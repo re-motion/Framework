@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
     /// <inheritdoc />
     Control IGenericTestPage<GenericTestOptions>.CreateControl (GenericTestOptions options)
     {
-      return CreateControl (options);
+      return CreateControl(options);
     }
 
     /// <summary>

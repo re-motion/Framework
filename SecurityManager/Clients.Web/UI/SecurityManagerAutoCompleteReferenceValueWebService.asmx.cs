@@ -47,10 +47,10 @@ namespace Remotion.SecurityManager.Clients.Web.UI
   {
     public static void BindServiceToControl (BocAutoCompleteReferenceValue control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
-      control.ControlServicePath = resourceUrlFactory.CreateResourceUrl (
+      control.ControlServicePath = resourceUrlFactory.CreateResourceUrl(
               typeof (SecurityManagerAutoCompleteReferenceValueWebService),
               ResourceType.UI,
               "SecurityManagerAutoCompleteReferenceValueWebService.asmx")
@@ -75,7 +75,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
         string arguments,
         string[] itemIDs)
     {
-      return itemIDs.Select (itemID => WebMenuItemProxy.Create (itemID, isDisabled: false)).ToArray();
+      return itemIDs.Select(itemID => WebMenuItemProxy.Create(itemID, isDisabled: false)).ToArray();
     }
 
     [WebMethod (EnableSession = true)]
@@ -88,19 +88,19 @@ namespace Remotion.SecurityManager.Clients.Web.UI
         string businessObject,
         string args)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("businessObjectClass", businessObjectClass);
-      ArgumentUtility.CheckNotNullOrEmpty ("businessObjectProperty", businessObjectProperty);
+      ArgumentUtility.CheckNotNullOrEmpty("businessObjectClass", businessObjectClass);
+      ArgumentUtility.CheckNotNullOrEmpty("businessObjectProperty", businessObjectProperty);
 
-      var businessObjectClassWithIdentity = GetBusinessObjectClassWithIdentity (businessObjectClass);
-      var referenceProperty = GetReferenceProperty (businessObjectProperty, businessObjectClassWithIdentity);
-      var securityManagerSearchArguments = GetSearchArguments (args, completionSetCount, searchString);
+      var businessObjectClassWithIdentity = GetBusinessObjectClassWithIdentity(businessObjectClass);
+      var referenceProperty = GetReferenceProperty(businessObjectProperty, businessObjectClassWithIdentity);
+      var securityManagerSearchArguments = GetSearchArguments(args, completionSetCount, searchString);
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        ClientTransaction.Current.Extensions.Add (new SecurityClientTransactionExtension());
-        var referencingObject = businessObjectClassWithIdentity.GetObject (businessObject);
-        var result = referenceProperty.SearchAvailableObjects (referencingObject, securityManagerSearchArguments);
-        return result.Cast<IBusinessObjectWithIdentity>().Select (o => new BusinessObjectWithIdentityProxy (o)).ToArray();
+        ClientTransaction.Current.Extensions.Add(new SecurityClientTransactionExtension());
+        var referencingObject = businessObjectClassWithIdentity.GetObject(businessObject);
+        var result = referenceProperty.SearchAvailableObjects(referencingObject, securityManagerSearchArguments);
+        return result.Cast<IBusinessObjectWithIdentity>().Select(o => new BusinessObjectWithIdentityProxy(o)).ToArray();
       }
     }
 
@@ -113,12 +113,12 @@ namespace Remotion.SecurityManager.Clients.Web.UI
         string businessObject,
         string args)
     {
-      var result = Search (searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
+      var result = Search(searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
       var hasSingleMatch = result.Count() == 1;
       if (hasSingleMatch)
         return result.Single();
 
-      var exactMatches = result.Where (r => string.Equals (r.DisplayName, searchString, StringComparison.CurrentCultureIgnoreCase)).ToArray();
+      var exactMatches = result.Where(r => string.Equals(r.DisplayName, searchString, StringComparison.CurrentCultureIgnoreCase)).ToArray();
       var hasExactMatch = exactMatches.Count() == 1;
       if (hasExactMatch)
         return exactMatches.Single();
@@ -129,38 +129,38 @@ namespace Remotion.SecurityManager.Clients.Web.UI
     private IBusinessObjectReferenceProperty GetReferenceProperty (
         string businessObjectProperty, IBusinessObjectClassWithIdentity businessObjectClassWithIdentity)
     {
-      var propertyDefinition = businessObjectClassWithIdentity.GetPropertyDefinition (businessObjectProperty);
-      Assertion.IsNotNull (propertyDefinition);
-      Assertion.IsTrue (propertyDefinition is IBusinessObjectReferenceProperty);
+      var propertyDefinition = businessObjectClassWithIdentity.GetPropertyDefinition(businessObjectProperty);
+      Assertion.IsNotNull(propertyDefinition);
+      Assertion.IsTrue(propertyDefinition is IBusinessObjectReferenceProperty);
 
       return (IBusinessObjectReferenceProperty) propertyDefinition;
     }
 
     private IBusinessObjectClassWithIdentity GetBusinessObjectClassWithIdentity (string businessObjectClass)
     {
-      var type = TypeUtility.GetType (businessObjectClass, true);
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType (type);
-      var bindableObjectClass = provider.GetBindableObjectClass (type);
-      Assertion.IsNotNull (bindableObjectClass);
-      Assertion.IsTrue (bindableObjectClass is IBusinessObjectClassWithIdentity);
+      var type = TypeUtility.GetType(businessObjectClass, true);
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(type);
+      var bindableObjectClass = provider.GetBindableObjectClass(type);
+      Assertion.IsNotNull(bindableObjectClass);
+      Assertion.IsTrue(bindableObjectClass is IBusinessObjectClassWithIdentity);
 
       return (IBusinessObjectClassWithIdentity) bindableObjectClass;
     }
 
     private SecurityManagerSearchArguments GetSearchArguments (string args, int? completionSetCount, string prefixText)
     {
-      return new SecurityManagerSearchArguments (
-          GetTenantConstraint (args),
-          GetResultSizeConstraint (completionSetCount),
-          GetDisplayNameConstraint (prefixText));
+      return new SecurityManagerSearchArguments(
+          GetTenantConstraint(args),
+          GetResultSizeConstraint(completionSetCount),
+          GetDisplayNameConstraint(prefixText));
     }
 
     private TenantConstraint GetTenantConstraint (string args)
     {
-      if (string.IsNullOrEmpty (args))
+      if (string.IsNullOrEmpty(args))
         return null;
 
-      return new TenantConstraint (ObjectID.Parse (args).GetHandle<Tenant>());
+      return new TenantConstraint(ObjectID.Parse(args).GetHandle<Tenant>());
     }
 
     private ResultSizeConstraint GetResultSizeConstraint (int? completionSetCount)
@@ -168,15 +168,15 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       if (!completionSetCount.HasValue)
         return null;
 
-      return new ResultSizeConstraint  (completionSetCount.Value);
+      return new ResultSizeConstraint(completionSetCount.Value);
     }
 
     private DisplayNameConstraint GetDisplayNameConstraint (string prefixText)
     {
-      if (string.IsNullOrEmpty (prefixText))
+      if (string.IsNullOrEmpty(prefixText))
         return null;
 
-      return new DisplayNameConstraint (prefixText);
+      return new DisplayNameConstraint(prefixText);
     }
   }
 }

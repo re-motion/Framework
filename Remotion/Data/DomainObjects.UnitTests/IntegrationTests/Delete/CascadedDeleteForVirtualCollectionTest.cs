@@ -41,10 +41,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       product.Delete();
 
-      Assert.That (product.State.IsInvalid, Is.True);
-      Assert.That (productReview.State.IsInvalid, Is.True);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
-      Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+      Assert.That(product.State.IsInvalid, Is.True);
+      Assert.That(productReview.State.IsInvalid, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
 
     [Test]
@@ -61,10 +61,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       product.Delete();
 
-      Assert.That (product.State.IsInvalid, Is.True);
-      Assert.That (productReview.State.IsInvalid, Is.True);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
-      Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+      Assert.That(product.State.IsInvalid, Is.True);
+      Assert.That(productReview.State.IsInvalid, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
 
     [Test]
@@ -82,16 +82,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
           review.Delete();
       };
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         product.Delete();
         ClientTransaction.Current.Commit();
       }
 
-      Assert.That (product.State.IsInvalid, Is.True);
-      Assert.That (productReview.State.IsInvalid, Is.True);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
-      Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+      Assert.That(product.State.IsInvalid, Is.True);
+      Assert.That(productReview.State.IsInvalid, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
 
     [Test]
@@ -106,16 +106,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       product.Deleting += delegate { objectToBeDeleted = product.Reviews.Single(); };
       product.Deleted += delegate { objectToBeDeleted.Delete(); };
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         product.Delete();
         ClientTransaction.Current.Commit();
       }
 
-      Assert.That (product.State.IsInvalid, Is.True);
-      Assert.That (productReview.State.IsInvalid, Is.True);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
-      Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+      Assert.That(product.State.IsInvalid, Is.True);
+      Assert.That(productReview.State.IsInvalid, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
   }
 }

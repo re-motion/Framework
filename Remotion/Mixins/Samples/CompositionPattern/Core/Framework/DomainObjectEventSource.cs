@@ -37,7 +37,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Framework
     {
       var handler = Committing;
       if (handler != null)
-        handler (_sender, EventArgs.Empty);
+        handler(_sender, EventArgs.Empty);
     }
   }
 }

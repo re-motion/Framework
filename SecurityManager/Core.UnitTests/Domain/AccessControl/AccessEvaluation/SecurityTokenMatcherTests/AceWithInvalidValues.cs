@@ -32,100 +32,100 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     {
       base.SetUp();
 
-      _companyHelper = new CompanyStructureHelper (TestHelper.Transaction);
+      _companyHelper = new CompanyStructureHelper(TestHelper.Transaction);
     }
 
     [Test]
     public void GroupHierarchyCondition_UndefinedValue ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
       Group owningGroup = _companyHelper.AustrianProjectsDepartment;
-      TestHelper.CreateRole (user, owningGroup, _companyHelper.HeadPosition);
+      TestHelper.CreateRole(user, owningGroup, _companyHelper.HeadPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, owningGroup);
+      SecurityToken token = TestHelper.CreateTokenWithOwningGroup(user, owningGroup);
 
       AccessControlEntry ace = TestHelper.CreateAceWithOwningGroup();
       ace.GroupHierarchyCondition = GroupHierarchyCondition.Undefined;
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (ace);
-      Assert.That (
-          () => matcher.MatchesToken (token),
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(ace);
+      Assert.That(
+          () => matcher.MatchesToken(token),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("The value 'Undefined' is not a valid value for matching the 'GroupHierarchyCondition'."));
+              .With.Message.EqualTo("The value 'Undefined' is not a valid value for matching the 'GroupHierarchyCondition'."));
     }
 
     [Test]
     public void GroupHierarchyCondition_Parent ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
       Group owningGroup = _companyHelper.AustrianProjectsDepartment;
-      TestHelper.CreateRole (user, owningGroup, _companyHelper.HeadPosition);
+      TestHelper.CreateRole(user, owningGroup, _companyHelper.HeadPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, owningGroup);
+      SecurityToken token = TestHelper.CreateTokenWithOwningGroup(user, owningGroup);
 
-      AccessControlEntry ace = TestHelper.CreateAceWithOwningGroup ();
+      AccessControlEntry ace = TestHelper.CreateAceWithOwningGroup();
       ace.GroupHierarchyCondition = GroupHierarchyCondition.Parent;
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (ace);
-      Assert.That (
-          () => matcher.MatchesToken (token),
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(ace);
+      Assert.That(
+          () => matcher.MatchesToken(token),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("The value 'Parent' is not a valid value for matching the 'GroupHierarchyCondition'."));
+              .With.Message.EqualTo("The value 'Parent' is not a valid value for matching the 'GroupHierarchyCondition'."));
     }
 
     [Test]
     public void GroupHierarchyCondition_Children ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
       Group owningGroup = _companyHelper.AustrianProjectsDepartment;
-      TestHelper.CreateRole (user, owningGroup, _companyHelper.HeadPosition);
+      TestHelper.CreateRole(user, owningGroup, _companyHelper.HeadPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, owningGroup);
+      SecurityToken token = TestHelper.CreateTokenWithOwningGroup(user, owningGroup);
 
-      AccessControlEntry ace = TestHelper.CreateAceWithOwningGroup ();
+      AccessControlEntry ace = TestHelper.CreateAceWithOwningGroup();
       ace.GroupHierarchyCondition = GroupHierarchyCondition.Children;
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (ace);
-      Assert.That (
-          () => matcher.MatchesToken (token),
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(ace);
+      Assert.That(
+          () => matcher.MatchesToken(token),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("The value 'Children' is not a valid value for matching the 'GroupHierarchyCondition'."));
+              .With.Message.EqualTo("The value 'Children' is not a valid value for matching the 'GroupHierarchyCondition'."));
     }
 
     [Test]
     public void TenantHierarchyCondition_UndefinedValue ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
       Tenant owningTenant = _companyHelper.CompanyTenant;
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningTenant (user, owningTenant);
+      SecurityToken token = TestHelper.CreateTokenWithOwningTenant(user, owningTenant);
 
-      AccessControlEntry ace = TestHelper.CreateAceWithOwningTenant ();
+      AccessControlEntry ace = TestHelper.CreateAceWithOwningTenant();
       ace.TenantHierarchyCondition = TenantHierarchyCondition.Undefined;
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (ace);
-      Assert.That (
-          () => matcher.MatchesToken (token),
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(ace);
+      Assert.That(
+          () => matcher.MatchesToken(token),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("The value 'Undefined' is not a valid value for matching the 'TenantHierarchyCondition'."));
+              .With.Message.EqualTo("The value 'Undefined' is not a valid value for matching the 'TenantHierarchyCondition'."));
     }
 
     [Test]
     public void TenantHierarchyCondition_Parent ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
       Tenant owningTenant = _companyHelper.CompanyTenant;
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningTenant (user, owningTenant);
+      SecurityToken token = TestHelper.CreateTokenWithOwningTenant(user, owningTenant);
 
-      AccessControlEntry ace = TestHelper.CreateAceWithOwningTenant ();
+      AccessControlEntry ace = TestHelper.CreateAceWithOwningTenant();
       ace.TenantHierarchyCondition = TenantHierarchyCondition.Parent;
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (ace);
-      Assert.That (
-          () => matcher.MatchesToken (token),
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(ace);
+      Assert.That(
+          () => matcher.MatchesToken(token),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("The value 'Parent' is not a valid value for matching the 'TenantHierarchyCondition'."));
+              .With.Message.EqualTo("The value 'Parent' is not a valid value for matching the 'TenantHierarchyCondition'."));
     }
   }
 }

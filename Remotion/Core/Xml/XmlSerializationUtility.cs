@@ -30,20 +30,20 @@ namespace Remotion.Xml
   {
     public static object DeserializeUsingSchema (XmlReader reader, Type type, string defaultNamespace, XmlReaderSettings settings)
     {
-      ArgumentUtility.CheckNotNull ("reader", reader);
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("settings", settings);
+      ArgumentUtility.CheckNotNull("reader", reader);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("settings", settings);
 
-      XmlSchemaValidationHandler validationHandler = new XmlSchemaValidationHandler (true);
+      XmlSchemaValidationHandler validationHandler = new XmlSchemaValidationHandler(true);
       settings.ValidationEventHandler += validationHandler.Handler;
       settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
 
-      XmlReader innerReader = XmlReader.Create (reader, settings);
-      XmlSerializer serializer = new XmlSerializer (type, defaultNamespace);
+      XmlReader innerReader = XmlReader.Create(reader, settings);
+      XmlSerializer serializer = new XmlSerializer(type, defaultNamespace);
 
       try
       {
-        return serializer.Deserialize (innerReader)!;
+        return serializer.Deserialize(innerReader)!;
       }
       catch (InvalidOperationException e)
       {
@@ -56,49 +56,49 @@ namespace Remotion.Xml
         IXmlLineInfo lineInfo = (IXmlLineInfo) innerReader;
         if (lineInfo != null)
         {
-          string errorMessage = string.Format (
+          string errorMessage = string.Format(
               "Error reading {0} ({1},{2}): {3}",
               innerReader.BaseURI,
               lineInfo.LineNumber,
               lineInfo.LinePosition,
               e.Message);
-          throw new XmlException (errorMessage, e, lineInfo.LineNumber, lineInfo.LinePosition);
+          throw new XmlException(errorMessage, e, lineInfo.LineNumber, lineInfo.LinePosition);
         }
         else
         {
-          string errorMessage = string.Format (
+          string errorMessage = string.Format(
               "Error reading {0}: {1}",
               innerReader.BaseURI,
               e.Message); 
-          throw new XmlException (errorMessage, e);
+          throw new XmlException(errorMessage, e);
         }
       }
     }
 
     public static object DeserializeUsingSchema (XmlReader reader, Type type, string defaultNamespace, XmlSchemaSet schemas)
     {
-      ArgumentUtility.CheckNotNull ("reader", reader);
+      ArgumentUtility.CheckNotNull("reader", reader);
 
       XmlReaderSettings settings = new XmlReaderSettings();
       settings.Schemas = schemas;
       settings.ValidationType = ValidationType.Schema;
 
-      return DeserializeUsingSchema (reader, type, defaultNamespace, settings);
+      return DeserializeUsingSchema(reader, type, defaultNamespace, settings);
     }
 
     public static object DeserializeUsingSchema (XmlReader reader, Type type, XmlSchemaSet schemas)
     {
-      return DeserializeUsingSchema (reader, type, GetNamespace (type), schemas);
+      return DeserializeUsingSchema(reader, type, GetNamespace(type), schemas);
     }
 
     public static object DeserializeUsingSchema (XmlReader reader, Type type, string schemaUri, XmlReader schemaReader)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("schemaUri", schemaUri);
-      ArgumentUtility.CheckNotNull ("schemaReader", schemaReader);
+      ArgumentUtility.CheckNotNullOrEmpty("schemaUri", schemaUri);
+      ArgumentUtility.CheckNotNull("schemaReader", schemaReader);
 
       XmlSchemaSet schemas = new XmlSchemaSet();
-      schemas.Add (schemaUri, schemaReader);
-      return DeserializeUsingSchema (reader, type, GetNamespace (type), schemas);
+      schemas.Add(schemaUri, schemaReader);
+      return DeserializeUsingSchema(reader, type, GetNamespace(type), schemas);
     }
 
    
@@ -108,27 +108,27 @@ namespace Remotion.Xml
     /// <exception cref="ArgumentException"> Thrown if no namespace is specified through at least one of the possible attributes. </exception>
     public static string GetNamespace (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      XmlTypeAttribute? xmlType = (XmlTypeAttribute?) Attribute.GetCustomAttribute (type, typeof (XmlTypeAttribute), true);
-      XmlRootAttribute? xmlRoot = (XmlRootAttribute?) Attribute.GetCustomAttribute (type, typeof (XmlRootAttribute), true);
+      XmlTypeAttribute? xmlType = (XmlTypeAttribute?) Attribute.GetCustomAttribute(type, typeof (XmlTypeAttribute), true);
+      XmlRootAttribute? xmlRoot = (XmlRootAttribute?) Attribute.GetCustomAttribute(type, typeof (XmlRootAttribute), true);
       bool hasXmlType = xmlType != null;
       bool hasXmlRoot = xmlRoot != null;
       if (!hasXmlType && !hasXmlRoot)
       {
-        throw new ArgumentException (
-            string.Format (
+        throw new ArgumentException(
+            string.Format(
                 "Cannot determine the xml namespace of type '{0}' because no neither an XmlTypeAttribute nor an XmlRootAttribute has been provided.",
                 type.GetFullNameSafe()),
             "type");
       }
 
-      bool hasXmlTypeNamespace = hasXmlType ? (! String.IsNullOrEmpty (xmlType!.Namespace)) : false;
-      bool hasXmlRootNamespace = hasXmlRoot ? (! String.IsNullOrEmpty (xmlRoot!.Namespace)) : false;
+      bool hasXmlTypeNamespace = hasXmlType ? (! String.IsNullOrEmpty(xmlType!.Namespace)) : false;
+      bool hasXmlRootNamespace = hasXmlRoot ? (! String.IsNullOrEmpty(xmlRoot!.Namespace)) : false;
       if (! hasXmlTypeNamespace && ! hasXmlRootNamespace)
       {
-        throw new ArgumentException (
-            string.Format (
+        throw new ArgumentException(
+            string.Format(
                 "Cannot determine the xml namespace of type '{0}' because neither an XmlTypeAttribute nor an XmlRootAttribute is used to define a namespace for the type.",
                 type.GetFullNameSafe()),
             "type");

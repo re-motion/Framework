@@ -36,13 +36,13 @@ namespace Remotion.Web.Compilation
 
     public static object GetResourceString (Control parent, string resourceID)
     {
-      ArgumentUtility.CheckNotNull ("parent", parent);
-      ArgumentUtility.CheckNotNullOrEmpty ("resourceID", resourceID);
+      ArgumentUtility.CheckNotNull("parent", parent);
+      ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
 
-      IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (parent, true);
+      IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager(parent, true);
       if (resourceManager == null)
-        throw new InvalidOperationException ("Remotion.Web.Compilation.ResourceExpressionBuilder can only be used on controls embedded within a parent implementing IObjectWithResources.");
-      return resourceManager.GetString (resourceID);
+        throw new InvalidOperationException("Remotion.Web.Compilation.ResourceExpressionBuilder can only be used on controls embedded within a parent implementing IObjectWithResources.");
+      return resourceManager.GetString(resourceID);
     }
 
     // member fields
@@ -58,18 +58,18 @@ namespace Remotion.Web.Compilation
     public override CodeExpression? GetCodeExpression (BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
     {
       Tuple<string, Type> entryTuple = (Tuple<string, Type>) parsedData;
-      CodeMethodInvokeExpression expression = new CodeMethodInvokeExpression ();
-      expression.Method.TargetObject = new CodeTypeReferenceExpression (base.GetType ());
+      CodeMethodInvokeExpression expression = new CodeMethodInvokeExpression();
+      expression.Method.TargetObject = new CodeTypeReferenceExpression(base.GetType());
       expression.Method.MethodName = "GetResourceString";
-      expression.Parameters.Add (new CodeThisReferenceExpression ());
-      expression.Parameters.Add (new CodePrimitiveExpression (entryTuple.Item1));
+      expression.Parameters.Add(new CodeThisReferenceExpression());
+      expression.Parameters.Add(new CodePrimitiveExpression(entryTuple.Item1));
 
       return expression;
     }
  
     public override object? ParseExpression (string expression, Type propertyType, ExpressionBuilderContext context)
     {
-      return new Tuple<string, Type> (expression, propertyType);
+      return new Tuple<string, Type>(expression, propertyType);
     }
   }
 }

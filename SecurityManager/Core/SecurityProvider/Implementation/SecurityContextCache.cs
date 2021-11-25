@@ -52,12 +52,12 @@ namespace Remotion.SecurityManager.SecurityProvider.Implementation
 
     public ICache<ISecurityPrincipal, AccessTypeCache> Items
     {
-      get { return GetCachedData (_revisionKey).Items; }
+      get { return GetCachedData(_revisionKey).Items; }
     }
 
     protected override Data LoadData (GuidRevisionValue revision)
     {
-      return new Data (revision);
+      return new Data(revision);
     }
   }
 }

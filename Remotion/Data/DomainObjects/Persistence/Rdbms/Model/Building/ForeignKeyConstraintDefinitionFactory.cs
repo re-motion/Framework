@@ -38,9 +38,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         IRdbmsPersistenceModelProvider persistenceModelProvider,
         IInfrastructureStoragePropertyDefinitionProvider infrastructureStoragePropertyDefinitionProvider)
     {
-      ArgumentUtility.CheckNotNull ("storageNameProvider", storageNameProvider);
-      ArgumentUtility.CheckNotNull ("persistenceModelProvider", persistenceModelProvider);
-      ArgumentUtility.CheckNotNull ("infrastructureStoragePropertyDefinitionProvider", infrastructureStoragePropertyDefinitionProvider);
+      ArgumentUtility.CheckNotNull("storageNameProvider", storageNameProvider);
+      ArgumentUtility.CheckNotNull("persistenceModelProvider", persistenceModelProvider);
+      ArgumentUtility.CheckNotNull("infrastructureStoragePropertyDefinitionProvider", infrastructureStoragePropertyDefinitionProvider);
 
       _storageNameProvider = storageNameProvider;
       _persistenceModelProvider = persistenceModelProvider;
@@ -65,25 +65,25 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     public IEnumerable<ForeignKeyConstraintDefinition> CreateForeignKeyConstraints (ClassDefinition classDefinition)
     {
       var allClassDefinitionsInHierarchy = classDefinition
-          .CreateSequence (cd => cd.BaseClass)
-          .Concat (classDefinition.GetAllDerivedClasses ());
+          .CreateSequence(cd => cd.BaseClass)
+          .Concat(classDefinition.GetAllDerivedClasses());
 
       return (from classDefinitionInHierarchy in allClassDefinitionsInHierarchy
               from endPointDefinition in classDefinitionInHierarchy.MyRelationEndPointDefinitions
               where !endPointDefinition.IsVirtual
               let referencedClassDefinition = endPointDefinition.ClassDefinition
-                  .GetMandatoryRelationEndPointDefinition (endPointDefinition.PropertyName)
-                  .GetOppositeClassDefinition ()
+                  .GetMandatoryRelationEndPointDefinition(endPointDefinition.PropertyName)
+                  .GetOppositeClassDefinition()
               let propertyDefinition = ((RelationEndPointDefinition) endPointDefinition).PropertyDefinition
               where propertyDefinition.StorageClass == StorageClass.Persistent
               let referencingStorageProperty =
-                  (IObjectIDStoragePropertyDefinition) _persistenceModelProvider.GetStoragePropertyDefinition (propertyDefinition)
+                  (IObjectIDStoragePropertyDefinition) _persistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition)
               where referencingStorageProperty.CanCreateForeignKeyConstraint
-              let referencedTableName = FindTableName (referencedClassDefinition)
+              let referencedTableName = FindTableName(referencedClassDefinition)
               where referencedTableName != null
               let referencedStoragePropertyDefinition = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition()
-              select referencingStorageProperty.CreateForeignKeyConstraint (
-                  referencingColumns => _storageNameProvider.GetForeignKeyConstraintName (classDefinition, referencingColumns),
+              select referencingStorageProperty.CreateForeignKeyConstraint(
+                  referencingColumns => _storageNameProvider.GetForeignKeyConstraintName(classDefinition, referencingColumns),
                   referencedTableName,
                   referencedStoragePropertyDefinition)
              ).ToList();
@@ -92,9 +92,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     private EntityNameDefinition FindTableName (ClassDefinition classDefinition)
     {
       var tableName = classDefinition
-          .CreateSequence (cd => cd.BaseClass)
-          .Select (cd => _storageNameProvider.GetTableName (cd))
-          .FirstOrDefault (name => name != null);
+          .CreateSequence(cd => cd.BaseClass)
+          .Select(cd => _storageNameProvider.GetTableName(cd))
+          .FirstOrDefault(name => name != null);
       return tableName;
     }
   }

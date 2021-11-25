@@ -38,8 +38,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       get
       {
-        var styledScope = Scope.FindCss ("span.buttonBody");
-        return new DefaultStyleInformation (this, styledScope);
+        var styledScope = Scope.FindCss("span.buttonBody");
+        return new DefaultStyleInformation(this, styledScope);
       }
     }
 
@@ -56,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public ButtonType GetButtonType ()
     {
-      return (ButtonType) Enum.Parse (typeof (ButtonType), Scope[DiagnosticMetadataAttributes.ButtonType]);
+      return (ButtonType) Enum.Parse(typeof (ButtonType), Scope[DiagnosticMetadataAttributes.ButtonType]);
     }
 
     [Obsolete ("Use IsDisabled instead. (Version 1.17.5)")]
@@ -75,10 +75,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public UnspecifiedPageObject Click (IWebTestActionOptions? actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
-      var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      ExecuteAction (new ClickAction (this, Scope), actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
+      ExecuteAction(new ClickAction(this, Scope), actualActionOptions);
       return UnspecifiedPage();
     }
   }

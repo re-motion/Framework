@@ -29,35 +29,35 @@ namespace Remotion.Mixins.CodeGeneration
 
     public TypeFactoryImplementation (IPipelineRegistry pipelineRegistry)
     {
-      ArgumentUtility.CheckNotNull ("pipelineRegistry", pipelineRegistry);
+      ArgumentUtility.CheckNotNull("pipelineRegistry", pipelineRegistry);
 
       _pipelineRegistry = pipelineRegistry;
     }
 
     public Type GetConcreteType (Type targetOrConcreteType)
     {
-      ArgumentUtility.CheckNotNull ("targetOrConcreteType", targetOrConcreteType);
+      ArgumentUtility.CheckNotNull("targetOrConcreteType", targetOrConcreteType);
 
-      var classContext = MixinConfiguration.ActiveConfiguration.GetContext (targetOrConcreteType);
+      var classContext = MixinConfiguration.ActiveConfiguration.GetContext(targetOrConcreteType);
       if (classContext == null)
         return targetOrConcreteType;
 
       if (classContext.Type != targetOrConcreteType)
       {
         // The ClassContext doesn't match the requested type, so it must already be a concrete type. Just return it.
-        Assertion.DebugAssert (MixinTypeUtility.IsGeneratedConcreteMixedType (targetOrConcreteType));
+        Assertion.DebugAssert(MixinTypeUtility.IsGeneratedConcreteMixedType(targetOrConcreteType));
         return targetOrConcreteType;
       }
 
-      return _pipelineRegistry.DefaultPipeline.ReflectionService.GetAssembledType (targetOrConcreteType);
+      return _pipelineRegistry.DefaultPipeline.ReflectionService.GetAssembledType(targetOrConcreteType);
     }
 
     public void InitializeUnconstructedInstance (object mixinTarget, InitializationSemantics initializationSemantics)
     {
-      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
-      ArgumentUtility.CheckType<IMixinTarget> ("mixinTarget", mixinTarget);
+      ArgumentUtility.CheckNotNull("mixinTarget", mixinTarget);
+      ArgumentUtility.CheckType<IMixinTarget>("mixinTarget", mixinTarget);
 
-      _pipelineRegistry.DefaultPipeline.ReflectionService.PrepareExternalUninitializedObject (mixinTarget, initializationSemantics);
+      _pipelineRegistry.DefaultPipeline.ReflectionService.PrepareExternalUninitializedObject(mixinTarget, initializationSemantics);
     }
   }
 }

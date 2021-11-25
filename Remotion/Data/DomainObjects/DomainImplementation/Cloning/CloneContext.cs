@@ -24,13 +24,13 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
   public class CloneContext
   {
     private readonly DomainObjectCloner _cloner;
-    private readonly Dictionary<DomainObject, DomainObject> _clones = new Dictionary<DomainObject, DomainObject> ();
-    private readonly Queue<Tuple<DomainObject, DomainObject>> _cloneHulls = new Queue<Tuple<DomainObject, DomainObject>> ();
+    private readonly Dictionary<DomainObject, DomainObject> _clones = new Dictionary<DomainObject, DomainObject>();
+    private readonly Queue<Tuple<DomainObject, DomainObject>> _cloneHulls = new Queue<Tuple<DomainObject, DomainObject>>();
     private readonly Func<DomainObject, DomainObject> _getCloneInternalFunc;
 
     public CloneContext (DomainObjectCloner cloner)
     {
-      ArgumentUtility.CheckNotNull ("cloner", cloner);
+      ArgumentUtility.CheckNotNull("cloner", cloner);
       _cloner = cloner;
 
       // Optimized for memory allocations
@@ -50,13 +50,13 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
     public virtual T GetCloneFor<T> (T domainObject)
         where T : DomainObject
     {
-      return (T) _clones.GetOrCreateValue (domainObject, _getCloneInternalFunc);
+      return (T) _clones.GetOrCreateValue(domainObject, _getCloneInternalFunc);
     }
 
     private DomainObject GetCloneInternal (DomainObject cloneTemplate)
     {
-      DomainObject clone = _cloner.CreateCloneHull (cloneTemplate);
-      CloneHulls.Enqueue (Tuple.Create (cloneTemplate, clone));
+      DomainObject clone = _cloner.CreateCloneHull(cloneTemplate);
+      CloneHulls.Enqueue(Tuple.Create(cloneTemplate, clone));
       return clone;
     }
   }

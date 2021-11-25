@@ -26,9 +26,9 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     public ShowSecondUserControlFormFunction ()
         : base (new NoneTransactionMode())
     {
-      ExceptionHandler.AppendCatchExceptionTypes (typeof (WxeUserCancelException));
+      ExceptionHandler.AppendCatchExceptionTypes(typeof (WxeUserCancelException));
     }
 
-    private WxeResourceUserControlStep Step1 = new WxeResourceUserControlStep (typeof (SecondControl), "ExecutionEngine/SecondControl.ascx");
+    private WxeResourceUserControlStep Step1 = new WxeResourceUserControlStep(typeof (SecondControl), "ExecutionEngine/SecondControl.ascx");
   }
 }

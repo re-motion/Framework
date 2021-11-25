@@ -28,15 +28,15 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     [Test]
     public void Accept ()
     {
-      var targetClass = DefinitionObjectMother.CreateTargetClassDefinition (typeof (NullTarget));
-      var requiredTargetCallTypeDefinition = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition (targetClass, typeof (ISimpleInterface));
-      var dependency = new ComposedInterfaceDependencyDefinition (requiredTargetCallTypeDefinition, typeof (ISimpleInterface), null);
+      var targetClass = DefinitionObjectMother.CreateTargetClassDefinition(typeof (NullTarget));
+      var requiredTargetCallTypeDefinition = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition(targetClass, typeof (ISimpleInterface));
+      var dependency = new ComposedInterfaceDependencyDefinition(requiredTargetCallTypeDefinition, typeof (ISimpleInterface), null);
 
-      var visitorMock = MockRepository.GenerateMock<IDefinitionVisitor> ();
+      var visitorMock = MockRepository.GenerateMock<IDefinitionVisitor>();
 
-      dependency.Accept (visitorMock);
+      dependency.Accept(visitorMock);
 
-      visitorMock.AssertWasCalled (mock => mock.Visit (dependency));
+      visitorMock.AssertWasCalled(mock => mock.Visit(dependency));
     }
   }
 }

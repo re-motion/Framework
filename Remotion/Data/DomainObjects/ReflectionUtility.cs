@@ -44,11 +44,11 @@ namespace Remotion.Data.DomainObjects
     private static readonly Func<Type, ValueTuple<bool, Type>> s_objectListTypeCacheValueFactory =
         static t =>
         {
-          var canAscribeTo = typeof (IReadOnlyList<DomainObject>).IsAssignableFrom (t) && t.CanAscribeTo (typeof (ObjectList<>));
-          return ValueTuple.Create (
+          var canAscribeTo = typeof (IReadOnlyList<DomainObject>).IsAssignableFrom(t) && t.CanAscribeTo(typeof (ObjectList<>));
+          return ValueTuple.Create(
               canAscribeTo,
               canAscribeTo
-                  ? t.GetAscribedGenericArguments (typeof (ObjectList<>))[0]
+                  ? t.GetAscribedGenericArguments(typeof (ObjectList<>))[0]
                   : null);
         };
 
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The path of the current executing assembly</returns>
     public static string GetConfigFileDirectory ()
     {
-      return GetAssemblyDirectory (typeof (DomainObject).Assembly);
+      return GetAssemblyDirectory(typeof (DomainObject).Assembly);
     }
 
     /// <summary>
@@ -70,13 +70,13 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="InvalidOperationException">The assembly's code base is not a local path.</exception>
     public static string GetAssemblyDirectory (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
 
-      var assemblyNameWithoutShadowCopy = assembly.GetName (copiedName: false);
-      var codeBaseUri = new Uri (assemblyNameWithoutShadowCopy.EscapedCodeBase);
+      var assemblyNameWithoutShadowCopy = assembly.GetName(copiedName: false);
+      var codeBaseUri = new Uri(assemblyNameWithoutShadowCopy.EscapedCodeBase);
       if (!codeBaseUri.IsFile)
-        throw new InvalidOperationException (String.Format ("The assembly's code base '{0}' is not a local path.", codeBaseUri.OriginalString));
-      return Path.GetDirectoryName (codeBaseUri.LocalPath);
+        throw new InvalidOperationException(String.Format("The assembly's code base '{0}' is not a local path.", codeBaseUri.OriginalString));
+      return Path.GetDirectoryName(codeBaseUri.LocalPath);
     }
 
     /// <summary>
@@ -89,33 +89,33 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="System.ArgumentException">Type <paramref name="type"/> has no suitable constructor for the given <paramref name="constructorParameters"/>.</exception>
     public static object CreateObject (Type type, params object[] constructorParameters)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       Type[] constructorParameterTypes = new Type[constructorParameters.Length];
       for (int i = 0; i < constructorParameterTypes.Length; i++)
         constructorParameterTypes[i] = constructorParameters[i].GetType();
 
-      ConstructorInfo constructor = type.GetConstructor (
+      ConstructorInfo constructor = type.GetConstructor(
           BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
           null,
           constructorParameterTypes,
           null);
 
       if (constructor != null)
-        return constructor.Invoke (constructorParameters);
+        return constructor.Invoke(constructorParameters);
       else
       {
-        throw new ArgumentException (
-            String.Format (
+        throw new ArgumentException(
+            String.Format(
                 "Type '{0}' has no suitable constructor. Parameter types: ({1})",
                 type,
-                GetTypeListAsString (constructorParameterTypes)));
+                GetTypeListAsString(constructorParameterTypes)));
       }
     }
 
     internal static string GetTypeListAsString (Type[] types)
     {
-      ArgumentUtility.CheckNotNull ("types", types);
+      ArgumentUtility.CheckNotNull("types", types);
       string result = String.Empty;
       foreach (Type type in types)
       {
@@ -133,8 +133,8 @@ namespace Remotion.Data.DomainObjects
 
     public static string GetSignatureForArguments (object[] args)
     {
-      Type[] argumentTypes = GetTypesForArgs (args);
-      return GetTypeListAsString (argumentTypes);
+      Type[] argumentTypes = GetTypesForArgs(args);
+      return GetTypeListAsString(argumentTypes);
     }
 
     public static Type[] GetTypesForArgs (object[] args)
@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects
     [Obsolete ("Use MappingConfiguration.Current.NameResolver.GetPropertyName(...).", true)]
     public static string GetPropertyName (Type originalDeclaringType, string propertyName)
     {
-      throw new NotSupportedException ("Use MappingConfiguration.Current.NameResolver.GetPropertyName(...).");
+      throw new NotSupportedException("Use MappingConfiguration.Current.NameResolver.GetPropertyName(...).");
     }
 
     /// <summary>
@@ -166,9 +166,9 @@ namespace Remotion.Data.DomainObjects
     /// </returns>
     public static bool IsObjectList (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return s_objectListTypeCache.GetOrAdd (type, s_objectListTypeCacheValueFactory).CanAscribeTo;
+      return s_objectListTypeCache.GetOrAdd(type, s_objectListTypeCacheValueFactory).CanAscribeTo;
     }
 
     /// <summary>
@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects
     /// </returns>
     public static bool IsIObjectList (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       if (type == typeof (IObjectList<>))
         return true;
@@ -202,9 +202,9 @@ namespace Remotion.Data.DomainObjects
     /// <returns><see langword="true" /> if the given type is a domain object.</returns>
     public static bool IsDomainObject (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return (typeof (DomainObject).IsAssignableFrom (type));
+      return (typeof (DomainObject).IsAssignableFrom(type));
     }
 
     /// <summary>
@@ -214,51 +214,51 @@ namespace Remotion.Data.DomainObjects
     /// <returns><see langword="true" /> if the given type is a relation property.</returns>
     public static bool IsRelationType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return IsDomainObject (type) || IsObjectList (type) || IsIObjectList (type);
+      return IsDomainObject(type) || IsObjectList(type) || IsIObjectList(type);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
     internal static bool IsBinaryPropertyValueType (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
       return s_binaryPropertyValueType.Equals(propertyType);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
     internal static bool IsStringPropertyValueType (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
-      return s_stringPropertyValueType.Equals (propertyType);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      return s_stringPropertyValueType.Equals(propertyType);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
     internal static bool IsExtensibleEnumPropertyValueType (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
-      return ExtensibleEnumUtility.IsExtensibleEnumType (propertyType);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      return ExtensibleEnumUtility.IsExtensibleEnumType(propertyType);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
     internal static bool IsStructuralEquatablePropertyValueType (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
-      return typeof (IStructuralEquatable).IsAssignableFrom (propertyType);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      return typeof (IStructuralEquatable).IsAssignableFrom(propertyType);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
     internal static bool IsObjectIDPropertyValueType (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
-      return s_objectIDPropertyValueType.Equals (propertyType);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      return s_objectIDPropertyValueType.Equals(propertyType);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
     internal static bool IsTypePropertyValueType (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
-      return s_typePropertyValueType.Equals (propertyType);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      return s_typePropertyValueType.Equals(propertyType);
     }
 
     /// <summary>
@@ -274,12 +274,12 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public static Type GetObjectListTypeParameter (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      var typeParameter = s_objectListTypeCache.GetOrAdd (type, s_objectListTypeCacheValueFactory).ItemType;
+      var typeParameter = s_objectListTypeCache.GetOrAdd(type, s_objectListTypeCacheValueFactory).ItemType;
 
       if (typeParameter is null)
-        throw ArgumentUtility.CreateArgumentTypeException ("type", type, typeof (ObjectList<>));
+        throw ArgumentUtility.CreateArgumentTypeException("type", type, typeof (ObjectList<>));
 
       if (typeParameter.IsGenericParameter)
         return null;
@@ -300,9 +300,9 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public static Type GetIObjectListTypeParameter (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      var typeParameters = type.GetAscribedGenericArguments (typeof (IObjectList<>));
+      var typeParameters = type.GetAscribedGenericArguments(typeof (IObjectList<>));
       var typeParameter = typeParameters[0];
       if (typeParameter.IsGenericParameter)
         return null;
@@ -316,12 +316,12 @@ namespace Remotion.Data.DomainObjects
     /// <returns>the domain object type of the given property.</returns>
     public static Type GetRelatedObjectTypeFromRelationProperty (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
-      if (IsObjectList (propertyInfo.PropertyType))
-        return GetObjectListTypeParameter (propertyInfo.PropertyType);
-      if (IsIObjectList (propertyInfo.PropertyType))
-        return GetIObjectListTypeParameter (propertyInfo.PropertyType);
+      if (IsObjectList(propertyInfo.PropertyType))
+        return GetObjectListTypeParameter(propertyInfo.PropertyType);
+      if (IsIObjectList(propertyInfo.PropertyType))
+        return GetIObjectListTypeParameter(propertyInfo.PropertyType);
       else
         return propertyInfo.PropertyType;
     }
@@ -334,16 +334,16 @@ namespace Remotion.Data.DomainObjects
     /// <returns>the declaring domain object type for the given property.</returns>
     public static Type GetDeclaringDomainObjectTypeForProperty (IPropertyInformation propertyInfo, ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      if (IsMixedProperty (propertyInfo, classDefinition))
+      if (IsMixedProperty(propertyInfo, classDefinition))
       {
         var originalMixinTarget =
-            classDefinition.PersistentMixinFinder.FindOriginalMixinTarget (classDefinition.GetPersistentMixin (propertyInfo.DeclaringType.ConvertToRuntimeType ()));
+            classDefinition.PersistentMixinFinder.FindOriginalMixinTarget(classDefinition.GetPersistentMixin(propertyInfo.DeclaringType.ConvertToRuntimeType()));
         if (originalMixinTarget == null)
-          throw new InvalidOperationException (
-              String.Format ("IPersistentMixinFinder.FindOriginalMixinTarget (DeclaringMixin) evaluated and returned null."));
+          throw new InvalidOperationException(
+              String.Format("IPersistentMixinFinder.FindOriginalMixinTarget (DeclaringMixin) evaluated and returned null."));
         return originalMixinTarget;
       }
       else
@@ -358,10 +358,10 @@ namespace Remotion.Data.DomainObjects
     /// <returns><see langword="true" /> if the given <see cref="PropertyInfo"/> is a mixed property.</returns>
     public static bool IsMixedProperty (IPropertyInformation propertyInfo, ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      return classDefinition.GetPersistentMixin (propertyInfo.DeclaringType.ConvertToRuntimeType()) != null;
+      return classDefinition.GetPersistentMixin(propertyInfo.DeclaringType.ConvertToRuntimeType()) != null;
     }
 
     /// <summary>
@@ -372,22 +372,22 @@ namespace Remotion.Data.DomainObjects
     /// <returns><see langword="true" /> if the given type is the inheritance root.</returns>
     public static bool IsInheritanceRoot (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (DomainObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (DomainObject));
 
-      if (IsTypeIgnoredForMappingConfiguration (type))
+      if (IsTypeIgnoredForMappingConfiguration(type))
         return false;
 
-      if (AttributeUtility.IsDefined<StorageGroupAttribute> (type, false))
+      if (AttributeUtility.IsDefined<StorageGroupAttribute>(type, false))
         return true;
 
-      return type.BaseType.CreateSequence (t => t.BaseType, IsDomainObject).All (IsTypeIgnoredForMappingConfiguration);
+      return type.BaseType.CreateSequence(t => t.BaseType, IsDomainObject).All(IsTypeIgnoredForMappingConfiguration);
     }
 
     public static bool IsTypeIgnoredForMappingConfiguration (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (DomainObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (DomainObject));
 
-      return AttributeUtility.IsDefined<IgnoreForMappingConfigurationAttribute> (type, false);
+      return AttributeUtility.IsDefined<IgnoreForMappingConfigurationAttribute>(type, false);
     }
   }
 }

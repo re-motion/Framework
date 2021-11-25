@@ -24,7 +24,7 @@ namespace Remotion.ExtensibleEnums
   [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.ExtensibleEnums.dll", true)]
   internal abstract class ExtensibleEnum<T> {
 
-    public static readonly ExtensibleEnumDefinition<T> Values = (ExtensibleEnumDefinition<T>) ExtensibleEnumUtility.GetDefinition (typeof (T));
+    public static readonly ExtensibleEnumDefinition<T> Values = (ExtensibleEnumDefinition<T>) ExtensibleEnumUtility.GetDefinition(typeof (T));
 
     public static bool operator == (ExtensibleEnum<T> value1, ExtensibleEnum<T> value2)
     {

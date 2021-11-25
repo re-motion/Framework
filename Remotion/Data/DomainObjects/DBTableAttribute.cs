@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="name">The name of the table. Must not be <see langword="null" /> or empty.</param>
     public DBTableAttribute (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
       _name = name;
     }
 

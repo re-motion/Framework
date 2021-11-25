@@ -38,14 +38,14 @@ namespace Remotion.Web.ExecutionEngine
     /// Indicates that a <see cref="WxeFunction"/> will create a new root transaction when executed. The transaction must be explicitly committed,
     /// otherwise all changes made in its scope will be discarded.
     /// </summary>
-    public static readonly ITransactionMode CreateRoot = new CreateRootTransactionMode(false, new TTransactionFactory ());
+    public static readonly ITransactionMode CreateRoot = new CreateRootTransactionMode(false, new TTransactionFactory());
 
     /// <summary>
     /// Indicates that a <see cref="WxeFunction"/> will create a new root transaction when executed. The transaction can be explicitly committed, and
     /// it will be committed automatically when the function successfuly finishes execution. When the function finishes with an exception, the
     /// transaction will not be committed automatically.
     /// </summary>
-    public static readonly ITransactionMode CreateRootWithAutoCommit = new CreateRootTransactionMode (true, new TTransactionFactory ());
+    public static readonly ITransactionMode CreateRootWithAutoCommit = new CreateRootTransactionMode(true, new TTransactionFactory());
 
     /// <summary>
     /// Indicates that a <see cref="WxeFunction"/> will create a new transaction when executed. If a <see cref="WxeStep.ParentFunction"/> exists which 
@@ -61,7 +61,7 @@ namespace Remotion.Web.ExecutionEngine
     /// it will be committed automatically when the function successfuly finishes execution. When the function finishes with an exception, the
     /// transaction will not be committed automatically.
     /// </summary>
-    public static readonly ITransactionMode CreateChildIfParentWithAutoCommit = new CreateChildIfParentTransactionMode (true, new TTransactionFactory());
+    public static readonly ITransactionMode CreateChildIfParentWithAutoCommit = new CreateChildIfParentTransactionMode(true, new TTransactionFactory());
 
     protected WxeTransactionMode ()
     {

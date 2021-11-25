@@ -31,19 +31,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTest ()
     {
-      Register ("autoCompleteReferenceValue", new BocAutoCompleteReferenceValueGenericTestPage());
-      Register ("booleanValue", new BocBooleanValueGenericTestPage());
-      Register ("checkBox", new BocCheckBoxValueGenericTestPage());
-      Register ("dateTimeValue", new BocDateTimeValueGenericTestPage());
-      Register ("dropDownList", new BocEnumValueGenericTestPage (ListControlType.DropDownList));
-      Register ("list", new BocListGenericTestPage());
-      Register ("listAsGrid", new BocListAsGridGenericTestPage());
-      Register ("listBox", new BocEnumValueGenericTestPage (ListControlType.ListBox));
-      Register ("multilineText", new BocMultilineTextValueGenericTestPage());
-      Register ("radioButtonList", new BocEnumValueGenericTestPage (ListControlType.RadioButtonList));
-      Register ("referenceValue", new BocReferenceValueGenericTestPage());
-      Register ("textValue", new BocTextValueGenericTestPage());
-      Register ("treeView", new BocTreeViewGenericTestPage());
+      Register("autoCompleteReferenceValue", new BocAutoCompleteReferenceValueGenericTestPage());
+      Register("booleanValue", new BocBooleanValueGenericTestPage());
+      Register("checkBox", new BocCheckBoxValueGenericTestPage());
+      Register("dateTimeValue", new BocDateTimeValueGenericTestPage());
+      Register("dropDownList", new BocEnumValueGenericTestPage(ListControlType.DropDownList));
+      Register("list", new BocListGenericTestPage());
+      Register("listAsGrid", new BocListAsGridGenericTestPage());
+      Register("listBox", new BocEnumValueGenericTestPage(ListControlType.ListBox));
+      Register("multilineText", new BocMultilineTextValueGenericTestPage());
+      Register("radioButtonList", new BocEnumValueGenericTestPage(ListControlType.RadioButtonList));
+      Register("referenceValue", new BocReferenceValueGenericTestPage());
+      Register("textValue", new BocTextValueGenericTestPage());
+      Register("treeView", new BocTreeViewGenericTestPage());
     }
 
     protected override GenericTestOptions AmbiguousControlOptions => OptionsFactory.CreateAmbiguous();
@@ -78,8 +78,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
       get
       {
         if (DataSource == null)
-          throw new InvalidOperationException ("DataSource has not been initialized yet.");
-        return new GenericTestOptionsFactory (DataSource.ID);
+          throw new InvalidOperationException("DataSource has not been initialized yet.");
+        return new GenericTestOptionsFactory(DataSource.ID);
       }
     }
 
@@ -88,35 +88,35 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
     protected override void OnInit (EventArgs e)
     {
       // Parameters which will be passed to the client
-      Parameters.Add (ParameterFactory.CreateHtmlIDSelector());
-      Parameters.Add (ParameterFactory.CreateIndexSelector());
-      Parameters.Add (ParameterFactory.CreateLocalIdSelector());
-      Parameters.Add (ParameterFactory.CreateFirstSelector());
-      Parameters.Add (ParameterFactory.CreateSingleSelector());
-      Parameters.Add (ParameterFactory.CreateDisabledTests());
-      Parameters.Add (ParameterFactory.CreateReadOnlyTests());
-      Parameters.Add (ParameterFactory.CreateLabelTests());
-      Parameters.Add (ParameterFactory.CreateValidationErrorTests());
+      Parameters.Add(ParameterFactory.CreateHtmlIDSelector());
+      Parameters.Add(ParameterFactory.CreateIndexSelector());
+      Parameters.Add(ParameterFactory.CreateLocalIdSelector());
+      Parameters.Add(ParameterFactory.CreateFirstSelector());
+      Parameters.Add(ParameterFactory.CreateSingleSelector());
+      Parameters.Add(ParameterFactory.CreateDisabledTests());
+      Parameters.Add(ParameterFactory.CreateReadOnlyTests());
+      Parameters.Add(ParameterFactory.CreateLabelTests());
+      Parameters.Add(ParameterFactory.CreateValidationErrorTests());
 
       ValidateButton.Click += ValidateButton_Click;
 
-      base.OnInit (e);
+      base.OnInit(e);
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       DataSource.BusinessObject = (IBusinessObject) ((GenericTestFunction) CurrentFunction).Person;
-      DataSource.LoadValues (IsReturningPostBack);
+      DataSource.LoadValues(IsReturningPostBack);
     }
 
     protected override void SetTestInformation (string information)
     {
       var master = Master as Layout;
       if (master == null)
-        throw new InvalidOperationException ("The master page of the generic test page is not set.");
-      master.SetTestInformation (information);
+        throw new InvalidOperationException("The master page of the generic test page is not set.");
+      master.SetTestInformation(information);
     }
 
     private void ValidateButton_Click (object sender, EventArgs e)

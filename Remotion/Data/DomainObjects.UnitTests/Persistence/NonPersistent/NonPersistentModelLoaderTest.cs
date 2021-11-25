@@ -42,66 +42,66 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     public void SetUp ()
     {
       _storageProviderID = "DefaultStorageProvider";
-      _storageProviderDefinition = new UnitTestStorageProviderStubDefinition (_storageProviderID);
+      _storageProviderDefinition = new UnitTestStorageProviderStubDefinition(_storageProviderID);
 
-      _persistenceModelLoader = new NonPersistentPersistenceModelLoader (_storageProviderDefinition);
+      _persistenceModelLoader = new NonPersistentPersistenceModelLoader(_storageProviderDefinition);
     }
 
     [Test]
     public void CreatePersistenceMappingValidator ()
     {
-      var baseClass = ClassDefinitionObjectMother.CreateClassDefinition (id: "Base", classType: typeof (BaseClass), baseClass: null);
-      baseClass.SetDerivedClasses (new ClassDefinition[0]);
-      baseClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new PropertyDefinition[0], true));
+      var baseClass = ClassDefinitionObjectMother.CreateClassDefinition(id: "Base", classType: typeof (BaseClass), baseClass: null);
+      baseClass.SetDerivedClasses(new ClassDefinition[0]);
+      baseClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new PropertyDefinition[0], true));
 
-      var validator = (PersistenceMappingValidator) _persistenceModelLoader.CreatePersistenceMappingValidator (baseClass);
+      var validator = (PersistenceMappingValidator) _persistenceModelLoader.CreatePersistenceMappingValidator(baseClass);
 
-      Assert.That (validator.ValidationRules.Count, Is.EqualTo (2));
-      Assert.That (validator.ValidationRules[0], Is.TypeOf (typeof (PropertyStorageClassIsSupportedByStorageProviderValidationRule)));
-      Assert.That (validator.ValidationRules[1], Is.TypeOf (typeof (RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule)));
+      Assert.That(validator.ValidationRules.Count, Is.EqualTo(2));
+      Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof (PropertyStorageClassIsSupportedByStorageProviderValidationRule)));
+      Assert.That(validator.ValidationRules[1], Is.TypeOf(typeof (RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule)));
     }
 
     [Test]
     public void ApplyPersistenceModelToHierarchy_CreatesEntities_AndProperties_ForClassAndDerivedClasses ()
     {
-      var baseClass = ClassDefinitionObjectMother.CreateClassDefinition (id: "Base", classType: typeof (BaseClass), baseClass: null);
-      var derivedClass = ClassDefinitionObjectMother.CreateClassDefinition (id: "Derived", classType: typeof (DerivedClass), baseClass: baseClass);
-      baseClass.SetDerivedClasses (new[] { derivedClass });
-      derivedClass.SetDerivedClasses (new ClassDefinition[0]);
+      var baseClass = ClassDefinitionObjectMother.CreateClassDefinition(id: "Base", classType: typeof (BaseClass), baseClass: null);
+      var derivedClass = ClassDefinitionObjectMother.CreateClassDefinition(id: "Derived", classType: typeof (DerivedClass), baseClass: baseClass);
+      baseClass.SetDerivedClasses(new[] { derivedClass });
+      derivedClass.SetDerivedClasses(new ClassDefinition[0]);
 
-      var persistentProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (baseClass, "PersistentProperty", StorageClass.Persistent);
-      var transactionProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (baseClass, "TransactionProperty", StorageClass.Transaction);
-      baseClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { persistentProperty, transactionProperty }, true));
-      derivedClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new PropertyDefinition[0], true));
+      var persistentProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(baseClass, "PersistentProperty", StorageClass.Persistent);
+      var transactionProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(baseClass, "TransactionProperty", StorageClass.Transaction);
+      baseClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { persistentProperty, transactionProperty }, true));
+      derivedClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new PropertyDefinition[0], true));
 
-      _persistenceModelLoader.ApplyPersistenceModelToHierarchy (baseClass);
+      _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass);
 
-      Assert.That (baseClass.StorageEntityDefinition, Is.TypeOf<NonPersistentStorageEntity>());
-      Assert.That (derivedClass.StorageEntityDefinition, Is.TypeOf<NonPersistentStorageEntity>());
+      Assert.That(baseClass.StorageEntityDefinition, Is.TypeOf<NonPersistentStorageEntity>());
+      Assert.That(derivedClass.StorageEntityDefinition, Is.TypeOf<NonPersistentStorageEntity>());
 
-      Assert.That (persistentProperty.StoragePropertyDefinition, Is.SameAs (NonPersistentStorageProperty.Instance));
-      Assert.That (transactionProperty.StorageClass, Is.EqualTo (StorageClass.Transaction));
+      Assert.That(persistentProperty.StoragePropertyDefinition, Is.SameAs(NonPersistentStorageProperty.Instance));
+      Assert.That(transactionProperty.StorageClass, Is.EqualTo(StorageClass.Transaction));
     }
 
     [Test]
     public void ApplyPersistenceModelToHierarchy_LeavesExistingEntities_AndProperties ()
     {
-      var fakeProviderDefinition = new NonPersistentProviderDefinition ("Test", MockRepository.GenerateStub<INonPersistentStorageObjectFactory>());
-      var fakeEntityDefinition = new NonPersistentStorageEntity (fakeProviderDefinition);
-      var fakeStoragePropertyDefinition = (NonPersistentStorageProperty) Activator.CreateInstance (typeof (NonPersistentStorageProperty), true);
+      var fakeProviderDefinition = new NonPersistentProviderDefinition("Test", MockRepository.GenerateStub<INonPersistentStorageObjectFactory>());
+      var fakeEntityDefinition = new NonPersistentStorageEntity(fakeProviderDefinition);
+      var fakeStoragePropertyDefinition = (NonPersistentStorageProperty) Activator.CreateInstance(typeof (NonPersistentStorageProperty), true);
 
-      var baseClass = ClassDefinitionObjectMother.CreateClassDefinition (id: "Base", classType: typeof (BaseClass), baseClass: null);
-      baseClass.SetDerivedClasses (new ClassDefinition[0]);
-      var persistentProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (baseClass, "PersistentProperty", StorageClass.Persistent);
-      baseClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { persistentProperty }, true));
+      var baseClass = ClassDefinitionObjectMother.CreateClassDefinition(id: "Base", classType: typeof (BaseClass), baseClass: null);
+      baseClass.SetDerivedClasses(new ClassDefinition[0]);
+      var persistentProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(baseClass, "PersistentProperty", StorageClass.Persistent);
+      baseClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { persistentProperty }, true));
 
-      baseClass.SetStorageEntity (fakeEntityDefinition);
-      persistentProperty.SetStorageProperty (fakeStoragePropertyDefinition);
+      baseClass.SetStorageEntity(fakeEntityDefinition);
+      persistentProperty.SetStorageProperty(fakeStoragePropertyDefinition);
 
-      _persistenceModelLoader.ApplyPersistenceModelToHierarchy (baseClass);
+      _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass);
 
-      Assert.That (baseClass.StorageEntityDefinition, Is.SameAs (fakeEntityDefinition));
-      Assert.That (persistentProperty.StoragePropertyDefinition, Is.SameAs (fakeStoragePropertyDefinition));
+      Assert.That(baseClass.StorageEntityDefinition, Is.SameAs(fakeEntityDefinition));
+      Assert.That(persistentProperty.StoragePropertyDefinition, Is.SameAs(fakeStoragePropertyDefinition));
     }
 
     [Test]
@@ -109,15 +109,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     {
       var invalidStorageEntityDefinition = MockRepository.GenerateStub<IStorageEntityDefinition>();
 
-      var baseClass = ClassDefinitionObjectMother.CreateClassDefinition (id: "Base", classType: typeof (BaseClass), baseClass: null);
-      baseClass.SetDerivedClasses (new ClassDefinition[0]);
+      var baseClass = ClassDefinitionObjectMother.CreateClassDefinition(id: "Base", classType: typeof (BaseClass), baseClass: null);
+      baseClass.SetDerivedClasses(new ClassDefinition[0]);
 
-      baseClass.SetStorageEntity (invalidStorageEntityDefinition);
-      baseClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new PropertyDefinition[0], true));
+      baseClass.SetStorageEntity(invalidStorageEntityDefinition);
+      baseClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new PropertyDefinition[0], true));
 
-      Assert.That (
-          () => _persistenceModelLoader.ApplyPersistenceModelToHierarchy (baseClass),
-          Throws.InvalidOperationException.With.Message.EqualTo (
+      Assert.That(
+          () => _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass),
+          Throws.InvalidOperationException.With.Message.EqualTo(
               "The storage entity definition of class 'Base' is not of type 'NonPersistentStorageEntity'."));
     }
 
@@ -125,17 +125,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     public void ApplyPersistenceModelToHierarchy_Throws_WhenExistingPropertyDefinitionDoesNotImplementIColumnDefinition ()
     {
 
-      var baseClass = ClassDefinitionObjectMother.CreateClassDefinition (id: "Base", classType: typeof (BaseClass), baseClass: null);
-      baseClass.SetDerivedClasses (new ClassDefinition[0]);
+      var baseClass = ClassDefinitionObjectMother.CreateClassDefinition(id: "Base", classType: typeof (BaseClass), baseClass: null);
+      baseClass.SetDerivedClasses(new ClassDefinition[0]);
 
-      var persistentProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (baseClass, "PersistentProperty", StorageClass.Persistent);
-      var transactionProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (baseClass, "TransactionProperty", StorageClass.Transaction);
-      baseClass.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { persistentProperty, transactionProperty }, true));
-      persistentProperty.SetStorageProperty (new FakeStoragePropertyDefinition ("Fake"));
+      var persistentProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(baseClass, "PersistentProperty", StorageClass.Persistent);
+      var transactionProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(baseClass, "TransactionProperty", StorageClass.Transaction);
+      baseClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { persistentProperty, transactionProperty }, true));
+      persistentProperty.SetStorageProperty(new FakeStoragePropertyDefinition("Fake"));
 
-      Assert.That (
-          () => _persistenceModelLoader.ApplyPersistenceModelToHierarchy (baseClass),
-          Throws.InvalidOperationException.With.Message.EqualTo (
+      Assert.That(
+          () => _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass),
+          Throws.InvalidOperationException.With.Message.EqualTo(
               "The property definition 'PersistentProperty' of class 'Base' has a storage property type of "
               + "'Remotion.Data.DomainObjects.UnitTests.Mapping.FakeStoragePropertyDefinition' when only 'NonPersistentStorageProperty' is supported."));
     }

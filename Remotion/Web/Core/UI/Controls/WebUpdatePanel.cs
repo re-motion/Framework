@@ -64,7 +64,7 @@ namespace Remotion.Web.UI.Controls
       }
       set
       {
-        _renderMode = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<WebUpdatePanelRenderMode> ("value", value);
+        _renderMode = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<WebUpdatePanelRenderMode>("value", value);
       }
     }
  
@@ -74,7 +74,7 @@ namespace Remotion.Web.UI.Controls
       {
         var pair = (Pair) savedState;
 
-        base.LoadViewState (pair.First);
+        base.LoadViewState(pair.First);
 
         _cssClass = (string) (pair.Second ?? string.Empty);
       }
@@ -84,15 +84,15 @@ namespace Remotion.Web.UI.Controls
     {
       object? baseViewState = base.SaveViewState();
 
-      if ((baseViewState == null) && string.IsNullOrEmpty (_cssClass))
+      if ((baseViewState == null) && string.IsNullOrEmpty(_cssClass))
         return null;
-      return new Pair (baseViewState, _cssClass);
+      return new Pair(baseViewState, _cssClass);
     }
 
     protected virtual void AddAttributesToRender (HtmlTextWriter writer)
     {
-      if (!string.IsNullOrEmpty (_cssClass))
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, _cssClass);
+      if (!string.IsNullOrEmpty(_cssClass))
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, _cssClass);
 
       Attributes.AddAttributes(writer);
     }
@@ -101,19 +101,19 @@ namespace Remotion.Web.UI.Controls
     {
       if (IsInPartialRendering)
       {
-        base.RenderChildren (writer);
+        base.RenderChildren(writer);
       }
       else
       {
-        AddAttributesToRender (writer);
-        writer.AddAttribute (HtmlTextWriterAttribute.Id, ClientID);
-        writer.RenderBeginTag (GetTagName());
+        AddAttributesToRender(writer);
+        writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+        writer.RenderBeginTag(GetTagName());
 
-        _memberCaller.RenderChildrenInternal (this, writer, Controls);
+        _memberCaller.RenderChildrenInternal(this, writer, Controls);
 
-        writer.RenderEndTag ();
+        writer.RenderEndTag();
 
-        _memberCaller.SetUpdatePanelRendered (this, true);
+        _memberCaller.SetUpdatePanelRendered(this, true);
       }
     }
 
@@ -140,7 +140,7 @@ namespace Remotion.Web.UI.Controls
           return HtmlTextWriterTag.Tfoot;
 
         default:
-          throw new InvalidOperationException(string.Format ("The RenderMode '{0}' is not valid.", _renderMode));
+          throw new InvalidOperationException(string.Format("The RenderMode '{0}' is not valid.", _renderMode));
       }
 #pragma warning restore 612,618
     }

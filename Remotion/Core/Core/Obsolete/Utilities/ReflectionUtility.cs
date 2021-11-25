@@ -35,7 +35,7 @@ namespace Remotion.Utilities
     [Obsolete ("Use Remotion.Reflection.TypeExtensions.CanAscribeTo (type, ascribeeType) instead. (Version 1.15.17.0)", true)]
     public static bool CanAscribe (Type type, Type ascribeeType)
     {
-      throw new NotSupportedException ("Use Remotion.Reflection.TypeExtensions.CanAscribeTo (type, ascribeeType) instead. (Version 1.15.17.0)");
+      throw new NotSupportedException("Use Remotion.Reflection.TypeExtensions.CanAscribeTo (type, ascribeeType) instead. (Version 1.15.17.0)");
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ namespace Remotion.Utilities
     [Obsolete ("Use Remotion.Reflection.TypeExtensions.GetAscribedGenericArguments (type, ascribeeType) instead. (Version 1.15.17.0)", true)]
     public static Type[] GetAscribedGenericArguments (Type type, Type ascribeeType)
     {
-      throw new NotSupportedException ("Use Remotion.Reflection.TypeExtensions.GetAscribedGenericArguments (type, ascribeeType) instead. (Version 1.15.17.0)");
+      throw new NotSupportedException("Use Remotion.Reflection.TypeExtensions.GetAscribedGenericArguments (type, ascribeeType) instead. (Version 1.15.17.0)");
     }
   }
 }

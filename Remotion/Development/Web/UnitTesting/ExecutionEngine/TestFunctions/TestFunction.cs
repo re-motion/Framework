@@ -68,12 +68,12 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions
 
     public void PublicStepMethod ()
     {
-      Step1 ();
+      Step1();
     }
 
     public void PublicStepMethodWithContext (WxeContext context)
     {
-      Step2 (context);
+      Step2(context);
     }
 
     public string? LastExecutedStepID

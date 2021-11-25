@@ -38,13 +38,13 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
     {
       get
       {
-        return DatabaseConfiguration.UpdateConnectionString ("Initial Catalog=DBPrefix_RemotionDataDomainObjectsWebIntegrationTestDomain");
+        return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_RemotionDataDomainObjectsWebIntegrationTestDomain");
       }
     }
 
     public static string MasterConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Initial Catalog=master"); }
+      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=master"); }
     }
 
     [OneTimeSetUp]
@@ -53,24 +53,24 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
       try
       {
         var providers = new ProviderCollection<StorageProviderDefinition>();
-        providers.Add (new RdbmsProviderDefinition ("TheStorageProvider", new SqlStorageObjectFactory(), TestDomainConnectionString));
-        var storageConfiguration = new StorageConfiguration (providers, providers["TheStorageProvider"]);
+        providers.Add(new RdbmsProviderDefinition("TheStorageProvider", new SqlStorageObjectFactory(), TestDomainConnectionString));
+        var storageConfiguration = new StorageConfiguration(providers, providers["TheStorageProvider"]);
 
-        DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (storage: storageConfiguration));
+        DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(storage: storageConfiguration));
 
         SqlConnection.ClearAllPools();
 
-        var scriptGenerator = new ScriptGenerator (
-            pd => pd.Factory.CreateSchemaScriptBuilder (pd),
+        var scriptGenerator = new ScriptGenerator(
+            pd => pd.Factory.CreateSchemaScriptBuilder(pd),
             new RdbmsStorageEntityDefinitionProvider(),
             new ScriptToStringConverter());
-        var scripts = scriptGenerator.GetScripts (MappingConfiguration.Current.GetTypeDefinitions()).Single();
+        var scripts = scriptGenerator.GetScripts(MappingConfiguration.Current.GetTypeDefinitions()).Single();
 
-        var masterAgent = new DatabaseAgent (MasterConnectionString);
-        masterAgent.ExecuteBatchFile ("Database\\CreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
+        var masterAgent = new DatabaseAgent(MasterConnectionString);
+        masterAgent.ExecuteBatchFile("Database\\CreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
 
-        var databaseAgent = new DatabaseAgent (TestDomainConnectionString);
-        databaseAgent.ExecuteBatchString (scripts.SetUpScript, true);
+        var databaseAgent = new DatabaseAgent(TestDomainConnectionString);
+        databaseAgent.ExecuteBatchString(scripts.SetUpScript, true);
 
         using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
         {
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
       }
       catch (Exception e)
       {
-        Console.WriteLine ("SetUpFixture failed: " + e);
+        Console.WriteLine("SetUpFixture failed: " + e);
         Console.WriteLine();
         throw;
       }

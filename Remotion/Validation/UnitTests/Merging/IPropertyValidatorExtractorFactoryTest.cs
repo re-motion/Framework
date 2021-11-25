@@ -35,19 +35,19 @@ namespace Remotion.Validation.UnitTests.Merging
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IPropertyValidatorExtractorFactory> ();
+      var factory = _serviceLocator.GetInstance<IPropertyValidatorExtractorFactory>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf<PropertyValidatorExtractorFactory> ());
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf<PropertyValidatorExtractorFactory>());
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IPropertyValidatorExtractorFactory> ();
-      var factory2 = _serviceLocator.GetInstance<IPropertyValidatorExtractorFactory> ();
+      var factory1 = _serviceLocator.GetInstance<IPropertyValidatorExtractorFactory>();
+      var factory2 = _serviceLocator.GetInstance<IPropertyValidatorExtractorFactory>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

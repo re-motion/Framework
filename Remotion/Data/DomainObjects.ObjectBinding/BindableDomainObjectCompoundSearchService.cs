@@ -22,8 +22,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 {
   public class BindableDomainObjectCompoundSearchService : ISearchAvailableObjectsService
   {
-    private readonly BindableDomainObjectSearchAllService _searchAllService = new BindableDomainObjectSearchAllService ();
-    private readonly BindableDomainObjectQuerySearchService _querySearchService = new BindableDomainObjectQuerySearchService ();
+    private readonly BindableDomainObjectSearchAllService _searchAllService = new BindableDomainObjectSearchAllService();
+    private readonly BindableDomainObjectQuerySearchService _querySearchService = new BindableDomainObjectQuerySearchService();
 
     public bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
@@ -33,10 +33,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     public IBusinessObject[] Search (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property, ISearchAvailableObjectsArguments searchArguments)
     {
       var defaultSearchArguments = searchArguments as DefaultSearchArguments;
-      if (defaultSearchArguments == null || string.IsNullOrEmpty (defaultSearchArguments.SearchStatement))
-        return _searchAllService.Search (referencingObject, property, searchArguments);
+      if (defaultSearchArguments == null || string.IsNullOrEmpty(defaultSearchArguments.SearchStatement))
+        return _searchAllService.Search(referencingObject, property, searchArguments);
       else
-        return _querySearchService.Search (referencingObject, property, searchArguments);
+        return _querySearchService.Search(referencingObject, property, searchArguments);
     }
   }
 }

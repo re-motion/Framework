@@ -34,39 +34,39 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   {
     public static RelationEndPointID Create (ObjectID objectID, IRelationEndPointDefinition definition)
     {
-      ArgumentUtility.CheckNotNull ("definition", definition);
+      ArgumentUtility.CheckNotNull("definition", definition);
 
-      return new RelationEndPointID (objectID, definition);
+      return new RelationEndPointID(objectID, definition);
     }
     
     public static RelationEndPointID Create (ObjectID objectID, string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
 
       IRelationEndPointDefinition endPointDefinition;
       try
       {
-        endPointDefinition = objectID.ClassDefinition.GetMandatoryRelationEndPointDefinition (propertyIdentifier);
+        endPointDefinition = objectID.ClassDefinition.GetMandatoryRelationEndPointDefinition(propertyIdentifier);
       }
       catch (MappingException ex)
       {
-        throw new ArgumentException (ex.Message, "propertyIdentifier", ex);
+        throw new ArgumentException(ex.Message, "propertyIdentifier", ex);
       }
 
-      return new RelationEndPointID (objectID, endPointDefinition);
+      return new RelationEndPointID(objectID, endPointDefinition);
     }
 
     public static RelationEndPointID Create (ObjectID objectID, Type declaringType, string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      ArgumentUtility.CheckNotNull ("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty ("shortPropertyName", shortPropertyName);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull("declaringType", declaringType);
+      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
 
-      return CreateViaPropertyAccessorData (
+      return CreateViaPropertyAccessorData(
           objectID, 
           "shortPropertyName", 
-          cache => cache.GetMandatoryPropertyAccessorData (declaringType, shortPropertyName));
+          cache => cache.GetMandatoryPropertyAccessorData(declaringType, shortPropertyName));
     }
 
     public static RelationEndPointID Resolve<TDomainObject, TRelation> (
@@ -74,21 +74,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         Expression<Func<TDomainObject, TRelation>> propertyAccessExpression)
         where TDomainObject : DomainObject
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull ("propertyAccessExpression", propertyAccessExpression);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("propertyAccessExpression", propertyAccessExpression);
 
-      return CreateViaPropertyAccessorData (
+      return CreateViaPropertyAccessorData(
           domainObject.ID,
           "propertyAccessExpression",
-          cache => cache.ResolveMandatoryPropertyAccessorData (propertyAccessExpression));
+          cache => cache.ResolveMandatoryPropertyAccessorData(propertyAccessExpression));
     }
 
     public static RelationEndPointID CreateOpposite (IRelationEndPointDefinition sourceEndPointDefinition, ObjectID oppositeObjectID)
     {
-      ArgumentUtility.CheckNotNull ("sourceEndPointDefinition", sourceEndPointDefinition);
+      ArgumentUtility.CheckNotNull("sourceEndPointDefinition", sourceEndPointDefinition);
 
       var oppositeEndPointDefinition = sourceEndPointDefinition.GetOppositeEndPointDefinition();
-      return Create (oppositeObjectID, oppositeEndPointDefinition);
+      return Create(oppositeObjectID, oppositeEndPointDefinition);
     }
 
     private static RelationEndPointID CreateViaPropertyAccessorData (
@@ -99,48 +99,48 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       PropertyAccessorData data;
       try
       {
-        data = dataGetter (objectID.ClassDefinition.PropertyAccessorDataCache);
+        data = dataGetter(objectID.ClassDefinition.PropertyAccessorDataCache);
       }
       catch (MappingException ex)
       {
-        throw new ArgumentException (ex.Message, argumentName, ex);
+        throw new ArgumentException(ex.Message, argumentName, ex);
       }
 
       if (data.RelationEndPointDefinition == null)
       {
-        var message = String.Format ("The property '{0}' is not a relation property.", data.PropertyIdentifier);
-        throw new ArgumentException (message, argumentName);
+        var message = String.Format("The property '{0}' is not a relation property.", data.PropertyIdentifier);
+        throw new ArgumentException(message, argumentName);
       }
 
-      return new RelationEndPointID (objectID, data.RelationEndPointDefinition);
+      return new RelationEndPointID(objectID, data.RelationEndPointDefinition);
     }
 
     public static IEnumerable<RelationEndPointID> GetAllRelationEndPointIDs (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
       
-      var endPointDefinitions = objectID.ClassDefinition.GetRelationEndPointDefinitions ();
-      return endPointDefinitions.Select (endPointDefinition => Create(objectID, endPointDefinition));
+      var endPointDefinitions = objectID.ClassDefinition.GetRelationEndPointDefinitions();
+      return endPointDefinitions.Select(endPointDefinition => Create(objectID, endPointDefinition));
     }
 
     public static bool operator == (RelationEndPointID endPointID1, RelationEndPointID endPointID2)
     {
-      return Equals (endPointID1, endPointID2);
+      return Equals(endPointID1, endPointID2);
     }
 
     public static bool operator != (RelationEndPointID endPointID1, RelationEndPointID endPointID2)
     {
-      return !Equals (endPointID1, endPointID2);
+      return !Equals(endPointID1, endPointID2);
     }
 
     public static bool Equals (RelationEndPointID endPointID1, RelationEndPointID endPointID2)
     {
-      if (ReferenceEquals (endPointID1, endPointID2))
+      if (ReferenceEquals(endPointID1, endPointID2))
         return true;
-      if (ReferenceEquals (endPointID1, null))
+      if (ReferenceEquals(endPointID1, null))
         return false;
 
-      return endPointID1.Equals (endPointID2);
+      return endPointID1.Equals(endPointID2);
     }
 
     private readonly IRelationEndPointDefinition _definition;
@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       // the hash code is really 0, it would be recalculated on each call.
 
       if (_cachedHashCode == 0)
-        _cachedHashCode = CalculateHashCode ();
+        _cachedHashCode = CalculateHashCode();
 
       return _cachedHashCode;
     }
@@ -188,9 +188,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         return false;
 
       var other = (RelationEndPointID) obj;
-      if (!Equals (_objectID, other._objectID))
+      if (!Equals(_objectID, other._objectID))
         return false;
-      if (!Equals (_definition, other._definition))
+      if (!Equals(_definition, other._definition))
         return false;
 
       return true;
@@ -198,27 +198,27 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override string ToString ()
     {
-      return String.Format ("{0}/{1}", _objectID != null ? _objectID.ToString() : "null", Definition.PropertyName);
+      return String.Format("{0}/{1}", _objectID != null ? _objectID.ToString() : "null", Definition.PropertyName);
     }
 
     private int CalculateHashCode ()
     {
       var propertyName = Definition.PropertyName;
-      return (_objectID != null ? _objectID.GetHashCode () : 0) ^ (propertyName != null ? propertyName.GetHashCode () : 0);
+      return (_objectID != null ? _objectID.GetHashCode() : 0) ^ (propertyName != null ? propertyName.GetHashCode() : 0);
     }
 
     #region Serialization
 
     private RelationEndPointID (SerializationInfo info, StreamingContext context)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
 
-      var objectID = (ObjectID) info.GetValue ("ObjectID", typeof (ObjectID));
-      var classDefinitionID = info.GetString ("ClassID");
-      var propertyName = info.GetString ("PropertyName");
+      var objectID = (ObjectID) info.GetValue("ObjectID", typeof (ObjectID));
+      var classDefinitionID = info.GetString("ClassID");
+      var propertyName = info.GetString("PropertyName");
       
-      var classDefinition = MappingConfiguration.Current.GetClassDefinition (classDefinitionID);
-      var relationEndPointDefinition = classDefinition.GetMandatoryRelationEndPointDefinition (propertyName);
+      var classDefinition = MappingConfiguration.Current.GetClassDefinition(classDefinitionID);
+      var relationEndPointDefinition = classDefinition.GetMandatoryRelationEndPointDefinition(propertyName);
 
       _objectID = objectID;
       _definition = relationEndPointDefinition;
@@ -226,22 +226,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
 
-      info.AddValue ("ObjectID", _objectID);
-      info.AddValue ("ClassID", _definition.ClassDefinition.ID);
-      info.AddValue ("PropertyName", _definition.PropertyName);
+      info.AddValue("ObjectID", _objectID);
+      info.AddValue("ClassID", _definition.ClassDefinition.ID);
+      info.AddValue("PropertyName", _definition.PropertyName);
     }
 
     // ReSharper disable UnusedMember.Local
     private RelationEndPointID (FlattenedDeserializationInfo info)
     {
-      var classDefinitionID = info.GetValueForHandle<string> ();
-      var propertyName = info.GetValueForHandle<string> ();
-      var objectID = info.GetValueForHandle<ObjectID> ();
+      var classDefinitionID = info.GetValueForHandle<string>();
+      var propertyName = info.GetValueForHandle<string>();
+      var objectID = info.GetValueForHandle<ObjectID>();
 
-      var classDefinition = MappingConfiguration.Current.GetClassDefinition (classDefinitionID);
-      var relationEndPointDefinition = classDefinition.GetMandatoryRelationEndPointDefinition (propertyName);
+      var classDefinition = MappingConfiguration.Current.GetClassDefinition(classDefinitionID);
+      var relationEndPointDefinition = classDefinition.GetMandatoryRelationEndPointDefinition(propertyName);
 
       _objectID = objectID;
       _definition = relationEndPointDefinition;
@@ -250,9 +250,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddHandle (_definition.ClassDefinition.ID);
-      info.AddHandle (_definition.PropertyName);
-      info.AddHandle (_objectID);
+      info.AddHandle(_definition.ClassDefinition.ID);
+      info.AddHandle(_definition.PropertyName);
+      info.AddHandle(_objectID);
     }
 
     #endregion

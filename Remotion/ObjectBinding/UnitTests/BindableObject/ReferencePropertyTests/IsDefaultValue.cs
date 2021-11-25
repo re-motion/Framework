@@ -39,66 +39,66 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       _bindableObjectProviderForDeclaringType = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
       _bindableObjectProviderForPropertyType = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
 
-      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute> (_bindableObjectProviderForDeclaringType);
-      BusinessObjectProvider.SetProvider<BindableObjectProviderForDefaultValueServiceAttribute> (_bindableObjectProviderForPropertyType);
+      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute>(_bindableObjectProviderForDeclaringType);
+      BusinessObjectProvider.SetProvider<BindableObjectProviderForDefaultValueServiceAttribute>(_bindableObjectProviderForPropertyType);
     }
 
     [Test]
     public void IsDefaultValue_WithDefaultValueSupported ()
     {
       var stubBusinessObject = new Mock<IBusinessObject>();
-      var mockService = new Mock<IDefaultValueServiceOnProperty> (MockBehavior.Strict);
-      IBusinessObjectReferenceProperty property = CreateProperty ("DefaultValueServiceFromPropertyDeclaration");
+      var mockService = new Mock<IDefaultValueServiceOnProperty>(MockBehavior.Strict);
+      IBusinessObjectReferenceProperty property = CreateProperty("DefaultValueServiceFromPropertyDeclaration");
       var value = new Mock<IBusinessObject>();
       var emptyProperties = new IBusinessObjectProperty[0];
 
       var sequence = new MockSequence();
-      mockService.InSequence (sequence).Setup (_ => _.SupportsProperty (property)).Returns (true).Verifiable();
-      mockService.InSequence (sequence).Setup (_ => _.IsDefaultValue (stubBusinessObject.Object, property, value.Object, emptyProperties)).Returns (true).Verifiable();
+      mockService.InSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
+      mockService.InSequence(sequence).Setup(_ => _.IsDefaultValue(stubBusinessObject.Object, property, value.Object, emptyProperties)).Returns(true).Verifiable();
 
-      _bindableObjectProviderForDeclaringType.AddService (mockService.Object);
-      bool actual = property.IsDefaultValue (stubBusinessObject.Object, value.Object, emptyProperties);
+      _bindableObjectProviderForDeclaringType.AddService(mockService.Object);
+      bool actual = property.IsDefaultValue(stubBusinessObject.Object, value.Object, emptyProperties);
 
       mockService.Verify();
-      Assert.That (actual, Is.True);
+      Assert.That(actual, Is.True);
     }
 
     [Test]
     public void IsDefaultValue_WithDefaultValueSupportedAndReferencingObjectNull ()
     {
-      var mockService = new Mock<IDefaultValueServiceOnType> (MockBehavior.Strict);
-      var property = CreateProperty ("DefaultValueServiceFromPropertyType");
+      var mockService = new Mock<IDefaultValueServiceOnType>(MockBehavior.Strict);
+      var property = CreateProperty("DefaultValueServiceFromPropertyType");
       var value = new Mock<IBusinessObject>();
       var emptyProperties = new IBusinessObjectProperty[0];
 
       var sequence = new MockSequence();
-      mockService.InSequence (sequence).Setup (_ => _.SupportsProperty (property)).Returns (true).Verifiable();
-      mockService.InSequence (sequence).Setup (_ => _.IsDefaultValue (null, property, value.Object, emptyProperties)).Returns (true).Verifiable();
+      mockService.InSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
+      mockService.InSequence(sequence).Setup(_ => _.IsDefaultValue(null, property, value.Object, emptyProperties)).Returns(true).Verifiable();
 
-      _bindableObjectProviderForPropertyType.AddService (mockService.Object);
-      bool actual = property.IsDefaultValue (null, value.Object, emptyProperties);
+      _bindableObjectProviderForPropertyType.AddService(mockService.Object);
+      bool actual = property.IsDefaultValue(null, value.Object, emptyProperties);
 
       mockService.Verify();
-      Assert.That (actual, Is.True);
+      Assert.That(actual, Is.True);
     }
 
     [Test]
     public void IsDefaultValue_WithDefaultValueNotSupported ()
     {
-      IBusinessObject businessObject = (IBusinessObject) ObjectFactory.Create<ClassWithBusinessObjectProperties> (ParamList.Empty);
-      var mockService = new Mock<IDefaultValueServiceOnProperty> (MockBehavior.Strict);
-      IBusinessObjectReferenceProperty property = CreateProperty ("DefaultValueServiceFromPropertyDeclaration");
+      IBusinessObject businessObject = (IBusinessObject) ObjectFactory.Create<ClassWithBusinessObjectProperties>(ParamList.Empty);
+      var mockService = new Mock<IDefaultValueServiceOnProperty>(MockBehavior.Strict);
+      IBusinessObjectReferenceProperty property = CreateProperty("DefaultValueServiceFromPropertyDeclaration");
       var value = new Mock<IBusinessObject>();
       var emptyProperties = new IBusinessObjectProperty[0];
 
-      mockService.Setup (_ => _.SupportsProperty (property)).Returns (false).Verifiable();
+      mockService.Setup(_ => _.SupportsProperty(property)).Returns(false).Verifiable();
 
-      _bindableObjectProviderForDeclaringType.AddService (mockService.Object);
+      _bindableObjectProviderForDeclaringType.AddService(mockService.Object);
 
-      Assert.That (
-          () => property.IsDefaultValue (businessObject, value.Object, emptyProperties),
+      Assert.That(
+          () => property.IsDefaultValue(businessObject, value.Object, emptyProperties),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Checking for a value's default is not supported for reference property 'DefaultValueServiceFromPropertyDeclaration' of business object class "
                   + "'Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain.ClassWithBusinessObjectProperties, "
                   + "Remotion.ObjectBinding.UnitTests'."));
@@ -108,9 +108,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     private ReferenceProperty CreateProperty (string propertyName)
     {
       PropertyBase.Parameters propertyParameters =
-          GetPropertyParameters (GetPropertyInfo (typeof (ClassWithBusinessObjectProperties), propertyName), _bindableObjectProviderForDeclaringType);
-      ReferenceProperty property = new ReferenceProperty (propertyParameters);
-      property.SetReflectedClass (BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassWithBusinessObjectProperties)));
+          GetPropertyParameters(GetPropertyInfo(typeof (ClassWithBusinessObjectProperties), propertyName), _bindableObjectProviderForDeclaringType);
+      ReferenceProperty property = new ReferenceProperty(propertyParameters);
+      property.SetReflectedClass(BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (ClassWithBusinessObjectProperties)));
 
       return property;
     }

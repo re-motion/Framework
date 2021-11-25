@@ -28,6 +28,6 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("MultiWindowTest/Window.aspx");
+    private WxeStep Step1 = new WxePageStep("MultiWindowTest/Window.aspx");
   }
 }

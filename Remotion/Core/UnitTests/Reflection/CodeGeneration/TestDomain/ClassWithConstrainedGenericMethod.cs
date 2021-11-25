@@ -25,7 +25,7 @@ namespace Remotion.UnitTests.Reflection.CodeGeneration.TestDomain
         where T2 : struct
         where T3 : T1
     {
-      return string.Format ("{0}, {1}, {2}", t1, t2, t3);
+      return string.Format("{0}, {1}, {2}", t1, t2, t3);
     }
   }
 }

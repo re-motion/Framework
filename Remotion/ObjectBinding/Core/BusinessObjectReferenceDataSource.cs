@@ -57,12 +57,12 @@ namespace Remotion.ObjectBinding
       set
       {
         if (value == this)
-          throw new ArgumentException ("Assigning a reference data source as its own data source is not allowed.", "value");
+          throw new ArgumentException("Assigning a reference data source as its own data source is not allowed.", "value");
         if (_dataSource != null)
-          _dataSource.Unregister (this);
+          _dataSource.Unregister(this);
         _dataSource = value;
         if (value != null)
-          value.Register (this);
+          value.Register(this);
         _propertyDirty = true;
       }
     }
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding
         if (_propertyDirty)
         {
           if (_dataSource != null && _dataSource.BusinessObjectClass != null && _propertyIdentifier != null)
-            _property = (IBusinessObjectReferenceProperty?) _dataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier);
+            _property = (IBusinessObjectReferenceProperty?) _dataSource.BusinessObjectClass.GetPropertyDefinition(_propertyIdentifier);
           else
             _property = null;
           _propertyDirty = false;
@@ -147,7 +147,7 @@ namespace Remotion.ObjectBinding
     
     protected override string GetDataSourceIdentifier ()
     {
-      return string.Format ("{0}", GetType().Name);
+      return string.Format("{0}", GetType().Name);
     }
 
     /// <summary> Gets or sets the value provided by the <see cref="BusinessObjectReferenceDataSource"/>. </summary>
@@ -155,7 +155,7 @@ namespace Remotion.ObjectBinding
     object? IBusinessObjectBoundControl.Value
     {
       get { return BusinessObject; }
-      set { BusinessObject = ArgumentUtility.CheckType<IBusinessObject> ("value", value); }
+      set { BusinessObject = ArgumentUtility.CheckType<IBusinessObject>("value", value); }
     }
 
     bool IBusinessObjectBoundControl.HasValue
@@ -179,7 +179,7 @@ namespace Remotion.ObjectBinding
         if (_dataSource == null || _property == null)
           return true;
 
-        return _property.IsAccessible (_dataSource.BusinessObject);
+        return _property.IsAccessible(_dataSource.BusinessObject);
       }
     }
 

@@ -45,9 +45,9 @@ namespace Remotion.Validation.Rules
         [CanBeNull] Func<TValidatedType, bool>? condition,
         [NotNull] IReadOnlyCollection<IPropertyValidator> validators)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      ArgumentUtility.CheckNotNull ("propertyFunc", propertyFunc);
-      ArgumentUtility.CheckNotNull ("validators", validators);
+      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull("propertyFunc", propertyFunc);
+      ArgumentUtility.CheckNotNull("validators", validators);
 
       Property = property;
       PropertyFunc = propertyFunc;
@@ -57,24 +57,24 @@ namespace Remotion.Validation.Rules
 
     public IEnumerable<ValidationFailure> Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       var instanceToValidate = (TValidatedType?) context.InstanceToValidate;
       if (instanceToValidate == null)
         return Enumerable.Empty<ValidationFailure>();
 
-      if (Condition != null && !Condition (instanceToValidate))
+      if (Condition != null && !Condition(instanceToValidate))
         return Enumerable.Empty<ValidationFailure>();
 
-      var propertyValue = PropertyFunc (instanceToValidate);
-      var propertyValidatorContext = new PropertyValidatorContext (context, instanceToValidate, Property, propertyValue);
+      var propertyValue = PropertyFunc(instanceToValidate);
+      var propertyValidatorContext = new PropertyValidatorContext(context, instanceToValidate, Property, propertyValue);
 
-      return Validators.SelectMany (validator => validator.Validate (propertyValidatorContext));
+      return Validators.SelectMany(validator => validator.Validate(propertyValidatorContext));
     }
 
     public bool IsActive (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       if (Condition == null)
         return true;
@@ -83,7 +83,7 @@ namespace Remotion.Validation.Rules
       if (instanceToValidate == null)
         return false;
 
-      return Condition (instanceToValidate);
+      return Condition(instanceToValidate);
     }
   }
 }

@@ -54,15 +54,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetRelationEndPointDefinitions ()
     {
-      Assert.That (_locationClass.GetRelationEndPointDefinitions (), Has.Member(_locationEndPoint));
-      Assert.That (_clientClass.GetRelationEndPointDefinitions (), Has.No.Member(_clientEndPoint));
+      Assert.That(_locationClass.GetRelationEndPointDefinitions(), Has.Member(_locationEndPoint));
+      Assert.That(_clientClass.GetRelationEndPointDefinitions(), Has.No.Member(_clientEndPoint));
     }
 
     [Test]
     public void GetMyRelationEndPointDefinitions ()
     {
-      Assert.That (_locationClass.MyRelationEndPointDefinitions, Has.Member(_locationEndPoint));
-      Assert.That (_clientClass.MyRelationEndPointDefinitions, Has.No.Member(_clientEndPoint));
+      Assert.That(_locationClass.MyRelationEndPointDefinitions, Has.Member(_locationEndPoint));
+      Assert.That(_clientClass.MyRelationEndPointDefinitions, Has.No.Member(_clientEndPoint));
     }
   }
 }

@@ -33,24 +33,24 @@ namespace Remotion.Validation.Validators
         [NotNull] IValidationMessageFactory validationMessageFactory)
         where T : IObjectValidator
     {
-      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
-      ArgumentUtility.CheckNotNull ("validatorFactory", validatorFactory);
-      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
+      ArgumentUtility.CheckNotNull("validatedType", validatedType);
+      ArgumentUtility.CheckNotNull("validatorFactory", validatorFactory);
+      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
       var deferredInitializationValidationMessage = new DeferredInitializationValidationMessage();
-      var initializationParameters = new ObjectValidationRuleInitializationParameters (deferredInitializationValidationMessage);
-      var validator = validatorFactory (initializationParameters);
-      Assertion.IsNotNull (validator, "validatorFactory evaluated and returned null.");
+      var initializationParameters = new ObjectValidationRuleInitializationParameters(deferredInitializationValidationMessage);
+      var validator = validatorFactory(initializationParameters);
+      Assertion.IsNotNull(validator, "validatorFactory evaluated and returned null.");
 
-      var validationMessage = validationMessageFactory.CreateValidationMessageForObjectValidator (validator, validatedType);
-      Assertion.IsNotNull (
+      var validationMessage = validationMessageFactory.CreateValidationMessageForObjectValidator(validator, validatedType);
+      Assertion.IsNotNull(
           validationMessage,
           "The {0} did not return a result for {1} applied to type '{2}'.",
-          nameof (IValidationMessageFactory),
+          nameof(IValidationMessageFactory),
           validator.GetType().Name,
           validatedType.GetFullNameSafe());
 
-      deferredInitializationValidationMessage.Initialize (validationMessage);
+      deferredInitializationValidationMessage.Initialize(validationMessage);
 
       return validator;
     }

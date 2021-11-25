@@ -41,8 +41,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       base.SetUp();
 
-      _stageMock = MockRepository.GenerateStrictMock<ISqlGenerationStage> ();
-      _commandBuilder = new SqlCommandBuilder ();
+      _stageMock = MockRepository.GenerateStrictMock<ISqlGenerationStage>();
+      _commandBuilder = new SqlCommandBuilder();
 
       _someSetOperationsMode = SetOperationsMode.StatementIsSetCombined;
     }
@@ -50,52 +50,52 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     [Test]
     public void GenerateSql_Collection ()
     {
-      var expression = Expression.Constant (new Order[] { });
-      Assert.That (
-          () => ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql (expression, _commandBuilder, _stageMock, _someSetOperationsMode),
+      var expression = Expression.Constant(new Order[] { });
+      Assert.That(
+          () => ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql(expression, _commandBuilder, _stageMock, _someSetOperationsMode),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.Contains ("Queries selecting collections are not supported because SQL is not well-suited to returning collections."));
+              .With.Message.Contains("Queries selecting collections are not supported because SQL is not well-suited to returning collections."));
     }
 
     [Test]
     public void GetObjectIDOrNull_NotNull ()
     {
-      var result = ExtendedSqlGeneratingOuterSelectExpressionVisitor.GetObjectIDOrNull (DomainObjectIDs.Order1.ClassID, DomainObjectIDs.Order1.Value);
+      var result = ExtendedSqlGeneratingOuterSelectExpressionVisitor.GetObjectIDOrNull(DomainObjectIDs.Order1.ClassID, DomainObjectIDs.Order1.Value);
 
-      Assert.That (result, Is.EqualTo (DomainObjectIDs.Order1));
+      Assert.That(result, Is.EqualTo(DomainObjectIDs.Order1));
     }
 
     [Test]
     public void GetObjectIDOrNull_Null ()
     {
-      var result = ExtendedSqlGeneratingOuterSelectExpressionVisitor.GetObjectIDOrNull (DomainObjectIDs.Order1.ClassID, null);
+      var result = ExtendedSqlGeneratingOuterSelectExpressionVisitor.GetObjectIDOrNull(DomainObjectIDs.Order1.ClassID, null);
 
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void VisitNewExpression_ForObjectID_GeneratesNullCheckInInMemoryProjection ()
     {
-      var constructorInfo = typeof (ObjectID).GetConstructor (new[] { typeof (string), typeof (object) });
-      Assertion.IsNotNull (constructorInfo);
-      var newObjectIDExpression = Expression.New (
+      var constructorInfo = typeof (ObjectID).GetConstructor(new[] { typeof (string), typeof (object) });
+      Assertion.IsNotNull(constructorInfo);
+      var newObjectIDExpression = Expression.New(
           constructorInfo,
-          new SqlColumnDefinitionExpression (typeof (string), "t0", "CustomerClassID", false),
-          Expression.Convert (new SqlColumnDefinitionExpression (typeof (Guid), "t0", "CustomerID", false), typeof (object)));
-      var compoundExpression = NamedExpression.CreateNewExpressionWithNamedArguments (newObjectIDExpression);
+          new SqlColumnDefinitionExpression(typeof (string), "t0", "CustomerClassID", false),
+          Expression.Convert(new SqlColumnDefinitionExpression(typeof (Guid), "t0", "CustomerID", false), typeof (object)));
+      var compoundExpression = NamedExpression.CreateNewExpressionWithNamedArguments(newObjectIDExpression);
 
-      ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql (compoundExpression, _commandBuilder, _stageMock, _someSetOperationsMode);
+      ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql(compoundExpression, _commandBuilder, _stageMock, _someSetOperationsMode);
 
-      Assert.That (_commandBuilder.GetCommandText(), Is.EqualTo ("[t0].[CustomerClassID] AS [m0],[t0].[CustomerID] AS [m1]"));
+      Assert.That(_commandBuilder.GetCommandText(), Is.EqualTo("[t0].[CustomerClassID] AS [m0],[t0].[CustomerID] AS [m1]"));
 
       Expression<Func<IDatabaseResultRow, ObjectID>> expectedInMemoryProjection =
-          row => ExtendedSqlGeneratingOuterSelectExpressionVisitor.GetObjectIDOrNull (
-              row.GetValue<string> (new ColumnID ("m0", 0)), 
-              row.GetValue<object> (new ColumnID ("m1", 1)));
-      var expectedInMemoryProjectionBody = PartialEvaluatingExpressionVisitor.EvaluateIndependentSubtrees (
+          row => ExtendedSqlGeneratingOuterSelectExpressionVisitor.GetObjectIDOrNull(
+              row.GetValue<string>(new ColumnID("m0", 0)), 
+              row.GetValue<object>(new ColumnID("m1", 1)));
+      var expectedInMemoryProjectionBody = PartialEvaluatingExpressionVisitor.EvaluateIndependentSubtrees(
           expectedInMemoryProjection.Body,
           new TestEvaluatableExpressionFilter());
-      SqlExpressionTreeComparer.CheckAreEqualTrees (expectedInMemoryProjectionBody, _commandBuilder.GetInMemoryProjectionBody());
+      SqlExpressionTreeComparer.CheckAreEqualTrees(expectedInMemoryProjectionBody, _commandBuilder.GetInMemoryProjectionBody());
     } 
   }
 }

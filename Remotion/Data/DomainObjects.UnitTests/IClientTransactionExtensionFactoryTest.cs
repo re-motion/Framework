@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var factory = _serviceLocator.GetInstance<IClientTransactionExtensionFactory>();
 
-      Assert.That (factory, Is.TypeOf<CompoundClientTransactionExtensionFactory>());
+      Assert.That(factory, Is.TypeOf<CompoundClientTransactionExtensionFactory>());
     }
 
     [Test]
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var factory1 = _serviceLocator.GetInstance<IClientTransactionExtensionFactory>();
       var factory2 = _serviceLocator.GetInstance<IClientTransactionExtensionFactory>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

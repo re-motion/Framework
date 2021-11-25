@@ -32,7 +32,7 @@ public abstract class WxeStep
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/GetFunction/*' />
   public static WxeFunction? GetFunction (WxeStep? step)
   {
-    return WxeStep.GetStepByType<WxeFunction> (step);
+    return WxeStep.GetStepByType<WxeFunction>(step);
   }
 
   /// <summary>
@@ -62,7 +62,7 @@ public abstract class WxeStep
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/varref/*' />
   protected static WxeVariableReference varref (string localVariable)
   {
-    return new WxeVariableReference (localVariable);
+    return new WxeVariableReference(localVariable);
   }
 
   private WxeStep? _parentStep = null;
@@ -88,7 +88,7 @@ public abstract class WxeStep
   [EditorBrowsable (EditorBrowsableState.Never)]
   public void Execute ()
   {
-    Execute (WxeContext.Current!); // TODO RM-8118: not null assertion
+    Execute(WxeContext.Current!); // TODO RM-8118: not null assertion
   }
 
   /// <summary> Executes the <see cref="WxeStep"/>. </summary>
@@ -121,7 +121,7 @@ public abstract class WxeStep
   [EditorBrowsable (EditorBrowsableState.Never)]
   public void SetParentStep (WxeStep parentStep)
   {
-    ArgumentUtility.CheckNotNull ("parentStep", parentStep);
+    ArgumentUtility.CheckNotNull("parentStep", parentStep);
     _parentStep = parentStep;
   }
 
@@ -149,7 +149,7 @@ public abstract class WxeStep
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/ParentFunction/*' />
   public WxeFunction? ParentFunction
   {
-    get { return WxeStep.GetFunction (ParentStep); }
+    get { return WxeStep.GetFunction(ParentStep); }
   }
 
   /// <summary> 

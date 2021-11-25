@@ -38,11 +38,11 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
     {
       var remotionPipelineFactory = new RemotionPipelineFactory();
       var settings = new AppConfigBasedSettingsProvider().GetSettings();
-      return remotionPipelineFactory.Create ("remotion-default-pipeline", settings, defaultPipelineParticipants);
+      return remotionPipelineFactory.Create("remotion-default-pipeline", settings, defaultPipelineParticipants);
     }
 
     public RemotionPipelineRegistry (IEnumerable<IParticipant> defaultPipelineParticipants)
-        : base (CreateDefaultPipeline (ArgumentUtility.CheckNotNull ("defaultPipelineParticipants", defaultPipelineParticipants)))
+        : base (CreateDefaultPipeline(ArgumentUtility.CheckNotNull("defaultPipelineParticipants", defaultPipelineParticipants)))
     {
     }
   }

@@ -36,9 +36,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocColumnRendererArrayBuilder (BocColumnDefinition[] columnDefinitions, IServiceLocator serviceLocator, WcagHelper wcagHelper)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("columnDefinitions", columnDefinitions);
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
-      ArgumentUtility.CheckNotNull ("wcagHelper", wcagHelper);
+      ArgumentUtility.CheckNotNullOrEmpty("columnDefinitions", columnDefinitions);
+      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
+      ArgumentUtility.CheckNotNull("wcagHelper", wcagHelper);
 
       _columnDefinitions = columnDefinitions;
       _serviceLocator = serviceLocator;
@@ -57,13 +57,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     
     public BocColumnRenderer[] CreateColumnRenderers ()
     {
-      var sortingDirections = new Dictionary<int, SortingDirection> ();
-      var sortingOrder = new List<int> ();
+      var sortingDirections = new Dictionary<int, SortingDirection>();
+      var sortingOrder = new List<int>();
       
-      PrepareSorting (sortingDirections, sortingOrder);
+      PrepareSorting(sortingDirections, sortingOrder);
       
       var firstValueColumnRendered = false;
-      var bocColumnRenderers = new List<BocColumnRenderer> (_columnDefinitions.Length);
+      var bocColumnRenderers = new List<BocColumnRenderer>(_columnDefinitions.Length);
       var visibleColumnIndex = GetInitialVisibleColumnIndex();
       for (int columnIndex = 0; columnIndex < _columnDefinitions.Length; columnIndex++)
       {
@@ -71,19 +71,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         var showIcon = !firstValueColumnRendered && columnDefinition is BocValueColumnDefinition && EnableIcon;
 
         var sortingDirection = SortingDirection.None;
-        if (sortingDirections.ContainsKey (columnIndex))
+        if (sortingDirections.ContainsKey(columnIndex))
           sortingDirection = sortingDirections[columnIndex];
-        var orderIndex = sortingOrder.IndexOf (columnIndex);
+        var orderIndex = sortingOrder.IndexOf(columnIndex);
 
-        if (IsColumnVisible (columnDefinition))
+        if (IsColumnVisible(columnDefinition))
         {
-          var columnRenderer = columnDefinition.GetRenderer (_serviceLocator);
-          bocColumnRenderers.Add (new BocColumnRenderer (columnRenderer, columnDefinition, columnIndex, visibleColumnIndex, showIcon, sortingDirection, orderIndex));
+          var columnRenderer = columnDefinition.GetRenderer(_serviceLocator);
+          bocColumnRenderers.Add(new BocColumnRenderer(columnRenderer, columnDefinition, columnIndex, visibleColumnIndex, showIcon, sortingDirection, orderIndex));
           
           visibleColumnIndex++;
         }
         else
-          bocColumnRenderers.Add (new BocColumnRenderer (new NullColumnRenderer(), columnDefinition, columnIndex, -1, false, sortingDirection, orderIndex));
+          bocColumnRenderers.Add(new BocColumnRenderer(new NullColumnRenderer(), columnDefinition, columnIndex, -1, false, sortingDirection, orderIndex));
 
         if (columnDefinition is BocValueColumnDefinition)
           firstValueColumnRendered = true;
@@ -95,15 +95,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       if (IsClientSideSortingEnabled || HasSortingKeys)
       {
-        Assertion.IsNotNull (SortingOrder, "SortingOrder must not be null.");
+        Assertion.IsNotNull(SortingOrder, "SortingOrder must not be null.");
 
         foreach (var entry in SortingOrder)
         {
-          var columnIndex = Array.IndexOf (_columnDefinitions, entry.Column);
+          var columnIndex = Array.IndexOf(_columnDefinitions, entry.Column);
           if (entry.Direction != SortingDirection.None)
           {
-            sortingDirections.Add (columnIndex, entry.Direction);
-            sortingOrder.Add (columnIndex);
+            sortingDirections.Add(columnIndex, entry.Direction);
+            sortingOrder.Add(columnIndex);
           }
         }
       }
@@ -123,7 +123,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private bool IsColumnVisible (BocColumnDefinition column)
     {
-      ArgumentUtility.CheckNotNull ("column", column);
+      ArgumentUtility.CheckNotNull("column", column);
 
       var columnAsCommandColumn = column as BocCommandColumnDefinition;
       if (columnAsCommandColumn != null && columnAsCommandColumn.Command != null)
@@ -141,14 +141,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       var columnAsDropDownMenuColumn = column as BocDropDownMenuColumnDefinition;
       if (columnAsDropDownMenuColumn != null)
-        return IsColumnVisibleForBocDropDownMenuColumnDefinition (columnAsDropDownMenuColumn);
+        return IsColumnVisibleForBocDropDownMenuColumnDefinition(columnAsDropDownMenuColumn);
       
       return true;
     }
 
     private bool IsColumnVisibleForBocCommandColumnDefinition (BocCommandColumnDefinition columnAsCommandColumn)
     {
-      if (_wcagHelper.IsWaiConformanceLevelARequired ()
+      if (_wcagHelper.IsWaiConformanceLevelARequired()
           && columnAsCommandColumn.Command != null
           && (columnAsCommandColumn.Command.Type == CommandType.Event || columnAsCommandColumn.Command.Type == CommandType.WxeFunction))
         return false;
@@ -157,7 +157,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private bool IsColumnVisibleForBocRowEditModeColumnDefinition (BocRowEditModeColumnDefinition column)
     {
-      if (_wcagHelper.IsWaiConformanceLevelARequired ())
+      if (_wcagHelper.IsWaiConformanceLevelARequired())
         return false;
       if (column.Show == BocRowEditColumnDefinitionShow.EditMode && IsListReadOnly)
         return false;
@@ -168,7 +168,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private bool IsColumnVisibleForBocDropDownMenuColumnDefinition (BocDropDownMenuColumnDefinition column)
     {
-      if (_wcagHelper.IsWaiConformanceLevelARequired ())
+      if (_wcagHelper.IsWaiConformanceLevelARequired())
         return false;
       return IsBrowserCapableOfScripting;
     }

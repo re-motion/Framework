@@ -34,13 +34,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IVirtualCollectionData collectionData,
         IClientTransactionEventSink transactionEventSink)
         : base (
-            ArgumentUtility.CheckNotNull ("modifiedEndPoint", modifiedEndPoint),
+            ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
             null,
             null,
-            ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink))
+            ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
     {
       if (modifiedEndPoint.IsNull)
-        throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
+        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
       _modifiedCollectionData = collectionData;
     }
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      return new ExpandedCommand (this);
+      return new ExpandedCommand(this);
     }
   }
 }

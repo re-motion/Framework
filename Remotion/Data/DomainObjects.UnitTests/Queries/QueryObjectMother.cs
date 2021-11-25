@@ -25,12 +25,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
   {
     public static IQuery Create ()
     {
-      return new Query (CreateQueryDefinition(), new QueryParameterCollection());
+      return new Query(CreateQueryDefinition(), new QueryParameterCollection());
     }
 
     private static QueryDefinition CreateQueryDefinition ()
     {
-      return new QueryDefinition (
+      return new QueryDefinition(
           "test", DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition, "Some statement", QueryType.Collection);
     }
   }

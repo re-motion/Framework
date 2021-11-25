@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
         Func<RdbmsProviderDefinition, IEnumSerializer> enumSerializerFactory,
         Func<RdbmsProviderDefinition, IEnumSerializer, IStorageProviderSerializer> storageProviderSerializerFactory)
     {
-      ArgumentUtility.CheckNotNull ("enumSerializerFactory", enumSerializerFactory);
-      ArgumentUtility.CheckNotNull ("storageProviderSerializerFactory", storageProviderSerializerFactory);
+      ArgumentUtility.CheckNotNull("enumSerializerFactory", enumSerializerFactory);
+      ArgumentUtility.CheckNotNull("storageProviderSerializerFactory", storageProviderSerializerFactory);
 
       _enumSerializerFactory = enumSerializerFactory;
       _storageProviderSerializerFactory = storageProviderSerializerFactory;
@@ -44,27 +44,27 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public XDocument Serialize (IEnumerable<ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
 
       var classDefinitionsByStorageProvider = classDefinitions
-          .Where (cd => cd.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition)
-          .GroupBy (cd => (RdbmsProviderDefinition) cd.StorageEntityDefinition.StorageProviderDefinition);
+          .Where(cd => cd.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition)
+          .GroupBy(cd => (RdbmsProviderDefinition) cd.StorageEntityDefinition.StorageProviderDefinition);
 
-      var mappingElement = new XElement (Constants.Namespace + "mapping");
+      var mappingElement = new XElement(Constants.Namespace + "mapping");
       var enumElements = new List<XElement>();
 
       foreach (var group in classDefinitionsByStorageProvider)
       {
         var rdbmsProviderDefinition = @group.Key;
-        var enumSerializer = _enumSerializerFactory (rdbmsProviderDefinition);
-        var storageProviderSerializer = _storageProviderSerializerFactory (rdbmsProviderDefinition, enumSerializer);
+        var enumSerializer = _enumSerializerFactory(rdbmsProviderDefinition);
+        var storageProviderSerializer = _storageProviderSerializerFactory(rdbmsProviderDefinition, enumSerializer);
 
-        mappingElement.Add (storageProviderSerializer.Serialize (@group, rdbmsProviderDefinition));
-        enumElements.AddRange (enumSerializer.Serialize());
+        mappingElement.Add(storageProviderSerializer.Serialize(@group, rdbmsProviderDefinition));
+        enumElements.AddRange(enumSerializer.Serialize());
       }
-      mappingElement.Add (enumElements);
+      mappingElement.Add(enumElements);
 
-      return new XDocument (mappingElement);
+      return new XDocument(mappingElement);
     }
   }
 }

@@ -48,25 +48,25 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
       _validatorMock1 = MockRepository.GenerateStrictMock<IValidator>();
       _validatorMock2 = MockRepository.GenerateStrictMock<IValidator>();
 
-      _extension = new ValidationClientTransactionExtension (_validatorProviderMock);
+      _extension = new ValidationClientTransactionExtension(_validatorProviderMock);
     }
 
     [Test]
     public void DefaultKey ()
     {
-      Assert.That (ValidationClientTransactionExtension.DefaultKey, Is.EqualTo (typeof (ValidationClientTransactionExtension).FullName));
+      Assert.That(ValidationClientTransactionExtension.DefaultKey, Is.EqualTo(typeof (ValidationClientTransactionExtension).FullName));
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_extension.ValidatorProvider, Is.SameAs (_validatorProviderMock));
+      Assert.That(_extension.ValidatorProvider, Is.SameAs(_validatorProviderMock));
     }
 
     [Test]
     public void Key ()
     {
-      Assert.That (_extension.Key, Is.EqualTo (ValidationClientTransactionExtension.DefaultKey));
+      Assert.That(_extension.Key, Is.EqualTo(ValidationClientTransactionExtension.DefaultKey));
     }
 
     [Test]
@@ -78,33 +78,33 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
         var domainObject2 = TestDomainObject.NewObject();
         var domainObject3 = DomainObjectWithoutAnnotatedProperties.NewObject();
 
-        var persistableData1 = new PersistableData (
+        var persistableData1 = new PersistableData(
             domainObject1,
             new DomainObjectState.Builder().SetNew().Value,
-            DataContainerObjectMother.Create (domainObject1),
+            DataContainerObjectMother.Create(domainObject1),
             new IRelationEndPoint[0]);
-        var persistableData2 = new PersistableData (
+        var persistableData2 = new PersistableData(
             domainObject2,
             new DomainObjectState.Builder().SetChanged().Value,
-            DataContainerObjectMother.Create (domainObject2),
+            DataContainerObjectMother.Create(domainObject2),
             new IRelationEndPoint[0]);
-        var persistableData3 = new PersistableData (
+        var persistableData3 = new PersistableData(
             domainObject3,
             new DomainObjectState.Builder().SetDeleted().Value,
-            DataContainerObjectMother.Create (domainObject3),
+            DataContainerObjectMother.Create(domainObject3),
             new IRelationEndPoint[0]);
 
         _validatorProviderMock
-            .Expect (mock => mock.GetValidator (typeof (DomainObjectWithoutAnnotatedProperties)))
-            .Return (_validatorMock1);
+            .Expect(mock => mock.GetValidator(typeof (DomainObjectWithoutAnnotatedProperties)))
+            .Return(_validatorMock1);
         _validatorProviderMock
-            .Expect (mock => mock.GetValidator (typeof (TestDomainObject)))
-            .Return (_validatorMock2);
+            .Expect(mock => mock.GetValidator(typeof (TestDomainObject)))
+            .Return(_validatorMock2);
 
-        _validatorMock1.Expect (mock => mock.Validate (domainObject1)).Return (new ValidationResult());
-        _validatorMock2.Expect (mock => mock.Validate (domainObject2)).Return (new ValidationResult());
+        _validatorMock1.Expect(mock => mock.Validate(domainObject1)).Return(new ValidationResult());
+        _validatorMock2.Expect(mock => mock.Validate(domainObject2)).Return(new ValidationResult());
 
-        _extension.CommitValidate (ClientTransaction.Current, Array.AsReadOnly (new[] { persistableData1, persistableData2, persistableData3 }));
+        _extension.CommitValidate(ClientTransaction.Current, Array.AsReadOnly(new[] { persistableData1, persistableData2, persistableData3 }));
 
         _validatorProviderMock.VerifyAllExpectations();
         _validatorMock1.VerifyAllExpectations();
@@ -121,51 +121,51 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
         var domainObject2 = TestDomainObject.NewObject();
         var domainObject3 = DomainObjectWithoutAnnotatedProperties.NewObject();
 
-        var persistableData1 = new PersistableData (
+        var persistableData1 = new PersistableData(
             domainObject1,
             new DomainObjectState.Builder().SetNew().Value,
-            DataContainerObjectMother.Create (domainObject1),
+            DataContainerObjectMother.Create(domainObject1),
             new IRelationEndPoint[0]);
-        var persistableData2 = new PersistableData (
+        var persistableData2 = new PersistableData(
             domainObject2,
             new DomainObjectState.Builder().SetChanged().Value,
-            DataContainerObjectMother.Create (domainObject2),
+            DataContainerObjectMother.Create(domainObject2),
             new IRelationEndPoint[0]);
-        var persistableData3 = new PersistableData (
+        var persistableData3 = new PersistableData(
             domainObject3,
             new DomainObjectState.Builder().SetDeleted().Value,
-            DataContainerObjectMother.Create (domainObject3),
+            DataContainerObjectMother.Create(domainObject3),
             new IRelationEndPoint[0]);
 
         _validatorProviderMock
-            .Expect (mock => mock.GetValidator (typeof (DomainObjectWithoutAnnotatedProperties)))
-            .Return (_validatorMock1);
+            .Expect(mock => mock.GetValidator(typeof (DomainObjectWithoutAnnotatedProperties)))
+            .Return(_validatorMock1);
 
         _validatorProviderMock
-            .Expect (mock => mock.GetValidator (typeof (TestDomainObject)))
-            .Return (_validatorMock2);
+            .Expect(mock => mock.GetValidator(typeof (TestDomainObject)))
+            .Return(_validatorMock2);
 
         var propertyStub1 = MockRepository.GenerateStub<IPropertyInformation>();
-        propertyStub1.Stub (_ => _.Name).Return ("PropertyStub1");
+        propertyStub1.Stub(_ => _.Name).Return("PropertyStub1");
         var propertyStub2 = MockRepository.GenerateStub<IPropertyInformation>();
-        propertyStub2.Stub (_ => _.Name).Return ("PropertyStub2");
+        propertyStub2.Stub(_ => _.Name).Return("PropertyStub2");
         var propertyStub4 = MockRepository.GenerateStub<IPropertyInformation>();
-        propertyStub4.Stub (_ => _.Name).Return ("PropertyStub4");
+        propertyStub4.Stub(_ => _.Name).Return("PropertyStub4");
 
-        var validationFailure1 = new PropertyValidationFailure (domainObject2, propertyStub1, "value", "Error1", "ValidationMessage1");
-        var validationFailure2 = new PropertyValidationFailure (domainObject1, propertyStub2, null, "Error2", "ValidationMessage2");
-        var validationFailure3 = new ObjectValidationFailure (domainObject2, "Error3", "ValidationMessage3");
-        var validationFailure4 = new PropertyValidationFailure (domainObject2, propertyStub4, null, "Error4", "ValidationMessage3");
-        var validationFailure5 = new PropertyValidationFailure (domainObject2, propertyStub1, null, "Error5", "ValidationMessage5");
+        var validationFailure1 = new PropertyValidationFailure(domainObject2, propertyStub1, "value", "Error1", "ValidationMessage1");
+        var validationFailure2 = new PropertyValidationFailure(domainObject1, propertyStub2, null, "Error2", "ValidationMessage2");
+        var validationFailure3 = new ObjectValidationFailure(domainObject2, "Error3", "ValidationMessage3");
+        var validationFailure4 = new PropertyValidationFailure(domainObject2, propertyStub4, null, "Error4", "ValidationMessage3");
+        var validationFailure5 = new PropertyValidationFailure(domainObject2, propertyStub1, null, "Error5", "ValidationMessage5");
 
-        _validatorMock1.Expect (mock => mock.Validate (domainObject1)).Return (new ValidationResult (new[] { validationFailure2 }));
-        _validatorMock2.Expect (mock => mock.Validate (domainObject2))
-            .Return (new ValidationResult (new ValidationFailure[] { validationFailure1, validationFailure3, validationFailure4, validationFailure5 }));
+        _validatorMock1.Expect(mock => mock.Validate(domainObject1)).Return(new ValidationResult(new[] { validationFailure2 }));
+        _validatorMock2.Expect(mock => mock.Validate(domainObject2))
+            .Return(new ValidationResult(new ValidationFailure[] { validationFailure1, validationFailure3, validationFailure4, validationFailure5 }));
 
-        var exception = Assert.Throws<ExtendedDomainObjectValidationException> (
-            () => _extension.CommitValidate (
+        var exception = Assert.Throws<ExtendedDomainObjectValidationException>(
+            () => _extension.CommitValidate(
                 ClientTransaction.Current,
-                Array.AsReadOnly (new[] { persistableData1, persistableData2, persistableData3 })));
+                Array.AsReadOnly(new[] { persistableData1, persistableData2, persistableData3 })));
 
         string expectedMessage = @"One or more DomainObject contain inconsistent data:
 
@@ -178,15 +178,15 @@ Object 'TestDomainObject' with ID '.*':
  -- PropertyStub4: Error4
  -- Error3
 ";
-        Assert.That (exception.Message, Does.Match (expectedMessage));
+        Assert.That(exception.Message, Does.Match(expectedMessage));
 
-        Assert.That (
+        Assert.That(
             exception.AffectedObjects,
-            Is.EquivalentTo (new DomainObject[] { domainObject1, domainObject2 }));
+            Is.EquivalentTo(new DomainObject[] { domainObject1, domainObject2 }));
 
-        Assert.That (
+        Assert.That(
             exception.ValidationFailures,
-            Is.EquivalentTo (new ValidationFailure[] { validationFailure1, validationFailure2, validationFailure3, validationFailure4, validationFailure5 }));
+            Is.EquivalentTo(new ValidationFailure[] { validationFailure1, validationFailure2, validationFailure3, validationFailure4, validationFailure5 }));
 
         _validatorProviderMock.VerifyAllExpectations();
         _validatorMock1.VerifyAllExpectations();
@@ -202,38 +202,38 @@ Object 'TestDomainObject' with ID '.*':
         var domainObject1 = DomainObjectWithoutAnnotatedProperties.NewObject();
         domainObject1.Name = null;
 
-        var persistableData1 = new PersistableData (
+        var persistableData1 = new PersistableData(
             domainObject1,
             new DomainObjectState.Builder().SetNew().Value,
-            DataContainerObjectMother.Create (domainObject1),
+            DataContainerObjectMother.Create(domainObject1),
             new IRelationEndPoint[0]);
 
-        var culture = CultureInfo.GetCultureInfo ("fr");
-        var uiCulture = CultureInfo.GetCultureInfo ("it");
+        var culture = CultureInfo.GetCultureInfo("fr");
+        var uiCulture = CultureInfo.GetCultureInfo("it");
 
         var validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
-        validationMessageStub.Stub (_ => _.Format (null, null, null)).IgnoreArguments().Return ("not set")
-            .WhenCalled (mi => mi.ReturnValue = $"Localized Message (uiCulture: {CultureInfo.CurrentUICulture}, culture: {CultureInfo.CurrentCulture})");
+        validationMessageStub.Stub(_ => _.Format(null, null, null)).IgnoreArguments().Return("not set")
+            .WhenCalled(mi => mi.ReturnValue = $"Localized Message (uiCulture: {CultureInfo.CurrentUICulture}, culture: {CultureInfo.CurrentCulture})");
 
-        var propertyRule = new PropertyValidationRule<DomainObjectWithoutAnnotatedProperties, string> (
-            PropertyInfoAdapter.Create (MemberInfoFromExpressionUtility.GetProperty ((DomainObjectWithoutAnnotatedProperties p) => p.Name)),
+        var propertyRule = new PropertyValidationRule<DomainObjectWithoutAnnotatedProperties, string>(
+            PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((DomainObjectWithoutAnnotatedProperties p) => p.Name)),
             o => ((DomainObjectWithoutAnnotatedProperties) o).Name,
             _ => true,
-            new[] { new NotNullValidator (validationMessageStub) });
+            new[] { new NotNullValidator(validationMessageStub) });
 
         var rules = new List<IValidationRule>();
-        rules.Add (propertyRule);
+        rules.Add(propertyRule);
 
-        Validator validator = new Validator (rules, typeof (DomainObjectWithoutAnnotatedProperties));
+        Validator validator = new Validator(rules, typeof (DomainObjectWithoutAnnotatedProperties));
 
         _validatorProviderMock
-            .Expect (mock => mock.GetValidator (typeof (DomainObjectWithoutAnnotatedProperties))).Repeat.Twice()
-            .Return (validator);
+            .Expect(mock => mock.GetValidator(typeof (DomainObjectWithoutAnnotatedProperties))).Repeat.Twice()
+            .Return(validator);
 
-        using (new CultureScope (culture, uiCulture))
+        using (new CultureScope(culture, uiCulture))
         {
-          var exception = Assert.Throws<ExtendedDomainObjectValidationException> (
-              () => _extension.CommitValidate (ClientTransaction.Current, Array.AsReadOnly (new[] { persistableData1 })));
+          var exception = Assert.Throws<ExtendedDomainObjectValidationException>(
+              () => _extension.CommitValidate(ClientTransaction.Current, Array.AsReadOnly(new[] { persistableData1 })));
 
 
           string expectedMessage = @"One or more DomainObject contain inconsistent data:
@@ -242,18 +242,18 @@ Object 'DomainObjectWithoutAnnotatedProperties' with ID '.*':
  -- Name: The value must not be null.
 ";
 
-          Assert.That (exception.Message, Does.Match (expectedMessage));
+          Assert.That(exception.Message, Does.Match(expectedMessage));
 
-          Assert.That (exception.AffectedObjects.Length, Is.EqualTo (1));
-          Assert.That (exception.AffectedObjects[0], Is.EqualTo (domainObject1));
+          Assert.That(exception.AffectedObjects.Length, Is.EqualTo(1));
+          Assert.That(exception.AffectedObjects[0], Is.EqualTo(domainObject1));
 
-          Assert.That (exception.ValidationFailures.Length, Is.EqualTo (1));
+          Assert.That(exception.ValidationFailures.Length, Is.EqualTo(1));
 
           var validationFailures = exception.ValidationFailures.ToArray();
-          Assert.That (validationFailures, Is.All.InstanceOf<PropertyValidationFailure>());
-          Assert.That (((PropertyValidationFailure) validationFailures[0]).ValidatedProperty.Name, Is.EqualTo ("Name"));
-          Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must not be null."));
-          Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Localized Message (uiCulture: it, culture: fr)"));
+          Assert.That(validationFailures, Is.All.InstanceOf<PropertyValidationFailure>());
+          Assert.That(((PropertyValidationFailure) validationFailures[0]).ValidatedProperty.Name, Is.EqualTo("Name"));
+          Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must not be null."));
+          Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Localized Message (uiCulture: it, culture: fr)"));
         }
       }
     }

@@ -32,30 +32,30 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
     [SetUp]
     public void SetUp ()
     {
-      _rule = new RemotionMaxLengthPropertyMetaValidationRule (typeof (Customer).GetProperty ("UserName"), 50);
+      _rule = new RemotionMaxLengthPropertyMetaValidationRule(typeof (Customer).GetProperty("UserName"), 50);
     }
 
     [Test]
     public void Validate_NoRule ()
     {
-      var result = _rule.Validate (new MaximumLengthValidator[0]).ToArray().Single();
+      var result = _rule.Validate(new MaximumLengthValidator[0]).ToArray().Single();
 
-      Assert.That (result.IsValid, Is.False);
-      Assert.That (
+      Assert.That(result.IsValid, Is.False);
+      Assert.That(
           result.Message,
-          Is.EqualTo (
+          Is.EqualTo(
               "'RemotionMaxLengthPropertyMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName': No max-length validation rules defined."));
     }
 
     [Test]
     public void Validate_MaxLengthExceeds ()
     {
-      var result = _rule.Validate (new[] { new MaximumLengthValidator (60, new InvariantValidationMessage ("Fake Message")) }).Single();
+      var result = _rule.Validate(new[] { new MaximumLengthValidator(60, new InvariantValidationMessage("Fake Message")) }).Single();
 
-      Assert.That (result.IsValid, Is.False);
-      Assert.That (
+      Assert.That(result.IsValid, Is.False);
+      Assert.That(
           result.Message,
-          Is.EqualTo (
+          Is.EqualTo(
               "'RemotionMaxLengthPropertyMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName': "
               + "Max-length validation rule value '60' exceeds meta validation rule max-length value of '50'."));
     }
@@ -63,9 +63,9 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
     [Test]
     public void Validate_ValidMaxLength ()
     {
-      var result = _rule.Validate (new[] { new MaximumLengthValidator (40, new InvariantValidationMessage ("Fake Message")) }).Single();
+      var result = _rule.Validate(new[] { new MaximumLengthValidator(40, new InvariantValidationMessage("Fake Message")) }).Single();
 
-      Assert.That (result.IsValid, Is.True);
+      Assert.That(result.IsValid, Is.True);
     }
   }
 }

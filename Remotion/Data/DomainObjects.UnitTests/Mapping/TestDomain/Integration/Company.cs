@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     [StorageClassNone]
     internal int NamePropertyOfInvalidType
     {
-      set { Properties["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Name"].SetValue (value); }
+      set { Properties["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Name"].SetValue(value); }
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]
@@ -44,8 +44,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     [DBBidirectionalRelation ("Companies")]
     public virtual IndustrialSector IndustrialSector
     {
-      get { return CurrentProperty.GetValue<IndustrialSector> (); }
-      set { CurrentProperty.SetValue<IndustrialSector> (value); }
+      get { return CurrentProperty.GetValue<IndustrialSector>(); }
+      set { CurrentProperty.SetValue<IndustrialSector>(value); }
     }
   }
 }

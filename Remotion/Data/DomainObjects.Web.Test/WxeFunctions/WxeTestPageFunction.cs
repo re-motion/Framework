@@ -43,6 +43,6 @@ public class WxeTestPageFunction : WxeFunction
     set { Variables["CurrentClientTransaction"] = value;}
   }
 
-  private WxePageStep Step1 = new WxePageStep ("WxeTestPage.aspx");
+  private WxePageStep Step1 = new WxePageStep("WxeTestPage.aspx");
 }
 }

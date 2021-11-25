@@ -35,9 +35,9 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     /// </summary>
     public static int GetWxePostBackSequenceNumber ([NotNull] PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return int.Parse (context.Scope.FindId (c_dmaWxePostBackSequenceNumberFieldId).Value);
+      return int.Parse(context.Scope.FindId(c_dmaWxePostBackSequenceNumberFieldId).Value);
     }
 
     /// <summary>
@@ -45,9 +45,9 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     /// </summary>
     public static string GetWxeFunctionToken ([NotNull] PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return context.Scope.FindId (c_wxeFunctionToken).Value;
+      return context.Scope.FindId(c_wxeFunctionToken).Value;
     }
 
     /// <summary>
@@ -60,18 +60,18 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
         int expectedWxePostBackSequenceNumber,
         TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("log", log);
+      ArgumentUtility.CheckNotNull("context", context);
 
       int newWxePostBackSequenceNumber;
       var options = timeout.HasValue ? new Options { Timeout = timeout.Value } : null;
 
       try
       {
-        EnsureWindowContext (context);
+        EnsureWindowContext(context);
 
-        newWxePostBackSequenceNumber = context.Window.Query (
-            () => GetWxePostBackSequenceNumber (context),
+        newWxePostBackSequenceNumber = context.Window.Query(
+            () => GetWxePostBackSequenceNumber(context),
             expectedWxePostBackSequenceNumber,
             options);
       }
@@ -79,23 +79,23 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
       {
         try
         {
-          log.DebugFormat ("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle (context));
+          log.DebugFormat("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle(context));
         }
         catch
         {
           // ignored
         }
 
-        context.RequestErrorDetectionStrategy.CheckPageForError (context.Scope);
+        context.RequestErrorDetectionStrategy.CheckPageForError(context.Scope);
 
         throw;
       }
 
-      log.DebugFormat ("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle (context));
+      log.DebugFormat("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle(context));
 
-      Assertion.IsTrue (
+      Assertion.IsTrue(
           newWxePostBackSequenceNumber == expectedWxePostBackSequenceNumber,
-          string.Format ("Expected WXE-PSN to be '{0}', but it actually is '{1}'", expectedWxePostBackSequenceNumber, newWxePostBackSequenceNumber));
+          string.Format("Expected WXE-PSN to be '{0}', but it actually is '{1}'", expectedWxePostBackSequenceNumber, newWxePostBackSequenceNumber));
     }
 
     /// <summary>
@@ -109,14 +109,14 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
         int expectedWxePostBackSequenceNumberIncrease,
         TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("log", log);
+      ArgumentUtility.CheckNotNull("context", context);
 
       var expectedWxePostBackSequenceNumber = oldWxePostBackSequenceNumber + expectedWxePostBackSequenceNumberIncrease;
 
-      log.DebugFormat ("State: previous WXE-PSN: {0}, expected WXE-PSN: {1}.", oldWxePostBackSequenceNumber, expectedWxePostBackSequenceNumber);
+      log.DebugFormat("State: previous WXE-PSN: {0}, expected WXE-PSN: {1}.", oldWxePostBackSequenceNumber, expectedWxePostBackSequenceNumber);
 
-      WaitForExpectedWxePostBackSequenceNumber (log, context, expectedWxePostBackSequenceNumber, timeout);
+      WaitForExpectedWxePostBackSequenceNumber(log, context, expectedWxePostBackSequenceNumber, timeout);
     }
 
     /// <summary>
@@ -128,40 +128,40 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
         [NotNull] string oldWxeFunctionToken,
         TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("oldWxeFunctionToken", oldWxeFunctionToken);
+      ArgumentUtility.CheckNotNull("log", log);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("oldWxeFunctionToken", oldWxeFunctionToken);
 
-      log.DebugFormat ("State: previous WXE-FT: {0}.", oldWxeFunctionToken);
+      log.DebugFormat("State: previous WXE-FT: {0}.", oldWxeFunctionToken);
       var options = timeout.HasValue ? new Options { Timeout = timeout.Value } : null;
 
       try
       {
-        EnsureWindowContext (context);
+        EnsureWindowContext(context);
 
-        context.Window.Query (() => GetWxeFunctionToken (context) != oldWxeFunctionToken, true, options);
+        context.Window.Query(() => GetWxeFunctionToken(context) != oldWxeFunctionToken, true, options);
       }
       catch (Exception)
       {
         try
         {
-          log.DebugFormat ("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle (context));
+          log.DebugFormat("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle(context));
         }
         catch
         {
           // ignored
         }
         
-        context.RequestErrorDetectionStrategy.CheckPageForError (context.Scope);
+        context.RequestErrorDetectionStrategy.CheckPageForError(context.Scope);
 
         throw;
       }
 
-      log.DebugFormat ("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle (context));
+      log.DebugFormat("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle(context));
 
-      Assertion.IsTrue (
-          GetWxeFunctionToken (context) != oldWxeFunctionToken,
-          string.Format ("Expected WXE-FT to be different to '{0}', but it is equal.", oldWxeFunctionToken));
+      Assertion.IsTrue(
+          GetWxeFunctionToken(context) != oldWxeFunctionToken,
+          string.Format("Expected WXE-FT to be different to '{0}', but it is equal.", oldWxeFunctionToken));
     }
 
     private static void EnsureWindowContext (PageObjectContext context)
@@ -178,9 +178,9 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     {
       // Note: do not use page.GetTitle() instead, it may be specifically overloaded for a certain type of page which is not yet fully loaded!
 
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return context.Scope.FindCss ("title").InnerHTML.Trim();
+      return context.Scope.FindCss("title").InnerHTML.Trim();
     }
   }
 }

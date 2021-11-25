@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   {
     public static TIAddress NewObject ()
     {
-      return NewObject<TIAddress> ();
+      return NewObject<TIAddress>();
     }
 
     protected TIAddress ()

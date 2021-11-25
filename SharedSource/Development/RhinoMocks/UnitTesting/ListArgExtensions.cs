@@ -40,10 +40,10 @@ namespace Remotion.Development.RhinoMocks.UnitTesting
     public static T Equivalent<T> (this ListArg<T> arg, IEnumerable collection) where T : IEnumerable
     {
       var items = collection.Cast<object>().ToArray();
-      var type = typeof (ListArg<>).Assembly.GetType ("Rhino.Mocks.ArgManager", true)!;
-      var message = "equivalent to collection [" + string.Join (", ", (IEnumerable<object>) items) + "]";
-      var constraint = new PredicateConstraintWithMessage<T> (c => c.Cast<object>().SetEquals (items), message);
-      PrivateInvoke.InvokeNonPublicStaticMethod (type, "AddInArgument", constraint);
+      var type = typeof (ListArg<>).Assembly.GetType("Rhino.Mocks.ArgManager", true)!;
+      var message = "equivalent to collection [" + string.Join(", ", (IEnumerable<object>) items) + "]";
+      var constraint = new PredicateConstraintWithMessage<T>(c => c.Cast<object>().SetEquals(items), message);
+      PrivateInvoke.InvokeNonPublicStaticMethod(type, "AddInArgument", constraint);
       return default (T)!;
     }
 
@@ -53,7 +53,7 @@ namespace Remotion.Development.RhinoMocks.UnitTesting
     [return: MaybeNull]
     public static T Equivalent<T> (this ListArg<T> arg, params object[] items) where T : IEnumerable
     {
-      return Equivalent (arg, (IEnumerable) items)!;
+      return Equivalent(arg, (IEnumerable) items)!;
     }
 
     /// <summary>
@@ -61,10 +61,10 @@ namespace Remotion.Development.RhinoMocks.UnitTesting
     /// </summary>
     public static T[] Equivalent<T> (this ListArg<IEnumerable<T>> arg, params T[] items)
     {
-      var argManagerType = typeof (ListArg<>).Assembly.GetType ("Rhino.Mocks.ArgManager", true)!;
-      var message = "equivalent to collection [" + string.Join (", ", items) + "]";
-      var constraint = new PredicateConstraintWithMessage<IEnumerable<T>> (c => c.SetEquals (items), message);
-      PrivateInvoke.InvokeNonPublicStaticMethod (argManagerType, "AddInArgument", constraint);
+      var argManagerType = typeof (ListArg<>).Assembly.GetType("Rhino.Mocks.ArgManager", true)!;
+      var message = "equivalent to collection [" + string.Join(", ", items) + "]";
+      var constraint = new PredicateConstraintWithMessage<IEnumerable<T>>(c => c.SetEquals(items), message);
+      PrivateInvoke.InvokeNonPublicStaticMethod(argManagerType, "AddInArgument", constraint);
 
       return new T[0];
     }

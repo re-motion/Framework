@@ -40,26 +40,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
     [Test]
     public void Initialization_QueryTypeNotScalar ()
     {
-      _queryStub.Stub (stub => stub.QueryType).Return (QueryType.Collection);
-      Assert.That (
-          () => new ScalarQueryAdapter<string> (_queryStub, _resultConversion),
+      _queryStub.Stub(stub => stub.QueryType).Return(QueryType.Collection);
+      Assert.That(
+          () => new ScalarQueryAdapter<string>(_queryStub, _resultConversion),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo ("Only scalar queries can be used to load scalar results.", "query"));
+              .With.ArgumentExceptionMessageEqualTo("Only scalar queries can be used to load scalar results.", "query"));
     }
 
     [Test]
     public void Execute ()
     {
-      _queryStub.Stub (stub => stub.QueryType).Return (QueryType.Scalar);
-      var scalarQueryAdapter = new ScalarQueryAdapter<string> (_queryStub, _resultConversion);
+      _queryStub.Stub(stub => stub.QueryType).Return(QueryType.Scalar);
+      var scalarQueryAdapter = new ScalarQueryAdapter<string>(_queryStub, _resultConversion);
 
       var queryManagerMock = MockRepository.GenerateStrictMock<IQueryManager>();
-      queryManagerMock.Expect (mock => mock.GetScalar (scalarQueryAdapter)).Return (5);
+      queryManagerMock.Expect(mock => mock.GetScalar(scalarQueryAdapter)).Return(5);
 
-      var result = scalarQueryAdapter.Execute (queryManagerMock);
+      var result = scalarQueryAdapter.Execute(queryManagerMock);
 
       queryManagerMock.VerifyAllExpectations();
-      Assert.That (result, Is.EqualTo ("5"));
+      Assert.That(result, Is.EqualTo("5"));
     }
   }
 }

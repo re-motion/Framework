@@ -50,19 +50,19 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
       {
         var item = ClassForRelationTest.NewObject();
         item.Name = "Item " + i;
-        item.ClassWithAllDataTypesMandatory = AttachObjectWithAllDataTypes (i, item);
+        item.ClassWithAllDataTypesMandatory = AttachObjectWithAllDataTypes(i, item);
 
-        items.Add (item);
+        items.Add(item);
       }
 
       Items = items.ToArray();
     }
 
-    private WxePageStep Step2 = new WxePageStep ("Performance/Form.aspx");
+    private WxePageStep Step2 = new WxePageStep("Performance/Form.aspx");
 
     private ClassWithAllDataTypes AttachObjectWithAllDataTypes (int i, ClassForRelationTest parent)
     {
-      var item = ClassWithAllDataTypes.NewObject ();
+      var item = ClassWithAllDataTypes.NewObject();
       item.Int32Property = i;
       item.DateProperty = DateTime.Today;
       item.StringProperty = "Child " + i;

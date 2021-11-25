@@ -32,17 +32,17 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public ValidationClientTransactionExtensionFactory (IValidatorProvider validatorProvider)
     {
-      ArgumentUtility.CheckNotNull ("validatorProvider", validatorProvider);
+      ArgumentUtility.CheckNotNull("validatorProvider", validatorProvider);
 
       _validationProvider = validatorProvider;
     }
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
 
       if (clientTransaction.RootTransaction == clientTransaction)
-        yield return new ValidationClientTransactionExtension (_validationProvider);
+        yield return new ValidationClientTransactionExtension(_validationProvider);
     }
   }
 }

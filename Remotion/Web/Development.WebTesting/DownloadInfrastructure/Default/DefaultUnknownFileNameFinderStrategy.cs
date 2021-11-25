@@ -32,28 +32,28 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     public DefaultUnknownFileNameFinderStrategy ([NotNull] string partialFileEnding)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("partialFileEnding", partialFileEnding);
+      ArgumentUtility.CheckNotNullOrEmpty("partialFileEnding", partialFileEnding);
 
       _partialFileEnding = partialFileEnding;
     }
 
     public string FindDownloadedFile (IReadOnlyCollection<string> newFiles)
     {
-      ArgumentUtility.CheckNotNull ("newFiles", newFiles);
+      ArgumentUtility.CheckNotNull("newFiles", newFiles);
       
       if (newFiles.Count == 0)
-        throw new DownloadResultNotFoundException ("Did not find any new files in the download directory.", newFiles);
+        throw new DownloadResultNotFoundException("Did not find any new files in the download directory.", newFiles);
       
       if (newFiles.Count > 1)
       {
-        throw new DownloadResultNotFoundException ("Multiple files found in the download directory but only expected one file.", newFiles);
+        throw new DownloadResultNotFoundException("Multiple files found in the download directory but only expected one file.", newFiles);
       }
 
       var downloadedFoundFile = newFiles.Single();
 
-      if (downloadedFoundFile.EndsWith (_partialFileEnding))
+      if (downloadedFoundFile.EndsWith(_partialFileEnding))
       {
-        throw new DownloadResultNotFoundException (
+        throw new DownloadResultNotFoundException(
           "Only a single file was found in the download directory. The file name indicates that the file belongs to an incomplete download.",
           newFiles);
       }
@@ -63,9 +63,9 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     public bool ContainsPreDownloadFiles (IReadOnlyCollection<string> newFiles)
     {
-      ArgumentUtility.CheckNotNull ("newFiles", newFiles);
+      ArgumentUtility.CheckNotNull("newFiles", newFiles);
       
-      return newFiles.Any(x => x.EndsWith (".tmp"));
+      return newFiles.Any(x => x.EndsWith(".tmp"));
     }
   }
 }

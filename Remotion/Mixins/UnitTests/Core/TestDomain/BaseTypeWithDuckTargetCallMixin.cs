@@ -23,7 +23,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
     public virtual string MethodImplementedOnBase ()
     {
-      return "BaseTypeWithDuckTargetCallMixin.MethodImplementedOnBase-" + ProtectedMethodImplementedOnBase ();
+      return "BaseTypeWithDuckTargetCallMixin.MethodImplementedOnBase-" + ProtectedMethodImplementedOnBase();
     }
 
     protected virtual string ProtectedMethodImplementedOnBase ()

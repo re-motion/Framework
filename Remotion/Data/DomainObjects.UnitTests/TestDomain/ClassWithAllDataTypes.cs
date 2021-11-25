@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     public static ClassWithAllDataTypes NewObject ()
     {
-      return NewObject<ClassWithAllDataTypes> ();
+      return NewObject<ClassWithAllDataTypes>();
     }
 
     protected ClassWithAllDataTypes ()
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     public void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      BaseGetObjectData (info, context);
+      BaseGetObjectData(info, context);
     }
 
     [StorageClassNone]

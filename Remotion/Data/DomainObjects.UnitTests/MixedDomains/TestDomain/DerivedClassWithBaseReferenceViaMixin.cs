@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
   {
     public new static DerivedClassWithBaseReferenceViaMixin NewObject ()
     {
-      return NewObject<DerivedClassWithBaseReferenceViaMixin> ();
+      return NewObject<DerivedClassWithBaseReferenceViaMixin>();
     }
 
     [DBBidirectionalRelation ("MyDerived")]

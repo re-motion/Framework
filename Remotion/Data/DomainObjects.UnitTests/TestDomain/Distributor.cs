@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   {
     public static new Distributor NewObject ()
     {
-      return NewObject<Distributor> ();
+      return NewObject<Distributor>();
     }
 
     protected Distributor ()

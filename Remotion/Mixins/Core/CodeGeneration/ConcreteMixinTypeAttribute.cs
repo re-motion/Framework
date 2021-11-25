@@ -29,19 +29,19 @@ namespace Remotion.Mixins.CodeGeneration
   {
     public static ConcreteMixinTypeAttribute Create (ConcreteMixinTypeIdentifier identifier)
     {
-      ArgumentUtility.CheckNotNull ("identifier", identifier);
+      ArgumentUtility.CheckNotNull("identifier", identifier);
 
-      var identifierSerializer = new AttributeConcreteMixinTypeIdentifierSerializer ();
-      identifier.Serialize (identifierSerializer);
+      var identifierSerializer = new AttributeConcreteMixinTypeIdentifierSerializer();
+      identifier.Serialize(identifierSerializer);
 
-      return new ConcreteMixinTypeAttribute (identifierSerializer.Values);
+      return new ConcreteMixinTypeAttribute(identifierSerializer.Values);
     }
 
     private readonly object[] _concreteMixinTypeIdentifierData;
 
     public ConcreteMixinTypeAttribute (object[] concreteMixinTypeIdentifierData)
     {
-      ArgumentUtility.CheckNotNull ("concreteMixinTypeIdentifierData", concreteMixinTypeIdentifierData);
+      ArgumentUtility.CheckNotNull("concreteMixinTypeIdentifierData", concreteMixinTypeIdentifierData);
 
       _concreteMixinTypeIdentifierData = concreteMixinTypeIdentifierData;
     }
@@ -53,8 +53,8 @@ namespace Remotion.Mixins.CodeGeneration
 
     public ConcreteMixinTypeIdentifier GetIdentifier ()
     {
-      var deserializer = new AttributeConcreteMixinTypeIdentifierDeserializer (ConcreteMixinTypeIdentifierData);
-      return ConcreteMixinTypeIdentifier.Deserialize (deserializer);
+      var deserializer = new AttributeConcreteMixinTypeIdentifierDeserializer(ConcreteMixinTypeIdentifierData);
+      return ConcreteMixinTypeIdentifier.Deserialize(deserializer);
     }
   }
 }

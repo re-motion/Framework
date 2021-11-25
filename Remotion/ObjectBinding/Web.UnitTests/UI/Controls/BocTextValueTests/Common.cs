@@ -37,14 +37,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       base.SetUp();
       _bocTextValue = new BocTextValueMock();
       _bocTextValue.ID = "BocTextValue";
-      NamingContainer.Controls.Add (_bocTextValue);
+      NamingContainer.Controls.Add(_bocTextValue);
 
       _businessObject = TypeWithString.Create();
 
       _propertyStringValue =
-          (IBusinessObjectStringProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("StringValue");
+          (IBusinessObjectStringProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition("StringValue");
 
-      _dataSource = new StubDataSource (((IBusinessObject) _businessObject).BusinessObjectClass);
+      _dataSource = new StubDataSource(((IBusinessObject) _businessObject).BusinessObjectClass);
       _dataSource.BusinessObject = (IBusinessObject) _businessObject;
     }
 
@@ -55,8 +55,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
       _bocTextValue.EvaluateWaiConformity();
 
-      Assert.That (WcagHelperMock.HasWarning, Is.False);
-      Assert.That (WcagHelperMock.HasError, Is.False);
+      Assert.That(WcagHelperMock.HasWarning, Is.False);
+      Assert.That(WcagHelperMock.HasError, Is.False);
     }
 
     [Test]
@@ -66,8 +66,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.TextBoxStyle.AutoPostBack = true;
       _bocTextValue.EvaluateWaiConformity();
 
-      Assert.That (WcagHelperMock.HasWarning, Is.False);
-      Assert.That (WcagHelperMock.HasError, Is.False);
+      Assert.That(WcagHelperMock.HasWarning, Is.False);
+      Assert.That(WcagHelperMock.HasError, Is.False);
     }
 
 
@@ -78,10 +78,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.TextBoxStyle.AutoPostBack = true;
       _bocTextValue.EvaluateWaiConformity();
 
-      Assert.That (WcagHelperMock.HasWarning, Is.True);
-      Assert.That (WcagHelperMock.Priority, Is.EqualTo (1));
-      Assert.That (WcagHelperMock.Control, Is.SameAs (_bocTextValue));
-      Assert.That (WcagHelperMock.Property, Is.EqualTo ("TextBoxStyle.AutoPostBack"));
+      Assert.That(WcagHelperMock.HasWarning, Is.True);
+      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
+      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocTextValue));
+      Assert.That(WcagHelperMock.Property, Is.EqualTo("TextBoxStyle.AutoPostBack"));
     }
 
     [Test]
@@ -89,8 +89,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
     {
       _bocTextValue.ReadOnly = true;
       string[] actual = _bocTextValue.GetTrackedClientIDs();
-      Assert.That (actual, Is.Not.Null);
-      Assert.That (actual.Length, Is.EqualTo (0));
+      Assert.That(actual, Is.Not.Null);
+      Assert.That(actual.Length, Is.EqualTo(0));
     }
 
     [Test]
@@ -98,9 +98,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
     {
       _bocTextValue.ReadOnly = false;
       string[] actual = _bocTextValue.GetTrackedClientIDs();
-      Assert.That (actual, Is.Not.Null);
-      Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (((IBocTextValueBase)_bocTextValue).GetValueName()));
+      Assert.That(actual, Is.Not.Null);
+      Assert.That(actual.Length, Is.EqualTo(1));
+      Assert.That(actual[0], Is.EqualTo(((IBocTextValueBase)_bocTextValue).GetValueName()));
     }
 
 
@@ -110,8 +110,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       string value = "Foo Bar";
       _bocTextValue.IsDirty = false;
       _bocTextValue.Value = value;
-      Assert.That (_bocTextValue.Value, Is.EqualTo (value));
-      Assert.That (_bocTextValue.IsDirty, Is.True);
+      Assert.That(_bocTextValue.Value, Is.EqualTo(value));
+      Assert.That(_bocTextValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -119,8 +119,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
     {
       _bocTextValue.IsDirty = false;
       _bocTextValue.Value = null;
-      Assert.That (_bocTextValue.Value, Is.EqualTo (null));
-      Assert.That (_bocTextValue.IsDirty, Is.True);
+      Assert.That(_bocTextValue.Value, Is.EqualTo(null));
+      Assert.That(_bocTextValue.IsDirty, Is.True);
     }
 
 
@@ -128,7 +128,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
     public void HasValue_ValueIsSet_ReturnsTrue ()
     {
       _bocTextValue.Value = "x";
-      Assert.That (_bocTextValue.HasValue, Is.True);
+      Assert.That(_bocTextValue.HasValue, Is.True);
     }
 
     [Test]
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
     {
       _bocTextValue.ValueType = BocTextValueType.Date;
       _bocTextValue.Text = "x";
-      Assert.That (_bocTextValue.HasValue, Is.True);
+      Assert.That(_bocTextValue.HasValue, Is.True);
     }
 
     [Test]
@@ -144,15 +144,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
     {
       _bocTextValue.ValueType = BocTextValueType.Date;
       _bocTextValue.Text = "  ";
-      Assert.That (_bocTextValue.HasValue, Is.False);
-      Assert.That (_bocTextValue.Value, Is.Null);
+      Assert.That(_bocTextValue.HasValue, Is.False);
+      Assert.That(_bocTextValue.Value, Is.Null);
     }
 
     [Test]
     public void HasValue_ValueIsNull_ReturnsFalse ()
     {
       _bocTextValue.Value = null;
-      Assert.That (_bocTextValue.HasValue, Is.False);
+      Assert.That(_bocTextValue.HasValue, Is.False);
     }
 
 
@@ -165,9 +165,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.Value = null;
       _bocTextValue.IsDirty = true;
 
-      _bocTextValue.LoadValue (true);
-      Assert.That (_bocTextValue.Value, Is.EqualTo (null));
-      Assert.That (_bocTextValue.IsDirty, Is.True);
+      _bocTextValue.LoadValue(true);
+      Assert.That(_bocTextValue.Value, Is.EqualTo(null));
+      Assert.That(_bocTextValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -179,9 +179,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.Value = null;
       _bocTextValue.IsDirty = true;
 
-      _bocTextValue.LoadValue (false);
-      Assert.That (_bocTextValue.Value, Is.EqualTo (_businessObject.StringValue));
-      Assert.That (_bocTextValue.IsDirty, Is.False);
+      _bocTextValue.LoadValue(false);
+      Assert.That(_bocTextValue.Value, Is.EqualTo(_businessObject.StringValue));
+      Assert.That(_bocTextValue.IsDirty, Is.False);
     }
 
     [Test]
@@ -193,9 +193,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.Value = "Foo Bar";
       _bocTextValue.IsDirty = true;
 
-      _bocTextValue.LoadValue (false);
-      Assert.That (_bocTextValue.Value, Is.EqualTo (_businessObject.StringValue));
-      Assert.That (_bocTextValue.IsDirty, Is.False);
+      _bocTextValue.LoadValue(false);
+      Assert.That(_bocTextValue.Value, Is.EqualTo(_businessObject.StringValue));
+      Assert.That(_bocTextValue.IsDirty, Is.False);
     }
 
     [Test]
@@ -206,9 +206,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.Value = "Foo Bar";
       _bocTextValue.IsDirty = true;
 
-      _bocTextValue.LoadValue (false);
-      Assert.That (_bocTextValue.Value, Is.EqualTo ("Foo Bar"));
-      Assert.That (_bocTextValue.IsDirty, Is.True);
+      _bocTextValue.LoadValue(false);
+      Assert.That(_bocTextValue.Value, Is.EqualTo("Foo Bar"));
+      Assert.That(_bocTextValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -219,9 +219,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.Value = "Foo Bar";
       _bocTextValue.IsDirty = true;
 
-      _bocTextValue.LoadValue (false);
-      Assert.That (_bocTextValue.Value, Is.EqualTo ("Foo Bar"));
-      Assert.That (_bocTextValue.IsDirty, Is.True);
+      _bocTextValue.LoadValue(false);
+      Assert.That(_bocTextValue.Value, Is.EqualTo("Foo Bar"));
+      Assert.That(_bocTextValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -233,9 +233,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.Value = "Foo Bar";
       _bocTextValue.IsDirty = true;
 
-      _bocTextValue.LoadValue (false);
-      Assert.That (_bocTextValue.Value, Is.EqualTo (null));
-      Assert.That (_bocTextValue.IsDirty, Is.False);
+      _bocTextValue.LoadValue(false);
+      Assert.That(_bocTextValue.Value, Is.EqualTo(null));
+      Assert.That(_bocTextValue.IsDirty, Is.False);
     }
 
 
@@ -246,9 +246,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.Value = null;
       _bocTextValue.IsDirty = true;
 
-      _bocTextValue.LoadUnboundValue (value, true);
-      Assert.That (_bocTextValue.Value, Is.EqualTo (null));
-      Assert.That (_bocTextValue.IsDirty, Is.True);
+      _bocTextValue.LoadUnboundValue(value, true);
+      Assert.That(_bocTextValue.Value, Is.EqualTo(null));
+      Assert.That(_bocTextValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -258,9 +258,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.Value = null;
       _bocTextValue.IsDirty = true;
 
-      _bocTextValue.LoadUnboundValue (value, false);
-      Assert.That (_bocTextValue.Value, Is.EqualTo (value));
-      Assert.That (_bocTextValue.IsDirty, Is.False);
+      _bocTextValue.LoadUnboundValue(value, false);
+      Assert.That(_bocTextValue.Value, Is.EqualTo(value));
+      Assert.That(_bocTextValue.IsDirty, Is.False);
     }
 
     [Test]
@@ -270,9 +270,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.Value = "Foo Bar";
       _bocTextValue.IsDirty = true;
 
-      _bocTextValue.LoadUnboundValue (value, false);
-      Assert.That (_bocTextValue.Value, Is.EqualTo (value));
-      Assert.That (_bocTextValue.IsDirty, Is.False);
+      _bocTextValue.LoadUnboundValue(value, false);
+      Assert.That(_bocTextValue.Value, Is.EqualTo(value));
+      Assert.That(_bocTextValue.IsDirty, Is.False);
     }
 
     [Test]
@@ -284,10 +284,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.Value = null;
       _bocTextValue.IsDirty = true;
 
-      var result = _bocTextValue.SaveValue (true);
-      Assert.That (result, Is.False);
-      Assert.That (_businessObject.StringValue, Is.EqualTo ("Foo Bar"));
-      Assert.That (_bocTextValue.IsDirty, Is.True);
+      var result = _bocTextValue.SaveValue(true);
+      Assert.That(result, Is.False);
+      Assert.That(_businessObject.StringValue, Is.EqualTo("Foo Bar"));
+      Assert.That(_bocTextValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -299,10 +299,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.Value = null;
       _bocTextValue.IsDirty = true;
 
-      var result = _bocTextValue.SaveValue (false);
-      Assert.That (result, Is.True);
-      Assert.That (_businessObject.StringValue, Is.EqualTo (null));
-      Assert.That (_bocTextValue.IsDirty, Is.False);
+      var result = _bocTextValue.SaveValue(false);
+      Assert.That(result, Is.True);
+      Assert.That(_businessObject.StringValue, Is.EqualTo(null));
+      Assert.That(_bocTextValue.IsDirty, Is.False);
     }
 
     [Test]
@@ -313,12 +313,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.Property = _propertyStringValue;
       _bocTextValue.Value = null;
       _bocTextValue.IsDirty = true;
-      _bocTextValue.RegisterValidator (new AlwaysInvalidValidator());
+      _bocTextValue.RegisterValidator(new AlwaysInvalidValidator());
 
-      var result = _bocTextValue.SaveValue (false);
-      Assert.That (result, Is.False);
-      Assert.That (_businessObject.StringValue, Is.EqualTo ("Foo Bar"));
-      Assert.That (_bocTextValue.IsDirty, Is.True);
+      var result = _bocTextValue.SaveValue(false);
+      Assert.That(result, Is.False);
+      Assert.That(_businessObject.StringValue, Is.EqualTo("Foo Bar"));
+      Assert.That(_bocTextValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -330,16 +330,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       _bocTextValue.Value = null;
       _bocTextValue.IsDirty = false;
 
-      var result = _bocTextValue.SaveValue (false);
-      Assert.That (result, Is.True);
-      Assert.That (_businessObject.StringValue, Is.EqualTo ("Foo Bar"));
-      Assert.That (_bocTextValue.IsDirty, Is.False);
+      var result = _bocTextValue.SaveValue(false);
+      Assert.That(result, Is.True);
+      Assert.That(_businessObject.StringValue, Is.EqualTo("Foo Bar"));
+      Assert.That(_bocTextValue.IsDirty, Is.False);
     }
 
     [Test]
     public void GetValueName ()
     {
-      Assert.That (((IBocTextValueBase)_bocTextValue).GetValueName(), Is.EqualTo ("NamingContainer_BocTextValue_Value"));
+      Assert.That(((IBocTextValueBase)_bocTextValue).GetValueName(), Is.EqualTo("NamingContainer_BocTextValue_Value"));
     }
   }
 }

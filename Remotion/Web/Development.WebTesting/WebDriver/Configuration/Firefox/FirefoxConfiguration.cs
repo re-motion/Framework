@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
   {
     private const string c_partialFileDownloadExtension = ".part";
 
-    private static readonly Lazy<FirefoxExecutable> s_firefoxExecutable = new Lazy<FirefoxExecutable> (
+    private static readonly Lazy<FirefoxExecutable> s_firefoxExecutable = new Lazy<FirefoxExecutable>(
         () => new FirefoxBinariesProvider().GetInstalledExecutable(),
         LazyThreadSafetyMode.ExecutionAndPublication);
 
@@ -63,15 +63,15 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
         [NotNull] FirefoxExecutable firefoxExecutable)
         : base (webTestConfigurationSection)
     {
-      ArgumentUtility.CheckNotNull ("firefoxExecutable", firefoxExecutable);
+      ArgumentUtility.CheckNotNull("firefoxExecutable", firefoxExecutable);
 
       BrowserBinaryPath = firefoxExecutable.BrowserBinaryPath;
       DriverBinaryPath = firefoxExecutable.DriverBinaryPath;
 
-      DownloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
+      DownloadDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 
-      var downloadStartedGracePeriod = TimeSpan.FromMinutes (1);
-      DownloadHelper = new DefaultDownloadHelper (
+      var downloadStartedGracePeriod = TimeSpan.FromMinutes(1);
+      DownloadHelper = new DefaultDownloadHelper(
           DownloadDirectory,
           c_partialFileDownloadExtension,
           webTestConfigurationSection.DownloadStartedTimeout,
@@ -87,7 +87,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     public override string WebDriverExecutableName => "geckodriver";
 
     /// <inheritdoc />
-    public override IBrowserFactory BrowserFactory => new FirefoxBrowserFactory (this);
+    public override IBrowserFactory BrowserFactory => new FirefoxBrowserFactory(this);
 
     /// <inheritdoc />
     public override IBrowserContentLocator Locator => new FirefoxBrowserContentLocator();
@@ -103,10 +103,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
 
       var profile = new FirefoxProfile();
 
-      profile.SetPreference ("browser.download.dir", DownloadDirectory);
-      profile.SetPreference ("browser.download.folderList", useCustomDownloadDirectory);
-      profile.SetPreference ("browser.helperApps.neverAsk.saveToDisk", mimeTypesToSkipDownloadDialog);
-      profile.SetPreference ("layout.css.devPixelsPerPx", 1);
+      profile.SetPreference("browser.download.dir", DownloadDirectory);
+      profile.SetPreference("browser.download.folderList", useCustomDownloadDirectory);
+      profile.SetPreference("browser.helperApps.neverAsk.saveToDisk", mimeTypesToSkipDownloadDialog);
+      profile.SetPreference("layout.css.devPixelsPerPx", 1);
 
       var firefoxOptions =  new FirefoxOptions
              {

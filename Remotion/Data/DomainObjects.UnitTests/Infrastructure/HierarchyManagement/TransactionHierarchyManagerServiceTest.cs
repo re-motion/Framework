@@ -29,9 +29,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     {
       var clientTransaction = ClientTransactionObjectMother.Create();
 
-      var result = TransactionHierarchyManagerService.GetTransactionHierarchyManager (clientTransaction);
+      var result = TransactionHierarchyManagerService.GetTransactionHierarchyManager(clientTransaction);
 
-      Assert.That (result, Is.Not.Null.And.SameAs (PrivateInvoke.GetNonPublicProperty (clientTransaction, "HierarchyManager")));
+      Assert.That(result, Is.Not.Null.And.SameAs(PrivateInvoke.GetNonPublicProperty(clientTransaction, "HierarchyManager")));
     }
   }
 }

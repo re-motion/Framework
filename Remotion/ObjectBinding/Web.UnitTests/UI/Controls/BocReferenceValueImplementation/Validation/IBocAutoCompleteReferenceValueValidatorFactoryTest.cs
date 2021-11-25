@@ -25,12 +25,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     {
       var instance = _serviceLocator.GetInstance<IBocAutoCompleteReferenceValueValidatorFactory>();
 
-      Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocAutoCompleteReferenceValue>>());
+      Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<IBocAutoCompleteReferenceValue>>());
 
       var factories = ((CompoundValidatorFactory<IBocAutoCompleteReferenceValue>) instance).VlidatorFactories;
-      Assert.That (
-          factories.Select (f => f.GetType()),
-          Is.EqualTo (new[] { typeof (BocAutoCompleteReferenceValueValidatorFactory), typeof (ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
+      Assert.That(
+          factories.Select(f => f.GetType()),
+          Is.EqualTo(new[] { typeof (BocAutoCompleteReferenceValueValidatorFactory), typeof (ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
     }
 
     [Test]
@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var instance1 = _serviceLocator.GetInstance<IBocAutoCompleteReferenceValueValidatorFactory>();
       var instance2 = _serviceLocator.GetInstance<IBocAutoCompleteReferenceValueValidatorFactory>();
 
-      Assert.That (instance1, Is.InstanceOf<CompoundValidatorFactory<IBocAutoCompleteReferenceValue>>());
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.InstanceOf<CompoundValidatorFactory<IBocAutoCompleteReferenceValue>>());
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

@@ -24,12 +24,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
   {
     public static TestExtensibleEnum Value1 (this ExtensibleEnumDefinition<TestExtensibleEnum> definition)
     {
-      return new TestExtensibleEnum (MethodBase.GetCurrentMethod ());
+      return new TestExtensibleEnum(MethodBase.GetCurrentMethod());
     }
 
     public static TestExtensibleEnum Value2 (this ExtensibleEnumDefinition<TestExtensibleEnum> definition)
     {
-      return new TestExtensibleEnum (MethodBase.GetCurrentMethod ());
+      return new TestExtensibleEnum(MethodBase.GetCurrentMethod());
     }
   }
 }

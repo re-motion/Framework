@@ -33,31 +33,31 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      var action = (Action<object, IProxyTypeAssemblyContext>) ((id, ctx) => ctx.ProxyType.AddField ("field", 0, typeof (int)));
+      var action = (Action<object, IProxyTypeAssemblyContext>) ((id, ctx) => ctx.ProxyType.AddField("field", 0, typeof (int)));
       var participantStub = new Mock<IParticipant>();
       // Modify proxy type to avoid no-modification optimization.
-      participantStub.Setup (_ => _.Participate (It.IsAny<object>(), It.IsAny<IProxyTypeAssemblyContext>())).Callback (action);
+      participantStub.Setup(_ => _.Participate(It.IsAny<object>(), It.IsAny<IProxyTypeAssemblyContext>())).Callback(action);
       _participants = new[] { participantStub.Object };
 
-      var registry = new RemotionPipelineRegistry (_participants);
+      var registry = new RemotionPipelineRegistry(_participants);
       _defaultPipeline = registry.DefaultPipeline;
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_defaultPipeline.ParticipantConfigurationID, Is.EqualTo ("remotion-default-pipeline"));
-      Assert.That (_defaultPipeline.Participants, Is.EqualTo (_participants));
+      Assert.That(_defaultPipeline.ParticipantConfigurationID, Is.EqualTo("remotion-default-pipeline"));
+      Assert.That(_defaultPipeline.Participants, Is.EqualTo(_participants));
     }
 
     [Test]
     public void Initialization_IntegrationTest_AddsNonApplicationAssemblyAttribute_OnModuleCreation ()
     {
       // Creates new in-memory assembly.
-      var type = _defaultPipeline.ReflectionService.GetAssembledType (typeof (RequestedType));
+      var type = _defaultPipeline.ReflectionService.GetAssembledType(typeof (RequestedType));
 
-      Assert.That (type, Is.Not.SameAs (typeof (RequestedType)));
-      Assert.That (type.Assembly.IsDefined (typeof (NonApplicationAssemblyAttribute), false), Is.True);
+      Assert.That(type, Is.Not.SameAs(typeof (RequestedType)));
+      Assert.That(type.Assembly.IsDefined(typeof (NonApplicationAssemblyAttribute), false), Is.True);
     }
 
     public class RequestedType {}

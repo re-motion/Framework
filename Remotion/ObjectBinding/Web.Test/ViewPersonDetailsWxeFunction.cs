@@ -40,6 +40,6 @@ public class ViewPersonDetailsWxeFunction: WxeFunction
 
   // steps
 
-  private WxeStep Step1 = new WxePageStep ("PersonDetailsForm.aspx");
+  private WxeStep Step1 = new WxePageStep("PersonDetailsForm.aspx");
 }
 }

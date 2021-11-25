@@ -81,22 +81,22 @@ namespace Remotion.Web.UI.Controls
         NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {
-      ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);
-      ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters);
+      ArgumentUtility.CheckNotNull("postBackEvent", postBackEvent);
+      ArgumentUtility.CheckNotNull("additionalUrlParameters", additionalUrlParameters);
       if (Type != CommandType.WxeFunction)
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "Call to GetCommandInfoForWxeFunctionCommand not allowed unless Type is set to CommandType.WxeFunction.");
 
       string href = "#";
       if (HttpContext.Current != null)
-        href = GetWxeFunctionPermanentUrl (additionalUrlParameters);
+        href = GetWxeFunctionPermanentUrl(additionalUrlParameters);
 
-      return CommandInfo.CreateForLink (
-          StringUtility.EmptyToNull (ToolTip),
-          StringUtility.EmptyToNull (AccessKey),
+      return CommandInfo.CreateForLink(
+          StringUtility.EmptyToNull(ToolTip),
+          StringUtility.EmptyToNull(AccessKey),
           href,
-          StringUtility.EmptyToNull (WxeFunctionCommand.Target),
-          StringUtility.EmptyToNull (onClick));
+          StringUtility.EmptyToNull(WxeFunctionCommand.Target),
+          StringUtility.EmptyToNull(onClick));
     }
 
     /// <summary> 
@@ -120,21 +120,21 @@ namespace Remotion.Web.UI.Controls
     /// </exception> 
     public virtual string GetWxeFunctionPermanentUrl (NameValueCollection additionalUrlParameters)
     {
-      ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters);
+      ArgumentUtility.CheckNotNull("additionalUrlParameters", additionalUrlParameters);
 
       if (Type != CommandType.WxeFunction)
-        throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");
+        throw new InvalidOperationException("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");
 
       Type functionType = WxeFunctionCommand.ResolveFunctionType();
-      WxeParameterDeclaration[] parameterDeclarations = WxeVariablesContainer.GetParameterDeclarations (functionType);
-      object[] parameterValues = WxeVariablesContainer.ParseActualParameters (
+      WxeParameterDeclaration[] parameterDeclarations = WxeVariablesContainer.GetParameterDeclarations(functionType);
+      object[] parameterValues = WxeVariablesContainer.ParseActualParameters(
           parameterDeclarations, WxeFunctionCommand.Parameters, CultureInfo.InvariantCulture);
 
-      NameValueCollection queryString = WxeVariablesContainer.SerializeParametersForQueryString (parameterDeclarations, parameterValues);
-      queryString.Set (WxeHandler.Parameters.WxeReturnToSelf, true.ToString());
-      NameValueCollectionUtility.Append (queryString, additionalUrlParameters);
+      NameValueCollection queryString = WxeVariablesContainer.SerializeParametersForQueryString(parameterDeclarations, parameterValues);
+      queryString.Set(WxeHandler.Parameters.WxeReturnToSelf, true.ToString());
+      NameValueCollectionUtility.Append(queryString, additionalUrlParameters);
 
-      return WxeContext.GetPermanentUrl (new HttpContextWrapper (HttpContext.Current), functionType, queryString);
+      return WxeContext.GetPermanentUrl(new HttpContextWrapper(HttpContext.Current), functionType, queryString);
     }
 
     /// <summary> 
@@ -154,7 +154,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception> 
     public string GetWxeFunctionPermanentUrl ()
     {
-      return GetWxeFunctionPermanentUrl (new NameValueCollection (0));
+      return GetWxeFunctionPermanentUrl(new NameValueCollection(0));
     }
   }
 }

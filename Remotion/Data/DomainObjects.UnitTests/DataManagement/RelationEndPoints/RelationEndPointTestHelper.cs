@@ -24,13 +24,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   {
     public static DataContainer CreateNewDataContainer (RelationEndPointID id)
     {
-      var foreignKeyDataContainer = DataContainer.CreateNew (id.ObjectID);
+      var foreignKeyDataContainer = DataContainer.CreateNew(id.ObjectID);
       return foreignKeyDataContainer;
     }
 
     public static DataContainer CreateExistingForeignKeyDataContainer (RelationEndPointID id, ObjectID initialForeignKeyValue)
     {
-      var foreignKeyDataContainer = DataContainer.CreateForExisting (
+      var foreignKeyDataContainer = DataContainer.CreateForExisting(
           id.ObjectID, 
           null, 
           pd => pd.PropertyName == id.Definition.PropertyName ? initialForeignKeyValue : pd.DefaultValue);
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public static DataContainer CreateExistingDataContainer (RelationEndPointID id)
     {
-      var foreignKeyDataContainer = DataContainer.CreateForExisting (
+      var foreignKeyDataContainer = DataContainer.CreateForExisting(
           id.ObjectID,
           null,
           pd => pd.DefaultValue);

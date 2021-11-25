@@ -45,13 +45,13 @@ public abstract class CommandLineGroupArgument: CommandLineArgument
       foreach (CommandLineArgument part in Parts)
       {
         if (sb.Length == 0)
-          sb.Append ('{');
+          sb.Append('{');
         else
-          sb.Append ('|');
-        sb.Append (Parser!.ArgumentDeclarationPrefix);
-        sb.Append (part.Name);
+          sb.Append('|');
+        sb.Append(Parser!.ArgumentDeclarationPrefix);
+        sb.Append(part.Name);
       }
-      sb.Append ('}');
+      sb.Append('}');
       return sb.ToString();
     }
     set
@@ -89,16 +89,16 @@ public class CommandLineModeArgument: CommandLineGroupArgument
     if (_enumType != null)
     {
       _flags.Clear();
-      foreach (FieldInfo field in _enumType.GetFields (BindingFlags.Public | BindingFlags.Static))
+      foreach (FieldInfo field in _enumType.GetFields(BindingFlags.Public | BindingFlags.Static))
       {
-        CommandLineModeAttribute? attribute = CommandLineModeAttribute.GetAttribute (field);
+        CommandLineModeAttribute? attribute = CommandLineModeAttribute.GetAttribute(field);
 
         string name = field.Name;
         if (attribute != null && attribute.Name != null)
           name = attribute.Name;
 
-        CommandLineFlagArgument argument = new CommandLineModeFlagArgument (
-            this, name, (Enum) field.GetValue (null)!);
+        CommandLineFlagArgument argument = new CommandLineModeFlagArgument(
+            this, name, (Enum) field.GetValue(null)!);
 
         if (attribute != null)
           argument.Description = attribute.Description;
@@ -108,12 +108,12 @@ public class CommandLineModeArgument: CommandLineGroupArgument
 
   public void Add (CommandLineModeFlagArgument flag)
   {
-    _flags.Add (flag);
+    _flags.Add(flag);
   }
 
   public override IList Parts
   {
-    get { return ArrayList.ReadOnly (_flags); }
+    get { return ArrayList.ReadOnly(_flags); }
   }
 
   public override object? ValueObject
@@ -130,14 +130,14 @@ public class CommandLineModeArgument: CommandLineGroupArgument
   internal void SetValue (CommandLineModeFlagArgument value)
   {
     if (_value != null)
-      throw new ConflictCommandLineParameterException (_value, value); 
+      throw new ConflictCommandLineParameterException(_value, value); 
     _value = value;
-    SetStringValue (value.Name!);
+    SetStringValue(value.Name!);
   }
 
   public override void AppendSynopsis (StringBuilder sb)
   {    
-    sb.Append (Placeholder);
+    sb.Append(Placeholder);
   }
 
   public Type? EnumType
@@ -161,16 +161,16 @@ public class CommandLineModeFlagArgument: CommandLineFlagArgument, ICommandLineP
   {
     _enumValue = enumValue;
     _modeFlagGroup = modeFlagGroup;
-    _modeFlagGroup.Add (this);
+    _modeFlagGroup.Add(this);
   }
 
   protected internal override void SetStringValue (string value)
   {
     if (value != string.Empty)
-      throw new InvalidCommandLineArgumentValueException (this, "");
+      throw new InvalidCommandLineArgumentValueException(this, "");
 
-    base.SetStringValue (value);
-    _modeFlagGroup.SetValue (this);
+    base.SetStringValue(value);
+    _modeFlagGroup.SetValue(this);
   }
 
   public Enum EnumValue

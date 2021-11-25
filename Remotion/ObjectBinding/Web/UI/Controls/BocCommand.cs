@@ -140,8 +140,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _hasClickFired = true;
       if (Click != null)
       {
-        BocCommandClickEventArgs e = new BocCommandClickEventArgs (this, businessObject);
-        Click (OwnerControl, e);
+        BocCommandClickEventArgs e = new BocCommandClickEventArgs(this, businessObject);
+        Click(OwnerControl, e);
       }
     }
 
@@ -170,7 +170,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         string businessObjectID,
         ISecurableObject securableObject)
     {
-      RenderBegin (writer, renderingFeatures, postBackLink, new[] { businessObjectID }, onClick, securableObject);
+      RenderBegin(writer, renderingFeatures, postBackLink, new[] { businessObjectID }, onClick, securableObject);
     }
 
     /// <summary>
@@ -182,11 +182,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void ExecuteWxeFunction (IWxePage wxePage, IBusinessObject? businessObject)
     {
-      ArgumentUtility.CheckNotNull ("wxePage", wxePage);
+      ArgumentUtility.CheckNotNull("wxePage", wxePage);
       if (! wxePage.IsReturningPostBack)
       {
-        NameObjectCollection parameters = PrepareWxeFunctionParameters (businessObject);
-        ExecuteWxeFunction (wxePage, parameters);
+        NameObjectCollection parameters = PrepareWxeFunctionParameters(businessObject);
+        ExecuteWxeFunction(wxePage, parameters);
       }
     }
 

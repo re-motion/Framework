@@ -24,10 +24,10 @@ namespace Remotion.Web.Test.Shared.ErrorHandling
   {
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
       var exception = GetLastError();
       if (exception != null)
-        ErrorDetails.Text = exception.ToString().Replace ("\r\n", "\r\n<br/>");
+        ErrorDetails.Text = exception.ToString().Replace("\r\n", "\r\n<br/>");
       else
         ErrorDetails.Text = "Error";
       Server.ClearError();
@@ -43,7 +43,7 @@ namespace Remotion.Web.Test.Shared.ErrorHandling
 
     protected override void Render (HtmlTextWriter writer)
     {
-      base.Render (writer);
+      base.Render(writer);
     }
   }
 }

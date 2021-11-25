@@ -36,15 +36,15 @@ namespace Remotion.Validation.Implementation
 
 
     public InvolvedTypeProvider (IValidationTypeFilter validationTypeFilter)
-        : this (c => c.OrderBy (t => t.Name), validationTypeFilter)
+        : this (c => c.OrderBy(t => t.Name), validationTypeFilter)
     {
     }
 
     [PublicAPI]
     protected InvolvedTypeProvider (Func<IEnumerable<Type>, IEnumerable<Type>> hierarchyLevelsubSort, IValidationTypeFilter validationTypeFilter)
     {
-      ArgumentUtility.CheckNotNull ("hierarchyLevelsubSort", hierarchyLevelsubSort);
-      ArgumentUtility.CheckNotNull ("validationTypeFilter", validationTypeFilter);
+      ArgumentUtility.CheckNotNull("hierarchyLevelsubSort", hierarchyLevelsubSort);
+      ArgumentUtility.CheckNotNull("validationTypeFilter", validationTypeFilter);
 
       _hierarchyLevelsubSort = hierarchyLevelsubSort;
       _validationTypeFilter = validationTypeFilter;
@@ -52,12 +52,12 @@ namespace Remotion.Validation.Implementation
 
     public IEnumerable<IEnumerable<Type>> GetTypes (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      var inheritanceHierarchy = GetInheritanceHierarchy (type).ToArray();
+      var inheritanceHierarchy = GetInheritanceHierarchy(type).ToArray();
       foreach (var classType in inheritanceHierarchy)
       {
-        foreach (var interfaceGroup in GetInterfaces (classType))
+        foreach (var interfaceGroup in GetInterfaces(classType))
           yield return interfaceGroup;
 
         yield return new[] { classType };
@@ -66,7 +66,7 @@ namespace Remotion.Validation.Implementation
 
     private IEnumerable<Type> GetInheritanceHierarchy (Type type)
     {
-      return type.CreateSequence (t => t.BaseType).Where (_validationTypeFilter.IsValidatableType).Reverse();
+      return type.CreateSequence(t => t.BaseType).Where(_validationTypeFilter.IsValidatableType).Reverse();
     }
 
     private IEnumerable<IEnumerable<Type>> GetInterfaces (Type type)
@@ -75,7 +75,7 @@ namespace Remotion.Validation.Implementation
       if (baseType == null)
         return Enumerable.Empty<IEnumerable<Type>>();
 
-      var interfaces = type.GetInterfaces().Except (baseType.GetInterfaces()).Where (_validationTypeFilter.IsValidatableType).ToList();
+      var interfaces = type.GetInterfaces().Except(baseType.GetInterfaces()).Where(_validationTypeFilter.IsValidatableType).ToList();
       if (!interfaces.Any())
         return Enumerable.Empty<IEnumerable<Type>>();
 
@@ -83,7 +83,7 @@ namespace Remotion.Validation.Implementation
       foreach (var interfaceType in interfaces)
         dependencies[interfaceType] = interfaceType.GetInterfaces().ToList();
 
-      return interfaces.TopologySortDesc (t => dependencies[t], _hierarchyLevelsubSort);
+      return interfaces.TopologySortDesc(t => dependencies[t], _hierarchyLevelsubSort);
     }
   }
 }

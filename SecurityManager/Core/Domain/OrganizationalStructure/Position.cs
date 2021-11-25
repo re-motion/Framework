@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     internal static Position NewObject ()
     {
-      return NewObject<Position> ();
+      return NewObject<Position>();
     }
 
     public static IQueryable<Position> FindAll ()
@@ -60,7 +60,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     [EditorBrowsable (EditorBrowsableState.Never)]
     public static void Dummy_AssignRole ()
     {
-      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
+      throw new NotImplementedException("This method is only intended for framework support and should never be called.");
     }
 
     //[DemandMethodPermission (GeneralAccessTypes.Create)]
@@ -73,7 +73,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     [EditorBrowsable (EditorBrowsableState.Never)]
     public static void Search ()
     {
-      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
+      throw new NotImplementedException("This method is only intended for framework support and should never be called.");
     }
 
     protected Position ()
@@ -115,28 +115,28 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     protected override void OnDeleting (EventArgs args)
     {
-      base.OnDeleting (args);
+      base.OnDeleting(args);
 
       using (DefaultTransactionContext.ClientTransaction.EnterNonDiscardingScope())
       {
-        var aces = QueryFactory.CreateLinqQuery<AccessControlEntry> ().Where (ace => ace.SpecificPosition == this);
-        var roles = QueryFactory.CreateLinqQuery<Role>().Where (r => r.Position == this);
+        var aces = QueryFactory.CreateLinqQuery<AccessControlEntry>().Where(ace => ace.SpecificPosition == this);
+        var roles = QueryFactory.CreateLinqQuery<Role>().Where(r => r.Position == this);
 
-        _deleteHandler = new DomainObjectDeleteHandler (aces, roles, GroupTypes);
+        _deleteHandler = new DomainObjectDeleteHandler(aces, roles, GroupTypes);
       }
     }
 
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
       _deleteHandler.Delete();
     }
 
     protected override IDictionary<string, Enum> GetStates ()
     {
-      IDictionary<string, Enum> states = base.GetStates ();
-      states.Add ("Delegation", Delegation);
+      IDictionary<string, Enum> states = base.GetStates();
+      states.Add("Delegation", Delegation);
 
       return states;
     }

@@ -39,30 +39,30 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     [Test]
     public void GetProperty_NormallyReturnsNonNull ()
     {
-      ClassWithValueType<int> instance = ObjectFactory.Create<ClassWithValueType<int>> (ParamList.Empty);
+      ClassWithValueType<int> instance = ObjectFactory.Create<ClassWithValueType<int>>(ParamList.Empty);
       IBusinessObject instanceAsIBusinessObject = (IBusinessObject) instance;
 
-      Assert.That (instanceAsIBusinessObject.GetProperty ("Scalar"), Is.Not.Null);
-      Assert.That (instanceAsIBusinessObject.GetProperty ("Scalar"), Is.EqualTo (instance.Scalar));
+      Assert.That(instanceAsIBusinessObject.GetProperty("Scalar"), Is.Not.Null);
+      Assert.That(instanceAsIBusinessObject.GetProperty("Scalar"), Is.EqualTo(instance.Scalar));
     }
 
     [Test]
     public void GetProperty_ReturnsNull_WhenDefaultValueTrue ()
     {
-      ClassWithValueType<int> instance = ObjectFactory.Create<ClassWithValueType<int>> (ParamList.Empty);
+      ClassWithValueType<int> instance = ObjectFactory.Create<ClassWithValueType<int>>(ParamList.Empty);
       IBusinessObject instanceAsIBusinessObject = (IBusinessObject) instance;
 
-      Assert.That(instanceAsIBusinessObject.GetProperty ("Scalar"), Is.EqualTo(0));
+      Assert.That(instanceAsIBusinessObject.GetProperty("Scalar"), Is.EqualTo(0));
     }
 
     [Test]
     public void GetProperty_ReturnsNonNull_WhenDefaultValueTrueOnList ()
     {
-      ClassWithValueType<int> instance = ObjectFactory.Create<ClassWithValueType<int>> (ParamList.Empty);
+      ClassWithValueType<int> instance = ObjectFactory.Create<ClassWithValueType<int>>(ParamList.Empty);
       IBusinessObject instanceAsIBusinessObject = (IBusinessObject) instance;
 
-      Assert.That (instanceAsIBusinessObject.GetProperty ("List"), Is.Not.Null);
-      Assert.That (instanceAsIBusinessObject.GetProperty ("List"), Is.EqualTo (instance.List));
+      Assert.That(instanceAsIBusinessObject.GetProperty("List"), Is.Not.Null);
+      Assert.That(instanceAsIBusinessObject.GetProperty("List"), Is.EqualTo(instance.List));
     }
   }
 }

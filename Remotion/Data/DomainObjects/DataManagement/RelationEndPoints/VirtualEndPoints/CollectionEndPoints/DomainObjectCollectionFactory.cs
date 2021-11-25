@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   {
     private static readonly ConcurrentDictionary<Type, (bool CanAscribe, Type ItemType)> s_genericEnumerableTypeCache = new();
 
-    public static readonly DomainObjectCollectionFactory Instance = new DomainObjectCollectionFactory ();
+    public static readonly DomainObjectCollectionFactory Instance = new DomainObjectCollectionFactory();
 
     private DomainObjectCollectionFactory ()
     {
@@ -52,19 +52,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// a single parameter of type <see cref="IDomainObjectCollectionData"/>.</exception>
     public DomainObjectCollection CreateCollection (Type collectionType, IDomainObjectCollectionData dataStrategy)
     {
-      ArgumentUtility.CheckNotNull ("collectionType", collectionType);
-      ArgumentUtility.CheckNotNull ("dataStrategy", dataStrategy);
+      ArgumentUtility.CheckNotNull("collectionType", collectionType);
+      ArgumentUtility.CheckNotNull("dataStrategy", dataStrategy);
 
-      var ctor = collectionType.GetConstructor (
+      var ctor = collectionType.GetConstructor(
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
           null, 
           new[] { typeof (IDomainObjectCollectionData) }, 
           null);
       
       if (ctor == null)
-        throw CreateMissingConstructorException (collectionType);
+        throw CreateMissingConstructorException(collectionType);
 
-      return (DomainObjectCollection) ctor.Invoke (new[] { dataStrategy });
+      return (DomainObjectCollection) ctor.Invoke(new[] { dataStrategy });
     }
 
     /// <summary>
@@ -79,16 +79,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// <returns>A stand-alone instance of <paramref name="collectionType"/>.</returns>
     public DomainObjectCollection CreateCollection (Type collectionType, IEnumerable<DomainObject> content, Type requiredItemType)
     {
-      ArgumentUtility.CheckNotNull ("collectionType", collectionType);
-      ArgumentUtility.CheckNotNull ("content", content);
+      ArgumentUtility.CheckNotNull("collectionType", collectionType);
+      ArgumentUtility.CheckNotNull("content", content);
 
-      var eventRaiser = new IndirectDomainObjectCollectionEventRaiser ();
+      var eventRaiser = new IndirectDomainObjectCollectionEventRaiser();
       
-      var dataStore = new DomainObjectCollectionData ();
-      dataStore.AddRangeAndCheckItems (content, requiredItemType);
+      var dataStore = new DomainObjectCollectionData();
+      dataStore.AddRangeAndCheckItems(content, requiredItemType);
       
-      var dataStrategy = DomainObjectCollection.CreateDataStrategyForStandAloneCollection (dataStore, requiredItemType, eventRaiser);
-      var collection = CreateCollection (collectionType, dataStrategy);
+      var dataStrategy = DomainObjectCollection.CreateDataStrategyForStandAloneCollection(dataStore, requiredItemType, eventRaiser);
+      var collection = CreateCollection(collectionType, dataStrategy);
 
       eventRaiser.EventRaiser = collection;
 
@@ -110,11 +110,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// </remarks>
     public DomainObjectCollection CreateCollection (Type collectionType, IEnumerable<DomainObject> content)
     {
-      ArgumentUtility.CheckNotNull ("collectionType", collectionType);
-      ArgumentUtility.CheckNotNull ("content", content);
+      ArgumentUtility.CheckNotNull("collectionType", collectionType);
+      ArgumentUtility.CheckNotNull("content", content);
 
       var requiredItemType = GetRequiredItemType(collectionType);
-      return CreateCollection (collectionType, content, requiredItemType);
+      return CreateCollection(collectionType, content, requiredItemType);
     }
 
     /// <summary>
@@ -130,24 +130,24 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// </remarks>
     public DomainObjectCollection CreateReadOnlyCollection (Type collectionType, IEnumerable<DomainObject> content)
     {
-      ArgumentUtility.CheckNotNull ("collectionType", collectionType);
-      ArgumentUtility.CheckNotNull ("content", content);
+      ArgumentUtility.CheckNotNull("collectionType", collectionType);
+      ArgumentUtility.CheckNotNull("content", content);
 
-      var dataStrategy = new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData (content));
-      return CreateCollection (collectionType, dataStrategy);
+      var dataStrategy = new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData(content));
+      return CreateCollection(collectionType, dataStrategy);
     }
 
     private Type GetRequiredItemType (Type collectionType)
     {
-      return s_genericEnumerableTypeCache.GetOrAdd (
+      return s_genericEnumerableTypeCache.GetOrAdd(
                collectionType,
                static type =>
                {
-                 var canAscribeTo = type.CanAscribeTo (typeof (IEnumerable<>));
-                 return ValueTuple.Create (
+                 var canAscribeTo = type.CanAscribeTo(typeof (IEnumerable<>));
+                 return ValueTuple.Create(
                      canAscribeTo,
                      canAscribeTo
-                         ? type.GetAscribedGenericArguments (typeof (IEnumerable<>))[0]
+                         ? type.GetAscribedGenericArguments(typeof (IEnumerable<>))[0]
                          : null);
                })
              .ItemType;
@@ -155,7 +155,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     private MissingMethodException CreateMissingConstructorException (Type collectionType)
     {
-      var message = string.Format (
+      var message = string.Format(
           "Cannot create an instance of '{0}' because that type does not provide a constructor taking an IDomainObjectCollectionData object." + Environment.NewLine
           + "Example: " + Environment.NewLine
           + "public class {1} : ObjectList<...>" + Environment.NewLine
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
           + "}}",
           collectionType,
           collectionType.Name);
-      return new MissingMethodException (message);
+      return new MissingMethodException(message);
     }
 
   }

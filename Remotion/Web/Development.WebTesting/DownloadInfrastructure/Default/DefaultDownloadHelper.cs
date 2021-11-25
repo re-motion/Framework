@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
   /// </summary>
   public class DefaultDownloadHelper : DownloadHelperBase
   {
-    private static ILog Log { get; } = LogManager.GetLogger (typeof (DefaultDownloadHelper));
+    private static ILog Log { get; } = LogManager.GetLogger(typeof (DefaultDownloadHelper));
 
     [NotNull]
     private string DownloadDirectory { get; }
@@ -71,8 +71,8 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
         bool cleanUpDownloadFolderOnError)
         : base (downloadStartedTimeout, downloadUpdatedTimeout)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("downloadDirectory", downloadDirectory);
-      ArgumentUtility.CheckNotNullOrEmpty ("partialFileExtension", partialFileExtension);
+      ArgumentUtility.CheckNotNullOrEmpty("downloadDirectory", downloadDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty("partialFileExtension", partialFileExtension);
 
       DownloadDirectory = downloadDirectory;
       PartialFileExtension = partialFileExtension;
@@ -85,9 +85,9 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
         TimeSpan downloadStartedTimeout,
         TimeSpan downloadUpdatedTimeout)
     {
-      ArgumentUtility.CheckNotNull ("downloadedFileFinder", downloadedFileFinder);
+      ArgumentUtility.CheckNotNull("downloadedFileFinder", downloadedFileFinder);
 
-      EnsureDownloadDirectoryExists (DownloadDirectory);
+      EnsureDownloadDirectoryExists(DownloadDirectory);
 
       //Empty list, as our infrastructure should keep the download directory clean by moving downloaded files away, so we can assume the download directory is empty.
       //We need this assumption since files are downloaded without a prompt, making it impossible to get the directory state before the download starts.
@@ -97,7 +97,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
       try
       {
-        downloadedFile = downloadedFileFinder.WaitForDownloadCompleted (
+        downloadedFile = downloadedFileFinder.WaitForDownloadCompleted(
             downloadStartedTimeout,
             downloadUpdatedTimeout,
             filesInDownloadDirectoryBeforeDownload);
@@ -105,45 +105,45 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
       catch (DownloadResultNotFoundException ex)
       {
         if (CleanUpDownloadFolderOnError)
-          CleanUpUnmatchedDownloadedFiles (ex.GetUnmatchedFilesInDownloadDirectory().ToList());
+          CleanUpUnmatchedDownloadedFiles(ex.GetUnmatchedFilesInDownloadDirectory().ToList());
 
         throw;
       }
 
-      return MoveDownloadedFile (downloadedFile);
+      return MoveDownloadedFile(downloadedFile);
     }
 
     protected override DownloadedFileFinder CreateDownloadedFileFinderForExpectedFileName (string fileName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("fileName", fileName);
+      ArgumentUtility.CheckNotNullOrEmpty("fileName", fileName);
 
-      return new DownloadedFileFinder (
+      return new DownloadedFileFinder(
           DownloadDirectory,
           PartialFileExtension,
           DownloadStartedGracePeriod,
-          new DefaultNamedExpectedFileNameFinderStrategy (fileName));
+          new DefaultNamedExpectedFileNameFinderStrategy(fileName));
     }
 
     protected override DownloadedFileFinder CreateDownloadedFileFinderForUnknownFileName ()
     {
-      return new DownloadedFileFinder (
+      return new DownloadedFileFinder(
           DownloadDirectory,
           PartialFileExtension,
           DownloadStartedGracePeriod,
-          new DefaultUnknownFileNameFinderStrategy (PartialFileExtension));
+          new DefaultUnknownFileNameFinderStrategy(PartialFileExtension));
     }
 
     protected override void AdditionalCleanup ()
     {
-      if (Directory.Exists (DownloadDirectory))
+      if (Directory.Exists(DownloadDirectory))
       {
         try
         {
-          Directory.Delete (DownloadDirectory, true);
+          Directory.Delete(DownloadDirectory, true);
         }
         catch (IOException ex)
         {
-          Log.WarnFormat (
+          Log.WarnFormat(
               @"Could not delete '{0}'.
 {1}",
               DownloadDirectory,
@@ -154,27 +154,27 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     private void EnsureDownloadDirectoryExists (string downloadDirectory)
     {
-      if (!Directory.Exists (downloadDirectory))
-        Directory.CreateDirectory (downloadDirectory);
+      if (!Directory.Exists(downloadDirectory))
+        Directory.CreateDirectory(downloadDirectory);
     }
 
     private void CleanUpUnmatchedDownloadedFiles ([NotNull] IEnumerable<string> unmatchedFiles)
     {
-      ArgumentUtility.CheckNotNull ("unmatchedFiles", unmatchedFiles);
+      ArgumentUtility.CheckNotNull("unmatchedFiles", unmatchedFiles);
 
       foreach (var file in unmatchedFiles)
       {
-        var fullFilePath = Path.Combine (DownloadDirectory, file);
+        var fullFilePath = Path.Combine(DownloadDirectory, file);
 
         try
         {
-          WaitUntilTrueOrTimeout (() => !IsFileLocked (fullFilePath), TimeSpan.FromMinutes (5), TimeSpan.FromSeconds (1));
+          WaitUntilTrueOrTimeout(() => !IsFileLocked(fullFilePath), TimeSpan.FromMinutes(5), TimeSpan.FromSeconds(1));
 
-          File.Delete (fullFilePath);
+          File.Delete(fullFilePath);
         }
         catch (IOException ex)
         {
-          Log.WarnFormat (
+          Log.WarnFormat(
               @"Could not delete '{0}'.
 {1}",
               fullFilePath,
@@ -190,7 +190,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
         if (func.Invoke())
           return;
 
-        Thread.Sleep (interval);
+        Thread.Sleep(interval);
       }
     }
 
@@ -198,7 +198,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
     {
       try
       {
-        using (var stream = File.Open (filePath, FileMode.Open, FileAccess.Read, FileShare.None))
+        using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
         {
           stream.Close();
         }

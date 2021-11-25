@@ -31,8 +31,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     protected const string c_firstLineText = "This is my test text.";
     protected const string c_secondLineText = "with two lines now.";
     private const string c_cssClass = "SomeClass";
-    private readonly Unit _height = new Unit (17, UnitType.Point);
-    private readonly Unit _width = new Unit (123, UnitType.Point);
+    private readonly Unit _height = new Unit(17, UnitType.Point);
+    private readonly Unit _width = new Unit(123, UnitType.Point);
     protected Mock<T> TextValue { get; set; }
     
     protected Unit Height
@@ -55,16 +55,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
         else
           cssClass = TextValue.Object.CssClass;
       }
-      Html.AssertAttribute (span, "class", cssClass, HtmlHelper.AttributeValueCompareMode.Contains);
+      Html.AssertAttribute(span, "class", cssClass, HtmlHelper.AttributeValueCompareMode.Contains);
     }
 
     protected virtual void SetStyle (bool withStyle, bool withCssClass, bool inStyleProperty, bool autoPostBack)
     {
       StateBag stateBag = new StateBag();
-      TextValue.Setup (mock => mock.Attributes).Returns (new AttributeCollection (stateBag));
-      TextValue.Setup (mock => mock.Style).Returns (TextValue.Object.Attributes.CssStyle);
-      TextValue.Setup (mock => mock.TextBoxStyle).Returns (new TextBoxStyle());
-      TextValue.Setup (mock => mock.ControlStyle).Returns (new Style (stateBag));
+      TextValue.Setup(mock => mock.Attributes).Returns(new AttributeCollection(stateBag));
+      TextValue.Setup(mock => mock.Style).Returns(TextValue.Object.Attributes.CssStyle);
+      TextValue.Setup(mock => mock.TextBoxStyle).Returns(new TextBoxStyle());
+      TextValue.Setup(mock => mock.ControlStyle).Returns(new Style(stateBag));
 
       TextValue.Object.TextBoxStyle.AutoPostBack = autoPostBack;
 
@@ -89,8 +89,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
         }
         else
         {
-          TextValue.Setup (mock => mock.Height).Returns (Height);
-          TextValue.Setup (mock => mock.Width).Returns (Width);
+          TextValue.Setup(mock => mock.Height).Returns(Height);
+          TextValue.Setup(mock => mock.Width).Returns(Width);
           TextValue.Object.ControlStyle.Height = TextValue.Object.Height;
           TextValue.Object.ControlStyle.Width = TextValue.Object.Width;
         }

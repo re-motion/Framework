@@ -32,9 +32,9 @@ namespace Remotion.Extensions.UnitTests.Utilities
     [SetUp]
     public void SetUp ()
     {
-      _innerDisposableMock = new Mock<IDisposable> (MockBehavior.Strict);
-      _actionMock = new Mock<IAction> (MockBehavior.Strict);
-      _decorator = new PostActionDisposableDecorator (_innerDisposableMock.Object, _actionMock.Object.Invoke);
+      _innerDisposableMock = new Mock<IDisposable>(MockBehavior.Strict);
+      _actionMock = new Mock<IAction>(MockBehavior.Strict);
+      _decorator = new PostActionDisposableDecorator(_innerDisposableMock.Object, _actionMock.Object.Invoke);
     }
 
     [Test]
@@ -42,12 +42,12 @@ namespace Remotion.Extensions.UnitTests.Utilities
     {
       var sequence = 0;
       _innerDisposableMock
-          .Setup (mock => mock.Dispose())
-          .Callback (() => Assert.That (sequence++, Is.EqualTo (0), "Inner Dispose must be called first."))
+          .Setup(mock => mock.Dispose())
+          .Callback(() => Assert.That(sequence++, Is.EqualTo(0), "Inner Dispose must be called first."))
           .Verifiable();
       _actionMock
-          .Setup (mock => mock.Invoke ())
-          .Callback (() => Assert.That (sequence++, Is.EqualTo (1), "Action must be called second."))
+          .Setup(mock => mock.Invoke())
+          .Callback(() => Assert.That(sequence++, Is.EqualTo(1), "Action must be called second."))
           .Verifiable();
 
       _decorator.Dispose();
@@ -60,17 +60,17 @@ namespace Remotion.Extensions.UnitTests.Utilities
     public void Dispose_Twice ()
     {
       _innerDisposableMock
-          .Setup (mock => mock.Dispose ())
+          .Setup(mock => mock.Dispose())
           .Verifiable();
       _actionMock
-          .Setup (mock => mock.Invoke ())
+          .Setup(mock => mock.Invoke())
           .Verifiable();
 
-      _decorator.Dispose ();
-      _decorator.Dispose ();
+      _decorator.Dispose();
+      _decorator.Dispose();
 
-      _innerDisposableMock.Verify (mock => mock.Dispose (), Times.Exactly (2));
-      _actionMock.Verify (mock => mock.Invoke (), Times.Once());
+      _innerDisposableMock.Verify(mock => mock.Dispose(), Times.Exactly(2));
+      _actionMock.Verify(mock => mock.Invoke(), Times.Once());
     }
 
     [Test]
@@ -79,12 +79,12 @@ namespace Remotion.Extensions.UnitTests.Utilities
       var exception = new Exception();
 
       _innerDisposableMock
-          .Setup (mock => mock.Dispose ())
-          .Throws (exception)
+          .Setup(mock => mock.Dispose())
+          .Throws(exception)
           .Verifiable();
-      _actionMock.Setup (mock => mock.Invoke ()).Verifiable();
+      _actionMock.Setup(mock => mock.Invoke()).Verifiable();
 
-      Assert.That (() =>_decorator.Dispose (), Throws.Exception.SameAs (exception));
+      Assert.That(() =>_decorator.Dispose(), Throws.Exception.SameAs(exception));
 
       _innerDisposableMock.Verify();
       _actionMock.Verify();
@@ -93,19 +93,19 @@ namespace Remotion.Extensions.UnitTests.Utilities
     [Test]
     public void Dispose_PostAction_DoesNotSwallowOriginalException ()
     {
-      var exception = new Exception ();
-      var exception2 = new Exception ();
+      var exception = new Exception();
+      var exception2 = new Exception();
 
       _innerDisposableMock
-          .Setup (mock => mock.Dispose ())
-          .Throws (exception)
+          .Setup(mock => mock.Dispose())
+          .Throws(exception)
           .Verifiable();
       _actionMock
-          .Setup (mock => mock.Invoke ())
-          .Throws (exception2)
+          .Setup(mock => mock.Invoke())
+          .Throws(exception2)
           .Verifiable();
 
-      Assert.That (() => _decorator.Dispose (), Throws.Exception.SameAs (exception));
+      Assert.That(() => _decorator.Dispose(), Throws.Exception.SameAs(exception));
 
       _innerDisposableMock.Verify();
       _actionMock.Verify();
@@ -114,15 +114,15 @@ namespace Remotion.Extensions.UnitTests.Utilities
     [Test]
     public void Dispose_PostAction_CanThrowExceptions ()
     {
-      var exception = new Exception ();
+      var exception = new Exception();
 
-      _innerDisposableMock.Setup (mock => mock.Dispose ()).Verifiable();
+      _innerDisposableMock.Setup(mock => mock.Dispose()).Verifiable();
       _actionMock
-          .Setup (mock => mock.Invoke ())
-          .Throws (exception)
+          .Setup(mock => mock.Invoke())
+          .Throws(exception)
           .Verifiable();
 
-      Assert.That (() => _decorator.Dispose (), Throws.Exception.SameAs (exception));
+      Assert.That(() => _decorator.Dispose(), Throws.Exception.SameAs(exception));
 
       _innerDisposableMock.Verify();
       _actionMock.Verify();

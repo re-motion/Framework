@@ -32,17 +32,17 @@ namespace OBWTest
     protected override void OnPreInit (EventArgs e)
     {
       MasterPageFile = (Global.PreferQuirksModeRendering) ? "~/QuirksMode.Master" : "~/StandardMode.Master";
-      base.OnPreInit (e);
+      base.OnPreInit(e);
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
-      Guid personID = new Guid (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-      Person person = Person.GetObject (personID);
+      Guid personID = new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+      Person person = Person.GetObject(personID);
       CurrentObject.BusinessObject = (IBusinessObject) person;
-      CurrentObject.LoadValues (IsPostBack);
+      CurrentObject.LoadValues(IsPostBack);
     }
   }
 }

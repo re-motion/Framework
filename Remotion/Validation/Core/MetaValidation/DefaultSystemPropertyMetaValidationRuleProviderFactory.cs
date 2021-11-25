@@ -25,9 +25,9 @@ namespace Remotion.Validation.MetaValidation
   {
     public ISystemPropertyMetaValidationRuleProvider Create (IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
 
-      return new DefaultSystemPropertyMetaValidationRuleProvider (propertyInformation);
+      return new DefaultSystemPropertyMetaValidationRuleProvider(propertyInformation);
     }
   }
 }

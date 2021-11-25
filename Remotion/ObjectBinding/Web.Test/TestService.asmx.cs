@@ -35,7 +35,7 @@ namespace OBWTest
       if (stringValue == "throw")
         throw new InvalidOperationException();
 
-      Thread.Sleep (3000);
+      Thread.Sleep(3000);
       return stringValue + " " + intValue * 2;
     }
   }

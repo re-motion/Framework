@@ -47,11 +47,11 @@ namespace Remotion.Mixins
         where TTarget : class
         where TNext: class
     {
-      ArgumentUtility.CheckNotNull ("mixin", mixin);
-      ArgumentUtility.CheckNotNull ("targetMock", targetMock);
-      ArgumentUtility.CheckNotNull ("nextMock", nextMock);
+      ArgumentUtility.CheckNotNull("mixin", mixin);
+      ArgumentUtility.CheckNotNull("targetMock", targetMock);
+      ArgumentUtility.CheckNotNull("nextMock", nextMock);
 
-      ((IInitializableMixin)mixin).Initialize (targetMock, nextMock, false);
+      ((IInitializableMixin)mixin).Initialize(targetMock, nextMock, false);
     }
 
     /// <summary>
@@ -72,10 +72,10 @@ namespace Remotion.Mixins
     public static void MockMixinTarget<TTarget> (Mixin<TTarget> mixin, TTarget targetMock)
         where TTarget : class
     {
-      ArgumentUtility.CheckNotNull ("mixin", mixin);
-      ArgumentUtility.CheckNotNull ("targetMock", targetMock);
+      ArgumentUtility.CheckNotNull("mixin", mixin);
+      ArgumentUtility.CheckNotNull("targetMock", targetMock);
 
-      ((IInitializableMixin) mixin).Initialize (targetMock, null, false);
+      ((IInitializableMixin) mixin).Initialize(targetMock, null, false);
     }
 
     /// <summary>
@@ -103,12 +103,12 @@ namespace Remotion.Mixins
         where TNext : class
         where TMixin : Mixin<TTarget, TNext>
     {
-      ArgumentUtility.CheckNotNull ("targetMock", targetMock);
-      ArgumentUtility.CheckNotNull ("nextMock", nextMock);
-      ArgumentUtility.CheckNotNull ("args", args);
+      ArgumentUtility.CheckNotNull("targetMock", targetMock);
+      ArgumentUtility.CheckNotNull("nextMock", nextMock);
+      ArgumentUtility.CheckNotNull("args", args);
 
-      var mixin = ObjectFactory.Create<TMixin> (true, ParamList.CreateDynamic (args));
-      MockMixinTarget (mixin, targetMock, nextMock);
+      var mixin = ObjectFactory.Create<TMixin>(true, ParamList.CreateDynamic(args));
+      MockMixinTarget(mixin, targetMock, nextMock);
       return mixin;
     }
 
@@ -134,11 +134,11 @@ namespace Remotion.Mixins
       where TTarget : class
       where TMixin : Mixin<TTarget>
     {
-      ArgumentUtility.CheckNotNull ("targetMock", targetMock);
-      ArgumentUtility.CheckNotNull ("args", args);
+      ArgumentUtility.CheckNotNull("targetMock", targetMock);
+      ArgumentUtility.CheckNotNull("args", args);
 
-      var mixin = ObjectFactory.Create<TMixin> (true, ParamList.CreateDynamic (args));
-      MockMixinTarget (mixin, targetMock);
+      var mixin = ObjectFactory.Create<TMixin>(true, ParamList.CreateDynamic(args));
+      MockMixinTarget(mixin, targetMock);
       return mixin;
     }
 
@@ -152,8 +152,8 @@ namespace Remotion.Mixins
     public static void MockMixinTargetAfterDeserialization<TTarget> (Mixin<TTarget> mixin, TTarget targetMock) 
         where TTarget : class
     {
-      ArgumentUtility.CheckNotNull ("mixin", mixin);
-      ((IInitializableMixin) mixin).Initialize (targetMock, null, true);
+      ArgumentUtility.CheckNotNull("mixin", mixin);
+      ((IInitializableMixin) mixin).Initialize(targetMock, null, true);
     }
 
     /// <summary>
@@ -169,8 +169,8 @@ namespace Remotion.Mixins
         where TTarget : class
         where TNext : class
     {
-      ArgumentUtility.CheckNotNull ("mixin", mixin);
-      ((IInitializableMixin) mixin).Initialize (targetMock, nextMock, true);
+      ArgumentUtility.CheckNotNull("mixin", mixin);
+      ((IInitializableMixin) mixin).Initialize(targetMock, nextMock, true);
     }
   }
 }

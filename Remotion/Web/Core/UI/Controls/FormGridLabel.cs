@@ -66,7 +66,7 @@ public class FormGridLabel: Label, ISmartControl
 
   HelpInfo? ISmartControl.HelpInfo
   {
-    get { return (_helpUrl != null) ? new HelpInfo (_helpUrl) : null; }
+    get { return (_helpUrl != null) ? new HelpInfo(_helpUrl) : null; }
   }
 
   IEnumerable<BaseValidator> ISmartControl.CreateValidators ()
@@ -95,14 +95,14 @@ public class FormGridLabel: Label, ISmartControl
 
   IPage? IControl.Page
   {
-    get { return PageWrapper.CastOrCreate (base.Page); }
+    get { return PageWrapper.CastOrCreate(base.Page); }
   }
   
   protected override HtmlTextWriterTag TagKey
   {
     get
     {
-      if (string.IsNullOrEmpty (AssociatedControlID))
+      if (string.IsNullOrEmpty(AssociatedControlID))
         return HtmlTextWriterTag.Span;
       return HtmlTextWriterTag.Label;
     }
@@ -110,19 +110,19 @@ public class FormGridLabel: Label, ISmartControl
 
   protected override void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    var resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
-    LoadResources (resourceManager);
+    var resourceManager = ResourceManagerUtility.GetResourceManager(this, true);
+    LoadResources(resourceManager);
   }
 
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
 
-    string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-    if (!string.IsNullOrEmpty (key))
-      Text = resourceManager.GetString (key);
+    string? key = ResourceManagerUtility.GetGlobalResourceKey(Text);
+    if (!string.IsNullOrEmpty(key))
+      Text = resourceManager.GetString(key);
   }
 
   void ISmartControl.RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -134,7 +134,7 @@ public class FormGridLabel: Label, ISmartControl
     string associatedControlID = AssociatedControlID;
     if (associatedControlID.Length != 0)
     {
-      Control? control = this.FindControl (associatedControlID);
+      Control? control = this.FindControl(associatedControlID);
       if (control == null)
         throw new HttpException(string.Format("Unable to find the control with id '{0}' that is associated with the Label '{1}'.", associatedControlID, ID));
       writer.AddAttribute("for", control.ClientID);

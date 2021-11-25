@@ -39,12 +39,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public virtual void LoadValues (bool interim)
     {
-      DataSource.LoadValues (interim);
+      DataSource.LoadValues(interim);
     }
 
     public virtual bool SaveValues (bool interim)
     {
-      return DataSource.SaveValues (interim);
+      return DataSource.SaveValues(interim);
     }
 
     public virtual void CancelEdit ()
@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     IPage? IControl.Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
   }
 }

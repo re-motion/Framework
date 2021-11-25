@@ -32,27 +32,27 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     public StorageGroupElement ()
     {
-      _storageGroup = new DoubleCheckedLockingContainer<StorageGroupAttribute> (
-          delegate { return (StorageGroupAttribute) Activator.CreateInstance (StorageGroupType); });
-      _storageGroupTypeProperty = TypeElement<StorageGroupAttribute>.CreateTypeProperty (null);
+      _storageGroup = new DoubleCheckedLockingContainer<StorageGroupAttribute>(
+          delegate { return (StorageGroupAttribute) Activator.CreateInstance(StorageGroupType); });
+      _storageGroupTypeProperty = TypeElement<StorageGroupAttribute>.CreateTypeProperty(null);
 
-      _storageProviderNameProperty = new ConfigurationProperty (
+      _storageProviderNameProperty = new ConfigurationProperty(
           "provider",
           typeof (string),
           null,
           ConfigurationPropertyOptions.IsRequired);
 
 
-      _properties.Add (_storageGroupTypeProperty);
-      _properties.Add (_storageProviderNameProperty);
+      _properties.Add(_storageGroupTypeProperty);
+      _properties.Add(_storageProviderNameProperty);
     }
 
     //TODO: test
     public StorageGroupElement (StorageGroupAttribute storageGroup, string storageProviderName)
         : this()
     {
-      ArgumentUtility.CheckNotNull ("storageGroup", storageGroup);
-      ArgumentUtility.CheckNotNullOrEmpty ("storageProviderName", storageProviderName);
+      ArgumentUtility.CheckNotNull("storageGroup", storageGroup);
+      ArgumentUtility.CheckNotNullOrEmpty("storageProviderName", storageProviderName);
 
       StorageGroup = storageGroup;
       StorageGroupType = storageGroup.GetType();
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     string INamedConfigurationElement.Name
     {
-      get { return TypeUtility.GetPartialAssemblyQualifiedName (StorageGroupType); }
+      get { return TypeUtility.GetPartialAssemblyQualifiedName(StorageGroupType); }
     }
   }
 }

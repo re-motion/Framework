@@ -36,16 +36,16 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       var result = DataStoreFactory.Create<string, int>();
 
-      Assert.That (result, Is.TypeOf (typeof (SimpleDataStore<string, int>)));
+      Assert.That(result, Is.TypeOf(typeof (SimpleDataStore<string, int>)));
     }
 
     [Test]
     public void Create_IEqualityComparerOverload ()
     {
-      var result = DataStoreFactory.Create<string, int> (_comparer);
+      var result = DataStoreFactory.Create<string, int>(_comparer);
 
-      Assert.That (result, Is.TypeOf (typeof (SimpleDataStore<string, int>)));
-      Assert.That (((SimpleDataStore<string, int>) result).Comparer, Is.SameAs (_comparer));
+      Assert.That(result, Is.TypeOf(typeof (SimpleDataStore<string, int>)));
+      Assert.That(((SimpleDataStore<string, int>) result).Comparer, Is.SameAs(_comparer));
     }
 
     [Test]
@@ -53,20 +53,20 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       var result = DataStoreFactory.CreateWithSynchronization<string, int>();
 
-      Assert.That (result, Is.TypeOf (typeof (ConcurrentDataStore<string, int>)));
+      Assert.That(result, Is.TypeOf(typeof (ConcurrentDataStore<string, int>)));
     }
 
     [Test]
     public void CreateWithSynchronization_IEqualityComparerOverload ()
     {
-      var result = DataStoreFactory.CreateWithSynchronization<string, int> (_comparer);
+      var result = DataStoreFactory.CreateWithSynchronization<string, int>(_comparer);
 
-      Assert.That (result, Is.TypeOf (typeof (ConcurrentDataStore<string, int>)));
+      Assert.That(result, Is.TypeOf(typeof (ConcurrentDataStore<string, int>)));
 
-      result.GetOrCreateValue ("a", key => 1);
+      result.GetOrCreateValue("a", key => 1);
 
-      Assert.That (result.GetOrCreateValue ("a", delegate { throw new InvalidOperationException(); }), Is.EqualTo (1));
-      Assert.That (result.GetOrCreateValue ("A", delegate { throw new InvalidOperationException(); }), Is.EqualTo (1));
+      Assert.That(result.GetOrCreateValue("a", delegate { throw new InvalidOperationException(); }), Is.EqualTo(1));
+      Assert.That(result.GetOrCreateValue("A", delegate { throw new InvalidOperationException(); }), Is.EqualTo(1));
     }
 
 #pragma warning disable 618
@@ -75,20 +75,20 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       var result = DataStoreFactory.CreateWithLocking<string, int>();
 
-      Assert.That (result, Is.TypeOf (typeof (LockingDataStoreDecorator<string, int>)));
-      var innerStore = PrivateInvoke.GetNonPublicField (result, "_innerStore");
-      Assert.That (innerStore, Is.TypeOf (typeof (SimpleDataStore<string, int>)));
+      Assert.That(result, Is.TypeOf(typeof (LockingDataStoreDecorator<string, int>)));
+      var innerStore = PrivateInvoke.GetNonPublicField(result, "_innerStore");
+      Assert.That(innerStore, Is.TypeOf(typeof (SimpleDataStore<string, int>)));
     }
 
     [Test]
     public void CreateWithLocking_IEqualityComparerOverload ()
     {
-      var result = DataStoreFactory.CreateWithLocking<string, int> (_comparer);
+      var result = DataStoreFactory.CreateWithLocking<string, int>(_comparer);
 
-      Assert.That (result, Is.TypeOf (typeof (LockingDataStoreDecorator<string, int>)));
-      var innerStore = PrivateInvoke.GetNonPublicField (result, "_innerStore");
-      Assert.That (innerStore, Is.TypeOf (typeof (SimpleDataStore<string, int>)));
-      Assert.That (((SimpleDataStore<string, int>) innerStore).Comparer, Is.SameAs (_comparer));
+      Assert.That(result, Is.TypeOf(typeof (LockingDataStoreDecorator<string, int>)));
+      var innerStore = PrivateInvoke.GetNonPublicField(result, "_innerStore");
+      Assert.That(innerStore, Is.TypeOf(typeof (SimpleDataStore<string, int>)));
+      Assert.That(((SimpleDataStore<string, int>) innerStore).Comparer, Is.SameAs(_comparer));
     }
 
     [Test]
@@ -96,24 +96,24 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       var result = DataStoreFactory.CreateWithLazyLocking<string, object>();
 
-      Assert.That (result, Is.TypeOf (typeof (LazyLockingDataStoreAdapter<string, object>)));
-      var innerStore = PrivateInvoke.GetNonPublicField (result, "_innerDataStore");
-      Assert.That (innerStore, Is.TypeOf (typeof (LockingDataStoreDecorator<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
-      var innerDecoratorStore = PrivateInvoke.GetNonPublicField (innerStore, "_innerStore");
-      Assert.That (innerDecoratorStore, Is.TypeOf (typeof (SimpleDataStore<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
+      Assert.That(result, Is.TypeOf(typeof (LazyLockingDataStoreAdapter<string, object>)));
+      var innerStore = PrivateInvoke.GetNonPublicField(result, "_innerDataStore");
+      Assert.That(innerStore, Is.TypeOf(typeof (LockingDataStoreDecorator<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
+      var innerDecoratorStore = PrivateInvoke.GetNonPublicField(innerStore, "_innerStore");
+      Assert.That(innerDecoratorStore, Is.TypeOf(typeof (SimpleDataStore<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
     }
 
     [Test]
     public void CreateWithLazyLocking_IEqualityComparerOverload ()
     {
-      var result = DataStoreFactory.CreateWithLazyLocking<string, object> (_comparer);
+      var result = DataStoreFactory.CreateWithLazyLocking<string, object>(_comparer);
 
-      Assert.That (result, Is.TypeOf (typeof (LazyLockingDataStoreAdapter<string, object>)));
-      var innerStore = PrivateInvoke.GetNonPublicField (result, "_innerDataStore");
-      Assert.That (innerStore, Is.TypeOf (typeof (LockingDataStoreDecorator<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
-      var innerDecoratorStore = PrivateInvoke.GetNonPublicField (innerStore, "_innerStore");
-      Assert.That (innerDecoratorStore, Is.TypeOf (typeof (SimpleDataStore<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
-      Assert.That (((SimpleDataStore<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>) innerDecoratorStore).Comparer, Is.SameAs (_comparer));
+      Assert.That(result, Is.TypeOf(typeof (LazyLockingDataStoreAdapter<string, object>)));
+      var innerStore = PrivateInvoke.GetNonPublicField(result, "_innerDataStore");
+      Assert.That(innerStore, Is.TypeOf(typeof (LockingDataStoreDecorator<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
+      var innerDecoratorStore = PrivateInvoke.GetNonPublicField(innerStore, "_innerStore");
+      Assert.That(innerDecoratorStore, Is.TypeOf(typeof (SimpleDataStore<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
+      Assert.That(((SimpleDataStore<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>) innerDecoratorStore).Comparer, Is.SameAs(_comparer));
     }
 #pragma warning restore 618
   }

@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   {
     public static Company NewObject ()
     {
-      return DomainObject.NewObject<Company> ();
+      return DomainObject.NewObject<Company>();
     }
 
     protected Company ()

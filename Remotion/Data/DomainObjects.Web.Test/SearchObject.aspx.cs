@@ -49,7 +49,7 @@ public class SearchObjectPage : WxePage
     ResultList.ValueAsList = MyFunction.Result;
 
     CurrentSearchObject.BusinessObject = (IBusinessObject) MyFunction.SearchObject;
-    CurrentSearchObject.LoadValues (IsPostBack);
+    CurrentSearchObject.LoadValues(IsPostBack);
 	}
 
 	#region Web Form Designer generated code
@@ -69,7 +69,7 @@ public class SearchObjectPage : WxePage
 	private void InitializeComponent ()
 	{    
     this.SearchButton.Click += new System.EventHandler(this.SearchButton_Click);
-    this.ResultList.EditableRowChangesSaved += new Remotion.ObjectBinding.Web.UI.Controls.BocListItemEventHandler (ResultList_EditableRowChangesSaved);
+    this.ResultList.EditableRowChangesSaved += new Remotion.ObjectBinding.Web.UI.Controls.BocListItemEventHandler(ResultList_EditableRowChangesSaved);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
@@ -77,19 +77,19 @@ public class SearchObjectPage : WxePage
 
   private void SearchButton_Click (object sender, System.EventArgs e)
   {
-    if (SearchFormGridManager.Validate ())
+    if (SearchFormGridManager.Validate())
     {
-      CurrentSearchObject.SaveValues (false);
+      CurrentSearchObject.SaveValues(false);
       
-      MyFunction.Requery ();
+      MyFunction.Requery();
       ResultList.ValueAsList = MyFunction.Result;
-      ResultList.LoadValue (false);
+      ResultList.LoadValue(false);
     }
   }
 
   private void ResultList_EditableRowChangesSaved (object sender, Remotion.ObjectBinding.Web.UI.Controls.BocListItemEventArgs e)
   {
-    ClientTransactionScope.CurrentTransaction.Commit ();
+    ClientTransactionScope.CurrentTransaction.Commit();
   }
 }
 }

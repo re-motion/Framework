@@ -27,8 +27,8 @@ namespace Remotion.UnitTests.Context
     public void Instance_AutoInitialization ()
     {
       ISafeContextStorageProvider instance = SafeContext.Instance;
-      Assert.That (instance, Is.Not.Null);
-      Assert.That (SafeContext.Instance, Is.SameAs (instance));
+      Assert.That(instance, Is.Not.Null);
+      Assert.That(SafeContext.Instance, Is.SameAs(instance));
     }
   }
 }

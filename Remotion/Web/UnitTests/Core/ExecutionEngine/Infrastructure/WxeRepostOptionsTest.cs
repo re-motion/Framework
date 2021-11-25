@@ -29,74 +29,74 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     public void SuppressRepost_UsesEventTargetTrue ()
     {
       var sender = new Control();
-      var options = WxeRepostOptions.SuppressRepost (sender, true);
+      var options = WxeRepostOptions.SuppressRepost(sender, true);
 
-      Assert.That (options.Sender, Is.SameAs (sender));
-      Assert.That (options.SuppressesRepost, Is.True);
-      Assert.That (options.UsesEventTarget, Is.True);
+      Assert.That(options.Sender, Is.SameAs(sender));
+      Assert.That(options.SuppressesRepost, Is.True);
+      Assert.That(options.UsesEventTarget, Is.True);
     }
 
     [Test]
     public void SuppressRepost_SenderImplementsIPostBackEventHandler ()
     {
       var sender = new Mock<Control>();
-      var options = WxeRepostOptions.SuppressRepost ((Control) sender.As<IPostBackEventHandler>().Object, false);
+      var options = WxeRepostOptions.SuppressRepost((Control) sender.As<IPostBackEventHandler>().Object, false);
 
-      Assert.That (options.Sender, Is.SameAs (sender.Object));
-      Assert.That (options.SuppressesRepost, Is.True);
-      Assert.That (options.UsesEventTarget, Is.False);
+      Assert.That(options.Sender, Is.SameAs(sender.Object));
+      Assert.That(options.SuppressesRepost, Is.True);
+      Assert.That(options.UsesEventTarget, Is.False);
     }
 
     [Test]
     public void SuppressRepost_SenderImplementsIPostBackDataHandler ()
     {
       var sender = new Mock<Control>();
-      var options = WxeRepostOptions.SuppressRepost ((Control) sender.As<IPostBackDataHandler>().Object, false);
+      var options = WxeRepostOptions.SuppressRepost((Control) sender.As<IPostBackDataHandler>().Object, false);
 
-      Assert.That (options.Sender, Is.SameAs (sender.Object));
-      Assert.That (options.SuppressesRepost, Is.True);
-      Assert.That (options.UsesEventTarget, Is.False);
+      Assert.That(options.Sender, Is.SameAs(sender.Object));
+      Assert.That(options.SuppressesRepost, Is.True);
+      Assert.That(options.UsesEventTarget, Is.False);
     }
 
     [Test]
     public void SuppressRepost_SenderNotIPostBackDataHandler_And_SenderNotIPostBackDataHandler_ThrowsArgumentException ()
     {
-      Assert.That (
-          () => WxeRepostOptions.SuppressRepost (new Control(), false),
+      Assert.That(
+          () => WxeRepostOptions.SuppressRepost(new Control(), false),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The 'sender' must implement either IPostBackEventHandler or IPostBackDataHandler. Provide the control that raised the post back event."));
     }
 
     [Test]
     public void SuppressRepost_NoSender_ThrowsArgumentNullException ()
     {
-      Assert.That (
-          () => WxeRepostOptions.SuppressRepost (null, false),
+      Assert.That(
+          () => WxeRepostOptions.SuppressRepost(null, false),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.Message.Contains ("sender"));
+              .With.Message.Contains("sender"));
       // ReSharper restore AssignNullToNotNullAttribute
     }
 
     [Test]
     public void DoRepost_NoSender ()
     {
-      var options = WxeRepostOptions.DoRepost (null);
+      var options = WxeRepostOptions.DoRepost(null);
 
-      Assert.That (options.Sender, Is.Null);
-      Assert.That (options.SuppressesRepost, Is.False);
-      Assert.That (options.UsesEventTarget, Is.False);
+      Assert.That(options.Sender, Is.Null);
+      Assert.That(options.SuppressesRepost, Is.False);
+      Assert.That(options.UsesEventTarget, Is.False);
     }
 
     [Test]
     public void DoRepost_HasSender ()
     {
       var sender = new Control();
-      var options = WxeRepostOptions.DoRepost (sender);
+      var options = WxeRepostOptions.DoRepost(sender);
 
-      Assert.That (options.Sender, Is.SameAs (sender));
-      Assert.That (options.SuppressesRepost, Is.False);
-      Assert.That (options.UsesEventTarget, Is.False);
+      Assert.That(options.Sender, Is.SameAs(sender));
+      Assert.That(options.SuppressesRepost, Is.False);
+      Assert.That(options.UsesEventTarget, Is.False);
     }
   }
 }

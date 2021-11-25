@@ -48,7 +48,7 @@ namespace Remotion.Utilities
     [AssertionMethod]
     public static void DebugAssert ([AssertionCondition (AssertionConditionType.IS_TRUE)] bool assertion, string message)
     {
-      IsTrue (assertion, message);
+      IsTrue(assertion, message);
     }
 
     [Conditional ("DEBUG")]
@@ -56,21 +56,21 @@ namespace Remotion.Utilities
     [StringFormatMethod("message")]
     public static void DebugAssert ([AssertionCondition (AssertionConditionType.IS_TRUE)] bool assertion, string message, params object[] arguments)
     {
-      IsTrue (assertion, message, arguments);
+      IsTrue(assertion, message, arguments);
     }
 
     [Conditional ("DEBUG")]
     [AssertionMethod]
     public static void DebugAssert ([AssertionCondition (AssertionConditionType.IS_TRUE)] bool assertion)
     {
-      IsTrue (assertion);
+      IsTrue(assertion);
     }
 
     [Conditional ("TRACE")]
     [AssertionMethod]
     public static void TraceAssert ([AssertionCondition (AssertionConditionType.IS_TRUE)] bool assertion, string message)
     {
-      IsTrue (assertion, message);
+      IsTrue(assertion, message);
     }
 
     [Conditional ("TRACE")]
@@ -78,20 +78,20 @@ namespace Remotion.Utilities
     [StringFormatMethod ("message")]
     public static void TraceAssert ([AssertionCondition (AssertionConditionType.IS_TRUE)] bool assertion, string message, params object[] arguments)
     {
-      IsTrue (assertion, message, arguments);
+      IsTrue(assertion, message, arguments);
     }
 
     [Conditional ("TRACE")]
     [AssertionMethod]
     public static void TraceAssert ([AssertionCondition (AssertionConditionType.IS_TRUE)] bool assertion)
     {
-      IsTrue (assertion);
+      IsTrue(assertion);
     }
 
     [AssertionMethod]
     public static void IsTrue ([AssertionCondition (AssertionConditionType.IS_TRUE)] bool assertion, string message)
     {
-      IsTrue (assertion, message, s_emptyArguments);
+      IsTrue(assertion, message, s_emptyArguments);
     }
 
     [AssertionMethod]
@@ -99,25 +99,25 @@ namespace Remotion.Utilities
     public static void IsTrue ([AssertionCondition (AssertionConditionType.IS_TRUE)] bool assertion, string message, params object[] arguments)
     {
       if (!assertion)
-        throw new InvalidOperationException (string.Format (message, arguments));
+        throw new InvalidOperationException(string.Format(message, arguments));
     }
 
     [AssertionMethod]
     public static void IsTrue ([AssertionCondition (AssertionConditionType.IS_TRUE)] bool assertion)
     {
-      IsTrue (assertion, c_msgIsFalse);
+      IsTrue(assertion, c_msgIsFalse);
     }
 
     [AssertionMethod]
     public static void IsFalse ([AssertionCondition (AssertionConditionType.IS_FALSE)] bool expression, string message)
     {
-      IsFalse (expression, message, s_emptyArguments);
+      IsFalse(expression, message, s_emptyArguments);
     }
 
     [AssertionMethod]
     public static void IsFalse ([AssertionCondition (AssertionConditionType.IS_FALSE)] bool expression)
     {
-      IsFalse (expression, c_msgIsTrue);
+      IsFalse(expression, c_msgIsTrue);
     }
 
     [AssertionMethod]
@@ -125,19 +125,19 @@ namespace Remotion.Utilities
     public static void IsFalse ([AssertionCondition (AssertionConditionType.IS_FALSE)] bool expression, string message, params object[] arguments)
     {
       if (expression)
-        throw new InvalidOperationException (string.Format (message, arguments));
+        throw new InvalidOperationException(string.Format(message, arguments));
     }
 
     [AssertionMethod]
     public static T IsNotNull<T> ([AssertionCondition (AssertionConditionType.IS_NOT_NULL)] T obj, string message)
     {
-      return IsNotNull (obj, message, s_emptyArguments);
+      return IsNotNull(obj, message, s_emptyArguments);
     }
 
     [AssertionMethod]
     public static T IsNotNull<T> ([AssertionCondition (AssertionConditionType.IS_NOT_NULL)] T obj)
     {
-      return IsNotNull (obj, c_msgIsNull);
+      return IsNotNull(obj, c_msgIsNull);
     }
 
     [AssertionMethod]
@@ -147,7 +147,7 @@ namespace Remotion.Utilities
       // ReSharper disable CompareNonConstrainedGenericWithNull
       if (obj == null)
         // ReSharper restore CompareNonConstrainedGenericWithNull
-        throw new InvalidOperationException (string.Format (message, arguments));
+        throw new InvalidOperationException(string.Format(message, arguments));
 
       return obj;
     }
@@ -155,13 +155,13 @@ namespace Remotion.Utilities
     [AssertionMethod]
     public static void IsNull ([AssertionCondition (AssertionConditionType.IS_NULL)] object obj, string message)
     {
-      IsNull (obj, message, s_emptyArguments);
+      IsNull(obj, message, s_emptyArguments);
     }
 
     [AssertionMethod]
     public static void IsNull ([AssertionCondition (AssertionConditionType.IS_NULL)] object obj)
     {
-      IsNull (obj, c_msgIsNotNull);
+      IsNull(obj, c_msgIsNotNull);
     }
 
     [AssertionMethod]
@@ -169,7 +169,7 @@ namespace Remotion.Utilities
     public static void IsNull ([AssertionCondition (AssertionConditionType.IS_NULL)] object obj, string message, params object[] arguments)
     {
       if (obj != null)
-        throw new InvalidOperationException (string.Format (message, arguments));
+        throw new InvalidOperationException(string.Format(message, arguments));
     }
   }
 }

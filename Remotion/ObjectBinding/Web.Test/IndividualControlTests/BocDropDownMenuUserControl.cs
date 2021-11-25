@@ -42,7 +42,7 @@ namespace OBWTest.IndividualControlTests
 
     override protected void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
       InitializeMenuItems();
     }
 
@@ -58,7 +58,7 @@ namespace OBWTest.IndividualControlTests
       menuItem.Command.Type = CommandType.WxeFunction;
       menuItem.Command.WxeFunctionCommand.Parameters = "objects";
       menuItem.Command.WxeFunctionCommand.TypeName = "OBWTest.ViewPersonsWxeFunction,OBWTest";
-      PartnerField.MenuItems.Add (menuItem);
+      PartnerField.MenuItems.Add(menuItem);
 
       menuItem = new BocMenuItem();
       menuItem.ItemID = "Copy";
@@ -67,7 +67,7 @@ namespace OBWTest.IndividualControlTests
       menuItem.Icon.Url = "~/Images/CopyItem.gif";
       menuItem.RequiredSelection = RequiredSelection.OneOrMore;
       menuItem.Command.Type = CommandType.Event;
-      PartnerField.MenuItems.Add (menuItem);
+      PartnerField.MenuItems.Add(menuItem);
 
       menuItem = new BocMenuItem();
       menuItem.ItemID = "Cut";
@@ -75,21 +75,21 @@ namespace OBWTest.IndividualControlTests
       menuItem.Category = "Edit";
       menuItem.RequiredSelection = RequiredSelection.OneOrMore;
       menuItem.Command.Type = CommandType.Event;
-      PartnerField.MenuItems.Add (menuItem);
+      PartnerField.MenuItems.Add(menuItem);
 
       menuItem = new BocMenuItem();
       menuItem.ItemID = "Paste";
       menuItem.Text = "Paste";
       menuItem.Category = "Edit";
       menuItem.Command.Type = CommandType.Event;
-      PartnerField.MenuItems.Add (menuItem);
+      PartnerField.MenuItems.Add(menuItem);
 
       menuItem = new BocMenuItem();
       menuItem.ItemID = "Duplicate";
       menuItem.Text = "Duplicate";
       menuItem.Category = "Edit";
       menuItem.Command.Type = CommandType.Event;
-      PartnerField.MenuItems.Add (menuItem);
+      PartnerField.MenuItems.Add(menuItem);
 
       menuItem = new BocMenuItem();
       menuItem.ItemID = "Delete";
@@ -100,46 +100,46 @@ namespace OBWTest.IndividualControlTests
       menuItem.RequiredSelection = RequiredSelection.OneOrMore;
       menuItem.Style = WebMenuItemStyle.Icon;
       menuItem.Command.Type = CommandType.Event;
-      PartnerField.MenuItems.Add (menuItem);
+      PartnerField.MenuItems.Add(menuItem);
 
       menuItem = new BocMenuItem();
       menuItem.Text = "Invisible Item";
       menuItem.IsVisible = false;
-      PartnerField.MenuItems.Add (menuItem);
+      PartnerField.MenuItems.Add(menuItem);
 
-      PartnerField.MenuItems.Add (WebMenuItem.GetSeparator());
+      PartnerField.MenuItems.Add(WebMenuItem.GetSeparator());
 
       menuItem = new BocMenuItem();
       menuItem.ItemID = "FilterByService";
       menuItem.Text = "Should be filtered";
       menuItem.IsVisible = true;
-      PartnerField.MenuItems.Add (menuItem);
+      PartnerField.MenuItems.Add(menuItem);
 
       menuItem = new BocMenuItem();
       menuItem.ItemID = "DisabledByService";
       menuItem.Text = "Should be disabled";
       menuItem.IsDisabled = false;
-      PartnerField.MenuItems.Add (menuItem);
+      PartnerField.MenuItems.Add(menuItem);
 
       menuItem = new BocMenuItem();
       menuItem.ItemID = "Command";
       menuItem.Text = "Command";
       menuItem.Command.Type = CommandType.Event;
-      UnboundField.MenuItems.Add (menuItem);
+      UnboundField.MenuItems.Add(menuItem);
 
-      UnboundField.MenuItems.Add (WebMenuItem.GetSeparator());
+      UnboundField.MenuItems.Add(WebMenuItem.GetSeparator());
 
       menuItem = new BocMenuItem();
       menuItem.ItemID = "FilterByService";
       menuItem.Text = "Should be filtered";
       menuItem.IsVisible = true;
-      UnboundField.MenuItems.Add (menuItem);
+      UnboundField.MenuItems.Add(menuItem);
 
       menuItem = new BocMenuItem();
       menuItem.ItemID = "DisabledByService";
       menuItem.Text = "Should be disabled";
       menuItem.IsDisabled = false;
-      UnboundField.MenuItems.Add (menuItem);
+      UnboundField.MenuItems.Add(menuItem);
     }
 
     public override IBusinessObjectDataSourceControl DataSource
@@ -154,16 +154,16 @@ namespace OBWTest.IndividualControlTests
 
     override protected void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       Person person = (Person) CurrentObject.BusinessObject;
 
-      UnboundField.LoadUnboundValue ((IBusinessObject) person, IsPostBack);
+      UnboundField.LoadUnboundValue((IBusinessObject) person, IsPostBack);
     }
 
     override protected void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     private void PartnerField_MenuItemClick (object sender, WebMenuItemClickEventArgs e)

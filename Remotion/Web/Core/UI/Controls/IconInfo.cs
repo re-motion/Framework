@@ -34,21 +34,21 @@ namespace Remotion.Web.UI.Controls
   {
     public static IconInfo CreateSpacer (IResourceUrlFactory resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull ("resourceUrlFactory", resourceUrlFactory);
+      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
 
       var infrastructureType = SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>().GetType();
 
-      string url = resourceUrlFactory.CreateResourceUrl (infrastructureType, ResourceType.Image, "Spacer.gif").GetUrl();
-      return new IconInfo (url) { AlternateText = "" };
+      string url = resourceUrlFactory.CreateResourceUrl(infrastructureType, ResourceType.Image, "Spacer.gif").GetUrl();
+      return new IconInfo(url) { AlternateText = "" };
     }
 
     public static bool ShouldSerialize (IconInfo? icon)
     {
       if (icon == null)
         return false;
-      else if (string.IsNullOrEmpty (icon.Url)
-               && string.IsNullOrEmpty (icon.AlternateText)
-               && string.IsNullOrEmpty (icon.ToolTip)
+      else if (string.IsNullOrEmpty(icon.Url)
+               && string.IsNullOrEmpty(icon.AlternateText)
+               && string.IsNullOrEmpty(icon.ToolTip)
                && icon.Height.IsEmpty
                && icon.Width.IsEmpty)
         return false;
@@ -77,7 +77,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     public IconInfo (string url, string? alternateText, string? toolTip, string width, string height)
-        : this (url, alternateText, toolTip, new Unit (width), new Unit (height))
+        : this (url, alternateText, toolTip, new Unit(width), new Unit(height))
     {
     }
 
@@ -103,7 +103,7 @@ namespace Remotion.Web.UI.Controls
     public string Url
     {
       get { return _url; }
-      [MemberNotNull (nameof (_url))]
+      [MemberNotNull (nameof(_url))]
       set { _url = value ?? string.Empty; }
     }
 
@@ -152,28 +152,28 @@ namespace Remotion.Web.UI.Controls
 
     public void Render (HtmlTextWriter writer, IControl container)
     {
-      ArgumentUtility.CheckNotNull ("container", container);
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("container", container);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      string url = container.ResolveClientUrl (_url);
-      if (string.IsNullOrEmpty (url))
-        throw new InvalidOperationException (string.Format ("Icon url '{0}' resolved to null or empty. Icons without a source are not supported.", _url));
+      string url = container.ResolveClientUrl(_url);
+      if (string.IsNullOrEmpty(url))
+        throw new InvalidOperationException(string.Format("Icon url '{0}' resolved to null or empty. Icons without a source are not supported.", _url));
 
-      writer.AddAttribute (HtmlTextWriterAttribute.Src, url);
+      writer.AddAttribute(HtmlTextWriterAttribute.Src, url);
 
-      AddDimensionToAttributes (writer, HtmlTextWriterAttribute.Width, _width);
-      AddDimensionToAttributes (writer, HtmlTextWriterAttribute.Height, _height);
+      AddDimensionToAttributes(writer, HtmlTextWriterAttribute.Width, _width);
+      AddDimensionToAttributes(writer, HtmlTextWriterAttribute.Height, _height);
 
-      writer.AddAttribute ("class", "Icon");
+      writer.AddAttribute("class", "Icon");
 
-      writer.AddAttribute (HtmlTextWriterAttribute.Alt, _alternateText ?? string.Empty);
-      if (string.IsNullOrEmpty (_alternateText))
-        writer.AddAttribute (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+      writer.AddAttribute(HtmlTextWriterAttribute.Alt, _alternateText ?? string.Empty);
+      if (string.IsNullOrEmpty(_alternateText))
+        writer.AddAttribute(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
 
-      if (! string.IsNullOrEmpty (_toolTip))
-        writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
+      if (! string.IsNullOrEmpty(_toolTip))
+        writer.AddAttribute(HtmlTextWriterAttribute.Title, _toolTip);
 
-      writer.RenderBeginTag (HtmlTextWriterTag.Img);
+      writer.RenderBeginTag(HtmlTextWriterTag.Img);
       writer.RenderEndTag();
     }
 
@@ -181,7 +181,7 @@ namespace Remotion.Web.UI.Controls
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public bool HasRenderingInformation
     {
-      get { return ! string.IsNullOrEmpty (_url); }
+      get { return ! string.IsNullOrEmpty(_url); }
     }
 
     public void Reset ()
@@ -199,17 +199,17 @@ namespace Remotion.Web.UI.Controls
         return;
 
       string? key;
-      key = ResourceManagerUtility.GetGlobalResourceKey (Url);
-      if (! string.IsNullOrEmpty (key))
-        Url = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(Url);
+      if (! string.IsNullOrEmpty(key))
+        Url = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (AlternateText);
-      if (! string.IsNullOrEmpty (key))
-        AlternateText = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(AlternateText);
+      if (! string.IsNullOrEmpty(key))
+        AlternateText = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
-      if (! string.IsNullOrEmpty (key))
-        ToolTip = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(ToolTip);
+      if (! string.IsNullOrEmpty(key))
+        ToolTip = resourceManager.GetString(key);
     }
 
     private void AddDimensionToAttributes (HtmlTextWriter writer, HtmlTextWriterAttribute attribute, Unit attributeValue)
@@ -217,7 +217,7 @@ namespace Remotion.Web.UI.Controls
       if (attributeValue.IsEmpty)
         return;
 
-      writer.AddStyleAttribute (GetDimensionAsStyleAttribute (attribute), attributeValue.ToString());
+      writer.AddStyleAttribute(GetDimensionAsStyleAttribute(attribute), attributeValue.ToString());
     }
 
     private HtmlTextWriterStyle GetDimensionAsStyleAttribute (HtmlTextWriterAttribute attribute)
@@ -229,7 +229,7 @@ namespace Remotion.Web.UI.Controls
         case HtmlTextWriterAttribute.Width:
           return HtmlTextWriterStyle.Width;
         default:
-          throw new InvalidOperationException ("Invalid value for attribute. Only Height and Width are supported.");
+          throw new InvalidOperationException("Invalid value for attribute. Only Height and Width are supported.");
       }
     }
   }
@@ -241,14 +241,14 @@ namespace Remotion.Web.UI.Controls
       if (context == null // Requried to circumvent the Designer
           && sourceType == typeof (string))
         return true;
-      return base.CanConvertFrom (context, sourceType);
+      return base.CanConvertFrom(context, sourceType);
     }
 
     public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
     {
       if (destinationType == typeof (string))
         return true;
-      return base.CanConvertTo (context, destinationType);
+      return base.CanConvertTo(context, destinationType);
     }
 
     public override object? ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object? value)
@@ -261,19 +261,19 @@ namespace Remotion.Web.UI.Controls
         IconInfo icon = new IconInfo();
         if (stringValue != string.Empty)
         {
-          string[] valueParts = stringValue.Split (new char[] { '\0' }, 5);
+          string[] valueParts = stringValue.Split(new char[] { '\0' }, 5);
           icon.Url = valueParts[0];
           if (valueParts[1] != string.Empty)
-            icon.Width = Unit.Parse (valueParts[1]);
+            icon.Width = Unit.Parse(valueParts[1]);
           if (valueParts[2] != string.Empty)
-            icon.Height = Unit.Parse (valueParts[2]);
+            icon.Height = Unit.Parse(valueParts[2]);
           icon.AlternateText = valueParts[3];
           icon.ToolTip = valueParts[4];
         }
         return icon;
       }
 
-      return base.ConvertFrom (context, culture, value);
+      return base.ConvertFrom(context, culture, value);
     }
 
     public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo culture, object? value, Type destinationType)
@@ -287,14 +287,14 @@ namespace Remotion.Web.UI.Controls
           IconInfo icon = (IconInfo) value;
           if (context == null) // Requried to circumvent the Designer
           {
-            if (IconInfo.ShouldSerialize (icon))
+            if (IconInfo.ShouldSerialize(icon))
             {
               StringBuilder serializedValue = new StringBuilder();
-              serializedValue.Append (icon.Url).Append ("\0");
-              serializedValue.Append (icon.Width.ToString()).Append ("\0");
-              serializedValue.Append (icon.Height.ToString()).Append ("\0");
-              serializedValue.Append (icon.AlternateText).Append ("\0");
-              serializedValue.Append (icon.ToolTip);
+              serializedValue.Append(icon.Url).Append("\0");
+              serializedValue.Append(icon.Width.ToString()).Append("\0");
+              serializedValue.Append(icon.Height.ToString()).Append("\0");
+              serializedValue.Append(icon.AlternateText).Append("\0");
+              serializedValue.Append(icon.ToolTip);
               return serializedValue.ToString();
             }
             else
@@ -304,7 +304,7 @@ namespace Remotion.Web.UI.Controls
             return icon.Url;
         }
       }
-      return base.ConvertTo (context, culture, value, destinationType);
+      return base.ConvertTo(context, culture, value, destinationType);
     }
   }
 }

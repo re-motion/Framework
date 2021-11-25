@@ -32,32 +32,32 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
   {
     public Rectangle GetBrowserContentBounds (IWebDriver driver)
     {
-      ArgumentUtility.CheckNotNull ("driver", driver);
+      ArgumentUtility.CheckNotNull("driver", driver);
 
-      var firefoxWindows = AutomationElement.RootElement.FindAll (
+      var firefoxWindows = AutomationElement.RootElement.FindAll(
               TreeScope.Children,
-              new AndCondition (
-                  new PropertyCondition (AutomationElement.ControlTypeProperty, ControlType.Window),
-                  new PropertyCondition (AutomationElement.ClassNameProperty, "MozillaWindowClass")))
+              new AndCondition(
+                  new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Window),
+                  new PropertyCondition(AutomationElement.ClassNameProperty, "MozillaWindowClass")))
           .Cast<AutomationElement>()
-          .Select (window => RateAutomationElement (window, driver))
+          .Select(window => RateAutomationElement(window, driver))
           .ToArray();
 
-      var maxScore = firefoxWindows.Max (t => t.Item1);
-      var bestFit = firefoxWindows.FirstOrDefault (t => t.Item1 == maxScore);
+      var maxScore = firefoxWindows.Max(t => t.Item1);
+      var bestFit = firefoxWindows.FirstOrDefault(t => t.Item1 == maxScore);
 
       if (bestFit == null)
-        throw new InvalidOperationException ("No Matching Firefox window could be found.");
+        throw new InvalidOperationException("No Matching Firefox window could be found.");
 
-      var firefoxContentElement = GetFirefoxContentElement (bestFit.Item2);
+      var firefoxContentElement = GetFirefoxContentElement(bestFit.Item2);
 
       var firefoxContentBounds = firefoxContentElement.Current.BoundingRectangle;
 
-      var result = new Rectangle (
-          (int) Math.Round (firefoxContentBounds.X),
-          (int) Math.Round (firefoxContentBounds.Y),
-          (int) Math.Round (firefoxContentBounds.Width),
-          (int) Math.Round (firefoxContentBounds.Height));
+      var result = new Rectangle(
+          (int) Math.Round(firefoxContentBounds.X),
+          (int) Math.Round(firefoxContentBounds.Y),
+          (int) Math.Round(firefoxContentBounds.Width),
+          (int) Math.Round(firefoxContentBounds.Height));
 
       return result;
     }
@@ -75,7 +75,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       {
         try
         {
-          var result = GetFirefoxDocumentControl (firefoxWindow);
+          var result = GetFirefoxDocumentControl(firefoxWindow);
 
           if (result != null)
             return result;
@@ -84,18 +84,18 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
         {
         }
 
-        Thread.Sleep (TimeSpan.FromMilliseconds (200));
+        Thread.Sleep(TimeSpan.FromMilliseconds(200));
       }
 
-      throw new InvalidOperationException ("The Firefox content window could not be found within a timeout of 2 seconds.");
+      throw new InvalidOperationException("The Firefox content window could not be found within a timeout of 2 seconds.");
     }
 
     [CanBeNull]
     private AutomationElement? GetFirefoxDocumentControl (AutomationElement firefoxWindow)
     {
-      return firefoxWindow.FindFirst (
+      return firefoxWindow.FindFirst(
           TreeScope.Subtree,
-          new PropertyCondition (
+          new PropertyCondition(
               AutomationElement.ControlTypeProperty,
               ControlType.Document));
     }
@@ -104,16 +104,16 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     {
       var rating = 0;
 
-      rating += GetFocusedWindowRating (window);
-      rating += GetDriverWindowSizeRating (window, driver);
+      rating += GetFocusedWindowRating(window);
+      rating += GetDriverWindowSizeRating(window, driver);
 
-      return new Tuple<int, AutomationElement> (rating, window);
+      return new Tuple<int, AutomationElement>(rating, window);
     }
 
     private int GetFocusedWindowRating (AutomationElement window)
     {
       var focusedWindow = AutomationElement.FocusedElement;
-      if (window.Equals (focusedWindow))
+      if (window.Equals(focusedWindow))
         return 2;
       return 0;
     }
@@ -121,14 +121,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     private int GetDriverWindowSizeRating (AutomationElement window, IWebDriver driver)
     {
       var driverWindow = driver.Manage().Window;
-      var driverWindowBounds = new Rectangle (driverWindow.Position, driverWindow.Size);
+      var driverWindowBounds = new Rectangle(driverWindow.Position, driverWindow.Size);
 
       var windowBoundingRectangle = window.Current.BoundingRectangle;
-      var windowBounds = new Rectangle (
-          (int) Math.Round (windowBoundingRectangle.X),
-          (int) Math.Round (windowBoundingRectangle.Y),
-          (int) Math.Round (windowBoundingRectangle.Width),
-          (int) Math.Round (windowBoundingRectangle.Height));
+      var windowBounds = new Rectangle(
+          (int) Math.Round(windowBoundingRectangle.X),
+          (int) Math.Round(windowBoundingRectangle.Y),
+          (int) Math.Round(windowBoundingRectangle.Width),
+          (int) Math.Round(windowBoundingRectangle.Height));
 
       if (driverWindowBounds == windowBounds)
         return 2;

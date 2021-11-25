@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   {
     public static Client NewObject ()
     {
-      return NewObject<Client> ();
+      return NewObject<Client>();
     }
 
     protected Client ()

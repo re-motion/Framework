@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public ExceptionCommand (Exception exception)
     {
-      ArgumentUtility.CheckNotNull ("exception", exception);
+      ArgumentUtility.CheckNotNull("exception", exception);
       _exception = exception;
     }
 
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      return new ExpandedCommand (this);
+      return new ExpandedCommand(this);
     }
   }
 }

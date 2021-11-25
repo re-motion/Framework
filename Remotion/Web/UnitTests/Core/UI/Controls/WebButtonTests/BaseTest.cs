@@ -25,7 +25,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     [TearDown]
     public override void TearDown ()
     {
-      base.TearDown ();
+      base.TearDown();
 
       WebConfigurationMock.Current = null;
     }

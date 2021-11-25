@@ -37,7 +37,7 @@ namespace Remotion.Validation.UnitTests.Providers
     public void SetUp ()
     {
       _validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
-      _provider = new TestableValidationAttributesBasedValidationRuleCollectorProvider (_validationMessageFactoryStub.Object);
+      _provider = new TestableValidationAttributesBasedValidationRuleCollectorProvider(_validationMessageFactoryStub.Object);
     }
 
     [Test]
@@ -51,38 +51,38 @@ namespace Remotion.Validation.UnitTests.Providers
     {
       var validationMessageStub = new Mock<ValidationMessage>();
       _validationMessageFactoryStub
-          .Setup (
-              _ => _.CreateValidationMessageForPropertyValidator (
+          .Setup(
+              _ => _.CreateValidationMessageForPropertyValidator(
                   It.IsNotNull<IPropertyValidator>(),
                   It.IsNotNull<IPropertyInformation>()))
-          .Returns (validationMessageStub.Object);
+          .Returns(validationMessageStub.Object);
 
-      var collectors = _provider.GetValidationRuleCollectors (new[] { typeof (Customer) });
-      Assert.That (collectors, Is.Not.Empty);
+      var collectors = _provider.GetValidationRuleCollectors(new[] { typeof (Customer) });
+      Assert.That(collectors, Is.Not.Empty);
 
-      var addingComponentPropertyRules = collectors.SelectMany (c => c.ToArray()).SelectMany (c => c.Collector.AddedPropertyRules).ToArray();
-      Assert.That (addingComponentPropertyRules, Is.Not.Empty);
-      Assert.That (addingComponentPropertyRules.OfType<AddingPropertyValidationRuleCollector<Customer, string>>().Count(), Is.EqualTo (2));
-      Assert.That (addingComponentPropertyRules.OfType<AddingPropertyValidationRuleCollector<Customer, Address>>(), Is.Empty);
-      Assert.That (addingComponentPropertyRules.OfType<AddingPropertyValidationRuleCollector<Customer, ICollection<Address>>>(), Is.Empty);
+      var addingComponentPropertyRules = collectors.SelectMany(c => c.ToArray()).SelectMany(c => c.Collector.AddedPropertyRules).ToArray();
+      Assert.That(addingComponentPropertyRules, Is.Not.Empty);
+      Assert.That(addingComponentPropertyRules.OfType<AddingPropertyValidationRuleCollector<Customer, string>>().Count(), Is.EqualTo(2));
+      Assert.That(addingComponentPropertyRules.OfType<AddingPropertyValidationRuleCollector<Customer, Address>>(), Is.Empty);
+      Assert.That(addingComponentPropertyRules.OfType<AddingPropertyValidationRuleCollector<Customer, ICollection<Address>>>(), Is.Empty);
 
-      validationMessageStub.Setup (_ => _.ToString()).Returns ("Stub Message");
-      var validators = addingComponentPropertyRules.SelectMany (r => r.Validators).ToArray();
-      Assert.That (validators, Is.Not.Empty);
-      Assert.That (validators, Is.All.InstanceOf<IPropertyValidator>());
-      Assert.That (validators.OfType<LengthValidator>().First().ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
-      Assert.That (validators.OfType<NotNullValidator>().First().ValidationMessage.ToString, Is.EqualTo ("Stub Message"));
+      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
+      var validators = addingComponentPropertyRules.SelectMany(r => r.Validators).ToArray();
+      Assert.That(validators, Is.Not.Empty);
+      Assert.That(validators, Is.All.InstanceOf<IPropertyValidator>());
+      Assert.That(validators.OfType<LengthValidator>().First().ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+      Assert.That(validators.OfType<NotNullValidator>().First().ValidationMessage.ToString, Is.EqualTo("Stub Message"));
     }
 
     [Test]
     public void CreatePropertyRuleReflector ()
     {
-      var result = _provider.CreatePropertyRuleReflectors (new [] { typeof (Customer) });
+      var result = _provider.CreatePropertyRuleReflectors(new [] { typeof (Customer) });
 
-      Assert.That (result, Is.Not.Null);
+      Assert.That(result, Is.Not.Null);
       var propertyReflectors = result[typeof (Customer)].ToArray();
-      Assert.That (propertyReflectors.Count(), Is.EqualTo (6));
-      CollectionAssert.AllItemsAreInstancesOfType (propertyReflectors, typeof (ValidationAttributesBasedPropertyRuleReflector));
+      Assert.That(propertyReflectors.Count(), Is.EqualTo(6));
+      CollectionAssert.AllItemsAreInstancesOfType(propertyReflectors, typeof (ValidationAttributesBasedPropertyRuleReflector));
     }
   }
 }

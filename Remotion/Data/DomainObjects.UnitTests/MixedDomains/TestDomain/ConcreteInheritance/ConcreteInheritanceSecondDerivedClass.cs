@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.Concrete
   {
     public static ConcreteInheritanceSecondDerivedClass NewObject ()
     {
-      return NewObject<ConcreteInheritanceSecondDerivedClass> ();
+      return NewObject<ConcreteInheritanceSecondDerivedClass>();
     }
 
     public virtual string SecondDerivedProperty { get; set; }

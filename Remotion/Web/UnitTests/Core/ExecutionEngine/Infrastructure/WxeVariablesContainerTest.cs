@@ -29,30 +29,30 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void GetParameterDeclarations_ParametersDeclaredOnType_ReturnsParametersSortedByIndex ()
     {
-      var parameters = WxeVariablesContainer.GetParameterDeclarations (typeof (TestBaseFunctionWithParameters));
-      Assert.That (parameters.Length, Is.EqualTo (2));
-      Assert.That (parameters[0].Name, Is.EqualTo ("Parameter1"));
-      Assert.That (parameters[1].Name, Is.EqualTo ("Parameter2"));
+      var parameters = WxeVariablesContainer.GetParameterDeclarations(typeof (TestBaseFunctionWithParameters));
+      Assert.That(parameters.Length, Is.EqualTo(2));
+      Assert.That(parameters[0].Name, Is.EqualTo("Parameter1"));
+      Assert.That(parameters[1].Name, Is.EqualTo("Parameter2"));
     }
 
     [Test]
     public void GetParameterDeclarations_ParametersDeclaredOnTypeAndBaseType_ReturnsParametersSortedByHierarchyAndIndex ()
     {
-      var parameters = WxeVariablesContainer.GetParameterDeclarations (typeof (TestDerivedFunctionWithParameters));
-      Assert.That (parameters.Length, Is.EqualTo (4));
-      Assert.That (parameters[0].Name, Is.EqualTo ("Parameter1"));
-      Assert.That (parameters[1].Name, Is.EqualTo ("Parameter2"));
-      Assert.That (parameters[2].Name, Is.EqualTo ("Parameter3"));
-      Assert.That (parameters[3].Name, Is.EqualTo ("Parameter4"));
+      var parameters = WxeVariablesContainer.GetParameterDeclarations(typeof (TestDerivedFunctionWithParameters));
+      Assert.That(parameters.Length, Is.EqualTo(4));
+      Assert.That(parameters[0].Name, Is.EqualTo("Parameter1"));
+      Assert.That(parameters[1].Name, Is.EqualTo("Parameter2"));
+      Assert.That(parameters[2].Name, Is.EqualTo("Parameter3"));
+      Assert.That(parameters[3].Name, Is.EqualTo("Parameter4"));
     }
 
     [Test]
     public void GetParameterDeclarations_ParametersDeclaredOnOverride_ThrowsWxeException ()
     {
-      Assert.That (
-          () => WxeVariablesContainer.GetParameterDeclarations (typeof (TestFunctionWithOverriddenParameter)),
+      Assert.That(
+          () => WxeVariablesContainer.GetParameterDeclarations(typeof (TestFunctionWithOverriddenParameter)),
           Throws.TypeOf<WxeException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Property 'Parameter1', overridden by 'Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions.TestFunctionWithOverriddenParameter', has a WxeParameterAttribute applied. "
                   + "The WxeParameterAttribute may only be applied to the original declaration of a property."));
     }
@@ -60,9 +60,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void GetParameterDeclarations_DuplciateParameterIndex_ThrowsWxeException ()
     {
-      Assert.That (
-          () => WxeVariablesContainer.GetParameterDeclarations (typeof (TestFunctionWithDuplicateParameterIndices)),
-          Throws.TypeOf<WxeException>().With.Message.EqualTo (
+      Assert.That(
+          () => WxeVariablesContainer.GetParameterDeclarations(typeof (TestFunctionWithDuplicateParameterIndices)),
+          Throws.TypeOf<WxeException>().With.Message.EqualTo(
               "'Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions.TestFunctionWithDuplicateParameterIndices' declares WxeParameters 'Parameter1' and 'Parameter2' with the same index. "
               + "The index of a WxeParameter must be unique within a type."));
     }
@@ -70,12 +70,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void SerializeParameters ()
     {
-      TestFunctionWithSerializableParameters function = new TestFunctionWithSerializableParameters ("Hello World", null, 1);
+      TestFunctionWithSerializableParameters function = new TestFunctionWithSerializableParameters("Hello World", null, 1);
       NameValueCollection parameters = function.VariablesContainer.SerializeParametersForQueryString();
-      Assert.That (parameters.Count, Is.EqualTo (3));
-      Assert.That (parameters["StringValue"], Is.EqualTo ("Hello World"));
-      Assert.That (parameters["NaInt32Value"], Is.EqualTo (""));
-      Assert.That (parameters["IntValue"], Is.EqualTo ("1"));
+      Assert.That(parameters.Count, Is.EqualTo(3));
+      Assert.That(parameters["StringValue"], Is.EqualTo("Hello World"));
+      Assert.That(parameters["NaInt32Value"], Is.EqualTo(""));
+      Assert.That(parameters["IntValue"], Is.EqualTo("1"));
     }
 
     [Test]
@@ -88,9 +88,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
 
       NameValueCollection parameters = function.VariablesContainer.SerializeParametersForQueryString();
 
-      Assert.That (parameters.Count, Is.EqualTo (2));
-      Assert.That (parameters["StringValue"], Is.EqualTo ("Hello World"));
-      Assert.That (parameters["NaInt32Value"], Is.EqualTo ("1"));
+      Assert.That(parameters.Count, Is.EqualTo(2));
+      Assert.That(parameters["StringValue"], Is.EqualTo("Hello World"));
+      Assert.That(parameters["NaInt32Value"], Is.EqualTo("1"));
     }
 
     [Test]
@@ -98,60 +98,60 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     {
       TestFunctionWithSerializableParameters function = new TestFunctionWithSerializableParameters();
       NameValueCollection parameters = new NameValueCollection();
-      parameters.Add ("StringValue", "Hello World");
-      parameters.Add ("NaInt32Value", "");
-      parameters.Add ("IntValue", "1");
+      parameters.Add("StringValue", "Hello World");
+      parameters.Add("NaInt32Value", "");
+      parameters.Add("IntValue", "1");
 
-      function.VariablesContainer.InitializeParameters (parameters);
+      function.VariablesContainer.InitializeParameters(parameters);
 
-      Assert.That (function.StringValue, Is.EqualTo ("Hello World"));
-      Assert.That (function.NaInt32Value, Is.EqualTo (null));
-      Assert.That (function.IntValue, Is.EqualTo (1));
+      Assert.That(function.StringValue, Is.EqualTo("Hello World"));
+      Assert.That(function.NaInt32Value, Is.EqualTo(null));
+      Assert.That(function.IntValue, Is.EqualTo(1));
     }
 
     [Test]
     public void InitializeParameters_WithStringBeingEmpty ()
     {
       NameValueCollection parameters = new NameValueCollection();
-      parameters.Add ("StringValue", "");
-      parameters.Add ("NaInt32Value", "2");
-      parameters.Add ("IntValue", "1");
+      parameters.Add("StringValue", "");
+      parameters.Add("NaInt32Value", "2");
+      parameters.Add("IntValue", "1");
 
       TestFunctionWithSerializableParameters function = new TestFunctionWithSerializableParameters();
-      function.VariablesContainer.InitializeParameters (parameters);
+      function.VariablesContainer.InitializeParameters(parameters);
 
-      Assert.That (function.StringValue, Is.EqualTo (""));
-      Assert.That (function.NaInt32Value, Is.EqualTo (2));
-      Assert.That (function.IntValue, Is.EqualTo (1));
+      Assert.That(function.StringValue, Is.EqualTo(""));
+      Assert.That(function.NaInt32Value, Is.EqualTo(2));
+      Assert.That(function.IntValue, Is.EqualTo(1));
     }
 
     [Test]
     public void InitializeParameters_WithNaInt32BeingEmpty ()
     {
       NameValueCollection parameters = new NameValueCollection();
-      parameters.Add ("StringValue", "Hello World");
-      parameters.Add ("NaInt32Value", "");
-      parameters.Add ("IntValue", "1");
+      parameters.Add("StringValue", "Hello World");
+      parameters.Add("NaInt32Value", "");
+      parameters.Add("IntValue", "1");
 
       TestFunctionWithSerializableParameters function = new TestFunctionWithSerializableParameters();
-      function.VariablesContainer.InitializeParameters (parameters);
+      function.VariablesContainer.InitializeParameters(parameters);
 
-      Assert.That (function.StringValue, Is.EqualTo ("Hello World"));
-      Assert.That (function.NaInt32Value, Is.EqualTo (null));
-      Assert.That (function.IntValue, Is.EqualTo (1));
+      Assert.That(function.StringValue, Is.EqualTo("Hello World"));
+      Assert.That(function.NaInt32Value, Is.EqualTo(null));
+      Assert.That(function.IntValue, Is.EqualTo(1));
     }
 
     [Test]
     public void InitializeParameters_WitInt32BeingEmpty ()
     {
       NameValueCollection parameters = new NameValueCollection();
-      parameters.Add ("StringValue", "Hello World");
-      parameters.Add ("NaInt32Value", "2");
-      parameters.Add ("IntValue", "");
+      parameters.Add("StringValue", "Hello World");
+      parameters.Add("NaInt32Value", "2");
+      parameters.Add("IntValue", "");
 
       TestFunctionWithSerializableParameters function = new TestFunctionWithSerializableParameters();
-      Assert.That (
-          () => function.VariablesContainer.InitializeParameters (parameters),
+      Assert.That(
+          () => function.VariablesContainer.InitializeParameters(parameters),
           Throws.InstanceOf<ApplicationException>());
     }
   }

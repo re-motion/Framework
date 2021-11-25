@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<TabbedMenuSelector, TabbedMenuControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<TabbedMenuSelector, TabbedMenuControlObject> testAction)
     {
-      testAction (Helper, e => e.TabbedMenus(), "tabbedMenu");
+      testAction(Helper, e => e.TabbedMenus(), "tabbedMenu");
     }
 
     [Test]
@@ -46,11 +46,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var control = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
+      var control = home.TabbedMenus().GetByLocalID("MyTabbedMenu");
 
       var definitions = control.GetItemDefinitions();
-      Assert.That (definitions[3].IsDisabled, Is.False);
-      Assert.That (definitions[5].IsDisabled, Is.True);
+      Assert.That(definitions[3].IsDisabled, Is.False);
+      Assert.That(definitions[5].IsDisabled, Is.True);
     }
 
     [Test]
@@ -58,25 +58,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var control = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
-      Assert.That (
-          () => control.SelectItem().WithDisplayText ("DisabledCommandTabTitle"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithDisplayText").Message));
-      Assert.That (
-          () => control.SelectItem().WithDisplayTextContains ("DisabledCommandTabTitle"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithDisplayTextContains").Message));
-      Assert.That (
-          () => control.SelectItem().WithIndex (6),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithIndex").Message));
-      Assert.That (
-          () => control.SelectItem().WithHtmlID ("body_MyTabbedMenu_MainMenuTabStrip_DisabledCommandTab"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithHtmlID").Message));
-      Assert.That (
-          () => control.SelectItem().WithItemID ("DisabledCommandTab"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithItemID").Message));
-      Assert.That (
-          () => control.SelectItem ("DisabledCommandTab"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem(itemID)").Message));
+      var control = home.TabbedMenus().GetByLocalID("MyTabbedMenu");
+      Assert.That(
+          () => control.SelectItem().WithDisplayText("DisabledCommandTabTitle"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithDisplayText").Message));
+      Assert.That(
+          () => control.SelectItem().WithDisplayTextContains("DisabledCommandTabTitle"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithDisplayTextContains").Message));
+      Assert.That(
+          () => control.SelectItem().WithIndex(6),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithIndex").Message));
+      Assert.That(
+          () => control.SelectItem().WithHtmlID("body_MyTabbedMenu_MainMenuTabStrip_DisabledCommandTab"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithHtmlID").Message));
+      Assert.That(
+          () => control.SelectItem().WithItemID("DisabledCommandTab"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithItemID").Message));
+      Assert.That(
+          () => control.SelectItem("DisabledCommandTab"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem(itemID)").Message));
     }
 
     [Test]
@@ -85,7 +85,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var tabbedMenu = home.TabbedMenus().Single();
-      Assert.That (tabbedMenu.GetStatusText(), Is.EqualTo ("MyStatusText"));
+      Assert.That(tabbedMenu.GetStatusText(), Is.EqualTo("MyStatusText"));
     }
 
     [Test]
@@ -93,22 +93,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabbedMenu = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
+      var tabbedMenu = home.TabbedMenus().GetByLocalID("MyTabbedMenu");
 
       var items = tabbedMenu.GetItemDefinitions();
-      Assert.That (items.Count, Is.EqualTo (7));
+      Assert.That(items.Count, Is.EqualTo(7));
       
-      Assert.That (items[0].ItemID, Is.EqualTo ("EventCommandTab"));
-      Assert.That (items[0].Index, Is.EqualTo (1));
-      Assert.That (items[0].Text, Is.EqualTo ("EventCommandTabTitle"));
-      Assert.That (items[0].IsDisabled, Is.False);
+      Assert.That(items[0].ItemID, Is.EqualTo("EventCommandTab"));
+      Assert.That(items[0].Index, Is.EqualTo(1));
+      Assert.That(items[0].Text, Is.EqualTo("EventCommandTabTitle"));
+      Assert.That(items[0].IsDisabled, Is.False);
 
-      Assert.That (items[3].IsDisabled, Is.False);
+      Assert.That(items[3].IsDisabled, Is.False);
 
-      Assert.That (items[4].ItemID, Is.EqualTo ("TabWithSubMenu"));
-      Assert.That (items[4].Index, Is.EqualTo (5));
-      Assert.That (items[4].Text, Is.EqualTo ("TabWithSubMenuTitle"));
-      Assert.That (items[4].IsDisabled, Is.False);
+      Assert.That(items[4].ItemID, Is.EqualTo("TabWithSubMenu"));
+      Assert.That(items[4].Index, Is.EqualTo(5));
+      Assert.That(items[4].Text, Is.EqualTo("TabWithSubMenuTitle"));
+      Assert.That(items[4].IsDisabled, Is.False);
     }
 
     [Test]
@@ -118,20 +118,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var tabbedMenu = home.TabbedMenus().Single();
 
-      tabbedMenu.SelectItem ("EventCommandTab");
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("EventCommandTab|Event"));
+      tabbedMenu.SelectItem("EventCommandTab");
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("EventCommandTab|Event"));
 
-      tabbedMenu.SelectItem().WithIndex (1);
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("EventCommandTab|Event"));
+      tabbedMenu.SelectItem().WithIndex(1);
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("EventCommandTab|Event"));
 
-      tabbedMenu.SelectItem().WithHtmlID ("body_MyTabbedMenu_MainMenuTabStrip_EventCommandTab");
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("EventCommandTab|Event"));
+      tabbedMenu.SelectItem().WithHtmlID("body_MyTabbedMenu_MainMenuTabStrip_EventCommandTab");
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("EventCommandTab|Event"));
 
-      tabbedMenu.SelectItem().WithDisplayText ("EventCommandTabTitle");
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("EventCommandTab|Event"));
+      tabbedMenu.SelectItem().WithDisplayText("EventCommandTabTitle");
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("EventCommandTab|Event"));
 
-      tabbedMenu.SelectItem().WithDisplayTextContains ("ntCom");
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("EventCommandTab|Event"));
+      tabbedMenu.SelectItem().WithDisplayTextContains("ntCom");
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("EventCommandTab|Event"));
     }
 
     [Test]
@@ -140,23 +140,23 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var tabbedMenu = home.TabbedMenus().Single();
-      var completionDetection = new CompletionDetectionStrategyTestHelper (tabbedMenu);
+      var completionDetection = new CompletionDetectionStrategyTestHelper(tabbedMenu);
 
-      tabbedMenu.SelectItem ("EventCommandTab");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("EventCommandTab|Event"));
+      tabbedMenu.SelectItem("EventCommandTab");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("EventCommandTab|Event"));
 
-      tabbedMenu.SelectItem ("HrefCommandTab");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      tabbedMenu.SelectItem("HrefCommandTab");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.Empty);
 
-      tabbedMenu.SelectItem ("EventCommandTab");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("EventCommandTab|Event"));
+      tabbedMenu.SelectItem("EventCommandTab");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("EventCommandTab|Event"));
 
-      tabbedMenu.SelectItem ("WxeFunctionCommandTab");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      tabbedMenu.SelectItem("WxeFunctionCommandTab");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.Empty);
     }
 
     [Test]
@@ -164,25 +164,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var tabbedMenu = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
+      var tabbedMenu = home.TabbedMenus().GetByLocalID("MyTabbedMenu");
 
       var subMenuItems = tabbedMenu.SubMenu.GetItemDefinitions();
-      Assert.That (subMenuItems, Is.Empty);
+      Assert.That(subMenuItems, Is.Empty);
 
-      tabbedMenu.SelectItem ("TabWithSubMenu");
+      tabbedMenu.SelectItem("TabWithSubMenu");
       subMenuItems = tabbedMenu.SubMenu.GetItemDefinitions();
 
-      Assert.That (subMenuItems.Count, Is.EqualTo (3));
+      Assert.That(subMenuItems.Count, Is.EqualTo(3));
 
-      Assert.That (subMenuItems[0].ItemID, Is.EqualTo ("SubMenuTab1"));
-      Assert.That (subMenuItems[0].Index, Is.EqualTo (1));
-      Assert.That (subMenuItems[0].Text, Is.EqualTo ("SubMenuTab1Title"));
-      Assert.That (subMenuItems[0].IsDisabled, Is.False);
+      Assert.That(subMenuItems[0].ItemID, Is.EqualTo("SubMenuTab1"));
+      Assert.That(subMenuItems[0].Index, Is.EqualTo(1));
+      Assert.That(subMenuItems[0].Text, Is.EqualTo("SubMenuTab1Title"));
+      Assert.That(subMenuItems[0].IsDisabled, Is.False);
 
-      Assert.That (subMenuItems[2].ItemID, Is.EqualTo ("SubMenuTab3"));
-      Assert.That (subMenuItems[2].Index, Is.EqualTo (3));
-      Assert.That (subMenuItems[2].Text, Is.EqualTo ("SubMenuTab3Title"));
-      Assert.That (subMenuItems[2].IsDisabled, Is.False);
+      Assert.That(subMenuItems[2].ItemID, Is.EqualTo("SubMenuTab3"));
+      Assert.That(subMenuItems[2].Index, Is.EqualTo(3));
+      Assert.That(subMenuItems[2].Text, Is.EqualTo("SubMenuTab3Title"));
+      Assert.That(subMenuItems[2].IsDisabled, Is.False);
     }
 
     [Test]
@@ -191,22 +191,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var tabbedMenu = home.TabbedMenus().Single();
-      tabbedMenu.SelectItem ("TabWithSubMenu");
+      tabbedMenu.SelectItem("TabWithSubMenu");
 
-      tabbedMenu.SubMenu.SelectItem ("SubMenuTab1");
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("SubMenuTab1|Event"));
+      tabbedMenu.SubMenu.SelectItem("SubMenuTab1");
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("SubMenuTab1|Event"));
 
-      tabbedMenu.SubMenu.SelectItem().WithIndex (3);
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      tabbedMenu.SubMenu.SelectItem().WithIndex(3);
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.Empty);
 
-      tabbedMenu.SubMenu.SelectItem().WithHtmlID ("body_MyTabbedMenu_SubMenuTabStrip_SubMenuTab1");
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("SubMenuTab1|Event"));
+      tabbedMenu.SubMenu.SelectItem().WithHtmlID("body_MyTabbedMenu_SubMenuTabStrip_SubMenuTab1");
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("SubMenuTab1|Event"));
 
-      tabbedMenu.SubMenu.SelectItem().WithDisplayText ("SubMenuTab3Title");
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      tabbedMenu.SubMenu.SelectItem().WithDisplayText("SubMenuTab3Title");
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.Empty);
 
-      tabbedMenu.SubMenu.SelectItem().WithDisplayTextContains ("nuTab1");
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("SubMenuTab1|Event"));
+      tabbedMenu.SubMenu.SelectItem().WithDisplayTextContains("nuTab1");
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("SubMenuTab1|Event"));
     }
 
     [Test]
@@ -215,28 +215,28 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var tabbedMenu = home.TabbedMenus().Single();
-      tabbedMenu.SelectItem ("TabWithSubMenu");
+      tabbedMenu.SelectItem("TabWithSubMenu");
 
-      Assert.That (
-          () => tabbedMenu.SubMenu.SelectItem ("SubMenuTab2"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem(itemID)").Message));
-      Assert.That (
-          () => tabbedMenu.SubMenu.SelectItem().WithIndex (2),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithIndex").Message));
-      Assert.That (
-          () => tabbedMenu.SubMenu.SelectItem().WithHtmlID ("body_MyTabbedMenu_SubMenuTabStrip_SubMenuTab2"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithHtmlID").Message));
-      Assert.That (
-          () => tabbedMenu.SubMenu.SelectItem().WithDisplayText ("SubMenuTab2Title"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithDisplayText").Message));
-      Assert.That (
-          () => tabbedMenu.SubMenu.SelectItem().WithDisplayTextContains ("nuTab2"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithDisplayTextContains").Message));
+      Assert.That(
+          () => tabbedMenu.SubMenu.SelectItem("SubMenuTab2"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem(itemID)").Message));
+      Assert.That(
+          () => tabbedMenu.SubMenu.SelectItem().WithIndex(2),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithIndex").Message));
+      Assert.That(
+          () => tabbedMenu.SubMenu.SelectItem().WithHtmlID("body_MyTabbedMenu_SubMenuTabStrip_SubMenuTab2"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithHtmlID").Message));
+      Assert.That(
+          () => tabbedMenu.SubMenu.SelectItem().WithDisplayText("SubMenuTab2Title"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithDisplayText").Message));
+      Assert.That(
+          () => tabbedMenu.SubMenu.SelectItem().WithDisplayTextContains("nuTab2"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithDisplayTextContains").Message));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("TabbedMenuTest.wxe");
+      return Start<WxePageObject>("TabbedMenuTest.wxe");
     }
   }
 }

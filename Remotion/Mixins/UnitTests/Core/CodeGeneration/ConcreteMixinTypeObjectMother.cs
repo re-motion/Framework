@@ -28,9 +28,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var identifier = ConcreteMixinTypeIdentifierObjectMother.Create();
       var generatedType = typeof (int);
       var generatedOverrideInterface = typeof (double);
-      var overrideInterfaceMethodsByMixinMethod = new Dictionary<MethodInfo, MethodInfo> ();
-      var methodWrappers = new Dictionary<MethodInfo, MethodInfo> ();
-      return new ConcreteMixinType (identifier, generatedType, generatedOverrideInterface, overrideInterfaceMethodsByMixinMethod, methodWrappers);
+      var overrideInterfaceMethodsByMixinMethod = new Dictionary<MethodInfo, MethodInfo>();
+      var methodWrappers = new Dictionary<MethodInfo, MethodInfo>();
+      return new ConcreteMixinType(identifier, generatedType, generatedOverrideInterface, overrideInterfaceMethodsByMixinMethod, methodWrappers);
     }
   }
 }

@@ -41,8 +41,8 @@ public class WcagTest : BaseTest
     _webButton.UseLegacyButton = false;
     _webButton.EvaluateWaiConformity();
 
-	  Assert.That (WcagHelperMock.HasWarning, Is.False);
-	  Assert.That (WcagHelperMock.HasError, Is.False);
+	  Assert.That(WcagHelperMock.HasWarning, Is.False);
+	  Assert.That(WcagHelperMock.HasError, Is.False);
   }
 
 	[Test]
@@ -52,8 +52,8 @@ public class WcagTest : BaseTest
     _webButton.UseLegacyButton = false;
     _webButton.EvaluateWaiConformity();
 
-	  Assert.That (WcagHelperMock.HasWarning, Is.False);
-	  Assert.That (WcagHelperMock.HasError, Is.False);
+	  Assert.That(WcagHelperMock.HasWarning, Is.False);
+	  Assert.That(WcagHelperMock.HasError, Is.False);
   }
 
 	[Test]
@@ -63,10 +63,10 @@ public class WcagTest : BaseTest
     _webButton.UseLegacyButton = false;
     _webButton.EvaluateWaiConformity();
 
-	  Assert.That (WcagHelperMock.HasError, Is.True);
-	  Assert.That (WcagHelperMock.Priority, Is.EqualTo (1));
-	  Assert.That (WcagHelperMock.Control, Is.SameAs (_webButton));
-	  Assert.That (WcagHelperMock.Property, Is.EqualTo ("UseLegacyButton"));
+	  Assert.That(WcagHelperMock.HasError, Is.True);
+	  Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
+	  Assert.That(WcagHelperMock.Control, Is.SameAs(_webButton));
+	  Assert.That(WcagHelperMock.Property, Is.EqualTo("UseLegacyButton"));
   }
 
 
@@ -75,7 +75,7 @@ public class WcagTest : BaseTest
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     _webButton.UseLegacyButton = false;
-    Assert.That (_webButton.IsLegacyButtonEnabled, Is.True);
+    Assert.That(_webButton.IsLegacyButtonEnabled, Is.True);
   }
 
   [Test]
@@ -83,7 +83,7 @@ public class WcagTest : BaseTest
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
     _webButton.UseLegacyButton = false;
-    Assert.That (_webButton.IsLegacyButtonEnabled, Is.False);
+    Assert.That(_webButton.IsLegacyButtonEnabled, Is.False);
   }
 }
 

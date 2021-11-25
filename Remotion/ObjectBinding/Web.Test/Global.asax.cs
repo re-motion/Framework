@@ -54,7 +54,7 @@ namespace OBWTest
     public Global ()
     {
       //  Initialize Logger
-      LogManager.GetLogger (typeof (Global));
+      LogManager.GetLogger(typeof (Global));
       InitializeComponent();
     }
 
@@ -69,43 +69,43 @@ namespace OBWTest
     {
       LogManager.Initialize();
       
-      string objectPath = Server.MapPath ("~/objects");
-      if (!Directory.Exists (objectPath))
-        Directory.CreateDirectory (objectPath);
-      var defaultServiceLocator = DefaultServiceLocator.Create ();
+      string objectPath = Server.MapPath("~/objects");
+      if (!Directory.Exists(objectPath))
+        Directory.CreateDirectory(objectPath);
+      var defaultServiceLocator = DefaultServiceLocator.Create();
 
       //defaultServiceLocator.RegisterSingle<ResourceTheme> (() => new ResourceTheme.NovaGray());
 
-      ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
+      ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 
       IReflectionBusinessObjectStorageProvider reflectionBusinessObjectStorageProvider;
       var writeReflectionBusinessObjectToDiskSetting = WebConfigurationManager.AppSettings[c_writeReflectionBusinessObjectToDiskAppSettingName];
-      if (StringComparer.OrdinalIgnoreCase.Equals (writeReflectionBusinessObjectToDiskSetting, true.ToString()))
+      if (StringComparer.OrdinalIgnoreCase.Equals(writeReflectionBusinessObjectToDiskSetting, true.ToString()))
       {
-        reflectionBusinessObjectStorageProvider = new FileSystemReflectionBusinessObjectStorageProvider (objectPath);
+        reflectionBusinessObjectStorageProvider = new FileSystemReflectionBusinessObjectStorageProvider(objectPath);
       }
       else
       {
         var httpContextProvider = SafeServiceLocator.Current.GetInstance<IHttpContextProvider>();
-        reflectionBusinessObjectStorageProvider = new SessionStateReflectionBusinessObjectStorageProvider (
+        reflectionBusinessObjectStorageProvider = new SessionStateReflectionBusinessObjectStorageProvider(
             httpContextProvider,
-            new InMemoryWithFileSystemReadFallbackReflectionBusinessObjectStorageProviderFactory (objectPath));
+            new InMemoryWithFileSystemReadFallbackReflectionBusinessObjectStorageProviderFactory(objectPath));
       }
 
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
-      XmlReflectionBusinessObjectStorageProvider provider = new XmlReflectionBusinessObjectStorageProvider (reflectionBusinessObjectStorageProvider);
-      XmlReflectionBusinessObjectStorageProvider.SetCurrent (provider);
-      BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>().AddService (typeof (IGetObjectService), provider);
+      XmlReflectionBusinessObjectStorageProvider provider = new XmlReflectionBusinessObjectStorageProvider(reflectionBusinessObjectStorageProvider);
+      XmlReflectionBusinessObjectStorageProvider.SetCurrent(provider);
+      BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>().AddService(typeof (IGetObjectService), provider);
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()
-                            .AddService (typeof (ISearchAvailableObjectsService), new BindableXmlObjectSearchService());
+                            .AddService(typeof (ISearchAvailableObjectsService), new BindableXmlObjectSearchService());
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()
-                            .AddService (typeof (IBusinessObjectWebUIService), new ReflectionBusinessObjectWebUIService (resourceUrlFactory));
+                            .AddService(typeof (IBusinessObjectWebUIService), new ReflectionBusinessObjectWebUIService(resourceUrlFactory));
 
-      BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService (new ReferenceDataSourceTestDefaultValueService());
-      BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService (new ReferenceDataSourceTestDeleteObjectService());
+      BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService(new ReferenceDataSourceTestDefaultValueService());
+      BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService(new ReferenceDataSourceTestDeleteObjectService());
 
-      var developmentResourcesExistTestPath = Path.Combine (Server.MapPath ("~/"), @"..\Web.ClientScript");
-      var isResourceMappingRequired = Directory.Exists (developmentResourcesExistTestPath);
+      var developmentResourcesExistTestPath = Path.Combine(Server.MapPath("~/"), @"..\Web.ClientScript");
+      var isResourceMappingRequired = Directory.Exists(developmentResourcesExistTestPath);
       if (isResourceMappingRequired)
       {
 #if DEBUG
@@ -113,25 +113,25 @@ namespace OBWTest
 #else
         const string configuration = "Release";
 #endif
-        _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
+        _resourceVirtualPathProvider = new ResourceVirtualPathProvider(
             new[]
             {
-                new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
-                new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
-                new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
-                new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
-                new ResourcePathMapping ("Remotion.ObjectBinding.Sample/Image", @"..\..\ObjectBinding\Sample\res\Image"),
-                new ResourcePathMapping ("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
-                new ResourcePathMapping ("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
-                new ResourcePathMapping ("Remotion.Web.Preview", @"..\..\Web\Preview\res"),
-                new ResourcePathMapping ("Remotion.ObjectBinding.Web.Preview", @"..\..\ObjectBinding\Web.Preview\res")
+                new ResourcePathMapping("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
+                new ResourcePathMapping("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
+                new ResourcePathMapping("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
+                new ResourcePathMapping("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
+                new ResourcePathMapping("Remotion.ObjectBinding.Sample/Image", @"..\..\ObjectBinding\Sample\res\Image"),
+                new ResourcePathMapping("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
+                new ResourcePathMapping("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
+                new ResourcePathMapping("Remotion.Web.Preview", @"..\..\Web\Preview\res"),
+                new ResourcePathMapping("Remotion.ObjectBinding.Web.Preview", @"..\..\ObjectBinding\Web.Preview\res")
             },
             FileExtensionHandlerMapping.Default);
-        _resourceVirtualPathProvider.Register ();
+        _resourceVirtualPathProvider.Register();
       }
       else
       {
-        _resourceVirtualPathProvider = new ResourceVirtualPathProvider (new ResourcePathMapping[0], new FileExtensionHandlerMapping[0]);
+        _resourceVirtualPathProvider = new ResourceVirtualPathProvider(new ResourcePathMapping[0], new FileExtensionHandlerMapping[0]);
       }
 
       //var bundle = new Bundle ("~/bundles/css");
@@ -168,14 +168,14 @@ namespace OBWTest
 
       try
       {
-        Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture (Request.UserLanguages[0]);
+        Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
       }
       catch (ArgumentException)
       {
       }
       try
       {
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo (Request.UserLanguages[0]);
+        Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
       }
       catch (ArgumentException)
       {

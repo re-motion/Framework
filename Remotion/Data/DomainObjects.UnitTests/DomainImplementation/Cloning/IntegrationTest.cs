@@ -27,35 +27,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     [Test]
     public void CompleteCloneStrategy ()
     {
-      DomainObjectCloner cloner = new DomainObjectCloner ();
-      cloner.CloneTransaction = ClientTransaction.CreateRootTransaction ();
+      DomainObjectCloner cloner = new DomainObjectCloner();
+      cloner.CloneTransaction = ClientTransaction.CreateRootTransaction();
 
-      Order source = DomainObjectIDs.Order1.GetObject<Order> ();
-      Order clone = cloner.CreateClone (source, new CompleteCloneStrategy());
+      Order source = DomainObjectIDs.Order1.GetObject<Order>();
+      Order clone = cloner.CreateClone(source, new CompleteCloneStrategy());
 
-      Assert.That (clone, Is.Not.SameAs (source));
-      Assert.That (clone.OrderNumber, Is.EqualTo (source.OrderNumber));
+      Assert.That(clone, Is.Not.SameAs(source));
+      Assert.That(clone.OrderNumber, Is.EqualTo(source.OrderNumber));
 
-      Assert.That (clone.OrderItems[0], Is.Not.SameAs (source.OrderItems[0]));
-      Assert.That (clone.OrderItems[0].Product, Is.EqualTo (source.OrderItems[0].Product));
-      Assert.That (clone.OrderTicket, Is.Not.SameAs (source.OrderTicket));
-      Assert.That (clone.OrderTicket.FileName, Is.EqualTo (source.OrderTicket.FileName));
-      Assert.That (clone.Customer, Is.Not.SameAs (source.Customer));
-      Assert.That (clone.Customer.Name, Is.EqualTo (source.Customer.Name));
-      Assert.That (clone.Customer.Orders.ContainsObject (clone));
+      Assert.That(clone.OrderItems[0], Is.Not.SameAs(source.OrderItems[0]));
+      Assert.That(clone.OrderItems[0].Product, Is.EqualTo(source.OrderItems[0].Product));
+      Assert.That(clone.OrderTicket, Is.Not.SameAs(source.OrderTicket));
+      Assert.That(clone.OrderTicket.FileName, Is.EqualTo(source.OrderTicket.FileName));
+      Assert.That(clone.Customer, Is.Not.SameAs(source.Customer));
+      Assert.That(clone.Customer.Name, Is.EqualTo(source.Customer.Name));
+      Assert.That(clone.Customer.Orders.ContainsObject(clone));
     }
    
     [Test]
     public void TwoClonesWithSameContext ()
     {
-      DomainObjectCloner cloner = new DomainObjectCloner ();
-      CloneContext context = new CloneContext (cloner);
+      DomainObjectCloner cloner = new DomainObjectCloner();
+      CloneContext context = new CloneContext(cloner);
 
-      Order source = DomainObjectIDs.Order1.GetObject<Order> ();
-      Order clone1 = cloner.CreateClone (source, new CompleteCloneStrategy(), context);
-      Order clone2 = cloner.CreateClone (source, new CompleteCloneStrategy(), context);
+      Order source = DomainObjectIDs.Order1.GetObject<Order>();
+      Order clone1 = cloner.CreateClone(source, new CompleteCloneStrategy(), context);
+      Order clone2 = cloner.CreateClone(source, new CompleteCloneStrategy(), context);
 
-      Assert.That (clone1, Is.SameAs (clone2));
+      Assert.That(clone1, Is.SameAs(clone2));
     }
   }
 }

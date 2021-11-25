@@ -35,9 +35,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (menuItem != null && menuItem.Command != null)
       {
         if (menuItem is BocMenuItem)
-          ((BocMenuItemCommand) menuItem.Command).OnClick ((BocMenuItem) menuItem);
+          ((BocMenuItemCommand) menuItem.Command).OnClick((BocMenuItem) menuItem);
         else
-          base.OnMenuItemEventCommandClick (menuItem, node);
+          base.OnMenuItemEventCommandClick(menuItem, node);
       }
     }
 
@@ -52,16 +52,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           if (node is BusinessObjectTreeNode)
             businessObject = ((BusinessObjectTreeNode) node).BusinessObject;
 
-          Assertion.DebugIsNotNull (node.TreeView, "node.TreeView must not be null.");
+          Assertion.DebugIsNotNull(node.TreeView, "node.TreeView must not be null.");
           Page? page = node.TreeView.Page;
           if (page is IWxePage)
-            command.ExecuteWxeFunction ((IWxePage) page, businessObject);
+            command.ExecuteWxeFunction((IWxePage) page, businessObject);
           //else
           //  command.ExecuteWxeFunction (Page, businessObject);
         }
         else
         {
-          base.OnMenuItemWxeFunctionCommandClick (menuItem, node);
+          base.OnMenuItemWxeFunctionCommandClick(menuItem, node);
         }
       }
     }

@@ -29,26 +29,26 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     public void RenderTitlesRow (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "titleStub");
-      renderingContext.Writer.RenderBeginTag ("tr");
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "titleStub");
+      renderingContext.Writer.RenderBeginTag("tr");
       renderingContext.Writer.RenderEndTag();
     }
 
     public void RenderEmptyListDataRow (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "emptyStub");
-      renderingContext.Writer.RenderBeginTag ("tr");
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "emptyStub");
+      renderingContext.Writer.RenderBeginTag("tr");
       renderingContext.Writer.RenderEndTag();
     }
     
     public void RenderDataRow (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, int rowIndex)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("rowRenderingContext", rowRenderingContext);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "dataStub");
-      renderingContext.Writer.RenderBeginTag ("tr");
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("rowRenderingContext", rowRenderingContext);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "dataStub");
+      renderingContext.Writer.RenderBeginTag("tr");
       renderingContext.Writer.RenderEndTag();
     }
   }

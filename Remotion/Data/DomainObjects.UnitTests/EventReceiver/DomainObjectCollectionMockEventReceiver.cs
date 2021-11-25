@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     protected DomainObjectCollectionMockEventReceiver (DomainObjectCollection domainObjectCollection)
     {
-      ArgumentUtility.CheckNotNull ("domainObjectCollection", domainObjectCollection);
+      ArgumentUtility.CheckNotNull("domainObjectCollection", domainObjectCollection);
 
       _domainObjectCollection = domainObjectCollection;
 
@@ -59,76 +59,76 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Adding (object sender, DomainObject domainObject)
     {
-      Adding (null, (DomainObjectCollectionChangeEventArgs) null);
-      LastCall.Constraints (Mocks_Is.Same (sender), Mocks_Property.Value ("DomainObject", domainObject));
+      Adding(null, (DomainObjectCollectionChangeEventArgs) null);
+      LastCall.Constraints(Mocks_Is.Same(sender), Mocks_Property.Value("DomainObject", domainObject));
     }
 
     public void Adding (DomainObject domainObject)
     {
-      Adding (_domainObjectCollection, domainObject);
+      Adding(_domainObjectCollection, domainObject);
     }
 
     public void Adding ()
     {
-      Adding (Arg<object>.Is.Anything, Arg<DomainObjectCollectionChangeEventArgs>.Is.Anything);
+      Adding(Arg<object>.Is.Anything, Arg<DomainObjectCollectionChangeEventArgs>.Is.Anything);
     }
 
     public void Added (object sender, DomainObject domainObject)
     {
-      Added (null, (DomainObjectCollectionChangeEventArgs) null);
-      LastCall.Constraints (Mocks_Is.Same (sender), Mocks_Property.Value ("DomainObject", domainObject));
+      Added(null, (DomainObjectCollectionChangeEventArgs) null);
+      LastCall.Constraints(Mocks_Is.Same(sender), Mocks_Property.Value("DomainObject", domainObject));
     }
 
     public void Added (DomainObject domainObject)
     {
-      Added (_domainObjectCollection, domainObject);
+      Added(_domainObjectCollection, domainObject);
     }
 
     public void Added ()
     {
-      Added (Arg<object>.Is.Anything, Arg<DomainObjectCollectionChangeEventArgs>.Is.Anything);
+      Added(Arg<object>.Is.Anything, Arg<DomainObjectCollectionChangeEventArgs>.Is.Anything);
     }
 
     public void Removing (object sender, DomainObject domainObject)
     {
-      Removing (null, (DomainObjectCollectionChangeEventArgs) null);
-      LastCall.Constraints (Mocks_Is.Same (sender), Mocks_Property.Value ("DomainObject", domainObject));
+      Removing(null, (DomainObjectCollectionChangeEventArgs) null);
+      LastCall.Constraints(Mocks_Is.Same(sender), Mocks_Property.Value("DomainObject", domainObject));
     }
 
     public void Removing (DomainObject domainObject)
     {
-      Removing (_domainObjectCollection, domainObject);
+      Removing(_domainObjectCollection, domainObject);
     }
 
     public void Removing ()
     {
-      Removing (Arg<object>.Is.Anything, Arg<DomainObjectCollectionChangeEventArgs>.Is.Anything);
+      Removing(Arg<object>.Is.Anything, Arg<DomainObjectCollectionChangeEventArgs>.Is.Anything);
     }
 
     public void Removed (object sender, DomainObject domainObject)
     {
-      Removed (null, (DomainObjectCollectionChangeEventArgs) null);
-      LastCall.Constraints (Mocks_Is.Same (sender), Mocks_Property.Value ("DomainObject", domainObject));
+      Removed(null, (DomainObjectCollectionChangeEventArgs) null);
+      LastCall.Constraints(Mocks_Is.Same(sender), Mocks_Property.Value("DomainObject", domainObject));
     }
 
     public void Removed (DomainObject domainObject)
     {
-      Removed (_domainObjectCollection, domainObject);
+      Removed(_domainObjectCollection, domainObject);
     }
 
     public void Removed ()
     {
-      Removed (Arg<object>.Is.Anything, Arg<DomainObjectCollectionChangeEventArgs>.Is.Anything);
+      Removed(Arg<object>.Is.Anything, Arg<DomainObjectCollectionChangeEventArgs>.Is.Anything);
     }
 
     public void Deleting ()
     {
-      Deleting (Arg.Is (_domainObjectCollection), Arg<EventArgs>.Is.Anything);
+      Deleting(Arg.Is(_domainObjectCollection), Arg<EventArgs>.Is.Anything);
     }
 
     public void Deleted ()
     {
-      Deleted (Arg.Is (_domainObjectCollection), Arg<EventArgs>.Is.Anything);
+      Deleted(Arg.Is(_domainObjectCollection), Arg<EventArgs>.Is.Anything);
     }
   }
 }

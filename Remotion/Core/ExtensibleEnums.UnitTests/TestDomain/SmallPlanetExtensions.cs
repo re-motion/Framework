@@ -24,24 +24,24 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
     [ExtensibleEnumPosition (-1.0)]
     public static Planet Mercury (this ExtensibleEnumDefinition<Planet> definition)
     {
-      return new Planet (MethodBase.GetCurrentMethod ());
+      return new Planet(MethodBase.GetCurrentMethod());
     }
 
     [ExtensibleEnumPosition (-0.5)]
     public static Planet Venus (this ExtensibleEnumDefinition<Planet> definition)
     {
-      return new Planet (MethodBase.GetCurrentMethod ());
+      return new Planet(MethodBase.GetCurrentMethod());
     }
 
     public static Planet Earth (this ExtensibleEnumDefinition<Planet> definition)
     {
-      return new Planet (MethodBase.GetCurrentMethod ());
+      return new Planet(MethodBase.GetCurrentMethod());
     }
 
     [ExtensibleEnumPosition (1.0)]
     public static Planet Mars (this ExtensibleEnumDefinition<Planet> definition)
     {
-      return new Planet (MethodBase.GetCurrentMethod ());
+      return new Planet(MethodBase.GetCurrentMethod());
     }
   }
 }

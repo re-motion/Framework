@@ -36,66 +36,66 @@ namespace Remotion.Web.ExecutionEngine
   {
     public static bool HasAccess (Type functionType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("functionType", functionType, typeof (WxeFunction));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("functionType", functionType, typeof (WxeFunction));
 
-      var wxeSecurityAdapter = GetWxeSecurityAdapter ();
+      var wxeSecurityAdapter = GetWxeSecurityAdapter();
       if (wxeSecurityAdapter == null)
         return true;
 
-      return wxeSecurityAdapter.HasStatelessAccess (functionType);
+      return wxeSecurityAdapter.HasStatelessAccess(functionType);
     }
 
     private IWxeFunctionExecutionListener _executionListener = NullExecutionListener.Null;
     private TransactionStrategyBase? _transactionStrategy;
     private ITransactionMode _transactionMode;
     private readonly WxeVariablesContainer _variablesContainer;
-    private readonly WxeExceptionHandler _exceptionHandler = new WxeExceptionHandler ();
+    private readonly WxeExceptionHandler _exceptionHandler = new WxeExceptionHandler();
     private string? _functionToken;
     private string? _returnUrl;
     private string? _executionCompletedScript;
 
     protected WxeFunction (ITransactionMode transactionMode, params object[] actualParameters)
     {
-      ArgumentUtility.CheckNotNull ("transactionMode", transactionMode);
-      ArgumentUtility.CheckNotNull ("actualParameters", actualParameters);
+      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
+      ArgumentUtility.CheckNotNull("actualParameters", actualParameters);
 
       _transactionMode = transactionMode;
-      _variablesContainer = new WxeVariablesContainer (this, actualParameters);
+      _variablesContainer = new WxeVariablesContainer(this, actualParameters);
     }
 
     protected WxeFunction (ITransactionMode transactionMode, WxeParameterDeclaration[] parameterDeclarations, object[] actualParameters)
     {
-      ArgumentUtility.CheckNotNull ("transactionMode", transactionMode);
-      ArgumentUtility.CheckNotNull ("parameterDeclarations", parameterDeclarations);
-      ArgumentUtility.CheckNotNull ("actualParameters", actualParameters);
+      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
+      ArgumentUtility.CheckNotNull("parameterDeclarations", parameterDeclarations);
+      ArgumentUtility.CheckNotNull("actualParameters", actualParameters);
 
       _transactionMode = transactionMode;
-      _variablesContainer = new WxeVariablesContainer (this, actualParameters, parameterDeclarations);
+      _variablesContainer = new WxeVariablesContainer(this, actualParameters, parameterDeclarations);
     }
 
     public override void Execute (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      Assertion.IsNotNull (_executionListener);
+      ArgumentUtility.CheckNotNull("context", context);
+      Assertion.IsNotNull(_executionListener);
 
       if (!IsExecutionStarted)
       {
-        _variablesContainer.EnsureParametersInitialized (null);
+        _variablesContainer.EnsureParametersInitialized(null);
         var wxeSecurityAdapter = GetWxeSecurityAdapter();
-        _executionListener = new SecurityExecutionListener (this, _executionListener, wxeSecurityAdapter);
+        _executionListener = new SecurityExecutionListener(this, _executionListener, wxeSecurityAdapter);
 
-        _transactionStrategy = _transactionMode.CreateTransactionStrategy (this, context);
-        Assertion.IsNotNull (_transactionStrategy);
+        _transactionStrategy = _transactionMode.CreateTransactionStrategy(this, context);
+        Assertion.IsNotNull(_transactionStrategy);
 
-        _executionListener = _transactionStrategy.CreateExecutionListener (_executionListener);
-        Assertion.IsNotNull (_executionListener);
+        _executionListener = _transactionStrategy.CreateExecutionListener(_executionListener);
+        Assertion.IsNotNull(_executionListener);
       }
 
       try
       {
-        _executionListener.OnExecutionPlay (context);
-        base.Execute (context);
-        _executionListener.OnExecutionStop (context);
+        _executionListener.OnExecutionPlay(context);
+        base.Execute(context);
+        _executionListener.OnExecutionStop(context);
       }
       catch (WxeFatalExecutionException)
       {
@@ -104,31 +104,31 @@ namespace Remotion.Web.ExecutionEngine
       }
       catch (ThreadAbortException)
       {
-        _executionListener.OnExecutionPause (context);
+        _executionListener.OnExecutionPause(context);
         throw;
       }
       catch (Exception stepException)
       {
         try
         {
-          _executionListener.OnExecutionFail (context, stepException);
+          _executionListener.OnExecutionFail(context, stepException);
         }
         catch (Exception listenerException)
         {
-          throw new WxeFatalExecutionException (stepException, listenerException);
+          throw new WxeFatalExecutionException(stepException, listenerException);
         }
 
-        var unwrappedException = WxeHttpExceptionPreservingException.GetUnwrappedException (stepException) ?? stepException;
-        if (!_exceptionHandler.Catch (unwrappedException))
+        var unwrappedException = WxeHttpExceptionPreservingException.GetUnwrappedException(stepException) ?? stepException;
+        if (!_exceptionHandler.Catch(unwrappedException))
         {
-          throw new WxeUnhandledException (
-              string.Format ("An exception ocured while executing WxeFunction '{0}'.", GetType().GetFullNameSafe()),
+          throw new WxeUnhandledException(
+              string.Format("An exception ocured while executing WxeFunction '{0}'.", GetType().GetFullNameSafe()),
               stepException);
         }
       }
 
       if (_exceptionHandler.Exception == null && ParentStep != null)
-        _variablesContainer.ReturnParametersToCaller ();
+        _variablesContainer.ReturnParametersToCaller();
     }
 
     public ITransactionStrategy Transaction
@@ -148,10 +148,10 @@ namespace Remotion.Web.ExecutionEngine
 
     protected void SetTransactionMode (ITransactionMode transactionMode)
     {
-      ArgumentUtility.CheckNotNull ("transactionMode", transactionMode);
+      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
 
       if (_transactionStrategy != null)
-        throw new InvalidOperationException ("The TransactionMode cannot be set after the TransactionStrategy has been initialized.");
+        throw new InvalidOperationException("The TransactionMode cannot be set after the TransactionStrategy has been initialized.");
 
       _transactionMode = transactionMode;
     }
@@ -163,22 +163,22 @@ namespace Remotion.Web.ExecutionEngine
 
     protected void SetExecutionListener (IWxeFunctionExecutionListener executionListener)
     {
-      ArgumentUtility.CheckNotNull ("executionListener", executionListener);
+      ArgumentUtility.CheckNotNull("executionListener", executionListener);
 
       if (_transactionStrategy != null)
-        throw new InvalidOperationException ("The ExecutionListener cannot be set after the TransactionStrategy has been initialized.");
+        throw new InvalidOperationException("The ExecutionListener cannot be set after the TransactionStrategy has been initialized.");
 
       _executionListener = executionListener;
     }
 
     object?[] IWxeFunctionExecutionContext.GetInParameters ()
     {
-      return _variablesContainer.ParameterDeclarations.Where (p => p.IsIn).Select (p => p.GetValue (_variablesContainer.Variables)).ToArray();
+      return _variablesContainer.ParameterDeclarations.Where(p => p.IsIn).Select(p => p.GetValue(_variablesContainer.Variables)).ToArray();
     }
 
     object?[] IWxeFunctionExecutionContext.GetOutParameters ()
     {
-      return _variablesContainer.ParameterDeclarations.Where (p => p.IsOut).Select (p => p.GetValue (_variablesContainer.Variables)).ToArray ();
+      return _variablesContainer.ParameterDeclarations.Where(p => p.IsOut).Select(p => p.GetValue(_variablesContainer.Variables)).ToArray();
     }
 
     object[] IWxeFunctionExecutionContext.GetVariables ()
@@ -198,9 +198,9 @@ namespace Remotion.Web.ExecutionEngine
       get { return _returnUrl; }
       set
       {
-        if (value != null && value.StartsWith ("javascript:", StringComparison.OrdinalIgnoreCase))
+        if (value != null && value.StartsWith("javascript:", StringComparison.OrdinalIgnoreCase))
         {
-          throw new ArgumentException (
+          throw new ArgumentException(
               "The ReturnUrl cannot be a javascript-URL. Use the WxeFunction.SetExecutionCompletedScript(script) method instead.",
               "value");
         }
@@ -221,7 +221,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks>The <paramref name="script"/> will supersede any <see cref="ReturnUrl"/> set on the same <see cref="WxeFunction"/>.</remarks>
     public void SetExecutionCompletedScript ([NotNull] string script)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("script", script);
+      ArgumentUtility.CheckNotNullOrEmpty("script", script);
 
       _returnUrl = null;
       _executionCompletedScript = script;
@@ -251,43 +251,43 @@ namespace Remotion.Web.ExecutionEngine
         WxeFunction? rootFunction = RootFunction;
         if (rootFunction != null && rootFunction != this)
           return rootFunction.FunctionToken;
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "The WxeFunction does not have a RootFunction, i.e. the top-most WxeFunction does not have a FunctionToken.");
       }
     }
 
     internal void SetFunctionToken (string functionToken)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
+      ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
       _functionToken = functionToken;
     }
 
     public override string ToString ()
     {
-      StringBuilder sb = new StringBuilder ();
-      sb.Append ("WxeFunction: ");
-      sb.Append (GetType ().Name);
-      sb.Append (" (");
+      StringBuilder sb = new StringBuilder();
+      sb.Append("WxeFunction: ");
+      sb.Append(GetType().Name);
+      sb.Append(" (");
       for (int i = 0; i < _variablesContainer.ActualParameters.Length; ++i)
       {
         if (i > 0)
-          sb.Append (", ");
+          sb.Append(", ");
         object value = _variablesContainer.ActualParameters[i];
         if (value is WxeVariableReference)
-          sb.Append ("@" + ((WxeVariableReference) value).Name);
+          sb.Append("@" + ((WxeVariableReference) value).Name);
         else if (value is string)
-          sb.AppendFormat ("\"{0}\"", value);
+          sb.AppendFormat("\"{0}\"", value);
         else
-          sb.Append (value);
+          sb.Append(value);
       }
-      sb.Append (")");
-      return sb.ToString ();
+      sb.Append(")");
+      return sb.ToString();
     }
 
     internal static IWxeSecurityAdapter? GetWxeSecurityAdapter ()
     {
       return SafeServiceLocator.Current.GetAllInstances<IWxeSecurityAdapter>()
-          .SingleOrDefault (() => new InvalidOperationException ("Only a single IWxeSecurityAdapter can be registered."));
+          .SingleOrDefault(() => new InvalidOperationException("Only a single IWxeSecurityAdapter can be registered."));
     }
   }
 }

@@ -23,7 +23,7 @@ namespace Remotion.Mixins
   public partial class MixinConfiguration
   {
     private static readonly SafeContextSingleton<MixinConfiguration> s_activeConfiguration =
-        new SafeContextSingleton<MixinConfiguration> (SafeContextKeys.MixinsMixinConfigurationActiveConfiguration,
+        new SafeContextSingleton<MixinConfiguration>(SafeContextKeys.MixinsMixinConfigurationActiveConfiguration,
         GetMasterConfiguration);
 
     /// <summary>
@@ -67,7 +67,7 @@ namespace Remotion.Mixins
     /// <param name="configuration">The configuration to be set, can be <see langword="null"/>.</param>
     public static void SetActiveConfiguration (MixinConfiguration? configuration)
     {
-      s_activeConfiguration.SetCurrent (configuration!);
+      s_activeConfiguration.SetCurrent(configuration!);
     }
   }
 }

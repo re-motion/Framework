@@ -48,11 +48,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         string[] itemIDs)
     {
       if (arguments == "error")
-        throw new HttpException (500, "Server error");
+        throw new HttpException(500, "Server error");
 
-      var delayInMilliseconds = int.Parse (arguments);
-      Thread.Sleep (TimeSpan.FromMilliseconds (delayInMilliseconds));
-      return itemIDs.Select (itemID => WebMenuItemProxy.Create (itemID, isDisabled: false)).ToArray();
+      var delayInMilliseconds = int.Parse(arguments);
+      Thread.Sleep(TimeSpan.FromMilliseconds(delayInMilliseconds));
+      return itemIDs.Select(itemID => WebMenuItemProxy.Create(itemID, isDisabled: false)).ToArray();
     }
   }
 }

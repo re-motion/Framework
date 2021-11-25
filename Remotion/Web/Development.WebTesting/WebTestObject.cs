@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting
 
     protected WebTestObject ([NotNull] TWebTestObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       _context = context;
     }

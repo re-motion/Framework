@@ -33,83 +33,83 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     [SetUp]
     public void SetUp ()
     {
-      _serializer = new AttributeClassContextSerializer ();
-      _invalidDeserializer = new AttributeClassContextDeserializer (new object[] { 1, 2, 3 });
+      _serializer = new AttributeClassContextSerializer();
+      _invalidDeserializer = new AttributeClassContextDeserializer(new object[] { 1, 2, 3 });
     }
 
     [Test]
     public void AddClassType ()
     {
-      _serializer.AddClassType (typeof (DateTime));
+      _serializer.AddClassType(typeof (DateTime));
 
-      var deserializer = new AttributeClassContextDeserializer (_serializer.Values);
-      Assert.That (deserializer.GetClassType (), Is.EqualTo (typeof (DateTime)));
+      var deserializer = new AttributeClassContextDeserializer(_serializer.Values);
+      Assert.That(deserializer.GetClassType(), Is.EqualTo(typeof (DateTime)));
     }
 
     [Test]
     public void AddMixins ()
     {
-      var mixinContext1 = MixinContextObjectMother.Create (mixinType: typeof (string), origin: MixinContextOriginObjectMother.Create (assembly: GetType().Assembly));
-      var mixinContext2 = MixinContextObjectMother.Create (mixinType: typeof (object));
-      _serializer.AddMixins (new[] {mixinContext1, mixinContext2});
+      var mixinContext1 = MixinContextObjectMother.Create(mixinType: typeof (string), origin: MixinContextOriginObjectMother.Create(assembly: GetType().Assembly));
+      var mixinContext2 = MixinContextObjectMother.Create(mixinType: typeof (object));
+      _serializer.AddMixins(new[] {mixinContext1, mixinContext2});
 
       // Check that the chain of serializers correctly sets up the AttributeMixinContextOriginSerializer
       var serializedMixinContexts = ((object[]) _serializer.Values[1]);
       var serializedMixinContext1 = (object[]) serializedMixinContexts[1];
       var serializedMixinOrigin = (object[]) serializedMixinContext1[4];
       var serializedMixinOriginAssembly = serializedMixinOrigin[1];
-      Assert.That (serializedMixinOriginAssembly, Is.EqualTo (GetType ().Assembly.FullName));
+      Assert.That(serializedMixinOriginAssembly, Is.EqualTo(GetType().Assembly.FullName));
 
-      var deserializer = new AttributeClassContextDeserializer (_serializer.Values);
-      Assert.That (deserializer.GetMixins ().ToArray (), Is.EqualTo (new[] { mixinContext1, mixinContext2 }));
+      var deserializer = new AttributeClassContextDeserializer(_serializer.Values);
+      Assert.That(deserializer.GetMixins().ToArray(), Is.EqualTo(new[] { mixinContext1, mixinContext2 }));
     }
 
     [Test]
     public void AddComposedInterfaces ()
     {
-      _serializer.AddComposedInterfaces (new[] {typeof (int), typeof (string)});
+      _serializer.AddComposedInterfaces(new[] {typeof (int), typeof (string)});
 
-      var deserializer = new AttributeClassContextDeserializer (_serializer.Values);
-      Assert.That (deserializer.GetComposedInterfaces (), Is.EqualTo (new[] { typeof (int), typeof (string) }));
+      var deserializer = new AttributeClassContextDeserializer(_serializer.Values);
+      Assert.That(deserializer.GetComposedInterfaces(), Is.EqualTo(new[] { typeof (int), typeof (string) }));
     }
 
     [Test]
     public void Deserializer_InvalidArray ()
     {
-      Assert.That (
-          () => new AttributeClassContextDeserializer (new[] { "x" }),
+      Assert.That(
+          () => new AttributeClassContextDeserializer(new[] { "x" }),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Expected an array with 3 elements.", "values"));
     }
 
     [Test]
     public void GetClassType_Invalid ()
     {
-      Assert.That (
-          () => _invalidDeserializer.GetClassType (),
+      Assert.That(
+          () => _invalidDeserializer.GetClassType(),
           Throws.InstanceOf<SerializationException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Expected value of type 'System.Type' at index 0 in the values array, but found 'System.Int32'."));
     }
 
     [Test]
     public void GetMixins_Invalid ()
     {
-      Assert.That (
-          () => _invalidDeserializer.GetMixins (),
+      Assert.That(
+          () => _invalidDeserializer.GetMixins(),
           Throws.InstanceOf<SerializationException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Expected value of type 'System.Object[]' at index 1 in the values array, but found 'System.Int32'."));
     }
 
     [Test]
     public void GetComposedInterfaces_Invalid ()
     {
-      Assert.That (
+      Assert.That(
           () => _invalidDeserializer.GetComposedInterfaces(),
           Throws.InstanceOf<SerializationException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Expected value of type 'System.Type[]' at index 2 in the values array, but found 'System.Int32'."));
     }
   }

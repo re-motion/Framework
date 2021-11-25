@@ -102,64 +102,64 @@ namespace Remotion.ObjectBinding
     /// </exception>
     public string GetPropertyString (IBusinessObject businessObject, IBusinessObjectProperty property, string? format)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("property", property);
       
       if (property.IsList)
       {
-        Tuple<int, string?> result = GetLineCountAndFormatString (format);
-        return GetStringValues (businessObject, property, result.Item2, result.Item1);
+        Tuple<int, string?> result = GetLineCountAndFormatString(format);
+        return GetStringValues(businessObject, property, result.Item2, result.Item1);
       }
       else
       {
-        return GetStringValue (businessObject, businessObject.GetProperty (property), property, format);
+        return GetStringValue(businessObject, businessObject.GetProperty(property), property, format);
       }
     }
 
     private string GetStringValues (IBusinessObject businessObject, IBusinessObjectProperty property, string? format, int lines)
     {
-      IList? list = (IList?) businessObject.GetProperty (property);
+      IList? list = (IList?) businessObject.GetProperty(property);
       if (list == null)
         return string.Empty;
 
       int count = list.Count;
-      StringBuilder sb = new StringBuilder (count*40);
+      StringBuilder sb = new StringBuilder(count*40);
       for (int i = 0;
            i < count && (lines == -1 || i < lines);
            ++i)
       {
         if (i > 0)
-          sb.AppendLine ();
-        sb.Append (GetStringValue (businessObject, list[i], property, format));
+          sb.AppendLine();
+        sb.Append(GetStringValue(businessObject, list[i], property, format));
       }
 
       if (lines != -1 && count > lines)
-        sb.Append (" ... [" + count + "]");
+        sb.Append(" ... [" + count + "]");
 
       return sb.ToString();
     }
 
     private Tuple<int, string?> GetLineCountAndFormatString (string? format)
     {
-      Tuple<string?, string?> formatStrings = GetFormatStrings (format);
-      return new Tuple<int, string?> (ParseLineCount(formatStrings.Item1), formatStrings.Item2);
+      Tuple<string?, string?> formatStrings = GetFormatStrings(format);
+      return new Tuple<int, string?>(ParseLineCount(formatStrings.Item1), formatStrings.Item2);
     }
 
     private Tuple<string?, string?> GetFormatStrings (string? format)
     {
       if (format == null)
-        return new Tuple<string?, string?> (null, null);
+        return new Tuple<string?, string?>(null, null);
 
       const string lineCountPrefix = "lines=";
-      if (format.StartsWith (lineCountPrefix))
+      if (format.StartsWith(lineCountPrefix))
       {
-        string[] formatStrings = format.Split (new char[] {'|'}, 2);
-        return new Tuple<string?, string?> (
-            formatStrings[0].Substring (lineCountPrefix.Length), 
+        string[] formatStrings = format.Split(new char[] {'|'}, 2);
+        return new Tuple<string?, string?>(
+            formatStrings[0].Substring(lineCountPrefix.Length), 
             (formatStrings.Length == 2) ? formatStrings[1] : null);
       }
 
-      return new Tuple<string?, string?> (null, format);
+      return new Tuple<string?, string?>(null, format);
     }
 
     private int ParseLineCount (string? linesString)
@@ -168,7 +168,7 @@ namespace Remotion.ObjectBinding
         return -1;
 
       int lines;
-      if (int.TryParse (linesString, NumberStyles.Integer, CultureInfo.InvariantCulture, out lines))
+      if (int.TryParse(linesString, NumberStyles.Integer, CultureInfo.InvariantCulture, out lines))
         return lines;
 
       return 1;
@@ -177,24 +177,24 @@ namespace Remotion.ObjectBinding
     private string GetStringValue (IBusinessObject businessObject, object? value, IBusinessObjectProperty property, string? format)
     {
       if (property is IBusinessObjectBooleanProperty)
-        return GetStringValueForBooleanProperty (value, (IBusinessObjectBooleanProperty) property);
+        return GetStringValueForBooleanProperty(value, (IBusinessObjectBooleanProperty) property);
       if (property is IBusinessObjectDateTimeProperty)
-        return GetStringValueForDateTimeProperty (value, (IBusinessObjectDateTimeProperty) property, format);
+        return GetStringValueForDateTimeProperty(value, (IBusinessObjectDateTimeProperty) property, format);
       if (property is IBusinessObjectEnumerationProperty)
-        return GetStringValueForEnumerationProperty (value, (IBusinessObjectEnumerationProperty) property, businessObject);
+        return GetStringValueForEnumerationProperty(value, (IBusinessObjectEnumerationProperty) property, businessObject);
       if (property is IBusinessObjectNumericProperty)
-        return GetStringValueForNumericProperty (value, format);
+        return GetStringValueForNumericProperty(value, format);
       if (property is IBusinessObjectReferenceProperty)
-        return GetStringValueForReferenceProperty (value);
+        return GetStringValueForReferenceProperty(value);
       if (property is IBusinessObjectStringProperty)
-        return GetStringValueForStringProperty (value);
+        return GetStringValueForStringProperty(value);
 
       return value?.ToString() ?? string.Empty;
     }
 
     private string GetStringValueForDateTimeProperty (object? value, IBusinessObjectDateTimeProperty property, string? format)
     {
-      if (string.IsNullOrEmpty (format))
+      if (string.IsNullOrEmpty(format))
       {
         if (property.Type == DateTimeType.Date)
           format = "d";
@@ -202,20 +202,20 @@ namespace Remotion.ObjectBinding
           format = "g";
       }
 
-      return GetStringValueForFormattableValue ((IFormattable?) value, format);
+      return GetStringValueForFormattableValue((IFormattable?) value, format);
     }
 
     private string GetStringValueForBooleanProperty (object? value, IBusinessObjectBooleanProperty property)
     {
       if (value is bool)
-        return property.GetDisplayName ((bool) value);
+        return property.GetDisplayName((bool) value);
       else
         return string.Empty;
     }
 
     private string GetStringValueForEnumerationProperty (object? value, IBusinessObjectEnumerationProperty property, IBusinessObject businessObject)
     {
-      IEnumerationValueInfo? enumValueInfo = property.GetValueInfoByValue (value, businessObject);
+      IEnumerationValueInfo? enumValueInfo = property.GetValueInfoByValue(value, businessObject);
       if (enumValueInfo == null)
         return string.Empty;
       return enumValueInfo.DisplayName;
@@ -223,7 +223,7 @@ namespace Remotion.ObjectBinding
 
     private string GetStringValueForNumericProperty (object? value, string? format)
     {
-      return GetStringValueForFormattableValue ((IFormattable?) value, format);
+      return GetStringValueForFormattableValue((IFormattable?) value, format);
     }
 
     private string GetStringValueForReferenceProperty (object? value)
@@ -249,7 +249,7 @@ namespace Remotion.ObjectBinding
     {
       if (value == null)
         return string.Empty;
-      return value.ToString (format, null);
+      return value.ToString(format, null);
     }
   }
 }

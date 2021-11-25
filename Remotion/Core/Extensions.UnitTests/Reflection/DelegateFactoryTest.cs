@@ -39,74 +39,74 @@ namespace Remotion.Extensions.UnitTests.Reflection
 
       var result = _factory.GetSignature(delegateType);
 
-      Assert.That (result.Item1, Is.EqualTo (new[] { typeof (int), typeof (string) }));
-      Assert.That (result.Item2, Is.EqualTo (typeof(IDisposable)));
+      Assert.That(result.Item1, Is.EqualTo(new[] { typeof (int), typeof (string) }));
+      Assert.That(result.Item2, Is.EqualTo(typeof(IDisposable)));
     }
 
     [Test]
     public void CreateConstructorCall ()
     {
-      var constructor = MemberInfoFromExpressionUtility.GetConstructor (() => new DomainType ("", 7));
+      var constructor = MemberInfoFromExpressionUtility.GetConstructor(() => new DomainType("", 7));
 
       var result =
           (Func<string, int, DomainType>)
-          _factory.CreateConstructorCall (constructor, typeof (Func<string, int, DomainType>));
+          _factory.CreateConstructorCall(constructor, typeof (Func<string, int, DomainType>));
 
-      var instance = result ("abc", 7);
-      Assert.That (instance.String, Is.EqualTo ("abc"));
-      Assert.That (instance.Int, Is.EqualTo (7));
+      var instance = result("abc", 7);
+      Assert.That(instance.String, Is.EqualTo("abc"));
+      Assert.That(instance.Int, Is.EqualTo(7));
     }
 
     [Test]
     public void CreateConstructorCall_ValueType ()
     {
-      var constructor = MemberInfoFromExpressionUtility.GetConstructor (() => new DomainValueType ("", 7));
+      var constructor = MemberInfoFromExpressionUtility.GetConstructor(() => new DomainValueType("", 7));
 
       var result =
           (Func<string, int, DomainValueType>)
-          _factory.CreateConstructorCall (constructor, typeof (Func<string, int, DomainValueType>));
+          _factory.CreateConstructorCall(constructor, typeof (Func<string, int, DomainValueType>));
 
-      var instance = result ("abc", 7);
-      Assert.That (instance.String, Is.EqualTo ("abc"));
-      Assert.That (instance.Int, Is.EqualTo (7));
+      var instance = result("abc", 7);
+      Assert.That(instance.String, Is.EqualTo("abc"));
+      Assert.That(instance.Int, Is.EqualTo(7));
     }
 
     [Test]
     public void CreateConstructorCall_ValueType_Boxing ()
     {
-      var constructor = MemberInfoFromExpressionUtility.GetConstructor (() => new DomainValueType ("", 7));
+      var constructor = MemberInfoFromExpressionUtility.GetConstructor(() => new DomainValueType("", 7));
 
-      var result = (Func<string, int, object>) _factory.CreateConstructorCall (constructor, typeof (Func<string, int, object>));
+      var result = (Func<string, int, object>) _factory.CreateConstructorCall(constructor, typeof (Func<string, int, object>));
 
-      var instance = (DomainValueType) result ("abc", 7);
-      Assert.That (instance.String, Is.EqualTo ("abc"));
-      Assert.That (instance.Int, Is.EqualTo (7));
+      var instance = (DomainValueType) result("abc", 7);
+      Assert.That(instance.String, Is.EqualTo("abc"));
+      Assert.That(instance.Int, Is.EqualTo(7));
     }
 
     [Test]
     public void CreateDefaultConstructorCall ()
     {
-      var result = (Func<DomainType>) _factory.CreateDefaultConstructorCall (typeof (DomainType), typeof (Func<DomainType>));
+      var result = (Func<DomainType>) _factory.CreateDefaultConstructorCall(typeof (DomainType), typeof (Func<DomainType>));
 
       var instance = result();
-      Assert.That (instance.String, Is.EqualTo ("defaultCtor"));
+      Assert.That(instance.String, Is.EqualTo("defaultCtor"));
     }
 
     [Test]
     public void CreateDefaultConstructorCall_ValueType ()
     {
-      var result = (Func<DomainValueType>) _factory.CreateDefaultConstructorCall (typeof (DomainValueType), typeof (Func<DomainValueType>));
+      var result = (Func<DomainValueType>) _factory.CreateDefaultConstructorCall(typeof (DomainValueType), typeof (Func<DomainValueType>));
 
-      Assert.That (() => result(), Throws.Nothing);
+      Assert.That(() => result(), Throws.Nothing);
     }
 
     [Test]
     public void CreateDefaultConstructorCall_ValueType_Boxing ()
     {
-      var result = (Func<object>) _factory.CreateDefaultConstructorCall (typeof (DomainValueType), typeof (Func<object>));
+      var result = (Func<object>) _factory.CreateDefaultConstructorCall(typeof (DomainValueType), typeof (Func<object>));
 
       var instance = result();
-      Assert.That (instance, Is.Not.Null);
+      Assert.That(instance, Is.Not.Null);
     }
 
     class DomainType

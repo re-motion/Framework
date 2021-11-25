@@ -40,55 +40,55 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void NoVirtualRelationEndPointDefinition ()
     {
-      var endPointDefinition = new AnonymousRelationEndPointDefinition (_classDefinition);
-      var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
+      var endPointDefinition = new AnonymousRelationEndPointDefinition(_classDefinition);
+      var relationDefinition = new RelationDefinition("Test", endPointDefinition, endPointDefinition);
 
-      var validationResult = _validationRule.Validate (relationDefinition);
+      var validationResult = _validationRule.Validate(relationDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void CardinalityIsMany ()
     {
-      var endPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
+      var endPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
           _classDefinition, "PropertyName", false, typeof (DomainObjectCollection));
-      var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
+      var relationDefinition = new RelationDefinition("Test", endPointDefinition, endPointDefinition);
       
-      var validationResult = _validationRule.Validate (relationDefinition);
+      var validationResult = _validationRule.Validate(relationDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void CardinalityIsOne_And_EndPointDefinitionHasNoSortExpression ()
     {
-      var endPointDefinition = VirtualObjectRelationEndPointDefinitionFactory.Create (
+      var endPointDefinition = VirtualObjectRelationEndPointDefinitionFactory.Create(
         _classDefinition, "PropertyName", false, typeof (DerivedValidationDomainObjectClass));
-      var relationDefinition = new RelationDefinition ("Test", endPointDefinition, endPointDefinition);
+      var relationDefinition = new RelationDefinition("Test", endPointDefinition, endPointDefinition);
       
-      var validationResult = _validationRule.Validate (relationDefinition);
+      var validationResult = _validationRule.Validate(relationDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void CardinalityOne_And_EndPointDefinitionsHaveSortExpression ()
     {
-      var leftEndPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
+      var leftEndPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
           _classDefinition, "PropertyName", false, typeof (DerivedValidationDomainObjectClass));
 
-      var rightEndPointDefinition = VirtualObjectRelationEndPointDefinitionFactory.Create (
+      var rightEndPointDefinition = VirtualObjectRelationEndPointDefinitionFactory.Create(
           _classDefinition, "PropertyName", false, typeof (DomainObject), "SortExpression");
 
-      var relationDefinition = new RelationDefinition ("Test", leftEndPointDefinition, rightEndPointDefinition);
+      var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       
-      var validationResult = _validationRule.Validate (relationDefinition);
+      var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage = 
         "Property 'PropertyName' of class 'Order' must not specify a SortExpression, because cardinality is equal to 'one'.\r\n\r\n"
         + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\nProperty: PropertyName";
-      AssertMappingValidationResult (validationResult, false, expectedMessage);
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
     
   }

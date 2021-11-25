@@ -24,16 +24,16 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
     protected static Mock<IBusinessObjectClass> CreateClassStub ()
     {
       var classStub = new Mock<IBusinessObjectClass>();
-      classStub.Setup (_ => _.BusinessObjectProvider).Returns (new Mock<IBusinessObjectProvider>().Object);
-      Mock.Get (classStub.Object.BusinessObjectProvider).Setup (_ => _.GetPropertyPathSeparator()).Returns (':');
+      classStub.Setup(_ => _.BusinessObjectProvider).Returns(new Mock<IBusinessObjectProvider>().Object);
+      Mock.Get(classStub.Object.BusinessObjectProvider).Setup(_ => _.GetPropertyPathSeparator()).Returns(':');
       return classStub;
     }
 
     protected Mock<IBusinessObjectProperty> CreatePropertyStub (Mock<IBusinessObjectClass> classStub, string propertyIdentifier)
     {
       var propertyStub = new Mock<IBusinessObjectProperty>();
-      propertyStub.Setup (_ => _.Identifier).Returns (propertyIdentifier);
-      classStub.Setup (_ => _.GetPropertyDefinition (propertyIdentifier)).Returns (propertyStub.Object);
+      propertyStub.Setup(_ => _.Identifier).Returns(propertyIdentifier);
+      classStub.Setup(_ => _.GetPropertyDefinition(propertyIdentifier)).Returns(propertyStub.Object);
       return propertyStub;
     }
 
@@ -43,9 +43,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
         Mock<IBusinessObjectClass> referenceClassStub)
     {
       var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
-      propertyStub.Setup (_ => _.Identifier).Returns (propertyIdentifier);
-      propertyStub.Setup (_ => _.ReferenceClass).Returns (referenceClassStub.Object);
-      classStub.Setup (_ => _.GetPropertyDefinition (propertyIdentifier)).Returns (propertyStub.Object);
+      propertyStub.Setup(_ => _.Identifier).Returns(propertyIdentifier);
+      propertyStub.Setup(_ => _.ReferenceClass).Returns(referenceClassStub.Object);
+      classStub.Setup(_ => _.GetPropertyDefinition(propertyIdentifier)).Returns(propertyStub.Object);
       return propertyStub;
     }
   }

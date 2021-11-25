@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
   {
     public static SampleBindableMixinDomainObject NewObject ()
     {
-      return NewObject<SampleBindableMixinDomainObject> ();
+      return NewObject<SampleBindableMixinDomainObject>();
     }
 
     public abstract string Name { get; set; }

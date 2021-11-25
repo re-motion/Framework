@@ -31,7 +31,7 @@ namespace OBWTest
       int hashcode = global.GetHashCode();
       lock (global.SyncRoot)
       {
-        global.Add (Guid.NewGuid());
+        global.Add(Guid.NewGuid());
       }
     }
 

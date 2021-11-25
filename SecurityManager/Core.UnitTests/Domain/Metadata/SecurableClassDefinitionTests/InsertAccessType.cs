@@ -44,16 +44,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       var accessType3 = AccessTypeDefinition.NewObject();
       var securableClassDefinition = SecurableClassDefinition.NewObject();
 
-      securableClassDefinition.AddAccessType (accessType0);
-      securableClassDefinition.AddAccessType (accessType1);
-      securableClassDefinition.AddAccessType (accessType2);
+      securableClassDefinition.AddAccessType(accessType0);
+      securableClassDefinition.AddAccessType(accessType1);
+      securableClassDefinition.AddAccessType(accessType2);
 
-      securableClassDefinition.InsertAccessType (0, accessType3);
+      securableClassDefinition.InsertAccessType(0, accessType3);
       
-      Assert.That (securableClassDefinition.AccessTypes, Is.EqualTo (new[] { accessType3, accessType0, accessType1, accessType2 }));
-      var references = new SecurableClassDefinitionWrapper (securableClassDefinition).AccessTypeReferences;
+      Assert.That(securableClassDefinition.AccessTypes, Is.EqualTo(new[] { accessType3, accessType0, accessType1, accessType2 }));
+      var references = new SecurableClassDefinitionWrapper(securableClassDefinition).AccessTypeReferences;
       for (int i = 0; i < references.Count; i++)
-        Assert.That (((AccessTypeReference) references[i]).Index, Is.EqualTo (i));
+        Assert.That(((AccessTypeReference) references[i]).Index, Is.EqualTo(i));
     }
     
     [Test]
@@ -65,16 +65,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       var accessType3 = AccessTypeDefinition.NewObject();
       var securableClassDefinition = SecurableClassDefinition.NewObject();
 
-      securableClassDefinition.AddAccessType (accessType0);
-      securableClassDefinition.AddAccessType (accessType1);
-      securableClassDefinition.AddAccessType (accessType2);
+      securableClassDefinition.AddAccessType(accessType0);
+      securableClassDefinition.AddAccessType(accessType1);
+      securableClassDefinition.AddAccessType(accessType2);
 
-      securableClassDefinition.InsertAccessType (1, accessType3);
+      securableClassDefinition.InsertAccessType(1, accessType3);
       
-      Assert.That (securableClassDefinition.AccessTypes, Is.EqualTo (new[] { accessType0, accessType3, accessType1, accessType2 }));
-      var references = new SecurableClassDefinitionWrapper (securableClassDefinition).AccessTypeReferences;
+      Assert.That(securableClassDefinition.AccessTypes, Is.EqualTo(new[] { accessType0, accessType3, accessType1, accessType2 }));
+      var references = new SecurableClassDefinitionWrapper(securableClassDefinition).AccessTypeReferences;
       for (int i = 0; i < references.Count; i++)
-        Assert.That (((AccessTypeReference) references[i]).Index, Is.EqualTo (i));
+        Assert.That(((AccessTypeReference) references[i]).Index, Is.EqualTo(i));
     }
 
     [Test]
@@ -86,16 +86,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       var accessType3 = AccessTypeDefinition.NewObject();
       var securableClassDefinition = SecurableClassDefinition.NewObject();
 
-      securableClassDefinition.AddAccessType (accessType0);
-      securableClassDefinition.AddAccessType (accessType1);
-      securableClassDefinition.AddAccessType (accessType2);
+      securableClassDefinition.AddAccessType(accessType0);
+      securableClassDefinition.AddAccessType(accessType1);
+      securableClassDefinition.AddAccessType(accessType2);
 
-      securableClassDefinition.InsertAccessType (3, accessType3);
+      securableClassDefinition.InsertAccessType(3, accessType3);
       
-      Assert.That (securableClassDefinition.AccessTypes, Is.EqualTo (new[] { accessType0, accessType1, accessType2, accessType3 }));
-      var references = new SecurableClassDefinitionWrapper (securableClassDefinition).AccessTypeReferences;
+      Assert.That(securableClassDefinition.AccessTypes, Is.EqualTo(new[] { accessType0, accessType1, accessType2, accessType3 }));
+      var references = new SecurableClassDefinitionWrapper(securableClassDefinition).AccessTypeReferences;
       for (int i = 0; i < references.Count; i++)
-        Assert.That (((AccessTypeReference) references[i]).Index, Is.EqualTo (i));
+        Assert.That(((AccessTypeReference) references[i]).Index, Is.EqualTo(i));
     }
 
     [Test]
@@ -106,11 +106,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         securableClassDefinition.EnsureDataAvailable();
-        Assert.That (securableClassDefinition.State.IsUnchanged, Is.True);
+        Assert.That(securableClassDefinition.State.IsUnchanged, Is.True);
 
-        securableClassDefinition.InsertAccessType (0, AccessTypeDefinition.NewObject());
+        securableClassDefinition.InsertAccessType(0, AccessTypeDefinition.NewObject());
 
-        Assert.That (securableClassDefinition.State.IsChanged, Is.True);
+        Assert.That(securableClassDefinition.State.IsChanged, Is.True);
       }
     }
 
@@ -120,38 +120,38 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       var accessType0 = AccessTypeDefinition.NewObject();
       var accessType1 = AccessTypeDefinition.NewObject();
       var securableClassDefinition = SecurableClassDefinition.NewObject();
-      securableClassDefinition.AddAccessType (accessType0);
+      securableClassDefinition.AddAccessType(accessType0);
 
-      var testHelper = new AccessControlTestHelper (ClientTransaction.Current);
+      var testHelper = new AccessControlTestHelper(ClientTransaction.Current);
       var acls = new List<AccessControlList>();
-      acls.Add (testHelper.CreateStatefulAcl (securableClassDefinition));
-      acls.Add (testHelper.CreateStatelessAcl (securableClassDefinition));
+      acls.Add(testHelper.CreateStatefulAcl(securableClassDefinition));
+      acls.Add(testHelper.CreateStatelessAcl(securableClassDefinition));
 
       foreach (var acl in acls)
         acl.CreateAccessControlEntry();
 
-      securableClassDefinition.InsertAccessType (1, accessType1);
+      securableClassDefinition.InsertAccessType(1, accessType1);
       foreach (var acl in acls)
       {
         var permissions = acl.AccessControlEntries[0].GetPermissions();
-        Assert.That (permissions.Count, Is.EqualTo (2));
-        Assert.That (permissions[1].AccessType, Is.SameAs (accessType1));
-        Assert.That (permissions[1].Allowed, Is.Null);
+        Assert.That(permissions.Count, Is.EqualTo(2));
+        Assert.That(permissions[1].AccessType, Is.SameAs(accessType1));
+        Assert.That(permissions[1].Allowed, Is.Null);
       }
     }
 
     [Test]
     public void FailsForExistingAccessType ()
     {
-      var accessType = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Test", 42);
+      var accessType = AccessTypeDefinition.NewObject(Guid.NewGuid(), "Test", 42);
 
       var securableClassDefinition = SecurableClassDefinition.NewObject();
       securableClassDefinition.Name = "Class";
-      securableClassDefinition.AddAccessType (accessType);
-      Assert.That (
-          () => securableClassDefinition.AddAccessType (accessType),
+      securableClassDefinition.AddAccessType(accessType);
+      Assert.That(
+          () => securableClassDefinition.AddAccessType(accessType),
           Throws.ArgumentException
-              .And.Message.StartsWith ("The access type 'Test' has already been added to the securable class definition."));
+              .And.Message.StartsWith("The access type 'Test' has already been added to the securable class definition."));
     }
 
     [Test]
@@ -159,11 +159,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     {
       var securableClassDefinition = SecurableClassDefinition.NewObject();
       securableClassDefinition.Name = "Class";
-      securableClassDefinition.AddAccessType (AccessTypeDefinition.NewObject());
-      Assert.That (
-          () => securableClassDefinition.InsertAccessType (-1, AccessTypeDefinition.NewObject()),
+      securableClassDefinition.AddAccessType(AccessTypeDefinition.NewObject());
+      Assert.That(
+          () => securableClassDefinition.InsertAccessType(-1, AccessTypeDefinition.NewObject()),
           Throws.TypeOf<ArgumentOutOfRangeException>()
-              .And.Message.StartsWith (
+              .And.Message.StartsWith(
                   "The index must not be less than 0 or greater than the total number of access types for the securable class definition."));
     }
 
@@ -172,11 +172,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     {
       var securableClassDefinition = SecurableClassDefinition.NewObject();
       securableClassDefinition.Name = "Class";
-      securableClassDefinition.AddAccessType (AccessTypeDefinition.NewObject());
-      Assert.That (
-          () => securableClassDefinition.InsertAccessType (2, AccessTypeDefinition.NewObject()),
+      securableClassDefinition.AddAccessType(AccessTypeDefinition.NewObject());
+      Assert.That(
+          () => securableClassDefinition.InsertAccessType(2, AccessTypeDefinition.NewObject()),
           Throws.TypeOf<ArgumentOutOfRangeException>()
-              .And.Message.StartsWith (
+              .And.Message.StartsWith(
                   "The index must not be less than 0 or greater than the total number of access types for the securable class definition."));
     }
   }

@@ -35,62 +35,62 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [SetUp]
     public void SetUp ()
     {
-      _storageTypeInformationProviderStub = MockRepository.GenerateStub<IStorageTypeInformationProvider> ();
+      _storageTypeInformationProviderStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
       _dataReaderStrictMock = MockRepository.GenerateStrictMock<IDataReader>();
 
-      _queryResultRowReader = new QueryResultRowReader (_storageTypeInformationProviderStub);
+      _queryResultRowReader = new QueryResultRowReader(_storageTypeInformationProviderStub);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_queryResultRowReader.StorageTypeInformationProvider, Is.SameAs (_storageTypeInformationProviderStub));
+      Assert.That(_queryResultRowReader.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
     }
 
     [Test]
     public void Read ()
     {
-      _dataReaderStrictMock.Expect (mock => mock.Read ()).Return (true);
+      _dataReaderStrictMock.Expect(mock => mock.Read()).Return(true);
 
-      var result = _queryResultRowReader.Read (_dataReaderStrictMock);
+      var result = _queryResultRowReader.Read(_dataReaderStrictMock);
 
-      _dataReaderStrictMock.VerifyAllExpectations ();
-      Assert.That (result, Is.Not.Null);
+      _dataReaderStrictMock.VerifyAllExpectations();
+      Assert.That(result, Is.Not.Null);
       CheckQueryResultRow(result);
     }
 
     [Test]
     public void Read_NoData ()
     {
-      _dataReaderStrictMock.Expect (mock => mock.Read()).Return (false);
+      _dataReaderStrictMock.Expect(mock => mock.Read()).Return(false);
 
-      var result = _queryResultRowReader.Read (_dataReaderStrictMock);
+      var result = _queryResultRowReader.Read(_dataReaderStrictMock);
 
-      _dataReaderStrictMock.VerifyAllExpectations ();
-      Assert.That (result, Is.Null);
+      _dataReaderStrictMock.VerifyAllExpectations();
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void ReadSequence ()
     {
-      _dataReaderStrictMock.Expect (mock => mock.Read ()).Return (true).Repeat.Times (3);
-      _dataReaderStrictMock.Expect (mock => mock.Read ()).Return (false).Repeat.Once ();
+      _dataReaderStrictMock.Expect(mock => mock.Read()).Return(true).Repeat.Times(3);
+      _dataReaderStrictMock.Expect(mock => mock.Read()).Return(false).Repeat.Once();
 
-      var result = _queryResultRowReader.ReadSequence (_dataReaderStrictMock).OfType<QueryResultRow>().ToList();
+      var result = _queryResultRowReader.ReadSequence(_dataReaderStrictMock).OfType<QueryResultRow>().ToList();
 
-      _dataReaderStrictMock.VerifyAllExpectations ();
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result.Count, Is.EqualTo (3));
-      CheckQueryResultRow (result[0]);
-      CheckQueryResultRow (result[1]);
-      CheckQueryResultRow (result[2]);
+      _dataReaderStrictMock.VerifyAllExpectations();
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.Count, Is.EqualTo(3));
+      CheckQueryResultRow(result[0]);
+      CheckQueryResultRow(result[1]);
+      CheckQueryResultRow(result[2]);
     }
 
     private void CheckQueryResultRow (IQueryResultRow result)
     {
-      Assert.That (result, Is.TypeOf (typeof (QueryResultRow)));
-      Assert.That (((QueryResultRow) result).StorageTypeInformationProvider, Is.SameAs (_storageTypeInformationProviderStub));
-      Assert.That (((QueryResultRow) result).DataReader, Is.SameAs (_dataReaderStrictMock));
+      Assert.That(result, Is.TypeOf(typeof (QueryResultRow)));
+      Assert.That(((QueryResultRow) result).StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
+      Assert.That(((QueryResultRow) result).DataReader, Is.SameAs(_dataReaderStrictMock));
     }
 
   }

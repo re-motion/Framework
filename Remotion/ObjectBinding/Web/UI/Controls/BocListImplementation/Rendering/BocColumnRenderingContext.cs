@@ -41,11 +41,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         int columnIndex,
         int visibleColumnIndex)
     {
-      ArgumentUtility.CheckNotNull ("httpContext", httpContext);
-      ArgumentUtility.CheckNotNull ("writer", writer);
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNull ("businessObjectWebServiceContext", businessObjectWebServiceContext);
-      ArgumentUtility.CheckNotNull ("columnDefinition", columnDefinition);
+      ArgumentUtility.CheckNotNull("httpContext", httpContext);
+      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull("businessObjectWebServiceContext", businessObjectWebServiceContext);
+      ArgumentUtility.CheckNotNull("columnDefinition", columnDefinition);
 
       _httpContext = httpContext;
       _writer = writer;

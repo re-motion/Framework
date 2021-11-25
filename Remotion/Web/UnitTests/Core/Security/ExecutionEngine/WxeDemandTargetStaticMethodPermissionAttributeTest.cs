@@ -28,51 +28,51 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void Initialize_WithMethodNameAndSecurableClass ()
     {
-      WxeDemandTargetStaticMethodPermissionAttribute attribute = new WxeDemandTargetStaticMethodPermissionAttribute ("Search", typeof (SecurableObject));
+      WxeDemandTargetStaticMethodPermissionAttribute attribute = new WxeDemandTargetStaticMethodPermissionAttribute("Search", typeof (SecurableObject));
 
-      Assert.That (attribute.MethodType, Is.EqualTo (MethodType.Static));
-      Assert.That (attribute.MethodName, Is.EqualTo ("Search"));
-      Assert.That (attribute.SecurableClass, Is.SameAs (typeof (SecurableObject)));
+      Assert.That(attribute.MethodType, Is.EqualTo(MethodType.Static));
+      Assert.That(attribute.MethodName, Is.EqualTo("Search"));
+      Assert.That(attribute.SecurableClass, Is.SameAs(typeof (SecurableObject)));
     }
 
     [Test]
     public void Initialize_WithMethodNameEnum ()
     {
-      WxeDemandTargetStaticMethodPermissionAttribute attribute = new WxeDemandTargetStaticMethodPermissionAttribute (SecurableObject.Method.Search);
+      WxeDemandTargetStaticMethodPermissionAttribute attribute = new WxeDemandTargetStaticMethodPermissionAttribute(SecurableObject.Method.Search);
 
-      Assert.That (attribute.MethodType, Is.EqualTo (MethodType.Static));
-      Assert.That (attribute.MethodName, Is.EqualTo ("Search"));
-      Assert.That (attribute.SecurableClass, Is.SameAs (typeof (SecurableObject)));
+      Assert.That(attribute.MethodType, Is.EqualTo(MethodType.Static));
+      Assert.That(attribute.MethodName, Is.EqualTo("Search"));
+      Assert.That(attribute.SecurableClass, Is.SameAs(typeof (SecurableObject)));
     }
 
     [Test]
     public void Initialize_WithMethodNameEnumAndSecurableClass ()
     {
       WxeDemandTargetStaticMethodPermissionAttribute attribute = 
-          new WxeDemandTargetStaticMethodPermissionAttribute (SecurableObject.Method.Search, typeof (DerivedSecurableObject));
+          new WxeDemandTargetStaticMethodPermissionAttribute(SecurableObject.Method.Search, typeof (DerivedSecurableObject));
 
-      Assert.That (attribute.MethodType, Is.EqualTo (MethodType.Static));
-      Assert.That (attribute.MethodName, Is.EqualTo ("Search"));
-      Assert.That (attribute.SecurableClass, Is.SameAs (typeof (DerivedSecurableObject)));
+      Assert.That(attribute.MethodType, Is.EqualTo(MethodType.Static));
+      Assert.That(attribute.MethodName, Is.EqualTo("Search"));
+      Assert.That(attribute.SecurableClass, Is.SameAs(typeof (DerivedSecurableObject)));
     }
 
     [Test]
     public void Initialize_WithMethodNameEnumNotNestedType ()
     {
-      Assert.That (
-          () => new WxeDemandTargetStaticMethodPermissionAttribute (MethodNameEnum.Show),
+      Assert.That(
+          () => new WxeDemandTargetStaticMethodPermissionAttribute(MethodNameEnum.Show),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Enumerated type 'Remotion.Web.UnitTests.Core.Security.Domain.MethodNameEnum' is not declared as a nested type.", "methodNameEnum"));
     }
 
     [Test]
     public void Initialize_WithMethodNameEnumNotHavingValidDeclaringType ()
     {
-      Assert.That (
-          () => new WxeDemandTargetStaticMethodPermissionAttribute (SimpleType.MethodNameEnum.Show),
+      Assert.That(
+          () => new WxeDemandTargetStaticMethodPermissionAttribute(SimpleType.MethodNameEnum.Show),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The declaring type of enumerated type 'Remotion.Web.UnitTests.Core.Security.Domain.SimpleType+MethodNameEnum' does not implement interface"
                   + " 'Remotion.Security.ISecurableObject'.", "methodNameEnum"));
     }
@@ -80,20 +80,20 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void Initialize_WithMethodNameEnumNotNestedTypeAndSecurableClass ()
     {
-      Assert.That (
-          () => new WxeDemandTargetStaticMethodPermissionAttribute (MethodNameEnum.Show, typeof (DerivedSecurableObject)),
+      Assert.That(
+          () => new WxeDemandTargetStaticMethodPermissionAttribute(MethodNameEnum.Show, typeof (DerivedSecurableObject)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Enumerated type 'Remotion.Web.UnitTests.Core.Security.Domain.MethodNameEnum' is not declared as a nested type.", "methodNameEnum"));
     }
 
     [Test]
     public void Initialize_WithMethodNameEnumNotHavingValidDeclaringTypeAndSecurableClass ()
     {
-      Assert.That (
-          () => new WxeDemandTargetStaticMethodPermissionAttribute (SimpleType.MethodNameEnum.Show, typeof (DerivedSecurableObject)),
+      Assert.That(
+          () => new WxeDemandTargetStaticMethodPermissionAttribute(SimpleType.MethodNameEnum.Show, typeof (DerivedSecurableObject)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The declaring type of enumerated type 'Remotion.Web.UnitTests.Core.Security.Domain.SimpleType+MethodNameEnum' does not implement interface"
                   + " 'Remotion.Security.ISecurableObject'.", "methodNameEnum"));
     }
@@ -101,10 +101,10 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void TestWithParameterNotOfNotMatchingType ()
     {
-      Assert.That (
-          () => new WxeDemandTargetStaticMethodPermissionAttribute (SecurableObject.Method.Show, typeof (OtherSecurableObject)),
+      Assert.That(
+          () => new WxeDemandTargetStaticMethodPermissionAttribute(SecurableObject.Method.Show, typeof (OtherSecurableObject)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Type 'Remotion.Web.UnitTests.Core.Security.Domain.OtherSecurableObject' cannot be assigned to the declaring type of enumerated type"
                   + " 'Remotion.Web.UnitTests.Core.Security.Domain.SecurableObject+Method'.", "securableClass"));
     }

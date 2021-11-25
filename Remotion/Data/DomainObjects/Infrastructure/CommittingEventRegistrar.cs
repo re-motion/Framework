@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public CommittingEventRegistrar (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       _clientTransaction = clientTransaction;
     }
 
@@ -44,12 +44,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public IReadOnlyCollection<DomainObject> RegisteredObjects
     {
-      get { return _registeredObjects.AsReadOnly (); }
+      get { return _registeredObjects.AsReadOnly(); }
     }
 
     public void RegisterForAdditionalCommittingEvents (params DomainObject[] domainObjects)
     {
-      ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+      ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
 
       foreach (var domainObject in domainObjects)
       {
@@ -60,16 +60,16 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
         if (!isPersistenceRelevantDomainObject)
         {
-          var message = string.Format (
+          var message = string.Format(
               "The given DomainObject '{0}' cannot be registered due to its {1}. Only objects that are part of the commit set can be "
               + "registered. Use RegisterForCommit to add an unchanged object to the commit set.",
               domainObject.ID,
               state);
-          throw new ArgumentException (message, "domainObjects");
+          throw new ArgumentException(message, "domainObjects");
         }
       }
 
-      _registeredObjects.UnionWith (domainObjects);
+      _registeredObjects.UnionWith(domainObjects);
     }
   }
 }

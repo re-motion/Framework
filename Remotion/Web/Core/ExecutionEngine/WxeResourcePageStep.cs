@@ -67,7 +67,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the page using the assemby's resource directory.
     /// </summary>
     public WxeResourcePageStep (Assembly resourceAssembly, string pageName)
-        : base (new ResourceObject (ResourcePathBuilder, resourceAssembly, pageName))
+        : base (new ResourceObject(ResourcePathBuilder, resourceAssembly, pageName))
     {
     }
 
@@ -75,7 +75,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the page using the assemby's resource directory.
     /// </summary>
     public WxeResourcePageStep (Assembly resourceAssembly, WxeVariableReference page)
-        : base (new ResourceObjectWithVarRef (ResourcePathBuilder, resourceAssembly, page))
+        : base (new ResourceObjectWithVarRef(ResourcePathBuilder, resourceAssembly, page))
     {
     }
 

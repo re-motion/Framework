@@ -31,11 +31,11 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       foreach (var endPointDefinition in relationDefinition.EndPointDefinitions)
       {
-        var validationResult = Validate (endPointDefinition);
+        var validationResult = Validate(endPointDefinition);
         if (!validationResult.IsValid)
           return validationResult;
       }
@@ -45,13 +45,13 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     private MappingValidationResult Validate (IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
       if (relationEndPointDefinition.IsVirtual
           && relationEndPointDefinition.PropertyInfo != null
-          && !ReflectionUtility.IsRelationType (relationEndPointDefinition.PropertyInfo.PropertyType))
+          && !ReflectionUtility.IsRelationType(relationEndPointDefinition.PropertyInfo.PropertyType))
       {
-        return MappingValidationResult.CreateInvalidResultForProperty (
+        return MappingValidationResult.CreateInvalidResultForProperty(
             relationEndPointDefinition.PropertyInfo,
             "Virtual property '{0}' of class '{1}' is of type '{2}', but must be assignable to '{3}' or '{4}' or be of type '{5}'.",
             relationEndPointDefinition.PropertyInfo.Name,

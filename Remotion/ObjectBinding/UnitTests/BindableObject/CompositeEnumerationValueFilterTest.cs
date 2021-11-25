@@ -36,48 +36,48 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       _businessObjectStub = new Mock<IBusinessObject>();
       _propertyStub = new Mock<IBusinessObjectEnumerationProperty>();
 
-      _value1 = new EnumerationValueInfo ("Value1", "ID1", "Value 1", true);
+      _value1 = new EnumerationValueInfo("Value1", "ID1", "Value 1", true);
 
       _trueFilterStub = new Mock<IEnumerationValueFilter>();
-      _trueFilterStub.Setup (stub => stub.IsEnabled (_value1, _businessObjectStub.Object, _propertyStub.Object)).Returns (true);
+      _trueFilterStub.Setup(stub => stub.IsEnabled(_value1, _businessObjectStub.Object, _propertyStub.Object)).Returns(true);
       
       _falseFilterStub = new Mock<IEnumerationValueFilter>();
-      _falseFilterStub.Setup (stub => stub.IsEnabled (_value1, _businessObjectStub.Object, _propertyStub.Object)).Returns (false);
+      _falseFilterStub.Setup(stub => stub.IsEnabled(_value1, _businessObjectStub.Object, _propertyStub.Object)).Returns(false);
     }
 
     [Test]
     public void IsEnabled_True ()
     {
-      var filter = new CompositeEnumerationValueFilter (new IEnumerationValueFilter[0]);
-      Assert.That (filter.IsEnabled (_value1, _businessObjectStub.Object, _propertyStub.Object), Is.True);
+      var filter = new CompositeEnumerationValueFilter(new IEnumerationValueFilter[0]);
+      Assert.That(filter.IsEnabled(_value1, _businessObjectStub.Object, _propertyStub.Object), Is.True);
     }
 
     [Test]
     public void IsEnabled_True_WithTrueFilter ()
     {
-      var filter = new CompositeEnumerationValueFilter (new[] { _trueFilterStub.Object});
-      Assert.That (filter.IsEnabled (_value1, _businessObjectStub.Object, _propertyStub.Object), Is.True);
+      var filter = new CompositeEnumerationValueFilter(new[] { _trueFilterStub.Object});
+      Assert.That(filter.IsEnabled(_value1, _businessObjectStub.Object, _propertyStub.Object), Is.True);
     }
 
     [Test]
     public void IsEnabled_False ()
     {
-      var filter = new CompositeEnumerationValueFilter (new[] { _falseFilterStub.Object });
-      Assert.That (filter.IsEnabled (_value1, _businessObjectStub.Object, _propertyStub.Object), Is.False);
+      var filter = new CompositeEnumerationValueFilter(new[] { _falseFilterStub.Object });
+      Assert.That(filter.IsEnabled(_value1, _businessObjectStub.Object, _propertyStub.Object), Is.False);
     }
 
     [Test]
     public void IsEnabled_False_SecondFilterFalse ()
     {
-      var filter = new CompositeEnumerationValueFilter (new[] {_trueFilterStub.Object, _falseFilterStub.Object });
-      Assert.That (filter.IsEnabled (_value1, _businessObjectStub.Object, _propertyStub.Object), Is.False);
+      var filter = new CompositeEnumerationValueFilter(new[] {_trueFilterStub.Object, _falseFilterStub.Object });
+      Assert.That(filter.IsEnabled(_value1, _businessObjectStub.Object, _propertyStub.Object), Is.False);
     }
 
     [Test]
     public void IsEnabled_NullBusinessObject ()
     {
-      var filter = new CompositeEnumerationValueFilter (new IEnumerationValueFilter[0]);
-      Assert.That (filter.IsEnabled (_value1, null, _propertyStub.Object), Is.True);
+      var filter = new CompositeEnumerationValueFilter(new IEnumerationValueFilter[0]);
+      Assert.That(filter.IsEnabled(_value1, null, _propertyStub.Object), Is.True);
     }
   }
 }

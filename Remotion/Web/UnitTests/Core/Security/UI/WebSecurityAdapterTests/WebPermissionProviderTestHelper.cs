@@ -41,50 +41,50 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
 
     public WebPermissionProviderTestHelper ()
     {
-      _mockSecurityProvider = new Mock<ISecurityProvider> (MockBehavior.Strict);
-      _mockSecurityProvider.Setup (_ => _.IsNull).Returns (false);
-      _mockObjectSecurityStrategy = new Mock<IObjectSecurityStrategy> (MockBehavior.Strict);
-      _mockFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy> (MockBehavior.Strict);
-      _mockWxeSecurityAdapter = new Mock<IWxeSecurityAdapter> (MockBehavior.Strict);
+      _mockSecurityProvider = new Mock<ISecurityProvider>(MockBehavior.Strict);
+      _mockSecurityProvider.Setup(_ => _.IsNull).Returns(false);
+      _mockObjectSecurityStrategy = new Mock<IObjectSecurityStrategy>(MockBehavior.Strict);
+      _mockFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy>(MockBehavior.Strict);
+      _mockWxeSecurityAdapter = new Mock<IWxeSecurityAdapter>(MockBehavior.Strict);
 
       _stubUser = new Mock<ISecurityPrincipal>();
-      _stubUser.Setup (_ => _.User).Returns ("user");
-      _mockPrincipalProvider = new Mock<IPrincipalProvider> (MockBehavior.Strict);
-      _mockPrincipalProvider.Setup (_ => _.GetPrincipal()).Returns (_stubUser.Object);
+      _stubUser.Setup(_ => _.User).Returns("user");
+      _mockPrincipalProvider = new Mock<IPrincipalProvider>(MockBehavior.Strict);
+      _mockPrincipalProvider.Setup(_ => _.GetPrincipal()).Returns(_stubUser.Object);
     }
 
     // methods and properties
 
     public void ExpectHasAccess (Enum[] accessTypeEnums, bool returnValue)
     {
-      AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (accessTypeEnums, AccessType.Get);
+      AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType>(accessTypeEnums, AccessType.Get);
       _mockObjectSecurityStrategy
-          .Setup (
-              _ => _.HasAccess (
+          .Setup(
+              _ => _.HasAccess(
                   _mockSecurityProvider.Object,
                   _stubUser.Object,
                   accessTypes))
-          .Returns (returnValue)
+          .Returns(returnValue)
           .Verifiable();
     }
 
     public void ExpectHasStatelessAccessForSecurableObject (Enum[] accessTypeEnums, bool returnValue)
     {
-      AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (accessTypeEnums, AccessType.Get);
+      AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType>(accessTypeEnums, AccessType.Get);
       _mockFunctionalSecurityStrategy
-          .Setup (
-              _ => _.HasAccess (
+          .Setup(
+              _ => _.HasAccess(
                   typeof (SecurableObject),
                   _mockSecurityProvider.Object,
                   _stubUser.Object,
                   accessTypes))
-          .Returns (returnValue)
+          .Returns(returnValue)
           .Verifiable();
     }
 
     public void ExpectHasStatelessAccessForWxeFunction (Type functionType, bool returnValue)
     {
-      _mockWxeSecurityAdapter.Setup (_ => _.HasStatelessAccess (functionType)).Returns (returnValue).Verifiable();
+      _mockWxeSecurityAdapter.Setup(_ => _.HasStatelessAccess(functionType)).Returns(returnValue).Verifiable();
     }
 
     public void VerifyAll ()
@@ -119,7 +119,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
 
     public SecurableObject CreateSecurableObject ()
     {
-      return new SecurableObject (_mockObjectSecurityStrategy.Object);
+      return new SecurableObject(_mockObjectSecurityStrategy.Object);
     }
   }
 }

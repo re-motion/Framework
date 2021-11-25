@@ -37,8 +37,8 @@ namespace Remotion.Validation.Providers
         IInvolvedTypeProvider involvedTypeProvider,
         IEnumerable<IValidationRuleCollectorProvider> validationCollectorProviders)
     {
-      ArgumentUtility.CheckNotNull ("involvedTypeProvider", involvedTypeProvider);
-      ArgumentUtility.CheckNotNull ("validationCollectorProviders", validationCollectorProviders);
+      ArgumentUtility.CheckNotNull("involvedTypeProvider", involvedTypeProvider);
+      ArgumentUtility.CheckNotNull("validationCollectorProviders", validationCollectorProviders);
 
       _involvedTypeProvider = involvedTypeProvider;
       _validationCollectorProviders = validationCollectorProviders.ToList();
@@ -56,23 +56,23 @@ namespace Remotion.Validation.Providers
 
     public IEnumerable<IEnumerable<ValidationRuleCollectorInfo>> GetValidationRuleCollectors (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull ("types", types);
+      ArgumentUtility.CheckNotNull("types", types);
 
-      return GetTypeGroups (types)
-          .Aggregate (
+      return GetTypeGroups(types)
+          .Aggregate(
               Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>(),
-              (validationCollectors, typeGroup) => validationCollectors.Concat (GetValidationRuleCollectorsForTypeGroup (typeGroup)));
+              (validationCollectors, typeGroup) => validationCollectors.Concat(GetValidationRuleCollectorsForTypeGroup(typeGroup)));
     }
 
     private IEnumerable<IEnumerable<Type>> GetTypeGroups (IEnumerable<Type> types)
     {
-      return types.SelectMany (t => _involvedTypeProvider.GetTypes (t));
+      return types.SelectMany(t => _involvedTypeProvider.GetTypes(t));
     }
 
     private IEnumerable<IEnumerable<ValidationRuleCollectorInfo>> GetValidationRuleCollectorsForTypeGroup (IEnumerable<Type> typeGroup)
     {
       var evaluatedTypeGroup = typeGroup.ToArray();
-      return _validationCollectorProviders.SelectMany (p => p.GetValidationRuleCollectors (evaluatedTypeGroup));
+      return _validationCollectorProviders.SelectMany(p => p.GetValidationRuleCollectors(evaluatedTypeGroup));
     }
   }
 }

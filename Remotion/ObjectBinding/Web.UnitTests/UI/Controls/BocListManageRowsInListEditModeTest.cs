@@ -44,148 +44,148 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       base.SetUp();
 
       _values = new IBusinessObject[5];
-      _values[0] = (IBusinessObject) TypeWithString.Create ("0", "A");
-      _values[1] = (IBusinessObject) TypeWithString.Create ("1", "A");
-      _values[2] = (IBusinessObject) TypeWithString.Create ("2", "B");
-      _values[3] = (IBusinessObject) TypeWithString.Create ("3", "B");
-      _values[4] = (IBusinessObject) TypeWithString.Create ("4", "C");
+      _values[0] = (IBusinessObject) TypeWithString.Create("0", "A");
+      _values[1] = (IBusinessObject) TypeWithString.Create("1", "A");
+      _values[2] = (IBusinessObject) TypeWithString.Create("2", "B");
+      _values[3] = (IBusinessObject) TypeWithString.Create("3", "B");
+      _values[4] = (IBusinessObject) TypeWithString.Create("4", "C");
 
       _newValues = new IBusinessObject[2];
-      _newValues[0] = (IBusinessObject) TypeWithString.Create ("5", "C");
-      _newValues[1] = (IBusinessObject) TypeWithString.Create ("6", "D");
+      _newValues[0] = (IBusinessObject) TypeWithString.Create("5", "C");
+      _newValues[1] = (IBusinessObject) TypeWithString.Create("6", "D");
 
       _typeWithStringClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithString));
 
-      _typeWithStringFirstValuePath = BusinessObjectPropertyPath.CreateStatic (_typeWithStringClass, "FirstValue");
-      _typeWithStringSecondValuePath = BusinessObjectPropertyPath.CreateStatic (_typeWithStringClass, "SecondValue");
+      _typeWithStringFirstValuePath = BusinessObjectPropertyPath.CreateStatic(_typeWithStringClass, "FirstValue");
+      _typeWithStringSecondValuePath = BusinessObjectPropertyPath.CreateStatic(_typeWithStringClass, "SecondValue");
 
       _typeWithStringFirstValueSimpleColumn = new BocSimpleColumnDefinition();
-      _typeWithStringFirstValueSimpleColumn.SetPropertyPath (_typeWithStringFirstValuePath);
+      _typeWithStringFirstValueSimpleColumn.SetPropertyPath(_typeWithStringFirstValuePath);
 
       _typeWithStringSecondValueSimpleColumn = new BocSimpleColumnDefinition();
-      _typeWithStringSecondValueSimpleColumn.SetPropertyPath (_typeWithStringSecondValuePath);
+      _typeWithStringSecondValueSimpleColumn.SetPropertyPath(_typeWithStringSecondValuePath);
 
       _bocList = new BocListMock();
       _bocList.ID = "BocList";
-      NamingContainer.Controls.Add (_bocList);
+      NamingContainer.Controls.Add(_bocList);
 
-      _bocList.LoadUnboundValue (_values, false);
+      _bocList.LoadUnboundValue(_values, false);
       _bocList.SwitchListIntoEditMode();
 
-      Assert.That (_bocList.IsListEditModeActive, Is.True);
+      Assert.That(_bocList.IsListEditModeActive, Is.True);
     }
 
     [Test]
     public void AddRow ()
     {
-      int index = _bocList.AddRow (_newValues[0]);
+      int index = _bocList.AddRow(_newValues[0]);
 
-      Assert.That (ReferenceEquals (_values, _bocList.Value), Is.False);
-      Assert.That (_bocList.Value.Count, Is.EqualTo (6));
-      Assert.That (_bocList.Value[0], Is.SameAs (_values[0]));
-      Assert.That (_bocList.Value[1], Is.SameAs (_values[1]));
-      Assert.That (_bocList.Value[2], Is.SameAs (_values[2]));
-      Assert.That (_bocList.Value[3], Is.SameAs (_values[3]));
-      Assert.That (_bocList.Value[4], Is.SameAs (_values[4]));
+      Assert.That(ReferenceEquals(_values, _bocList.Value), Is.False);
+      Assert.That(_bocList.Value.Count, Is.EqualTo(6));
+      Assert.That(_bocList.Value[0], Is.SameAs(_values[0]));
+      Assert.That(_bocList.Value[1], Is.SameAs(_values[1]));
+      Assert.That(_bocList.Value[2], Is.SameAs(_values[2]));
+      Assert.That(_bocList.Value[3], Is.SameAs(_values[3]));
+      Assert.That(_bocList.Value[4], Is.SameAs(_values[4]));
 
-      Assert.That (index, Is.EqualTo (5));
-      Assert.That (_bocList.Value[5], Is.SameAs (_newValues[0]));
+      Assert.That(index, Is.EqualTo(5));
+      Assert.That(_bocList.Value[5], Is.SameAs(_newValues[0]));
 
-      Assert.That (_bocList.IsListEditModeActive, Is.True);
+      Assert.That(_bocList.IsListEditModeActive, Is.True);
     }
 
     [Test]
     public void AddRows ()
     {
-      _bocList.AddRows (_newValues);
+      _bocList.AddRows(_newValues);
 
-      Assert.That (ReferenceEquals (_values, _bocList.Value), Is.False);
-      Assert.That (_bocList.Value.Count, Is.EqualTo (7));
-      Assert.That (_bocList.Value[0], Is.SameAs (_values[0]));
-      Assert.That (_bocList.Value[1], Is.SameAs (_values[1]));
-      Assert.That (_bocList.Value[2], Is.SameAs (_values[2]));
-      Assert.That (_bocList.Value[3], Is.SameAs (_values[3]));
-      Assert.That (_bocList.Value[4], Is.SameAs (_values[4]));
+      Assert.That(ReferenceEquals(_values, _bocList.Value), Is.False);
+      Assert.That(_bocList.Value.Count, Is.EqualTo(7));
+      Assert.That(_bocList.Value[0], Is.SameAs(_values[0]));
+      Assert.That(_bocList.Value[1], Is.SameAs(_values[1]));
+      Assert.That(_bocList.Value[2], Is.SameAs(_values[2]));
+      Assert.That(_bocList.Value[3], Is.SameAs(_values[3]));
+      Assert.That(_bocList.Value[4], Is.SameAs(_values[4]));
 
-      Assert.That (_bocList.Value[5], Is.SameAs (_newValues[0]));
-      Assert.That (_bocList.Value[6], Is.SameAs (_newValues[1]));
+      Assert.That(_bocList.Value[5], Is.SameAs(_newValues[0]));
+      Assert.That(_bocList.Value[6], Is.SameAs(_newValues[1]));
 
-      Assert.That (_bocList.IsListEditModeActive, Is.True);
+      Assert.That(_bocList.IsListEditModeActive, Is.True);
     }
 
     [Test]
     public void RemoveRowWithIndex ()
     {
-      _bocList.RemoveRow (2);
+      _bocList.RemoveRow(2);
 
-      Assert.That (ReferenceEquals (_values, _bocList.Value), Is.False);
-      Assert.That (_bocList.Value.Count, Is.EqualTo (4));
-      Assert.That (_bocList.Value[0], Is.SameAs (_values[0]));
-      Assert.That (_bocList.Value[1], Is.SameAs (_values[1]));
-      Assert.That (_bocList.Value[2], Is.SameAs (_values[3]));
-      Assert.That (_bocList.Value[3], Is.SameAs (_values[4]));
+      Assert.That(ReferenceEquals(_values, _bocList.Value), Is.False);
+      Assert.That(_bocList.Value.Count, Is.EqualTo(4));
+      Assert.That(_bocList.Value[0], Is.SameAs(_values[0]));
+      Assert.That(_bocList.Value[1], Is.SameAs(_values[1]));
+      Assert.That(_bocList.Value[2], Is.SameAs(_values[3]));
+      Assert.That(_bocList.Value[3], Is.SameAs(_values[4]));
 
-      Assert.That (_bocList.IsListEditModeActive, Is.True);
+      Assert.That(_bocList.IsListEditModeActive, Is.True);
     }
 
     [Test]
     public void RemoveRowWithBusinessObject ()
     {
-      _bocList.RemoveRow (_values[2]);
+      _bocList.RemoveRow(_values[2]);
 
-      Assert.That (ReferenceEquals (_values, _bocList.Value), Is.False);
-      Assert.That (_bocList.Value.Count, Is.EqualTo (4));
-      Assert.That (_bocList.Value[0], Is.SameAs (_values[0]));
-      Assert.That (_bocList.Value[1], Is.SameAs (_values[1]));
-      Assert.That (_bocList.Value[2], Is.SameAs (_values[3]));
-      Assert.That (_bocList.Value[3], Is.SameAs (_values[4]));
+      Assert.That(ReferenceEquals(_values, _bocList.Value), Is.False);
+      Assert.That(_bocList.Value.Count, Is.EqualTo(4));
+      Assert.That(_bocList.Value[0], Is.SameAs(_values[0]));
+      Assert.That(_bocList.Value[1], Is.SameAs(_values[1]));
+      Assert.That(_bocList.Value[2], Is.SameAs(_values[3]));
+      Assert.That(_bocList.Value[3], Is.SameAs(_values[4]));
 
-      Assert.That (_bocList.IsListEditModeActive, Is.True);
+      Assert.That(_bocList.IsListEditModeActive, Is.True);
     }
 
     [Test]
     public void RemoveRowsWithNoRows ()
     {
-      _bocList.RemoveRows (new IBusinessObject[0]);
+      _bocList.RemoveRows(new IBusinessObject[0]);
 
-      Assert.That (ReferenceEquals (_values, _bocList.Value), Is.False);
-      Assert.That (_bocList.Value.Count, Is.EqualTo (5));
-      Assert.That (_bocList.Value[0], Is.SameAs (_values[0]));
-      Assert.That (_bocList.Value[1], Is.SameAs (_values[1]));
-      Assert.That (_bocList.Value[2], Is.SameAs (_values[2]));
-      Assert.That (_bocList.Value[3], Is.SameAs (_values[3]));
-      Assert.That (_bocList.Value[4], Is.SameAs (_values[4]));
+      Assert.That(ReferenceEquals(_values, _bocList.Value), Is.False);
+      Assert.That(_bocList.Value.Count, Is.EqualTo(5));
+      Assert.That(_bocList.Value[0], Is.SameAs(_values[0]));
+      Assert.That(_bocList.Value[1], Is.SameAs(_values[1]));
+      Assert.That(_bocList.Value[2], Is.SameAs(_values[2]));
+      Assert.That(_bocList.Value[3], Is.SameAs(_values[3]));
+      Assert.That(_bocList.Value[4], Is.SameAs(_values[4]));
 
-      Assert.That (_bocList.IsListEditModeActive, Is.True);
+      Assert.That(_bocList.IsListEditModeActive, Is.True);
     }
 
     [Test]
     public void RemoveRowsWithSingleRow ()
     {
-      _bocList.RemoveRows (new IBusinessObject[] {_values[2]});
+      _bocList.RemoveRows(new IBusinessObject[] {_values[2]});
 
-      Assert.That (ReferenceEquals (_values, _bocList.Value), Is.False);
-      Assert.That (_bocList.Value.Count, Is.EqualTo (4));
-      Assert.That (_bocList.Value[0], Is.SameAs (_values[0]));
-      Assert.That (_bocList.Value[1], Is.SameAs (_values[1]));
-      Assert.That (_bocList.Value[2], Is.SameAs (_values[3]));
-      Assert.That (_bocList.Value[3], Is.SameAs (_values[4]));
+      Assert.That(ReferenceEquals(_values, _bocList.Value), Is.False);
+      Assert.That(_bocList.Value.Count, Is.EqualTo(4));
+      Assert.That(_bocList.Value[0], Is.SameAs(_values[0]));
+      Assert.That(_bocList.Value[1], Is.SameAs(_values[1]));
+      Assert.That(_bocList.Value[2], Is.SameAs(_values[3]));
+      Assert.That(_bocList.Value[3], Is.SameAs(_values[4]));
 
-      Assert.That (_bocList.IsListEditModeActive, Is.True);
+      Assert.That(_bocList.IsListEditModeActive, Is.True);
     }
 
     [Test]
     public void RemoveRowsWithMultipleRows ()
     {
-      _bocList.RemoveRows (new IBusinessObject[] {_values[1], _values[3]});
+      _bocList.RemoveRows(new IBusinessObject[] {_values[1], _values[3]});
 
-      Assert.That (ReferenceEquals (_values, _bocList.Value), Is.False);
-      Assert.That (_bocList.Value.Count, Is.EqualTo (3));
-      Assert.That (_bocList.Value[0], Is.SameAs (_values[0]));
-      Assert.That (_bocList.Value[1], Is.SameAs (_values[2]));
-      Assert.That (_bocList.Value[2], Is.SameAs (_values[4]));
+      Assert.That(ReferenceEquals(_values, _bocList.Value), Is.False);
+      Assert.That(_bocList.Value.Count, Is.EqualTo(3));
+      Assert.That(_bocList.Value[0], Is.SameAs(_values[0]));
+      Assert.That(_bocList.Value[1], Is.SameAs(_values[2]));
+      Assert.That(_bocList.Value[2], Is.SameAs(_values[4]));
 
-      Assert.That (_bocList.IsListEditModeActive, Is.True);
+      Assert.That(_bocList.IsListEditModeActive, Is.True);
     }
   }
 }

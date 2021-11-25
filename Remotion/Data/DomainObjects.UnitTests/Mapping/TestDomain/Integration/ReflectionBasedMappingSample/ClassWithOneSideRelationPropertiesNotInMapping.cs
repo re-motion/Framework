@@ -43,13 +43,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     [DBBidirectionalRelation ("BasePrivateBidirectionalOneToManyForDomainObjectCollection", SortExpression = "NoAttributeForDomainObjectCollection")]
     private ObjectList<ClassWithRealRelationEndPoints> BasePrivateBidirectionalOneToManyForDomainObjectCollection
     {
-      get { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
     }
   
     [DBBidirectionalRelation ("BasePrivateBidirectionalOneToManyForVirtualCollection", SortExpression = "NoAttributeForVirtualCollection")]
     private IObjectList<ClassWithRealRelationEndPoints> BasePrivateBidirectionalOneToManyForVirtualCollection
     {
-      get { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
     }
   }
 }

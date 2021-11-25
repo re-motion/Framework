@@ -52,27 +52,27 @@ namespace Remotion.Data.DomainObjects.Queries
 
     public virtual IQueryable<T> CreateQueryable<T> (IQueryParser queryParser, IQueryExecutor executor)
     {
-      ArgumentUtility.CheckNotNull ("queryParser", queryParser);
-      ArgumentUtility.CheckNotNull ("executor", executor);
+      ArgumentUtility.CheckNotNull("queryParser", queryParser);
+      ArgumentUtility.CheckNotNull("executor", executor);
 
-      return new DomainObjectQueryable<T> (queryParser, executor);
+      return new DomainObjectQueryable<T>(queryParser, executor);
     }
 
     public virtual IQueryParser CreateQueryParser ()
     {
       var customNodeTypeRegistry = CreateCustomNodeTypeProvider();
-      var expressionTreeParser = CreateExpressionTreeParser (customNodeTypeRegistry);
-      return CreateQueryParser (expressionTreeParser);
+      var expressionTreeParser = CreateExpressionTreeParser(customNodeTypeRegistry);
+      return CreateQueryParser(expressionTreeParser);
     }
 
     public virtual IQueryExecutor CreateQueryExecutor (StorageProviderDefinition providerDefinition)
     {
-      var queryGenerator = providerDefinition.Factory.CreateDomainObjectQueryGenerator (
+      var queryGenerator = providerDefinition.Factory.CreateDomainObjectQueryGenerator(
           providerDefinition,
           _methodCallTransformerProvider,
           _resultOperatorHandlerRegistry,
           MappingConfiguration.Current);
-      return new DomainObjectQueryExecutor (providerDefinition, queryGenerator);
+      return new DomainObjectQueryExecutor(providerDefinition, queryGenerator);
     }
 
     protected virtual IMethodCallTransformerProvider CreateMethodCallTransformerProvider ()
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.Queries
       var methodInfoBasedRegistry = RegistryBase<MethodInfoBasedMethodCallTransformerRegistry, MethodInfo, IMethodCallTransformer>.CreateDefault();
       var nameBasedRegistry = RegistryBase<NameBasedMethodCallTransformerRegistry, string, IMethodCallTransformer>.CreateDefault();
 
-      return new CompoundMethodCallTransformerProvider (methodInfoBasedRegistry, nameBasedRegistry);
+      return new CompoundMethodCallTransformerProvider(methodInfoBasedRegistry, nameBasedRegistry);
     }
 
     protected virtual ResultOperatorHandlerRegistry CreateResultOperatorHandlerRegistry ()
@@ -88,51 +88,51 @@ namespace Remotion.Data.DomainObjects.Queries
       var resultOperatorHandlerRegistry = RegistryBase<ResultOperatorHandlerRegistry, Type, IResultOperatorHandler>.CreateDefault();
 
       var handler = new FetchResultOperatorHandler();
-      resultOperatorHandlerRegistry.Register (handler.SupportedResultOperatorType, handler);
+      resultOperatorHandlerRegistry.Register(handler.SupportedResultOperatorType, handler);
 
       return resultOperatorHandlerRegistry;
     }
 
     protected virtual MethodInfoBasedNodeTypeRegistry CreateCustomNodeTypeProvider ()
     {
-      var customNodeTypeRegistry = new MethodInfoBasedNodeTypeRegistry ();
+      var customNodeTypeRegistry = new MethodInfoBasedNodeTypeRegistry();
 
-      customNodeTypeRegistry.Register (
-          new[] { MemberInfoFromExpressionUtility.GetMethod ((DomainObjectCollection obj) => obj.ContainsObject (null)) },
+      customNodeTypeRegistry.Register(
+          new[] { MemberInfoFromExpressionUtility.GetMethod((DomainObjectCollection obj) => obj.ContainsObject(null)) },
           typeof (ContainsExpressionNode));
-      customNodeTypeRegistry.Register (
-          new[] { MemberInfoFromExpressionUtility.GetProperty ((DomainObjectCollection obj) => obj.Count).GetGetMethod () },
+      customNodeTypeRegistry.Register(
+          new[] { MemberInfoFromExpressionUtility.GetProperty((DomainObjectCollection obj) => obj.Count).GetGetMethod() },
           typeof (CountExpressionNode));
-      customNodeTypeRegistry.Register (
-          new[] { typeof (IObjectList<>).GetRuntimeMethod ("get_Count", new Type[0]) },
+      customNodeTypeRegistry.Register(
+          new[] { typeof (IObjectList<>).GetRuntimeMethod("get_Count", new Type[0]) },
           typeof (CountExpressionNode));
 
-      customNodeTypeRegistry.Register (new[] { typeof (EagerFetchingExtensionMethods).GetMethod ("FetchOne") }, typeof (FetchOneExpressionNode));
-      customNodeTypeRegistry.Register (new[] { typeof (EagerFetchingExtensionMethods).GetMethod ("FetchMany") }, typeof (FetchManyExpressionNode));
-      customNodeTypeRegistry.Register (
-          new[] { typeof (EagerFetchingExtensionMethods).GetMethod ("ThenFetchOne") }, typeof (ThenFetchOneExpressionNode));
-      customNodeTypeRegistry.Register (
-          new[] { typeof (EagerFetchingExtensionMethods).GetMethod ("ThenFetchMany") }, typeof (ThenFetchManyExpressionNode));
+      customNodeTypeRegistry.Register(new[] { typeof (EagerFetchingExtensionMethods).GetMethod("FetchOne") }, typeof (FetchOneExpressionNode));
+      customNodeTypeRegistry.Register(new[] { typeof (EagerFetchingExtensionMethods).GetMethod("FetchMany") }, typeof (FetchManyExpressionNode));
+      customNodeTypeRegistry.Register(
+          new[] { typeof (EagerFetchingExtensionMethods).GetMethod("ThenFetchOne") }, typeof (ThenFetchOneExpressionNode));
+      customNodeTypeRegistry.Register(
+          new[] { typeof (EagerFetchingExtensionMethods).GetMethod("ThenFetchMany") }, typeof (ThenFetchManyExpressionNode));
 
       return customNodeTypeRegistry;
     }
 
     protected virtual ExpressionTreeParser CreateExpressionTreeParser (INodeTypeProvider customNodeTypeProvider)
     {
-      ArgumentUtility.CheckNotNull ("customNodeTypeProvider", customNodeTypeProvider);
+      ArgumentUtility.CheckNotNull("customNodeTypeProvider", customNodeTypeProvider);
 
-      var nodeTypeProvider = ExpressionTreeParser.CreateDefaultNodeTypeProvider ();
-      nodeTypeProvider.InnerProviders.Insert (0, customNodeTypeProvider);
+      var nodeTypeProvider = ExpressionTreeParser.CreateDefaultNodeTypeProvider();
+      nodeTypeProvider.InnerProviders.Insert(0, customNodeTypeProvider);
 
-      var transformerRegistry = ExpressionTransformerRegistry.CreateDefault ();
-      var processor = ExpressionTreeParser.CreateDefaultProcessor (transformerRegistry);
-      return new ExpressionTreeParser (nodeTypeProvider, processor);
+      var transformerRegistry = ExpressionTransformerRegistry.CreateDefault();
+      var processor = ExpressionTreeParser.CreateDefaultProcessor(transformerRegistry);
+      return new ExpressionTreeParser(nodeTypeProvider, processor);
     }
 
     protected virtual IQueryParser CreateQueryParser (ExpressionTreeParser expressionTreeParser)
     {
-      ArgumentUtility.CheckNotNull ("expressionTreeParser", expressionTreeParser);
-      return new QueryParser (expressionTreeParser);
+      ArgumentUtility.CheckNotNull("expressionTreeParser", expressionTreeParser);
+      return new QueryParser(expressionTreeParser);
     }
   }
 }

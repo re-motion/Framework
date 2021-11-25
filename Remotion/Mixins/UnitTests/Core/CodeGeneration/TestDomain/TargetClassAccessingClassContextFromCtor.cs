@@ -31,8 +31,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
       var mixinTarget = (IMixinTarget) this;
       ClassContext = mixinTarget.ClassContext;
 
-      Assert.That (ClassContext.Mixins.Count, Is.EqualTo (1));
-      Assert.That (ClassContext.Mixins.ContainsKey (typeof (NullMixin)), Is.True);
+      Assert.That(ClassContext.Mixins.Count, Is.EqualTo(1));
+      Assert.That(ClassContext.Mixins.ContainsKey(typeof (NullMixin)), Is.True);
     }
   }
 }

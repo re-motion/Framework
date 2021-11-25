@@ -33,14 +33,14 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     {
       var wxeFunction = CreateWxeFunction();
       ObjectSecurityStrategyStub
-          .Stub (
-              stub => stub.HasAccess (
-                  Arg.Is (SecurityProviderStub),
-                  Arg.Is (SecurityPrincipalStub),
-                  Arg<IReadOnlyList<AccessType>>.List.Equal (new[] { TestAccessTypeValue })))
-          .Return (true);
+          .Stub(
+              stub => stub.HasAccess(
+                  Arg.Is(SecurityProviderStub),
+                  Arg.Is(SecurityPrincipalStub),
+                  Arg<IReadOnlyList<AccessType>>.List.Equal(new[] { TestAccessTypeValue })))
+          .Return(true);
 
-      wxeFunction.Execute (Context);
+      wxeFunction.Execute(Context);
     }
 
     [Test]
@@ -48,15 +48,15 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     {
       var wxeFunction = CreateWxeFunction();
       ObjectSecurityStrategyStub
-          .Stub (
-              stub => stub.HasAccess (
-                  Arg.Is (SecurityProviderStub),
-                  Arg.Is (SecurityPrincipalStub),
-                  Arg<IReadOnlyList<AccessType>>.List.Equal (new[] { TestAccessTypeValue })))
-          .Return (false);
+          .Stub(
+              stub => stub.HasAccess(
+                  Arg.Is(SecurityProviderStub),
+                  Arg.Is(SecurityPrincipalStub),
+                  Arg<IReadOnlyList<AccessType>>.List.Equal(new[] { TestAccessTypeValue })))
+          .Return(false);
 
-      Assert.That (
-          () => wxeFunction.Execute (Context),
+      Assert.That(
+          () => wxeFunction.Execute(Context),
           Throws.TypeOf<WxeUnhandledException>().With.InnerException.TypeOf<PermissionDeniedException>());
     }
 
@@ -64,39 +64,39 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     public void HasAccess_ViaDomainObjectParameter_WithFunctionalHasAccessTrue_ReturnsTrue ()
     {
       FunctionalSecurityStrategyStub
-          .Stub (
-              stub => stub.HasAccess (
-                  Arg.Is (typeof (SecurableDomainObject)),
-                  Arg.Is (SecurityProviderStub),
-                  Arg.Is (SecurityPrincipalStub),
-                  Arg<IReadOnlyList<AccessType>>.List.Equal (new[] { TestAccessTypeValue })))
-          .Return (true);
+          .Stub(
+              stub => stub.HasAccess(
+                  Arg.Is(typeof (SecurableDomainObject)),
+                  Arg.Is(SecurityProviderStub),
+                  Arg.Is(SecurityPrincipalStub),
+                  Arg<IReadOnlyList<AccessType>>.List.Equal(new[] { TestAccessTypeValue })))
+          .Return(true);
 
-      Assert.That (WxeFunction.HasAccess (typeof (FunctionWithSecuredDomainObjectParameter)), Is.True);
+      Assert.That(WxeFunction.HasAccess(typeof (FunctionWithSecuredDomainObjectParameter)), Is.True);
     }
 
     [Test]
     public void HasAccess_ViaDomainObjectParameter_WithFunctionalHasAccessFalse_ReturnsFalse ()
     {
       FunctionalSecurityStrategyStub
-          .Stub (
-              stub => stub.HasAccess (
-                  Arg.Is (typeof (SecurableDomainObject)),
-                  Arg.Is (SecurityProviderStub),
-                  Arg.Is (SecurityPrincipalStub),
-                  Arg<IReadOnlyList<AccessType>>.List.Equal (new[] { TestAccessTypeValue })))
-          .Return (false);
+          .Stub(
+              stub => stub.HasAccess(
+                  Arg.Is(typeof (SecurableDomainObject)),
+                  Arg.Is(SecurityProviderStub),
+                  Arg.Is(SecurityPrincipalStub),
+                  Arg<IReadOnlyList<AccessType>>.List.Equal(new[] { TestAccessTypeValue })))
+          .Return(false);
 
-      Assert.That (WxeFunction.HasAccess (typeof (FunctionWithSecuredDomainObjectParameter)), Is.False);
+      Assert.That(WxeFunction.HasAccess(typeof (FunctionWithSecuredDomainObjectParameter)), Is.False);
     }
 
     private FunctionWithSecuredDomainObjectParameter CreateWxeFunction ()
     {
       var clientTransaction = ClientTransaction.CreateRootTransaction();
-      var securableDomainObject = CreateSecurableDomainObject (clientTransaction);
+      var securableDomainObject = CreateSecurableDomainObject(clientTransaction);
 
-      var transactionMode = CreateTransactionModeForClientTransaction (clientTransaction);
-      var wxeFunction = new FunctionWithSecuredDomainObjectParameter (transactionMode);
+      var transactionMode = CreateTransactionModeForClientTransaction(clientTransaction);
+      var wxeFunction = new FunctionWithSecuredDomainObjectParameter(transactionMode);
       wxeFunction.SecurableParameter = securableDomainObject;
       return wxeFunction;
     }

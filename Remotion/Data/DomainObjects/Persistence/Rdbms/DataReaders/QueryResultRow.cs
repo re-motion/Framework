@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public QueryResultRow (IDataReader dataReader, IStorageTypeInformationProvider storageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
-      ArgumentUtility.CheckNotNull ("storageTypeInformationProvider", storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
 
       _dataReader = dataReader;
       _storageTypeInformationProvider = storageTypeInformationProvider;
@@ -57,33 +57,33 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public object GetRawValue (int position)
     {
-      return _dataReader.GetValue (position);
+      return _dataReader.GetValue(position);
     }
 
     public object GetConvertedValue (int position, Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      var storageType =  GetStorageType (type);
-      return storageType.Read (_dataReader, position);
+      var storageType =  GetStorageType(type);
+      return storageType.Read(_dataReader, position);
     }
 
     public T GetConvertedValue<T> (int position)
     {
-      return (T) GetConvertedValue (position, typeof(T));
+      return (T) GetConvertedValue(position, typeof(T));
     }
 
     private IStorageTypeInformation GetStorageType (Type type)
     {
       try
       {
-        return _storageTypeInformationProvider.GetStorageType (type);
+        return _storageTypeInformationProvider.GetStorageType(type);
       }
       catch (NotSupportedException ex)
       {
-        if (typeof (ObjectID).IsAssignableFrom (type))
+        if (typeof (ObjectID).IsAssignableFrom(type))
         {
-          throw new NotSupportedException (
+          throw new NotSupportedException(
               "Type 'ObjectID' ist not supported by this storage provider."
               + Environment.NewLine
               + "Please select the ID and ClassID values separately, then create an ObjectID with it in memory "

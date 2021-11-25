@@ -55,14 +55,14 @@ public class CompleteBocUserControl :
   private void Page_Load (object sender, EventArgs e)
 	{
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
-    Person person = Person.GetObject (personID);
+    Person person = Person.GetObject(personID);
     Person partner;
     if (person == null)
     {
-      person = Person.CreateObject (personID);
+      person = Person.CreateObject(personID);
       person.FirstName = "Hugo";
       person.LastName = "Meier";
-      person.DateOfBirth = new DateTime (1959, 4, 15);
+      person.DateOfBirth = new DateTime(1959, 4, 15);
       person.Height = 179;
       person.Income = 2000;
 
@@ -76,13 +76,13 @@ public class CompleteBocUserControl :
     }
 
     CurrentObject.BusinessObject = (IBusinessObject) person;
-    CurrentObject.LoadValues (IsPostBack);
+    CurrentObject.LoadValues(IsPostBack);
 
     if (! IsPostBack)
     {
-      IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert (
-          XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (typeof (Person)), typeof (IBusinessObjectWithIdentity));
-      ReferenceField.SetBusinessObjectList (objects);
+      IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert(
+          XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof (Person)), typeof (IBusinessObjectWithIdentity));
+      ReferenceField.SetBusinessObjectList(objects);
     }
 
 	}
@@ -106,13 +106,13 @@ public class CompleteBocUserControl :
     incomeField.PropertyIdentifier = "Income";
     incomeField.Visible = false;
     //  A new row
-    newRows.Add (new FormGridRowInfo(
+    newRows.Add(new FormGridRowInfo(
         incomeField, 
         FormGridRowInfo.RowType.ControlInRowWithLabel, 
         BooleanField.ID, 
         FormGridRowInfo.RowPosition.AfterRowWithID));
 
-    InitalizeReferenceFieldMenuItems ();
+    InitalizeReferenceFieldMenuItems();
   }
 
   private void InitalizeReferenceFieldMenuItems ()
@@ -127,7 +127,7 @@ public class CompleteBocUserControl :
     menuItem.Command.Type = CommandType.WxeFunction;
     menuItem.Command.WxeFunctionCommand.Parameters = "objects";
     menuItem.Command.WxeFunctionCommand.TypeName = "OBWTest.ViewPersonsWxeFunction,OBWTest";
-    ReferenceField.OptionsMenuItems.Add (menuItem);
+    ReferenceField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
@@ -136,7 +136,7 @@ public class CompleteBocUserControl :
     menuItem.Icon.Url = "Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
-    ReferenceField.OptionsMenuItems.Add (menuItem);
+    ReferenceField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Cut";
@@ -144,14 +144,14 @@ public class CompleteBocUserControl :
     menuItem.Category = "Edit";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
-    ReferenceField.OptionsMenuItems.Add (menuItem);
+    ReferenceField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
     menuItem.Text = "Paste";
     menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
-    ReferenceField.OptionsMenuItems.Add (menuItem);
+    ReferenceField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
@@ -162,7 +162,7 @@ public class CompleteBocUserControl :
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Style = WebMenuItemStyle.Icon;
     menuItem.Command.Type = CommandType.Event;
-    ReferenceField.OptionsMenuItems.Add (menuItem);
+    ReferenceField.OptionsMenuItems.Add(menuItem);
   }
 
 
@@ -171,7 +171,7 @@ public class CompleteBocUserControl :
     bool isValid = FormGridManager.Validate();
     if (isValid)
     {
-      CurrentObject.SaveValues (false);
+      CurrentObject.SaveValues(false);
       Person person = (Person) CurrentObject.BusinessObject;
       person.SaveObject();
     }

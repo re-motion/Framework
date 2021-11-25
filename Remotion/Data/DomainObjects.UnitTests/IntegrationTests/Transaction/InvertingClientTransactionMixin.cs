@@ -30,13 +30,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [OverrideTarget]
     public void Commit ()
     {
-      Next.Rollback (); // okay, this is not really realistic
+      Next.Rollback(); // okay, this is not really realistic
     }
 
     [OverrideTarget]
     public void Rollback ()
     {
-      Next.Commit ();
+      Next.Commit();
     }
   }
 }

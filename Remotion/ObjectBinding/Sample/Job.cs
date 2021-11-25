@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Sample
   {
     public static Job GetObject (Guid id)
     {
-      return GetObject<Job> (id);
+      return GetObject<Job>(id);
     }
 
     public static Job CreateObject ()
@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public static Job CreateObject (Guid id)
     {
-      return CreateObject<Job> (id);
+      return CreateObject<Job>(id);
     }
 
     private string _title;

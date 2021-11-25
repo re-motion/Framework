@@ -28,14 +28,14 @@ namespace Remotion.Web.UnitTests.Core.Security.Domain
         return handleType.GetGenericArguments().Single();
       else
       {
-        var handleInterface = handleType.GetInterfaces().Single (i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof (IHandle<>));
-        return GetReferencedType (handleInterface);
+        var handleInterface = handleType.GetInterfaces().Single(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof (IHandle<>));
+        return GetReferencedType(handleInterface);
       }
     }
 
     public object GetReferencedInstance (object handleInstance)
     {
-      return ((IHandle<object>) handleInstance).GetReferencedInstance ();
+      return ((IHandle<object>) handleInstance).GetReferencedInstance();
     }
   }
 }

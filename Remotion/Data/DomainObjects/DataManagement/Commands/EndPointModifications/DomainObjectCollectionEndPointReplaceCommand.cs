@@ -39,13 +39,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IDomainObjectCollectionData collectionData,
         IClientTransactionEventSink transactionEventSink)
       : base (
-            ArgumentUtility.CheckNotNull ("modifiedEndPoint", modifiedEndPoint),
-            ArgumentUtility.CheckNotNull ("replacedObject", replacedObject),
-            ArgumentUtility.CheckNotNull ("replacementObject", replacementObject),
-            ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink))
+            ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
+            ArgumentUtility.CheckNotNull("replacedObject", replacedObject),
+            ArgumentUtility.CheckNotNull("replacementObject", replacementObject),
+            ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
     {
       if (modifiedEndPoint.IsNull)
-        throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
+        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
       _index = index;
       _modifiedCollectionData = collectionData;
@@ -66,27 +66,27 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     {
       using (EnterTransactionScope())
       {
-        ModifiedCollectionEventRaiser.BeginRemove (_index, OldRelatedObject);
-        ModifiedCollectionEventRaiser.BeginAdd (_index, NewRelatedObject);
+        ModifiedCollectionEventRaiser.BeginRemove(_index, OldRelatedObject);
+        ModifiedCollectionEventRaiser.BeginAdd(_index, NewRelatedObject);
       }
 
-      base.Begin ();
+      base.Begin();
     }
 
     public override void Perform ()
     {
-      ModifiedCollectionData.Replace (_index, NewRelatedObject);
+      ModifiedCollectionData.Replace(_index, NewRelatedObject);
       ModifiedEndPoint.Touch();
     }
 
     public override void End ()
     {
-      base.End ();
+      base.End();
 
       using (EnterTransactionScope())
       {
-        ModifiedCollectionEventRaiser.EndAdd (_index, NewRelatedObject);
-        ModifiedCollectionEventRaiser.EndRemove (_index, OldRelatedObject);
+        ModifiedCollectionEventRaiser.EndAdd(_index, NewRelatedObject);
+        ModifiedCollectionEventRaiser.EndRemove(_index, OldRelatedObject);
       }
     }
 
@@ -105,23 +105,23 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
       // the end point that will be linked to the collection end point after the operation
-      var endPointOfNewObject = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint> (NewRelatedObject);
+      var endPointOfNewObject = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint>(NewRelatedObject);
       // the end point that was linked to the collection end point before the operation
-      var endPointOfOldObject = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint> (OldRelatedObject);
+      var endPointOfOldObject = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint>(OldRelatedObject);
       // the object that was linked to the new related object before the operation
-      var oldRelatedObjectOfNewObject = endPointOfNewObject.GetOppositeObject ();
+      var oldRelatedObjectOfNewObject = endPointOfNewObject.GetOppositeObject();
       // the end point that was linked to the new related object before the operation
-      var oldRelatedEndPointOfNewObject = endPointOfNewObject.GetEndPointWithOppositeDefinition<IDomainObjectCollectionEndPoint> (oldRelatedObjectOfNewObject);
+      var oldRelatedEndPointOfNewObject = endPointOfNewObject.GetEndPointWithOppositeDefinition<IDomainObjectCollectionEndPoint>(oldRelatedObjectOfNewObject);
 
-      return new ExpandedCommand (
+      return new ExpandedCommand(
           // customer.Order[index].Customer = null
-          endPointOfOldObject.CreateRemoveCommand (ModifiedEndPoint.GetDomainObject()),
+          endPointOfOldObject.CreateRemoveCommand(ModifiedEndPoint.GetDomainObject()),
           // newOrder.Customer = customer
-          endPointOfNewObject.CreateSetCommand (ModifiedEndPoint.GetDomainObject()),
+          endPointOfNewObject.CreateSetCommand(ModifiedEndPoint.GetDomainObject()),
           // customer.Orders[index] = newOrder
           this,
           // oldCustomer.Orders.Remove (insertedOrder)
-          oldRelatedEndPointOfNewObject.CreateRemoveCommand (NewRelatedObject));
+          oldRelatedEndPointOfNewObject.CreateRemoveCommand(NewRelatedObject));
     }
   }
 }

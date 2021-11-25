@@ -26,19 +26,19 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     [Obsolete ("Use DomSelectorUtility.CreateHasAttributeCheckForXPath (string, string) instead. (1.19.2)")]
     public static string CreateHasAttributeCheck (string attributeName, string attributeValue)
     {
-      return DomSelectorUtility.CreateHasAttributeCheckForXPath (attributeName, attributeValue);
+      return DomSelectorUtility.CreateHasAttributeCheckForXPath(attributeName, attributeValue);
     }
 
     [Obsolete ("Use DomSelectorUtility.CreateHasClassCheck (string) instead. (1.19.2)")]
     public static string CreateHasClassCheck (string cssClass)
     {
-      return DomSelectorUtility.CreateHasClassCheckForXPath (cssClass);
+      return DomSelectorUtility.CreateHasClassCheckForXPath(cssClass);
     }
 
     [Obsolete ("Use DomSelectorUtility.CreateHasOneOfClassesCheck (string[]) instead. (1.19.2)")]
     public static string CreateHasOneOfClassesCheck (params string[] cssClasses)
     {
-      return DomSelectorUtility.CreateHasOneOfClassesCheckForXPath (cssClasses);
+      return DomSelectorUtility.CreateHasOneOfClassesCheckForXPath(cssClasses);
     }
   }
 }

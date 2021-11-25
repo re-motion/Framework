@@ -38,8 +38,8 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     public WebTabRenderer (IHotkeyFormatter hotkeyFormatter, IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull ("hotkeyFormatter", hotkeyFormatter);
-      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull("hotkeyFormatter", hotkeyFormatter);
+      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 
       _hotkeyFormatter = hotkeyFormatter;
       _renderingFeatures = renderingFeatures;
@@ -60,26 +60,26 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     public void Render (WebTabStripRenderingContext renderingContext, IWebTab tab, bool isEnabled, bool isLast, WebTabStyle style)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("style", style);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("style", style);
 
-      ScriptUtility.Instance.RegisterElementForBorderSpans (renderingContext.Control, "#" + GetTabClientID (renderingContext, tab) + " > *:first-child");
+      ScriptUtility.Instance.RegisterElementForBorderSpans(renderingContext.Control, "#" + GetTabClientID(renderingContext, tab) + " > *:first-child");
 
-      RenderTabBegin (renderingContext);
-      RenderSeperator (renderingContext);
-      RenderWrapperBegin (renderingContext, tab);
+      RenderTabBegin(renderingContext);
+      RenderSeperator(renderingContext);
+      RenderWrapperBegin(renderingContext, tab);
 
-      var command = RenderBeginTagForCommand (renderingContext, tab, isEnabled, style);
-      RenderContents (renderingContext, tab);
-      RenderEndTagForCommand (renderingContext, command);
+      var command = RenderBeginTagForCommand(renderingContext, tab, isEnabled, style);
+      RenderContents(renderingContext, tab);
+      RenderEndTagForCommand(renderingContext, command);
 
       renderingContext.Writer.RenderEndTag(); // End tab span
       renderingContext.Writer.RenderEndTag(); // End tab wrapper span
 
       if (isLast)
       {
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabLast);
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabLast);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
         renderingContext.Writer.RenderEndTag();
       }
 
@@ -93,9 +93,9 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     private void RenderWrapperBegin (WebTabStripRenderingContext renderingContext, IWebTab tab)
     {
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetTabClientID (renderingContext, tab));
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, GetTabClientID(renderingContext, tab));
       // role=none is required on span in this instance to remove the implied 'group' role.
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
 
       string cssClass;
       if (tab.IsSelected)
@@ -106,47 +106,47 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
       if (isDisabled)
         cssClass += " " + CssClassDisabled;
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
 
       if (RenderingFeatures.EnableDiagnosticMetadata)
       {
-        if (!string.IsNullOrEmpty (tab.ItemID))
-          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.ItemID, tab.ItemID);
+        if (!string.IsNullOrEmpty(tab.ItemID))
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.ItemID, tab.ItemID);
 
-        if (!string.IsNullOrEmpty (tab.Text))
-          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (tab.Text));
+        if (!string.IsNullOrEmpty(tab.Text))
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(tab.Text));
         
-        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.IsDisabled, (isDisabled).ToString().ToLower());
+        renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsDisabled, (isDisabled).ToString().ToLower());
       }
 
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin tab span
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin tab span
     }
 
     private void RenderTabBegin (WebTabStripRenderingContext renderingContext)
     {
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Li); // Begin list item
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Li); // Begin list item
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "tabStripTabWrapper");
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin tab wrapper span
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "tabStripTabWrapper");
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin tab wrapper span
     }
 
     private void RenderSeperator (WebTabStripRenderingContext renderingContext)
     {
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassSeparator);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassSeparator);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       renderingContext.Writer.RenderEndTag();
       renderingContext.Writer.RenderEndTag();
     }
 
     protected virtual Command RenderBeginTagForCommand (WebTabStripRenderingContext renderingContext, IWebTab tab, bool isEnabled, WebTabStyle style)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("style", style);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("style", style);
 
       var attributes = new NameValueCollection();
-      attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Tab);
+      attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Tab);
 
       var command = new Command();
       command.OwnerControl = renderingContext.Control;
@@ -156,22 +156,22 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       {
         command.Type = CommandType.Event;
 
-        var textWithHotkey = HotkeyParser.Parse (tab.Text);
+        var textWithHotkey = HotkeyParser.Parse(tab.Text);
         if (textWithHotkey.Hotkey.HasValue)
-          command.AccessKey = _hotkeyFormatter.FormatHotkey (textWithHotkey);
+          command.AccessKey = _hotkeyFormatter.FormatHotkey(textWithHotkey);
 
         if (tab.IsSelected)
         {
-          attributes.Add (HtmlTextWriterAttribute2.AriaSelected, HtmlAriaDisabledAttributeValue.True);
+          attributes.Add(HtmlTextWriterAttribute2.AriaSelected, HtmlAriaDisabledAttributeValue.True);
           // aria-controls will not be rendered at this time. Rendering the element isn't possible with the current composition graph.
           // Screenreaders do not depend/support aria-controls so this is not an issue at this time.
           //attributes.Add (HtmlTextWriterAttribute2.AriaControls, ??);
-          attributes.Add ("tabindex", "0");
+          attributes.Add("tabindex", "0");
         }
         else
         {
-          attributes.Add (HtmlTextWriterAttribute2.AriaSelected, HtmlAriaDisabledAttributeValue.False);
-          attributes.Add ("tabindex", "-1");
+          attributes.Add(HtmlTextWriterAttribute2.AriaSelected, HtmlAriaDisabledAttributeValue.False);
+          attributes.Add("tabindex", "-1");
         }
       }
       else
@@ -180,21 +180,21 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
         if (tab.IsSelected)
         {
           command.NoneCommand.EnableFocus = true;
-          attributes.Add (HtmlTextWriterAttribute2.AriaSelected, HtmlAriaDisabledAttributeValue.True);
+          attributes.Add(HtmlTextWriterAttribute2.AriaSelected, HtmlAriaDisabledAttributeValue.True);
           // aria-controls will not be rendered at this time. Rendering the element isn't possible with the current composition graph.
           // Screenreaders do not depend/support aria-controls so this is not an issue at this time.
           //attributes.Add (HtmlTextWriterAttribute2.AriaControls, ??);
-          attributes.Add ("tabindex", "0");
+          attributes.Add("tabindex", "0");
         }
         else
         {
-          attributes.Add (HtmlTextWriterAttribute2.AriaSelected, HtmlAriaDisabledAttributeValue.False);
-          attributes.Add (HtmlTextWriterAttribute2.AriaDisabled, HtmlAriaDisabledAttributeValue.True);
-          attributes.Add ("tabindex", "-1");
+          attributes.Add(HtmlTextWriterAttribute2.AriaSelected, HtmlAriaDisabledAttributeValue.False);
+          attributes.Add(HtmlTextWriterAttribute2.AriaDisabled, HtmlAriaDisabledAttributeValue.True);
+          attributes.Add("tabindex", "-1");
         }
       }
 
-      command.RenderBegin (
+      command.RenderBegin(
           renderingContext.Writer,
           RenderingFeatures,
           tab.GetPostBackClientEvent(),
@@ -211,32 +211,32 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     protected virtual void RenderEndTagForCommand (WebTabStripRenderingContext renderingContext, Command command)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("command", command);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("command", command);
 
-      command.RenderEnd (renderingContext.Writer);
+      command.RenderEnd(renderingContext.Writer);
     }
 
     protected virtual void RenderContents (WebTabStripRenderingContext renderingContext, IWebTab tab)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabAnchorBody);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin anchor body span
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabAnchorBody);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin anchor body span
 
       bool hasIcon = tab.Icon.HasRenderingInformation;
-      bool hasText = !string.IsNullOrEmpty (tab.Text);
+      bool hasText = !string.IsNullOrEmpty(tab.Text);
       if (hasIcon)
-        tab.Icon.Render (renderingContext.Writer, renderingContext.Control);
+        tab.Icon.Render(renderingContext.Writer, renderingContext.Control);
       if (hasText)
       {
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin text span
-        var textWithHotkey = HotkeyParser.Parse (tab.Text);
-        renderingContext.Writer.Write (_hotkeyFormatter.FormatText (textWithHotkey, false)); // Do not HTML encode
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin text span
+        var textWithHotkey = HotkeyParser.Parse(tab.Text);
+        renderingContext.Writer.Write(_hotkeyFormatter.FormatText(textWithHotkey, false)); // Do not HTML encode
         renderingContext.Writer.RenderEndTag(); // End text span
       }
       if (!hasIcon && !hasText)
-        renderingContext.Writer.Write ("&nbsp;");
+        renderingContext.Writer.Write("&nbsp;");
 
       renderingContext.Writer.RenderEndTag(); // End anchor body span
     }

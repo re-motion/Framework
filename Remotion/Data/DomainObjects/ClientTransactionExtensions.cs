@@ -35,10 +35,10 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The result of <paramref name="func"/>.</returns>
     public static T ExecuteInScope<T> (this ClientTransaction clientTransaction, Func<T> func)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("func", func);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("func", func);
 
-      using (EnterScopeOnDemand (clientTransaction))
+      using (EnterScopeOnDemand(clientTransaction))
       {
         return func();
       }
@@ -53,10 +53,10 @@ namespace Remotion.Data.DomainObjects
     /// <param name="action">The delegate to be executed.</param>
     public static void ExecuteInScope (this ClientTransaction clientTransaction, Action action)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("action", action);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("action", action);
 
-      using (EnterScopeOnDemand (clientTransaction))
+      using (EnterScopeOnDemand(clientTransaction))
       {
         action();
       }

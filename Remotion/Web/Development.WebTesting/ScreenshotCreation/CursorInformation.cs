@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Represents an invisible cursor with default cursor image at position (0,0).
     /// </summary>
-    public static readonly CursorInformation Empty = new CursorInformation (Point.Empty, Cursors.Default, false);
+    public static readonly CursorInformation Empty = new CursorInformation(Point.Empty, Cursors.Default, false);
 
     /// <summary>
     /// Captures the current <see cref="CursorInformation"/>.
@@ -57,16 +57,16 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       var cursorInformation = new CursorInfoDto
                               {
-                                  Size = (uint) Marshal.SizeOf (typeof (CursorInfoDto))
+                                  Size = (uint) Marshal.SizeOf(typeof (CursorInfoDto))
                               };
 
-      if (!GetCursorInfo (ref cursorInformation))
-        throw new InvalidOperationException ("Could not retrieve the cursor information.", new Win32Exception (Marshal.GetLastWin32Error()));
+      if (!GetCursorInfo(ref cursorInformation))
+        throw new InvalidOperationException("Could not retrieve the cursor information.", new Win32Exception(Marshal.GetLastWin32Error()));
 
       if (cursorInformation.Flags == c_cursorVisible)
-        return new CursorInformation (cursorInformation.ScreenPosition, new Cursor (cursorInformation.CursorHandle), true);
+        return new CursorInformation(cursorInformation.ScreenPosition, new Cursor(cursorInformation.CursorHandle), true);
 
-      return new CursorInformation (cursorInformation.ScreenPosition, Cursors.Default, false);
+      return new CursorInformation(cursorInformation.ScreenPosition, Cursors.Default, false);
     }
 
     private readonly Cursor _cursor;
@@ -75,7 +75,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     public CursorInformation (Point position, [NotNull] Cursor cursor, bool isIsVisible)
     {
-      ArgumentUtility.CheckNotNull ("cursor", cursor);
+      ArgumentUtility.CheckNotNull("cursor", cursor);
 
       _position = position;
       _cursor = cursor;
@@ -112,13 +112,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     public void Draw (Graphics graphics)
     {
-      ArgumentUtility.CheckNotNull ("graphics", graphics);
+      ArgumentUtility.CheckNotNull("graphics", graphics);
 
       if (!_isVisible)
         return;
 
-      var bounds = new Rectangle (_position - new Size (_cursor.HotSpot), _cursor.Size);
-      _cursor.Draw (graphics, bounds);
+      var bounds = new Rectangle(_position - new Size(_cursor.HotSpot), _cursor.Size);
+      _cursor.Draw(graphics, bounds);
     }
   }
 }

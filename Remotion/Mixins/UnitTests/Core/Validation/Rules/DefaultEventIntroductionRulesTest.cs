@@ -30,80 +30,80 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     public void SucceedsIfPrivateIntroducedEvent_HasSameNameAsTargetClassEvent ()
     {
       TargetClassDefinition classDefinition =
-          DefinitionObjectMother.BuildUnvalidatedDefinition (
+          DefinitionObjectMother.BuildUnvalidatedDefinition(
               typeof (TargetClassWithSameNamesAsIntroducedMembers),
               typeof (MixinIntroducingMembersWithDifferentVisibilities));
-      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent ("EventWithDefaultVisibility")];
+      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent("EventWithDefaultVisibility")];
 
-      var log = Validator.Validate (definition);
-      AssertSuccess (log);
+      var log = Validator.Validate(definition);
+      AssertSuccess(log);
     }
 
     [Test]
     public void FailsIfPublicIntroducedEvent_HasSameNameButDifferentSignatureFromTargetClassEvent ()
     {
       TargetClassDefinition classDefinition =
-          DefinitionObjectMother.BuildUnvalidatedDefinition (
+          DefinitionObjectMother.BuildUnvalidatedDefinition(
               typeof (TargetClassWithSameNamesDifferentSignaturesAsIntroducedMembers),
               typeof (MixinIntroducingMembersWithDifferentVisibilities));
-      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent ("EventWithPublicVisibility")];
+      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent("EventWithPublicVisibility")];
 
-      var log = Validator.Validate (definition);
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultEventIntroductionRules.PublicEventNameMustBeUniqueInTargetClass", log), Is.True);
+      var log = Validator.Validate(definition);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultEventIntroductionRules.PublicEventNameMustBeUniqueInTargetClass", log), Is.True);
     }
 
     [Test]
     public void FailsIfPublicIntroducedEvent_HasSameNameAndSignatureAsTargetClassEvent ()
     {
       TargetClassDefinition classDefinition =
-          DefinitionObjectMother.BuildUnvalidatedDefinition (
+          DefinitionObjectMother.BuildUnvalidatedDefinition(
               typeof (TargetClassWithSameNamesAsIntroducedMembers),
               typeof (MixinIntroducingMembersWithDifferentVisibilities));
-      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent ("EventWithPublicVisibility")];
+      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent("EventWithPublicVisibility")];
 
-      var log = Validator.Validate (definition);
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultEventIntroductionRules.PublicEventNameMustBeUniqueInTargetClass", log), Is.True);
+      var log = Validator.Validate(definition);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultEventIntroductionRules.PublicEventNameMustBeUniqueInTargetClass", log), Is.True);
     }
 
     [Test]
     public void SucceedsIfPrivateIntroducedEvent_HasSameNameAsOther ()
     {
       TargetClassDefinition classDefinition =
-          DefinitionObjectMother.BuildUnvalidatedDefinition (
+          DefinitionObjectMother.BuildUnvalidatedDefinition(
               typeof (NullTarget),
               typeof (MixinIntroducingMembersWithDifferentVisibilities),
               typeof (OtherMixinIntroducingMembersWithDifferentVisibilities));
-      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent ("EventWithDefaultVisibility")];
+      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent("EventWithDefaultVisibility")];
 
-      var log = Validator.Validate (definition);
-      AssertSuccess (log);
+      var log = Validator.Validate(definition);
+      AssertSuccess(log);
     }
 
     [Test]
     public void SucceedsIfPublicIntroducedEvent_DoesNotHaveSameNameAsOther ()
     {
       TargetClassDefinition classDefinition =
-          DefinitionObjectMother.BuildUnvalidatedDefinition (
+          DefinitionObjectMother.BuildUnvalidatedDefinition(
               typeof (NullTarget),
               typeof (MixinIntroducingMembersWithDifferentVisibilities));
-      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent ("EventWithPublicVisibility")];
+      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent("EventWithPublicVisibility")];
 
-      var log = Validator.Validate (definition);
-      AssertSuccess (log);
+      var log = Validator.Validate(definition);
+      AssertSuccess(log);
     }
 
     [Test]
     public void SucceedsIfPublicIntroducedEvent_HasSameNameAsPrivateOther ()
     {
       TargetClassDefinition classDefinition =
-          DefinitionObjectMother.BuildUnvalidatedDefinition (
+          DefinitionObjectMother.BuildUnvalidatedDefinition(
               typeof (NullTarget),
               typeof (MixinIntroducingMembersWithDifferentVisibilities),
               typeof (MixinIntroducingMembersWithPrivateVisibilities));
-      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent ("EventWithPublicVisibility")];
+      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent("EventWithPublicVisibility")];
 
-      var log = Validator.Validate (definition);
-      AssertSuccess (log);
+      var log = Validator.Validate(definition);
+      AssertSuccess(log);
     }
 
 
@@ -111,28 +111,28 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     public void FailsIfPublicIntroducedEvent_HasSameNameButDifferentSignatureAsOther ()
     {
       TargetClassDefinition classDefinition =
-          DefinitionObjectMother.BuildUnvalidatedDefinition (
+          DefinitionObjectMother.BuildUnvalidatedDefinition(
               typeof (NullTarget),
               typeof (MixinIntroducingMembersWithDifferentVisibilities),
               typeof (OtherMixinIntroducingMembersWithPublicVisibilityDifferentSignatures));
-      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent ("EventWithPublicVisibility")];
+      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent("EventWithPublicVisibility")];
 
-      var log = Validator.Validate (definition);
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultEventIntroductionRules.PublicEventNameMustBeUniqueInOtherMixins", log), Is.True);
+      var log = Validator.Validate(definition);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultEventIntroductionRules.PublicEventNameMustBeUniqueInOtherMixins", log), Is.True);
     }
 
     [Test]
     public void FailsIfPublicIntroducedEvent_HasSameNameAsOther ()
     {
       TargetClassDefinition classDefinition =
-          DefinitionObjectMother.BuildUnvalidatedDefinition (
+          DefinitionObjectMother.BuildUnvalidatedDefinition(
               typeof (NullTarget),
               typeof (MixinIntroducingMembersWithDifferentVisibilities),
               typeof (OtherMixinIntroducingMembersWithDifferentVisibilities));
-      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent ("EventWithPublicVisibility")];
+      EventIntroductionDefinition definition = classDefinition.ReceivedInterfaces[typeof (IMixinIntroducingMembersWithDifferentVisibilities)].IntroducedEvents[typeof (IMixinIntroducingMembersWithDifferentVisibilities).GetEvent("EventWithPublicVisibility")];
 
-      var log = Validator.Validate (definition);
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultEventIntroductionRules.PublicEventNameMustBeUniqueInOtherMixins", log), Is.True);
+      var log = Validator.Validate(definition);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultEventIntroductionRules.PublicEventNameMustBeUniqueInOtherMixins", log), Is.True);
     }
   }
 }

@@ -30,18 +30,18 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void DoubleMixinOverrides_CreateMixinInstance ()
     {
-      MixinMixingClass instance = ObjectFactory.Create<MixinMixingClass> (ParamList.Empty);
-      Assert.That (Mixin.Get<MixinMixingMixin> (instance), Is.Not.Null);
+      MixinMixingClass instance = ObjectFactory.Create<MixinMixingClass>(ParamList.Empty);
+      Assert.That(Mixin.Get<MixinMixingMixin>(instance), Is.Not.Null);
     }
 
     [Test]
     public void DoubleMixinOverrides_CreateClassInstance ()
     {
-      ClassWithMixedMixin instance = ObjectFactory.Create<ClassWithMixedMixin> (ParamList.Empty);
-      Assert.That (Mixin.Get<MixinMixingClass> (instance), Is.Not.Null);
-      Assert.That (Mixin.Get<MixinMixingMixin> (Mixin.Get<MixinMixingClass> (instance)), Is.Not.Null);
+      ClassWithMixedMixin instance = ObjectFactory.Create<ClassWithMixedMixin>(ParamList.Empty);
+      Assert.That(Mixin.Get<MixinMixingClass>(instance), Is.Not.Null);
+      Assert.That(Mixin.Get<MixinMixingMixin>(Mixin.Get<MixinMixingClass>(instance)), Is.Not.Null);
 
-      Assert.That (instance.StringMethod (3), Is.EqualTo ("MixinMixingMixin-MixinMixingClass-ClassWithMixedMixin.StringMethod (3)"));
+      Assert.That(instance.StringMethod(3), Is.EqualTo("MixinMixingMixin-MixinMixingClass-ClassWithMixedMixin.StringMethod (3)"));
     }
 
     [Test]
@@ -53,7 +53,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
           .EnterScope())
       {
         var instance = ObjectFactory.Create<ClassOverridingSingleMixinMethod>(ParamList.Empty);
-        Assert.That (Mixin.Get<MixinWithOverridableMember> (instance).ToString(), Does.StartWith("Overridden: "));
+        Assert.That(Mixin.Get<MixinWithOverridableMember>(instance).ToString(), Does.StartWith("Overridden: "));
       }
     }
 
@@ -61,35 +61,35 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void MixedMixin_Serialization ()
     {
-      var instance = ObjectFactory.Create<ClassWithMixedMixin> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassWithMixedMixin>(ParamList.Empty);
 
-      var deserialized = Serializer.SerializeAndDeserialize (instance);
+      var deserialized = Serializer.SerializeAndDeserialize(instance);
 
-      Assert.That (deserialized.StringMethod (3), Is.EqualTo ("MixinMixingMixin-MixinMixingClass-ClassWithMixedMixin.StringMethod (3)"));
+      Assert.That(deserialized.StringMethod(3), Is.EqualTo("MixinMixingMixin-MixinMixingClass-ClassWithMixedMixin.StringMethod (3)"));
     }
 
     [Ignore ("TODO 5812")]
     [Test]
     public void MixedDerivedMixin_Serialization ()
     {
-      var instance = ObjectFactory.Create<ClassWithMixedDerivedMixin> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassWithMixedDerivedMixin>(ParamList.Empty);
 
-      var derivedMixin = Mixin.Get<MixinMixingClassRequiringToBeDerived> (instance);
+      var derivedMixin = Mixin.Get<MixinMixingClassRequiringToBeDerived>(instance);
       var mixinType = derivedMixin.GetType();
-      Assert.That (Pipeline.ReflectionService.IsAssembledType (mixinType), Is.True, "Mixed mixin.");
+      Assert.That(Pipeline.ReflectionService.IsAssembledType(mixinType), Is.True, "Mixed mixin.");
 
-      var underlyingType = Pipeline.ReflectionService.GetRequestedType (mixinType);
-      Assert.That (underlyingType, Is.Not.SameAs (typeof (MixinMixingClassRequiringToBeDerived)), "Derived mixin.");
-      Assert.That (underlyingType.BaseType, Is.SameAs (typeof (MixinMixingClassRequiringToBeDerived)));
+      var underlyingType = Pipeline.ReflectionService.GetRequestedType(mixinType);
+      Assert.That(underlyingType, Is.Not.SameAs(typeof (MixinMixingClassRequiringToBeDerived)), "Derived mixin.");
+      Assert.That(underlyingType.BaseType, Is.SameAs(typeof (MixinMixingClassRequiringToBeDerived)));
 
-      var mixinMixin = Mixin.Get<MixinMixingDerivedMixin> (derivedMixin);
-      Assert.That (mixinMixin, Is.Not.Null);
+      var mixinMixin = Mixin.Get<MixinMixingDerivedMixin>(derivedMixin);
+      Assert.That(mixinMixin, Is.Not.Null);
 
-      var deserialized = Serializer.SerializeAndDeserialize (instance);
+      var deserialized = Serializer.SerializeAndDeserialize(instance);
 
-      Assert.That (
-          deserialized.StringMethod (3),
-          Is.EqualTo ("MixinMixingDerivedMixin-MixinMixingClassRequiringToBeDerived-ClassWithMixedDerivedMixin.StringMethod (3)"));
+      Assert.That(
+          deserialized.StringMethod(3),
+          Is.EqualTo("MixinMixingDerivedMixin-MixinMixingClassRequiringToBeDerived-ClassWithMixedDerivedMixin.StringMethod (3)"));
     }
 
     [Serializable]

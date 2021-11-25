@@ -13,10 +13,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <typeparam name="T">Type of the validator.</typeparam>
     internal static T? GetValidator<T> (this IReadOnlyCollection<BaseValidator>? value) where T : BaseValidator
     {
-      if (value == null || !value.Any ())
+      if (value == null || !value.Any())
         return null;
 
-      return value.OfType<T> ().FirstOrDefault ();
+      return value.OfType<T>().FirstOrDefault();
     } 
   }
 }

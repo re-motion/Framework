@@ -34,12 +34,12 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests
     {
       if (browserConfiguration.IsInternetExplorer())
       {
-        var cssRegex = new Regex (
+        var cssRegex = new Regex(
             @"(\.bocListTableBlock|\.hasMenuBlock|\.hasNavigator) > \.screenReaderText\[aria-label="".+""]\[aria-hidden=""true""]");
 
-        return violations.Where (
+        return violations.Where(
             ruleResult => !(ruleResult.Rule.ID == AccessibilityRuleID.AriaHiddenFocus
-                            && cssRegex.IsMatch (ruleResult.TargetPath.Last().CssSelector)));
+                            && cssRegex.IsMatch(ruleResult.TargetPath.Last().CssSelector)));
       }
 
       return violations;

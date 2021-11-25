@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [SetUp]
     public virtual void SetUp ()
     {
-      using (TestDataLoader loader = new TestDataLoader (StandardConfiguration.ConnectionString))
+      using (TestDataLoader loader = new TestDataLoader(StandardConfiguration.ConnectionString))
       {
         loader.Load();
       }

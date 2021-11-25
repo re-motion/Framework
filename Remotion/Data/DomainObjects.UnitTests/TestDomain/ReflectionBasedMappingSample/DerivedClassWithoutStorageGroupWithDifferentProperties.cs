@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
       set
       {
         Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithoutStorageGroupWithDifferentProperties.PrivateString"]
-            .SetValue (value);
+            .SetValue(value);
       }
     }
   }

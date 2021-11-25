@@ -46,26 +46,26 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     public TControlObject GetControl<TControlObject> (IControlSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return ((IFluentScreenshotElementWithCovariance<T>) this).Target.GetControl (controlSelectionCommand);
+      return ((IFluentScreenshotElementWithCovariance<T>) this).Target.GetControl(controlSelectionCommand);
     }
 
     /// <inheritdoc />
     public TControlObject? GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return ((IFluentScreenshotElementWithCovariance<T>) this).Target.GetControlOrNull (controlSelectionCommand);
+      return ((IFluentScreenshotElementWithCovariance<T>) this).Target.GetControlOrNull(controlSelectionCommand);
     }
 
     /// <inheritdoc />
     public bool HasControl (IControlExistsCommand controlSelectionCommand)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return ((IFluentScreenshotElementWithCovariance<T>) this).Target.HasControl (controlSelectionCommand);
+      return ((IFluentScreenshotElementWithCovariance<T>) this).Target.HasControl(controlSelectionCommand);
     }
   }
 }

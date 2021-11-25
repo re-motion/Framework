@@ -39,14 +39,14 @@ namespace Remotion.Development.UnitTesting
     {
       GC.Collect();
       for (int i = 0; i < s_generationCount; i++)
-        _oldCollections[i] = GC.CollectionCount (i);
+        _oldCollections[i] = GC.CollectionCount(i);
     }
 
     public void EndCount ()
     {
       var newCollections = new int[s_generationCount];
       for (int i = 0; i < s_generationCount; i++)
-        newCollections[i] = GC.CollectionCount (i);
+        newCollections[i] = GC.CollectionCount(i);
 
       for (int i = 0; i < s_generationCount; i++)
        _totalCollections[i] = newCollections[i] - _oldCollections[i];
@@ -56,15 +56,15 @@ namespace Remotion.Development.UnitTesting
 
     public void PrintCount (TextWriter outputWriter)
     {
-      ArgumentUtility.CheckNotNull ("outputWriter", outputWriter);
+      ArgumentUtility.CheckNotNull("outputWriter", outputWriter);
 
       var output = new string[s_generationCount];
       for (int i = 0; i < s_generationCount; i++)
-        output[i] = string.Format ("GC Gen {0}: {1}x", i, _totalCollections[i]);
+        output[i] = string.Format("GC Gen {0}: {1}x", i, _totalCollections[i]);
 
-      var combinedOutput = string.Join (", ", output);
+      var combinedOutput = string.Join(", ", output);
       
-      outputWriter.WriteLine (combinedOutput);
+      outputWriter.WriteLine(combinedOutput);
     }
   }
 }

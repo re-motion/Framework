@@ -49,56 +49,56 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, TextBoxStyle textBoxStyle)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      textBoxStyle.RegisterJavaScriptInclude (ResourceUrlFactory, htmlHeadAppender);
+      textBoxStyle.RegisterJavaScriptInclude(ResourceUrlFactory, htmlHeadAppender);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string styleKey = typeof (BocTextValueRenderer).GetFullNameChecked() + "_Style";
-      var styleFile = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocTextValueRenderer), ResourceType.Html, "BocTextValue.css");
-      htmlHeadAppender.RegisterStylesheetLink (styleKey, styleFile, HtmlHeadAppender.Priority.Library);
+      var styleFile = ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocTextValueRenderer), ResourceType.Html, "BocTextValue.css");
+      htmlHeadAppender.RegisterStylesheetLink(styleKey, styleFile, HtmlHeadAppender.Priority.Library);
     }
 
     public void Render (BocTextValueRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      base.Render (renderingContext);
+      base.Render(renderingContext);
     }
 
     protected override TextBox GetTextBox (BocRenderingContext<IBocTextValue> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      var textBox = base.GetTextBox (renderingContext);
+      var textBox = base.GetTextBox(renderingContext);
       if (renderingContext.Control.TextBoxStyle.TextMode == BocTextBoxMode.PasswordRenderMasked)
-        textBox.Attributes.Add ("value", textBox.Text);
+        textBox.Attributes.Add("value", textBox.Text);
       return textBox;
     }
 
     protected override Label GetLabel (BocRenderingContext<IBocTextValue> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
       
       Label label = new Label { Text = renderingContext.Control.Text, ClientIDMode = ClientIDMode.Static};
-      label.ID = renderingContext.Control.GetValueName ();
+      label.ID = renderingContext.Control.GetValueName();
       label.EnableViewState = false;
       label.Text = GetText(renderingContext);
 
       label.Width = Unit.Empty;
       label.Height = Unit.Empty;
-      label.ApplyStyle (renderingContext.Control.CommonStyle);
-      label.ApplyStyle (renderingContext.Control.LabelStyle);
+      label.ApplyStyle(renderingContext.Control.CommonStyle);
+      label.ApplyStyle(renderingContext.Control.LabelStyle);
 
-      label.Attributes.Add ("tabindex", "0");
+      label.Attributes.Add("tabindex", "0");
       // Screenreaders (JAWS v18) will not read the contents of a span with role=textbox,
       // therefor we have to emulate the reading of the label + contents. Missing from this is "readonly" after the label is read.
       //label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Textbox);
       //label.Attributes.Add (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs, new[] { label.ClientID });
+      LabelReferenceRenderer.AddLabelsReference(renderingContext.Writer, labelIDs, new[] { label.ClientID });
 
       return label;
     }
@@ -108,17 +108,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       var textMode = renderingContext.Control.TextBoxStyle.TextMode;
 
       if (textMode == BocTextBoxMode.PasswordNoRender || textMode == BocTextBoxMode.PasswordRenderMasked)
-        return new string ((char) 9679, 5);
+        return new string((char) 9679, 5);
 
       string text;
       if (textMode == BocTextBoxMode.MultiLine)
       {
-        var lines = StringUtility.ParseNewLineSeparatedString (renderingContext.Control.Text ?? "");
-        text = RenderUtility.JoinLinesWithEncoding (lines);
+        var lines = StringUtility.ParseNewLineSeparatedString(renderingContext.Control.Text ?? "");
+        text = RenderUtility.JoinLinesWithEncoding(lines);
       }
       else
       {
-        text = HttpUtility.HtmlEncode (renderingContext.Control.Text);
+        text = HttpUtility.HtmlEncode(renderingContext.Control.Text);
       }
 
       return text;

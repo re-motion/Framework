@@ -30,43 +30,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _order1 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.Order1.GetObject<Order> ());
-      _orderTicket1 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ());
-      _orderTicket2 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.OrderTicket2.GetObject<OrderTicket> ());
-      _orderTicket3 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.OrderTicket3.GetObject<OrderTicket> ());
+      _order1 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.Order1.GetObject<Order>());
+      _orderTicket1 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>());
+      _orderTicket2 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.OrderTicket2.GetObject<OrderTicket>());
+      _orderTicket3 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.OrderTicket3.GetObject<OrderTicket>());
 
-      ExecuteInWriteableSubTransaction (() => _order1.OrderTicket = _orderTicket2);
-      ExecuteInWriteableSubTransaction (() => _orderTicket3.Order.EnsureDataAvailable());
+      ExecuteInWriteableSubTransaction(() => _order1.OrderTicket = _orderTicket2);
+      ExecuteInWriteableSubTransaction(() => _orderTicket3.Order.EnsureDataAvailable());
     }
 
     [Test]
     public void RelationSetInReadOnlyRootTransaction_IsForbidden ()
     {
-      CheckProperty (ReadOnlyRootTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
-      CheckProperty (ReadOnlyMiddleTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
-      CheckProperty (WriteableSubTransaction, _order1, o => o.OrderTicket, _orderTicket2, _orderTicket1);
+      CheckProperty(ReadOnlyRootTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
+      CheckProperty(ReadOnlyMiddleTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
+      CheckProperty(WriteableSubTransaction, _order1, o => o.OrderTicket, _orderTicket2, _orderTicket1);
 
-      CheckForbidden (() => ExecuteInReadOnlyRootTransaction (() => _order1.OrderTicket = _orderTicket3), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyRootTransaction(() => _order1.OrderTicket = _orderTicket3), "RelationChanging");
 
-      CheckProperty (ReadOnlyRootTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
-      CheckProperty (ReadOnlyMiddleTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
-      CheckProperty (WriteableSubTransaction, _order1, o => o.OrderTicket, _orderTicket2, _orderTicket1);
+      CheckProperty(ReadOnlyRootTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
+      CheckProperty(ReadOnlyMiddleTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
+      CheckProperty(WriteableSubTransaction, _order1, o => o.OrderTicket, _orderTicket2, _orderTicket1);
     }
 
     [Test]
     public void RelationSetInReadOnlyMiddleTransaction_IsForbidden ()
     {
-      CheckProperty (ReadOnlyRootTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
-      CheckProperty (ReadOnlyMiddleTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
-      CheckProperty (WriteableSubTransaction, _order1, o => o.OrderTicket, _orderTicket2, _orderTicket1);
+      CheckProperty(ReadOnlyRootTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
+      CheckProperty(ReadOnlyMiddleTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
+      CheckProperty(WriteableSubTransaction, _order1, o => o.OrderTicket, _orderTicket2, _orderTicket1);
 
-      CheckForbidden (() => ExecuteInReadOnlyMiddleTransaction (() => _order1.OrderTicket = _orderTicket3), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyMiddleTransaction(() => _order1.OrderTicket = _orderTicket3), "RelationChanging");
 
-      CheckProperty (ReadOnlyRootTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
-      CheckProperty (ReadOnlyMiddleTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
-      CheckProperty (WriteableSubTransaction, _order1, o => o.OrderTicket, _orderTicket2, _orderTicket1);
+      CheckProperty(ReadOnlyRootTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
+      CheckProperty(ReadOnlyMiddleTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
+      CheckProperty(WriteableSubTransaction, _order1, o => o.OrderTicket, _orderTicket2, _orderTicket1);
     }
   }
 }

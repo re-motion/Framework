@@ -49,9 +49,9 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
 
 	private void Page_Load (object sender, EventArgs e)
 	{
-	  var  personID = new Guid (((ViewPersonDetailsWxeFunction)CurrentFunction).ID);
+	  var  personID = new Guid(((ViewPersonDetailsWxeFunction)CurrentFunction).ID);
 
-    Person person = Person.GetObject (personID);
+    Person person = Person.GetObject(personID);
 #pragma warning disable 219 // unused variable
     Person partner;
     if (person != null)
@@ -59,13 +59,13 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
 #pragma warning restore 219
 
     CurrentObject.BusinessObject = (IBusinessObjectWithIdentity) person;
-    CurrentObject.LoadValues (IsPostBack);
+    CurrentObject.LoadValues(IsPostBack);
 
     if (! IsPostBack)
     {
-      IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert (
-          XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (typeof (Person)), typeof (IBusinessObjectWithIdentity));
-      PartnerField.SetBusinessObjectList (objects);
+      IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert(
+          XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof (Person)), typeof (IBusinessObjectWithIdentity));
+      PartnerField.SetBusinessObjectList(objects);
     }
 	}
 
@@ -96,7 +96,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     menuItem.Command.Type = CommandType.WxeFunction;
     menuItem.Command.WxeFunctionCommand.Parameters = "objects";
     menuItem.Command.WxeFunctionCommand.TypeName = "OBWTest.ViewPersonsWxeFunction,OBWTest";
-    PartnerField.OptionsMenuItems.Add (menuItem);
+    PartnerField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
@@ -105,7 +105,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     menuItem.Icon.Url = "Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
-    PartnerField.OptionsMenuItems.Add (menuItem);
+    PartnerField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Cut";
@@ -113,14 +113,14 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     menuItem.Category = "Edit";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
-    PartnerField.OptionsMenuItems.Add (menuItem);
+    PartnerField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
     menuItem.Text = "Paste";
     menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
-    PartnerField.OptionsMenuItems.Add (menuItem);
+    PartnerField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
@@ -131,7 +131,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Style = WebMenuItemStyle.Icon;
     menuItem.Command.Type = CommandType.Event;
-    PartnerField.OptionsMenuItems.Add (menuItem);
+    PartnerField.OptionsMenuItems.Add(menuItem);
   }
 
   private void InitalizeJobListMenuItems ()
@@ -144,7 +144,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     menuItem.Category = "Edit";
     menuItem.IsDisabled = true;
     menuItem.Command.Type = CommandType.Event;
-    JobList.ListMenuItems.Add (menuItem);
+    JobList.ListMenuItems.Add(menuItem);
   
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
@@ -155,7 +155,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Style = WebMenuItemStyle.Icon;
     menuItem.Command.Type = CommandType.Event;
-    JobList.ListMenuItems.Add (menuItem);
+    JobList.ListMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
@@ -163,7 +163,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     menuItem.Icon.Url = "Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.ExactlyOne;
     menuItem.Command.Type = CommandType.Event;
-    JobList.ListMenuItems.Add (menuItem);
+    JobList.ListMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Open";
@@ -173,7 +173,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     menuItem.Command.Type = CommandType.WxeFunction;
     menuItem.Command.WxeFunctionCommand.Parameters = "objects";
     menuItem.Command.WxeFunctionCommand.TypeName = "OBWTest.ViewPersonsWxeFunction,OBWTest";
-    JobList.OptionsMenuItems.Add (menuItem);
+    JobList.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
@@ -182,7 +182,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     menuItem.Icon.Url = "Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
-    JobList.OptionsMenuItems.Add (menuItem);
+    JobList.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Cut";
@@ -190,21 +190,21 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     menuItem.Category = "Edit";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
-    JobList.OptionsMenuItems.Add (menuItem);
+    JobList.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
     menuItem.Text = "Paste";
     menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
-    JobList.OptionsMenuItems.Add (menuItem);
+    JobList.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Duplicate";
     menuItem.Text = "Duplicate";
     menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
-    JobList.OptionsMenuItems.Add (menuItem);
+    JobList.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
@@ -215,7 +215,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Style = WebMenuItemStyle.Icon;
     menuItem.Command.Type = CommandType.Event;
-    JobList.OptionsMenuItems.Add (menuItem);
+    JobList.OptionsMenuItems.Add(menuItem);
   }
 
 	#region Web Form Designer generated code
@@ -238,7 +238,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     bool isValid = FormGridManager.Validate();
     if (isValid)
     {
-      CurrentObject.SaveValues (false);
+      CurrentObject.SaveValues(false);
       Person person = (Person) CurrentObject.BusinessObject;
       person.SaveObject();
       if (person.Partner != null)
@@ -249,8 +249,8 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
 
   private void PartnerField_SelectionChanged (object sender, EventArgs e)
   {
-    PartnerField.SaveValue (false);
-    PartnerDataSource.LoadValue (false);
+    PartnerField.SaveValue(false);
+    PartnerDataSource.LoadValue(false);
   }
 }
 

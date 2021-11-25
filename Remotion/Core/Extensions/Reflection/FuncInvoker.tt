@@ -99,7 +99,7 @@ for (int j = 0; j <= fixedArgCount; j++)
 
     public TResult With ()
     {
-      return GetDelegateWith () (<#= fixedArguments #>);
+      return GetDelegateWith ()(<#= fixedArguments #>);
     }
 
     public Func<<#= fixedTypeArguments #>TResult> GetDelegateWith ()
@@ -117,7 +117,7 @@ for (int j = 0; j <= fixedArgCount; j++)
 
     public TResult With<<#= typeArguments #>> (<#= signature #>)
     {
-      return GetDelegateWith<<#= typeArguments #>> () (<#= fixedArguments #><#= hasFixedArgs ? ", " : "" #><#= arguments #>);
+      return GetDelegateWith<<#= typeArguments #>> ()(<#= fixedArguments #><#= hasFixedArgs ? ", " : "" #><#= arguments #>);
     }
 
     public Func<<#= fixedTypeArguments #><#= typeArguments #>, TResult> GetDelegateWith<<#= typeArguments #>> ()

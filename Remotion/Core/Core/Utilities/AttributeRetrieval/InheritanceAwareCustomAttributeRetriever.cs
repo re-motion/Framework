@@ -37,25 +37,25 @@ namespace Remotion.Utilities.AttributeRetrieval
     // ReSharper disable StaticFieldInGenericType - yes, the field will exist once per instantiation, but we don't care.
     private static readonly DoubleCheckedLockingContainer<Func<MethodInfo, MethodInfo>> s_getMethodParentDefinition =
     // ReSharper restore StaticFieldInGenericType
-        new DoubleCheckedLockingContainer<Func<MethodInfo, MethodInfo>> (
+        new DoubleCheckedLockingContainer<Func<MethodInfo, MethodInfo>>(
             () =>
             {
-              var runtimeMethodInfoType = Type.GetType ("System.Reflection.RuntimeMethodInfo");
-              Assertion.IsNotNull (runtimeMethodInfoType, "The internal type RuntimeMethodInfo has been removed. We need to patch this implementation.");
+              var runtimeMethodInfoType = Type.GetType("System.Reflection.RuntimeMethodInfo");
+              Assertion.IsNotNull(runtimeMethodInfoType, "The internal type RuntimeMethodInfo has been removed. We need to patch this implementation.");
              
-              var method = runtimeMethodInfoType.GetMethod (
+              var method = runtimeMethodInfoType.GetMethod(
                   "GetParentDefinition",
                   BindingFlags.Instance | BindingFlags.NonPublic,
                   null,
                   Type.EmptyTypes,
                   null);
-              Assertion.IsNotNull (method, "The internal method RuntimeMethodInfo.GetParentDefinition has been removed. We need to patch this implementation.");
+              Assertion.IsNotNull(method, "The internal method RuntimeMethodInfo.GetParentDefinition has been removed. We need to patch this implementation.");
 
-              var parameterExpression = Expression.Parameter (typeof (MethodInfo));
-              var lambdaExpression = Expression.Lambda (
-                  Expression.Convert (
-                      Expression.Call (
-                          Expression.Convert (parameterExpression, runtimeMethodInfoType), method),
+              var parameterExpression = Expression.Parameter(typeof (MethodInfo));
+              var lambdaExpression = Expression.Lambda(
+                  Expression.Convert(
+                      Expression.Call(
+                          Expression.Convert(parameterExpression, runtimeMethodInfoType), method),
                       typeof (MethodInfo)),
                   parameterExpression);
 
@@ -66,54 +66,54 @@ namespace Remotion.Utilities.AttributeRetrieval
 
     public object[] GetCustomAttributes (TCustomAttributeProvider memberInfo, Type attributeType, bool inherit)
     {
-      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
-      ArgumentUtility.CheckNotNull ("attributeType", attributeType);
+      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull("attributeType", attributeType);
 
-      var declaredAttributes = memberInfo.GetCustomAttributes (attributeType, false);
+      var declaredAttributes = memberInfo.GetCustomAttributes(attributeType, false);
       if (!inherit)
         return declaredAttributes;
 
-      var allAttributes = new ArrayList ();
-      var attributeUsagesPerType = new Dictionary<Type, AttributeUsageAttribute> ();
+      var allAttributes = new ArrayList();
+      var attributeUsagesPerType = new Dictionary<Type, AttributeUsageAttribute>();
       foreach (var declaredAttribute in declaredAttributes)
       {
-        allAttributes.Add (declaredAttribute);
-        var declaredAttributeType = declaredAttribute.GetType ();
-        if (!attributeUsagesPerType.ContainsKey (declaredAttributeType))
-          attributeUsagesPerType.Add (declaredAttributeType, AttributeUtility.GetAttributeUsage (declaredAttributeType));
+        allAttributes.Add(declaredAttribute);
+        var declaredAttributeType = declaredAttribute.GetType();
+        if (!attributeUsagesPerType.ContainsKey(declaredAttributeType))
+          attributeUsagesPerType.Add(declaredAttributeType, AttributeUtility.GetAttributeUsage(declaredAttributeType));
       }
 
-      var currentMember = GetBaseMember (memberInfo);
+      var currentMember = GetBaseMember(memberInfo);
       while (currentMember != null)
       {
-        AddInheritedAttributes (allAttributes, currentMember, attributeType, attributeUsagesPerType);
-        currentMember = GetBaseMember (currentMember);
+        AddInheritedAttributes(allAttributes, currentMember, attributeType, attributeUsagesPerType);
+        currentMember = GetBaseMember(currentMember);
       }
-      return (object[]) allAttributes.ToArray (attributeType);
+      return (object[]) allAttributes.ToArray(attributeType);
     }
 
     protected static MethodInfo GetBaseMethod (MethodInfo methodInfo)
     {
-      return s_getMethodParentDefinition.Value (methodInfo);
+      return s_getMethodParentDefinition.Value(methodInfo);
     }
 
     private void AddInheritedAttributes (ArrayList allAttributes, TCustomAttributeProvider baseMember, Type attributeType, Dictionary<Type, AttributeUsageAttribute> visitedAttributeTypes)
     {
-      var currentAttributes = baseMember.GetCustomAttributes (attributeType, false);
+      var currentAttributes = baseMember.GetCustomAttributes(attributeType, false);
       foreach (var currentAttribute in currentAttributes)
       {
-        var currentAttributeType = currentAttribute.GetType ();
+        var currentAttributeType = currentAttribute.GetType();
         AttributeUsageAttribute attributeUsage;
-        if (!visitedAttributeTypes.TryGetValue (currentAttributeType, out attributeUsage!))
+        if (!visitedAttributeTypes.TryGetValue(currentAttributeType, out attributeUsage!))
         {
-          attributeUsage = AttributeUtility.GetAttributeUsage (currentAttributeType);
-          visitedAttributeTypes.Add (currentAttributeType, attributeUsage);
+          attributeUsage = AttributeUtility.GetAttributeUsage(currentAttributeType);
+          visitedAttributeTypes.Add(currentAttributeType, attributeUsage);
           if (attributeUsage.Inherited)
-            allAttributes.Add (currentAttribute);
+            allAttributes.Add(currentAttribute);
         }
         else if (attributeUsage.Inherited && attributeUsage.AllowMultiple)
         {
-          allAttributes.Add (currentAttribute);
+          allAttributes.Add(currentAttribute);
         }
       }
     }

@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       collection.Deleting += DomainObjectCollection_Deleting;
       collection.Deleted += DomainObjectCollection_Deleted;
 
-      Reset ();
+      Reset();
     }
 
     // methods and properties
@@ -65,8 +65,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       HasAddingEventBeenCalled = false;
       HasAddedEventBeenCalled = false;
 
-      _removingDomainObjects = new DomainObjectCollection ();
-      _removedDomainObjects = new DomainObjectCollection ();
+      _removingDomainObjects = new DomainObjectCollection();
+      _removedDomainObjects = new DomainObjectCollection();
       HasRemovingEventBeenCalled = false;
       HasRemovedEventBeenCalled = false;
 
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       _addingDomainObject = args.DomainObject;
 
       if (Cancel)
-        CancelOperation ();
+        CancelOperation();
     }
 
     private void DomainObjectCollection_Added (object sender, DomainObjectCollectionChangeEventArgs args)
@@ -123,15 +123,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     private void DomainObjectCollection_Removing (object sender, DomainObjectCollectionChangeEventArgs args)
     {
       HasRemovingEventBeenCalled = true;
-      _removingDomainObjects.Add (args.DomainObject);
+      _removingDomainObjects.Add(args.DomainObject);
 
       if (Cancel)
-        CancelOperation ();
+        CancelOperation();
     }
 
     private void DomainObjectCollection_Removed (object sender, DomainObjectCollectionChangeEventArgs args)
     {
-      _removedDomainObjects.Add (args.DomainObject);
+      _removedDomainObjects.Add(args.DomainObject);
       HasRemovedEventBeenCalled = true;
     }
 
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       HasDeletingEventBeenCalled = true;
 
       if (Cancel)
-        CancelOperation ();
+        CancelOperation();
     }
 
     private void DomainObjectCollection_Deleted (object sender, EventArgs args)

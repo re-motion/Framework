@@ -35,9 +35,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
     [NotNull]
     public static IComparer<BocListRow> CreateComparer ([NotNull] this IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
-      return new BusinessObjectPropertyPathBasedComparer (propertyPath);
+      return new BusinessObjectPropertyPathBasedComparer(propertyPath);
     }
   }
 }

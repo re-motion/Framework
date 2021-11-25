@@ -50,7 +50,7 @@ public class CommandLineFlagArgument: CommandLineArgument
 
   protected internal override void SetStringValue (string value)
   {
-    if (value == null) throw new ArgumentNullException ("value");
+    if (value == null) throw new ArgumentNullException("value");
 
     switch (value)
     {
@@ -67,10 +67,10 @@ public class CommandLineFlagArgument: CommandLineArgument
         break;
 
       default:
-        throw new InvalidCommandLineArgumentValueException (this, "Flag parameters support only + and - as arguments.");
+        throw new InvalidCommandLineArgumentValueException(this, "Flag parameters support only + and - as arguments.");
     }
 
-    base.SetStringValue (value);
+    base.SetStringValue(value);
   }
 
 
@@ -88,22 +88,22 @@ public class CommandLineFlagArgument: CommandLineArgument
   {
     if (IsOptional && _defaultValue == false)
     {
-      sb.Append (Parser!.ArgumentDeclarationPrefix);
-      sb.Append (Name);
+      sb.Append(Parser!.ArgumentDeclarationPrefix);
+      sb.Append(Name);
     }
     else if (IsOptional && _defaultValue == true)
     {
-      sb.Append (Parser!.ArgumentDeclarationPrefix);
-      sb.Append (Name);
-      sb.Append ("-");
+      sb.Append(Parser!.ArgumentDeclarationPrefix);
+      sb.Append(Name);
+      sb.Append("-");
     }
     else
     {
-      sb.Append (Parser!.ArgumentDeclarationPrefix);
-      sb.Append (Name);
-      sb.Append ("+ | /");
-      sb.Append (Name);
-      sb.Append ("-");
+      sb.Append(Parser!.ArgumentDeclarationPrefix);
+      sb.Append(Name);
+      sb.Append("+ | /");
+      sb.Append(Name);
+      sb.Append("-");
     }
   }
 }

@@ -117,7 +117,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </returns>
     public virtual bool SupportsProperty (IBusinessObjectProperty property)
     {
-      return _binding.SupportsProperty (property);
+      return _binding.SupportsProperty(property);
     }
 
     /// <summary>Gets a flag specifying whether the <see cref="IBusinessObjectBoundControl"/> has a valid binding configuration.</summary>
@@ -152,12 +152,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public static IconInfo? GetIcon (IBusinessObject? businessObject, IBusinessObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
+      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
 
       var webUIService = businessObjectProvider.GetService<IBusinessObjectWebUIService>();
 
       if (webUIService != null)
-        return webUIService.GetIcon (businessObject);
+        return webUIService.GetIcon(businessObject);
 
       return null;
     }
@@ -175,19 +175,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public static string? GetToolTip (IBusinessObject businessObject, IBusinessObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
+      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
 
       var webUIService = businessObjectProvider.GetService<IBusinessObjectWebUIService>();
 
       if (webUIService != null)
-        return webUIService.GetToolTip (businessObject);
+        return webUIService.GetToolTip(businessObject);
 
       return null;
     }
 
     public static HelpInfo? GetHelpInfo (IBusinessObjectBoundWebControl control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       var dataSource = control.DataSource;
       if (dataSource == null)
@@ -203,7 +203,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       var webUIService = businessObjectProvider.GetService<IBusinessObjectWebUIService>();
       if (webUIService != null)
-        return webUIService.GetHelpInfo (control, businessObjectClass, control.Property, dataSource.BusinessObject);
+        return webUIService.GetHelpInfo(control, businessObjectClass, control.Property, dataSource.BusinessObject);
 
       return null;
     }
@@ -220,26 +220,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Creates a new instance of the BusinessObjectBoundWebControl type. </summary>
     protected BusinessObjectBoundWebControl ()
     {
-      _binding = new BusinessObjectBinding (this);
+      _binding = new BusinessObjectBinding(this);
     }
 
     /// <remarks>Calls <see cref="Control.EnsureChildControls"/> and the <see cref="BusinessObjectBinding.EnsureDataSource"/> method.</remarks>
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
       EnsureChildControls();
       _binding.EnsureDataSource();
       if (Page != null)
       {
-        Page.RegisterRequiresControlState (this);
-        RegisterHtmlHeadContents (HtmlHeadAppender.Current);
+        Page.RegisterRequiresControlState(this);
+        RegisterHtmlHeadContents(HtmlHeadAppender.Current);
       }
     }
 
     protected override void OnUnload (EventArgs e)
     {
       _binding.UnregisterDataSource();
-      base.OnUnload (e);
+      base.OnUnload(e);
     }
 
     /// <summary>Gets or sets a value that determines whether a server control is rendered as UI on the page.</summary>
@@ -311,7 +311,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       bool tempEnabled = Enabled;
       if (!tempEnabled)
         Enabled = true;
-      base.AddAttributesToRender (writer);
+      base.AddAttributesToRender(writer);
       if (!tempEnabled)
         Enabled = false;
     }
@@ -347,7 +347,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     bool IBusinessObjectBoundWebControl.SupportsPropertyMultiplicity (bool isList)
     {
-      return SupportsPropertyMultiplicity (isList);
+      return SupportsPropertyMultiplicity(isList);
     }
 
     /// <summary> Indicates whether properties with the specified multiplicity are supported. </summary>
@@ -366,16 +366,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>An <see cref="IResourceManager"/> from which all resources for this control can be obtained.</returns>
     protected IResourceManager GetResourceManager (Type localResourcesType)
     {
-      ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
+      ArgumentUtility.CheckNotNull("localResourcesType", localResourcesType);
 
-      return _resourceManagerCache.GetOrCreateValue (
-          Tuple.Create (localResourcesType, NamingContainer),
+      return _resourceManagerCache.GetOrCreateValue(
+          Tuple.Create(localResourcesType, NamingContainer),
           key =>
           {
-            var localResourceManager = GlobalizationService.GetResourceManager (localResourcesType);
-            var namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
+            var localResourceManager = GlobalizationService.GetResourceManager(localResourcesType);
+            var namingContainerResourceManager = ResourceManagerUtility.GetResourceManager(NamingContainer, true);
 
-            return ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
+            return ResourceManagerSet.Create(namingContainerResourceManager, localResourceManager);
           });
     }
 
@@ -396,7 +396,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public virtual HelpInfo? HelpInfo
     {
-      get { return GetHelpInfo (this); }
+      get { return GetHelpInfo(this); }
     }
 
     /// <summary>Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its <see cref="Control.ClientID"/>.</summary>
@@ -413,16 +413,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public void AssignLabel (string labelID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("labelID", labelID);
+      ArgumentUtility.CheckNotNullOrEmpty("labelID", labelID);
 
       _assignedLabelID = labelID;
     }
 
     protected virtual IEnumerable<string> GetLabelIDs ()
     {
-      if (string.IsNullOrEmpty (_assignedLabelID))
+      if (string.IsNullOrEmpty(_assignedLabelID))
         return Enumerable.Empty<string>();
-      return EnumerableUtility.Singleton (_assignedLabelID);
+      return EnumerableUtility.Singleton(_assignedLabelID);
     }
 
     /// <summary> Evaluates whether this control is in <b>Design Mode</b>. </summary>
@@ -445,7 +445,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public new IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
     /// <summary> Gets a flag whether the control already existed in the previous page life cycle. </summary>
@@ -476,29 +476,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected IGlobalizationService GlobalizationService
     {
-      get { return ServiceLocator.GetInstance<IGlobalizationService> (); }
+      get { return ServiceLocator.GetInstance<IGlobalizationService>(); }
     }
 
     protected override void LoadControlState (object? savedState)
     {
-      base.LoadControlState (savedState);
+      base.LoadControlState(savedState);
       _controlExistedInPreviousRequest = true;
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>
     protected virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
       string? key;
-      key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
-      if (!string.IsNullOrEmpty (key))
-        AccessKey = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(AccessKey);
+      if (!string.IsNullOrEmpty(key))
+        AccessKey = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
-      if (!string.IsNullOrEmpty (key))
-        ToolTip = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(ToolTip);
+      if (!string.IsNullOrEmpty(key))
+        ToolTip = resourceManager.GetString(key);
     }
 
     //  /// <summary>

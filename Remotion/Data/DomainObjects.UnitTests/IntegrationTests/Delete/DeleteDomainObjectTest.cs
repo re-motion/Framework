@@ -38,8 +38,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       orderTicket.Delete();
 
-      Assert.That (orderTicket.State.IsDeleted, Is.True);
-      Assert.That (orderTicket.InternalDataContainer.State.IsDeleted, Is.True);
+      Assert.That(orderTicket.State.IsDeleted, Is.True);
+      Assert.That(orderTicket.InternalDataContainer.State.IsDeleted, Is.True);
     }
 
     [Test]
@@ -49,10 +49,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       orderTicket.Delete();
 
-      SequenceEventReceiver eventReceiver = new SequenceEventReceiver (orderTicket);
+      SequenceEventReceiver eventReceiver = new SequenceEventReceiver(orderTicket);
       orderTicket.Delete();
 
-      Assert.That (eventReceiver.Count, Is.EqualTo (0));
+      Assert.That(eventReceiver.Count, Is.EqualTo(0));
     }
 
     [Test]
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       OrderTicket orderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
 
       orderTicket.Delete();
-      Assert.That (
+      Assert.That(
           () => orderTicket.ID.GetObject<OrderTicket>(),
           Throws.InstanceOf<ObjectDeletedException>());
     }
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       orderTicket.Delete();
 
-      Assert.That (orderTicket.ID.GetObject<OrderTicket> (includeDeleted: true), Is.Not.Null);
+      Assert.That(orderTicket.ID.GetObject<OrderTicket>(includeDeleted: true), Is.Not.Null);
     }
 
     [Test]
@@ -84,8 +84,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       var dataContainer = order.InternalDataContainer;
 
       order.Delete();
-      Assert.That (
-          () => SetPropertyValue (dataContainer, typeof (Order), "OrderNumber", 10),
+      Assert.That(
+          () => SetPropertyValue(dataContainer, typeof (Order), "OrderNumber", 10),
           Throws.InstanceOf<ObjectDeletedException>());
     }
 
@@ -96,11 +96,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       order.Delete();
 
-      Assert.That (order.ID, Is.EqualTo (DomainObjectIDs.Order3));
-      Assert.That (order.OrderNumber, Is.EqualTo (3));
-      Assert.That (order.DeliveryDate, Is.EqualTo (new DateTime (2005, 3, 1)));
-      Assert.That (order.InternalDataContainer.Timestamp, Is.Not.Null);
-      Assert.That (GetPropertyValue (order.InternalDataContainer, typeof (Order), "OrderNumber"), Is.Not.Null);
+      Assert.That(order.ID, Is.EqualTo(DomainObjectIDs.Order3));
+      Assert.That(order.OrderNumber, Is.EqualTo(3));
+      Assert.That(order.DeliveryDate, Is.EqualTo(new DateTime(2005, 3, 1)));
+      Assert.That(order.InternalDataContainer.Timestamp, Is.Not.Null);
+      Assert.That(GetPropertyValue(order.InternalDataContainer, typeof (Order), "OrderNumber"), Is.Not.Null);
     }
 
     [Test]
@@ -109,19 +109,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       Employee supervisor = DomainObjectIDs.Employee1.GetObject<Employee>();
       supervisor.DeleteWithSubordinates();
 
-      DomainObject deletedSubordinate4 = DomainObjectIDs.Employee4.GetObject<Employee> (includeDeleted: true);
-      DomainObject deletedSubordinate5 = DomainObjectIDs.Employee5.GetObject<Employee> (includeDeleted: true);
+      DomainObject deletedSubordinate4 = DomainObjectIDs.Employee4.GetObject<Employee>(includeDeleted: true);
+      DomainObject deletedSubordinate5 = DomainObjectIDs.Employee5.GetObject<Employee>(includeDeleted: true);
 
-      Assert.That (supervisor.State.IsDeleted, Is.True);
-      Assert.That (deletedSubordinate4.State.IsDeleted, Is.True);
-      Assert.That (deletedSubordinate5.State.IsDeleted, Is.True);
+      Assert.That(supervisor.State.IsDeleted, Is.True);
+      Assert.That(deletedSubordinate4.State.IsDeleted, Is.True);
+      Assert.That(deletedSubordinate5.State.IsDeleted, Is.True);
 
       TestableClientTransaction.Commit();
       ReInitializeTransaction();
 
-      CheckIfObjectIsDeleted (DomainObjectIDs.Employee1);
-      CheckIfObjectIsDeleted (DomainObjectIDs.Employee4);
-      CheckIfObjectIsDeleted (DomainObjectIDs.Employee5);
+      CheckIfObjectIsDeleted(DomainObjectIDs.Employee1);
+      CheckIfObjectIsDeleted(DomainObjectIDs.Employee4);
+      CheckIfObjectIsDeleted(DomainObjectIDs.Employee5);
     }
 
     [Test]
@@ -130,29 +130,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       Product product = DomainObjectIDs.Product1.GetObject<Product>();
       product.DeleteWithProductReviews();
 
-      DomainObject deletedProductReview1 = DomainObjectIDs.ProductReview1.GetObject<ProductReview> (includeDeleted: true);
-      DomainObject deletedProductReview2 = DomainObjectIDs.ProductReview2.GetObject<ProductReview> (includeDeleted: true);
+      DomainObject deletedProductReview1 = DomainObjectIDs.ProductReview1.GetObject<ProductReview>(includeDeleted: true);
+      DomainObject deletedProductReview2 = DomainObjectIDs.ProductReview2.GetObject<ProductReview>(includeDeleted: true);
 
-      Assert.That (product.State.IsDeleted, Is.True);
-      Assert.That (deletedProductReview1.State.IsDeleted, Is.True);
-      Assert.That (deletedProductReview2.State.IsDeleted, Is.True);
+      Assert.That(product.State.IsDeleted, Is.True);
+      Assert.That(deletedProductReview1.State.IsDeleted, Is.True);
+      Assert.That(deletedProductReview2.State.IsDeleted, Is.True);
 
       TestableClientTransaction.Commit();
       ReInitializeTransaction();
 
-      CheckIfObjectIsDeleted (DomainObjectIDs.Product1);
-      CheckIfObjectIsDeleted (DomainObjectIDs.ProductReview1);
-      CheckIfObjectIsDeleted (DomainObjectIDs.ProductReview2);
+      CheckIfObjectIsDeleted(DomainObjectIDs.Product1);
+      CheckIfObjectIsDeleted(DomainObjectIDs.ProductReview1);
+      CheckIfObjectIsDeleted(DomainObjectIDs.ProductReview2);
     }
 
     [Test]
     public void CascadedDeleteForNewObjectsWithDomainObjectCollection ()
     {
       Order newOrder = Order.NewObject();
-      OrderTicket newOrderTicket = OrderTicket.NewObject (newOrder);
-      Assert.That (newOrder.OrderTicket, Is.SameAs (newOrderTicket));
-      OrderItem newOrderItem = OrderItem.NewObject (newOrder);
-      Assert.That (newOrder.OrderItems, Has.Member (newOrderItem));
+      OrderTicket newOrderTicket = OrderTicket.NewObject(newOrder);
+      Assert.That(newOrder.OrderTicket, Is.SameAs(newOrderTicket));
+      OrderItem newOrderItem = OrderItem.NewObject(newOrder);
+      Assert.That(newOrder.OrderItems, Has.Member(newOrderItem));
 
       newOrder.Deleted += delegate
       {
@@ -164,9 +164,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       //Expectation: no exception
 
-      Assert.That (newOrder.State.IsInvalid, Is.True);
-      Assert.That (newOrderTicket.State.IsInvalid, Is.True);
-      Assert.That (newOrderItem.State.IsInvalid, Is.True);
+      Assert.That(newOrder.State.IsInvalid, Is.True);
+      Assert.That(newOrderTicket.State.IsInvalid, Is.True);
+      Assert.That(newOrderItem.State.IsInvalid, Is.True);
     }
 
     [Test]
@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       Product newProduct = Product.NewObject();
       ProductReview newProductReview = ProductReview.NewObject();
       newProductReview.Product = newProduct;
-      Assert.That (newProduct.Reviews, Has.Member (newProductReview));
+      Assert.That(newProduct.Reviews, Has.Member(newProductReview));
 
       newProduct.Deleted += delegate
       {
@@ -186,8 +186,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       //Expectation: no exception
 
-      Assert.That (newProduct.State.IsInvalid, Is.True);
-      Assert.That (newProductReview.State.IsInvalid, Is.True);
+      Assert.That(newProduct.State.IsInvalid, Is.True);
+      Assert.That(newProductReview.State.IsInvalid, Is.True);
     }
   }
 }

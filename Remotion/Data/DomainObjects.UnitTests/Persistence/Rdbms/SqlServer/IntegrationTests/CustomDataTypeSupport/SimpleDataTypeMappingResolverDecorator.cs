@@ -44,17 +44,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public IResolvedTableInfo ResolveTableInfo (UnresolvedTableInfo tableInfo, UniqueIdentifierGenerator generator)
     {
-      return _innerMappingResolver.ResolveTableInfo (tableInfo, generator);
+      return _innerMappingResolver.ResolveTableInfo(tableInfo, generator);
     }
 
     public ResolvedJoinInfo ResolveJoinInfo (UnresolvedJoinInfo joinInfo, UniqueIdentifierGenerator generator)
     {
-      return _innerMappingResolver.ResolveJoinInfo (joinInfo, generator);
+      return _innerMappingResolver.ResolveJoinInfo(joinInfo, generator);
     }
 
     public SqlEntityDefinitionExpression ResolveSimpleTableInfo (IResolvedTableInfo tableInfo, UniqueIdentifierGenerator generator)
     {
-      return _innerMappingResolver.ResolveSimpleTableInfo (tableInfo, generator);
+      return _innerMappingResolver.ResolveSimpleTableInfo(tableInfo, generator);
     }
 
     public Expression ResolveMemberExpression (SqlEntityExpression originatingEntity, MemberInfo memberInfo)
@@ -62,52 +62,52 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var propertyInfo = memberInfo as PropertyInfo;
       if (propertyInfo != null && propertyInfo.PropertyType == typeof (SimpleDataType))
       {
-        var classDefinition = MappingConfiguration.Current.GetTypeDefinition (propertyInfo.DeclaringType);
-        var propertyName = MappingConfiguration.Current.NameResolver.GetPropertyName (PropertyInfoAdapter.Create (propertyInfo));
-        var propertyDefinition = classDefinition.GetPropertyDefinition (propertyName);
-        var storagePropertyDefinition = _rdbmsPersistenceModelProvider.GetStoragePropertyDefinition (propertyDefinition);
+        var classDefinition = MappingConfiguration.Current.GetTypeDefinition(propertyInfo.DeclaringType);
+        var propertyName = MappingConfiguration.Current.NameResolver.GetPropertyName(PropertyInfoAdapter.Create(propertyInfo));
+        var propertyDefinition = classDefinition.GetPropertyDefinition(propertyName);
+        var storagePropertyDefinition = _rdbmsPersistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition);
         var stringValueColumn = storagePropertyDefinition.GetColumns().Single();
-        var stringValueColumnExpression = originatingEntity.GetColumn (
+        var stringValueColumnExpression = originatingEntity.GetColumn(
             stringValueColumn.StorageTypeInfo.DotNetType,
             stringValueColumn.Name,
             stringValueColumn.IsPartOfPrimaryKey);
 
-        var simpleDataTypeCtor = typeof (SimpleDataType).GetConstructor (new[] { typeof (string) });
-        Assertion.IsNotNull (simpleDataTypeCtor);
-        var stringValueMember = typeof (SimpleDataType).GetProperty ("StringValue");
-        var simpleDataTypeConstruction = Expression.New (
+        var simpleDataTypeCtor = typeof (SimpleDataType).GetConstructor(new[] { typeof (string) });
+        Assertion.IsNotNull(simpleDataTypeCtor);
+        var stringValueMember = typeof (SimpleDataType).GetProperty("StringValue");
+        var simpleDataTypeConstruction = Expression.New(
             simpleDataTypeCtor,
             new[] { stringValueColumnExpression },
             new[] { stringValueMember });
 
-        return NamedExpression.CreateNewExpressionWithNamedArguments (simpleDataTypeConstruction);
+        return NamedExpression.CreateNewExpressionWithNamedArguments(simpleDataTypeConstruction);
       }
-      return _innerMappingResolver.ResolveMemberExpression (originatingEntity, memberInfo);
+      return _innerMappingResolver.ResolveMemberExpression(originatingEntity, memberInfo);
     }
 
     public Expression ResolveMemberExpression (SqlColumnExpression sqlColumnExpression, MemberInfo memberInfo)
     {
-      return _innerMappingResolver.ResolveMemberExpression (sqlColumnExpression, memberInfo);
+      return _innerMappingResolver.ResolveMemberExpression(sqlColumnExpression, memberInfo);
     }
 
     public Expression ResolveConstantExpression (ConstantExpression constantExpression)
     {
-      return _innerMappingResolver.ResolveConstantExpression (constantExpression);
+      return _innerMappingResolver.ResolveConstantExpression(constantExpression);
     }
 
     public Expression ResolveTypeCheck (Expression expression, Type desiredType)
     {
-      return _innerMappingResolver.ResolveTypeCheck (expression, desiredType);
+      return _innerMappingResolver.ResolveTypeCheck(expression, desiredType);
     }
 
     public Expression TryResolveOptimizedIdentity (SqlEntityRefMemberExpression entityRefMemberExpression)
     {
-      return _innerMappingResolver.TryResolveOptimizedIdentity (entityRefMemberExpression);
+      return _innerMappingResolver.TryResolveOptimizedIdentity(entityRefMemberExpression);
     }
 
     public Expression TryResolveOptimizedMemberExpression (SqlEntityRefMemberExpression entityRefMemberExpression, MemberInfo memberInfo)
     {
-      return _innerMappingResolver.TryResolveOptimizedMemberExpression (entityRefMemberExpression, memberInfo);
+      return _innerMappingResolver.TryResolveOptimizedMemberExpression(entityRefMemberExpression, memberInfo);
     }
   }
 }

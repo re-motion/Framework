@@ -15,7 +15,7 @@ namespace Remotion.Validation.RuleCollectors
     public void Initialize (ValidationMessage validationMessage)
     {
       if (_validationMessage != null)
-        throw new InvalidOperationException ("Validation message has already been initialized.");
+        throw new InvalidOperationException("Validation message has already been initialized.");
 
       _validationMessage = validationMessage;
     }
@@ -23,15 +23,15 @@ namespace Remotion.Validation.RuleCollectors
     public override string Format (CultureInfo culture, IFormatProvider? formatProvider, params object?[] parameters)
     {
       if (_validationMessage == null)
-        throw new InvalidOperationException ("Validation message has not been initialized.");
+        throw new InvalidOperationException("Validation message has not been initialized.");
 
-      return _validationMessage.Format (culture, formatProvider, parameters);
+      return _validationMessage.Format(culture, formatProvider, parameters);
     }
 
     public override string ToString ()
     {
       if (_validationMessage == null)
-        return nameof (DeferredInitializationValidationMessage);
+        return nameof(DeferredInitializationValidationMessage);
 
       return _validationMessage.ToString();
     }

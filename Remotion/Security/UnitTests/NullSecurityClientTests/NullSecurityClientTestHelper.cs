@@ -37,9 +37,9 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
 
     private NullSecurityClientTestHelper ()
     {
-      _mockObjectSecurityStrategy = new Mock<IObjectSecurityStrategy> (MockBehavior.Strict);
+      _mockObjectSecurityStrategy = new Mock<IObjectSecurityStrategy>(MockBehavior.Strict);
       
-      _securableObject = new SecurableObject (_mockObjectSecurityStrategy.Object);
+      _securableObject = new SecurableObject(_mockObjectSecurityStrategy.Object);
     }
 
     public NullSecurityClient CreateSecurityClient ()

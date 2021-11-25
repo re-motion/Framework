@@ -31,11 +31,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _testHelper = new MetadataTestHelper ();
-      _importer = new MetadataImporter (_testHelper.Transaction);
-      _testHelper.Transaction.EnterNonDiscardingScope ();
+      _testHelper = new MetadataTestHelper();
+      _importer = new MetadataImporter(_testHelper.Transaction);
+      _testHelper.Transaction.EnterNonDiscardingScope();
     }
 
     [Test]
@@ -50,14 +50,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
           </securityMetadata>
           ";
 
-      _importer.Import (GetXmlDocument (metadataXml));
+      _importer.Import(GetXmlDocument(metadataXml));
 
-      using (_testHelper.Transaction.EnterNonDiscardingScope ())
+      using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual (0, _importer.Classes.Count, "Class count");
-        Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+        Assert.AreEqual(0, _importer.Classes.Count, "Class count");
+        Assert.AreEqual(0, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual(0, _importer.AccessTypes.Count, "Access type count");
       }
     }
 
@@ -76,18 +76,18 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
           </securityMetadata>
           ";
 
-      _importer.Import (GetXmlDocument (metadataXml));
+      _importer.Import(GetXmlDocument(metadataXml));
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual (1, _importer.Classes.Count, "Class count");
-        Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+        Assert.AreEqual(1, _importer.Classes.Count, "Class count");
+        Assert.AreEqual(0, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual(0, _importer.AccessTypes.Count, "Access type count");
 
-        SecurableClassDefinition actualClass1 = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
-        Assert.That (actualClass1.Index, Is.EqualTo (0));
-        Assert.That (actualClass1.Name, Is.EqualTo ("Remotion.Security.UnitTests.TestDomain.File"));
+        SecurableClassDefinition actualClass1 = _importer.Classes[new Guid("00000000-0000-0000-0001-000000000000")];
+        Assert.That(actualClass1.Index, Is.EqualTo(0));
+        Assert.That(actualClass1.Name, Is.EqualTo("Remotion.Security.UnitTests.TestDomain.File"));
       }
     }
 
@@ -107,22 +107,22 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
           </securityMetadata>
           ";
 
-      _importer.Import (GetXmlDocument (metadataXml));
+      _importer.Import(GetXmlDocument(metadataXml));
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual (2, _importer.Classes.Count, "Class count");
-        Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+        Assert.AreEqual(2, _importer.Classes.Count, "Class count");
+        Assert.AreEqual(0, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual(0, _importer.AccessTypes.Count, "Access type count");
 
-        SecurableClassDefinition actualClass1 = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
-        Assert.That (actualClass1.Index, Is.EqualTo (0));
-        Assert.That (actualClass1.Name, Is.EqualTo ("Remotion.Security.UnitTests.TestDomain.File"));
+        SecurableClassDefinition actualClass1 = _importer.Classes[new Guid("00000000-0000-0000-0001-000000000000")];
+        Assert.That(actualClass1.Index, Is.EqualTo(0));
+        Assert.That(actualClass1.Name, Is.EqualTo("Remotion.Security.UnitTests.TestDomain.File"));
 
-        SecurableClassDefinition actualClass2 = _importer.Classes[new Guid ("00000000-0000-0000-0002-000000000000")];
-        Assert.That (actualClass2.Index, Is.EqualTo (1));
-        Assert.That (actualClass2.Name, Is.EqualTo ("Remotion.Security.UnitTests.TestDomain.Directory"));
+        SecurableClassDefinition actualClass2 = _importer.Classes[new Guid("00000000-0000-0000-0002-000000000000")];
+        Assert.That(actualClass2.Index, Is.EqualTo(1));
+        Assert.That(actualClass2.Name, Is.EqualTo("Remotion.Security.UnitTests.TestDomain.Directory"));
       }
     }
 
@@ -143,23 +143,23 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
           </securityMetadata>
           ";
 
-      _importer.Import (GetXmlDocument (metadataXml));
+      _importer.Import(GetXmlDocument(metadataXml));
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual (0, _importer.Classes.Count, "Class count");
-        Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual (3, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+        Assert.AreEqual(0, _importer.Classes.Count, "Class count");
+        Assert.AreEqual(0, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual(3, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual(0, _importer.AccessTypes.Count, "Access type count");
 
-        AbstractRoleDefinition expectedRole1 = _testHelper.CreateClerkAbstractRole (0);
-        MetadataObjectAssert.AreEqual (expectedRole1, _importer.AbstractRoles[expectedRole1.MetadataItemID], "Abstract Role Clerk");
+        AbstractRoleDefinition expectedRole1 = _testHelper.CreateClerkAbstractRole(0);
+        MetadataObjectAssert.AreEqual(expectedRole1, _importer.AbstractRoles[expectedRole1.MetadataItemID], "Abstract Role Clerk");
 
-        AbstractRoleDefinition expectedRole2 = _testHelper.CreateSecretaryAbstractRole (1);
-        MetadataObjectAssert.AreEqual (expectedRole2, _importer.AbstractRoles[expectedRole2.MetadataItemID], "Abstract Role Secretary");
+        AbstractRoleDefinition expectedRole2 = _testHelper.CreateSecretaryAbstractRole(1);
+        MetadataObjectAssert.AreEqual(expectedRole2, _importer.AbstractRoles[expectedRole2.MetadataItemID], "Abstract Role Secretary");
 
-        AbstractRoleDefinition expectedRole3 = _testHelper.CreateAdministratorAbstractRole (2);
-        MetadataObjectAssert.AreEqual (expectedRole3, _importer.AbstractRoles[expectedRole3.MetadataItemID], "Abstract Role Administrator");
+        AbstractRoleDefinition expectedRole3 = _testHelper.CreateAdministratorAbstractRole(2);
+        MetadataObjectAssert.AreEqual(expectedRole3, _importer.AbstractRoles[expectedRole3.MetadataItemID], "Abstract Role Administrator");
       }
     }
 
@@ -180,23 +180,23 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
           </securityMetadata>
           ";
 
-      _importer.Import (GetXmlDocument (metadataXml));
+      _importer.Import(GetXmlDocument(metadataXml));
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual (0, _importer.Classes.Count, "Class count");
-        Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual (3, _importer.AccessTypes.Count, "Access type count");
+        Assert.AreEqual(0, _importer.Classes.Count, "Class count");
+        Assert.AreEqual(0, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual(3, _importer.AccessTypes.Count, "Access type count");
 
-        AccessTypeDefinition expectedAccessType1 = _testHelper.CreateAccessTypeCreate (0);
-        MetadataObjectAssert.AreEqual (expectedAccessType1, _importer.AccessTypes[expectedAccessType1.MetadataItemID], "Access Type Create");
+        AccessTypeDefinition expectedAccessType1 = _testHelper.CreateAccessTypeCreate(0);
+        MetadataObjectAssert.AreEqual(expectedAccessType1, _importer.AccessTypes[expectedAccessType1.MetadataItemID], "Access Type Create");
 
-        AccessTypeDefinition expectedAccessType2 = _testHelper.CreateAccessTypeRead (1);
-        MetadataObjectAssert.AreEqual (expectedAccessType2, _importer.AccessTypes[expectedAccessType2.MetadataItemID], "Access Type Read");
+        AccessTypeDefinition expectedAccessType2 = _testHelper.CreateAccessTypeRead(1);
+        MetadataObjectAssert.AreEqual(expectedAccessType2, _importer.AccessTypes[expectedAccessType2.MetadataItemID], "Access Type Read");
 
-        AccessTypeDefinition expectedAccessType3 = _testHelper.CreateAccessTypeEdit (2);
-        MetadataObjectAssert.AreEqual (expectedAccessType3, _importer.AccessTypes[expectedAccessType3.MetadataItemID], "Access Type Edit");
+        AccessTypeDefinition expectedAccessType3 = _testHelper.CreateAccessTypeEdit(2);
+        MetadataObjectAssert.AreEqual(expectedAccessType3, _importer.AccessTypes[expectedAccessType3.MetadataItemID], "Access Type Edit");
       }
     }
 
@@ -225,24 +225,24 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
           </securityMetadata>
           ";
 
-      _importer.Import (GetXmlDocument (metadataXml));
+      _importer.Import(GetXmlDocument(metadataXml));
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual (0, _importer.Classes.Count, "Class count");
-        Assert.AreEqual (2, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+        Assert.AreEqual(0, _importer.Classes.Count, "Class count");
+        Assert.AreEqual(2, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual(0, _importer.AccessTypes.Count, "Access type count");
 
-        StatePropertyDefinition expectedProperty1 = _testHelper.CreateFileStateProperty (0);
+        StatePropertyDefinition expectedProperty1 = _testHelper.CreateFileStateProperty(0);
         StatePropertyDefinition actualProperty1 = _importer.StateProperties[expectedProperty1.MetadataItemID];
-        Assert.IsNotNull (actualProperty1, "State property not found");
-        MetadataObjectAssert.AreEqual (expectedProperty1, actualProperty1, "State property");
+        Assert.IsNotNull(actualProperty1, "State property not found");
+        MetadataObjectAssert.AreEqual(expectedProperty1, actualProperty1, "State property");
 
-        StatePropertyDefinition expectedProperty2 = _testHelper.CreateConfidentialityProperty (1);
+        StatePropertyDefinition expectedProperty2 = _testHelper.CreateConfidentialityProperty(1);
         StatePropertyDefinition actualProperty2 = _importer.StateProperties[expectedProperty2.MetadataItemID];
-        Assert.IsNotNull (actualProperty2, "Confidentiality property not found");
-        MetadataObjectAssert.AreEqual (expectedProperty2, actualProperty2, "Confidentiality property");
+        Assert.IsNotNull(actualProperty2, "Confidentiality property not found");
+        MetadataObjectAssert.AreEqual(expectedProperty2, actualProperty2, "Confidentiality property");
       }
     }
 
@@ -261,24 +261,24 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
             <abstractRoles />
           </securityMetadata>";
 
-      _importer.Import (GetXmlDocument (metadataXml));
+      _importer.Import(GetXmlDocument(metadataXml));
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual (2, _importer.Classes.Count, "Class count");
-        Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+        Assert.AreEqual(2, _importer.Classes.Count, "Class count");
+        Assert.AreEqual(0, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual(0, _importer.AccessTypes.Count, "Access type count");
 
-        SecurableClassDefinition baseClass = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
-        SecurableClassDefinition derivedClass = _importer.Classes[new Guid ("00000000-0000-0000-0002-000000000000")];
+        SecurableClassDefinition baseClass = _importer.Classes[new Guid("00000000-0000-0000-0001-000000000000")];
+        SecurableClassDefinition derivedClass = _importer.Classes[new Guid("00000000-0000-0000-0002-000000000000")];
 
-        Assert.That (baseClass.DerivedClasses.Count, Is.EqualTo (1));
-        Assert.That (baseClass.DerivedClasses[0], Is.SameAs (derivedClass));
-        Assert.That (baseClass.BaseClass, Is.Null);
+        Assert.That(baseClass.DerivedClasses.Count, Is.EqualTo(1));
+        Assert.That(baseClass.DerivedClasses[0], Is.SameAs(derivedClass));
+        Assert.That(baseClass.BaseClass, Is.Null);
 
-        Assert.That (derivedClass.DerivedClasses.Count, Is.EqualTo (0));
-        Assert.That (derivedClass.BaseClass, Is.SameAs (baseClass));
+        Assert.That(derivedClass.DerivedClasses.Count, Is.EqualTo(0));
+        Assert.That(derivedClass.BaseClass, Is.SameAs(baseClass));
       }
     }
 
@@ -313,21 +313,21 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
             <abstractRoles />
           </securityMetadata>";
 
-      _importer.Import (GetXmlDocument (metadataXml));
+      _importer.Import(GetXmlDocument(metadataXml));
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual (1, _importer.Classes.Count, "Class count");
-        Assert.AreEqual (2, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
+        Assert.AreEqual(1, _importer.Classes.Count, "Class count");
+        Assert.AreEqual(2, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual(0, _importer.AccessTypes.Count, "Access type count");
 
-        SecurableClassDefinition classDefinition = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
-        StatePropertyDefinition property1 = _importer.StateProperties[new Guid ("00000000-0000-0000-0002-000000000001")];
-        StatePropertyDefinition property2 = _importer.StateProperties[new Guid ("00000000-0000-0000-0001-000000000001")];
+        SecurableClassDefinition classDefinition = _importer.Classes[new Guid("00000000-0000-0000-0001-000000000000")];
+        StatePropertyDefinition property1 = _importer.StateProperties[new Guid("00000000-0000-0000-0002-000000000001")];
+        StatePropertyDefinition property2 = _importer.StateProperties[new Guid("00000000-0000-0000-0001-000000000001")];
 
-        Assert.AreEqual (1, classDefinition.StateProperties.Count, "State property count");
-        Assert.That (classDefinition.StateProperties[0], Is.SameAs (property2));
+        Assert.AreEqual(1, classDefinition.StateProperties.Count, "State property count");
+        Assert.That(classDefinition.StateProperties[0], Is.SameAs(property2));
       }
     }
 
@@ -361,20 +361,20 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
             <abstractRoles />
           </securityMetadata>";
 
-      _importer.Import (GetXmlDocument (metadataXml));
+      _importer.Import(GetXmlDocument(metadataXml));
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual (1, _importer.Classes.Count, "Class count");
-        Assert.AreEqual (0, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual (8, _importer.AccessTypes.Count, "Access type count");
+        Assert.AreEqual(1, _importer.Classes.Count, "Class count");
+        Assert.AreEqual(0, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual(8, _importer.AccessTypes.Count, "Access type count");
 
-        SecurableClassDefinition classDefinition = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
-        AccessTypeDefinition accessType = _importer.AccessTypes[new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a")];
+        SecurableClassDefinition classDefinition = _importer.Classes[new Guid("00000000-0000-0000-0001-000000000000")];
+        AccessTypeDefinition accessType = _importer.AccessTypes[new Guid("62dfcd92-a480-4d57-95f1-28c0f5996b3a")];
 
-        Assert.AreEqual (1, classDefinition.AccessTypes.Count, "Access type count");
-        Assert.That (classDefinition.AccessTypes[0], Is.SameAs (accessType));
+        Assert.AreEqual(1, classDefinition.AccessTypes.Count, "Access type count");
+        Assert.That(classDefinition.AccessTypes[0], Is.SameAs(accessType));
       }
     }
 
@@ -451,14 +451,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
             </abstractRoles>
           </securityMetadata>";
 
-      _importer.Import (GetXmlDocument (metadataXml));
+      _importer.Import(GetXmlDocument(metadataXml));
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual (2, _importer.Classes.Count, "Class count");
-        Assert.AreEqual (2, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual (3, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual (8, _importer.AccessTypes.Count, "Access type count");
+        Assert.AreEqual(2, _importer.Classes.Count, "Class count");
+        Assert.AreEqual(2, _importer.StateProperties.Count, "State property count");
+        Assert.AreEqual(3, _importer.AbstractRoles.Count, "Abstract role count");
+        Assert.AreEqual(8, _importer.AccessTypes.Count, "Access type count");
       }
     }
 
@@ -469,8 +469,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
           <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
             <classes />
           </securityMetadata>";
-      Assert.That (
-          () => _importer.Import (GetXmlDocument (metadataXml)),
+      Assert.That(
+          () => _importer.Import(GetXmlDocument(metadataXml)),
           Throws.InstanceOf<XmlSchemaValidationException>());
     }
 
@@ -487,10 +487,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
             <abstractRoles />
           </securityMetadata>
           ";
-      Assert.That (
-          () => _importer.Import (GetXmlDocument (metadataXml)),
+      Assert.That(
+          () => _importer.Import(GetXmlDocument(metadataXml)),
           Throws.InstanceOf<ImportException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The base class '00000000-0000-0000-0001-000000000000' referenced by the class '00000000-0000-0000-0002-000000000000' could not be found."));
     }
 
@@ -518,10 +518,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
             <abstractRoles />
           </securityMetadata>
           ";
-      Assert.That (
-          () => _importer.Import (GetXmlDocument (metadataXml)),
+      Assert.That(
+          () => _importer.Import(GetXmlDocument(metadataXml)),
           Throws.InstanceOf<ImportException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The state property '00000000-0000-0000-0001-000000000001' referenced by the class '00000000-0000-0000-0001-000000000000' could not be found."));
     }
 
@@ -553,17 +553,17 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
             <abstractRoles />
           </securityMetadata>
           ";
-      Assert.That (
-          () => _importer.Import (GetXmlDocument (metadataXml)),
+      Assert.That(
+          () => _importer.Import(GetXmlDocument(metadataXml)),
           Throws.InstanceOf<ImportException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The access type '62dfcd92-a480-4d57-95f1-28c0f5996b3a' referenced by the class '00000000-0000-0000-0001-000000000000' could not be found."));
     }
 
     private XmlDocument GetXmlDocument (string metadataXml)
     {
-      XmlDocument metadataXmlDocument = new XmlDocument ();
-      metadataXmlDocument.LoadXml (metadataXml);
+      XmlDocument metadataXmlDocument = new XmlDocument();
+      metadataXmlDocument.LoadXml(metadataXml);
 
       return metadataXmlDocument;
     }

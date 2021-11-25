@@ -44,7 +44,7 @@ namespace Remotion.Web.UI.Controls
     // constants
 
     // statics
-    private static readonly object s_eventCommandClickEvent = new object ();
+    private static readonly object s_eventCommandClickEvent = new object();
 
     // types
 
@@ -62,10 +62,10 @@ namespace Remotion.Web.UI.Controls
     // construction and destruction
     public TabbedMenu ()
     {
-      _mainMenuTabStrip = new WebTabStrip (new MainMenuTabCollection (this, new[] { typeof (MainMenuTab) }));
-      _subMenuTabStrip = new WebTabStrip (this, new[] { typeof (SubMenuTab) });
-      _statusStyle = new Style ();
-      _subMenuBackgroundColor = new Color ();
+      _mainMenuTabStrip = new WebTabStrip(new MainMenuTabCollection(this, new[] { typeof (MainMenuTab) }));
+      _subMenuTabStrip = new WebTabStrip(this, new[] { typeof (SubMenuTab) });
+      _statusStyle = new Style();
+      _subMenuBackgroundColor = new Color();
     }
 
     // methods and properties
@@ -73,8 +73,8 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Overrides the <see cref="Control.OnInit"/> method. </summary>
     protected override void OnInit (EventArgs e)
     {
-      EnsureChildControls ();
-      base.OnInit (e);
+      EnsureChildControls();
+      base.OnInit(e);
 
       _isPastInitialization = true;
       _mainMenuTabStrip.EnableSelectedTab = true;
@@ -86,41 +86,41 @@ namespace Remotion.Web.UI.Controls
 
       if (Page is ISmartNavigablePage)
       {
-        ((ISmartNavigablePage) Page).RegisterNavigationControl (this);
+        ((ISmartNavigablePage) Page).RegisterNavigationControl(this);
       }
-      LoadSelection ();
+      LoadSelection();
 
-      RegisterHtmlHeadContents (HtmlHeadAppender.Current);
+      RegisterHtmlHeadContents(HtmlHeadAppender.Current);
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
     protected virtual ITabbedMenuRenderer CreateRenderer ()
     {
-      return SafeServiceLocator.Current.GetInstance<ITabbedMenuRenderer> ();
+      return SafeServiceLocator.Current.GetInstance<ITabbedMenuRenderer>();
     }
 
     protected virtual TabbedMenuRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      return new TabbedMenuRenderingContext (Page!.Context!, writer, this); //TODO RM-8118: not null assertion
+      return new TabbedMenuRenderingContext(Page!.Context!, writer, this); //TODO RM-8118: not null assertion
     }
 
     /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
     protected override void CreateChildControls ()
     {
       _mainMenuTabStrip.ID = ID + "_MainMenuTabStrip";
-      Controls.Add (_mainMenuTabStrip);
+      Controls.Add(_mainMenuTabStrip);
 
       _subMenuTabStrip.ID = ID + "_SubMenuTabStrip";
-      Controls.Add (_subMenuTabStrip);
+      Controls.Add(_subMenuTabStrip);
     }
 
     /// <summary> Ensures that the <see cref="SubMenuTabStrip"/> is populated with the tabs from the selected 
@@ -130,7 +130,7 @@ namespace Remotion.Web.UI.Controls
     {
       if (_isSubMenuTabStripRefreshed)
         return;
-      PopulateSubMenuTabStrip ();
+      PopulateSubMenuTabStrip();
     }
 
     /// <summary> 
@@ -139,8 +139,8 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     internal void RefreshSubMenuTabStrip ()
     {
-      _subMenuTabStrip.Tabs.Clear ();
-      PopulateSubMenuTabStrip ();
+      _subMenuTabStrip.Tabs.Clear();
+      PopulateSubMenuTabStrip();
     }
 
     /// <summary> 
@@ -152,22 +152,22 @@ namespace Remotion.Web.UI.Controls
       _isSubMenuTabStripRefreshed = true;
       MainMenuTab? selectedMainMenuItem = SelectedMainMenuTab;
       if (selectedMainMenuItem != null)
-        _subMenuTabStrip.Tabs.AddRange (selectedMainMenuItem.SubMenuTabs);
+        _subMenuTabStrip.Tabs.AddRange(selectedMainMenuItem.SubMenuTabs);
       if (_subMenuTabStrip.SelectedTab == null && _subMenuTabStrip.Tabs.Count > 0)
-        _subMenuTabStrip.SetSelectedTabInternal (_subMenuTabStrip.Tabs[0]);
+        _subMenuTabStrip.SetSelectedTabInternal(_subMenuTabStrip.Tabs[0]);
     }
 
     /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
     protected override void OnPreRender (EventArgs e)
     {
-      EnsureSubMenuTabStripPopulated ();
+      EnsureSubMenuTabStripPopulated();
 
       foreach (MenuTab menuTab in Tabs)
       {
         if (menuTab.Command != null && menuTab.Command.Type == CommandType.Event)
         {
-          menuTab.Command.RegisterForSynchronousPostBackOnDemand (
-              _mainMenuTabStrip, menuTab.ItemID, string.Format ("TabbedMenu '{0}', MenuTab '{1}'", ID, menuTab.ItemID));
+          menuTab.Command.RegisterForSynchronousPostBackOnDemand(
+              _mainMenuTabStrip, menuTab.ItemID, string.Format("TabbedMenu '{0}', MenuTab '{1}'", ID, menuTab.ItemID));
         }
       }
 
@@ -177,19 +177,19 @@ namespace Remotion.Web.UI.Controls
         {
           if (menuTab.Command != null && menuTab.Command.Type == CommandType.Event)
           {
-            menuTab.Command.RegisterForSynchronousPostBackOnDemand (
+            menuTab.Command.RegisterForSynchronousPostBackOnDemand(
                 _subMenuTabStrip, 
                 menuTab.ItemID, 
-                string.Format ("TabbedMenu '{0}', MainMenuTab '{1}', SubMenuTab '{2}'", ID, SelectedMainMenuTab.ItemID, menuTab.ItemID));
+                string.Format("TabbedMenu '{0}', MainMenuTab '{1}', SubMenuTab '{2}'", ID, SelectedMainMenuTab.ItemID, menuTab.ItemID));
           }
         }
       }
 
-      base.OnPreRender (e);
-      SaveSelection ();
+      base.OnPreRender(e);
+      SaveSelection();
 
-      IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this, true) ?? NullResourceManager.Instance;
-      LoadResources (resourceManager);
+      IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager(this, true) ?? NullResourceManager.Instance;
+      LoadResources(resourceManager);
     }
 
     /// <summary> Overrides the <see cref="WebControl.TagKey"/> property. </summary>
@@ -202,18 +202,18 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
     protected override void AddAttributesToRender (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      base.AddAttributesToRender (writer);
-      if (string.IsNullOrEmpty (CssClass) && string.IsNullOrEmpty (Attributes["class"]))
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBase);
+      base.AddAttributesToRender(writer);
+      if (string.IsNullOrEmpty(CssClass) && string.IsNullOrEmpty(Attributes["class"]))
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
     }
 
     /// <summary> Checks whether the control conforms to the required WAI level. </summary>
     /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
     protected virtual void EvaluateWaiConformity ()
     {
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled () && WcagHelper.Instance.IsWaiConformanceLevelARequired ())
+      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
       {
         MainMenuTabCollection mainMenuTabs = Tabs;
         for (int mainMenuTabsIdx = 0; mainMenuTabsIdx < mainMenuTabs.Count; mainMenuTabsIdx++)
@@ -222,7 +222,7 @@ namespace Remotion.Web.UI.Controls
           bool hasMainMenuTabPostBackCommand = mainMenuTab.Command != null
                                               && mainMenuTab.Command.Type == CommandType.Event;
           if (hasMainMenuTabPostBackCommand)
-            WcagHelper.Instance.HandleError (1, this, string.Format ("Tabs[{0}].Command", mainMenuTabsIdx));
+            WcagHelper.Instance.HandleError(1, this, string.Format("Tabs[{0}].Command", mainMenuTabsIdx));
 
           SubMenuTabCollection subMenuTabs = mainMenuTab.SubMenuTabs;
           for (int subMenuTabsIdx = 0; subMenuTabsIdx < subMenuTabs.Count; subMenuTabsIdx++)
@@ -232,8 +232,8 @@ namespace Remotion.Web.UI.Controls
                                                && subMenuTab.Command.Type == CommandType.Event;
             if (hasSubMenuTabPostBackCommand)
             {
-              WcagHelper.Instance.HandleError (
-                  1, this, string.Format ("Tabs[{0}].SubMenuTabs[{1}].Command", mainMenuTabsIdx, subMenuTabsIdx));
+              WcagHelper.Instance.HandleError(
+                  1, this, string.Format("Tabs[{0}].SubMenuTabs[{1}].Command", mainMenuTabsIdx, subMenuTabsIdx));
             }
           }
         }
@@ -242,13 +242,13 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
-      EnsureChildControls ();
+      ArgumentUtility.CheckNotNull("writer", writer);
+      EnsureChildControls();
 
-      EvaluateWaiConformity ();
+      EvaluateWaiConformity();
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     /// <summary> Overrides the <see cref="Control.Controls"/> property. </summary>
@@ -256,7 +256,7 @@ namespace Remotion.Web.UI.Controls
     {
       get
       {
-        EnsureChildControls ();
+        EnsureChildControls();
         return base.Controls;
       }
     }
@@ -304,22 +304,22 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Loads the selected tabs from the window state or the query string. </summary>
     private void LoadSelection ()
     {
-      string[] selectedTabIDs = GetSelectionFromWindowState ();
+      string[] selectedTabIDs = GetSelectionFromWindowState();
       if (selectedTabIDs.Length == 0)
-        selectedTabIDs = GetSelectionFromQueryString ();
+        selectedTabIDs = GetSelectionFromQueryString();
 
       if (selectedTabIDs.Length > 0)
       {
         string selectedMainMenuItemID = selectedTabIDs[0];
-        WebTab selectedMainMenuItem = _mainMenuTabStrip.Tabs.Find (selectedMainMenuItemID)!;
+        WebTab selectedMainMenuItem = _mainMenuTabStrip.Tabs.Find(selectedMainMenuItemID)!;
         if (selectedMainMenuItem.IsVisible)
           selectedMainMenuItem.IsSelected = true;
       }
-      RefreshSubMenuTabStrip ();
+      RefreshSubMenuTabStrip();
       if (selectedTabIDs.Length > 1)
       {
         string selectedSubMenuItemID = selectedTabIDs[1];
-        WebTab selectedSubMenuItem = _subMenuTabStrip.Tabs.Find (selectedSubMenuItemID)!;
+        WebTab selectedSubMenuItem = _subMenuTabStrip.Tabs.Find(selectedSubMenuItemID)!;
         if (selectedSubMenuItem.IsVisible)
           selectedSubMenuItem.IsSelected = true;
       }
@@ -340,7 +340,7 @@ namespace Remotion.Web.UI.Controls
       else
         value = Context.Request.QueryString[SelectionID];
       if (value != null)
-        selection = (string[]?)TypeConversionProvider.Convert (typeof (string), typeof (string[]), value);
+        selection = (string[]?)TypeConversionProvider.Convert(typeof (string), typeof (string[]), value);
 
       if (selection == null)
         selection = new string[0];
@@ -358,7 +358,7 @@ namespace Remotion.Web.UI.Controls
 
       IWindowStateManager? windowStateManager = Page as IWindowStateManager;
       if (windowStateManager != null)
-        selection = (string[]?)windowStateManager.GetData (SelectionID);
+        selection = (string[]?)windowStateManager.GetData(SelectionID);
 
       if (selection == null)
         selection = new string[0];
@@ -372,8 +372,8 @@ namespace Remotion.Web.UI.Controls
       if (windowStateManager == null)
         return;
 
-      string[] tabIDs = ConvertTabIDsToArray (SelectedMainMenuTab, SelectedSubMenuTab);
-      windowStateManager.SetData (SelectionID, tabIDs);
+      string[] tabIDs = ConvertTabIDsToArray(SelectedMainMenuTab, SelectedSubMenuTab);
+      windowStateManager.SetData(SelectionID, tabIDs);
     }
 
     /// <summary> 
@@ -386,10 +386,10 @@ namespace Remotion.Web.UI.Controls
     NameValueCollection INavigationControl.GetNavigationUrlParameters ()
     {
       if (_subMenuTabStrip.SelectedTab != null)
-        return GetUrlParameters (SelectedSubMenuTab!);
+        return GetUrlParameters(SelectedSubMenuTab!);
       else if (_mainMenuTabStrip.SelectedTab != null)
-        return GetUrlParameters (SelectedMainMenuTab!);
-      return new NameValueCollection ();
+        return GetUrlParameters(SelectedMainMenuTab!);
+      return new NameValueCollection();
     }
 
     /// <summary> Gets the parameters required for selecting the <paramref name="menuTab"/>. </summary>
@@ -403,23 +403,23 @@ namespace Remotion.Web.UI.Controls
     /// </returns>
     public virtual NameValueCollection GetUrlParameters (IMenuTab menuTab)
     {
-      ArgumentUtility.CheckNotNull ("menuTab", menuTab);
+      ArgumentUtility.CheckNotNull("menuTab", menuTab);
 
       MainMenuTab? mainMenuTab = menuTab as MainMenuTab;
       SubMenuTab? subMenuTab = menuTab as SubMenuTab;
 
       string[] tabIDs;
       if (mainMenuTab != null)
-        tabIDs = ConvertTabIDsToArray (mainMenuTab, null);
+        tabIDs = ConvertTabIDsToArray(mainMenuTab, null);
       else if (subMenuTab != null)
-        tabIDs = ConvertTabIDsToArray (subMenuTab.Parent, subMenuTab);
+        tabIDs = ConvertTabIDsToArray(subMenuTab.Parent, subMenuTab);
       else
-        throw new NotSupportedException (string.Format ("menuTab is of unsupported type '{0}'.", menuTab.GetType().GetFullNameSafe()));
+        throw new NotSupportedException(string.Format("menuTab is of unsupported type '{0}'.", menuTab.GetType().GetFullNameSafe()));
 
-      string? value = (string?) TypeConversionProvider.Convert (typeof (string[]), typeof (string), tabIDs);
+      string? value = (string?) TypeConversionProvider.Convert(typeof (string[]), typeof (string), tabIDs);
 
-      NameValueCollection urlParameters = new NameValueCollection ();
-      urlParameters.Add (SelectionID, value);
+      NameValueCollection urlParameters = new NameValueCollection();
+      urlParameters.Add(SelectionID, value);
       return urlParameters;
     }
 
@@ -431,12 +431,12 @@ namespace Remotion.Web.UI.Controls
     /// <returns> The <paramref name="url"/> extended with the parameters required by this <see cref="TabbedMenu"/>. </returns>
     public string FormatUrl (string url)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("url", url);
+      ArgumentUtility.CheckNotNullOrEmpty("url", url);
 
       if (_subMenuTabStrip.SelectedTab != null)
-        return FormatUrl (url, SelectedSubMenuTab!);
+        return FormatUrl(url, SelectedSubMenuTab!);
       else if (_mainMenuTabStrip.SelectedTab != null)
-        return FormatUrl (url, SelectedMainMenuTab!);
+        return FormatUrl(url, SelectedMainMenuTab!);
       else
         return url;
     }
@@ -452,10 +452,10 @@ namespace Remotion.Web.UI.Controls
     /// <returns> The <paramref name="url"/> extended with the parameters required by this <see cref="TabbedMenu"/>. </returns>
     public string FormatUrl (string url, MenuTab menuTab)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("url", url);
+      ArgumentUtility.CheckNotNullOrEmpty("url", url);
 
-      NameValueCollection urlParameters = GetUrlParameters (menuTab);
-      url = UrlUtility.AddParameters (url, urlParameters);
+      NameValueCollection urlParameters = GetUrlParameters(menuTab);
+      url = UrlUtility.AddParameters(url, urlParameters);
       return url;
     }
 
@@ -465,7 +465,7 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     private void MainMenuTabStrip_Click (object sender, WebTabClickEventArgs e)
     {
-      HandleTabStripClick ((MenuTab) e.Tab);
+      HandleTabStripClick((MenuTab) e.Tab);
     }
 
     /// <summary> 
@@ -473,7 +473,7 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     private void SubMenuTabStrip_Click (object sender, WebTabClickEventArgs e)
     {
-      HandleTabStripClick ((MenuTab) e.Tab);
+      HandleTabStripClick((MenuTab) e.Tab);
     }
 
     /// <summary> 
@@ -486,11 +486,11 @@ namespace Remotion.Web.UI.Controls
       {
         if (tab.Command.Type == CommandType.Event)
         {
-          OnEventCommandClick (tab);
+          OnEventCommandClick(tab);
         }
         else if (tab.Command.Type == CommandType.WxeFunction)
         {
-          throw new InvalidOperationException ("MenuTab commands of CommandType WxeFunction must always execute on client side.");
+          throw new InvalidOperationException("MenuTab commands of CommandType WxeFunction must always execute on client side.");
         }
       }
     }
@@ -500,13 +500,13 @@ namespace Remotion.Web.UI.Controls
     protected virtual void OnEventCommandClick (MenuTab? tab)
     {
       if (tab != null && tab.Command != null)
-        tab.Command.OnClick ();
+        tab.Command.OnClick();
 
       MenuTabClickEventHandler? handler = (MenuTabClickEventHandler?) Events[s_eventCommandClickEvent];
       if (handler != null)
       {
-        MenuTabClickEventArgs e = new MenuTabClickEventArgs (tab!); // TODO RM-8118: not null assertion
-        handler (this, e);
+        MenuTabClickEventArgs e = new MenuTabClickEventArgs(tab!); // TODO RM-8118: not null assertion
+        handler(this, e);
       }
     }
 
@@ -514,7 +514,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
     protected virtual IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (null!); // TODO RM-8118: What's happening here?
+      return GetResourceManager(null!); // TODO RM-8118: What's happening here?
     }
 
     /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
@@ -532,10 +532,10 @@ namespace Remotion.Web.UI.Controls
 
       //  Get the resource managers
 
-      var localResourceManager = GlobalizationService.GetResourceManager (localResourcesType);
-      var namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
+      var localResourceManager = GlobalizationService.GetResourceManager(localResourcesType);
+      var namingContainerResourceManager = ResourceManagerUtility.GetResourceManager(NamingContainer, true);
 
-      _cachedResourceManager = ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
+      _cachedResourceManager = ResourceManagerSet.Create(namingContainerResourceManager, localResourceManager);
 
       return _cachedResourceManager;
     }
@@ -543,11 +543,11 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected virtual void LoadResources (IResourceManager resourceManager)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (StatusText);
-      if (!string.IsNullOrEmpty (key))
-        StatusText = resourceManager.GetString (key);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(StatusText);
+      if (!string.IsNullOrEmpty(key))
+        StatusText = resourceManager.GetString(key);
     }
 
     protected IGlobalizationService GlobalizationService
@@ -570,7 +570,7 @@ namespace Remotion.Web.UI.Controls
       get
       {
         if (_isPastInitialization)
-          EnsureSubMenuTabStripPopulated ();
+          EnsureSubMenuTabStripPopulated();
         return (MainMenuTabCollection) _mainMenuTabStrip.Tabs;
       }
     }
@@ -592,8 +592,8 @@ namespace Remotion.Web.UI.Controls
     [Description ("Is raised when a tab with a command of type Event is clicked.")]
     public event MenuTabClickEventHandler EventCommandClick
     {
-      add { Events.AddHandler (s_eventCommandClickEvent, value); }
-      remove { Events.RemoveHandler (s_eventCommandClickEvent, value); }
+      add { Events.AddHandler(s_eventCommandClickEvent, value); }
+      remove { Events.RemoveHandler(s_eventCommandClickEvent, value); }
     }
 
     /// <summary> Gets the selected <see cref="MainMenuTab"/>. </summary>
@@ -725,7 +725,7 @@ namespace Remotion.Web.UI.Controls
 
     public new IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
     string IControlWithDiagnosticMetadata.ControlType

@@ -36,11 +36,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
 
       public void CleanUp ()
       {
-        EnsureWriteAccessToPolicyKey (_policiesPath);
+        EnsureWriteAccessToPolicyKey(_policiesPath);
 
-        using (var key = GetOrCreatePoliciesKey (_policiesPath))
+        using (var key = GetOrCreatePoliciesKey(_policiesPath))
         {
-          key.DeleteValue (c_securityWarningsPolicyName);
+          key.DeleteValue(c_securityWarningsPolicyName);
         }
       }
     }
@@ -69,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
     [NotNull]
     public static IBrowserSessionCleanUpStrategy CreateForChrome (ChromiumDisableSecurityWarningsBehavior disableSecurityWarningsBehavior)
     {
-      return CreateCleanUpStrategy (disableSecurityWarningsBehavior, c_chromePoliciesPath);
+      return CreateCleanUpStrategy(disableSecurityWarningsBehavior, c_chromePoliciesPath);
     }
 
     /// <summary>
@@ -85,24 +85,24 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
     [NotNull]
     public static IBrowserSessionCleanUpStrategy CreateForEdge (ChromiumDisableSecurityWarningsBehavior disableSecurityWarningsBehavior)
     {
-      return CreateCleanUpStrategy (disableSecurityWarningsBehavior, c_edgePoliciesPath);
+      return CreateCleanUpStrategy(disableSecurityWarningsBehavior, c_edgePoliciesPath);
     }
 
     private static IBrowserSessionCleanUpStrategy CreateCleanUpStrategy (ChromiumDisableSecurityWarningsBehavior disableSecurityWarningsBehavior, string policiesPath)
     {
-      if (!SecurityWarningsEnabled (policiesPath))
+      if (!SecurityWarningsEnabled(policiesPath))
         return new EmptyCleanUpStrategy();
 
       switch (disableSecurityWarningsBehavior)
       {
         case ChromiumDisableSecurityWarningsBehavior.Require:
         {
-          throw new InvalidOperationException ($"The '{c_securityWarningsPolicyName}' policy in '{policiesPath}' needs to be set to 0.");
+          throw new InvalidOperationException($"The '{c_securityWarningsPolicyName}' policy in '{policiesPath}' needs to be set to 0.");
         }
         case ChromiumDisableSecurityWarningsBehavior.Automatic:
         {
-          DisableSecurityWarningsViaRegistry (policiesPath);
-          return new RestoreSecurityWarningsRegistryCleanUpStrategy (policiesPath);
+          DisableSecurityWarningsViaRegistry(policiesPath);
+          return new RestoreSecurityWarningsRegistryCleanUpStrategy(policiesPath);
         }
         default:
         {
@@ -113,21 +113,21 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
 
     private static void DisableSecurityWarningsViaRegistry (string policiesPath)
     {
-      EnsureWriteAccessToPolicyKey (policiesPath);
+      EnsureWriteAccessToPolicyKey(policiesPath);
 
-      using (var key = GetOrCreatePoliciesKey (policiesPath))
+      using (var key = GetOrCreatePoliciesKey(policiesPath))
       {
-        key.SetValue (c_securityWarningsPolicyName, 0);
+        key.SetValue(c_securityWarningsPolicyName, 0);
       }
     }
 
     private static bool SecurityWarningsEnabled (string policiesPath)
     {
-      using (var currentUserKey = Registry.CurrentUser.OpenSubKey (policiesPath))
-      using (var localMachineKey = Registry.LocalMachine.OpenSubKey (policiesPath))
+      using (var currentUserKey = Registry.CurrentUser.OpenSubKey(policiesPath))
+      using (var localMachineKey = Registry.LocalMachine.OpenSubKey(policiesPath))
       {
-        var currentUserSecurityPolicyValue = currentUserKey?.GetValue (c_securityWarningsPolicyName) as int?;
-        var localMachineSecurityPolicyValue = localMachineKey?.GetValue (c_securityWarningsPolicyName) as int?;
+        var currentUserSecurityPolicyValue = currentUserKey?.GetValue(c_securityWarningsPolicyName) as int?;
+        var localMachineSecurityPolicyValue = localMachineKey?.GetValue(c_securityWarningsPolicyName) as int?;
 
         return (currentUserSecurityPolicyValue ?? localMachineSecurityPolicyValue) != 0;
       }
@@ -137,17 +137,17 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
     {
       try
       {
-        Registry.CurrentUser.CreateSubKey (policiesPath)?.Dispose();
+        Registry.CurrentUser.CreateSubKey(policiesPath)?.Dispose();
       }
       catch (UnauthorizedAccessException)
       {
-        throw new UnauthorizedAccessException ($"Cannot configure security policy, write access to '{policiesPath}' was denied.");
+        throw new UnauthorizedAccessException($"Cannot configure security policy, write access to '{policiesPath}' was denied.");
       }
     }
 
     private static RegistryKey GetOrCreatePoliciesKey (string policiesPath)
     {
-      return Registry.CurrentUser.CreateSubKey (policiesPath);
+      return Registry.CurrentUser.CreateSubKey(policiesPath);
     }
   }
 }

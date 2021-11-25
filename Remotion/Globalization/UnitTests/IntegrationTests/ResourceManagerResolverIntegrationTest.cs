@@ -37,70 +37,70 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     [Test]
     public void Resolve_WithTypeDefiningMultipleResources_ReturnsResourceManagersInOrderOfDefinition ()
     {
-      var result = _resolver.Resolve (typeof (ClassWithMultiLingualResourcesAttributes));
+      var result = _resolver.Resolve(typeof (ClassWithMultiLingualResourcesAttributes));
 
-      Assert.That (result.ResourceManager.IsNull, Is.False);
-      Assert.That (result.ResourceManager, Is.InstanceOf<ResourceManagerSet>());
-      Assert.That (result.DefinedResourceManager, Is.SameAs (result.ResourceManager));
-      Assert.That (result.InheritedResourceManager.IsNull, Is.True);
+      Assert.That(result.ResourceManager.IsNull, Is.False);
+      Assert.That(result.ResourceManager, Is.InstanceOf<ResourceManagerSet>());
+      Assert.That(result.DefinedResourceManager, Is.SameAs(result.ResourceManager));
+      Assert.That(result.InheritedResourceManager.IsNull, Is.True);
 
       var resourceManagerSet = (ResourceManagerSet) result.ResourceManager;
 
-      Assert.That (
-          resourceManagerSet.ResourceManagers.Select (rm => rm.Name),
-          Is.EquivalentTo (new[] { NamedResources.One, NamedResources.Two, NamedResources.Three }));
+      Assert.That(
+          resourceManagerSet.ResourceManagers.Select(rm => rm.Name),
+          Is.EquivalentTo(new[] { NamedResources.One, NamedResources.Two, NamedResources.Three }));
     }
 
     [Test]
     public void Resolve_WithTypeDefiningAndInheritingMultipleResources_ReturnsResourceManagersInOrderOfDefinition ()
     {
-      var result = _resolver.Resolve (typeof (DerivedClassWithMultiLingualResourcesAttributes));
+      var result = _resolver.Resolve(typeof (DerivedClassWithMultiLingualResourcesAttributes));
 
-      Assert.That (result.ResourceManager, Is.InstanceOf<ResourceManagerSet>());
+      Assert.That(result.ResourceManager, Is.InstanceOf<ResourceManagerSet>());
       var resourceManagerSet = (ResourceManagerSet) result.ResourceManager;
-      Assert.That (
-          resourceManagerSet.ResourceManagers.Select (rm => rm.Name),
-          Is.EquivalentTo (new[] { NamedResources.Four, NamedResources.Five, NamedResources.One, NamedResources.Two, NamedResources.Three }));
-      Assert.That (
-          resourceManagerSet.ResourceManagers.Take (2).Select (rm => rm.Name),
-          Is.EquivalentTo (new[] { NamedResources.Four, NamedResources.Five }));
-      Assert.That (
-          resourceManagerSet.ResourceManagers.Skip (2).Select (rm => rm.Name),
-          Is.EquivalentTo (new[] { NamedResources.One, NamedResources.Two, NamedResources.Three }));
+      Assert.That(
+          resourceManagerSet.ResourceManagers.Select(rm => rm.Name),
+          Is.EquivalentTo(new[] { NamedResources.Four, NamedResources.Five, NamedResources.One, NamedResources.Two, NamedResources.Three }));
+      Assert.That(
+          resourceManagerSet.ResourceManagers.Take(2).Select(rm => rm.Name),
+          Is.EquivalentTo(new[] { NamedResources.Four, NamedResources.Five }));
+      Assert.That(
+          resourceManagerSet.ResourceManagers.Skip(2).Select(rm => rm.Name),
+          Is.EquivalentTo(new[] { NamedResources.One, NamedResources.Two, NamedResources.Three }));
 
-      Assert.That (result.DefinedResourceManager, Is.InstanceOf<ResourceManagerSet>());
+      Assert.That(result.DefinedResourceManager, Is.InstanceOf<ResourceManagerSet>());
       var definedResourceManagerSet = (ResourceManagerSet) result.DefinedResourceManager;
-      Assert.That (
-          definedResourceManagerSet.ResourceManagers.Select (rm => rm.Name),
-          Is.EquivalentTo (new[] { NamedResources.Four, NamedResources.Five }));
+      Assert.That(
+          definedResourceManagerSet.ResourceManagers.Select(rm => rm.Name),
+          Is.EquivalentTo(new[] { NamedResources.Four, NamedResources.Five }));
 
-      Assert.That (result.InheritedResourceManager, Is.InstanceOf<ResourceManagerSet>());
+      Assert.That(result.InheritedResourceManager, Is.InstanceOf<ResourceManagerSet>());
       var inheritedResourceManagerSet = (ResourceManagerSet) result.InheritedResourceManager;
-      Assert.That (
-          inheritedResourceManagerSet.ResourceManagers.Select (rm => rm.Name),
-          Is.EquivalentTo (new[] { NamedResources.One, NamedResources.Two, NamedResources.Three }));
+      Assert.That(
+          inheritedResourceManagerSet.ResourceManagers.Select(rm => rm.Name),
+          Is.EquivalentTo(new[] { NamedResources.One, NamedResources.Two, NamedResources.Three }));
     }
 
     [Test]
     public void Resolve_WithTypeOnlyInheritingMultipleResources_ReturnsNullResourceManagerForDefinedResourceManager ()
     {
-      var result = _resolver.Resolve (typeof (DerivedClassWithoutMultiLingualResourcesAttributes));
+      var result = _resolver.Resolve(typeof (DerivedClassWithoutMultiLingualResourcesAttributes));
 
-      Assert.That (result.ResourceManager, Is.InstanceOf<ResourceManagerSet>());
+      Assert.That(result.ResourceManager, Is.InstanceOf<ResourceManagerSet>());
       var resourceManagerSet = (ResourceManagerSet) result.ResourceManager;
-      Assert.That (
-          resourceManagerSet.ResourceManagers.Select (rm => rm.Name),
-          Is.EquivalentTo (new[] { NamedResources.Four, NamedResources.Five, NamedResources.One, NamedResources.Two, NamedResources.Three }));
-      Assert.That (
-          resourceManagerSet.ResourceManagers.Take (2).Select (rm => rm.Name),
-          Is.EquivalentTo (new[] { NamedResources.Four, NamedResources.Five }));
-      Assert.That (
-          resourceManagerSet.ResourceManagers.Skip (2).Select (rm => rm.Name),
-          Is.EquivalentTo (new[] { NamedResources.One, NamedResources.Two, NamedResources.Three }));
+      Assert.That(
+          resourceManagerSet.ResourceManagers.Select(rm => rm.Name),
+          Is.EquivalentTo(new[] { NamedResources.Four, NamedResources.Five, NamedResources.One, NamedResources.Two, NamedResources.Three }));
+      Assert.That(
+          resourceManagerSet.ResourceManagers.Take(2).Select(rm => rm.Name),
+          Is.EquivalentTo(new[] { NamedResources.Four, NamedResources.Five }));
+      Assert.That(
+          resourceManagerSet.ResourceManagers.Skip(2).Select(rm => rm.Name),
+          Is.EquivalentTo(new[] { NamedResources.One, NamedResources.Two, NamedResources.Three }));
 
-      Assert.That (result.DefinedResourceManager.IsNull, Is.True);
+      Assert.That(result.DefinedResourceManager.IsNull, Is.True);
 
-      Assert.That (result.InheritedResourceManager, Is.SameAs (result.ResourceManager));
+      Assert.That(result.InheritedResourceManager, Is.SameAs(result.ResourceManager));
     }
   }
 }

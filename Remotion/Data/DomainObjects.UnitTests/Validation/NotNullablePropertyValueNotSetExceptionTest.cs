@@ -32,22 +32,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
       var domainObject = Order.NewObject();
-      var inner = new InvalidOperationException ("Test");
-      var exception = new PropertyValueNotSetException (domainObject, "xy", "Msg", inner);
+      var inner = new InvalidOperationException("Test");
+      var exception = new PropertyValueNotSetException(domainObject, "xy", "Msg", inner);
 
-      var deserializedException = Serializer.SerializeAndDeserialize (exception);
+      var deserializedException = Serializer.SerializeAndDeserialize(exception);
 
-      Assert.That (deserializedException.DomainObject, Is.Not.Null);
-      Assert.That (deserializedException.DomainObject.ID, Is.EqualTo (domainObject.ID));
+      Assert.That(deserializedException.DomainObject, Is.Not.Null);
+      Assert.That(deserializedException.DomainObject.ID, Is.EqualTo(domainObject.ID));
 
-      Assert.That (deserializedException.PropertyName, Is.Not.Null);
-      Assert.That (deserializedException.PropertyName, Is.EqualTo ("xy"));
+      Assert.That(deserializedException.PropertyName, Is.Not.Null);
+      Assert.That(deserializedException.PropertyName, Is.EqualTo("xy"));
 
-      Assert.That (deserializedException.Message, Is.Not.Null);
-      Assert.That (deserializedException.Message, Is.EqualTo ("Msg"));
+      Assert.That(deserializedException.Message, Is.Not.Null);
+      Assert.That(deserializedException.Message, Is.EqualTo("Msg"));
 
-      Assert.That (deserializedException.InnerException, Is.Not.Null);
-      Assert.That (deserializedException.InnerException, Is.TypeOf (typeof (InvalidOperationException)));
+      Assert.That(deserializedException.InnerException, Is.Not.Null);
+      Assert.That(deserializedException.InnerException, Is.TypeOf(typeof (InvalidOperationException)));
     }
   }
 }

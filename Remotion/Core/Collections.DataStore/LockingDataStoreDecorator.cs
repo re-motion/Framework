@@ -46,7 +46,7 @@ namespace Remotion.Collections.DataStore
     /// <param name="innerStore">The inner store which is wrapped.</param>
     public LockingDataStoreDecorator (IDataStore<TKey, TValue> innerStore)
     {
-      ArgumentUtility.CheckNotNull ("innerStore", innerStore);
+      ArgumentUtility.CheckNotNull("innerStore", innerStore);
       _innerStore = innerStore;
     }
 
@@ -65,11 +65,11 @@ namespace Remotion.Collections.DataStore
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     public bool ContainsKey (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
       lock (_lock)
       {
-        return _innerStore.ContainsKey (key);
+        return _innerStore.ContainsKey(key);
       }
     }
 
@@ -82,12 +82,12 @@ namespace Remotion.Collections.DataStore
     /// <exception cref="ArgumentException">An item with an equal key already exists in the store.</exception>
     public void Add (TKey key, TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
       // value can be null
 
       lock (_lock)
       {
-        _innerStore.Add (key, value);
+        _innerStore.Add(key, value);
       }
     }
 
@@ -101,11 +101,11 @@ namespace Remotion.Collections.DataStore
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     public bool Remove (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
       lock (_lock)
       {
-        return _innerStore.Remove (key);
+        return _innerStore.Remove(key);
       }
     }
 
@@ -116,7 +116,7 @@ namespace Remotion.Collections.DataStore
     {
       lock (_lock)
       {
-        _innerStore.Clear ();
+        _innerStore.Clear();
       }
     }
 
@@ -128,7 +128,7 @@ namespace Remotion.Collections.DataStore
     {
       get
       {
-        ArgumentUtility.DebugCheckNotNull ("key", key);
+        ArgumentUtility.DebugCheckNotNull("key", key);
 
         lock (_lock)
         {
@@ -137,7 +137,7 @@ namespace Remotion.Collections.DataStore
       }
       set
       {
-        ArgumentUtility.DebugCheckNotNull ("key", key);
+        ArgumentUtility.DebugCheckNotNull("key", key);
 
         lock (_lock)
         {
@@ -156,11 +156,11 @@ namespace Remotion.Collections.DataStore
     [return: MaybeNull]
     public TValue GetValueOrDefault (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
       lock (_lock)
       {
-        return _innerStore.GetValueOrDefault (key);
+        return _innerStore.GetValueOrDefault(key);
       }
     }
 
@@ -175,11 +175,11 @@ namespace Remotion.Collections.DataStore
     /// </returns>
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
       lock (_lock)
       {
-        return _innerStore.TryGetValue (key, out value);
+        return _innerStore.TryGetValue(key, out value);
       }
     }
 
@@ -193,12 +193,12 @@ namespace Remotion.Collections.DataStore
     /// </returns>
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
 
       lock (_lock)
       {
-        return _innerStore.GetOrCreateValue (key, valueFactory);
+        return _innerStore.GetOrCreateValue(key, valueFactory);
       }
     }
   }

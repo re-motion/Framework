@@ -31,12 +31,12 @@ namespace Remotion.Web.UI.Controls.Hotkey
 
     protected override void AppendHotkeyBeginTag (StringBuilder stringBuilder, string hotkey)
     {
-      ArgumentUtility.CheckNotNull ("hotkey", hotkey);
+      ArgumentUtility.CheckNotNull("hotkey", hotkey);
     }
 
     protected override void AppendHotkeyEndTag (StringBuilder stringBuilder)
     {
-      ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
+      ArgumentUtility.CheckNotNull("stringBuilder", stringBuilder);
     }
   }
 }

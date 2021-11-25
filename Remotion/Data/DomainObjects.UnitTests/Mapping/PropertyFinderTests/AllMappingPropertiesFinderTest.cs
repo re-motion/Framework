@@ -28,8 +28,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
     [Test]
     public void FindMappingProperties_IncludeBasePropertiesIsFalse ()
     {
-      var classDefinition = CreateClassDefinition (typeof (DerivedClassWithMappingAttribute));
-      var propertyFinder = new AllMappingPropertiesFinder (
+      var classDefinition = CreateClassDefinition(typeof (DerivedClassWithMappingAttribute));
+      var propertyFinder = new AllMappingPropertiesFinder(
           typeof (DerivedClassWithMappingAttribute),
           false,
           true,
@@ -39,22 +39,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
 
       var properties = propertyFinder.FindPropertyInfos();
 
-      Assert.That (properties.Length, Is.EqualTo (2));
-      Assert.That (
+      Assert.That(properties.Length, Is.EqualTo(2));
+      Assert.That(
           properties,
-          Is.EqualTo (
+          Is.EqualTo(
               new[]
               {
-                  GetProperty (typeof (DerivedClassWithMappingAttribute), "Property1"),
-                  GetProperty (typeof (DerivedClassWithMappingAttribute), "Property3")
+                  GetProperty(typeof (DerivedClassWithMappingAttribute), "Property1"),
+                  GetProperty(typeof (DerivedClassWithMappingAttribute), "Property3")
               }));
     }
 
     [Test]
     public void FindMappingProperties_IncludeBasePropertiesIsTrue ()
     {
-      var classDefinition = CreateClassDefinition (typeof (DerivedClassWithMappingAttribute));
-      var propertyFinder = new AllMappingPropertiesFinder (
+      var classDefinition = CreateClassDefinition(typeof (DerivedClassWithMappingAttribute));
+      var propertyFinder = new AllMappingPropertiesFinder(
           typeof (DerivedClassWithMappingAttribute),
           true,
           true,
@@ -64,16 +64,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
 
       var properties = propertyFinder.FindPropertyInfos();
 
-      Assert.That (properties.Length, Is.EqualTo (4));
-      Assert.That (
+      Assert.That(properties.Length, Is.EqualTo(4));
+      Assert.That(
           properties,
-          Is.EqualTo (
+          Is.EqualTo(
               new[]
               {
-                  GetProperty (typeof (BaseMappingAttributesClass), "Property1"),
-                  GetProperty (typeof (BaseMappingAttributesClass), "Property4"),
-                  GetProperty (typeof (DerivedClassWithMappingAttribute), "Property1"),
-                  GetProperty (typeof (DerivedClassWithMappingAttribute), "Property3")
+                  GetProperty(typeof (BaseMappingAttributesClass), "Property1"),
+                  GetProperty(typeof (BaseMappingAttributesClass), "Property4"),
+                  GetProperty(typeof (DerivedClassWithMappingAttribute), "Property1"),
+                  GetProperty(typeof (DerivedClassWithMappingAttribute), "Property3")
               }));
     }
   }

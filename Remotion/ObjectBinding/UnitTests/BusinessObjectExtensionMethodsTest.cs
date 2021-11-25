@@ -35,13 +35,13 @@ namespace Remotion.ObjectBinding.UnitTests
       var classStub = new Mock<IBusinessObjectClass>();
       var propertyStub = new Mock<IBusinessObjectProperty>();
 
-      businessObjectStub.Setup (_ => _.BusinessObjectClass).Returns (classStub.Object);
-      classStub.Setup (_ => _.GetPropertyDefinition ("TheProperty")).Returns (propertyStub.Object);
-      businessObjectStub.Setup (_ => _.GetProperty (propertyStub.Object)).Returns (exptected);
+      businessObjectStub.Setup(_ => _.BusinessObjectClass).Returns(classStub.Object);
+      classStub.Setup(_ => _.GetPropertyDefinition("TheProperty")).Returns(propertyStub.Object);
+      businessObjectStub.Setup(_ => _.GetProperty(propertyStub.Object)).Returns(exptected);
 
-      object actual = businessObjectStub.Object.GetProperty ("TheProperty");
+      object actual = businessObjectStub.Object.GetProperty("TheProperty");
 
-      Assert.That (actual, Is.EqualTo (exptected));
+      Assert.That(actual, Is.EqualTo(exptected));
     }
 
     [Test]
@@ -52,11 +52,11 @@ namespace Remotion.ObjectBinding.UnitTests
       var classStub = new Mock<IBusinessObjectClass>();
       var propertyStub = new Mock<IBusinessObjectProperty>();
 
-      businessObjectMock.Setup (_ => _.BusinessObjectClass).Returns (classStub.Object);
-      classStub.Setup (_ => _.GetPropertyDefinition ("TheProperty")).Returns (propertyStub.Object);
-      businessObjectMock.Setup (_ => _.SetProperty (propertyStub.Object, exptected)).Verifiable();
+      businessObjectMock.Setup(_ => _.BusinessObjectClass).Returns(classStub.Object);
+      classStub.Setup(_ => _.GetPropertyDefinition("TheProperty")).Returns(propertyStub.Object);
+      businessObjectMock.Setup(_ => _.SetProperty(propertyStub.Object, exptected)).Verifiable();
 
-      businessObjectMock.Object.SetProperty ("TheProperty", exptected);
+      businessObjectMock.Object.SetProperty("TheProperty", exptected);
 
       businessObjectMock.Verify();
     }
@@ -69,13 +69,13 @@ namespace Remotion.ObjectBinding.UnitTests
       var classStub = new Mock<IBusinessObjectClass>();
       var propertyStub = new Mock<IBusinessObjectProperty>();
 
-      businessObjectStub.Setup (_ => _.BusinessObjectClass).Returns (classStub.Object);
-      classStub.Setup (_ => _.GetPropertyDefinition ("TheProperty")).Returns (propertyStub.Object);
-      businessObjectStub.Setup (_ => _.GetPropertyString (propertyStub.Object, null)).Returns (exptected);
+      businessObjectStub.Setup(_ => _.BusinessObjectClass).Returns(classStub.Object);
+      classStub.Setup(_ => _.GetPropertyDefinition("TheProperty")).Returns(propertyStub.Object);
+      businessObjectStub.Setup(_ => _.GetPropertyString(propertyStub.Object, null)).Returns(exptected);
 
-      string actual = businessObjectStub.Object.GetPropertyString ("TheProperty");
+      string actual = businessObjectStub.Object.GetPropertyString("TheProperty");
 
-      Assert.That (actual, Is.EqualTo (exptected));
+      Assert.That(actual, Is.EqualTo(exptected));
     }
 
     [Test]
@@ -84,13 +84,13 @@ namespace Remotion.ObjectBinding.UnitTests
       var businessObjectStub = new Mock<IBusinessObject>();
       var classStub = new Mock<IBusinessObjectClass>();
 
-      businessObjectStub.Setup (_ => _.BusinessObjectClass).Returns (classStub.Object);
-      classStub.Setup (_ => _.GetPropertyDefinition ("InvalidProperty")).Returns ((IBusinessObjectProperty) null);
-      classStub.Setup (_ => _.Identifier).Returns ("TheClass");
+      businessObjectStub.Setup(_ => _.BusinessObjectClass).Returns(classStub.Object);
+      classStub.Setup(_ => _.GetPropertyDefinition("InvalidProperty")).Returns((IBusinessObjectProperty) null);
+      classStub.Setup(_ => _.Identifier).Returns("TheClass");
 
-      Assert.That (
-          () => businessObjectStub.Object.GetProperty ("InvalidProperty"),
-          Throws.InvalidOperationException.With.Message.EqualTo (
+      Assert.That(
+          () => businessObjectStub.Object.GetProperty("InvalidProperty"),
+          Throws.InvalidOperationException.With.Message.EqualTo(
               "The business object's class ('TheClass') does not contain a property named 'InvalidProperty'."));
     }
 
@@ -100,13 +100,13 @@ namespace Remotion.ObjectBinding.UnitTests
       var businessObjectStub = new Mock<IBusinessObjectWithIdentity>();
       var classStub = new Mock<IBusinessObjectClass>();
 
-      classStub.Setup (_ => _.GetPropertyDefinition ("DisplayName")).Returns ((IBusinessObjectProperty) null);
-      businessObjectStub.Setup (_ => _.BusinessObjectClass).Returns (classStub.Object);
-      businessObjectStub.Setup (_ => _.DisplayName).Returns ("The DisplayName");
+      classStub.Setup(_ => _.GetPropertyDefinition("DisplayName")).Returns((IBusinessObjectProperty) null);
+      businessObjectStub.Setup(_ => _.BusinessObjectClass).Returns(classStub.Object);
+      businessObjectStub.Setup(_ => _.DisplayName).Returns("The DisplayName");
 
       string actual = businessObjectStub.Object.GetAccessibleDisplayName();
 
-      Assert.That (actual, Does.StartWith ("The DisplayName"));
+      Assert.That(actual, Does.StartWith("The DisplayName"));
     }
 
     [Test]
@@ -116,16 +116,16 @@ namespace Remotion.ObjectBinding.UnitTests
       var classStub = new Mock<IBusinessObjectClass>();
       var propertyMock = new Mock<IBusinessObjectProperty>();
 
-      classStub.Setup (_ => _.GetPropertyDefinition ("DisplayName")).Returns (propertyMock.Object);
-      propertyMock.Setup (_ => _.IsAccessible (businessObjectStub.Object)).Returns (true).Verifiable();
-      businessObjectStub.Setup (_ => _.BusinessObjectClass).Returns (classStub.Object);
-      businessObjectStub.Setup (_ => _.DisplayName).Throws (new AssertionException ("Should not be called."));
-      businessObjectStub.Setup (_ => _.GetProperty (propertyMock.Object)).Returns ("The DisplayName");
+      classStub.Setup(_ => _.GetPropertyDefinition("DisplayName")).Returns(propertyMock.Object);
+      propertyMock.Setup(_ => _.IsAccessible(businessObjectStub.Object)).Returns(true).Verifiable();
+      businessObjectStub.Setup(_ => _.BusinessObjectClass).Returns(classStub.Object);
+      businessObjectStub.Setup(_ => _.DisplayName).Throws(new AssertionException("Should not be called."));
+      businessObjectStub.Setup(_ => _.GetProperty(propertyMock.Object)).Returns("The DisplayName");
 
       string actual = businessObjectStub.Object.GetAccessibleDisplayName();
 
       propertyMock.Verify();
-      Assert.That (actual, Is.EqualTo ("The DisplayName"));
+      Assert.That(actual, Is.EqualTo("The DisplayName"));
     }
 
     [Test]
@@ -136,17 +136,17 @@ namespace Remotion.ObjectBinding.UnitTests
       var propertyMock = new Mock<IBusinessObjectProperty>();
       var businessObjectProviderStub = new Mock<IBusinessObjectProvider>();
 
-      classStub.Setup (_ => _.GetPropertyDefinition ("DisplayName")).Returns (propertyMock.Object);
-      propertyMock.Setup (_ => _.IsAccessible (businessObjectStub.Object)).Returns (false).Verifiable();
-      propertyMock.Setup (_ => _.BusinessObjectProvider).Returns (businessObjectProviderStub.Object);
-      businessObjectStub.Setup (_ => _.BusinessObjectClass).Returns (classStub.Object);
-      businessObjectStub.Setup (_ => _.DisplayName).Throws (new AssertionException ("Should not be called."));
-      businessObjectStub.Setup (_ => _.GetProperty (propertyMock.Object)).Throws (new AssertionException ("Should not be called."));
-      businessObjectProviderStub.Setup (_ => _.GetNotAccessiblePropertyStringPlaceHolder()).Returns ("N/A");
+      classStub.Setup(_ => _.GetPropertyDefinition("DisplayName")).Returns(propertyMock.Object);
+      propertyMock.Setup(_ => _.IsAccessible(businessObjectStub.Object)).Returns(false).Verifiable();
+      propertyMock.Setup(_ => _.BusinessObjectProvider).Returns(businessObjectProviderStub.Object);
+      businessObjectStub.Setup(_ => _.BusinessObjectClass).Returns(classStub.Object);
+      businessObjectStub.Setup(_ => _.DisplayName).Throws(new AssertionException("Should not be called."));
+      businessObjectStub.Setup(_ => _.GetProperty(propertyMock.Object)).Throws(new AssertionException("Should not be called."));
+      businessObjectProviderStub.Setup(_ => _.GetNotAccessiblePropertyStringPlaceHolder()).Returns("N/A");
       string actual = businessObjectStub.Object.GetAccessibleDisplayName();
 
       propertyMock.Verify();
-      Assert.That (actual, Is.EqualTo ("N/A"));
+      Assert.That(actual, Is.EqualTo("N/A"));
     }
 
     [Test]
@@ -157,36 +157,36 @@ namespace Remotion.ObjectBinding.UnitTests
       var propertyMock = new Mock<IBusinessObjectProperty>();
       var businessObjectProviderStub = new Mock<IBusinessObjectProvider>();
 
-      classStub.Setup (_ => _.GetPropertyDefinition ("DisplayName")).Returns (propertyMock.Object);
-      propertyMock.Setup (_ => _.IsAccessible (businessObjectStub.Object)).Returns (true).Verifiable();
-      propertyMock.Setup (_ => _.BusinessObjectProvider).Returns (businessObjectProviderStub.Object);
-      businessObjectStub.Setup (_ => _.BusinessObjectClass).Returns (classStub.Object);
-      businessObjectStub.Setup (_ => _.DisplayName).Throws (new AssertionException ("Should not be called."));
-      businessObjectStub.Setup (_ => _.GetProperty (propertyMock.Object)).Throws (new BusinessObjectPropertyAccessException ("The Message", null));
-      businessObjectProviderStub.Setup (_ => _.GetNotAccessiblePropertyStringPlaceHolder()).Returns ("N/A");
+      classStub.Setup(_ => _.GetPropertyDefinition("DisplayName")).Returns(propertyMock.Object);
+      propertyMock.Setup(_ => _.IsAccessible(businessObjectStub.Object)).Returns(true).Verifiable();
+      propertyMock.Setup(_ => _.BusinessObjectProvider).Returns(businessObjectProviderStub.Object);
+      businessObjectStub.Setup(_ => _.BusinessObjectClass).Returns(classStub.Object);
+      businessObjectStub.Setup(_ => _.DisplayName).Throws(new AssertionException("Should not be called."));
+      businessObjectStub.Setup(_ => _.GetProperty(propertyMock.Object)).Throws(new BusinessObjectPropertyAccessException("The Message", null));
+      businessObjectProviderStub.Setup(_ => _.GetNotAccessiblePropertyStringPlaceHolder()).Returns("N/A");
       string actual = businessObjectStub.Object.GetAccessibleDisplayName();
 
       propertyMock.Verify();
-      Assert.That (actual, Is.EqualTo ("N/A"));
+      Assert.That(actual, Is.EqualTo("N/A"));
     }
 
     [Test]
     public void GetAccessibleDisplayName_WithBusinessObjectProperty_AndOtherException_ReThrowsOriginalException ()
     {
-      var expectedException = new Exception ("The Message", null);
+      var expectedException = new Exception("The Message", null);
 
       var businessObjectStub = new Mock<IBusinessObjectWithIdentity>();
       var classStub = new Mock<IBusinessObjectClass>();
       var propertyMock = new Mock<IBusinessObjectProperty>();
       var businessObjectProviderStub = new Mock<IBusinessObjectProvider>();
 
-      classStub.Setup (_ => _.GetPropertyDefinition ("DisplayName")).Returns (propertyMock.Object);
-      propertyMock.Setup (_ => _.IsAccessible (businessObjectStub.Object)).Returns (true).Verifiable();
-      businessObjectStub.Setup (_ => _.BusinessObjectClass).Returns (classStub.Object);
-      businessObjectStub.Setup (_ => _.DisplayName).Throws (new AssertionException ("Should not be called."));
-      businessObjectStub.Setup (_ => _.GetProperty (propertyMock.Object)).Throws (expectedException);
-      businessObjectProviderStub.Setup (_ => _.GetNotAccessiblePropertyStringPlaceHolder()).Returns ("N/A");
-      Assert.That (() => businessObjectStub.Object.GetAccessibleDisplayName(), Throws.Exception.SameAs (expectedException));
+      classStub.Setup(_ => _.GetPropertyDefinition("DisplayName")).Returns(propertyMock.Object);
+      propertyMock.Setup(_ => _.IsAccessible(businessObjectStub.Object)).Returns(true).Verifiable();
+      businessObjectStub.Setup(_ => _.BusinessObjectClass).Returns(classStub.Object);
+      businessObjectStub.Setup(_ => _.DisplayName).Throws(new AssertionException("Should not be called."));
+      businessObjectStub.Setup(_ => _.GetProperty(propertyMock.Object)).Throws(expectedException);
+      businessObjectProviderStub.Setup(_ => _.GetNotAccessiblePropertyStringPlaceHolder()).Returns("N/A");
+      Assert.That(() => businessObjectStub.Object.GetAccessibleDisplayName(), Throws.Exception.SameAs(expectedException));
 
       propertyMock.Verify();
     }

@@ -85,7 +85,7 @@ namespace Remotion
 
     public bool IsSuppressed (Type attributeType, ICustomAttributeProvider declaringEntity, ICustomAttributeProvider suppressingEntity)
     {
-      return AttributeBaseType.IsAssignableFrom (attributeType) && declaringEntity != suppressingEntity;
+      return AttributeBaseType.IsAssignableFrom(attributeType) && declaringEntity != suppressingEntity;
     }
   }
 }

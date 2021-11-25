@@ -41,12 +41,12 @@ namespace Remotion.Security.UnitTests.SampleDomain
 
     public IObjectSecurityStrategy GetSecurityStrategy ()
     {
-      throw new Exception ("The method or operation is not implemented.");
+      throw new Exception("The method or operation is not implemented.");
     }
 
     public Type GetSecurableType ()
     {
-      throw new Exception ("The method or operation is not implemented.");
+      throw new Exception("The method or operation is not implemented.");
     }
   }
 }

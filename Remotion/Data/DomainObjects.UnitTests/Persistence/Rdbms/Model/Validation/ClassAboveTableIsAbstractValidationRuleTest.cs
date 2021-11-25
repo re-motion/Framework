@@ -43,98 +43,98 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     public void SetUp ()
     {
       _validationRule = new ClassAboveTableIsAbstractValidationRule();
-      _abstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (DerivedValidationDomainObjectClass), isAbstract: true);
-      _concreteClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (DerivedValidationDomainObjectClass), isAbstract: false);
-      var storageProviderDefinition = new UnitTestStorageProviderStubDefinition ("DefaultStorageProvider");
-      _tableDefinition = TableDefinitionObjectMother.Create (storageProviderDefinition, new EntityNameDefinition (null, "TableName"));
-      _unionViewDefinition = UnionViewDefinitionObjectMother.Create (storageProviderDefinition);
-      _emptyViewDefinition = EmptyViewDefinitionObjectMother.Create (storageProviderDefinition);
+      _abstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (DerivedValidationDomainObjectClass), isAbstract: true);
+      _concreteClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (DerivedValidationDomainObjectClass), isAbstract: false);
+      var storageProviderDefinition = new UnitTestStorageProviderStubDefinition("DefaultStorageProvider");
+      _tableDefinition = TableDefinitionObjectMother.Create(storageProviderDefinition, new EntityNameDefinition(null, "TableName"));
+      _unionViewDefinition = UnionViewDefinitionObjectMother.Create(storageProviderDefinition);
+      _emptyViewDefinition = EmptyViewDefinitionObjectMother.Create(storageProviderDefinition);
     }
 
     [Test]
     public void ClassTypeUnresolved_UnionViewDefinition_NotAbstract ()
     {
-      var classDefinition = new ClassDefinitionWithUnresolvedClassType (
+      var classDefinition = new ClassDefinitionWithUnresolvedClassType(
           "NonAbstractClassHasEntityNameDomainObject",
           typeof (DerivedValidationDomainObjectClass),
           false,
           null,
           MockRepository.GenerateStub<IPersistentMixinFinder>(),
           MockRepository.GenerateStub<IDomainObjectCreator>());
-      classDefinition.SetStorageEntity (_unionViewDefinition);
+      classDefinition.SetStorageEntity(_unionViewDefinition);
 
-      var validationResult = _validationRule.Validate (classDefinition);
+      var validationResult = _validationRule.Validate(classDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void ClassTypeResolved_NoRdbmsStorageEntity_NotAbstract ()
     {
       var nonRdbmsStorageEntity = MockRepository.GenerateStub<IStorageEntityDefinition>();
-      _concreteClassDefinition.SetStorageEntity (nonRdbmsStorageEntity);
+      _concreteClassDefinition.SetStorageEntity(nonRdbmsStorageEntity);
 
-      var validationResult = _validationRule.Validate (_concreteClassDefinition);
+      var validationResult = _validationRule.Validate(_concreteClassDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void ClassTypeResolved_NoUnionViewDefinition_Abstract ()
     {
-      _abstractClassDefinition.SetStorageEntity (_tableDefinition);
+      _abstractClassDefinition.SetStorageEntity(_tableDefinition);
 
-      var validationResult = _validationRule.Validate (_abstractClassDefinition);
+      var validationResult = _validationRule.Validate(_abstractClassDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void ClassTypeResolved_UnionViewDefinition_Abstract ()
     {
-      _abstractClassDefinition.SetStorageEntity (_unionViewDefinition);
+      _abstractClassDefinition.SetStorageEntity(_unionViewDefinition);
 
-      var validationResult = _validationRule.Validate (_abstractClassDefinition);
+      var validationResult = _validationRule.Validate(_abstractClassDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void ClassTypeResolved_EmptyViewDefinition_Abstract ()
     {
-      _abstractClassDefinition.SetStorageEntity (_emptyViewDefinition);
+      _abstractClassDefinition.SetStorageEntity(_emptyViewDefinition);
 
-      var validationResult = _validationRule.Validate (_abstractClassDefinition);
+      var validationResult = _validationRule.Validate(_abstractClassDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void ClassTypeResolved_UnionViewDefinition_NotAbstract ()
     {
-      _concreteClassDefinition.SetStorageEntity (_unionViewDefinition);
+      _concreteClassDefinition.SetStorageEntity(_unionViewDefinition);
 
-      var validationResult = _validationRule.Validate (_concreteClassDefinition);
+      var validationResult = _validationRule.Validate(_concreteClassDefinition);
 
       var expectedMessage = "Neither class 'DerivedValidationDomainObjectClass' nor its base classes are mapped to a table. "
                             + "Make class 'DerivedValidationDomainObjectClass' abstract or define a table for it or one of its base classes.\r\n\r\n"
                             +
                             "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass";
-      AssertMappingValidationResult (validationResult, false, expectedMessage);
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
 
     [Test]
     public void ClassTypeResolved_EmptyViewDefinition_NotAbstract ()
     {
-      _concreteClassDefinition.SetStorageEntity (_emptyViewDefinition);
+      _concreteClassDefinition.SetStorageEntity(_emptyViewDefinition);
 
-      var validationResult = _validationRule.Validate (_concreteClassDefinition);
+      var validationResult = _validationRule.Validate(_concreteClassDefinition);
 
       var expectedMessage = "Neither class 'DerivedValidationDomainObjectClass' nor its base classes are mapped to a table. "
                             + "Make class 'DerivedValidationDomainObjectClass' abstract or define a table for it or one of its base classes.\r\n\r\n"
                             +
                             "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass";
-      AssertMappingValidationResult (validationResult, false, expectedMessage);
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
   }
 }

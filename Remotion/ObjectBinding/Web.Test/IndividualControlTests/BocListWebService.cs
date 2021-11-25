@@ -43,12 +43,12 @@ namespace OBWTest.IndividualControlTests
         string arguments,
         string[] itemIDs)
     {
-      Thread.Sleep (TimeSpan.FromMilliseconds (500));
+      Thread.Sleep(TimeSpan.FromMilliseconds(500));
       string[] filteredItems = { "FilterByService" };
       string[] disabledItems = { "DisabledByService" };
       return itemIDs
-          .Where (itemID => !filteredItems.Contains (itemID))
-          .Select (itemID => WebMenuItemProxy.Create (itemID, isDisabled: disabledItems.Contains (itemID)))
+          .Where(itemID => !filteredItems.Contains(itemID))
+          .Select(itemID => WebMenuItemProxy.Create(itemID, isDisabled: disabledItems.Contains(itemID)))
           .ToArray();
     }
 
@@ -65,12 +65,12 @@ namespace OBWTest.IndividualControlTests
         string arguments,
         string[] itemIDs)
     {
-      Thread.Sleep (TimeSpan.FromMilliseconds (500));
+      Thread.Sleep(TimeSpan.FromMilliseconds(500));
       string[] filteredItems = { "FilterByService" };
       string[] disabledItems = { "DisabledByService" };
       return itemIDs
-          .Where (itemID => !filteredItems.Contains (itemID))
-          .Select (itemID => WebMenuItemProxy.Create (itemID, isDisabled: disabledItems.Contains (itemID)))
+          .Where(itemID => !filteredItems.Contains(itemID))
+          .Select(itemID => WebMenuItemProxy.Create(itemID, isDisabled: disabledItems.Contains(itemID)))
           .ToArray();
     }
   }

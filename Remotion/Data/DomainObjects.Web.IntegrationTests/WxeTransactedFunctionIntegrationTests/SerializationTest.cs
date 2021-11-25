@@ -31,19 +31,19 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
       var function = new SerializationTestTransactedFunction();
-      function.Execute (Context);
-      Assert.That (function.FirstStepExecuted, Is.True);
-      Assert.That (function.SecondStepExecuted, Is.True);
+      function.Execute(Context);
+      Assert.That(function.FirstStepExecuted, Is.True);
+      Assert.That(function.SecondStepExecuted, Is.True);
 
       var deserializedFunction =
-          (SerializationTestTransactedFunction) Serializer.Deserialize (function.SerializedSelf);
-      Assert.That (deserializedFunction.FirstStepExecuted, Is.True);
-      Assert.That (deserializedFunction.SecondStepExecuted, Is.False);
+          (SerializationTestTransactedFunction) Serializer.Deserialize(function.SerializedSelf);
+      Assert.That(deserializedFunction.FirstStepExecuted, Is.True);
+      Assert.That(deserializedFunction.SecondStepExecuted, Is.False);
 
-      deserializedFunction.Execute (Context);
+      deserializedFunction.Execute(Context);
 
-      Assert.That (deserializedFunction.FirstStepExecuted, Is.True);
-      Assert.That (deserializedFunction.SecondStepExecuted, Is.True);
+      Assert.That(deserializedFunction.FirstStepExecuted, Is.True);
+      Assert.That(deserializedFunction.SecondStepExecuted, Is.True);
     }
   }
 }

@@ -29,7 +29,7 @@ public class BocListViewCollection: BusinessObjectControlItemCollection
 
   public new BocListView[] ToArray ()
   {
-    return (BocListView[]) InnerList.ToArray (typeof (BocListView));
+    return (BocListView[]) InnerList.ToArray(typeof (BocListView));
   }
 
   //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.

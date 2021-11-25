@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       if (property.Identifier == "StringProperty")
         return StringProperty;
       else
-        throw new NotSupportedException ();
+        throw new NotSupportedException();
     }
 
     public void SetProperty (IBusinessObjectProperty property, object value)
@@ -42,12 +42,12 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       if (property.Identifier == "StringProperty")
         StringProperty = (string) value;
       else
-        throw new NotSupportedException ();
+        throw new NotSupportedException();
     }
 
     public string GetPropertyString (IBusinessObjectProperty property, string format)
     {
-      return GetProperty (property).ToString ();
+      return GetProperty(property).ToString();
     }
 
     public IBusinessObjectClass BusinessObjectClass

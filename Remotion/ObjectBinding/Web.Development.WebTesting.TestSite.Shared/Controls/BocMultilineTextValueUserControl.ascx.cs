@@ -28,14 +28,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
       SetTestOutput();
     }
 
     private void SetTestOutput ()
     {
-      TestOutput.SetCurrentValueNormal (string.Join (" NL ", CVField_Normal.Value ?? new string[0]));
-      TestOutput.SetCurrentValueNoAutoPostBack (string.Join (" NL ", CVField_NoAutoPostBack.Value ?? new string[0]));
+      TestOutput.SetCurrentValueNormal(string.Join(" NL ", CVField_Normal.Value ?? new string[0]));
+      TestOutput.SetCurrentValueNoAutoPostBack(string.Join(" NL ", CVField_NoAutoPostBack.Value ?? new string[0]));
     }
 
     private BocMultilineTextValueUserControlTestOutput TestOutput

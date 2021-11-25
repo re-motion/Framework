@@ -72,12 +72,12 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (HtmlHeadAppender.Current);
+      renderer.RegisterHtmlHeadContents(HtmlHeadAppender.Current);
 
-      ScriptUtility.Instance.RegisterJavaScriptInclude (this, HtmlHeadAppender.Current);
+      ScriptUtility.Instance.RegisterJavaScriptInclude(this, HtmlHeadAppender.Current);
     }
 
     protected virtual IWebButtonRenderer CreateRenderer ()
@@ -94,29 +94,29 @@ namespace Remotion.Web.UI.Controls
     /// </remarks>
     bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      ArgumentUtility.CheckNotNull ("postCollection", postCollection);
+      ArgumentUtility.CheckNotNull("postCollection", postCollection);
 
       string? eventTarget = postCollection[ControlHelper.PostEventSourceID];
-      bool isScriptedPostBack = !string.IsNullOrEmpty (eventTarget);
+      bool isScriptedPostBack = !string.IsNullOrEmpty(eventTarget);
       if (!isScriptedPostBack && IsLegacyButtonEnabled)
       {
         // The button can only fire a click event if client script is active or the button is used in legacy mode
         // A more general fallback is not possible becasue of compatibility issues with ExecuteFunctionNoRepost
-        bool isSuccessfulControl = !string.IsNullOrEmpty (postCollection[postDataKey]);
+        bool isSuccessfulControl = !string.IsNullOrEmpty(postCollection[postDataKey]);
         if (isSuccessfulControl)
-          Page!.RegisterRequiresRaiseEvent (this);
+          Page!.RegisterRequiresRaiseEvent(this);
       }
       return false;
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this, true) ?? NullResourceManager.Instance;
-      LoadResources (resourceManager);
+      IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager(this, true) ?? NullResourceManager.Instance;
+      LoadResources(resourceManager);
 
-      if (_isDefaultButton && Page != null && string.IsNullOrEmpty (Page.Form.DefaultButton))
+      if (_isDefaultButton && Page != null && string.IsNullOrEmpty(Page.Form.DefaultButton))
         Page.Form.DefaultButton = UniqueID;
 
       if (Page != null)
@@ -127,47 +127,47 @@ namespace Remotion.Web.UI.Controls
     {
       if (_requiresSynchronousPostBack)
       {
-        var scriptManager = ScriptManager.GetCurrent (base.Page!);
+        var scriptManager = ScriptManager.GetCurrent(base.Page!);
         if (scriptManager != null)
-          scriptManager.RegisterPostBackControl (this);
+          scriptManager.RegisterPostBackControl(this);
       }
       _hasPagePreRenderCompleted = true;
     }
 
-    [MemberNotNull (nameof (_textWithHotkey))]
+    [MemberNotNull (nameof(_textWithHotkey))]
     protected override void Render (HtmlTextWriter writer)
     {
-      _textWithHotkey = HotkeyParser.Parse (Text);
+      _textWithHotkey = HotkeyParser.Parse(Text);
 
-      base.Render (writer);
+      base.Render(writer);
     }
 
     protected override void AddAttributesToRender (HtmlTextWriter writer)
     {
-      if (string.IsNullOrEmpty (AccessKey) && _textWithHotkey!.Hotkey.HasValue) // TODO RM-8118: Debug assert _textWithHotkey not null
-        writer.AddAttribute (HtmlTextWriterAttribute.Accesskey, HotkeyFormatter.FormatHotkey (_textWithHotkey));
+      if (string.IsNullOrEmpty(AccessKey) && _textWithHotkey!.Hotkey.HasValue) // TODO RM-8118: Debug assert _textWithHotkey not null
+        writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, HotkeyFormatter.FormatHotkey(_textWithHotkey));
 
       if (IsLegacyButtonEnabled)
       {
-        if (!string.IsNullOrEmpty (_textWithHotkey!.Text))
+        if (!string.IsNullOrEmpty(_textWithHotkey!.Text))
           Text = _textWithHotkey.Text;
         else if (_icon != null && _icon.HasRenderingInformation)
           Text = _icon.AlternateText;
       }
 
       if (Page != null)
-        Page.VerifyRenderingInServerForm (this);
+        Page.VerifyRenderingInServerForm(this);
 
       if (IsEnabled)
       {
-        string onClick = EnsureEndWithSemiColon (OnClientClick);
+        string onClick = EnsureEndWithSemiColon(OnClientClick);
         if (HasAttributes)
         {
           string? onClickAttribute = Attributes["onclick"];
           if (onClickAttribute != null)
           {
-            onClick += EnsureEndWithSemiColon (onClickAttribute);
-            Attributes.Remove ("onclick");
+            onClick += EnsureEndWithSemiColon(onClickAttribute);
+            Attributes.Remove("onclick");
           }
         }
 
@@ -176,21 +176,21 @@ namespace Remotion.Web.UI.Controls
           var options = GetPostBackOptions();
           options.ClientSubmit = true;
 
-          var postBackEventReference = Page.ClientScript.GetPostBackEventReference (options, false);
-          if (string.IsNullOrEmpty (postBackEventReference))
-            postBackEventReference = Page.ClientScript.GetPostBackEventReference (this, null);
-          var postBackScript = EnsureEndWithSemiColon (postBackEventReference);
+          var postBackEventReference = Page.ClientScript.GetPostBackEventReference(options, false);
+          if (string.IsNullOrEmpty(postBackEventReference))
+            postBackEventReference = Page.ClientScript.GetPostBackEventReference(this, null);
+          var postBackScript = EnsureEndWithSemiColon(postBackEventReference);
 
           onClick += postBackScript;
           onClick += "return false;";
         }
 
-        if (!string.IsNullOrEmpty (onClick))
-          writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
+        if (!string.IsNullOrEmpty(onClick))
+          writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
 
-        writer.AddAttribute ("onmousedown", "WebButton.MouseDown (this, '" + CssClassMouseDown + "');");
-        writer.AddAttribute ("onmouseup", "WebButton.MouseUp (this, '" + CssClassMouseDown + "');");
-        writer.AddAttribute ("onmouseout", "WebButton.MouseOut (this, '" + CssClassMouseDown + "');");
+        writer.AddAttribute("onmousedown", "WebButton.MouseDown (this, '" + CssClassMouseDown + "');");
+        writer.AddAttribute("onmouseup", "WebButton.MouseUp (this, '" + CssClassMouseDown + "');");
+        writer.AddAttribute("onmouseout", "WebButton.MouseOut (this, '" + CssClassMouseDown + "');");
       }
 
 
@@ -203,8 +203,8 @@ namespace Remotion.Web.UI.Controls
       OnClientClick = null;
 
       var cssClassBackup = ControlStyle.CssClass;
-      var originalCssClass = (CssClass ?? "").Replace (DisabledCssClass, "").Trim();
-      var isCssStyleOverridden = !string.IsNullOrEmpty (originalCssClass);
+      var originalCssClass = (CssClass ?? "").Replace(DisabledCssClass, "").Trim();
+      var isCssStyleOverridden = !string.IsNullOrEmpty(originalCssClass);
       var computedCssClass = isCssStyleOverridden ? originalCssClass : CssClassBase;
       if (ButtonType == ButtonType.Primary)
         computedCssClass += " " + CssClassPrimary;
@@ -215,7 +215,7 @@ namespace Remotion.Web.UI.Controls
 
       ControlStyle.CssClass = computedCssClass;
 
-      base.AddAttributesToRender (writer);
+      base.AddAttributesToRender(writer);
 
       ControlStyle.CssClass = cssClassBackup;
 
@@ -223,7 +223,7 @@ namespace Remotion.Web.UI.Controls
 
       // Must be after OnClientClick has been reset
       if (_renderingFeatures.EnableDiagnosticMetadata)
-        AddDiagnosticMetadataAttributes (writer);
+        AddDiagnosticMetadataAttributes(writer);
 
       _options = null;
     }
@@ -231,21 +231,21 @@ namespace Remotion.Web.UI.Controls
     private void AddDiagnosticMetadataAttributes (HtmlTextWriter writer)
     {
       IControlWithDiagnosticMetadata controlWithDiagnosticMetadata = this;
-      writer.AddAttribute (DiagnosticMetadataAttributes.ControlType, controlWithDiagnosticMetadata.ControlType);
+      writer.AddAttribute(DiagnosticMetadataAttributes.ControlType, controlWithDiagnosticMetadata.ControlType);
 
-      if (!string.IsNullOrEmpty (Text))
-        writer.AddAttribute (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (Text));
+      if (!string.IsNullOrEmpty(Text))
+        writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(Text));
 
-      if (!string.IsNullOrEmpty (CommandName))
-        writer.AddAttribute (DiagnosticMetadataAttributes.CommandName, CommandName);
+      if (!string.IsNullOrEmpty(CommandName))
+        writer.AddAttribute(DiagnosticMetadataAttributes.CommandName, CommandName);
 
-      if (!string.IsNullOrEmpty (ID))
-        writer.AddAttribute (DiagnosticMetadataAttributes.ItemID, ID);
+      if (!string.IsNullOrEmpty(ID))
+        writer.AddAttribute(DiagnosticMetadataAttributes.ItemID, ID);
 
-      var triggersPostBack = !OnClientClick.Contains (";return ");
-      writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, triggersPostBack.ToString().ToLower());
+      var triggersPostBack = !OnClientClick.Contains(";return ");
+      writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, triggersPostBack.ToString().ToLower());
 
-      writer.AddAttribute (DiagnosticMetadataAttributes.ButtonType, ButtonType.ToString());
+      writer.AddAttribute(DiagnosticMetadataAttributes.ButtonType, ButtonType.ToString());
     }
 
     protected override PostBackOptions GetPostBackOptions ()
@@ -276,7 +276,7 @@ namespace Remotion.Web.UI.Controls
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
       {
         if (!_useLegacyButton)
-          WcagHelper.Instance.HandleError (1, this, "UseLegacyButton");
+          WcagHelper.Instance.HandleError(1, this, "UseLegacyButton");
       }
     }
 
@@ -291,34 +291,34 @@ namespace Remotion.Web.UI.Controls
       //if (ControlHelper.IsDesignMode (this))
       //  return;
 
-      ScriptUtility.Instance.RegisterElementForBorderSpans (this, "#" + ClientID + " > *:first-child");
+      ScriptUtility.Instance.RegisterElementForBorderSpans(this, "#" + ClientID + " > *:first-child");
 
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassButtonBody);
-      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassButtonBody);
+      writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-      var text = HotkeyFormatter.FormatText (_textWithHotkey!, false); // TODO RM-8118: not null assertion
+      var text = HotkeyFormatter.FormatText(_textWithHotkey!, false); // TODO RM-8118: not null assertion
 
       if (HasControls())
-        base.RenderContents (writer);
+        base.RenderContents(writer);
       else
       {
         bool hasIcon = _icon.HasRenderingInformation;
-        bool hasText = !string.IsNullOrEmpty (text);
+        bool hasText = !string.IsNullOrEmpty(text);
         if (hasIcon)
         {
-          writer.AddAttribute (HtmlTextWriterAttribute.Src, _icon.Url);
+          writer.AddAttribute(HtmlTextWriterAttribute.Src, _icon.Url);
           if (!_icon.Height.IsEmpty)
-            writer.AddAttribute (HtmlTextWriterAttribute.Height, _icon.Height.ToString());
+            writer.AddAttribute(HtmlTextWriterAttribute.Height, _icon.Height.ToString());
           if (!_icon.Width.IsEmpty)
-            writer.AddAttribute (HtmlTextWriterAttribute.Width, _icon.Width.ToString());
-          writer.AddAttribute (HtmlTextWriterAttribute.Alt, _icon.AlternateText);
-          writer.RenderBeginTag (HtmlTextWriterTag.Img);
+            writer.AddAttribute(HtmlTextWriterAttribute.Width, _icon.Width.ToString());
+          writer.AddAttribute(HtmlTextWriterAttribute.Alt, _icon.AlternateText);
+          writer.RenderBeginTag(HtmlTextWriterTag.Img);
           writer.RenderEndTag();
         }
         if (hasText)
         {
-          writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin text span
-          writer.Write (text); // Do not HTML enocde
+          writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin text span
+          writer.Write(text); // Do not HTML enocde
           writer.RenderEndTag(); // End text span
         }
       }
@@ -341,23 +341,23 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected virtual void LoadResources (IResourceManager resourceManager)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
 
       //  Dispatch simple properties
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-      if (!string.IsNullOrEmpty (key))
-        Text = resourceManager.GetString (key);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(Text);
+      if (!string.IsNullOrEmpty(key))
+        Text = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
-      if (!string.IsNullOrEmpty (key))
-        AccessKey = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(AccessKey);
+      if (!string.IsNullOrEmpty(key))
+        AccessKey = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
-      if (!string.IsNullOrEmpty (key))
-        ToolTip = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(ToolTip);
+      if (!string.IsNullOrEmpty(key))
+        ToolTip = resourceManager.GetString(key);
 
       if (Icon != null)
-        Icon.LoadResources (resourceManager);
+        Icon.LoadResources(resourceManager);
     }
 
     /// <summary>
@@ -406,11 +406,11 @@ namespace Remotion.Web.UI.Controls
     [JetBrains.Annotations.NotNull]
     private string EnsureEndWithSemiColon (string value)
     {
-      if (!string.IsNullOrEmpty (value))
+      if (!string.IsNullOrEmpty(value))
       {
         value = value.Trim();
 
-        if (!value.EndsWith (";"))
+        if (!value.EndsWith(";"))
           value += ";";
       }
 
@@ -427,7 +427,7 @@ namespace Remotion.Web.UI.Controls
       if (clickHandler == null)
         return true;
 
-      return securityAdapter.HasAccess (_securableObject, Events[s_clickEvent]);
+      return securityAdapter.HasAccess(_securableObject, Events[s_clickEvent]);
     }
 
     public override bool Visible
@@ -463,17 +463,17 @@ namespace Remotion.Web.UI.Controls
     [Category ("Action")]
     public new event EventHandler Click
     {
-      add { Events.AddHandler (s_clickEvent, value); }
-      remove { Events.RemoveHandler (s_clickEvent, value); }
+      add { Events.AddHandler(s_clickEvent, value); }
+      remove { Events.RemoveHandler(s_clickEvent, value); }
     }
 
     protected override void OnClick (EventArgs e)
     {
-      base.OnClick (e);
+      base.OnClick(e);
 
       EventHandler? clickHandler = (EventHandler?) Events[s_clickEvent];
       if (clickHandler != null)
-        clickHandler (this, e);
+        clickHandler(this, e);
     }
 
     [Browsable (false)]
@@ -505,8 +505,8 @@ namespace Remotion.Web.UI.Controls
       {
         if (_hasPagePreRenderCompleted)
         {
-          throw new InvalidOperationException (
-              string.Format (
+          throw new InvalidOperationException(
+              string.Format(
                   "Attempting to set the RequiresSynchronousPostBack flag on button '{0}' is not supported after the PreRenderComplete event has fired.",
                   ID));
         }
@@ -516,7 +516,7 @@ namespace Remotion.Web.UI.Controls
 
     public new IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
 

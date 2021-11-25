@@ -42,7 +42,7 @@ namespace Remotion.Validation.Attributes.Validation
     /// <param name="collectorTypeToRemoveFrom">Constraints the removal to validators introduced by the specified <see cref="Type"/>.</param>/>
     public RemoveValidatorAttribute (Type validatorType, Type? collectorTypeToRemoveFrom)
     {
-      ArgumentUtility.CheckNotNull ("validatorType", validatorType);
+      ArgumentUtility.CheckNotNull("validatorType", validatorType);
 
       _validatorType = validatorType;
       _collectorTypeToRemoveFrom = collectorTypeToRemoveFrom;

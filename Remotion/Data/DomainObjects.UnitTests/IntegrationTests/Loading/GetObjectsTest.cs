@@ -27,16 +27,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Loading
     [Test]
     public void GettingSameObjectID_MultipleTimes ()
     {
-      var domainObjects = LifetimeService.GetObjects<DomainObject> (TestableClientTransaction, DomainObjectIDs.Order1, DomainObjectIDs.Order1);
+      var domainObjects = LifetimeService.GetObjects<DomainObject>(TestableClientTransaction, DomainObjectIDs.Order1, DomainObjectIDs.Order1);
 
-      Assert.That (domainObjects, Is.EqualTo (new[] { DomainObjectIDs.Order1.GetObject<Order>(), DomainObjectIDs.Order1.GetObject<Order>() }));
+      Assert.That(domainObjects, Is.EqualTo(new[] { DomainObjectIDs.Order1.GetObject<Order>(), DomainObjectIDs.Order1.GetObject<Order>() }));
     }
 
     [Test]
     public void OnLoadedAccessingObject_LoadedLaterInSameBatch_IsSupported_AndDoesNotThrow ()
     {
-      var order1 = DomainObjectIDs.Order1.GetObjectReference<Order> ();
-      var order3 = DomainObjectIDs.Order3.GetObjectReference<Order> ();
+      var order1 = DomainObjectIDs.Order1.GetObjectReference<Order>();
+      var order3 = DomainObjectIDs.Order3.GetObjectReference<Order>();
 
       bool order1LoadedCalled = false;
       order1.ProtectedLoaded += (sender, args) =>
@@ -48,11 +48,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Loading
       int order2LoadedCount = 0;
       order3.ProtectedLoaded += (sender, args) => { order2LoadedCount++; };
 
-      var domainObjects = LifetimeService.GetObjects<DomainObject> (TestableClientTransaction, DomainObjectIDs.Order1, DomainObjectIDs.Order3);
+      var domainObjects = LifetimeService.GetObjects<DomainObject>(TestableClientTransaction, DomainObjectIDs.Order1, DomainObjectIDs.Order3);
 
-      Assert.That (domainObjects, Is.EqualTo (new[] { order1, order3 }));
-      Assert.That (order1LoadedCalled, Is.True);
-      Assert.That (order2LoadedCount, Is.EqualTo (1));
+      Assert.That(domainObjects, Is.EqualTo(new[] { order1, order3 }));
+      Assert.That(order1LoadedCalled, Is.True);
+      Assert.That(order2LoadedCount, Is.EqualTo(1));
     }
   }
 }

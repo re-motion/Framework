@@ -31,19 +31,19 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.Infrastructure
     [Test]
     public void GetAccessTypesTest ()
     {
-      var ace = TestHelper.CreateAceWithNoMatchingRestrictions ();
-      AttachAccessTypeReadWriteDelete (ace, true, false, true);
-      Assert.That (ace.Validate ().IsValid);
-      TestHelper.CreateStatefulAcl (ace);
+      var ace = TestHelper.CreateAceWithNoMatchingRestrictions();
+      AttachAccessTypeReadWriteDelete(ace, true, false, true);
+      Assert.That(ace.Validate().IsValid);
+      TestHelper.CreateStatefulAcl(ace);
 
       var aclExpansionEntryCreator = new AclExpansionEntryCreator();
       //AclProbe aclProbe;
       //AccessTypeStatistics accessTypeStatistics;
       var accessTypesResult = 
-        aclExpansionEntryCreator.GetAccessTypes (new UserRoleAclAceCombination (Role2, ace)); //, out aclProbe, out accessTypeStatistics);
+        aclExpansionEntryCreator.GetAccessTypes(new UserRoleAclAceCombination(Role2, ace)); //, out aclProbe, out accessTypeStatistics);
 
-      Assert.That (accessTypesResult.AccessInformation.AllowedAccessTypes, Is.EquivalentTo (new[] { ReadAccessType, DeleteAccessType }));
-      Assert.That (accessTypesResult.AccessInformation.DeniedAccessTypes, Is.EquivalentTo (new[] { WriteAccessType }));
+      Assert.That(accessTypesResult.AccessInformation.AllowedAccessTypes, Is.EquivalentTo(new[] { ReadAccessType, DeleteAccessType }));
+      Assert.That(accessTypesResult.AccessInformation.DeniedAccessTypes, Is.EquivalentTo(new[] { WriteAccessType }));
     }
 
     [Test]
@@ -52,42 +52,42 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.Infrastructure
       var aclExpansionEntryCreator = new AclExpansionEntryCreator();
       //AclProbe aclProbe;
       //AccessTypeStatistics accessTypeStatistics;
-      User.Roles.Add (Role2);
-      var userRoleAclAceCombination = new UserRoleAclAceCombination (Role, Ace);
-      var accessTypesResult = aclExpansionEntryCreator.GetAccessTypes (userRoleAclAceCombination); //, out aclProbe, out accessTypeStatistics);
-      Assert.That (User.Roles, Is.EquivalentTo (new[] { Role, Role2 }));
-      Assert.That (accessTypesResult.AclProbe.SecurityToken.Principal.Roles, Is.EquivalentTo (new[] { Role }).Using (PrincipalRoleComparer.Instance));
+      User.Roles.Add(Role2);
+      var userRoleAclAceCombination = new UserRoleAclAceCombination(Role, Ace);
+      var accessTypesResult = aclExpansionEntryCreator.GetAccessTypes(userRoleAclAceCombination); //, out aclProbe, out accessTypeStatistics);
+      Assert.That(User.Roles, Is.EquivalentTo(new[] { Role, Role2 }));
+      Assert.That(accessTypesResult.AclProbe.SecurityToken.Principal.Roles, Is.EquivalentTo(new[] { Role }).Using(PrincipalRoleComparer.Instance));
     }
 
 
     [Test]
     public void CreateAclExpansionEntryTest ()
     {
-      var userRoleAclAce = new UserRoleAclAceCombination (Role, Ace);
+      var userRoleAclAce = new UserRoleAclAceCombination(Role, Ace);
       var allowedAccessTypes = new[] { WriteAccessType, DeleteAccessType };
       var deniedAccessTypes = new[] { ReadAccessType };
-      AccessInformation accessInformation = new AccessInformation (allowedAccessTypes, deniedAccessTypes);
+      AccessInformation accessInformation = new AccessInformation(allowedAccessTypes, deniedAccessTypes);
 
       var aclExpansionEntryCreatorMock = new Mock<AclExpansionEntryCreator>() { CallBase = true };
-      var aclProbe = AclProbe.CreateAclProbe (User, Role, Ace);
-      var accessTypeStatisticsMock = new Mock<AccessTypeStatistics> (MockBehavior.Strict);
-      accessTypeStatisticsMock.Setup (x => x.IsInAccessTypesContributingAces (userRoleAclAce.Ace)).Returns (true).Verifiable();
+      var aclProbe = AclProbe.CreateAclProbe(User, Role, Ace);
+      var accessTypeStatisticsMock = new Mock<AccessTypeStatistics>(MockBehavior.Strict);
+      accessTypeStatisticsMock.Setup(x => x.IsInAccessTypesContributingAces(userRoleAclAce.Ace)).Returns(true).Verifiable();
 
-      aclExpansionEntryCreatorMock.Setup (x => x.GetAccessTypes (userRoleAclAce))
-          .Returns (new AclExpansionEntryCreator_GetAccessTypesResult (accessInformation, aclProbe, accessTypeStatisticsMock.Object))
+      aclExpansionEntryCreatorMock.Setup(x => x.GetAccessTypes(userRoleAclAce))
+          .Returns(new AclExpansionEntryCreator_GetAccessTypesResult(accessInformation, aclProbe, accessTypeStatisticsMock.Object))
           .Verifiable();
 
-      var aclExpansionEntry = aclExpansionEntryCreatorMock.Object.CreateAclExpansionEntry (userRoleAclAce);
+      var aclExpansionEntry = aclExpansionEntryCreatorMock.Object.CreateAclExpansionEntry(userRoleAclAce);
 
       aclExpansionEntryCreatorMock.Verify();
       accessTypeStatisticsMock.Verify();
 
-      Assert.That (aclExpansionEntry.User, Is.EqualTo (userRoleAclAce.User));
-      Assert.That (aclExpansionEntry.Role, Is.EqualTo (userRoleAclAce.Role));
-      Assert.That (aclExpansionEntry.AccessControlList, Is.EqualTo (userRoleAclAce.Acl));
-      Assert.That (aclExpansionEntry.AccessConditions, Is.EqualTo (aclProbe.AccessConditions));
-      Assert.That (aclExpansionEntry.AllowedAccessTypes, Is.EqualTo (allowedAccessTypes));
-      Assert.That (aclExpansionEntry.DeniedAccessTypes, Is.EqualTo (deniedAccessTypes));
+      Assert.That(aclExpansionEntry.User, Is.EqualTo(userRoleAclAce.User));
+      Assert.That(aclExpansionEntry.Role, Is.EqualTo(userRoleAclAce.Role));
+      Assert.That(aclExpansionEntry.AccessControlList, Is.EqualTo(userRoleAclAce.Acl));
+      Assert.That(aclExpansionEntry.AccessConditions, Is.EqualTo(aclProbe.AccessConditions));
+      Assert.That(aclExpansionEntry.AllowedAccessTypes, Is.EqualTo(allowedAccessTypes));
+      Assert.That(aclExpansionEntry.DeniedAccessTypes, Is.EqualTo(deniedAccessTypes));
     }
 
 

@@ -29,12 +29,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
 
     protected AbstractMixinImplementingISerializable (SerializationInfo info, StreamingContext context)
     {
-      I = info.GetInt32 ("I") + 13;
+      I = info.GetInt32("I") + 13;
     }
 
     public void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      info.AddValue ("I", I + 4);
+      info.AddValue("I", I + 4);
     }
   }
 }

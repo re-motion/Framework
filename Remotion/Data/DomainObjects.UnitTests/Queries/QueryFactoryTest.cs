@@ -37,36 +37,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     public override void TearDown ()
     {
       ResetCaches();
-      base.TearDown ();
+      base.TearDown();
     }
 
     [Test]
     public void CreateQuery_FromDefinition ()
     {
-      var definition = new QueryDefinition ("Test", TestDomainStorageProviderDefinition, "y", QueryType.Collection, typeof (OrderCollection));
+      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.Collection, typeof (OrderCollection));
 
-      IQuery query = QueryFactory.CreateQuery (definition);
-      Assert.That (query.CollectionType, Is.EqualTo (definition.CollectionType));
-      Assert.That (query.ID, Is.EqualTo (definition.ID));
-      Assert.That (query.Parameters, Is.Empty);
-      Assert.That (query.QueryType, Is.EqualTo (definition.QueryType));
-      Assert.That (query.Statement, Is.EqualTo (definition.Statement));
-      Assert.That (query.StorageProviderDefinition, Is.SameAs(definition.StorageProviderDefinition));
+      IQuery query = QueryFactory.CreateQuery(definition);
+      Assert.That(query.CollectionType, Is.EqualTo(definition.CollectionType));
+      Assert.That(query.ID, Is.EqualTo(definition.ID));
+      Assert.That(query.Parameters, Is.Empty);
+      Assert.That(query.QueryType, Is.EqualTo(definition.QueryType));
+      Assert.That(query.Statement, Is.EqualTo(definition.Statement));
+      Assert.That(query.StorageProviderDefinition, Is.SameAs(definition.StorageProviderDefinition));
     }
 
     [Test]
     public void CreateQuery_FromDefinition_WithParameterCollection ()
     {
-      var definition = new QueryDefinition ("Test", TestDomainStorageProviderDefinition, "y", QueryType.Collection, typeof (OrderCollection));
+      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.Collection, typeof (OrderCollection));
       var parameterCollection = new QueryParameterCollection();
 
-      IQuery query = QueryFactory.CreateQuery (definition, parameterCollection);
-      Assert.That (query.CollectionType, Is.EqualTo (definition.CollectionType));
-      Assert.That (query.ID, Is.EqualTo (definition.ID));
-      Assert.That (query.Parameters, Is.SameAs (parameterCollection));
-      Assert.That (query.QueryType, Is.EqualTo (definition.QueryType));
-      Assert.That (query.Statement, Is.EqualTo (definition.Statement));
-      Assert.That (query.StorageProviderDefinition, Is.SameAs(definition.StorageProviderDefinition));
+      IQuery query = QueryFactory.CreateQuery(definition, parameterCollection);
+      Assert.That(query.CollectionType, Is.EqualTo(definition.CollectionType));
+      Assert.That(query.ID, Is.EqualTo(definition.ID));
+      Assert.That(query.Parameters, Is.SameAs(parameterCollection));
+      Assert.That(query.QueryType, Is.EqualTo(definition.QueryType));
+      Assert.That(query.Statement, Is.EqualTo(definition.Statement));
+      Assert.That(query.StorageProviderDefinition, Is.SameAs(definition.StorageProviderDefinition));
     }
 
     [Test]
@@ -74,13 +74,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     {
       var definition = DomainObjectsConfiguration.Current.Query.QueryDefinitions[0];
 
-      IQuery query = QueryFactory.CreateQueryFromConfiguration (definition.ID);
-      Assert.That (query.CollectionType, Is.EqualTo (definition.CollectionType));
-      Assert.That (query.ID, Is.EqualTo (definition.ID));
-      Assert.That (query.Parameters, Is.Empty);
-      Assert.That (query.QueryType, Is.EqualTo (definition.QueryType));
-      Assert.That (query.Statement, Is.EqualTo (definition.Statement));
-      Assert.That (query.StorageProviderDefinition, Is.SameAs(definition.StorageProviderDefinition));
+      IQuery query = QueryFactory.CreateQueryFromConfiguration(definition.ID);
+      Assert.That(query.CollectionType, Is.EqualTo(definition.CollectionType));
+      Assert.That(query.ID, Is.EqualTo(definition.ID));
+      Assert.That(query.Parameters, Is.Empty);
+      Assert.That(query.QueryType, Is.EqualTo(definition.QueryType));
+      Assert.That(query.Statement, Is.EqualTo(definition.Statement));
+      Assert.That(query.StorageProviderDefinition, Is.SameAs(definition.StorageProviderDefinition));
     }
 
     [Test]
@@ -89,13 +89,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var definition = DomainObjectsConfiguration.Current.Query.QueryDefinitions[0];
       var parameterCollection = new QueryParameterCollection();
 
-      IQuery query = QueryFactory.CreateQueryFromConfiguration (definition.ID, parameterCollection);
-      Assert.That (query.CollectionType, Is.EqualTo (definition.CollectionType));
-      Assert.That (query.ID, Is.EqualTo (definition.ID));
-      Assert.That (query.Parameters, Is.SameAs (parameterCollection));
-      Assert.That (query.QueryType, Is.EqualTo (definition.QueryType));
-      Assert.That (query.Statement, Is.EqualTo (definition.Statement));
-      Assert.That (query.StorageProviderDefinition, Is.EqualTo (definition.StorageProviderDefinition));
+      IQuery query = QueryFactory.CreateQueryFromConfiguration(definition.ID, parameterCollection);
+      Assert.That(query.CollectionType, Is.EqualTo(definition.CollectionType));
+      Assert.That(query.ID, Is.EqualTo(definition.ID));
+      Assert.That(query.Parameters, Is.SameAs(parameterCollection));
+      Assert.That(query.QueryType, Is.EqualTo(definition.QueryType));
+      Assert.That(query.Statement, Is.EqualTo(definition.Statement));
+      Assert.That(query.StorageProviderDefinition, Is.EqualTo(definition.StorageProviderDefinition));
     }
 
     [Test]
@@ -105,13 +105,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var statement = "stmt";
       var parameterCollection = new QueryParameterCollection();
 
-      IQuery query = QueryFactory.CreateScalarQuery (id, TestDomainStorageProviderDefinition, statement, parameterCollection);
-      Assert.That (query.CollectionType, Is.Null);
-      Assert.That (query.ID, Is.EqualTo (id));
-      Assert.That (query.Parameters, Is.SameAs (parameterCollection));
-      Assert.That (query.QueryType, Is.EqualTo (QueryType.Scalar));
-      Assert.That (query.Statement, Is.EqualTo (statement));
-      Assert.That (query.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
+      IQuery query = QueryFactory.CreateScalarQuery(id, TestDomainStorageProviderDefinition, statement, parameterCollection);
+      Assert.That(query.CollectionType, Is.Null);
+      Assert.That(query.ID, Is.EqualTo(id));
+      Assert.That(query.Parameters, Is.SameAs(parameterCollection));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.Scalar));
+      Assert.That(query.Statement, Is.EqualTo(statement));
+      Assert.That(query.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
     }
 
     [Test]
@@ -122,13 +122,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var parameterCollection = new QueryParameterCollection();
       var collectionType = typeof (OrderCollection);
 
-      IQuery query = QueryFactory.CreateCollectionQuery (id, TestDomainStorageProviderDefinition, statement, parameterCollection, collectionType);
-      Assert.That (query.ID, Is.EqualTo (id));
-      Assert.That (query.CollectionType, Is.SameAs (collectionType));
-      Assert.That (query.Parameters, Is.SameAs (parameterCollection));
-      Assert.That (query.QueryType, Is.EqualTo (QueryType.Collection));
-      Assert.That (query.Statement, Is.EqualTo (statement));
-      Assert.That (query.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
+      IQuery query = QueryFactory.CreateCollectionQuery(id, TestDomainStorageProviderDefinition, statement, parameterCollection, collectionType);
+      Assert.That(query.ID, Is.EqualTo(id));
+      Assert.That(query.CollectionType, Is.SameAs(collectionType));
+      Assert.That(query.Parameters, Is.SameAs(parameterCollection));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.Collection));
+      Assert.That(query.Statement, Is.EqualTo(statement));
+      Assert.That(query.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
     }
 
     [Test]
@@ -136,15 +136,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     {
       var id = "id";
       var statement = "stmt";
-      var parameterCollection = new QueryParameterCollection ();
+      var parameterCollection = new QueryParameterCollection();
 
-      IQuery query = QueryFactory.CreateCustomQuery (id, TestDomainStorageProviderDefinition, statement, parameterCollection);
-      Assert.That (query.ID, Is.EqualTo (id));
-      Assert.That (query.CollectionType, Is.Null);
-      Assert.That (query.Parameters, Is.SameAs (parameterCollection));
-      Assert.That (query.QueryType, Is.EqualTo (QueryType.Custom));
-      Assert.That (query.Statement, Is.EqualTo (statement));
-      Assert.That (query.StorageProviderDefinition, Is.SameAs (TestDomainStorageProviderDefinition));
+      IQuery query = QueryFactory.CreateCustomQuery(id, TestDomainStorageProviderDefinition, statement, parameterCollection);
+      Assert.That(query.ID, Is.EqualTo(id));
+      Assert.That(query.CollectionType, Is.Null);
+      Assert.That(query.Parameters, Is.SameAs(parameterCollection));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.Custom));
+      Assert.That(query.Statement, Is.EqualTo(statement));
+      Assert.That(query.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
     }
 
     [Test]
@@ -154,14 +154,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
                       where o.OrderNumber > 1
                       select o;
 
-      IQuery query = QueryFactory.CreateQuery<Order> ("<dynamico queryo>", queryable);
-      Assert.That (query.Statement, Is.EqualTo (
+      IQuery query = QueryFactory.CreateQuery<Order>("<dynamico queryo>", queryable);
+      Assert.That(query.Statement, Is.EqualTo(
         "SELECT [t0].[ID],[t0].[ClassID],[t0].[Timestamp],[t0].[OrderNo],[t0].[DeliveryDate],[t0].[OfficialID],[t0].[CustomerID],[t0].[CustomerIDClassID] "
         +"FROM [OrderView] AS [t0] WHERE ([t0].[OrderNo] > @1)"));
-      Assert.That (query.Parameters.Count, Is.EqualTo (1));
-      Assert.That (query.ID, Is.EqualTo ("<dynamico queryo>"));
-      Assert.That (query.QueryType, Is.EqualTo (QueryType.Collection));
-      Assert.That (query.StorageProviderDefinition, Is.EqualTo (TestDomainStorageProviderDefinition));
+      Assert.That(query.Parameters.Count, Is.EqualTo(1));
+      Assert.That(query.ID, Is.EqualTo("<dynamico queryo>"));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.Collection));
+      Assert.That(query.StorageProviderDefinition, Is.EqualTo(TestDomainStorageProviderDefinition));
     }
 
     [Test]
@@ -169,21 +169,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     {
       var queryable = (from o in QueryFactory.CreateLinqQuery<Order>()
                        where o.OrderNumber > 1
-                       select o).FetchMany (o => o.OrderItems);
+                       select o).FetchMany(o => o.OrderItems);
 
-      IQuery query = QueryFactory.CreateQuery<Order> ("<dynamico queryo>", queryable);
-      Assert.That (query.EagerFetchQueries.Count, Is.EqualTo (1));
-      Assert.That (query.EagerFetchQueries.Single().Key.PropertyName, Is.EqualTo (typeof (Order).FullName + ".OrderItems"));
+      IQuery query = QueryFactory.CreateQuery<Order>("<dynamico queryo>", queryable);
+      Assert.That(query.EagerFetchQueries.Count, Is.EqualTo(1));
+      Assert.That(query.EagerFetchQueries.Single().Key.PropertyName, Is.EqualTo(typeof (Order).FullName + ".OrderItems"));
     }
 
     [Test]
     public void CreateQuery_FromLinqQuery_InvalidQueryable ()
     {
       var queryable = new int[0].AsQueryable();
-      Assert.That (
-          () => QueryFactory.CreateQuery<int> ("<dynamic query>", queryable),
+      Assert.That(
+          () => QueryFactory.CreateQuery<int>("<dynamic query>", queryable),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The given queryable must stem from an instance of DomainObjectQueryable. Instead, "
                   +
                   "it is of type 'EnumerableQuery`1', with a query provider of type 'EnumerableQuery`1'. Be sure to use QueryFactory.CreateLinqQuery to "
@@ -193,52 +193,52 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateLinqQuery_WithParserAndExecutor ()
     {
-      var factoryMock = MockRepository.GenerateStrictMock<ILinqProviderComponentFactory> ();
+      var factoryMock = MockRepository.GenerateStrictMock<ILinqProviderComponentFactory>();
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<ILinqProviderComponentFactory> (() => factoryMock);
-      using (new ServiceLocatorScope (serviceLocator))
+      serviceLocator.RegisterSingle<ILinqProviderComponentFactory>(() => factoryMock);
+      using (new ServiceLocatorScope(serviceLocator))
       {
         var executorStub = MockRepository.GenerateStub<IQueryExecutor>();
         var queryParserStub = MockRepository.GenerateStub<IQueryParser>();
         var fakeResult = MockRepository.GenerateStub<IQueryable<Order>>();
 
         factoryMock
-            .Expect (mock => mock.CreateQueryable<Order> (queryParserStub, executorStub))
-            .Return (fakeResult);
+            .Expect(mock => mock.CreateQueryable<Order>(queryParserStub, executorStub))
+            .Return(fakeResult);
 
-        var result = QueryFactory.CreateLinqQuery<Order> (queryParserStub, executorStub);
+        var result = QueryFactory.CreateLinqQuery<Order>(queryParserStub, executorStub);
 
         factoryMock.VerifyAllExpectations();
-        Assert.That (result, Is.SameAs (fakeResult));
+        Assert.That(result, Is.SameAs(fakeResult));
       }
     }
 
     [Test]
     public void CreateLinqQuery_WithoutParserAndExecutor ()
     {
-      var factoryMock = MockRepository.GenerateStrictMock<ILinqProviderComponentFactory> ();
+      var factoryMock = MockRepository.GenerateStrictMock<ILinqProviderComponentFactory>();
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<ILinqProviderComponentFactory> (() => factoryMock);
-      using (new ServiceLocatorScope (serviceLocator))
+      serviceLocator.RegisterSingle<ILinqProviderComponentFactory>(() => factoryMock);
+      using (new ServiceLocatorScope(serviceLocator))
       {
-        var fakeExecutor = MockRepository.GenerateStub<IQueryExecutor> ();
-        var fakeQueryParser = MockRepository.GenerateStub<IQueryParser> ();
-        var fakeResult = MockRepository.GenerateStub<IQueryable<Order>> ();
+        var fakeExecutor = MockRepository.GenerateStub<IQueryExecutor>();
+        var fakeQueryParser = MockRepository.GenerateStub<IQueryParser>();
+        var fakeResult = MockRepository.GenerateStub<IQueryable<Order>>();
 
         factoryMock
-            .Expect (mock => mock.CreateQueryExecutor (TestDomainStorageProviderDefinition))
-            .Return (fakeExecutor);
+            .Expect(mock => mock.CreateQueryExecutor(TestDomainStorageProviderDefinition))
+            .Return(fakeExecutor);
         factoryMock
-            .Expect (mock => mock.CreateQueryParser ())
-            .Return (fakeQueryParser);
+            .Expect(mock => mock.CreateQueryParser())
+            .Return(fakeQueryParser);
         factoryMock
-            .Expect (mock => mock.CreateQueryable<Order> (fakeQueryParser, fakeExecutor))
-            .Return (fakeResult);
+            .Expect(mock => mock.CreateQueryable<Order>(fakeQueryParser, fakeExecutor))
+            .Return(fakeResult);
 
-        var result = QueryFactory.CreateLinqQuery<Order> ();
+        var result = QueryFactory.CreateLinqQuery<Order>();
 
-        factoryMock.VerifyAllExpectations ();
-        Assert.That (result, Is.SameAs (fakeResult));
+        factoryMock.VerifyAllExpectations();
+        Assert.That(result, Is.SameAs(fakeResult));
       }
     }
 
@@ -246,11 +246,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     {
       var linqProviderComponentFactoryCache =
           (DoubleCheckedLockingContainer<ILinqProviderComponentFactory>)
-          PrivateInvoke.GetNonPublicStaticField (typeof (QueryFactory), "s_linqProviderComponentFactory");
+          PrivateInvoke.GetNonPublicStaticField(typeof (QueryFactory), "s_linqProviderComponentFactory");
       linqProviderComponentFactoryCache.Value = null;
 
       var queryParserCache =
-          (DoubleCheckedLockingContainer<IQueryParser>) PrivateInvoke.GetNonPublicStaticField (typeof (QueryFactory), "s_queryParser");
+          (DoubleCheckedLockingContainer<IQueryParser>) PrivateInvoke.GetNonPublicStaticField(typeof (QueryFactory), "s_queryParser");
       queryParserCache.Value = null;
     }
   }

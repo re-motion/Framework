@@ -29,67 +29,67 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void FailsIfSealedTargetClass ()
     {
-      TargetClassDefinition bc = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (DateTime));
-      var log = Validator.Validate (bc);
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustNotBeSealed", log), Is.True);
-      Assert.That (log.GetNumberOfWarnings (), Is.EqualTo (0));
+      TargetClassDefinition bc = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (DateTime));
+      var log = Validator.Validate(bc);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustNotBeSealed", log), Is.True);
+      Assert.That(log.GetNumberOfWarnings(), Is.EqualTo(0));
     }
 
     [Test]
     public void SucceedsIfAbstractTargetClass ()
     {
-      TargetClassDefinition bc = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (MixinWithAbstractMembers));
-      var log = Validator.Validate (bc);
-      AssertSuccess (log);
+      TargetClassDefinition bc = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (MixinWithAbstractMembers));
+      var log = Validator.Validate(bc);
+      AssertSuccess(log);
     }
 
     [Test]
     public void FailsIfTargetClassDefinitionIsInterface ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (IBaseType2));
-      var log = Validator.Validate (definition);
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (IBaseType2));
+      var log = Validator.Validate(definition);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustNotBeAnInterface", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustNotBeAnInterface", log), Is.True);
     }
 
     [Test]
     public void FailsIfNoPublicOrProtectedCtorInTargetClass ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (ClassWithPrivateCtor),
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (ClassWithPrivateCtor),
           typeof (NullMixin));
-      var log = Validator.Validate (definition);
+      var log = Validator.Validate(definition);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustHavePublicOrProtectedCtor", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustHavePublicOrProtectedCtor", log), Is.True);
     }
 
     [Test]
     public void FailsIfTargetClassIsNotPublic ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (InternalClass),
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (InternalClass),
           typeof (NullMixin));
-      var log = Validator.Validate (definition);
+      var log = Validator.Validate(definition);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustBePublic", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustBePublic", log), Is.True);
     }
 
     [Test]
     public void FailsIfNestedTargetClassIsNotPublic ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (PublicNester.InternalNested),
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (PublicNester.InternalNested),
           typeof (NullMixin));
-      var log = Validator.Validate (definition);
+      var log = Validator.Validate(definition);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustBePublic", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultTargetClassRules.TargetClassMustBePublic", log), Is.True);
     }
 
     [Test]
     public void SucceedsIfNestedTargetClassIsPublic ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (PublicNester.PublicNested),
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (PublicNester.PublicNested),
           typeof (NullMixin));
-      var log = Validator.Validate (definition);
+      var log = Validator.Validate(definition);
 
-      AssertSuccess (log);
+      AssertSuccess(log);
     }
   }
 }

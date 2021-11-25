@@ -22,8 +22,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
   {
     public int PersistentPropertyRedirectedToMixin
     {
-      get { return Properties[typeof (MixinAddingPersistentProperties), "PersistentPropertyRedirectedToMixin"].GetValue<int> (); }
-      set { Properties[typeof (MixinAddingPersistentProperties), "PersistentPropertyRedirectedToMixin"].SetValue (value); }
+      get { return Properties[typeof (MixinAddingPersistentProperties), "PersistentPropertyRedirectedToMixin"].GetValue<int>(); }
+      set { Properties[typeof (MixinAddingPersistentProperties), "PersistentPropertyRedirectedToMixin"].SetValue(value); }
     }
   }
 }

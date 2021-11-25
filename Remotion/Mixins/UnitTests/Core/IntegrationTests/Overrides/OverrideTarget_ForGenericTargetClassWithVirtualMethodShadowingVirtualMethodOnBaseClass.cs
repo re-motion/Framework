@@ -29,11 +29,11 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     [TestCase (typeof (MixinWithExplicitTargetSpecification<>), "TheMixin.M -> C.M")]
     public void InstantiateTargetType_ShouldOverrideTargetMethodFromTargetType (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass (typeof (C<>)).AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass(typeof (C<>)).AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<C<int>>();
-        Assert.That (((Shadowed_C<int>) instance).M (0), Is.EqualTo ("Shadowed_C.M"));
-        Assert.That (instance.M (0), Is.EqualTo (expectedMethodOutput));
+        Assert.That(((Shadowed_C<int>) instance).M(0), Is.EqualTo("Shadowed_C.M"));
+        Assert.That(instance.M(0), Is.EqualTo(expectedMethodOutput));
       }
     }
 
@@ -43,11 +43,11 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     [TestCase (typeof (MixinWithExplicitTargetSpecification<>), "TheMixin.M -> C.M")]
     public void InstantiateDerivedTypeWithoutOverride_ShouldOverrideTargetMethodFromTargetType (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass (typeof (C<>)).AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass(typeof (C<>)).AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<D1<int>>();
-        Assert.That (((Shadowed_C<int>) instance).M (0), Is.EqualTo ("Shadowed_C.M"));
-        Assert.That (instance.M (0), Is.EqualTo (expectedMethodOutput));
+        Assert.That(((Shadowed_C<int>) instance).M(0), Is.EqualTo("Shadowed_C.M"));
+        Assert.That(instance.M(0), Is.EqualTo(expectedMethodOutput));
       }
     }
 
@@ -57,11 +57,11 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     [TestCase (typeof (MixinWithExplicitTargetSpecification<>), "TheMixin.M -> D2.M")]
     public void InstantiateDerivedTypeWithOverride_ShouldOverrideTargetMethodFromDerivedType (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass (typeof (C<>)).AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass(typeof (C<>)).AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<D2<int>>();
-        Assert.That (((Shadowed_C<int>) instance).M (0), Is.EqualTo ("Shadowed_C.M"));
-        Assert.That (instance.M (0), Is.EqualTo (expectedMethodOutput));
+        Assert.That(((Shadowed_C<int>) instance).M(0), Is.EqualTo("Shadowed_C.M"));
+        Assert.That(instance.M(0), Is.EqualTo(expectedMethodOutput));
       }
     }
 
@@ -71,11 +71,11 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     [TestCase (typeof (MixinWithExplicitTargetSpecification<>), "TheMixin.M -> D2.M")]
     public void InstantiateDerivedTypeWithoutOverrideOfDerivedTypeWithOverride_ShouldOverrideTargetMethodFromDerivedType (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass (typeof (C<>)).AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass(typeof (C<>)).AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<E<int>>();
-        Assert.That (((Shadowed_C<int>) instance).M (0), Is.EqualTo ("Shadowed_C.M"));
-        Assert.That (instance.M (0), Is.EqualTo (expectedMethodOutput));
+        Assert.That(((Shadowed_C<int>) instance).M(0), Is.EqualTo("Shadowed_C.M"));
+        Assert.That(instance.M(0), Is.EqualTo(expectedMethodOutput));
       }
     }
 
@@ -123,7 +123,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
       [OverrideTarget]
       public string M (T p1)
       {
-        return "TheMixin.M -> " + Next.M (p1);
+        return "TheMixin.M -> " + Next.M(p1);
       }
     }
 
@@ -138,7 +138,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
       [OverrideTarget]
       public string M (T p1)
       {
-        return "TheMixin.M -> " + Next.M (p1);
+        return "TheMixin.M -> " + Next.M(p1);
       }
     }
 

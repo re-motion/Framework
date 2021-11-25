@@ -33,23 +33,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public void DispatchValidationFailures (IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull ("validationResult", validationResult);
+      ArgumentUtility.CheckNotNull("validationResult", validationResult);
 
       var control = GetControlToValidate();
 
-      Assertion.IsNotNull (control.UserControl, "control.UserControl must not be null.");
+      Assertion.IsNotNull(control.UserControl, "control.UserControl must not be null.");
 
       var namingContainer = control.UserControl.DataSource.NamingContainer;
-      var validator = EnumerableUtility.SelectRecursiveDepthFirst (
+      var validator = EnumerableUtility.SelectRecursiveDepthFirst(
               namingContainer,
-              child => child.Controls.Cast<Control>().Where (item => !(item is INamingContainer)))
+              child => child.Controls.Cast<Control>().Where(item => !(item is INamingContainer)))
           .OfType<BindableObjectDataSourceControlValidationResultDispatchingValidator>()
-          .SingleOrDefault (
+          .SingleOrDefault(
               c => c.ControlToValidate == control.UserControl.DataSource.ID,
-              () => new InvalidOperationException (
-                  $"Only one '{nameof (UserControlBindingValidationResultDispatchingValidator)}' is allowed per '{nameof (UserControlBinding)}'."));
+              () => new InvalidOperationException(
+                  $"Only one '{nameof(UserControlBindingValidationResultDispatchingValidator)}' is allowed per '{nameof(UserControlBinding)}'."));
 
-      validator?.DispatchValidationFailures (validationResult);
+      validator?.DispatchValidationFailures(validationResult);
     }
 
     protected override bool EvaluateIsValid ()
@@ -61,20 +61,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
     protected override bool ControlPropertiesValid ()
     {
       string controlToValidate = ControlToValidate;
-      if (string.IsNullOrEmpty (controlToValidate))
+      if (string.IsNullOrEmpty(controlToValidate))
         return base.ControlPropertiesValid();
       else
-        return NamingContainer.FindControl (controlToValidate) != null;
+        return NamingContainer.FindControl(controlToValidate) != null;
     }
 
     private UserControlBinding GetControlToValidate ()
     {
-      var control = NamingContainer.FindControl (ControlToValidate);
+      var control = NamingContainer.FindControl(ControlToValidate);
       var userControlBinding = control as UserControlBinding;
       if (userControlBinding == null)
       {
-        throw new InvalidOperationException (
-            $"'{nameof (UserControlBindingValidationResultDispatchingValidator)}' may only be applied to controls of type '{nameof (UserControlBinding)}'.");
+        throw new InvalidOperationException(
+            $"'{nameof(UserControlBindingValidationResultDispatchingValidator)}' may only be applied to controls of type '{nameof(UserControlBinding)}'.");
       }
 
       return userControlBinding;

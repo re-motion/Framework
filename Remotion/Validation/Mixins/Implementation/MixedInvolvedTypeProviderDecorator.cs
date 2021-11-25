@@ -35,8 +35,8 @@ namespace Remotion.Validation.Mixins.Implementation
 
     public MixedInvolvedTypeProviderDecorator (IInvolvedTypeProvider involvedTypeProvider, IValidationTypeFilter validationTypeFilter)
     {
-      ArgumentUtility.CheckNotNull ("involvedTypeProvider", involvedTypeProvider);
-      ArgumentUtility.CheckNotNull ("validationTypeFilter", validationTypeFilter);
+      ArgumentUtility.CheckNotNull("involvedTypeProvider", involvedTypeProvider);
+      ArgumentUtility.CheckNotNull("validationTypeFilter", validationTypeFilter);
 
       _involvedTypeProvider = involvedTypeProvider;
       _validationTypeFilter = validationTypeFilter;
@@ -49,23 +49,23 @@ namespace Remotion.Validation.Mixins.Implementation
 
     public IEnumerable<IEnumerable<Type>> GetTypes (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       //Note: if the type is a mixin type then the concrete type is passed to the InvolvedTypeProvider. 
       //That is the reason why no compound implementation is possible!
-      var concreteOrMixedType = MixinTypeUtility.GetConcreteMixedType (type); 
+      var concreteOrMixedType = MixinTypeUtility.GetConcreteMixedType(type); 
 
-      var involvedTypes = _involvedTypeProvider.GetTypes (concreteOrMixedType);
-      var involvedMixins = GetMixins (type);
-      return involvedTypes.Concat (involvedMixins);
+      var involvedTypes = _involvedTypeProvider.GetTypes(concreteOrMixedType);
+      var involvedMixins = GetMixins(type);
+      return involvedTypes.Concat(involvedMixins);
     }
 
     private IEnumerable<IEnumerable<Type>> GetMixins (Type type)
     {
       return
-          MixinTypeUtility.GetMixinTypesExact (type)
-              .Where (_validationTypeFilter.IsValidatableType)
-              .Select (mixinType => new[] { mixinType })
+          MixinTypeUtility.GetMixinTypesExact(type)
+              .Where(_validationTypeFilter.IsValidatableType)
+              .Select(mixinType => new[] { mixinType })
               .ToArray();
     }
   }

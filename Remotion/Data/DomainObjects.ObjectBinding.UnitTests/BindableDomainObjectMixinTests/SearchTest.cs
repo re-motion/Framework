@@ -42,18 +42,18 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       _searchServiceTestHelper = new SearchServiceTestHelper();
       _stubbedQueryID = "FakeQuery";
 
-      BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>().AddService (
+      BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>().AddService(
           typeof (ISearchAvailableObjectsService), new BindableDomainObjectCompoundSearchService());
 
       _clientTransaction = _searchServiceTestHelper.CreateStubbableTransaction<ClientTransaction>();
       _transactionScope = _clientTransaction.EnterDiscardingScope();
 
-      var fakeResultData = _searchServiceTestHelper.CreateFakeResultData (_clientTransaction);
-      _searchServiceTestHelper.StubQueryResult (_stubbedQueryID, new[] { fakeResultData });
+      var fakeResultData = _searchServiceTestHelper.CreateFakeResultData(_clientTransaction);
+      _searchServiceTestHelper.StubQueryResult(_stubbedQueryID, new[] { fakeResultData });
 
       var referencingObject = SampleBindableMixinDomainObject.NewObject();
       _referencingBusinessObject = (IBusinessObject) referencingObject;
-      _property = (IBusinessObjectReferenceProperty) _referencingBusinessObject.BusinessObjectClass.GetPropertyDefinition ("Relation");
+      _property = (IBusinessObjectReferenceProperty) _referencingBusinessObject.BusinessObjectClass.GetPropertyDefinition("Relation");
     }
 
     public override void TearDown ()
@@ -65,85 +65,85 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void SearchViaReferencePropertyWithIdentity ()
     {
-      Assert.That (_property.SupportsSearchAvailableObjects, Is.True);
+      Assert.That(_property.SupportsSearchAvailableObjects, Is.True);
       var results =
-          (IBusinessObjectWithIdentity[]) _property.SearchAvailableObjects (_referencingBusinessObject, new DefaultSearchArguments (_stubbedQueryID));
-      Assert.That (
+          (IBusinessObjectWithIdentity[]) _property.SearchAvailableObjects(_referencingBusinessObject, new DefaultSearchArguments(_stubbedQueryID));
+      Assert.That(
           results,
-          Is.EqualTo (ClientTransaction.Current.QueryManager.GetCollection (QueryFactory.CreateQueryFromConfiguration (_stubbedQueryID)).ToArray()));
+          Is.EqualTo(ClientTransaction.Current.QueryManager.GetCollection(QueryFactory.CreateQueryFromConfiguration(_stubbedQueryID)).ToArray()));
     }
 
     [Test]
     public void SearchViaReferencePropertyWithoutIdentity ()
     {
-      Assert.That (_property.SupportsSearchAvailableObjects, Is.True);
-      IBusinessObject[] results = _property.SearchAvailableObjects (_referencingBusinessObject, new DefaultSearchArguments (_stubbedQueryID));
-      Assert.That (
+      Assert.That(_property.SupportsSearchAvailableObjects, Is.True);
+      IBusinessObject[] results = _property.SearchAvailableObjects(_referencingBusinessObject, new DefaultSearchArguments(_stubbedQueryID));
+      Assert.That(
           results,
-          Is.EqualTo (ClientTransaction.Current.QueryManager.GetCollection (QueryFactory.CreateQueryFromConfiguration (_stubbedQueryID)).ToArray()));
+          Is.EqualTo(ClientTransaction.Current.QueryManager.GetCollection(QueryFactory.CreateQueryFromConfiguration(_stubbedQueryID)).ToArray()));
     }
 
     [Test]
     public void SearchAvailableObjectsUsesAssociatedTransaction ()
     {
-      var transaction = _searchServiceTestHelper.CreateTransactionWithStubbedQuery<ClientTransaction> (_stubbedQueryID);
+      var transaction = _searchServiceTestHelper.CreateTransactionWithStubbedQuery<ClientTransaction>(_stubbedQueryID);
 
-      IBusinessObject boundObject = (IBusinessObject) transaction.ExecuteInScope (() => SampleBindableMixinDomainObject.NewObject());
+      IBusinessObject boundObject = (IBusinessObject) transaction.ExecuteInScope(() => SampleBindableMixinDomainObject.NewObject());
 
-      IBusinessObject[] results = _property.SearchAvailableObjects (boundObject, new DefaultSearchArguments (_stubbedQueryID));
-      Assert.That (results, Is.Not.Null);
-      Assert.That (results.Length > 0, Is.True);
+      IBusinessObject[] results = _property.SearchAvailableObjects(boundObject, new DefaultSearchArguments(_stubbedQueryID));
+      Assert.That(results, Is.Not.Null);
+      Assert.That(results.Length > 0, Is.True);
 
       var resultDomainObject = (DomainObject) results[0];
-      Assert.That (ClientTransaction.Current.IsEnlisted (resultDomainObject), Is.False);
-      Assert.That (transaction.IsEnlisted (resultDomainObject), Is.True);
+      Assert.That(ClientTransaction.Current.IsEnlisted(resultDomainObject), Is.False);
+      Assert.That(transaction.IsEnlisted(resultDomainObject), Is.True);
     }
 
     [Test]
     public void SearchAvailableObjectsWithDifferentObject ()
     {
       IBusinessObject[] businessObjects =
-          _property.SearchAvailableObjects (SampleBindableDomainObject.NewObject(), new DefaultSearchArguments (_stubbedQueryID));
+          _property.SearchAvailableObjects(SampleBindableDomainObject.NewObject(), new DefaultSearchArguments(_stubbedQueryID));
 
-      Assert.That (businessObjects, Is.Not.Null);
-      Assert.That (businessObjects.Length > 0, Is.True);
+      Assert.That(businessObjects, Is.Not.Null);
+      Assert.That(businessObjects.Length > 0, Is.True);
     }
 
     [Test]
     public void SearchAvailableObjectsWithNullSearchArguments ()
     {
-      var fakeResultData = _searchServiceTestHelper.CreateFakeResultData (_clientTransaction);
-      _searchServiceTestHelper.StubSearchAllObjectsQueryResult (typeof (OppositeBidirectionalBindableDomainObject), new[] { fakeResultData });
+      var fakeResultData = _searchServiceTestHelper.CreateFakeResultData(_clientTransaction);
+      _searchServiceTestHelper.StubSearchAllObjectsQueryResult(typeof (OppositeBidirectionalBindableDomainObject), new[] { fakeResultData });
 
-      IBusinessObject[] businessObjects = _property.SearchAvailableObjects (_referencingBusinessObject, null);
+      IBusinessObject[] businessObjects = _property.SearchAvailableObjects(_referencingBusinessObject, null);
 
-      Assert.That (businessObjects, Is.Not.Null);
-      Assert.That (((DomainObject) businessObjects[0]).ID, Is.EqualTo (fakeResultData.ObjectID));
-      Assert.That (((DomainObject) businessObjects[0]).RootTransaction, Is.SameAs (_clientTransaction));
+      Assert.That(businessObjects, Is.Not.Null);
+      Assert.That(((DomainObject) businessObjects[0]).ID, Is.EqualTo(fakeResultData.ObjectID));
+      Assert.That(((DomainObject) businessObjects[0]).RootTransaction, Is.SameAs(_clientTransaction));
     }
 
     [Test]
     public void SearchAvailableObjectsWithNullQuery ()
     {
-      var fakeResultData = _searchServiceTestHelper.CreateFakeResultData (_clientTransaction);
-      _searchServiceTestHelper.StubSearchAllObjectsQueryResult (typeof (OppositeBidirectionalBindableDomainObject), new[] { fakeResultData });
+      var fakeResultData = _searchServiceTestHelper.CreateFakeResultData(_clientTransaction);
+      _searchServiceTestHelper.StubSearchAllObjectsQueryResult(typeof (OppositeBidirectionalBindableDomainObject), new[] { fakeResultData });
 
-      IBusinessObject[] businessObjects = _property.SearchAvailableObjects (_referencingBusinessObject, new DefaultSearchArguments (null));
+      IBusinessObject[] businessObjects = _property.SearchAvailableObjects(_referencingBusinessObject, new DefaultSearchArguments(null));
 
-      Assert.That (businessObjects, Is.Not.Null);
-      Assert.That (((DomainObject) businessObjects[0]).ID, Is.EqualTo (fakeResultData.ObjectID));
+      Assert.That(businessObjects, Is.Not.Null);
+      Assert.That(((DomainObject) businessObjects[0]).ID, Is.EqualTo(fakeResultData.ObjectID));
     }
 
     [Test]
     public void SearchAvailableObjectsWithEmptyQuery ()
     {
-      var fakeResultData = _searchServiceTestHelper.CreateFakeResultData (_clientTransaction);
-      _searchServiceTestHelper.StubSearchAllObjectsQueryResult (typeof (OppositeBidirectionalBindableDomainObject), new[] { fakeResultData });
+      var fakeResultData = _searchServiceTestHelper.CreateFakeResultData(_clientTransaction);
+      _searchServiceTestHelper.StubSearchAllObjectsQueryResult(typeof (OppositeBidirectionalBindableDomainObject), new[] { fakeResultData });
 
-      IBusinessObject[] businessObjects = _property.SearchAvailableObjects (_referencingBusinessObject, new DefaultSearchArguments (""));
+      IBusinessObject[] businessObjects = _property.SearchAvailableObjects(_referencingBusinessObject, new DefaultSearchArguments(""));
 
-      Assert.That (businessObjects, Is.Not.Null);
-      Assert.That (((DomainObject) businessObjects[0]).ID, Is.EqualTo (fakeResultData.ObjectID));
+      Assert.That(businessObjects, Is.Not.Null);
+      Assert.That(((DomainObject) businessObjects[0]).ID, Is.EqualTo(fakeResultData.ObjectID));
     }
   }
 }

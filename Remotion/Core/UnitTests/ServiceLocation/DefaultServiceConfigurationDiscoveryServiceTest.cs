@@ -37,7 +37,7 @@ namespace Remotion.UnitTests.ServiceLocation
     public void SetUp ()
     {
       _typeDiscoveryServiceStub = new Mock<ITypeDiscoveryService>();
-      _defaultServiceConfigurationDiscoveryService = new DefaultServiceConfigurationDiscoveryService (_typeDiscoveryServiceStub.Object);
+      _defaultServiceConfigurationDiscoveryService = new DefaultServiceConfigurationDiscoveryService(_typeDiscoveryServiceStub.Object);
 #pragma warning disable SYSLIB0005
       _excludeGlobalTypes = !typeof (ImplementationForAttribute).Assembly.GlobalAssemblyCache;
 #pragma warning restore SYSLIB0005
@@ -46,29 +46,29 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Returns (new ArrayList { typeof (ITestSingletonConcreteImplementationAttributeType) });
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestSingletonConcreteImplementationAttributeType), false))
-          .Returns (new ArrayList { typeof (TestConcreteImplementationAttributeType) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, _excludeGlobalTypes))
+          .Returns(new ArrayList { typeof (ITestSingletonConcreteImplementationAttributeType) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof (ITestSingletonConcreteImplementationAttributeType), false))
+          .Returns(new ArrayList { typeof (TestConcreteImplementationAttributeType) });
 
       var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().ToArray();
 
-      Assert.That (serviceConfigurationEntries, Has.Length.EqualTo (1));
+      Assert.That(serviceConfigurationEntries, Has.Length.EqualTo(1));
       var serviceConfigurationEntry = serviceConfigurationEntries.Single();
-      Assert.That (serviceConfigurationEntry.ServiceType, Is.SameAs (typeof (ITestSingletonConcreteImplementationAttributeType)));
+      Assert.That(serviceConfigurationEntry.ServiceType, Is.SameAs(typeof (ITestSingletonConcreteImplementationAttributeType)));
 
-      Assert.That (serviceConfigurationEntry.ImplementationInfos.Count, Is.EqualTo (1));
-      Assert.That (serviceConfigurationEntry.ImplementationInfos[0].ImplementationType, Is.EqualTo (typeof (TestConcreteImplementationAttributeType)));
-      Assert.That (serviceConfigurationEntry.ImplementationInfos[0].Lifetime, Is.EqualTo (LifetimeKind.Singleton));
+      Assert.That(serviceConfigurationEntry.ImplementationInfos.Count, Is.EqualTo(1));
+      Assert.That(serviceConfigurationEntry.ImplementationInfos[0].ImplementationType, Is.EqualTo(typeof (TestConcreteImplementationAttributeType)));
+      Assert.That(serviceConfigurationEntry.ImplementationInfos[0].Lifetime, Is.EqualTo(LifetimeKind.Singleton));
     }
 
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithMultipleConcreteImplementationAttributes ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Returns (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesType) });
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesType), false))
-          .Returns (
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, _excludeGlobalTypes))
+          .Returns(new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesType) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof (ITestMultipleConcreteImplementationAttributesType), false))
+          .Returns(
               new ArrayList
               {
                   typeof (TestMultipleConcreteImplementationAttributesType1),
@@ -78,34 +78,34 @@ namespace Remotion.UnitTests.ServiceLocation
 
       var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().ToArray();
 
-      Assert.That (serviceConfigurationEntries, Has.Length.EqualTo (1));
+      Assert.That(serviceConfigurationEntries, Has.Length.EqualTo(1));
       var serviceConfigurationEntry = serviceConfigurationEntries.Single();
-      Assert.That (serviceConfigurationEntry.ServiceType, Is.SameAs (typeof (ITestMultipleConcreteImplementationAttributesType)));
+      Assert.That(serviceConfigurationEntry.ServiceType, Is.SameAs(typeof (ITestMultipleConcreteImplementationAttributesType)));
 
-      Assert.That (serviceConfigurationEntry.ImplementationInfos.Count, Is.EqualTo (3));
-      Assert.That (
+      Assert.That(serviceConfigurationEntry.ImplementationInfos.Count, Is.EqualTo(3));
+      Assert.That(
           serviceConfigurationEntry.ImplementationInfos[0].ImplementationType,
-          Is.EqualTo (typeof (TestMultipleConcreteImplementationAttributesType2)));
-      Assert.That (serviceConfigurationEntry.ImplementationInfos[0].Lifetime, Is.EqualTo (LifetimeKind.InstancePerDependency));
+          Is.EqualTo(typeof (TestMultipleConcreteImplementationAttributesType2)));
+      Assert.That(serviceConfigurationEntry.ImplementationInfos[0].Lifetime, Is.EqualTo(LifetimeKind.InstancePerDependency));
 
-      Assert.That (
+      Assert.That(
           serviceConfigurationEntry.ImplementationInfos[1].ImplementationType,
-          Is.EqualTo (typeof (TestMultipleConcreteImplementationAttributesType3)));
-      Assert.That (serviceConfigurationEntry.ImplementationInfos[1].Lifetime, Is.EqualTo (LifetimeKind.InstancePerDependency));
+          Is.EqualTo(typeof (TestMultipleConcreteImplementationAttributesType3)));
+      Assert.That(serviceConfigurationEntry.ImplementationInfos[1].Lifetime, Is.EqualTo(LifetimeKind.InstancePerDependency));
 
-      Assert.That (
+      Assert.That(
           serviceConfigurationEntry.ImplementationInfos[2].ImplementationType,
-          Is.EqualTo (typeof (TestMultipleConcreteImplementationAttributesType1)));
-      Assert.That (serviceConfigurationEntry.ImplementationInfos[2].Lifetime, Is.EqualTo (LifetimeKind.Singleton));
+          Is.EqualTo(typeof (TestMultipleConcreteImplementationAttributesType1)));
+      Assert.That(serviceConfigurationEntry.ImplementationInfos[2].Lifetime, Is.EqualTo(LifetimeKind.Singleton));
     }
 
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithMultipleConcreteImplementationAttributes_ReturnsSortedByPosition ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Returns (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesType) });
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesType), false))
-          .Returns (
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, _excludeGlobalTypes))
+          .Returns(new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesType) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof (ITestMultipleConcreteImplementationAttributesType), false))
+          .Returns(
               new ArrayList
               {
                   typeof (TestMultipleConcreteImplementationAttributesType1),
@@ -114,9 +114,9 @@ namespace Remotion.UnitTests.ServiceLocation
               });
 
       var serviceConfigurationEntry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().Single();
-      Assert.That (
-          serviceConfigurationEntry.ImplementationInfos.Select (i => i.ImplementationType),
-          Is.EqualTo (
+      Assert.That(
+          serviceConfigurationEntry.ImplementationInfos.Select(i => i.ImplementationType),
+          Is.EqualTo(
               new[]
               {
                   typeof (TestMultipleConcreteImplementationAttributesType2),
@@ -128,19 +128,19 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithMixedRegistrationTypes_ThrowsException ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Returns (new ArrayList { typeof (ITestMixedRegistrationTypes) });
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestMixedRegistrationTypes), false))
-          .Returns (
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, _excludeGlobalTypes))
+          .Returns(new ArrayList { typeof (ITestMixedRegistrationTypes) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof (ITestMixedRegistrationTypes), false))
+          .Returns(
               new ArrayList
               {
                   typeof (TestMixedRegistrationTypes1),
                   typeof (TestMixedRegistrationTypes2),
               });
 
-      Assert.That (
-          () => _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration ().ToArray(),
-          Throws.InvalidOperationException.With.Message.EqualTo (
+      Assert.That(
+          () => _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().ToArray(),
+          Throws.InvalidOperationException.With.Message.EqualTo(
               "Invalid configuration of service type "
               + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMixedRegistrationTypes'. "
               + "Registration types 'Single' and 'Multiple' cannot be used together.")
@@ -150,14 +150,14 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithTypeWithDuplicatePosition ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Returns (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType) });
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType), false))
-          .Returns (new ArrayList { typeof (TestMultipleConcreteImplementationAttributesWithDuplicatePositionType1), typeof (TestMultipleConcreteImplementationAttributesWithDuplicatePositionType2) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, _excludeGlobalTypes))
+          .Returns(new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType), false))
+          .Returns(new ArrayList { typeof (TestMultipleConcreteImplementationAttributesWithDuplicatePositionType1), typeof (TestMultipleConcreteImplementationAttributesWithDuplicatePositionType2) });
 
-      Assert.That (
-          () => _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration ().ToArray(),
-          Throws.InvalidOperationException.With.Message.EqualTo (
+      Assert.That(
+          () => _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().ToArray(),
+          Throws.InvalidOperationException.With.Message.EqualTo(
               "Invalid configuration of service type "
               + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType'. "
               + "Ambiguous ImplementationForAttribute: Position for registration type 'Single' must be unique.")
@@ -167,15 +167,15 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithTypeWithDuplicateImplementation ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Returns (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType) });
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType), false))
-          .Returns (new ArrayList { typeof (TestMultipleConcreteImplementationAttributesWithDuplicateImplementationType) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, _excludeGlobalTypes))
+          .Returns(new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof (ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType), false))
+          .Returns(new ArrayList { typeof (TestMultipleConcreteImplementationAttributesWithDuplicateImplementationType) });
 
-      Assert.That (
-          () => _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration ().ToArray (),
+      Assert.That(
+          () => _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().ToArray(),
           Throws.InvalidOperationException
-            .With.Message.EqualTo (
+            .With.Message.EqualTo(
               "Invalid configuration of service type "
               + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType'. "
               + "Ambiguous ImplementationForAttribute: Implementation type must be unique.")
@@ -185,10 +185,10 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithCompoundRegistrationType_NoException ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Returns (new ArrayList { typeof (ITestCompoundRegistration) });
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestCompoundRegistration), false))
-          .Returns (
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, _excludeGlobalTypes))
+          .Returns(new ArrayList { typeof (ITestCompoundRegistration) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof (ITestCompoundRegistration), false))
+          .Returns(
               new ArrayList
               {
                   typeof (TestCompoundImplementation1),
@@ -202,10 +202,10 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithDecoratorRegistrationType_NoException ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Returns (new ArrayList { typeof (ITestDecoratorRegistration) });
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestDecoratorRegistration), false))
-          .Returns (
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, _excludeGlobalTypes))
+          .Returns(new ArrayList { typeof (ITestDecoratorRegistration) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof (ITestDecoratorRegistration), false))
+          .Returns(
               new ArrayList
               {
                   typeof (TestDecoratorRegistrationDecoratedObject1),
@@ -219,10 +219,10 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithCompoundAndSingleRegistrationType ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes))
-          .Returns (new ArrayList { typeof (ITestCompoundMixedRegistrationTypes) });
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestCompoundMixedRegistrationTypes), false))
-          .Returns (
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, _excludeGlobalTypes))
+          .Returns(new ArrayList { typeof (ITestCompoundMixedRegistrationTypes) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof (ITestCompoundMixedRegistrationTypes), false))
+          .Returns(
               new ArrayList
               {
                   typeof (TestCompoundMixedRegistrationTypes),
@@ -230,10 +230,10 @@ namespace Remotion.UnitTests.ServiceLocation
                   typeof (TestCompoundMixedRegistrationImplementation2),
               });
 
-      Assert.That (
+      Assert.That(
           () => _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().ToArray(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Invalid configuration of service type "
                   + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundMixedRegistrationTypes'. "
                   + "Registration types 'Compound' and 'Single' cannot be used together.")
@@ -243,92 +243,92 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_WithTypeAsGenericInterface ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestOpenGenericService<>), false))
-          .Returns (new ArrayList { typeof (TestOpenGenericIntImplementation), typeof (TestOpenGenericStringImplementation) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof (ITestOpenGenericService<>), false))
+          .Returns(new ArrayList { typeof (TestOpenGenericIntImplementation), typeof (TestOpenGenericStringImplementation) });
 
-      var serviceConfigurationEntry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (typeof (ITestOpenGenericService<int>));
+      var serviceConfigurationEntry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration(typeof (ITestOpenGenericService<int>));
 
-      Assert.That (serviceConfigurationEntry.ServiceType, Is.SameAs (typeof (ITestOpenGenericService<int>)));
+      Assert.That(serviceConfigurationEntry.ServiceType, Is.SameAs(typeof (ITestOpenGenericService<int>)));
 
-      Assert.That (serviceConfigurationEntry.ImplementationInfos.Count, Is.EqualTo (1));
-      Assert.That (serviceConfigurationEntry.ImplementationInfos[0].ImplementationType, Is.EqualTo (typeof (TestOpenGenericIntImplementation)));
-      Assert.That (serviceConfigurationEntry.ImplementationInfos[0].Lifetime, Is.EqualTo (LifetimeKind.InstancePerDependency));
+      Assert.That(serviceConfigurationEntry.ImplementationInfos.Count, Is.EqualTo(1));
+      Assert.That(serviceConfigurationEntry.ImplementationInfos[0].ImplementationType, Is.EqualTo(typeof (TestOpenGenericIntImplementation)));
+      Assert.That(serviceConfigurationEntry.ImplementationInfos[0].Lifetime, Is.EqualTo(LifetimeKind.InstancePerDependency));
     }
 
     [Test]
     public void GetDefaultConfiguration_WithNoImplementations ()
     {
-      _typeDiscoveryServiceStub.Setup (_ => _.GetTypes (It.IsAny<Type>(), It.IsAny<bool>())).Returns (new Type[0]);
+      _typeDiscoveryServiceStub.Setup(_ => _.GetTypes(It.IsAny<Type>(), It.IsAny<bool>())).Returns(new Type[0]);
 
-      var entry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (typeof (ICollection));
+      var entry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration(typeof (ICollection));
 
-      Assert.That (entry, Is.Not.Null);
-      Assert.That (entry.ImplementationInfos, Is.Empty);
+      Assert.That(entry, Is.Not.Null);
+      Assert.That(entry.ImplementationInfos, Is.Empty);
     }
 
     [Test]
     public void GetDefaultConfiguration_WithGlobalType_IncludesGlobalTypes ()
     {
-      _typeDiscoveryServiceStub.Setup (_ => _.GetTypes (typeof (ICollection), false)).Returns (new Type[0]);
+      _typeDiscoveryServiceStub.Setup(_ => _.GetTypes(typeof (ICollection), false)).Returns(new Type[0]);
 
-      var entry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (typeof (ICollection));
+      var entry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration(typeof (ICollection));
 
-      Assert.That (entry.ServiceType, Is.EqualTo (typeof (ICollection)));
+      Assert.That(entry.ServiceType, Is.EqualTo(typeof (ICollection)));
 
-      Assert.That (entry.ImplementationInfos, Is.Empty);
+      Assert.That(entry.ImplementationInfos, Is.Empty);
     }
 
     [Test]
     public void GetDefaultConfiguration_WithNonGlobalType_ExcludesGlobalTypes ()
     {
-      _typeDiscoveryServiceStub.Setup (_ => _.GetTypes (typeof (ITestSingletonConcreteImplementationAttributeType), false))
-          .Returns (new[] { typeof (TestConcreteImplementationAttributeType) });
+      _typeDiscoveryServiceStub.Setup(_ => _.GetTypes(typeof (ITestSingletonConcreteImplementationAttributeType), false))
+          .Returns(new[] { typeof (TestConcreteImplementationAttributeType) });
 
-      var entry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (typeof (ITestSingletonConcreteImplementationAttributeType));
+      var entry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration(typeof (ITestSingletonConcreteImplementationAttributeType));
 
-      Assert.That (entry.ServiceType, Is.EqualTo (typeof (ITestSingletonConcreteImplementationAttributeType)));
+      Assert.That(entry.ServiceType, Is.EqualTo(typeof (ITestSingletonConcreteImplementationAttributeType)));
 
-      Assert.That (entry.ImplementationInfos.Count, Is.EqualTo (1));
-      Assert.That (entry.ImplementationInfos[0].ImplementationType, Is.EqualTo (typeof (TestConcreteImplementationAttributeType)));
-      Assert.That (entry.ImplementationInfos[0].Lifetime, Is.EqualTo (LifetimeKind.Singleton));
+      Assert.That(entry.ImplementationInfos.Count, Is.EqualTo(1));
+      Assert.That(entry.ImplementationInfos[0].ImplementationType, Is.EqualTo(typeof (TestConcreteImplementationAttributeType)));
+      Assert.That(entry.ImplementationInfos[0].Lifetime, Is.EqualTo(LifetimeKind.Singleton));
     }
 
     [Test]
     public void GetDefaultConfiguration_Types ()
     {
-      _typeDiscoveryServiceStub.Setup (_ => _.GetTypes (typeof (ITestSingletonConcreteImplementationAttributeType), false))
-        .Returns (new [] { typeof (TestConcreteImplementationAttributeType) });
+      _typeDiscoveryServiceStub.Setup(_ => _.GetTypes(typeof (ITestSingletonConcreteImplementationAttributeType), false))
+        .Returns(new [] { typeof (TestConcreteImplementationAttributeType) });
 
-      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (
+      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration(
           new[] { typeof (ITestSingletonConcreteImplementationAttributeType) }).ToArray();
 
-      Assert.That (serviceConfigurationEntries, Has.Length.EqualTo (1));
+      Assert.That(serviceConfigurationEntries, Has.Length.EqualTo(1));
       var entry = serviceConfigurationEntries.Single();
-      Assert.That (entry.ServiceType, Is.EqualTo (typeof (ITestSingletonConcreteImplementationAttributeType)));
+      Assert.That(entry.ServiceType, Is.EqualTo(typeof (ITestSingletonConcreteImplementationAttributeType)));
 
-      Assert.That (entry.ImplementationInfos.Count, Is.EqualTo (1));
-      Assert.That (entry.ImplementationInfos[0].ImplementationType, Is.EqualTo (typeof (TestConcreteImplementationAttributeType)));
-      Assert.That (entry.ImplementationInfos[0].Lifetime, Is.EqualTo (LifetimeKind.Singleton));
+      Assert.That(entry.ImplementationInfos.Count, Is.EqualTo(1));
+      Assert.That(entry.ImplementationInfos[0].ImplementationType, Is.EqualTo(typeof (TestConcreteImplementationAttributeType)));
+      Assert.That(entry.ImplementationInfos[0].Lifetime, Is.EqualTo(LifetimeKind.Singleton));
     }
 
     [Test]
     public void GetDefaultConfiguration_Types_Unresolvable ()
     {
-      _typeDiscoveryServiceStub.Setup (_ => _.GetTypes (typeof (ITestConcreteImplementationAttributeWithUnresolvableImplementationType), false))
-        .Returns (new Type[0]);
+      _typeDiscoveryServiceStub.Setup(_ => _.GetTypes(typeof (ITestConcreteImplementationAttributeWithUnresolvableImplementationType), false))
+        .Returns(new Type[0]);
       
-      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (
+      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration(
           new[] { typeof (ITestConcreteImplementationAttributeWithUnresolvableImplementationType) }).ToArray();
 
-      Assert.That (serviceConfigurationEntries, Is.Empty);
+      Assert.That(serviceConfigurationEntries, Is.Empty);
     }
 
     [Test]
     public void GetDefaultConfiguration_WithMultipleRegistrationsWithRegistrationTypeSingle_ReturnsFirstRegistration_OrderedByPositionAscending ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes)).Returns (new ArrayList { typeof (ITestRegistrationTypeSingle) });
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestRegistrationTypeSingle), false))
-          .Returns (
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, _excludeGlobalTypes)).Returns(new ArrayList { typeof (ITestRegistrationTypeSingle) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof (ITestRegistrationTypeSingle), false))
+          .Returns(
               new ArrayList
               {
                   typeof (TestRegistrationTypeSingle2),
@@ -336,16 +336,16 @@ namespace Remotion.UnitTests.ServiceLocation
               });
 
       var configurationEntry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().Single();
-      Assert.That (configurationEntry.ImplementationInfos, Has.Count.EqualTo (1));
-      Assert.That (configurationEntry.ImplementationInfos.Single().ImplementationType, Is.EqualTo (typeof (TestRegistrationTypeSingle1)));
+      Assert.That(configurationEntry.ImplementationInfos, Has.Count.EqualTo(1));
+      Assert.That(configurationEntry.ImplementationInfos.Single().ImplementationType, Is.EqualTo(typeof (TestRegistrationTypeSingle1)));
     }
 
     [Test]
     public void GetDefaultConfiguration_WithMultipleRegistrationsWithRegistrationTypeCompound_ReturnsFirstRegistration_OrderedByPositionAscending ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes)).Returns (new ArrayList { typeof (ITestCompoundRegistration) });
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (typeof (ITestCompoundRegistration), false))
-          .Returns (
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, _excludeGlobalTypes)).Returns(new ArrayList { typeof (ITestCompoundRegistration) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof (ITestCompoundRegistration), false))
+          .Returns(
               new ArrayList
               {
                   typeof (TestCompoundRegistration2),
@@ -353,8 +353,8 @@ namespace Remotion.UnitTests.ServiceLocation
               });
 
       var configurationEntry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().Single();
-      Assert.That (configurationEntry.ImplementationInfos, Has.Count.EqualTo (1));
-      Assert.That (configurationEntry.ImplementationInfos.Single().ImplementationType, Is.EqualTo (typeof (TestCompoundRegistration)));
+      Assert.That(configurationEntry.ImplementationInfos, Has.Count.EqualTo(1));
+      Assert.That(configurationEntry.ImplementationInfos.Single().ImplementationType, Is.EqualTo(typeof (TestCompoundRegistration)));
     }
 
     [Test]
@@ -363,17 +363,17 @@ namespace Remotion.UnitTests.ServiceLocation
       var defaultServiceConfigurationDiscoveryService = DefaultServiceConfigurationDiscoveryService.Create();
 
       // Because the TestDomain contains test classes with ambiguous attributes, we expect an exception here.
-      Assert.That (
-          () => defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (new[] { GetType().Assembly }).ToArray(), 
+      Assert.That(
+          () => defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration(new[] { GetType().Assembly }).ToArray(), 
             Throws.InvalidOperationException);
     }
 
     [Test]
     public void EnsureAllMembersOfImplementationForAttributeAreCloned ()
     {
-      Assert.That (
-          typeof (ImplementationForAttribute).GetFields (BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic).Length,
-          Is.EqualTo (4),
+      Assert.That(
+          typeof (ImplementationForAttribute).GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic).Length,
+          Is.EqualTo(4),
           "Additional state has been defined on ImplementationForAttributes. These new members need to be added to DefaultServiceConfigurationDiscoveryService.CloneAttribute(...) method.");
     }
   }

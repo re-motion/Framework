@@ -33,8 +33,8 @@ namespace Remotion.Security.UnitTests.Metadata
 
     public override ConstraintResult ApplyTo<TActual> (TActual actual)
     {
-      var isSuccess = Matches (actual);
-      return new EnumValueInfoListContentsConstraintResult (this, actual, _expectedName, isSuccess);
+      var isSuccess = Matches(actual);
+      return new EnumValueInfoListContentsConstraintResult(this, actual, _expectedName, isSuccess);
     }
 
     private bool Matches (object actual)
@@ -44,7 +44,7 @@ namespace Remotion.Security.UnitTests.Metadata
       {
         foreach (var value in actualAsEnumValueInfoList)
         {
-          if (string.Equals (value.Name, _expectedName, StringComparison.Ordinal))
+          if (string.Equals(value.Name, _expectedName, StringComparison.Ordinal))
             return true;
         }
       }

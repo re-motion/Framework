@@ -25,12 +25,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     {
       var instance = _serviceLocator.GetInstance<IBocReferenceValueValidatorFactory>();
 
-      Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocReferenceValue>>());
+      Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<IBocReferenceValue>>());
 
       var factories = ((CompoundValidatorFactory<IBocReferenceValue>) instance).VlidatorFactories;
-      Assert.That (
-          factories.Select (f => f.GetType()),
-          Is.EqualTo (new[] { typeof (BocReferenceValueValidatorFactory), typeof (ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
+      Assert.That(
+          factories.Select(f => f.GetType()),
+          Is.EqualTo(new[] { typeof (BocReferenceValueValidatorFactory), typeof (ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
     }
 
     [Test]
@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var instance1 = _serviceLocator.GetInstance<IBocReferenceValueValidatorFactory>();
       var instance2 = _serviceLocator.GetInstance<IBocReferenceValueValidatorFactory>();
 
-      Assert.That (instance1, Is.InstanceOf<CompoundValidatorFactory<IBocReferenceValue>>());
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.InstanceOf<CompoundValidatorFactory<IBocReferenceValue>>());
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

@@ -89,7 +89,7 @@ public class ValidationStateViewer : WebControl, IControl
   /// <param name="parent"> Parent element of the FormGridManager objects. </param>
   private void PopulateFormGridManagerList (Control parent)
   {
-    ArgumentUtility.CheckNotNull ("parent", parent);
+    ArgumentUtility.CheckNotNull("parent", parent);
 
     //  Add all FormGridManager instances
     for (int i = 0; i < parent.Controls.Count; i++)
@@ -101,7 +101,7 @@ public class ValidationStateViewer : WebControl, IControl
         _formGridManagers!.Add(formGridManager); // TODO RM-8118: Debug not null assertion
 
       bool isChildNamingContainer = childControl is INamingContainer;
-      PopulateFormGridManagerList (childControl);
+      PopulateFormGridManagerList(childControl);
     }
   }
 
@@ -112,19 +112,19 @@ public class ValidationStateViewer : WebControl, IControl
 
   protected override void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    IResourceManager resourceManager = GetResourceManager ();
-    LoadResources (resourceManager);
+    IResourceManager resourceManager = GetResourceManager();
+    LoadResources(resourceManager);
   }
 
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
 
-    string? key = ResourceManagerUtility.GetGlobalResourceKey (NoticeText);
-    if (!string.IsNullOrEmpty (key))
-      NoticeText = resourceManager.GetString (key);
+    string? key = ResourceManagerUtility.GetGlobalResourceKey(NoticeText);
+    if (!string.IsNullOrEmpty(key))
+      NoticeText = resourceManager.GetString(key);
   }
 
   protected override void RenderContents (HtmlTextWriter writer)
@@ -133,12 +133,12 @@ public class ValidationStateViewer : WebControl, IControl
     {
       case ValidationErrorStyle.Notice:
       {
-        RenderValidationNotice (writer);
+        RenderValidationNotice(writer);
         break;
       }
       case ValidationErrorStyle.DetailedMessages:
       {
-        RenderValidationMessages (writer);
+        RenderValidationMessages(writer);
         break;
       }
       case ValidationErrorStyle.HideErrors:
@@ -171,20 +171,20 @@ public class ValidationStateViewer : WebControl, IControl
     //  Enclose the validation error notice inside a div
     if (! isPageValid)
     {
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValidationNotice);
-      writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassValidationNotice);
+      writer.RenderBeginTag(HtmlTextWriterTag.Div);
       
       string noticeText;
-      if (string.IsNullOrEmpty (_noticeText))
+      if (string.IsNullOrEmpty(_noticeText))
       {
         IResourceManager resourceManager = GetResourceManager();
-        noticeText = resourceManager.GetString (ResourceIdentifier.NoticeText);
+        noticeText = resourceManager.GetString(ResourceIdentifier.NoticeText);
       }
       else
         noticeText = _noticeText;
         
       // Do not HTML encode.
-      writer.WriteLine (noticeText);
+      writer.WriteLine(noticeText);
       writer.RenderEndTag();
     }
   }
@@ -193,12 +193,12 @@ public class ValidationStateViewer : WebControl, IControl
   protected virtual void RenderValidationMessages (HtmlTextWriter writer)
   {
     _formGridManagers = new ArrayList();
-    PopulateFormGridManagerList (NamingContainer);
+    PopulateFormGridManagerList(NamingContainer);
 
-    writer.AddStyleAttribute ("border-spacing", "0");
-    writer.AddStyleAttribute ("border-collapse", "collapse");
-    writer.AddStyleAttribute ("border", "none");
-    writer.RenderBeginTag (HtmlTextWriterTag.Table);
+    writer.AddStyleAttribute("border-spacing", "0");
+    writer.AddStyleAttribute("border-collapse", "collapse");
+    writer.AddStyleAttribute("border", "none");
+    writer.RenderBeginTag(HtmlTextWriterTag.Table);
     for (int idxFormGridManagers = 0; idxFormGridManagers < _formGridManagers.Count; idxFormGridManagers++)
     {
       FormGridManager formGridManager = (FormGridManager) _formGridManagers[idxFormGridManagers]!; // TODO RM-8118: not null assertion
@@ -210,12 +210,12 @@ public class ValidationStateViewer : WebControl, IControl
         if (validationError == null)
           continue;
 
-        writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+        writer.RenderBeginTag(HtmlTextWriterTag.Tr);
 
         if (validationError.Labels  != null)
         {
-          writer.AddStyleAttribute ("padding-right", "0.3em");
-          writer.RenderBeginTag (HtmlTextWriterTag.Td);
+          writer.AddStyleAttribute("padding-right", "0.3em");
+          writer.RenderBeginTag(HtmlTextWriterTag.Td);
           for (int idxErrorLabels = 0; idxErrorLabels < validationError.Labels.Count; idxErrorLabels++)
           {
             Control control = (Control) validationError.Labels[idxErrorLabels];
@@ -231,19 +231,19 @@ public class ValidationStateViewer : WebControl, IControl
 
             text = text ?? string.Empty;
             // Do not HTML enocde.
-            writer.Write (text);
+            writer.Write(text);
 
           }
           writer.RenderEndTag();
         }
         else
         {
-          writer.RenderBeginTag (HtmlTextWriterTag.Td);
+          writer.RenderBeginTag(HtmlTextWriterTag.Td);
           writer.RenderEndTag();
         }
       
-        writer.RenderBeginTag (HtmlTextWriterTag.Td);
-        validationError.ToHyperLink (CssClassValidationMessage).RenderControl (writer);
+        writer.RenderBeginTag(HtmlTextWriterTag.Td);
+        validationError.ToHyperLink(CssClassValidationMessage).RenderControl(writer);
         writer.RenderEndTag();
 
         writer.RenderEndTag();
@@ -264,9 +264,9 @@ public class ValidationStateViewer : WebControl, IControl
 
     //  Get the resource managers
 
-    IResourceManager localResourceManager = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier));
-    IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
-    _cachedResourceManager = ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
+    IResourceManager localResourceManager = GlobalizationService.GetResourceManager(typeof (ResourceIdentifier));
+    IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager(NamingContainer, true);
+    _cachedResourceManager = ResourceManagerSet.Create(namingContainerResourceManager, localResourceManager);
 
     return _cachedResourceManager;
   }
@@ -322,7 +322,7 @@ public class ValidationStateViewer : WebControl, IControl
 
   IPage? IControl.Page
   {
-    get { return PageWrapper.CastOrCreate (base.Page); }
+    get { return PageWrapper.CastOrCreate(base.Page); }
   }
 
   /// <summary> CSS-Class applied to the individual validation messages. </summary>

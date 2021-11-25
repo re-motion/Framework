@@ -24,7 +24,7 @@ namespace Remotion.UnitTests.Configuration
     public ThrowingFakeProvider (string name, NameValueCollection config)
         : base (name, config)
     {
-      throw new ConstructorException ("A message from the constructor.");
+      throw new ConstructorException("A message from the constructor.");
     }
   }
 }

@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public LinqToSqlExtension (Guid clientTransactionID, LinqToSqlAppenderProxy appenderProxy)
     {
-      ArgumentUtility.CheckNotNull ("appenderProxy", appenderProxy);
+      ArgumentUtility.CheckNotNull("appenderProxy", appenderProxy);
 
       _clientTransactionID = clientTransactionID;
       _appenderProxy = appenderProxy;
@@ -182,80 +182,80 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public void TransactionInitialize (ClientTransaction clientTransaction)
     {
-      _appenderProxy.ConnectionStarted (_clientTransactionID);
+      _appenderProxy.ConnectionStarted(_clientTransactionID);
     }
 
     public void TransactionDiscard (ClientTransaction clientTransaction)
     {
-      _appenderProxy.ConnectionDisposed (_clientTransactionID);
+      _appenderProxy.ConnectionDisposed(_clientTransactionID);
     }
 
     public void QueryCompleted (Guid connectionID, Guid queryID, TimeSpan durationOfDataRead, int rowCount)
     {
-      _appenderProxy.StatementRowCount (_clientTransactionID, queryID, rowCount);
+      _appenderProxy.StatementRowCount(_clientTransactionID, queryID, rowCount);
     }
 
     public void QueryError (Guid connectionID, Guid queryID, Exception e)
     {
-      _appenderProxy.StatementError (_clientTransactionID, e);
+      _appenderProxy.StatementError(_clientTransactionID, e);
     }
 
     public void QueryExecuted (Guid connectionID, Guid queryID, TimeSpan durationOfQueryExecution)
     {
-      _appenderProxy.CommandDurationAndRowCount (_clientTransactionID, durationOfQueryExecution.Milliseconds, null);
+      _appenderProxy.CommandDurationAndRowCount(_clientTransactionID, durationOfQueryExecution.Milliseconds, null);
     }
 
     public void QueryExecuting (
         Guid connectionID, Guid queryID, string commandText, IDictionary<string, object> parameters)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("commandText", commandText);
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
+      ArgumentUtility.CheckNotNullOrEmpty("commandText", commandText);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
-      _appenderProxy.StatementExecuted (_clientTransactionID, queryID, AppendParametersToCommandText (commandText, parameters));
+      _appenderProxy.StatementExecuted(_clientTransactionID, queryID, AppendParametersToCommandText(commandText, parameters));
     }
 
     public void TransactionBegan (Guid connectionID, IsolationLevel isolationLevel)
     {
-      _appenderProxy.TransactionBegan (_clientTransactionID, isolationLevel);
+      _appenderProxy.TransactionBegan(_clientTransactionID, isolationLevel);
     }
 
     public void TransactionCommitted (Guid connectionID)
     {
-      _appenderProxy.TransactionCommit (_clientTransactionID);
+      _appenderProxy.TransactionCommit(_clientTransactionID);
     }
 
     public void TransactionDisposed (Guid connectionID)
     {
-      _appenderProxy.TransactionDisposed (_clientTransactionID);
+      _appenderProxy.TransactionDisposed(_clientTransactionID);
     }
 
     public void TransactionRolledBack (Guid connectionID)
     {
-      _appenderProxy.TransactionRolledBack (_clientTransactionID);
+      _appenderProxy.TransactionRolledBack(_clientTransactionID);
     }
 
     private string AppendParametersToCommandText (string commandText, IDictionary<string, object> parameters)
     {
       StringBuilder builder = new StringBuilder();
-      builder.AppendLine (commandText);
-      builder.AppendLine ("-- Ignore unbounded result sets: TOP *"); // Format with space and asterisk is important to trigger RexEx in profiler.
-      builder.AppendLine ("-- Parameters:");
+      builder.AppendLine(commandText);
+      builder.AppendLine("-- Ignore unbounded result sets: TOP *"); // Format with space and asterisk is important to trigger RexEx in profiler.
+      builder.AppendLine("-- Parameters:");
       foreach (string key in parameters.Keys)
       {
         string parameterName = key;
-        if (!parameterName.StartsWith ("@"))
+        if (!parameterName.StartsWith("@"))
           parameterName = "@" + parameterName;
         object value = parameters[key];
 
-        builder.Append ("-- ");
-        builder.Append (parameterName);
-        builder.Append (" = [-[");
-        builder.Append (value);
-        builder.Append ("]-] [-[");
-        builder.Append ("Type"); //parameter.DbType
-        builder.Append (" (");
-        builder.Append (0); // parameter.Size
-        builder.AppendLine (")]-]");
+        builder.Append("-- ");
+        builder.Append(parameterName);
+        builder.Append(" = [-[");
+        builder.Append(value);
+        builder.Append("]-] [-[");
+        builder.Append("Type"); //parameter.DbType
+        builder.Append(" (");
+        builder.Append(0); // parameter.Size
+        builder.AppendLine(")]-]");
       }
 
       return builder.ToString();

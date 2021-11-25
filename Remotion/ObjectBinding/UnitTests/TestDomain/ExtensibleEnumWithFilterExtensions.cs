@@ -25,12 +25,12 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   {
     public static ExtensibleEnumWithFilter Value1 (this ExtensibleEnumDefinition<ExtensibleEnumWithFilter> definition)
     {
-      return new ExtensibleEnumWithFilter ("Value1");
+      return new ExtensibleEnumWithFilter("Value1");
     }
 
     public static ExtensibleEnumWithFilter Value2 (this ExtensibleEnumDefinition<ExtensibleEnumWithFilter> definition)
     {
-      return new ExtensibleEnumWithFilter ("Value2");
+      return new ExtensibleEnumWithFilter("Value2");
     }
   }
 }

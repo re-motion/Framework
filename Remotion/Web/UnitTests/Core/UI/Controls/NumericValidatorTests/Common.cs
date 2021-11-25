@@ -31,21 +31,21 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
       Validator.DataType = NumericValidationDataType.Double;
       Validator.NumberStyle = NumberStyles.HexNumber;
       TextBox.Text = "1";
-      Assert.That (
+      Assert.That(
           () => Validator.Validate(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("The combination of the flags in the 'NumberStyle' property is invalid."));
+              .With.Message.EqualTo("The combination of the flags in the 'NumberStyle' property is invalid."));
     }
 
     [Test]
     public void Validate_WithInvalidDataType ()
     {
-      PrivateInvoke.SetNonPublicField (Validator, "_dataType", -1);
+      PrivateInvoke.SetNonPublicField(Validator, "_dataType", -1);
       TextBox.Text = "a";
-      Assert.That (
-          () => Validator.Validate (),
+      Assert.That(
+          () => Validator.Validate(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The value '-1' of the 'DataType' property is not a valid value."));
     }
   }

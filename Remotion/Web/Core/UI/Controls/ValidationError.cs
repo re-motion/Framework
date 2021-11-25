@@ -60,7 +60,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="labels">The labels containing the control's headings.</param>
     public ValidationError (Control? validatedControl, IValidator validator, ControlCollection? labels)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
+      ArgumentUtility.CheckNotNull("validator", validator);
 
       _validatedControl = validatedControl;
       _validationMessage = null;
@@ -83,7 +83,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="labels">The labels containing the control's headings.</param>
     public ValidationError (Control validatedControl, string validationMessage, ControlCollection? labels)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNullOrEmpty("validationMessage", validationMessage);
 
       _validatedControl = validatedControl;
       _validationMessage = validationMessage;
@@ -142,13 +142,13 @@ namespace Remotion.Web.UI.Controls
     /// <returns> A <see cref="Label"/>. </returns>
     public HtmlGenericControl ToLabel (string cssClass)
     {
-      HtmlGenericControl label = new HtmlGenericControl ("label");
+      HtmlGenericControl label = new HtmlGenericControl("label");
 
-      label.Controls.Add (ToSpan (ValidationMessage));
+      label.Controls.Add(ToSpan(ValidationMessage));
       if (_validatedControl != null)
         label.Attributes["for"] = _validatedControl.ClientID;
 
-      if (!string.IsNullOrEmpty (cssClass))
+      if (!string.IsNullOrEmpty(cssClass))
         label.Attributes["class"] = cssClass;
 
       return label;
@@ -164,11 +164,11 @@ namespace Remotion.Web.UI.Controls
     {
       HyperLink hyperLink = new HyperLink();
 
-      hyperLink.Controls.Add (ToSpan (ValidationMessage));
+      hyperLink.Controls.Add(ToSpan(ValidationMessage));
       if (_validatedControl != null)
-        hyperLink.Attributes.Add ("href", "#" + _validatedControl.ClientID);
+        hyperLink.Attributes.Add("href", "#" + _validatedControl.ClientID);
 
-      if (!string.IsNullOrEmpty (cssClass))
+      if (!string.IsNullOrEmpty(cssClass))
         hyperLink.CssClass = cssClass;
 
       return hyperLink;
@@ -181,7 +181,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns> A <see cref="HtmlGenericControl"/>. </returns>
     public HtmlGenericControl ToDiv (string cssClass)
     {
-      return ToGenericControl (cssClass, "div");
+      return ToGenericControl(cssClass, "div");
     }
 
     /// <summary>
@@ -191,7 +191,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns> A <see cref="HtmlGenericControl"/>. </returns>
     public HtmlGenericControl ToSpan (string cssClass)
     {
-      return ToGenericControl (cssClass, "span");
+      return ToGenericControl(cssClass, "span");
     }
 
     /// <summary>
@@ -203,10 +203,10 @@ namespace Remotion.Web.UI.Controls
     /// <returns> A <see cref="HtmlGenericControl"/>. </returns>
     private HtmlGenericControl ToGenericControl (string cssClass, string tag)
     {
-      HtmlGenericControl genericControl = new HtmlGenericControl (tag);
-      if (!string.IsNullOrEmpty (cssClass))
+      HtmlGenericControl genericControl = new HtmlGenericControl(tag);
+      if (!string.IsNullOrEmpty(cssClass))
         genericControl.Attributes["class"] = cssClass;
-      genericControl.InnerHtml = WebString.CreateFromText (ValidationMessage).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+      genericControl.InnerHtml = WebString.CreateFromText(ValidationMessage).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
       return genericControl;
     }
   }

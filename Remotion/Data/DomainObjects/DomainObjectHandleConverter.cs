@@ -41,22 +41,22 @@ namespace Remotion.Data.DomainObjects
 
       var stringValue = value as string;
       if (stringValue == null)
-        throw new NotSupportedException (string.Format ("This TypeConverter cannot convert from values of type '{0}'.", value.GetType()));
+        throw new NotSupportedException(string.Format("This TypeConverter cannot convert from values of type '{0}'.", value.GetType()));
 
       try
       {
-        return ObjectID.Parse (stringValue).GetHandle<IDomainObject>();
+        return ObjectID.Parse(stringValue).GetHandle<IDomainObject>();
       }
       catch (FormatException ex)
       {
-        throw new NotSupportedException ("The given string is not a valid ObjectID string.", ex);
+        throw new NotSupportedException("The given string is not a valid ObjectID string.", ex);
       }
     }
 
     public override object ConvertTo (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
     {
       if (destinationType != typeof (string))
-        throw new NotSupportedException (string.Format ("This TypeConverter cannot convert to values of type '{0}'.", destinationType));
+        throw new NotSupportedException(string.Format("This TypeConverter cannot convert to values of type '{0}'.", destinationType));
 
       if (value == null)
         return null;
@@ -64,8 +64,8 @@ namespace Remotion.Data.DomainObjects
       var domainObjectHandle = value as IDomainObjectHandle<IDomainObject>;
       if (domainObjectHandle == null)
       {
-        var message = string.Format ("This TypeConverter can only convert values of type '{0}'.", typeof (IDomainObjectHandle<IDomainObject>));
-        throw new NotSupportedException (message);
+        var message = string.Format("This TypeConverter can only convert values of type '{0}'.", typeof (IDomainObjectHandle<IDomainObject>));
+        throw new NotSupportedException(message);
       }
       
       return domainObjectHandle.ObjectID.ToString();

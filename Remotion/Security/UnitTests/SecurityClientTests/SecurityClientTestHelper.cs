@@ -37,22 +37,22 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
 
     public SecurityClientTestHelper ()
     {
-      _mockSecurityProvider = new Mock<ISecurityProvider> (MockBehavior.Strict);
-      _mockPermissionReflector = new Mock<IPermissionProvider> (MockBehavior.Strict);
-      _mockObjectSecurityStrategy = new Mock<IObjectSecurityStrategy> (MockBehavior.Strict);
-      _mockFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy> (MockBehavior.Strict);
-      _mockMemberResolver = new Mock<IMemberResolver> (MockBehavior.Strict);
+      _mockSecurityProvider = new Mock<ISecurityProvider>(MockBehavior.Strict);
+      _mockPermissionReflector = new Mock<IPermissionProvider>(MockBehavior.Strict);
+      _mockObjectSecurityStrategy = new Mock<IObjectSecurityStrategy>(MockBehavior.Strict);
+      _mockFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy>(MockBehavior.Strict);
+      _mockMemberResolver = new Mock<IMemberResolver>(MockBehavior.Strict);
       _userStub = new Mock<ISecurityPrincipal>();
-      _userStub.Setup (_ => _.User).Returns ("user");
+      _userStub.Setup(_ => _.User).Returns("user");
       _stubPrincipalProvider = new Mock<IPrincipalProvider>();
-      _stubPrincipalProvider.Setup (_ => _.GetPrincipal()).Returns (_userStub.Object);
+      _stubPrincipalProvider.Setup(_ => _.GetPrincipal()).Returns(_userStub.Object);
 
-      _securableObject = new SecurableObject (_mockObjectSecurityStrategy.Object);
+      _securableObject = new SecurableObject(_mockObjectSecurityStrategy.Object);
     }
 
     public SecurityClient CreateSecurityClient ()
     {
-      return new SecurityClient (_mockSecurityProvider.Object, _mockPermissionReflector.Object, _stubPrincipalProvider.Object, _mockFunctionalSecurityStrategy.Object, _mockMemberResolver.Object);
+      return new SecurityClient(_mockSecurityProvider.Object, _mockPermissionReflector.Object, _stubPrincipalProvider.Object, _mockFunctionalSecurityStrategy.Object, _mockMemberResolver.Object);
     }
 
     public SecurableObject SecurableObject
@@ -62,51 +62,51 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
 
     public void ExpectMemberResolverGetMethodInformation (string methodName, MemberAffiliation memberAffiliation, IMethodInformation returnValue)
     {
-      _mockMemberResolver.Setup (_ => _.GetMethodInformation (typeof (SecurableObject), methodName, memberAffiliation)).Returns (returnValue).Verifiable();
+      _mockMemberResolver.Setup(_ => _.GetMethodInformation(typeof (SecurableObject), methodName, memberAffiliation)).Returns(returnValue).Verifiable();
     }
 
     public void ExpectMemberResolverGetMethodInformation (MethodInfo methodInfo, MemberAffiliation memberAffiliation, IMethodInformation returnValue)
     {
-      _mockMemberResolver.Setup (_ => _.GetMethodInformation (typeof (SecurableObject), methodInfo, memberAffiliation)).Returns (returnValue).Verifiable();
+      _mockMemberResolver.Setup(_ => _.GetMethodInformation(typeof (SecurableObject), methodInfo, memberAffiliation)).Returns(returnValue).Verifiable();
     }
 
     public void ExpectPermissionReflectorGetRequiredMethodPermissions (IMethodInformation methodInformation, params Enum[] returnValue)
     {
-      _mockPermissionReflector.Setup (_ => _.GetRequiredMethodPermissions (typeof (SecurableObject), methodInformation)).Returns (returnValue).Verifiable();
+      _mockPermissionReflector.Setup(_ => _.GetRequiredMethodPermissions(typeof (SecurableObject), methodInformation)).Returns(returnValue).Verifiable();
     }
 
     public void ExpectObjectSecurityStrategyHasAccess (Enum requiredAccessType, bool returnValue)
     {
-      ExpectObjectSecurityStrategyHasAccess (new[] { requiredAccessType }, returnValue);
+      ExpectObjectSecurityStrategyHasAccess(new[] { requiredAccessType }, returnValue);
     }
 
     public void ExpectObjectSecurityStrategyHasAccess (Enum[] requiredAccessTypes, bool returnValue)
     {
-      var value = ConvertAccessTypeEnums (requiredAccessTypes);
+      var value = ConvertAccessTypeEnums(requiredAccessTypes);
       _mockObjectSecurityStrategy
-          .Setup (_ => _.HasAccess (
+          .Setup(_ => _.HasAccess(
                   _mockSecurityProvider.Object,
                   _userStub.Object,
                   value))
-          .Returns (returnValue)
+          .Returns(returnValue)
           .Verifiable();
     }
 
     public void ExpectFunctionalSecurityStrategyHasAccess (Enum requiredAccessType, bool returnValue)
     {
-      ExpectFunctionalSecurityStrategyHasAccess (new[] { requiredAccessType }, returnValue);
+      ExpectFunctionalSecurityStrategyHasAccess(new[] { requiredAccessType }, returnValue);
     }
 
     public void ExpectFunctionalSecurityStrategyHasAccess (Enum[] requiredAccessTypes, bool returnValue)
     {
-      var value = ConvertAccessTypeEnums (requiredAccessTypes);
+      var value = ConvertAccessTypeEnums(requiredAccessTypes);
       _mockFunctionalSecurityStrategy
-          .Setup (_ => _.HasAccess (
+          .Setup(_ => _.HasAccess(
                   typeof (SecurableObject),
                   _mockSecurityProvider.Object,
                   _userStub.Object,
                   value))
-          .Returns (returnValue)
+          .Returns(returnValue)
           .Verifiable();
     }
 
@@ -121,7 +121,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
 
     private IReadOnlyList<AccessType> ConvertAccessTypeEnums (Enum[] accessTypeEnums)
     {
-      return Array.ConvertAll (accessTypeEnums, AccessType.Get);
+      return Array.ConvertAll(accessTypeEnums, AccessType.Get);
     }
 
   }

@@ -36,7 +36,7 @@ namespace Remotion.Validation.UnitTests
     {
       var instance = _serviceLocator.GetInstance<IValidatorProvider>();
 
-      Assert.That (instance, Is.InstanceOf<CachingValidatorProvider>());
+      Assert.That(instance, Is.InstanceOf<CachingValidatorProvider>());
     }
 
     [Test]
@@ -45,8 +45,8 @@ namespace Remotion.Validation.UnitTests
       var instance1 = _serviceLocator.GetInstance<IValidatorProvider>();
       var instance2 = _serviceLocator.GetInstance<IValidatorProvider>();
 
-      Assert.That (instance1, Is.InstanceOf<CachingValidatorProvider>());
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.InstanceOf<CachingValidatorProvider>());
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

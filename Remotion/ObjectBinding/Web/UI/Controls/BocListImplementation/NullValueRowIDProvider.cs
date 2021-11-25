@@ -33,27 +33,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     public string GetControlRowID (BocListRow row)
     {
-      throw new NotSupportedException ("The operation is not supported because the value is not set.");
+      throw new NotSupportedException("The operation is not supported because the value is not set.");
     }
 
     public string GetItemRowID (BocListRow row)
     {
-      throw new NotSupportedException ("The operation is not supported because the value is not set.");
+      throw new NotSupportedException("The operation is not supported because the value is not set.");
     }
 
     public BocListRow? GetRowFromItemRowID (IReadOnlyList<IBusinessObject> rows, string rowID)
     {
-      throw new NotSupportedException ("The operation is not supported because the value is not set.");
+      throw new NotSupportedException("The operation is not supported because the value is not set.");
     }
 
     public void AddRow (BocListRow row)
     {
-      throw new NotSupportedException ("The operation is not supported because the value is not set.");
+      throw new NotSupportedException("The operation is not supported because the value is not set.");
     }
 
     public void RemoveRow (BocListRow row)
     {
-      throw new NotSupportedException ("The operation is not supported because the value is not set.");
+      throw new NotSupportedException("The operation is not supported because the value is not set.");
     }
   }
 }

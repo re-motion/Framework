@@ -29,29 +29,29 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetService_TypeWithConcreteImplementationAttribute ()
     {
-      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (typeof (ITestType), typeof (TestImplementation1));
+      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(typeof (ITestType), typeof (TestImplementation1));
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register(serviceConfigurationEntry);
 
-      var result = ((IServiceLocator) serviceLocator).GetService (typeof (ITestType));
+      var result = ((IServiceLocator) serviceLocator).GetService(typeof (ITestType));
 
-      Assert.That (result, Is.TypeOf<TestImplementation1>());
+      Assert.That(result, Is.TypeOf<TestImplementation1>());
     }
 
     [Test]
     public void GetService_TypeWithoutConcreteImplementatioAttribute ()
     {
       //TODO RM-5506: Integration Test
-      var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (typeof (ITestType), new Type[0]);
+      var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry(typeof (ITestType), new Type[0]);
 
-      var serviceConfigurationDiscoveryServiceMock = new Mock<IServiceConfigurationDiscoveryService> (MockBehavior.Strict);
-      serviceConfigurationDiscoveryServiceMock.Setup (_ => _.GetDefaultConfiguration (typeof (ITestType))).Returns (serviceConfigurationEntry);
-      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceMock.Object);
+      var serviceConfigurationDiscoveryServiceMock = new Mock<IServiceConfigurationDiscoveryService>(MockBehavior.Strict);
+      serviceConfigurationDiscoveryServiceMock.Setup(_ => _.GetDefaultConfiguration(typeof (ITestType))).Returns(serviceConfigurationEntry);
+      var serviceLocator = CreateServiceLocator(serviceConfigurationDiscoveryServiceMock.Object);
 
-      var result = ((IServiceLocator) serviceLocator).GetService (typeof (ITestType));
+      var result = ((IServiceLocator) serviceLocator).GetService(typeof (ITestType));
 
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
   }
 }

@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     public NoAutoCommitTestTransactedFunction (ITransactionMode transactionMode, ObjectID objectWithAllDataTypes)
         : base (transactionMode, objectWithAllDataTypes)
     {
-      Assertion.IsFalse (TransactionMode.AutoCommit);
+      Assertion.IsFalse(TransactionMode.AutoCommit);
     }
 
     // methods and properties
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
 
     private void Step1 ()
     {
-      SampleObject objectWithAllDataTypes = ObjectWithAllDataTypes.GetObject<SampleObject> ();
+      SampleObject objectWithAllDataTypes = ObjectWithAllDataTypes.GetObject<SampleObject>();
 
       objectWithAllDataTypes.Int32Property = 10;
     }

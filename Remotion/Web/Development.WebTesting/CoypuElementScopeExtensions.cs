@@ -33,9 +33,9 @@ namespace Remotion.Web.Development.WebTesting
   /// </summary>
   public static class CoypuElementScopeExtensions
   {
-    private static readonly Lazy<FieldInfo> s_driverFieldInfo = new Lazy<FieldInfo> (
-        () => Assertion.IsNotNull (
-            typeof (ElementScope).GetField ("_driver", BindingFlags.NonPublic | BindingFlags.Instance),
+    private static readonly Lazy<FieldInfo> s_driverFieldInfo = new Lazy<FieldInfo>(
+        () => Assertion.IsNotNull(
+            typeof (ElementScope).GetField("_driver", BindingFlags.NonPublic | BindingFlags.Instance),
             "Coypu has changed, update CoypuElementScopeExtensions.GetDriver() method."),
         LazyThreadSafetyMode.ExecutionAndPublication);
 
@@ -55,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </exception>
     public static void EnsureExistence ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       try
       {
@@ -63,11 +63,11 @@ namespace Remotion.Web.Development.WebTesting
       }
       catch (MissingHtmlException exception)
       {
-        throw AssertionExceptionUtility.CreateControlMissingException (scope.GetDriver(), exception.Message);
+        throw AssertionExceptionUtility.CreateControlMissingException(scope.GetDriver(), exception.Message);
       }
       catch (AmbiguousException exception)
       {
-        throw AssertionExceptionUtility.CreateControlAmbiguousException (scope.GetDriver(), exception.Message);
+        throw AssertionExceptionUtility.CreateControlAmbiguousException(scope.GetDriver(), exception.Message);
       }
     }
 
@@ -83,7 +83,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </exception>
     public static void EnsureSingle ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       var matchBackup = scope.ElementFinder.Options.Match;
 
@@ -94,11 +94,11 @@ namespace Remotion.Web.Development.WebTesting
       }
       catch (MissingHtmlException exception)
       {
-        throw AssertionExceptionUtility.CreateControlMissingException (scope.GetDriver(), exception.Message);
+        throw AssertionExceptionUtility.CreateControlMissingException(scope.GetDriver(), exception.Message);
       }
       catch (AmbiguousException exception)
       {
-        throw AssertionExceptionUtility.CreateControlAmbiguousException (scope.GetDriver(), exception.Message);
+        throw AssertionExceptionUtility.CreateControlAmbiguousException(scope.GetDriver(), exception.Message);
       }
       finally
       {
@@ -118,7 +118,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <exception cref="WebTestException">If multiple matching controls are found.</exception>
     public static bool ExistsWorkaround ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       var scopeTimeoutBackup = scope.ElementFinder.Options.Timeout;
       try
@@ -127,13 +127,13 @@ namespace Remotion.Web.Development.WebTesting
 
         try
         {
-          scope.Exists (Options.NoWait);
+          scope.Exists(Options.NoWait);
         }
         catch (Exception)
         {
           // Sometimes, the first scope.Exists() call fails after a switch to an IFrame. So we swallow that first exception and just try again.
         }
-        var exists = scope.Exists (Options.NoWait);
+        var exists = scope.Exists(Options.NoWait);
 
         // scope.Exists (...) does not work correctly in some circumstances, whereby we do the exist check via this workaround. See RM-6773 for details.
         if (!exists)
@@ -170,7 +170,7 @@ namespace Remotion.Web.Development.WebTesting
       }
       catch (AmbiguousException exception)
       {
-        throw AssertionExceptionUtility.CreateControlAmbiguousException (scope.GetDriver(), exception.Message);
+        throw AssertionExceptionUtility.CreateControlAmbiguousException(scope.GetDriver(), exception.Message);
       }
       finally
       {
@@ -191,7 +191,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="scope">The <see cref="ElementScope"/> which is asserted to match only a single DOM element.</param>
     public static bool ExistsWithEnsureSingleWorkaround ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       var matchBackup = scope.ElementFinder.Options.Match;
       scope.ElementFinder.Options.Match = Match.Single;
@@ -210,15 +210,15 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>The background color or <see cref="WebColor.Transparent"/> if no background color is set (not even on any parent node).</returns>
     public static WebColor GetComputedBackgroundColor ([NotNull] this ElementScope scope, [NotNull] ControlObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var computedBackgroundColor = (string) context.Browser.Driver.ExecuteScript (CommonJavaScripts.GetComputedBackgroundColor, scope, scope.Native);
+      var computedBackgroundColor = (string) context.Browser.Driver.ExecuteScript(CommonJavaScripts.GetComputedBackgroundColor, scope, scope.Native);
 
-      if (IsTransparent (computedBackgroundColor))
+      if (IsTransparent(computedBackgroundColor))
         return WebColor.Transparent;
 
-      return ParseColorFromBrowserReturnedString (computedBackgroundColor);
+      return ParseColorFromBrowserReturnedString(computedBackgroundColor);
     }
 
     /// <summary>
@@ -228,15 +228,15 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>The text color or <see cref="WebColor.Transparent"/> if no text color is set (not even on any parent node).</returns>
     public static WebColor GetComputedTextColor ([NotNull] this ElementScope scope, [NotNull] ControlObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var computedTextColor = (string) context.Browser.Driver.ExecuteScript (CommonJavaScripts.GetComputedTextColor, scope, scope.Native);
+      var computedTextColor = (string) context.Browser.Driver.ExecuteScript(CommonJavaScripts.GetComputedTextColor, scope, scope.Native);
 
-      if (IsTransparent (computedTextColor))
+      if (IsTransparent(computedTextColor))
         return WebColor.Transparent;
 
-      return ParseColorFromBrowserReturnedString (computedTextColor);
+      return ParseColorFromBrowserReturnedString(computedTextColor);
     }
 
     /// <summary>
@@ -245,14 +245,14 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>The <see cref="IDriver"/> instance held by <paramref name="scope"/>.</returns>
     internal static IDriver GetDriver ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      return (IDriver) s_driverFieldInfo.Value.GetValue (scope)!;
+      return (IDriver) s_driverFieldInfo.Value.GetValue(scope)!;
     }
 
     private static bool IsTransparent ([NotNull] string color)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("color", color);
+      ArgumentUtility.CheckNotNullOrEmpty("color", color);
 
       // Chrome
       if (color == "rgba(0, 0, 0, 0)")
@@ -267,9 +267,9 @@ namespace Remotion.Web.Development.WebTesting
 
     private static WebColor ParseColorFromBrowserReturnedString ([NotNull] string color)
     {
-      var rgbArgs = color.Split (new[] { '(', ',', ')' });
-      var rgb = rgbArgs.Skip (1).Take (3).Select (byte.Parse).ToArray();
-      return WebColor.FromRgb (rgb[0], rgb[1], rgb[2]);
+      var rgbArgs = color.Split(new[] { '(', ',', ')' });
+      var rgb = rgbArgs.Skip(1).Take(3).Select(byte.Parse).ToArray();
+      return WebColor.FromRgb(rgb[0], rgb[1], rgb[2]);
     }
 
     /// <summary>
@@ -278,9 +278,9 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>True if the HTML element is selected, otherwise false.</returns>
     public static bool IsSelected ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      return RetryUntilTimeout.Run (
+      return RetryUntilTimeout.Run(
           () =>
           {
             var webElement = (IWebElement) scope.Native;
@@ -295,9 +295,9 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>True if the given <paramref name="scope"/> is visible, otherwise false.</returns>
     public static bool IsVisible ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      return RetryUntilTimeout.Run (
+      return RetryUntilTimeout.Run(
           () =>
           {
             var webElement = (IWebElement) scope.Native;
@@ -310,9 +310,9 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public static void Unhover ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      Cursor.Position = new Point (0, 0);
+      Cursor.Position = new Point(0, 0);
     }
 
     /// <summary>
@@ -326,13 +326,13 @@ namespace Remotion.Web.Development.WebTesting
     [NotNull]
     public static string GetAttribute ([NotNull] this ElementScope scope, [NotNull] string attributeName)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNullOrEmpty ("attributeName", attributeName);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
 
       var result = scope[attributeName];
 
       if (result == null)
-        throw new MissingHtmlException ($"Cannot find the attribute '{attributeName}' on the current scope.");
+        throw new MissingHtmlException($"Cannot find the attribute '{attributeName}' on the current scope.");
 
       return result;
     }

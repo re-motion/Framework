@@ -25,7 +25,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
     [MultiLingualName ("Attribute", "")]
     public static Color MixedRed (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new Color ("MixedColor", "MixedRed");
+      return new Color("MixedColor", "MixedRed");
     }
   }
 }

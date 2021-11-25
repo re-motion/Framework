@@ -51,7 +51,7 @@ return true;";
     public ScreenshotBocAutoCompleteReferenceValueSelectListSelector (
         [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
+      ArgumentUtility.CheckNotNull("fluentAutoComplete", fluentAutoComplete);
 
       _fluentAutoComplete = fluentAutoComplete;
     }
@@ -59,19 +59,19 @@ return true;";
     /// <inheritdoc />
     public void WithDisplayText (string displayText)
     {
-      ArgumentUtility.CheckNotNull ("displayText", displayText);
+      ArgumentUtility.CheckNotNull("displayText", displayText);
 
-      var executor = JavaScriptExecutor.GetJavaScriptExecutor (_fluentAutoComplete.Target.AutoComplete);
-      var ok = JavaScriptExecutor.ExecuteStatement<bool> (executor, c_selectWithDisplayText, GetInputField (_fluentAutoComplete), displayText);
+      var executor = JavaScriptExecutor.GetJavaScriptExecutor(_fluentAutoComplete.Target.AutoComplete);
+      var ok = JavaScriptExecutor.ExecuteStatement<bool>(executor, c_selectWithDisplayText, GetInputField(_fluentAutoComplete), displayText);
       if (!ok)
-        throw new InvalidOperationException (string.Format ("Could not find an item with the Display text '{0}'", displayText));
+        throw new InvalidOperationException(string.Format("Could not find an item with the Display text '{0}'", displayText));
     }
 
     /// <inheritdoc />
     public void WithIndex (int oneBasedIndex)
     {
-      var executor = JavaScriptExecutor.GetJavaScriptExecutor (_fluentAutoComplete.Target.AutoComplete);
-      JavaScriptExecutor.ExecuteVoidStatement (executor, c_selectWithIndex, GetInputField (_fluentAutoComplete), oneBasedIndex);
+      var executor = JavaScriptExecutor.GetJavaScriptExecutor(_fluentAutoComplete.Target.AutoComplete);
+      JavaScriptExecutor.ExecuteVoidStatement(executor, c_selectWithIndex, GetInputField(_fluentAutoComplete), oneBasedIndex);
     }
 
     private static IWebElement GetInputField (IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentPopup)

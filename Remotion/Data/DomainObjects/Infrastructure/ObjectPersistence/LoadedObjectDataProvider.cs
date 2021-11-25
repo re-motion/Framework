@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public LoadedObjectDataProvider (ILoadedDataContainerProvider loadedDataContainerProvider, IInvalidDomainObjectManager invalidDomainObjectManager)
     {
-      ArgumentUtility.CheckNotNull ("loadedDataContainerProvider", loadedDataContainerProvider);
-      ArgumentUtility.CheckNotNull ("invalidDomainObjectManager", invalidDomainObjectManager);
+      ArgumentUtility.CheckNotNull("loadedDataContainerProvider", loadedDataContainerProvider);
+      ArgumentUtility.CheckNotNull("invalidDomainObjectManager", invalidDomainObjectManager);
       
       _loadedDataContainerProvider = loadedDataContainerProvider;
       _invalidDomainObjectManager = invalidDomainObjectManager;
@@ -52,13 +52,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public ILoadedObjectData GetLoadedObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      if (_invalidDomainObjectManager.IsInvalid (objectID))
-        return new InvalidLoadedObjectData (_invalidDomainObjectManager.GetInvalidObjectReference (objectID));
+      if (_invalidDomainObjectManager.IsInvalid(objectID))
+        return new InvalidLoadedObjectData(_invalidDomainObjectManager.GetInvalidObjectReference(objectID));
 
-      var dataContainer = _loadedDataContainerProvider.GetDataContainerWithoutLoading (objectID);
-      return dataContainer != null ? new AlreadyExistingLoadedObjectData (dataContainer) : null;
+      var dataContainer = _loadedDataContainerProvider.GetDataContainerWithoutLoading(objectID);
+      return dataContainer != null ? new AlreadyExistingLoadedObjectData(dataContainer) : null;
     }
   }
 }

@@ -30,75 +30,75 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     public void DeriveFromSimpleOpenGenericType ()
     {
       Type baseType = typeof (List<>);
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "DeriveFromSimpleOpenGenericType", baseType, Type.EmptyTypes,
+      CustomClassEmitter classEmitter = new CustomClassEmitter(Scope, "DeriveFromSimpleOpenGenericType", baseType, Type.EmptyTypes,
           TypeAttributes.Public | TypeAttributes.Class, false);
-      Type builtType = classEmitter.BuildType ();
+      Type builtType = classEmitter.BuildType();
 
-      Assert.That (builtType.ContainsGenericParameters, Is.True);
-      Type[] typeParameters = builtType.GetGenericArguments ();
-      Assert.That (typeParameters.Length, Is.EqualTo (1));
-      Assert.That (builtType.BaseType.ContainsGenericParameters, Is.True);
-      Assert.That (builtType.BaseType.GetGenericArguments ()[0], Is.EqualTo (typeParameters[0]));
+      Assert.That(builtType.ContainsGenericParameters, Is.True);
+      Type[] typeParameters = builtType.GetGenericArguments();
+      Assert.That(typeParameters.Length, Is.EqualTo(1));
+      Assert.That(builtType.BaseType.ContainsGenericParameters, Is.True);
+      Assert.That(builtType.BaseType.GetGenericArguments()[0], Is.EqualTo(typeParameters[0]));
     }
 
     [Test]
     public void DeriveFromClosedGenericTypeWithConstraints ()
     {
       Type baseType = typeof (GenericClassWithConstraints<ICloneable, List<string>, int, object, ICloneable, List<List<ICloneable[]>>>);
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "DeriveFromClosedGenericTypeWithConstraints", baseType, Type.EmptyTypes,
+      CustomClassEmitter classEmitter = new CustomClassEmitter(Scope, "DeriveFromClosedGenericTypeWithConstraints", baseType, Type.EmptyTypes,
           TypeAttributes.Public | TypeAttributes.Class, false);
-      Type builtType = classEmitter.BuildType ();
-      Assert.That (builtType.ContainsGenericParameters, Is.False);
-      Assert.That (builtType.BaseType.ContainsGenericParameters, Is.False);
-      Assert.That (builtType.BaseType, Is.EqualTo (typeof (GenericClassWithConstraints<ICloneable, List<string>, int, object, ICloneable, List<List<ICloneable[]>>>)));
+      Type builtType = classEmitter.BuildType();
+      Assert.That(builtType.ContainsGenericParameters, Is.False);
+      Assert.That(builtType.BaseType.ContainsGenericParameters, Is.False);
+      Assert.That(builtType.BaseType, Is.EqualTo(typeof (GenericClassWithConstraints<ICloneable, List<string>, int, object, ICloneable, List<List<ICloneable[]>>>)));
     }
 
     [Test]
     public void DeriveFromOpenGenericTypeWithConstraints ()
     {
       Type baseType = typeof (GenericClassWithConstraints<,,,,,>);
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "DeriveFromOpenGenericTypeWithConstraints", baseType, Type.EmptyTypes,
+      CustomClassEmitter classEmitter = new CustomClassEmitter(Scope, "DeriveFromOpenGenericTypeWithConstraints", baseType, Type.EmptyTypes,
           TypeAttributes.Public | TypeAttributes.Class, false);
-      Type builtType = classEmitter.BuildType ();
-      Assert.That (builtType.ContainsGenericParameters, Is.True);
-      Type[] typeParameters = builtType.GetGenericArguments ();
-      Assert.That (typeParameters.Length, Is.EqualTo (6));
-      Assert.That (builtType.BaseType.ContainsGenericParameters, Is.True);
-      Assert.That (builtType.BaseType.GetGenericArguments ()[0], Is.EqualTo (typeParameters[0]));
+      Type builtType = classEmitter.BuildType();
+      Assert.That(builtType.ContainsGenericParameters, Is.True);
+      Type[] typeParameters = builtType.GetGenericArguments();
+      Assert.That(typeParameters.Length, Is.EqualTo(6));
+      Assert.That(builtType.BaseType.ContainsGenericParameters, Is.True);
+      Assert.That(builtType.BaseType.GetGenericArguments()[0], Is.EqualTo(typeParameters[0]));
     }
 
     [Test]
     public void OverrideSimpleGenericMethod ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "OverrideSimpleGenericMethod", typeof (ClassWithSimpleGenericMethod), Type.EmptyTypes,
+      CustomClassEmitter classEmitter = new CustomClassEmitter(Scope, "OverrideSimpleGenericMethod", typeof (ClassWithSimpleGenericMethod), Type.EmptyTypes,
           TypeAttributes.Public | TypeAttributes.Class, false);
 
-      MethodInfo baseMethod = typeof (ClassWithSimpleGenericMethod).GetMethod ("GenericMethod");
-      var methodEmitter = classEmitter.CreateMethodOverride (baseMethod);
-      methodEmitter.ImplementByBaseCall (baseMethod);
+      MethodInfo baseMethod = typeof (ClassWithSimpleGenericMethod).GetMethod("GenericMethod");
+      var methodEmitter = classEmitter.CreateMethodOverride(baseMethod);
+      methodEmitter.ImplementByBaseCall(baseMethod);
 
-      Type builtType = classEmitter.BuildType ();
-      ClassWithSimpleGenericMethod instance = (ClassWithSimpleGenericMethod) Activator.CreateInstance (builtType);
+      Type builtType = classEmitter.BuildType();
+      ClassWithSimpleGenericMethod instance = (ClassWithSimpleGenericMethod) Activator.CreateInstance(builtType);
 
-      string result = instance.GenericMethod ("1", 2, false);
-      Assert.That (result, Is.EqualTo ("1, 2, False"));
+      string result = instance.GenericMethod("1", 2, false);
+      Assert.That(result, Is.EqualTo("1, 2, False"));
     }
 
     [Test]
     public void OverrideConstrainedGenericMethod ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "OverrideConstrainedGenericMethod", typeof (ClassWithConstrainedGenericMethod), Type.EmptyTypes,
+      CustomClassEmitter classEmitter = new CustomClassEmitter(Scope, "OverrideConstrainedGenericMethod", typeof (ClassWithConstrainedGenericMethod), Type.EmptyTypes,
           TypeAttributes.Public | TypeAttributes.Class, false);
 
-      MethodInfo baseMethod = typeof (ClassWithConstrainedGenericMethod).GetMethod ("GenericMethod");
-      var methodEmitter = classEmitter.CreateMethodOverride (baseMethod);
-      methodEmitter.ImplementByBaseCall (baseMethod);
+      MethodInfo baseMethod = typeof (ClassWithConstrainedGenericMethod).GetMethod("GenericMethod");
+      var methodEmitter = classEmitter.CreateMethodOverride(baseMethod);
+      methodEmitter.ImplementByBaseCall(baseMethod);
 
-      Type builtType = classEmitter.BuildType ();
-      ClassWithConstrainedGenericMethod instance = (ClassWithConstrainedGenericMethod) Activator.CreateInstance (builtType);
+      Type builtType = classEmitter.BuildType();
+      ClassWithConstrainedGenericMethod instance = (ClassWithConstrainedGenericMethod) Activator.CreateInstance(builtType);
 
-      string result = instance.GenericMethod ("1", 2, "2");
-      Assert.That (result, Is.EqualTo ("1, 2, 2"));
+      string result = instance.GenericMethod("1", 2, "2");
+      Assert.That(result, Is.EqualTo("1, 2, 2"));
     }
 
     [Test]
@@ -106,55 +106,55 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     public void OverrideGenericMethod_WithConstraint_ModifiedByClosedGenericClass ()
     {
       Type baseType = typeof (GenericClassWithGenericMethod<IConvertible, List<string>, int, object, IConvertible, List<List<IConvertible[]>>>);
-      var classEmitter = new CustomClassEmitter (
+      var classEmitter = new CustomClassEmitter(
           Scope,
           "OverrideGenericMethod_WithConstraint_ModifiedByClosedGenericClass",
           baseType,
           Type.EmptyTypes,
           TypeAttributes.Public | TypeAttributes.Class, false);
 
-      MethodInfo baseMethod = baseType.GetMethod ("GenericMethod");
+      MethodInfo baseMethod = baseType.GetMethod("GenericMethod");
 
-      var methodEmitter = classEmitter.CreateMethodOverride (baseMethod);
-      methodEmitter.ImplementByBaseCall (baseMethod);
+      var methodEmitter = classEmitter.CreateMethodOverride(baseMethod);
+      methodEmitter.ImplementByBaseCall(baseMethod);
 
-      Type builtType = classEmitter.BuildType ();
+      Type builtType = classEmitter.BuildType();
       var instance =
           (GenericClassWithGenericMethod<IConvertible, List<string>, int, object, IConvertible, List<List<IConvertible[]>>>)
-          Activator.CreateInstance (builtType);
+          Activator.CreateInstance(builtType);
 
-      string result = instance.GenericMethod (1, new List<int[]> (), new List<List<IConvertible[]>> ());
-      Assert.That (result, Is.EqualTo ("1, System.Collections.Generic.List`1[System.Int32[]], System.Collections.Generic.List`1[System.Collections.Generic.List`1["
+      string result = instance.GenericMethod(1, new List<int[]>(), new List<List<IConvertible[]>>());
+      Assert.That(result, Is.EqualTo("1, System.Collections.Generic.List`1[System.Int32[]], System.Collections.Generic.List`1[System.Collections.Generic.List`1["
                                        + "System.IConvertible[]]]"));
     }
 
     [Test]
     public void OverridingSimpleMembersOfClosedGenericClass ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "OverridingSimpleMembersOfClosedGenericClass", typeof (GenericClassWithAllKindsOfMembers<int>), Type.EmptyTypes,
+      CustomClassEmitter classEmitter = new CustomClassEmitter(Scope, "OverridingSimpleMembersOfClosedGenericClass", typeof (GenericClassWithAllKindsOfMembers<int>), Type.EmptyTypes,
           TypeAttributes.Public | TypeAttributes.Class, false);
 
-      MethodInfo baseMethod = typeof (GenericClassWithAllKindsOfMembers<int>).GetMethod ("Method");
-      var overriddenMethod = classEmitter.CreateMethodOverride (baseMethod);
-      overriddenMethod.ImplementByBaseCall (baseMethod);
+      MethodInfo baseMethod = typeof (GenericClassWithAllKindsOfMembers<int>).GetMethod("Method");
+      var overriddenMethod = classEmitter.CreateMethodOverride(baseMethod);
+      overriddenMethod.ImplementByBaseCall(baseMethod);
 
-      PropertyInfo baseProperty = typeof (GenericClassWithAllKindsOfMembers<int>).GetProperty ("Property");
-      CustomPropertyEmitter overriddenProperty = classEmitter.CreatePropertyOverride (baseProperty);
-      overriddenProperty.GetMethod = classEmitter.CreateMethodOverride (baseProperty.GetGetMethod ());
-      overriddenProperty.GetMethod.ImplementByBaseCall (baseProperty.GetGetMethod ());
+      PropertyInfo baseProperty = typeof (GenericClassWithAllKindsOfMembers<int>).GetProperty("Property");
+      CustomPropertyEmitter overriddenProperty = classEmitter.CreatePropertyOverride(baseProperty);
+      overriddenProperty.GetMethod = classEmitter.CreateMethodOverride(baseProperty.GetGetMethod());
+      overriddenProperty.GetMethod.ImplementByBaseCall(baseProperty.GetGetMethod());
 
-      EventInfo baseEvent = typeof (GenericClassWithAllKindsOfMembers<int>).GetEvent ("Event");
-      CustomEventEmitter overriddenEvent = classEmitter.CreateEventOverride (baseEvent);
-      overriddenEvent.AddMethod = classEmitter.CreateMethodOverride (baseEvent.GetAddMethod ());
-      overriddenEvent.AddMethod.ImplementByBaseCall (baseEvent.GetAddMethod ());
-      overriddenEvent.RemoveMethod = classEmitter.CreateMethodOverride (baseEvent.GetRemoveMethod ());
-      overriddenEvent.RemoveMethod.ImplementByBaseCall (baseEvent.GetRemoveMethod ());
+      EventInfo baseEvent = typeof (GenericClassWithAllKindsOfMembers<int>).GetEvent("Event");
+      CustomEventEmitter overriddenEvent = classEmitter.CreateEventOverride(baseEvent);
+      overriddenEvent.AddMethod = classEmitter.CreateMethodOverride(baseEvent.GetAddMethod());
+      overriddenEvent.AddMethod.ImplementByBaseCall(baseEvent.GetAddMethod());
+      overriddenEvent.RemoveMethod = classEmitter.CreateMethodOverride(baseEvent.GetRemoveMethod());
+      overriddenEvent.RemoveMethod.ImplementByBaseCall(baseEvent.GetRemoveMethod());
 
-      Type builtType = classEmitter.BuildType ();
-      GenericClassWithAllKindsOfMembers<int> instance = (GenericClassWithAllKindsOfMembers<int>) Activator.CreateInstance (builtType);
+      Type builtType = classEmitter.BuildType();
+      GenericClassWithAllKindsOfMembers<int> instance = (GenericClassWithAllKindsOfMembers<int>) Activator.CreateInstance(builtType);
 
-      instance.Method (5);
-      Assert.That (instance.Property, Is.EqualTo (0));
+      instance.Method(5);
+      Assert.That(instance.Property, Is.EqualTo(0));
       instance.Event += delegate { return 0;  };
       instance.Event -= delegate { return 0;  };
     }
@@ -162,31 +162,31 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void OverridingSimpleMembersOfOpenGenericClass ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter (Scope, "OverridingSimpleMembersOfOpenGenericClass", typeof (GenericClassWithAllKindsOfMembers<>), Type.EmptyTypes,
+      CustomClassEmitter classEmitter = new CustomClassEmitter(Scope, "OverridingSimpleMembersOfOpenGenericClass", typeof (GenericClassWithAllKindsOfMembers<>), Type.EmptyTypes,
           TypeAttributes.Public | TypeAttributes.Class, false);
 
-      MethodInfo baseMethod = typeof (GenericClassWithAllKindsOfMembers<>).GetMethod ("Method");
-      var overriddenMethod = classEmitter.CreateMethodOverride (baseMethod);
-      overriddenMethod.ImplementByBaseCall (baseMethod);
+      MethodInfo baseMethod = typeof (GenericClassWithAllKindsOfMembers<>).GetMethod("Method");
+      var overriddenMethod = classEmitter.CreateMethodOverride(baseMethod);
+      overriddenMethod.ImplementByBaseCall(baseMethod);
 
-      PropertyInfo baseProperty = typeof (GenericClassWithAllKindsOfMembers<>).GetProperty ("Property");
-      CustomPropertyEmitter overriddenProperty = classEmitter.CreatePropertyOverride (baseProperty);
-      overriddenProperty.GetMethod = classEmitter.CreateMethodOverride (baseProperty.GetGetMethod ());
-      overriddenProperty.GetMethod.ImplementByBaseCall (baseProperty.GetGetMethod ());
+      PropertyInfo baseProperty = typeof (GenericClassWithAllKindsOfMembers<>).GetProperty("Property");
+      CustomPropertyEmitter overriddenProperty = classEmitter.CreatePropertyOverride(baseProperty);
+      overriddenProperty.GetMethod = classEmitter.CreateMethodOverride(baseProperty.GetGetMethod());
+      overriddenProperty.GetMethod.ImplementByBaseCall(baseProperty.GetGetMethod());
 
-      EventInfo baseEvent = typeof (GenericClassWithAllKindsOfMembers<>).GetEvent ("Event");
-      CustomEventEmitter overriddenEvent = classEmitter.CreateEventOverride (baseEvent);
-      overriddenEvent.AddMethod = classEmitter.CreateMethodOverride (baseEvent.GetAddMethod ());
-      overriddenEvent.AddMethod.ImplementByBaseCall (baseEvent.GetAddMethod ());
-      overriddenEvent.RemoveMethod = classEmitter.CreateMethodOverride (baseEvent.GetRemoveMethod ());
-      overriddenEvent.RemoveMethod.ImplementByBaseCall (baseEvent.GetRemoveMethod ());
+      EventInfo baseEvent = typeof (GenericClassWithAllKindsOfMembers<>).GetEvent("Event");
+      CustomEventEmitter overriddenEvent = classEmitter.CreateEventOverride(baseEvent);
+      overriddenEvent.AddMethod = classEmitter.CreateMethodOverride(baseEvent.GetAddMethod());
+      overriddenEvent.AddMethod.ImplementByBaseCall(baseEvent.GetAddMethod());
+      overriddenEvent.RemoveMethod = classEmitter.CreateMethodOverride(baseEvent.GetRemoveMethod());
+      overriddenEvent.RemoveMethod.ImplementByBaseCall(baseEvent.GetRemoveMethod());
 
-      Type builtType = classEmitter.BuildType ();
+      Type builtType = classEmitter.BuildType();
       GenericClassWithAllKindsOfMembers<int> instance =
-          (GenericClassWithAllKindsOfMembers<int>) Activator.CreateInstance (builtType.MakeGenericType (typeof (int)));
+          (GenericClassWithAllKindsOfMembers<int>) Activator.CreateInstance(builtType.MakeGenericType(typeof (int)));
 
-      instance.Method (5);
-      Assert.That (instance.Property, Is.EqualTo (0));
+      instance.Method(5);
+      Assert.That(instance.Property, Is.EqualTo(0));
       instance.Event += delegate { return 0; };
       instance.Event -= delegate { return 0; };
     }
@@ -195,34 +195,34 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     public void ImplementingSimpleMembersOfOpenGenericInterface ()
     {
       CustomClassEmitter classEmitter =
-          new CustomClassEmitter (
+          new CustomClassEmitter(
               Scope,
               "ImplementingSimpleMembersOfOpenGenericInterface",
               typeof (object),
               new Type[] {typeof (GenericInterfaceWithAllKindsOfMembers<int>)},
               TypeAttributes.Public | TypeAttributes.Class, false);
 
-      MethodInfo baseMethod = typeof (GenericInterfaceWithAllKindsOfMembers<int>).GetMethod ("Method");
-      var overriddenMethod = classEmitter.CreateInterfaceMethodImplementation (baseMethod);
-      overriddenMethod.AddStatement (new ReturnStatement());
+      MethodInfo baseMethod = typeof (GenericInterfaceWithAllKindsOfMembers<int>).GetMethod("Method");
+      var overriddenMethod = classEmitter.CreateInterfaceMethodImplementation(baseMethod);
+      overriddenMethod.AddStatement(new ReturnStatement());
 
-      PropertyInfo baseProperty = typeof (GenericInterfaceWithAllKindsOfMembers<int>).GetProperty ("Property");
-      CustomPropertyEmitter overriddenProperty = classEmitter.CreateInterfacePropertyImplementation (baseProperty);
-      overriddenProperty.GetMethod = classEmitter.CreateInterfaceMethodImplementation (baseProperty.GetGetMethod ());
-      overriddenProperty.GetMethod.AddStatement (new ReturnStatement (new ConstReference (13)));
+      PropertyInfo baseProperty = typeof (GenericInterfaceWithAllKindsOfMembers<int>).GetProperty("Property");
+      CustomPropertyEmitter overriddenProperty = classEmitter.CreateInterfacePropertyImplementation(baseProperty);
+      overriddenProperty.GetMethod = classEmitter.CreateInterfaceMethodImplementation(baseProperty.GetGetMethod());
+      overriddenProperty.GetMethod.AddStatement(new ReturnStatement(new ConstReference(13)));
 
-      EventInfo baseEvent = typeof (GenericInterfaceWithAllKindsOfMembers<int>).GetEvent ("Event");
-      CustomEventEmitter overriddenEvent = classEmitter.CreateInterfaceEventImplementation (baseEvent);
-      overriddenEvent.AddMethod = classEmitter.CreateInterfaceMethodImplementation (baseEvent.GetAddMethod ());
-      overriddenEvent.AddMethod.AddStatement (new ReturnStatement ());
-      overriddenEvent.RemoveMethod = classEmitter.CreateInterfaceMethodImplementation (baseEvent.GetRemoveMethod ());
-      overriddenEvent.RemoveMethod.AddStatement (new ReturnStatement ());
+      EventInfo baseEvent = typeof (GenericInterfaceWithAllKindsOfMembers<int>).GetEvent("Event");
+      CustomEventEmitter overriddenEvent = classEmitter.CreateInterfaceEventImplementation(baseEvent);
+      overriddenEvent.AddMethod = classEmitter.CreateInterfaceMethodImplementation(baseEvent.GetAddMethod());
+      overriddenEvent.AddMethod.AddStatement(new ReturnStatement());
+      overriddenEvent.RemoveMethod = classEmitter.CreateInterfaceMethodImplementation(baseEvent.GetRemoveMethod());
+      overriddenEvent.RemoveMethod.AddStatement(new ReturnStatement());
 
-      Type builtType = classEmitter.BuildType ();
-      GenericInterfaceWithAllKindsOfMembers<int> instance = (GenericInterfaceWithAllKindsOfMembers<int>) Activator.CreateInstance (builtType);
+      Type builtType = classEmitter.BuildType();
+      GenericInterfaceWithAllKindsOfMembers<int> instance = (GenericInterfaceWithAllKindsOfMembers<int>) Activator.CreateInstance(builtType);
 
-      instance.Method (7);
-      Assert.That (instance.Property, Is.EqualTo (13));
+      instance.Method(7);
+      Assert.That(instance.Property, Is.EqualTo(13));
       instance.Event += delegate { return 0; };
       instance.Event -= delegate { return 0; };
     }
@@ -230,22 +230,22 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void ClassEmitterThrowsOnNestedGenericBase ()
     {
-      Assert.That (
-          () => new CustomClassEmitter (Scope, "ClassEmitterThrowsOnNestedGenericBase", typeof (GenericClassWithNested<>.Nested)),
+      Assert.That(
+          () => new CustomClassEmitter(Scope, "ClassEmitterThrowsOnNestedGenericBase", typeof (GenericClassWithNested<>.Nested)),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "This emitter does not support nested types of non-closed generic types."));
     }
 
     [Test]
     public void ClassEmitterThrowsOnOpenConstructedBase ()
     {
-      Type genericParameter = typeof (ClassWithSimpleGenericMethod).GetMethod ("GenericMethod").GetGenericArguments()[0];
-      Type openConstructedType = typeof (GenericClassWithNested<>).MakeGenericType (genericParameter);
-      Assert.That (
-          () => new CustomClassEmitter (Scope, "ClassEmitterThrowsOnOpenConstructedBase", openConstructedType),
+      Type genericParameter = typeof (ClassWithSimpleGenericMethod).GetMethod("GenericMethod").GetGenericArguments()[0];
+      Type openConstructedType = typeof (GenericClassWithNested<>).MakeGenericType(genericParameter);
+      Assert.That(
+          () => new CustomClassEmitter(Scope, "ClassEmitterThrowsOnOpenConstructedBase", openConstructedType),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "This emitter does not support open constructed types as base types. "
                   + "Specify a closed type or a generic type definition."));
     }

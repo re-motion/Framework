@@ -40,46 +40,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
         ClientTransaction clientTransaction = null)
     {
       clientTransaction = clientTransaction ?? ClientTransactionScope.CurrentTransaction;
-      var dataManager = ClientTransactionTestHelper.GetDataManager (clientTransaction);
+      var dataManager = ClientTransactionTestHelper.GetDataManager(clientTransaction);
       var changeDetectionStrategy = new RootDomainObjectCollectionEndPointChangeDetectionStrategy();
-      var dataStrategyFactory = new AssociatedDomainObjectCollectionDataStrategyFactory (dataManager);
-      var collectionEndPoint = new DomainObjectCollectionEndPoint (
+      var dataStrategyFactory = new AssociatedDomainObjectCollectionDataStrategyFactory(dataManager);
+      var collectionEndPoint = new DomainObjectCollectionEndPoint(
           clientTransaction,
           endPointID,
-          new DomainObjectCollectionEndPointCollectionManager (endPointID, new DomainObjectCollectionEndPointCollectionProvider (dataStrategyFactory), dataStrategyFactory),
+          new DomainObjectCollectionEndPointCollectionManager(endPointID, new DomainObjectCollectionEndPointCollectionProvider(dataStrategyFactory), dataStrategyFactory),
           dataManager,
           dataManager,
-          ClientTransactionTestHelper.GetEventBroker (clientTransaction),
-          new DomainObjectCollectionEndPointDataManagerFactory (changeDetectionStrategy));
+          ClientTransactionTestHelper.GetEventBroker(clientTransaction),
+          new DomainObjectCollectionEndPointDataManagerFactory(changeDetectionStrategy));
       
       if (initialContents != null)
-        DomainObjectCollectionEndPointTestHelper.FillCollectionEndPointWithInitialContents (collectionEndPoint, initialContents);
+        DomainObjectCollectionEndPointTestHelper.FillCollectionEndPointWithInitialContents(collectionEndPoint, initialContents);
 
       return collectionEndPoint;
     }
 
     public static RealObjectEndPoint CreateRealObjectEndPoint (RelationEndPointID endPointID)
     {
-      var dataManager = (DataManager) PrivateInvoke.GetNonPublicProperty (ClientTransaction.Current, "DataManager");
-      var dataContainer = dataManager.GetDataContainerWithLazyLoad (endPointID.ObjectID, true);
-      return CreateRealObjectEndPoint (endPointID, dataContainer);
+      var dataManager = (DataManager) PrivateInvoke.GetNonPublicProperty(ClientTransaction.Current, "DataManager");
+      var dataContainer = dataManager.GetDataContainerWithLazyLoad(endPointID.ObjectID, true);
+      return CreateRealObjectEndPoint(endPointID, dataContainer);
     }
 
     public static RealObjectEndPoint CreateRealObjectEndPoint (RelationEndPointID endPointID, DataContainer dataContainer)
     {
       var clientTransaction = dataContainer.ClientTransaction;
-      var endPointProvider = ClientTransactionTestHelper.GetDataManager (clientTransaction);
-      var transactionEventSink = ClientTransactionTestHelper.GetEventBroker (clientTransaction);
-      return new RealObjectEndPoint (clientTransaction, endPointID, dataContainer, endPointProvider, transactionEventSink);
+      var endPointProvider = ClientTransactionTestHelper.GetDataManager(clientTransaction);
+      var transactionEventSink = ClientTransactionTestHelper.GetEventBroker(clientTransaction);
+      return new RealObjectEndPoint(clientTransaction, endPointID, dataContainer, endPointProvider, transactionEventSink);
     }
 
     public static VirtualObjectEndPoint CreateVirtualObjectEndPoint (RelationEndPointID endPointID, ClientTransaction clientTransaction)
     {
-      var lazyLoader = ClientTransactionTestHelper.GetDataManager (clientTransaction);
-      var endPointProvider = ClientTransactionTestHelper.GetDataManager (clientTransaction);
-      var transactionEventSink = ClientTransactionTestHelper.GetEventBroker (clientTransaction);
-      var dataManagerFactory = new VirtualObjectEndPointDataManagerFactory ();
-      return new VirtualObjectEndPoint (
+      var lazyLoader = ClientTransactionTestHelper.GetDataManager(clientTransaction);
+      var endPointProvider = ClientTransactionTestHelper.GetDataManager(clientTransaction);
+      var transactionEventSink = ClientTransactionTestHelper.GetEventBroker(clientTransaction);
+      var dataManagerFactory = new VirtualObjectEndPointDataManagerFactory();
+      return new VirtualObjectEndPoint(
           clientTransaction,
           endPointID,
           lazyLoader,
@@ -93,15 +93,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       if (endPointID.Definition.IsVirtual)
       {
         var clientTransaction = ClientTransaction.Current;
-        VirtualObjectEndPoint endPoint = CreateVirtualObjectEndPoint (endPointID, clientTransaction);
-        endPoint.MarkDataComplete (LifetimeService.GetObjectReference (clientTransaction, oppositeObjectID));
+        VirtualObjectEndPoint endPoint = CreateVirtualObjectEndPoint(endPointID, clientTransaction);
+        endPoint.MarkDataComplete(LifetimeService.GetObjectReference(clientTransaction, oppositeObjectID));
         return endPoint;
       }
       else
       {
-        var endPoint = CreateRealObjectEndPoint (endPointID);
-        RealObjectEndPointTestHelper.SetValueViaDataContainer (endPoint, oppositeObjectID);
-        endPoint.Commit ();
+        var endPoint = CreateRealObjectEndPoint(endPointID);
+        RealObjectEndPointTestHelper.SetValueViaDataContainer(endPoint, oppositeObjectID);
+        endPoint.Commit();
         return endPoint;
       }
     }
@@ -110,38 +110,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       objectID = objectID ?? new ObjectID(typeof (Order), Guid.NewGuid());
       shortPropertyName = shortPropertyName ?? "OrderItems";
-      return RelationEndPointID.Create (objectID, objectID.ClassDefinition.ClassType, shortPropertyName);
+      return RelationEndPointID.Create(objectID, objectID.ClassDefinition.ClassType, shortPropertyName);
     }
 
     public static RelationEndPointID CreateAnonymousEndPointID ()
     {
-      var anonymousEndPointDefinition = GetEndPointDefinition (typeof (Location), "Client").GetOppositeEndPointDefinition ();
-      var endPointID = RelationEndPointID.Create (new DomainObjectIDs (MappingConfiguration.Current).Client1, anonymousEndPointDefinition);
-      Assert.That (endPointID.Definition.IsAnonymous, Is.True);
+      var anonymousEndPointDefinition = GetEndPointDefinition(typeof (Location), "Client").GetOppositeEndPointDefinition();
+      var endPointID = RelationEndPointID.Create(new DomainObjectIDs(MappingConfiguration.Current).Client1, anonymousEndPointDefinition);
+      Assert.That(endPointID.Definition.IsAnonymous, Is.True);
       return endPointID;
     }
 
     public static IRelationEndPointDefinition GetEndPointDefinition (Type declaringType, string shortPropertyName)
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (declaringType);
-      var propertyAccessorData = classDefinition.PropertyAccessorDataCache.FindPropertyAccessorData (declaringType, shortPropertyName);
-      Assert.That (propertyAccessorData, Is.Not.Null);
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(declaringType);
+      var propertyAccessorData = classDefinition.PropertyAccessorDataCache.FindPropertyAccessorData(declaringType, shortPropertyName);
+      Assert.That(propertyAccessorData, Is.Not.Null);
       return propertyAccessorData.RelationEndPointDefinition;
     }
 
     public static DomainObjectCollectionEndPoint CreateCollectionEndPoint_Customer1_Orders (params Order[] initialContents)
     {
-      var customerEndPointID = CreateRelationEndPointID (new DomainObjectIDs (MappingConfiguration.Current).Customer1, "Orders");
-      return CreateDomainObjectCollectionEndPoint (customerEndPointID, initialContents);
+      var customerEndPointID = CreateRelationEndPointID(new DomainObjectIDs(MappingConfiguration.Current).Customer1, "Orders");
+      return CreateDomainObjectCollectionEndPoint(customerEndPointID, initialContents);
     }
 
     public static IRelationEndPoint CreateStub (RelationEndPointID endPointID = null)
     {
       endPointID = endPointID ?? CreateRelationEndPointID();
       var endPoint = MockRepository.GenerateStub<IRelationEndPoint>();
-      endPoint.Stub (stub => stub.ID).Return (endPointID);
-      endPoint.Stub (stub => stub.Definition).Return (endPointID.Definition);
-      endPoint.Stub (stub => stub.ObjectID).Return (endPointID.ObjectID);
+      endPoint.Stub(stub => stub.ID).Return(endPointID);
+      endPoint.Stub(stub => stub.Definition).Return(endPointID.Definition);
+      endPoint.Stub(stub => stub.ObjectID).Return(endPointID.ObjectID);
       return endPoint;
     }
   }

@@ -41,128 +41,128 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public SecurityContextRepository (IDomainRevisionProvider revisionProvider, IUserNamesRevisionProvider userRevisionProvider)
     {
-      ArgumentUtility.CheckNotNull ("revisionProvider", revisionProvider);
-      ArgumentUtility.CheckNotNull ("userRevisionProvider", userRevisionProvider);
+      ArgumentUtility.CheckNotNull("revisionProvider", revisionProvider);
+      ArgumentUtility.CheckNotNull("userRevisionProvider", userRevisionProvider);
       
-      _cache = new SecurityContextRevisionBasedCache (revisionProvider);
-      _userNamesCache = new SecurityContextUserNamesRevisionBasedCache (userRevisionProvider);
+      _cache = new SecurityContextRevisionBasedCache(revisionProvider);
+      _userNamesCache = new SecurityContextUserNamesRevisionBasedCache(userRevisionProvider);
     }
 
     public IDomainObjectHandle<Tenant> GetTenant (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
 
       var cachedData = _cache.GetData();
-      var tenant = cachedData.Tenants.GetValueOrDefault (uniqueIdentifier);
+      var tenant = cachedData.Tenants.GetValueOrDefault(uniqueIdentifier);
       if (tenant == null)
       {
         cachedData = _cache.GetDataWithRefresh();
-        tenant = cachedData.Tenants.GetValueOrDefault (uniqueIdentifier);
+        tenant = cachedData.Tenants.GetValueOrDefault(uniqueIdentifier);
         if (tenant == null)
-          throw CreateAccessControlException ("The tenant '{0}' could not be found.", uniqueIdentifier);
+          throw CreateAccessControlException("The tenant '{0}' could not be found.", uniqueIdentifier);
       }
       return tenant;
     }
 
     public IDomainObjectHandle<Group> GetGroup (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
 
       var cachedData = _cache.GetData();
-      var group = cachedData.Groups.GetValueOrDefault (uniqueIdentifier);
+      var group = cachedData.Groups.GetValueOrDefault(uniqueIdentifier);
       if (group == null)
       {
         cachedData = _cache.GetDataWithRefresh();
-        group = cachedData.Groups.GetValueOrDefault (uniqueIdentifier);
+        group = cachedData.Groups.GetValueOrDefault(uniqueIdentifier);
         if (group == null)
-          throw CreateAccessControlException ("The group '{0}' could not be found.", uniqueIdentifier);
+          throw CreateAccessControlException("The group '{0}' could not be found.", uniqueIdentifier);
       }
       return group;
     }
 
     public IDomainObjectHandle<User> GetUser (string userName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("userName", userName);
+      ArgumentUtility.CheckNotNullOrEmpty("userName", userName);
 
       var cachedData = _userNamesCache.GetData();
-      var user = cachedData.Users.GetValueOrDefault (userName);
+      var user = cachedData.Users.GetValueOrDefault(userName);
       if (user == null)
       {
         cachedData = _userNamesCache.GetDataWithRefresh();
-        user = cachedData.Users.GetValueOrDefault (userName);
+        user = cachedData.Users.GetValueOrDefault(userName);
         if (user == null)
-          throw CreateAccessControlException ("The user '{0}' could not be found.", userName);
+          throw CreateAccessControlException("The user '{0}' could not be found.", userName);
       }
       return user;
     }
 
     public IDomainObjectHandle<Position> GetPosition (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
 
       var cachedData = _cache.GetData();
-      var position = cachedData.Positions.GetValueOrDefault (uniqueIdentifier);
+      var position = cachedData.Positions.GetValueOrDefault(uniqueIdentifier);
       if (position == null)
       {
         cachedData = _cache.GetDataWithRefresh();
-        position = cachedData.Positions.GetValueOrDefault (uniqueIdentifier);
+        position = cachedData.Positions.GetValueOrDefault(uniqueIdentifier);
         if (position == null)
-          throw CreateAccessControlException ("The position '{0}' could not be found.", uniqueIdentifier);
+          throw CreateAccessControlException("The position '{0}' could not be found.", uniqueIdentifier);
       }
       return position;
     }
 
     public IDomainObjectHandle<AbstractRoleDefinition> GetAbstractRole (EnumWrapper name)
     {
-      ArgumentUtility.CheckNotNull ("name", name);
+      ArgumentUtility.CheckNotNull("name", name);
 
       var cachedData = _cache.GetData();
-      var abstractRole = cachedData.AbstractRoles.GetValueOrDefault (name);
+      var abstractRole = cachedData.AbstractRoles.GetValueOrDefault(name);
       if (abstractRole == null)
       {
         cachedData = _cache.GetDataWithRefresh();
-        abstractRole = cachedData.AbstractRoles.GetValueOrDefault (name);
+        abstractRole = cachedData.AbstractRoles.GetValueOrDefault(name);
         if (abstractRole == null)
-          throw CreateAccessControlException ("The abstract role '{0}' could not be found.", name);
+          throw CreateAccessControlException("The abstract role '{0}' could not be found.", name);
       }
       return abstractRole;
     }
 
     public SecurableClassDefinitionData GetClass (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
       var cachedData = _cache.GetData();
-      var @class = cachedData.Classes.GetValueOrDefault (name);
+      var @class = cachedData.Classes.GetValueOrDefault(name);
       if (@class == null)
       {
         cachedData = _cache.GetDataWithRefresh();
-        @class = cachedData.Classes.GetValueOrDefault (name);
+        @class = cachedData.Classes.GetValueOrDefault(name);
         if (@class == null)
-          throw CreateAccessControlException ("The securable class '{0}' could not be found.", name);
+          throw CreateAccessControlException("The securable class '{0}' could not be found.", name);
       }
       return @class;
     }
 
     public IReadOnlyCollection<string> GetStatePropertyValues (IDomainObjectHandle<StatePropertyDefinition> stateProperty)
     {
-      ArgumentUtility.CheckNotNull ("stateProperty", stateProperty);
+      ArgumentUtility.CheckNotNull("stateProperty", stateProperty);
 
       var cachedData = _cache.GetData();
-      var values = cachedData.StatePropertyValues.GetValueOrDefault (stateProperty);
+      var values = cachedData.StatePropertyValues.GetValueOrDefault(stateProperty);
       if (values == null)
       {
         cachedData = _cache.GetDataWithRefresh();
-        values = cachedData.StatePropertyValues.GetValueOrDefault (stateProperty);
+        values = cachedData.StatePropertyValues.GetValueOrDefault(stateProperty);
         if (values == null)
-          throw CreateAccessControlException ("The state property with ID '{0}' could not be found.", stateProperty);
+          throw CreateAccessControlException("The state property with ID '{0}' could not be found.", stateProperty);
       }
       return values;
     }
 
     private AccessControlException CreateAccessControlException (string message, params object[] args)
     {
-      return new AccessControlException (string.Format (message, args));
+      return new AccessControlException(string.Format(message, args));
     }
   }
 }

@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public ReflectionBusinessObjectWebUIService (IResourceUrlFactory resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull ("resourceUrlFactory", resourceUrlFactory);
+      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
 
       _resourceUrlFactory = resourceUrlFactory;
     }
@@ -55,8 +55,8 @@ namespace Remotion.ObjectBinding.Sample
       {
         var targetType = ((BindableObjectClass) obj.BusinessObjectClass).TargetType;
         var fileName = targetType.GetFullNameChecked() + ".gif";
-        string url = _resourceUrlFactory.CreateResourceUrl (targetType, ResourceType.Image, fileName).GetUrl();
-        return new IconInfo (url, Unit.Pixel (16), Unit.Pixel (16));
+        string url = _resourceUrlFactory.CreateResourceUrl(targetType, ResourceType.Image, fileName).GetUrl();
+        return new IconInfo(url, Unit.Pixel(16), Unit.Pixel(16));
       }
     }
 
@@ -74,10 +74,10 @@ namespace Remotion.ObjectBinding.Sample
         IBusinessObjectProperty businessObjectProperty,
         IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNull ("businessObjectClass", businessObjectClass);
+      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull("businessObjectClass", businessObjectClass);
 
-      return new ToolTipBasedHelpInfo ("Help for " + (businessObjectProperty != null ? businessObjectProperty.Identifier : "prop"));
+      return new ToolTipBasedHelpInfo("Help for " + (businessObjectProperty != null ? businessObjectProperty.Identifier : "prop"));
       //return new ToolTipBasedHelpInfo (string.Format (
       //        "{0}\r\n{1}\r\n{2}\r\n{3}",
       //        control.ID,

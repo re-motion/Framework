@@ -29,14 +29,14 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     /// <include file='..\..\doc\include\ExecutionEngine\WxePageExtensions.xml' path='WxePageExtensions/ExecuteFunction/param[@name="page" or @name="function"]' />
     public static void ExecuteFunction (this IWxePage page, WxeFunction function)
     {
-      ExecuteFunction (page, function, false, false, null);
+      ExecuteFunction(page, function, false, false, null);
     }
 
     /// <summary> Executes the <paramref name="function"/> in the current window. </summary>
     /// <include file='..\..\doc\include\ExecutionEngine\WxePageExtensions.xml' path='WxePageExtensions/ExecuteFunction/param[@name="page" or @name="function" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
     public static void ExecuteFunction (this IWxePage page, WxeFunction function, bool createPermaUrl, bool useParentPermaUrl)
     {
-      ExecuteFunction (page, function, createPermaUrl, useParentPermaUrl, null);
+      ExecuteFunction(page, function, createPermaUrl, useParentPermaUrl, null);
     }
 
     /// <summary> Executes the <paramref name="function"/> in the current window. </summary>
@@ -44,9 +44,9 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     public static void ExecuteFunction (
         this IWxePage page, WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection? permaUrlParameters)
     {
-      var permaUrlOptions = CreatePermaUrlOptions (createPermaUrl, useParentPermaUrl, permaUrlParameters);
-      var arguments = new WxeCallArgumentsWithoutSender (permaUrlOptions);
-      Execute (page, function, arguments);
+      var permaUrlOptions = CreatePermaUrlOptions(createPermaUrl, useParentPermaUrl, permaUrlParameters);
+      var arguments = new WxeCallArgumentsWithoutSender(permaUrlOptions);
+      Execute(page, function, arguments);
     }
 
     /// <summary>Executes the <paramref name="function"/> in the current window without triggering the current post-back event on returning.</summary>
@@ -54,7 +54,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     /// <include file='..\..\doc\include\ExecutionEngine\WxePageExtensions.xml' path='WxePageExtensions/ExecuteFunctionNoRepost/param[@name="page" or @name="function" or @name="sender"]' />
     public static void ExecuteFunctionNoRepost (this IWxePage page, WxeFunction function, Control sender)
     {
-      ExecuteFunctionNoRepost (page, function, sender, false, false, null);
+      ExecuteFunctionNoRepost(page, function, sender, false, false, null);
     }
 
     /// <summary>Executes the <paramref name="function"/> in the current window without triggering the current post-back event on returning.</summary>
@@ -65,7 +65,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     /// <include file='..\..\doc\include\ExecutionEngine\WxePageExtensions.xml' path='WxePageExtensions/ExecuteFunctionNoRepost/param[@name="page" or @name="function" or @name="sender" or @name="usesEventTarget"]' />
     public static void ExecuteFunctionNoRepost (this IWxePage page, WxeFunction function, Control sender, bool usesEventTarget)
     {
-      ExecuteFunctionNoRepost (page, function, sender, usesEventTarget, false, false, null);
+      ExecuteFunctionNoRepost(page, function, sender, usesEventTarget, false, false, null);
     }
 
     /// <summary>Executes the <paramref name="function"/> in the current window without triggering the current post-back event on returning.</summary>
@@ -74,7 +74,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     public static void ExecuteFunctionNoRepost (
         this IWxePage page, WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl)
     {
-      ExecuteFunctionNoRepost (page, function, sender, createPermaUrl, useParentPermaUrl, null);
+      ExecuteFunctionNoRepost(page, function, sender, createPermaUrl, useParentPermaUrl, null);
     }
 
     /// <summary>Executes the <paramref name="function"/> in the current window without triggering the current post-back event on returning.</summary>
@@ -83,10 +83,10 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     public static void ExecuteFunctionNoRepost (
         this IWxePage page, WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection? permaUrlParameters)
     {
-      var permaUrlOptions = CreatePermaUrlOptions (createPermaUrl, useParentPermaUrl, permaUrlParameters);
-      var options = new WxeCallOptionsNoRepost (permaUrlOptions);
-      var arguments = new WxeCallArguments (sender, options);
-      Execute (page, function, arguments);
+      var permaUrlOptions = CreatePermaUrlOptions(createPermaUrl, useParentPermaUrl, permaUrlParameters);
+      var options = new WxeCallOptionsNoRepost(permaUrlOptions);
+      var arguments = new WxeCallArguments(sender, options);
+      Execute(page, function, arguments);
     }
 
     /// <summary>Executes the <paramref name="function"/> in the current window without triggering the current post-back event on returning.</summary>
@@ -98,7 +98,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     public static void ExecuteFunctionNoRepost (
         this IWxePage page, WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl)
     {
-      ExecuteFunctionNoRepost (page, function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, null);
+      ExecuteFunctionNoRepost(page, function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, null);
     }
 
     /// <summary>Executes the <paramref name="function"/> in the current window without triggering the current post-back event on returning.</summary>
@@ -116,10 +116,10 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
         bool useParentPermaUrl,
         NameValueCollection? permaUrlParameters)
     {
-      var permaUrlOptions = CreatePermaUrlOptions (createPermaUrl, useParentPermaUrl, permaUrlParameters);
-      var options = new WxeCallOptionsNoRepost (usesEventTarget, permaUrlOptions);
-      var arguments = new WxeCallArguments (sender, options);
-      Execute (page, function, arguments);
+      var permaUrlOptions = CreatePermaUrlOptions(createPermaUrl, useParentPermaUrl, permaUrlParameters);
+      var options = new WxeCallOptionsNoRepost(usesEventTarget, permaUrlOptions);
+      var arguments = new WxeCallArguments(sender, options);
+      Execute(page, function, arguments);
     }
 
     /// <summary> 
@@ -130,7 +130,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     public static void ExecuteFunctionExternal (
         this IWxePage page, WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
     {
-      ExecuteFunctionExternal (page, function, sender, createPermaUrl, useParentPermaUrl, urlParameters, true, null);
+      ExecuteFunctionExternal(page, function, sender, createPermaUrl, useParentPermaUrl, urlParameters, true, null);
     }
 
     /// <summary> 
@@ -148,10 +148,10 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
         bool returnToCaller,
         NameValueCollection? callerUrlParameters)
     {
-      var permaUrlOptions = CreatePermaUrlOptions ((createPermaUrl || urlParameters != null), useParentPermaUrl, urlParameters);
-      var options = new WxeCallOptionsExternalByRedirect (permaUrlOptions, returnToCaller, callerUrlParameters);
-      var arguments = new WxeCallArguments (sender, options);
-      Execute (page, function, arguments);
+      var permaUrlOptions = CreatePermaUrlOptions((createPermaUrl || urlParameters != null), useParentPermaUrl, urlParameters);
+      var options = new WxeCallOptionsExternalByRedirect(permaUrlOptions, returnToCaller, callerUrlParameters);
+      var arguments = new WxeCallArguments(sender, options);
+      Execute(page, function, arguments);
     }
 
     /// <summary> 
@@ -161,7 +161,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     /// <include file='..\..\doc\include\ExecutionEngine\WxePageExtensions.xml' path='WxePageExtensions/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
     public static void ExecuteFunctionExternal (this IWxePage page, WxeFunction function, string target, Control sender, bool returningPostback)
     {
-      ExecuteFunctionExternal (page, function, target, null, sender, returningPostback, false, false, null);
+      ExecuteFunctionExternal(page, function, target, null, sender, returningPostback, false, false, null);
     }
 
     /// <summary> 
@@ -172,7 +172,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     public static void ExecuteFunctionExternal (
         this IWxePage page, WxeFunction function, string target, string features, Control sender, bool returningPostback)
     {
-      ExecuteFunctionExternal (page, function, target, features, sender, returningPostback, false, false, null);
+      ExecuteFunctionExternal(page, function, target, features, sender, returningPostback, false, false, null);
     }
 
     /// <summary> 
@@ -183,7 +183,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     public static void ExecuteFunctionExternal (
         this IWxePage page, WxeFunction function, string target, Control sender, bool returningPostback, bool createPermaUrl, bool useParentPermaUrl)
     {
-      ExecuteFunctionExternal (page, function, target, null, sender, returningPostback, createPermaUrl, useParentPermaUrl, null);
+      ExecuteFunctionExternal(page, function, target, null, sender, returningPostback, createPermaUrl, useParentPermaUrl, null);
     }
 
     /// <summary> 
@@ -201,7 +201,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
         bool useParentPermaUrl,
         NameValueCollection urlParameters)
     {
-      ExecuteFunctionExternal (page, function, target, null, sender, returningPostback, createPermaUrl, useParentPermaUrl, urlParameters);
+      ExecuteFunctionExternal(page, function, target, null, sender, returningPostback, createPermaUrl, useParentPermaUrl, urlParameters);
     }
 
     /// <summary> 
@@ -219,7 +219,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
         bool createPermaUrl,
         bool useParentPermaUrl)
     {
-      ExecuteFunctionExternal (page, function, target, features, sender, returningPostback, createPermaUrl, useParentPermaUrl, null);
+      ExecuteFunctionExternal(page, function, target, features, sender, returningPostback, createPermaUrl, useParentPermaUrl, null);
     }
 
     /// <summary> 
@@ -238,17 +238,17 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
         bool useParentPermaUrl,
         NameValueCollection? urlParameters)
     {
-      var permaUrlOptions = CreatePermaUrlOptions (createPermaUrl, useParentPermaUrl, urlParameters);
-      var options = new WxeCallOptionsExternal (target, features, returningPostback, permaUrlOptions);
-      var arguments = new WxeCallArguments (sender, options);
-      Execute (page, function, arguments);
+      var permaUrlOptions = CreatePermaUrlOptions(createPermaUrl, useParentPermaUrl, urlParameters);
+      var options = new WxeCallOptionsExternal(target, features, returningPostback, permaUrlOptions);
+      var arguments = new WxeCallArguments(sender, options);
+      Execute(page, function, arguments);
     }
 
     private static void Execute (IWxePage page, WxeFunction function, IWxeCallArguments arguments)
     {
       try
       {
-        page.ExecuteFunction (function, arguments);
+        page.ExecuteFunction(function, arguments);
       }
       catch (WxeCallExternalException)
       {
@@ -257,7 +257,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
 
     private static WxePermaUrlOptions CreatePermaUrlOptions (bool createPermaUrl, bool useParentPermaUrl, NameValueCollection? urlParameters)
     {
-      return createPermaUrl ? new WxePermaUrlOptions (useParentPermaUrl, urlParameters) : WxePermaUrlOptions.Null;
+      return createPermaUrl ? new WxePermaUrlOptions(useParentPermaUrl, urlParameters) : WxePermaUrlOptions.Null;
     }
   }
 }

@@ -38,31 +38,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var type = typeof (DerivedClassWithoutStorageGroupAttribute);
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(type);
 
-      var validationResult = _validationRule.Validate (classDefinition);
+      var validationResult = _validationRule.Validate(classDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void InheritanceRoot_WithoutStorageGroupAttribute ()
     {
       var type = typeof (BaseClassWithoutStorageGroupAttribute);
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (type);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(type);
       
-      var validationResult = _validationRule.Validate (classDefinition);
+      var validationResult = _validationRule.Validate(classDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void InheritanceRoot_WithStorageGroupAttribute_And_WithoutStorageGroupAttributeOnBaseClass ()
     {
       var type = typeof (BaseClassWithStorageGroupAttribute);
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (type);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(type);
       
-      var validationResult = _validationRule.Validate (classDefinition);
+      var validationResult = _validationRule.Validate(classDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
@@ -71,12 +71,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var type = typeof (DerivedClassWithStorageGroupAttribute);
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(type);
 
-      var validationResult = _validationRule.Validate (classDefinition);
+      var validationResult = _validationRule.Validate(classDefinition);
 
       string message = "The domain object type cannot redefine the 'StorageGroupAttribute' already defined on base type 'BaseClassWithStorageGroupAttribute'.\r\n\r\n"
         +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
         +"StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule.DerivedClassWithStorageGroupAttribute";
-      AssertMappingValidationResult (validationResult, false, message);
+      AssertMappingValidationResult(validationResult, false, message);
     }
   }
 }

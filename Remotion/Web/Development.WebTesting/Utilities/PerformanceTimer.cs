@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public PerformanceTimer ([NotNull] ILog log, string message)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
+      ArgumentUtility.CheckNotNull("log", log);
 
       _log = log;
       _message = message;
@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public void Dispose ()
     {
       _stopwatch.Stop();
-      _log.DebugFormat (_message + " [took: {0}]", _stopwatch.Elapsed);
+      _log.DebugFormat(_message + " [took: {0}]", _stopwatch.Elapsed);
     }
   }
 }

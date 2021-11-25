@@ -27,9 +27,9 @@ namespace Remotion.Security.Metadata
 
     public LocalizedName (string referencedObjectID, string comment, string text)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("referencedObjectID", referencedObjectID);
-      ArgumentUtility.CheckNotNullOrEmpty ("comment", comment);
-      ArgumentUtility.CheckNotNull ("text", text);
+      ArgumentUtility.CheckNotNullOrEmpty("referencedObjectID", referencedObjectID);
+      ArgumentUtility.CheckNotNullOrEmpty("comment", comment);
+      ArgumentUtility.CheckNotNull("text", text);
 
       _referencedObjectID = referencedObjectID;
       _comment = comment;
@@ -57,12 +57,12 @@ namespace Remotion.Security.Metadata
       if (otherName == null)
         return false;
 
-      return otherName._comment.Equals (_comment) && otherName._referencedObjectID.Equals (_referencedObjectID) && otherName._text.Equals (_text);
+      return otherName._comment.Equals(_comment) && otherName._referencedObjectID.Equals(_referencedObjectID) && otherName._text.Equals(_text);
     }
 
     public override int GetHashCode ()
     {
-      return _comment.GetHashCode () ^ _referencedObjectID.GetHashCode () ^ _text.GetHashCode ();
+      return _comment.GetHashCode() ^ _referencedObjectID.GetHashCode() ^ _text.GetHashCode();
     }
   }
 }

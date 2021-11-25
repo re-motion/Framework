@@ -29,73 +29,73 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void Loading ()
     {
-      var relationEndPointDefinition = GetEndPointDefinition (typeof (Order), "Customer");
-      var collection = Provider.LoadDataContainersByRelatedID (
+      var relationEndPointDefinition = GetEndPointDefinition(typeof (Order), "Customer");
+      var collection = Provider.LoadDataContainersByRelatedID(
           (RelationEndPointDefinition) relationEndPointDefinition,
           null,
           DomainObjectIDs.Customer1).ToList();
 
-      Assert.That (collection, Is.Not.Null);
-      Assert.AreEqual (2, collection.Count, "DataContainerCollection.Count");
-      Assert.IsNotNull (collection.SingleOrDefault(o=>o.ID==DomainObjectIDs.Order1), "ID of Order with OrdnerNo 1");
-      Assert.IsNotNull (collection.SingleOrDefault(o=>o.ID==DomainObjectIDs.Order2), "ID of Order with OrdnerNo 2");
+      Assert.That(collection, Is.Not.Null);
+      Assert.AreEqual(2, collection.Count, "DataContainerCollection.Count");
+      Assert.IsNotNull(collection.SingleOrDefault(o=>o.ID==DomainObjectIDs.Order1), "ID of Order with OrdnerNo 1");
+      Assert.IsNotNull(collection.SingleOrDefault(o=>o.ID==DomainObjectIDs.Order2), "ID of Order with OrdnerNo 2");
     }
 
     [Test]
     public void LoadOverInheritedProperty ()
     {
-      var relationEndPointDefinition = GetEndPointDefinition (typeof (Partner), "ContactPerson");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof (Partner), "ContactPerson");
 
-      var collection = Provider.LoadDataContainersByRelatedID (
+      var collection = Provider.LoadDataContainersByRelatedID(
           (RelationEndPointDefinition) relationEndPointDefinition,
           null,
           DomainObjectIDs.Person6).ToList();
 
-      Assert.That (collection.Count, Is.EqualTo (1));
-      Assert.That (collection[0].ID, Is.EqualTo (DomainObjectIDs.Distributor2));
+      Assert.That(collection.Count, Is.EqualTo(1));
+      Assert.That(collection[0].ID, Is.EqualTo(DomainObjectIDs.Distributor2));
     }
 
     [Test]
     public void LoadWithOrderBy ()
     {
-      var relationEndPointDefinition = GetEndPointDefinition (typeof (Order), "Customer");
-      var orderNumberProperty = GetPropertyDefinition (typeof (Order), "OrderNumber");
-      var sortExpression = new SortExpressionDefinition (new[] { new SortedPropertySpecification (orderNumberProperty, SortOrder.Ascending) });
+      var relationEndPointDefinition = GetEndPointDefinition(typeof (Order), "Customer");
+      var orderNumberProperty = GetPropertyDefinition(typeof (Order), "OrderNumber");
+      var sortExpression = new SortExpressionDefinition(new[] { new SortedPropertySpecification(orderNumberProperty, SortOrder.Ascending) });
 
-      var orderContainers = Provider.LoadDataContainersByRelatedID (
+      var orderContainers = Provider.LoadDataContainersByRelatedID(
           (RelationEndPointDefinition) relationEndPointDefinition,
           sortExpression,
           DomainObjectIDs.Customer1).ToList();
 
-      Assert.That (orderContainers.Count, Is.EqualTo (2));
-      Assert.That (orderContainers[0].ID, Is.EqualTo (DomainObjectIDs.Order1));
-      Assert.That (orderContainers[1].ID, Is.EqualTo (DomainObjectIDs.Order2));
+      Assert.That(orderContainers.Count, Is.EqualTo(2));
+      Assert.That(orderContainers[0].ID, Is.EqualTo(DomainObjectIDs.Order1));
+      Assert.That(orderContainers[1].ID, Is.EqualTo(DomainObjectIDs.Order2));
     }
 
     [Test]
     public void LoadDataContainersByRelatedIDOfDifferentStorageProvider ()
     {
-      var relationEndPointDefinition = GetEndPointDefinition (typeof (Order), "Official");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof (Order), "Official");
 
-      var orderContainers = Provider.LoadDataContainersByRelatedID (
+      var orderContainers = Provider.LoadDataContainersByRelatedID(
           (RelationEndPointDefinition) relationEndPointDefinition,
           null,
           DomainObjectIDs.Official1);
-      Assert.That (orderContainers, Is.Not.Null);
-      Assert.That (orderContainers.Count(), Is.EqualTo (5));
+      Assert.That(orderContainers, Is.Not.Null);
+      Assert.That(orderContainers.Count(), Is.EqualTo(5));
     }
 
     [Test]
     public void LoadDataContainersByRelatedID_WithStorageClassTransactionProperty ()
     {
-      var relationEndPointDefinition = GetEndPointDefinition (typeof (Computer), "EmployeeTransactionProperty");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof (Computer), "EmployeeTransactionProperty");
 
-      var result = Provider.LoadDataContainersByRelatedID (
+      var result = Provider.LoadDataContainersByRelatedID(
           (RelationEndPointDefinition) relationEndPointDefinition,
           null,
           DomainObjectIDs.Employee1);
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result.Count(), Is.EqualTo (0));
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.Count(), Is.EqualTo(0));
     }
   }
 }

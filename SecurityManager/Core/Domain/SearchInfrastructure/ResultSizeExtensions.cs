@@ -26,7 +26,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
     {
       if (constraint == null)
         return query;
-      return constraint.ApplyTo (query);
+      return constraint.ApplyTo(query);
     }
   }
 }

@@ -27,7 +27,7 @@ public class BocMultilineTextValueMock: BocMultilineTextValue
 {
 	public new void EvaluateWaiConformity ()
   {
-    base.EvaluateWaiConformity ();
+    base.EvaluateWaiConformity();
   }
 }
 

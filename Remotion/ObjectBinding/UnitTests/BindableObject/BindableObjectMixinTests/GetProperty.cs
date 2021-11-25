@@ -35,8 +35,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     {
       base.SetUp();
 
-      _bindableObject = ObjectFactory.Create<SimpleBusinessObjectClass> (ParamList.Empty);
-      _bindableObjectMixin = Mixin.Get<BindableObjectMixin> (_bindableObject);
+      _bindableObject = ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty);
+      _bindableObjectMixin = Mixin.Get<BindableObjectMixin>(_bindableObject);
       _businessObject = _bindableObjectMixin;
     }
 
@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     {
       _bindableObject.String = "A String";
 
-      Assert.That (_businessObject.GetProperty (_businessObject.BusinessObjectClass.GetPropertyDefinition ("String")), Is.EqualTo ("A String"));
+      Assert.That(_businessObject.GetProperty(_businessObject.BusinessObjectClass.GetPropertyDefinition("String")), Is.EqualTo("A String"));
     }
 
     [Test]
@@ -53,18 +53,18 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     {
       _bindableObject.String = "A String";
 
-      Assert.That (_businessObject.GetProperty ("String"), Is.EqualTo ("A String"));
+      Assert.That(_businessObject.GetProperty("String"), Is.EqualTo("A String"));
     }
 
     [Test]
     [Ignore ("TODO: discuss desired behavior")]
     public void WithoutGetter ()
     {
-      IBusinessObject businessObject = Mixin.Get<BindableObjectMixin> (ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty));
-      Assert.That (
-          () => businessObject.GetProperty ("StringWithoutGetter"),
+      IBusinessObject businessObject = Mixin.Get<BindableObjectMixin>(ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty));
+      Assert.That(
+          () => businessObject.GetProperty("StringWithoutGetter"),
           Throws.InstanceOf<KeyNotFoundException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The property 'StringWithoutGetter' was not found on business object class "
                   + "'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'."));
     }

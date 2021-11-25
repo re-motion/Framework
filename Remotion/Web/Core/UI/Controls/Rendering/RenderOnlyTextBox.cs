@@ -15,8 +15,8 @@ namespace Remotion.Web.UI.Controls.Rendering
 
     protected override void Render (HtmlTextWriter writer)
     {
-      base.OnPreRender (EventArgs.Empty);
-      base.Render (writer);
+      base.OnPreRender(EventArgs.Empty);
+      base.Render(writer);
     }
   }
 }

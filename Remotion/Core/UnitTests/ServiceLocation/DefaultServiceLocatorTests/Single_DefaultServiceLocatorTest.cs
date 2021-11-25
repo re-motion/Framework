@@ -29,162 +29,162 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetInstance_LookUpViaServiceConfigurationDiscoveryService_InstantiatesImplementation ()
     {
-      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (typeof (ITestType), typeof (TestImplementation1));
-      var serviceConfigurationDiscoveryServiceStub = new Mock<IServiceConfigurationDiscoveryService> (MockBehavior.Strict);
-      serviceConfigurationDiscoveryServiceStub.Setup(_=>_.GetDefaultConfiguration (typeof (ITestType))).Returns (serviceConfigurationEntry);
+      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(typeof (ITestType), typeof (TestImplementation1));
+      var serviceConfigurationDiscoveryServiceStub = new Mock<IServiceConfigurationDiscoveryService>(MockBehavior.Strict);
+      serviceConfigurationDiscoveryServiceStub.Setup(_=>_.GetDefaultConfiguration(typeof (ITestType))).Returns(serviceConfigurationEntry);
 
-      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub.Object);
+      var serviceLocator = CreateServiceLocator(serviceConfigurationDiscoveryServiceStub.Object);
 
-      var instance = serviceLocator.GetInstance (typeof (ITestType));
+      var instance = serviceLocator.GetInstance(typeof (ITestType));
 
-      Assert.That (instance, Is.TypeOf<TestImplementation1>());
+      Assert.That(instance, Is.TypeOf<TestImplementation1>());
     }
 
     [Test]
     public void GetInstance_InstantiatesService ()
     {
-      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (typeof (ITestType), typeof (TestImplementation1));
+      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(typeof (ITestType), typeof (TestImplementation1));
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register(serviceConfigurationEntry);
 
-      object instance = serviceLocator.GetInstance (typeof (ITestType));
+      object instance = serviceLocator.GetInstance(typeof (ITestType));
 
-      Assert.That (instance, Is.TypeOf<TestImplementation1>());
+      Assert.That(instance, Is.TypeOf<TestImplementation1>());
     }
 
     [Test]
     public void GetInstance_GenericOverload_InstantiatesImplementation ()
     {
-      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (typeof (ITestType), typeof (TestImplementation1));
+      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(typeof (ITestType), typeof (TestImplementation1));
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register(serviceConfigurationEntry);
 
       ITestType result = serviceLocator.GetInstance<ITestType>();
 
-      Assert.That (result, Is.TypeOf (typeof (TestImplementation1)));
+      Assert.That(result, Is.TypeOf(typeof (TestImplementation1)));
     }
 
     [Test]
     public void GetInstance_WithInstancePerDependencyLifetimeKind_ReturnsNotSameInstancesForAServiceType ()
     {
-      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (
+      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
           typeof (ITestType),
           typeof (TestImplementation1),
           LifetimeKind.InstancePerDependency);
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register(serviceConfigurationEntry);
 
-      var instance1 = serviceLocator.GetInstance (typeof (ITestType));
-      var instance2 = serviceLocator.GetInstance (typeof (ITestType));
+      var instance1 = serviceLocator.GetInstance(typeof (ITestType));
+      var instance2 = serviceLocator.GetInstance(typeof (ITestType));
 
-      Assert.That (instance1, Is.Not.SameAs (instance2));
+      Assert.That(instance1, Is.Not.SameAs(instance2));
     }
 
     [Test]
     public void GetInstance_WithSingletonLifetimeKind_ReturnsSameInstancesForAServiceType ()
     {
-      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (typeof (ITestType), typeof (TestImplementation1), LifetimeKind.Singleton);
+      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(typeof (ITestType), typeof (TestImplementation1), LifetimeKind.Singleton);
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register(serviceConfigurationEntry);
 
-      var instance1 = serviceLocator.GetInstance (typeof (ITestType));
-      var instance2 = serviceLocator.GetInstance (typeof (ITestType));
+      var instance1 = serviceLocator.GetInstance(typeof (ITestType));
+      var instance2 = serviceLocator.GetInstance(typeof (ITestType));
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
 
     [Test]
     public void GetInstance_WithSingletonLifetimeKind_AndSingletonIsLazyInitialized ()
     {
-      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (
+      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
           typeof (ITestType),
           typeof (TestImplementationWithOneConstructorParameter),
           LifetimeKind.Singleton);
 
       var serviceLocator = CreateServiceLocator();
-      Assert.That (() => serviceLocator.Register (serviceConfigurationEntry), Throws.Nothing);
+      Assert.That(() => serviceLocator.Register(serviceConfigurationEntry), Throws.Nothing);
     }
 
     [Test]
     public void GetInstance_ImplementationIsRegisteredAsFactoryWithInstanceLifetime ()
     {
       TestImplementation1 expectedInstance = null;
-      var serviceImplementation = ServiceImplementationInfo.CreateSingle (
+      var serviceImplementation = ServiceImplementationInfo.CreateSingle(
           () => expectedInstance = new TestImplementation1(),
           LifetimeKind.InstancePerDependency);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), serviceImplementation);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry(typeof (ITestType), serviceImplementation);
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register(serviceConfigurationEntry);
 
-      var instance1 = serviceLocator.GetInstance (typeof (ITestType));
-      Assert.That (expectedInstance, Is.Not.Null);
+      var instance1 = serviceLocator.GetInstance(typeof (ITestType));
+      Assert.That(expectedInstance, Is.Not.Null);
 
-      var instance2 = serviceLocator.GetInstance (typeof (ITestType));
-      Assert.That (instance1, Is.Not.SameAs (instance2));
+      var instance2 = serviceLocator.GetInstance(typeof (ITestType));
+      Assert.That(instance1, Is.Not.SameAs(instance2));
     }
 
     [Test]
     public void GetInstance_ImplementationIsRegisteredAsFactoryWithSingletonLifetime_AndSingletonIsLazyInitialized ()
     {
       TestImplementation1 expectedInstance = null;
-      var serviceImplementation = ServiceImplementationInfo.CreateSingle (() => expectedInstance = new TestImplementation1(), LifetimeKind.Singleton);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), serviceImplementation);
+      var serviceImplementation = ServiceImplementationInfo.CreateSingle(() => expectedInstance = new TestImplementation1(), LifetimeKind.Singleton);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry(typeof (ITestType), serviceImplementation);
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register(serviceConfigurationEntry);
 
-      Assert.That (expectedInstance, Is.Null);
-      var instance1 = serviceLocator.GetInstance (typeof (ITestType));
-      Assert.That (expectedInstance, Is.Not.Null);
+      Assert.That(expectedInstance, Is.Null);
+      var instance1 = serviceLocator.GetInstance(typeof (ITestType));
+      Assert.That(expectedInstance, Is.Not.Null);
 
-      var instance2 = serviceLocator.GetInstance (typeof (ITestType));
-      Assert.That (instance1, Is.SameAs (instance2));
+      var instance2 = serviceLocator.GetInstance(typeof (ITestType));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
 
     [Test]
     public void GetInstance_WithKeyParameter_KeyIsIgnored ()
     {
-      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (typeof (ITestType), typeof (TestImplementation1));
+      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(typeof (ITestType), typeof (TestImplementation1));
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register(serviceConfigurationEntry);
 
-      var result = serviceLocator.GetInstance (typeof (ITestType), "Test");
+      var result = serviceLocator.GetInstance(typeof (ITestType), "Test");
 
-      Assert.That (result, Is.TypeOf (typeof (TestImplementation1)));
+      Assert.That(result, Is.TypeOf(typeof (TestImplementation1)));
     }
 
     [Test]
     public void GetInstance_Generic_WithKeyParameter_KeyIsIgnored ()
     {
-      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (typeof (ITestType), typeof (TestImplementation1));
+      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(typeof (ITestType), typeof (TestImplementation1));
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register(serviceConfigurationEntry);
 
-      var result = serviceLocator.GetInstance<ITestType> ("Test");
+      var result = serviceLocator.GetInstance<ITestType>("Test");
 
-      Assert.That (result, Is.TypeOf (typeof (TestImplementation1)));
+      Assert.That(result, Is.TypeOf(typeof (TestImplementation1)));
     }
 
     [Test]
     public void GetAllInstances_ThrowsActivationException ()
     {
-      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (
+      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
           typeof (ITestType),
           typeof (TestImplementation1));
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register(serviceConfigurationEntry);
 
-      Assert.That (
-          () => serviceLocator.GetAllInstances (typeof (ITestType)),
-          Throws.TypeOf<ActivationException>().With.Message.EqualTo (
+      Assert.That(
+          () => serviceLocator.GetAllInstances(typeof (ITestType)),
+          Throws.TypeOf<ActivationException>().With.Message.EqualTo(
               "A single implementation is configured for service type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType'. "
               + "Use GetInstance() to retrieve the implementation."));
     }
@@ -192,31 +192,31 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetInstance_ConstructorThrowingException_ExceptionIsWrappedInActivationException ()
     {
-      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (
+      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
           typeof (ITestTypeWithErrors),
           typeof (TestTypeWithConstructorThrowingException));
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register(serviceConfigurationEntry);
 
-      var exception = Assert.Throws<ActivationException> (() => serviceLocator.GetInstance (typeof (ITestTypeWithErrors)));
-      Assert.That (exception.Message, Is.EqualTo ("ApplicationException: This exception comes from the ctor."));
-      Assert.That (exception.InnerException, Is.TypeOf<ApplicationException>());
-      Assert.That (exception.InnerException.Message, Is.EqualTo ("This exception comes from the ctor."));
+      var exception = Assert.Throws<ActivationException>(() => serviceLocator.GetInstance(typeof (ITestTypeWithErrors)));
+      Assert.That(exception.Message, Is.EqualTo("ApplicationException: This exception comes from the ctor."));
+      Assert.That(exception.InnerException, Is.TypeOf<ApplicationException>());
+      Assert.That(exception.InnerException.Message, Is.EqualTo("This exception comes from the ctor."));
     }
 
     [Test]
     public void GetInstance_ServiceTypeWithFactoryReturningNull_ThrowsActivationException ()
     {
-      var implementation = ServiceImplementationInfo.CreateSingle<ITestTypeWithErrors> (() => null);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestTypeWithErrors), implementation);
+      var implementation = ServiceImplementationInfo.CreateSingle<ITestTypeWithErrors>(() => null);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry(typeof (ITestTypeWithErrors), implementation);
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register(serviceConfigurationEntry);
 
-      Assert.That (
-          () => serviceLocator.GetInstance (typeof (ITestTypeWithErrors)),
-          Throws.TypeOf<ActivationException> ().With.Message.EqualTo (
+      Assert.That(
+          () => serviceLocator.GetInstance(typeof (ITestTypeWithErrors)),
+          Throws.TypeOf<ActivationException>().With.Message.EqualTo(
               "The registered factory returned null instead of an instance implementing the requested service type "
               + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestTypeWithErrors'."));
     }
@@ -224,30 +224,30 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetInstance_ServiceTypeWithoutImplementation_ThrowsActivationException ()
     {
-      var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (typeof (ITestType), new Type[0]);
-      var serviceConfigurationDiscoveryServiceStub = new Mock<IServiceConfigurationDiscoveryService> (MockBehavior.Strict);
-      serviceConfigurationDiscoveryServiceStub.Setup (_ => _.GetDefaultConfiguration (typeof (ITestType))).Returns (serviceConfigurationEntry);
+      var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry(typeof (ITestType), new Type[0]);
+      var serviceConfigurationDiscoveryServiceStub = new Mock<IServiceConfigurationDiscoveryService>(MockBehavior.Strict);
+      serviceConfigurationDiscoveryServiceStub.Setup(_ => _.GetDefaultConfiguration(typeof (ITestType))).Returns(serviceConfigurationEntry);
 
-      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub.Object);
+      var serviceLocator = CreateServiceLocator(serviceConfigurationDiscoveryServiceStub.Object);
 
-      Assert.That (
-          () => serviceLocator.GetInstance (typeof (ITestType)),
-          Throws.TypeOf<ActivationException>().With.Message.EqualTo (
+      Assert.That(
+          () => serviceLocator.GetInstance(typeof (ITestType)),
+          Throws.TypeOf<ActivationException>().With.Message.EqualTo(
               "No implementation is registered for service type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType'."));
     }
 
     [Test]
     public void Register_SingleWithMultipleRegistrations_ThrowsInvalidOperationException ()
     {
-      var implementation1 = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.InstancePerDependency, RegistrationType.Single);
-      var implementation2 = new ServiceImplementationInfo (typeof (TestImplementation2), LifetimeKind.InstancePerDependency, RegistrationType.Single);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), implementation1, implementation2);
+      var implementation1 = new ServiceImplementationInfo(typeof (TestImplementation1), LifetimeKind.InstancePerDependency, RegistrationType.Single);
+      var implementation2 = new ServiceImplementationInfo(typeof (TestImplementation2), LifetimeKind.InstancePerDependency, RegistrationType.Single);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry(typeof (ITestType), implementation1, implementation2);
 
       var serviceLocator = CreateServiceLocator();
 
-      Assert.That (
-          () => serviceLocator.Register (serviceConfigurationEntry),
-          Throws.InvalidOperationException.With.Message.EqualTo (
+      Assert.That(
+          () => serviceLocator.Register(serviceConfigurationEntry),
+          Throws.InvalidOperationException.With.Message.EqualTo(
               "Cannot register multiple implementations with registration type 'Single' "
               + "for service type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType'."));
     }

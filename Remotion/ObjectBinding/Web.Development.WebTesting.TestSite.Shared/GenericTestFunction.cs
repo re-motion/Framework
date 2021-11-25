@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
     public GenericTestFunction ()
         : base (new NoneTransactionMode())
     {
-      _person = Person.GetObject (new Guid (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1));
+      _person = Person.GetObject(new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1));
     }
 
     public Person Person
@@ -39,6 +39,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
     }
 
     // Steps
-    private WxeStep Step1 = new WxeResourcePageStep (typeof (GenericTest), "GenericTest.aspx");
+    private WxeStep Step1 = new WxeResourcePageStep(typeof (GenericTest), "GenericTest.aspx");
   }
 }

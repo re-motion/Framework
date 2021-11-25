@@ -29,8 +29,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
     public TypeReferenceWrapper (Reference referenceToWrap, Type referenceType)
       : base (referenceToWrap.OwnerReference, referenceType)
     {
-      ArgumentUtility.CheckNotNull ("referenceToWrap", referenceToWrap);
-      ArgumentUtility.CheckNotNull ("referenceType", referenceType);
+      ArgumentUtility.CheckNotNull("referenceToWrap", referenceToWrap);
+      ArgumentUtility.CheckNotNull("referenceType", referenceType);
 
       _referenceToWrap = referenceToWrap;
       _referenceType = referenceType;
@@ -38,17 +38,17 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void LoadAddressOfReference (ILGenerator gen)
     {
-      _referenceToWrap.LoadAddressOfReference (gen);
+      _referenceToWrap.LoadAddressOfReference(gen);
     }
 
     public override void LoadReference (ILGenerator gen)
     {
-      _referenceToWrap.LoadReference (gen);
+      _referenceToWrap.LoadReference(gen);
     }
 
     public override void StoreReference (ILGenerator gen)
     {
-      _referenceToWrap.StoreReference (gen);
+      _referenceToWrap.StoreReference(gen);
     }
   }
 }

@@ -47,13 +47,13 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
         IBusinessObjectReferenceProperty property,
         ISearchAvailableObjectsArguments searchArguments)
     {
-      var referencingSecurityManagerObject = ArgumentUtility.CheckType<TReferencingObject> ("referencingObject", referencingObject);
-      ArgumentUtility.CheckNotNull ("property", property);
+      var referencingSecurityManagerObject = ArgumentUtility.CheckType<TReferencingObject>("referencingObject", referencingObject);
+      ArgumentUtility.CheckNotNull("property", property);
 
-      var queryFactory = GetQueryFactory (property);
+      var queryFactory = GetQueryFactory(property);
 
-      var securityManagerSearchArguments = CreateSearchArguments (searchArguments);
-      return CreateQuery (queryFactory, referencingSecurityManagerObject, property, securityManagerSearchArguments).ToArray();
+      var securityManagerSearchArguments = CreateSearchArguments(searchArguments);
+      return CreateQuery(queryFactory, referencingSecurityManagerObject, property, securityManagerSearchArguments).ToArray();
     }
 
     private IQueryable<IBusinessObject> CreateQuery (
@@ -62,26 +62,26 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
         IBusinessObjectReferenceProperty property,
         SecurityManagerSearchArguments searchArguments)
     {
-      var query = queryFactory (referencingSecurityManagerObject, property, searchArguments.TenantConstraint, searchArguments.DisplayNameConstraint);
-      return query.Apply (searchArguments.ResultSizeConstraint);
+      var query = queryFactory(referencingSecurityManagerObject, property, searchArguments.TenantConstraint, searchArguments.DisplayNameConstraint);
+      return query.Apply(searchArguments.ResultSizeConstraint);
     }
 
     private SecurityManagerSearchArguments CreateSearchArguments (ISearchAvailableObjectsArguments searchArguments)
     {
       if (searchArguments == null)
-        return new SecurityManagerSearchArguments (null, null, null);
+        return new SecurityManagerSearchArguments(null, null, null);
 
       var defaultSearchArguments = searchArguments as DefaultSearchArguments;
       if (defaultSearchArguments != null)
       {
-        if (string.IsNullOrEmpty (defaultSearchArguments.SearchStatement))
-          return new SecurityManagerSearchArguments (null, null, null);
+        if (string.IsNullOrEmpty(defaultSearchArguments.SearchStatement))
+          return new SecurityManagerSearchArguments(null, null, null);
 
-        var tenantHandle = ObjectID.Parse (defaultSearchArguments.SearchStatement).GetHandle<Tenant>();
-        return new SecurityManagerSearchArguments (new TenantConstraint (tenantHandle), null, null);
+        var tenantHandle = ObjectID.Parse(defaultSearchArguments.SearchStatement).GetHandle<Tenant>();
+        return new SecurityManagerSearchArguments(new TenantConstraint(tenantHandle), null, null);
       }
 
-      return ArgumentUtility.CheckType<SecurityManagerSearchArguments> ("searchArguments", searchArguments);
+      return ArgumentUtility.CheckType<SecurityManagerSearchArguments>("searchArguments", searchArguments);
     }
   }
 }

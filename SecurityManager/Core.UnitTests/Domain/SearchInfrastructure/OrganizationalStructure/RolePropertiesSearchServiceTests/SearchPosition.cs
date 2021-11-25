@@ -39,10 +39,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
-        Tenant tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransactionScope.CurrentTransaction);
+        Tenant tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransactionScope.CurrentTransaction);
         var expectedTenantHandle = tenant.GetHandle();
 
-        var groups = Group.FindByTenant (expectedTenantHandle);
+        var groups = Group.FindByTenant(expectedTenantHandle);
         foreach (Group group in groups)
         {
           if (group.UniqueIdentifier == "UID: rootGroup")
@@ -59,17 +59,17 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
 
       _searchService = new RolePropertiesSearchService();
 
-      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (Role));
-      _positionProperty = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition ("Position");
-      Assert.That (_positionProperty, Is.Not.Null);
+      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (Role));
+      _positionProperty = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition("Position");
+      Assert.That(_positionProperty, Is.Not.Null);
     }
 
     [Test]
     public void Search_WithoutGroup ()
     {
-      var positions = _searchService.Search (null, _positionProperty, CreateSearchArguments (null));
+      var positions = _searchService.Search(null, _positionProperty, CreateSearchArguments(null));
 
-      Assert.That (positions.Length, Is.EqualTo (3));
+      Assert.That(positions.Length, Is.EqualTo(3));
     }
 
     [Test]
@@ -77,14 +77,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
     {
       Group parentGroup = _expectedParentGroup0Handle.GetObject();
 
-       var positions = _searchService.Search (null, _positionProperty, CreateSearchArguments (parentGroup));
+       var positions = _searchService.Search(null, _positionProperty, CreateSearchArguments(parentGroup));
 
-      Assert.That (positions.Length, Is.EqualTo (2));
+      Assert.That(positions.Length, Is.EqualTo(2));
       foreach (string positionName in new[] { "Official", "Manager" })
       {
-        Assert.IsTrue (
+        Assert.IsTrue(
 // ReSharper disable AccessToModifiedClosure
-            Array.Exists (positions, current => positionName == ((Position) current).Name),
+            Array.Exists(positions, current => positionName == ((Position) current).Name),
 // ReSharper restore AccessToModifiedClosure
             "Position '{0}' was not found.",
             positionName);
@@ -96,16 +96,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
     {
       Group rootGroup = _expectedRootGroupHandle.GetObject();
 
-       var positions = _searchService.Search (null, _positionProperty, CreateSearchArguments (rootGroup));
+       var positions = _searchService.Search(null, _positionProperty, CreateSearchArguments(rootGroup));
 
-      Assert.That (positions.Length, Is.EqualTo (3));
+      Assert.That(positions.Length, Is.EqualTo(3));
     }
 
     private ISearchAvailableObjectsArguments CreateSearchArguments (Group group)
     {
       if (group == null)
         return null;
-      return new RolePropertiesSearchArguments (group.GetHandle());
+      return new RolePropertiesSearchArguments(group.GetHandle());
     }
   }
 }

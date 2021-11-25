@@ -52,52 +52,52 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError (1, this);
+        WcagHelper.Instance.HandleError(1, this);
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
-      RegisterHtmlHeadContents (HtmlHeadAppender.Current);
+      base.OnInit(e);
+      RegisterHtmlHeadContents(HtmlHeadAppender.Current);
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
     protected virtual IListMenuRenderer CreateRenderer ()
     {
-      return SafeServiceLocator.Current.GetInstance<IListMenuRenderer> ();
+      return SafeServiceLocator.Current.GetInstance<IListMenuRenderer>();
     }
 
     protected virtual ListMenuRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      return new ListMenuRenderingContext (Page!.Context!, writer, this); // TODO RM-8118: not null assertion
+      return new ListMenuRenderingContext(Page!.Context!, writer, this); // TODO RM-8118: not null assertion
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       for (int i = 0; i < MenuItems.Count; i++)
       {
         WebMenuItem menuItem = MenuItems[i];
         if (menuItem.Command != null)
         {
-          menuItem.Command.RegisterForSynchronousPostBackOnDemand (
-              this, i.ToString (), string.Format ("ListMenu '{0}', MenuItem '{1}'", ID, menuItem.ItemID));
+          menuItem.Command.RegisterForSynchronousPostBackOnDemand(
+              this, i.ToString(), string.Format("ListMenu '{0}', MenuItem '{1}'", ID, menuItem.ItemID));
         }
       }
     }
@@ -119,9 +119,9 @@ namespace Remotion.Web.UI.Controls
     /// <returns>A Javascript statement, terminiated with a <c>;</c> (semicolon).</returns>
     public string GetUpdateScriptReference (string getSelectionCount)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("getSelectionCount", getSelectionCount);
+      ArgumentUtility.CheckNotNullOrEmpty("getSelectionCount", getSelectionCount);
       
-      return string.Format ("ListMenu.Update ('#{0}', {1});", ClientID, getSelectionCount);
+      return string.Format("ListMenu.Update ('#{0}', {1});", ClientID, getSelectionCount);
     }
 
     string IControlWithDiagnosticMetadata.ControlType

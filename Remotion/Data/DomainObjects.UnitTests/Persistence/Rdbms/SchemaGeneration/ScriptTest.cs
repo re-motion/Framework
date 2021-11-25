@@ -27,17 +27,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _script = new Script (SchemaGenerationFirstStorageProviderDefinition, "CreateScript", "DropScript");
+      _script = new Script(SchemaGenerationFirstStorageProviderDefinition, "CreateScript", "DropScript");
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_script.StorageProviderDefinition, Is.SameAs (SchemaGenerationFirstStorageProviderDefinition));
-      Assert.That (_script.SetUpScript, Is.EqualTo ("CreateScript"));
-      Assert.That (_script.TearDownScript, Is.EqualTo ("DropScript"));
+      Assert.That(_script.StorageProviderDefinition, Is.SameAs(SchemaGenerationFirstStorageProviderDefinition));
+      Assert.That(_script.SetUpScript, Is.EqualTo("CreateScript"));
+      Assert.That(_script.TearDownScript, Is.EqualTo("DropScript"));
     }
   }
 }

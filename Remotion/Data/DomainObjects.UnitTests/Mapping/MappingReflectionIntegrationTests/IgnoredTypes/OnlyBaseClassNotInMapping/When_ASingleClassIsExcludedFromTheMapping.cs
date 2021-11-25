@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _baseClassOfExcludedClass = TypeDefinitions[typeof (BaseClassOfExcludedClass)];
       _classDerivedFromExcludedClass = TypeDefinitions[typeof (ClassDerivedFromExcludedClass)];
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     [Test]
     public void Then_TheExcludedTypeShouldNotHaveAClassDefinition ()
     {
-      Assert.That (_classDerivedFromExcludedClass.BaseClass, Is.SameAs (_baseClassOfExcludedClass));
+      Assert.That(_classDerivedFromExcludedClass.BaseClass, Is.SameAs(_baseClassOfExcludedClass));
     }
   }
 }

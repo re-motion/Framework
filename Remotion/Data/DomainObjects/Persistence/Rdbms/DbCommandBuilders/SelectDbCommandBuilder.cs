@@ -42,10 +42,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         ISqlDialect sqlDialect)
         : base (sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("table", table);
-      ArgumentUtility.CheckNotNull ("selectedColumns", selectedColumns);
-      ArgumentUtility.CheckNotNull ("comparedColumns", comparedColumns);
-      ArgumentUtility.CheckNotNull ("orderedColumns", orderedColumns);
+      ArgumentUtility.CheckNotNull("table", table);
+      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
+      ArgumentUtility.CheckNotNull("comparedColumns", comparedColumns);
+      ArgumentUtility.CheckNotNull("orderedColumns", orderedColumns);
 
       _table = table;
       _selectedColumns = selectedColumns;
@@ -75,16 +75,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     public override IDbCommand Create (IRdbmsProviderCommandExecutionContext commandExecutionContext)
     {
-      ArgumentUtility.CheckNotNull ("commandExecutionContext", commandExecutionContext);
+      ArgumentUtility.CheckNotNull("commandExecutionContext", commandExecutionContext);
 
       var command = commandExecutionContext.CreateDbCommand();
 
       var statement = new StringBuilder();
-      AppendSelectClause (statement, command, _selectedColumns);
-      AppendFromClause (statement, command, _table);
-      AppendWhereClause (statement, command, _comparedColumns);
-      AppendOrderByClause (statement, command, _orderedColumns);
-      statement.Append (SqlDialect.StatementDelimiter);
+      AppendSelectClause(statement, command, _selectedColumns);
+      AppendFromClause(statement, command, _table);
+      AppendWhereClause(statement, command, _comparedColumns);
+      AppendOrderByClause(statement, command, _orderedColumns);
+      statement.Append(SqlDialect.StatementDelimiter);
 
       command.CommandText = statement.ToString();
 

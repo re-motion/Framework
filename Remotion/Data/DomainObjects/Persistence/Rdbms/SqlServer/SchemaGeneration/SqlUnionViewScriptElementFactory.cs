@@ -29,30 +29,30 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     protected override string GetSelectStatements (UnionViewDefinition unionViewDefinition)
     {
-      ArgumentUtility.CheckNotNull ("unionViewDefinition", unionViewDefinition);
+      ArgumentUtility.CheckNotNull("unionViewDefinition", unionViewDefinition);
 
-      var createSelectStringBuilder = new StringBuilder ();
+      var createSelectStringBuilder = new StringBuilder();
       
-      foreach (var tableDefinition in unionViewDefinition.GetAllTables ())
+      foreach (var tableDefinition in unionViewDefinition.GetAllTables())
       {
         if (createSelectStringBuilder.Length > 0)
-          createSelectStringBuilder.AppendFormat ("\r\n  UNION ALL\r\n");
+          createSelectStringBuilder.AppendFormat("\r\n  UNION ALL\r\n");
 
         var availableTableColumns = tableDefinition.GetAllColumns();
-        var unionedColumns = unionViewDefinition.CalculateFullColumnList (availableTableColumns);
-        createSelectStringBuilder.AppendFormat (
+        var unionedColumns = unionViewDefinition.CalculateFullColumnList(availableTableColumns);
+        createSelectStringBuilder.AppendFormat(
             "  SELECT {0}\r\n"
             + "    FROM [{1}].[{2}]",
-            GetColumnList (unionedColumns),
+            GetColumnList(unionedColumns),
             tableDefinition.TableName.SchemaName ?? DefaultSchema,
             tableDefinition.TableName.EntityName);
       }
-      return createSelectStringBuilder.ToString ();
+      return createSelectStringBuilder.ToString();
     }
 
     protected override bool UseCheckOption (UnionViewDefinition unionViewDefinition)
     {
-      ArgumentUtility.CheckNotNull ("unionViewDefinition", unionViewDefinition);
+      ArgumentUtility.CheckNotNull("unionViewDefinition", unionViewDefinition);
 
       return unionViewDefinition.GetAllTables().Count() == 1;
     }

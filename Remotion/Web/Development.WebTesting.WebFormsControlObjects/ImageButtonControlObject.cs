@@ -54,19 +54,19 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     public UnspecifiedPageObject Click (IWebTestActionOptions? actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
-      var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      ExecuteAction (new ClickAction (this, Scope), actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
+      ExecuteAction(new ClickAction(this, Scope), actualActionOptions);
       return UnspecifiedPage();
     }
 
     /// <inheritdoc/>
     protected override ICompletionDetectionStrategy GetDefaultCompletionDetectionStrategy (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      if (IsPostBackLink (scope))
+      if (IsPostBackLink(scope))
         return ((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy;
 
       return ((IWebFormsPageObject) Context.PageObject).NavigationCompletionDetectionStrategy;
@@ -76,7 +76,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     {
       const string doPostBackWithOptionsScript = "DoPostBackWithOptions";
 
-      return scope["onclick"] != null && scope["onclick"].Contains (doPostBackWithOptionsScript);
+      return scope["onclick"] != null && scope["onclick"].Contains(doPostBackWithOptionsScript);
     }
   }
 }

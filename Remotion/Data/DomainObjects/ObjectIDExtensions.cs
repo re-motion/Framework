@@ -58,9 +58,9 @@ namespace Remotion.Data.DomainObjects
     public static T GetObject<T> (this ObjectID id, ClientTransaction clientTransaction = null, bool includeDeleted = false)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull ("id", id);
+      ArgumentUtility.CheckNotNull("id", id);
       
-      return GetHandleChecked<T> (id).GetObject (clientTransaction, includeDeleted);
+      return GetHandleChecked<T>(id).GetObject(clientTransaction, includeDeleted);
     }
 
     /// <summary>
@@ -84,8 +84,8 @@ namespace Remotion.Data.DomainObjects
     public static T TryGetObject<T> (this ObjectID id, ClientTransaction clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull ("id", id);
-      return GetHandleChecked<T> (id).TryGetObject (clientTransaction);
+      ArgumentUtility.CheckNotNull("id", id);
+      return GetHandleChecked<T>(id).TryGetObject(clientTransaction);
     }
 
     /// <summary>
@@ -114,8 +114,8 @@ namespace Remotion.Data.DomainObjects
     public static T GetObjectReference<T> (this ObjectID id, ClientTransaction clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull ("id", id);
-      return GetHandleChecked<T> (id).GetObjectReference (clientTransaction);
+      ArgumentUtility.CheckNotNull("id", id);
+      return GetHandleChecked<T>(id).GetObjectReference(clientTransaction);
     }
 
     /// <summary>
@@ -140,8 +140,8 @@ namespace Remotion.Data.DomainObjects
     public static T[] GetObjects<T> (this IEnumerable<ObjectID> ids, ClientTransaction clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull ("ids", ids);
-      return ids.Select (GetHandleChecked<T>).GetObjects (clientTransaction);
+      ArgumentUtility.CheckNotNull("ids", ids);
+      return ids.Select(GetHandleChecked<T>).GetObjects(clientTransaction);
     }
 
     /// <summary>
@@ -161,20 +161,20 @@ namespace Remotion.Data.DomainObjects
     public static T[] TryGetObjects<T> (this IEnumerable<ObjectID> ids, ClientTransaction clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull ("ids", ids);
-      return ids.Select (GetHandleChecked<T>).TryGetObjects (clientTransaction);
+      ArgumentUtility.CheckNotNull("ids", ids);
+      return ids.Select(GetHandleChecked<T>).TryGetObjects(clientTransaction);
     }
 
     private static IDomainObjectHandle<T> GetHandleChecked<T> (ObjectID id) where T : DomainObject, ISupportsGetObject
     {
       try
       {
-        return id.GetHandle<T> ();
+        return id.GetHandle<T>();
       }
       catch (ArgumentException ex)
       {
-        var message = string.Format ("The ObjectID '{0}' is not compatible with type '{1}'.", id, typeof (T));
-        throw new ArgumentException (message, "id", ex);
+        var message = string.Format("The ObjectID '{0}' is not compatible with type '{1}'.", id, typeof (T));
+        throw new ArgumentException(message, "id", ex);
       }
     }
   }

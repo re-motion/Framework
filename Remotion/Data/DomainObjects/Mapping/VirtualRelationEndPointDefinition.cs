@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         string sortExpressionText,
         IPropertyInformation propertyInfo)
     {
-      throw new NotImplementedException (
+      throw new NotImplementedException(
           "Use DomainObjectCollectionRelationEndPointDefinition or VirtualCollectionRelationEndPointDefinition or VirtualObjectRelationEndPointDefinition respectively. (Version: 3.0.0)");
     }
 

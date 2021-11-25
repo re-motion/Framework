@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
 
     public static ClassWithAllDataTypes NewObject ()
     {
-      return NewObject<ClassWithAllDataTypes> ();
+      return NewObject<ClassWithAllDataTypes>();
     }
 
     private SecurityContext _securityContext;
@@ -58,13 +58,13 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
     [StorageClassNone]
     public string[] StringArray
     {
-      get { return DelimitedStringArrayProperty.Split (';'); }
+      get { return DelimitedStringArrayProperty.Split(';'); }
       set
       {
         if (value == null)
           DelimitedStringArrayProperty = String.Empty;
         else
-          DelimitedStringArrayProperty = String.Join (";", value);
+          DelimitedStringArrayProperty = String.Join(";", value);
       }
     }
 
@@ -83,14 +83,14 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
         if (delimitedNullStringArray == null)
           return null;
 
-        return delimitedNullStringArray.Split (';');
+        return delimitedNullStringArray.Split(';');
       }
       set
       {
         if (value == null)
           DelimitedNullStringArrayProperty = null;
         else
-          DelimitedNullStringArrayProperty = String.Join (";", value);
+          DelimitedNullStringArrayProperty = String.Join(";", value);
       }
     }
 
@@ -272,7 +272,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
       DecimalProperty = 10.3m;
       DoubleProperty = 2.0;
       EnumProperty = EnumType.Value1;
-      GuidProperty = Guid.NewGuid ();
+      GuidProperty = Guid.NewGuid();
       Int16Property = 16;
       Int32Property = 32;
       Int64Property = 64;
@@ -280,22 +280,22 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
       StringProperty = "string";
       StringPropertyWithoutMaxLength = "string without max length";
       BinaryProperty = new byte[] { 1, 2, 3 };
-      var oppositeObject = ClassForRelationTest.NewObject ();
+      var oppositeObject = ClassForRelationTest.NewObject();
       ClassForRelationTestMandatory = oppositeObject;
-      ClassesForRelationTestMandatoryNavigateOnly.Add (oppositeObject);
+      ClassesForRelationTestMandatoryNavigateOnly.Add(oppositeObject);
     }
 
     IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()
     {
-      return new DomainObjectSecurityStrategyDecorator (
-          ObjectSecurityStrategy.Create (this, InvalidationToken.Create()),
+      return new DomainObjectSecurityStrategyDecorator(
+          ObjectSecurityStrategy.Create(this, InvalidationToken.Create()),
           this,
           RequiredSecurityForStates.NewAndDeleted);
     }
 
     Type ISecurableObject.GetSecurableType ()
     {
-      return GetPublicDomainObjectType ();
+      return GetPublicDomainObjectType();
     }
 
     ISecurityContext ISecurityContextFactory.CreateSecurityContext ()
@@ -303,11 +303,11 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
       if (_securityContext == null)
       {
         _securityContext =
-            SecurityContext.Create (
+            SecurityContext.Create(
                 GetPublicDomainObjectType(),
                 null,
                 null,
-                ClassForRelationTestMandatory.Name.Substring (0, ClassForRelationTestMandatory.Name.Length - 1),
+                ClassForRelationTestMandatory.Name.Substring(0, ClassForRelationTestMandatory.Name.Length - 1),
                 new Dictionary<string, EnumWrapper>(),
                 new EnumWrapper[0]);
       }

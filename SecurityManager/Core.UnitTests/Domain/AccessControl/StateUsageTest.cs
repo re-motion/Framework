@@ -41,21 +41,21 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     public void ValidateDuringCommit ()
     {
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
-      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
-      StateDefinition paidState = paymentProperty[EnumWrapper.Get (PaymentState.Paid).Name];
-      StateDefinition notPaidState = paymentProperty[EnumWrapper.Get (PaymentState.None).Name];
-      _testHelper.CreateStateCombination (orderClass, paidState);
-      _testHelper.CreateStateCombination (orderClass, notPaidState);
-      _testHelper.CreateStateCombination (orderClass);
+      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty(orderClass);
+      StateDefinition paidState = paymentProperty[EnumWrapper.Get(PaymentState.Paid).Name];
+      StateDefinition notPaidState = paymentProperty[EnumWrapper.Get(PaymentState.None).Name];
+      _testHelper.CreateStateCombination(orderClass, paidState);
+      _testHelper.CreateStateCombination(orderClass, notPaidState);
+      _testHelper.CreateStateCombination(orderClass);
       var dupicateStateCombination = orderClass.CreateStatefulAccessControlList().StateCombinations[0];
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        dupicateStateCombination.AttachState (paidState);
-        Assert.That (
+        dupicateStateCombination.AttachState(paidState);
+        Assert.That(
             () => ClientTransaction.Current.Commit(),
             Throws.InstanceOf<ConstraintViolationException>()
-                .With.Message.EqualTo (
+                .With.Message.EqualTo(
                     "The securable class definition 'Remotion.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination "
                     + "that has been defined twice."));
       }
@@ -65,9 +65,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     public void OnCommitting_WithChangedStateUsage_RegistersClassForCommit ()
     {
       var classDefinition = _testHelper.CreateOrderClassDefinition();
-      var property = _testHelper.CreatePaymentStateProperty (classDefinition);
-      var state = property[EnumWrapper.Get (PaymentState.Paid).Name];
-      var combination = _testHelper.CreateStateCombination (classDefinition);
+      var property = _testHelper.CreatePaymentStateProperty(classDefinition);
+      var state = property[EnumWrapper.Get(PaymentState.Paid).Name];
+      var combination = _testHelper.CreateStateCombination(classDefinition);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -75,13 +75,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
         };
-        combination.AttachState (state);
+        combination.AttachState(state);
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (commitOnClassWasCalled, Is.True);
+        Assert.That(commitOnClassWasCalled, Is.True);
       }
     }
 
@@ -89,9 +89,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     public void OnCommitting_WithDeletedStateUsage_RegistersClassForCommit ()
     {
       var classDefinition = _testHelper.CreateOrderClassDefinition();
-      var property = _testHelper.CreatePaymentStateProperty (classDefinition);
-      var combination = _testHelper.CreateStateCombination (classDefinition);
-      combination.AttachState (property[EnumWrapper.Get (PaymentState.Paid).Name]);
+      var property = _testHelper.CreatePaymentStateProperty(classDefinition);
+      var combination = _testHelper.CreateStateCombination(classDefinition);
+      combination.AttachState(property[EnumWrapper.Get(PaymentState.Paid).Name]);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -99,14 +99,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
         };
         combination.ClearStates();
-        combination.AttachState (property[EnumWrapper.Get (PaymentState.None).Name]);
+        combination.AttachState(property[EnumWrapper.Get(PaymentState.None).Name]);
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (commitOnClassWasCalled, Is.True);
+        Assert.That(commitOnClassWasCalled, Is.True);
       }
     }
   }

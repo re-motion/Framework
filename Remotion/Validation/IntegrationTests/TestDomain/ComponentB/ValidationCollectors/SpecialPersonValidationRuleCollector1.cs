@@ -25,12 +25,12 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentB.ValidationC
   {
     public SpecialPersonValidationRuleCollector1 ()
     {
-      RemoveRule (p => p.LastName).Validator (
+      RemoveRule(p => p.LastName).Validator(
           typeof (NotEqualValidator),
           typeof (PersonValidationRuleCollector1),
-          validator => "Test".Equals (((NotEqualValidator) validator).ComparisonValue));
+          validator => "Test".Equals(((NotEqualValidator) validator).ComparisonValue));
 
-      RemoveRule ().Validator (
+      RemoveRule().Validator(
           typeof (RealPersonValidator),
           typeof (PersonValidationRuleCollector1),
           validator => validator is RealPersonValidator);

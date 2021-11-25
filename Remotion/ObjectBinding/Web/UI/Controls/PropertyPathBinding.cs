@@ -53,9 +53,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public PropertyPathBinding (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
-      SetPropertyPath (propertyPath);
+      SetPropertyPath(propertyPath);
     }
 
     public PropertyPathBinding (string propertyPathIdentifier)
@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </returns>
     public override string ToString ()
     {
-      return GetType ().Name;
+      return GetType().Name;
     }
 
     /// <summary> 
@@ -104,20 +104,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_propertyPath != null)
         return _propertyPath;
 
-      if (string.IsNullOrEmpty (_propertyPathIdentifier))
+      if (string.IsNullOrEmpty(_propertyPathIdentifier))
       {
         _propertyPath = new NullBusinessObjectPropertyPath();
       }
       else if (_isDynamic)
       {
-        _propertyPath = BusinessObjectPropertyPath.CreateDynamic (_propertyPathIdentifier);
+        _propertyPath = BusinessObjectPropertyPath.CreateDynamic(_propertyPathIdentifier);
       }
       else
       {
         if (BusinessObjectClass == null)
-          throw new InvalidOperationException ("The property path could not be resolved because the Business Object Class is not set.");
+          throw new InvalidOperationException("The property path could not be resolved because the Business Object Class is not set.");
         else
-          _propertyPath = BusinessObjectPropertyPath.CreateStatic (BusinessObjectClass, _propertyPathIdentifier);
+          _propertyPath = BusinessObjectPropertyPath.CreateStatic(BusinessObjectClass, _propertyPathIdentifier);
       }
 
       return _propertyPath;

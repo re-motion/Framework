@@ -42,8 +42,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     {
       base.SetUp();
 
-      _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderTicket");
-      _endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (_endPointID, DomainObjectIDs.OrderTicket1);
+      _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
+      _endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(_endPointID, DomainObjectIDs.OrderTicket1);
       _domainObject = _endPoint.GetDomainObject();
       
       _oppositeObjectNullSetterCalled = false;
@@ -53,25 +53,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       };
 
       _transactionEventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
-      _command = new ObjectEndPointDeleteCommand (_endPoint, _oppositeObjectNullSetter, _transactionEventSinkWithMock);
+      _command = new ObjectEndPointDeleteCommand(_endPoint, _oppositeObjectNullSetter, _transactionEventSinkWithMock);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_command.ModifiedEndPoint, Is.SameAs (_endPoint));
-      Assert.That (_command.OldRelatedObject, Is.Null);
-      Assert.That (_command.NewRelatedObject, Is.Null);
+      Assert.That(_command.ModifiedEndPoint, Is.SameAs(_endPoint));
+      Assert.That(_command.OldRelatedObject, Is.Null);
+      Assert.That(_command.NewRelatedObject, Is.Null);
     }
 
     [Test]
     public void Initialization_FromNullEndPoint ()
     {
-      var endPoint = new NullObjectEndPoint (TestableClientTransaction, _endPointID.Definition);
-      Assert.That (
-          () => new ObjectEndPointDeleteCommand (endPoint, () => { }, _transactionEventSinkWithMock),
+      var endPoint = new NullObjectEndPoint(TestableClientTransaction, _endPointID.Definition);
+      Assert.That(
+          () => new ObjectEndPointDeleteCommand(endPoint, () => { }, _transactionEventSinkWithMock),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Modified end point is null, a NullEndPointModificationCommand is needed.",
                   "modifiedEndPoint"));
     }
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     {
       _transactionEventSinkWithMock.Replay();
 
-      _command.End ();
+      _command.End();
     }
 
     [Test]
@@ -101,26 +101,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       _domainObject.RelationChanging += (sender, args) => relationChangingCalled = true;
       _domainObject.RelationChanged += (sender, args) => relationChangedCalled = true;
 
-      Assert.That (_oppositeObjectNullSetterCalled, Is.False);
-      Assert.That (_endPoint.HasBeenTouched, Is.False);
+      Assert.That(_oppositeObjectNullSetterCalled, Is.False);
+      Assert.That(_endPoint.HasBeenTouched, Is.False);
 
-      _command.Perform ();
+      _command.Perform();
 
-      Assert.That (relationChangingCalled, Is.False); // operation was not started
-      Assert.That (relationChangedCalled, Is.False); // operation was not finished
+      Assert.That(relationChangingCalled, Is.False); // operation was not started
+      Assert.That(relationChangedCalled, Is.False); // operation was not finished
 
-      Assert.That (_oppositeObjectNullSetterCalled, Is.True);
-      Assert.That (_endPoint.HasBeenTouched, Is.True);
+      Assert.That(_oppositeObjectNullSetterCalled, Is.True);
+      Assert.That(_endPoint.HasBeenTouched, Is.True);
     }
 
     [Test]
     public void ExpandToAllRelatedObjects ()
     {
-      var bidirectionalModification = _command.ExpandToAllRelatedObjects ();
+      var bidirectionalModification = _command.ExpandToAllRelatedObjects();
 
       var steps = bidirectionalModification.GetNestedCommands();
-      Assert.That (steps.Count, Is.EqualTo (1));
-      Assert.That (steps[0], Is.SameAs (_command));
+      Assert.That(steps.Count, Is.EqualTo(1));
+      Assert.That(steps[0], Is.SameAs(_command));
 
     }
   }

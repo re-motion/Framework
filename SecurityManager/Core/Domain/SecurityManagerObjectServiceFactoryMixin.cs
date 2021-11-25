@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.Domain
     [OverrideTarget]
     public virtual IBusinessObjectService CreateService (IBusinessObjectProviderWithIdentity provider, Type serviceType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("serviceType", serviceType, typeof (IBusinessObjectService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof (IBusinessObjectService));
 
       if (serviceType == typeof (SubstitutionPropertiesSearchService))
         return new SubstitutionPropertiesSearchService();
@@ -81,7 +81,7 @@ namespace Remotion.SecurityManager.Domain
       if (serviceType == typeof (AbstractRoleDefinitionPropertyTypeSearchService))
         return new AbstractRoleDefinitionPropertyTypeSearchService();
 
-      return Next.CreateService (provider, serviceType);
+      return Next.CreateService(provider, serviceType);
     }
   }
 }

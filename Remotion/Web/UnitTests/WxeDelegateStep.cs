@@ -27,13 +27,13 @@ namespace Remotion.Web.UnitTests
 
     public WxeDelegateStep (Action action)
     {
-      ArgumentUtility.CheckNotNull ("action", action);
+      ArgumentUtility.CheckNotNull("action", action);
       _action = action;
     }
 
     public override void Execute (WxeContext context)
     {
-      _action ();
+      _action();
     }
   }
 }

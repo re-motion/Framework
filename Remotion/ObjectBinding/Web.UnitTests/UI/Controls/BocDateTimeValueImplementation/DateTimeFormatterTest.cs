@@ -29,9 +29,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     {
       var formatter = new DateTimeFormatter();
 
-      using (new CultureScope ("en-US"))
+      using (new CultureScope("en-US"))
       {
-        Assert.That (formatter.FormatDateValue (new DateTime (2013, 06, 20, 14, 30, 40)), Is.EqualTo ("6/20/2013"));
+        Assert.That(formatter.FormatDateValue(new DateTime(2013, 06, 20, 14, 30, 40)), Is.EqualTo("6/20/2013"));
       }
     }
 
@@ -40,9 +40,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     {
       var formatter = new DateTimeFormatter();
 
-      using (new CultureScope ("en-US"))
+      using (new CultureScope("en-US"))
       {
-        Assert.That (formatter.FormatTimeValue (new DateTime (2013, 06, 20, 14, 30, 40), true), Is.EqualTo ("2:30:40 PM"));
+        Assert.That(formatter.FormatTimeValue(new DateTime(2013, 06, 20, 14, 30, 40), true), Is.EqualTo("2:30:40 PM"));
       }
     }
 
@@ -51,9 +51,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     {
       var formatter = new DateTimeFormatter();
 
-      using (new CultureScope ("en-US"))
+      using (new CultureScope("en-US"))
       {
-        Assert.That (formatter.FormatTimeValue (new DateTime (2013, 06, 20, 5, 30, 40), false), Is.EqualTo ("5:30 AM"));
+        Assert.That(formatter.FormatTimeValue(new DateTime(2013, 06, 20, 5, 30, 40), false), Is.EqualTo("5:30 AM"));
       }
     }
 
@@ -62,9 +62,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     {
       var formatter = new DateTimeFormatter();
 
-      using (new CultureScope ("en-US"))
+      using (new CultureScope("en-US"))
       {
-        Assert.That (formatter.Is12HourTimeFormat(), Is.True);
+        Assert.That(formatter.Is12HourTimeFormat(), Is.True);
       }
     }
 
@@ -73,9 +73,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     {
       var formatter = new DateTimeFormatter();
 
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
-        Assert.That (formatter.Is12HourTimeFormat(), Is.False);
+        Assert.That(formatter.Is12HourTimeFormat(), Is.False);
       }
     }
 
@@ -84,9 +84,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     {
       var formatter = new DateTimeFormatter();
 
-      using (new CultureScope ("en-US"))
+      using (new CultureScope("en-US"))
       {
-        Assert.That (formatter.GetDateMaxLength(), Is.EqualTo (10));
+        Assert.That(formatter.GetDateMaxLength(), Is.EqualTo(10));
       }
     }
 
@@ -96,9 +96,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     {
       var formatter = new DateTimeFormatter();
 
-      using (new CultureScope ("en-US"))
+      using (new CultureScope("en-US"))
       {
-        Assert.That (formatter.GetTimeMaxLength (true), Is.EqualTo (11));
+        Assert.That(formatter.GetTimeMaxLength(true), Is.EqualTo(11));
       }
     }
 
@@ -107,9 +107,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     {
       var formatter = new DateTimeFormatter();
 
-      using (new CultureScope ("en-US"))
+      using (new CultureScope("en-US"))
       {
-        Assert.That (formatter.GetTimeMaxLength (false), Is.EqualTo (8));
+        Assert.That(formatter.GetTimeMaxLength(false), Is.EqualTo(8));
       }
     }
   }

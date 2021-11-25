@@ -33,63 +33,63 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository ();
+      _mockRepository = new MockRepository();
     }
 
     [Test]
     public void Run ()
     {
       bool threadRun = false;
-      ThreadRunner.Run (delegate { threadRun = true; });
+      ThreadRunner.Run(delegate { threadRun = true; });
 
-      Assert.That (threadRun, Is.True);
+      Assert.That(threadRun, Is.True);
     }
 
     [Test]
     public void Ctor_WithTimeout ()
     {
-      var threadRunner = new ThreadRunner (delegate { }, TimeSpan.FromSeconds (1.0));
-      Assert.That (threadRunner.Timeout, Is.EqualTo (TimeSpan.FromSeconds (1.0)));
+      var threadRunner = new ThreadRunner(delegate { }, TimeSpan.FromSeconds(1.0));
+      Assert.That(threadRunner.Timeout, Is.EqualTo(TimeSpan.FromSeconds(1.0)));
     }
 
     [Test]
     public void Ctor_WithoutTimeout_HasInfiniteTimeout ()
     {
-      var threadRunner = new ThreadRunner (delegate { });
-      Assert.That (threadRunner.Timeout.TotalMilliseconds, Is.EqualTo (Timeout.Infinite));
+      var threadRunner = new ThreadRunner(delegate { });
+      Assert.That(threadRunner.Timeout.TotalMilliseconds, Is.EqualTo(Timeout.Infinite));
     }
 
     [Test]
     public void Run_CallsJoin ()
     {
-      TimeSpan timeout = TimeSpan.FromSeconds (1.0);
-      var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner> ((ThreadStart) delegate { }, timeout);
-      threadRunnerMock.Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "JoinThread", Arg<Thread>.Is.Anything)).Return (true);
+      TimeSpan timeout = TimeSpan.FromSeconds(1.0);
+      var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner>((ThreadStart) delegate { }, timeout);
+      threadRunnerMock.Expect(mock => PrivateInvoke.InvokeNonPublicMethod(mock, "JoinThread", Arg<Thread>.Is.Anything)).Return(true);
 
-      threadRunnerMock.Replay ();
+      threadRunnerMock.Replay();
       threadRunnerMock.Run();
-      threadRunnerMock.VerifyAllExpectations ();
+      threadRunnerMock.VerifyAllExpectations();
     }
 
     [Test]
     public void Run_CallsJoin_WithRightThread ()
     {
-      using (var waitHandle = new ManualResetEvent (false))
+      using (var waitHandle = new ManualResetEvent(false))
       {
         Thread? threadRunnerThread = null;
-        var threadMethod = (ThreadStart) delegate { threadRunnerThread = Thread.CurrentThread; waitHandle.Set (); };
+        var threadMethod = (ThreadStart) delegate { threadRunnerThread = Thread.CurrentThread; waitHandle.Set(); };
 
         TimeSpan timeout = TimeSpan.MaxValue;
-        var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner> (threadMethod, timeout);
+        var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner>(threadMethod, timeout);
 
-        threadRunnerMock.Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "JoinThread", Arg<Thread>.Is.Anything)).
-            WhenCalled (
+        threadRunnerMock.Expect(mock => PrivateInvoke.InvokeNonPublicMethod(mock, "JoinThread", Arg<Thread>.Is.Anything)).
+            WhenCalled(
             // when this expectation is reached, assert that the threadRunnerThread was passed to the method
             invocation =>
             {
-              waitHandle.WaitOne ();
-              Assert.That (invocation.Arguments[0], Is.SameAs (threadRunnerThread));
-            }).Return (true);
+              waitHandle.WaitOne();
+              Assert.That(invocation.Arguments[0], Is.SameAs(threadRunnerThread));
+            }).Return(true);
 
         threadRunnerMock.Replay();
         threadRunnerMock.Run();
@@ -100,30 +100,30 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting
     [Test]
     public void Run_WithTimedOutThread_ThrowsTimeoutException ()
     {
-      ManualResetEvent wait = new ManualResetEvent (false);
-      TimeSpan timeout = TimeSpan.FromMinutes (2.0);
-      var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner> ((ThreadStart)delegate { wait.Set(); }, timeout);
+      ManualResetEvent wait = new ManualResetEvent(false);
+      TimeSpan timeout = TimeSpan.FromMinutes(2.0);
+      var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner>((ThreadStart)delegate { wait.Set(); }, timeout);
       threadRunnerMock
-          .Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "JoinThread", Arg<Thread>.Is.Anything))
-          .WhenCalled (mi => { wait.WaitOne(); })
-          .Return (false);
+          .Expect(mock => PrivateInvoke.InvokeNonPublicMethod(mock, "JoinThread", Arg<Thread>.Is.Anything))
+          .WhenCalled(mi => { wait.WaitOne(); })
+          .Return(false);
 
-      threadRunnerMock.Replay ();
-      Assert.That (
+      threadRunnerMock.Replay();
+      Assert.That(
           () => threadRunnerMock.Run(),
           Throws.TypeOf<TimeoutException>()
-              .With.Message.EqualTo ("The thread has not finished executing within the timeout (00:02:00) and was not cleaned up.")
+              .With.Message.EqualTo("The thread has not finished executing within the timeout (00:02:00) and was not cleaned up.")
               .With.InnerException.Null);
-      threadRunnerMock.VerifyAllExpectations ();
+      threadRunnerMock.VerifyAllExpectations();
     }
 
     [Test]
     public void Run_WithExceptionOnTimedOutThread_ThrowsTimeoutException ()
     {
-      ManualResetEvent wait = new ManualResetEvent (false);
-      var exception = new InvalidOperationException ("xy");
-      TimeSpan timeout = TimeSpan.FromMinutes (1.0);
-      var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner> (
+      ManualResetEvent wait = new ManualResetEvent(false);
+      var exception = new InvalidOperationException("xy");
+      TimeSpan timeout = TimeSpan.FromMinutes(1.0);
+      var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner>(
           (ThreadStart)delegate
           {
             wait.Set();
@@ -131,38 +131,38 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting
           },
           timeout);
       threadRunnerMock
-          .Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "JoinThread", Arg<Thread>.Is.Anything))
-          .WhenCalled (
+          .Expect(mock => PrivateInvoke.InvokeNonPublicMethod(mock, "JoinThread", Arg<Thread>.Is.Anything))
+          .WhenCalled(
               mi =>
               {
                 wait.WaitOne();
-                Thread.Sleep (TimeSpan.FromSeconds (1));
+                Thread.Sleep(TimeSpan.FromSeconds(1));
               })
-          .Return (false);
+          .Return(false);
 
-      threadRunnerMock.Replay ();
-      Assert.That (
+      threadRunnerMock.Replay();
+      Assert.That(
           () => threadRunnerMock.Run(),
           Throws.TypeOf<TimeoutException>()
-              .With.Message.EqualTo ("The thread has not finished executing within the timeout (00:01:00) and was not cleaned up.")
-              .With.InnerException.SameAs (exception));
-      threadRunnerMock.VerifyAllExpectations ();
+              .With.Message.EqualTo("The thread has not finished executing within the timeout (00:01:00) and was not cleaned up.")
+              .With.InnerException.SameAs(exception));
+      threadRunnerMock.VerifyAllExpectations();
     }
 
     [Test]
     public void WithTimeout ()
     {
-      ThreadRunner threadRunner = new ThreadRunner (delegate { }, TimeSpan.FromMinutes (250));
-      Assert.That (threadRunner.Timeout, Is.EqualTo (TimeSpan.FromMinutes (250)));
+      ThreadRunner threadRunner = new ThreadRunner(delegate { }, TimeSpan.FromMinutes(250));
+      Assert.That(threadRunner.Timeout, Is.EqualTo(TimeSpan.FromMinutes(250)));
     }
 
     [Test]
     public void Run_WithException ()
     {
-      var exception = new InvalidOperationException ("xy");
-      Assert.That (
-          () => ThreadRunner.Run (() => { throw exception; }),
-          Throws.InvalidOperationException.With.SameAs (exception));
+      var exception = new InvalidOperationException("xy");
+      Assert.That(
+          () => ThreadRunner.Run(() => { throw exception; }),
+          Throws.InvalidOperationException.With.SameAs(exception));
     }
   }
 }

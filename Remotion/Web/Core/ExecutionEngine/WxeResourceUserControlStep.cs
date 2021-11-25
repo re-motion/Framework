@@ -67,7 +67,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the user controls using the assemby's resource directory.
     /// </summary>
     public WxeResourceUserControlStep (Assembly resourceAssembly, string userControlName)
-        : base (new ResourceObject (ResourcePathBuilder, resourceAssembly, userControlName))
+        : base (new ResourceObject(ResourcePathBuilder, resourceAssembly, userControlName))
     {
     }
 
@@ -75,7 +75,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the user controls using the assemby's resource directory.
     /// </summary>
     public WxeResourceUserControlStep (Assembly resourceAssembly, WxeVariableReference userControl)
-        : base (new ResourceObjectWithVarRef (ResourcePathBuilder, resourceAssembly, userControl))
+        : base (new ResourceObjectWithVarRef(ResourcePathBuilder, resourceAssembly, userControl))
     {
     }
 

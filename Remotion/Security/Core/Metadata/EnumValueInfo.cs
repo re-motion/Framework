@@ -35,8 +35,8 @@ namespace Remotion.Security.Metadata
 
     public EnumValueInfo (string typeName, string name, int value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
       _value = value;
       _typeName = typeName;
@@ -59,7 +59,7 @@ namespace Remotion.Security.Metadata
       }
       set
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("TypeName", value);
+        ArgumentUtility.CheckNotNullOrEmpty("TypeName", value);
         _typeName = value;
       }
     }

@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
     {
       get
       {
-        return Properties[typeof (MixinAddingTwoReferencesToDerivedClass2), "MyDerived2"].GetValue<ObjectList<DerivedClassWithTwoBaseReferencesViaMixins>> ();
+        return Properties[typeof (MixinAddingTwoReferencesToDerivedClass2), "MyDerived2"].GetValue<ObjectList<DerivedClassWithTwoBaseReferencesViaMixins>>();
       }
     }
   }

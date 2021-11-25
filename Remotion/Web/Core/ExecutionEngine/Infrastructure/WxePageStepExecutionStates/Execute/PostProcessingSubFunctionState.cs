@@ -35,15 +35,15 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
     //TODO: CleanUp duplication with other PostProcessSubFunction-implemenations
     public override void ExecuteSubFunction (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       // Correct the PostBack-Sequence number
       Parameters.PostBackCollection[WxePageInfo.PostBackSequenceNumberID] = context.PostBackID.ToString();
 
       //  Provide the executed sub-function and backed up postback data to the executing page
-      ExecutionStateContext.SetReturnState (Parameters.SubFunction, true, Parameters.PostBackCollection);
+      ExecutionStateContext.SetReturnState(Parameters.SubFunction, true, Parameters.PostBackCollection);
 
-      ExecutionStateContext.SetExecutionState (NullExecutionState.Null);
+      ExecutionStateContext.SetExecutionState(NullExecutionState.Null);
     }
   }
 }

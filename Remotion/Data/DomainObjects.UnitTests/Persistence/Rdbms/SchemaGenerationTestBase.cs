@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
   public class SchemaGenerationTestBase : DatabaseTest
   {
     public SchemaGenerationTestBase ()
-        : base (new DatabaseAgent (SchemaGenerationConnectionString1), "Dummy.sql")
+        : base (new DatabaseAgent(SchemaGenerationConnectionString1), "Dummy.sql")
     {
     }
 
@@ -48,8 +48,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       base.SetUp();
 
-      DomainObjectsConfiguration.SetCurrent (SchemaGenerationConfiguration.Instance.GetDomainObjectsConfiguration());
-      MappingConfiguration.SetCurrent (SchemaGenerationConfiguration.Instance.GetMappingConfiguration());
+      DomainObjectsConfiguration.SetCurrent(SchemaGenerationConfiguration.Instance.GetDomainObjectsConfiguration());
+      MappingConfiguration.SetCurrent(SchemaGenerationConfiguration.Instance.GetMappingConfiguration());
     }
 
     [TearDown]
@@ -98,12 +98,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     protected virtual TableScriptBuilder CreateTableBuilder ()
     {
-      return new TableScriptBuilder (new SqlTableScriptElementFactory(), new SqlCommentScriptElementFactory());
+      return new TableScriptBuilder(new SqlTableScriptElementFactory(), new SqlCommentScriptElementFactory());
     }
 
     protected virtual ViewScriptBuilder CreateViewBuilder ()
     {
-      return new ViewScriptBuilder (
+      return new ViewScriptBuilder(
           new SqlTableViewScriptElementFactory(),
           new SqlUnionViewScriptElementFactory(),
           new SqlFilterViewScriptElementFactory(),
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     protected virtual ViewScriptBuilder CreateExtendedViewBuilder ()
     {
-      return new ViewScriptBuilder (
+      return new ViewScriptBuilder(
           new ExtendedSqlTableViewScriptElementFactory(),
           new ExtendedSqlUnionViewScriptElementFactory(),
           new ExtendedSqlFilterViewScriptElementFactory(),
@@ -123,14 +123,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     protected virtual ForeignKeyConstraintScriptBuilder CreateConstraintBuilder ()
     {
-      return new ForeignKeyConstraintScriptBuilder (new SqlForeignKeyConstraintScriptElementFactory(), new SqlCommentScriptElementFactory());
+      return new ForeignKeyConstraintScriptBuilder(new SqlForeignKeyConstraintScriptElementFactory(), new SqlCommentScriptElementFactory());
     }
 
     protected virtual IndexScriptBuilder CreateIndexBuilder ()
     {
       return
-          new IndexScriptBuilder (
-              new SqlIndexScriptElementFactory (
+          new IndexScriptBuilder(
+              new SqlIndexScriptElementFactory(
                   new SqlIndexDefinitionScriptElementFactory(),
                   new SqlPrimaryXmlIndexDefinitionScriptElementFactory(),
                   new SqlSecondaryXmlIndexDefinitionScriptElementFactory()),
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     protected virtual SynonymScriptBuilder CreateSynonymBuilder ()
     {
       var sqlSynonymScriptElementFactory = new SqlSynonymScriptElementFactory();
-      return new SynonymScriptBuilder (
+      return new SynonymScriptBuilder(
           sqlSynonymScriptElementFactory,
           sqlSynonymScriptElementFactory,
           sqlSynonymScriptElementFactory,
@@ -151,8 +151,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     protected PropertyDefinition GetPropertyDefinition<TSourceObject, TPropertyType> (Expression<Func<TSourceObject, TPropertyType>> expression)
         where TSourceObject : DomainObject
     {
-      var propertyInfo = MemberInfoFromExpressionUtility.GetProperty (expression);
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (TSourceObject));
-      return classDefinition.ResolveProperty (PropertyInfoAdapter.Create (propertyInfo));
+      var propertyInfo = MemberInfoFromExpressionUtility.GetProperty(expression);
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (TSourceObject));
+      return classDefinition.ResolveProperty(PropertyInfoAdapter.Create(propertyInfo));
     }}
 }

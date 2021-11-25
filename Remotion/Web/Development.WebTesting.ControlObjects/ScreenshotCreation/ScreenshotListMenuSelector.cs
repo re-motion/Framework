@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
 
     public ScreenshotListMenuSelector ([NotNull] ListMenuControlObject listMenu)
     {
-      ArgumentUtility.CheckNotNull ("listMenu", listMenu);
+      ArgumentUtility.CheckNotNull("listMenu", listMenu);
 
       _listMenu = listMenu;
     }
@@ -46,17 +46,17 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithHtmlID (string htmlID)
     {
-      ArgumentUtility.CheckNotNull ("htmlID", htmlID);
+      ArgumentUtility.CheckNotNull("htmlID", htmlID);
 
-      return _listMenu.Scope.FindId (htmlID).ForElementScopeScreenshot();
+      return _listMenu.Scope.FindId(htmlID).ForElementScopeScreenshot();
     }
 
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("itemID", itemID);
 
-      var item = _listMenu.Scope.FindTagWithAttribute ("span.listMenuItem", DiagnosticMetadataAttributes.ItemID, itemID);
+      var item = _listMenu.Scope.FindTagWithAttribute("span.listMenuItem", DiagnosticMetadataAttributes.ItemID, itemID);
 
       return item.ForElementScopeScreenshot();
     }
@@ -64,7 +64,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithIndex (int oneBasedIndex)
     {
-      var item = _listMenu.Scope.FindChild ((oneBasedIndex - 1).ToString());
+      var item = _listMenu.Scope.FindChild((oneBasedIndex - 1).ToString());
 
       return item.ForElementScopeScreenshot();
     }
@@ -72,9 +72,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayText (string displayText)
     {
-      ArgumentUtility.CheckNotNull ("displayText", displayText);
+      ArgumentUtility.CheckNotNull("displayText", displayText);
 
-      var item = _listMenu.Scope.FindTagWithAttribute (
+      var item = _listMenu.Scope.FindTagWithAttribute(
           "span.listMenuItem",
           DiagnosticMetadataAttributes.Content,
           displayText);
@@ -85,15 +85,15 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayTextContains (string displayText)
     {
-      ArgumentUtility.CheckNotNull ("displayText", displayText);
+      ArgumentUtility.CheckNotNull("displayText", displayText);
 
-      var item = _listMenu.Scope.FindTagWithAttributeUsingOperator (
+      var item = _listMenu.Scope.FindTagWithAttributeUsingOperator(
           "span.listMenuItem",
           CssComparisonOperator.SubstringMatch,
           DiagnosticMetadataAttributes.Content,
           displayText);
 
-      return FluentUtility.CreateFluentElementScope (item);
+      return FluentUtility.CreateFluentElementScope(item);
     }
   }
 }

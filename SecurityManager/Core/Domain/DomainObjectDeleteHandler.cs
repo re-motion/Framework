@@ -29,9 +29,9 @@ namespace Remotion.SecurityManager.Domain
 
     public DomainObjectDeleteHandler (params IEnumerable[] lists)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("lists", lists);
+      ArgumentUtility.CheckNotNullOrItemsNull("lists", lists);
 
-      _objectsToBeDeleted = lists.SelectMany (objects => objects.Cast<BaseSecurityManagerObject>()).ToArray();
+      _objectsToBeDeleted = lists.SelectMany(objects => objects.Cast<BaseSecurityManagerObject>()).ToArray();
     }
 
     public bool IsDeleted
@@ -42,9 +42,9 @@ namespace Remotion.SecurityManager.Domain
     public void Delete ()
     {
       if (IsDeleted)
-        throw new InvalidOperationException ("The Delete operation my only be performed once.");
+        throw new InvalidOperationException("The Delete operation my only be performed once.");
 
-      foreach (BaseSecurityManagerObject domainObject in _objectsToBeDeleted.Where (o =>!o.State.IsInvalid))
+      foreach (BaseSecurityManagerObject domainObject in _objectsToBeDeleted.Where(o =>!o.State.IsInvalid))
         domainObject.Delete();
 
       _objectsToBeDeleted = null;

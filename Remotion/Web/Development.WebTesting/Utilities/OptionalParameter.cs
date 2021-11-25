@@ -27,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   {
     public static implicit operator OptionalParameter<T> (T value)
     {
-      return new OptionalParameter<T> (value);
+      return new OptionalParameter<T>(value);
     }
 
     public static explicit operator T (OptionalParameter<T> optionalParameter)
@@ -61,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       get
       {
         if (!_hasValue)
-          throw new InvalidOperationException ("Optional parameter has no value.");
+          throw new InvalidOperationException("Optional parameter has no value.");
         return _value;
       }
     }
@@ -85,7 +85,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         return other == null;
       if (other == null)
         return false;
-      return _value!.Equals (other);
+      return _value!.Equals(other);
     }
 
     /// <inheritdoc />

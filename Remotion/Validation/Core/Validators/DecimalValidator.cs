@@ -63,16 +63,16 @@ namespace Remotion.Validation.Validators
 
     public DecimalValidator (int maxIntegerPlaces, int maxDecimalPlaces, bool ignoreTrailingZeros, [NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
       if (maxIntegerPlaces < 1)
-        throw new ArgumentOutOfRangeException ("maxIntegerPlaces", maxIntegerPlaces, "Value must not be zero or negative.");
+        throw new ArgumentOutOfRangeException("maxIntegerPlaces", maxIntegerPlaces, "Value must not be zero or negative.");
 
       if (maxDecimalPlaces < 0)
-        throw new ArgumentOutOfRangeException ("maxDecimalPlaces", maxDecimalPlaces, "Value must not be negative.");
+        throw new ArgumentOutOfRangeException("maxDecimalPlaces", maxDecimalPlaces, "Value must not be negative.");
 
       if ((maxIntegerPlaces + maxDecimalPlaces) > c_systemDecimalMaxPrecision)
-        throw new ArgumentException (message:$"The sum of {nameof (maxIntegerPlaces)} ({maxIntegerPlaces}) and {nameof (maxDecimalPlaces)} ({maxDecimalPlaces}) must not be greater than {c_systemDecimalMaxPrecision}.");
+        throw new ArgumentException(message:$"The sum of {nameof(maxIntegerPlaces)} ({maxIntegerPlaces}) and {nameof(maxDecimalPlaces)} ({maxDecimalPlaces}) must not be greater than {c_systemDecimalMaxPrecision}.");
 
       MaxIntegerPlaces = maxIntegerPlaces;
       MaxDecimalPlaces = maxDecimalPlaces;
@@ -85,10 +85,10 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
-      if (IsValid (context))
+      if (IsValid(context))
         return Enumerable.Empty<PropertyValidationFailure>();
 
-      return EnumerableUtility.Singleton (CreateValidationError (context));
+      return EnumerableUtility.Singleton(CreateValidationError(context));
     }
 
     private bool IsValid (PropertyValidatorContext context)
@@ -96,19 +96,19 @@ namespace Remotion.Validation.Validators
       if (!(context.PropertyValue is decimal propertyValue))
         return true;
 
-      decimal absolutePropertyValue = Math.Abs (propertyValue);
+      decimal absolutePropertyValue = Math.Abs(propertyValue);
       bool hasValidIntegerPlaces;
       if (MaxIntegerPlaces == c_systemDecimalMaxPrecision)
         hasValidIntegerPlaces = true;
       else
-        hasValidIntegerPlaces = Decimal.Floor (absolutePropertyValue) < s_compareValuesWithoutScale[MaxIntegerPlaces];
+        hasValidIntegerPlaces = Decimal.Floor(absolutePropertyValue) < s_compareValuesWithoutScale[MaxIntegerPlaces];
 
       decimal propertyValueForScale;
       if (IgnoreTrailingZeros)
         propertyValueForScale = propertyValue / 1.0m;
       else
         propertyValueForScale = propertyValue;
-      int[] bits = Decimal.GetBits (propertyValueForScale);
+      int[] bits = Decimal.GetBits(propertyValueForScale);
       var scale = (bits[3] & 0x00FF0000) >> 16;
       bool hasValidDecimalPlaces = scale <= MaxDecimalPlaces;
 
@@ -117,13 +117,13 @@ namespace Remotion.Validation.Validators
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
-      string localizedValidationMessage = ValidationMessage.Format (
+      string localizedValidationMessage = ValidationMessage.Format(
           CultureInfo.CurrentUICulture,
           (IFormatProvider) CultureInfo.CurrentCulture,
           MaxIntegerPlaces,
           MaxDecimalPlaces);
 
-      return new PropertyValidationFailure (
+      return new PropertyValidationFailure(
           context.Instance,
           context.Property,
           context.PropertyValue,

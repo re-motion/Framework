@@ -38,8 +38,8 @@ namespace Remotion.Web.UnitTests.Core.Security
     {
       var obj = _serviceLocator.GetInstance<IPrincipalProvider>();
 
-      Assert.That (obj, Is.Not.Null);
-      Assert.That (obj, Is.TypeOf (typeof (HttpContextPrincipalProvider)));
+      Assert.That(obj, Is.Not.Null);
+      Assert.That(obj, Is.TypeOf(typeof (HttpContextPrincipalProvider)));
     }
 
     [Test]
@@ -48,7 +48,7 @@ namespace Remotion.Web.UnitTests.Core.Security
       var obj1 = _serviceLocator.GetInstance<IPrincipalProvider>();
       var obj2 = _serviceLocator.GetInstance<IPrincipalProvider>();
 
-      Assert.That (obj1, Is.SameAs (obj2));
+      Assert.That(obj1, Is.SameAs(obj2));
     }
   }
 }

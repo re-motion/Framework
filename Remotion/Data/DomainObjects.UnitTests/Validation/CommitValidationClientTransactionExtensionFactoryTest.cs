@@ -30,14 +30,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var clientTransaction = ClientTransaction.CreateRootTransaction();
       var persistableDataValidatorStub = MockRepository.GenerateStub<IPersistableDataValidator>();
-      var factory = new CommitValidationClientTransactionExtensionFactory (persistableDataValidatorStub);
+      var factory = new CommitValidationClientTransactionExtensionFactory(persistableDataValidatorStub);
 
-      var result = factory.CreateClientTransactionExtensions (clientTransaction).ToArray();
+      var result = factory.CreateClientTransactionExtensions(clientTransaction).ToArray();
 
-      Assert.That (result.Count(), Is.EqualTo (1));
+      Assert.That(result.Count(), Is.EqualTo(1));
       var clientTransactionExtension = result.First();
-      Assert.That (clientTransactionExtension, Is.TypeOf<CommitValidationClientTransactionExtension>());
-      Assert.That (((CommitValidationClientTransactionExtension) clientTransactionExtension).Validator, Is.SameAs(persistableDataValidatorStub));
+      Assert.That(clientTransactionExtension, Is.TypeOf<CommitValidationClientTransactionExtension>());
+      Assert.That(((CommitValidationClientTransactionExtension) clientTransactionExtension).Validator, Is.SameAs(persistableDataValidatorStub));
     }
 
     [Test]
@@ -45,11 +45,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var clientTransaction = ClientTransaction.CreateRootTransaction();
       var subTransaction = clientTransaction.CreateSubTransaction();
-      var factory = new CommitValidationClientTransactionExtensionFactory (MockRepository.GenerateStub<IPersistableDataValidator>());
+      var factory = new CommitValidationClientTransactionExtensionFactory(MockRepository.GenerateStub<IPersistableDataValidator>());
 
-      var result = factory.CreateClientTransactionExtensions (subTransaction).ToArray();
+      var result = factory.CreateClientTransactionExtensions(subTransaction).ToArray();
 
-      Assert.That (result, Is.Empty);
+      Assert.That(result, Is.Empty);
     }
   }
 }

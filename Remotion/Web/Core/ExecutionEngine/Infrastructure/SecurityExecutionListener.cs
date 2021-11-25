@@ -32,8 +32,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public SecurityExecutionListener (WxeFunction function, IWxeFunctionExecutionListener innerListener, [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
     {
-      ArgumentUtility.CheckNotNull ("function", function);
-      ArgumentUtility.CheckNotNull ("innerListener", innerListener);
+      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentUtility.CheckNotNull("innerListener", innerListener);
 
       _function = function;
       _innerListener = innerListener;
@@ -61,22 +61,22 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     /// <summary>Play is invoked when the function's <see cref="WxeFunction.Execute(WxeContext)"/> method is invoked (first and subsequent calls).</summary>
     public void OnExecutionPlay (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       if (!_function.IsExecutionStarted)
       {
         if (_wxeSecurityAdapter != null)
-          _wxeSecurityAdapter.CheckAccess (_function);
+          _wxeSecurityAdapter.CheckAccess(_function);
       }
 
-      _innerListener.OnExecutionPlay (context);
+      _innerListener.OnExecutionPlay(context);
     }
 
     /// <summary>Stop is invoked when the function's <see cref="WxeFunction.Execute(WxeContext)"/> method is completed successfully.</summary>
     public void OnExecutionStop (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      _innerListener.OnExecutionStop (context);
+      ArgumentUtility.CheckNotNull("context", context);
+      _innerListener.OnExecutionStop(context);
     }
 
     /// <summary>
@@ -85,15 +85,15 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     /// </summary>
     public void OnExecutionPause (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      _innerListener.OnExecutionPause (context);
+      ArgumentUtility.CheckNotNull("context", context);
+      _innerListener.OnExecutionPause(context);
     }
 
     /// <summary>Play is invoked when the function's <see cref="WxeFunction.Execute(WxeContext)"/> method fails.</summary>
     public void OnExecutionFail (WxeContext context, Exception exception)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      _innerListener.OnExecutionFail (context, exception);
+      ArgumentUtility.CheckNotNull("context", context);
+      _innerListener.OnExecutionFail(context, exception);
     }
 
     public void OnDeserialization (object? sender)

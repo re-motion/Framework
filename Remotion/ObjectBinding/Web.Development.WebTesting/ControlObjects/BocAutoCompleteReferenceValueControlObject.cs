@@ -70,8 +70,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           [NotNull] FinishInputWithAction finishInputWith)
           : base (control, scope)
       {
-        ArgumentUtility.CheckNotNull ("autoCompleteResultItem", autoCompleteResultItem);
-        ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
+        ArgumentUtility.CheckNotNull("autoCompleteResultItem", autoCompleteResultItem);
+        ArgumentUtility.CheckNotNull("finishInputWith", finishInputWith);
 
         _autoCompleteResultItem = autoCompleteResultItem;
         _finishInputWith = finishInputWith;
@@ -86,16 +86,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       {
         var displayName = _autoCompleteResultItem.DisplayName;
 
-        scope.FillInWithFixed (displayName, FinishInput.Promptly);
+        scope.FillInWithFixed(displayName, FinishInput.Promptly);
 
-        var executor = JavaScriptExecutor.GetJavaScriptExecutor (scope);
+        var executor = JavaScriptExecutor.GetJavaScriptExecutor(scope);
 
-        JavaScriptExecutor.ExecuteVoidStatement (
+        JavaScriptExecutor.ExecuteVoidStatement(
             executor,
-            string.Format (c_updateResultScript, displayName, _autoCompleteResultItem.UniqueIdentifier),
+            string.Format(c_updateResultScript, displayName, _autoCompleteResultItem.UniqueIdentifier),
             scope.Native);
 
-        _finishInputWith (scope);
+        _finishInputWith(scope);
       }
     }
 
@@ -108,47 +108,47 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public string GetText ()
     {
       if (IsReadOnly())
-        return Scope.FindChild ("Value").Text; // do not trim
+        return Scope.FindChild("Value").Text; // do not trim
 
-      return Scope.FindChild ("TextValue").Value; // do not trim
+      return Scope.FindChild("TextValue").Value; // do not trim
     }
 
     /// <inheritdoc/>
     public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
+      ArgumentUtility.CheckNotNull("text", text);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      return FillWith (text, FinishInput.WithTab, actionOptions);
+      return FillWith(text, FinishInput.WithTab, actionOptions);
     }
 
     /// <inheritdoc/>
     public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
-      ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
+      ArgumentUtility.CheckNotNull("text", text);
+      ArgumentUtility.CheckNotNull("finishInputWith", finishInputWith);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      ExecuteAction (new FillWithAction (this, Scope.FindChild ("TextValue"), text, finishInputWith), actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
+      ExecuteAction(new FillWithAction(this, Scope.FindChild("TextValue"), text, finishInputWith), actualActionOptions);
       return UnspecifiedPage();
     }
 
     /// <inheritdoc/>
     public DropDownMenuControlObject GetDropDownMenu ()
     {
-      var dropDownMenuScope = Scope.FindChild ("Boc_OptionsMenu");
-      return new DropDownMenuControlObject (Context.CloneForControl (dropDownMenuScope));
+      var dropDownMenuScope = Scope.FindChild("Boc_OptionsMenu");
+      return new DropDownMenuControlObject(Context.CloneForControl(dropDownMenuScope));
     }
 
     /// <summary>
@@ -160,13 +160,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <returns>The completion set as list of <see cref="SearchServiceResultItem"/> or an empty list if the completion set has been empty.</returns>
     public IReadOnlyList<SearchServiceResultItem> GetSearchServiceResults ([NotNull] string searchText, int completionSetCount)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("searchText", searchText);
+      ArgumentUtility.CheckNotNullOrEmpty("searchText", searchText);
 
       var inputScopeID = GetInputScopeID();
 
-      var searchServiceRequestScript = CreateAutoCompleteSearchServiceRequest (inputScopeID, searchText, completionSetCount);
-      var response = (IReadOnlyDictionary<string, object>) Context.Browser.Driver.ExecuteScript (searchServiceRequestScript, Scope);
-      return ParseSearchServiceResponse (response);
+      var searchServiceRequestScript = CreateAutoCompleteSearchServiceRequest(inputScopeID, searchText, completionSetCount);
+      var response = (IReadOnlyDictionary<string, object>) Context.Browser.Driver.ExecuteScript(searchServiceRequestScript, Scope);
+      return ParseSearchServiceResponse(response);
     }
 
     /// <summary>
@@ -177,13 +177,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <returns>The exact search result as <see cref="SearchServiceResultItem"/> or null if no result has been found.</returns>
     public SearchServiceResultItem? GetExactSearchServiceResult ([NotNull] string searchText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("searchText", searchText);
+      ArgumentUtility.CheckNotNullOrEmpty("searchText", searchText);
 
       var inputScopeId = GetInputScopeID();
 
-      var searchServiceRequestScript = CreateAutoCompleteExactSearchServiceRequest (inputScopeId, searchText);
-      var response = (IReadOnlyDictionary<string, object>) Context.Browser.Driver.ExecuteScript (searchServiceRequestScript, Scope);
-      return ParseSearchServiceResponse (response).SingleOrDefault();
+      var searchServiceRequestScript = CreateAutoCompleteExactSearchServiceRequest(inputScopeId, searchText);
+      var response = (IReadOnlyDictionary<string, object>) Context.Browser.Driver.ExecuteScript(searchServiceRequestScript, Scope);
+      return ParseSearchServiceResponse(response).SingleOrDefault();
     }
 
     /// <summary>
@@ -195,15 +195,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <returns>An unspecified page object, may be used in case a new page is expected after clicking the control object.</returns>
     public UnspecifiedPageObject SelectFirstMatch ([NotNull] string filter, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("filter", filter);
+      ArgumentUtility.CheckNotNull("filter", filter);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      return SelectFirstMatch (filter, FinishInput.WithTab, actionOptions);
+      return SelectFirstMatch(filter, FinishInput.WithTab, actionOptions);
     }
 
     /// <summary>
@@ -217,20 +217,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <returns>An unspecified page object, may be used in case a new page is expected after clicking the control object.</returns>
     public UnspecifiedPageObject SelectFirstMatch ([NotNull] string filter, [NotNull] FinishInputWithAction finishInputWith, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("filter", filter);
-      ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
+      ArgumentUtility.CheckNotNull("filter", filter);
+      ArgumentUtility.CheckNotNull("finishInputWith", finishInputWith);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      var firstAutoCompleteResult = GetFirstAutoCompleteResult (filter);
-      var textField = Scope.FindChild ("TextValue");
+      var firstAutoCompleteResult = GetFirstAutoCompleteResult(filter);
+      var textField = Scope.FindChild("TextValue");
 
-      var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      ExecuteAction (new SelectAutoCompleteAction (this, textField, firstAutoCompleteResult, finishInputWith), actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
+      ExecuteAction(new SelectAutoCompleteAction(this, textField, firstAutoCompleteResult, finishInputWith), actualActionOptions);
 
       return UnspecifiedPage();
     }
@@ -238,37 +238,37 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<string> GetValidationErrors ()
     {
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      return GetValidationErrors (Scope.FindChild ("TextValue"));
+      return GetValidationErrors(Scope.FindChild("TextValue"));
     }
 
     public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
     {
-      return GetValidationErrorsForReadOnly (GetLabeledElementScope());
+      return GetValidationErrorsForReadOnly(GetLabeledElementScope());
     }
 
     protected override ElementScope GetLabeledElementScope ()
     {
       if (IsReadOnly())
-        return Scope.FindChild ("Content");
+        return Scope.FindChild("Content");
 
 #pragma warning disable 618
       if (Scope.Browser.IsInternetExplorer())
 #pragma warning restore 618
-        return Scope.FindChild ("TextValue");
+        return Scope.FindChild("TextValue");
       else
-        return Scope.FindChild ("TextValue").FindXPath ("..");
+        return Scope.FindChild("TextValue").FindXPath("..");
     }
 
     private SearchServiceResultItem GetFirstAutoCompleteResult ([NotNull] string filter)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("filter", filter);
+      ArgumentUtility.CheckNotNullOrEmpty("filter", filter);
 
-      var results = GetSearchServiceResults (filter, 2);
+      var results = GetSearchServiceResults(filter, 2);
 
       if (results.Count == 0)
-        throw AssertionExceptionUtility.CreateExpectationException (Driver, "No matches were found for the specified filter: '{0}'.", filter);
+        throw AssertionExceptionUtility.CreateExpectationException(Driver, "No matches were found for the specified filter: '{0}'.", filter);
 
       return results.First();
     }
@@ -282,10 +282,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         [NotNull] string autoCompleteTextValueInputFieldId,
         [NotNull] string searchText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
-      ArgumentUtility.CheckNotNullOrEmpty ("searchText", searchText);
+      ArgumentUtility.CheckNotNullOrEmpty("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
+      ArgumentUtility.CheckNotNullOrEmpty("searchText", searchText);
 
-      return CreateAutoCompleteSearchServiceRequestScript (autoCompleteTextValueInputFieldId, searchText, "serviceMethodSearchExact", null);
+      return CreateAutoCompleteSearchServiceRequestScript(autoCompleteTextValueInputFieldId, searchText, "serviceMethodSearchExact", null);
     }
 
     /// <summary>
@@ -299,10 +299,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         [NotNull] string searchText,
         int completionSetCount)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
-      ArgumentUtility.CheckNotNullOrEmpty ("searchText", searchText);
+      ArgumentUtility.CheckNotNullOrEmpty("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
+      ArgumentUtility.CheckNotNullOrEmpty("searchText", searchText);
 
-      return CreateAutoCompleteSearchServiceRequestScript (autoCompleteTextValueInputFieldId, searchText, "serviceMethodSearch", completionSetCount);
+      return CreateAutoCompleteSearchServiceRequestScript(autoCompleteTextValueInputFieldId, searchText, "serviceMethodSearch", completionSetCount);
     }
 
     private string CreateAutoCompleteSearchServiceRequestScript (
@@ -311,12 +311,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         [NotNull] string searchMethod,
         int? completionSetCount)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
-      ArgumentUtility.CheckNotNullOrEmpty ("searchText", searchText);
-      ArgumentUtility.CheckNotNullOrEmpty ("searchMethod", searchMethod);
+      ArgumentUtility.CheckNotNullOrEmpty("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
+      ArgumentUtility.CheckNotNullOrEmpty("searchText", searchText);
+      ArgumentUtility.CheckNotNullOrEmpty("searchMethod", searchMethod);
 
       var setCompletionSetCountScriptPart = completionSetCount.HasValue
-          ? string.Format ("data['completionSetCount'] = {0};", completionSetCount.Value)
+          ? string.Format("data['completionSetCount'] = {0};", completionSetCount.Value)
           : string.Empty;
 
       return $@"
@@ -366,7 +366,7 @@ return CallWebService();";
 
     private IReadOnlyList<SearchServiceResultItem> ParseSearchServiceResponse ([NotNull] IReadOnlyDictionary<string, object> response)
     {
-      ArgumentUtility.CheckNotNull ("response", response);
+      ArgumentUtility.CheckNotNull("response", response);
 
       var state = (string) response[AutoCompleteSearchService.State];
       var data = response[AutoCompleteSearchService.Data];
@@ -375,20 +375,20 @@ return CallWebService();";
         case AutoCompleteSearchService.Success:
           var successData = (IReadOnlyCollection<object>) data;
           return successData.Cast<IDictionary<string, object>>()
-              .Where (d => d != null) // empty JSON object (= no result) is converted to null
-              .Select (d => new SearchServiceResultItem ((string) d["UniqueIdentifier"], (string) d["DisplayName"], (string) d["IconUrl"]))
+              .Where(d => d != null) // empty JSON object (= no result) is converted to null
+              .Select(d => new SearchServiceResultItem((string) d["UniqueIdentifier"], (string) d["DisplayName"], (string) d["IconUrl"]))
               .ToList();
 
         case AutoCompleteSearchService.Error:
           var errorData = (IDictionary<string, object>) data;
-          throw new WebServiceExceutionException (
+          throw new WebServiceExceutionException(
               (long) errorData["readyState"],
               (string) errorData["responseText"],
               (long) errorData["status"],
               (string) errorData["statusText"]);
 
         default:
-          throw new NotSupportedException (string.Format ("The script returned the unknown state '{0}'.", state));
+          throw new NotSupportedException(string.Format("The script returned the unknown state '{0}'.", state));
       }
     }
 
@@ -398,7 +398,7 @@ return CallWebService();";
     /// </summary>
     ICollection<string> IControlObjectWithFormElements.GetFormElementNames ()
     {
-      return new[] { GetInputScopeID(), string.Format ("{0}_KeyValue", GetHtmlID()) };
+      return new[] { GetInputScopeID(), string.Format("{0}_KeyValue", GetHtmlID()) };
     }
 
     private string GetInputScopeID ()
@@ -409,9 +409,9 @@ return CallWebService();";
     private ElementScope GetScopeWithReferenceInformation ()
     {
       if (IsReadOnly())
-        return Scope.FindChild ("Command");
+        return Scope.FindChild("Command");
 
-      return Scope.FindChild ("TextValue").FindXPath ("..");
+      return Scope.FindChild("TextValue").FindXPath("..");
     }
   }
 }

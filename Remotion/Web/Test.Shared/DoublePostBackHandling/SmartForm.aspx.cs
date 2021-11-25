@@ -24,13 +24,13 @@ namespace Remotion.Web.Test.Shared.DoublePostBackHandling
   {
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
-      var counter = string.IsNullOrEmpty (CounterTextBox.Text) ? 0 : int.Parse (CounterTextBox.Text);
+      base.OnLoad(e);
+      var counter = string.IsNullOrEmpty(CounterTextBox.Text) ? 0 : int.Parse(CounterTextBox.Text);
       counter++;
       CounterTextBox.Text = counter.ToString();
 
       if (IsPostBack)
-        Thread.Sleep (500);
+        Thread.Sleep(500);
     }
 
     protected void AsyncTextBox_OnTextChanged (object sender, EventArgs e)
@@ -76,9 +76,9 @@ namespace Remotion.Web.Test.Shared.DoublePostBackHandling
     protected override void OnPreRender (EventArgs e)
     {
       AbortQueuedSubmit = AbortedQueuedSubmitCheckBox.Checked;
-      RegisterControlForSynchronousPostBack (UpdatePanelSyncSubmitButton);
-      RegisterControlForSynchronousPostBack (UpdatePanelSyncLinkButton);
-      base.OnPreRender (e);
+      RegisterControlForSynchronousPostBack(UpdatePanelSyncSubmitButton);
+      RegisterControlForSynchronousPostBack(UpdatePanelSyncLinkButton);
+      base.OnPreRender(e);
     }
   }
 }

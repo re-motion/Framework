@@ -29,19 +29,19 @@ namespace Remotion.Development.UnitTesting.Reflection.TypeDiscovery
 
     public FixedTypeDiscoveryService (params Type[] types)
     {
-      ArgumentUtility.CheckNotNull ("types", types);
+      ArgumentUtility.CheckNotNull("types", types);
       _types = types;
     }
 
     public ICollection GetTypes (Type baseType, bool excludeGlobalTypes)
     {
-      return _types.Where (t => IncludeType (t, baseType, excludeGlobalTypes)).ToArray ();
+      return _types.Where(t => IncludeType(t, baseType, excludeGlobalTypes)).ToArray();
     }
 
     private bool IncludeType (Type type, Type baseTypeFilter, bool excludeGlobalTypes)
     {
-      return (baseTypeFilter == null || baseTypeFilter.IsAssignableFrom (type)) 
-             && (!excludeGlobalTypes || !AssemblyTypeCache.IsGacAssembly (type.Assembly));
+      return (baseTypeFilter == null || baseTypeFilter.IsAssignableFrom(type)) 
+             && (!excludeGlobalTypes || !AssemblyTypeCache.IsGacAssembly(type.Assembly));
     }
   }
 }

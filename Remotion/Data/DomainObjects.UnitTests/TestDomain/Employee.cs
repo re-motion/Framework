@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   {
     public static Employee NewObject ()
     {
-      return NewObject<Employee> ();
+      return NewObject<Employee>();
     }
 
     protected Employee ()
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     public Computer Computer
     {
       get { return Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"].GetValue<Computer>(); }
-      set { Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"].SetValue (value); }
+      set { Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"].SetValue(value); }
     }
 
     [StorageClassTransaction]
@@ -55,10 +55,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     public void DeleteWithSubordinates ()
     {
-      foreach (Employee employee in Subordinates.Clone ())
-        employee.Delete ();
+      foreach (Employee employee in Subordinates.Clone())
+        employee.Delete();
 
-      this.Delete ();
+      this.Delete();
     }
   }
 }

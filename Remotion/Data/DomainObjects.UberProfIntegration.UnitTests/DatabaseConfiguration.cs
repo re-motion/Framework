@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 
     public static string DatabaseDirectory
     {
-      get { return ConfigurationManager.AppSettings["DatabaseDirectory"].TrimEnd ('\\') + "\\"; }
+      get { return ConfigurationManager.AppSettings["DatabaseDirectory"].TrimEnd('\\') + "\\"; }
     }
 
     public static string DatabaseNamePrefix
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 
     public static bool IntegratedSecurity
     {
-      get { return Boolean.Parse (ConfigurationManager.AppSettings["IntegratedSecurity"]); }
+      get { return Boolean.Parse(ConfigurationManager.AppSettings["IntegratedSecurity"]); }
     }
 
     public static string Username
@@ -61,9 +61,9 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 
     public static string UpdateConnectionString (string connectionString)
     {
-      var sqlConnectionStringBuilder = new SqlConnectionStringBuilder (connectionString);
+      var sqlConnectionStringBuilder = new SqlConnectionStringBuilder(connectionString);
       sqlConnectionStringBuilder.DataSource = DataSource;
-      sqlConnectionStringBuilder.InitialCatalog = sqlConnectionStringBuilder.InitialCatalog.Replace (DefaultDatabaseNamePrefix, DatabaseNamePrefix);
+      sqlConnectionStringBuilder.InitialCatalog = sqlConnectionStringBuilder.InitialCatalog.Replace(DefaultDatabaseNamePrefix, DatabaseNamePrefix);
       sqlConnectionStringBuilder.IntegratedSecurity = IntegratedSecurity;
       sqlConnectionStringBuilder.UserID = Username;
       sqlConnectionStringBuilder.Password = Password;
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 
     public static ReadOnlyDictionary<string, string> GetReplacementDictionary ()
     {
-      return new ReadOnlyDictionary<string, string> (
+      return new ReadOnlyDictionary<string, string>(
           new Dictionary<string, string>
           {
               { DefaultDatabaseDirectory, DatabaseDirectory },

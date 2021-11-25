@@ -35,13 +35,13 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <exception cref="InvalidOperationException">The JavaScript statement returned a value.</exception>
     public static void ExecuteVoidStatement ([NotNull] IJavaScriptExecutor executor, [NotNull] string statement, [NotNull] params object[] args)
     {
-      ArgumentUtility.CheckNotNull ("executor", executor);
-      ArgumentUtility.CheckNotNullOrEmpty ("statement", statement);
-      ArgumentUtility.CheckNotNull ("args", args);
+      ArgumentUtility.CheckNotNull("executor", executor);
+      ArgumentUtility.CheckNotNullOrEmpty("statement", statement);
+      ArgumentUtility.CheckNotNull("args", args);
 
-      var result = executor.ExecuteScript (statement, args);
+      var result = executor.ExecuteScript(statement, args);
       if (result != null)
-        throw new InvalidOperationException ("JavaScript void statement returned a value.");
+        throw new InvalidOperationException("JavaScript void statement returned a value.");
     }
 
     /// <summary>
@@ -53,15 +53,15 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       // TODO RM-8107: Improve null safety.
 
-      ArgumentUtility.CheckNotNull ("executor", executor);
-      ArgumentUtility.CheckNotNullOrEmpty ("statement", statement);
-      ArgumentUtility.CheckNotNull ("args", args);
+      ArgumentUtility.CheckNotNull("executor", executor);
+      ArgumentUtility.CheckNotNullOrEmpty("statement", statement);
+      ArgumentUtility.CheckNotNull("args", args);
 
-      var result = executor.ExecuteScript (statement, args);
-      if (result == null && !NullableTypeUtility.IsNullableType (typeof (T)))
+      var result = executor.ExecuteScript(statement, args);
+      if (result == null && !NullableTypeUtility.IsNullableType(typeof (T)))
       {
-        throw new InvalidOperationException (
-            string.Format ("The JavaScript statement returned null which is incompatible with the specified type '{0}'.", typeof (T).Name));
+        throw new InvalidOperationException(
+            string.Format("The JavaScript statement returned null which is incompatible with the specified type '{0}'.", typeof (T).Name));
       }
 
       return (T?) result;
@@ -72,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public static IJavaScriptExecutor GetJavaScriptExecutor ([NotNull] IBrowserSession browserSession)
     {
-      ArgumentUtility.CheckNotNull ("browserSession", browserSession);
+      ArgumentUtility.CheckNotNull("browserSession", browserSession);
 
       return (IJavaScriptExecutor) browserSession.Driver.Native;
     }
@@ -82,7 +82,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public static IJavaScriptExecutor GetJavaScriptExecutor ([NotNull] ControlObject controlObject)
     {
-      ArgumentUtility.CheckNotNull ("controlObject", controlObject);
+      ArgumentUtility.CheckNotNull("controlObject", controlObject);
 
       return (IJavaScriptExecutor) ((IWrapsDriver) controlObject.Scope.Native).WrappedDriver;
     }
@@ -92,7 +92,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public static IJavaScriptExecutor GetJavaScriptExecutor ([NotNull] ElementScope element)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
+      ArgumentUtility.CheckNotNull("element", element);
 
       return (IJavaScriptExecutor) ((IWrapsDriver) element.Native).WrappedDriver;
     }
@@ -102,7 +102,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public static IJavaScriptExecutor GetJavaScriptExecutor ([NotNull] IWebElement webElement)
     {
-      ArgumentUtility.CheckNotNull ("webElement", webElement);
+      ArgumentUtility.CheckNotNull("webElement", webElement);
 
       return (IJavaScriptExecutor) ((IWrapsDriver) webElement).WrappedDriver;
     }

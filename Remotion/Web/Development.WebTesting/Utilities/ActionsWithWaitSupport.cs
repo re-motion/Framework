@@ -53,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public ActionsWithWaitSupport (IWebDriver driver)
         : base (driver)
     {
-      ArgumentUtility.CheckNotNull ("driver", driver);
+      ArgumentUtility.CheckNotNull("driver", driver);
 
       _driver = driver;
     }
@@ -70,16 +70,16 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// check of the condition is retried.</exception>
     public ActionsWithWaitSupport WaitFor ([NotNull] IWebElement webElement, [NotNull] Func<IWebElement, bool> predicate, TimeSpan timeout)
     {
-      ArgumentUtility.CheckNotNull ("webElement", webElement);
-      ArgumentUtility.CheckNotNull ("predicate", predicate);
+      ArgumentUtility.CheckNotNull("webElement", webElement);
+      ArgumentUtility.CheckNotNull("predicate", predicate);
 
-      AddAction (
-          new ActionAdapter (
+      AddAction(
+          new ActionAdapter(
               () =>
               {
-                var webDriverWait = new WebDriverWait (_driver, timeout);
-                webDriverWait.IgnoreExceptionTypes (typeof (StaleElementReferenceException));
-                webDriverWait.Until (_ => predicate (webElement));
+                var webDriverWait = new WebDriverWait(_driver, timeout);
+                webDriverWait.IgnoreExceptionTypes(typeof (StaleElementReferenceException));
+                webDriverWait.Until(_ => predicate(webElement));
               }));
 
       return this;

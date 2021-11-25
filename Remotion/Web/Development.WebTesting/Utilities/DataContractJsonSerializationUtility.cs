@@ -34,14 +34,14 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static string Serialize<T> ([NotNull] T data)
         where T : class
     {
-      ArgumentUtility.CheckNotNull ("data", data);
+      ArgumentUtility.CheckNotNull("data", data);
 
-      var serializer = new DataContractJsonSerializer (typeof (T));
+      var serializer = new DataContractJsonSerializer(typeof (T));
       using (var dataStream = new MemoryStream())
       {
-        serializer.WriteObject (dataStream, data);
+        serializer.WriteObject(dataStream, data);
 
-        return Encoding.UTF8.GetString (dataStream.ToArray());
+        return Encoding.UTF8.GetString(dataStream.ToArray());
       }
     }
 
@@ -51,13 +51,13 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static T? Deserialize<T> ([CanBeNull] string? serializedData)
         where T : class
     {
-      if (string.IsNullOrEmpty (serializedData))
+      if (string.IsNullOrEmpty(serializedData))
         return default(T);
 
-      using (var dataStream = new MemoryStream (Encoding.UTF8.GetBytes (serializedData)))
+      using (var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(serializedData)))
       {
-        var serializer = new DataContractJsonSerializer (typeof (T));
-        return (T?) serializer.ReadObject (dataStream);
+        var serializer = new DataContractJsonSerializer(typeof (T));
+        return (T?) serializer.ReadObject(dataStream);
       }
     }
   }

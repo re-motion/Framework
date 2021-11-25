@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       string propertyName = CurrentPropertyName;
       if (propertyName == null)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?");
       }
       else
@@ -89,9 +89,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </exception>
     public static void PreparePropertyAccess (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
 
-      CurrentPropertyNames.Push (propertyName);
+      CurrentPropertyNames.Push(propertyName);
     }
 
     /// <summary>
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public static void PropertyAccessFinished ()
     {
       if (CurrentPropertyNames.Count == 0)
-        throw new InvalidOperationException ("There is no property to finish.");
+        throw new InvalidOperationException("There is no property to finish.");
       CurrentPropertyNames.Pop();
     }
   }

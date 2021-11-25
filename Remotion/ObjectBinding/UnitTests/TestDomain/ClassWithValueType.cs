@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
     private T _readOnlyAttributeScalar;
     private T[] _array;
     private T?[] _nullableArray;
-    private List<T> _list = new List<T> ();
+    private List<T> _list = new List<T>();
 
     public ClassWithValueType ()
     {

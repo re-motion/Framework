@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       _bindablePropertyReadAccessStrategyMock = MockRepository.GenerateStrictMock<IBindablePropertyReadAccessStrategy>();
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => _bindablePropertyReadAccessStrategyMock);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle(() => _bindablePropertyReadAccessStrategyMock);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
     public override void TearDown ()
@@ -52,11 +52,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void DisplayName ()
     {
-      BindableDomainObjectMixin bindableObjectMixin = Mixin.Get<BindableDomainObjectMixin> (SampleBindableMixinDomainObject.NewObject ());
+      BindableDomainObjectMixin bindableObjectMixin = Mixin.Get<BindableDomainObjectMixin>(SampleBindableMixinDomainObject.NewObject());
 
-      Assert.That (
+      Assert.That(
           ((IBusinessObjectWithIdentity) bindableObjectMixin).DisplayName,
-          Is.EqualTo ("Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.SampleBindableMixinDomainObject, Remotion.Data.DomainObjects.ObjectBinding.UnitTests"));
+          Is.EqualTo("Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.SampleBindableMixinDomainObject, Remotion.Data.DomainObjects.ObjectBinding.UnitTests"));
     }
 
     [Test]
@@ -64,9 +64,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     {
       var businessObject = (IBusinessObjectWithIdentity) SampleBindableMixinDomainObjectWithOverriddenDisplayName.NewObject();
 
-      Assert.That (
+      Assert.That(
           businessObject.DisplayName,
-          Is.EqualTo ("TheDisplayName"));
+          Is.EqualTo("TheDisplayName"));
     }
   }
 }

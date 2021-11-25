@@ -26,49 +26,49 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     [Test]
     public void CompareEmptyDocuments ()
     {
-      XmlDocument expected = new XmlDocument ();
-      XmlDocument actual = new XmlDocument ();
+      XmlDocument expected = new XmlDocument();
+      XmlDocument actual = new XmlDocument();
 
-      var constraint = new XmlDocumentEqualConstraint (expected);
-      Assert.That (constraint.Matches (actual), Is.True);
+      var constraint = new XmlDocumentEqualConstraint(expected);
+      Assert.That(constraint.Matches(actual), Is.True);
     }
 
     [Test]
     public void CompareWithNullDocument ()
     {
-      XmlDocument expected = new XmlDocument ();
+      XmlDocument expected = new XmlDocument();
 
-      var constraint = new XmlDocumentEqualConstraint (expected);
-      Assert.That (constraint.Matches ((object)null), Is.False);
+      var constraint = new XmlDocumentEqualConstraint(expected);
+      Assert.That(constraint.Matches((object)null), Is.False);
     }
 
     [Test]
     public void ExpectedDocumentIsNull ()
     {
-      XmlDocument actual = new XmlDocument ();
+      XmlDocument actual = new XmlDocument();
 
-      var constraint = new XmlDocumentEqualConstraint (null);
-      Assert.That (constraint.Matches(actual), Is.False);
+      var constraint = new XmlDocumentEqualConstraint(null);
+      Assert.That(constraint.Matches(actual), Is.False);
     }
 
     [Test]
     public void ExpectedAndActualDocumentsAreNull ()
     {
-      var constraint = new XmlDocumentEqualConstraint (null);
-      Assert.That (constraint.Matches((object)null), Is.True);
+      var constraint = new XmlDocumentEqualConstraint(null);
+      Assert.That(constraint.Matches((object)null), Is.True);
     }
 
     [Test]
     public void CompareWithDocumentContainingOnlyRootNode ()
     {
-      XmlDocument expected = new XmlDocument ();
-      XmlDocument actual = new XmlDocument ();
+      XmlDocument expected = new XmlDocument();
+      XmlDocument actual = new XmlDocument();
 
-      XmlElement actualRootNode = actual.CreateElement ("root", "http://test");
-      actual.AppendChild (actualRootNode);
+      XmlElement actualRootNode = actual.CreateElement("root", "http://test");
+      actual.AppendChild(actualRootNode);
 
-      var constraint = new XmlDocumentEqualConstraint (expected);
-      Assert.That (constraint.Matches (actual), Is.False);
+      var constraint = new XmlDocumentEqualConstraint(expected);
+      Assert.That(constraint.Matches(actual), Is.False);
     }
 
     [Test]
@@ -76,16 +76,16 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     {
       string expectedXml = @"<rootA xmlns=""http://test"" />";
 
-      XmlDocument expected = new XmlDocument ();
-      XmlDocument actual = new XmlDocument ();
+      XmlDocument expected = new XmlDocument();
+      XmlDocument actual = new XmlDocument();
 
-      expected.LoadXml (expectedXml);
+      expected.LoadXml(expectedXml);
 
-      XmlElement actualRootNode = actual.CreateElement ("rootB", "http://test");
-      actual.AppendChild (actualRootNode);
+      XmlElement actualRootNode = actual.CreateElement("rootB", "http://test");
+      actual.AppendChild(actualRootNode);
 
-      var constraint = new XmlDocumentEqualConstraint (expected);
-      Assert.That (constraint.Matches(actual), Is.False);
+      var constraint = new XmlDocumentEqualConstraint(expected);
+      Assert.That(constraint.Matches(actual), Is.False);
     }
 
     [Test]
@@ -93,16 +93,16 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     {
       string expectedXml = @"<root xmlns=""http://test"" />";
 
-      XmlDocument expected = new XmlDocument ();
-      XmlDocument actual = new XmlDocument ();
+      XmlDocument expected = new XmlDocument();
+      XmlDocument actual = new XmlDocument();
 
-      expected.LoadXml (expectedXml);
+      expected.LoadXml(expectedXml);
 
-      XmlElement actualRootNode = actual.CreateElement ("root", "http://test");
-      actual.AppendChild (actualRootNode);
+      XmlElement actualRootNode = actual.CreateElement("root", "http://test");
+      actual.AppendChild(actualRootNode);
 
-      var constraint = new XmlDocumentEqualConstraint (expected);
-      Assert.That (constraint.Matches (actual), Is.True);
+      var constraint = new XmlDocumentEqualConstraint(expected);
+      Assert.That(constraint.Matches(actual), Is.True);
     }
 
     [Test]
@@ -113,40 +113,40 @@ namespace Remotion.Security.UnitTests.XmlAsserter
   <child />
 </root>";
 
-      XmlDocument expected = new XmlDocument ();
-      XmlDocument actual = new XmlDocument ();
+      XmlDocument expected = new XmlDocument();
+      XmlDocument actual = new XmlDocument();
 
-      expected.LoadXml (expectedXml);
+      expected.LoadXml(expectedXml);
 
-      XmlElement actualRootNode = actual.CreateElement ("root", "http://test");
-      XmlElement actualChildNode = actual.CreateElement ("childA", "http://test");
-      actualRootNode.AppendChild (actualChildNode);
-      actual.AppendChild (actualRootNode);
+      XmlElement actualRootNode = actual.CreateElement("root", "http://test");
+      XmlElement actualChildNode = actual.CreateElement("childA", "http://test");
+      actualRootNode.AppendChild(actualChildNode);
+      actual.AppendChild(actualRootNode);
 
-      var constraint = new XmlDocumentEqualConstraint (expected);
-      Assert.That (constraint.Matches(actual), Is.False);
+      var constraint = new XmlDocumentEqualConstraint(expected);
+      Assert.That(constraint.Matches(actual), Is.False);
     }
 
     [Test]
     public void CompareRootNodesWithDifferentAttributes ()
     {
-      XmlDocument expected = new XmlDocument ();
-      XmlDocument actual = new XmlDocument ();
+      XmlDocument expected = new XmlDocument();
+      XmlDocument actual = new XmlDocument();
 
-      XmlElement expectedRootNode = expected.CreateElement ("root", "http://test");
-      XmlAttribute expectedAttribute = expected.CreateAttribute ("name");
+      XmlElement expectedRootNode = expected.CreateElement("root", "http://test");
+      XmlAttribute expectedAttribute = expected.CreateAttribute("name");
       expectedAttribute.Value = "root";
-      expectedRootNode.Attributes.Append (expectedAttribute);
-      expected.AppendChild (expectedRootNode);
+      expectedRootNode.Attributes.Append(expectedAttribute);
+      expected.AppendChild(expectedRootNode);
 
-      XmlElement actualRootNode = actual.CreateElement ("root", "http://test");
-      XmlAttribute actualAttribute = actual.CreateAttribute ("id");
+      XmlElement actualRootNode = actual.CreateElement("root", "http://test");
+      XmlAttribute actualAttribute = actual.CreateAttribute("id");
       actualAttribute.Value = "root";
-      actualRootNode.Attributes.Append (actualAttribute);
-      actual.AppendChild (actualRootNode);
+      actualRootNode.Attributes.Append(actualAttribute);
+      actual.AppendChild(actualRootNode);
 
-      var constraint = new XmlDocumentEqualConstraint (expected);
-      Assert.That (constraint.Matches (actual), Is.False);
+      var constraint = new XmlDocumentEqualConstraint(expected);
+      Assert.That(constraint.Matches(actual), Is.False);
     }
 
     [Test]
@@ -154,41 +154,41 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     {
       string expectedXml = @"<root xmlns=""http://test"" name=""root"" />";
 
-      XmlDocument expected = new XmlDocument ();
-      XmlDocument actual = new XmlDocument ();
+      XmlDocument expected = new XmlDocument();
+      XmlDocument actual = new XmlDocument();
 
-      expected.LoadXml (expectedXml);
+      expected.LoadXml(expectedXml);
 
-      XmlElement actualRootNode = actual.CreateElement ("root", "http://test");
-      XmlAttribute actualAttribute = actual.CreateAttribute ("name");
+      XmlElement actualRootNode = actual.CreateElement("root", "http://test");
+      XmlAttribute actualAttribute = actual.CreateAttribute("name");
       actualAttribute.Value = "root";
-      actualRootNode.Attributes.Append (actualAttribute);
-      actual.AppendChild (actualRootNode);
+      actualRootNode.Attributes.Append(actualAttribute);
+      actual.AppendChild(actualRootNode);
 
-      var constraint= new XmlDocumentEqualConstraint (expected);
-      Assert.That (constraint.Matches (actual), Is.True);
+      var constraint= new XmlDocumentEqualConstraint(expected);
+      Assert.That(constraint.Matches(actual), Is.True);
     }
 
     [Test]
     public void CompareRootNodesWithDifferentAttributeValues ()
     {
-      XmlDocument expected = new XmlDocument ();
-      XmlDocument actual = new XmlDocument ();
+      XmlDocument expected = new XmlDocument();
+      XmlDocument actual = new XmlDocument();
 
-      XmlElement expectedRootNode = expected.CreateElement ("root", "http://test");
-      XmlAttribute expectedAttribute = expected.CreateAttribute ("name");
+      XmlElement expectedRootNode = expected.CreateElement("root", "http://test");
+      XmlAttribute expectedAttribute = expected.CreateAttribute("name");
       expectedAttribute.Value = "root";
-      expectedRootNode.Attributes.Append (expectedAttribute);
-      expected.AppendChild (expectedRootNode);
+      expectedRootNode.Attributes.Append(expectedAttribute);
+      expected.AppendChild(expectedRootNode);
 
-      XmlElement actualRootNode = actual.CreateElement ("root", "http://test");
-      XmlAttribute actualAttribute = actual.CreateAttribute ("name");
+      XmlElement actualRootNode = actual.CreateElement("root", "http://test");
+      XmlAttribute actualAttribute = actual.CreateAttribute("name");
       actualAttribute.Value = "second";
-      actualRootNode.Attributes.Append (actualAttribute);
-      actual.AppendChild (actualRootNode);
+      actualRootNode.Attributes.Append(actualAttribute);
+      actual.AppendChild(actualRootNode);
 
-      var constraint = new XmlDocumentEqualConstraint (expected);
-      Assert.That (constraint.Matches (actual), Is.False);
+      var constraint = new XmlDocumentEqualConstraint(expected);
+      Assert.That(constraint.Matches(actual), Is.False);
     }
 
     [Test]
@@ -196,18 +196,18 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     {
       string expectedXml = @"<root xmlns=""http://test"">Hello</root>";
 
-      XmlDocument expected = new XmlDocument ();
-      XmlDocument actual = new XmlDocument ();
+      XmlDocument expected = new XmlDocument();
+      XmlDocument actual = new XmlDocument();
 
-      expected.LoadXml (expectedXml);
+      expected.LoadXml(expectedXml);
 
-      XmlElement actualRootNode = actual.CreateElement ("root", "http://test");
-      XmlText actualText = actual.CreateTextNode ("Hello");
-      actualRootNode.AppendChild (actualText);
-      actual.AppendChild (actualRootNode);
+      XmlElement actualRootNode = actual.CreateElement("root", "http://test");
+      XmlText actualText = actual.CreateTextNode("Hello");
+      actualRootNode.AppendChild(actualText);
+      actual.AppendChild(actualRootNode);
 
       var constraint = new XmlDocumentEqualConstraint(expected);
-      Assert.That (constraint.Matches (actual), Is.True);
+      Assert.That(constraint.Matches(actual), Is.True);
     }
 
     [Test]
@@ -221,41 +221,41 @@ namespace Remotion.Security.UnitTests.XmlAsserter
   </elements>
 </root>";
 
-      XmlDocument expected = new XmlDocument ();
-      XmlDocument actual = new XmlDocument ();
+      XmlDocument expected = new XmlDocument();
+      XmlDocument actual = new XmlDocument();
 
-      expected.LoadXml (expectedXml);
+      expected.LoadXml(expectedXml);
 
-      XmlElement actualRootNode = actual.CreateElement ("root", "http://test");
-      XmlElement elementsNode = actual.CreateElement ("elements", "http://test");
+      XmlElement actualRootNode = actual.CreateElement("root", "http://test");
+      XmlElement elementsNode = actual.CreateElement("elements", "http://test");
       
-      XmlElement element1Node = actual.CreateElement ("element", "http://test");
-      XmlAttribute element1IDAttribute = actual.CreateAttribute ("id");
+      XmlElement element1Node = actual.CreateElement("element", "http://test");
+      XmlAttribute element1IDAttribute = actual.CreateAttribute("id");
       element1IDAttribute.Value = "id1";
-      element1Node.Attributes.Append (element1IDAttribute);
-      XmlAttribute element1NameAttribute = actual.CreateAttribute ("name");
+      element1Node.Attributes.Append(element1IDAttribute);
+      XmlAttribute element1NameAttribute = actual.CreateAttribute("name");
       element1NameAttribute.Value = "Hello";
-      element1Node.Attributes.Append (element1NameAttribute);
-      XmlText element1Text = actual.CreateTextNode ("Hello, ");
-      element1Node.AppendChild (element1Text);
-      elementsNode.AppendChild (element1Node);
+      element1Node.Attributes.Append(element1NameAttribute);
+      XmlText element1Text = actual.CreateTextNode("Hello, ");
+      element1Node.AppendChild(element1Text);
+      elementsNode.AppendChild(element1Node);
 
-      XmlElement element2Node = actual.CreateElement ("element", "http://test");
-      XmlAttribute element2IDAttribute = actual.CreateAttribute ("id");
+      XmlElement element2Node = actual.CreateElement("element", "http://test");
+      XmlAttribute element2IDAttribute = actual.CreateAttribute("id");
       element2IDAttribute.Value = "id2";
-      element2Node.Attributes.Append (element2IDAttribute);
-      XmlAttribute element2NameAttribute = actual.CreateAttribute ("name");
+      element2Node.Attributes.Append(element2IDAttribute);
+      XmlAttribute element2NameAttribute = actual.CreateAttribute("name");
       element2NameAttribute.Value = "World";
-      element2Node.Attributes.Append (element2NameAttribute);
-      XmlText element2Text = actual.CreateTextNode ("World!");
-      element2Node.AppendChild (element2Text);
-      elementsNode.AppendChild (element2Node);
+      element2Node.Attributes.Append(element2NameAttribute);
+      XmlText element2Text = actual.CreateTextNode("World!");
+      element2Node.AppendChild(element2Text);
+      elementsNode.AppendChild(element2Node);
 
-      actualRootNode.AppendChild (elementsNode);
-      actual.AppendChild (actualRootNode);
+      actualRootNode.AppendChild(elementsNode);
+      actual.AppendChild(actualRootNode);
 
-      var constraint = new XmlDocumentEqualConstraint (expected);
-      Assert.That (actual, constraint);
+      var constraint = new XmlDocumentEqualConstraint(expected);
+      Assert.That(actual, constraint);
     }
   }
 }

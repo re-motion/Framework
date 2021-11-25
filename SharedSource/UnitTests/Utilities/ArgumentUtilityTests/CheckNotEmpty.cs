@@ -32,25 +32,25 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_NonEmptyString ()
     {
-      var result = ArgumentUtility.CheckNotEmpty ("arg", "x");
-      Assert.That (result, Is.EqualTo ("x"));
+      var result = ArgumentUtility.CheckNotEmpty("arg", "x");
+      Assert.That(result, Is.EqualTo("x"));
     }
 
     [Test]
     public void Succeed_NullString ()
     {
       const string? s = null;
-      var result = ArgumentUtility.CheckNotEmpty ("arg", s);
-      Assert.That (result, Is.Null);
+      var result = ArgumentUtility.CheckNotEmpty("arg", s);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void Fail_EmptyString ()
     {
-      Assert.That (
-          () => ArgumentUtility.CheckNotEmpty ("arg", ""),
+      Assert.That(
+          () => ArgumentUtility.CheckNotEmpty("arg", ""),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
@@ -59,9 +59,9 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       ICollection value = new[] { 1 };
 
-      var result = ArgumentUtility.CheckNotEmpty ("arg", value);
+      var result = ArgumentUtility.CheckNotEmpty("arg", value);
 
-      Assert.That (result, Is.SameAs (value));
+      Assert.That(result, Is.SameAs(value));
     }
 
     [Test]
@@ -69,7 +69,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       ICollection<object> value = new List<object> { 1 };
 
-      ArgumentUtility.CheckNotEmpty ("arg", value);
+      ArgumentUtility.CheckNotEmpty("arg", value);
     }
 
     [Test]
@@ -77,7 +77,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       IReadOnlyCollection<object> value = new List<object> { 1 };
 
-      ArgumentUtility.CheckNotEmpty ("arg", value);
+      ArgumentUtility.CheckNotEmpty("arg", value);
     }
 
     [Test]
@@ -85,7 +85,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       object[] value = new object[] { 1 };
 
-      ArgumentUtility.CheckNotEmpty ("arg", value);
+      ArgumentUtility.CheckNotEmpty("arg", value);
     }
 
     [Test]
@@ -93,14 +93,14 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       List<object> value = new List<object> { 1 };
 
-      ArgumentUtility.CheckNotEmpty ("arg", value);
+      ArgumentUtility.CheckNotEmpty("arg", value);
     }
 
     [Test]
     public void Succeed_NullCollection ()
     {
-      var result = ArgumentUtility.CheckNotEmpty ("arg", (ICollection?) null);
-      Assert.That (result, Is.Null);
+      var result = ArgumentUtility.CheckNotEmpty("arg", (ICollection?) null);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
@@ -108,7 +108,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       ICollection<object>? value = null;
 
-      ArgumentUtility.CheckNotEmpty ("arg", value);
+      ArgumentUtility.CheckNotEmpty("arg", value);
     }
 
     [Test]
@@ -116,7 +116,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       IReadOnlyCollection<object>? value = null;
 
-      ArgumentUtility.CheckNotEmpty ("arg", value);
+      ArgumentUtility.CheckNotEmpty("arg", value);
     }
 
     [Test]
@@ -124,7 +124,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       object[]? value = null;
 
-      ArgumentUtility.CheckNotEmpty ("arg", value);
+      ArgumentUtility.CheckNotEmpty("arg", value);
     }
 
     [Test]
@@ -132,16 +132,16 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       List<object>? value = null;
 
-      ArgumentUtility.CheckNotEmpty ("arg", value);
+      ArgumentUtility.CheckNotEmpty("arg", value);
     }
 
     [Test]
     public void Fail_EmptyICollection ()
     {
-      Assert.That (
-          () => ArgumentUtility.CheckNotEmpty ("arg", Type.EmptyTypes),
+      Assert.That(
+          () => ArgumentUtility.CheckNotEmpty("arg", Type.EmptyTypes),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
@@ -150,10 +150,10 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       ICollection<object> value = new List<object>();
 
-      Assert.That (
-          () => ArgumentUtility.CheckNotEmpty ("arg", value),
+      Assert.That(
+          () => ArgumentUtility.CheckNotEmpty("arg", value),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
@@ -162,10 +162,10 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       IReadOnlyCollection<object> value = new List<object>();
 
-      Assert.That (
-          () => ArgumentUtility.CheckNotEmpty ("arg", value),
+      Assert.That(
+          () => ArgumentUtility.CheckNotEmpty("arg", value),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
@@ -174,10 +174,10 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       object[] value = new object[0];
 
-      Assert.That (
-          () => ArgumentUtility.CheckNotEmpty ("arg", value),
+      Assert.That(
+          () => ArgumentUtility.CheckNotEmpty("arg", value),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
@@ -186,10 +186,10 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       List<object> value = new List<object>();
 
-      Assert.That (
-          () => ArgumentUtility.CheckNotEmpty ("arg", value),
+      Assert.That(
+          () => ArgumentUtility.CheckNotEmpty("arg", value),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
@@ -197,17 +197,17 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Succeed_NonEmptyGuid ()
     {
       Guid guid = Guid.NewGuid();
-      var result = ArgumentUtility.CheckNotEmpty ("arg", guid);
-      Assert.That (result, Is.EqualTo (guid));
+      var result = ArgumentUtility.CheckNotEmpty("arg", guid);
+      Assert.That(result, Is.EqualTo(guid));
     }
 
     [Test]
     public void Fail_EmptyGuid ()
     {
-      Assert.That (
-          () => ArgumentUtility.CheckNotEmpty ("arg", Guid.Empty),
+      Assert.That(
+          () => ArgumentUtility.CheckNotEmpty("arg", Guid.Empty),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
   }

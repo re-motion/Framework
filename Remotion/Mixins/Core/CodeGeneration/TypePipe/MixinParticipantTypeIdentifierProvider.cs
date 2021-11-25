@@ -28,35 +28,35 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// </summary>
   public class MixinParticipantTypeIdentifierProvider : ITypeIdentifierProvider
   {
-    private static readonly MethodInfo s_createFlatClassContext = MemberInfoFromExpressionUtility.GetMethod (() => FlatClassContext.Create (null!));
+    private static readonly MethodInfo s_createFlatClassContext = MemberInfoFromExpressionUtility.GetMethod(() => FlatClassContext.Create(null!));
 
     public object? GetID (Type requestedType)
     {
-      ArgumentUtility.DebugCheckNotNull ("requestedType", requestedType);
+      ArgumentUtility.DebugCheckNotNull("requestedType", requestedType);
 
-      return MixinConfiguration.ActiveConfiguration.GetContext (requestedType);
+      return MixinConfiguration.ActiveConfiguration.GetContext(requestedType);
     }
 
     public Expression GetExpression (object id)
     {
-      var classContext = ArgumentUtility.CheckNotNullAndType<ClassContext> ("id", id);
+      var classContext = ArgumentUtility.CheckNotNullAndType<ClassContext>("id", id);
 
-      var classContextExpression = GetClassContextExpression (classContext);
-      return Expression.Convert (classContextExpression, typeof (object));
+      var classContextExpression = GetClassContextExpression(classContext);
+      return Expression.Convert(classContextExpression, typeof (object));
     }
 
     public Expression GetFlatValueExpressionForSerialization (object id)
     {
-      var classContext = ArgumentUtility.CheckNotNullAndType<ClassContext> ("id", id);
+      var classContext = ArgumentUtility.CheckNotNullAndType<ClassContext>("id", id);
 
-      var classContextExpression = GetClassContextExpression (classContext);
-      return Expression.Call (s_createFlatClassContext, classContextExpression);
+      var classContextExpression = GetClassContextExpression(classContext);
+      return Expression.Call(s_createFlatClassContext, classContextExpression);
     }
 
     private Expression GetClassContextExpression (ClassContext classContext)
     {
       var classContextCodeGenerator = new CodeGenerationClassContextSerializer();
-      classContext.Serialize (classContextCodeGenerator);
+      classContext.Serialize(classContextCodeGenerator);
 
       return classContextCodeGenerator.GetConstructorInvocationExpression();
     }

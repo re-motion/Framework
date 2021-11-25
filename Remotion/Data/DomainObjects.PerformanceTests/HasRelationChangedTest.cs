@@ -29,14 +29,14 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public void AskChanged ()
     {
-      Console.WriteLine ("Expected average duration of HasRelationChangedTest on reference system: ~8 ms");
+      Console.WriteLine("Expected average duration of HasRelationChangedTest on reference system: ~8 ms");
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var objects = TestDomainObjectMother.PrepareDatabaseObjectsWithRelationProperties (TestSetSize);
+        var objects = TestDomainObjectMother.PrepareDatabaseObjectsWithRelationProperties(TestSetSize);
         bool changed = ClientTransaction.Current.HasChanged();
 
-        Assert.That (changed, Is.False);
+        Assert.That(changed, Is.False);
 
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -44,13 +44,13 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
           changed ^= ClientTransaction.Current.HasChanged();
         stopwatch.Stop();
 
-        Console.WriteLine (changed);
+        Console.WriteLine(changed);
 
         double averageMilliSeconds = stopwatch.Elapsed.TotalMilliseconds / TestRepititions;
-        Console.WriteLine (
+        Console.WriteLine(
             "HasRelationChangedTest (executed {0} x ClientTransaction.Current.HasChanged ({2} objects - total {3} objects in CTx)): Average duration: {1} ms",
             TestRepititions,
-            averageMilliSeconds.ToString ("n"),
+            averageMilliSeconds.ToString("n"),
             objects.Length,
             ClientTransaction.Current.EnlistedDomainObjectCount);
       }

@@ -47,28 +47,28 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected override IBusinessObjectBoundEditableWebControl CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
       if (propertyPath.Identifier == "Group")
-        return CreateControlForGroup (propertyPath);
+        return CreateControlForGroup(propertyPath);
       else if (propertyPath.Identifier == "Position")
-        return CreateControlForPosition (propertyPath);
+        return CreateControlForPosition(propertyPath);
       else
-        return base.CreateFromPropertyPath (propertyPath);
+        return base.CreateFromPropertyPath(propertyPath);
     }
 
     protected virtual BocReferenceValue CreateBocReferenceValue (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
       return new BocReferenceValue();
     }
 
     private IBusinessObjectBoundEditableWebControl CreateControlForGroup (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
-      var control = base.CreateFromPropertyPath (propertyPath);
+      var control = base.CreateFromPropertyPath(propertyPath);
       if (control is BocAutoCompleteReferenceValue)
       {
         var referenceValue = (BocAutoCompleteReferenceValue) control;
@@ -82,14 +82,14 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
         return referenceValue;
       }
       else
-        throw new InvalidOperationException (string.Format ("Control type '{0}' is not supported for property 'Group'", control.GetType()));
+        throw new InvalidOperationException(string.Format("Control type '{0}' is not supported for property 'Group'", control.GetType()));
     }
 
     private IBusinessObjectBoundEditableWebControl CreateControlForPosition (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
-      var control = CreateBocReferenceValue (propertyPath);
+      var control = CreateBocReferenceValue(propertyPath);
       control.PreRender += HandlePositionPreRender;
       control.EnableSelectStatement = false;
       return control;
@@ -97,9 +97,9 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     private void HandlePositionPreRender (object sender, EventArgs e)
     {
-      var positionReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue> ("sender", sender);
+      var positionReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>("sender", sender);
 
-      var groupReferenceValue = GetGroupReferenceValue (positionReferenceValue.DataSource);
+      var groupReferenceValue = GetGroupReferenceValue(positionReferenceValue.DataSource);
 
       var group = (Group) groupReferenceValue.Value;
       if (group == null)
@@ -109,18 +109,18 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       }
       else
       {
-        var positions = positionReferenceValue.Property.SearchAvailableObjects (null, new RolePropertiesSearchArguments (group.GetHandle()));
-        positionReferenceValue.SetBusinessObjectList (positions);
+        var positions = positionReferenceValue.Property.SearchAvailableObjects(null, new RolePropertiesSearchArguments(group.GetHandle()));
+        positionReferenceValue.SetBusinessObjectList(positions);
         positionReferenceValue.Enabled = true;
       }
     }
 
     private IBusinessObjectBoundControl GetGroupReferenceValue (IBusinessObjectDataSource dataSource)
     {
-      var groupProperty = dataSource.BusinessObject.BusinessObjectClass.GetPropertyDefinition ("Group");
+      var groupProperty = dataSource.BusinessObject.BusinessObjectClass.GetPropertyDefinition("Group");
       return dataSource.GetBoundControlsWithValidBinding()
-          .Where (c => c.Property == groupProperty)
-          .Single (() => new InvalidOperationException ("Expected control bound to property 'Group' was not found"));
+          .Where(c => c.Property == groupProperty)
+          .Single(() => new InvalidOperationException("Expected control bound to property 'Group' was not found"));
     }
   }
 }

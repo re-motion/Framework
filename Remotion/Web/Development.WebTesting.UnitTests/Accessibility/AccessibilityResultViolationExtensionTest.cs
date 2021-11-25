@@ -30,15 +30,15 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     [SetUp]
     public void SetUp ()
     {
-      _defaultViolation = new AccessibilityRuleResult (
-          new AccessibilityRule (
+      _defaultViolation = new AccessibilityRuleResult(
+          new AccessibilityRule(
               AccessibilityRuleID.AudioCaption,
               "Description",
               AccessibilityTestImpact.Moderate,
               new[] { AccessibilityTestSuccessCriteria.Wcag_1_3_6 }),
-          new[] { new AccessibilityTestTarget ("xPath", "CSS") },
+          new[] { new AccessibilityTestTarget("xPath", "CSS") },
           "Html",
-          new[] { new AccessibilityRequirement (AccessibilityRequirementID.MetaViewport, "Message", AccessibilityTestImpact.Moderate) },
+          new[] { new AccessibilityRequirement(AccessibilityRequirementID.MetaViewport, "Message", AccessibilityTestImpact.Moderate) },
           new AccessibilityRequirement[0],
           new AccessibilityRequirement[0]);
     }
@@ -51,131 +51,131 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
                        IgnoreCssSelectors = { "test" },
                        IncludeImpact = AccessibilityTestImpact.Moderate
                    };
-      var violation = CreateViolation (impact: AccessibilityTestImpact.Moderate, targets: new[] { CreateTargetWithXPathAndCss ("test") });
+      var violation = CreateViolation(impact: AccessibilityTestImpact.Moderate, targets: new[] { CreateTargetWithXPathAndCss("test") });
       var violations = new[] { violation, _defaultViolation };
 
-      var filteredViolations = violations.Filter (filter);
+      var filteredViolations = violations.Filter(filter);
 
-      Assert.That (filteredViolations, Is.EquivalentTo (new[] { _defaultViolation }));
+      Assert.That(filteredViolations, Is.EquivalentTo(new[] { _defaultViolation }));
     }
 
     [Test]
     public void Filter_ByMultipleRuleIDs ()
     {
-      var violation1 = CreateViolation (AccessibilityRuleID.AreaAlt);
-      var violation2 = CreateViolation (AccessibilityRuleID.FrameTitleUnique);
+      var violation1 = CreateViolation(AccessibilityRuleID.AreaAlt);
+      var violation2 = CreateViolation(AccessibilityRuleID.FrameTitleUnique);
       var violations = new[] { violation1, violation2, _defaultViolation };
 
       var filter = new AccessibilityResultFilter();
-      filter.IgnoreRuleID.Add (AccessibilityRuleID.AreaAlt);
-      filter.IgnoreRuleID.Add (AccessibilityRuleID.FrameTitleUnique);
-      var filteredViolations = violations.Filter (filter);
+      filter.IgnoreRuleID.Add(AccessibilityRuleID.AreaAlt);
+      filter.IgnoreRuleID.Add(AccessibilityRuleID.FrameTitleUnique);
+      var filteredViolations = violations.Filter(filter);
 
-      Assert.That (filteredViolations, Is.EquivalentTo (new[] { _defaultViolation }));
+      Assert.That(filteredViolations, Is.EquivalentTo(new[] { _defaultViolation }));
     }
 
     [Test]
     public void Filter_ByRuleIDAndSuccessCriteria ()
     {
       var filter = new AccessibilityResultFilter();
-      filter.IgnoreSuccessCriteria.Add (AccessibilityTestSuccessCriteria.Wcag_1_2_4);
-      filter.IgnoreRuleID.Add (AccessibilityRuleID.AreaAlt);
+      filter.IgnoreSuccessCriteria.Add(AccessibilityTestSuccessCriteria.Wcag_1_2_4);
+      filter.IgnoreRuleID.Add(AccessibilityRuleID.AreaAlt);
 
-      var violation = CreateViolation (AccessibilityRuleID.AreaAlt, successCriteria: new[] { AccessibilityTestSuccessCriteria.Wcag_1_2_4 });
+      var violation = CreateViolation(AccessibilityRuleID.AreaAlt, successCriteria: new[] { AccessibilityTestSuccessCriteria.Wcag_1_2_4 });
       var violations = new[] { violation, _defaultViolation };
-      var filteredViolations = violations.Filter (filter);
+      var filteredViolations = violations.Filter(filter);
 
-      Assert.That (filteredViolations, Is.EquivalentTo (new[] { _defaultViolation }));
+      Assert.That(filteredViolations, Is.EquivalentTo(new[] { _defaultViolation }));
     }
 
     [Test]
     public void Ignore_ByCheckID ()
     {
-      var violation = CreateViolation (checkIDs: new[] { AccessibilityRequirementID.TdHasHeader });
+      var violation = CreateViolation(checkIDs: new[] { AccessibilityRequirementID.TdHasHeader });
       var violations = new[] { violation, _defaultViolation };
 
-      var filteredViolations = violations.IgnoreByCheckID (AccessibilityRequirementID.TdHasHeader);
+      var filteredViolations = violations.IgnoreByCheckID(AccessibilityRequirementID.TdHasHeader);
 
-      Assert.That (filteredViolations, Is.EquivalentTo (new[] { _defaultViolation }));
+      Assert.That(filteredViolations, Is.EquivalentTo(new[] { _defaultViolation }));
     }
 
     [Test]
     public void Ignore_ByCssSelector ()
     {
-      var violation = CreateViolation (targets: new[] { CreateTargetWithXPathAndCss ("test1") });
+      var violation = CreateViolation(targets: new[] { CreateTargetWithXPathAndCss("test1") });
       var violations = new[] { violation, _defaultViolation };
 
-      var filteredViolations = violations.IgnoreByCssSelector ("test1");
+      var filteredViolations = violations.IgnoreByCssSelector("test1");
 
-      Assert.That (filteredViolations, Is.EquivalentTo (new[] { _defaultViolation }));
+      Assert.That(filteredViolations, Is.EquivalentTo(new[] { _defaultViolation }));
     }
 
     [Test]
     public void Ignore_ByMultipleCheckIDs ()
     {
-      var violation = CreateViolation (checkIDs: new[] { AccessibilityRequirementID.ThHasDataCells, AccessibilityRequirementID.DuplicateId });
+      var violation = CreateViolation(checkIDs: new[] { AccessibilityRequirementID.ThHasDataCells, AccessibilityRequirementID.DuplicateId });
       var violations = new[] { violation, _defaultViolation };
 
-      var filteredViolations = violations.IgnoreByCheckID (AccessibilityRequirementID.ThHasDataCells, AccessibilityRequirementID.DuplicateId);
+      var filteredViolations = violations.IgnoreByCheckID(AccessibilityRequirementID.ThHasDataCells, AccessibilityRequirementID.DuplicateId);
 
-      Assert.That (filteredViolations, Is.EquivalentTo (new[] { _defaultViolation }));
+      Assert.That(filteredViolations, Is.EquivalentTo(new[] { _defaultViolation }));
     }
 
     [Test]
     public void Ignore_ByRuleIDAndCssSelector ()
     {
-      var violation = CreateViolation (AccessibilityRuleID.AreaAlt, targets: new[] { CreateTargetWithXPathAndCss ("testFrame") });
+      var violation = CreateViolation(AccessibilityRuleID.AreaAlt, targets: new[] { CreateTargetWithXPathAndCss("testFrame") });
       var violations = new[] { violation, _defaultViolation };
 
-      var filteredViolations = violations.IgnoreByRuleIDAndXPath (AccessibilityRuleID.AreaAlt, "testFrame");
+      var filteredViolations = violations.IgnoreByRuleIDAndXPath(AccessibilityRuleID.AreaAlt, "testFrame");
 
-      Assert.That (filteredViolations, Is.EquivalentTo (new[] { _defaultViolation }));
+      Assert.That(filteredViolations, Is.EquivalentTo(new[] { _defaultViolation }));
     }
 
     [Test]
     public void Ignore_ByRuleIDAndMultipleCssSelectors ()
     {
-      var violation = CreateViolation (AccessibilityRuleID.AreaAlt, targets: new[] { CreateTargetWithXPathAndCss ("testFrame"), CreateTargetWithXPathAndCss ("test") });
+      var violation = CreateViolation(AccessibilityRuleID.AreaAlt, targets: new[] { CreateTargetWithXPathAndCss("testFrame"), CreateTargetWithXPathAndCss("test") });
       var violations = new[] { violation, _defaultViolation };
 
-      var filteredViolations = violations.IgnoreByRuleIDAndXPath (AccessibilityRuleID.AreaAlt, "testFrame", "test");
+      var filteredViolations = violations.IgnoreByRuleIDAndXPath(AccessibilityRuleID.AreaAlt, "testFrame", "test");
 
-      Assert.That (filteredViolations, Is.EquivalentTo (new[] { _defaultViolation }));
+      Assert.That(filteredViolations, Is.EquivalentTo(new[] { _defaultViolation }));
     }
 
     [Test]
     public void Ignore_ByRuleIDXPath_OnlyOnePathMatching_DoesNotIgnore ()
     {
-      var violation = CreateViolation (
+      var violation = CreateViolation(
           AccessibilityRuleID.AreaAlt,
-          targets: new[] { CreateTargetWithXPathAndCss ("testFrame1"), CreateTargetWithXPathAndCss ("testFrame2") });
+          targets: new[] { CreateTargetWithXPathAndCss("testFrame1"), CreateTargetWithXPathAndCss("testFrame2") });
       var violations = new[] { violation, _defaultViolation };
 
-      var filteredViolations = violations.IgnoreByRuleIDAndXPath (AccessibilityRuleID.AreaAlt, "testFrame1");
+      var filteredViolations = violations.IgnoreByRuleIDAndXPath(AccessibilityRuleID.AreaAlt, "testFrame1");
 
-      Assert.That (filteredViolations, Is.EquivalentTo (new[] { violation, _defaultViolation }));
+      Assert.That(filteredViolations, Is.EquivalentTo(new[] { violation, _defaultViolation }));
     }
 
     [Test]
     public void Ignore_BySuccessCriteria ()
     {
-      var violation = CreateViolation (successCriteria: new[] { AccessibilityTestSuccessCriteria.Wcag_1_2_9 });
+      var violation = CreateViolation(successCriteria: new[] { AccessibilityTestSuccessCriteria.Wcag_1_2_9 });
       var violations = new[] { violation, _defaultViolation };
 
-      var filteredViolations = violations.IgnoreBySuccessCriteria (AccessibilityTestSuccessCriteria.Wcag_1_2_9);
+      var filteredViolations = violations.IgnoreBySuccessCriteria(AccessibilityTestSuccessCriteria.Wcag_1_2_9);
 
-      Assert.That (filteredViolations, Is.EquivalentTo (new[] { _defaultViolation }));
+      Assert.That(filteredViolations, Is.EquivalentTo(new[] { _defaultViolation }));
     }
 
     [Test]
     public void Ignore_RuleByRuleID ()
     {
-      var violation = CreateViolation (AccessibilityRuleID.AreaAlt);
+      var violation = CreateViolation(AccessibilityRuleID.AreaAlt);
       var violations = new[] { violation, _defaultViolation };
 
-      var filteredViolations = violations.IgnoreByRuleID (AccessibilityRuleID.AreaAlt);
+      var filteredViolations = violations.IgnoreByRuleID(AccessibilityRuleID.AreaAlt);
 
-      Assert.That (filteredViolations, Is.EquivalentTo (new[] { _defaultViolation }));
+      Assert.That(filteredViolations, Is.EquivalentTo(new[] { _defaultViolation }));
     }
 
     private AccessibilityRuleResult CreateViolation (
@@ -185,17 +185,17 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
         AccessibilityTestSuccessCriteria[] successCriteria = null,
         AccessibilityTestTarget[] targets = null)
     {
-      return new AccessibilityRuleResult (
-          new AccessibilityRule (
+      return new AccessibilityRuleResult(
+          new AccessibilityRule(
               ruleID ?? AccessibilityRuleID.AccessKeys,
               "test",
               impact ?? AccessibilityTestImpact.Minor,
               successCriteria ?? new[] { AccessibilityTestSuccessCriteria.Wcag_1_2_6 }
               ),
-          targets ?? new[] { new AccessibilityTestTarget ("A", "B") },
+          targets ?? new[] { new AccessibilityTestTarget("A", "B") },
           "test",
           new List<AccessibilityRequirement>(),
-          checkIDs == null ? CreateRequirements (new[] { AccessibilityRequirementID.AriaLabeledBy }).ToArray() : CreateRequirements (checkIDs).ToArray(),
+          checkIDs == null ? CreateRequirements(new[] { AccessibilityRequirementID.AriaLabeledBy }).ToArray() : CreateRequirements(checkIDs).ToArray(),
           new List<AccessibilityRequirement>()
           );
     }
@@ -203,12 +203,12 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     private IEnumerable<AccessibilityRequirement> CreateRequirements (AccessibilityRequirementID[] checkIDs)
     {
       foreach (var accessibilityCheckID in checkIDs)
-        yield return new AccessibilityRequirement (accessibilityCheckID, "message", AccessibilityTestImpact.Minor);
+        yield return new AccessibilityRequirement(accessibilityCheckID, "message", AccessibilityTestImpact.Minor);
     }
 
     private AccessibilityTestTarget CreateTargetWithXPathAndCss (string xpathAndCss)
     {
-      return new AccessibilityTestTarget (xpathAndCss, xpathAndCss);
+      return new AccessibilityTestTarget(xpathAndCss, xpathAndCss);
     }
   }
 }

@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public UnsupportedStoragePropertyDefinition (Type propertyType, string message, Exception innerException)
     {
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
-      ArgumentUtility.CheckNotNullOrEmpty ("message", message);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentUtility.CheckNotNullOrEmpty("message", message);
 
       _propertyType = propertyType;
       _message = message;
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnDefinition> GetColumns ()
     {
-      throw CreateNotSupportedException ();
+      throw CreateNotSupportedException();
     }
 
     public IEnumerable<ColumnDefinition> GetColumnsForComparison ()
@@ -69,37 +69,37 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnValue> SplitValueForComparison (object value)
     {
-      throw CreateNotSupportedException ();
+      throw CreateNotSupportedException();
     }
 
     public ColumnValueTable SplitValuesForComparison (IEnumerable<object> values)
     {
-      throw CreateNotSupportedException ();
+      throw CreateNotSupportedException();
     }
 
     public object CombineValue (IColumnValueProvider columnValueProvider)
     {
-      throw CreateNotSupportedException ();
+      throw CreateNotSupportedException();
     }
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)
     {
-      ArgumentUtility.CheckNotNull ("equivalentProperties", equivalentProperties);
-      equivalentProperties.Select (property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty (
+      ArgumentUtility.CheckNotNull("equivalentProperties", equivalentProperties);
+      equivalentProperties.Select(property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
           this,
           property,
           "equivalentProperties",
-          prop => Tuple.Create<string, object> ("property type", prop.PropertyType),
-          prop => Tuple.Create<string, object> ("message", prop.Message),
-          prop => Tuple.Create<string, object> ("inner exception type", prop.InnerException.GetType())
-          )).ToArray ();
+          prop => Tuple.Create<string, object>("property type", prop.PropertyType),
+          prop => Tuple.Create<string, object>("message", prop.Message),
+          prop => Tuple.Create<string, object>("inner exception type", prop.InnerException.GetType())
+          )).ToArray();
 
-      return new UnsupportedStoragePropertyDefinition (_propertyType, _message, _innerException);
+      return new UnsupportedStoragePropertyDefinition(_propertyType, _message, _innerException);
     }
 
     private NotSupportedException CreateNotSupportedException ()
     {
-      return new NotSupportedException ("This operation is not supported because the storage property is invalid. Reason: " + Message, InnerException);
+      return new NotSupportedException("This operation is not supported because the storage property is invalid. Reason: " + Message, InnerException);
     }
   }
 }

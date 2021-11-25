@@ -37,9 +37,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
         IDataManagementCommand unloadDataCommand,
         IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("domainObjects", domainObjects);
-      ArgumentUtility.CheckNotNull ("unloadDataCommand", unloadDataCommand);
-      ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink);
+      ArgumentUtility.CheckNotNullOrEmpty("domainObjects", domainObjects);
+      ArgumentUtility.CheckNotNull("unloadDataCommand", unloadDataCommand);
+      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
 
       _domainObjects = domainObjects.ToArray();
       _unloadDataCommand = unloadDataCommand;
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public ReadOnlyCollection<DomainObject> DomainObjects
     {
-      get { return Array.AsReadOnly (_domainObjects); }
+      get { return Array.AsReadOnly(_domainObjects); }
     }
 
     public IDataManagementCommand UnloadDataCommand
@@ -63,35 +63,35 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public IEnumerable<Exception> GetAllExceptions ()
     {
-      return _unloadDataCommand.GetAllExceptions ();
+      return _unloadDataCommand.GetAllExceptions();
     }
 
     public void Begin ()
     {
-      this.EnsureCanExecute ();
+      this.EnsureCanExecute();
 
-      _transactionEventSink.RaiseObjectsUnloadingEvent ( Array.AsReadOnly (_domainObjects));
-      _unloadDataCommand.Begin ();
+      _transactionEventSink.RaiseObjectsUnloadingEvent( Array.AsReadOnly(_domainObjects));
+      _unloadDataCommand.Begin();
     }
 
     public void Perform ()
     {
-      this.EnsureCanExecute ();
+      this.EnsureCanExecute();
 
-      _unloadDataCommand.Perform ();
+      _unloadDataCommand.Perform();
     }
 
     public void End ()
     {
-      this.EnsureCanExecute ();
+      this.EnsureCanExecute();
 
-      _unloadDataCommand.End ();
-      _transactionEventSink.RaiseObjectsUnloadedEvent (Array.AsReadOnly (_domainObjects));
+      _unloadDataCommand.End();
+      _transactionEventSink.RaiseObjectsUnloadedEvent(Array.AsReadOnly(_domainObjects));
     }
 
     public ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      return new ExpandedCommand (this);
+      return new ExpandedCommand(this);
     }
   }
 }

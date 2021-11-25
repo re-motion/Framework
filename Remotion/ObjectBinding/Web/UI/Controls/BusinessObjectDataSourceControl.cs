@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public virtual void LoadValues (bool interim)
     {
-      InnerDataSource.LoadValues (interim);
+      InnerDataSource.LoadValues(interim);
     }
 
     /// <summary> 
@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public virtual bool SaveValues (bool interim)
     {
-      return InnerDataSource.SaveValues (interim);
+      return InnerDataSource.SaveValues(interim);
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public virtual void Register (IBusinessObjectBoundControl control)
     {
-      InnerDataSource.Register (control);
+      InnerDataSource.Register(control);
     }
 
     /// <summary>
@@ -115,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public virtual void Unregister (IBusinessObjectBoundControl control)
     {
-      InnerDataSource.Unregister (control);
+      InnerDataSource.Unregister(control);
     }
 
     /// <summary>
@@ -234,7 +234,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     IPage? IControl.Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
     /// <summary>
@@ -249,9 +249,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void OnUnload (EventArgs e)
     {
       foreach (var control in InnerDataSource.GetAllBoundControls().ToArray())
-        InnerDataSource.Unregister (control);
+        InnerDataSource.Unregister(control);
 
-      base.OnUnload (e);
+      base.OnUnload(e);
     }
   }
 }

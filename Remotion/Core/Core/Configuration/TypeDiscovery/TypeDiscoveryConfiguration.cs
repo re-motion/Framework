@@ -33,7 +33,7 @@ namespace Remotion.Configuration.TypeDiscovery
     // TODO RM-7788: The Type property of CustomRootAssemblyFinder & CustomTypeDiscoveryService should be constrained to reference types.
 
     private static readonly DoubleCheckedLockingContainer<TypeDiscoveryConfiguration> s_current = 
-        new DoubleCheckedLockingContainer<TypeDiscoveryConfiguration> (GetTypeDiscoveryConfiguration);
+        new DoubleCheckedLockingContainer<TypeDiscoveryConfiguration>(GetTypeDiscoveryConfiguration);
 
     /// <summary>
     /// Gets the current <see cref="TypeDiscoveryConfiguration"/> instance. This is used by 
@@ -58,7 +58,7 @@ namespace Remotion.Configuration.TypeDiscovery
     private static TypeDiscoveryConfiguration GetTypeDiscoveryConfiguration ()
     {
       return (TypeDiscoveryConfiguration) 
-             (ConfigurationWrapper.Current.GetSection ("remotion.typeDiscovery", false) ?? new TypeDiscoveryConfiguration());
+             (ConfigurationWrapper.Current.GetSection("remotion.typeDiscovery", false) ?? new TypeDiscoveryConfiguration());
     }
 
     /// <summary>
@@ -67,8 +67,8 @@ namespace Remotion.Configuration.TypeDiscovery
     /// </summary>
     public TypeDiscoveryConfiguration ()
     {
-      var xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
-      Properties.Add (xmlnsProperty);
+      var xmlnsProperty = new ConfigurationProperty("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
+      Properties.Add(xmlnsProperty);
     }
 
     /// <summary>
@@ -131,13 +131,13 @@ namespace Remotion.Configuration.TypeDiscovery
       switch (Mode)
       {
         case TypeDiscoveryMode.CustomRootAssemblyFinder:
-          return CreateServiceWithCustomRootAssemblyFinder ();
+          return CreateServiceWithCustomRootAssemblyFinder();
         case TypeDiscoveryMode.SpecificRootAssemblies:
-          return CreateServiceWithSpecificRootAssemblies ();
+          return CreateServiceWithSpecificRootAssemblies();
         case TypeDiscoveryMode.CustomTypeDiscoveryService:
-          return CreateCustomService ();
+          return CreateCustomService();
         default:
-          return CreateServiceWithAutomaticDiscovery ();
+          return CreateServiceWithAutomaticDiscovery();
       }
     }
 
@@ -145,54 +145,54 @@ namespace Remotion.Configuration.TypeDiscovery
     {
       if (CustomRootAssemblyFinder.Type == null)
       {
-        string message = string.Format (
+        string message = string.Format(
             "In CustomRootAssemblyFinder mode, a custom root assembly finder must be specified in the type discovery configuration. {0}", 
-            GetConfigurationBodyErrorMessage (
+            GetConfigurationBodyErrorMessage(
                 "CustomRootAssemblyFinder", 
                 "<customRootAssemblyFinder type=\"ApplicationNamespace.CustomFinderType, ApplicationAssembly\"/>"));
-        throw new ConfigurationErrorsException (message);
+        throw new ConfigurationErrorsException(message);
       }
 
       // TODO RM-7788: The return value of Activator.CreateInstance should be checked for null.
-      var customRootAssemblyFinder = (IRootAssemblyFinder) Activator.CreateInstance (CustomRootAssemblyFinder.Type)!;
-      return CreateServiceWithAssemblyFinder (customRootAssemblyFinder);
+      var customRootAssemblyFinder = (IRootAssemblyFinder) Activator.CreateInstance(CustomRootAssemblyFinder.Type)!;
+      return CreateServiceWithAssemblyFinder(customRootAssemblyFinder);
     }
 
     private ITypeDiscoveryService CreateServiceWithSpecificRootAssemblies ()
     {
       var assemblyLoader = CreateAllAssemblyLoader();
-      var rootAssemblyFinder = SpecificRootAssemblies.CreateRootAssemblyFinder (assemblyLoader);
-      return CreateServiceWithAssemblyFinder (rootAssemblyFinder);
+      var rootAssemblyFinder = SpecificRootAssemblies.CreateRootAssemblyFinder(assemblyLoader);
+      return CreateServiceWithAssemblyFinder(rootAssemblyFinder);
     }
 
     private ITypeDiscoveryService CreateCustomService ()
     {
       if (CustomTypeDiscoveryService.Type == null)
       {
-        string message = string.Format (
+        string message = string.Format(
             "In CustomTypeDiscoveryService mode, a custom type discovery service must be specified in the type discovery configuration. {0}",
-            GetConfigurationBodyErrorMessage (
+            GetConfigurationBodyErrorMessage(
                 "CustomTypeDiscoveryService",
                 "<customTypeDiscoveryService type=\"ApplicationNamespace.CustomServiceType, ApplicationAssembly\"/>"));
-        throw new ConfigurationErrorsException (message);
+        throw new ConfigurationErrorsException(message);
       }
 
       // TODO RM-7788: The return value of Activator.CreateInstance should be checked for null.
-      return (ITypeDiscoveryService) Activator.CreateInstance (CustomTypeDiscoveryService.Type)!;
+      return (ITypeDiscoveryService) Activator.CreateInstance(CustomTypeDiscoveryService.Type)!;
     }
 
     private ITypeDiscoveryService CreateServiceWithAutomaticDiscovery ()
     {
       var assemblyLoader = CreateApplicationAssemblyLoader();
-      var searchPathRootAssemblyFinder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain (false, assemblyLoader);
-      return CreateServiceWithAssemblyFinder (searchPathRootAssemblyFinder);
+      var searchPathRootAssemblyFinder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain(false, assemblyLoader);
+      return CreateServiceWithAssemblyFinder(searchPathRootAssemblyFinder);
     }
 
     private ITypeDiscoveryService CreateServiceWithAssemblyFinder (IRootAssemblyFinder customRootAssemblyFinder)
     {
       var filteringAssemblyLoader = CreateApplicationAssemblyLoader();
-      var assemblyFinder = new CachingAssemblyFinderDecorator (new AssemblyFinder (customRootAssemblyFinder, filteringAssemblyLoader));
-      return new AssemblyFinderTypeDiscoveryService (assemblyFinder);
+      var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(customRootAssemblyFinder, filteringAssemblyLoader));
+      return new AssemblyFinderTypeDiscoveryService(assemblyFinder);
     }
 
     private string GetConfigurationBodyErrorMessage (string modeValue, string modeSpecificBodyElement)
@@ -213,12 +213,12 @@ namespace Remotion.Configuration.TypeDiscovery
 
     private IAssemblyLoader CreateApplicationAssemblyLoader ()
     {
-      return new FilteringAssemblyLoader (ApplicationAssemblyLoaderFilter.Instance);
+      return new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
     }
 
     private IAssemblyLoader CreateAllAssemblyLoader ()
     {
-      return new FilteringAssemblyLoader (new LoadAllAssemblyLoaderFilter());
+      return new FilteringAssemblyLoader(new LoadAllAssemblyLoaderFilter());
     }
   }
 }

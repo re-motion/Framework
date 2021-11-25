@@ -33,39 +33,39 @@ namespace Remotion.Validation.Globalization
 
     public TypeBasedValidationMessageFactory (IMemberInformationGlobalizationService memberInformationGlobalizationService)
     {
-      ArgumentUtility.CheckNotNull ("memberInformationGlobalizationService", memberInformationGlobalizationService);
+      ArgumentUtility.CheckNotNull("memberInformationGlobalizationService", memberInformationGlobalizationService);
 
       _memberInformationGlobalizationService = memberInformationGlobalizationService;
     }
 
     public ValidationMessage? CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
-      ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
+      ArgumentUtility.CheckNotNull("validator", validator);
+      ArgumentUtility.CheckNotNull("validatedProperty", validatedProperty);
 
-      var typeInformation = TypeAdapter.Create (validator.GetType());
+      var typeInformation = TypeAdapter.Create(validator.GetType());
       var typeInformationForResourceResolution = typeInformation;
 
-      if (!_memberInformationGlobalizationService.ContainsTypeDisplayName (typeInformation, typeInformationForResourceResolution))
+      if (!_memberInformationGlobalizationService.ContainsTypeDisplayName(typeInformation, typeInformationForResourceResolution))
         return null;
 
-      return new DelegateBasedValidationMessage (
-          () => _memberInformationGlobalizationService.GetTypeDisplayName (typeInformation, typeInformationForResourceResolution));
+      return new DelegateBasedValidationMessage(
+          () => _memberInformationGlobalizationService.GetTypeDisplayName(typeInformation, typeInformationForResourceResolution));
     }
 
     public ValidationMessage? CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
-      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
+      ArgumentUtility.CheckNotNull("validator", validator);
+      ArgumentUtility.CheckNotNull("validatedType", validatedType);
 
-      var typeInformation = TypeAdapter.Create (validator.GetType());
+      var typeInformation = TypeAdapter.Create(validator.GetType());
       var typeInformationForResourceResolution = typeInformation;
 
-      if (!_memberInformationGlobalizationService.ContainsTypeDisplayName (typeInformation, typeInformationForResourceResolution))
+      if (!_memberInformationGlobalizationService.ContainsTypeDisplayName(typeInformation, typeInformationForResourceResolution))
         return null;
 
-      return new DelegateBasedValidationMessage (
-          () => _memberInformationGlobalizationService.GetTypeDisplayName (typeInformation, typeInformationForResourceResolution));
+      return new DelegateBasedValidationMessage(
+          () => _memberInformationGlobalizationService.GetTypeDisplayName(typeInformation, typeInformationForResourceResolution));
     }
   }
 }

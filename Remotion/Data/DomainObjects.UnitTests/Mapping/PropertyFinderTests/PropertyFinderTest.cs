@@ -28,9 +28,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
     [Test]
     public void Initialize ()
     {
-      var classDefinition = CreateClassDefinition (typeof (ClassWithDifferentProperties));
+      var classDefinition = CreateClassDefinition(typeof (ClassWithDifferentProperties));
       var propertyFinder =
-          new PropertyFinder (
+          new PropertyFinder(
               typeof (ClassWithDifferentProperties),
               classDefinition,
               true,
@@ -41,16 +41,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
               new DomainModelConstraintProvider(),
               new SortExpressionDefinitionProvider());
 
-      Assert.That (propertyFinder.Type, Is.SameAs (typeof (ClassWithDifferentProperties)));
-      Assert.That (propertyFinder.IncludeBaseProperties, Is.True);
+      Assert.That(propertyFinder.Type, Is.SameAs(typeof (ClassWithDifferentProperties)));
+      Assert.That(propertyFinder.IncludeBaseProperties, Is.True);
     }
 
     [Test]
     public void FindPropertyInfos_ForClassWithMixedProperties ()
     {
-      var classDefinition = CreateClassDefinition (typeof (ClassWithDifferentProperties));
+      var classDefinition = CreateClassDefinition(typeof (ClassWithDifferentProperties));
       var propertyFinder =
-          new PropertyFinder (
+          new PropertyFinder(
               typeof (ClassWithDifferentProperties),
               classDefinition,
               true,
@@ -61,27 +61,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
               new DomainModelConstraintProvider(),
               new SortExpressionDefinitionProvider());
 
-      Assert.That (
+      Assert.That(
           propertyFinder.FindPropertyInfos(),
-          Is.EqualTo (
+          Is.EqualTo(
               new[]
               {
-                  GetProperty (typeof (ClassWithDifferentPropertiesNotInMapping), "BaseString"),
-                  GetProperty (typeof (ClassWithDifferentPropertiesNotInMapping), "BaseUnidirectionalOneToOne"),
-                  GetProperty (typeof (ClassWithDifferentPropertiesNotInMapping), "BasePrivateUnidirectionalOneToOne"),
-                  GetProperty (typeof (ClassWithDifferentProperties), "Int32"),
-                  GetProperty (typeof (ClassWithDifferentProperties), "String"),
-                  GetProperty (typeof (ClassWithDifferentProperties), "UnidirectionalOneToOne"),
-                  GetProperty (typeof (ClassWithDifferentProperties), "PrivateString")
+                  GetProperty(typeof (ClassWithDifferentPropertiesNotInMapping), "BaseString"),
+                  GetProperty(typeof (ClassWithDifferentPropertiesNotInMapping), "BaseUnidirectionalOneToOne"),
+                  GetProperty(typeof (ClassWithDifferentPropertiesNotInMapping), "BasePrivateUnidirectionalOneToOne"),
+                  GetProperty(typeof (ClassWithDifferentProperties), "Int32"),
+                  GetProperty(typeof (ClassWithDifferentProperties), "String"),
+                  GetProperty(typeof (ClassWithDifferentProperties), "UnidirectionalOneToOne"),
+                  GetProperty(typeof (ClassWithDifferentProperties), "PrivateString")
               }));
     }
 
     [Test]
     public void FindPropertyInfos_ForClassWithOneSideRelationProperties ()
     {
-      var classDefinition = CreateClassDefinition (typeof (ClassWithVirtualRelationEndPoints));
+      var classDefinition = CreateClassDefinition(typeof (ClassWithVirtualRelationEndPoints));
       var propertyFinder =
-          new PropertyFinder (
+          new PropertyFinder(
               typeof (ClassWithVirtualRelationEndPoints),
               classDefinition,
               true,
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
               new DomainModelConstraintProvider(),
               new SortExpressionDefinitionProvider());
 
-      Assert.That (propertyFinder.FindPropertyInfos(), Is.Empty);
+      Assert.That(propertyFinder.FindPropertyInfos(), Is.Empty);
     }
   }
 }

@@ -48,15 +48,15 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       get
       {
         var batch = _content.ToString().Trim();
-        return string.IsNullOrEmpty (batch) ? null : batch;
+        return string.IsNullOrEmpty(batch) ? null : batch;
       }
     }
 
     public void AppendCommandBatchLine (string commandBatchLine)
     {
-      ArgumentUtility.CheckNotNull ("commandBatchLine", commandBatchLine);
+      ArgumentUtility.CheckNotNull("commandBatchLine", commandBatchLine);
       
-      _content.AppendLine (commandBatchLine);
+      _content.AppendLine(commandBatchLine);
       _lineCount++;
     }
   }

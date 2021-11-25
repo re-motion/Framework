@@ -41,10 +41,10 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
-      Assertion.IsNotNull (Page, "Page is null for control '{0}'", ID!);
-      Page.RegisterRequiresControlState (this);
+      Assertion.IsNotNull(Page, "Page is null for control '{0}'", ID!);
+      Page.RegisterRequiresControlState(this);
     }
 
     public string? ValueInViewState
@@ -82,10 +82,10 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
     protected override void Render (HtmlTextWriter writer)
     {
       writer.RenderBeginTag( HtmlTextWriterTag.Div);
-      writer.Write ("ValueInViewState: {0}", _valueInViewState);
+      writer.Write("ValueInViewState: {0}", _valueInViewState);
       writer.WriteBreak();
-      writer.Write ("ValueInControlState: {0}", _valueInControlState);
-      writer.RenderEndTag ();
+      writer.Write("ValueInControlState: {0}", _valueInControlState);
+      writer.RenderEndTag();
     }
   }
 }

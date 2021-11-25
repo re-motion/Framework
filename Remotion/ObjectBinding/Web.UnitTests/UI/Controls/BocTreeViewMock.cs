@@ -27,7 +27,7 @@ public class BocTreeViewMock: BocTreeView
 {
 	public new void EvaluateWaiConformity ()
   {
-    base.EvaluateWaiConformity ();
+    base.EvaluateWaiConformity();
   }
 }
 

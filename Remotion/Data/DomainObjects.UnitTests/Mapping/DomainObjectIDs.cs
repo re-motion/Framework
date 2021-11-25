@@ -25,15 +25,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     // Customer: Customer1
     // Official: Official1
     // OrderNumber: 1
-    public readonly ObjectID Order1 = new ObjectID("Order", new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}"));
+    public readonly ObjectID Order1 = new ObjectID("Order", new Guid("{5682F032-2F0B-494b-A31C-C97F02B89C36}"));
 
 
     // Order: Order1
     // Product: Mainboard
-    public readonly ObjectID OrderItem1 = new ObjectID("OrderItem", new Guid ("{2F4D42C7-7FFA-490d-BFCD-A9101BBF4E1A}"));
+    public readonly ObjectID OrderItem1 = new ObjectID("OrderItem", new Guid("{2F4D42C7-7FFA-490d-BFCD-A9101BBF4E1A}"));
 
 
     // Order: Order1
-    public readonly ObjectID OrderTicket1 = new ObjectID("OrderTicket", new Guid ("{058EF259-F9CD-4cb1-85E5-5C05119AB596}"));
+    public readonly ObjectID OrderTicket1 = new ObjectID("OrderTicket", new Guid("{058EF259-F9CD-4cb1-85E5-5C05119AB596}"));
   }
 }

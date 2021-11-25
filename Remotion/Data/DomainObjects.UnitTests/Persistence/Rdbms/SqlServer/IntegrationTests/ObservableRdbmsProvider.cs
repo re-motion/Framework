@@ -42,26 +42,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         ICommandExecutionListener listener)
         : base(definition, persistenceExtension, storageProviderCommandFactory, connectionFactory)
     {
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("listener", listener);
       _listener = listener;
     }
 
     public override IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior)
     {
-      _listener.OnExecuteReader (command, behavior);
-      return base.ExecuteReader (command, behavior);
+      _listener.OnExecuteReader(command, behavior);
+      return base.ExecuteReader(command, behavior);
     }
 
     public override object ExecuteScalar (IDbCommand command)
     {
-      _listener.OnExecuteScalar (command);
-      return base.ExecuteScalar (command);
+      _listener.OnExecuteScalar(command);
+      return base.ExecuteScalar(command);
     }
 
     public override int ExecuteNonQuery (IDbCommand command)
     {
-      _listener.OnExecuteNonQuery (command);
-      return base.ExecuteNonQuery (command);
+      _listener.OnExecuteNonQuery(command);
+      return base.ExecuteNonQuery(command);
     }
   }
 }

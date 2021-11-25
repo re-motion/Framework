@@ -39,24 +39,24 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       _bindableObjectProviderForDeclaringType = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
       _bindableObjectProviderForPropertyType = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
 
-      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute> (_bindableObjectProviderForDeclaringType);
-      BusinessObjectProvider.SetProvider<BindableObjectProviderForDeleteObjectServiceAttribute> (_bindableObjectProviderForPropertyType);
+      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute>(_bindableObjectProviderForDeclaringType);
+      BusinessObjectProvider.SetProvider<BindableObjectProviderForDeleteObjectServiceAttribute>(_bindableObjectProviderForPropertyType);
     }
 
     [Test]
     public void Delete_WithDeleteSupported ()
     {
       var stubBusinessObject = new Mock<IBusinessObject>();
-      var mockService = new Mock<IDeleteObjectServiceOnProperty> (MockBehavior.Strict);
-      IBusinessObjectReferenceProperty property = DeleteProperty ("DeleteObjectServiceFromPropertyDeclaration");
+      var mockService = new Mock<IDeleteObjectServiceOnProperty>(MockBehavior.Strict);
+      IBusinessObjectReferenceProperty property = DeleteProperty("DeleteObjectServiceFromPropertyDeclaration");
       var value = new Mock<IBusinessObject>();
 
       var sequence = new MockSequence();
-      mockService.InSequence (sequence).Setup (mock => mock.SupportsProperty (property)).Returns (true).Verifiable();
-      mockService.InSequence (sequence).Setup (mock => mock.Delete (stubBusinessObject.Object, property, value.Object)).Verifiable();
+      mockService.InSequence(sequence).Setup(mock => mock.SupportsProperty(property)).Returns(true).Verifiable();
+      mockService.InSequence(sequence).Setup(mock => mock.Delete(stubBusinessObject.Object, property, value.Object)).Verifiable();
 
-      _bindableObjectProviderForDeclaringType.AddService (mockService.Object);
-      property.Delete (stubBusinessObject.Object, value.Object);
+      _bindableObjectProviderForDeclaringType.AddService(mockService.Object);
+      property.Delete(stubBusinessObject.Object, value.Object);
 
       mockService.Verify();
     }
@@ -64,16 +64,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     [Test]
     public void Create_WithDeleteSupportedAndReferencingObjectNull ()
     {
-      var mockService = new Mock<IDeleteObjectServiceOnType> (MockBehavior.Strict);
-      var property = DeleteProperty ("DeleteObjectServiceFromPropertyType");
+      var mockService = new Mock<IDeleteObjectServiceOnType>(MockBehavior.Strict);
+      var property = DeleteProperty("DeleteObjectServiceFromPropertyType");
       var value = new Mock<IBusinessObject>();
 
       var sequence = new MockSequence();
-      mockService.InSequence (sequence).Setup (mock => mock.SupportsProperty (property)).Returns (true).Verifiable();
-      mockService.InSequence (sequence).Setup (mock => mock.Delete (null, property, value.Object)).Verifiable();
+      mockService.InSequence(sequence).Setup(mock => mock.SupportsProperty(property)).Returns(true).Verifiable();
+      mockService.InSequence(sequence).Setup(mock => mock.Delete(null, property, value.Object)).Verifiable();
 
-      _bindableObjectProviderForPropertyType.AddService (mockService.Object);
-      property.Delete (null, value.Object);
+      _bindableObjectProviderForPropertyType.AddService(mockService.Object);
+      property.Delete(null, value.Object);
 
       mockService.Verify();
     }
@@ -82,18 +82,18 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     public void Delete_WithDeleteNotSupported ()
     {
       IBusinessObject businessObject = (IBusinessObject) ObjectFactory.Create<ClassWithBusinessObjectProperties>(ParamList.Empty);
-      var mockService = new Mock<IDeleteObjectServiceOnProperty> (MockBehavior.Strict);
-      IBusinessObjectReferenceProperty property = DeleteProperty ("DeleteObjectServiceFromPropertyDeclaration");
+      var mockService = new Mock<IDeleteObjectServiceOnProperty>(MockBehavior.Strict);
+      IBusinessObjectReferenceProperty property = DeleteProperty("DeleteObjectServiceFromPropertyDeclaration");
       var value = new Mock<IBusinessObject>();
 
-      mockService.Setup (mock => mock.SupportsProperty (property)).Returns (false).Verifiable();
+      mockService.Setup(mock => mock.SupportsProperty(property)).Returns(false).Verifiable();
 
-      _bindableObjectProviderForDeclaringType.AddService (mockService.Object);
+      _bindableObjectProviderForDeclaringType.AddService(mockService.Object);
 
-      Assert.That (
-          () => property.Delete (businessObject, value.Object),
+      Assert.That(
+          () => property.Delete(businessObject, value.Object),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Deleting an object is not supported for reference property 'DeleteObjectServiceFromPropertyDeclaration' of business object class "
                   + "'Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain.ClassWithBusinessObjectProperties, "
                   + "Remotion.ObjectBinding.UnitTests'."));
@@ -105,9 +105,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     private ReferenceProperty DeleteProperty (string propertyName)
     {
       PropertyBase.Parameters propertyParameters =
-          GetPropertyParameters (GetPropertyInfo (typeof (ClassWithBusinessObjectProperties), propertyName), _bindableObjectProviderForDeclaringType);
-      ReferenceProperty property = new ReferenceProperty (propertyParameters);
-      property.SetReflectedClass (BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassWithBusinessObjectProperties)));
+          GetPropertyParameters(GetPropertyInfo(typeof (ClassWithBusinessObjectProperties), propertyName), _bindableObjectProviderForDeclaringType);
+      ReferenceProperty property = new ReferenceProperty(propertyParameters);
+      property.SetReflectedClass(BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (ClassWithBusinessObjectProperties)));
 
       return property;
     }

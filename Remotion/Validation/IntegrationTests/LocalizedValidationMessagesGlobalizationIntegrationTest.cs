@@ -37,12 +37,12 @@ namespace Remotion.Validation.IntegrationTests
 
       var validator = ValidationBuilder.BuildValidator<Person>();
 
-      var result = validator.Validate (person);
+      var result = validator.Validate(person);
 
-      Assert.That (result.IsValid, Is.False);
-      Assert.That (
-          result.Errors.OfType<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
-          Is.EquivalentTo (new[] { "FirstName: Enter a value.", "LastName: Enter a valid value." }));
+      Assert.That(result.IsValid, Is.False);
+      Assert.That(
+          result.Errors.OfType<PropertyValidationFailure>().Select(e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
+          Is.EquivalentTo(new[] { "FirstName: Enter a value.", "LastName: Enter a valid value." }));
     }
 
     [Test]
@@ -52,16 +52,16 @@ namespace Remotion.Validation.IntegrationTests
       person.FirstName = null;
       person.LastName = "value";
 
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
         var validator = ValidationBuilder.BuildValidator<Person>();
 
-        var result = validator.Validate (person);
+        var result = validator.Validate(person);
 
-        Assert.That (result.IsValid, Is.False);
-        Assert.That (
-            result.Errors.OfType<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
-            Is.EquivalentTo (new[] { "FirstName: Geben Sie einen Wert ein." }));
+        Assert.That(result.IsValid, Is.False);
+        Assert.That(
+            result.Errors.OfType<PropertyValidationFailure>().Select(e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
+            Is.EquivalentTo(new[] { "FirstName: Geben Sie einen Wert ein." }));
       }
     }
 
@@ -72,18 +72,18 @@ namespace Remotion.Validation.IntegrationTests
       person.FirstName = null;
       person.LastName = "value";
 
-      Assert.That (Thread.CurrentThread.CurrentCulture, Is.EqualTo (CultureInfo.InvariantCulture));
+      Assert.That(Thread.CurrentThread.CurrentCulture, Is.EqualTo(CultureInfo.InvariantCulture));
 
       var validator = ValidationBuilder.BuildValidator<Person>();
 
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
-        var result = validator.Validate (person);
+        var result = validator.Validate(person);
 
-        Assert.That (result.IsValid, Is.False);
-        Assert.That (
-            result.Errors.OfType<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
-            Is.EquivalentTo (new[] { "FirstName: Geben Sie einen Wert ein." }));
+        Assert.That(result.IsValid, Is.False);
+        Assert.That(
+            result.Errors.OfType<PropertyValidationFailure>().Select(e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
+            Is.EquivalentTo(new[] { "FirstName: Geben Sie einen Wert ein." }));
       }
     }
 
@@ -96,18 +96,18 @@ namespace Remotion.Validation.IntegrationTests
 
       var validator = ValidationBuilder.BuildValidator<Person>();
       
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
-        var result = validator.Validate (person);
+        var result = validator.Validate(person);
 
         // ValidationError is immutable.
 
-        using (new CultureScope (""))
+        using (new CultureScope(""))
         {
-          Assert.That (result.IsValid, Is.False);
-          Assert.That (
-              result.Errors.OfType<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
-              Is.EquivalentTo (new[] { "FirstName: Geben Sie einen Wert ein." }));
+          Assert.That(result.IsValid, Is.False);
+          Assert.That(
+              result.Errors.OfType<PropertyValidationFailure>().Select(e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
+              Is.EquivalentTo(new[] { "FirstName: Geben Sie einen Wert ein." }));
         }
       }
     }

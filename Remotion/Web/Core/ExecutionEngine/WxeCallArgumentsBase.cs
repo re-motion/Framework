@@ -27,7 +27,7 @@ namespace Remotion.Web.ExecutionEngine
 
     protected WxeCallArgumentsBase (IWxeCallOptions options)
     {
-      ArgumentUtility.CheckNotNull ("options", options);
+      ArgumentUtility.CheckNotNull("options", options);
 
       _options = options;
     }
@@ -39,15 +39,15 @@ namespace Remotion.Web.ExecutionEngine
 
     protected virtual void Dispatch (IWxeExecutor executor, WxeFunction function)
     {
-      ArgumentUtility.CheckNotNull ("executor", executor);
-      ArgumentUtility.CheckNotNull ("function", function);
+      ArgumentUtility.CheckNotNull("executor", executor);
+      ArgumentUtility.CheckNotNull("function", function);
 
       //_options.Dispatch (executor, function, _sender);
     }
 
     void IWxeCallArguments.Dispatch (IWxeExecutor executor, WxeFunction function)
     {
-      Dispatch (executor, function);
+      Dispatch(executor, function);
     }
   }
 }

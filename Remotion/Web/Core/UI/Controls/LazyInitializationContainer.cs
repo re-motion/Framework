@@ -30,7 +30,7 @@ namespace Remotion.Web.UI.Controls
 
     public LazyInitializationContainer ()
     {
-      _placeHolder = new PlaceHolder ();
+      _placeHolder = new PlaceHolder();
     }
 
     public bool IsInitialized
@@ -40,7 +40,7 @@ namespace Remotion.Web.UI.Controls
 
     public ControlCollection GetControls (ControlCollection baseControls)
     {
-      ArgumentUtility.CheckNotNull ("baseControls", baseControls);
+      ArgumentUtility.CheckNotNull("baseControls", baseControls);
         if (_isEnsured)
           return baseControls;
         else
@@ -49,16 +49,16 @@ namespace Remotion.Web.UI.Controls
 
     public void Ensure (ControlCollection baseControls)
     {
-      ArgumentUtility.CheckNotNull ("baseControls", baseControls);
+      ArgumentUtility.CheckNotNull("baseControls", baseControls);
 
       if (_isEnsured)
         return;
 
       _isEnsured = true;
 
-      List<Control> controls = new List<Control> (_placeHolder.Controls.Cast<Control> ());
+      List<Control> controls = new List<Control>(_placeHolder.Controls.Cast<Control>());
       foreach (Control control in controls)
-        baseControls.Add (control);
+        baseControls.Add(control);
     }
   }
 }

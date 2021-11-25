@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
   {
     public IResourceUrl CreateThemedResourceUrl (ResourceType resourceType, string relativeUrl)
     {
-      return new StaticResourceUrl ("/" + relativeUrl);
+      return new StaticResourceUrl("/" + relativeUrl);
     }
   }
 }

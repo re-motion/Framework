@@ -27,9 +27,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Hotkey
     public void Format_NoEncoding_WithHotkey ()
     {
       var formatter = new UnderscoreHotkeyFormatter();
-      var textWithHotkey = new TextWithHotkey ("foo bar", 4);
+      var textWithHotkey = new TextWithHotkey("foo bar", 4);
 
-      Assert.That (formatter.FormatText (textWithHotkey, false), Is.EqualTo ("foo <u>b</u>ar"));
+      Assert.That(formatter.FormatText(textWithHotkey, false), Is.EqualTo("foo <u>b</u>ar"));
     }
   }
 }

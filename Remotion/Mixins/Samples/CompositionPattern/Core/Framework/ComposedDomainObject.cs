@@ -33,7 +33,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Framework
     protected ComposedDomainObject ()
     {
       _id = Guid.NewGuid();
-      _events = new DomainObjectEventSource (this);
+      _events = new DomainObjectEventSource(this);
 
       // ReSharper disable DoNotCallOverridableMethodsInConstructor
       OnReferenceInitializing();

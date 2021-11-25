@@ -39,34 +39,34 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       var htmlHeadAppender = HtmlHeadAppender.Current;
       var htmlHeadElements = htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      var renderingContext = CreateRenderingContext (writer, htmlHeadElements);
+      var renderingContext = CreateRenderingContext(writer, htmlHeadElements);
       var renderer = CreateRenderer();
-      renderer.Render (renderingContext);
+      renderer.Render(renderingContext);
 
       htmlHeadAppender.SetAppended();
     }
 
     protected virtual HtmlHeadContentsRenderingContext CreateRenderingContext (HtmlTextWriter writer, HtmlHeadElement[] htmlHeadElements)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      var renderingContext = new HtmlHeadContentsRenderingContext (Page!.Context!, writer, this, htmlHeadElements); // TODO RM-8118: not null assertion
+      var renderingContext = new HtmlHeadContentsRenderingContext(Page!.Context!, writer, this, htmlHeadElements); // TODO RM-8118: not null assertion
       return renderingContext;
     }
 
     protected virtual IHtmlHeadContentsRenderer CreateRenderer ()
     {
-      return SafeServiceLocator.Current.GetInstance<IHtmlHeadContentsRenderer> ();
+      return SafeServiceLocator.Current.GetInstance<IHtmlHeadContentsRenderer>();
     }
 
     public new IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
   }
 }

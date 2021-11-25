@@ -33,11 +33,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
       ITransactionFactory transactionFactory = new ClientTransactionFactory();
 
       ITransaction transaction = transactionFactory.CreateRootTransaction();
-      Assert.That (transaction, Is.InstanceOf (typeof (ClientTransactionWrapper)));
-      Assert.That (transaction.To<ClientTransaction>(), Is.InstanceOf (typeof (ClientTransaction)));
+      Assert.That(transaction, Is.InstanceOf(typeof (ClientTransactionWrapper)));
+      Assert.That(transaction.To<ClientTransaction>(), Is.InstanceOf(typeof (ClientTransaction)));
       
-      var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy (transaction.To<ClientTransaction>());
-      Assert.That (persistenceStrategy, Is.InstanceOf (typeof (RootPersistenceStrategy)));
+      var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy(transaction.To<ClientTransaction>());
+      Assert.That(persistenceStrategy, Is.InstanceOf(typeof (RootPersistenceStrategy)));
     }
 
     [Test]
@@ -46,15 +46,15 @@ namespace Remotion.Data.DomainObjects.UnitTests
       ITransactionFactory factory = MockRepository.GenerateMock<ClientTransactionFactory>();
 
       var extensionStub = MockRepository.GenerateStub<IClientTransactionExtension>();
-      extensionStub.Stub (stub => stub.Key).Return ("extension");
+      extensionStub.Stub(stub => stub.Key).Return("extension");
 
-      factory.Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "OnTransactionCreated", Arg<ClientTransaction>.Is.NotNull)).WhenCalled (
-          invocation => ((ClientTransaction) invocation.Arguments[0]).Extensions.Add (extensionStub));
+      factory.Expect(mock => PrivateInvoke.InvokeNonPublicMethod(mock, "OnTransactionCreated", Arg<ClientTransaction>.Is.NotNull)).WhenCalled(
+          invocation => ((ClientTransaction) invocation.Arguments[0]).Extensions.Add(extensionStub));
 
       ITransaction transaction = factory.CreateRootTransaction();
 
       var clientTransaction = transaction.To<ClientTransaction>();
-      Assert.That (clientTransaction.Extensions, Has.Member (extensionStub));
+      Assert.That(clientTransaction.Extensions, Has.Member(extensionStub));
     }
 
     [Test]
@@ -63,17 +63,17 @@ namespace Remotion.Data.DomainObjects.UnitTests
       ITransactionFactory factory = MockRepository.GenerateMock<ClientTransactionFactory>();
 
       var extensionStub = MockRepository.GenerateStub<IClientTransactionExtension>();
-      extensionStub.Stub (stub => stub.Key).Return ("extension");
+      extensionStub.Stub(stub => stub.Key).Return("extension");
       
       factory
-          .Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "OnTransactionCreated", Arg<ClientTransaction>.Is.NotNull))
-          .WhenCalled (invocation => ((ClientTransaction) invocation.Arguments[0]).Extensions.Add (extensionStub));
+          .Expect(mock => PrivateInvoke.InvokeNonPublicMethod(mock, "OnTransactionCreated", Arg<ClientTransaction>.Is.NotNull))
+          .WhenCalled(invocation => ((ClientTransaction) invocation.Arguments[0]).Extensions.Add(extensionStub));
 
       ITransaction rootTransaction = factory.CreateRootTransaction();
       ITransaction childTransaction = rootTransaction.CreateChild();
 
-      Assert.That (rootTransaction.To<ClientTransaction>().Extensions, Has.Member (extensionStub));
-      Assert.That (childTransaction.To<ClientTransaction>().Extensions, Has.No.Member (extensionStub));
+      Assert.That(rootTransaction.To<ClientTransaction>().Extensions, Has.Member(extensionStub));
+      Assert.That(childTransaction.To<ClientTransaction>().Extensions, Has.No.Member(extensionStub));
     }
   }
 }

@@ -24,16 +24,16 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation
   {
     public MetaValidationRuleTestClassCollector4 ()
     {
-      AddRule (c => c.Property1).AddMetaValidationRule(lengthRules =>
+      AddRule(c => c.Property1).AddMetaValidationRule(lengthRules =>
       {
         if (lengthRules.Count() > 1)
-          return MetaValidationRuleValidationResult.CreateInvalidResult ("Invalid length validator count!");
+          return MetaValidationRuleValidationResult.CreateInvalidResult("Invalid length validator count!");
 
         return MetaValidationRuleValidationResult.CreateValidResult();
       });
 
-      AddRule (c => c.Property1).Length (4, 10);
-      AddRule (c => c.Property1).Length (6, 9);
+      AddRule(c => c.Property1).Length(4, 10);
+      AddRule(c => c.Property1).Length(6, 9);
     }
   }
 }

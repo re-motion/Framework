@@ -32,98 +32,98 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocAutoCompleteReferenceVa
     public void Normal ()
     {
       var home = Start();
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocAutoComplete.Analyze (analyzer);
+      var result = bocAutoComplete.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Normal_WithValidationErrors ()
     {
       var home = Start();
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-      bocAutoComplete.FillWith ("InvalidInput");
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
+      bocAutoComplete.FillWith("InvalidInput");
       var validateButton = home.GetValidateButton();
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocAutoComplete.Analyze (analyzer);
+      var result = bocAutoComplete.Analyze(analyzer);
 
-      Assert.That (bocAutoComplete.GetValidationErrors(), Is.Not.Empty);
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(bocAutoComplete.GetValidationErrors(), Is.Not.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ReadOnly ()
     {
       var home = Start();
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_ReadOnly");
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_ReadOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocAutoComplete.Analyze (analyzer);
+      var result = bocAutoComplete.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Disabled ()
     {
       var home = Start();
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Disabled");
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Disabled");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocAutoComplete.Analyze (analyzer);
+      var result = bocAutoComplete.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void NoCommandNoMenu ()
     {
       var home = Start();
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_NoCommandNoMenu");
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_NoCommandNoMenu");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocAutoComplete.Analyze (analyzer);
+      var result = bocAutoComplete.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void NoCommandNoMenu_ReadOnly ()
     {
       var home = Start();
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_NoCommandNoMenu_ReadOnly");
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_NoCommandNoMenu_ReadOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocAutoComplete.Analyze (analyzer);
+      var result = bocAutoComplete.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Required_ExpandedMenu ()
     {
       var home = Start();
-      var dropDownButton = home.WebButtons().GetByID ("body_DataEditControl_PartnerField_Normal_Required_DropDownButton");
+      var dropDownButton = home.WebButtons().GetByID("body_DataEditControl_PartnerField_Normal_Required_DropDownButton");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal_Required");
-      bocAutoComplete.FillWith ("");
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal_Required");
+      bocAutoComplete.FillWith("");
       dropDownButton.Click();
 
-      Assert.That (FluentScreenshotExtensions.ForControlObjectScreenshot (bocAutoComplete).GetSelectList().IsVisible(), Is.True);
-      var result = bocAutoComplete.Analyze (analyzer);
-      Assert.That (bocAutoComplete.ForControlObjectScreenshot().GetSelectList().IsVisible(), Is.True);
+      Assert.That(FluentScreenshotExtensions.ForControlObjectScreenshot(bocAutoComplete).GetSelectList().IsVisible(), Is.True);
+      var result = bocAutoComplete.Analyze(analyzer);
+      Assert.That(bocAutoComplete.ForControlObjectScreenshot().GetSelectList().IsVisible(), Is.True);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocAutoCompleteReferenceValue");
+      return Start("BocAutoCompleteReferenceValue");
     }
   }
 }

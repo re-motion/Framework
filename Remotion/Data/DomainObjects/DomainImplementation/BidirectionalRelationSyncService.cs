@@ -133,12 +133,12 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </exception>
     public static bool? IsSynchronized (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
-      CheckNotUnidirectional (endPointID, "endPointID");
+      CheckNotUnidirectional(endPointID, "endPointID");
 
-      var endPoint = GetEndPoint (clientTransaction.RootTransaction, endPointID);
+      var endPoint = GetEndPoint(clientTransaction.RootTransaction, endPointID);
       if (endPoint == null)
         return null;
 
@@ -181,46 +181,46 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static void Synchronize (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
-      CheckNotUnidirectional (endPointID, "endPointID");
+      CheckNotUnidirectional(endPointID, "endPointID");
 
       var currentTransaction = clientTransaction.RootTransaction;
-      var endPoint = GetAndCheckLoadedEndPoint (endPointID, currentTransaction);
+      var endPoint = GetAndCheckLoadedEndPoint(endPointID, currentTransaction);
 
       while (endPoint != null)
       {
         endPoint.Synchronize();
 
         currentTransaction = currentTransaction.SubTransaction;
-        endPoint = currentTransaction != null ? GetEndPoint (currentTransaction, endPointID) : null;
+        endPoint = currentTransaction != null ? GetEndPoint(currentTransaction, endPointID) : null;
       }
     }
 
     private static void CheckNotUnidirectional (RelationEndPointID endPointID, string paramName)
     {
       if (endPointID.Definition.RelationDefinition.RelationKind == RelationKindType.Unidirectional)
-        throw new ArgumentException ("BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.", paramName);
+        throw new ArgumentException("BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.", paramName);
     }
 
     private static IRelationEndPoint GetAndCheckLoadedEndPoint (RelationEndPointID endPointID, ClientTransaction clientTransaction)
     {
-      var endPoint = GetEndPoint (clientTransaction, endPointID);
+      var endPoint = GetEndPoint(clientTransaction, endPointID);
 
       if (endPoint == null)
       {
-        var message = String.Format (
+        var message = String.Format(
             "The relation property '{0}' of object '{1}' has not yet been fully loaded into the given ClientTransaction.",
             endPointID.Definition.PropertyName,
             endPointID.ObjectID);
-        throw new InvalidOperationException (message);
+        throw new InvalidOperationException(message);
       }
       return endPoint;
     }
 
     private static IRelationEndPoint GetEndPoint (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      var endPoint = clientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID);
+      var endPoint = clientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID);
       return endPoint == null || !endPoint.IsDataComplete ? null : endPoint;
     }
   }

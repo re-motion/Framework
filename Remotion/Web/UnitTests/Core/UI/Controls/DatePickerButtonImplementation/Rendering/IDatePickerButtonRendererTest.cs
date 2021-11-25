@@ -27,19 +27,19 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = SafeServiceLocator.Current.GetInstance<IDatePickerButtonRenderer> ();
+      var factory = SafeServiceLocator.Current.GetInstance<IDatePickerButtonRenderer>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (DatePickerButtonRenderer)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof (DatePickerButtonRenderer)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = SafeServiceLocator.Current.GetInstance<IDatePickerButtonRenderer> ();
-      var factory2 = SafeServiceLocator.Current.GetInstance<IDatePickerButtonRenderer> ();
+      var factory1 = SafeServiceLocator.Current.GetInstance<IDatePickerButtonRenderer>();
+      var factory2 = SafeServiceLocator.Current.GetInstance<IDatePickerButtonRenderer>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

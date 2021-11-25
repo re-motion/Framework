@@ -37,13 +37,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       base.SetUp();
 
-      _eventReceiverMock = MockRepository.GenerateStrictMock<OrderCollection.ICollectionEventReceiver> ();
+      _eventReceiverMock = MockRepository.GenerateStrictMock<OrderCollection.ICollectionEventReceiver>();
       
-      _itemA = DomainObjectMother.CreateFakeObject<Order> ();
-      _itemB = DomainObjectMother.CreateFakeObject<Order> ();
-      _itemCNotInCollection = DomainObjectMother.CreateFakeObject<Order> ();
+      _itemA = DomainObjectMother.CreateFakeObject<Order>();
+      _itemB = DomainObjectMother.CreateFakeObject<Order>();
+      _itemCNotInCollection = DomainObjectMother.CreateFakeObject<Order>();
 
-      _collection = new OrderCollection (new[] { _itemA, _itemB });
+      _collection = new OrderCollection(new[] { _itemA, _itemB });
     }
 
     [Test]
@@ -52,20 +52,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       using (_eventReceiverMock.GetMockRepository().Ordered())
       {
         _eventReceiverMock
-            .Expect (mock => mock.OnAdding (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemCNotInCollection)))
-            .WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB })));
+            .Expect(mock => mock.OnAdding(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemCNotInCollection)))
+            .WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB })));
         _eventReceiverMock
-            .Expect (mock => mock.OnAdded (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemCNotInCollection)))
-            .WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB, _itemCNotInCollection })));
+            .Expect(mock => mock.OnAdded(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemCNotInCollection)))
+            .WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB, _itemCNotInCollection })));
       }
 
     _eventReceiverMock.Replay();
-      _collection.SetEventReceiver (_eventReceiverMock);
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      _collection.Add (_itemCNotInCollection);
+      _collection.Add(_itemCNotInCollection);
 
       _eventReceiverMock.VerifyAllExpectations();
-      Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB, _itemCNotInCollection }));
+      Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB, _itemCNotInCollection }));
     }
 
     [Test]
@@ -73,44 +73,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       var exception = new Exception();
       _eventReceiverMock
-          .Expect (mock => mock.OnAdding (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemCNotInCollection)))
-          .Throw (exception);
-      _eventReceiverMock.Replay ();
-      _collection.SetEventReceiver (_eventReceiverMock);
+          .Expect(mock => mock.OnAdding(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemCNotInCollection)))
+          .Throw(exception);
+      _eventReceiverMock.Replay();
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      Assert.That (() => _collection.Add (_itemCNotInCollection), Throws.Exception.SameAs (exception));
+      Assert.That(() => _collection.Add(_itemCNotInCollection), Throws.Exception.SameAs(exception));
 
       _eventReceiverMock.VerifyAllExpectations();
-      Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB }));
+      Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB }));
     }
 
     [Test]
     public void Clear_Events ()
     {
-      using (_eventReceiverMock.GetMockRepository ().Ordered ())
+      using (_eventReceiverMock.GetMockRepository().Ordered())
       {
         _eventReceiverMock
-            .Expect (
-                mock => mock.OnRemoving (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemA)))
-            .WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB })));
+            .Expect(
+                mock => mock.OnRemoving(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemA)))
+            .WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB })));
         _eventReceiverMock
-            .Expect (mock => mock.OnRemoving (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemB)))
-            .WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB })));
+            .Expect(mock => mock.OnRemoving(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemB)))
+            .WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB })));
         _eventReceiverMock
-            .Expect (
-                mock => mock.OnRemoved (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemB)))
-            .WhenCalled (mi => Assert.That (_collection, Is.Empty));
+            .Expect(
+                mock => mock.OnRemoved(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemB)))
+            .WhenCalled(mi => Assert.That(_collection, Is.Empty));
         _eventReceiverMock
-            .Expect (mock => mock.OnRemoved (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemA)))
-            .WhenCalled (mi => Assert.That (_collection, Is.Empty));
+            .Expect(mock => mock.OnRemoved(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemA)))
+            .WhenCalled(mi => Assert.That(_collection, Is.Empty));
       }
       _eventReceiverMock.Replay();
-      _collection.SetEventReceiver (_eventReceiverMock);
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      _collection.Clear ();
+      _collection.Clear();
 
       _eventReceiverMock.VerifyAllExpectations();
-      Assert.That (_collection, Is.Empty);
+      Assert.That(_collection, Is.Empty);
     }
 
     
@@ -118,46 +118,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void Clear_Events_Cancel ()
     {
       var exception = new Exception();
-      _eventReceiverMock.Expect (mock => mock.OnRemoving(Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemA)));
+      _eventReceiverMock.Expect(mock => mock.OnRemoving(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemA)));
       _eventReceiverMock
-          .Expect (mock => mock.OnRemoving(Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemB)))
-          .Throw (exception);
-      _eventReceiverMock.Replay ();
-      _collection.SetEventReceiver (_eventReceiverMock);
+          .Expect(mock => mock.OnRemoving(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemB)))
+          .Throw(exception);
+      _eventReceiverMock.Replay();
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      Assert.That (() => _collection.Clear (), Throws.Exception.SameAs (exception));
+      Assert.That(() => _collection.Clear(), Throws.Exception.SameAs(exception));
 
-      Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB }));
+      Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB }));
     }
 
     [Test]
     public void Remove_Events ()
     {
-      using (_eventReceiverMock.GetMockRepository ().Ordered ())
+      using (_eventReceiverMock.GetMockRepository().Ordered())
       {
         _eventReceiverMock
-            .Expect (
-                mock => mock.OnRemoving (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemA)))
-            .WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB })));
+            .Expect(
+                mock => mock.OnRemoving(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemA)))
+            .WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB })));
         _eventReceiverMock
-            .Expect (mock => mock.OnRemoved (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemA)))
-            .WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemB })));
+            .Expect(mock => mock.OnRemoved(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemA)))
+            .WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemB })));
       }
       _eventReceiverMock.Replay();
-      _collection.SetEventReceiver (_eventReceiverMock);
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      _collection.Remove (_itemA);
+      _collection.Remove(_itemA);
 
-      Assert.That (_collection, Is.EqualTo (new[] { _itemB }));
+      Assert.That(_collection, Is.EqualTo(new[] { _itemB }));
     }
 
     [Test]
     public void Remove_Null_Events ()
     {
-      _eventReceiverMock.Replay ();
-      _collection.SetEventReceiver (_eventReceiverMock);
+      _eventReceiverMock.Replay();
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      Assert.That (() => _collection.Remove ((DomainObject) null), Throws.TypeOf<ArgumentNullException>());
+      Assert.That(() => _collection.Remove((DomainObject) null), Throws.TypeOf<ArgumentNullException>());
 
       _eventReceiverMock.VerifyAllExpectations();
     }
@@ -165,12 +165,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void Remove_ObjectNotInCollection_Events ()
     {
-      _eventReceiverMock.Replay ();
-      _collection.SetEventReceiver (_eventReceiverMock);
+      _eventReceiverMock.Replay();
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      _collection.Remove (_itemCNotInCollection);
+      _collection.Remove(_itemCNotInCollection);
 
-      _eventReceiverMock.VerifyAllExpectations ();
+      _eventReceiverMock.VerifyAllExpectations();
     }
     
     [Test]
@@ -178,96 +178,96 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       var exception = new Exception();
       _eventReceiverMock
-          .Expect (mock => mock.OnRemoving (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemA)))
-          .Throw (exception);
-      _eventReceiverMock.Replay ();
-      _collection.SetEventReceiver (_eventReceiverMock);
+          .Expect(mock => mock.OnRemoving(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemA)))
+          .Throw(exception);
+      _eventReceiverMock.Replay();
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      Assert.That (() => _collection.Remove (_itemA), Throws.Exception.SameAs (exception));
+      Assert.That(() => _collection.Remove(_itemA), Throws.Exception.SameAs(exception));
 
       _eventReceiverMock.VerifyAllExpectations();
-      Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB }));
+      Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB }));
     }
 
     [Test]
     public void Remove_ID_Events ()
     {
-      using (_eventReceiverMock.GetMockRepository ().Ordered ())
+      using (_eventReceiverMock.GetMockRepository().Ordered())
       {
         _eventReceiverMock
-            .Expect (
-                mock => mock.OnRemoving (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemA)))
-            .WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB })));
+            .Expect(
+                mock => mock.OnRemoving(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemA)))
+            .WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB })));
         _eventReceiverMock
-            .Expect (mock => mock.OnRemoved (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemA)))
-            .WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemB })));
+            .Expect(mock => mock.OnRemoved(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemA)))
+            .WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemB })));
       }
-      _eventReceiverMock.Replay ();
-      _collection.SetEventReceiver (_eventReceiverMock);
+      _eventReceiverMock.Replay();
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      _collection.Remove (_itemA.ID);
+      _collection.Remove(_itemA.ID);
 
-      Assert.That (_collection, Is.EqualTo (new[] { _itemB }));
+      Assert.That(_collection, Is.EqualTo(new[] { _itemB }));
     }
 
     [Test]
     public void Remove_ID_Null_Events ()
     {
-      _eventReceiverMock.Replay ();
-      _collection.SetEventReceiver (_eventReceiverMock);
+      _eventReceiverMock.Replay();
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      Assert.That (() => _collection.Remove ((ObjectID) null), Throws.TypeOf<ArgumentNullException> ());
+      Assert.That(() => _collection.Remove((ObjectID) null), Throws.TypeOf<ArgumentNullException>());
 
-      _eventReceiverMock.VerifyAllExpectations ();
+      _eventReceiverMock.VerifyAllExpectations();
     }
 
     [Test]
     public void Remove_ID_ObjectNotInCollection_Events ()
     {
-      _eventReceiverMock.Replay ();
-      _collection.SetEventReceiver (_eventReceiverMock);
+      _eventReceiverMock.Replay();
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      _collection.Remove (_itemCNotInCollection.ID);
+      _collection.Remove(_itemCNotInCollection.ID);
 
-      _eventReceiverMock.VerifyAllExpectations ();
+      _eventReceiverMock.VerifyAllExpectations();
     }
 
     [Test]
     public void Remove_ID_Events_Cancel ()
     {
-      var exception = new Exception ();
+      var exception = new Exception();
       _eventReceiverMock
-          .Expect (mock => mock.OnRemoving (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemA)))
-          .Throw (exception);
-      _eventReceiverMock.Replay ();
-      _collection.SetEventReceiver (_eventReceiverMock);
+          .Expect(mock => mock.OnRemoving(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemA)))
+          .Throw(exception);
+      _eventReceiverMock.Replay();
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      Assert.That (() => _collection.Remove (_itemA.ID), Throws.Exception.SameAs (exception));
+      Assert.That(() => _collection.Remove(_itemA.ID), Throws.Exception.SameAs(exception));
 
-      _eventReceiverMock.VerifyAllExpectations ();
-      Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB }));
+      _eventReceiverMock.VerifyAllExpectations();
+      Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB }));
     }
 
 
     [Test]
     public void Insert_Events ()
     {
-      using (_eventReceiverMock.GetMockRepository ().Ordered ())
+      using (_eventReceiverMock.GetMockRepository().Ordered())
       {
         _eventReceiverMock
-            .Expect (mock => mock.OnAdding (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemCNotInCollection)))
-            .WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB })));
+            .Expect(mock => mock.OnAdding(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemCNotInCollection)))
+            .WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB })));
         _eventReceiverMock
-            .Expect (mock => mock.OnAdded (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemCNotInCollection)))
-            .WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemCNotInCollection, _itemA, _itemB })));
+            .Expect(mock => mock.OnAdded(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemCNotInCollection)))
+            .WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemCNotInCollection, _itemA, _itemB })));
       }
       _eventReceiverMock.Replay();
-      _collection.SetEventReceiver (_eventReceiverMock);
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      _collection.Insert (0, _itemCNotInCollection);
+      _collection.Insert(0, _itemCNotInCollection);
 
       _eventReceiverMock.VerifyAllExpectations();
-      Assert.That (_collection, Is.EqualTo (new[] { _itemCNotInCollection, _itemA, _itemB }));
+      Assert.That(_collection, Is.EqualTo(new[] { _itemCNotInCollection, _itemA, _itemB }));
     }
 
     [Test]
@@ -275,70 +275,70 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       var exception = new Exception();
       _eventReceiverMock
-          .Expect (mock => mock.OnAdding (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemCNotInCollection)))
-          .Throw (exception);
-      _eventReceiverMock.Replay ();
-      _collection.SetEventReceiver (_eventReceiverMock);
+          .Expect(mock => mock.OnAdding(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemCNotInCollection)))
+          .Throw(exception);
+      _eventReceiverMock.Replay();
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      Assert.That (() => _collection.Insert (0, _itemCNotInCollection), Throws.Exception.SameAs (exception));
+      Assert.That(() => _collection.Insert(0, _itemCNotInCollection), Throws.Exception.SameAs(exception));
 
-      _eventReceiverMock.VerifyAllExpectations ();
-      Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB }));
+      _eventReceiverMock.VerifyAllExpectations();
+      Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB }));
     }
 
     [Test]
     public void Item_Set_Events ()
     {
-      using (_eventReceiverMock.GetMockRepository ().Ordered ())
+      using (_eventReceiverMock.GetMockRepository().Ordered())
       {
         _eventReceiverMock
-            .Expect (mock => mock.OnRemoving (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemA)))
-            .WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB })));
+            .Expect(mock => mock.OnRemoving(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemA)))
+            .WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB })));
         _eventReceiverMock
-            .Expect (mock => mock.OnAdding (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemCNotInCollection)))
-            .WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB })));
+            .Expect(mock => mock.OnAdding(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemCNotInCollection)))
+            .WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB })));
         _eventReceiverMock
-            .Expect (mock => mock.OnRemoved (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemA)))
-            .WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemCNotInCollection, _itemB })));
+            .Expect(mock => mock.OnRemoved(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemA)))
+            .WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemCNotInCollection, _itemB })));
         _eventReceiverMock
-            .Expect (mock => mock.OnAdded (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemCNotInCollection)))
-            .WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemCNotInCollection, _itemB })));
+            .Expect(mock => mock.OnAdded(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemCNotInCollection)))
+            .WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemCNotInCollection, _itemB })));
       }
       _eventReceiverMock.Replay();
-      _collection.SetEventReceiver (_eventReceiverMock);
+      _collection.SetEventReceiver(_eventReceiverMock);
 
       _collection[0] = _itemCNotInCollection;
 
       _eventReceiverMock.VerifyAllExpectations();
-      Assert.That (_collection, Is.EqualTo (new[] { _itemCNotInCollection, _itemB }));
+      Assert.That(_collection, Is.EqualTo(new[] { _itemCNotInCollection, _itemB }));
     }
 
     [Test]
     public void Item_Set_Events_Cancel ()
     {
       var exception = new Exception();
-      _eventReceiverMock.Expect (mock => mock.OnRemoving(Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemA)));
+      _eventReceiverMock.Expect(mock => mock.OnRemoving(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemA)));
       _eventReceiverMock
-          .Expect (mock => mock.OnAdding (Arg<DomainObjectCollectionChangeEventArgs>.Matches (args => args.DomainObject == _itemCNotInCollection)))
-          .Throw (exception);
-      _eventReceiverMock.Replay ();
-      _collection.SetEventReceiver (_eventReceiverMock);
+          .Expect(mock => mock.OnAdding(Arg<DomainObjectCollectionChangeEventArgs>.Matches(args => args.DomainObject == _itemCNotInCollection)))
+          .Throw(exception);
+      _eventReceiverMock.Replay();
+      _collection.SetEventReceiver(_eventReceiverMock);
 
-      Assert.That (() => _collection[0] = _itemCNotInCollection, Throws.Exception.SameAs (exception));
+      Assert.That(() => _collection[0] = _itemCNotInCollection, Throws.Exception.SameAs(exception));
 
       _eventReceiverMock.VerifyAllExpectations();
-      Assert.That (_collection, Is.EqualTo (new[] { _itemA, _itemB }));
+      Assert.That(_collection, Is.EqualTo(new[] { _itemA, _itemB }));
     }
 
     [Test]
     public void Sort_Events ()
     {
-      _collection.SetEventReceiver (_eventReceiverMock);
-      _eventReceiverMock.Expect (mock => mock.OnReplaceData()).WhenCalled (mi => Assert.That (_collection, Is.EqualTo (new[] { _itemB, _itemA})));
+      _collection.SetEventReceiver(_eventReceiverMock);
+      _eventReceiverMock.Expect(mock => mock.OnReplaceData()).WhenCalled(mi => Assert.That(_collection, Is.EqualTo(new[] { _itemB, _itemA})));
       _eventReceiverMock.Replay();
 
       var weights = new Dictionary<DomainObject, int> { { _itemA, 2 }, { _itemB, 1 } };
-      _collection.Sort ((one, two) => weights[one].CompareTo (weights[two]));
+      _collection.Sort((one, two) => weights[one].CompareTo(weights[two]));
 
       _eventReceiverMock.VerifyAllExpectations();
     }

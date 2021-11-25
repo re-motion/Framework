@@ -61,7 +61,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void SetCondition<TValidatedType> (Func<TValidatedType, bool> predicate) => throw new NotImplementedException();
 
     public void RegisterValidator (Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory)
-      => _validators.Add (validatorFactory (new PropertyValidationRuleInitializationParameters (new InvariantValidationMessage ("Fake Message"))));
+      => _validators.Add(validatorFactory(new PropertyValidationRuleInitializationParameters(new InvariantValidationMessage("Fake Message"))));
 
     public string RuleSet => throw new NotImplementedException();
 
@@ -69,7 +69,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
     public IPropertyInformation Property
     {
-      get { return PropertyInfoAdapter.Create (MemberInfoFromExpressionUtility.GetProperty ((DomainType _) => _.DomainProperty)); }
+      get { return PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((DomainType _) => _.DomainProperty)); }
     }
 
     public bool IsRemovable => throw new NotImplementedException();

@@ -25,7 +25,7 @@ public class TabbedMenuMock: TabbedMenu
 {
   public new void EvaluateWaiConformity ()
   {
-    base.EvaluateWaiConformity ();
+    base.EvaluateWaiConformity();
   }
 }
 }

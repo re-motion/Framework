@@ -34,20 +34,20 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     public CreateRootWithChildTestTransactedFunction (ClientTransaction previousClientTransaction, WxeFunction childFunction)
         : base (WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit, childFunction, previousClientTransaction)
     {
-      Insert (
+      Insert(
           0,
-          new WxeMethodStep (
+          new WxeMethodStep(
               () =>
               {
-                Assert.That (ClientTransactionScope.CurrentTransaction, Is.Not.SameAs (PreviousClientTransaction));
+                Assert.That(ClientTransactionScope.CurrentTransaction, Is.Not.SameAs(PreviousClientTransaction));
                 TransactionBeforeChild = ClientTransactionScope.CurrentTransaction;
               }));
-      Add (
-          new WxeMethodStep (
+      Add(
+          new WxeMethodStep(
               () =>
               {
                 TransactionAfterChild = ClientTransactionScope.CurrentTransaction;
-                Assert.That (TransactionAfterChild, Is.SameAs (TransactionBeforeChild));
+                Assert.That(TransactionAfterChild, Is.SameAs(TransactionBeforeChild));
               }));
     }
 

@@ -40,19 +40,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     protected override void Initialize ()
     {
-      Initialize (true);
+      Initialize(true);
     }
 
     protected void Initialize (bool withRowObjects)
     {
-      base.Initialize ();
+      base.Initialize();
 
       TypeWithReference businessObject;
       if (withRowObjects)
       {
-        businessObject = TypeWithReference.Create (
-            TypeWithReference.Create ("referencedObject1"),
-            TypeWithReference.Create ("referencedObject2"));
+        businessObject = TypeWithReference.Create(
+            TypeWithReference.Create("referencedObject1"),
+            TypeWithReference.Create("referencedObject2"));
         businessObject.ReferenceList = new[] { businessObject.FirstValue, businessObject.SecondValue };
         
       }
@@ -62,10 +62,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
         businessObject.ReferenceList = new TypeWithReference[0];
       }
       BusinessObject = (IBusinessObject) businessObject;
-      BusinessObject.BusinessObjectClass.BusinessObjectProvider.AddService<IBusinessObjectWebUIService>
-          (new ReflectionBusinessObjectWebUIService ());
+      BusinessObject.BusinessObjectClass.BusinessObjectProvider.AddService<IBusinessObjectWebUIService>(new ReflectionBusinessObjectWebUIService());
 
-      EventArgs = new BocListDataRowRenderEventArgs (10, (IBusinessObject) businessObject.FirstValue, false, true);
+      EventArgs = new BocListDataRowRenderEventArgs(10, (IBusinessObject) businessObject.FirstValue, false, true);
 
       InitializeMockList();
     }
@@ -74,53 +73,53 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       List = new Mock<IBocList>();
 
-      List.Setup (list => list.ClientID).Returns ("MyList");
-      List.Setup (mock => mock.ControlType).Returns ("BocList");
-      List.Setup (list => list.HasClientScript).Returns (true);
-      List.Setup (mock => mock.GetLabelIDs()).Returns (EnumerableUtility.Singleton ("Label"));
-      List.Setup (mock => mock.GetValidationErrors()).Returns (EnumerableUtility.Singleton ("ValidationError"));
+      List.Setup(list => list.ClientID).Returns("MyList");
+      List.Setup(mock => mock.ControlType).Returns("BocList");
+      List.Setup(list => list.HasClientScript).Returns(true);
+      List.Setup(mock => mock.GetLabelIDs()).Returns(EnumerableUtility.Singleton("Label"));
+      List.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton("ValidationError"));
 
       var dataSourceMock = new Mock<IBusinessObjectDataSource>();
-      dataSourceMock.SetupProperty (_ => _.BusinessObject);
-      List.Setup (list => list.DataSource).Returns (dataSourceMock.Object);
+      dataSourceMock.SetupProperty(_ => _.BusinessObject);
+      List.Setup(list => list.DataSource).Returns(dataSourceMock.Object);
       List.Object.DataSource.BusinessObject = BusinessObject;
-      List.Setup (list => list.Property).Returns (BusinessObject.BusinessObjectClass.GetPropertyDefinition ("ReferenceList"));
+      List.Setup(list => list.Property).Returns(BusinessObject.BusinessObjectClass.GetPropertyDefinition("ReferenceList"));
 
       var value = ((TypeWithReference) BusinessObject).ReferenceList;
-      List.Setup (list => list.Value).Returns (value);
-      List.Setup (list => list.HasValue).Returns (value != null && value.Length > 0);
+      List.Setup(list => list.Value).Returns(value);
+      List.Setup(list => list.HasValue).Returns(value != null && value.Length > 0);
 
       var listMenuStub = new Mock<IListMenu>();
-      listMenuStub.SetupProperty (_ => _.Visible);
-      List.Setup (list => list.ListMenu).Returns (listMenuStub.Object);
+      listMenuStub.SetupProperty(_ => _.Visible);
+      List.Setup(list => list.ListMenu).Returns(listMenuStub.Object);
 
-      StateBag stateBag = new StateBag ();
-      List.Setup (mock => mock.Attributes).Returns (new AttributeCollection (stateBag));
-      List.Setup (mock => mock.Style).Returns (List.Object.Attributes.CssStyle);
-      List.Setup (mock => mock.ControlStyle).Returns (new Style (stateBag));
+      StateBag stateBag = new StateBag();
+      List.Setup(mock => mock.Attributes).Returns(new AttributeCollection(stateBag));
+      List.Setup(mock => mock.Style).Returns(List.Object.Attributes.CssStyle);
+      List.Setup(mock => mock.ControlStyle).Returns(new Style(stateBag));
 
       var page = new Mock<IPage>();
-      page.Setup (_ => _.Context).Returns (HttpContext);
-      List.Setup (list => list.Page).Returns (page.Object);
+      page.Setup(_ => _.Context).Returns(HttpContext);
+      List.Setup(list => list.Page).Returns(page.Object);
 
       var clientScriptManager = new Mock<IClientScriptManager>();
-      page.Setup (pageMock => pageMock.ClientScript).Returns (clientScriptManager.Object);
+      page.Setup(pageMock => pageMock.ClientScript).Returns(clientScriptManager.Object);
 
-      clientScriptManager.Setup (scriptManagerMock => scriptManagerMock.GetPostBackEventReference (It.IsAny<IControl>(), It.IsAny<string>())).Returns ("postBackEventReference");
+      clientScriptManager.Setup(scriptManagerMock => scriptManagerMock.GetPostBackEventReference(It.IsAny<IControl>(), It.IsAny<string>())).Returns("postBackEventReference");
 
-      clientScriptManager.Setup (scriptManagerMock => scriptManagerMock.GetPostBackEventReference (It.IsAny<PostBackOptions>())).Returns ("postBackEventReference");
+      clientScriptManager.Setup(scriptManagerMock => scriptManagerMock.GetPostBackEventReference(It.IsAny<PostBackOptions>())).Returns("postBackEventReference");
 
       var editModeController = new Mock<IEditModeController>();
-      List.Setup (list => list.EditModeController).Returns (editModeController.Object);
+      List.Setup(list => list.EditModeController).Returns(editModeController.Object);
 
-      List.Setup (stub => stub.GetSelectorControlName ()).Returns ("SelectRowControl$UnqiueID");
-      List.Setup (stub => stub.GetSelectAllControlName()).Returns ("SelectAllControl$UniqueID");
-      List.Setup (stub => stub.GetCurrentPageControlName()).Returns ("CurrentPageControl$UniqueID"); // Keep the $-sign as long as the ScalarLoadPostDataTarget is used.
+      List.Setup(stub => stub.GetSelectorControlName()).Returns("SelectRowControl$UnqiueID");
+      List.Setup(stub => stub.GetSelectAllControlName()).Returns("SelectAllControl$UniqueID");
+      List.Setup(stub => stub.GetCurrentPageControlName()).Returns("CurrentPageControl$UniqueID"); // Keep the $-sign as long as the ScalarLoadPostDataTarget is used.
 
-      List.Setup (list => list.GetResourceManager()).Returns (
-          GlobalizationService.GetResourceManager (typeof (ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier)));
+      List.Setup(list => list.GetResourceManager()).Returns(
+          GlobalizationService.GetResourceManager(typeof (ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier)));
 
-      List.Setup (stub => stub.ResolveClientUrl (It.IsAny<string>())).Returns ((string url) => url.TrimStart ('~'));
+      List.Setup(stub => stub.ResolveClientUrl(It.IsAny<string>())).Returns((string url) => url.TrimStart('~'));
     }
   }
 }

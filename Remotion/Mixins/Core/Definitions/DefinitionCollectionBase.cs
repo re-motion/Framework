@@ -24,7 +24,7 @@ namespace Remotion.Mixins.Definitions
   public abstract class DefinitionCollectionBase<TKey, TValue> : IEnumerable<TValue>
       where TValue : IVisitableDefinition
   {
-    private List<TValue> _orderedItems = new List<TValue> ();
+    private List<TValue> _orderedItems = new List<TValue>();
 
     public delegate TKey KeyMaker (TValue value);
     private KeyMaker _keyMaker;
@@ -33,19 +33,19 @@ namespace Remotion.Mixins.Definitions
 
     public DefinitionCollectionBase (KeyMaker keyMaker, Predicate<TValue>? guardian)
     {
-      ArgumentUtility.CheckNotNull ("keyMaker", keyMaker);
+      ArgumentUtility.CheckNotNull("keyMaker", keyMaker);
       _keyMaker = keyMaker;
       _guardian = guardian;
     }
 
     public IEnumerator<TValue> GetEnumerator ()
     {
-      return _orderedItems.GetEnumerator ();
+      return _orderedItems.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
     {
-      return GetEnumerator ();
+      return GetEnumerator();
     }
 
     public TValue[] ToArray ()
@@ -62,24 +62,24 @@ namespace Remotion.Mixins.Definitions
 
     protected internal void Add (TValue newItem)
     {
-      ArgumentUtility.CheckNotNull ("newItem", newItem);
-      if (_guardian != null && !_guardian (newItem))
-        throw new ArgumentException (string.Format ("The item does not match the criteria to be added to the collection: {0}.", _guardian.Method),
+      ArgumentUtility.CheckNotNull("newItem", newItem);
+      if (_guardian != null && !_guardian(newItem))
+        throw new ArgumentException(string.Format("The item does not match the criteria to be added to the collection: {0}.", _guardian.Method),
             "newItem");
 
-      TKey key = _keyMaker (newItem);
+      TKey key = _keyMaker(newItem);
 
-      CustomizedAdd (key, newItem);
+      CustomizedAdd(key, newItem);
 
-      _orderedItems.Add (newItem);
+      _orderedItems.Add(newItem);
     }
 
     protected abstract void CustomizedAdd (TKey key, TValue value);
 
     public void Clear ()
     {
-      _orderedItems.Clear ();
-      CustomizedClear ();
+      _orderedItems.Clear();
+      CustomizedClear();
     }
 
     protected abstract void CustomizedClear ();
@@ -91,10 +91,10 @@ namespace Remotion.Mixins.Definitions
 
     internal void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
       foreach (TValue value in this)
       {
-        value.Accept (visitor);
+        value.Accept(visitor);
       }
     }
   }

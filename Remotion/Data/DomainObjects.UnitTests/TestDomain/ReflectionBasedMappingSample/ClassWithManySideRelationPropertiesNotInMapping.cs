@@ -48,8 +48,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
     [DBBidirectionalRelation ("BasePrivateBidirectionalOneToMany")]
     private ClassWithOneSideRelationProperties BasePrivateBidirectionalOneToMany
     {
-      get { throw new NotImplementedException (); }
-      set { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
+      set { throw new NotImplementedException(); }
     }
   }
 }

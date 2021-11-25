@@ -46,9 +46,9 @@ public class UndefinedEnumTestPage : WxePage
     ExistingObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject) MyFunction.ExistingObjectWithUndefinedEnum;
     SearchObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject) MyFunction.SearchObjectWithUndefinedEnum;
 
-    NewObjectWithUndefinedEnumDataSource.LoadValues (IsPostBack);
-    ExistingObjectWithUndefinedEnumDataSource.LoadValues (IsPostBack);
-    SearchObjectWithUndefinedEnumDataSource.LoadValues (IsPostBack);
+    NewObjectWithUndefinedEnumDataSource.LoadValues(IsPostBack);
+    ExistingObjectWithUndefinedEnumDataSource.LoadValues(IsPostBack);
+    SearchObjectWithUndefinedEnumDataSource.LoadValues(IsPostBack);
 	}
 
 	#region Web Form Designer generated code
@@ -75,25 +75,25 @@ public class UndefinedEnumTestPage : WxePage
 
   private void TestButton_Click (object sender, System.EventArgs e)
   {
-    if (FormGridManager.Validate ())
+    if (FormGridManager.Validate())
     {
-      NewObjectWithUndefinedEnumDataSource.SaveValues (false);
-      ExistingObjectWithUndefinedEnumDataSource.SaveValues (false);
-      SearchObjectWithUndefinedEnumDataSource.SaveValues (false);
+      NewObjectWithUndefinedEnumDataSource.SaveValues(false);
+      ExistingObjectWithUndefinedEnumDataSource.SaveValues(false);
+      SearchObjectWithUndefinedEnumDataSource.SaveValues(false);
 
-      AreEqual (UndefinedEnum.Value1, MyFunction.NewObjectWithUndefinedEnum.UndefinedEnum);
-      AreEqual (UndefinedEnum.Value1, MyFunction.ExistingObjectWithUndefinedEnum.UndefinedEnum);
-      if (!Enum.IsDefined (typeof (UndefinedEnum), MyFunction.SearchObjectWithUndefinedEnum.UndefinedEnum))
-        throw new TestFailureException ("SearchObjectWithUndefinedEnum.UndefinedEnum has an invalid value.");
+      AreEqual(UndefinedEnum.Value1, MyFunction.NewObjectWithUndefinedEnum.UndefinedEnum);
+      AreEqual(UndefinedEnum.Value1, MyFunction.ExistingObjectWithUndefinedEnum.UndefinedEnum);
+      if (!Enum.IsDefined(typeof (UndefinedEnum), MyFunction.SearchObjectWithUndefinedEnum.UndefinedEnum))
+        throw new TestFailureException("SearchObjectWithUndefinedEnum.UndefinedEnum has an invalid value.");
 
-      ExecuteNextStep ();
+      ExecuteNextStep();
     }
   }
 
   private void AreEqual (UndefinedEnum expected, UndefinedEnum actual)
   {
     if (expected != actual)
-      throw new TestFailureException (string.Format ("Actual value '{0}' does not match expected value '{1}'.", actual, expected));
+      throw new TestFailureException(string.Format("Actual value '{0}' does not match expected value '{1}'.", actual, expected));
   }
 }
 }

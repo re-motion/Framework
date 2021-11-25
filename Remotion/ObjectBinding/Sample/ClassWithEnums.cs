@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public static ClassWithEnums CreateObject ()
     {
-      return CreateObject<ClassWithEnums> ();
+      return CreateObject<ClassWithEnums>();
     }
 
     protected ClassWithEnums ()

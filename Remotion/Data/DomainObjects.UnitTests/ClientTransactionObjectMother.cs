@@ -34,32 +34,32 @@ namespace Remotion.Data.DomainObjects.UnitTests
   {
     public static ClientTransaction CreateStrictMock ()
     {
-      return CreateStrictMock(new MockRepository ());
+      return CreateStrictMock(new MockRepository());
     }
 
     public static ClientTransaction CreateStrictMock (MockRepository mockRepository)
     {
       var componentFactory = RootClientTransactionComponentFactory.Create();
-      return mockRepository.StrictMock<ClientTransaction> (componentFactory);
+      return mockRepository.StrictMock<ClientTransaction>(componentFactory);
     }
 
     public static T CreateTransactionWithPersistenceStrategy<T> (IPersistenceStrategy persistenceStrategy) where T : ClientTransaction
     {
-      var componentFactory = new TestComponentFactoryWithSpecificPersistenceStrategy (persistenceStrategy);
-      return CreateWithComponents<T> (componentFactory);
+      var componentFactory = new TestComponentFactoryWithSpecificPersistenceStrategy(persistenceStrategy);
+      return CreateWithComponents<T>(componentFactory);
     }
 
     public static T CreateTransactionWithQueryManager<T> (IQueryManager queryManager) where T : ClientTransaction
     {
-      var componentFactory = new TestComponentFactoryWithSpecificQueryManager (queryManager);
-      return CreateWithComponents<T> (componentFactory);
+      var componentFactory = new TestComponentFactoryWithSpecificQueryManager(queryManager);
+      return CreateWithComponents<T>(componentFactory);
     }
 
     public static T CreateTransactionWithObjectLoaderDecorator<T> (TestComponentFactoryWithObjectLoaderDecorator.DecoratorFactory factory) 
         where T : ClientTransaction
     {
-      var componentFactory = new TestComponentFactoryWithObjectLoaderDecorator (factory);
-      return CreateWithComponents<T> (componentFactory);
+      var componentFactory = new TestComponentFactoryWithObjectLoaderDecorator(factory);
+      return CreateWithComponents<T>(componentFactory);
     }
 
     public static ClientTransaction Create ()
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static T CreateWithComponents<T> (IClientTransactionComponentFactory componentFactory) where T : ClientTransaction
     {
-      return (T) PrivateInvoke.CreateInstanceNonPublicCtor (typeof (T), componentFactory);
+      return (T) PrivateInvoke.CreateInstanceNonPublicCtor(typeof (T), componentFactory);
     }
 
     public static T CreateWithComponents<T> (
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         IEnumerable<IClientTransactionExtension> extensions = null)
       where T : ClientTransaction
     {
-      var componentFactoryStub = CreateComponentFactory (
+      var componentFactoryStub = CreateComponentFactory(
           applicationData,
           eventBroker,
           transactionHierarchyManager,
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
           commitRollbackAgent,
           extensions);
 
-      return CreateWithComponents<T> (componentFactoryStub);
+      return CreateWithComponents<T>(componentFactoryStub);
     }
 
     public static IClientTransactionComponentFactory CreateComponentFactory (
@@ -128,54 +128,54 @@ namespace Remotion.Data.DomainObjects.UnitTests
       extensions = extensions ?? Enumerable.Empty<IClientTransactionExtension>();
       
       var componentFactoryStub = MockRepository.GenerateStub<IClientTransactionComponentFactory>();
-      componentFactoryStub.Stub (stub => stub.CreateApplicationData (Arg<ClientTransaction>.Is.Anything)).Return (applicationData);
+      componentFactoryStub.Stub(stub => stub.CreateApplicationData(Arg<ClientTransaction>.Is.Anything)).Return(applicationData);
       componentFactoryStub
-          .Stub (stub => stub.CreateEventBroker (Arg<ClientTransaction>.Is.Anything))
-          .Return (eventBroker);
+          .Stub(stub => stub.CreateEventBroker(Arg<ClientTransaction>.Is.Anything))
+          .Return(eventBroker);
       componentFactoryStub
-          .Stub (stub => stub.CreateTransactionHierarchyManager (Arg<ClientTransaction>.Is.Anything, Arg<IClientTransactionEventSink>.Is.Anything))
-          .Return (transactionHierarchyManager);
-      componentFactoryStub.Stub (stub => stub.CreateEnlistedObjectManager (Arg<ClientTransaction>.Is.Anything)).Return (enlistedDomainObjectManager);
+          .Stub(stub => stub.CreateTransactionHierarchyManager(Arg<ClientTransaction>.Is.Anything, Arg<IClientTransactionEventSink>.Is.Anything))
+          .Return(transactionHierarchyManager);
+      componentFactoryStub.Stub(stub => stub.CreateEnlistedObjectManager(Arg<ClientTransaction>.Is.Anything)).Return(enlistedDomainObjectManager);
       componentFactoryStub
-          .Stub (stub => stub.CreateInvalidDomainObjectManager (Arg<ClientTransaction>.Is.Anything, Arg<IClientTransactionEventSink>.Is.Anything))
-          .Return (invalidDomainObjectManager);
-      componentFactoryStub.Stub (stub => stub.CreatePersistenceStrategy (Arg<ClientTransaction>.Is.Anything)).Return (persistenceStrategy);
+          .Stub(stub => stub.CreateInvalidDomainObjectManager(Arg<ClientTransaction>.Is.Anything, Arg<IClientTransactionEventSink>.Is.Anything))
+          .Return(invalidDomainObjectManager);
+      componentFactoryStub.Stub(stub => stub.CreatePersistenceStrategy(Arg<ClientTransaction>.Is.Anything)).Return(persistenceStrategy);
       componentFactoryStub
-          .Stub (stub => stub.CreateDataManager(
+          .Stub(stub => stub.CreateDataManager(
               Arg<ClientTransaction>.Is.Anything,
               Arg<IClientTransactionEventSink>.Is.Anything, 
               Arg<IInvalidDomainObjectManager>.Is.Anything, 
               Arg<IPersistenceStrategy>.Is.Anything, 
               Arg<ITransactionHierarchyManager>.Is.Anything))
-          .Return (dataManager);
+          .Return(dataManager);
       componentFactoryStub
-          .Stub (
+          .Stub(
               stub =>
-              stub.CreateObjectLifetimeAgent (
+              stub.CreateObjectLifetimeAgent(
                   Arg<ClientTransaction>.Is.Anything,
                   Arg<IClientTransactionEventSink>.Is.Anything,
                   Arg<IInvalidDomainObjectManager>.Is.Anything,
                   Arg<IDataManager>.Is.Anything,
                   Arg<IEnlistedDomainObjectManager>.Is.Anything, 
                   Arg<IPersistenceStrategy>.Is.Anything))
-          .Return (objectLifetimeAgent);
+          .Return(objectLifetimeAgent);
       componentFactoryStub
-          .Stub (stub => stub.CreateQueryManager (
+          .Stub(stub => stub.CreateQueryManager(
               Arg<ClientTransaction>.Is.Anything,
               Arg<IClientTransactionEventSink>.Is.Anything,
               Arg<IInvalidDomainObjectManager>.Is.Anything,
               Arg<IPersistenceStrategy>.Is.Anything,
               Arg<IDataManager>.Is.Anything,
               Arg<ITransactionHierarchyManager>.Is.Anything))
-          .Return (queryManager);
+          .Return(queryManager);
       componentFactoryStub
-          .Stub (stub => stub.CreateCommitRollbackAgent (
+          .Stub(stub => stub.CreateCommitRollbackAgent(
               Arg<ClientTransaction>.Is.Anything,
               Arg<IClientTransactionEventSink>.Is.Anything,
               Arg<IPersistenceStrategy>.Is.Anything,
               Arg<IDataManager>.Is.Anything))
-          .Return (commitRollbackAgent);
-      componentFactoryStub.Stub (stub => stub.CreateExtensions (Arg<ClientTransaction>.Is.Anything)).Return (extensions);
+          .Return(commitRollbackAgent);
+      componentFactoryStub.Stub(stub => stub.CreateExtensions(Arg<ClientTransaction>.Is.Anything)).Return(extensions);
       return componentFactoryStub;
     }
 
@@ -183,26 +183,26 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var componentFactoryPartialMock = MockRepository.GeneratePartialMock<RootClientTransactionComponentFactory>();
       componentFactoryPartialMock
-          .Stub (stub => PrivateInvoke.InvokeNonPublicMethod (stub, "CreateListeners", Arg<ClientTransaction>.Is.Anything))
-          .Return (listeners);
-      componentFactoryPartialMock.Replay ();
+          .Stub(stub => PrivateInvoke.InvokeNonPublicMethod(stub, "CreateListeners", Arg<ClientTransaction>.Is.Anything))
+          .Return(listeners);
+      componentFactoryPartialMock.Replay();
 
-      return CreateWithComponents<ClientTransaction> (componentFactoryPartialMock);
+      return CreateWithComponents<ClientTransaction>(componentFactoryPartialMock);
     }
 
     public static ClientTransaction CreateWithParent (ClientTransaction parent)
     {
       var hierarchyManagerStub = MockRepository.GenerateStub<ITransactionHierarchyManager>();
-      hierarchyManagerStub.Stub (stub => stub.ParentTransaction).Return (parent);
-      return CreateWithComponents<ClientTransaction> (transactionHierarchyManager: hierarchyManagerStub);
+      hierarchyManagerStub.Stub(stub => stub.ParentTransaction).Return(parent);
+      return CreateWithComponents<ClientTransaction>(transactionHierarchyManager: hierarchyManagerStub);
     }
 
     public static ClientTransaction CreateWithSub (ClientTransaction sub)
     {
       var hierarchyManagerStub = MockRepository.GenerateStub<ITransactionHierarchyManager>();
-      hierarchyManagerStub.Stub (stub => stub.SubTransaction).Return (sub);
-      hierarchyManagerStub.Stub (stub => stub.IsWriteable).Return (false);
-      return CreateWithComponents<ClientTransaction> (transactionHierarchyManager: hierarchyManagerStub);
+      hierarchyManagerStub.Stub(stub => stub.SubTransaction).Return(sub);
+      hierarchyManagerStub.Stub(stub => stub.IsWriteable).Return(false);
+      return CreateWithComponents<ClientTransaction>(transactionHierarchyManager: hierarchyManagerStub);
     }
   }
 }

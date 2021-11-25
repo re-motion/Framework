@@ -36,38 +36,38 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_NullString ()
     {
       const string value = null;
-      Assert.That (
-          () => ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value),
+      Assert.That(
+          () => ArgumentUtility.DebugCheckNotNullOrEmpty("arg", value),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
     public void Fail_EmptyString ()
     {
-      Assert.That (
-          () => ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", ""),
+      Assert.That(
+          () => ArgumentUtility.DebugCheckNotNullOrEmpty("arg", ""),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
     public void Fail_EmptyArray ()
     {
-      Assert.That (
-          () => ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", new string[0]),
+      Assert.That(
+          () => ArgumentUtility.DebugCheckNotNullOrEmpty("arg", new string[0]),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
     public void Fail_EmptyCollection ()
     {
-      Assert.That (
-          () => ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", new ArrayList()),
+      Assert.That(
+          () => ArgumentUtility.DebugCheckNotNullOrEmpty("arg", new ArrayList()),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
@@ -76,10 +76,10 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       ICollection<object> value = new List<object>();
 
-      Assert.That (
-          () => ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value),
+      Assert.That(
+          () => ArgumentUtility.DebugCheckNotNullOrEmpty("arg", value),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
@@ -88,10 +88,10 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       IReadOnlyCollection<object> value = new List<object>();
 
-      Assert.That (
-          () => ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value),
+      Assert.That(
+          () => ArgumentUtility.DebugCheckNotNullOrEmpty("arg", value),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
@@ -100,52 +100,52 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       IReadOnlyCollection<object> value = new List<object>();
 
-      Assert.That (
-          () => ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value),
+      Assert.That(
+          () => ArgumentUtility.DebugCheckNotNullOrEmpty("arg", value),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
     public void Succeed_String ()
     {
-      ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", "Test");
+      ArgumentUtility.DebugCheckNotNullOrEmpty("arg", "Test");
     }
 
     [Test]
     public void Succeed_Array ()
     {
       var array = new[] { "test" };
-      ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", array);
+      ArgumentUtility.DebugCheckNotNullOrEmpty("arg", array);
     }
 
     [Test]
     public void Succeed_Collection ()
     {
       var list = new ArrayList { "test" };
-      ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", list);
+      ArgumentUtility.DebugCheckNotNullOrEmpty("arg", list);
     }
 
     [Test]
     public void Succeed_ICollectionOfT ()
     {
       ICollection<string> value = new List<string> { "test" };
-      ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value);
+      ArgumentUtility.DebugCheckNotNullOrEmpty("arg", value);
     }
 
     [Test]
     public void Succeed_IReadOnlyCollectionOfT ()
     {
       IReadOnlyCollection<string> value = new List<string> { "test" };
-      ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value);
+      ArgumentUtility.DebugCheckNotNullOrEmpty("arg", value);
     }
 
     [Test]
     public void Succeed_ListOfT ()
     {
       List<string> value = new List<string> { "test" };
-      ArgumentUtility.DebugCheckNotNullOrEmpty ("arg", value);
+      ArgumentUtility.DebugCheckNotNullOrEmpty("arg", value);
     }
   }
 }

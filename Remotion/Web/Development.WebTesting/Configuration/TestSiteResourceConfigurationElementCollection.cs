@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// <inheritdoc />
     protected override object GetElementKey (ConfigurationElement element)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
+      ArgumentUtility.CheckNotNull("element", element);
 
       return ((TestSiteResourceConfigurationElement) element).Path;
     }

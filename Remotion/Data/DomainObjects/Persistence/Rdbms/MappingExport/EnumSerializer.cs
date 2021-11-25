@@ -41,30 +41,30 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public void CollectPropertyType (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       var propertyType = propertyDefinition.PropertyType;
-      if (NullableTypeUtility.IsNullableType (propertyType))
-        propertyType = NullableTypeUtility.GetBasicType (propertyType);
+      if (NullableTypeUtility.IsNullableType(propertyType))
+        propertyType = NullableTypeUtility.GetBasicType(propertyType);
 
       if (propertyType.IsEnum)
-        _enumTypes.Add (propertyType);
+        _enumTypes.Add(propertyType);
     }
 
     public IEnumerable<XElement> Serialize ()
     {
-      return _enumTypes.Select (
-          t => new XElement (Constants.Namespace + "enumType",
-              new XAttribute ("type", TypeUtility.GetPartialAssemblyQualifiedName (t)),
-              GetValues (t)));
+      return _enumTypes.Select(
+          t => new XElement(Constants.Namespace + "enumType",
+              new XAttribute("type", TypeUtility.GetPartialAssemblyQualifiedName(t)),
+              GetValues(t)));
     }
 
     private IEnumerable<XElement> GetValues (Type type)
     {
-     return Enum.GetValues (type).Cast<object> ().Select (
-          value => new XElement (Constants.Namespace + "value",
-              new XAttribute ("name", Enum.GetName (type, value)),
-              new XAttribute ("columnValue", Convert.ChangeType (value, Enum.GetUnderlyingType (type)))));
+     return Enum.GetValues(type).Cast<object>().Select(
+          value => new XElement(Constants.Namespace + "value",
+              new XAttribute("name", Enum.GetName(type, value)),
+              new XAttribute("columnValue", Convert.ChangeType(value, Enum.GetUnderlyingType(type)))));
     }
   }
 }

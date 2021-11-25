@@ -9,7 +9,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
     public static string GetString (GlobalResources value)
     {
       var globalizationSerivce = SafeServiceLocator.Current.GetInstance<IGlobalizationService>();
-      return GetString (globalizationSerivce, value);
+      return GetString(globalizationSerivce, value);
     }
 
     public static string GetString (IGlobalizationService service, GlobalResources value)

@@ -29,16 +29,16 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     public void IntegrationTest ()
     {
       var someAssembly = GetType().Assembly;
-      var referenceContextOrigin = new MixinContextOrigin ("some kind", someAssembly, "some location");
+      var referenceContextOrigin = new MixinContextOrigin("some kind", someAssembly, "some location");
 
-      var serializer = new CodeGenerationMixinContextOriginSerializer ();
-      referenceContextOrigin.Serialize (serializer);
+      var serializer = new CodeGenerationMixinContextOriginSerializer();
+      referenceContextOrigin.Serialize(serializer);
 
-      var expression = serializer.GetConstructorInvocationExpression ();
+      var expression = serializer.GetConstructorInvocationExpression();
 
-      var compiledExpression = Expression.Lambda<Func<MixinContextOrigin>> (expression).Compile();
+      var compiledExpression = Expression.Lambda<Func<MixinContextOrigin>>(expression).Compile();
       var result = compiledExpression();
-      Assert.That (result, Is.EqualTo (referenceContextOrigin));
+      Assert.That(result, Is.EqualTo(referenceContextOrigin));
     }
   }
 }

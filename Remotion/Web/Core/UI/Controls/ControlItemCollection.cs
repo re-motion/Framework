@@ -33,7 +33,7 @@ namespace Remotion.Web.UI.Controls
   /// </summary>
   public class ControlItemCollection : CollectionBase
   {
-    private static readonly ILog s_log = LogManager.GetLogger (MethodBase.GetCurrentMethod()!.DeclaringType!);
+    private static readonly ILog s_log = LogManager.GetLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
 
     private IControl? _ownerControl;
     private readonly Type[] _supportedTypes;
@@ -55,14 +55,14 @@ namespace Remotion.Web.UI.Controls
     /// </param>
     public ControlItemCollection (IControl? ownerControl, Type[] supportedTypes)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("supportedTypes", supportedTypes);
+      ArgumentUtility.CheckNotNullOrItemsNull("supportedTypes", supportedTypes);
       for (int i = 0; i < supportedTypes.Length; i++)
       {
         Type type = supportedTypes[i];
-        if (!typeof (IControlItem).IsAssignableFrom (type))
+        if (!typeof (IControlItem).IsAssignableFrom(type))
         {
-          throw new ArgumentException (
-              string.Format ("Type '{0}' at index {1} does not implement interface 'IControlItem'.", type.GetFullNameSafe(), i), "supportedTypes");
+          throw new ArgumentException(
+              string.Format("Type '{0}' at index {1} does not implement interface 'IControlItem'.", type.GetFullNameSafe(), i), "supportedTypes");
         }
       }
 
@@ -87,7 +87,7 @@ namespace Remotion.Web.UI.Controls
         if (_isChanged)
         {
           _isChanged = false;
-          OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Refresh, null));
+          OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Refresh, null));
         }
       }
     }
@@ -96,117 +96,117 @@ namespace Remotion.Web.UI.Controls
     private void OnCollectionChanged (CollectionChangeEventArgs e)
     {
       if (CollectionChanged != null && !_isEditing)
-        CollectionChanged (this, e);
+        CollectionChanged(this, e);
     }
 
     protected virtual void ValidateNewValue ([NotNull]object? value)
     {
-      IControlItem controlItem = ArgumentUtility.CheckNotNullAndType<IControlItem> ("value", value!);
+      IControlItem controlItem = ArgumentUtility.CheckNotNullAndType<IControlItem>("value", value!);
 
-      if (! IsSupportedType (controlItem))
-        throw ArgumentUtility.CreateArgumentTypeException ("value", controlItem.GetType(), null);
-      if (Find (controlItem.ItemID) != null)
-        throw new ArgumentException (string.Format ("The collection already contains an item with ItemID '{0}'.", controlItem.ItemID), "value");
+      if (! IsSupportedType(controlItem))
+        throw ArgumentUtility.CreateArgumentTypeException("value", controlItem.GetType(), null);
+      if (Find(controlItem.ItemID) != null)
+        throw new ArgumentException(string.Format("The collection already contains an item with ItemID '{0}'.", controlItem.ItemID), "value");
     }
 
     protected override void OnInsert (int index, object? value)
     {
-      ValidateNewValue (value);
+      ValidateNewValue(value);
 
-      base.OnInsert (index, value);
+      base.OnInsert(index, value);
       IControlItem controlItem = (IControlItem) value;
       controlItem.OwnerControl = _ownerControl;
     }
 
     protected override void OnInsertComplete (int index, object? value)
     {
-      ArgumentUtility.CheckNotNull ("value", value!);
+      ArgumentUtility.CheckNotNull("value", value!);
 
-      base.OnInsertComplete (index, value);
+      base.OnInsertComplete(index, value);
       _isChanged |= _isEditing;
-      OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, value));
+      OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, value));
     }
 
     protected override void OnSet (int index, object? oldValue, object? newValue)
     {
-      ValidateNewValue (newValue);
+      ValidateNewValue(newValue);
 
-      base.OnSet (index, oldValue, newValue);
+      base.OnSet(index, oldValue, newValue);
       IControlItem controlItem = (IControlItem) newValue;
       controlItem.OwnerControl = _ownerControl;
     }
 
     protected override void OnSetComplete (int index, object? oldValue, object? newValue)
     {
-      ArgumentUtility.CheckNotNull ("oldValue", oldValue!);
-      ArgumentUtility.CheckNotNull ("newValue", newValue!);
+      ArgumentUtility.CheckNotNull("oldValue", oldValue!);
+      ArgumentUtility.CheckNotNull("newValue", newValue!);
 
-      base.OnSetComplete (index, oldValue, newValue);
+      base.OnSetComplete(index, oldValue, newValue);
       _isChanged |= _isEditing;
-      OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, oldValue));
-      OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, newValue));
+      OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Remove, oldValue));
+      OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, newValue));
     }
 
     protected override void OnRemoveComplete (int index, object? value)
     {
-      ArgumentUtility.CheckNotNull ("value", value!);
+      ArgumentUtility.CheckNotNull("value", value!);
 
-      base.OnRemoveComplete (index, value);
+      base.OnRemoveComplete(index, value);
       _isChanged |= _isEditing;
-      OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, value));
+      OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Remove, value));
     }
 
     public int Add (IControlItem? value)
     {
-      int count = List.Add (value);
+      int count = List.Add(value);
       return count;
     }
 
     public void AddRange (params IControlItem[] values)
     {
-      AddRange ((IList) values);
+      AddRange((IList) values);
     }
 
     protected void AddRange (IList values)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
-      ArgumentUtility.CheckItemsNotNullAndType ("values", values, typeof (IControlItem));
+      ArgumentUtility.CheckNotNull("values", values);
+      ArgumentUtility.CheckItemsNotNullAndType("values", values, typeof (IControlItem));
 
       BeginEdit();
       for (int i = 0; i < values.Count; i++)
-        Add ((IControlItem?) values[i]);
+        Add((IControlItem?) values[i]);
       EndEdit();
     }
 
     public void Insert (int index, IControlItem value)
     {
-      List.Insert (index, value);
+      List.Insert(index, value);
     }
 
     /// <remarks> Redefine this member in a derived class if you wish to return a more specific array. </remarks>
     public IControlItem[] ToArray ()
     {
-      return (IControlItem[]) InnerList.ToArray (typeof (IControlItem));
+      return (IControlItem[]) InnerList.ToArray(typeof (IControlItem));
     }
 
     public virtual void Sort ()
     {
-      Sort (Comparer.Default);
+      Sort(Comparer.Default);
     }
 
     public virtual void Sort (IComparer comparer)
     {
-      Sort (0, Count, comparer);
+      Sort(0, Count, comparer);
     }
 
     public virtual void Sort (int index, int count, IComparer comparer)
     {
-      InnerList.Sort (index, count, comparer);
+      InnerList.Sort(index, count, comparer);
     }
 
     public int IndexOf (IControlItem item)
     {
-      return InnerList.IndexOf (item);
+      return InnerList.IndexOf(item);
     }
 
     /// <summary> Finds the <see cref="IControlItem"/> with an <see cref="IControlItem.ItemID"/> of <paramref name="id"/>. </summary>
@@ -214,7 +214,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns> An <see cref="IControlItem"/> or <see langword="null"/> if no matching item was found. </returns>
     public IControlItem? Find (string? id)
     {
-      if (string.IsNullOrEmpty (id))
+      if (string.IsNullOrEmpty(id))
         return null;
 
       for (int i = 0; i < InnerList.Count; i++)
@@ -245,7 +245,7 @@ namespace Remotion.Web.UI.Controls
       for (int i = 0; i < _supportedTypes.Length; i++)
       {
         Type type = _supportedTypes[i];
-        if (type.IsAssignableFrom (controlItemType))
+        if (type.IsAssignableFrom(controlItemType))
           return true;
       }
 
@@ -283,12 +283,12 @@ namespace Remotion.Web.UI.Controls
       {
         string id = (string) entry.Key;
 
-        IControlItem? item = Find (id);
+        IControlItem? item = Find(id);
         if (item != null)
-          ResourceDispatcher.DispatchGeneric (item, (IDictionary) entry.Value!); // TODO: not null assertion
+          ResourceDispatcher.DispatchGeneric(item, (IDictionary) entry.Value!); // TODO: not null assertion
         else //  Invalid collection element
         {
-          s_log.Debug (
+          s_log.Debug(
               "'" + parentID + "' on page '" + page + "' does not contain an item with an ID of '" + id + "' inside the collection '" + collectionName
               + "'.");
         }
@@ -297,13 +297,13 @@ namespace Remotion.Web.UI.Controls
 
     public void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
       
       for (int i = 0; i < InnerList.Count; i++)
       {
         IControlItem controlItem = (IControlItem) InnerList[i]!;
-        controlItem.LoadResources (resourceManager, globalizationService);
+        controlItem.LoadResources(resourceManager, globalizationService);
       }
     }
   }

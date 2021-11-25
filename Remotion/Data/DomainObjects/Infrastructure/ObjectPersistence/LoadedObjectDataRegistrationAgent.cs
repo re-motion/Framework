@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       private readonly LoadedObjectDataPendingRegistrationCollector _dataPendingRegistrationCollector;
       private readonly ClientTransaction _clientTransaction;
-      private readonly List<ObjectID> _notFoundObjectIDs = new List<ObjectID> ();
+      private readonly List<ObjectID> _notFoundObjectIDs = new List<ObjectID>();
 
       private readonly List<ILoadedObjectData> _loadedObjectData = new List<ILoadedObjectData>();
 
@@ -43,8 +43,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
           LoadedObjectDataPendingRegistrationCollector dataPendingRegistrationCollector, 
           ClientTransaction clientTransaction)
       {
-        ArgumentUtility.CheckNotNull ("dataPendingRegistrationCollector", dataPendingRegistrationCollector);
-        ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+        ArgumentUtility.CheckNotNull("dataPendingRegistrationCollector", dataPendingRegistrationCollector);
+        ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
         
         _dataPendingRegistrationCollector = dataPendingRegistrationCollector;
         _clientTransaction = clientTransaction;
@@ -62,45 +62,45 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       public void VisitFreshlyLoadedObject (FreshlyLoadedObjectData freshlyLoadedObjectData)
       {
-        ArgumentUtility.CheckNotNull ("freshlyLoadedObjectData", freshlyLoadedObjectData);
+        ArgumentUtility.CheckNotNull("freshlyLoadedObjectData", freshlyLoadedObjectData);
 
-        var consolidatedData = _dataPendingRegistrationCollector.Add (freshlyLoadedObjectData);
-        _loadedObjectData.Add (consolidatedData);
+        var consolidatedData = _dataPendingRegistrationCollector.Add(freshlyLoadedObjectData);
+        _loadedObjectData.Add(consolidatedData);
 
         if (consolidatedData == freshlyLoadedObjectData)
         {
-          var domainObject = _clientTransaction.GetObjectReference (freshlyLoadedObjectData.FreshlyLoadedDataContainer.ID);
-          freshlyLoadedObjectData.FreshlyLoadedDataContainer.SetDomainObject (domainObject);
+          var domainObject = _clientTransaction.GetObjectReference(freshlyLoadedObjectData.FreshlyLoadedDataContainer.ID);
+          freshlyLoadedObjectData.FreshlyLoadedDataContainer.SetDomainObject(domainObject);
         }
       }
 
       public void VisitAlreadyExistingLoadedObject (AlreadyExistingLoadedObjectData alreadyExistingLoadedObjectData)
       {
-        ArgumentUtility.CheckNotNull ("alreadyExistingLoadedObjectData", alreadyExistingLoadedObjectData);
+        ArgumentUtility.CheckNotNull("alreadyExistingLoadedObjectData", alreadyExistingLoadedObjectData);
 
-        _loadedObjectData.Add (alreadyExistingLoadedObjectData);
+        _loadedObjectData.Add(alreadyExistingLoadedObjectData);
       }
 
       public void VisitNullLoadedObject (NullLoadedObjectData nullLoadedObjectData)
       {
-        ArgumentUtility.CheckNotNull ("nullLoadedObjectData", nullLoadedObjectData);
+        ArgumentUtility.CheckNotNull("nullLoadedObjectData", nullLoadedObjectData);
 
-        _loadedObjectData.Add (nullLoadedObjectData);
+        _loadedObjectData.Add(nullLoadedObjectData);
       }
 
       public void VisitInvalidLoadedObject (InvalidLoadedObjectData invalidLoadedObjectData)
       {
-        ArgumentUtility.CheckNotNull ("invalidLoadedObjectData", invalidLoadedObjectData);
+        ArgumentUtility.CheckNotNull("invalidLoadedObjectData", invalidLoadedObjectData);
 
-        _loadedObjectData.Add (invalidLoadedObjectData);
+        _loadedObjectData.Add(invalidLoadedObjectData);
       }
 
       public void VisitNotFoundLoadedObject (NotFoundLoadedObjectData notFoundLoadedObjectData)
       {
-        ArgumentUtility.CheckNotNull ("notFoundLoadedObjectData", notFoundLoadedObjectData);
-        _notFoundObjectIDs.Add (notFoundLoadedObjectData.ObjectID);
+        ArgumentUtility.CheckNotNull("notFoundLoadedObjectData", notFoundLoadedObjectData);
+        _notFoundObjectIDs.Add(notFoundLoadedObjectData.ObjectID);
 
-        _loadedObjectData.Add (notFoundLoadedObjectData);
+        _loadedObjectData.Add(notFoundLoadedObjectData);
       }
     }
 
@@ -113,9 +113,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         IDataManager dataManager,
         ILoadedObjectDataRegistrationListener registrationListener)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("dataManager", dataManager);
-      ArgumentUtility.CheckNotNull ("registrationListener", registrationListener);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("dataManager", dataManager);
+      ArgumentUtility.CheckNotNull("registrationListener", registrationListener);
 
       _dataManager = dataManager;
       _clientTransaction = clientTransaction;
@@ -140,28 +140,28 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     public IEnumerable<ILoadedObjectData> RegisterIfRequired (IEnumerable<ILoadedObjectData> loadedObjects, bool throwOnNotFound)
     {
       var collector = new LoadedObjectDataPendingRegistrationCollector();
-      var result = BeginRegisterIfRequired (loadedObjects, throwOnNotFound, collector);
-      EndRegisterIfRequired (collector);
+      var result = BeginRegisterIfRequired(loadedObjects, throwOnNotFound, collector);
+      EndRegisterIfRequired(collector);
       return result;
     }
 
     public IEnumerable<ILoadedObjectData> BeginRegisterIfRequired (
         IEnumerable<ILoadedObjectData> loadedObjects, bool throwOnNotFound, LoadedObjectDataPendingRegistrationCollector pendingLoadedObjectDataCollector)
     {
-      ArgumentUtility.CheckNotNull ("loadedObjects", loadedObjects);
+      ArgumentUtility.CheckNotNull("loadedObjects", loadedObjects);
 
-      var visitor = new RegisteredDataContainerGatheringVisitor (pendingLoadedObjectDataCollector, _clientTransaction);
+      var visitor = new RegisteredDataContainerGatheringVisitor(pendingLoadedObjectDataCollector, _clientTransaction);
       foreach (var loadedObject in loadedObjects)
-        loadedObject.Accept (visitor);
+        loadedObject.Accept(visitor);
 
       if (visitor.NotFoundObjectIDs.Any())
       {
-        _registrationListener.OnObjectsNotFound (visitor.NotFoundObjectIDs);
+        _registrationListener.OnObjectsNotFound(visitor.NotFoundObjectIDs);
 
         // Note: If this exception is thrown, we have already set the DomainObjects of the freshly loaded DataContainer, and we've also added them to 
         // the collector. This shouldn't make any difference, and it's easier to implement.
         if (throwOnNotFound)
-          throw new ObjectsNotFoundException (visitor.NotFoundObjectIDs);
+          throw new ObjectsNotFoundException(visitor.NotFoundObjectIDs);
       }
 
       return visitor.LoadedObjectData;
@@ -169,30 +169,30 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void EndRegisterIfRequired (LoadedObjectDataPendingRegistrationCollector pendingLoadedObjectDataCollector)
     {
-      ArgumentUtility.CheckNotNull ("pendingLoadedObjectDataCollector", pendingLoadedObjectDataCollector);
+      ArgumentUtility.CheckNotNull("pendingLoadedObjectDataCollector", pendingLoadedObjectDataCollector);
 
       if (pendingLoadedObjectDataCollector.DataPendingRegistration.Count == 0)
         return;
 
       // Note: After this event, OnAfterObjectRegistration _must_ be raised for the same ObjectIDs! Otherwise, we'll leak "objects currently loading".
-      var objectIDs = pendingLoadedObjectDataCollector.DataPendingRegistration.Select (data => data.ObjectID).ToList().AsReadOnly();
-      _registrationListener.OnBeforeObjectRegistration (objectIDs);
+      var objectIDs = pendingLoadedObjectDataCollector.DataPendingRegistration.Select(data => data.ObjectID).ToList().AsReadOnly();
+      _registrationListener.OnBeforeObjectRegistration(objectIDs);
 
-      var loadedDomainObjects = new List<DomainObject> (pendingLoadedObjectDataCollector.DataPendingRegistration.Count);
+      var loadedDomainObjects = new List<DomainObject>(pendingLoadedObjectDataCollector.DataPendingRegistration.Count);
       try
       {
         foreach (var data in pendingLoadedObjectDataCollector.DataPendingRegistration)
         {
           var dataContainer = data.FreshlyLoadedDataContainer;
-          Assertion.IsTrue (dataContainer.HasDomainObject);
+          Assertion.IsTrue(dataContainer.HasDomainObject);
 
-          _dataManager.RegisterDataContainer (dataContainer);
-          loadedDomainObjects.Add (dataContainer.DomainObject);
+          _dataManager.RegisterDataContainer(dataContainer);
+          loadedDomainObjects.Add(dataContainer.DomainObject);
         }
       }
       finally
       {
-        _registrationListener.OnAfterObjectRegistration (objectIDs, loadedDomainObjects.AsReadOnly ());
+        _registrationListener.OnAfterObjectRegistration(objectIDs, loadedDomainObjects.AsReadOnly());
       }
     }
   }

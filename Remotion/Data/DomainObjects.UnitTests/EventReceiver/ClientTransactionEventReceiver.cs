@@ -36,9 +36,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public ClientTransactionEventReceiver (ClientTransaction clientTransaction)
     {
-      _loadedDomainObjectLists = new List<IReadOnlyList<DomainObject>> ();
-      _committingDomainObjectLists = new List<IReadOnlyList<DomainObject>> ();
-      _committedDomainObjectLists = new List<IReadOnlyList<DomainObject>> ();
+      _loadedDomainObjectLists = new List<IReadOnlyList<DomainObject>>();
+      _committingDomainObjectLists = new List<IReadOnlyList<DomainObject>>();
+      _committedDomainObjectLists = new List<IReadOnlyList<DomainObject>>();
       _clientTransaction = clientTransaction;
 
       _clientTransaction.Loaded += ClientTransaction_Loaded;
@@ -50,9 +50,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Clear ()
     {
-      _loadedDomainObjectLists = new List<IReadOnlyList<DomainObject>> ();
-      _committingDomainObjectLists = new List<IReadOnlyList<DomainObject>> ();
-      _committedDomainObjectLists = new List<IReadOnlyList<DomainObject>> ();
+      _loadedDomainObjectLists = new List<IReadOnlyList<DomainObject>>();
+      _committingDomainObjectLists = new List<IReadOnlyList<DomainObject>>();
+      _committedDomainObjectLists = new List<IReadOnlyList<DomainObject>>();
     }
 
     public void Unregister ()
@@ -64,17 +64,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     private void ClientTransaction_Loaded (object sender, ClientTransactionEventArgs args)
     {
-      _loadedDomainObjectLists.Add (args.DomainObjects);
+      _loadedDomainObjectLists.Add(args.DomainObjects);
     }
 
     private void ClientTransaction_Committing (object sender, ClientTransactionEventArgs args)
     {
-      _committingDomainObjectLists.Add (args.DomainObjects);
+      _committingDomainObjectLists.Add(args.DomainObjects);
     }
 
     private void ClientTransaction_Committed (object sender, ClientTransactionEventArgs args)
     {
-      _committedDomainObjectLists.Add (args.DomainObjects);
+      _committedDomainObjectLists.Add(args.DomainObjects);
     }
 
     public List<IReadOnlyList<DomainObject>> LoadedDomainObjectLists

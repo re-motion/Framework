@@ -31,48 +31,48 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     [SetUp]
     public virtual void SetUp ()
     {
-      _testHelper = new CommandTestHelper ();
-      HttpContextHelper.SetCurrent (_testHelper.HttpContext);
+      _testHelper = new CommandTestHelper();
+      HttpContextHelper.SetCurrent(_testHelper.HttpContext);
     }
 
     [Test]
     public void HasAccess_WithoutSeucrityProvider ()
     {
-      Command command = _testHelper.CreateNoneCommand ();
+      Command command = _testHelper.CreateNoneCommand();
 
-      bool hasAccess = command.HasAccess (null);
+      bool hasAccess = command.HasAccess(null);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Render_WithAccessGranted ()
     {
-      var command = _testHelper.CreateNoneCommandAsPartialMock ();
-      _testHelper.ExpectOnceOnHasAccess (command, true);
+      var command = _testHelper.CreateNoneCommandAsPartialMock();
+      _testHelper.ExpectOnceOnHasAccess(command, true);
 
-      command.Object.RenderBegin (_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
+      command.Object.RenderBegin(_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
 
-      Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
-      Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
-      Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has wrong number of attributes");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.AreEqual(HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
+      Assert.AreEqual(0, _testHelper.HtmlWriter.Attributes.Count, "Has wrong number of attributes");
     }
 
     [Test]
     public void Render_WithAccessDenied ()
     {
-      var command = _testHelper.CreateNoneCommandAsPartialMock ();
-      _testHelper.ExpectOnceOnHasAccess (command, false);
+      var command = _testHelper.CreateNoneCommandAsPartialMock();
+      _testHelper.ExpectOnceOnHasAccess(command, false);
 
-      command.Object.RenderBegin (_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
+      command.Object.RenderBegin(_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
-      _testHelper.VerifyAll ();
-      Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
-      Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
-      Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has wrong number of attributes");
+      _testHelper.VerifyAll();
+      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.AreEqual(HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
+      Assert.AreEqual(0, _testHelper.HtmlWriter.Attributes.Count, "Has wrong number of attributes");
     }
   }
 }

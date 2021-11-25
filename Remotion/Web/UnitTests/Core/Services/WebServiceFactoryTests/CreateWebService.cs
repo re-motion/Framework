@@ -73,27 +73,27 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     public void SetUp ()
     {
       _buildManagerStub = new Mock<IBuildManager>();
-      _webServiceFactory = new WebServiceFactory (_buildManagerStub.Object);
+      _webServiceFactory = new WebServiceFactory(_buildManagerStub.Object);
     }
 
     [Test]
     public void Test ()
     {
-      _buildManagerStub.Setup (stub => stub.GetCompiledType ("~/VirtualServicePath")).Returns (typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
 
-      var service = _webServiceFactory.CreateWebService<IValidWebService> ("~/VirtualServicePath");
+      var service = _webServiceFactory.CreateWebService<IValidWebService>("~/VirtualServicePath");
 
-      Assert.That (service, Is.InstanceOf<TestScriptService>());
+      Assert.That(service, Is.InstanceOf<TestScriptService>());
     }
 
     [Test]
     public void Test_InterfaceNotImplemented ()
     {
-      _buildManagerStub.Setup (stub => stub.GetCompiledType ("~/VirtualServicePath")).Returns (typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
 
-      Assert.That (
-          () => _webServiceFactory.CreateWebService<IInvalidInterface> ("~/VirtualServicePath"),
-          Throws.ArgumentException.And.Message.EqualTo (
+      Assert.That(
+          () => _webServiceFactory.CreateWebService<IInvalidInterface>("~/VirtualServicePath"),
+          Throws.ArgumentException.And.Message.EqualTo(
               "Web service '~/VirtualServicePath' does not implement mandatory interface "
               + "'Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests.CreateWebService+IInvalidInterface'."));
     }
@@ -101,11 +101,11 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_BaseTypeNotImplemented ()
     {
-      _buildManagerStub.Setup (stub => stub.GetCompiledType ("~/VirtualServicePath")).Returns (typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
 
-      Assert.That (
-          () => _webServiceFactory.CreateWebService<InvalidBaseType> ("~/VirtualServicePath"),
-          Throws.ArgumentException.And.Message.EqualTo (
+      Assert.That(
+          () => _webServiceFactory.CreateWebService<InvalidBaseType>("~/VirtualServicePath"),
+          Throws.ArgumentException.And.Message.EqualTo(
               "Web service '~/VirtualServicePath' is not based on type "
               + "'Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests.CreateWebService+InvalidBaseType'."));
     }
@@ -113,22 +113,22 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     [Test]
     public void Test_FactoryChecksWebServiceDeclaration ()
     {
-      _buildManagerStub.Setup (stub => stub.GetCompiledType ("~/VirtualServicePath")).Returns (typeof (TestScriptService));
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns(typeof (TestScriptService));
 
-      Assert.That (
-          () => _webServiceFactory.CreateWebService<IInvalidWebServiceWithMissingWebMethodAttribute> ("~/VirtualServicePath"),
-          Throws.ArgumentException.And.Message.Contains (
+      Assert.That(
+          () => _webServiceFactory.CreateWebService<IInvalidWebServiceWithMissingWebMethodAttribute>("~/VirtualServicePath"),
+          Throws.ArgumentException.And.Message.Contains(
               " does not have the 'System.Web.Services.WebMethodAttribute' applied."));
     }
 
     [Test]
     public void Test_VirtualPathCannotBeCompiled ()
     {
-      _buildManagerStub.Setup (stub => stub.GetCompiledType ("~/VirtualServicePath")).Returns ((Type) null);
+      _buildManagerStub.Setup(stub => stub.GetCompiledType("~/VirtualServicePath")).Returns((Type) null);
 
-      Assert.That (
-          () => _webServiceFactory.CreateWebService<IInvalidInterface> ("~/VirtualServicePath"),
-          Throws.InvalidOperationException.And.Message.EqualTo ("Web service '~/VirtualServicePath' could not be compiled."));
+      Assert.That(
+          () => _webServiceFactory.CreateWebService<IInvalidInterface>("~/VirtualServicePath"),
+          Throws.InvalidOperationException.And.Message.EqualTo("Web service '~/VirtualServicePath' could not be compiled."));
     }
   }
 }

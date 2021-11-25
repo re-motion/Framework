@@ -40,32 +40,32 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public override void  Clear ()
     {
-      throw new NotSupportedException ("Cannot clear a read-only collection.");
+      throw new NotSupportedException("Cannot clear a read-only collection.");
     }
 
     public override void Insert (int index, DomainObject domainObject)
     {
-      throw new NotSupportedException ("Cannot insert an item into a read-only collection.");
+      throw new NotSupportedException("Cannot insert an item into a read-only collection.");
     }
 
     public override bool Remove (DomainObject domainObject)
     {
-      throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
+      throw new NotSupportedException("Cannot remove an item from a read-only collection.");
     }
 
     public override bool Remove (ObjectID objectID)
     {
-      throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
+      throw new NotSupportedException("Cannot remove an item from a read-only collection.");
     }
 
     public override void Replace (int index, DomainObject newDomainObject)
     {
-      throw new NotSupportedException ("Cannot replace an item in a read-only collection.");
+      throw new NotSupportedException("Cannot replace an item in a read-only collection.");
     }
 
     public override void Sort (Comparison<DomainObject> comparison)
     {
-      throw new NotSupportedException ("Cannot sort a read-only collection.");
+      throw new NotSupportedException("Cannot sort a read-only collection.");
     }
   }
 }

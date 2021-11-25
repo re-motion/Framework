@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
-        new CreateRootTestTransactedFunction (originalScope).Execute (Context);
-        Assert.That (ClientTransactionScope.ActiveScope, Is.SameAs (originalScope));
+        new CreateRootTestTransactedFunction(originalScope).Execute(Context);
+        Assert.That(ClientTransactionScope.ActiveScope, Is.SameAs(originalScope));
       }
     }
 
@@ -42,9 +42,9 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
-        new CreateRootWithChildTestTransactedFunction (originalScope.ScopedTransaction, new CreateChildIfParentTestTransactedFunction()).Execute (
+        new CreateRootWithChildTestTransactedFunction(originalScope.ScopedTransaction, new CreateChildIfParentTestTransactedFunction()).Execute(
             Context);
-        Assert.That (ClientTransactionScope.ActiveScope, Is.SameAs (originalScope));
+        Assert.That(ClientTransactionScope.ActiveScope, Is.SameAs(originalScope));
       }
     }
 
@@ -54,8 +54,8 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
-        new CreateNoneTestTransactedFunction (originalScope).Execute (Context);
-        Assert.That (ClientTransactionScope.ActiveScope, Is.SameAs (originalScope));
+        new CreateNoneTestTransactedFunction(originalScope).Execute(Context);
+        Assert.That(ClientTransactionScope.ActiveScope, Is.SameAs(originalScope));
       }
     }
 
@@ -65,13 +65,13 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
-        SetInt32Property (5, ClientTransaction.CreateRootTransaction());
+        SetInt32Property(5, ClientTransaction.CreateRootTransaction());
 
-        new AutoCommitTestTransactedFunction (
-            WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit, DomainObjectIDs.ClassWithAllDataTypes1).Execute (Context);
-        Assert.That (ClientTransactionScope.ActiveScope, Is.SameAs (originalScope));
+        new AutoCommitTestTransactedFunction(
+            WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit, DomainObjectIDs.ClassWithAllDataTypes1).Execute(Context);
+        Assert.That(ClientTransactionScope.ActiveScope, Is.SameAs(originalScope));
 
-        Assert.That (GetInt32Property (ClientTransaction.CreateRootTransaction()), Is.EqualTo (10));
+        Assert.That(GetInt32Property(ClientTransaction.CreateRootTransaction()), Is.EqualTo(10));
       }
     }
 
@@ -81,53 +81,53 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
-        SetInt32Property (5, ClientTransaction.CreateRootTransaction());
+        SetInt32Property(5, ClientTransaction.CreateRootTransaction());
 
-        new NoAutoCommitTestTransactedFunction (WxeTransactionMode<ClientTransactionFactory>.CreateRoot, DomainObjectIDs.ClassWithAllDataTypes1).
-            Execute (Context);
+        new NoAutoCommitTestTransactedFunction(WxeTransactionMode<ClientTransactionFactory>.CreateRoot, DomainObjectIDs.ClassWithAllDataTypes1).
+            Execute(Context);
 
-        Assert.That (ClientTransactionScope.ActiveScope, Is.SameAs (originalScope));
+        Assert.That(ClientTransactionScope.ActiveScope, Is.SameAs(originalScope));
 
-        Assert.That (GetInt32Property (ClientTransaction.CreateRootTransaction()), Is.EqualTo (5));
+        Assert.That(GetInt32Property(ClientTransaction.CreateRootTransaction()), Is.EqualTo(5));
       }
     }
 
     [Test]
     public void WxeTransactedFunctionNoneNoAutoCommit ()
     {
-      SetInt32Property (5, ClientTransaction.CreateRootTransaction());
+      SetInt32Property(5, ClientTransaction.CreateRootTransaction());
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
 
-        new NoAutoCommitTestTransactedFunction (WxeTransactionMode<ClientTransactionFactory>.None, DomainObjectIDs.ClassWithAllDataTypes1).Execute (
+        new NoAutoCommitTestTransactedFunction(WxeTransactionMode<ClientTransactionFactory>.None, DomainObjectIDs.ClassWithAllDataTypes1).Execute(
             Context);
 
-        Assert.That (ClientTransactionScope.ActiveScope, Is.SameAs (originalScope));
+        Assert.That(ClientTransactionScope.ActiveScope, Is.SameAs(originalScope));
 
-        Assert.That (GetInt32Property (ClientTransactionScope.CurrentTransaction), Is.EqualTo (10));
+        Assert.That(GetInt32Property(ClientTransactionScope.CurrentTransaction), Is.EqualTo(10));
       }
 
-      Assert.That (GetInt32Property (ClientTransaction.CreateRootTransaction()), Is.EqualTo (5));
+      Assert.That(GetInt32Property(ClientTransaction.CreateRootTransaction()), Is.EqualTo(5));
     }
 
     private void SetInt32Property (int value, ClientTransaction clientTransaction)
     {
-      using (clientTransaction.EnterDiscardingScope ())
+      using (clientTransaction.EnterDiscardingScope())
       {
-        SampleObject objectWithAllDataTypes = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<SampleObject> ();
+        SampleObject objectWithAllDataTypes = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<SampleObject>();
 
         objectWithAllDataTypes.Int32Property = value;
 
-        clientTransaction.Commit ();
+        clientTransaction.Commit();
       }
     }
 
     private int GetInt32Property (ClientTransaction clientTransaction)
     {
-      using (clientTransaction.EnterDiscardingScope ())
+      using (clientTransaction.EnterDiscardingScope())
       {
-        SampleObject objectWithAllDataTypes = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<SampleObject> ();
+        SampleObject objectWithAllDataTypes = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<SampleObject>();
 
         return objectWithAllDataTypes.Int32Property;
       }

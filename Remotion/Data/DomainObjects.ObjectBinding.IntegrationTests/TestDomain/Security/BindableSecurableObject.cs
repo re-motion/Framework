@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
     {
       using (clientTransaction.EnterNonDiscardingScope())
       {
-        return NewObject<BindableSecurableObject> (ParamList.Create (securityStrategy));
+        return NewObject<BindableSecurableObject>(ParamList.Create(securityStrategy));
       }
     }
 
@@ -51,8 +51,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
 
     protected override void OnLoaded (LoadMode loadMode)
     {
-      base.OnLoaded (loadMode);
-      _securityStrategy = ObjectSecurityStrategy.Create (this, InvalidationToken.Create());
+      base.OnLoaded(loadMode);
+      _securityStrategy = ObjectSecurityStrategy.Create(this, InvalidationToken.Create());
     }
 
     public IObjectSecurityStrategy GetSecurityStrategy ()
@@ -67,8 +67,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
 
     public DataContainer GetDataContainer (ClientTransaction transaction)
     {
-      var dataManager = (DataManager) PrivateInvoke.GetNonPublicProperty (transaction, "DataManager");
-      return dataManager.GetDataContainerWithLazyLoad (ID, true);
+      var dataManager = (DataManager) PrivateInvoke.GetNonPublicProperty(transaction, "DataManager");
+      return dataManager.GetDataContainerWithLazyLoad(ID, true);
     }
 
     public abstract string StringProperty { get; set; }
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
 
     ISecurityContext ISecurityContextFactory.CreateSecurityContext ()
     {
-      return SecurityContext.CreateStateless (GetPublicDomainObjectType());
+      return SecurityContext.CreateStateless(GetPublicDomainObjectType());
     }
 
     public new void Delete ()

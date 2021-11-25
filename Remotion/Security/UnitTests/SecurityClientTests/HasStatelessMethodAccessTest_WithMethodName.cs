@@ -34,79 +34,79 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [SetUp]
     public void SetUp ()
     {
-      _testHelper = new SecurityClientTestHelper ();
-      _securityClient = _testHelper.CreateSecurityClient ();
+      _testHelper = new SecurityClientTestHelper();
+      _securityClient = _testHelper.CreateSecurityClient();
       _methodInformation = new Mock<IMethodInformation>();
-      _methodInformation.Setup (n => n.Name).Returns ("InstanceMethod");
+      _methodInformation.Setup(n => n.Name).Returns("InstanceMethod");
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectMemberResolverGetMethodInformation ("InstanceMethod", MemberAffiliation.Instance, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation.Object, TestAccessTypes.First);
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, true);
+      _testHelper.ExpectMemberResolverGetMethodInformation("InstanceMethod", MemberAffiliation.Instance, _methodInformation.Object);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, TestAccessTypes.First);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess(TestAccessTypes.First, true);
 
-      bool hasAccess = _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "InstanceMethod");
+      bool hasAccess = _securityClient.HasStatelessMethodAccess(typeof (SecurableObject), "InstanceMethod");
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_AccessDenied ()
     {
-      _testHelper.ExpectMemberResolverGetMethodInformation ("InstanceMethod", MemberAffiliation.Instance, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation.Object, TestAccessTypes.First);
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, false);
+      _testHelper.ExpectMemberResolverGetMethodInformation("InstanceMethod", MemberAffiliation.Instance, _methodInformation.Object);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, TestAccessTypes.First);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess(TestAccessTypes.First, false);
 
-      bool hasAccess = _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "InstanceMethod");
+      bool hasAccess = _securityClient.HasStatelessMethodAccess(typeof (SecurableObject), "InstanceMethod");
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.False);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.False);
     }
 
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
-      _testHelper.ExpectMemberResolverGetMethodInformation ("InstanceMethod", MemberAffiliation.Instance, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation.Object, TestAccessTypes.First);
+      _testHelper.ExpectMemberResolverGetMethodInformation("InstanceMethod", MemberAffiliation.Instance, _methodInformation.Object);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, TestAccessTypes.First);
 
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "InstanceMethod");
+        hasAccess = _securityClient.HasStatelessMethodAccess(typeof (SecurableObject), "InstanceMethod");
       }
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_WithoutRequiredPermissions_ShouldThrowArgumentException ()
     {
-      _testHelper.ExpectMemberResolverGetMethodInformation ("InstanceMethod", MemberAffiliation.Instance, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation.Object);
+      _testHelper.ExpectMemberResolverGetMethodInformation("InstanceMethod", MemberAffiliation.Instance, _methodInformation.Object);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object);
 
-      Assert.That (
-          () => _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "InstanceMethod"),
+      Assert.That(
+          () => _securityClient.HasStatelessMethodAccess(typeof (SecurableObject), "InstanceMethod"),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo ("The member 'InstanceMethod' does not define required permissions.", "requiredAccessTypeEnums"));
+              .With.ArgumentExceptionMessageEqualTo("The member 'InstanceMethod' does not define required permissions.", "requiredAccessTypeEnums"));
       _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithoutRequiredPermissionsAndWithinSecurityFreeSection_ShouldThrowArgumentException ()
     {
-      _testHelper.ExpectMemberResolverGetMethodInformation ("InstanceMethod", MemberAffiliation.Instance, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation.Object);
+      _testHelper.ExpectMemberResolverGetMethodInformation("InstanceMethod", MemberAffiliation.Instance, _methodInformation.Object);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object);
 
       using (SecurityFreeSection.Activate())
       {
-        Assert.That (
-            () => _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "InstanceMethod"),
+        Assert.That(
+            () => _securityClient.HasStatelessMethodAccess(typeof (SecurableObject), "InstanceMethod"),
             Throws.ArgumentException
-                .With.ArgumentExceptionMessageEqualTo ("The member 'InstanceMethod' does not define required permissions.", "requiredAccessTypeEnums"));
+                .With.ArgumentExceptionMessageEqualTo("The member 'InstanceMethod' does not define required permissions.", "requiredAccessTypeEnums"));
       }
 
       _testHelper.VerifyAll();
@@ -118,13 +118,13 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_WithPermissionProviderReturnedNull_ShouldThrowInvalidOperationException ()
     {
-      _testHelper.ExpectMemberResolverGetMethodInformation ("StaticMethod", MemberAffiliation.Instance, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation.Object,  (Enum[]) null);
+      _testHelper.ExpectMemberResolverGetMethodInformation("StaticMethod", MemberAffiliation.Instance, _methodInformation.Object);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object,  (Enum[]) null);
 
-      Assert.That (
-          () => _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "StaticMethod"),
+      Assert.That(
+          () => _securityClient.HasStatelessMethodAccess(typeof (SecurableObject), "StaticMethod"),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null."));
+              .With.Message.EqualTo("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null."));
       _testHelper.VerifyAll();
     }
 
@@ -134,18 +134,18 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_WithPermissionProviderReturnedNullAndWithinSecurityFreeSection_ShouldThrowInvalidOperationException ()
     {
-      _testHelper.ExpectMemberResolverGetMethodInformation ("StaticMethod", MemberAffiliation.Instance, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation.Object, (Enum[]) null);
+      _testHelper.ExpectMemberResolverGetMethodInformation("StaticMethod", MemberAffiliation.Instance, _methodInformation.Object);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, (Enum[]) null);
 
       using (SecurityFreeSection.Activate())
       {
-        Assert.That (
-            () => _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "StaticMethod"),
+        Assert.That(
+            () => _securityClient.HasStatelessMethodAccess(typeof (SecurableObject), "StaticMethod"),
             Throws.InvalidOperationException
-                .With.Message.EqualTo ("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null."));
+                .With.Message.EqualTo("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null."));
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
   }

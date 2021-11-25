@@ -39,8 +39,8 @@ namespace Remotion.ExtensibleEnums
       where T: ExtensibleEnum<T>
   {
     private static readonly Lazy<ExtensibleEnumDefinition<T>> s_values =
-        new Lazy<ExtensibleEnumDefinition<T>> (
-            () => (ExtensibleEnumDefinition<T>) ExtensibleEnumUtility.GetDefinition (typeof (T)),
+        new Lazy<ExtensibleEnumDefinition<T>>(
+            () => (ExtensibleEnumDefinition<T>) ExtensibleEnumUtility.GetDefinition(typeof (T)),
             LazyThreadSafetyMode.ExecutionAndPublication);
 
     /// <summary>
@@ -62,7 +62,7 @@ namespace Remotion.ExtensibleEnums
     /// have equal types and <see cref="ID"/> values. Otherwise, <see langword="false" />.</returns>
     public static bool operator == (ExtensibleEnum<T>? value1, ExtensibleEnum<T>? value2)
     {
-      return object.Equals (value1, value2);
+      return object.Equals(value1, value2);
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ namespace Remotion.ExtensibleEnums
     /// and hash code calculations.</param>
     protected ExtensibleEnum (string? declarationSpace, string valueName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("valueName", valueName);
+      ArgumentUtility.CheckNotNullOrEmpty("valueName", valueName);
 
       DeclarationSpace = declarationSpace;
       ValueName = valueName;
@@ -102,7 +102,7 @@ namespace Remotion.ExtensibleEnums
     protected ExtensibleEnum (string id)
         : this (
             (string?) null, 
-            ArgumentUtility.CheckNotNullOrEmpty ("id", id))
+            ArgumentUtility.CheckNotNullOrEmpty("id", id))
     {
     }
 
@@ -116,8 +116,8 @@ namespace Remotion.ExtensibleEnums
     /// and hash code calculations.</param>
     protected ExtensibleEnum (Type declaringType, string valueName)
         : this (
-            ArgumentUtility.CheckNotNull ("declaringType", declaringType).GetFullNameChecked(), 
-            ArgumentUtility.CheckNotNullOrEmpty ("valueName", valueName))
+            ArgumentUtility.CheckNotNull("declaringType", declaringType).GetFullNameChecked(), 
+            ArgumentUtility.CheckNotNullOrEmpty("valueName", valueName))
     {
     }
 
@@ -129,7 +129,7 @@ namespace Remotion.ExtensibleEnums
     /// equality comparisons and hash code calculations.</param>
     protected ExtensibleEnum (MethodBase currentMethod)
         : this (
-            ArgumentUtility.CheckNotNull ("currentMethod", currentMethod).DeclaringType!,
+            ArgumentUtility.CheckNotNull("currentMethod", currentMethod).DeclaringType!,
             currentMethod.Name)
     {
     }
@@ -142,7 +142,7 @@ namespace Remotion.ExtensibleEnums
     /// <value>The ID of this value. Once an <see cref="ExtensibleEnum{T}"/> instance is constructed, this value is guaranteed to never change.</value>
     public string ID 
     {
-      get { return string.IsNullOrEmpty (DeclarationSpace) ? ValueName : DeclarationSpace + "." + ValueName; }
+      get { return string.IsNullOrEmpty(DeclarationSpace) ? ValueName : DeclarationSpace + "." + ValueName; }
     }
     
     /// <summary>
@@ -166,7 +166,7 @@ namespace Remotion.ExtensibleEnums
     /// <returns>The <see cref="ExtensibleEnumInfo{T}"/> for this value.</returns>
     public ExtensibleEnumInfo<T> GetValueInfo ()
     {
-      return Values.GetValueInfoByID (ID);
+      return Values.GetValueInfoByID(ID);
     }
 
     /// <summary>
@@ -188,7 +188,7 @@ namespace Remotion.ExtensibleEnums
     /// </returns>
     public bool Equals (T? obj)
     {
-      return !ReferenceEquals (obj, null) && obj.GetType() == GetType() && obj.ID == ID;
+      return !ReferenceEquals(obj, null) && obj.GetType() == GetType() && obj.ID == ID;
     }
 
     /// <summary>
@@ -202,7 +202,7 @@ namespace Remotion.ExtensibleEnums
     /// </returns>
     public override bool Equals (object? obj)
     {
-      return Equals (obj as T);
+      return Equals(obj as T);
     }
 
     /// <inheritdoc />
@@ -226,7 +226,7 @@ namespace Remotion.ExtensibleEnums
 
     IExtensibleEnumInfo IExtensibleEnum.GetValueInfo ()
     {
-      return GetValueInfo ();
+      return GetValueInfo();
     }
   }
 }

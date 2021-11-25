@@ -57,7 +57,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public static IQueryable<Group> FindByTenant (IDomainObjectHandle<Tenant> tenantHandle)
     {
-      ArgumentUtility.CheckNotNull ("tenantHandle", tenantHandle);
+      ArgumentUtility.CheckNotNull("tenantHandle", tenantHandle);
 
       return from g in QueryFactory.CreateLinqQuery<Group>()
                    where g.Tenant.ID == tenantHandle.ObjectID
@@ -67,7 +67,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public static Group FindByUnqiueIdentifier (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
 
       var result = from g in QueryFactory.CreateLinqQuery<Group>()
                    where g.UniqueIdentifier == uniqueIdentifier
@@ -86,7 +86,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     [EditorBrowsable (EditorBrowsableState.Never)]
     public static void Search ()
     {
-      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
+      throw new NotImplementedException("This method is only intended for framework support and should never be called.");
     }
 
     // member fields
@@ -137,31 +137,31 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     protected override void OnDeleting (EventArgs args)
     {
-      base.OnDeleting (args);
+      base.OnDeleting(args);
 
-      using (DefaultTransactionContext.ClientTransaction.EnterNonDiscardingScope ())
+      using (DefaultTransactionContext.ClientTransaction.EnterNonDiscardingScope())
       {
-        var aces = QueryFactory.CreateLinqQuery<AccessControlEntry>().Where (ace => ace.SpecificGroup == this);
+        var aces = QueryFactory.CreateLinqQuery<AccessControlEntry>().Where(ace => ace.SpecificGroup == this);
 
-        _deleteHandler = new DomainObjectDeleteHandler (aces, Roles);
+        _deleteHandler = new DomainObjectDeleteHandler(aces, Roles);
       }
     }
 
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
-      _deleteHandler.Delete ();
+      _deleteHandler.Delete();
     }
 
     public override string DisplayName
     {
       get
       {
-        if (string.IsNullOrEmpty (ShortName))
+        if (string.IsNullOrEmpty(ShortName))
           return Name;
         else
-          return string.Format ("{0} ({1})", ShortName, Name);
+          return string.Format("{0} ({1})", ShortName, Name);
       }
     }
 
@@ -190,15 +190,15 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     public IEnumerable<Group> GetParents ()
     {
       var securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
-      if (!securityClient.HasMethodAccess (this, "GetParents"))
+      if (!securityClient.HasMethodAccess(this, "GetParents"))
         return Enumerable.Empty<Group>();
 
-      return Parent.CreateSequenceWithCycleCheck (
+      return Parent.CreateSequenceWithCycleCheck(
           g => g.Parent,
-          g => g != null && securityClient.HasAccess (g, AccessType.Get (GeneralAccessTypes.Read)),
+          g => g != null && securityClient.HasAccess(g, AccessType.Get(GeneralAccessTypes.Read)),
           null,
-          g => new InvalidOperationException (
-              string.Format ("The parent hierarchy for group '{0}' cannot be resolved because a circular reference exists.", ID)));
+          g => new InvalidOperationException(
+              string.Format("The parent hierarchy for group '{0}' cannot be resolved because a circular reference exists.", ID)));
     }
 
     /// <summary>
@@ -215,7 +215,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     /// </exception>
     public IEnumerable<Group> GetHierachy ()
     {
-      return GetHierarchyWithSecurityCheck (this);
+      return GetHierarchyWithSecurityCheck(this);
     }
 
     /// <summary>
@@ -224,11 +224,11 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     /// </summary>
     private IEnumerable<Group> GetHierarchyWithSecurityCheck (Group startPoint)
     {
-      var securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      if (!securityClient.HasAccess (this, AccessType.Get (GeneralAccessTypes.Read)))
+      var securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
+      if (!securityClient.HasAccess(this, AccessType.Get(GeneralAccessTypes.Read)))
         return Enumerable.Empty<Group>();
 
-      return new[] { this }.Concat (Children.SelectMany (c => c.GetHierarchyWithCircularReferenceCheck (startPoint)));
+      return new[] { this }.Concat(Children.SelectMany(c => c.GetHierarchyWithCircularReferenceCheck(startPoint)));
     }
 
     /// <summary>
@@ -242,16 +242,16 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
       if (this == startPoint)
       {
-        throw new InvalidOperationException (
-            string.Format ("The hierarchy for group '{0}' cannot be resolved because a circular reference exists.", startPoint.ID));
+        throw new InvalidOperationException(
+            string.Format("The hierarchy for group '{0}' cannot be resolved because a circular reference exists.", startPoint.ID));
       }
 
-      return GetHierarchyWithSecurityCheck (startPoint);
+      return GetHierarchyWithSecurityCheck(startPoint);
     }
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
       CheckParentHierarchy();
     }
@@ -261,10 +261,10 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       if (!Properties[typeof (Group), "Parent"].HasChanged)
         return;
 
-      var parents = GetParentObjectReference().CreateSequenceWithCycleCheck (
+      var parents = GetParentObjectReference().CreateSequenceWithCycleCheck(
           g => g.GetParentObjectReference(),
-          g => new InvalidOperationException (
-              string.Format ("Group '{0}' cannot be committed because it would result in a cirucular parent hierarchy.", ID)));
+          g => new InvalidOperationException(
+              string.Format("Group '{0}' cannot be committed because it would result in a cirucular parent hierarchy.", ID)));
 
       foreach (var group in parents)
         group.RegisterForCommit();
@@ -276,8 +276,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       if (parentID == null)
         return null;
 
-      var parent = (Group) LifetimeService.GetObjectReference (DefaultTransactionContext.ClientTransaction, parentID);
-      UnloadService.TryUnloadData (DefaultTransactionContext.ClientTransaction, parent.ID);
+      var parent = (Group) LifetimeService.GetObjectReference(DefaultTransactionContext.ClientTransaction, parentID);
+      UnloadService.TryUnloadData(DefaultTransactionContext.ClientTransaction, parent.ID);
      
       return parent;
     }

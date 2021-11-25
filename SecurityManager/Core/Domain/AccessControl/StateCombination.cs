@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   {
     public static StateCombination NewObject ()
     {
-      return NewObject<StateCombination> ();
+      return NewObject<StateCombination>();
     }
 
     private DomainObjectDeleteHandler _deleteHandler;
@@ -58,20 +58,20 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public bool MatchesStates (IList<StateDefinition> states)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("states", states);
+      ArgumentUtility.CheckNotNullOrItemsNull("states", states);
 
       if (StateUsages.Count == 0 && states.Count > 0)
         return false;
 
-      return StateUsages.Select (stateUsage => stateUsage.StateDefinition).All (usedState => states.Contains (usedState));
+      return StateUsages.Select(stateUsage => stateUsage.StateDefinition).All(usedState => states.Contains(usedState));
     }
 
     public void AttachState (StateDefinition state)
     {
-      ArgumentUtility.CheckNotNull ("state", state);
-      StateUsage stateUsage = StateUsage.NewObject ();
+      ArgumentUtility.CheckNotNull("state", state);
+      StateUsage stateUsage = StateUsage.NewObject();
       stateUsage.StateDefinition = state;
-      StateUsages.Add (stateUsage);
+      StateUsages.Add(stateUsage);
     }
 
     public void ClearStates ()
@@ -82,12 +82,12 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public StateDefinition[] GetStates ()
     {
-      return StateUsages.Select (stateUsage => stateUsage.StateDefinition).ToArray();
+      return StateUsages.Select(stateUsage => stateUsage.StateDefinition).ToArray();
     }
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
       if (Class != null)
         Class.RegisterForCommit();
@@ -97,14 +97,14 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     protected override void OnDeleting (EventArgs args)
     {
-      base.OnDeleting (args);
+      base.OnDeleting(args);
 
-      _deleteHandler = new DomainObjectDeleteHandler (StateUsages);
+      _deleteHandler = new DomainObjectDeleteHandler(StateUsages);
     }
     
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
       _deleteHandler.Delete();
     }

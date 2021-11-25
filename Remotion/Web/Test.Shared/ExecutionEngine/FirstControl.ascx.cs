@@ -25,15 +25,15 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
   {
     protected void ExecuteSecondUserControlButton_Click (object sender, EventArgs e)
     {
-      ControlLabel.Text = DateTime.Now.ToString ("HH:mm:ss") + ": Executed";
+      ControlLabel.Text = DateTime.Now.ToString("HH:mm:ss") + ": Executed";
       try
       {
-        SecondControl.Call (WxePage, this, (Control) sender);
-        ControlLabel.Text = DateTime.Now.ToString ("HH:mm:ss") + ": Returned";
+        SecondControl.Call(WxePage, this, (Control) sender);
+        ControlLabel.Text = DateTime.Now.ToString("HH:mm:ss") + ": Returned";
       }
       catch (WxeUserCancelException)
       {
-        ControlLabel.Text = DateTime.Now.ToString ("HH:mm:ss") + ": Canceled";
+        ControlLabel.Text = DateTime.Now.ToString("HH:mm:ss") + ": Canceled";
       }
 
       //if (!WxePage.IsReturningPostBack)
@@ -49,8 +49,8 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     protected void ExecuteNextStep_Click (object sender, EventArgs e)
     {
-      ControlLabel.Text = DateTime.Now.ToString ("HH:mm:ss");
-      ExecuteNextStep ();
+      ControlLabel.Text = DateTime.Now.ToString("HH:mm:ss");
+      ExecuteNextStep();
     }
 
     protected void Cancel_Click (object sender, EventArgs e)
@@ -60,99 +60,99 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     protected override void OnInitComplete (EventArgs e)
     {
-      base.OnInitComplete (e);
-      Page.RegisterRequiresControlState (this);
+      base.OnInitComplete(e);
+      Page.RegisterRequiresControlState(this);
       ViewStateLabel.Text = "#";
       ControlStateLabel.Text = "#";
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (ControlStateValue == 0)
       {
-        Assertion.IsFalse (IsPostBack);
-        Assertion.IsFalse (IsUserControlPostBack);
+        Assertion.IsFalse(IsPostBack);
+        Assertion.IsFalse(IsUserControlPostBack);
       }
       else
       {
-        Assertion.IsTrue (IsPostBack);
-        Assertion.IsTrue (IsUserControlPostBack);
+        Assertion.IsTrue(IsPostBack);
+        Assertion.IsTrue(IsUserControlPostBack);
       }
-      Assertion.IsTrue (CurrentFunction is ShowFirstUserControlFormFunction);
-      Assertion.IsTrue (WxePage.CurrentFunction is ShowUserControlFormFunction);
-      Assertion.IsTrue (WxePage.Variables != this.Variables);
+      Assertion.IsTrue(CurrentFunction is ShowFirstUserControlFormFunction);
+      Assertion.IsTrue(WxePage.CurrentFunction is ShowUserControlFormFunction);
+      Assertion.IsTrue(WxePage.Variables != this.Variables);
 
       ViewStateValue++;
       ViewStateLabel.Text = ViewStateValue.ToString();
 
       ControlStateValue++;
-      ControlStateLabel.Text = ControlStateValue.ToString ();
+      ControlStateLabel.Text = ControlStateValue.ToString();
 
       if (!IsUserControlPostBack)
       {
-        Assertion.IsNull (SubControlWithState.ValueInViewState);
-        SubControlWithState.ValueInViewState = 1.ToString ();
+        Assertion.IsNull(SubControlWithState.ValueInViewState);
+        SubControlWithState.ValueInViewState = 1.ToString();
 
-        Assertion.IsNull (SubControlWithState.ValueInControlState);
-        SubControlWithState.ValueInControlState = 1.ToString ();
+        Assertion.IsNull(SubControlWithState.ValueInControlState);
+        SubControlWithState.ValueInControlState = 1.ToString();
       }
       else
       {
-        Assertion.IsNotNull (SubControlWithState.ValueInViewState);
-        SubControlWithState.ValueInViewState = (int.Parse (SubControlWithState.ValueInViewState) + 1).ToString ();
+        Assertion.IsNotNull(SubControlWithState.ValueInViewState);
+        SubControlWithState.ValueInViewState = (int.Parse(SubControlWithState.ValueInViewState) + 1).ToString();
 
-        Assertion.IsNotNull (SubControlWithState.ValueInControlState);
-        SubControlWithState.ValueInControlState = (int.Parse (SubControlWithState.ValueInControlState) + 1).ToString ();
+        Assertion.IsNotNull(SubControlWithState.ValueInControlState);
+        SubControlWithState.ValueInControlState = (int.Parse(SubControlWithState.ValueInControlState) + 1).ToString();
       }
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       if (!IsUserControlPostBack)
       {
-        Assertion.IsTrue (string.IsNullOrEmpty (SubControlWithFormElement.Text));
-        SubControlWithFormElement.Text = 1.ToString ();
+        Assertion.IsTrue(string.IsNullOrEmpty(SubControlWithFormElement.Text));
+        SubControlWithFormElement.Text = 1.ToString();
       }
       else
       {
 
-        Assertion.IsFalse (string.IsNullOrEmpty (SubControlWithFormElement.Text));
-        SubControlWithFormElement.Text = (int.Parse (SubControlWithFormElement.Text) + 1).ToString();
+        Assertion.IsFalse(string.IsNullOrEmpty(SubControlWithFormElement.Text));
+        SubControlWithFormElement.Text = (int.Parse(SubControlWithFormElement.Text) + 1).ToString();
       }
     }
 
     protected override void LoadControlState (object savedState)
     {
       var controlState = (object[]) savedState;
-      base.LoadControlState (controlState[0]);
+      base.LoadControlState(controlState[0]);
       ControlStateValue = (int) controlState[1];
-      Assertion.IsTrue ((Type) controlState[2] == typeof (FirstControl), "Expected ControlState from 'FirstControl' but was '{0}'.", ((Type)controlState[2]).Name);
+      Assertion.IsTrue((Type) controlState[2] == typeof (FirstControl), "Expected ControlState from 'FirstControl' but was '{0}'.", ((Type)controlState[2]).Name);
       HasLoaded = (bool) controlState[3];
-      Assertion.IsTrue (((NonSerializeableObject)controlState[4]).Value == "TheValue");
+      Assertion.IsTrue(((NonSerializeableObject)controlState[4]).Value == "TheValue");
     }
 
     protected override object SaveControlState ()
     {
-      return new [] {base.SaveControlState(), ControlStateValue, typeof (FirstControl), HasLoaded, new NonSerializeableObject ("TheValue")};
+      return new [] {base.SaveControlState(), ControlStateValue, typeof (FirstControl), HasLoaded, new NonSerializeableObject("TheValue")};
     }
 
     protected override void LoadViewState (object savedState)
     {
-      Assertion.IsNotNull (savedState, "Missing ViewState.");
+      Assertion.IsNotNull(savedState, "Missing ViewState.");
 
       var viewState = (Tuple<object, Type>) savedState;
-      base.LoadViewState (viewState.Item1);
+      base.LoadViewState(viewState.Item1);
 
-      Assertion.IsTrue (viewState.Item2 == typeof (FirstControl), "Expected ViewState from 'FirstControl' but was '{0}'.", viewState.Item2.Name);
+      Assertion.IsTrue(viewState.Item2 == typeof (FirstControl), "Expected ViewState from 'FirstControl' but was '{0}'.", viewState.Item2.Name);
     }
 
     protected override object SaveViewState ()
     {
-      return new Tuple<object, Type> (base.SaveViewState (), typeof (FirstControl));
+      return new Tuple<object, Type>(base.SaveViewState(), typeof (FirstControl));
     }
 
     private int ViewStateValue

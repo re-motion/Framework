@@ -31,19 +31,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
   {
     public ScriptPair Convert (IScriptBuilder scriptBuilder)
     {
-      ArgumentUtility.CheckNotNull ("scriptBuilder", scriptBuilder);
+      ArgumentUtility.CheckNotNull("scriptBuilder", scriptBuilder);
 
-      var createScriptStatements = new List<ScriptStatement> ();
-      var dropScriptStatements = new List<ScriptStatement> ();
-      var createScriptCollection = scriptBuilder.GetCreateScript ();
-      var dropScriptCollection = scriptBuilder.GetDropScript ();
+      var createScriptStatements = new List<ScriptStatement>();
+      var dropScriptStatements = new List<ScriptStatement>();
+      var createScriptCollection = scriptBuilder.GetCreateScript();
+      var dropScriptCollection = scriptBuilder.GetDropScript();
 
-      createScriptCollection.AppendToScript (createScriptStatements);
-      dropScriptCollection.AppendToScript (dropScriptStatements);
+      createScriptCollection.AppendToScript(createScriptStatements);
+      dropScriptCollection.AppendToScript(dropScriptStatements);
 
-      return new ScriptPair (
-          createScriptStatements.Aggregate (new StringBuilder (), (sb, stmt) => sb.AppendLine (stmt.Statement)).ToString (),
-          dropScriptStatements.Aggregate (new StringBuilder (), (sb, stmt) => sb.AppendLine (stmt.Statement)).ToString ());
+      return new ScriptPair(
+          createScriptStatements.Aggregate(new StringBuilder(), (sb, stmt) => sb.AppendLine(stmt.Statement)).ToString(),
+          dropScriptStatements.Aggregate(new StringBuilder(), (sb, stmt) => sb.AppendLine(stmt.Statement)).ToString());
     }
   }
 }

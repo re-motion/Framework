@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
       VisibleDomainProperty = data.Arguments[0];
       HiddenDomainProperty = data.Arguments[1];

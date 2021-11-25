@@ -30,74 +30,74 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.ExternalDomainMix
     [SetUp]
     public void SetUp ()
     {
-      _municipalMixinConfigurationScope = MixinConfiguration.BuildFromActive ()
-          .ForClass<Settlement> ()
-              .AddMixin<MunicipalSettlementMixin> ()
-              .AddMixin<MunicipalDocumentMixin> ().ReplaceMixin<DocumentMixin>()
-              .EnterScope ();
+      _municipalMixinConfigurationScope = MixinConfiguration.BuildFromActive()
+          .ForClass<Settlement>()
+              .AddMixin<MunicipalSettlementMixin>()
+              .AddMixin<MunicipalDocumentMixin>().ReplaceMixin<DocumentMixin>()
+              .EnterScope();
     }
 
     [TearDown]
     public void TearDown ()
     {
-      _municipalMixinConfigurationScope.Dispose ();
+      _municipalMixinConfigurationScope.Dispose();
     }
 
     [Test]
     public void NewObject ()
     {
-      var instance = Settlement.NewObject ();
-      Assert.That (instance, Is.InstanceOf (typeof (Settlement)));
+      var instance = Settlement.NewObject();
+      Assert.That(instance, Is.InstanceOf(typeof (Settlement)));
     }
 
     [Test]
     public void MunicipalProperties ()
     {
-      var instance = Settlement.NewObject ();
+      var instance = Settlement.NewObject();
 
       instance.AsMunicipalSettlement().MunicipalityID = 7;
-      Assert.That (instance.AsMunicipalSettlement ().MunicipalityID, Is.EqualTo (7));
+      Assert.That(instance.AsMunicipalSettlement().MunicipalityID, Is.EqualTo(7));
     }
 
     [Test]
     public void SettlementProperties ()
     {
-      var instance = Settlement.NewObject ();
+      var instance = Settlement.NewObject();
 
       instance.SettlementKind = "Ordinary";
-      Assert.That (instance.SettlementKind, Is.EqualTo ("Ordinary"));
+      Assert.That(instance.SettlementKind, Is.EqualTo("Ordinary"));
     }
 
     [Test]
     public void DocumentProperties ()
     {
-      var instance = Settlement.NewObject ();
-      instance.AsMunicipalSettlement ().MunicipalityID = 7;
+      var instance = Settlement.NewObject();
+      instance.AsMunicipalSettlement().MunicipalityID = 7;
 
       instance.Title = "MySettlement";
-      Assert.That (instance.Title, Is.EqualTo ("MySettlement (for municipality 7)"));
+      Assert.That(instance.Title, Is.EqualTo("MySettlement (for municipality 7)"));
     }
 
     [Test]
     public void TenantBoundProperties ()
     {
-      var instance = Settlement.NewObject ();
+      var instance = Settlement.NewObject();
 
       instance.Tenant = "SpecialTenant";
-      Assert.That (instance.Tenant, Is.EqualTo ("SpecialTenant"));
+      Assert.That(instance.Tenant, Is.EqualTo("SpecialTenant"));
     }
 
     [Test]
     public void GetDescriptionForMayors ()
     {
-      var instance = Settlement.NewObject ();
-      instance.AsMunicipalSettlement ().MunicipalityID = 17;
+      var instance = Settlement.NewObject();
+      instance.AsMunicipalSettlement().MunicipalityID = 17;
       instance.Title = "Title";
       instance.SettlementKind = "Kind";
 
-      var result = instance.AsMunicipalSettlement().GetDescriptionForMayors ();
+      var result = instance.AsMunicipalSettlement().GetDescriptionForMayors();
 
-      Assert.That (result, Is.EqualTo ("MunicipalSettlement: Title (for municipality 17) (Kind), 17"));
+      Assert.That(result, Is.EqualTo("MunicipalSettlement: Title (for municipality 17) (Kind), 17"));
     }
   }
 }

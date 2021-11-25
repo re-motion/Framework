@@ -30,7 +30,7 @@ namespace Remotion.Data.UnitTests.UnitTesting
 
     // member fields
 
-    private readonly List<IsIn> _constraints = new List<IsIn> ();
+    private readonly List<IsIn> _constraints = new List<IsIn>();
 
     // construction and disposing
 
@@ -40,11 +40,11 @@ namespace Remotion.Data.UnitTests.UnitTesting
 
     public ContainsConstraint (IEnumerable objects)
     {
-      ArgumentUtility.CheckNotNull ("objects", objects);
+      ArgumentUtility.CheckNotNull("objects", objects);
 
-      _constraints = new List<IsIn> ();
+      _constraints = new List<IsIn>();
       foreach (object current in objects)
-        _constraints.Add (new IsIn (current));
+        _constraints.Add(new IsIn(current));
     }
 
     // methods and properties
@@ -53,7 +53,7 @@ namespace Remotion.Data.UnitTests.UnitTesting
     {
       foreach (IsIn constraint in _constraints)
       {
-        if (!constraint.Eval (obj))
+        if (!constraint.Eval(obj))
           return false;
       }
       return true;

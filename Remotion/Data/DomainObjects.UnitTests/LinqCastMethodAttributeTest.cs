@@ -31,74 +31,74 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void GetExpressionTransformer ()
     {
       var attribute = new LinqCastMethodAttribute();
-      var transformer = attribute.GetExpressionTransformer (null);
+      var transformer = attribute.GetExpressionTransformer(null);
 
-      Assert.That (transformer, Is.TypeOf (typeof (LinqCastMethodAttribute.MethodCallTransformer)));
+      Assert.That(transformer, Is.TypeOf(typeof (LinqCastMethodAttribute.MethodCallTransformer)));
     }
 
     [Test]
     public void MethodCallTransformer_SupportedExpressionTypes ()
     {
-      Assert.That (new LinqCastMethodAttribute.MethodCallTransformer().SupportedExpressionTypes, Is.EqualTo (new[] { ExpressionType.Call }));
+      Assert.That(new LinqCastMethodAttribute.MethodCallTransformer().SupportedExpressionTypes, Is.EqualTo(new[] { ExpressionType.Call }));
     }
 
     [Test]
     public void MethodCallTransformer_Transform_InstanceMethod ()
     {
-      var instance = Expression.Constant (null, typeof (TargetClassForPersistentMixin));
-      var call = Expression.Call (instance, typeof (TargetClassForPersistentMixin).GetProperty ("MixedMembers").GetGetMethod());
-      var transformer = new LinqCastMethodAttribute.MethodCallTransformer ();
+      var instance = Expression.Constant(null, typeof (TargetClassForPersistentMixin));
+      var call = Expression.Call(instance, typeof (TargetClassForPersistentMixin).GetProperty("MixedMembers").GetGetMethod());
+      var transformer = new LinqCastMethodAttribute.MethodCallTransformer();
 
-      var result = transformer.Transform (call);
+      var result = transformer.Transform(call);
 
-      var expected = Expression.Convert (instance, typeof (IMixinAddingPersistentProperties));
-      SqlExpressionTreeComparer.CheckAreEqualTrees (expected, result);
+      var expected = Expression.Convert(instance, typeof (IMixinAddingPersistentProperties));
+      SqlExpressionTreeComparer.CheckAreEqualTrees(expected, result);
     }
 
     [Test]
     public void MethodCallTransformer_Transform_InstanceMethod_WrongParameterCount ()
     {
-      var instance = Expression.Constant (null, typeof (LinqCastMethodAttributeTest));
-      var call = Expression.Call (instance, typeof (LinqCastMethodAttributeTest).GetMethod ("InvalidInstanceCastMethod"), Expression.Constant (0));
-      var transformer = new LinqCastMethodAttribute.MethodCallTransformer ();
-      Assert.That (
-          () => transformer.Transform (call),
+      var instance = Expression.Constant(null, typeof (LinqCastMethodAttributeTest));
+      var call = Expression.Call(instance, typeof (LinqCastMethodAttributeTest).GetMethod("InvalidInstanceCastMethod"), Expression.Constant(0));
+      var transformer = new LinqCastMethodAttribute.MethodCallTransformer();
+      Assert.That(
+          () => transformer.Transform(call),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo ("Non-static LinqCastMethods must have no arguments. Expression: 'null.InvalidInstanceCastMethod(0)'"));
+              .With.Message.EqualTo("Non-static LinqCastMethods must have no arguments. Expression: 'null.InvalidInstanceCastMethod(0)'"));
     }
 
     [Test]
     public void MethodCallTransformer_Transform_StaticMethod ()
     {
-      var instance = Expression.Constant (null, typeof (TargetClassForPersistentMixin));
-      var call = Expression.Call (typeof (TargetClassForPersistentMixinExtensions).GetMethod ("GetMixedMembers"), instance);
-      var transformer = new LinqCastMethodAttribute.MethodCallTransformer ();
+      var instance = Expression.Constant(null, typeof (TargetClassForPersistentMixin));
+      var call = Expression.Call(typeof (TargetClassForPersistentMixinExtensions).GetMethod("GetMixedMembers"), instance);
+      var transformer = new LinqCastMethodAttribute.MethodCallTransformer();
 
-      var result = transformer.Transform (call);
+      var result = transformer.Transform(call);
 
-      var expected = Expression.Convert (instance, typeof (IMixinAddingPersistentProperties));
-      SqlExpressionTreeComparer.CheckAreEqualTrees (expected, result);
+      var expected = Expression.Convert(instance, typeof (IMixinAddingPersistentProperties));
+      SqlExpressionTreeComparer.CheckAreEqualTrees(expected, result);
     }
 
     [Test]
     public void MethodCallTransformer_Transform_StaticMethod_WrongParameterCount ()
     {
-      var call = Expression.Call (typeof (LinqCastMethodAttributeTest).GetMethod ("InvalidStaticCastMethod"));
-      var transformer = new LinqCastMethodAttribute.MethodCallTransformer ();
-      Assert.That (
-          () => transformer.Transform (call),
+      var call = Expression.Call(typeof (LinqCastMethodAttributeTest).GetMethod("InvalidStaticCastMethod"));
+      var transformer = new LinqCastMethodAttribute.MethodCallTransformer();
+      Assert.That(
+          () => transformer.Transform(call),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo ("Static LinqCastMethods must have exactly one argument. Expression: 'InvalidStaticCastMethod()'"));
+              .With.Message.EqualTo("Static LinqCastMethods must have exactly one argument. Expression: 'InvalidStaticCastMethod()'"));
     }
 
     public IMixinAddingPersistentProperties InvalidInstanceCastMethod (int i)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public static IMixinAddingPersistentProperties InvalidStaticCastMethod ()
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
   }
 }

@@ -30,7 +30,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns> The <paramref name="menuItems"/>, sorted by their categories. </returns>
     public static WebMenuItem[] GroupMenuItems (WebMenuItem[] menuItems, bool generateSeparators)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("menuItems", menuItems);
+      ArgumentUtility.CheckNotNullOrItemsNull("menuItems", menuItems);
 
       //  <string category, ArrayList menuItems>
       NameObjectCollection groupedMenuItems = new NameObjectCollection();
@@ -42,15 +42,15 @@ namespace Remotion.Web.UI.Controls
 
         string category = menuItem.Category ?? string.Empty;
         ArrayList menuItemsForCategory;
-        if (groupedMenuItems.Contains (category))
+        if (groupedMenuItems.Contains(category))
           menuItemsForCategory = (ArrayList) groupedMenuItems[category]!;
         else
         {
           menuItemsForCategory = new ArrayList();
-          groupedMenuItems.Add (category, menuItemsForCategory);
-          categories.Add (category);
+          groupedMenuItems.Add(category, menuItemsForCategory);
+          categories.Add(category);
         }
-        menuItemsForCategory.Add (menuItem);
+        menuItemsForCategory.Add(menuItem);
       }
 
       ArrayList arrayList = new ArrayList();
@@ -63,11 +63,11 @@ namespace Remotion.Web.UI.Controls
           if (isFirst)
             isFirst = false;
           else
-            arrayList.Add (WebMenuItem.GetSeparator());
+            arrayList.Add(WebMenuItem.GetSeparator());
         }
-        arrayList.AddRange ((ArrayList) groupedMenuItems[category]!);
+        arrayList.AddRange((ArrayList) groupedMenuItems[category]!);
       }
-      return (WebMenuItem[]) arrayList.ToArray (typeof (WebMenuItem));
+      return (WebMenuItem[]) arrayList.ToArray(typeof (WebMenuItem));
     }
 
     /// <summary> Initializes a new instance. </summary>
@@ -84,7 +84,7 @@ namespace Remotion.Web.UI.Controls
 
     public new WebMenuItem[] ToArray ()
     {
-      return (WebMenuItem[]) InnerList.ToArray (typeof (WebMenuItem));
+      return (WebMenuItem[]) InnerList.ToArray(typeof (WebMenuItem));
     }
 
     //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
@@ -99,7 +99,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns> The <see cref="WebMenuItem"/> objects, sorted by their categories. </returns>
     public WebMenuItem[] GroupMenuItems (bool generateSeparators)
     {
-      return GroupMenuItems (ToArray(), generateSeparators);
+      return GroupMenuItems(ToArray(), generateSeparators);
     }
   }
 }

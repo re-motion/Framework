@@ -38,35 +38,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     public void OnDeserialization (object sender)
     {
       if (s_receiver != null)
-        s_receiver.OnDeserialization (sender);
+        s_receiver.OnDeserialization(sender);
     }
 
     [OnDeserialized]
     public void OnDeserialized (StreamingContext context)
     {
       if (s_receiver != null)
-        s_receiver.OnDeserialized (context);
+        s_receiver.OnDeserialized(context);
     }
 
     [OnDeserializing]
     public void OnDeserializing (StreamingContext context)
     {
       if (s_receiver != null)
-        s_receiver.OnDeserializing (context);
+        s_receiver.OnDeserializing(context);
     }
 
     [OnSerialized]
     public void OnSerialized (StreamingContext context)
     {
       if (s_receiver != null)
-        s_receiver.OnSerialized (context);
+        s_receiver.OnSerialized(context);
     }
 
     [OnSerializing]
     public void OnSerializing (StreamingContext context)
     {
       if (s_receiver != null)
-        s_receiver.OnSerializing (context);
+        s_receiver.OnSerializing(context);
     }
   }
 }

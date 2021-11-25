@@ -37,26 +37,26 @@ namespace Remotion.Validation.Providers
 
     public ValidationAttributesBasedValidationRuleCollectorProvider (IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
+      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
       ValidationMessageFactory = validationMessageFactory;
     }
 
     protected override ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull ("types", types);
+      ArgumentUtility.CheckNotNull("types", types);
 
-      return types.SelectMany (
-          t => t.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly)
-              .Where (HasValidationRulesOnProperty)
-              .Select (p => new { Type = t, Property = p }))
-          .Select (r => new { r.Type, Reflector = new ValidationAttributesBasedPropertyRuleReflector (r.Property, ValidationMessageFactory) })
-          .ToLookup (r => r.Type, c => (IAttributesBasedValidationPropertyRuleReflector) c.Reflector);
+      return types.SelectMany(
+          t => t.GetProperties(PropertyBindingFlags | BindingFlags.DeclaredOnly)
+              .Where(HasValidationRulesOnProperty)
+              .Select(p => new { Type = t, Property = p }))
+          .Select(r => new { r.Type, Reflector = new ValidationAttributesBasedPropertyRuleReflector(r.Property, ValidationMessageFactory) })
+          .ToLookup(r => r.Type, c => (IAttributesBasedValidationPropertyRuleReflector) c.Reflector);
     }
 
     private bool HasValidationRulesOnProperty (PropertyInfo property)
     {
-      var reflector = new ValidationAttributesBasedPropertyRuleReflector (property, ValidationMessageFactory);
+      var reflector = new ValidationAttributesBasedPropertyRuleReflector(property, ValidationMessageFactory);
       return reflector.GetRemovablePropertyValidators().Any()
              || reflector.GetNonRemovablePropertyValidators().Any()
              || reflector.GetRemovingValidatorRegistrations().Any();

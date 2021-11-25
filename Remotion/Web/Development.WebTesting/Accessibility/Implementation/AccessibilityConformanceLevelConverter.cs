@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
                 { "section508", AccessibilityConformanceLevel.Section508 },
             };
 
-      s_enumToString = s_stringToEnum.ToDictionary (kvp => kvp.Value, kvp => kvp.Key);
+      s_enumToString = s_stringToEnum.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
     }
 
     /// <summary>
@@ -50,10 +50,10 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     /// </summary>
     public static AccessibilityConformanceLevel ConvertToEnum ([NotNull] string conformanceLevelAsString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("conformanceLevelAsString", conformanceLevelAsString);
+      ArgumentUtility.CheckNotNullOrEmpty("conformanceLevelAsString", conformanceLevelAsString);
 
-      if (!s_stringToEnum.TryGetValue (conformanceLevelAsString, out var conformanceLevel))
-        throw new InvalidOperationException ($"The conformance level '{conformanceLevelAsString}' is not supported.");
+      if (!s_stringToEnum.TryGetValue(conformanceLevelAsString, out var conformanceLevel))
+        throw new InvalidOperationException($"The conformance level '{conformanceLevelAsString}' is not supported.");
 
       return conformanceLevel;
     }
@@ -71,9 +71,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     /// </summary>
     public static bool IsValid ([NotNull] string conformanceLevelAsString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("conformanceLevelAsString", conformanceLevelAsString);
+      ArgumentUtility.CheckNotNullOrEmpty("conformanceLevelAsString", conformanceLevelAsString);
 
-      return s_stringToEnum.ContainsKey (conformanceLevelAsString);
+      return s_stringToEnum.ContainsKey(conformanceLevelAsString);
     }
   }
 }

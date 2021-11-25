@@ -38,9 +38,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
                            MockRepository.GenerateStub<IPersistableDataValidator>(),
                            MockRepository.GenerateStub<IPersistableDataValidator>()
                        };
-      var compoundValidator = new CompoundPersistableDataValidator (validators);
+      var compoundValidator = new CompoundPersistableDataValidator(validators);
 
-      Assert.That (compoundValidator.Validators, Is.EqualTo (validators));
+      Assert.That(compoundValidator.Validators, Is.EqualTo(validators));
     }
 
     [Test]
@@ -54,19 +54,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
-        var dataContainer = DataContainer.CreateNew (domainObject.ID);
-        var persistableData = new PersistableData (
+        var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes>(DomainObjectIDs.ClassWithAllDataTypes1);
+        var dataContainer = DataContainer.CreateNew(domainObject.ID);
+        var persistableData = new PersistableData(
             domainObject,
             new DomainObjectState.Builder().SetChanged().Value,
             dataContainer,
             Enumerable.Empty<IRelationEndPoint>());
-        var compoundValidator = new CompoundPersistableDataValidator (validators);
+        var compoundValidator = new CompoundPersistableDataValidator(validators);
 
-        compoundValidator.Validate (ClientTransaction.Current, persistableData);
+        compoundValidator.Validate(ClientTransaction.Current, persistableData);
 
-        validators[0].AssertWasCalled (_ => _.Validate (ClientTransaction.Current, persistableData));
-        validators[1].AssertWasCalled (_ => _.Validate (ClientTransaction.Current, persistableData));
+        validators[0].AssertWasCalled(_ => _.Validate(ClientTransaction.Current, persistableData));
+        validators[1].AssertWasCalled(_ => _.Validate(ClientTransaction.Current, persistableData));
       }
     }
   }

@@ -36,10 +36,10 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       return from IRelationEndPointDefinition endPointDefinition in classDefinition.MyRelationEndPointDefinitions
-          select Validate (endPointDefinition);
+          select Validate(endPointDefinition);
     }
 
     private MappingValidationResult Validate (IRelationEndPointDefinition endPointDefinition)
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
         if (relationEndPointDefinition.PropertyDefinition.StorageClass == StorageClass.Persistent
             && oppositeEndPointDefinition.ClassDefinition.StorageEntityDefinition is NonPersistentStorageEntity)
         {
-          return MappingValidationResult.CreateInvalidResultForProperty (
+          return MappingValidationResult.CreateInvalidResultForProperty(
               relationEndPointDefinition.PropertyInfo,
               "The relation property is defined as persistent but the referenced type '{0}' is non-persistent. "
               + "Persistent relation properties may only reference persistent types.",

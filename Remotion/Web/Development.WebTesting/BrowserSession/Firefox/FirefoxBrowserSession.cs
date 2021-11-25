@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Firefox
     /// <inheritdoc />
     public override IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
     {
-      return new[] { new BrowserLogEntry (LogLevel.Info, "Firefox does not support getting browser logs.", DateTime.Now) };
+      return new[] { new BrowserLogEntry(LogLevel.Info, "Firefox does not support getting browser logs.", DateTime.Now) };
     }
   }
 }

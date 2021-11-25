@@ -29,8 +29,8 @@ namespace Remotion.Web.UI.Controls
     public MainMenuTab (string itemID, string text, IconInfo? icon)
         : base (itemID, text, icon)
     {
-      _subMenuTabs = new SubMenuTabCollection (OwnerControl);
-      _subMenuTabs.SetParent (this);
+      _subMenuTabs = new SubMenuTabCollection(OwnerControl);
+      _subMenuTabs.SetParent(this);
     }
 
     public MainMenuTab (string itemID, string text)
@@ -43,8 +43,8 @@ namespace Remotion.Web.UI.Controls
     [EditorBrowsable (EditorBrowsableState.Never)]
     public MainMenuTab ()
     {
-      _subMenuTabs = new SubMenuTabCollection (OwnerControl);
-      _subMenuTabs.SetParent (this);
+      _subMenuTabs = new SubMenuTabCollection(OwnerControl);
+      _subMenuTabs.SetParent(this);
     }
 
     [PersistenceMode (PersistenceMode.InnerProperty)]
@@ -76,7 +76,7 @@ namespace Remotion.Web.UI.Controls
 
       _activeTab = this;
 
-      Assertion.IsNotNull (Command, "Command must not be null.");
+      Assertion.IsNotNull(Command, "Command must not be null.");
 
       if (Command.Type == CommandType.None)
       {

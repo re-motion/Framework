@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public void Open ()
     {
       var menuButtonScope = GetDropDownMenuButtonScope();
-      Open (menuButtonScope);
+      Open(menuButtonScope);
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public bool IsOpen ()
     {
       var menuButtonScope = GetDropDownMenuButtonScope();
-      return IsOpen (menuButtonScope);
+      return IsOpen(menuButtonScope);
     }
 
     /// <summary>
@@ -62,26 +62,26 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public void Close ()
     {
       if (IsOpen())
-        Context.Browser.Driver.ExecuteScript ("DropDownMenu_ClosePopUp(false)", Scope);
+        Context.Browser.Driver.ExecuteScript("DropDownMenu_ClosePopUp(false)", Scope);
     }
 
     /// <inheritdoc/>
     public IReadOnlyList<ItemDefinition> GetItemDefinitions ()
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       var dropDownMenuScope = GetDropDownMenuScope();
 
-      var itemDefinitions = RetryUntilTimeout.Run (
-          () => dropDownMenuScope.FindAllCss ("li.DropDownMenuItem, li.DropDownMenuItemDisabled")
-              .Select (
+      var itemDefinitions = RetryUntilTimeout.Run(
+          () => dropDownMenuScope.FindAllCss("li.DropDownMenuItem, li.DropDownMenuItemDisabled")
+              .Select(
                   (itemScope, i) =>
-                      new ItemDefinition (
+                      new ItemDefinition(
                           itemScope[DiagnosticMetadataAttributes.ItemID],
                           i + 1,
                           itemScope.Text.Trim(),
-                          FindItemCommand (itemScope).IsDisabled()))
+                          FindItemCommand(itemScope).IsDisabled()))
               .ToList());
 
       Close();
@@ -107,17 +107,17 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem(itemID)";
 
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: operationName);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);
 
-      var itemCommand = GetItemCommandByItemID (itemID);
+      var itemCommand = GetItemCommandByItemID(itemID);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: operationName);
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: operationName);
 
-      return ClickItem (itemCommand, actionOptions);
+      return ClickItem(itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -125,17 +125,17 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem.WithItemID";
 
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: operationName);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);
 
-      var itemCommand = GetItemCommandByItemID (itemID);
+      var itemCommand = GetItemCommandByItemID(itemID);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: operationName);
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: operationName);
 
-      return ClickItem (itemCommand, actionOptions);
+      return ClickItem(itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -144,14 +144,14 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       const string operationName = "SelectItem.WithIndex";
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: operationName);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);
 
-      var itemCommand = GetItemCommandByIndex (oneBasedIndex);
+      var itemCommand = GetItemCommandByIndex(oneBasedIndex);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: operationName);
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: operationName);
 
-      return ClickItem (itemCommand, actionOptions);
+      return ClickItem(itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -159,17 +159,17 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem.WithHtmlID";
 
-      ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
+      ArgumentUtility.CheckNotNullOrEmpty("htmlID", htmlID);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: operationName);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);
 
-      var itemCommand = GetItemCommandByHtmlID (htmlID);
+      var itemCommand = GetItemCommandByHtmlID(htmlID);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: operationName);
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: operationName);
 
-      return ClickItem (itemCommand, actionOptions);
+      return ClickItem(itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -177,17 +177,17 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem.WithDisplayText";
 
-      ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
+      ArgumentUtility.CheckNotNullOrEmpty("displayText", displayText);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: operationName);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);
 
-      var itemCommand = GetItemCommandByDisplayText (displayText);
+      var itemCommand = GetItemCommandByDisplayText(displayText);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: operationName);
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: operationName);
 
-      return ClickItem (itemCommand, actionOptions);
+      return ClickItem(itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -197,92 +197,92 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem.WithDisplayTextContains";
 
-      ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
+      ArgumentUtility.CheckNotNullOrEmpty("containsDisplayText", containsDisplayText);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: operationName);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);
 
-      var itemCommand = GetItemCommandByDisplayTextContains (containsDisplayText);
+      var itemCommand = GetItemCommandByDisplayTextContains(containsDisplayText);
 
       if (itemCommand.IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver, operationName: operationName);
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: operationName);
 
-      return ClickItem (itemCommand, actionOptions);
+      return ClickItem(itemCommand, actionOptions);
     }
 
     private CommandControlObject GetItemCommandByItemID (string itemID)
     {
       var dropDownMenuScope = GetDropDownMenuScope();
-      var scope = dropDownMenuScope.FindTagWithAttribute (
+      var scope = dropDownMenuScope.FindTagWithAttribute(
           "ul.DropDownMenuOptions > li",
           DiagnosticMetadataAttributes.ItemID,
           itemID);
 
-      return FindItemCommand (scope);
+      return FindItemCommand(scope);
     }
 
     private CommandControlObject GetItemCommandByIndex (int oneBasedIndex)
     {
       var dropDownMenuScope = GetDropDownMenuScope();
-      var scope = dropDownMenuScope.FindXPath (string.Format ("li[{0}]", oneBasedIndex));
+      var scope = dropDownMenuScope.FindXPath(string.Format("li[{0}]", oneBasedIndex));
 
-      return FindItemCommand (scope);
+      return FindItemCommand(scope);
     }
 
     private CommandControlObject GetItemCommandByHtmlID (string htmlID)
     {
       var dropDownMenuScope = GetDropDownMenuScope();
-      var scope = dropDownMenuScope.FindId (htmlID);
+      var scope = dropDownMenuScope.FindId(htmlID);
 
-      return FindItemCommand (scope);
+      return FindItemCommand(scope);
     }
 
     private CommandControlObject GetItemCommandByDisplayText (string displayText)
     {
       var dropDownMenuScope = GetDropDownMenuScope();
-      var scope = dropDownMenuScope.FindTagWithAttribute (
+      var scope = dropDownMenuScope.FindTagWithAttribute(
           "ul.DropDownMenuOptions > li",
           DiagnosticMetadataAttributes.Content,
           displayText);
 
-      return FindItemCommand (scope);
+      return FindItemCommand(scope);
     }
 
     private CommandControlObject GetItemCommandByDisplayTextContains (string containsDisplayText)
     {
       var dropDownMenuScope = GetDropDownMenuScope();
-      var scope = dropDownMenuScope.FindTagWithAttributeUsingOperator (
+      var scope = dropDownMenuScope.FindTagWithAttributeUsingOperator(
           "ul.DropDownMenuOptions > li",
           CssComparisonOperator.SubstringMatch,
           DiagnosticMetadataAttributes.Content,
           containsDisplayText);
 
-      return FindItemCommand (scope);
+      return FindItemCommand(scope);
     }
 
     private void Open (ElementScope menuButtonScope)
     {
-      if (!IsOpen (menuButtonScope))
+      if (!IsOpen(menuButtonScope))
       {
-        PerformOpen (menuButtonScope);
+        PerformOpen(menuButtonScope);
 
-        RetryUntilTimeout.Run (
+        RetryUntilTimeout.Run(
             () =>
             {
-              if (GetDropDownMenuPopupID (menuButtonScope) == null)
-                throw AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to open the menu.");
+              if (GetDropDownMenuPopupID(menuButtonScope) == null)
+                throw AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to open the menu.");
             });
       }
     }
 
     private bool IsOpen (ElementScope menuButtonScope)
     {
-      return GetDropDownMenuPopupID (menuButtonScope) != null;
+      return GetDropDownMenuPopupID(menuButtonScope) != null;
     }
 
     private ElementScope GetDropDownMenuButtonScope ()
     {
-      return Scope.FindCss ("a[aria-haspopup='menu']");
+      return Scope.FindCss("a[aria-haspopup='menu']");
     }
 
     private string GetDropDownMenuPopupID (ElementScope scope)
@@ -294,10 +294,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       var menuButtonScope = GetDropDownMenuButtonScope();
 
-      Open (menuButtonScope);
+      Open(menuButtonScope);
 
-      var dropDownMenuPopupID = GetDropDownMenuPopupID (menuButtonScope);
-      var dropDownMenuOptionsScope = Context.RootScope.FindCss ("#" + dropDownMenuPopupID + " > ul.DropDownMenuOptions");
+      var dropDownMenuPopupID = GetDropDownMenuPopupID(menuButtonScope);
+      var dropDownMenuOptionsScope = Context.RootScope.FindCss("#" + dropDownMenuPopupID + " > ul.DropDownMenuOptions");
 
       return dropDownMenuOptionsScope;
     }
@@ -307,7 +307,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       try
       {
         ((IControlObjectNotifier) itemCommand).ActionExecute += OnActionExecute;
-        return itemCommand.Click (actionOptions);
+        return itemCommand.Click(actionOptions);
       }
       finally
       {
@@ -318,7 +318,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     private CommandControlObject FindItemCommand (ElementScope itemScope)
     {
       var itemCommandScope = itemScope.FindLink();
-      return new CommandControlObject (Context.CloneForControl (itemCommandScope));
+      return new CommandControlObject(Context.CloneForControl(itemCommandScope));
     }
   }
 }

@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation
 
     public virtual string FormatDateValue (DateTime dateValue)
     {
-      return dateValue.ToString ("d");
+      return dateValue.ToString("d");
     }
 
     public virtual string FormatTimeValue (DateTime timeValue, bool showSeconds)
@@ -40,12 +40,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation
       if (showSeconds)
       {
         //  T: hh, mm, ss
-        return timeValue.ToString ("T");
+        return timeValue.ToString("T");
       }
       else
       {
         //  T: hh, mm
-        return timeValue.ToString ("t");
+        return timeValue.ToString("t");
       }
     }
 
@@ -54,18 +54,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation
       var shortTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern;
       var hoursOn12HourClockFormatSpecifier = "h";
       var amPmDesignatorFormatSpecifier = "t";
-      return shortTimePattern.Contains (hoursOn12HourClockFormatSpecifier) && shortTimePattern.Contains (amPmDesignatorFormatSpecifier);
+      return shortTimePattern.Contains(hoursOn12HourClockFormatSpecifier) && shortTimePattern.Contains(amPmDesignatorFormatSpecifier);
     }
 
     public int GetDateMaxLength ()
     {
-      var maxDate = FormatDateValue (new DateTime (2000, 12, 31));
+      var maxDate = FormatDateValue(new DateTime(2000, 12, 31));
       return maxDate.Length;
     }
 
     public int GetTimeMaxLength (bool showSeconds)
     {
-      var maxTime = FormatTimeValue (new DateTime (1, 1, 1, 23, 30, 30), showSeconds);
+      var maxTime = FormatTimeValue(new DateTime(1, 1, 1, 23, 30, 30), showSeconds);
       return maxTime.Length;
     }
   }

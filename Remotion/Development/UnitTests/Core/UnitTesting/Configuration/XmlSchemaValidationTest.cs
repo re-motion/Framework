@@ -43,20 +43,20 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Configuration
       var validFragment = @"<tag xmlns=""targetNamespace"" attribute=""true"" />";
       var invalidFragment = @"<tag xmlns=""targetNamespace"" attribute=""null"" />";
 
-      Assert.That (() => XmlSchemaValidation.Validate (validFragment, xsdContent), Throws.Nothing);
-      Assert.That (
-          () => XmlSchemaValidation.Validate (invalidFragment, xsdContent),
-          Throws.Exception.With.Message.StartsWith ("Validation of the xml fragment did not succeed for schema"));
+      Assert.That(() => XmlSchemaValidation.Validate(validFragment, xsdContent), Throws.Nothing);
+      Assert.That(
+          () => XmlSchemaValidation.Validate(invalidFragment, xsdContent),
+          Throws.Exception.With.Message.StartsWith("Validation of the xml fragment did not succeed for schema"));
     }
 
     [Test]
     public void Validate_InvalidSchema ()
     {
       var invalidSchema = @"<xs:invalid xmlns:xs=""http://www.w3.org/2001/XMLSchema"" />";
-      Assert.That (
-          () => XmlSchemaValidation.Validate ("does not matter", invalidSchema),
+      Assert.That(
+          () => XmlSchemaValidation.Validate("does not matter", invalidSchema),
           Throws.InstanceOf<XmlSchemaException>()
-              .With.Message.StartsWith ("Schema is invalid:"));
+              .With.Message.StartsWith("Schema is invalid:"));
     }
   }
 }

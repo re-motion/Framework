@@ -35,31 +35,31 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     public override void SetUp ()
     {
       base.SetUp();
-      _executionState = new ExecutingSubFunctionWithoutPermaUrlState (ExecutionStateContextMock.Object, new ExecutionStateParameters (SubFunction.Object, PostBackCollection));
+      _executionState = new ExecutingSubFunctionWithoutPermaUrlState(ExecutionStateContextMock.Object, new ExecutionStateParameters(SubFunction.Object, PostBackCollection));
     }
 
     protected override Mock<OtherTestFunction> CreateSubFunction ()
     {
-      return new Mock<OtherTestFunction> (MockBehavior.Strict);
+      return new Mock<OtherTestFunction>(MockBehavior.Strict);
     }
 
     [Test]
     public void IsExecuting ()
     {
-      Assert.That (_executionState.IsExecuting, Is.True);
+      Assert.That(_executionState.IsExecuting, Is.True);
     }
 
     [Test]
     public void ExecuteSubFunction_GoesToPostProcessingSubFunction ()
     {
       var sequence = new MockSequence();
-      SubFunction.InSequence (sequence).Setup (mock => mock.Execute (WxeContext)).Verifiable();
-      ExecutionStateContextMock.InSequence (sequence)
-          .Setup (mock => mock.SetExecutionState (It.IsNotNull<PostProcessingSubFunctionState>()))
-          .Callback ((IExecutionState executionState) => CheckExecutionState ((PostProcessingSubFunctionState) executionState))
+      SubFunction.InSequence(sequence).Setup(mock => mock.Execute(WxeContext)).Verifiable();
+      ExecutionStateContextMock.InSequence(sequence)
+          .Setup(mock => mock.SetExecutionState(It.IsNotNull<PostProcessingSubFunctionState>()))
+          .Callback((IExecutionState executionState) => CheckExecutionState((PostProcessingSubFunctionState) executionState))
           .Verifiable();
 
-      _executionState.ExecuteSubFunction (WxeContext);
+      _executionState.ExecuteSubFunction(WxeContext);
 
       VerifyAll();
     }
@@ -68,13 +68,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     public void ExecuteSubFunction_ReEntrancy_GoesToPostProcessingSubFunction ()
     {
       var sequence = new MockSequence();
-      SubFunction.InSequence (sequence).Setup (mock => mock.Execute (WxeContext)).Callback ((WxeContext context) => WxeThreadAbortHelper.Abort ()).Verifiable();
-      SubFunction.InSequence (sequence).Setup (mock => mock.Execute (WxeContext)).Verifiable();
-      ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetExecutionState (It.IsNotNull<IExecutionState>())).Verifiable();
+      SubFunction.InSequence(sequence).Setup(mock => mock.Execute(WxeContext)).Callback((WxeContext context) => WxeThreadAbortHelper.Abort()).Verifiable();
+      SubFunction.InSequence(sequence).Setup(mock => mock.Execute(WxeContext)).Verifiable();
+      ExecutionStateContextMock.InSequence(sequence).Setup(mock => mock.SetExecutionState(It.IsNotNull<IExecutionState>())).Verifiable();
 
       try
       {
-        _executionState.ExecuteSubFunction (WxeContext);
+        _executionState.ExecuteSubFunction(WxeContext);
         Assert.Fail();
       }
       catch (ThreadAbortException)
@@ -82,7 +82,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
         WxeThreadAbortHelper.ResetAbort();
       }
 
-      _executionState.ExecuteSubFunction (WxeContext);
+      _executionState.ExecuteSubFunction(WxeContext);
 
       VerifyAll();
     }

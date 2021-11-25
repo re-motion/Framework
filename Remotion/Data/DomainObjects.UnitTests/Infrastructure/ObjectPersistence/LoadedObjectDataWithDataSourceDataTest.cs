@@ -30,57 +30,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _loadedObjectData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (DomainObjectIDs.Order1);
-      _dataSourceData = DataContainer.CreateForExisting (DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
+      _loadedObjectData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order1);
+      _dataSourceData = DataContainer.CreateForExisting(DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
     }
 
     [Test]
     public void Initialization ()
     {
-      var dataWithDataSource = new LoadedObjectDataWithDataSourceData (_loadedObjectData, _dataSourceData);
+      var dataWithDataSource = new LoadedObjectDataWithDataSourceData(_loadedObjectData, _dataSourceData);
 
-      Assert.That (dataWithDataSource.LoadedObjectData, Is.SameAs (_loadedObjectData));
-      Assert.That (dataWithDataSource.DataSourceData, Is.SameAs (_dataSourceData));
-      Assert.That (dataWithDataSource.IsNull, Is.False);
+      Assert.That(dataWithDataSource.LoadedObjectData, Is.SameAs(_loadedObjectData));
+      Assert.That(dataWithDataSource.DataSourceData, Is.SameAs(_dataSourceData));
+      Assert.That(dataWithDataSource.IsNull, Is.False);
     }
 
     [Test]
     public void Initialization_Null ()
     {
-      var dataWithDataSource = new LoadedObjectDataWithDataSourceData (new NullLoadedObjectData(), null);
+      var dataWithDataSource = new LoadedObjectDataWithDataSourceData(new NullLoadedObjectData(), null);
 
-      Assert.That (dataWithDataSource.LoadedObjectData.IsNull, Is.True);
-      Assert.That (dataWithDataSource.DataSourceData, Is.Null);
-      Assert.That (dataWithDataSource.IsNull, Is.True);
+      Assert.That(dataWithDataSource.LoadedObjectData.IsNull, Is.True);
+      Assert.That(dataWithDataSource.DataSourceData, Is.Null);
+      Assert.That(dataWithDataSource.IsNull, Is.True);
     }
 
     [Test]
     public void Initialization_IDsDontMatch ()
     {
-      var loadedObjectDataStub = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (DomainObjectIDs.Order3);
-      Assert.That (
-          () => new LoadedObjectDataWithDataSourceData (loadedObjectDataStub, _dataSourceData),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+      var loadedObjectDataStub = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order3);
+      Assert.That(
+          () => new LoadedObjectDataWithDataSourceData(loadedObjectDataStub, _dataSourceData),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The ID of the dataSourceData parameter does not match the loadedObjectData.", "dataSourceData"));
     }
 
     [Test]
     public void Initialization_Null_DataContainerNotNull ()
     {
-      Assert.That (
-          () => new LoadedObjectDataWithDataSourceData (new NullLoadedObjectData(), _dataSourceData),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+      Assert.That(
+          () => new LoadedObjectDataWithDataSourceData(new NullLoadedObjectData(), _dataSourceData),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The dataSourceData parameter must be null when loadedObjectData.IsNull is true.", "dataSourceData"));
     }
 
     [Test]
     public void Initialization_Null_LoadedObjectDataNotNull ()
     {
-      Assert.That (
-          () => new LoadedObjectDataWithDataSourceData (_loadedObjectData, null),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+      Assert.That(
+          () => new LoadedObjectDataWithDataSourceData(_loadedObjectData, null),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The dataSourceData parameter must not be null when loadedObjectData.IsNull is false.", "dataSourceData"));
     }
   }

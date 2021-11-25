@@ -32,68 +32,68 @@ namespace Remotion.Web.UnitTests.Core.Security
     public void GetPrincipal_HttpContextUserIsNotAuthenticated_ReturnsNullSecurityPrincipal ()
     {
       var identityStub = new Mock<IIdentity>();
-      identityStub.Setup (_ => _.IsAuthenticated).Returns (false);
+      identityStub.Setup(_ => _.IsAuthenticated).Returns(false);
 
       var principalStub = new Mock<IPrincipal>();
-      principalStub.Setup (_ => _.Identity).Returns (identityStub.Object);
+      principalStub.Setup(_ => _.Identity).Returns(identityStub.Object);
 
       var httpContextStub = new Mock<HttpContextBase>();
-      httpContextStub.SetupProperty (_ => _.User);
+      httpContextStub.SetupProperty(_ => _.User);
       httpContextStub.Object.User = principalStub.Object;
 
       var httpContextProviderStub = new Mock<IHttpContextProvider>();
-      httpContextProviderStub.Setup (_ => _.GetCurrentHttpContext()).Returns (httpContextStub.Object);
+      httpContextProviderStub.Setup(_ => _.GetCurrentHttpContext()).Returns(httpContextStub.Object);
 
-      IPrincipalProvider principalProvider = new HttpContextPrincipalProvider (httpContextProviderStub.Object);
+      IPrincipalProvider principalProvider = new HttpContextPrincipalProvider(httpContextProviderStub.Object);
 
-      Assert.That (principalProvider.GetPrincipal(), Is.TypeOf<NullSecurityPrincipal>());
+      Assert.That(principalProvider.GetPrincipal(), Is.TypeOf<NullSecurityPrincipal>());
     }
 
     [Test]
     public void GetPrincipal_HttpContextUserIsAuthenticated_ReturnsSecurityPrincipalWithNameFromUser ()
     {
       var identityStub = new Mock<IIdentity>();
-      identityStub.Setup (_ => _.IsAuthenticated).Returns (true);
-      identityStub.Setup (_ => _.Name).Returns ("The User");
+      identityStub.Setup(_ => _.IsAuthenticated).Returns(true);
+      identityStub.Setup(_ => _.Name).Returns("The User");
 
       var principalStub = new Mock<IPrincipal>();
-      principalStub.Setup (_ => _.Identity).Returns (identityStub.Object);
+      principalStub.Setup(_ => _.Identity).Returns(identityStub.Object);
 
       var httpContextStub = new Mock<HttpContextBase>();
-      httpContextStub.SetupProperty (_ => _.User);
+      httpContextStub.SetupProperty(_ => _.User);
       httpContextStub.Object.User = principalStub.Object;
 
       var httpContextProviderStub = new Mock<IHttpContextProvider>();
-      httpContextProviderStub.Setup (_ => _.GetCurrentHttpContext()).Returns (httpContextStub.Object);
+      httpContextProviderStub.Setup(_ => _.GetCurrentHttpContext()).Returns(httpContextStub.Object);
 
-      IPrincipalProvider principalProvider = new HttpContextPrincipalProvider (httpContextProviderStub.Object);
+      IPrincipalProvider principalProvider = new HttpContextPrincipalProvider(httpContextProviderStub.Object);
 
       var securityPrincipal = principalProvider.GetPrincipal();
-      Assert.That (securityPrincipal, Is.TypeOf<SecurityPrincipal>());
-      Assert.That (securityPrincipal.User, Is.EqualTo ("The User"));
-      Assert.That (securityPrincipal.Roles, Is.Null);
-      Assert.That (securityPrincipal.SubstitutedUser, Is.Null);
-      Assert.That (securityPrincipal.SubstitutedRoles, Is.Null);
+      Assert.That(securityPrincipal, Is.TypeOf<SecurityPrincipal>());
+      Assert.That(securityPrincipal.User, Is.EqualTo("The User"));
+      Assert.That(securityPrincipal.Roles, Is.Null);
+      Assert.That(securityPrincipal.SubstitutedUser, Is.Null);
+      Assert.That(securityPrincipal.SubstitutedRoles, Is.Null);
     }
 
     [Test]
     public void GetPrincipal_HttpContextProviderReturnsNull_ThrowsInvalidOperationException ()
     {
       var httpContextProviderStub = new Mock<IHttpContextProvider>();
-      httpContextProviderStub.Setup (_ => _.GetCurrentHttpContext()).Returns ((HttpContextBase) null);
+      httpContextProviderStub.Setup(_ => _.GetCurrentHttpContext()).Returns((HttpContextBase) null);
 
-      IPrincipalProvider principalProvider = new HttpContextPrincipalProvider (httpContextProviderStub.Object);
+      IPrincipalProvider principalProvider = new HttpContextPrincipalProvider(httpContextProviderStub.Object);
 
-      Assert.That (
+      Assert.That(
           () => principalProvider.GetPrincipal(),
-          Throws.InvalidOperationException.With.Message.EqualTo ("IHttpContextProvider.GetCurrentHttpContext() evaludated and returned null."));
+          Throws.InvalidOperationException.With.Message.EqualTo("IHttpContextProvider.GetCurrentHttpContext() evaludated and returned null."));
     }
 
     [Test]
     public void GetIsNull ()
     {
       IPrincipalProvider principalProvider = new HttpContextPrincipalProvider(new Mock<IHttpContextProvider>().Object);
-      Assert.That (principalProvider.IsNull, Is.False);
+      Assert.That(principalProvider.IsNull, Is.False);
     }
   }
 }

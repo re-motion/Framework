@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
   {
     public static HookedTargetClass NewObject ()
     {
-      return NewObject<HookedTargetClass> ();
+      return NewObject<HookedTargetClass>();
     }
 
     public virtual int Property { get; set; }

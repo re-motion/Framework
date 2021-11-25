@@ -26,14 +26,14 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
   {
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
-      Stack.Text = string.Join ("</br>", CurrentFunction.CreateSequence (f => f.ParentFunction).Select (f => f.GetType().Name));
+      base.OnPreRender(e);
+      Stack.Text = string.Join("</br>", CurrentFunction.CreateSequence(f => f.ParentFunction).Select(f => f.GetType().Name));
     }
 
     protected void OpenSubFunctionButton_Click (object sender, EventArgs e)
     {
       if (!IsReturningPostBack)
-        ExecuteFunction (new TestFunction(), WxeCallArguments.Default);
+        ExecuteFunction(new TestFunction(), WxeCallArguments.Default);
     }
 
     protected void ThrowExceptionButton_Click (object sender, EventArgs e)
@@ -49,28 +49,28 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
       }
       catch (Exception ex)
       {
-        throw new HttpException ("Test outer HTTP exception", ex);
+        throw new HttpException("Test outer HTTP exception", ex);
       }
     }
     
     protected void ThrowExceptionFromSubFunctionButton_Click (object sender, EventArgs e)
     {
-      ExecuteFunction (new ThrowingFunction(), WxeCallArguments.Default);
+      ExecuteFunction(new ThrowingFunction(), WxeCallArguments.Default);
     }
     
     protected void ThrowExceptionForMissingPageButton_Click (object sender, EventArgs e)
     {
-      ExecuteFunction (new MissingPageFunction(), WxeCallArguments.Default);
+      ExecuteFunction(new MissingPageFunction(), WxeCallArguments.Default);
     }
 
     protected void ThrowExceptionForMissingUserControlButton_Click (object sender, EventArgs e)
     {
-      ExecuteFunction (new MissingUserControlFunction(), WxeCallArguments.Default);
+      ExecuteFunction(new MissingUserControlFunction(), WxeCallArguments.Default);
     }
 
     protected void ThrowExceptionForInvalidMarkupButton_Click (object sender, EventArgs e)
     {
-      ExecuteFunction (new InvalidMarkupFunction(), WxeCallArguments.Default);
+      ExecuteFunction(new InvalidMarkupFunction(), WxeCallArguments.Default);
     }
 
     private void ThrowInnerExceptionWithNesting ()
@@ -81,13 +81,13 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
       }
       catch (Exception ex)
       {
-        throw new ApplicationException ("Test inner exception with nesting", ex);
+        throw new ApplicationException("Test inner exception with nesting", ex);
       }
     }
 
     private void ThrowInnerException ()
     {
-      throw new ApplicationException ("Test inner exception");
+      throw new ApplicationException("Test inner exception");
     }
   }
 }

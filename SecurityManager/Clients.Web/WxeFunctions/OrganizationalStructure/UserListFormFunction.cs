@@ -37,6 +37,6 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
     {
     }
 
-    WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (UserListForm), "UI/OrganizationalStructure/UserListForm.aspx");
+    WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof (UserListForm), "UI/OrganizationalStructure/UserListForm.aspx");
   }
 }

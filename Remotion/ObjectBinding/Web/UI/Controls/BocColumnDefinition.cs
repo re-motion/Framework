@@ -41,9 +41,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public IBocColumnRenderer GetRenderer (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
+      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
       
-      return GetRendererInternal (serviceLocator);
+      return GetRendererInternal(serviceLocator);
     }
 
     protected abstract IBocColumnRenderer GetRendererInternal (IServiceLocator locator);
@@ -52,12 +52,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override string ToString ()
     {
       string? displayName = ItemID;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         displayName = ColumnTitle;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         return DisplayedTypeName;
       else
-        return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+        return string.Format("{0}: {1}", displayName, DisplayedTypeName);
     }
 
     /// <summary> Gets the programmatic name of the <see cref="BocColumnDefinition"/>. </summary>
@@ -151,14 +151,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
       
-      base.LoadResources (resourceManager, globalizationService);
+      base.LoadResources(resourceManager, globalizationService);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (ColumnTitle);
-      if (!string.IsNullOrEmpty (key))
-        ColumnTitle = resourceManager.GetString (key);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(ColumnTitle);
+      if (!string.IsNullOrEmpty(key))
+        ColumnTitle = resourceManager.GetString(key);
     }
   }
 }

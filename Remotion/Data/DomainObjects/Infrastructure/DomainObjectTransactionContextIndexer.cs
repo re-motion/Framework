@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public DomainObjectTransactionContextIndexer (DomainObject domainObject, bool isInitializedEventExecuting)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
       _domainObject = domainObject;
       _isInitializedEventExecuting = isInitializedEventExecuting;
     }
@@ -40,9 +40,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       get
       {
-        var context = new DomainObjectTransactionContext (_domainObject, clientTransaction);
+        var context = new DomainObjectTransactionContext(_domainObject, clientTransaction);
         if (_isInitializedEventExecuting)
-          return new InitializedEventDomainObjectTransactionContextDecorator (context);
+          return new InitializedEventDomainObjectTransactionContextDecorator(context);
         else
           return context;
       }

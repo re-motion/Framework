@@ -32,39 +32,39 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     public void SetUp ()
     {
       _referencedDataSourceStub = new Mock<IBusinessObjectDataSource>();
-      _referencedDataSourceStub.SetupProperty (_ => _.BusinessObject);
+      _referencedDataSourceStub.SetupProperty(_ => _.BusinessObject);
       _referencedDataSourceStub.Object.BusinessObject = new Mock<IBusinessObject>().Object;
-      _referencedDataSourceStub.Setup (_ => _.BusinessObjectClass).Returns (new Mock<IBusinessObjectClass>().Object);
+      _referencedDataSourceStub.Setup(_ => _.BusinessObjectClass).Returns(new Mock<IBusinessObjectClass>().Object);
       _referencePropertyStub = new Mock<IBusinessObjectReferenceProperty>();
-      _referencePropertyStub.Setup (_ => _.ReflectedClass).Returns (new Mock<IBusinessObjectClass>().Object);
+      _referencePropertyStub.Setup(_ => _.ReflectedClass).Returns(new Mock<IBusinessObjectClass>().Object);
     }
 
     [Test]
     public void SetValue_OldValueIsNewlyCreatedDefaultValue ()
     {
-      Mock.Get (_referencedDataSourceStub.Object.BusinessObject).SetupSequence (stub => stub.GetProperty (_referencePropertyStub.Object))
-          .Returns ((object) null)
-          .Throws (new InvalidOperationException ("Method is supposed to be called only once!"));
-      _referencePropertyStub.Setup (stub => stub.SupportsDefaultValue).Returns (true);
-      _referencePropertyStub.Setup (stub => stub.SupportsDelete).Returns (true);
+      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).SetupSequence(stub => stub.GetProperty(_referencePropertyStub.Object))
+          .Returns((object) null)
+          .Throws(new InvalidOperationException("Method is supposed to be called only once!"));
+      _referencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
+      _referencePropertyStub.Setup(stub => stub.SupportsDelete).Returns(true);
       var oldValue = new Mock<IBusinessObject>();
-      _referencePropertyStub.SetupSequence (stub => stub.CreateDefaultValue (_referencedDataSourceStub.Object.BusinessObject))
-          .Returns (oldValue.Object)
-          .Throws (new InvalidOperationException ("Method is supposed to be called only once!"));
+      _referencePropertyStub.SetupSequence(stub => stub.CreateDefaultValue(_referencedDataSourceStub.Object.BusinessObject))
+          .Returns(oldValue.Object)
+          .Throws(new InvalidOperationException("Method is supposed to be called only once!"));
 
-      var referenceDataSource = new TestableBusinessObjectReferenceDataSource (_referencedDataSourceStub.Object, _referencePropertyStub.Object);
+      var referenceDataSource = new TestableBusinessObjectReferenceDataSource(_referencedDataSourceStub.Object, _referencePropertyStub.Object);
       referenceDataSource.Mode = DataSourceMode.Edit;
 
-      referenceDataSource.LoadValue (false);
+      referenceDataSource.LoadValue(false);
 
-      Assert.That (referenceDataSource.HasBusinessObjectCreated, Is.True);
-      Assert.That (referenceDataSource.BusinessObject, Is.SameAs (oldValue.Object));
+      Assert.That(referenceDataSource.HasBusinessObjectCreated, Is.True);
+      Assert.That(referenceDataSource.BusinessObject, Is.SameAs(oldValue.Object));
 
       referenceDataSource.BusinessObject = null;
 
-      Assert.That (referenceDataSource.HasBusinessObjectCreated, Is.False);
-      Assert.That (referenceDataSource.BusinessObject, Is.Null);
-      _referencePropertyStub.Verify (stub => stub.CreateDefaultValue (_referencedDataSourceStub.Object.BusinessObject), Times.Once());
+      Assert.That(referenceDataSource.HasBusinessObjectCreated, Is.False);
+      Assert.That(referenceDataSource.BusinessObject, Is.Null);
+      _referencePropertyStub.Verify(stub => stub.CreateDefaultValue(_referencedDataSourceStub.Object.BusinessObject), Times.Once());
     }
   }
 #pragma warning restore 612,618

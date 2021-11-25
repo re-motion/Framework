@@ -27,8 +27,8 @@ namespace Remotion.Mixins.Validation
 
     public ValidationResultItem (string ruleName, string message)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("ruleName", ruleName);
-      ArgumentUtility.CheckNotNullOrEmpty ("message", message);
+      ArgumentUtility.CheckNotNullOrEmpty("ruleName", ruleName);
+      ArgumentUtility.CheckNotNullOrEmpty("message", message);
 
       _ruleName = ruleName;
       _message = message;

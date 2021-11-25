@@ -28,60 +28,60 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      _order1 = (Order) LifetimeService.GetObjectReference (WriteableSubTransaction, DomainObjectIDs.Order1);
+      base.SetUp();
+      _order1 = (Order) LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Order1);
     }
 
     [Test]
     public void PropertyValueReadInReadOnlyRootTransaction_WithoutLoading_IsAllowed ()
     {
-      WriteableSubTransaction.EnsureDataAvailable (_order1.ID);
+      WriteableSubTransaction.EnsureDataAvailable(_order1.ID);
 
-      var value = ExecuteInReadOnlyRootTransaction (() => _order1.OrderNumber);
+      var value = ExecuteInReadOnlyRootTransaction(() => _order1.OrderNumber);
 
-      Assert.That (value, Is.EqualTo (1));
+      Assert.That(value, Is.EqualTo(1));
     }
 
     [Test]
     public void PropertyValueReadInReadOnlyMiddleTransaction_WithoutLoading_IsAllowed ()
     {
-      WriteableSubTransaction.EnsureDataAvailable (_order1.ID);
+      WriteableSubTransaction.EnsureDataAvailable(_order1.ID);
 
-      var value = ExecuteInReadOnlyMiddleTransaction (() => _order1.OrderNumber);
+      var value = ExecuteInReadOnlyMiddleTransaction(() => _order1.OrderNumber);
 
-      Assert.That (value, Is.EqualTo (1));
+      Assert.That(value, Is.EqualTo(1));
     }
 
     [Test]
     public void PropertyValueReadInReadOnlyRootTransaction_WithLoading_IsAllowed ()
     {
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      var value = ExecuteInReadOnlyRootTransaction (() => _order1.OrderNumber);
+      var value = ExecuteInReadOnlyRootTransaction(() => _order1.OrderNumber);
       
-      Assert.That (value, Is.EqualTo (1));
+      Assert.That(value, Is.EqualTo(1));
 
-      CheckDataLoaded (ReadOnlyRootTransaction, _order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, _order1);
-      CheckDataNotLoaded (WriteableSubTransaction, _order1);
+      CheckDataLoaded(ReadOnlyRootTransaction, _order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, _order1);
+      CheckDataNotLoaded(WriteableSubTransaction, _order1);
     }
 
     [Test]
     public void PropertyValueReadInReadOnlyMiddleTransaction_WithLoading_IsAllowed ()
     {
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      var value = ExecuteInReadOnlyMiddleTransaction (() => _order1.OrderNumber);
+      var value = ExecuteInReadOnlyMiddleTransaction(() => _order1.OrderNumber);
 
-      Assert.That (value, Is.EqualTo (1));
+      Assert.That(value, Is.EqualTo(1));
 
-      CheckDataLoaded (ReadOnlyRootTransaction, _order1);
-      CheckDataLoaded (ReadOnlyMiddleTransaction, _order1);
-      CheckDataNotLoaded (WriteableSubTransaction, _order1);
+      CheckDataLoaded(ReadOnlyRootTransaction, _order1);
+      CheckDataLoaded(ReadOnlyMiddleTransaction, _order1);
+      CheckDataNotLoaded(WriteableSubTransaction, _order1);
     }
   }
 }

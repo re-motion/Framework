@@ -35,14 +35,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     public override GenericTestPageParameterDto Read (ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-      var container = Assertion.IsNotNull (JsonSerializer.Deserialize<Dictionary<string, JsonElement>> (ref reader, options));
+      var container = Assertion.IsNotNull(JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(ref reader, options));
       var status = (GenericTestPageStatus) container["status"].GetInt32();
       var parameters = container["parameters"].EnumerateObject()
-          .ToDictionary (
+          .ToDictionary(
               p => p.Name,
-              p => new GenericTestPageParameter (p.Name, p.Value.EnumerateArray().Select (i => i.GetString()).ToArray()));
+              p => new GenericTestPageParameter(p.Name, p.Value.EnumerateArray().Select(i => i.GetString()).ToArray()));
 
-      return new (status, parameters);
+      return new(status, parameters);
     }
 
     public override void Write (Utf8JsonWriter writer, GenericTestPageParameterDto value, JsonSerializerOptions options)
@@ -50,10 +50,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       var container = new Dictionary<string, object>
                       {
                           { "status", (int) value.Status },
-                          { "parameters", value.Parameters.ToDictionary (pair => pair.Key, pair => pair.Value.Arguments) },
+                          { "parameters", value.Parameters.ToDictionary(pair => pair.Key, pair => pair.Value.Arguments) },
                       };
 
-      JsonSerializer.Serialize (writer, container, options);
+      JsonSerializer.Serialize(writer, container, options);
     }
   }
 }

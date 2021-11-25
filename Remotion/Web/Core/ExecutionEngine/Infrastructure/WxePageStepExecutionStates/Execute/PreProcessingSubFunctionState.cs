@@ -46,37 +46,37 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 
     public override void ExecuteSubFunction (WxeContext context)
     {
-      Parameters.SubFunction.SetParentStep (ExecutionStateContext.CurrentStep);
+      Parameters.SubFunction.SetParentStep(ExecutionStateContext.CurrentStep);
       NameValueCollection postBackCollection = BackupPostBackCollection();
-      EnsureSenderPostBackRegistration (postBackCollection);
+      EnsureSenderPostBackRegistration(postBackCollection);
 
-      Parameters.Page.SaveAllState ();
+      Parameters.Page.SaveAllState();
 
       if (Parameters.PermaUrlOptions.UsePermaUrl)
       {
-        var parameters = new PreparingRedirectToSubFunctionStateParameters (Parameters.SubFunction, postBackCollection, Parameters.PermaUrlOptions);
-        ExecutionStateContext.SetExecutionState (new PreparingRedirectToSubFunctionState (ExecutionStateContext, parameters));
+        var parameters = new PreparingRedirectToSubFunctionStateParameters(Parameters.SubFunction, postBackCollection, Parameters.PermaUrlOptions);
+        ExecutionStateContext.SetExecutionState(new PreparingRedirectToSubFunctionState(ExecutionStateContext, parameters));
       }
       else
       {
-        var parameters = new ExecutionStateParameters (Parameters.SubFunction, postBackCollection);
-        ExecutionStateContext.SetExecutionState (new ExecutingSubFunctionWithoutPermaUrlState (ExecutionStateContext, parameters));
+        var parameters = new ExecutionStateParameters(Parameters.SubFunction, postBackCollection);
+        ExecutionStateContext.SetExecutionState(new ExecutingSubFunctionWithoutPermaUrlState(ExecutionStateContext, parameters));
       }
     }
 
     private NameValueCollection BackupPostBackCollection ()
     {
-      var postBackCollection = Assertion.IsNotNull (Parameters.Page.GetPostBackCollection()).Clone();
+      var postBackCollection = Assertion.IsNotNull(Parameters.Page.GetPostBackCollection()).Clone();
 
       if (_repostOptions.SuppressesRepost)
       {
         if (_repostOptions.UsesEventTarget)
         {
-          postBackCollection.Remove (ControlHelper.PostEventSourceID);
-          postBackCollection.Remove (ControlHelper.PostEventArgumentID);
+          postBackCollection.Remove(ControlHelper.PostEventSourceID);
+          postBackCollection.Remove(ControlHelper.PostEventArgumentID);
         }
         else
-          postBackCollection.Remove (_repostOptions.Sender!.UniqueID); // TODO RM-8118: not null assertion
+          postBackCollection.Remove(_repostOptions.Sender!.UniqueID); // TODO RM-8118: not null assertion
       }
       return postBackCollection;
     }
@@ -87,7 +87,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
         return;
 
       if (_repostOptions.Sender is IPostBackDataHandler && postBackCollection[_repostOptions.Sender.UniqueID] == null)
-        Parameters.Page.RegisterRequiresPostBack (_repostOptions.Sender);
+        Parameters.Page.RegisterRequiresPostBack(_repostOptions.Sender);
     }
   }
 }

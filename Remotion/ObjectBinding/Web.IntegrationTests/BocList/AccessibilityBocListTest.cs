@@ -31,136 +31,136 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
     public void Normal ()
     {
       var home = Start();
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocList.Analyze (analyzer);
+      var result = bocList.Analyze(analyzer);
 
-      Assert.That (result.Violations.IgnoreKnownWorkarounds (Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
     }
 
     [Test]
     public void AlwaysInvalid_WithValidationErrors ()
     {
       var home = Start();
-      var bocList = home.Lists().GetByLocalID ("JobList_AlwaysInvalid");
+      var bocList = home.Lists().GetByLocalID("JobList_AlwaysInvalid");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
       var validateButton = home.GetValidateButton();
       validateButton.Click();
-      var result = bocList.Analyze (analyzer);
+      var result = bocList.Analyze(analyzer);
 
-      Assert.That (bocList.GetValidationErrors(), Is.Not.Empty);
-      Assert.That (result.Violations.IgnoreKnownWorkarounds (Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(bocList.GetValidationErrors(), Is.Not.Empty);
+      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
     }
 
     [Test]
     public void WithRadioButtons ()
     {
       var home = Start();
-      var bocList = home.Lists().GetByLocalID ("JobList_WithRadioButtons");
+      var bocList = home.Lists().GetByLocalID("JobList_WithRadioButtons");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocList.Analyze (analyzer);
+      var result = bocList.Analyze(analyzer);
 
-      Assert.That (result.Violations.IgnoreKnownWorkarounds (Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
     }
 
     [Test]
     public void ReadOnly ()
     {
       var home = Start();
-      var bocList = home.Lists().GetByLocalID ("JobList_ReadOnly");
+      var bocList = home.Lists().GetByLocalID("JobList_ReadOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocList.Analyze (analyzer);
+      var result = bocList.Analyze(analyzer);
 
-      Assert.That (result.Violations.IgnoreKnownWorkarounds (Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
     }
 
     [Test]
     public void Special ()
     {
       var home = Start();
-      var bocList = home.Lists().GetByLocalID ("JobList_Special");
+      var bocList = home.Lists().GetByLocalID("JobList_Special");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocList.Analyze (analyzer);
+      var result = bocList.Analyze(analyzer);
 
-      Assert.That (result.Violations.IgnoreKnownWorkarounds (Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
     }
 
     [Test]
     public void Empty_WithPlaceholder ()
     {
       var home = Start();
-      var bocList = home.Lists().GetByLocalID ("JobList_Empty");
+      var bocList = home.Lists().GetByLocalID("JobList_Empty");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocList.Analyze (analyzer);
+      var result = bocList.Analyze(analyzer);
 
-      Assert.That (result.Violations.IgnoreKnownWorkarounds (Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
     }
 
     [Test]
     public void Empty_WithoutPlaceholder ()
     {
       var home = Start();
-      var bocList = home.Lists().GetByLocalID ("JobList_Empty_WithoutPlaceholder");
+      var bocList = home.Lists().GetByLocalID("JobList_Empty_WithoutPlaceholder");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocList.Analyze (analyzer);
+      var result = bocList.Analyze(analyzer);
 
       // TODO RM-7333 remove ignore once issue is resolved
-      var filteredViolations = result.Violations.IgnoreByRuleIDAndXPath (
+      var filteredViolations = result.Violations.IgnoreByRuleIDAndXPath(
               AccessibilityRuleID.AriaRequiredChildren,
               "/div[@id='body_DataEditControl_JobList_Empty_WithoutPlaceholder_TableScrollContainer']/table/tbody")
-          .IgnoreKnownWorkarounds (Helper.BrowserConfiguration);
+          .IgnoreKnownWorkarounds(Helper.BrowserConfiguration);
 
-      Assert.That (filteredViolations, Is.Empty);
+      Assert.That(filteredViolations, Is.Empty);
     }
 
     [Test]
     public void NoFakeTableHeader ()
     {
       var home = Start();
-      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocList.Analyze (analyzer);
+      var result = bocList.Analyze(analyzer);
 
-      Assert.That (result.Violations.IgnoreKnownWorkarounds (Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
     }
 
     [Test]
     public void AscendingEndDate ()
     {
       var home = Start();
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      bocList.ClickOnSortColumnByTitle ("EndDate");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      bocList.ClickOnSortColumnByTitle("EndDate");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocList.Analyze (analyzer);
+      var result = bocList.Analyze(analyzer);
 
-      Assert.That (result.Violations.IgnoreKnownWorkarounds (Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
     }
 
     [Test]
     public void DescendingEndDate ()
     {
       var home = Start();
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      bocList.ClickOnSortColumnByTitle ("EndDate");
-      bocList.ClickOnSortColumnByTitle ("EndDate");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      bocList.ClickOnSortColumnByTitle("EndDate");
+      bocList.ClickOnSortColumnByTitle("EndDate");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocList.Analyze (analyzer);
+      var result = bocList.Analyze(analyzer);
 
-      Assert.That (result.Violations.IgnoreKnownWorkarounds (Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocList");
+      return Start("BocList");
     }
   }
 }

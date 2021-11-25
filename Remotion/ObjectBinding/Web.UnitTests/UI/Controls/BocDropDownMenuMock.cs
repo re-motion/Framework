@@ -27,7 +27,7 @@ public class BocDropDownMenuMock: BocDropDownMenu
 {
 	public new void EvaluateWaiConformity ()
   {
-    base.EvaluateWaiConformity ();
+    base.EvaluateWaiConformity();
   }
 }
 

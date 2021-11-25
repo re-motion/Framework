@@ -27,33 +27,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void TableInheritanceBaseClass ()
     {
-      var domainBaseClass = Configuration.GetTypeDefinition (typeof (TIDomainBase));
-      Assert.That (domainBaseClass, Is.Not.Null);
-      Assert.That (domainBaseClass.StorageEntityDefinition, Is.TypeOf<UnionViewDefinition> ());
+      var domainBaseClass = Configuration.GetTypeDefinition(typeof (TIDomainBase));
+      Assert.That(domainBaseClass, Is.Not.Null);
+      Assert.That(domainBaseClass.StorageEntityDefinition, Is.TypeOf<UnionViewDefinition>());
 
-      var personClass = Configuration.GetTypeDefinition (typeof (TIPerson));
-      Assert.That (personClass.StorageEntityDefinition, Is.TypeOf<TableDefinition> ());
-      Assert.That (((TableDefinition) personClass.StorageEntityDefinition).TableName.EntityName, Is.EqualTo ("TableInheritance_Person"));
+      var personClass = Configuration.GetTypeDefinition(typeof (TIPerson));
+      Assert.That(personClass.StorageEntityDefinition, Is.TypeOf<TableDefinition>());
+      Assert.That(((TableDefinition) personClass.StorageEntityDefinition).TableName.EntityName, Is.EqualTo("TableInheritance_Person"));
 
-      var organizationalUnitClass = Configuration.GetTypeDefinition (typeof (TIOrganizationalUnit));
-      Assert.That (organizationalUnitClass.StorageEntityDefinition, Is.TypeOf<TableDefinition> ());
-      Assert.That (((TableDefinition) organizationalUnitClass.StorageEntityDefinition).TableName.EntityName, Is.EqualTo ("TableInheritance_OrganizationalUnit"));
+      var organizationalUnitClass = Configuration.GetTypeDefinition(typeof (TIOrganizationalUnit));
+      Assert.That(organizationalUnitClass.StorageEntityDefinition, Is.TypeOf<TableDefinition>());
+      Assert.That(((TableDefinition) organizationalUnitClass.StorageEntityDefinition).TableName.EntityName, Is.EqualTo("TableInheritance_OrganizationalUnit"));
 
-      Assert.That (
+      Assert.That(
           ((UnionViewDefinition) domainBaseClass.StorageEntityDefinition).UnionedEntities,
-          Is.EquivalentTo (new[] { personClass.StorageEntityDefinition, organizationalUnitClass.StorageEntityDefinition }));
+          Is.EquivalentTo(new[] { personClass.StorageEntityDefinition, organizationalUnitClass.StorageEntityDefinition }));
 
-      var customerClass = Configuration.GetTypeDefinition (typeof (TICustomer));
-      Assert.That (customerClass.StorageEntityDefinition, Is.TypeOf<FilterViewDefinition> ());
-      Assert.That (((FilterViewDefinition) customerClass.StorageEntityDefinition).BaseEntity, Is.SameAs (personClass.StorageEntityDefinition));
-      Assert.That (((FilterViewDefinition) customerClass.StorageEntityDefinition).ClassIDs, Is.EqualTo (new[] { "TI_Customer" }));
+      var customerClass = Configuration.GetTypeDefinition(typeof (TICustomer));
+      Assert.That(customerClass.StorageEntityDefinition, Is.TypeOf<FilterViewDefinition>());
+      Assert.That(((FilterViewDefinition) customerClass.StorageEntityDefinition).BaseEntity, Is.SameAs(personClass.StorageEntityDefinition));
+      Assert.That(((FilterViewDefinition) customerClass.StorageEntityDefinition).ClassIDs, Is.EqualTo(new[] { "TI_Customer" }));
     }
 
     [Test]
     public void ClassWithoutEntity_AndWithoutHierarchy ()
     {
-      var classDefinition = Configuration.GetTypeDefinition (typeof (AbstractClassWithoutHierarchy));
-      Assert.That (classDefinition.StorageEntityDefinition, Is.TypeOf<EmptyViewDefinition>());
+      var classDefinition = Configuration.GetTypeDefinition(typeof (AbstractClassWithoutHierarchy));
+      Assert.That(classDefinition.StorageEntityDefinition, Is.TypeOf<EmptyViewDefinition>());
     }
   }
 }

@@ -36,7 +36,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Domain.Mixins
 
     private void Target_Committing (object sender, EventArgs e)
     {
-      if (string.IsNullOrEmpty (Title))
+      if (string.IsNullOrEmpty(Title))
         Title = "(unnamed document of " + Target.Tenant + ")";
     }
   }

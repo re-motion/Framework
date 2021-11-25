@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
     {
       var specificVisitor = visitor as ISqlIndexDefinitionVisitor;
       if (specificVisitor != null)
-        Accept (specificVisitor);
+        Accept(specificVisitor);
     }
 
     protected abstract void Accept (ISqlIndexDefinitionVisitor visitor);

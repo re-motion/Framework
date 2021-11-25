@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
   public class FindMetadataObjectQueryBuilderTest : DomainTest
   {
     private readonly QueryableComparer _queryableComparer 
-        = new QueryableComparer ((actual, exptected) => Assert.That (actual, Is.EqualTo (exptected)));
+        = new QueryableComparer((actual, exptected) => Assert.That(actual, Is.EqualTo(exptected)));
 
     private FindMetadataObjectQueryBuilder _queryBuilder;
 
@@ -46,12 +46,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
       string metadataObjectID = "b8621bc9-9ab3-4524-b1e4-582657d6b420";
 
       var expected = from m in QueryFactory.CreateLinqQuery<MetadataObject>()
-                     where m.MetadataItemID == new Guid (metadataObjectID)
+                     where m.MetadataItemID == new Guid(metadataObjectID)
                      select m;
 
-      var actual = _queryBuilder.CreateQuery (metadataObjectID);
+      var actual = _queryBuilder.CreateQuery(metadataObjectID);
 
-      _queryableComparer.Compare (expected, actual);
+      _queryableComparer.Compare(expected, actual);
     }
 
     [Test]
@@ -60,22 +60,22 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
       string metadataObjectID = "9e689c4c-3758-436e-ac86-23171289fa5e|2";
 
       var expected = from state in QueryFactory.CreateLinqQuery<StateDefinition>()
-                     where state.StateProperty.MetadataItemID == new Guid ("9e689c4c-3758-436e-ac86-23171289fa5e") && state.Value == 2
+                     where state.StateProperty.MetadataItemID == new Guid("9e689c4c-3758-436e-ac86-23171289fa5e") && state.Value == 2
                      select state;
 
-      var actual = _queryBuilder.CreateQuery (metadataObjectID);
+      var actual = _queryBuilder.CreateQuery(metadataObjectID);
 
-      _queryableComparer.Compare (expected, actual.Cast<StateDefinition>());
+      _queryableComparer.Compare(expected, actual.Cast<StateDefinition>());
     }
 
     [Test]
     public void Find_InvalidMetadataItemID ()
     {
       string metadataObjectID = "Hello|42";
-      Assert.That (
-          () => _queryBuilder.CreateQuery (metadataObjectID),
+      Assert.That(
+          () => _queryBuilder.CreateQuery(metadataObjectID),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The metadata ID 'Hello|42' is invalid.", "metadataID"));
     }
 
@@ -83,10 +83,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     public void Find_InvalidStateValue ()
     {
       string metadataObjectID = "9e689c4c-3758-436e-ac86-23171289fa5e|Hello";
-      Assert.That (
-          () => _queryBuilder.CreateQuery (metadataObjectID),
+      Assert.That(
+          () => _queryBuilder.CreateQuery(metadataObjectID),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The metadata ID '9e689c4c-3758-436e-ac86-23171289fa5e|Hello' is invalid.", "metadataID"));
     }
   }

@@ -26,19 +26,19 @@ namespace Remotion.Mixins.Definitions
   public class TargetClassDefinition : ClassDefinitionBase, IAttributeIntroductionTarget
   {
     private readonly UniqueDefinitionCollection<Type, MixinDefinition> _mixins =
-        new UniqueDefinitionCollection<Type, MixinDefinition> (m => m.Type);
+        new UniqueDefinitionCollection<Type, MixinDefinition>(m => m.Type);
     private readonly UniqueDefinitionCollection<Type, RequiredTargetCallTypeDefinition> _requiredTargetCallTypes =
-        new UniqueDefinitionCollection<Type, RequiredTargetCallTypeDefinition> (t => t.Type);
+        new UniqueDefinitionCollection<Type, RequiredTargetCallTypeDefinition>(t => t.Type);
     private readonly UniqueDefinitionCollection<Type, RequiredNextCallTypeDefinition> _requiredNextCallTypes =
-        new UniqueDefinitionCollection<Type, RequiredNextCallTypeDefinition> (t => t.Type);
+        new UniqueDefinitionCollection<Type, RequiredNextCallTypeDefinition>(t => t.Type);
     private readonly UniqueDefinitionCollection<Type, RequiredMixinTypeDefinition> _requiredMixinTypes =
-        new UniqueDefinitionCollection<Type, RequiredMixinTypeDefinition> (t => t.Type);
+        new UniqueDefinitionCollection<Type, RequiredMixinTypeDefinition>(t => t.Type);
     
     private readonly UniqueDefinitionCollection<Type, ComposedInterfaceDependencyDefinition> _composedInterfaceDependencies =
-        new UniqueDefinitionCollection<Type, ComposedInterfaceDependencyDefinition> (d => d.RequiredType.Type);
+        new UniqueDefinitionCollection<Type, ComposedInterfaceDependencyDefinition>(d => d.RequiredType.Type);
     
     private readonly UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> _receivedInterfaces =
-        new UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> (i => i.InterfaceType);
+        new UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition>(i => i.InterfaceType);
     private readonly MultiDefinitionCollection<Type, AttributeIntroductionDefinition> _receivedAttributes;
 
     private readonly ClassContext _configurationContext;
@@ -47,12 +47,12 @@ namespace Remotion.Mixins.Definitions
     public TargetClassDefinition (ClassContext configurationContext)
         : base (configurationContext.Type)
     {
-      ArgumentUtility.CheckNotNull ("configurationContext", configurationContext);
+      ArgumentUtility.CheckNotNull("configurationContext", configurationContext);
 
-      _receivedAttributes = new MultiDefinitionCollection<Type, AttributeIntroductionDefinition> (a => a.AttributeType);
+      _receivedAttributes = new MultiDefinitionCollection<Type, AttributeIntroductionDefinition>(a => a.AttributeType);
 
       _configurationContext = configurationContext;
-      _mixinTypeCloser = new MixinTypeCloser (configurationContext.Type);
+      _mixinTypeCloser = new MixinTypeCloser(configurationContext.Type);
     }
 
     public MultiDefinitionCollection<Type, AttributeIntroductionDefinition> ReceivedAttributes
@@ -117,26 +117,26 @@ namespace Remotion.Mixins.Definitions
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
 
-      visitor.Visit (this);
+      visitor.Visit(this);
       
-      _mixins.Accept (visitor);
-      _requiredTargetCallTypes.Accept (visitor);
-      _requiredNextCallTypes.Accept (visitor);
-      _requiredMixinTypes.Accept (visitor);
-      _composedInterfaceDependencies.Accept (visitor);
+      _mixins.Accept(visitor);
+      _requiredTargetCallTypes.Accept(visitor);
+      _requiredNextCallTypes.Accept(visitor);
+      _requiredMixinTypes.Accept(visitor);
+      _composedInterfaceDependencies.Accept(visitor);
     }
 
     public bool HasMixinWithConfiguredType (Type configuredType)
     {
-      Type realType = MixinTypeCloser.GetClosedMixinType (configuredType);
-      return _mixins.ContainsKey (realType);
+      Type realType = MixinTypeCloser.GetClosedMixinType(configuredType);
+      return _mixins.ContainsKey(realType);
     }
 
     public MixinDefinition GetMixinByConfiguredType (Type configuredType)
     {
-      Type realType = MixinTypeCloser.GetClosedMixinType (configuredType);
+      Type realType = MixinTypeCloser.GetClosedMixinType(configuredType);
       return _mixins[realType];
     }
   }

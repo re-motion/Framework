@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
     protected override bool IsInfrastructureProperty (PropertyInfo propertyInfo, MethodInfo accessorDeclaration)
     {
-      return base.IsInfrastructureProperty (propertyInfo, accessorDeclaration)
+      return base.IsInfrastructureProperty(propertyInfo, accessorDeclaration)
           || accessorDeclaration.DeclaringType == typeof (DomainObject)
           || accessorDeclaration.DeclaringType == typeof (BindableDomainObject)
           || accessorDeclaration.DeclaringType == typeof (IDomainObject);

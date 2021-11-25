@@ -35,123 +35,123 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     public void SetUp ()
     {
       _provider = new ReflectionBasedStorageNameProvider();
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("Company", classType: typeof (Company), baseClass: null);
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Company", classType: typeof (Company), baseClass: null);
     }
 
     [Test]
     public void IDColumnName ()
     {
-      Assert.That (_provider.GetIDColumnName(), Is.EqualTo ("ID"));
+      Assert.That(_provider.GetIDColumnName(), Is.EqualTo("ID"));
     }
 
     [Test]
     public void ClassIDColumnName ()
     {
-      Assert.That (_provider.GetClassIDColumnName(), Is.EqualTo ("ClassID"));
+      Assert.That(_provider.GetClassIDColumnName(), Is.EqualTo("ClassID"));
     }
 
     [Test]
     public void TimestampColumnName ()
     {
-      Assert.That (_provider.GetTimestampColumnName(), Is.EqualTo ("Timestamp"));
+      Assert.That(_provider.GetTimestampColumnName(), Is.EqualTo("Timestamp"));
     }
 
     [Test]
     public void GetTableName_ClassHasDBTableAttributeWithoutName_ReturnsClassIDName ()
     {
-      var result = _provider.GetTableName (_classDefinition).EntityName;
+      var result = _provider.GetTableName(_classDefinition).EntityName;
 
-      Assert.That (result, Is.EqualTo ("Company"));
+      Assert.That(result, Is.EqualTo("Company"));
     }
 
     [Test]
     public void GetTableName_ClassHasDBTableAttributeWithtName_ReturnsAttributeName ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (ClassHavingStorageSpecificIdentifierAttribute), baseClass: null);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (ClassHavingStorageSpecificIdentifierAttribute), baseClass: null);
 
-      var result = _provider.GetTableName (classDefinition).EntityName;
+      var result = _provider.GetTableName(classDefinition).EntityName;
 
-      Assert.That (result, Is.EqualTo ("ClassHavingStorageSpecificIdentifierAttributeTable"));
+      Assert.That(result, Is.EqualTo("ClassHavingStorageSpecificIdentifierAttributeTable"));
     }
 
     [Test]
     public void GetTableName_ClassHasNoDBTableAttribute_ReturnsNull ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Folder), baseClass: null);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Folder), baseClass: null);
 
-      var result = _provider.GetTableName (classDefinition);
+      var result = _provider.GetTableName(classDefinition);
 
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void GetViewName ()
     {
-      var result = _provider.GetViewName (_classDefinition).EntityName;
+      var result = _provider.GetViewName(_classDefinition).EntityName;
 
-      Assert.That (result, Is.EqualTo ("CompanyView"));
+      Assert.That(result, Is.EqualTo("CompanyView"));
     }
 
     [Test]
     public void GetColumnName_PropertyWithIStorageSpecificIdentifierAttribute_ReturnsNameFromAttribute ()
     {
       var classWithAllDataTypesDefinition =
-          ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (ClassWithAllDataTypes), baseClass: null);
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo (
+          ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (ClassWithAllDataTypes), baseClass: null);
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(
           classWithAllDataTypesDefinition, typeof (ClassWithAllDataTypes), "BooleanProperty");
 
-      var result = _provider.GetColumnName (propertyDefinition);
+      var result = _provider.GetColumnName(propertyDefinition);
 
-      Assert.That (result, Is.EqualTo ("Boolean"));
+      Assert.That(result, Is.EqualTo("Boolean"));
     }
 
     [Test]
     public void GetColumnName_PropertyWithoutIStorageSpecificIdentifierAttribute_ReturnsPropertyName ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Distributor), baseClass: null);
-      classDefinition.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection());
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo (classDefinition, typeof (Distributor), "NumberOfShops");
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Distributor), baseClass: null);
+      classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(classDefinition, typeof (Distributor), "NumberOfShops");
 
-      var result = _provider.GetColumnName (propertyDefinition);
+      var result = _provider.GetColumnName(propertyDefinition);
 
-      Assert.That (result, Is.EqualTo ("NumberOfShops"));
+      Assert.That(result, Is.EqualTo("NumberOfShops"));
     }
 
     [Test]
     public void GetRelationColumnName ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (FileSystemItem), baseClass: null);
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo (classDefinition, typeof (FileSystemItem), "ParentFolder");
-      var relationDefinition = new RelationEndPointDefinition (propertyDefinition, true);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (FileSystemItem), baseClass: null);
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(classDefinition, typeof (FileSystemItem), "ParentFolder");
+      var relationDefinition = new RelationEndPointDefinition(propertyDefinition, true);
 
-      var result = _provider.GetRelationColumnName (relationDefinition);
+      var result = _provider.GetRelationColumnName(relationDefinition);
 
-      Assert.That (result, Is.EqualTo ("ParentFolderID"));
+      Assert.That(result, Is.EqualTo("ParentFolderID"));
     }
 
     [Test]
     public void GetRelationColumnName_PropertyWithIStorageSpecificIdentifierAttribute_ReturnsNameFromAttribute ()
     {
       var classDefinition =
-          ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (FileSystemItem), baseClass: null);
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo (classDefinition, typeof (FileSystemItem), "ParentFolder2");
-      var relationDefinition = new RelationEndPointDefinition (propertyDefinition, true);
+          ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (FileSystemItem), baseClass: null);
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(classDefinition, typeof (FileSystemItem), "ParentFolder2");
+      var relationDefinition = new RelationEndPointDefinition(propertyDefinition, true);
 
-      var result = _provider.GetRelationColumnName (relationDefinition);
+      var result = _provider.GetRelationColumnName(relationDefinition);
 
-      Assert.That (result, Is.EqualTo ("ParentFolderRelation"));
+      Assert.That(result, Is.EqualTo("ParentFolderRelation"));
     }
 
     [Test]
     public void GetRelationClassIDColumnName ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (FileSystemItem), baseClass: null);
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo (classDefinition, typeof (FileSystemItem), "ParentFolder");
-      var relationDefinition = new RelationEndPointDefinition (propertyDefinition, true);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (FileSystemItem), baseClass: null);
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(classDefinition, typeof (FileSystemItem), "ParentFolder");
+      var relationDefinition = new RelationEndPointDefinition(propertyDefinition, true);
 
-      var result = _provider.GetRelationClassIDColumnName (relationDefinition);
+      var result = _provider.GetRelationClassIDColumnName(relationDefinition);
 
-      Assert.That (result, Is.EqualTo ("ParentFolderIDClassID"));
+      Assert.That(result, Is.EqualTo("ParentFolderIDClassID"));
     }
 
     [Test]
@@ -159,28 +159,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     {
       var result = _provider.GetPrimaryKeyConstraintName(_classDefinition);
 
-      Assert.That (result, Is.EqualTo ("PK_Company"));
+      Assert.That(result, Is.EqualTo("PK_Company"));
     }
 
     [Test]
     public void GetForeignKeyConstraintName_One ()
     {
-      var columnDefinition = ColumnDefinitionObjectMother.CreateColumn ("FakeColumn");
+      var columnDefinition = ColumnDefinitionObjectMother.CreateColumn("FakeColumn");
 
-      var result = _provider.GetForeignKeyConstraintName (_classDefinition, new[] { columnDefinition });
+      var result = _provider.GetForeignKeyConstraintName(_classDefinition, new[] { columnDefinition });
 
-      Assert.That (result, Is.EqualTo ("FK_Company_FakeColumn"));
+      Assert.That(result, Is.EqualTo("FK_Company_FakeColumn"));
     }
 
     [Test]
     public void GetForeignKeyConstraintName_Many ()
     {
-      var columnDefinition1 = ColumnDefinitionObjectMother.CreateColumn ("FakeColumn1");
-      var columnDefinition2 = ColumnDefinitionObjectMother.CreateColumn ("FakeColumn2");
+      var columnDefinition1 = ColumnDefinitionObjectMother.CreateColumn("FakeColumn1");
+      var columnDefinition2 = ColumnDefinitionObjectMother.CreateColumn("FakeColumn2");
 
-      var result = _provider.GetForeignKeyConstraintName (_classDefinition, new[] { columnDefinition1, columnDefinition2 });
+      var result = _provider.GetForeignKeyConstraintName(_classDefinition, new[] { columnDefinition1, columnDefinition2 });
 
-      Assert.That (result, Is.EqualTo ("FK_Company_FakeColumn1_FakeColumn2"));
+      Assert.That(result, Is.EqualTo("FK_Company_FakeColumn1_FakeColumn2"));
     }
   }
 }

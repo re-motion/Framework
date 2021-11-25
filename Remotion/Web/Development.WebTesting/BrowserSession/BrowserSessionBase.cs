@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
   public abstract class BrowserSessionBase<T> : IBrowserSession
       where T : IBrowserConfiguration
   {
-    private readonly TimeSpan _browserProcessesShutdownTime = TimeSpan.FromSeconds (60);
+    private readonly TimeSpan _browserProcessesShutdownTime = TimeSpan.FromSeconds(60);
 
     private readonly T _browserConfiguration;
     private readonly Coypu.BrowserSession _value;
@@ -45,11 +45,11 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
         [NotNull] T browserConfiguration,
         int driverProcessId)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
+      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
 
       if (driverProcessId < 0)
-        throw new ArgumentOutOfRangeException ("driverProcessId", "Process id can not be smaller that zero.");
+        throw new ArgumentOutOfRangeException("driverProcessId", "Process id can not be smaller that zero.");
 
       _value = value;
       _browserConfiguration = browserConfiguration;
@@ -69,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
 
     public void AcceptModalDialog (Options? options = null)
     {
-      _value.AcceptModalDialog (options);
+      _value.AcceptModalDialog(options);
     }
 
     public IDriver Driver
@@ -84,9 +84,9 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
 
     public BrowserWindow FindWindow (string locator, Options? options = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("locator", locator);
+      ArgumentUtility.CheckNotNullOrEmpty("locator", locator);
 
-      return _value.FindWindow (locator, options);
+      return _value.FindWindow(locator, options);
     }
 
     public virtual void DeleteAllCookies ()
@@ -111,16 +111,16 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
 
       var processesToClose = new List<Process>();
       if (driverProcess != null)
-        processesToClose.Add (driverProcess);
+        processesToClose.Add(driverProcess);
       if (browserProcess != null)
-        processesToClose.Add (browserProcess);
+        processesToClose.Add(browserProcess);
       if (browserProcess != null)
-        processesToClose.AddRange (FindSubProcesses (browserProcess));
+        processesToClose.AddRange(FindSubProcesses(browserProcess));
 
       // Dispose the underlying BrowserSession
       _value.Dispose();
 
-      ProcessUtils.GracefulProcessShutdown (processesToClose, _browserProcessesShutdownTime);
+      ProcessUtils.GracefulProcessShutdown(processesToClose, _browserProcessesShutdownTime);
     }
 
     /// <summary>
@@ -131,7 +131,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     {
       var processes = Process.GetProcesses();
 
-      return processes.FirstOrDefault (p => p.Id == _driverProcessID);
+      return processes.FirstOrDefault(p => p.Id == _driverProcessID);
     }
 
     /// <summary>
@@ -142,9 +142,9 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     {
       var processes = Process.GetProcesses();
 
-      return processes.FirstOrDefault (
+      return processes.FirstOrDefault(
           p => p.ProcessName == _browserConfiguration.BrowserExecutableName
-               && ProcessUtils.GetParentProcessID (p) == _driverProcessID);
+               && ProcessUtils.GetParentProcessID(p) == _driverProcessID);
     }
 
     /// <summary>
@@ -154,7 +154,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     {
       var processes = Process.GetProcesses();
 
-      return processes.Where (p => p.ProcessName == _browserConfiguration.BrowserExecutableName && ProcessUtils.GetParentProcessID (p) == process.Id);
+      return processes.Where(p => p.ProcessName == _browserConfiguration.BrowserExecutableName && ProcessUtils.GetParentProcessID(p) == process.Id);
     }
   }
 }

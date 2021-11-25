@@ -30,51 +30,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void RedirectedValueProperty ()
     {
       var query =
-          from o in QueryFactory.CreateLinqQuery<Order> ()
+          from o in QueryFactory.CreateLinqQuery<Order>()
           where o.RedirectedOrderNumber == 1
           select o;
-      CheckQueryResult (query, DomainObjectIDs.Order1);
+      CheckQueryResult(query, DomainObjectIDs.Order1);
     }
 
     [Test]
     public void RedirectedRelationProperty_CardinalityOne ()
     {
       var query =
-          from o in QueryFactory.CreateLinqQuery<Order> ()
+          from o in QueryFactory.CreateLinqQuery<Order>()
           where o.OrderNumber == 1
           select o.RedirectedOrderTicket;
-      CheckQueryResult (query, DomainObjectIDs.OrderTicket1);
+      CheckQueryResult(query, DomainObjectIDs.OrderTicket1);
     }
 
     [Test]
     public void RedirectedRelationProperty_CardinalityMany ()
     {
       var query =
-          from o in QueryFactory.CreateLinqQuery<Order> ()
+          from o in QueryFactory.CreateLinqQuery<Order>()
           from oi in o.RedirectedOrderItems
           where o.OrderNumber == 1
           select oi;
-      CheckQueryResult (query, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
+      CheckQueryResult(query, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
     }
 
     [Test]
     public void RedirectedRedirectedProperty ()
     {
       var query =
-          from o in QueryFactory.CreateLinqQuery<Order> ()
+          from o in QueryFactory.CreateLinqQuery<Order>()
           where o.RedirectedRedirectedOrderNumber == 1
           select o;
-      CheckQueryResult (query, DomainObjectIDs.Order1);
+      CheckQueryResult(query, DomainObjectIDs.Order1);
     }
 
     [Test]
     public void PropertyRedirectedToInterface_ImplementedByMixin ()
     {
       var query =
-          from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin> ()
+          from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
           where o.RedirectedPersistentProperty == 1
           select o;
-      CheckQueryResult (query);
+      CheckQueryResult(query);
     }
 
     [Test]
@@ -84,27 +84,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           from o in QueryFactory.CreateLinqQuery<TargetClassWithSameInterfaceAsPersistentMixin>()
           where o.PersistentPropertyRedirectedToMixin == 1
           select o;
-      CheckQueryResult (query);
+      CheckQueryResult(query);
     }
 
     [Test]
     public void RedirectedProperty_ViaExtensionMethod ()
     {
       var query =
-          from o in QueryFactory.CreateLinqQuery<Order> ()
+          from o in QueryFactory.CreateLinqQuery<Order>()
           where o.GetRedirectedOrderNumber() == 1
           select o;
-      CheckQueryResult (query, DomainObjectIDs.Order1);
+      CheckQueryResult(query, DomainObjectIDs.Order1);
     }
 
     [Test]
     public void RedirectedRedirectedProperty_ViaExtensionMethod ()
     {
       var query =
-          from o in QueryFactory.CreateLinqQuery<Order> ()
+          from o in QueryFactory.CreateLinqQuery<Order>()
           where o.GetRedirectedRedirectedOrderNumber() == 1
           select o;
-      CheckQueryResult (query, DomainObjectIDs.Order1);
+      CheckQueryResult(query, DomainObjectIDs.Order1);
     }
   }
 }

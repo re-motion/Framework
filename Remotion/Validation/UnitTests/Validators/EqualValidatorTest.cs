@@ -32,38 +32,38 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void Validate_WithValueTypeAndValueEqualsComparisonValue_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (1);
-      var validator = new EqualValidator (1, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(1);
+      var validator = new EqualValidator(1, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithValueTypeAndValueNotEqualsComparisonValue_ReturnsSingleValidationFailure ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (2);
-      var validator = new EqualValidator (1, validationMessage: new InvariantValidationMessage ("Custom validation message: '{0}'."));
+      var propertyValidatorContext = CreatePropertyValidatorContext(2);
+      var validator = new EqualValidator(1, validationMessage: new InvariantValidationMessage("Custom validation message: '{0}'."));
 
-      var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
+      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
-      Assert.That (validationFailures.Length, Is.EqualTo (1));
+      Assert.That(validationFailures.Length, Is.EqualTo(1));
       //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
-      Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must be equal to '1'."));
-      Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '1'."));
+      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must be equal to '1'."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '1'."));
     }
 
     [Test]
     public void Validate_WithReferenceTypeAndReferenceEqualsComparisonValue_ReturnsNoValidationFailures ()
     {
       var instanceToValidate = new object();
-      var propertyValidatorContext = CreatePropertyValidatorContext (instanceToValidate);
-      var validator = new EqualValidator (instanceToValidate, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(instanceToValidate);
+      var validator = new EqualValidator(instanceToValidate, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
@@ -71,45 +71,45 @@ namespace Remotion.Validation.UnitTests.Validators
     {
       using (CultureScope.CreateInvariantCultureScope())
       {
-        Assert.That (
-            () => new EqualValidator (null, new InvariantValidationMessage ("Fake Message")),
+        Assert.That(
+            () => new EqualValidator(null, new InvariantValidationMessage("Fake Message")),
             Throws.InstanceOf<ArgumentNullException>()
-                .With.ArgumentExceptionMessageEqualTo ($"Value cannot be null.", "comparisonValue"));
+                .With.ArgumentExceptionMessageEqualTo($"Value cannot be null.", "comparisonValue"));
       }
     }
 
     [Test]
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (null);
-      var validator = new EqualValidator ("some string", new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(null);
+      var validator = new EqualValidator("some string", new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueDifferentTypeThanComparisonValue_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (1);
-      var validator = new EqualValidator ("some string", new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(1);
+      var validator = new EqualValidator("some string", new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithReferenceTypeAndReferenceNotEqualsComparisonValue_ReturnsSingleValidationFailure ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (new object());
-      var validator = new EqualValidator (new object(), new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(new object());
+      var validator = new EqualValidator(new object(), new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
+      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
-      Assert.That (validationFailures.Length, Is.EqualTo (1));
-      Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must be equal to 'System.Object'."));
+      Assert.That(validationFailures.Length, Is.EqualTo(1));
+      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must be equal to 'System.Object'."));
     }
 
     [Test]
@@ -117,16 +117,16 @@ namespace Remotion.Validation.UnitTests.Validators
     {
       var equalityComparerMock = new Mock<IEqualityComparer>();
       equalityComparerMock
-          .Setup (_ => _.Equals ("comparisonValue", "propertyValue"))
-          .Returns (true)
+          .Setup(_ => _.Equals("comparisonValue", "propertyValue"))
+          .Returns(true)
           .Verifiable();
-      var propertyValidatorContext = CreatePropertyValidatorContext ("propertyValue");
-      var validator = new EqualValidator ("comparisonValue", new InvariantValidationMessage ("Fake Message"), equalityComparerMock.Object);
+      var propertyValidatorContext = CreatePropertyValidatorContext("propertyValue");
+      var validator = new EqualValidator("comparisonValue", new InvariantValidationMessage("Fake Message"), equalityComparerMock.Object);
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
       equalityComparerMock.Verify();
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
   }
 }

@@ -35,7 +35,7 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
         return "Windows SDK 6: n/a";
       else
       {
-        return string.Format (
+        return string.Format(
             "Windows SDK 6: Registry: HKEY_LOCAL_MACHINE\\{0}\\[CurrentVersion]\\{1}\\bin\\PEVerify.exe",
             WindowsSdkRegistryKey,
             WindowsSdkRegistryInstallationFolderValue);
@@ -47,20 +47,20 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
       if (version != PEVerifyVersion.DotNet2)
         return null;
 
-      var windowsSdkVersion = RegistryKey.OpenBaseKey (RegistryHive.LocalMachine, RegistryView.Registry32)
-          .OpenSubKey (WindowsSdkRegistryKey, false)
-          ?.GetValue (WindowsSdkRegistryVersionValue) as string;
+      var windowsSdkVersion = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32)
+          .OpenSubKey(WindowsSdkRegistryKey, false)
+          ?.GetValue(WindowsSdkRegistryVersionValue) as string;
 
       if (windowsSdkVersion == null)
         return null;
 
-      var sdkPath = Registry.LocalMachine.OpenSubKey (WindowsSdkRegistryKey + "\\" + windowsSdkVersion, false)
-          ?.GetValue (WindowsSdkRegistryInstallationFolderValue) as string;
+      var sdkPath = Registry.LocalMachine.OpenSubKey(WindowsSdkRegistryKey + "\\" + windowsSdkVersion, false)
+          ?.GetValue(WindowsSdkRegistryInstallationFolderValue) as string;
 
       if (sdkPath == null)
         return null;
 
-      return Path.Combine (sdkPath, "bin", "PEVerify.exe");
+      return Path.Combine(sdkPath, "bin", "PEVerify.exe");
     }
   }
 }

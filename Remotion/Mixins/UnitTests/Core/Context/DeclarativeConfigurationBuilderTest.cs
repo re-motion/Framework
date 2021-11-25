@@ -36,53 +36,53 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [SetUp]
     public void SetUp ()
     {
-      _builder = new DeclarativeConfigurationBuilder (null);
-      _globalClassContext = new ClassContextBuilder (typeof (TargetClassForGlobalMix))
-          .AddMixin (typeof (MixinForGlobalMix)).WithDependency (typeof (AdditionalDependencyForGlobalMix))
-          .AddMixin (typeof (AdditionalDependencyForGlobalMix)).BuildClassContext ();
+      _builder = new DeclarativeConfigurationBuilder(null);
+      _globalClassContext = new ClassContextBuilder(typeof (TargetClassForGlobalMix))
+          .AddMixin(typeof (MixinForGlobalMix)).WithDependency(typeof (AdditionalDependencyForGlobalMix))
+          .AddMixin(typeof (AdditionalDependencyForGlobalMix)).BuildClassContext();
     }
 
     [Test]
     public void AddType ()
     {
-      _builder.AddType (typeof (object));
-      _builder.AddType (typeof (string));
+      _builder.AddType(typeof (object));
+      _builder.AddType(typeof (string));
 
-      Assert.That (_builder.AllTypes, Is.EquivalentTo (new[] { typeof (object), typeof (string) }));
+      Assert.That(_builder.AllTypes, Is.EquivalentTo(new[] { typeof (object), typeof (string) }));
     }
 
     [Test]
     public void AddType_Twice ()
     {
-      _builder.AddType (typeof (object));
-      _builder.AddType (typeof (object));
+      _builder.AddType(typeof (object));
+      _builder.AddType(typeof (object));
 
-      Assert.That (_builder.AllTypes, Is.EquivalentTo (new[] { typeof (object) }));
+      Assert.That(_builder.AllTypes, Is.EquivalentTo(new[] { typeof (object) }));
     }
 
     [Test]
     public void AddType_WithDerivedType ()
     {
-      _builder.AddType (typeof (string));
+      _builder.AddType(typeof (string));
 
-      Assert.That (_builder.AllTypes, Is.EquivalentTo (new[] { typeof (object), typeof (string) }));
+      Assert.That(_builder.AllTypes, Is.EquivalentTo(new[] { typeof (object), typeof (string) }));
     }
 
     [Test]
     public void AddType_WithOpenGenericType ()
     {
-      _builder.AddType (typeof (List<>));
+      _builder.AddType(typeof (List<>));
 
-      Assert.That (_builder.AllTypes, Is.EquivalentTo (new[] { typeof (List<>), typeof (object) }));
+      Assert.That(_builder.AllTypes, Is.EquivalentTo(new[] { typeof (List<>), typeof (object) }));
     }
 
     [Test]
     public void AddType_WithClosedGenericType ()
     {
-      Assert.That (
-          () => _builder.AddType (typeof (List<int>)),
+      Assert.That(
+          () => _builder.AddType(typeof (List<int>)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo ("Type must be non-generic or a generic type definition.", "type"));
+              .With.ArgumentExceptionMessageEqualTo("Type must be non-generic or a generic type definition.", "type"));
     }
 
     class DerivedList : List<int> { }
@@ -90,9 +90,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [Test]
     public void AddType_WithDerivedFromGenericType ()
     {
-      _builder.AddType (typeof (DerivedList));
+      _builder.AddType(typeof (DerivedList));
 
-      Assert.That (_builder.AllTypes, Is.EquivalentTo (new[] { typeof (DerivedList), typeof (List<>), typeof (object) }));
+      Assert.That(_builder.AllTypes, Is.EquivalentTo(new[] { typeof (DerivedList), typeof (List<>), typeof (object) }));
     }
 
     [IgnoreForMixinConfiguration]
@@ -103,40 +103,40 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [Test]
     public void AddAssembly_AddsTypesInAssembly ()
     {
-      _builder.AddAssembly (typeof (DeclarativeConfigurationBuilderTest).Assembly);
-      Assert.That (_builder.AllTypes, Has.Member(typeof (BaseType1)));
+      _builder.AddAssembly(typeof (DeclarativeConfigurationBuilderTest).Assembly);
+      Assert.That(_builder.AllTypes, Has.Member(typeof (BaseType1)));
     }
 
     [Test]
     public void AddAssembly_IgnoresTaggedTypes ()
     {
-      _builder.AddAssembly (typeof (DeclarativeConfigurationBuilderTest).Assembly);
+      _builder.AddAssembly(typeof (DeclarativeConfigurationBuilderTest).Assembly);
 
-      Assert.That (_builder.AllTypes, Has.No.Member(typeof (TypeIgnored)));
+      Assert.That(_builder.AllTypes, Has.No.Member(typeof (TypeIgnored)));
     }
 
     [Test]
     public void AddAssembly_IgnoresGeneratedTypes ()
     {
-      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType1));
-      _builder.AddAssembly (generatedType.Assembly);
+      Type generatedType = TypeFactory.GetConcreteType(typeof (BaseType1));
+      _builder.AddAssembly(generatedType.Assembly);
 
-      Assert.That (_builder.AllTypes, Is.Empty);
+      Assert.That(_builder.AllTypes, Is.Empty);
     }
 
     [Test]
     public void AddAssembly_CheckTypes ()
     {
-      _builder.AddAssembly (typeof (DeclarativeConfigurationBuilderTest).Assembly);
+      _builder.AddAssembly(typeof (DeclarativeConfigurationBuilderTest).Assembly);
 
-      var referenceBuilder = new DeclarativeConfigurationBuilder (null);
-      foreach (Type t in typeof (DeclarativeConfigurationBuilderTest).Assembly.GetTypes ())
+      var referenceBuilder = new DeclarativeConfigurationBuilder(null);
+      foreach (Type t in typeof (DeclarativeConfigurationBuilderTest).Assembly.GetTypes())
       {
-        if (!t.IsDefined (typeof (IgnoreForMixinConfigurationAttribute), false) && !MixinTypeUtility.IsGeneratedByMixinEngine (t))
-          referenceBuilder.AddType (t);
+        if (!t.IsDefined(typeof (IgnoreForMixinConfigurationAttribute), false) && !MixinTypeUtility.IsGeneratedByMixinEngine(t))
+          referenceBuilder.AddType(t);
       }
 
-      Assert.That (_builder.AllTypes, Is.EquivalentTo (referenceBuilder.AllTypes));
+      Assert.That(_builder.AllTypes, Is.EquivalentTo(referenceBuilder.AllTypes));
     }
 
     [Uses (typeof (NullMixin))]
@@ -155,73 +155,73 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [Test]
     public void BuildConfiguration ()
     {
-      _builder.AddType (typeof (User));
-      _builder.AddType (typeof (Extender));
-      _builder.AddType (typeof (IComposedInterface));
+      _builder.AddType(typeof (User));
+      _builder.AddType(typeof (Extender));
+      _builder.AddType(typeof (IComposedInterface));
 
       MixinConfiguration configuration = _builder.BuildConfiguration();
-      ClassContext c1 = new ClassContextBuilder (typeof (User)).AddMixin (typeof (NullMixin)).OfKind (MixinKind.Used).BuildClassContext();
+      ClassContext c1 = new ClassContextBuilder(typeof (User)).AddMixin(typeof (NullMixin)).OfKind(MixinKind.Used).BuildClassContext();
       ClassContext c2 = new ClassContextBuilder(typeof (NullTarget))
-          .AddMixin (typeof (Extender)).AddComposedInterface (typeof (IComposedInterface)).BuildClassContext ();
-      Assert.That (configuration.ClassContexts, Is.EquivalentTo (new object[] { c1, c2, _globalClassContext }));
+          .AddMixin(typeof (Extender)).AddComposedInterface(typeof (IComposedInterface)).BuildClassContext();
+      Assert.That(configuration.ClassContexts, Is.EquivalentTo(new object[] { c1, c2, _globalClassContext }));
     }
 
     [Test]
     public void BuildConfiguration_WithParentConfiguration ()
     {
       MixinConfiguration parentConfiguration = MixinConfiguration.BuildNew().ForClass<int>().AddMixin<string>().BuildConfiguration();
-      var builder = new DeclarativeConfigurationBuilder (parentConfiguration);
-      builder.AddType (typeof (User));
+      var builder = new DeclarativeConfigurationBuilder(parentConfiguration);
+      builder.AddType(typeof (User));
 
-      MixinConfiguration configuration = builder.BuildConfiguration ();
-      ClassContext c1 = new ClassContextBuilder (typeof (User)).AddMixin (typeof (NullMixin)).OfKind (MixinKind.Used).BuildClassContext ();
-      Assert.That (configuration.ClassContexts,
-          Is.EquivalentTo (new object[] { c1, parentConfiguration.GetContext (typeof (int)), _globalClassContext }));
+      MixinConfiguration configuration = builder.BuildConfiguration();
+      ClassContext c1 = new ClassContextBuilder(typeof (User)).AddMixin(typeof (NullMixin)).OfKind(MixinKind.Used).BuildClassContext();
+      Assert.That(configuration.ClassContexts,
+          Is.EquivalentTo(new object[] { c1, parentConfiguration.GetContext(typeof (int)), _globalClassContext }));
     }
     
     [Test]
     public void BuildConfiguration_Duplicates_NotIgnoredInGeneral ()
     {
       var builder = new DeclarativeConfigurationBuilder(null);
-      builder.AddType (typeof (TypeWithDuplicateAttributeNotIgnoringDuplicates));
+      builder.AddType(typeof (TypeWithDuplicateAttributeNotIgnoringDuplicates));
 
-      Assert.That (() => builder.BuildConfiguration (), Throws.TypeOf<ConfigurationException>().With.Message.Contains ("already configured"));
+      Assert.That(() => builder.BuildConfiguration(), Throws.TypeOf<ConfigurationException>().With.Message.Contains("already configured"));
     }
 
     [Test]
     public void BuildConfiguration_Duplicates_IgnoredIfIndicatedByAttribute ()
     {
-      var builder = new DeclarativeConfigurationBuilder (null);
-      builder.AddType (typeof (TypeWithDuplicateAttributeIgnoringDuplicates1));
-      builder.AddType (typeof (TypeWithDuplicateAttributeIgnoringDuplicates2));
+      var builder = new DeclarativeConfigurationBuilder(null);
+      builder.AddType(typeof (TypeWithDuplicateAttributeIgnoringDuplicates1));
+      builder.AddType(typeof (TypeWithDuplicateAttributeIgnoringDuplicates2));
 
       var configuration = builder.BuildConfiguration();
 
-      Assert.That (configuration.GetContext (typeof (TypeWithDuplicateAttributeIgnoringDuplicates1)).Mixins, Has.Count.EqualTo (1));
-      Assert.That (configuration.GetContext (typeof (TypeWithDuplicateAttributeIgnoringDuplicates2)), Is.Null, "Ignored attributes - no mixins.");
+      Assert.That(configuration.GetContext(typeof (TypeWithDuplicateAttributeIgnoringDuplicates1)).Mixins, Has.Count.EqualTo(1));
+      Assert.That(configuration.GetContext(typeof (TypeWithDuplicateAttributeIgnoringDuplicates2)), Is.Null, "Ignored attributes - no mixins.");
     }
 
     [Test]
     public void BuildConfigurationFromAssemblies ()
     {
-      MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
+      MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(Assembly.GetExecutingAssembly());
 
-      Assert.That (configuration.ClassContexts.ContainsWithInheritance (typeof (BaseType1)), Is.True);
+      Assert.That(configuration.ClassContexts.ContainsWithInheritance(typeof (BaseType1)), Is.True);
 
-      ClassContext contextForBaseType1 = configuration.GetContext (typeof (BaseType1));
-      Assert.That (contextForBaseType1.Mixins.Count, Is.EqualTo (2));
+      ClassContext contextForBaseType1 = configuration.GetContext(typeof (BaseType1));
+      Assert.That(contextForBaseType1.Mixins.Count, Is.EqualTo(2));
 
-      Assert.That (contextForBaseType1.Mixins.ContainsKey (typeof (BT1Mixin1)), Is.True);
-      Assert.That (contextForBaseType1.Mixins.ContainsKey (typeof (BT1Mixin2)), Is.True);
+      Assert.That(contextForBaseType1.Mixins.ContainsKey(typeof (BT1Mixin1)), Is.True);
+      Assert.That(contextForBaseType1.Mixins.ContainsKey(typeof (BT1Mixin2)), Is.True);
     }
 
     [Test]
     public void BuildConfigurationFromAssemblies_Multiple ()
     {
       var assemblies = new[] { typeof (BaseType1).Assembly, typeof (DisposableMixin).Assembly };
-      MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (null, assemblies);
-      Assert.That (configuration.ClassContexts.ContainsWithInheritance (typeof (BaseType1)), Is.True);
-      Assert.That (configuration.ClassContexts.ContainsWithInheritance (typeof (DisposableMixinTest.C)), Is.True);
+      MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(null, assemblies);
+      Assert.That(configuration.ClassContexts.ContainsWithInheritance(typeof (BaseType1)), Is.True);
+      Assert.That(configuration.ClassContexts.ContainsWithInheritance(typeof (DisposableMixinTest.C)), Is.True);
     }
 
     [AttributeUsage (AttributeTargets.Class, AllowMultiple = true)]
@@ -246,18 +246,18 @@ namespace Remotion.Mixins.UnitTests.Core.Context
 
       public override int GetHashCode ()
       {
-        return typeof (TestAttributeWithEquality).GetHashCode ();
+        return typeof (TestAttributeWithEquality).GetHashCode();
       }
 
       public void Apply (MixinConfigurationBuilder configurationBuilder, Type attributeTarget)
       {
         try
         {
-          configurationBuilder.ForClass (attributeTarget).AddMixin<NullMixin> ();
+          configurationBuilder.ForClass(attributeTarget).AddMixin<NullMixin>();
         }
         catch (Exception ex)
         {
-          throw new ConfigurationException (ex.Message, ex);
+          throw new ConfigurationException(ex.Message, ex);
         }
       }
     }

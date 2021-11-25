@@ -29,8 +29,8 @@ namespace Remotion.Mixins.Definitions.Building
 
     public ComposedInterfaceDependencyDefinitionBuilder (TargetClassDefinition targetClass, Type composedInterface)
     {
-      ArgumentUtility.CheckNotNull ("targetClass", targetClass);
-      ArgumentUtility.CheckNotNull ("composedInterface", composedInterface);
+      ArgumentUtility.CheckNotNull("targetClass", targetClass);
+      ArgumentUtility.CheckNotNull("composedInterface", composedInterface);
 
       _targetClass = targetClass;
       _composedInterface = composedInterface;
@@ -43,23 +43,23 @@ namespace Remotion.Mixins.Definitions.Building
 
     protected override RequirementDefinitionBase CreateRequirement (Type type)
     {
-      return new RequiredTargetCallTypeDefinition (_targetClass, type);
+      return new RequiredTargetCallTypeDefinition(_targetClass, type);
     }
 
     protected override void AddRequirement (RequirementDefinitionBase requirement)
     {
-      _targetClass.RequiredTargetCallTypes.Add ((RequiredTargetCallTypeDefinition) requirement);
+      _targetClass.RequiredTargetCallTypes.Add((RequiredTargetCallTypeDefinition) requirement);
     }
 
     protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
-      return new ComposedInterfaceDependencyDefinition ((RequiredTargetCallTypeDefinition) requirement, _composedInterface, aggregator);
+      return new ComposedInterfaceDependencyDefinition((RequiredTargetCallTypeDefinition) requirement, _composedInterface, aggregator);
     }
 
     protected override void AddDependency (DependencyDefinitionBase dependency)
     {
-      ArgumentUtility.CheckNotNull ("dependency", dependency);
-      _targetClass.ComposedInterfaceDependencies.Add ((ComposedInterfaceDependencyDefinition) dependency);
+      ArgumentUtility.CheckNotNull("dependency", dependency);
+      _targetClass.ComposedInterfaceDependencies.Add((ComposedInterfaceDependencyDefinition) dependency);
     }
   }
 }

@@ -41,7 +41,7 @@ namespace Remotion.Context
   /// </threadsafety>
   public static class SafeContext
   {
-    private static readonly Lazy<ISafeContextStorageProvider> s_instance = new Lazy<ISafeContextStorageProvider> (
+    private static readonly Lazy<ISafeContextStorageProvider> s_instance = new Lazy<ISafeContextStorageProvider>(
         () => SafeServiceLocator.Current.GetInstance<ISafeContextStorageProvider>(),
         LazyThreadSafetyMode.ExecutionAndPublication);
 

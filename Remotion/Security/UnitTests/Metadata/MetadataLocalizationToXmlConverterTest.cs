@@ -31,26 +31,26 @@ namespace Remotion.Security.UnitTests.Metadata
     public void Convert_Empty ()
     {
       LocalizedName[] localizedNames = new LocalizedName[0];
-      MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter ();
+      MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter();
 
-      XmlDocument document = converter.Convert (localizedNames, "de");
+      XmlDocument document = converter.Convert(localizedNames, "de");
 
       string expectedXml = @"<?xml version=""1.0""?>
           <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture=""de"" />
           ";
 
-      XmlAssert.AreDocumentsEqual (expectedXml, document);
+      XmlAssert.AreDocumentsEqual(expectedXml, document);
     }
 
     [Test]
     public void Convert_OneLocalizedName ()
     {
       LocalizedName[] localizedNames = new LocalizedName[1];
-      localizedNames[0] = new LocalizedName ("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Beamter");
+      localizedNames[0] = new LocalizedName("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Beamter");
 
-      MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter ();
+      MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter();
 
-      XmlDocument document = converter.Convert (localizedNames, "de");
+      XmlDocument document = converter.Convert(localizedNames, "de");
 
       string expectedXml = @"<?xml version=""1.0""?>
           <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture=""de"">
@@ -60,19 +60,19 @@ namespace Remotion.Security.UnitTests.Metadata
           </localizedNames>
           ";
 
-      XmlAssert.AreDocumentsEqual (expectedXml, document);
+      XmlAssert.AreDocumentsEqual(expectedXml, document);
     }
 
     [Test]
     public void Convert_TwoLocalizedNames ()
     {
       LocalizedName[] localizedNames = new LocalizedName[2];
-      localizedNames[0] = new LocalizedName ("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Beamter");
-      localizedNames[1] = new LocalizedName ("93969f13-65d7-49f4-a456-a1686a4de3de", "Confidentiality", "Vertraulichkeit");
+      localizedNames[0] = new LocalizedName("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Beamter");
+      localizedNames[1] = new LocalizedName("93969f13-65d7-49f4-a456-a1686a4de3de", "Confidentiality", "Vertraulichkeit");
 
-      MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter ();
+      MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter();
 
-      XmlDocument document = converter.Convert (localizedNames, "de");
+      XmlDocument document = converter.Convert(localizedNames, "de");
 
       string expectedXml = @"<?xml version=""1.0""?>
           <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture=""de"">
@@ -85,18 +85,18 @@ namespace Remotion.Security.UnitTests.Metadata
           </localizedNames>
           ";
 
-      XmlAssert.AreDocumentsEqual (expectedXml, document);
+      XmlAssert.AreDocumentsEqual(expectedXml, document);
     }
 
     [Test]
     public void Convert_OneLocalizedNameForInvariantCulture ()
     {
       LocalizedName[] localizedNames = new LocalizedName[1];
-      localizedNames[0] = new LocalizedName ("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Beamter");
+      localizedNames[0] = new LocalizedName("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Beamter");
 
-      MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter ();
+      MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter();
 
-      XmlDocument document = converter.Convert (localizedNames, CultureInfo.InvariantCulture.Name);
+      XmlDocument document = converter.Convert(localizedNames, CultureInfo.InvariantCulture.Name);
 
       string expectedXml = @"<?xml version=""1.0""?>
           <localizedNames xmlns=""http://www.re-motion.org/Security/Metadata/Localization/1.0"" culture="""">
@@ -106,7 +106,7 @@ namespace Remotion.Security.UnitTests.Metadata
           </localizedNames>
           ";
 
-      XmlAssert.AreDocumentsEqual (expectedXml, document);
+      XmlAssert.AreDocumentsEqual(expectedXml, document);
     }
 
     [Test]
@@ -114,19 +114,19 @@ namespace Remotion.Security.UnitTests.Metadata
     {
       string testOutputPath = @"Core\Metadata\Testoutput";
 
-      if (!Directory.Exists (testOutputPath))
-        Directory.CreateDirectory (testOutputPath);
+      if (!Directory.Exists(testOutputPath))
+        Directory.CreateDirectory(testOutputPath);
 
-      string filename = Path.Combine (testOutputPath, "metadata.xml");
-      string expectedFilename = Path.Combine (testOutputPath, "metadata.Localization.de.xml");
+      string filename = Path.Combine(testOutputPath, "metadata.xml");
+      string expectedFilename = Path.Combine(testOutputPath, "metadata.Localization.de.xml");
 
-      if (File.Exists (expectedFilename))
-        File.Delete (expectedFilename);
+      if (File.Exists(expectedFilename))
+        File.Delete(expectedFilename);
 
-      MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter ();
-      converter.ConvertAndSave (new LocalizedName[0], new CultureInfo("de"), filename);
+      MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter();
+      converter.ConvertAndSave(new LocalizedName[0], new CultureInfo("de"), filename);
 
-      Assert.That (File.Exists (expectedFilename), Is.True);
+      Assert.That(File.Exists(expectedFilename), Is.True);
     }
   }
 }

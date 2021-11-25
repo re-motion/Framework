@@ -49,14 +49,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
  
       try
       {
-        completionDetection.WaitForCompletion (home.Context, 2);
+        completionDetection.WaitForCompletion(home.Context, 2);
       }
       catch (WebTestException)
       {
       }
  
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
+      Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount + 1));
+      Assert.That(_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo(rootScope.InnerHTML));
     }
 
     [Test]
@@ -70,19 +70,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
  
       try
       {
-        completionDetection.WaitForCompletion (home.Context, "wxeFunctionToken");
+        completionDetection.WaitForCompletion(home.Context, "wxeFunctionToken");
       }
       catch (WebTestException)
       {
       }
  
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
+      Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount + 1));
+      Assert.That(_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo(rootScope.InnerHTML));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("AspNetRequestErrorDetectionParserStaticPages/CustomErrorDefaultErrorPage.html");
+      return Start<WxePageObject>("AspNetRequestErrorDetectionParserStaticPages/CustomErrorDefaultErrorPage.html");
     }
   }
 }

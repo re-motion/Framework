@@ -36,9 +36,9 @@ namespace Remotion.Data.UnitTests.UnitTesting
 
     public void CheckPosition (string operationName, int expectedPosition, string message = null)
     {
-      Assert.That (
+      Assert.That(
           _currentPosition,
-          Is.EqualTo (expectedPosition),
+          Is.EqualTo(expectedPosition),
           "Expected operation '{0}' at sequence number {1}, but was {2}. {3}",
           operationName,
           expectedPosition,

@@ -46,7 +46,7 @@ namespace Remotion.Web.Security.UI
 
     protected DemandTargetPermissionAttribute (Type functionType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("functionType", functionType, typeof (WxeFunction));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("functionType", functionType, typeof (WxeFunction));
 
       _permissionSource = PermissionSource.WxeFunction;
       _functionType = functionType;
@@ -54,29 +54,29 @@ namespace Remotion.Web.Security.UI
 
     protected DemandTargetPermissionAttribute (object methodEnum)
     {
-      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum> ("methodEnum", methodEnum);
-      CheckDeclaringTypeOfMethodNameEnum (enumValue);
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>("methodEnum", methodEnum);
+      CheckDeclaringTypeOfMethodNameEnum(enumValue);
 
       _permissionSource = PermissionSource.SecurableObject;
-      _securableClass = enumValue.GetType ().DeclaringType;
-      _methodName = enumValue.ToString ();
+      _securableClass = enumValue.GetType().DeclaringType;
+      _methodName = enumValue.ToString();
     }
 
     protected DemandTargetPermissionAttribute (object methodEnum, Type securableClass)
     {
-      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum> ("methodEnum", methodEnum);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableObject));
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>("methodEnum", methodEnum);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof (ISecurableObject));
 
-      CheckDeclaringTypeOfMethodNameEnum (enumValue, securableClass);
+      CheckDeclaringTypeOfMethodNameEnum(enumValue, securableClass);
 
       _permissionSource = PermissionSource.SecurableObject;
       _securableClass = securableClass;
-      _methodName = enumValue.ToString ();
+      _methodName = enumValue.ToString();
     }
 
     protected DemandTargetPermissionAttribute (string methodName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
+      ArgumentUtility.CheckNotNullOrEmpty("methodName", methodName);
 
       _permissionSource = PermissionSource.SecurableObject;
       _methodName = methodName;
@@ -84,8 +84,8 @@ namespace Remotion.Web.Security.UI
 
     protected DemandTargetPermissionAttribute (string methodName, Type securableClass)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNullOrEmpty("methodName", methodName);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof (ISecurableObject));
 
       _permissionSource = PermissionSource.SecurableObject;
       _methodName = methodName;
@@ -116,16 +116,16 @@ namespace Remotion.Web.Security.UI
 
     protected void CheckDeclaringTypeOfMethodNameEnum (Enum methodNameEnum)
     {
-      ArgumentUtility.CheckNotNull ("methodNameEnum", methodNameEnum);
+      ArgumentUtility.CheckNotNull("methodNameEnum", methodNameEnum);
 
-      Type enumType = methodNameEnum.GetType ();
+      Type enumType = methodNameEnum.GetType();
 
       if (enumType.DeclaringType == null)
-        throw new ArgumentException (string.Format ("Enumerated type '{0}' is not declared as a nested type.", enumType.GetFullNameSafe()), "methodNameEnum");
+        throw new ArgumentException(string.Format("Enumerated type '{0}' is not declared as a nested type.", enumType.GetFullNameSafe()), "methodNameEnum");
 
-      if (!typeof (ISecurableObject).IsAssignableFrom (enumType.DeclaringType))
+      if (!typeof (ISecurableObject).IsAssignableFrom(enumType.DeclaringType))
       {
-        throw new ArgumentException (string.Format (
+        throw new ArgumentException(string.Format(
                 "The declaring type of enumerated type '{0}' does not implement interface '{1}'.",
                 enumType.GetFullNameSafe(),
                 typeof (ISecurableObject).GetFullNameSafe()),
@@ -135,13 +135,13 @@ namespace Remotion.Web.Security.UI
 
     protected void CheckDeclaringTypeOfMethodNameEnum (Enum enumValue, Type securableClass)
     {
-      CheckDeclaringTypeOfMethodNameEnum (enumValue);
+      CheckDeclaringTypeOfMethodNameEnum(enumValue);
 
-      Type enumType = enumValue.GetType ();
-      if (!enumType.DeclaringType!.IsAssignableFrom (securableClass))
+      Type enumType = enumValue.GetType();
+      if (!enumType.DeclaringType!.IsAssignableFrom(securableClass))
       {
-        throw new ArgumentException (
-            string.Format ("Type '{0}' cannot be assigned to the declaring type of enumerated type '{1}'.", securableClass, enumType),
+        throw new ArgumentException(
+            string.Format("Type '{0}' cannot be assigned to the declaring type of enumerated type '{1}'.", securableClass, enumType),
             "securableClass");
       }
     }

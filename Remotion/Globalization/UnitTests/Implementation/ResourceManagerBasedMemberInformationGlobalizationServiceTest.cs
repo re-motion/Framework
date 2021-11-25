@@ -41,29 +41,29 @@ namespace Remotion.Globalization.UnitTests.Implementation
     public void SetUp ()
     {
       _globalizationServiceMock = new Mock<IGlobalizationService>();
-      _resourceManagerMock = new Mock<IResourceManager> (MockBehavior.Strict);
-      _resourceManagerMock.Setup (stub => stub.IsNull).Returns (false);
-      _resourceManagerMock.Setup (stub => stub.Name).Returns ("RM1");
+      _resourceManagerMock = new Mock<IResourceManager>(MockBehavior.Strict);
+      _resourceManagerMock.Setup(stub => stub.IsNull).Returns(false);
+      _resourceManagerMock.Setup(stub => stub.Name).Returns("RM1");
 
       _typeInformationStub = new Mock<ITypeInformation>();
-      _typeInformationStub.Setup (stub => stub.Name).Returns ("TypeName");
+      _typeInformationStub.Setup(stub => stub.Name).Returns("TypeName");
 
       _typeInformationForResourceResolutionStub = new Mock<ITypeInformation>();
-      _typeInformationForResourceResolutionStub.Setup (stub => stub.Name).Returns ("TypeNameForResourceResolution");
+      _typeInformationForResourceResolutionStub.Setup(stub => stub.Name).Returns("TypeNameForResourceResolution");
 
       _propertyInformationStub = new Mock<IPropertyInformation>();
-      _propertyInformationStub.Setup (stub => stub.Name).Returns ("PropertyName");
+      _propertyInformationStub.Setup(stub => stub.Name).Returns("PropertyName");
 
       _memberInformationNameResolverStub = new Mock<IMemberInformationNameResolver>();
-      _memberInformationNameResolverStub.Setup (stub => stub.GetPropertyName (_propertyInformationStub.Object)).Returns ("FakePropertyFullName");
-      _memberInformationNameResolverStub.Setup (stub => stub.GetTypeName (_typeInformationStub.Object)).Returns ("FakeTypeFullName");
+      _memberInformationNameResolverStub.Setup(stub => stub.GetPropertyName(_propertyInformationStub.Object)).Returns("FakePropertyFullName");
+      _memberInformationNameResolverStub.Setup(stub => stub.GetTypeName(_typeInformationStub.Object)).Returns("FakeTypeFullName");
 
       _shortPropertyResourceID = "property:PropertyName";
       _longPropertyResourceID = "property:FakePropertyFullName";
       _shortTypeResourceID = "type:TypeName";
       _longTypeResourceID = "type:FakeTypeFullName";
 
-      _service = new ResourceManagerBasedMemberInformationGlobalizationService (_globalizationServiceMock.Object, _memberInformationNameResolverStub.Object);
+      _service = new ResourceManagerBasedMemberInformationGlobalizationService(_globalizationServiceMock.Object, _memberInformationNameResolverStub.Object);
     }
 
     [Test]
@@ -71,18 +71,18 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       string outValue = null;
 
-      _globalizationServiceMock.Setup (mock => mock.GetResourceManager (_typeInformationStub.Object)).Returns (_resourceManagerMock.Object);
+      _globalizationServiceMock.Setup(mock => mock.GetResourceManager(_typeInformationStub.Object)).Returns(_resourceManagerMock.Object);
 
-      _resourceManagerMock.Setup (mock => mock.TryGetString (_longPropertyResourceID, out outValue)).Returns (false).Verifiable();
-      _resourceManagerMock.Setup (mock => mock.TryGetString (_shortPropertyResourceID, out outValue)).Returns (false).Verifiable();
+      _resourceManagerMock.Setup(mock => mock.TryGetString(_longPropertyResourceID, out outValue)).Returns(false).Verifiable();
+      _resourceManagerMock.Setup(mock => mock.TryGetString(_shortPropertyResourceID, out outValue)).Returns(false).Verifiable();
 
       string resourceValue;
-      var result = _service.TryGetPropertyDisplayName (_propertyInformationStub.Object, _typeInformationStub.Object, out resourceValue);
+      var result = _service.TryGetPropertyDisplayName(_propertyInformationStub.Object, _typeInformationStub.Object, out resourceValue);
 
       _globalizationServiceMock.Verify();
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.False);
-      Assert.That (resourceValue, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(resourceValue, Is.Null);
     }
 
     [Test]
@@ -90,17 +90,17 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       var outValue = "Test";
 
-      _globalizationServiceMock.Setup (mock => mock.GetResourceManager (_typeInformationStub.Object)).Returns (_resourceManagerMock.Object);
+      _globalizationServiceMock.Setup(mock => mock.GetResourceManager(_typeInformationStub.Object)).Returns(_resourceManagerMock.Object);
 
-      _resourceManagerMock.Setup (mock => mock.TryGetString (_longPropertyResourceID, out outValue)).Returns (true).Verifiable();
+      _resourceManagerMock.Setup(mock => mock.TryGetString(_longPropertyResourceID, out outValue)).Returns(true).Verifiable();
 
       string resourceValue;
-      var result = _service.TryGetPropertyDisplayName (_propertyInformationStub.Object, _typeInformationStub.Object, out resourceValue);
+      var result = _service.TryGetPropertyDisplayName(_propertyInformationStub.Object, _typeInformationStub.Object, out resourceValue);
 
       _globalizationServiceMock.Verify();
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("Test"));
+      Assert.That(result, Is.True);
+      Assert.That(resourceValue, Is.EqualTo("Test"));
     }
 
     [Test]
@@ -109,18 +109,18 @@ namespace Remotion.Globalization.UnitTests.Implementation
       string nullOutValue = null;
       var testOutValue = "Test";
 
-      _globalizationServiceMock.Setup (mock => mock.GetResourceManager (_typeInformationStub.Object)).Returns (_resourceManagerMock.Object);
+      _globalizationServiceMock.Setup(mock => mock.GetResourceManager(_typeInformationStub.Object)).Returns(_resourceManagerMock.Object);
 
-      _resourceManagerMock.Setup (mock => mock.TryGetString (_longPropertyResourceID, out nullOutValue)).Returns (false).Verifiable();
-      _resourceManagerMock.Setup (mock => mock.TryGetString (_shortPropertyResourceID, out testOutValue)).Returns (true).Verifiable();
+      _resourceManagerMock.Setup(mock => mock.TryGetString(_longPropertyResourceID, out nullOutValue)).Returns(false).Verifiable();
+      _resourceManagerMock.Setup(mock => mock.TryGetString(_shortPropertyResourceID, out testOutValue)).Returns(true).Verifiable();
 
       string resourceValue;
-      var result = _service.TryGetPropertyDisplayName (_propertyInformationStub.Object, _typeInformationStub.Object, out resourceValue);
+      var result = _service.TryGetPropertyDisplayName(_propertyInformationStub.Object, _typeInformationStub.Object, out resourceValue);
 
       _globalizationServiceMock.Verify();
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("Test"));
+      Assert.That(result, Is.True);
+      Assert.That(resourceValue, Is.EqualTo("Test"));
     }
 
     [Test]
@@ -129,18 +129,18 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var testLongOutValue = "TestLong";
       var testShortOutValue = "TestShort";
 
-      _globalizationServiceMock.Setup (mock => mock.GetResourceManager (_typeInformationStub.Object)).Returns (_resourceManagerMock.Object);
+      _globalizationServiceMock.Setup(mock => mock.GetResourceManager(_typeInformationStub.Object)).Returns(_resourceManagerMock.Object);
 
-      _resourceManagerMock.Setup (mock => mock.TryGetString (_longPropertyResourceID, out testLongOutValue)).Returns (true);
-      _resourceManagerMock.Setup (mock => mock.TryGetString (_shortPropertyResourceID, out testShortOutValue)).Verifiable();
+      _resourceManagerMock.Setup(mock => mock.TryGetString(_longPropertyResourceID, out testLongOutValue)).Returns(true);
+      _resourceManagerMock.Setup(mock => mock.TryGetString(_shortPropertyResourceID, out testShortOutValue)).Verifiable();
 
       string resourceValue;
-      var result = _service.TryGetPropertyDisplayName (_propertyInformationStub.Object, _typeInformationStub.Object, out resourceValue);
+      var result = _service.TryGetPropertyDisplayName(_propertyInformationStub.Object, _typeInformationStub.Object, out resourceValue);
 
-      _resourceManagerMock.Verify (mock => mock.TryGetString (_longPropertyResourceID, out testLongOutValue), Times.AtLeastOnce);
-      _resourceManagerMock.Verify (mock => mock.TryGetString (_shortPropertyResourceID, out testShortOutValue), Times.Never());
-      Assert.That (result, Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("TestLong"));
+      _resourceManagerMock.Verify(mock => mock.TryGetString(_longPropertyResourceID, out testLongOutValue), Times.AtLeastOnce);
+      _resourceManagerMock.Verify(mock => mock.TryGetString(_shortPropertyResourceID, out testShortOutValue), Times.Never());
+      Assert.That(result, Is.True);
+      Assert.That(resourceValue, Is.EqualTo("TestLong"));
     }
 
     [Test]
@@ -148,17 +148,17 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       string outValue = null;
 
-      _globalizationServiceMock.Setup (mock => mock.GetResourceManager (_typeInformationForResourceResolutionStub.Object)).Returns (_resourceManagerMock.Object);
+      _globalizationServiceMock.Setup(mock => mock.GetResourceManager(_typeInformationForResourceResolutionStub.Object)).Returns(_resourceManagerMock.Object);
 
-      _resourceManagerMock.Setup (mock => mock.TryGetString (_longTypeResourceID, out outValue)).Returns (false).Verifiable();
-      _resourceManagerMock.Setup (mock => mock.TryGetString (_shortTypeResourceID, out outValue)).Returns (false).Verifiable();
+      _resourceManagerMock.Setup(mock => mock.TryGetString(_longTypeResourceID, out outValue)).Returns(false).Verifiable();
+      _resourceManagerMock.Setup(mock => mock.TryGetString(_shortTypeResourceID, out outValue)).Returns(false).Verifiable();
 
       string resourceValue;
-      var result = _service.TryGetTypeDisplayName (_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object, out resourceValue);
+      var result = _service.TryGetTypeDisplayName(_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object, out resourceValue);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.False);
-      Assert.That (resourceValue, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(resourceValue, Is.Null);
     }
 
     [Test]
@@ -166,16 +166,16 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       var outValue = "Test";
 
-      _globalizationServiceMock.Setup (mock => mock.GetResourceManager (_typeInformationForResourceResolutionStub.Object)).Returns (_resourceManagerMock.Object);
+      _globalizationServiceMock.Setup(mock => mock.GetResourceManager(_typeInformationForResourceResolutionStub.Object)).Returns(_resourceManagerMock.Object);
 
-      _resourceManagerMock.Setup (mock => mock.TryGetString (_longTypeResourceID, out outValue)).Returns (true).Verifiable();
+      _resourceManagerMock.Setup(mock => mock.TryGetString(_longTypeResourceID, out outValue)).Returns(true).Verifiable();
 
       string resourceValue;
-      var result = _service.TryGetTypeDisplayName (_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object, out resourceValue);
+      var result = _service.TryGetTypeDisplayName(_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object, out resourceValue);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("Test"));
+      Assert.That(result, Is.True);
+      Assert.That(resourceValue, Is.EqualTo("Test"));
     }
 
     [Test]
@@ -184,17 +184,17 @@ namespace Remotion.Globalization.UnitTests.Implementation
       string nullOutValue = null;
       var testOutValue = "Test";
 
-      _globalizationServiceMock.Setup (mock => mock.GetResourceManager (_typeInformationForResourceResolutionStub.Object)).Returns (_resourceManagerMock.Object);
+      _globalizationServiceMock.Setup(mock => mock.GetResourceManager(_typeInformationForResourceResolutionStub.Object)).Returns(_resourceManagerMock.Object);
 
-      _resourceManagerMock.Setup (mock => mock.TryGetString (_longTypeResourceID, out nullOutValue)).Returns (false).Verifiable();
-      _resourceManagerMock.Setup (mock => mock.TryGetString (_shortTypeResourceID, out testOutValue)).Returns (true).Verifiable();
+      _resourceManagerMock.Setup(mock => mock.TryGetString(_longTypeResourceID, out nullOutValue)).Returns(false).Verifiable();
+      _resourceManagerMock.Setup(mock => mock.TryGetString(_shortTypeResourceID, out testOutValue)).Returns(true).Verifiable();
 
       string resourceValue;
-      var result = _service.TryGetTypeDisplayName (_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object, out resourceValue);
+      var result = _service.TryGetTypeDisplayName(_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object, out resourceValue);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("Test"));
+      Assert.That(result, Is.True);
+      Assert.That(resourceValue, Is.EqualTo("Test"));
     }
 
     [Test]
@@ -203,18 +203,18 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var testLongOutValue = "TestLong";
       var testShortOutValue = "TestShort";
 
-      _globalizationServiceMock.Setup (mock => mock.GetResourceManager (_typeInformationForResourceResolutionStub.Object)).Returns (_resourceManagerMock.Object);
+      _globalizationServiceMock.Setup(mock => mock.GetResourceManager(_typeInformationForResourceResolutionStub.Object)).Returns(_resourceManagerMock.Object);
 
-      _resourceManagerMock.Setup (mock => mock.TryGetString (_longTypeResourceID, out testLongOutValue)).Returns (true).Verifiable();
-      _resourceManagerMock.Setup (stub => stub.TryGetString (_shortTypeResourceID, out testShortOutValue)).Verifiable();
+      _resourceManagerMock.Setup(mock => mock.TryGetString(_longTypeResourceID, out testLongOutValue)).Returns(true).Verifiable();
+      _resourceManagerMock.Setup(stub => stub.TryGetString(_shortTypeResourceID, out testShortOutValue)).Verifiable();
 
       string resourceValue;
-      var result = _service.TryGetTypeDisplayName (_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object, out resourceValue);
+      var result = _service.TryGetTypeDisplayName(_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object, out resourceValue);
 
-      _resourceManagerMock.Verify (stub => stub.TryGetString (_longTypeResourceID, out testLongOutValue), Times.AtLeastOnce);
-      _resourceManagerMock.Verify (stub => stub.TryGetString (_shortTypeResourceID, out testShortOutValue), Times.Never());
-      Assert.That (result, Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("TestLong"));
+      _resourceManagerMock.Verify(stub => stub.TryGetString(_longTypeResourceID, out testLongOutValue), Times.AtLeastOnce);
+      _resourceManagerMock.Verify(stub => stub.TryGetString(_shortTypeResourceID, out testShortOutValue), Times.Never());
+      Assert.That(result, Is.True);
+      Assert.That(resourceValue, Is.EqualTo("TestLong"));
     }
   }
 }

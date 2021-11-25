@@ -21,12 +21,12 @@ namespace Remotion.Security.UnitTests.Metadata
     public override void WriteMessageTo (MessageWriter writer)
     {
       var message = new StringBuilder();
-      message.Append ("Expected: ");
-      message.Append (_expectedName);
-      message.Append ("\t but was: ");
-      message.Append (String.Join (", ", ExtractNames (((IList<EnumValueInfo>) _actual)).ToArray()));
+      message.Append("Expected: ");
+      message.Append(_expectedName);
+      message.Append("\t but was: ");
+      message.Append(String.Join(", ", ExtractNames(((IList<EnumValueInfo>) _actual)).ToArray()));
 
-      writer.Write (message.ToString());
+      writer.Write(message.ToString());
     }
 
     private List<string> ExtractNames (IList<EnumValueInfo> list)
@@ -35,9 +35,9 @@ namespace Remotion.Security.UnitTests.Metadata
       if (actualAsEnumValueInfoList == null)
         return null;
 
-      List<string> actualNames = new List<string> ();
+      List<string> actualNames = new List<string>();
       foreach (EnumValueInfo value in list)
-        actualNames.Add (value.Name);
+        actualNames.Add(value.Name);
 
       return actualNames;
     }

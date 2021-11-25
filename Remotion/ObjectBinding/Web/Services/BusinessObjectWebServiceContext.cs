@@ -32,11 +32,11 @@ namespace Remotion.ObjectBinding.Web.Services
         [CanBeNull] IBusinessObjectProperty? property,
         [CanBeNull] string? arguments)
     {
-      return new BusinessObjectWebServiceContext (
+      return new BusinessObjectWebServiceContext(
           dataSource?.BusinessObject?.BusinessObjectClass?.Identifier ?? dataSource?.BusinessObjectClass?.Identifier,
           property?.Identifier,
           (dataSource?.BusinessObject as IBusinessObjectWithIdentity)?.UniqueIdentifier,
-          StringUtility.EmptyToNull (arguments));
+          StringUtility.EmptyToNull(arguments));
     }
 
     /// <summary>

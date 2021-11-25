@@ -42,18 +42,18 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       _serializationInfo = new SerializationInfo(typeof(object), new FormatterConverter());
       _context = new StreamingContext();
       _concreteMixin = new FakeConcreteMixinType();
-      var classContext = ClassContextObjectMother.Create (typeof (ClassOverridingMixinMembers), typeof (FakeConcreteMixinType));
+      var classContext = ClassContextObjectMother.Create(typeof (ClassOverridingMixinMembers), typeof (FakeConcreteMixinType));
       _identifier = DefinitionObjectMother.GetTargetClassDefinition(classContext).Mixins[0].GetConcreteMixinTypeIdentifier();
 
       _pipeline = SafeServiceLocator.Current.GetInstance<IPipelineFactory>()
-          .Create (
+          .Create(
           "MixinSerializationHelper",
-          new MixinParticipant (
+          new MixinParticipant(
               SafeServiceLocator.Current.GetInstance<IConfigurationProvider>(),
               SafeServiceLocator.Current.GetInstance<IMixinTypeProvider>(),
               SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
               SafeServiceLocator.Current.GetInstance<IConcreteTypeMetadataImporter>()));
-      SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().Register (_pipeline);
+      SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().Register(_pipeline);
     }
 
     [TearDown]
@@ -85,7 +85,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       CallGetObjectDataForGeneratedTypes(true);
 
-      var deserializedIdentifier = _serializationInfo.GetString ("__participantConfigurationID");
+      var deserializedIdentifier = _serializationInfo.GetString("__participantConfigurationID");
       Assert.That(deserializedIdentifier, Is.EqualTo(_pipeline.ParticipantConfigurationID));
     }
 

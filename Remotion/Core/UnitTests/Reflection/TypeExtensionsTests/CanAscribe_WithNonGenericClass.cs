@@ -26,13 +26,13 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
     [Test]
     public void DerivedType ()
     {
-      Assert.That (TypeExtensions.CanAscribeTo (typeof (DerivedType), typeof (DerivedType)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof (DerivedType), typeof (DerivedType)), Is.True);
     }
 
     [Test]
     public void BaseType ()
     {
-      Assert.That (TypeExtensions.CanAscribeTo (typeof (BaseType), typeof (DerivedType)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof (BaseType), typeof (DerivedType)), Is.False);
     }
   }
 }

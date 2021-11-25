@@ -31,96 +31,96 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
     [Test]
     public void FindPropertyInfos_IncludeBasePropertiesTrue ()
     {
-      MixinPropertyFinder propertyFinder = CreatePropertyFinder (typeof (TargetClassA), true);
+      MixinPropertyFinder propertyFinder = CreatePropertyFinder(typeof (TargetClassA), true);
 
-      Assert.That (propertyFinder.FindPropertyInfosOnMixins ().ToArray (),
-          Is.EquivalentTo (
+      Assert.That(propertyFinder.FindPropertyInfosOnMixins().ToArray(),
+          Is.EquivalentTo(
               new []
                   {
-                      GetProperty (typeof (MixinBase), "P0a"),
-                      GetProperty (typeof (MixinA), "P5"),
-                      GetProperty (typeof (MixinC), "P7"),
-                      GetProperty (typeof (MixinD), "P8"),
+                      GetProperty(typeof (MixinBase), "P0a"),
+                      GetProperty(typeof (MixinA), "P5"),
+                      GetProperty(typeof (MixinC), "P7"),
+                      GetProperty(typeof (MixinD), "P8"),
                   }));
     }
 
     [Test]
     public void FindPropertyInfos_IncludeBasePropertiesFalse ()
     {
-      MixinPropertyFinder propertyFinder = CreatePropertyFinder (typeof (TargetClassA), false);
+      MixinPropertyFinder propertyFinder = CreatePropertyFinder(typeof (TargetClassA), false);
 
-      Assert.That (propertyFinder.FindPropertyInfosOnMixins ().ToArray (),
-          Is.EquivalentTo (
+      Assert.That(propertyFinder.FindPropertyInfosOnMixins().ToArray(),
+          Is.EquivalentTo(
               new[]
                   {
-                      GetProperty (typeof (MixinA), "P5"),
-                      GetProperty (typeof (MixinC), "P7"),
-                      GetProperty (typeof (MixinD), "P8"),
+                      GetProperty(typeof (MixinA), "P5"),
+                      GetProperty(typeof (MixinC), "P7"),
+                      GetProperty(typeof (MixinD), "P8"),
                   }));
     }
 
     [Test]
     public void FindPropertyInfos_ForDerived ()
     {
-      MixinPropertyFinder propertyFinder = CreatePropertyFinder (typeof (TargetClassB), false);
+      MixinPropertyFinder propertyFinder = CreatePropertyFinder(typeof (TargetClassB), false);
 
-      Assert.That (propertyFinder.FindPropertyInfosOnMixins ().ToArray (),
-          Is.EquivalentTo (
+      Assert.That(propertyFinder.FindPropertyInfosOnMixins().ToArray(),
+          Is.EquivalentTo(
               new []
                   {
-                      GetProperty (typeof (MixinB), "P6"),
-                      GetProperty (typeof (MixinE), "P9"),
+                      GetProperty(typeof (MixinB), "P6"),
+                      GetProperty(typeof (MixinE), "P9"),
                   }));
     }
 
     [Test]
     public void FindPropertyInfos_ForDerivedMixinNotOnBase ()
     {
-      MixinPropertyFinder propertyFinder = CreatePropertyFinder (typeof (TargetClassC), false);
+      MixinPropertyFinder propertyFinder = CreatePropertyFinder(typeof (TargetClassC), false);
 
-      Assert.That (propertyFinder.FindPropertyInfosOnMixins ().ToArray (),
-          Is.EquivalentTo (
+      Assert.That(propertyFinder.FindPropertyInfosOnMixins().ToArray(),
+          Is.EquivalentTo(
               new []
                   {
-                      GetProperty (typeof (DerivedMixinNotOnBase), "DerivedMixinProperty"),
-                      GetProperty (typeof (MixinNotOnBase), "MixinProperty"),
+                      GetProperty(typeof (DerivedMixinNotOnBase), "DerivedMixinProperty"),
+                      GetProperty(typeof (MixinNotOnBase), "MixinProperty"),
                   }));
     }
 
     [Test]
     public void FindPropertyInfos_WithDiamondShapedInheritance ()
     {
-      MixinPropertyFinder propertyFinder = CreatePropertyFinder (typeof (DiamondTarget), false);
+      MixinPropertyFinder propertyFinder = CreatePropertyFinder(typeof (DiamondTarget), false);
 
-      Assert.That (propertyFinder.FindPropertyInfosOnMixins ().ToArray (),
-          Is.EquivalentTo (
+      Assert.That(propertyFinder.FindPropertyInfosOnMixins().ToArray(),
+          Is.EquivalentTo(
               new[]
                   {
-                      GetProperty (typeof (DiamondBase), "PBase"),
+                      GetProperty(typeof (DiamondBase), "PBase"),
                   }));
     }
 
     [Test]
     public void FindPropertyInfos_ForMixinAppliedAboveInheritanceRoot ()
     {
-      MixinPropertyFinder propertyFinder = CreatePropertyFinder (typeof (InheritanceRootInheritingPersistentMixin), true);
+      MixinPropertyFinder propertyFinder = CreatePropertyFinder(typeof (InheritanceRootInheritingPersistentMixin), true);
 
-      Assert.That (
-          propertyFinder.FindPropertyInfosOnMixins ().ToArray (),
-          Is.EquivalentTo (
+      Assert.That(
+          propertyFinder.FindPropertyInfosOnMixins().ToArray(),
+          Is.EquivalentTo(
               new[]
                 {
-                    GetProperty (typeof (MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentProperty"),
-                    GetProperty (typeof (MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentRelationProperty")
+                    GetProperty(typeof (MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentProperty"),
+                    GetProperty(typeof (MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentRelationProperty")
                 }));
     }
 
     private MixinPropertyFinder CreatePropertyFinder (Type type, bool includeBaseProperties)
     {
-      var persistentMixinFinder = new PersistentMixinFinder (type, includeBaseProperties);
+      var persistentMixinFinder = new PersistentMixinFinder(type, includeBaseProperties);
 
       Func<Type, bool, bool, PropertyFinderBase> propertyFinderFactory = (typeArg, includeBasePropertiesArg, includeMixinPropertiesArg) =>
-          (PropertyFinderBase) new StubPropertyFinderBase (
+          (PropertyFinderBase) new StubPropertyFinderBase(
               typeArg,
               includeBasePropertiesArg,
               includeMixinPropertiesArg,
@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
               persistentMixinFinder,
               new PropertyMetadataReflector());
 
-      return new MixinPropertyFinder (propertyFinderFactory, persistentMixinFinder, includeBaseProperties);
+      return new MixinPropertyFinder(propertyFinderFactory, persistentMixinFinder, includeBaseProperties);
     }
   }
 }

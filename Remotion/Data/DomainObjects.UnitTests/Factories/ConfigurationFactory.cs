@@ -24,11 +24,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
   {
     public static System.Configuration.Configuration LoadConfigurationFromFile (TempFile tempFile, byte[] content)
     {
-      tempFile.WriteAllBytes (content);
+      tempFile.WriteAllBytes(content);
 
       ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap();
       fileMap.ExeConfigFilename = tempFile.FileName;
-      return ConfigurationManager.OpenMappedExeConfiguration (fileMap, ConfigurationUserLevel.None);
+      return ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
     }
   }
 }

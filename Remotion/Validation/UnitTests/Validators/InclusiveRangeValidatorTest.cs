@@ -32,12 +32,12 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (null);
-      var validator = new InclusiveRangeValidator (2, 4, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(null);
+      var validator = new InclusiveRangeValidator(2, 4, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
@@ -45,10 +45,10 @@ namespace Remotion.Validation.UnitTests.Validators
     {
       using (CultureScope.CreateInvariantCultureScope())
       {
-        Assert.That (
-            () => new InclusiveRangeValidator (2, 1, new InvariantValidationMessage ("Fake Message")),
+        Assert.That(
+            () => new InclusiveRangeValidator(2, 1, new InvariantValidationMessage("Fake Message")),
             Throws.InstanceOf<ArgumentOutOfRangeException>()
-                .With.ArgumentExceptionMessageEqualTo ("'to' should be larger than 'from'.", "to"));
+                .With.ArgumentExceptionMessageEqualTo("'to' should be larger than 'from'.", "to"));
       }
     }
 
@@ -57,82 +57,82 @@ namespace Remotion.Validation.UnitTests.Validators
     {
       using (CultureScope.CreateInvariantCultureScope())
       {
-        Assert.That (
-            () => new InclusiveRangeValidator (2f, 3m, new InvariantValidationMessage ("Fake Message")),
-            Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ($"'from' must have the same type as 'to'.", "to"));
+        Assert.That(
+            () => new InclusiveRangeValidator(2f, 3m, new InvariantValidationMessage("Fake Message")),
+            Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo($"'from' must have the same type as 'to'.", "to"));
       }
     }
 
     [Test]
     public void Validate_WithPropertyValueDifferentTypeThanFrom_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (1f);
-      var validator = new InclusiveRangeValidator (2m, 4m, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(1f);
+      var validator = new InclusiveRangeValidator(2m, 4m, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueExclusivelyBetweenBoundaries_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (3);
-      var validator = new InclusiveRangeValidator (2, 4, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(3);
+      var validator = new InclusiveRangeValidator(2, 4, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueEqualsLowerBoundary_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (2);
-      var validator = new InclusiveRangeValidator (2, 4, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(2);
+      var validator = new InclusiveRangeValidator(2, 4, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueEqualsUpperBoundary_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (4);
-      var validator = new InclusiveRangeValidator (2, 4, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(4);
+      var validator = new InclusiveRangeValidator(2, 4, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueGreaterThanUpperBoundary_ReturnsSingleValidationFailure ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (5);
-      var validator = new InclusiveRangeValidator (2, 4, new InvariantValidationMessage ("Custom validation message: '{0}', '{1}'."));
+      var propertyValidatorContext = CreatePropertyValidatorContext(5);
+      var validator = new InclusiveRangeValidator(2, 4, new InvariantValidationMessage("Custom validation message: '{0}', '{1}'."));
 
-      var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
+      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
-      Assert.That (validationFailures.Length, Is.EqualTo (1));
+      Assert.That(validationFailures.Length, Is.EqualTo(1));
       //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
-      Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must be between '2' and '4'."));
-      Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '2', '4'."));
+      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must be between '2' and '4'."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '2', '4'."));
     }
 
     [Test]
     public void Validate_WithPropertyValueLessThanLowerBoundary_ReturnsSingleValidationFailure ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (1);
-      var validator = new InclusiveRangeValidator (2, 4, new InvariantValidationMessage ("Custom validation message: '{0}', '{1}'."));
+      var propertyValidatorContext = CreatePropertyValidatorContext(1);
+      var validator = new InclusiveRangeValidator(2, 4, new InvariantValidationMessage("Custom validation message: '{0}', '{1}'."));
 
-      var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
+      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
-      Assert.That (validationFailures.Length, Is.EqualTo (1));
+      Assert.That(validationFailures.Length, Is.EqualTo(1));
       //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
-      Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must be between '2' and '4'."));
-      Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '2', '4'."));
+      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must be between '2' and '4'."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '2', '4'."));
     }
 
     [Test]
@@ -141,41 +141,41 @@ namespace Remotion.Validation.UnitTests.Validators
       var propertyValueMock = new Mock<IComparable>();
       var fromStub = new Mock<IComparable>();
       var toStub = new Mock<IComparable>();
-      propertyValueMock.Setup (_ => _.CompareTo (fromStub.Object)).Returns (1).Verifiable();
-      propertyValueMock.Setup (_ => _.CompareTo (toStub.Object)).Returns (-1).Verifiable();
-      var propertyValidatorContext = CreatePropertyValidatorContext (propertyValueMock.Object);
-      var validator = new InclusiveRangeValidator (fromStub.Object, toStub.Object, new InvariantValidationMessage ("Fake Message"));
+      propertyValueMock.Setup(_ => _.CompareTo(fromStub.Object)).Returns(1).Verifiable();
+      propertyValueMock.Setup(_ => _.CompareTo(toStub.Object)).Returns(-1).Verifiable();
+      var propertyValidatorContext = CreatePropertyValidatorContext(propertyValueMock.Object);
+      var validator = new InclusiveRangeValidator(fromStub.Object, toStub.Object, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
       propertyValueMock.Verify();
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithCustomComparer_UsesComparer ()
     {
       var comparerMock = new Mock<IComparer>();
-      comparerMock.Setup (_ => _.Compare (10, 1)).Returns (1).Verifiable();
-      comparerMock.Setup (_ => _.Compare (10, 3)).Returns (-1).Verifiable();
-      var propertyValidatorContext = CreatePropertyValidatorContext (10);
-      var validator = new InclusiveRangeValidator (1, 3, new InvariantValidationMessage ("Fake Message"), comparerMock.Object);
+      comparerMock.Setup(_ => _.Compare(10, 1)).Returns(1).Verifiable();
+      comparerMock.Setup(_ => _.Compare(10, 3)).Returns(-1).Verifiable();
+      var propertyValidatorContext = CreatePropertyValidatorContext(10);
+      var validator = new InclusiveRangeValidator(1, 3, new InvariantValidationMessage("Fake Message"), comparerMock.Object);
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
       comparerMock.Verify();
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueDifferentTypeThanComparisonValue_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (new object());
-      var validator = new InclusiveRangeValidator (1, 3, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(new object());
+      var validator = new InclusiveRangeValidator(1, 3, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
   }
 }

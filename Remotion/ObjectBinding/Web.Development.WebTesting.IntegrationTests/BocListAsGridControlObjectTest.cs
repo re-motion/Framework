@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [TestCaseSource (typeof (ValidationErrorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocListAsGridSelector, BocListAsGridControlObject> testAction)
     {
-      testAction (Helper, e => e.ListAsGrids(), "listAsGrid");
+      testAction(Helper, e => e.ListAsGrids(), "listAsGrid");
     }
 
     [Test]
@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocListAsGridSelector, BocListAsGridControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocListAsGridSelector, BocListAsGridControlObject> testAction)
     {
-      testAction (Helper, e => e.ListAsGrids(), "listAsGrid");
+      testAction(Helper, e => e.ListAsGrids(), "listAsGrid");
     }
 
     [Category ("Screenshot")]
@@ -67,80 +67,80 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void ScreenshotTest_DerivedType ()
     {
       var home = Start();
-      var controlObjectContext = home.ListAsGrids().GetByLocalID ("JobList_Normal").Context;
-      var controlObject = new DerivedBocListAsGridControlObject (controlObjectContext);
+      var controlObjectContext = home.ListAsGrids().GetByLocalID("JobList_Normal").Context;
+      var controlObject = new DerivedBocListAsGridControlObject(controlObjectContext);
       var fluentControlObject = controlObject.ForScreenshot();
-      var derivedControlObject = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocList<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      var derivedControlObject = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocList<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentControlObject.GetTarget().FluentList, fluentControlObject.GetTarget().FluentElement));
 
       var fluentTableContainer = derivedControlObject.GetTableContainer();
-      Assert.That (fluentTableContainer, Is.Not.Null);
-      var derivedTableContainer = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListTableContainer<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      Assert.That(fluentTableContainer, Is.Not.Null);
+      var derivedTableContainer = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListTableContainer<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentTableContainer.GetTarget().FluentList, fluentTableContainer.GetTarget().FluentElement));
       var fluentHeaderRow = derivedTableContainer.GetHeaderRow();
-      Assert.That (fluentHeaderRow, Is.Not.Null);
-      var derivedHeaderRow = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListHeaderRow<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      Assert.That(fluentHeaderRow, Is.Not.Null);
+      var derivedHeaderRow = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListHeaderRow<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentTableContainer.GetTarget().FluentList,
               fluentHeaderRow.GetTarget().FluentElement),
           minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
-      Assert.That (derivedHeaderRow.GetCell(), Is.Not.Null);
-      Assert.That (derivedHeaderRow.GetCell (1), Is.Not.Null);
-      Assert.That (derivedHeaderRow.GetCell ("RowCmd"), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetRowCount(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetRow(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetRow ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
-      var fluentRow = derivedTableContainer.GetRow (1);
-      Assert.That (fluentRow, Is.Not.Null);
-      var derivedRow = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListRow<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      Assert.That(derivedHeaderRow.GetCell(), Is.Not.Null);
+      Assert.That(derivedHeaderRow.GetCell(1), Is.Not.Null);
+      Assert.That(derivedHeaderRow.GetCell("RowCmd"), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetRowCount(), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetRow(), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetRow("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
+      var fluentRow = derivedTableContainer.GetRow(1);
+      Assert.That(fluentRow, Is.Not.Null);
+      var derivedRow = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListRow<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentRow.GetTarget().FluentList,
               fluentRow.GetTarget().FluentRow),
           minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
-      Assert.That (derivedRow.GetCell(), Is.Not.Null);
-      Assert.That (derivedRow.GetCell (1), Is.Not.Null);
-      Assert.That (derivedRow.GetCell ("RowCmd"), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetColumn(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetColumn ("RowCmd"), Is.Not.Null);
-      var fluentColumn = derivedTableContainer.GetColumn (1);
-      Assert.That (fluentColumn, Is.Not.Null);
-      var derivedColumn = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListColumn<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      Assert.That(derivedRow.GetCell(), Is.Not.Null);
+      Assert.That(derivedRow.GetCell(1), Is.Not.Null);
+      Assert.That(derivedRow.GetCell("RowCmd"), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetColumn(), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetColumn("RowCmd"), Is.Not.Null);
+      var fluentColumn = derivedTableContainer.GetColumn(1);
+      Assert.That(fluentColumn, Is.Not.Null);
+      var derivedColumn = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListColumn<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentTableContainer.GetTarget().FluentList,
               includeHeader : false,
               columnIndex : 1),
           minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
-      Assert.That (derivedColumn.GetCell(), Is.Not.Null);
-      Assert.That (derivedColumn.GetCell (1), Is.Not.Null);
-      Assert.That (derivedColumn.GetCell ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
+      Assert.That(derivedColumn.GetCell(), Is.Not.Null);
+      Assert.That(derivedColumn.GetCell(1), Is.Not.Null);
+      Assert.That(derivedColumn.GetCell("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
 
       var fluentNavigator = derivedControlObject.GetNavigator();
-      Assert.That (fluentNavigator, Is.Not.Null);
-      var derivedNavigator = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListNavigator<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      Assert.That(fluentNavigator, Is.Not.Null);
+      var derivedNavigator = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListNavigator<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentNavigator.GetTarget().FluentList, fluentNavigator.GetTarget().FluentElement));
-      Assert.That (derivedNavigator.GetFirstPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetLastPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetNextPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetPreviousPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetPageInformationText(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetFirstPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetLastPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetNextPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetPreviousPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetPageInformationText(), Is.Not.Null);
 
       var fluentMenuBlock = derivedControlObject.GetMenuBlock();
-      Assert.That (fluentMenuBlock, Is.Not.Null);
-      var derivedMenuBlock = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListMenuBlock<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      Assert.That(fluentMenuBlock, Is.Not.Null);
+      var derivedMenuBlock = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListMenuBlock<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentMenuBlock.GetTarget().FluentList, fluentMenuBlock.GetTarget().FluentElement));
-      Assert.That (derivedMenuBlock.GetDropDownMenu(), Is.Not.Null);
-      Assert.That (derivedMenuBlock.GetListMenu(), Is.Not.Null);
+      Assert.That(derivedMenuBlock.GetDropDownMenu(), Is.Not.Null);
+      Assert.That(derivedMenuBlock.GetListMenu(), Is.Not.Null);
 
       var fluentDropDown = derivedMenuBlock.GetViewsMenu();
-      Assert.That (fluentDropDown, Is.Not.Null);
-      var derivedDropDown = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListDropDown<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      Assert.That(fluentDropDown, Is.Not.Null);
+      var derivedDropDown = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListDropDown<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentDropDown.GetTarget().FluentList, fluentDropDown.GetTarget().FluentElement));
-      Assert.That (() => derivedDropDown.Open(), Throws.Nothing);
+      Assert.That(() => derivedDropDown.Open(), Throws.Nothing);
     }
 
     [Category ("Screenshot")]
@@ -148,80 +148,80 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void ScreenshotTest_DerivedTypeGeneric ()
     {
       var home = Start();
-      var controlObjectContext = home.ListAsGrids().GetByLocalID ("JobList_Normal").Context;
-      var controlObject = new DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject> (controlObjectContext);
+      var controlObjectContext = home.ListAsGrids().GetByLocalID("JobList_Normal").Context;
+      var controlObject = new DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>(controlObjectContext);
       var fluentControlObject = controlObject.ForBocListAsGridScreenshot<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject>();
-      var derivedControlObject = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocList<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      var derivedControlObject = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocList<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentControlObject.GetTarget().FluentList, fluentControlObject.GetTarget().FluentElement));
 
       var fluentTableContainer = derivedControlObject.GetTableContainer();
-      Assert.That (fluentTableContainer, Is.Not.Null);
-      var derivedTableContainer = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListTableContainer<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      Assert.That(fluentTableContainer, Is.Not.Null);
+      var derivedTableContainer = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListTableContainer<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentTableContainer.GetTarget().FluentList, fluentTableContainer.GetTarget().FluentElement));
       var fluentHeaderRow = derivedTableContainer.GetHeaderRow();
-      Assert.That (fluentHeaderRow, Is.Not.Null);
-      var derivedHeaderRow = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListHeaderRow<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      Assert.That(fluentHeaderRow, Is.Not.Null);
+      var derivedHeaderRow = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListHeaderRow<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentTableContainer.GetTarget().FluentList,
               fluentHeaderRow.GetTarget().FluentElement),
           minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
-      Assert.That (derivedHeaderRow.GetCell(), Is.Not.Null);
-      Assert.That (derivedHeaderRow.GetCell (1), Is.Not.Null);
-      Assert.That (derivedHeaderRow.GetCell ("RowCmd"), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetRowCount(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetRow(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetRow ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
-      var fluentRow = derivedTableContainer.GetRow (1);
-      Assert.That (fluentRow, Is.Not.Null);
-      var derivedRow = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListRow<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      Assert.That(derivedHeaderRow.GetCell(), Is.Not.Null);
+      Assert.That(derivedHeaderRow.GetCell(1), Is.Not.Null);
+      Assert.That(derivedHeaderRow.GetCell("RowCmd"), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetRowCount(), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetRow(), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetRow("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
+      var fluentRow = derivedTableContainer.GetRow(1);
+      Assert.That(fluentRow, Is.Not.Null);
+      var derivedRow = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListRow<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentRow.GetTarget().FluentList,
               fluentRow.GetTarget().FluentRow),
           minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
-      Assert.That (derivedRow.GetCell(), Is.Not.Null);
-      Assert.That (derivedRow.GetCell (1), Is.Not.Null);
-      Assert.That (derivedRow.GetCell ("RowCmd"), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetColumn(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetColumn ("RowCmd"), Is.Not.Null);
-      var fluentColumn = derivedTableContainer.GetColumn (1);
-      Assert.That (fluentColumn, Is.Not.Null);
-      var derivedColumn = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListColumn<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      Assert.That(derivedRow.GetCell(), Is.Not.Null);
+      Assert.That(derivedRow.GetCell(1), Is.Not.Null);
+      Assert.That(derivedRow.GetCell("RowCmd"), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetColumn(), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetColumn("RowCmd"), Is.Not.Null);
+      var fluentColumn = derivedTableContainer.GetColumn(1);
+      Assert.That(fluentColumn, Is.Not.Null);
+      var derivedColumn = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListColumn<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentTableContainer.GetTarget().FluentList,
               includeHeader : false,
               columnIndex : 1),
           minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
-      Assert.That (derivedColumn.GetCell(), Is.Not.Null);
-      Assert.That (derivedColumn.GetCell (1), Is.Not.Null);
-      Assert.That (derivedColumn.GetCell ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
+      Assert.That(derivedColumn.GetCell(), Is.Not.Null);
+      Assert.That(derivedColumn.GetCell(1), Is.Not.Null);
+      Assert.That(derivedColumn.GetCell("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
 
       var fluentNavigator = derivedControlObject.GetNavigator();
-      Assert.That (fluentNavigator, Is.Not.Null);
-      var derivedNavigator = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListNavigator<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      Assert.That(fluentNavigator, Is.Not.Null);
+      var derivedNavigator = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListNavigator<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentNavigator.GetTarget().FluentList, fluentNavigator.GetTarget().FluentElement));
-      Assert.That (derivedNavigator.GetFirstPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetLastPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetNextPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetPreviousPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetPageInformationText(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetFirstPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetLastPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetNextPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetPreviousPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetPageInformationText(), Is.Not.Null);
 
       var fluentMenuBlock = derivedControlObject.GetMenuBlock();
-      Assert.That (fluentMenuBlock, Is.Not.Null);
-      var derivedMenuBlock = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListMenuBlock<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      Assert.That(fluentMenuBlock, Is.Not.Null);
+      var derivedMenuBlock = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListMenuBlock<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentMenuBlock.GetTarget().FluentList, fluentMenuBlock.GetTarget().FluentElement));
-      Assert.That (derivedMenuBlock.GetDropDownMenu(), Is.Not.Null);
-      Assert.That (derivedMenuBlock.GetListMenu(), Is.Not.Null);
+      Assert.That(derivedMenuBlock.GetDropDownMenu(), Is.Not.Null);
+      Assert.That(derivedMenuBlock.GetListMenu(), Is.Not.Null);
 
       var fluentDropDown = derivedMenuBlock.GetViewsMenu();
-      Assert.That (fluentDropDown, Is.Not.Null);
-      var derivedDropDown = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListDropDown<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject> (
+      Assert.That(fluentDropDown, Is.Not.Null);
+      var derivedDropDown = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListDropDown<DerivedBocListAsGridControlObject<DerivedBocListAsGridRowControlObject>, DerivedBocListAsGridRowControlObject, BocListAsGridCellControlObject>(
               fluentDropDown.GetTarget().FluentList, fluentDropDown.GetTarget().FluentElement));
-      Assert.That (() => derivedDropDown.Open(), Throws.Nothing);
+      Assert.That(() => derivedDropDown.Open(), Throws.Nothing);
     }
 
     [Test]
@@ -229,10 +229,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
-      Assert.That (
-          bocList.GetColumnDefinitions().Select (cd => cd.Title),
-          Is.EquivalentTo (new[] { "I_ndex", "", "Command", "Menu", "Title", "StartDate", "EndDate", "DisplayName", "TitleWithCmd" }));
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
+      Assert.That(
+          bocList.GetColumnDefinitions().Select(cd => cd.Title),
+          Is.EquivalentTo(new[] { "I_ndex", "", "Command", "Menu", "Title", "StartDate", "EndDate", "DisplayName", "TitleWithCmd" }));
     }
 
     [Test]
@@ -240,10 +240,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
       var rows = bocList.GetDisplayedRows();
-      Assert.That (rows.Count, Is.EqualTo (8));
-      Assert.That (rows[1].GetCell ("DisplayName").GetText(), Is.EqualTo ("CEO"));
+      Assert.That(rows.Count, Is.EqualTo(8));
+      Assert.That(rows[1].GetCell("DisplayName").GetText(), Is.EqualTo("CEO"));
     }
 
     [Test]
@@ -251,14 +251,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
-      var cell = bocList.GetDisplayedRows()[1].GetCell (3);
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
+      var cell = bocList.GetDisplayedRows()[1].GetCell(3);
 
       var cellCommand = cell.GetCommand();
-      var completionDetection = new CompletionDetectionStrategyTestHelper (cellCommand);
+      var completionDetection = new CompletionDetectionStrategyTestHelper(cellCommand);
       cellCommand.Click();
 
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
     }
 
     [Test]
@@ -266,8 +266,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
-      Assert.That (bocList.GetNumberOfRows(), Is.EqualTo (8));
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
+      Assert.That(bocList.GetNumberOfRows(), Is.EqualTo(8));
     }
 
     [Test]
@@ -275,10 +275,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Empty");
-      Assert.That (bocList.GetNumberOfRows(), Is.EqualTo (0));
-      Assert.That (bocList.IsEmpty(), Is.True);
-      Assert.That (bocList.GetEmptyMessage(), Is.EqualTo ("A wonderful empty list."));
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Empty");
+      Assert.That(bocList.GetNumberOfRows(), Is.EqualTo(0));
+      Assert.That(bocList.IsEmpty(), Is.True);
+      Assert.That(bocList.GetEmptyMessage(), Is.EqualTo("A wonderful empty list."));
     }
 
     [Test]
@@ -286,31 +286,31 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
-      var firstRow = bocList.GetRow (1);
-      var lastRow = bocList.GetRow (bocList.GetNumberOfRows());
-      var completionDetection = new CompletionDetectionStrategyTestHelper (bocList);
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
+      var firstRow = bocList.GetRow(1);
+      var lastRow = bocList.GetRow(bocList.GetNumberOfRows());
+      var completionDetection = new CompletionDetectionStrategyTestHelper(bocList);
 
-      Assert.That (firstRow.IsSelected, Is.False);
-      Assert.That (lastRow.IsSelected, Is.False);
-
-      bocList.SelectAll();
-
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (firstRow.IsSelected, Is.True);
-      Assert.That (lastRow.IsSelected, Is.True);
+      Assert.That(firstRow.IsSelected, Is.False);
+      Assert.That(lastRow.IsSelected, Is.False);
 
       bocList.SelectAll();
 
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (firstRow.IsSelected, Is.True);
-      Assert.That (lastRow.IsSelected, Is.True);
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(firstRow.IsSelected, Is.True);
+      Assert.That(lastRow.IsSelected, Is.True);
+
+      bocList.SelectAll();
+
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(firstRow.IsSelected, Is.True);
+      Assert.That(lastRow.IsSelected, Is.True);
 
       bocList.DeselectAll();
 
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (firstRow.IsSelected, Is.False);
-      Assert.That (lastRow.IsSelected, Is.False);
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(firstRow.IsSelected, Is.False);
+      Assert.That(lastRow.IsSelected, Is.False);
     }
 
     [Test]
@@ -318,13 +318,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
 
-      var row = bocList.GetRow ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98");
-      Assert.That (row.GetCell (8).GetText(), Is.EqualTo ("CEO"));
+      var row = bocList.GetRow("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98");
+      Assert.That(row.GetCell(8).GetText(), Is.EqualTo("CEO"));
 
-      row = bocList.GetRow (1);
-      Assert.That (row.GetCell (8).GetText(), Is.EqualTo ("Programmer"));
+      row = bocList.GetRow(1);
+      Assert.That(row.GetCell(8).GetText(), Is.EqualTo("Programmer"));
     }
 
     [Test]
@@ -332,14 +332,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
       var dropDownMenu = bocList.GetDropDownMenu();
-      dropDownMenu.SelectItem ("OptCmd2");
+      dropDownMenu.SelectItem("OptCmd2");
 
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("JobList_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderRowLabel").Text, Is.EqualTo ("-1"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("ListMenuOrOptionsClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("OptCmd2|Option command 2"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("JobList_Normal"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderRowLabel").Text, Is.EqualTo("-1"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("ListMenuOrOptionsClick"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("OptCmd2|Option command 2"));
     }
 
     [Test]
@@ -347,14 +347,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
       var listMenu = bocList.GetListMenu();
-      listMenu.SelectItem ("ListMenuCmd3");
+      listMenu.SelectItem("ListMenuCmd3");
 
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("JobList_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderRowLabel").Text, Is.EqualTo ("-1"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("ListMenuOrOptionsClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("ListMenuCmd3|LM cmd 3"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("JobList_Normal"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderRowLabel").Text, Is.EqualTo("-1"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("ListMenuOrOptionsClick"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("ListMenuCmd3|LM cmd 3"));
     }
 
     [Test]
@@ -362,20 +362,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
-      var row = bocList.GetRow (2);
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
+      var row = bocList.GetRow(2);
 
-      var cell = row.GetCell ("DisplayName");
-      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+      var cell = row.GetCell("DisplayName");
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
 
-      cell = row.GetCell (8);
-      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+      cell = row.GetCell(8);
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
 
-      cell = row.GetCell().WithColumnTitle ("DisplayName");
-      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+      cell = row.GetCell().WithColumnTitle("DisplayName");
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
 
-      cell = row.GetCell().WithColumnTitleContains ("layNam");
-      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+      cell = row.GetCell().WithColumnTitleContains("layNam");
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
     }
 
     [Test]
@@ -383,25 +383,25 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
-      var row = bocList.GetRow (2);
-      var completionDetection = new CompletionDetectionStrategyTestHelper (row);
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
+      var row = bocList.GetRow(2);
+      var completionDetection = new CompletionDetectionStrategyTestHelper(row);
 
       row.Select();
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
 
-      row.GetCell (3).ExecuteCommand();
-      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("1"));
+      row.GetCell(3).ExecuteCommand();
+      Assert.That(home.Scope.FindIdEndingWith("SelectedIndicesLabel").Text, Is.EqualTo("1"));
 
       row.Select();
-      row.GetCell (3).ExecuteCommand();
-      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("1"));
+      row.GetCell(3).ExecuteCommand();
+      Assert.That(home.Scope.FindIdEndingWith("SelectedIndicesLabel").Text, Is.EqualTo("1"));
 
       row.Deselect();
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
 
-      row.GetCell (3).ExecuteCommand();
-      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("NoneSelected"));
+      row.GetCell(3).ExecuteCommand();
+      Assert.That(home.Scope.FindIdEndingWith("SelectedIndicesLabel").Text, Is.EqualTo("NoneSelected"));
     }
 
     [Test]
@@ -409,15 +409,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
-      var row = bocList.GetRow (2);
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
+      var row = bocList.GetRow(2);
       var dropDownMenu = row.GetDropDownMenu();
-      dropDownMenu.SelectItem ("RowMenuItemCmd2");
+      dropDownMenu.SelectItem("RowMenuItemCmd2");
 
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("JobList_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderRowLabel").Text, Is.EqualTo ("1"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("RowContextMenuClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("RowMenuItemCmd2|Row menu 2"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("JobList_Normal"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderRowLabel").Text, Is.EqualTo("1"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("RowContextMenuClick"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("RowMenuItemCmd2|Row menu 2"));
     }
 
     [Test]
@@ -425,10 +425,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
-      var cell = bocList.GetRow (2).GetCell (8);
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
+      var cell = bocList.GetRow(2).GetCell(8);
 
-      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
     }
 
     [Test]
@@ -436,15 +436,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
-      var cell = bocList.GetRow (2).GetCell (3);
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
+      var cell = bocList.GetRow(2).GetCell(3);
 
       cell.ExecuteCommand();
 
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("JobList_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderRowLabel").Text, Is.EqualTo ("1"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("CellCommandClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("RowCmd"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("JobList_Normal"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderRowLabel").Text, Is.EqualTo("1"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("CellCommandClick"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("RowCmd"));
     }
 
     [Test]
@@ -452,14 +452,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
-      var editableRow = bocList.GetRow (2);
-      var editableCell = editableRow.GetCell (5);
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
+      var editableRow = bocList.GetRow(2);
+      var editableCell = editableRow.GetCell(5);
 
       var bocText = editableCell.TextValues().First();
-      bocText.FillWith ("NewTitle");
+      bocText.FillWith("NewTitle");
 
-      Assert.That (bocText.GetText(), Is.EqualTo ("NewTitle"));
+      Assert.That(bocText.GetText(), Is.EqualTo("NewTitle"));
     }
 
     [Test]
@@ -467,11 +467,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
       var rows = bocList.GetDisplayedRows();
-      var cell = rows[0].GetCell().WithDomainPropertyPath ("DisplayName");
+      var cell = rows[0].GetCell().WithDomainPropertyPath("DisplayName");
 
-      Assert.That (cell.GetText(), Is.EqualTo ("Programmer"));
+      Assert.That(cell.GetText(), Is.EqualTo("Programmer"));
     }
 
     [Test]
@@ -479,9 +479,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
 
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(1));
     }
 
     [Test]
@@ -489,8 +489,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Empty");
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Empty");
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(1));
     }
 
     [Test]
@@ -498,9 +498,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
 
-      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (1));
+      Assert.That(bocList.GetNumberOfPages(), Is.EqualTo(1));
     }
 
     [Test]
@@ -508,8 +508,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Empty");
-      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (1));
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Empty");
+      Assert.That(bocList.GetNumberOfPages(), Is.EqualTo(1));
     }
     
     [Test]
@@ -517,13 +517,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
 
-      Assert.That (
-          () => bocList.GoToSpecificPage (1),
+      Assert.That(
+          () => bocList.GoToSpecificPage(1),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     [Test]
@@ -531,13 +531,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
 
-      Assert.That (
+      Assert.That(
           () => bocList.GoToFirstPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     [Test]
@@ -545,13 +545,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
 
-      Assert.That (
+      Assert.That(
           () => bocList.GoToPreviousPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     [Test]
@@ -559,13 +559,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
 
-      Assert.That (
+      Assert.That(
           () => bocList.GoToNextPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     [Test]
@@ -573,18 +573,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
 
-      Assert.That (
+      Assert.That(
           () => bocList.GoToLastPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocListAsGrid");
+      return Start("BocListAsGrid");
     }
 
     private class DerivedBocListAsGridControlObject : BocListAsGridControlObject

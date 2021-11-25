@@ -29,17 +29,17 @@ namespace Remotion.Web.IntegrationTests.Label
     public void SmartLabel ()
     {
       var home = Start();
-      var label = home.Labels().GetByLocalID ("MySmartLabel");
+      var label = home.Labels().GetByLocalID("MySmartLabel");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (label);
+      var result = analyzer.Analyze(label);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("LabelTest.aspx");
+      return Start<WxePageObject>("LabelTest.aspx");
     }
   }
 }

@@ -42,7 +42,7 @@ public class ConfigurationBase
   /// <exception cref="System.ArgumentNullException"><paramref name="loader"/> is <see langword="null"/>.</exception>
   protected ConfigurationBase (BaseFileLoader loader)
   {
-    ArgumentUtility.CheckNotNull ("loader", loader);
+    ArgumentUtility.CheckNotNull("loader", loader);
 
     _resolveTypes = loader.ResolveTypes;
   }

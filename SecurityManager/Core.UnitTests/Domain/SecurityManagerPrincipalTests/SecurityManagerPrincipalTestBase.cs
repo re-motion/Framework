@@ -35,27 +35,27 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
         User substitutedUser = null,
         Role[] substitutedRoles = null)
     {
-      ArgumentUtility.CheckNotNull ("tenant", tenant);
-      ArgumentUtility.CheckNotNull ("user", user);
+      ArgumentUtility.CheckNotNull("tenant", tenant);
+      ArgumentUtility.CheckNotNull("user", user);
 
-      return new SecurityManagerPrincipal (
+      return new SecurityManagerPrincipal(
           tenant.GetHandle(),
           user.GetHandle(),
-          roles == null ? null : roles.Select (r => r.GetHandle()).ToArray(),
+          roles == null ? null : roles.Select(r => r.GetHandle()).ToArray(),
           substitution.GetSafeHandle(),
           substitutedUser.GetSafeHandle(),
-          substitutedRoles == null ? null : substitutedRoles.Select (r => r.GetHandle()).ToArray());
+          substitutedRoles == null ? null : substitutedRoles.Select(r => r.GetHandle()).ToArray());
     }
 
     protected void IncrementDomainRevision ()
     {
-      ClientTransaction.Current.QueryManager.GetScalar (Revision.GetIncrementRevisionQuery(new RevisionKey()));
+      ClientTransaction.Current.QueryManager.GetScalar(Revision.GetIncrementRevisionQuery(new RevisionKey()));
       SafeServiceLocator.Current.GetInstance<IDomainRevisionProvider>().InvalidateRevision(new RevisionKey());
     }
 
     protected void IncrementUserRevision (string userName)
     {
-      ClientTransaction.Current.QueryManager.GetScalar (Revision.GetIncrementRevisionQuery(new UserRevisionKey(userName)));
+      ClientTransaction.Current.QueryManager.GetScalar(Revision.GetIncrementRevisionQuery(new UserRevisionKey(userName)));
       SafeServiceLocator.Current.GetInstance<IUserRevisionProvider>().InvalidateRevision(new UserRevisionKey(userName));
     }
   }

@@ -49,11 +49,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
         IEnlistedDomainObjectManager enlistedDomainObjectManager,
         IPersistenceStrategy persistenceStrategy)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("eventSink", eventSink);
-      ArgumentUtility.CheckNotNull ("invalidDomainObjectManager", invalidDomainObjectManager);
-      ArgumentUtility.CheckNotNull ("dataManager", dataManager);
-      ArgumentUtility.CheckNotNull ("persistenceStrategy", persistenceStrategy);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("eventSink", eventSink);
+      ArgumentUtility.CheckNotNull("invalidDomainObjectManager", invalidDomainObjectManager);
+      ArgumentUtility.CheckNotNull("dataManager", dataManager);
+      ArgumentUtility.CheckNotNull("persistenceStrategy", persistenceStrategy);
 
       _clientTransaction = clientTransaction;
       _eventSink = eventSink;
@@ -95,71 +95,71 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 
     public DomainObject NewObject (ClassDefinition classDefinition, ParamList constructorParameters)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("constructorParameters", constructorParameters);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
 
       if (classDefinition.IsAbstract)
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "Cannot instantiate type '{0}' because it is abstract. For classes with automatic properties, InstantiableAttribute must be used.",
                 classDefinition.ClassType));
 
-      _eventSink.RaiseNewObjectCreatingEvent (classDefinition.ClassType);
+      _eventSink.RaiseNewObjectCreatingEvent(classDefinition.ClassType);
 
-      var objectID = _persistenceStrategy.CreateNewObjectID (classDefinition);
-      var initializationContext = new NewObjectInitializationContext (
+      var objectID = _persistenceStrategy.CreateNewObjectID(classDefinition);
+      var initializationContext = new NewObjectInitializationContext(
           objectID, _clientTransaction.RootTransaction, _enlistedDomainObjectManager, _dataManager);
 
       try
       {
-        return classDefinition.InstanceCreator.CreateNewObject (initializationContext, constructorParameters, _clientTransaction);
+        return classDefinition.InstanceCreator.CreateNewObject(initializationContext, constructorParameters, _clientTransaction);
       }
       catch (Exception ex)
       {
         if (initializationContext.RegisteredObject != null)
-          CleanupCreatedObject (objectID, initializationContext.RegisteredObject, ex);
+          CleanupCreatedObject(objectID, initializationContext.RegisteredObject, ex);
         throw;
       }
     }
 
     public DomainObject GetObjectReference (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      if (_invalidDomainObjectManager.IsInvalid (objectID))
-        return _invalidDomainObjectManager.GetInvalidObjectReference (objectID);
+      if (_invalidDomainObjectManager.IsInvalid(objectID))
+        return _invalidDomainObjectManager.GetInvalidObjectReference(objectID);
 
-      var enlistedObject = _enlistedDomainObjectManager.GetEnlistedDomainObject (objectID);
+      var enlistedObject = _enlistedDomainObjectManager.GetEnlistedDomainObject(objectID);
       if (enlistedObject != null)
         return enlistedObject;
 
       var creator = objectID.ClassDefinition.InstanceCreator;
-      var initializationContext = new ObjectReferenceInitializationContext (
+      var initializationContext = new ObjectReferenceInitializationContext(
           objectID, _clientTransaction.RootTransaction, _enlistedDomainObjectManager);
-      return creator.CreateObjectReference (initializationContext, _clientTransaction);
+      return creator.CreateObjectReference(initializationContext, _clientTransaction);
     }
 
     public DomainObject GetObject (ObjectID objectID, bool includeDeleted)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
       // GetDataContainerWithLazyLoad throws on invalid objectID
-      var dataContainer = _dataManager.GetDataContainerWithLazyLoad (objectID, throwOnNotFound: true);
+      var dataContainer = _dataManager.GetDataContainerWithLazyLoad(objectID, throwOnNotFound: true);
 
       if (dataContainer.State.IsDeleted && !includeDeleted)
-        throw new ObjectDeletedException (objectID);
+        throw new ObjectDeletedException(objectID);
 
       return dataContainer.DomainObject;
     }
 
     public DomainObject TryGetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      if (_invalidDomainObjectManager.IsInvalid (objectID))
-        return _invalidDomainObjectManager.GetInvalidObjectReference (objectID);
+      if (_invalidDomainObjectManager.IsInvalid(objectID))
+        return _invalidDomainObjectManager.GetInvalidObjectReference(objectID);
 
-      var dataContainer = _dataManager.GetDataContainerWithLazyLoad (objectID, throwOnNotFound: false);
+      var dataContainer = _dataManager.GetDataContainerWithLazyLoad(objectID, throwOnNotFound: false);
       if (dataContainer == null)
         return null;
 
@@ -168,83 +168,83 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 
     public T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
       // GetDataContainersWithLazyLoad throws on invalid objectID
-      return _dataManager.GetDataContainersWithLazyLoad (objectIDs, throwOnNotFound: true)
-          .Select (dc => dc.DomainObject)
-          .Cast<T> ()
-          .ToArray ();
+      return _dataManager.GetDataContainersWithLazyLoad(objectIDs, throwOnNotFound: true)
+          .Select(dc => dc.DomainObject)
+          .Cast<T>()
+          .ToArray();
     }
 
     public T[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-      var objectIDsAsCollection = objectIDs.ConvertToCollection ();
+      var objectIDsAsCollection = objectIDs.ConvertToCollection();
 
-      var validObjectIDs = objectIDsAsCollection.Where (id => !_invalidDomainObjectManager.IsInvalid (id)).ConvertToCollection ();
+      var validObjectIDs = objectIDsAsCollection.Where(id => !_invalidDomainObjectManager.IsInvalid(id)).ConvertToCollection();
 
       // this performs a bulk load operation
       var dataContainersByID = validObjectIDs
-          .Zip (_dataManager.GetDataContainersWithLazyLoad (validObjectIDs, false))
-          .ToDictionary (t => t.Item1, t => t.Item2);
+          .Zip(_dataManager.GetDataContainersWithLazyLoad(validObjectIDs, false))
+          .ToDictionary(t => t.Item1, t => t.Item2);
 
-      var result = objectIDsAsCollection.Select (
+      var result = objectIDsAsCollection.Select(
           id =>
           {
             DataContainer loadResult;
-            if (dataContainersByID.TryGetValue (id, out loadResult))
+            if (dataContainersByID.TryGetValue(id, out loadResult))
               return loadResult == null ? null : (T) loadResult.DomainObject;
             else
             {
-              Assertion.IsTrue (
-                  _invalidDomainObjectManager.IsInvalid (id),
+              Assertion.IsTrue(
+                  _invalidDomainObjectManager.IsInvalid(id),
                   "All valid IDs have been passed to GetDataContainersWithLazyLoad, so if its not in the loadResult, it must be invalid.");
-              return (T) _invalidDomainObjectManager.GetInvalidObjectReference (id);
+              return (T) _invalidDomainObjectManager.GetInvalidObjectReference(id);
             }
           });
-      return result.ToArray ();
+      return result.ToArray();
 
     }
 
     public void Delete (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       // DataManager checks that object is enlisted and not invalid
-      var command = _dataManager.CreateDeleteCommand (domainObject);
-      var fullCommand = command.ExpandToAllRelatedObjects ();
-      fullCommand.NotifyAndPerform ();
+      var command = _dataManager.CreateDeleteCommand(domainObject);
+      var fullCommand = command.ExpandToAllRelatedObjects();
+      fullCommand.NotifyAndPerform();
     }
 
     private void CleanupCreatedObject (ObjectID objectID, DomainObject domainObject, Exception creationException)
     {
       try
       {
-        Delete (domainObject);
+        Delete(domainObject);
       }
       catch (Exception deleteException)
       {
-        var message = string.Format (
+        var message = string.Format(
             "While cleaning up an object of type '{0}' that threw an exception of type "
             + "'{1}' from its constructor, another exception of type '{2}' was encountered. "
             + "Cleanup was therefore aborted, and a partially constructed object with ID '{3}' remains within the ClientTransaction '{4}'."
             + " Rollback the transaction to get rid of the partially constructed instance." + Environment.NewLine
             + "Message of original exception: {5}" + Environment.NewLine
             + "Message of exception occurring during cleanup: {6}",
-            domainObject.GetPublicDomainObjectType (),
-            creationException.GetType (),
-            deleteException.GetType (),
+            domainObject.GetPublicDomainObjectType(),
+            creationException.GetType(),
+            deleteException.GetType(),
             objectID,
             _clientTransaction,
             creationException.Message,
             deleteException.Message);
-        throw new ObjectCleanupException (message, objectID, creationException, deleteException);
+        throw new ObjectCleanupException(message, objectID, creationException, deleteException);
       }
 
-      _enlistedDomainObjectManager.DisenlistDomainObject (domainObject);
+      _enlistedDomainObjectManager.DisenlistDomainObject(domainObject);
     }
   }
 }

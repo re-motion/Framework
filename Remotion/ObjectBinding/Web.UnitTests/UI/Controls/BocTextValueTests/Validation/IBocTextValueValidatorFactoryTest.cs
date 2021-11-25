@@ -25,12 +25,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     {
       var instance = _serviceLocator.GetInstance<IBocTextValueValidatorFactory>();
 
-      Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocTextValue>>());
+      Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<IBocTextValue>>());
 
       var factories = ((CompoundValidatorFactory<IBocTextValue>) instance).VlidatorFactories;
-      Assert.That (
-          factories.Select (f => f.GetType()),
-          Is.EqualTo (new[] { typeof (BocTextValueValidatorFactory), typeof (ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
+      Assert.That(
+          factories.Select(f => f.GetType()),
+          Is.EqualTo(new[] { typeof (BocTextValueValidatorFactory), typeof (ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
     }
 
     [Test]
@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
       var instance1 = _serviceLocator.GetInstance<IBocTextValueValidatorFactory>();
       var instance2 = _serviceLocator.GetInstance<IBocTextValueValidatorFactory>();
 
-      Assert.That (instance1, Is.InstanceOf<CompoundValidatorFactory<IBocTextValue>>());
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.InstanceOf<CompoundValidatorFactory<IBocTextValue>>());
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

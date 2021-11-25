@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public ChangeState (object sender, string message)
     {
-      ArgumentUtility.CheckNotNull ("sender", sender);
+      ArgumentUtility.CheckNotNull("sender", sender);
 
       _sender = sender;
       _message = message;
@@ -61,19 +61,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public virtual void Check (ChangeState expectedState)
     {
-      ArgumentUtility.CheckNotNull ("expectedState", expectedState);
+      ArgumentUtility.CheckNotNull("expectedState", expectedState);
 
-      if (this.GetType () != expectedState.GetType ())
+      if (this.GetType() != expectedState.GetType())
       {
-        throw CreateApplicationException (
+        throw CreateApplicationException(
             "Type of actual state '{0}' does not match type of expected state '{1}'.",
-            this.GetType (),
-            expectedState.GetType ());
+            this.GetType(),
+            expectedState.GetType());
       }
 
-      if (!ReferenceEquals (_sender, expectedState.Sender))
+      if (!ReferenceEquals(_sender, expectedState.Sender))
       {
-        throw CreateApplicationException (
+        throw CreateApplicationException(
             "Actual sender '{0}' does not match expected sender '{1}'.", _sender, expectedState.Sender);
       }
     }
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     [MustUseReturnValue]
     protected ApplicationException CreateApplicationException (string message, params object[] args)
     {
-      return new ApplicationException (string.Format (message, args));
+      return new ApplicationException(string.Format(message, args));
     }
   }
 }

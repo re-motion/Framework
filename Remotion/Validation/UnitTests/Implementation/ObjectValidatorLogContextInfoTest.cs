@@ -36,14 +36,14 @@ namespace Remotion.Validation.UnitTests.Implementation
       _ObjectValidatorStub1 = new Mock<IObjectValidator>();
       _removingObjectValidatorRegistrations = new RemovingObjectValidatorRegistration[0];
 
-      _logContextInfo = new ObjectValidatorLogContextInfo (_ObjectValidatorStub1.Object, _removingObjectValidatorRegistrations);
+      _logContextInfo = new ObjectValidatorLogContextInfo(_ObjectValidatorStub1.Object, _removingObjectValidatorRegistrations);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_logContextInfo.RemovedValidator, Is.SameAs (_ObjectValidatorStub1.Object));
-      Assert.That (_logContextInfo.RemovingObjectValidatorRegistrations, Is.SameAs (_removingObjectValidatorRegistrations));
+      Assert.That(_logContextInfo.RemovedValidator, Is.SameAs(_ObjectValidatorStub1.Object));
+      Assert.That(_logContextInfo.RemovingObjectValidatorRegistrations, Is.SameAs(_removingObjectValidatorRegistrations));
     }
   }
 }

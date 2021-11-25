@@ -56,15 +56,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       _webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 
-      _webTestHelper.OnFixtureSetUp (MaximizeMainBrowserSession);
-      s_webApplicationRoot = new Lazy<Uri> (
+      _webTestHelper.OnFixtureSetUp(MaximizeMainBrowserSession);
+      s_webApplicationRoot = new Lazy<Uri>(
           () =>
           {
-            var uri = new Uri (_webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot);
+            var uri = new Uri(_webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot);
 
             // RM-7401: Edge loads pages slower due to repeated hostname resolution.
             if (_webTestHelper.BrowserConfiguration.IsEdge())
-              return HostnameResolveHelper.ResolveHostname (uri);
+              return HostnameResolveHelper.ResolveHostname(uri);
 
             return uri;
           });
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [SetUp]
     public void IntegrationTestSetUp ()
     {
-      _webTestHelper.OnSetUp (GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
+      _webTestHelper.OnSetUp(GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
 
       // Prevent failing IE tests due to topmost windows
       if (_webTestHelper.BrowserConfiguration.IsInternetExplorer())
@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void IntegrationTestTearDown ()
     {
       var hasSucceeded = TestContext.CurrentContext.Result.Outcome.Status != TestStatus.Failed;
-      _webTestHelper.OnTearDown (hasSucceeded);
+      _webTestHelper.OnTearDown(hasSucceeded);
     }
 
     [OneTimeTearDown]
@@ -95,18 +95,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
     protected WxePageObject Start (string userControl)
     {
-      var userControlUrl = string.Format ("Controls/{0}UserControl.ascx", userControl);
+      var userControlUrl = string.Format("Controls/{0}UserControl.ascx", userControl);
 
-      var url = string.Format ("{0}ControlTest.wxe?UserControl={1}", s_webApplicationRoot.Value, userControlUrl);
-      _webTestHelper.MainBrowserSession.Window.Visit (url);
+      var url = string.Format("{0}ControlTest.wxe?UserControl={1}", s_webApplicationRoot.Value, userControlUrl);
+      _webTestHelper.MainBrowserSession.Window.Visit(url);
       _webTestHelper.AcceptPossibleModalDialog();
 
-      return _webTestHelper.CreateInitialPageObject<WxePageObject> (_webTestHelper.MainBrowserSession);
+      return _webTestHelper.CreateInitialPageObject<WxePageObject>(_webTestHelper.MainBrowserSession);
     }
 
     private static void KillAnyExistingWindowsErrorReportingProcesses ()
     {
-      ProcessUtils.KillAllProcessesWithName ("WerFault");
+      ProcessUtils.KillAllProcessesWithName("WerFault");
     }
   }
 }

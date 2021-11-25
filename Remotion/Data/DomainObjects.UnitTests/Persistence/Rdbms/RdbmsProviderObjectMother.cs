@@ -37,38 +37,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
         Func<RdbmsProviderDefinition, IPersistenceExtension, IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>, RdbmsProvider> ctorCall = null)
     {
       var storageTypeInformationProvider =
-          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (new SqlStorageTypeInformationProvider());
-      var dbCommandBuilderFactory = new SqlDbCommandBuilderFactory (new SqlDialect());
-      var storageNameProvider = new ReflectionBasedStorageNameProvider ();
-      var rdbmsPersistenceModelProvider = new RdbmsPersistenceModelProvider ();
-      var infrastructureStoragePropertyDefinitionProvider = new InfrastructureStoragePropertyDefinitionProvider (
+          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(new SqlStorageTypeInformationProvider());
+      var dbCommandBuilderFactory = new SqlDbCommandBuilderFactory(new SqlDialect());
+      var storageNameProvider = new ReflectionBasedStorageNameProvider();
+      var rdbmsPersistenceModelProvider = new RdbmsPersistenceModelProvider();
+      var infrastructureStoragePropertyDefinitionProvider = new InfrastructureStoragePropertyDefinitionProvider(
           storageTypeInformationProvider, storageNameProvider);
-      var dataStoragePropertyDefinitionFactory = new DataStoragePropertyDefinitionFactory (
-          new ValueStoragePropertyDefinitionFactory (storageTypeInformationProvider, storageNameProvider),
-          new RelationStoragePropertyDefinitionFactory (
+      var dataStoragePropertyDefinitionFactory = new DataStoragePropertyDefinitionFactory(
+          new ValueStoragePropertyDefinitionFactory(storageTypeInformationProvider, storageNameProvider),
+          new RelationStoragePropertyDefinitionFactory(
               storageProviderDefinition,
               false,
               storageNameProvider,
               storageTypeInformationProvider,
               new StorageEntityBasedStorageProviderDefinitionFinder()));
-      var dataContainerValidator = new CompoundDataContainerValidator (Enumerable.Empty<IDataContainerValidator>());
-      var objectReaderFactory = new ObjectReaderFactory (
+      var dataContainerValidator = new CompoundDataContainerValidator(Enumerable.Empty<IDataContainerValidator>());
+      var objectReaderFactory = new ObjectReaderFactory(
           rdbmsPersistenceModelProvider,
           infrastructureStoragePropertyDefinitionProvider,
           storageTypeInformationProvider,
           dataContainerValidator);
-      var commandFactory = new RdbmsProviderCommandFactory (
+      var commandFactory = new RdbmsProviderCommandFactory(
           storageProviderDefinition,
           dbCommandBuilderFactory,
           rdbmsPersistenceModelProvider,
           objectReaderFactory,
-          new TableDefinitionFinder (rdbmsPersistenceModelProvider),
+          new TableDefinitionFinder(rdbmsPersistenceModelProvider),
           dataStoragePropertyDefinitionFactory);
 
       if (ctorCall == null)
-        ctorCall = (def, ext, factory) => new RdbmsProvider (def, ext, factory, () => new SqlConnection());
+        ctorCall = (def, ext, factory) => new RdbmsProvider(def, ext, factory, () => new SqlConnection());
 
-      return ctorCall (storageProviderDefinition, NullPersistenceExtension.Instance, commandFactory);
+      return ctorCall(storageProviderDefinition, NullPersistenceExtension.Instance, commandFactory);
     }
   }
 }

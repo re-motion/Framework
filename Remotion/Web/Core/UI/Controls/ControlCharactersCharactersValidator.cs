@@ -63,14 +63,14 @@ namespace Remotion.Web.UI.Controls
 
     protected override bool EvaluateIsValid ()
     {
-      string text = base.GetControlValidationValue (base.ControlToValidate);
+      string text = base.GetControlValidationValue(base.ControlToValidate);
 
-      return EvaluateIsTextValid (text);
+      return EvaluateIsTextValid(text);
     }
 
     protected bool EvaluateIsTextValid (string text)
     {
-      if (string.IsNullOrEmpty (text))
+      if (string.IsNullOrEmpty(text))
         return true;
 
       int linePosition = 0;
@@ -81,7 +81,7 @@ namespace Remotion.Web.UI.Controls
         linePosition++;
 
         var c = text[textPosition];
-        if (char.IsControl (c))
+        if (char.IsControl(c))
         {
           if (c == '\t')
             continue;
@@ -99,7 +99,7 @@ namespace Remotion.Web.UI.Controls
               continue;
           }
 
-          return HandleError (textPosition);
+          return HandleError(textPosition);
         }
       }
 
@@ -107,25 +107,25 @@ namespace Remotion.Web.UI.Controls
 
       bool HandleError (int textPosition)
       {
-        if (!string.IsNullOrEmpty (ErrorMessageFormat))
+        if (!string.IsNullOrEmpty(ErrorMessageFormat))
         {
-          var sampleTextLength = Math.Max (0, SampleTextLength);
-          var sampleTextStart = Math.Max (0, textPosition - sampleTextLength);
-          var sampleTextEnd = Math.Min (textPosition + sampleTextLength, text.Length - 1);
-          var sampleText = text.Substring (sampleTextStart, sampleTextEnd + 1 - sampleTextStart);
+          var sampleTextLength = Math.Max(0, SampleTextLength);
+          var sampleTextStart = Math.Max(0, textPosition - sampleTextLength);
+          var sampleTextEnd = Math.Min(textPosition + sampleTextLength, text.Length - 1);
+          var sampleText = text.Substring(sampleTextStart, sampleTextEnd + 1 - sampleTextStart);
 
           if (EnableMultilineText)
           {
-            var indexOfLastLeadingLineBreak = sampleText.LastIndexOf ('\n', textPosition - sampleTextStart) + 1;
+            var indexOfLastLeadingLineBreak = sampleText.LastIndexOf('\n', textPosition - sampleTextStart) + 1;
 
-            var indexOfFirstTrailingLineBreak = sampleText.IndexOf ('\n', textPosition - sampleTextStart);
+            var indexOfFirstTrailingLineBreak = sampleText.IndexOf('\n', textPosition - sampleTextStart);
             if (indexOfFirstTrailingLineBreak == -1)
               indexOfFirstTrailingLineBreak = sampleText.Length;
 
-            sampleText = sampleText.Substring (indexOfLastLeadingLineBreak, indexOfFirstTrailingLineBreak - indexOfLastLeadingLineBreak);
+            sampleText = sampleText.Substring(indexOfLastLeadingLineBreak, indexOfFirstTrailingLineBreak - indexOfLastLeadingLineBreak);
           }
 
-          ErrorMessage = string.Format (ErrorMessageFormat, sampleText, linePosition, lineNumber);
+          ErrorMessage = string.Format(ErrorMessageFormat, sampleText, linePosition, lineNumber);
         }
 
         return false;

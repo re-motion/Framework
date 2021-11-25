@@ -44,22 +44,22 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations
     public ScreenshotTransformationContext<IFluentScreenshotElement<T>> BeginApply (
         ScreenshotTransformationContext<IFluentScreenshotElement<T>> context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return ConvertContextBack (_transformations.BeginApply (ConvertContext (context)), context.Target);
+      return ConvertContextBack(_transformations.BeginApply(ConvertContext(context)), context.Target);
     }
 
     /// <inheritdoc />
     public void EndApply (ScreenshotTransformationContext<IFluentScreenshotElement<T>> context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      _transformations.EndApply (ConvertContext (context));
+      _transformations.EndApply(ConvertContext(context));
     }
 
     private ScreenshotTransformationContext<T> ConvertContext (ScreenshotTransformationContext<IFluentScreenshotElement<T>> context)
     {
-      return new ScreenshotTransformationContext<T> (
+      return new ScreenshotTransformationContext<T>(
           context.Manipulation,
           context.Graphics,
           context.Target.Resolver,
@@ -71,11 +71,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations
         ScreenshotTransformationContext<T> context,
         IFluentScreenshotElement<T> source)
     {
-      return new ScreenshotTransformationContext<IFluentScreenshotElement<T>> (
+      return new ScreenshotTransformationContext<IFluentScreenshotElement<T>>(
           context.Manipulation,
           context.Graphics,
           FluentResolver<T>.Instance,
-          FluentUtility.CloneWith (source, context.Target),
+          FluentUtility.CloneWith(source, context.Target),
           context.ResolvedElement);
     }
   }

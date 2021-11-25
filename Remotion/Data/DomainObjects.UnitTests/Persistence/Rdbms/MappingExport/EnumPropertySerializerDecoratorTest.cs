@@ -31,37 +31,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize_DelegatesToPropertySerializer ()
     {
-      var sampleProperty = GetPropertyDefinition ((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty);
+      var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty);
       var propertySerializerMock = MockRepository.GenerateMock<IPropertySerializer>();
-      var enumPropertySerializerDecorator = new EnumPropertySerializerDecorator (MockRepository.GenerateStub<IEnumSerializer>(), propertySerializerMock);
+      var enumPropertySerializerDecorator = new EnumPropertySerializerDecorator(MockRepository.GenerateStub<IEnumSerializer>(), propertySerializerMock);
 
-      var expected = new XElement ("expected");
-      propertySerializerMock.Expect (
-          _ => _.Serialize (Arg.Is (sampleProperty), Arg<IRdbmsPersistenceModelProvider>.Is.Anything))
-          .Return (expected);
+      var expected = new XElement("expected");
+      propertySerializerMock.Expect(
+          _ => _.Serialize(Arg.Is(sampleProperty), Arg<IRdbmsPersistenceModelProvider>.Is.Anything))
+          .Return(expected);
 
       propertySerializerMock.Replay();
 
-      var actual = enumPropertySerializerDecorator.Serialize (
+      var actual = enumPropertySerializerDecorator.Serialize(
           sampleProperty,
           MockRepository.GenerateStub<IRdbmsPersistenceModelProvider>());
 
       propertySerializerMock.VerifyAllExpectations();
 
-      Assert.That (actual, Is.SameAs (expected));
+      Assert.That(actual, Is.SameAs(expected));
     }
 
     [Test]
     public void Serialize_PassesPropertyToEnumSerializer ()
     {
-      var sampleProperty = GetPropertyDefinition ((ClassWithAllDataTypes _) => _.EnumProperty);
+      var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.EnumProperty);
       var enumSerializerMock = MockRepository.GenerateMock<IEnumSerializer>();
-      var enumPropertySerializerDecorator = new EnumPropertySerializerDecorator (enumSerializerMock, MockRepository.GenerateStub<IPropertySerializer>());
+      var enumPropertySerializerDecorator = new EnumPropertySerializerDecorator(enumSerializerMock, MockRepository.GenerateStub<IPropertySerializer>());
 
-      enumSerializerMock.Expect (_ => _.CollectPropertyType (sampleProperty));
+      enumSerializerMock.Expect(_ => _.CollectPropertyType(sampleProperty));
       enumSerializerMock.Replay();
 
-      enumPropertySerializerDecorator.Serialize (
+      enumPropertySerializerDecorator.Serialize(
           sampleProperty,
           MockRepository.GenerateStub<IRdbmsPersistenceModelProvider>());
 

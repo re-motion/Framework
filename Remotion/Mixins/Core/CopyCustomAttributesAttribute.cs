@@ -48,16 +48,16 @@ namespace Remotion.Mixins
 
     public CopyCustomAttributesAttribute (Type attributeSourceType, params Type[] copiedAttributeTypes)
     {
-      _attributeSourceType = ArgumentUtility.CheckNotNull ("attributeSourceType", attributeSourceType);
+      _attributeSourceType = ArgumentUtility.CheckNotNull("attributeSourceType", attributeSourceType);
       _attributeSourceMemberName = null;
-      _copiedAttributeTypes = ArgumentUtility.CheckNotNull ("copiedAttributeTypes", copiedAttributeTypes);
+      _copiedAttributeTypes = ArgumentUtility.CheckNotNull("copiedAttributeTypes", copiedAttributeTypes);
     }
 
     public CopyCustomAttributesAttribute (Type attributeSourceType, string attributeSourceMemberName, params Type[] copiedAttributeTypes)
     {
-      _attributeSourceType = ArgumentUtility.CheckNotNull ("attributeSourceType", attributeSourceType);
-      _attributeSourceMemberName = ArgumentUtility.CheckNotNull ("attributeSourceMemberName", attributeSourceMemberName);
-      _copiedAttributeTypes = ArgumentUtility.CheckNotNull ("copiedAttributeTypes", copiedAttributeTypes);
+      _attributeSourceType = ArgumentUtility.CheckNotNull("attributeSourceType", attributeSourceType);
+      _attributeSourceMemberName = ArgumentUtility.CheckNotNull("attributeSourceMemberName", attributeSourceMemberName);
+      _copiedAttributeTypes = ArgumentUtility.CheckNotNull("copiedAttributeTypes", copiedAttributeTypes);
     }
 
     public Type AttributeSourceType
@@ -91,7 +91,7 @@ namespace Remotion.Mixins
       else
       {
         MemberInfo[] members =
-            AttributeSourceType.GetMember (AttributeSourceMemberName, memberType, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            AttributeSourceType.GetMember(AttributeSourceMemberName, memberType, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
         if (members.Length == 0)
           return null;
@@ -99,8 +99,8 @@ namespace Remotion.Mixins
           return members[0];
         else
         {
-          throw new AmbiguousMatchException (
-              string.Format (
+          throw new AmbiguousMatchException(
+              string.Format(
                   "The source member string {0} matches several members on type {1}.",
                   AttributeSourceMemberName,
                   AttributeSourceType.GetFullNameSafe()));
@@ -110,8 +110,8 @@ namespace Remotion.Mixins
 
     public bool IsCopiedAttributeType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      return CopiedAttributeTypes.Length == 0 || ((IList) CopiedAttributeTypes).Contains (type);
+      ArgumentUtility.CheckNotNull("type", type);
+      return CopiedAttributeTypes.Length == 0 || ((IList) CopiedAttributeTypes).Contains(type);
     }
   }
 }

@@ -48,6 +48,6 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
         CurrentObject = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreatePosition();
     }
 
-    private WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditPositionForm), "UI/OrganizationalStructure/EditPositionForm.aspx");
+    private WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof (EditPositionForm), "UI/OrganizationalStructure/EditPositionForm.aspx");
   }
 }

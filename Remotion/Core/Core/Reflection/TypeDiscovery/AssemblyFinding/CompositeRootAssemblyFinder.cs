@@ -30,7 +30,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     public CompositeRootAssemblyFinder (IEnumerable<IRootAssemblyFinder> finders)
     {
-      ArgumentUtility.CheckNotNull ("finders", finders);
+      ArgumentUtility.CheckNotNull("finders", finders);
       _innerFinders = finders.ToList().AsReadOnly();
     }
 
@@ -41,7 +41,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     public IEnumerable<RootAssembly> FindRootAssemblies ()
     {
-      return _innerFinders.AsParallel().SelectMany (finder => finder.FindRootAssemblies());
+      return _innerFinders.AsParallel().SelectMany(finder => finder.FindRootAssemblies());
     }
   }
 }

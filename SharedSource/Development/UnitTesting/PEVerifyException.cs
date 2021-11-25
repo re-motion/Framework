@@ -31,13 +31,13 @@ namespace Remotion.Development.UnitTesting
     {
     }
 
-    public PEVerifyException (int resultCode, string output) : base (ConstructMessage (resultCode, output))
+    public PEVerifyException (int resultCode, string output) : base (ConstructMessage(resultCode, output))
     {
     }
 
     private static string ConstructMessage (int code, string output)
     {
-      return string.Format ("PEVerify returned {0}.\n{1}", code, output);
+      return string.Format("PEVerify returned {0}.\n{1}", code, output);
     }
   }
 }

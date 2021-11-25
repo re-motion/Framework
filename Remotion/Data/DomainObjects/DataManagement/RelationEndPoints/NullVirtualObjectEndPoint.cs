@@ -41,12 +41,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      throw new InvalidOperationException ("A NullObjectEndPoint cannot be used to synchronize an opposite end-point.");
+      throw new InvalidOperationException("A NullObjectEndPoint cannot be used to synchronize an opposite end-point.");
     }
 
     public void MarkDataIncomplete ()
     {
-      throw new InvalidOperationException ("MarkDataIncomplete cannot be called on a NullVirtualObjectEndPoint.");
+      throw new InvalidOperationException("MarkDataIncomplete cannot be called on a NullVirtualObjectEndPoint.");
     }
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)

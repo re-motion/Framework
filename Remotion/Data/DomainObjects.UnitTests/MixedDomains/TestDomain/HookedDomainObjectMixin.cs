@@ -38,14 +38,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
       OnLoadedCalled = true;
       OnLoadedLoadMode = loadMode;
       ++OnLoadedCount;
-      Assert.That (Target.ID, Is.Not.Null);
+      Assert.That(Target.ID, Is.Not.Null);
       ++Target.Property;
     }
 
     public void OnDomainObjectCreated ()
     {
       OnCreatedCalled = true;
-      Assert.That (Target.ID, Is.Not.Null);
+      Assert.That(Target.ID, Is.Not.Null);
       Target.Property += 2;
     }
 
@@ -53,9 +53,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
     {
       OnDomainObjectReferenceInitializingCalled = true;
       ++OnDomainObjectReferenceInitializingCount;
-      Assert.That (Target.ID, Is.Not.Null);
+      Assert.That(Target.ID, Is.Not.Null);
       if (InitializationHandler != null)
-        InitializationHandler (this, EventArgs.Empty);
+        InitializationHandler(this, EventArgs.Empty);
     }
 
     public new HookedTargetClass Target 

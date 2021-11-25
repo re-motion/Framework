@@ -35,16 +35,16 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
     public WebMenuItemProxy[] GetMenuItemStatusWithDelay (string arguments, string[] itemIDs)
     {
-      var delayInMilliseconds = int.Parse (arguments);
-      Thread.Sleep (TimeSpan.FromMilliseconds (delayInMilliseconds));
-      return itemIDs.Select (itemID => WebMenuItemProxy.Create (itemID, isDisabled: false)).ToArray();
+      var delayInMilliseconds = int.Parse(arguments);
+      Thread.Sleep(TimeSpan.FromMilliseconds(delayInMilliseconds));
+      return itemIDs.Select(itemID => WebMenuItemProxy.Create(itemID, isDisabled: false)).ToArray();
     }
 
     [WebMethod]
     [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
     public WebMenuItemProxy[] GetMenuItemStatusWithError (string[] itemIDs)
     {
-      throw new HttpException (500, "Server error");
+      throw new HttpException(500, "Server error");
     }
   }
 }

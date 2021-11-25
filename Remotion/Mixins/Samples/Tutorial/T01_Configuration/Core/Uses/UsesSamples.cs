@@ -33,7 +33,7 @@ namespace Remotion.Mixins.Samples.Tutorial.T01_Configuration.Core.Uses
     {
       public object Clone ()
       {
-        throw new System.NotImplementedException ();
+        throw new System.NotImplementedException();
       }
     }
 

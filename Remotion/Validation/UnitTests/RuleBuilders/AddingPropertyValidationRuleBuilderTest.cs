@@ -39,13 +39,13 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     [SetUp]
     public void SetUp ()
     {
-      _addingPropertyValidationRuleCollectorMock = new Mock<IAddingPropertyValidationRuleCollector> (MockBehavior.Strict);
-      _addingPropertyValidationRuleCollectorMock.Setup (stub => stub.Property).Returns (PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("UserName")));
+      _addingPropertyValidationRuleCollectorMock = new Mock<IAddingPropertyValidationRuleCollector>(MockBehavior.Strict);
+      _addingPropertyValidationRuleCollectorMock.Setup(stub => stub.Property).Returns(PropertyInfoAdapter.Create(typeof (Customer).GetProperty("UserName")));
 
-      _propertyMetaValidationRuleCollectorMock = new Mock<IPropertyMetaValidationRuleCollector> (MockBehavior.Strict);
-      _addingPropertyValidationRuleCollectorMock.Setup (stub => stub.Property).Returns (PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("UserName")));
+      _propertyMetaValidationRuleCollectorMock = new Mock<IPropertyMetaValidationRuleCollector>(MockBehavior.Strict);
+      _addingPropertyValidationRuleCollectorMock.Setup(stub => stub.Property).Returns(PropertyInfoAdapter.Create(typeof (Customer).GetProperty("UserName")));
 
-      _addingPropertyValidationBuilder = new AddingPropertyValidationRuleBuilder<Customer, string> (
+      _addingPropertyValidationBuilder = new AddingPropertyValidationRuleBuilder<Customer, string>(
           _addingPropertyValidationRuleCollectorMock.Object,
           _propertyMetaValidationRuleCollectorMock.Object);
 
@@ -55,17 +55,17 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     [Test]
     public void Initialization ()
     {
-      Assert.That (_addingPropertyValidationBuilder.AddingPropertyValidationRuleCollector, Is.SameAs (_addingPropertyValidationRuleCollectorMock.Object));
-      Assert.That (_addingPropertyValidationBuilder.PropertyMetaValidationRuleCollector, Is.SameAs (_propertyMetaValidationRuleCollectorMock.Object));
+      Assert.That(_addingPropertyValidationBuilder.AddingPropertyValidationRuleCollector, Is.SameAs(_addingPropertyValidationRuleCollectorMock.Object));
+      Assert.That(_addingPropertyValidationBuilder.PropertyMetaValidationRuleCollector, Is.SameAs(_propertyMetaValidationRuleCollectorMock.Object));
     }
 
     [Test]
     public void SetValidator ()
     {
       Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory = _ => _propertyValidatorStub.Object;
-      _addingPropertyValidationRuleCollectorMock.Setup (mock => mock.RegisterValidator (validatorFactory)).Verifiable();
+      _addingPropertyValidationRuleCollectorMock.Setup(mock => mock.RegisterValidator(validatorFactory)).Verifiable();
 
-      ((IAddingPropertyValidationRuleBuilder<Customer, string>) _addingPropertyValidationBuilder).SetValidator (validatorFactory);
+      ((IAddingPropertyValidationRuleBuilder<Customer, string>) _addingPropertyValidationBuilder).SetValidator(validatorFactory);
 
       _addingPropertyValidationRuleCollectorMock.Verify();
     }
@@ -73,7 +73,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     [Test]
     public void CanBeRemoved ()
     {
-      _addingPropertyValidationRuleCollectorMock.Setup (mock => mock.SetRemovable()).Verifiable();
+      _addingPropertyValidationRuleCollectorMock.Setup(mock => mock.SetRemovable()).Verifiable();
 
       _addingPropertyValidationBuilder.CanBeRemoved();
 
@@ -85,9 +85,9 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     {
       var metaValidationRuleStub = new Mock<IPropertyMetaValidationRule>();
 
-      _propertyMetaValidationRuleCollectorMock.Setup (mock => mock.RegisterMetaValidationRule (metaValidationRuleStub.Object)).Verifiable();
+      _propertyMetaValidationRuleCollectorMock.Setup(mock => mock.RegisterMetaValidationRule(metaValidationRuleStub.Object)).Verifiable();
 
-      _addingPropertyValidationBuilder.AddMetaValidationRule (metaValidationRuleStub.Object);
+      _addingPropertyValidationBuilder.AddMetaValidationRule(metaValidationRuleStub.Object);
 
       _propertyMetaValidationRuleCollectorMock.Verify();
     }
@@ -97,15 +97,15 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     {
       var fakeValidationResult = MetaValidationRuleValidationResult.CreateValidResult();
 
-      _propertyMetaValidationRuleCollectorMock.Setup (
-          mock => mock.RegisterMetaValidationRule (
-              It.Is<IPropertyMetaValidationRule> (
+      _propertyMetaValidationRuleCollectorMock.Setup(
+          mock => mock.RegisterMetaValidationRule(
+              It.Is<IPropertyMetaValidationRule>(
                   rule =>
                       rule.GetType() == typeof (DelegatePropertyMetaValidationRule<IPropertyValidator>) &&
-                      rule.Validate (new IPropertyValidator[0]).First() == fakeValidationResult)))
+                      rule.Validate(new IPropertyValidator[0]).First() == fakeValidationResult)))
           .Verifiable();
 
-      _addingPropertyValidationBuilder.AddMetaValidationRule (v => fakeValidationResult);
+      _addingPropertyValidationBuilder.AddMetaValidationRule(v => fakeValidationResult);
 
       _propertyMetaValidationRuleCollectorMock.Verify();
     }
@@ -113,14 +113,14 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     [Test]
     public void AddMetaValidationRule_ExpressionOverload_IsValidIsTrue ()
     {
-      _propertyMetaValidationRuleCollectorMock.Setup (
-          mock => mock.RegisterMetaValidationRule (
-              It.Is<IPropertyMetaValidationRule> (
+      _propertyMetaValidationRuleCollectorMock.Setup(
+          mock => mock.RegisterMetaValidationRule(
+              It.Is<IPropertyMetaValidationRule>(
                   rule =>
                       rule.GetType() == typeof (DelegatePropertyMetaValidationRule<IPropertyValidator>)
-                      && rule.Validate (new IPropertyValidator[0]).First().IsValid))).Verifiable();
+                      && rule.Validate(new IPropertyValidator[0]).First().IsValid))).Verifiable();
 
-      _addingPropertyValidationBuilder.AddMetaValidationRule<IPropertyValidator> (v => true);
+      _addingPropertyValidationBuilder.AddMetaValidationRule<IPropertyValidator>(v => true);
 
       _propertyMetaValidationRuleCollectorMock.Verify();
     }
@@ -128,17 +128,17 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     [Test]
     public void AddMetaValidationRule_ExpressionOverload_IsValidIsFalse ()
     {
-      _propertyMetaValidationRuleCollectorMock.Setup (
-          mock => mock.RegisterMetaValidationRule (
-              It.Is<IPropertyMetaValidationRule> (
+      _propertyMetaValidationRuleCollectorMock.Setup(
+          mock => mock.RegisterMetaValidationRule(
+              It.Is<IPropertyMetaValidationRule>(
                   rule =>
                       rule.GetType() == typeof (DelegatePropertyMetaValidationRule<IPropertyValidator>) &&
-                      !rule.Validate (new IPropertyValidator[0]).First().IsValid &&
-                      rule.Validate (new IPropertyValidator[0]).First().Message
+                      !rule.Validate(new IPropertyValidator[0]).First().IsValid &&
+                      rule.Validate(new IPropertyValidator[0]).First().Message
                       == "Meta validation rule 'v => False' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
                       + "on property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName'."))).Verifiable();
 
-      _addingPropertyValidationBuilder.AddMetaValidationRule<IPropertyValidator> (v => false);
+      _addingPropertyValidationBuilder.AddMetaValidationRule<IPropertyValidator>(v => false);
 
       _propertyMetaValidationRuleCollectorMock.Verify();
     }

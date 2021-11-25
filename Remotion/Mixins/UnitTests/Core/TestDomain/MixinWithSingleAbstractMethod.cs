@@ -25,7 +25,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 
     public string ImplementedMethod ()
     {
-      return "MixinWithSingleAbstractMethod.ImplementedMethod-" + AbstractMethod (25);
+      return "MixinWithSingleAbstractMethod.ImplementedMethod-" + AbstractMethod(25);
     }
 
     protected abstract string AbstractMethod (int i);

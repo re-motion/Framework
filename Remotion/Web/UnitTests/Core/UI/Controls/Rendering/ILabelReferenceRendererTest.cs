@@ -37,8 +37,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
     {
       var factory = _serviceLocator.GetInstance<ILabelReferenceRenderer>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (LabelReferenceRenderer)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof (LabelReferenceRenderer)));
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
       var factory1 = _serviceLocator.GetInstance<ILabelReferenceRenderer>();
       var factory2 = _serviceLocator.GetInstance<ILabelReferenceRenderer>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      return _clientTransactionExtensionFactories.SelectMany (f => f.CreateClientTransactionExtensions (clientTransaction));
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      return _clientTransactionExtensionFactories.SelectMany(f => f.CreateClientTransactionExtensions(clientTransaction));
     }
   }
 }

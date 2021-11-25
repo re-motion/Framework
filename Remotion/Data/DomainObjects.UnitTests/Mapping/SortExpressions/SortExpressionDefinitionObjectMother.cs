@@ -25,12 +25,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
   {
     public static SortedPropertySpecification CreateSortedPropertyAscending (PropertyDefinition propertyDefinition)
     {
-      return new SortedPropertySpecification (propertyDefinition, SortOrder.Ascending);
+      return new SortedPropertySpecification(propertyDefinition, SortOrder.Ascending);
     }
 
     public static SortedPropertySpecification CreateSortedPropertyDescending (PropertyDefinition propertyDefinition)
     {
-      return new SortedPropertySpecification (propertyDefinition, SortOrder.Descending);
+      return new SortedPropertySpecification(propertyDefinition, SortOrder.Descending);
     }
   }
 }

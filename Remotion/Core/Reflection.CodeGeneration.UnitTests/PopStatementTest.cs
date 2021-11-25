@@ -29,12 +29,12 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void Pop ()
     {
-      var methodEmitter = GetMethodEmitter (false, typeof (void), new Type[0]);
-      methodEmitter.AddStatement (new ILStatement (delegate (IMemberEmitter emitter, ILGenerator gen) { gen.Emit (OpCodes.Ldc_I4_0); }));
-      methodEmitter.AddStatement (new PopStatement ());
-      methodEmitter.AddStatement (new ReturnStatement ());
+      var methodEmitter = GetMethodEmitter(false, typeof (void), new Type[0]);
+      methodEmitter.AddStatement(new ILStatement(delegate (IMemberEmitter emitter, ILGenerator gen) { gen.Emit(OpCodes.Ldc_I4_0); }));
+      methodEmitter.AddStatement(new PopStatement());
+      methodEmitter.AddStatement(new ReturnStatement());
 
-      InvokeMethod ();
+      InvokeMethod();
     }
   }
 }

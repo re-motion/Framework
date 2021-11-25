@@ -29,9 +29,9 @@ namespace Remotion.SecurityManager.Clients.Web.Test.Domain
   {
     public static FileItem NewObject (ClientTransaction clientTransaction)
     {
-      using (clientTransaction.EnterNonDiscardingScope ())
+      using (clientTransaction.EnterNonDiscardingScope())
       {
-        return DomainObject.NewObject<FileItem> ();
+        return DomainObject.NewObject<FileItem>();
       }
     }
 
@@ -60,14 +60,14 @@ namespace Remotion.SecurityManager.Clients.Web.Test.Domain
     {
       if (File == null)
         return null;
-      return File.GetOwnerGroup ();
+      return File.GetOwnerGroup();
     }
 
     public override Tenant GetOwnerTenant ()
     {
       if (File == null)
         return null;
-      return File.GetOwnerTenant ();
+      return File.GetOwnerTenant();
     }
   }
 }

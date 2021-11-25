@@ -41,76 +41,76 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [SetUp]
     public void SetUp ()
     {
-      _property = PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName"));
+      _property = PropertyInfoAdapter.Create(typeof (Customer).GetProperty("UserName"));
 
-      _userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.UserName);
-      _lastNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.LastName);
+      _userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.UserName);
+      _lastNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.LastName);
 
-      _removingPropertyValidationRuleCollector = RemovingPropertyValidationRuleCollector.Create (_userNameExpression, typeof (RemovingPropertyValidationRuleCollectorTest));
+      _removingPropertyValidationRuleCollector = RemovingPropertyValidationRuleCollector.Create(_userNameExpression, typeof (RemovingPropertyValidationRuleCollectorTest));
     }
 
     [Test]
     public void Initialization_PropertyDeclaredInSameClass ()
     {
-      Assert.That (_removingPropertyValidationRuleCollector.Property.Equals(_property), Is.True);
-      Assert.That (_removingPropertyValidationRuleCollector.Property, Is.EqualTo (_property));
-      Assert.That (_removingPropertyValidationRuleCollector.CollectorType, Is.EqualTo (typeof (RemovingPropertyValidationRuleCollectorTest)));
-      Assert.That (_removingPropertyValidationRuleCollector.Validators.Any(), Is.False);
+      Assert.That(_removingPropertyValidationRuleCollector.Property.Equals(_property), Is.True);
+      Assert.That(_removingPropertyValidationRuleCollector.Property, Is.EqualTo(_property));
+      Assert.That(_removingPropertyValidationRuleCollector.CollectorType, Is.EqualTo(typeof (RemovingPropertyValidationRuleCollectorTest)));
+      Assert.That(_removingPropertyValidationRuleCollector.Validators.Any(), Is.False);
     }
 
     [Test]
     public void Create_MemberInfoIsNoPropertyInfo_ExceptionIsThrown ()
     {
-      var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.Dummy ());
+      var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.Dummy());
 
-      Assert.That (
-          () => RemovingPropertyValidationRuleCollector.Create (dummyExpression, typeof (CustomerValidationRuleCollector1)),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("Must be a MemberExpression.", "expression"));
+      Assert.That(
+          () => RemovingPropertyValidationRuleCollector.Create(dummyExpression, typeof (CustomerValidationRuleCollector1)),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Must be a MemberExpression.", "expression"));
     }
 
     [Test]
     public void Create_PropertyDeclaredInBaseClass ()
     {
-      var componentPropertyRule = AddingPropertyValidationRuleCollector.Create (_lastNameExpression, typeof (CustomerValidationRuleCollector1));
+      var componentPropertyRule = AddingPropertyValidationRuleCollector.Create(_lastNameExpression, typeof (CustomerValidationRuleCollector1));
       var propertyInfo = ((PropertyInfoAdapter) componentPropertyRule.Property).PropertyInfo;
 
       //TODO-5906 simplify assertion with PropertyInfoAdapter compare
-      Assert.That (
-          MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (propertyInfo, typeof (Customer).GetMember ("LastName")[0]),
+      Assert.That(
+          MemberInfoEqualityComparer<MemberInfo>.Instance.Equals(propertyInfo, typeof (Customer).GetMember("LastName")[0]),
           Is.True);
     }
 
     [Test]
     public void RegisterValidator_WithCollectorNullAndPredicateNull_AddsValidatorToCollector ()
     {
-      _removingPropertyValidationRuleCollector.RegisterValidator (typeof (StubPropertyValidator), null, null);
+      _removingPropertyValidationRuleCollector.RegisterValidator(typeof (StubPropertyValidator), null, null);
 
-      Assert.That (_removingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo (1));
+      Assert.That(_removingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo(1));
 
       var removingPropertyValidatorRegistration = _removingPropertyValidationRuleCollector.Validators.Single();
-      Assert.That (removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo (typeof (StubPropertyValidator)));
-      Assert.That (removingPropertyValidatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
-      Assert.That (removingPropertyValidatorRegistration.ValidatorPredicate, Is.Null);
-      Assert.That (
+      Assert.That(removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo(typeof (StubPropertyValidator)));
+      Assert.That(removingPropertyValidatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
+      Assert.That(removingPropertyValidatorRegistration.ValidatorPredicate, Is.Null);
+      Assert.That(
           removingPropertyValidatorRegistration.RemovingPropertyValidationRuleCollector,
-          Is.SameAs (_removingPropertyValidationRuleCollector));
+          Is.SameAs(_removingPropertyValidationRuleCollector));
     }
 
     [Test]
     public void RegisterValidator_WithCollectorNotNullAndPredicateNull_AddsValidatorToCollector ()
     {
-      _removingPropertyValidationRuleCollector.RegisterValidator (typeof (NotEmptyValidator), typeof (CustomerValidationRuleCollector1), null);
+      _removingPropertyValidationRuleCollector.RegisterValidator(typeof (NotEmptyValidator), typeof (CustomerValidationRuleCollector1), null);
 
-      Assert.That (_removingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo (1));
+      Assert.That(_removingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo(1));
 
       var removingPropertyValidatorRegistration = _removingPropertyValidationRuleCollector.Validators.Single();
 
-      Assert.That (removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo (typeof (NotEmptyValidator)));
-      Assert.That (removingPropertyValidatorRegistration.CollectorTypeToRemoveFrom, Is.EqualTo (typeof (CustomerValidationRuleCollector1)));
-      Assert.That (removingPropertyValidatorRegistration.ValidatorPredicate, Is.Null);
-      Assert.That (
+      Assert.That(removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo(typeof (NotEmptyValidator)));
+      Assert.That(removingPropertyValidatorRegistration.CollectorTypeToRemoveFrom, Is.EqualTo(typeof (CustomerValidationRuleCollector1)));
+      Assert.That(removingPropertyValidatorRegistration.ValidatorPredicate, Is.Null);
+      Assert.That(
           removingPropertyValidatorRegistration.RemovingPropertyValidationRuleCollector,
-          Is.SameAs (_removingPropertyValidationRuleCollector));
+          Is.SameAs(_removingPropertyValidationRuleCollector));
 
     }
 
@@ -118,30 +118,30 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     public void RegisterValidator_WithCollectorNullAndPredicateNotNull_AddsValidatorToCollector ()
     {
       Func<IPropertyValidator, bool> validatorPredicate = _ => false;
-      _removingPropertyValidationRuleCollector.RegisterValidator (typeof (NotEmptyValidator), null, validatorPredicate);
+      _removingPropertyValidationRuleCollector.RegisterValidator(typeof (NotEmptyValidator), null, validatorPredicate);
 
-      Assert.That (_removingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo (1));
+      Assert.That(_removingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo(1));
 
       var removingPropertyValidatorRegistration = _removingPropertyValidationRuleCollector.Validators.Single();
 
-      Assert.That (removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo (typeof (NotEmptyValidator)));
-      Assert.That (removingPropertyValidatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
-      Assert.That (removingPropertyValidatorRegistration.ValidatorPredicate, Is.SameAs (validatorPredicate));
-      Assert.That (
+      Assert.That(removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo(typeof (NotEmptyValidator)));
+      Assert.That(removingPropertyValidatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
+      Assert.That(removingPropertyValidatorRegistration.ValidatorPredicate, Is.SameAs(validatorPredicate));
+      Assert.That(
           removingPropertyValidatorRegistration.RemovingPropertyValidationRuleCollector,
-          Is.SameAs (_removingPropertyValidationRuleCollector));
+          Is.SameAs(_removingPropertyValidationRuleCollector));
     }
 
     [Test]
     public void RegisterValidator_WithMultipleValidators_AddsAllValidatorsToCollector ()
     {
-      _removingPropertyValidationRuleCollector.RegisterValidator (typeof (StubPropertyValidator), null, null);
-      _removingPropertyValidationRuleCollector.RegisterValidator (typeof (StubPropertyValidator), null, null);
-      _removingPropertyValidationRuleCollector.RegisterValidator (typeof (NotEmptyValidator), null, null);
+      _removingPropertyValidationRuleCollector.RegisterValidator(typeof (StubPropertyValidator), null, null);
+      _removingPropertyValidationRuleCollector.RegisterValidator(typeof (StubPropertyValidator), null, null);
+      _removingPropertyValidationRuleCollector.RegisterValidator(typeof (NotEmptyValidator), null, null);
 
-      Assert.That (
-          _removingPropertyValidationRuleCollector.Validators.Select (v => v.ValidatorType),
-          Is.EqualTo (new[] { typeof (StubPropertyValidator), typeof (StubPropertyValidator), typeof (NotEmptyValidator) }));
+      Assert.That(
+          _removingPropertyValidationRuleCollector.Validators.Select(v => v.ValidatorType),
+          Is.EqualTo(new[] { typeof (StubPropertyValidator), typeof (StubPropertyValidator), typeof (NotEmptyValidator) }));
     }
 
     [Test]
@@ -161,9 +161,9 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     {
       var result = _removingPropertyValidationRuleCollector.ToString();
 
-      Assert.That (
+      Assert.That(
           result,
-          Is.EqualTo ("RemovingPropertyValidationRuleCollector: Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
+          Is.EqualTo("RemovingPropertyValidationRuleCollector: Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
     }
   }
 }

@@ -26,7 +26,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 
     public TargetClassGettingMixinFromCtor ()
     {
-      MixinInstance = Mixin.Get<NullMixin> (this);
+      MixinInstance = Mixin.Get<NullMixin>(this);
     }
   }
 }

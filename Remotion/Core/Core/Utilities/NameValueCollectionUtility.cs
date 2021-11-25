@@ -27,7 +27,7 @@ namespace Remotion.Utilities
   {
     public static NameValueCollection Clone (this NameValueCollection collection)
     {
-      return new NameValueCollection (collection);
+      return new NameValueCollection(collection);
     }
 
     // TODO RM-7432: remove "must not be null" from "second" parameter
@@ -39,12 +39,12 @@ namespace Remotion.Utilities
     /// <param name="second"> Must not be <see langword="null"/>. </param>
     public static void Append (NameValueCollection first, NameValueCollection? second)
     {
-      ArgumentUtility.CheckNotNull ("first", first);
+      ArgumentUtility.CheckNotNull("first", first);
       
       if (second != null)
       {
         for (int i = 0; i < second.Count; i++)
-          first.Set (second.GetKey(i), second.Get(i));
+          first.Set(second.GetKey(i), second.Get(i));
       }
     }
 
@@ -58,12 +58,12 @@ namespace Remotion.Utilities
       if (first == null && second == null)
         return null;
       else if (first != null && second == null)
-        return Clone (first);
+        return Clone(first);
       else if (first == null && second != null)
-        return Clone (second);
+        return Clone(second);
 
-      NameValueCollection result = Clone (first!);
-      Append (result, second);
+      NameValueCollection result = Clone(first!);
+      Append(result, second);
       return result;
     }
   }

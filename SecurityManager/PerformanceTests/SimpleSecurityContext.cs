@@ -41,14 +41,14 @@ namespace Remotion.SecurityManager.PerformanceTests
         Dictionary<string, EnumWrapper> states,
         EnumWrapper[] abstractRoles)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("class", @class);
-      ArgumentUtility.CheckNotNull ("states", states);
-      ArgumentUtility.CheckNotNull ("abstractRoles", abstractRoles);
+      ArgumentUtility.CheckNotNullOrEmpty("class", @class);
+      ArgumentUtility.CheckNotNull("states", states);
+      ArgumentUtility.CheckNotNull("abstractRoles", abstractRoles);
 
       _class = @class;
-      _owner = StringUtility.EmptyToNull (owner);
-      _ownerGroup = StringUtility.EmptyToNull (ownerGroup);
-      _ownerTenant = StringUtility.EmptyToNull (ownerTenant);
+      _owner = StringUtility.EmptyToNull(owner);
+      _ownerGroup = StringUtility.EmptyToNull(ownerGroup);
+      _ownerTenant = StringUtility.EmptyToNull(ownerTenant);
       _isStateless = isStateless;
       _states = states;
       _abstractRoles = abstractRoles;
@@ -86,7 +86,7 @@ namespace Remotion.SecurityManager.PerformanceTests
 
     public bool ContainsState (string propertyName)
     {
-      return _states.ContainsKey (propertyName);
+      return _states.ContainsKey(propertyName);
     }
 
     public bool IsStateless

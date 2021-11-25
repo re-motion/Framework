@@ -45,26 +45,26 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery.IntegrationTests.Specif
     [Test]
     public void Deserialization_SpecificRootAssemblies_ByName ()
     {
-      var section = Deserialize (c_xmlFragmentWithMscorlibByName);
+      var section = Deserialize(c_xmlFragmentWithMscorlibByName);
 
       var service = section.CreateTypeDiscoveryService();
       
-      var types = service.GetTypes (null, false);
-      Assert.That (types, Has.Member (typeof (Moq.Capture)));
+      var types = service.GetTypes(null, false);
+      Assert.That(types, Has.Member(typeof (Moq.Capture)));
     }
 
     [Test]
     public void Deserialization_SpecificRootAssemblies_ByFilePattern ()
     {
-      ApplicationAssemblyLoaderFilter.Instance.AddIgnoredAssembly (GetTestAssemblyName());
+      ApplicationAssemblyLoaderFilter.Instance.AddIgnoredAssembly(GetTestAssemblyName());
       try
       {
-        var section = Deserialize (s_xmlFragmentWithAssemblyByFilePattern);
+        var section = Deserialize(s_xmlFragmentWithAssemblyByFilePattern);
 
-        var service = section.CreateTypeDiscoveryService ();
+        var service = section.CreateTypeDiscoveryService();
 
-        var types = service.GetTypes (null, false);
-        Assert.That (types, Has.Member (typeof (SpecificRootAssembliesAreNotSubjectToApplicationFilterTest)));
+        var types = service.GetTypes(null, false);
+        Assert.That(types, Has.Member(typeof (SpecificRootAssembliesAreNotSubjectToApplicationFilterTest)));
       }
       finally
       {
@@ -74,14 +74,14 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery.IntegrationTests.Specif
 
     private TypeDiscoveryConfiguration Deserialize (string xmlFragment)
     {
-      var section = new TypeDiscoveryConfiguration ();
-      ConfigurationHelper.DeserializeSection (section, xmlFragment);
+      var section = new TypeDiscoveryConfiguration();
+      ConfigurationHelper.DeserializeSection(section, xmlFragment);
       return section;
     }
 
     private static string GetTestAssemblyName ()
     {
-      return typeof (SpecificRootAssembliesAreNotSubjectToApplicationFilterTest).Assembly.GetName ().Name;
+      return typeof (SpecificRootAssembliesAreNotSubjectToApplicationFilterTest).Assembly.GetName().Name;
     }
   }
 }

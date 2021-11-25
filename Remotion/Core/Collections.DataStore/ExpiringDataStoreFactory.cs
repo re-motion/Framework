@@ -46,10 +46,10 @@ namespace Remotion.Collections.DataStore
         where TKey : notnull
         where TValue : notnull
     {
-      ArgumentUtility.CheckNotNull ("policy", policy);
-      ArgumentUtility.CheckNotNull ("comparer", comparer);
+      ArgumentUtility.CheckNotNull("policy", policy);
+      ArgumentUtility.CheckNotNull("comparer", comparer);
 
-      return new ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo> (policy, comparer);
+      return new ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo>(policy, comparer);
     }
 
     /// <summary>
@@ -78,10 +78,10 @@ namespace Remotion.Collections.DataStore
         where TKey : notnull
         where TValue : notnull
     {
-      ArgumentUtility.CheckNotNull ("policy", policy);
-      ArgumentUtility.CheckNotNull ("comparer", comparer);
+      ArgumentUtility.CheckNotNull("policy", policy);
+      ArgumentUtility.CheckNotNull("comparer", comparer);
 
-      return new LockingDataStoreDecorator<TKey, TValue> (new ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo> (policy, comparer));
+      return new LockingDataStoreDecorator<TKey, TValue>(new ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo>(policy, comparer));
     }
 
     /// <summary>
@@ -110,11 +110,11 @@ namespace Remotion.Collections.DataStore
         where TKey : notnull
         where TValue: class?
     {
-      ArgumentUtility.CheckNotNull ("policy", policy);
-      ArgumentUtility.CheckNotNull ("comparer", comparer);
+      ArgumentUtility.CheckNotNull("policy", policy);
+      ArgumentUtility.CheckNotNull("comparer", comparer);
 
-      return new LazyLockingDataStoreAdapter<TKey, TValue> (
-          new ExpiringDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> (
+      return new LazyLockingDataStoreAdapter<TKey, TValue>(
+          new ExpiringDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo>(
               policy, 
               comparer));
     }

@@ -29,17 +29,17 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     public void CreateTargetClassDefinition_ReturnsValidClassDefinition ()
     {
       var context = ClassContextObjectMother.Create(typeof (BaseType1));
-      var def = TargetClassDefinitionFactory.CreateAndValidate (context);
-      Assert.That (def, Is.Not.Null);
-      Assert.That (def.ConfigurationContext, Is.SameAs (context));
+      var def = TargetClassDefinitionFactory.CreateAndValidate(context);
+      Assert.That(def, Is.Not.Null);
+      Assert.That(def.ConfigurationContext, Is.SameAs(context));
     }
 
     [Test]
     public void CreateTargetClassDefinition_ValidatesWhenGeneratingDefinition ()
     {
       var cc = ClassContextObjectMother.Create(typeof (DateTime));
-      Assert.That (
-          () => TargetClassDefinitionFactory.CreateAndValidate (cc),
+      Assert.That(
+          () => TargetClassDefinitionFactory.CreateAndValidate(cc),
           Throws.InstanceOf<ValidationException>());
     }
   }

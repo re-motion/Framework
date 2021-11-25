@@ -46,8 +46,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     public BocListInlineEditingConfigurator (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceUrlFactory", resourceUrlFactory);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
       _resourceUrlFactory = resourceUrlFactory;
       _globalizationService = globalizationService;
@@ -56,33 +56,33 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     public virtual void Configure<TBusinessObject> (BocList bocList, Func<TBusinessObject> newObjectFactory)
         where TBusinessObject: BaseSecurityManagerObject
     {
-      ArgumentUtility.CheckNotNull ("bocList", bocList);
-      ArgumentUtility.CheckNotNull ("newObjectFactory", newObjectFactory);
+      ArgumentUtility.CheckNotNull("bocList", bocList);
+      ArgumentUtility.CheckNotNull("newObjectFactory", newObjectFactory);
 
-      bocList.FixedColumns.Insert (
+      bocList.FixedColumns.Insert(
           0,
           new BocRowEditModeColumnDefinition
           {
-              Width = Unit.Pixel (40),
-              EditIcon = GetIcon ("sprite.svg#EditItem", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Edit)),
-              SaveIcon = GetIcon("sprite.svg#ApplyButton", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Apply)),
-              CancelIcon = GetIcon("sprite.svg#CancelButton", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Cancel))
+              Width = Unit.Pixel(40),
+              EditIcon = GetIcon("sprite.svg#EditItem", GlobalResourcesHelper.GetString(_globalizationService, GlobalResources.Edit)),
+              SaveIcon = GetIcon("sprite.svg#ApplyButton", GlobalResourcesHelper.GetString(_globalizationService, GlobalResources.Apply)),
+              CancelIcon = GetIcon("sprite.svg#CancelButton", GlobalResourcesHelper.GetString(_globalizationService, GlobalResources.Cancel))
           });
 
       bocList.EditableRowChangesCanceled += HandleEditableRowChangesCanceled;
 
-      bocList.ListMenuItems.Add (
+      bocList.ListMenuItems.Add(
           new BocMenuItem
           {
               ItemID = "New",
-              Text = GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.New),
-              Command = new InlineEditingNewItemMenuItemCommand<TBusinessObject> (newObjectFactory)
+              Text = GlobalResourcesHelper.GetString(_globalizationService, GlobalResources.New),
+              Command = new InlineEditingNewItemMenuItemCommand<TBusinessObject>(newObjectFactory)
           });
-      bocList.ListMenuItems.Add (
+      bocList.ListMenuItems.Add(
           new BocMenuItem
           {
               ItemID = "Delete",
-              Text = GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Delete),
+              Text = GlobalResourcesHelper.GetString(_globalizationService, GlobalResources.Delete),
               RequiredSelection = RequiredSelection.OneOrMore,
               Command = new InlineEditingDeleteItemMenuItemCommand<TBusinessObject>()
           });
@@ -90,8 +90,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     private void HandleEditableRowChangesCanceled (object sender, BocListItemEventArgs e)
     {
-      ArgumentUtility.CheckNotNull ("sender", sender);
-      ArgumentUtility.CheckNotNull ("e", e);
+      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentUtility.CheckNotNull("e", e);
 
       var businessObject = (BaseSecurityManagerObject) e.BusinessObject;
       if (businessObject.State.IsNew)
@@ -100,8 +100,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     private IconInfo GetIcon (string resourceUrl, string alternateText)
     {
-      var url = _resourceUrlFactory.CreateThemedResourceUrl (typeof (BocListInlineEditingConfigurator), ResourceType.Image, resourceUrl).GetUrl();
-      return new IconInfo (url) { AlternateText = alternateText };
+      var url = _resourceUrlFactory.CreateThemedResourceUrl(typeof (BocListInlineEditingConfigurator), ResourceType.Image, resourceUrl).GetUrl();
+      return new IconInfo(url) { AlternateText = alternateText };
     }
   }
 }

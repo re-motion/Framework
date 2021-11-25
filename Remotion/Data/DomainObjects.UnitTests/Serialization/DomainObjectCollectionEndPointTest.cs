@@ -39,10 +39,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       base.SetUp();
 
-      Dev.Null = DomainObjectIDs.Order1.GetObject<Order> ().OrderItems;
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName (typeof (Order), "OrderItems"));
+      Dev.Null = DomainObjectIDs.Order1.GetObject<Order>().OrderItems;
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof (Order), "OrderItems"));
       _endPoint = (DomainObjectCollectionEndPoint) 
-          ((StateUpdateRaisingDomainObjectCollectionEndPointDecorator) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID)).InnerEndPoint;
+          ((StateUpdateRaisingDomainObjectCollectionEndPointDecorator) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID)).InnerEndPoint;
 
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }
@@ -50,10 +50,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void CollectionEndPointIsNotSerializable ()
     {
-      Assert.That (
-          () => Serializer.SerializeAndDeserialize (_endPoint),
+      Assert.That(
+          () => Serializer.SerializeAndDeserialize(_endPoint),
           Throws.InstanceOf<SerializationException>()
-              .With.Message.Matches (
+              .With.Message.Matches(
                   "Type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.DomainObjectCollectionEndPoint' in Assembly "
                   + ".* is not marked as serializable."));
     }
@@ -61,63 +61,63 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void CollectionEndPointIsFlattenedSerializable ()
     {
-      DomainObjectCollectionEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
-      Assert.That (deserializedEndPoint, Is.Not.Null);
-      Assert.That (deserializedEndPoint, Is.Not.SameAs (_endPoint));
+      DomainObjectCollectionEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
+      Assert.That(deserializedEndPoint, Is.Not.Null);
+      Assert.That(deserializedEndPoint, Is.Not.SameAs(_endPoint));
     }
 
     [Test]
     public void CollectionEndPoint_Content ()
     {
-      _endPoint.Collection.Add (DomainObjectIDs.OrderItem5.GetObject<OrderItem>());
+      _endPoint.Collection.Add(DomainObjectIDs.OrderItem5.GetObject<OrderItem>());
 
-      DomainObjectCollectionEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
-      Assert.That (deserializedEndPoint.Definition, Is.SameAs (_endPoint.Definition));
-      Assert.That (deserializedEndPoint.HasBeenTouched, Is.True);
+      DomainObjectCollectionEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
+      Assert.That(deserializedEndPoint.Definition, Is.SameAs(_endPoint.Definition));
+      Assert.That(deserializedEndPoint.HasBeenTouched, Is.True);
 
-      Assert.That (deserializedEndPoint.Collection.Count, Is.EqualTo (3));
-      Assert.That (deserializedEndPoint.Collection.Contains (DomainObjectIDs.OrderItem1), Is.True);
-      Assert.That (deserializedEndPoint.Collection.Contains (DomainObjectIDs.OrderItem2), Is.True);
-      Assert.That (deserializedEndPoint.Collection.Contains (DomainObjectIDs.OrderItem5), Is.True);
-      Assert.That (deserializedEndPoint.Collection.IsReadOnly, Is.False);
+      Assert.That(deserializedEndPoint.Collection.Count, Is.EqualTo(3));
+      Assert.That(deserializedEndPoint.Collection.Contains(DomainObjectIDs.OrderItem1), Is.True);
+      Assert.That(deserializedEndPoint.Collection.Contains(DomainObjectIDs.OrderItem2), Is.True);
+      Assert.That(deserializedEndPoint.Collection.Contains(DomainObjectIDs.OrderItem5), Is.True);
+      Assert.That(deserializedEndPoint.Collection.IsReadOnly, Is.False);
 
-      Assert.That (deserializedEndPoint.GetCollectionWithOriginalData().Count, Is.EqualTo (2));
-      Assert.That (deserializedEndPoint.GetCollectionWithOriginalData().Contains (DomainObjectIDs.OrderItem1), Is.True);
-      Assert.That (deserializedEndPoint.GetCollectionWithOriginalData().Contains (DomainObjectIDs.OrderItem2), Is.True);
-      Assert.That (deserializedEndPoint.GetCollectionWithOriginalData().IsReadOnly, Is.True);
+      Assert.That(deserializedEndPoint.GetCollectionWithOriginalData().Count, Is.EqualTo(2));
+      Assert.That(deserializedEndPoint.GetCollectionWithOriginalData().Contains(DomainObjectIDs.OrderItem1), Is.True);
+      Assert.That(deserializedEndPoint.GetCollectionWithOriginalData().Contains(DomainObjectIDs.OrderItem2), Is.True);
+      Assert.That(deserializedEndPoint.GetCollectionWithOriginalData().IsReadOnly, Is.True);
     }
 
     [Test]
     public void CollectionEndPoint_Touched ()
     {
-      _endPoint.Touch ();
+      _endPoint.Touch();
 
-      DomainObjectCollectionEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
-      Assert.That (deserializedEndPoint.HasBeenTouched, Is.True);
+      DomainObjectCollectionEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
+      Assert.That(deserializedEndPoint.HasBeenTouched, Is.True);
     }
 
     [Test]
     public void CollectionEndPoint_Untouched ()
     {
-      DomainObjectCollectionEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
-      Assert.That (deserializedEndPoint.HasBeenTouched, Is.False);
+      DomainObjectCollectionEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
+      Assert.That(deserializedEndPoint.HasBeenTouched, Is.False);
     }
 
     [Test]
     public void CollectionEndPoint_ClientTransaction ()
     {
-      DomainObjectCollectionEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
-      Assert.That (deserializedEndPoint.ClientTransaction, Is.Not.Null);
+      DomainObjectCollectionEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
+      Assert.That(deserializedEndPoint.ClientTransaction, Is.Not.Null);
     }
 
     [Test]
     public void CollectionEndPoint_DelegatingDataMembers ()
     {
-      _endPoint.Collection.Add (DomainObjectIDs.OrderItem5.GetObject<OrderItem>());
+      _endPoint.Collection.Add(DomainObjectIDs.OrderItem5.GetObject<OrderItem>());
 
-      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
 
-      DomainObjectCollectionDataTestHelper.CheckAssociatedCollectionStrategy (
+      DomainObjectCollectionDataTestHelper.CheckAssociatedCollectionStrategy(
           deserializedEndPoint.Collection,
           _endPoint.Collection.RequiredItemType,
           deserializedEndPoint.ID);
@@ -127,51 +127,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     public void CollectionEndPoint_ReplacedCollection ()
     {
       var newOpposites = _endPoint.Collection.Clone();
-      _endPoint.CreateSetCollectionCommand (newOpposites).ExpandToAllRelatedObjects().NotifyAndPerform();
+      _endPoint.CreateSetCollectionCommand(newOpposites).ExpandToAllRelatedObjects().NotifyAndPerform();
       
-      DomainObjectCollectionEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
-      Assert.That (deserializedEndPoint.HasChanged, Is.True);
+      DomainObjectCollectionEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
+      Assert.That(deserializedEndPoint.HasChanged, Is.True);
 
       var deserializedNewOpposites = deserializedEndPoint.Collection;
-      deserializedEndPoint.Rollback ();
+      deserializedEndPoint.Rollback();
       
-      Assert.That (deserializedEndPoint.HasChanged, Is.False);
+      Assert.That(deserializedEndPoint.HasChanged, Is.False);
       var deserializedOldOpposites = deserializedEndPoint.Collection;
-      Assert.That (deserializedOldOpposites, Is.Not.SameAs (deserializedNewOpposites));
-      Assert.That (deserializedOldOpposites, Is.Not.Null);
+      Assert.That(deserializedOldOpposites, Is.Not.SameAs(deserializedNewOpposites));
+      Assert.That(deserializedOldOpposites, Is.Not.Null);
     }
 
     [Test]
     public void CollectionEndPoint_ReplacedCollection_ReferenceEqualityWithOtherCollection ()
     {
-      var industrialSector = DomainObjectIDs.IndustrialSector1.GetObject<IndustrialSector> ();
+      var industrialSector = DomainObjectIDs.IndustrialSector1.GetObject<IndustrialSector>();
       var oldOpposites = industrialSector.Companies;
-      var newOpposites = industrialSector.Companies.Clone ();
+      var newOpposites = industrialSector.Companies.Clone();
       industrialSector.Companies = newOpposites;
 
-      var tuple = Tuple.Create (TestableClientTransaction, industrialSector, oldOpposites, newOpposites);
-      var deserializedTuple = Serializer.SerializeAndDeserialize (tuple);
+      var tuple = Tuple.Create(TestableClientTransaction, industrialSector, oldOpposites, newOpposites);
+      var deserializedTuple = Serializer.SerializeAndDeserialize(tuple);
       using (deserializedTuple.Item1.EnterDiscardingScope())
       {
-        Assert.That (deserializedTuple.Item2.Companies, Is.SameAs (deserializedTuple.Item4));
+        Assert.That(deserializedTuple.Item2.Companies, Is.SameAs(deserializedTuple.Item4));
         ClientTransaction.Current.Rollback();
-        Assert.That (deserializedTuple.Item2.Companies, Is.SameAs (deserializedTuple.Item3));
+        Assert.That(deserializedTuple.Item2.Companies, Is.SameAs(deserializedTuple.Item3));
       }
     }
 
     [Test]
     public void Serialization_IntegrationWithRelationEndPointMap ()
     {
-      var deserializedTransactionMock = Serializer.SerializeAndDeserialize (TestableClientTransaction);
-      var deserializedCollectionEndPoint = deserializedTransactionMock.DataManager.GetRelationEndPointWithLazyLoad (_endPoint.ID);
-      Assert.That (deserializedCollectionEndPoint, Is.Not.Null);
+      var deserializedTransactionMock = Serializer.SerializeAndDeserialize(TestableClientTransaction);
+      var deserializedCollectionEndPoint = deserializedTransactionMock.DataManager.GetRelationEndPointWithLazyLoad(_endPoint.ID);
+      Assert.That(deserializedCollectionEndPoint, Is.Not.Null);
     }
 
     [Test]
     public void Serialization_InjectedObjects ()
     {
-      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Customer1, "Orders");
-      var originalEndPoint = new DomainObjectCollectionEndPoint (
+      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Customer1, "Orders");
+      var originalEndPoint = new DomainObjectCollectionEndPoint(
           ClientTransaction.Current,
           endPointID,
           new SerializableDomainObjectCollectionEndPointCollectionManagerFake(),
@@ -180,16 +180,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
           new SerializableClientTransactionEventSinkFake(),
           new SerializableDomainObjectCollectionEndPointDataManagerFactoryFake());
 
-      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (originalEndPoint);
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(originalEndPoint);
 
-      var deserializedLoadState = PrivateInvoke.GetNonPublicField (deserializedEndPoint, "_loadState");
-      Assert.That (deserializedLoadState, Is.Not.Null);
+      var deserializedLoadState = PrivateInvoke.GetNonPublicField(deserializedEndPoint, "_loadState");
+      Assert.That(deserializedLoadState, Is.Not.Null);
 
-      Assert.That (deserializedEndPoint.CollectionManager, Is.Not.Null);
-      Assert.That (deserializedEndPoint.LazyLoader, Is.Not.Null);
-      Assert.That (deserializedEndPoint.EndPointProvider, Is.Not.Null);
-      Assert.That (deserializedEndPoint.TransactionEventSink, Is.Not.Null);
-      Assert.That (deserializedEndPoint.DataManagerFactory, Is.Not.Null);
+      Assert.That(deserializedEndPoint.CollectionManager, Is.Not.Null);
+      Assert.That(deserializedEndPoint.LazyLoader, Is.Not.Null);
+      Assert.That(deserializedEndPoint.EndPointProvider, Is.Not.Null);
+      Assert.That(deserializedEndPoint.TransactionEventSink, Is.Not.Null);
+      Assert.That(deserializedEndPoint.DataManagerFactory, Is.Not.Null);
     }
   }
 }

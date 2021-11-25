@@ -23,23 +23,23 @@ namespace Remotion.Reflection
   {
     public static void CheckInvokeArguments (Type[] valueTypes, object?[] values)
     {
-      ArgumentUtility.CheckNotNull ("valueTypes", valueTypes);
-      ArgumentUtility.CheckNotNull ("values", values);
+      ArgumentUtility.CheckNotNull("valueTypes", valueTypes);
+      ArgumentUtility.CheckNotNull("values", values);
       if (valueTypes.Length != values.Length)
-        throw new InvalidOperationException ("Arguments must be of same size.");
+        throw new InvalidOperationException("Arguments must be of same size.");
 
 #if DEBUG
       for (int i = 0; i < values.Length; ++i)
       {
         Assertion.IsTrue(
-            values[i] == null || valueTypes[i].IsAssignableFrom (values[i]!.GetType()), "Incompatible types at array index " + i + ".");
+            values[i] == null || valueTypes[i].IsAssignableFrom(values[i]!.GetType()), "Incompatible types at array index " + i + ".");
       }
 #endif
     }
 
     public static Type[] GetValueTypes (object?[] values)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
+      ArgumentUtility.CheckNotNull("values", values);
 
       Type[] valueTypes = new Type[values.Length];
       for (int i = 0; i < values.Length; ++i)

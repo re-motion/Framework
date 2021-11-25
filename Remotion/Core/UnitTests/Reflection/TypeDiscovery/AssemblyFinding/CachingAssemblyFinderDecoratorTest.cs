@@ -30,7 +30,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [SetUp]
     public void SetUp ()
     {
-      _innerFinder = new Mock<IAssemblyFinder> (MockBehavior.Strict);
+      _innerFinder = new Mock<IAssemblyFinder>(MockBehavior.Strict);
       _decorator = new CachingAssemblyFinderDecorator(_innerFinder.Object);
     }
 
@@ -38,29 +38,29 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     public void FindAssemblies_FirstTime ()
     {
       var assemblies = new[] { typeof (object).Assembly, GetType().Assembly };
-      _innerFinder.Setup (mock => mock.FindAssemblies()).Returns (assemblies).Verifiable();
+      _innerFinder.Setup(mock => mock.FindAssemblies()).Returns(assemblies).Verifiable();
 
       var result = _decorator.FindAssemblies();
 
       _innerFinder.Verify();
-      Assert.That (result, Is.EqualTo (assemblies));
+      Assert.That(result, Is.EqualTo(assemblies));
     }
 
     [Test]
     public void FindAssemblies_MultipleTimes ()
     {
-      var assemblies = new[] { typeof (object).Assembly, GetType ().Assembly };
+      var assemblies = new[] { typeof (object).Assembly, GetType().Assembly };
       _innerFinder
-          .Setup (mock => mock.FindAssemblies ())
-          .Returns (assemblies)
+          .Setup(mock => mock.FindAssemblies())
+          .Returns(assemblies)
           .Verifiable();
 
-      var result1 = _decorator.FindAssemblies ();
-      var result2 = _decorator.FindAssemblies ();
+      var result1 = _decorator.FindAssemblies();
+      var result2 = _decorator.FindAssemblies();
 
-      _innerFinder.Verify (mock => mock.FindAssemblies (), Times.Once());
-      Assert.That (result1, Is.EqualTo (assemblies));
-      Assert.That (result2, Is.EqualTo (result1));
+      _innerFinder.Verify(mock => mock.FindAssemblies(), Times.Once());
+      Assert.That(result1, Is.EqualTo(assemblies));
+      Assert.That(result2, Is.EqualTo(result1));
     }
   }
 }

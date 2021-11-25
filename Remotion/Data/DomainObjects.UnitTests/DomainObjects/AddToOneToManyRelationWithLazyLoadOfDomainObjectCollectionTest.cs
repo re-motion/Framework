@@ -26,19 +26,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Insert ()
     {
-      Employee newSupervisor = DomainObjectIDs.Employee1.GetObject<Employee> ();
-      Employee subordinate = DomainObjectIDs.Employee3.GetObject<Employee> ();
+      Employee newSupervisor = DomainObjectIDs.Employee1.GetObject<Employee>();
+      Employee subordinate = DomainObjectIDs.Employee3.GetObject<Employee>();
 
       int countBeforeInsert = newSupervisor.Subordinates.Count;
 
-      newSupervisor.Subordinates.Insert (0, subordinate);
+      newSupervisor.Subordinates.Insert(0, subordinate);
 
-      Assert.That (newSupervisor.Subordinates.Count, Is.EqualTo (countBeforeInsert + 1));
-      Assert.That (newSupervisor.Subordinates.IndexOf (subordinate), Is.EqualTo (0));
-      Assert.That (subordinate.Supervisor, Is.SameAs (newSupervisor));
+      Assert.That(newSupervisor.Subordinates.Count, Is.EqualTo(countBeforeInsert + 1));
+      Assert.That(newSupervisor.Subordinates.IndexOf(subordinate), Is.EqualTo(0));
+      Assert.That(subordinate.Supervisor, Is.SameAs(newSupervisor));
 
-      Employee oldSupervisor = DomainObjectIDs.Employee2.GetObject<Employee> ();
-      Assert.That (oldSupervisor.Subordinates.ContainsObject (subordinate), Is.False);
+      Employee oldSupervisor = DomainObjectIDs.Employee2.GetObject<Employee>();
+      Assert.That(oldSupervisor.Subordinates.ContainsObject(subordinate), Is.False);
     }
   }
 }

@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding
 
     protected BusinessObjectProviderAttribute (Type businessObjectProviderType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("businessObjectProviderType", businessObjectProviderType, typeof (IBusinessObjectProvider));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("businessObjectProviderType", businessObjectProviderType, typeof (IBusinessObjectProvider));
       _businessObjectProviderType = businessObjectProviderType;
     }
 

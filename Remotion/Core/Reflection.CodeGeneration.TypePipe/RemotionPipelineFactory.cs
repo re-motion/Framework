@@ -32,8 +32,8 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
     [CLSCompliant (false)]
     protected override IModuleBuilderFactory NewModuleBuilderFactory (string participantConfigurationID)
     {
-      var moduleBuilderFactory = base.NewModuleBuilderFactory (participantConfigurationID);
-      return new RemotionModuleBuilderFactoryDecorator (moduleBuilderFactory);
+      var moduleBuilderFactory = base.NewModuleBuilderFactory(participantConfigurationID);
+      return new RemotionModuleBuilderFactoryDecorator(moduleBuilderFactory);
     }
   }
 }

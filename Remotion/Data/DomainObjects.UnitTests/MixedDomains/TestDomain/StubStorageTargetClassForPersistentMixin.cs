@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
   {
     public static StubStorageTargetClassForPersistentMixin NewObject ()
     {
-      return NewObject<StubStorageTargetClassForPersistentMixin> ();
+      return NewObject<StubStorageTargetClassForPersistentMixin>();
     }
   }
 }

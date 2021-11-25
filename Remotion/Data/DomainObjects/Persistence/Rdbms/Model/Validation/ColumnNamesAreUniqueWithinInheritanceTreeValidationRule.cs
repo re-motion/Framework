@@ -33,31 +33,31 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
 
     public ColumnNamesAreUniqueWithinInheritanceTreeValidationRule (IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider)
     {
-      ArgumentUtility.CheckNotNull ("rdbmsPersistenceModelProvider", rdbmsPersistenceModelProvider);
+      ArgumentUtility.CheckNotNull("rdbmsPersistenceModelProvider", rdbmsPersistenceModelProvider);
 
       _rdbmsPersistenceModelProvider = rdbmsPersistenceModelProvider;
     }
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       var validationResults = new List<MappingValidationResult>();
       if (classDefinition.BaseClass == null) //if class definition is inheritance root class
       {
         var derivedPropertyDefinitions = classDefinition.GetAllDerivedClasses()
-            .SelectMany (cd => cd.MyPropertyDefinitions);
+            .SelectMany(cd => cd.MyPropertyDefinitions);
         var allPropertyDefinitions =
-            classDefinition.MyPropertyDefinitions.Concat (derivedPropertyDefinitions).Where (pd => pd.StorageClass == StorageClass.Persistent);
+            classDefinition.MyPropertyDefinitions.Concat(derivedPropertyDefinitions).Where(pd => pd.StorageClass == StorageClass.Persistent);
 
         var  propertyDefinitionsByName = new MultiDictionary<string, PropertyDefinition>();
         foreach (var propertyDefinition in allPropertyDefinitions)
         {
           foreach (var simpleColumnDefinition in _rdbmsPersistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition).GetColumns())
-            propertyDefinitionsByName[simpleColumnDefinition.Name].Add (propertyDefinition);
+            propertyDefinitionsByName[simpleColumnDefinition.Name].Add(propertyDefinition);
         }
         foreach (var keyValuePair in propertyDefinitionsByName)
-          validationResults.AddRange (ValidatePropertyGroup (keyValuePair.Key, keyValuePair.Value));
+          validationResults.AddRange(ValidatePropertyGroup(keyValuePair.Key, keyValuePair.Value));
       }
       return validationResults;
     }
@@ -67,12 +67,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
       if (propertyDefinitions.Count > 1)
       {
         var referenceProperty = propertyDefinitions[0];
-        var differentProperties = propertyDefinitions.Where (pd => !pd.PropertyInfo.Equals (referenceProperty.PropertyInfo));
+        var differentProperties = propertyDefinitions.Where(pd => !pd.PropertyInfo.Equals(referenceProperty.PropertyInfo));
         if (differentProperties.Any())
         {
           foreach (var differentProperty in differentProperties)
           {
-            yield return MappingValidationResult.CreateInvalidResultForProperty (
+            yield return MappingValidationResult.CreateInvalidResultForProperty(
                 referenceProperty.PropertyInfo,
                 "Property '{0}' of class '{1}' must not define storage specific name '{2}',"
                 + " because class '{3}' in same inheritance hierarchy already defines property '{4}' with the same storage specific name.",

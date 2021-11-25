@@ -56,23 +56,23 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [SetUp]
     public void SetUp ()
     {
-      _securityAdapter = new WxeSecurityAdapter ();
+      _securityAdapter = new WxeSecurityAdapter();
 
-      _mockSecurityProvider = new Mock<ISecurityProvider> (MockBehavior.Strict);
-      _mockSecurityProvider.Setup (_ => _.IsNull).Returns (false).Verifiable();
+      _mockSecurityProvider = new Mock<ISecurityProvider>(MockBehavior.Strict);
+      _mockSecurityProvider.Setup(_ => _.IsNull).Returns(false).Verifiable();
       _stubUser = new Mock<ISecurityPrincipal>();
-      _stubUser.Setup (_ => _.User).Returns ("user");
-      _mockPrincipalProvider = new Mock<IPrincipalProvider> (MockBehavior.Strict);
-      _mockPrincipalProvider.Setup (_ => _.GetPrincipal ()).Returns (_stubUser.Object).Verifiable();
+      _stubUser.Setup(_ => _.User).Returns("user");
+      _mockPrincipalProvider = new Mock<IPrincipalProvider>(MockBehavior.Strict);
+      _mockPrincipalProvider.Setup(_ => _.GetPrincipal()).Returns(_stubUser.Object).Verifiable();
 
-      _mockObjectSecurityStrategy = new Mock<IObjectSecurityStrategy> (MockBehavior.Strict);
-      _mockFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy> (MockBehavior.Strict);
+      _mockObjectSecurityStrategy = new Mock<IObjectSecurityStrategy>(MockBehavior.Strict);
+      _mockFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy>(MockBehavior.Strict);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => _mockSecurityProvider.Object);
-      serviceLocator.RegisterSingle (() => _mockPrincipalProvider.Object);
-      serviceLocator.RegisterSingle (() => _mockFunctionalSecurityStrategy.Object);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle(() => _mockSecurityProvider.Object);
+      serviceLocator.RegisterSingle(() => _mockPrincipalProvider.Object);
+      serviceLocator.RegisterSingle(() => _mockFunctionalSecurityStrategy.Object);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
     [TearDown]
@@ -84,12 +84,12 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void CheckAccess_AccessGranted ()
     {
-      ExpectObjectSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Read, true);
-      SecurableObject thisObject = new SecurableObject (_mockObjectSecurityStrategy.Object);
-      TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (thisObject);
+      ExpectObjectSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Read, true);
+      SecurableObject thisObject = new SecurableObject(_mockObjectSecurityStrategy.Object);
+      TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod(thisObject);
       function.ThisObject = thisObject; // Required because in this test the WxeFunction has not started executing.
 
-      _securityAdapter.CheckAccess (function);
+      _securityAdapter.CheckAccess(function);
 
       _mockSecurityProvider.Verify();
       _stubUser.Verify();
@@ -101,30 +101,30 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void CheckAccess_AccessDenied ()
     {
-      ExpectObjectSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Read, false);
-      SecurableObject thisObject = new SecurableObject (_mockObjectSecurityStrategy.Object);
-      TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (thisObject);
+      ExpectObjectSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Read, false);
+      SecurableObject thisObject = new SecurableObject(_mockObjectSecurityStrategy.Object);
+      TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod(thisObject);
       function.ThisObject = thisObject; // Required because in this test the WxeFunction has not started executing.
-      Assert.That (
-          () => _securityAdapter.CheckAccess (function),
+      Assert.That(
+          () => _securityAdapter.CheckAccess(function),
           Throws.InstanceOf<PermissionDeniedException>());
     }
 
     [Test]
     public void CheckAccess_WithinSecurityFreeSection_AccessGranted ()
     {
-      SecurableObject thisObject = new SecurableObject (_mockObjectSecurityStrategy.Object);
-      TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (thisObject);
+      SecurableObject thisObject = new SecurableObject(_mockObjectSecurityStrategy.Object);
+      TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod(thisObject);
       function.ThisObject = thisObject; // Required because in this test the WxeFunction has not started executing.
 
       using (SecurityFreeSection.Activate())
       {
-        _securityAdapter.CheckAccess (function);
+        _securityAdapter.CheckAccess(function);
       }
 
-      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
+      _mockSecurityProvider.Verify(_ => _.IsNull, Times.Never);
       _stubUser.Verify();
-      _mockPrincipalProvider.Verify (_ => _.GetPrincipal (), Times.Never);
+      _mockPrincipalProvider.Verify(_ => _.GetPrincipal(), Times.Never);
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
     }
@@ -133,87 +133,87 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     public void HasAccess_AccessGranted ()
     {
       ExpectObjectSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Read, true);
-      SecurableObject thisObject = new SecurableObject (_mockObjectSecurityStrategy.Object);
-      TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (thisObject);
+      SecurableObject thisObject = new SecurableObject(_mockObjectSecurityStrategy.Object);
+      TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod(thisObject);
       function.ThisObject = thisObject; // Required because in this test the WxeFunction has not started executing.
 
-      bool hasAccess = _securityAdapter.HasAccess (function);
+      bool hasAccess = _securityAdapter.HasAccess(function);
 
       _mockSecurityProvider.Verify();
       _stubUser.Verify();
       _mockPrincipalProvider.Verify();
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void HasAccess_AccessDenied ()
     {
-      ExpectObjectSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Read, false);
-      SecurableObject thisObject = new SecurableObject (_mockObjectSecurityStrategy.Object);
-      TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (thisObject);
+      ExpectObjectSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Read, false);
+      SecurableObject thisObject = new SecurableObject(_mockObjectSecurityStrategy.Object);
+      TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod(thisObject);
       function.ThisObject = thisObject; // Required because in this test the WxeFunction has not started executing.
 
-      bool hasAccess = _securityAdapter.HasAccess (function);
+      bool hasAccess = _securityAdapter.HasAccess(function);
 
       _mockSecurityProvider.Verify();
       _stubUser.Verify();
       _mockPrincipalProvider.Verify();
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
-      Assert.That (hasAccess, Is.False);
+      Assert.That(hasAccess, Is.False);
     }
 
     [Test]
     public void HasAccess_WithinSecurityFreeSection_AccessGranted ()
     {
-      SecurableObject thisObject = new SecurableObject (_mockObjectSecurityStrategy.Object);
-      TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (thisObject);
+      SecurableObject thisObject = new SecurableObject(_mockObjectSecurityStrategy.Object);
+      TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod(thisObject);
       function.ThisObject = thisObject; // Required because in this test the WxeFunction has not started executing.
 
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityAdapter.HasAccess (function);
+        hasAccess = _securityAdapter.HasAccess(function);
       }
 
-      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
+      _mockSecurityProvider.Verify(_ => _.IsNull, Times.Never);
       _stubUser.Verify();
-      _mockPrincipalProvider.Verify(_ => _.GetPrincipal (), Times.Never);
+      _mockPrincipalProvider.Verify(_ => _.GetPrincipal(), Times.Never);
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void HasStatelessAccess_AccessGranted ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Read, true);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Read, true);
 
-      bool hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromInstanceMethod));
+      bool hasAccess = _securityAdapter.HasStatelessAccess(typeof (TestFunctionWithPermissionsFromInstanceMethod));
 
       _mockSecurityProvider.Verify();
       _stubUser.Verify();
       _mockPrincipalProvider.Verify();
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void HasStatelessAccess_AccessDenied ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Read, false);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Read, false);
 
-      bool hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromInstanceMethod));
+      bool hasAccess = _securityAdapter.HasStatelessAccess(typeof (TestFunctionWithPermissionsFromInstanceMethod));
 
       _mockSecurityProvider.Verify();
       _stubUser.Verify();
       _mockPrincipalProvider.Verify();
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
-      Assert.That (hasAccess, Is.False);
+      Assert.That(hasAccess, Is.False);
     }
 
     [Test]
@@ -222,39 +222,39 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromInstanceMethod));
+        hasAccess = _securityAdapter.HasStatelessAccess(typeof (TestFunctionWithPermissionsFromInstanceMethod));
       }
 
-      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
+      _mockSecurityProvider.Verify(_ => _.IsNull, Times.Never);
       _stubUser.Verify();
-      _mockPrincipalProvider.Verify(_ => _.GetPrincipal (), Times.Never);
+      _mockPrincipalProvider.Verify(_ => _.GetPrincipal(), Times.Never);
       _mockObjectSecurityStrategy.Verify();
       _mockFunctionalSecurityStrategy.Verify();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     private void ExpectObjectSecurityStrategyHasAccessForSecurableObject (Enum accessTypeEnum, bool returnValue)
     {
       _mockObjectSecurityStrategy
-          .Setup (
-              _ => _.HasAccess (
+          .Setup(
+              _ => _.HasAccess(
                   _mockSecurityProvider.Object,
                   _stubUser.Object,
-                  new[] { AccessType.Get (accessTypeEnum) }))
-          .Returns (returnValue)
+                  new[] { AccessType.Get(accessTypeEnum) }))
+          .Returns(returnValue)
           .Verifiable();
     }
 
     private void ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (Enum accessTypeEnum, bool returnValue)
     {
       _mockFunctionalSecurityStrategy
-          .Setup (
-              _ => _.HasAccess (
+          .Setup(
+              _ => _.HasAccess(
                   typeof (SecurableObject),
                   _mockSecurityProvider.Object,
                   _stubUser.Object,
-                  new[] { AccessType.Get (accessTypeEnum) }))
-          .Returns (returnValue)
+                  new[] { AccessType.Get(accessTypeEnum) }))
+          .Returns(returnValue)
           .Verifiable();
     }
   }

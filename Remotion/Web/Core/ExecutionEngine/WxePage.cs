@@ -37,7 +37,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> End this page step and continue with the WXE function. </summary>
     public void ExecuteNextStep ()
     {
-      _wxePageInfo.ExecuteNextStep ();
+      _wxePageInfo.ExecuteNextStep();
     }
 
     /// <summary>Executes the <paramref name="function"/> using the specified <paramref name="callArguments"/>.</summary>
@@ -45,10 +45,10 @@ namespace Remotion.Web.ExecutionEngine
     /// <param name="callArguments">The <see cref="IWxeCallArguments"/> used to control the function invocation. Must not be <see langword="null" />.</param>
     public void ExecuteFunction (WxeFunction function, IWxeCallArguments callArguments)
     {
-      ArgumentUtility.CheckNotNull ("function", function);
-      ArgumentUtility.CheckNotNull ("callArguments", callArguments);
+      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentUtility.CheckNotNull("callArguments", callArguments);
 
-      callArguments.Dispatch (_wxePageInfo.Executor, function);
+      callArguments.Dispatch(_wxePageInfo.Executor, function);
     }
 
     /// <summary> Gets a flag describing whether this post-back has been triggered by returning from a WXE function. </summary>
@@ -68,20 +68,20 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> Gets the permanent URL parameters the current page. </summary>
     public NameValueCollection GetPermanentUrlParameters ()
     {
-      return _wxePageInfo.GetPermanentUrlParameters ();
+      return _wxePageInfo.GetPermanentUrlParameters();
     }
 
     /// <summary> Gets the permanent URL for the current page. </summary>
     public string GetPermanentUrl ()
     {
-      return _wxePageInfo.GetPermanentUrl ();
+      return _wxePageInfo.GetPermanentUrl();
     }
 
     /// <summary> Gets the permanent URL for the current page using the specified <paramref name="queryString"/>. </summary>
     /// <include file='..\doc\include\ExecutionEngine\WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="queryString"]' />
     public string GetPermanentUrl (NameValueCollection queryString)
     {
-      return _wxePageInfo.GetPermanentUrl (queryString);
+      return _wxePageInfo.GetPermanentUrl(queryString);
     }
 
     /// <summary> 
@@ -91,7 +91,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='..\doc\include\ExecutionEngine\WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
     public string GetPermanentUrl (Type functionType, NameValueCollection queryString)
     {
-      return _wxePageInfo.GetPermanentUrl (functionType, queryString);
+      return _wxePageInfo.GetPermanentUrl(functionType, queryString);
     }
 
     /// <summary> 
@@ -137,12 +137,12 @@ namespace Remotion.Web.ExecutionEngine
 
     object? IWindowStateManager.GetData (string key)
     {
-      return _wxePageInfo.GetData (key);
+      return _wxePageInfo.GetData(key);
     }
 
     void IWindowStateManager.SetData (string key, object? value)
     {
-      _wxePageInfo.SetData (key, value);
+      _wxePageInfo.SetData(key, value);
     }
 
     #endregion
@@ -155,16 +155,16 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxePage ()
     {
-      _wxePageInfo = new WxePageInfo (this);
+      _wxePageInfo = new WxePageInfo(this);
       _disposed = false;
     }
 
     public override Control? FindControl (string id)
     {
       bool callBaseMethod;
-      Control? control = _wxePageInfo.FindControl (id, out callBaseMethod);
+      Control? control = _wxePageInfo.FindControl(id, out callBaseMethod);
       if (callBaseMethod)
-        return base.FindControl (id);
+        return base.FindControl(id);
       else
         return control;
     }
@@ -173,7 +173,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks> Uses <see cref="WxePageInfo.EnsurePostBackModeDetermined"/> determine the postback mode. </remarks>
     protected override NameValueCollection? DeterminePostBackMode ()
     {
-      NameValueCollection? result = _wxePageInfo.EnsurePostBackModeDetermined (Context);
+      NameValueCollection? result = _wxePageInfo.EnsurePostBackModeDetermined(Context);
 
       return result;
     }
@@ -182,13 +182,13 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks> Application developers should only rely on this collection for accessing the post-back data. </remarks>
     protected override NameValueCollection? GetPostBackCollection ()
     {
-      return _wxePageInfo.EnsurePostBackModeDetermined (Context);
+      return _wxePageInfo.EnsurePostBackModeDetermined(Context);
     }
 
     /// <remarks> Uses <see cref="WxePageInfo.SavePageStateToPersistenceMedium"/> to save the viewstate. </remarks>
     protected override void SavePageStateToPersistenceMedium (object viewState)
     {
-      _wxePageInfo.SavePageStateToPersistenceMedium (viewState);
+      _wxePageInfo.SavePageStateToPersistenceMedium(viewState);
     }
 
     /// <remarks> Uses <see cref="WxePageInfo.LoadPageStateFromPersistenceMedium"/> to load the viewstate. </remarks>
@@ -216,9 +216,9 @@ namespace Remotion.Web.ExecutionEngine
     {
       // wxeInfo.OnPreRenderComplete() must be called before base.OnPreRenderComplete (EventArgs)
       // Base-Implementation uses SmartPageInfo, which also overrides OnPreRenderComplete 
-      _wxePageInfo.OnPreRenderComplete ();
+      _wxePageInfo.OnPreRenderComplete();
 
-      base.OnPreRenderComplete (e);
+      base.OnPreRenderComplete(e);
     }
 
     /// <summary> Gets the <see cref="WxePageStep"/> that called this <see cref="WxePage"/>. </summary>
@@ -274,12 +274,12 @@ namespace Remotion.Web.ExecutionEngine
     /// </remarks>
     public override void Dispose ()
     {
-      base.Dispose ();
+      base.Dispose();
       if (!_disposed)
       {
-        Dispose (true);
+        Dispose(true);
         _disposed = true;
-        _wxePageInfo.Dispose ();
+        _wxePageInfo.Dispose();
       }
     }
 
@@ -292,11 +292,11 @@ namespace Remotion.Web.ExecutionEngine
     {
       try
       {
-        base.ProcessRequestImplementation (httpContext);
+        base.ProcessRequestImplementation(httpContext);
       }
       catch (HttpException ex)
       {
-        throw _wxePageInfo.WrapProcessRequestException (ex);
+        throw _wxePageInfo.WrapProcessRequestException(ex);
       }
     }
 

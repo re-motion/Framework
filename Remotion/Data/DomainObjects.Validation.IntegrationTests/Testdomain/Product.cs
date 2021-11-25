@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
   {
     public static Product NewObject ()
     {
-      return NewObject<Product> ();
+      return NewObject<Product>();
     }
 
     public virtual decimal Price { get; set; }

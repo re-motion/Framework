@@ -49,16 +49,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     [TestCase (BocDateTimeValueType.DateTime, new[] { MissingDateAndTimeErrorMessage })]
     public void Validate_Required_DateAndTimeMissing (BocDateTimeValueType valueType, string[] expectedError)
     {
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
-        var bocDateTimeValue = CreateBocDateTimeValue ("", "", true, valueType);
-        var validators = CreateValidator (bocDateTimeValue);
+        var bocDateTimeValue = CreateBocDateTimeValue("", "", true, valueType);
+        var validators = CreateValidator(bocDateTimeValue);
 
         List<string> errors;
-        bool isValid = Validate (validators, out errors);
+        bool isValid = Validate(validators, out errors);
 
-        Assert.That (isValid, Is.False);
-        Assert.That (errors, Is.EqualTo (expectedError));
+        Assert.That(isValid, Is.False);
+        Assert.That(errors, Is.EqualTo(expectedError));
       }
     }
 
@@ -68,16 +68,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     [TestCase (BocDateTimeValueType.DateTime, new[] { MissingDateErrorMessage }, false)]
     public void Validate_Required_DateMissing (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
-        var bocDateTimeValue = CreateBocDateTimeValue ("", ValidTime, true, valueType);
-        var validators = CreateValidator (bocDateTimeValue);
+        var bocDateTimeValue = CreateBocDateTimeValue("", ValidTime, true, valueType);
+        var validators = CreateValidator(bocDateTimeValue);
 
         List<string> errors;
-        bool isValid = Validate (validators, out errors);
+        bool isValid = Validate(validators, out errors);
 
-        Assert.That (isValid, Is.EqualTo (valid));
-        Assert.That (errors, Is.EqualTo (expectedError));
+        Assert.That(isValid, Is.EqualTo(valid));
+        Assert.That(errors, Is.EqualTo(expectedError));
       }
     }
 
@@ -87,16 +87,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     [TestCase (BocDateTimeValueType.DateTime, new[] { MissingDateErrorMessage }, false)]
     public void Validate_NotRequired_DateMissing (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
-        var bocDateTimeValue = CreateBocDateTimeValue ("", ValidTime, false, valueType);
-        var validators = CreateValidator (bocDateTimeValue);
+        var bocDateTimeValue = CreateBocDateTimeValue("", ValidTime, false, valueType);
+        var validators = CreateValidator(bocDateTimeValue);
 
         List<string> errors;
-        bool isValid = Validate (validators, out errors);
+        bool isValid = Validate(validators, out errors);
 
-        Assert.That (isValid, Is.EqualTo (valid));
-        Assert.That (errors, Is.EqualTo (expectedError));
+        Assert.That(isValid, Is.EqualTo(valid));
+        Assert.That(errors, Is.EqualTo(expectedError));
       }
     }
 
@@ -106,16 +106,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     [TestCase (BocDateTimeValueType.DateTime, new[] { MissingTimeErrorMessage }, false)]
     public void Validate_Required_TimeMissing (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
-        var bocDateTimeValue = CreateBocDateTimeValue (ValidDate, "", true, valueType);
-        var validators = CreateValidator (bocDateTimeValue);
+        var bocDateTimeValue = CreateBocDateTimeValue(ValidDate, "", true, valueType);
+        var validators = CreateValidator(bocDateTimeValue);
 
         List<string> errors;
-        bool isValid = Validate (validators, out errors);
+        bool isValid = Validate(validators, out errors);
 
-        Assert.That (isValid, Is.EqualTo (valid));
-        Assert.That (errors, Is.EqualTo (expectedError));
+        Assert.That(isValid, Is.EqualTo(valid));
+        Assert.That(errors, Is.EqualTo(expectedError));
       }
     }
 
@@ -125,16 +125,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     [TestCase (BocDateTimeValueType.DateTime, new[] { InvalidDateAndTimeErrorMessage }, false)]
     public void Validate_InvalidDateAndTime (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
-        var bocDateTimeValue = CreateBocDateTimeValue ("invalid", "invalid", false, valueType);
-        var validators = CreateValidator (bocDateTimeValue);
+        var bocDateTimeValue = CreateBocDateTimeValue("invalid", "invalid", false, valueType);
+        var validators = CreateValidator(bocDateTimeValue);
 
         List<string> errors;
-        bool isValid = Validate (validators, out errors);
+        bool isValid = Validate(validators, out errors);
 
-        Assert.That (isValid, Is.EqualTo (valid));
-        Assert.That (errors, Is.EqualTo (expectedError));
+        Assert.That(isValid, Is.EqualTo(valid));
+        Assert.That(errors, Is.EqualTo(expectedError));
       }
     }
 
@@ -145,16 +145,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     [TestCase (-2, new string[0], true)]
     public void Validate_InvalidDate (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
-        var bocDateTimeValue = CreateBocDateTimeValue ("invalid", ValidTime, false, valueType);
-        var validators = CreateValidator (bocDateTimeValue);
+        var bocDateTimeValue = CreateBocDateTimeValue("invalid", ValidTime, false, valueType);
+        var validators = CreateValidator(bocDateTimeValue);
 
         List<string> errors;
-        bool isValid = Validate (validators, out errors);
+        bool isValid = Validate(validators, out errors);
 
-        Assert.That (isValid, Is.EqualTo (valid));
-        Assert.That (errors, Is.EqualTo (expectedError));
+        Assert.That(isValid, Is.EqualTo(valid));
+        Assert.That(errors, Is.EqualTo(expectedError));
       }
     }
 
@@ -164,17 +164,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     [TestCase (BocDateTimeValueType.DateTime, new[] { InvalidDateErrorMessage }, false)]
     public void Validate_InvalidDate2 (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
         // ValidDate + " " + ValidTime would be a valid date but is entered in date field -> invalid
-        var bocDateTimeValue = CreateBocDateTimeValue (ValidDate + " " + ValidTime, ValidTime, false, valueType);
-        var validators = CreateValidator (bocDateTimeValue);
+        var bocDateTimeValue = CreateBocDateTimeValue(ValidDate + " " + ValidTime, ValidTime, false, valueType);
+        var validators = CreateValidator(bocDateTimeValue);
 
         List<string> errors;
-        bool isValid = Validate (validators, out errors);
+        bool isValid = Validate(validators, out errors);
 
-        Assert.That (isValid, Is.EqualTo (valid));
-        Assert.That (errors, Is.EqualTo (expectedError));
+        Assert.That(isValid, Is.EqualTo(valid));
+        Assert.That(errors, Is.EqualTo(expectedError));
       }
     }
 
@@ -184,16 +184,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     [TestCase (BocDateTimeValueType.DateTime, new[] { InvalidDateErrorMessage }, false)]
     public void Validate_InvalidDate3 (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
-        var bocDateTimeValue = CreateBocDateTimeValue ("01.01.10000", ValidTime, false, valueType);
-        var validators = CreateValidator (bocDateTimeValue);
+        var bocDateTimeValue = CreateBocDateTimeValue("01.01.10000", ValidTime, false, valueType);
+        var validators = CreateValidator(bocDateTimeValue);
 
         List<string> errors;
-        bool isValid = Validate (validators, out errors);
+        bool isValid = Validate(validators, out errors);
 
-        Assert.That (isValid, Is.EqualTo (valid));
-        Assert.That (errors, Is.EqualTo (expectedError));
+        Assert.That(isValid, Is.EqualTo(valid));
+        Assert.That(errors, Is.EqualTo(expectedError));
       }
     }
 
@@ -203,16 +203,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     [TestCase (BocDateTimeValueType.DateTime, new[] { InvalidTimeErrorMessage }, false)]
     public void Validate_InvalidTime (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
-        var bocDateTimeValue = CreateBocDateTimeValue (ValidDate, "invalid", false, valueType);
-        var validators = CreateValidator (bocDateTimeValue);
+        var bocDateTimeValue = CreateBocDateTimeValue(ValidDate, "invalid", false, valueType);
+        var validators = CreateValidator(bocDateTimeValue);
 
         List<string> errors;
-        bool isValid = Validate (validators, out errors);
+        bool isValid = Validate(validators, out errors);
 
-        Assert.That (isValid, Is.EqualTo (valid));
-        Assert.That (errors, Is.EqualTo (expectedError));
+        Assert.That(isValid, Is.EqualTo(valid));
+        Assert.That(errors, Is.EqualTo(expectedError));
       }
     }
 
@@ -222,16 +222,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     [TestCase (BocDateTimeValueType.DateTime, new[] { InvalidTimeErrorMessage }, false)]
     public void Validate_InvalidTime2 (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
-        var bocDateTimeValue = CreateBocDateTimeValue (ValidDate, ValidDate + " " + ValidTime, false, valueType);
-        var validators = CreateValidator (bocDateTimeValue);
+        var bocDateTimeValue = CreateBocDateTimeValue(ValidDate, ValidDate + " " + ValidTime, false, valueType);
+        var validators = CreateValidator(bocDateTimeValue);
 
         List<string> errors;
-        bool isValid = Validate (validators, out errors);
+        bool isValid = Validate(validators, out errors);
 
-        Assert.That (isValid, Is.EqualTo (valid));
-        Assert.That (errors, Is.EqualTo (expectedError));
+        Assert.That(isValid, Is.EqualTo(valid));
+        Assert.That(errors, Is.EqualTo(expectedError));
       }
     }
 
@@ -239,10 +239,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     public void Validate_NoBocDateTimeValue ()
     {
       var control = new BocTextValue();
-      var validators = CreateValidator (control);
+      var validators = CreateValidator(control);
 
       List<string> errors;
-      Assert.Throws<HttpException> (() => Validate (validators, out errors));
+      Assert.Throws<HttpException>(() => Validate(validators, out errors));
     }
 
     [Test]
@@ -251,16 +251,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     [TestCase (BocDateTimeValueType.DateTime, new[] { InvalidDateErrorMessage }, false)]
     public void Validate_EmptyDate (BocDateTimeValueType valueType, string[] expectedError, bool valid)
     {
-      using (new CultureScope ("de-AT"))
+      using (new CultureScope("de-AT"))
       {
-        var bocDateTimeValue = CreateBocDateTimeValue ("00:00", ValidTime, false, valueType);
-        var validators = CreateValidator (bocDateTimeValue);
+        var bocDateTimeValue = CreateBocDateTimeValue("00:00", ValidTime, false, valueType);
+        var validators = CreateValidator(bocDateTimeValue);
 
         List<string> errors;
-        bool isValid = Validate (validators, out errors);
+        bool isValid = Validate(validators, out errors);
 
-        Assert.That (isValid, Is.EqualTo (valid));
-        Assert.That (errors, Is.EqualTo (expectedError));
+        Assert.That(isValid, Is.EqualTo(valid));
+        Assert.That(errors, Is.EqualTo(expectedError));
       }
     }
 
@@ -273,7 +273,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         validator.Validate();
         isValid &= validator.IsValid;
         if (!validator.IsValid)
-          errors.Add (validator.ErrorMessage);
+          errors.Add(validator.ErrorMessage);
       }
       return isValid;
     }
@@ -281,8 +281,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     private BocDateTimeValue CreateBocDateTimeValue (string dateValue, string timeValue, bool isRequired, BocDateTimeValueType valueType)
     {
       var bocDateTimeValue = new Mock<BocDateTimeValue>() { CallBase = true };
-      bocDateTimeValue.Protected().Setup<string> ("InternalDateValue").Returns (dateValue);
-      bocDateTimeValue.Protected().Setup<string> ("InternalTimeValue").Returns (timeValue);
+      bocDateTimeValue.Protected().Setup<string>("InternalDateValue").Returns(dateValue);
+      bocDateTimeValue.Protected().Setup<string>("InternalTimeValue").Returns(timeValue);
       bocDateTimeValue.Object.Required = isRequired;
       bocDateTimeValue.Object.ValueType = valueType;
       return bocDateTimeValue.Object;
@@ -291,11 +291,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     private List<BaseValidator> CreateValidator (BusinessObjectBoundEditableWebControl bocDateTimeValue)
     {
       var namingContainer = new Mock<Control>();
-      namingContainer.Setup (c => c.FindControl ("Control")).Returns (bocDateTimeValue).Verifiable();
+      namingContainer.Setup(c => c.FindControl("Control")).Returns(bocDateTimeValue).Verifiable();
 
       var requiredValidator = new Mock<BocDateTimeRequiredValidator>() { CallBase = true };
-      requiredValidator.Setup (c => c.NamingContainer).Returns (namingContainer.Object);
-      requiredValidator.SetupProperty (_ => _.ID);
+      requiredValidator.Setup(c => c.NamingContainer).Returns(namingContainer.Object);
+      requiredValidator.SetupProperty(_ => _.ID);
       requiredValidator.Object.ID = "RequiredValidator";
       requiredValidator.Object.ControlToValidate = "Control";
       requiredValidator.Object.MissingDateAndTimeErrorMessage = MissingDateAndTimeErrorMessage;
@@ -304,7 +304,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       requiredValidator.Object.MissingTimeErrorMessage = MissingTimeErrorMessage;
 
       var formatValidator = new Mock<BocDateTimeFormatValidator>() { CallBase = true };
-      formatValidator.Setup (c => c.NamingContainer).Returns (namingContainer.Object);
+      formatValidator.Setup(c => c.NamingContainer).Returns(namingContainer.Object);
       formatValidator.Object.ID = "FormatValidator";
       formatValidator.Object.ControlToValidate = "Control";
       formatValidator.Object.InvalidDateAndTimeErrorMessage = InvalidDateAndTimeErrorMessage;

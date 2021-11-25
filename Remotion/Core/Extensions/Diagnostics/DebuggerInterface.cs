@@ -49,7 +49,7 @@ namespace Remotion.Diagnostics
 
     public void Log (int level, string category, string message)
     {
-      Debugger.Log (level, category, message);
+      Debugger.Log(level, category, message);
     }
 
     public bool IsLogging ()

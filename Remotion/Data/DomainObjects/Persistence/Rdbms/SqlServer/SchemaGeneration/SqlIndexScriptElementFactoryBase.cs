@@ -35,11 +35,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public virtual IScriptElement GetDropElement (T indexDefinition, EntityNameDefinition ownerName)
     {
-      ArgumentUtility.CheckNotNull ("indexDefinition", indexDefinition);
-      ArgumentUtility.CheckNotNull ("ownerName", ownerName);
+      ArgumentUtility.CheckNotNull("indexDefinition", indexDefinition);
+      ArgumentUtility.CheckNotNull("ownerName", ownerName);
 
-      return new ScriptStatement (
-          string.Format (
+      return new ScriptStatement(
+          string.Format(
               "IF EXISTS (SELECT * FROM sys.objects so JOIN sysindexes si ON so.[object_id] = si.[id] "
               + "WHERE so.[name] = '{0}' AND schema_name (so.schema_id)='{1}' AND si.[name] = '{2}')\r\n"
               + "  DROP INDEX [{2}] ON [{1}].[{0}]",
@@ -50,51 +50,51 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected string GetIndexedColumnNames (IEnumerable<SqlIndexedColumnDefinition> indexedColumnDefinitions)
     {
-      return string.Join (", ", indexedColumnDefinitions.Select (
+      return string.Join(", ", indexedColumnDefinitions.Select(
           cd => "[" + cd.Columnn.Name + "]" + (cd.IndexOrder.HasValue ? " " + cd.IndexOrder.ToString().ToUpper() : string.Empty)));
     }
 
     protected virtual string GetCreateIndexOptions (IEnumerable<string> optionItems)
     {
-      ArgumentUtility.CheckNotNull ("optionItems", optionItems);
+      ArgumentUtility.CheckNotNull("optionItems", optionItems);
 
-      var filteredItems = optionItems.Except (new[] { string.Empty, null }).ToList ();
+      var filteredItems = optionItems.Except(new[] { string.Empty, null }).ToList();
       if (filteredItems.Any())
-        return "\r\n  WITH (" + string.Join (", ", filteredItems) + ")";
+        return "\r\n  WITH (" + string.Join(", ", filteredItems) + ")";
       else
         return string.Empty;
     }
 
     protected virtual IEnumerable<string> GetCreateIndexOptionItems (T indexDefinition)
     {
-      ArgumentUtility.CheckNotNull ("indexDefinition", indexDefinition);
+      ArgumentUtility.CheckNotNull("indexDefinition", indexDefinition);
 
       yield return GetIndexOption("PAD_INDEX", indexDefinition.PadIndex);
-      yield return GetIndexOption ("FILLFACTOR", indexDefinition.FillFactor);
-      yield return GetIndexOption ("SORT_IN_TEMPDB", indexDefinition.SortInDb);
-      yield return GetIndexOption ("STATISTICS_NORECOMPUTE", indexDefinition.StatisticsNoReCompute);
-      yield return GetIndexOption ("DROP_EXISTING", indexDefinition.DropExisiting);
-      yield return GetIndexOption ("ALLOW_ROW_LOCKS", indexDefinition.AllowRowLocks);
-      yield return GetIndexOption ("ALLOW_PAGE_LOCKS", indexDefinition.AllowPageLocks);
-      yield return GetIndexOption ("MAXDOP", indexDefinition.MaxDop);
+      yield return GetIndexOption("FILLFACTOR", indexDefinition.FillFactor);
+      yield return GetIndexOption("SORT_IN_TEMPDB", indexDefinition.SortInDb);
+      yield return GetIndexOption("STATISTICS_NORECOMPUTE", indexDefinition.StatisticsNoReCompute);
+      yield return GetIndexOption("DROP_EXISTING", indexDefinition.DropExisiting);
+      yield return GetIndexOption("ALLOW_ROW_LOCKS", indexDefinition.AllowRowLocks);
+      yield return GetIndexOption("ALLOW_PAGE_LOCKS", indexDefinition.AllowPageLocks);
+      yield return GetIndexOption("MAXDOP", indexDefinition.MaxDop);
     }
 
     protected string GetIndexOption (string optionName , bool? optionValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("optionName", optionName);
+      ArgumentUtility.CheckNotNullOrEmpty("optionName", optionName);
 
       if (optionValue.HasValue)
-        return string.Format ("{0} = {1}", optionName, optionValue.Value ? "ON" : "OFF");
+        return string.Format("{0} = {1}", optionName, optionValue.Value ? "ON" : "OFF");
       else
         return string.Empty;
     }
 
     protected string GetIndexOption (string optionName , int? optionValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("optionName", optionName);
+      ArgumentUtility.CheckNotNullOrEmpty("optionName", optionName);
 
       if (optionValue.HasValue)
-        return string.Format ("{0} = {1}", optionName, optionValue.Value);
+        return string.Format("{0} = {1}", optionName, optionValue.Value);
       else
         return string.Empty;
     }

@@ -32,18 +32,18 @@ namespace Remotion.UnitTests.ServiceLocation
     {
       var args = new object[]
                  {
-                     new TestConstructorInjectionWithOneParameter (null),
-                     new TestConstructorInjectionWithOneParameter (null),
+                     new TestConstructorInjectionWithOneParameter(null),
+                     new TestConstructorInjectionWithOneParameter(null),
                      new TestConcreteImplementationAttributeType()
                  };
 
-      Func<object> factory = () => new TestConstructorInjectionWithThreeParameters (
+      Func<object> factory = () => new TestConstructorInjectionWithThreeParameters(
                                        (ITestConstructorInjectionWithOneParameter) args[0],
                                        (ITestConstructorInjectionWithOneParameter) args[1],
                                        (ITestSingletonConcreteImplementationAttributeType) args[2]);
 
       int acc = 0;
-      using (StopwatchScope.CreateScope ("New: elapsed: {elapsed}"))
+      using (StopwatchScope.CreateScope("New: elapsed: {elapsed}"))
       {
         for (int i = 0; i < 1000000; ++i)
         {
@@ -51,7 +51,7 @@ namespace Remotion.UnitTests.ServiceLocation
           acc ^= instance.GetHashCode();
         }
       }
-      Console.WriteLine (acc);
+      Console.WriteLine(acc);
     }
 
     [Test]
@@ -59,28 +59,28 @@ namespace Remotion.UnitTests.ServiceLocation
     {
       var args = new object[]
                  {
-                     new TestConstructorInjectionWithOneParameter (null),
-                     new TestConstructorInjectionWithOneParameter (null),
+                     new TestConstructorInjectionWithOneParameter(null),
+                     new TestConstructorInjectionWithOneParameter(null),
                      new TestConcreteImplementationAttributeType()
                  };
 
-      var ctorInfo = typeof (TestConstructorInjectionWithThreeParameters).GetConstructors ()[0];
+      var ctorInfo = typeof (TestConstructorInjectionWithThreeParameters).GetConstructors()[0];
 
-      var ctorArgExpressions = ctorInfo.GetParameters().Select (p => (Expression) Expression.Constant (args[p.Position]));
-      Expression<Func<object>> factoryExpression = Expression.Lambda<Func<object>> (Expression.New (ctorInfo, ctorArgExpressions));
+      var ctorArgExpressions = ctorInfo.GetParameters().Select(p => (Expression) Expression.Constant(args[p.Position]));
+      Expression<Func<object>> factoryExpression = Expression.Lambda<Func<object>>(Expression.New(ctorInfo, ctorArgExpressions));
 
-      Func<object> factory = factoryExpression.Compile ();
+      Func<object> factory = factoryExpression.Compile();
 
       int acc = 0;
-      using (StopwatchScope.CreateScope ("Built factory: elapsed: {elapsed}"))
+      using (StopwatchScope.CreateScope("Built factory: elapsed: {elapsed}"))
       {
         for (int i = 0; i < 1000000; ++i)
         {
-          var instance = factory ();
-          acc ^= instance.GetHashCode ();
+          var instance = factory();
+          acc ^= instance.GetHashCode();
         }
       }
-      Console.WriteLine (acc);
+      Console.WriteLine(acc);
     }
 
     [Test]
@@ -89,15 +89,15 @@ namespace Remotion.UnitTests.ServiceLocation
       var ctorInfo = typeof (TestConstructorInjectionWithThreeParameters).GetConstructors()[0];
       var args = new object[]
                  {
-                     new TestConstructorInjectionWithOneParameter (null),
-                     new TestConstructorInjectionWithOneParameter (null),
+                     new TestConstructorInjectionWithOneParameter(null),
+                     new TestConstructorInjectionWithOneParameter(null),
                      new TestConcreteImplementationAttributeType()
                  };
 
-      Func<object> factory = () => ctorInfo.Invoke (args);
+      Func<object> factory = () => ctorInfo.Invoke(args);
 
       int acc = 0;
-      using (StopwatchScope.CreateScope ("CtorInfo: elapsed: {elapsed}"))
+      using (StopwatchScope.CreateScope("CtorInfo: elapsed: {elapsed}"))
       {
         for (int i = 0; i < 1000000; ++i)
         {
@@ -105,7 +105,7 @@ namespace Remotion.UnitTests.ServiceLocation
           acc ^= instance.GetHashCode();
         }
       }
-      Console.WriteLine (acc);
+      Console.WriteLine(acc);
     }
 
     [Test]
@@ -113,15 +113,15 @@ namespace Remotion.UnitTests.ServiceLocation
     {
       var args = new object[]
                  {
-                     new TestConstructorInjectionWithOneParameter (null),
-                     new TestConstructorInjectionWithOneParameter (null),
+                     new TestConstructorInjectionWithOneParameter(null),
+                     new TestConstructorInjectionWithOneParameter(null),
                      new TestConcreteImplementationAttributeType()
                  };
 
-      Func<object> factory = () => Activator.CreateInstance (typeof (TestConstructorInjectionWithThreeParameters), args);
+      Func<object> factory = () => Activator.CreateInstance(typeof (TestConstructorInjectionWithThreeParameters), args);
 
       int acc = 0;
-      using (StopwatchScope.CreateScope ("Activator: elapsed: {elapsed}"))
+      using (StopwatchScope.CreateScope("Activator: elapsed: {elapsed}"))
       {
         for (int i = 0; i < 1000000; ++i)
         {
@@ -129,7 +129,7 @@ namespace Remotion.UnitTests.ServiceLocation
           acc ^= instance.GetHashCode();
         }
       }
-      Console.WriteLine (acc);
+      Console.WriteLine(acc);
     }
   }
 }

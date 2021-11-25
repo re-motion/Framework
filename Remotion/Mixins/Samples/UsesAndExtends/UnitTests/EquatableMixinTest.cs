@@ -36,50 +36,50 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.UnitTests
     public void ImplementsEquatable ()
     {
       C c = new C();
-      Assert.That (c is IEquatable<C>, Is.False);
+      Assert.That(c is IEquatable<C>, Is.False);
 
       C c2 = ObjectFactory.Create<C>(ParamList.Empty);
-      Assert.That (c2 is IEquatable<C>, Is.True);
+      Assert.That(c2 is IEquatable<C>, Is.True);
     }
 
     [Test]
     public void EqualsRespectsMembers ()
     {
-      C c = ObjectFactory.Create<C> (ParamList.Empty);
-      C c2 = ObjectFactory.Create<C> (ParamList.Empty);
-      Assert.That (c2, Is.EqualTo (c));
+      C c = ObjectFactory.Create<C>(ParamList.Empty);
+      C c2 = ObjectFactory.Create<C>(ParamList.Empty);
+      Assert.That(c2, Is.EqualTo(c));
 
       c2.S = "foo";
-      Assert.That (c2, Is.Not.EqualTo (c));
+      Assert.That(c2, Is.Not.EqualTo(c));
       c2.I = 5;
       c2.B = true;
-      Assert.That (c2, Is.Not.EqualTo (c));
+      Assert.That(c2, Is.Not.EqualTo(c));
       c.S = "foo";
-      Assert.That (c2, Is.Not.EqualTo (c));
+      Assert.That(c2, Is.Not.EqualTo(c));
       c.I = 5;
-      Assert.That (c2, Is.Not.EqualTo (c));
+      Assert.That(c2, Is.Not.EqualTo(c));
       c.B = true;
-      Assert.That (c2, Is.EqualTo (c));
+      Assert.That(c2, Is.EqualTo(c));
     }
 
     [Test]
     public void GetHashCodeRespectsMembers ()
     {
-      C c = ObjectFactory.Create<C> (ParamList.Empty);
-      C c2 = ObjectFactory.Create<C> (ParamList.Empty);
-      Assert.That (c2.GetHashCode(), Is.EqualTo (c.GetHashCode()));
+      C c = ObjectFactory.Create<C>(ParamList.Empty);
+      C c2 = ObjectFactory.Create<C>(ParamList.Empty);
+      Assert.That(c2.GetHashCode(), Is.EqualTo(c.GetHashCode()));
 
       c2.S = "foo";
-      Assert.That (c2.GetHashCode(), Is.Not.EqualTo (c.GetHashCode()));
+      Assert.That(c2.GetHashCode(), Is.Not.EqualTo(c.GetHashCode()));
       c2.I = 5;
       c2.B = true;
-      Assert.That (c2.GetHashCode (), Is.Not.EqualTo (c.GetHashCode ()));
+      Assert.That(c2.GetHashCode(), Is.Not.EqualTo(c.GetHashCode()));
       c.S = "foo";
-      Assert.That (c2.GetHashCode (), Is.Not.EqualTo (c.GetHashCode ()));
+      Assert.That(c2.GetHashCode(), Is.Not.EqualTo(c.GetHashCode()));
       c.I = 5;
-      Assert.That (c2.GetHashCode (), Is.Not.EqualTo (c.GetHashCode ()));
+      Assert.That(c2.GetHashCode(), Is.Not.EqualTo(c.GetHashCode()));
       c.B = true;
-      Assert.That (c2.GetHashCode (), Is.EqualTo (c.GetHashCode ()));
+      Assert.That(c2.GetHashCode(), Is.EqualTo(c.GetHashCode()));
     }
   }
 }

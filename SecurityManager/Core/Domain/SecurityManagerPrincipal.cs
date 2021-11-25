@@ -54,7 +54,7 @@ namespace Remotion.SecurityManager.Domain
     public static readonly ISecurityManagerPrincipal Null = new NullSecurityManagerPrincipal();
 
     private static readonly SafeContextSingleton<ISecurityManagerPrincipal> s_principal =
-        new SafeContextSingleton<ISecurityManagerPrincipal> (SafeContextKeys.SecurityManagerPrincipalCurrent, () => Null);
+        new SafeContextSingleton<ISecurityManagerPrincipal>(SafeContextKeys.SecurityManagerPrincipalCurrent, () => Null);
 
     [NotNull]
     public static ISecurityManagerPrincipal Current
@@ -62,8 +62,8 @@ namespace Remotion.SecurityManager.Domain
       get { return s_principal.Current; }
       set
       {
-        ArgumentUtility.CheckNotNull ("value", value);
-        s_principal.SetCurrent (value);
+        ArgumentUtility.CheckNotNull("value", value);
+        s_principal.SetCurrent(value);
       }
     }
 
@@ -96,11 +96,11 @@ namespace Remotion.SecurityManager.Domain
         [CanBeNull] IDomainObjectHandle<User> substitutedUserHandle,
         [CanBeNull] IReadOnlyList<IDomainObjectHandle<Role>> substitutedRoleHandles)
     {
-      ArgumentUtility.CheckNotNull ("tenantHandle", tenantHandle);
-      ArgumentUtility.CheckNotNull ("userHandle", userHandle);
+      ArgumentUtility.CheckNotNull("tenantHandle", tenantHandle);
+      ArgumentUtility.CheckNotNull("userHandle", userHandle);
       if (substitutionHandle == null && (substitutedUserHandle != null || substitutedRoleHandles != null))
       {
-        throw new ArgumentException (
+        throw new ArgumentException(
             "When the 'substitutedUserHandle' or the 'substitutedRoleHandles' are set, the 'substitutionHandle' must also be specified.",
             "substitutionHandle");
       }
@@ -114,15 +114,15 @@ namespace Remotion.SecurityManager.Domain
 
       var transaction = CreateClientTransaction();
 
-      _tenantProxy = CreateTenantProxy (GetTenant (transaction));
-      _userProxy = CreateUserProxy (GetUser (transaction));
-      _roleProxies = CreateRoleProxies (GetRoles (transaction));
-      var substitution = GetSubstitution (transaction);
-      _substitutionProxy = substitution != null ? CreateSubstitutionProxy (substitution) : null;
-      _securityPrincipal = CreateSecurityPrincipal (transaction);
+      _tenantProxy = CreateTenantProxy(GetTenant(transaction));
+      _userProxy = CreateUserProxy(GetUser(transaction));
+      _roleProxies = CreateRoleProxies(GetRoles(transaction));
+      var substitution = GetSubstitution(transaction);
+      _substitutionProxy = substitution != null ? CreateSubstitutionProxy(substitution) : null;
+      _securityPrincipal = CreateSecurityPrincipal(transaction);
 
       _domainRevision = GetDomainRevision();
-      _userRevision = GetUserRevision (_securityPrincipal.User);
+      _userRevision = GetUserRevision(_securityPrincipal.User);
     }
 
     public TenantProxy Tenant
@@ -152,9 +152,9 @@ namespace Remotion.SecurityManager.Domain
 
     public ISecurityManagerPrincipal GetRefreshedInstance ()
     {
-      if (_domainRevision.IsCurrent (GetDomainRevision()) && _userRevision.IsCurrent (GetUserRevision (_securityPrincipal.User)))
+      if (_domainRevision.IsCurrent(GetDomainRevision()) && _userRevision.IsCurrent(GetUserRevision(_securityPrincipal.User)))
         return this;
-      return new SecurityManagerPrincipal (
+      return new SecurityManagerPrincipal(
           _tenantHandle,
           _userHandle,
           _roleHandles,
@@ -168,19 +168,19 @@ namespace Remotion.SecurityManager.Domain
       Tenant tenant;
       using (SecurityFreeSection.Activate())
       {
-        tenant = GetUser (CreateClientTransaction()).Tenant;
+        tenant = GetUser(CreateClientTransaction()).Tenant;
       }
 
       return tenant.GetHierachy()
-                   .Where (t => includeAbstractTenants || !t.IsAbstract)
-                   .Select (CreateTenantProxy)
+                   .Where(t => includeAbstractTenants || !t.IsAbstract)
+                   .Select(CreateTenantProxy)
                    .ToArray();
     }
 
     public SubstitutionProxy[] GetActiveSubstitutions ()
     {
-      return GetUser (CreateClientTransaction()).GetActiveSubstitutions()
-                                                .Select (CreateSubstitutionProxy)
+      return GetUser(CreateClientTransaction()).GetActiveSubstitutions()
+                                                .Select(CreateSubstitutionProxy)
                                                 .ToArray();
     }
 
@@ -188,23 +188,23 @@ namespace Remotion.SecurityManager.Domain
     {
       using (SecurityFreeSection.Activate())
       {
-        string user = GetUser (transaction).UserName;
+        string user = GetUser(transaction).UserName;
 
         ISecurityPrincipalRole[] roles = null;
-        var rolesOrNull = GetRoles (transaction);
+        var rolesOrNull = GetRoles(transaction);
         if (rolesOrNull != null)
-          roles = rolesOrNull.Select (CreateSecurityPrincipalRole).ToArray();
+          roles = rolesOrNull.Select(CreateSecurityPrincipalRole).ToArray();
 
-        var substitutedUserObject = GetSubstitutedUser (transaction);
-        var substitutedRoleObjects = GetSubstitutedRoles (transaction);
+        var substitutedUserObject = GetSubstitutedUser(transaction);
+        var substitutedRoleObjects = GetSubstitutedRoles(transaction);
         if (substitutedUserObject == null && substitutedRoleObjects == null)
         {
-          Substitution substitution = GetSubstitution (transaction);
+          Substitution substitution = GetSubstitution(transaction);
           if (substitution != null)
           {
             substitutedUserObject = substitution.SubstitutedUser;
             if (substitution.SubstitutedRole != null)
-              substitutedRoleObjects = EnumerableUtility.Singleton (substitution.SubstitutedRole);
+              substitutedRoleObjects = EnumerableUtility.Singleton(substitution.SubstitutedRole);
           }
         }
 
@@ -214,22 +214,22 @@ namespace Remotion.SecurityManager.Domain
 
         ISecurityPrincipalRole[] substitutedRoles = null;
         if (substitutedRoleObjects != null)
-          substitutedRoles = substitutedRoleObjects.Select (CreateSecurityPrincipalRole).ToArray();
+          substitutedRoles = substitutedRoleObjects.Select(CreateSecurityPrincipalRole).ToArray();
 
-        return new SecurityPrincipal (user, roles, substitutedUser, substitutedRoles);
+        return new SecurityPrincipal(user, roles, substitutedUser, substitutedRoles);
       }
     }
 
     private static ISecurityPrincipalRole CreateSecurityPrincipalRole (Role role)
     {
-      return new SecurityPrincipalRole (role.Group.UniqueIdentifier, role.Position.UniqueIdentifier);
+      return new SecurityPrincipalRole(role.Group.UniqueIdentifier, role.Position.UniqueIdentifier);
     }
 
     private TenantProxy CreateTenantProxy (Tenant tenant)
     {
       using (SecurityFreeSection.Activate())
       {
-        return TenantProxy.Create (tenant);
+        return TenantProxy.Create(tenant);
       }
     }
 
@@ -237,7 +237,7 @@ namespace Remotion.SecurityManager.Domain
     {
       using (SecurityFreeSection.Activate())
       {
-        return UserProxy.Create (user);
+        return UserProxy.Create(user);
       }
     }
 
@@ -249,7 +249,7 @@ namespace Remotion.SecurityManager.Domain
 
       using (SecurityFreeSection.Activate())
       {
-        return roles.Select (RoleProxy.Create).ToArray();
+        return roles.Select(RoleProxy.Create).ToArray();
       }
     }
 
@@ -257,18 +257,18 @@ namespace Remotion.SecurityManager.Domain
     {
       using (SecurityFreeSection.Activate())
       {
-        return SubstitutionProxy.Create (substitution);
+        return SubstitutionProxy.Create(substitution);
       }
     }
 
     private Tenant GetTenant (ClientTransaction transaction)
     {
-      return _tenantHandle.GetObject (transaction);
+      return _tenantHandle.GetObject(transaction);
     }
 
     private User GetUser (ClientTransaction transaction)
     {
-      return _userHandle.GetObject (transaction);
+      return _userHandle.GetObject(transaction);
     }
 
     [CanBeNull]
@@ -277,7 +277,7 @@ namespace Remotion.SecurityManager.Domain
       if (_roleHandles == null)
         return null;
 
-      return LifetimeService.TryGetObjects<Role> (transaction, _roleHandles.Select (r => r.ObjectID)).Where (r => r != null);
+      return LifetimeService.TryGetObjects<Role>(transaction, _roleHandles.Select(r => r.ObjectID)).Where(r => r != null);
     }
 
     [CanBeNull]
@@ -286,7 +286,7 @@ namespace Remotion.SecurityManager.Domain
       if (_substitutionHandle == null)
         return null;
 
-      return (Substitution) LifetimeService.GetObject (transaction, _substitutionHandle.ObjectID, false);
+      return (Substitution) LifetimeService.GetObject(transaction, _substitutionHandle.ObjectID, false);
     }
 
     private User GetSubstitutedUser (ClientTransaction transaction)
@@ -294,7 +294,7 @@ namespace Remotion.SecurityManager.Domain
       if (_substitutedUserHandle == null)
         return null;
 
-      return _substitutedUserHandle.GetObject (transaction);
+      return _substitutedUserHandle.GetObject(transaction);
     }
 
     [CanBeNull]
@@ -303,7 +303,7 @@ namespace Remotion.SecurityManager.Domain
       if (_substitutedRoleHandles == null)
         return null;
 
-      return LifetimeService.TryGetObjects<Role> (transaction, _substitutedRoleHandles.Select (r=>r.ObjectID)).Where (r=>r != null);
+      return LifetimeService.TryGetObjects<Role>(transaction, _substitutedRoleHandles.Select(r=>r.ObjectID)).Where(r=>r != null);
     }
 
     private ClientTransaction CreateClientTransaction ()
@@ -311,7 +311,7 @@ namespace Remotion.SecurityManager.Domain
       var transaction = ClientTransaction.CreateRootTransaction();
 
       if (!SecurityConfiguration.Current.DisableAccessChecks)
-        transaction.Extensions.Add (new SecurityClientTransactionExtension());
+        transaction.Extensions.Add(new SecurityClientTransactionExtension());
 
       return transaction;
     }
@@ -323,7 +323,7 @@ namespace Remotion.SecurityManager.Domain
 
     private GuidRevisionValue GetUserRevision (string userName)
     {
-      return SafeServiceLocator.Current.GetInstance<IUserRevisionProvider>().GetRevision (new UserRevisionKey (userName));
+      return SafeServiceLocator.Current.GetInstance<IUserRevisionProvider>().GetRevision(new UserRevisionKey(userName));
     }
 
     bool INullObject.IsNull

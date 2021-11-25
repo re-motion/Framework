@@ -25,8 +25,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
   {
     protected override void Render (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
     {
-      writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      writer.Write ("Custom " + new string (Enumerable.Repeat ('X', Math.Max(0, 5 - arguments.ListIndex)).ToArray()));
+      writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      writer.Write("Custom " + new string(Enumerable.Repeat('X', Math.Max(0, 5 - arguments.ListIndex)).ToArray()));
       writer.RenderEndTag();
     }
   }

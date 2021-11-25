@@ -34,23 +34,23 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Fail ()
     {
-      Assert.That (
-          () => ArgumentUtility.DebugCheckTypeIsAssignableFrom ("arg", typeof (object), typeof (string)),
+      Assert.That(
+          () => ArgumentUtility.DebugCheckTypeIsAssignableFrom("arg", typeof (object), typeof (string)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' is a 'System.Object', which cannot be assigned to type 'System.String'.", "arg"));
     }
 
     [Test]
     public void Succeed_Null ()
     {
-      ArgumentUtility.DebugCheckTypeIsAssignableFrom ("arg", null, typeof (object));
+      ArgumentUtility.DebugCheckTypeIsAssignableFrom("arg", null, typeof (object));
     }
 
     [Test]
     public void Succeed ()
     {
-      ArgumentUtility.DebugCheckTypeIsAssignableFrom ("arg", typeof (string), typeof (object));
+      ArgumentUtility.DebugCheckTypeIsAssignableFrom("arg", typeof (string), typeof (object));
     }
   }
 }

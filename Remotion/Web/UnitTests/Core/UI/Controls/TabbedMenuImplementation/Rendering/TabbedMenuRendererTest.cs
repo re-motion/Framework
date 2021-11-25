@@ -45,100 +45,100 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rende
     [SetUp]
     public void SetUp ()
     {
-      _htmlHelper = new HtmlHelper ();
+      _htmlHelper = new HtmlHelper();
       _httpContext = new Mock<HttpContextBase>();
 
       _control = new Mock<ITabbedMenu>();
-      _control.Setup (stub => stub.ClientID).Returns ("MyTabbedMenu");
-      _control.Setup (stub => stub.ControlType).Returns ("TabbedMenu");
-      _control.Setup (stub => stub.MainMenuTabStrip).Returns (new Mock<IWebTabStrip>().Object);
-      _control.Setup (stub => stub.SubMenuTabStrip).Returns (new Mock<IWebTabStrip>().Object);
+      _control.Setup(stub => stub.ClientID).Returns("MyTabbedMenu");
+      _control.Setup(stub => stub.ControlType).Returns("TabbedMenu");
+      _control.Setup(stub => stub.MainMenuTabStrip).Returns(new Mock<IWebTabStrip>().Object);
+      _control.Setup(stub => stub.SubMenuTabStrip).Returns(new Mock<IWebTabStrip>().Object);
 
-      StateBag stateBag = new StateBag ();
-      _control.Setup (stub => stub.Attributes).Returns (new AttributeCollection (stateBag));
-      _control.Setup (stub => stub.ControlStyle).Returns (new Style (stateBag));
-      _control.Setup (stub => stub.StatusStyle).Returns (new Style (stateBag));
+      StateBag stateBag = new StateBag();
+      _control.Setup(stub => stub.Attributes).Returns(new AttributeCollection(stateBag));
+      _control.Setup(stub => stub.ControlStyle).Returns(new Style(stateBag));
+      _control.Setup(stub => stub.StatusStyle).Returns(new Style(stateBag));
 
-      Mock.Get (_control.Object.SubMenuTabStrip).Setup (stub => stub.ControlStyle).Returns (new Style (stateBag));
-      Mock.Get (_control.Object.SubMenuTabStrip).Setup (stub => stub.Style).Returns (_control.Object.SubMenuTabStrip.ControlStyle.GetStyleAttributes(_control.Object));
+      Mock.Get(_control.Object.SubMenuTabStrip).Setup(stub => stub.ControlStyle).Returns(new Style(stateBag));
+      Mock.Get(_control.Object.SubMenuTabStrip).Setup(stub => stub.Style).Returns(_control.Object.SubMenuTabStrip.ControlStyle.GetStyleAttributes(_control.Object));
 
       var pageStub = new Mock<IPage>();
-      _control.Setup (stub => stub.Page).Returns (pageStub.Object);
+      _control.Setup(stub => stub.Page).Returns(pageStub.Object);
 
-      _renderer = new TabbedMenuRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default);
+      _renderer = new TabbedMenuRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default);
     }
 
     [Test]
     public void RenderEmptyMenu ()
     {
-      AssertControl (false, false, false);
+      AssertControl(false, false, false);
     }
 
     [Test]
     public void RenderEmptyMenuWithStatusText ()
     {
-      _control.Setup (stub => stub.StatusText).Returns ("Status");
-      AssertControl (false, true, false);
+      _control.Setup(stub => stub.StatusText).Returns("Status");
+      AssertControl(false, true, false);
     }
 
     [Test]
     public void RenderEmptyMenuWithCssClass ()
     {
-      _control.SetupProperty (_ => _.CssClass);
+      _control.SetupProperty(_ => _.CssClass);
       _control.Object.CssClass = "CustomCssClass";
-      AssertControl (false, false, true);
+      AssertControl(false, false, true);
     }
 
     [Test]
     public void RenderEmptyMenuWithBackgroundColor ()
     {
-      _control.Setup (stub => stub.SubMenuBackgroundColor).Returns (Color.Yellow);
-      AssertControl (false, false, false);
+      _control.Setup(stub => stub.SubMenuBackgroundColor).Returns(Color.Yellow);
+      AssertControl(false, false, false);
     }
 
     [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
-      _renderer = new TabbedMenuRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
+      _renderer = new TabbedMenuRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
 
-      var table = AssertControl (false, false, false);
+      var table = AssertControl(false, false, false);
 
-      table.AssertAttributeValueEquals (DiagnosticMetadataAttributes.ControlType, "TabbedMenu");
+      table.AssertAttributeValueEquals(DiagnosticMetadataAttributes.ControlType, "TabbedMenu");
     }
 
     private XmlNode AssertControl (bool isDesignMode, bool hasStatusText, bool hasCssClass)
     {
-      _renderer.Render (new TabbedMenuRenderingContext (_httpContext.Object, _htmlHelper.Writer, _control.Object));
+      _renderer.Render(new TabbedMenuRenderingContext(_httpContext.Object, _htmlHelper.Writer, _control.Object));
       // _control.RenderControl (_htmlHelper.Writer);
 
       var document = _htmlHelper.GetResultDocument();
-      var table = document.GetAssertedChildElement ("table", 0);
-      table.AssertAttributeValueEquals ("class", hasCssClass ? "CustomCssClass" : "tabbedMenu");
+      var table = document.GetAssertedChildElement("table", 0);
+      table.AssertAttributeValueEquals("class", hasCssClass ? "CustomCssClass" : "tabbedMenu");
       if (isDesignMode)
-        table.AssertStyleAttribute ("width", "100%");
-      table.AssertChildElementCount (2);
+        table.AssertStyleAttribute("width", "100%");
+      table.AssertChildElementCount(2);
 
-      var trMainMenu = table.GetAssertedChildElement ("tr", 0);
-      trMainMenu.AssertChildElementCount (1);
+      var trMainMenu = table.GetAssertedChildElement("tr", 0);
+      trMainMenu.AssertChildElementCount(1);
 
-      var tdMainMenu = trMainMenu.GetAssertedChildElement ("td", 0);
-      tdMainMenu.AssertAttributeValueEquals ("colspan", "2");
-      tdMainMenu.AssertAttributeValueEquals ("class", "tabbedMainMenuCell");
-      tdMainMenu.AssertChildElementCount (0);
+      var tdMainMenu = trMainMenu.GetAssertedChildElement("td", 0);
+      tdMainMenu.AssertAttributeValueEquals("colspan", "2");
+      tdMainMenu.AssertAttributeValueEquals("class", "tabbedMainMenuCell");
+      tdMainMenu.AssertChildElementCount(0);
 
-      var trSubMenu = table.GetAssertedChildElement ("tr", 1);
-      trSubMenu.AssertChildElementCount (2);
+      var trSubMenu = table.GetAssertedChildElement("tr", 1);
+      trSubMenu.AssertChildElementCount(2);
 
-      var tdSubMenu = trSubMenu.GetAssertedChildElement ("td", 0);
-      tdSubMenu.AssertAttributeValueEquals ("class", "tabbedSubMenuCell");
+      var tdSubMenu = trSubMenu.GetAssertedChildElement("td", 0);
+      tdSubMenu.AssertAttributeValueEquals("class", "tabbedSubMenuCell");
       if (!_control.Object.SubMenuBackgroundColor.IsEmpty)
-        tdSubMenu.AssertStyleAttribute ("background-color", ColorTranslator.ToHtml (Color.Yellow));
-      tdSubMenu.AssertChildElementCount (0);
+        tdSubMenu.AssertStyleAttribute("background-color", ColorTranslator.ToHtml(Color.Yellow));
+      tdSubMenu.AssertChildElementCount(0);
 
-      var tdMenuStatus = trSubMenu.GetAssertedChildElement ("td", 1);
-      tdMenuStatus.AssertAttributeValueEquals ("class", "tabbedMenuStatusCell");
-      tdMenuStatus.AssertChildElementCount (0);
-      tdMenuStatus.AssertTextNode (hasStatusText ? "Status" : "&nbsp;", 0);
+      var tdMenuStatus = trSubMenu.GetAssertedChildElement("td", 1);
+      tdMenuStatus.AssertAttributeValueEquals("class", "tabbedMenuStatusCell");
+      tdMenuStatus.AssertChildElementCount(0);
+      tdMenuStatus.AssertTextNode(hasStatusText ? "Status" : "&nbsp;", 0);
 
       return table;
     }

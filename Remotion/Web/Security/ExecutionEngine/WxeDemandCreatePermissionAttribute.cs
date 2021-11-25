@@ -33,7 +33,7 @@ namespace Remotion.Web.Security.ExecutionEngine
     public WxeDemandCreatePermissionAttribute (Type securableClass)
       : base (MethodType.Constructor)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof (ISecurableObject));
       SecurableClass = securableClass;
     }
 

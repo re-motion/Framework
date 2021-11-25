@@ -38,10 +38,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         IEnumerable<RequiredTargetCallTypeDefinition> requiredTargetCallTypes, 
         IEnumerable<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull ("alreadyImplementedInterfaces", alreadyImplementedInterfaces);
-      ArgumentUtility.CheckNotNull ("receivedInterfaces", receivedInterfaces);
-      ArgumentUtility.CheckNotNull ("requiredTargetCallTypes", requiredTargetCallTypes);
-      ArgumentUtility.CheckNotNull ("mixinInfos", mixinInfos);
+      ArgumentUtility.CheckNotNull("alreadyImplementedInterfaces", alreadyImplementedInterfaces);
+      ArgumentUtility.CheckNotNull("receivedInterfaces", receivedInterfaces);
+      ArgumentUtility.CheckNotNull("requiredTargetCallTypes", requiredTargetCallTypes);
+      ArgumentUtility.CheckNotNull("mixinInfos", mixinInfos);
 
       _alreadyImplementedInterfaces = alreadyImplementedInterfaces;
       _receivedInterfaces = receivedInterfaces;
@@ -51,17 +51,17 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public Type[] GetInterfacesToImplement ()
     {
-      var interfaces = new HashSet<Type> ();
-      interfaces.UnionWith (_requiredTargetCallTypes
-                                .Select (faceTypeDefinition => faceTypeDefinition.Type)
-                                .Where (t => t.IsInterface));
-      interfaces.ExceptWith (_alreadyImplementedInterfaces); // remove required interfaces the type already implements
+      var interfaces = new HashSet<Type>();
+      interfaces.UnionWith(_requiredTargetCallTypes
+                                .Select(faceTypeDefinition => faceTypeDefinition.Type)
+                                .Where(t => t.IsInterface));
+      interfaces.ExceptWith(_alreadyImplementedInterfaces); // remove required interfaces the type already implements
 
-      interfaces.UnionWith (_receivedInterfaces.Select (introduction => introduction.InterfaceType));
-      interfaces.UnionWith (_mixinInfos.SelectMany (mixin => mixin.GetInterfacesToImplement()));
-      interfaces.Add (typeof (IMixinTarget));
+      interfaces.UnionWith(_receivedInterfaces.Select(introduction => introduction.InterfaceType));
+      interfaces.UnionWith(_mixinInfos.SelectMany(mixin => mixin.GetInterfacesToImplement()));
+      interfaces.Add(typeof (IMixinTarget));
 
-      return interfaces.ToArray ();
+      return interfaces.ToArray();
     }
   }
 }

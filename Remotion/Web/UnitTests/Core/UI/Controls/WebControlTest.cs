@@ -35,9 +35,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     public virtual void SetUp ()
     {
       _wcagHelperMock = new WcagHelperMock();
-      WcagHelper.SetInstance (_wcagHelperMock);
-      SetUpContext ();
-      SetUpPage ();
+      WcagHelper.SetInstance(_wcagHelperMock);
+      SetUpContext();
+      SetUpPage();
     }
 
     protected virtual void SetUpContext ()
@@ -46,26 +46,26 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
     protected virtual void SetUpPage ()
     {
-      _page = new PageMock ();
+      _page = new PageMock();
 
       _namingContainer = new NamingContainerMock();
       _namingContainer.ID = "NamingContainer";
-      _page.Controls.Add (_namingContainer);
+      _page.Controls.Add(_namingContainer);
 
-      _namingContainerInvoker = new ControlInvoker (_namingContainer);
+      _namingContainerInvoker = new ControlInvoker(_namingContainer);
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      TearDownPage ();
-      TearDownContext ();
-      WcagHelper.SetInstance (null);
+      TearDownPage();
+      TearDownContext();
+      WcagHelper.SetInstance(null);
     }
 
     protected virtual void TearDownContext ()
     {
-      HttpContextHelper.SetCurrent (null);
+      HttpContextHelper.SetCurrent(null);
     }
 
     protected virtual void TearDownPage ()

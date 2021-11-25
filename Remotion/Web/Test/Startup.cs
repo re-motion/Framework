@@ -27,7 +27,7 @@ namespace Remotion.Web.Test
 
       app.UseRouting();
 
-      app.UseLegacyAspNet (LegacyAspNetOptions.Default);
+      app.UseLegacyAspNet(LegacyAspNetOptions.Default);
     }
   }
 }

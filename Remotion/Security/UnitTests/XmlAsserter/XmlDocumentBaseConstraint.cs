@@ -36,8 +36,8 @@ namespace Remotion.Security.UnitTests.XmlAsserter
 
     public override ConstraintResult ApplyTo<TActual> (TActual actual)
     {
-      var isSuccess = Matches (actual);
-      return new XmlDocumentConstraintResult (this, actual, isSuccess, Messages);
+      var isSuccess = Matches(actual);
+      return new XmlDocumentConstraintResult(this, actual, isSuccess, Messages);
     }
 
     public bool Matches (object actual)
@@ -49,7 +49,7 @@ namespace Remotion.Security.UnitTests.XmlAsserter
       if (actualAsXmlDocument == null || _expectedDocument == null)
         return false;
 
-      return CompareDocuments (_expectedDocument, actualAsXmlDocument);
+      return CompareDocuments(_expectedDocument, actualAsXmlDocument);
     }
 
 
@@ -57,20 +57,20 @@ namespace Remotion.Security.UnitTests.XmlAsserter
 
     protected void ShowNodeStack (XmlNode node, MessageListenerDelegate messageListener)
     {
-      var nodeStack = GetNodeStack (node);
+      var nodeStack = GetNodeStack(node);
 
       while (nodeStack.Count > 0)
-        messageListener (GetNodeInfo (nodeStack.Pop ()));
+        messageListener(GetNodeInfo(nodeStack.Pop()));
     }
 
     protected Stack<XmlNode> GetNodeStack (XmlNode node)
     {
-      var nodeStack = new Stack<XmlNode> ();
+      var nodeStack = new Stack<XmlNode>();
 
       var currentNode = node;
       while (currentNode != null && !(currentNode is XmlDocument))
       {
-        nodeStack.Push (currentNode);
+        nodeStack.Push(currentNode);
         currentNode = currentNode.ParentNode;
       }
 
@@ -79,7 +79,7 @@ namespace Remotion.Security.UnitTests.XmlAsserter
 
     private string GetNodeInfo (XmlNode node)
     {
-      return node.NamespaceURI + ":" + node.LocalName + GetAttributeInfo (node.Attributes) + GetNodeValueInfo (node.Value);
+      return node.NamespaceURI + ":" + node.LocalName + GetAttributeInfo(node.Attributes) + GetNodeValueInfo(node.Value);
     }
 
     private string GetAttributeInfo (XmlAttributeCollection attributes)
@@ -87,17 +87,17 @@ namespace Remotion.Security.UnitTests.XmlAsserter
       if (attributes == null || attributes.Count == 0)
         return string.Empty;
 
-      var attributeInfoBuilder = new StringBuilder ();
+      var attributeInfoBuilder = new StringBuilder();
 
       foreach (XmlAttribute attribute in attributes)
       {
         if (attributeInfoBuilder.Length > 0)
-          attributeInfoBuilder.Append (", ");
+          attributeInfoBuilder.Append(", ");
 
-        attributeInfoBuilder.Append (attribute.NamespaceURI + ":" + attribute.Name + "=\"" + attribute.Value + "\"");
+        attributeInfoBuilder.Append(attribute.NamespaceURI + ":" + attribute.Name + "=\"" + attribute.Value + "\"");
       }
 
-      return "[" + attributeInfoBuilder.ToString () + "]";
+      return "[" + attributeInfoBuilder.ToString() + "]";
     }
 
     private string GetNodeValueInfo (string nodeValue)

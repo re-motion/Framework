@@ -26,11 +26,11 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
   {
     public static string GetRootedPath (string path)
     {
-      ArgumentUtility.CheckNotNull ("path", path);
-      if (Path.IsPathRooted (path))
-        return Path.GetFullPath (path);
+      ArgumentUtility.CheckNotNull("path", path);
+      if (Path.IsPathRooted(path))
+        return Path.GetFullPath(path);
       else
-        return Path.GetFullPath (Path.Combine (AppContext.BaseDirectory, path));
+        return Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, path));
     }
 
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
@@ -39,18 +39,18 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
     public QueryFileElement ()
     {
-      _queryFileFileNameProperty = new ConfigurationProperty (
+      _queryFileFileNameProperty = new ConfigurationProperty(
           "filename",
           typeof (string),
           null,
           ConfigurationPropertyOptions.IsRequired | ConfigurationPropertyOptions.IsKey);
 
-      _properties.Add (_queryFileFileNameProperty);
+      _properties.Add(_queryFileFileNameProperty);
     }
 
     public QueryFileElement (string fileName) : this()
     {
-      ArgumentUtility.CheckNotNull ("fileName", fileName);
+      ArgumentUtility.CheckNotNull("fileName", fileName);
 
       FileName = fileName;
     }
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
     public string RootedFileName
     {
-      get { return GetRootedPath (FileName); }
+      get { return GetRootedPath(FileName); }
     }
 
     protected override ConfigurationPropertyCollection Properties

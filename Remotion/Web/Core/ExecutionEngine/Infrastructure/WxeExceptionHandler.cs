@@ -63,7 +63,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     {
       if (_catchExceptionTypes != null)
       {
-        ArrayList exceptionTypeList = new ArrayList (_catchExceptionTypes);
+        ArrayList exceptionTypeList = new ArrayList(_catchExceptionTypes);
         for (int idxNewTypes = 0; idxNewTypes < exceptionTypes.Length; idxNewTypes++)
         {
           bool isRegistered = false;
@@ -76,27 +76,27 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
             }
           }
           if (!isRegistered)
-            exceptionTypeList.Add (exceptionTypes[idxNewTypes]);
+            exceptionTypeList.Add(exceptionTypes[idxNewTypes]);
         }
-        exceptionTypes = (Type[]) exceptionTypeList.ToArray (typeof (Type));
+        exceptionTypes = (Type[]) exceptionTypeList.ToArray(typeof (Type));
       }
-      SetCatchExceptionTypes (exceptionTypes);
+      SetCatchExceptionTypes(exceptionTypes);
     }
 
     public Type[] GetCatchExceptionTypes ()
     {
       if (_catchExceptionTypes == null)
         return new Type[0];
-      return (Type[]) _catchExceptionTypes.Clone ();
+      return (Type[]) _catchExceptionTypes.Clone();
     }
 
     public bool Catch (Exception exception)
     {
-      ArgumentUtility.CheckNotNull ("exception", exception);
+      ArgumentUtility.CheckNotNull("exception", exception);
 
       bool match = false;
       if (_catchExceptions && _catchExceptionTypes != null)
-        match = _catchExceptionTypes.Any (exceptionType => exceptionType.IsInstanceOfType (exception));
+        match = _catchExceptionTypes.Any(exceptionType => exceptionType.IsInstanceOfType(exception));
 
       if (!_catchExceptions || !match)
         return false;

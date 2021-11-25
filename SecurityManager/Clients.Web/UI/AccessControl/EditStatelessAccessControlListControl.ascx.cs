@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       DeleteAccessControlListButton.Text = resourceManager.GetString(ResourceIdentifier.DeleteAccessControlListButtonText);
       NewAccessControlEntryButton.Text = resourceManager.GetString(ResourceIdentifier.NewAccessControlEntryButtonText);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     public override IBusinessObjectDataSourceControl DataSource

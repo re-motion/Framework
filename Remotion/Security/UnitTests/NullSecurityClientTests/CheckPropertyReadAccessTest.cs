@@ -31,15 +31,15 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [SetUp]
     public void SetUp ()
     {
-      _testHelper = NullSecurityClientTestHelper.CreateForStatefulSecurity ();
+      _testHelper = NullSecurityClientTestHelper.CreateForStatefulSecurity();
       _securityClient = _testHelper.CreateSecurityClient();
-      _methodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetProperty ("IsVisible").GetGetMethod());
+      _methodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetProperty("IsVisible").GetGetMethod());
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, "IsVisible");
+      _securityClient.CheckPropertyReadAccess(_testHelper.SecurableObject, "IsVisible");
 
       _testHelper.VerifyAll();
     }
@@ -47,17 +47,17 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted_WithPropertyInfo ()
     {
-      _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+      _securityClient.CheckPropertyReadAccess(_testHelper.SecurableObject, _methodInformation);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_AccessGranted_WithPropertyInformation ()
     {
-      _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+      _securityClient.CheckPropertyReadAccess(_testHelper.SecurableObject, _methodInformation);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
@@ -65,10 +65,10 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, "IsVisible");
+        _securityClient.CheckPropertyReadAccess(_testHelper.SecurableObject, "IsVisible");
       }
     
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
@@ -76,10 +76,10 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+        _securityClient.CheckPropertyReadAccess(_testHelper.SecurableObject, _methodInformation);
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
@@ -87,34 +87,34 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+        _securityClient.CheckPropertyReadAccess(_testHelper.SecurableObject, _methodInformation);
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull ()
     {
-      _securityClient.CheckPropertyReadAccess (new SecurableObject (null), "IsVisible");
+      _securityClient.CheckPropertyReadAccess(new SecurableObject(null), "IsVisible");
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull_WithPropertyInfo ()
     {
-      _securityClient.CheckPropertyReadAccess (new SecurableObject (null), _methodInformation);
+      _securityClient.CheckPropertyReadAccess(new SecurableObject(null), _methodInformation);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull_WithPropertyInformation ()
     {
-      _securityClient.CheckPropertyReadAccess (new SecurableObject (null), _methodInformation);
+      _securityClient.CheckPropertyReadAccess(new SecurableObject(null), _methodInformation);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
   }
 }

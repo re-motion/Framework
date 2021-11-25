@@ -31,11 +31,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     public WxeContext CreateContext (WxeFunction rootFunction)
     {
       var httpContext = new Mock<HttpContextBase>();
-      WxeFunctionStateManager functionStateManager = new WxeFunctionStateManager (new Mock<HttpSessionStateBase>().Object);
-      WxeFunctionState functionState = new WxeFunctionState (rootFunction, false);
-      NameValueCollection queryString = new NameValueCollection ();
+      WxeFunctionStateManager functionStateManager = new WxeFunctionStateManager(new Mock<HttpSessionStateBase>().Object);
+      WxeFunctionState functionState = new WxeFunctionState(rootFunction, false);
+      NameValueCollection queryString = new NameValueCollection();
 
-      return new WxeContext (httpContext.Object, functionStateManager, functionState, queryString);
+      return new WxeContext(httpContext.Object, functionStateManager, functionState, queryString);
     }
 
   }

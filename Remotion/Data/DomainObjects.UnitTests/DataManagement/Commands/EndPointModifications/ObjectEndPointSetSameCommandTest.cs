@@ -42,30 +42,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     {
       base.SetUp();
 
-      _domainObject = DomainObjectIDs.Computer1.GetObject<Computer> ();
-      _relatedObject = DomainObjectIDs.Employee3.GetObject<Employee> ();
+      _domainObject = DomainObjectIDs.Computer1.GetObject<Computer>();
+      _relatedObject = DomainObjectIDs.Employee3.GetObject<Employee>();
 
-      _endPointID = RelationEndPointID.Resolve (_domainObject, c => c.Employee);
-      _endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (_endPointID, _relatedObject.ID);
+      _endPointID = RelationEndPointID.Resolve(_domainObject, c => c.Employee);
+      _endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(_endPointID, _relatedObject.ID);
       _transactionEventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
 
-      _command = new ObjectEndPointSetSameCommand (_endPoint, _transactionEventSinkWithMock);
+      _command = new ObjectEndPointSetSameCommand(_endPoint, _transactionEventSinkWithMock);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_command.ModifiedEndPoint, Is.SameAs (_endPoint));
-      Assert.That (_command.OldRelatedObject, Is.SameAs (_relatedObject));
-      Assert.That (_command.NewRelatedObject, Is.SameAs (_relatedObject));
+      Assert.That(_command.ModifiedEndPoint, Is.SameAs(_endPoint));
+      Assert.That(_command.OldRelatedObject, Is.SameAs(_relatedObject));
+      Assert.That(_command.NewRelatedObject, Is.SameAs(_relatedObject));
     }
 
     [Test]
     public void Perform_TouchesEndPoint ()
     {
-      Assert.That (_endPoint.HasBeenTouched, Is.False);
+      Assert.That(_endPoint.HasBeenTouched, Is.False);
       _command.Perform();
-      Assert.That (_endPoint.HasBeenTouched, Is.True);
+      Assert.That(_endPoint.HasBeenTouched, Is.True);
     }
 
     [Test]
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       _command.Begin();
 
-      _transactionEventSinkWithMock.AssertWasNotCalled (mock => mock.RaiseRelationChangingEvent (
+      _transactionEventSinkWithMock.AssertWasNotCalled(mock => mock.RaiseRelationChangingEvent(
           Arg<DomainObject>.Is.Anything,
           Arg<IRelationEndPointDefinition>.Is.Anything,
           Arg<DomainObject>.Is.Anything,
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       _command.Begin();
 
-      _transactionEventSinkWithMock.AssertWasNotCalled (mock => mock.RaiseRelationChangedEvent (
+      _transactionEventSinkWithMock.AssertWasNotCalled(mock => mock.RaiseRelationChangedEvent(
           Arg<DomainObject>.Is.Anything,
           Arg<IRelationEndPointDefinition>.Is.Anything, 
           Arg<DomainObject>.Is.Anything,
@@ -99,33 +99,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void ExpandToAllRelatedObjects_SetSame_Unidirectional ()
     {
-      var client = DomainObjectIDs.Client2.GetObject<Client> ();
-      var unidirectionalEndPointID = RelationEndPointID.Resolve (client, c => c.ParentClient);
+      var client = DomainObjectIDs.Client2.GetObject<Client>();
+      var unidirectionalEndPointID = RelationEndPointID.Resolve(client, c => c.ParentClient);
       var unidirectionalEndPoint =
-          (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad (unidirectionalEndPointID);
-      Assert.That (unidirectionalEndPoint.Definition.GetOppositeEndPointDefinition().IsAnonymous, Is.True);
+          (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(unidirectionalEndPointID);
+      Assert.That(unidirectionalEndPoint.Definition.GetOppositeEndPointDefinition().IsAnonymous, Is.True);
 
-      var setSameModification = new ObjectEndPointSetSameCommand (unidirectionalEndPoint, _transactionEventSinkWithMock);
+      var setSameModification = new ObjectEndPointSetSameCommand(unidirectionalEndPoint, _transactionEventSinkWithMock);
 
       var bidirectionalModification = setSameModification.ExpandToAllRelatedObjects();
-      Assert.That (bidirectionalModification.GetNestedCommands(), Is.EqualTo (new[] { setSameModification }));
+      Assert.That(bidirectionalModification.GetNestedCommands(), Is.EqualTo(new[] { setSameModification }));
     }
 
     [Test]
     public void ExpandToAllRelatedObjects_SetSame_Bidirectional ()
     {
-      var oppositeEndPointID = RelationEndPointID.Resolve (_relatedObject, e => e.Computer);
-      var oppositeEndPoint = TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad (oppositeEndPointID);
+      var oppositeEndPointID = RelationEndPointID.Resolve(_relatedObject, e => e.Computer);
+      var oppositeEndPoint = TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(oppositeEndPointID);
 
       var bidirectionalModification = _command.ExpandToAllRelatedObjects();
 
       var steps = bidirectionalModification.GetNestedCommands();
-      Assert.That (steps.Count, Is.EqualTo (2));
+      Assert.That(steps.Count, Is.EqualTo(2));
 
-      Assert.That (steps[0], Is.SameAs (_command));
+      Assert.That(steps[0], Is.SameAs(_command));
 
-      Assert.That (steps[1], Is.InstanceOf (typeof (RelationEndPointTouchCommand)));
-      Assert.That (((RelationEndPointTouchCommand) steps[1]).EndPoint, Is.SameAs (oppositeEndPoint));
+      Assert.That(steps[1], Is.InstanceOf(typeof (RelationEndPointTouchCommand)));
+      Assert.That(((RelationEndPointTouchCommand) steps[1]).EndPoint, Is.SameAs(oppositeEndPoint));
     }
   }
 }

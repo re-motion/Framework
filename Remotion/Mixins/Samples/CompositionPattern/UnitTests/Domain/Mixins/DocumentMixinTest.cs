@@ -30,18 +30,18 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain.Mixins
     [SetUp]
     public void SetUp ()
     {
-      _mixin = MixinInstanceFactory.CreateDomainObjectMixinWithTargetStub<DocumentMixin, ITenantBoundObject> (out _targetStub);
+      _mixin = MixinInstanceFactory.CreateDomainObjectMixinWithTargetStub<DocumentMixin, ITenantBoundObject>(out _targetStub);
     }
     
     [Test]
     public void TargetCommitting_ReplacesNullTitle ()
     {
       _targetStub.Tenant = "TheTenant";
-      Assert.That (_mixin.Title, Is.Null);
+      Assert.That(_mixin.Title, Is.Null);
 
-      _mixin.TargetEvents.OnCommitting ();
+      _mixin.TargetEvents.OnCommitting();
 
-      Assert.That (_mixin.Title, Is.EqualTo ("(unnamed document of TheTenant)"));
+      Assert.That(_mixin.Title, Is.EqualTo("(unnamed document of TheTenant)"));
     }
 
     [Test]
@@ -50,9 +50,9 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain.Mixins
       _targetStub.Tenant = "TheTenant";
       _mixin.Title = "";
 
-      _mixin.TargetEvents.OnCommitting ();
+      _mixin.TargetEvents.OnCommitting();
 
-      Assert.That (_mixin.Title, Is.EqualTo ("(unnamed document of TheTenant)"));
+      Assert.That(_mixin.Title, Is.EqualTo("(unnamed document of TheTenant)"));
     }
 
     [Test]
@@ -60,9 +60,9 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain.Mixins
     {
       _mixin.Title = "Blah";
 
-      _mixin.TargetEvents.OnCommitting ();
+      _mixin.TargetEvents.OnCommitting();
 
-      Assert.That (_mixin.Title, Is.EqualTo ("Blah"));
+      Assert.That(_mixin.Title, Is.EqualTo("Blah"));
     }
   }
 }

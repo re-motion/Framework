@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static AccessTypeDefinition NewObject (Guid metadataItemID, string name, int value)
     {
-      return NewObject<AccessTypeDefinition> (ParamList.Create (metadataItemID, name, value));
+      return NewObject<AccessTypeDefinition>(ParamList.Create(metadataItemID, name, value));
     }
 
     protected AccessTypeDefinition ()
@@ -50,7 +50,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     protected AccessTypeDefinition (Guid metadataItemID, string name, int value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
       MetadataItemID = metadataItemID;
       Name = name;
@@ -64,10 +64,10 @@ namespace Remotion.SecurityManager.Domain.Metadata
     {
       if (AccessTypeReferences.Any())
       {
-        throw new InvalidOperationException (
-            string.Format ("Access type '{0}' cannot be deleted because it is associated with at least one securable class definition.", Name));
+        throw new InvalidOperationException(
+            string.Format("Access type '{0}' cannot be deleted because it is associated with at least one securable class definition.", Name));
       }
-      base.OnDeleting (args);
+      base.OnDeleting(args);
     }
   }
 }

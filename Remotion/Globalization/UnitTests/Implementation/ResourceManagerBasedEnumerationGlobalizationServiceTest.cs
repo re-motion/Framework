@@ -35,7 +35,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       _globalizationServiceStub = new Mock<IGlobalizationService>();
       _memberInformationNameResolverStub = new Mock<IMemberInformationNameResolver>();
-      _service = new ResourceManagerBasedEnumerationGlobalizationService (_globalizationServiceStub.Object, _memberInformationNameResolverStub.Object);
+      _service = new ResourceManagerBasedEnumerationGlobalizationService(_globalizationServiceStub.Object, _memberInformationNameResolverStub.Object);
     }
 
     [Test]
@@ -43,15 +43,15 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       var resourceManagerStub = new Mock<IResourceManager>();
       var outValue = "expected";
-      resourceManagerStub.Setup (_ => _.IsNull).Returns (false);
-      resourceManagerStub.Setup (_ => _.TryGetString ("enumName", out outValue)).Returns (true);
+      resourceManagerStub.Setup(_ => _.IsNull).Returns(false);
+      resourceManagerStub.Setup(_ => _.TryGetString("enumName", out outValue)).Returns(true);
 
-      _globalizationServiceStub.Setup (_ => _.GetResourceManager (TypeAdapter.Create (typeof (EnumWithResources)))).Returns (resourceManagerStub.Object);
-      _memberInformationNameResolverStub.Setup (_ => _.GetEnumName (EnumWithResources.Value1)).Returns ("enumName");
+      _globalizationServiceStub.Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof (EnumWithResources)))).Returns(resourceManagerStub.Object);
+      _memberInformationNameResolverStub.Setup(_ => _.GetEnumName(EnumWithResources.Value1)).Returns("enumName");
 
       string resourceValue;
-      Assert.That (_service.TryGetEnumerationValueDisplayName (EnumWithResources.Value1, out resourceValue), Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("expected"));
+      Assert.That(_service.TryGetEnumerationValueDisplayName(EnumWithResources.Value1, out resourceValue), Is.True);
+      Assert.That(resourceValue, Is.EqualTo("expected"));
     }
 
     [Test]
@@ -59,25 +59,25 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       var resourceManagerStub = new Mock<IResourceManager>();
       string outValue = null;
-      resourceManagerStub.Setup (_ => _.IsNull).Returns (false);
-      resourceManagerStub.Setup (_ => _.TryGetString ("enumName", out outValue)).Returns (false);
+      resourceManagerStub.Setup(_ => _.IsNull).Returns(false);
+      resourceManagerStub.Setup(_ => _.TryGetString("enumName", out outValue)).Returns(false);
 
-      _globalizationServiceStub.Setup (_ => _.GetResourceManager (TypeAdapter.Create (typeof (EnumWithResources)))).Returns (resourceManagerStub.Object);
-      _memberInformationNameResolverStub.Setup (_ => _.GetEnumName (EnumWithResources.Value1)).Returns ("enumName");
+      _globalizationServiceStub.Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof (EnumWithResources)))).Returns(resourceManagerStub.Object);
+      _memberInformationNameResolverStub.Setup(_ => _.GetEnumName(EnumWithResources.Value1)).Returns("enumName");
 
       string resourceValue;
-      Assert.That (_service.TryGetEnumerationValueDisplayName (EnumWithResources.Value1, out resourceValue), Is.False);
-      Assert.That (resourceValue, Is.Null);
+      Assert.That(_service.TryGetEnumerationValueDisplayName(EnumWithResources.Value1, out resourceValue), Is.False);
+      Assert.That(resourceValue, Is.Null);
     }
 
     [Test]
     public void TryGetEnumerationValueDisplayName_WithoutResourceManager_ReturnsNull ()
     {
-      _globalizationServiceStub.Setup (_ => _.GetResourceManager (TypeAdapter.Create (typeof (EnumWithResources)))).Returns (NullResourceManager.Instance);
+      _globalizationServiceStub.Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof (EnumWithResources)))).Returns(NullResourceManager.Instance);
 
       string resourceValue;
-      Assert.That (_service.TryGetEnumerationValueDisplayName (EnumWithResources.Value1, out resourceValue), Is.False);
-      Assert.That (resourceValue, Is.Null);
+      Assert.That(_service.TryGetEnumerationValueDisplayName(EnumWithResources.Value1, out resourceValue), Is.False);
+      Assert.That(resourceValue, Is.Null);
     }
   }
 }

@@ -36,7 +36,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
 
     public void SetPrevious (VirtualPathProvider provider)
     {
-      typeof (VirtualPathProvider).GetField ("_previous", BindingFlags.Instance | BindingFlags.NonPublic).SetValue (this, provider);
+      typeof (VirtualPathProvider).GetField("_previous", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this, provider);
     }
 
     protected override string GetProjectRoot ()
@@ -52,8 +52,8 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     protected override string CombineVirtualPath (string basePath, string relativePath)
     {
       if (_overrideCombineVirtualPathFunc != null)
-        return _overrideCombineVirtualPathFunc (basePath, relativePath);
-      return base.CombineVirtualPath (basePath, relativePath);
+        return _overrideCombineVirtualPathFunc(basePath, relativePath);
+      return base.CombineVirtualPath(basePath, relativePath);
     }
 
     protected override string ToAppRelativeVirtualPath (string virtualPath)
@@ -69,8 +69,8 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     protected override string MakeRelativeVirtualPath (string fromPath, string toPath)
     {
       if (_overrideMakeRelativeVirtualPathFunc != null)
-        return _overrideMakeRelativeVirtualPathFunc (fromPath, toPath);
-      return base.MakeRelativeVirtualPath (fromPath, toPath);
+        return _overrideMakeRelativeVirtualPathFunc(fromPath, toPath);
+      return base.MakeRelativeVirtualPath(fromPath, toPath);
     }
 
     public void SetMapPathOverride (Func<string, string> overrideFunc)
@@ -81,8 +81,8 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     protected override string MapPath (string virtualPath)
     {
       if (_overrideMapPathFunc != null)
-        return _overrideMapPathFunc (virtualPath);
-      return base.MapPath (virtualPath);
+        return _overrideMapPathFunc(virtualPath);
+      return base.MapPath(virtualPath);
     }
   }
 }

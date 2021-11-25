@@ -26,12 +26,12 @@ namespace Remotion.Configuration
     //TODO: test
     public static ConfigurationProperty CreateTypeProperty (Type? defaultValue)
     {
-      return new ConfigurationProperty (
+      return new ConfigurationProperty(
           "type",
           typeof (Type),
           defaultValue,
-          new TypeNameConverter (),
-          new SubclassTypeValidator (typeof (TBase)),
+          new TypeNameConverter(),
+          new SubclassTypeValidator(typeof (TBase)),
           ConfigurationPropertyOptions.IsRequired);
     }
 
@@ -45,10 +45,10 @@ namespace Remotion.Configuration
 
     protected TypeElement (Type? defaultValue)
     {
-      _typeProperty = CreateTypeProperty (defaultValue);
+      _typeProperty = CreateTypeProperty(defaultValue);
 
-      _properties = new ConfigurationPropertyCollection ();
-      _properties.Add (_typeProperty);
+      _properties = new ConfigurationPropertyCollection();
+      _properties.Add(_typeProperty);
     }
 
     protected override ConfigurationPropertyCollection Properties
@@ -67,7 +67,7 @@ namespace Remotion.Configuration
       if (Type == null)
         return null;
         
-      return (TBase?) Activator.CreateInstance (Type);
+      return (TBase?) Activator.CreateInstance(Type);
     }
   }
 

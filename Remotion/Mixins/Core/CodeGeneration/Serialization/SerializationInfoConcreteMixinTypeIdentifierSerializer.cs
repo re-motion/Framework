@@ -35,8 +35,8 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
 
     public SerializationInfoConcreteMixinTypeIdentifierSerializer (SerializationInfo serializationInfo, string key)
     {
-      ArgumentUtility.CheckNotNull ("serializationInfo", serializationInfo);
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+      ArgumentUtility.CheckNotNull("serializationInfo", serializationInfo);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
 
       _serializationInfo = serializationInfo;
       _key = key;
@@ -44,33 +44,33 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
 
     public void AddMixinType (Type mixinType)
     {
-      _serializationInfo.AddValue (_key + ".MixinType", mixinType.GetAssemblyQualifiedNameChecked());
+      _serializationInfo.AddValue(_key + ".MixinType", mixinType.GetAssemblyQualifiedNameChecked());
     }
 
     public void AddOverriders (HashSet<MethodInfo> overriders)
     {
-      SerializeMethods (_key + ".Overriders", overriders);
+      SerializeMethods(_key + ".Overriders", overriders);
     }
 
     public void AddOverridden (HashSet<MethodInfo> overridden)
     {
-      SerializeMethods (_key + ".Overridden", overridden);
+      SerializeMethods(_key + ".Overridden", overridden);
     }
 
     private void SerializeMethods (string collectionKey, ICollection<MethodInfo> collection)
     {
-      _serializationInfo.AddValue (collectionKey + ".Count", collection.Count);
+      _serializationInfo.AddValue(collectionKey + ".Count", collection.Count);
 
       var index = 0;
       foreach (var methodInfo in collection)
       {
         if (methodInfo.IsGenericMethod && !methodInfo.IsGenericMethodDefinition)
-          throw new NotSupportedException ("Cannot serialize closed generic methods. This is not supported.");
+          throw new NotSupportedException("Cannot serialize closed generic methods. This is not supported.");
 
-        _serializationInfo.AddValue (collectionKey + "[" + index + "].DeclaringType", methodInfo.DeclaringType!.GetAssemblyQualifiedNameChecked());
+        _serializationInfo.AddValue(collectionKey + "[" + index + "].DeclaringType", methodInfo.DeclaringType!.GetAssemblyQualifiedNameChecked());
 
-        _serializationInfo.AddValue (collectionKey + "[" + index + "].Name", methodInfo.Name);
-        _serializationInfo.AddValue (collectionKey + "[" + index + "].Signature", methodInfo.ToString());
+        _serializationInfo.AddValue(collectionKey + "[" + index + "].Name", methodInfo.Name);
+        _serializationInfo.AddValue(collectionKey + "[" + index + "].Signature", methodInfo.ToString());
 
         ++index;
       }

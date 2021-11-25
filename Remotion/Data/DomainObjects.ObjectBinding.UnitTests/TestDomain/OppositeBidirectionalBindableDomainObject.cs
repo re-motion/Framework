@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
   {
     public static OppositeBidirectionalBindableDomainObject NewObject ()
     {
-      return NewObject<OppositeBidirectionalBindableDomainObject> ();
+      return NewObject<OppositeBidirectionalBindableDomainObject>();
     }
 
     [DBBidirectionalRelation ("RequiredBidirectionalRelatedObjectProperty", ContainsForeignKey = true)]

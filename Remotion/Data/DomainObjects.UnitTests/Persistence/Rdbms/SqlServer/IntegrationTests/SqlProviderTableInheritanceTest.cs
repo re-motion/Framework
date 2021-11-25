@@ -32,58 +32,58 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _provider = RdbmsProviderObjectMother.CreateForIntegrationTest (TableInheritanceTestDomainStorageProviderDefinition);
+      _provider = RdbmsProviderObjectMother.CreateForIntegrationTest(TableInheritanceTestDomainStorageProviderDefinition);
     }
 
     public override void TearDown ()
     {
-      _provider.Dispose ();
-      base.TearDown ();
+      _provider.Dispose();
+      base.TearDown();
     }
     [Test]
     public void LoadConcreteSingle ()
     {
-      DataContainer customerContainer = _provider.LoadDataContainer (DomainObjectIDs.Customer).LocatedObject;
-      Assert.That (customerContainer, Is.Not.Null);
-      Assert.That (customerContainer.ID, Is.EqualTo (DomainObjectIDs.Customer));
-      Assert.That (customerContainer.GetValue (GetPropertyDefinition (typeof (TIDomainBase), "CreatedBy")), Is.EqualTo ("UnitTests"));
-      Assert.That (customerContainer.GetValue (GetPropertyDefinition (typeof (TIPerson), "FirstName")), Is.EqualTo ("Zaphod"));
-      Assert.That (customerContainer.GetValue (GetPropertyDefinition (typeof (TICustomer), "CustomerType")), Is.EqualTo (CustomerType.Premium));
+      DataContainer customerContainer = _provider.LoadDataContainer(DomainObjectIDs.Customer).LocatedObject;
+      Assert.That(customerContainer, Is.Not.Null);
+      Assert.That(customerContainer.ID, Is.EqualTo(DomainObjectIDs.Customer));
+      Assert.That(customerContainer.GetValue(GetPropertyDefinition(typeof (TIDomainBase), "CreatedBy")), Is.EqualTo("UnitTests"));
+      Assert.That(customerContainer.GetValue(GetPropertyDefinition(typeof (TIPerson), "FirstName")), Is.EqualTo("Zaphod"));
+      Assert.That(customerContainer.GetValue(GetPropertyDefinition(typeof (TICustomer), "CustomerType")), Is.EqualTo(CustomerType.Premium));
     }
 
     [Test]
     public void LoadDataContainersByRelatedID_WithAbstractBaseClass ()
     {
-      var relationEndPointDefinition = GetEndPointDefinition (typeof (TIDomainBase), "Client");
-      var createdAtProperty = GetPropertyDefinition (typeof (TIDomainBase), "CreatedAt");
-      var sortExpression = new SortExpressionDefinition (new[] { new SortedPropertySpecification (createdAtProperty, SortOrder.Ascending) });
+      var relationEndPointDefinition = GetEndPointDefinition(typeof (TIDomainBase), "Client");
+      var createdAtProperty = GetPropertyDefinition(typeof (TIDomainBase), "CreatedAt");
+      var sortExpression = new SortExpressionDefinition(new[] { new SortedPropertySpecification(createdAtProperty, SortOrder.Ascending) });
 
-      var loadedDataContainers = _provider.LoadDataContainersByRelatedID (
+      var loadedDataContainers = _provider.LoadDataContainersByRelatedID(
           (RelationEndPointDefinition) relationEndPointDefinition,
           sortExpression,
           DomainObjectIDs.Client).ToList();
 
-      Assert.That (loadedDataContainers, Is.Not.Null);
-      Assert.That (loadedDataContainers.Count, Is.EqualTo (4));
-      Assert.That (loadedDataContainers[0].ID, Is.EqualTo (DomainObjectIDs.OrganizationalUnit));
-      Assert.That (loadedDataContainers[1].ID, Is.EqualTo (DomainObjectIDs.Person));
-      Assert.That (loadedDataContainers[2].ID, Is.EqualTo (DomainObjectIDs.PersonForUnidirectionalRelationTest));
-      Assert.That (loadedDataContainers[3].ID, Is.EqualTo (DomainObjectIDs.Customer));
+      Assert.That(loadedDataContainers, Is.Not.Null);
+      Assert.That(loadedDataContainers.Count, Is.EqualTo(4));
+      Assert.That(loadedDataContainers[0].ID, Is.EqualTo(DomainObjectIDs.OrganizationalUnit));
+      Assert.That(loadedDataContainers[1].ID, Is.EqualTo(DomainObjectIDs.Person));
+      Assert.That(loadedDataContainers[2].ID, Is.EqualTo(DomainObjectIDs.PersonForUnidirectionalRelationTest));
+      Assert.That(loadedDataContainers[3].ID, Is.EqualTo(DomainObjectIDs.Customer));
     }
 
     [Test]
     public void LoadDataContainersByRelatedID_WithAbstractClassWithoutDerivations ()
     {
-      var relationEndPointDefinition = GetEndPointDefinition (typeof (AbstractClassWithoutDerivations), "DomainBase");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof (AbstractClassWithoutDerivations), "DomainBase");
 
-      var result = _provider.LoadDataContainersByRelatedID (
+      var result = _provider.LoadDataContainersByRelatedID(
           (RelationEndPointDefinition) relationEndPointDefinition,
           null,
           DomainObjectIDs.Customer);
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result.Count(), Is.EqualTo (0));
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.Count(), Is.EqualTo(0));
     }
   }
 }

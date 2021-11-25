@@ -60,51 +60,51 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls
     [SetUp]
     public void SetUp ()
     {
-      _currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "default.html", null);
-      HttpContextHelper.SetCurrent (_currentHttpContext);
+      _currentHttpContext = HttpContextHelper.CreateHttpContext("GET", "default.html", null);
+      HttpContextHelper.SetCurrent(_currentHttpContext);
 
-      _page = new PageMock ();
-      _page.SetRequestValueCollection (new NameValueCollection ());
+      _page = new PageMock();
+      _page.SetRequestValueCollection(new NameValueCollection());
       _currentHttpContext.Handler = _page;
 
       _parent = new PlaceHolder();
       _parent.ID = "Parent";
-      _parent.Init += new EventHandler (Control_Init);
-      _parent.Load += new EventHandler (Control_Load);
-      _parent.PreRender += new EventHandler (Control_PreRender);
-      _page.Controls.Add (_parent);
+      _parent.Init += new EventHandler(Control_Init);
+      _parent.Load += new EventHandler(Control_Load);
+      _parent.PreRender += new EventHandler(Control_PreRender);
+      _page.Controls.Add(_parent);
 
       _child = new Literal();
       _child.ID = "Child";
-      _child.Init += new EventHandler (Control_Init);
-      _child.Load += new EventHandler (Control_Load);
-      _child.PreRender += new EventHandler (Control_PreRender);
+      _child.Init += new EventHandler(Control_Init);
+      _child.Load += new EventHandler(Control_Load);
+      _child.PreRender += new EventHandler(Control_PreRender);
 
-      _parent.Controls.Add (_child);
+      _parent.Controls.Add(_child);
 
-      _invoker = new ControlInvoker (_parent);
+      _invoker = new ControlInvoker(_parent);
 
 
-      _pageAfterPostBack = new PageMock ();
-      _pageAfterPostBack.SetRequestValueCollection (new NameValueCollection ());
+      _pageAfterPostBack = new PageMock();
+      _pageAfterPostBack.SetRequestValueCollection(new NameValueCollection());
       _currentHttpContext.Handler = _pageAfterPostBack;
 
       _parentAfterPostBack = new PlaceHolder();
       _parentAfterPostBack.ID = "Parent";
-      _parentAfterPostBack.Init += new EventHandler (Control_Init);
-      _parentAfterPostBack.Load += new EventHandler (Control_Load);
-      _parentAfterPostBack.PreRender += new EventHandler (Control_PreRender);
-      _pageAfterPostBack.Controls.Add (_parentAfterPostBack);
+      _parentAfterPostBack.Init += new EventHandler(Control_Init);
+      _parentAfterPostBack.Load += new EventHandler(Control_Load);
+      _parentAfterPostBack.PreRender += new EventHandler(Control_PreRender);
+      _pageAfterPostBack.Controls.Add(_parentAfterPostBack);
 
       _childAfterPostBack = new Literal();
       _childAfterPostBack.ID = "Child";
-      _childAfterPostBack.Init += new EventHandler (Control_Init);
-      _childAfterPostBack.Load += new EventHandler (Control_Load);
-      _childAfterPostBack.PreRender += new EventHandler (Control_PreRender);
+      _childAfterPostBack.Init += new EventHandler(Control_Init);
+      _childAfterPostBack.Load += new EventHandler(Control_Load);
+      _childAfterPostBack.PreRender += new EventHandler(Control_PreRender);
 
-      _parentAfterPostBack.Controls.Add (_childAfterPostBack);
+      _parentAfterPostBack.Controls.Add(_childAfterPostBack);
 
-      _invokerAfterPostBack = new ControlInvoker (_parentAfterPostBack);
+      _invokerAfterPostBack = new ControlInvoker(_parentAfterPostBack);
 
       _events = string.Empty;
     }
@@ -112,29 +112,29 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls
     [TearDown]
     public void TearDown ()
     {
-      _parent.Init -= new EventHandler (Control_Init);
-      _parent.Load -= new EventHandler (Control_Load);
-      _parent.PreRender -= new EventHandler (Control_PreRender);
+      _parent.Init -= new EventHandler(Control_Init);
+      _parent.Load -= new EventHandler(Control_Load);
+      _parent.PreRender -= new EventHandler(Control_PreRender);
     
-      _child.Init -= new EventHandler (Control_Init);
-      _child.Load -= new EventHandler (Control_Load);
-      _child.PreRender -= new EventHandler (Control_PreRender);
+      _child.Init -= new EventHandler(Control_Init);
+      _child.Load -= new EventHandler(Control_Load);
+      _child.PreRender -= new EventHandler(Control_PreRender);
 
-      HttpContextHelper.SetCurrent (null);
+      HttpContextHelper.SetCurrent(null);
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.That (_parent, Is.SameAs (_invoker.Control));
+      Assert.That(_parent, Is.SameAs(_invoker.Control));
     }
 
     [Test]
     public void InitRecursive ()
     {
-      _invoker.InitRecursive ();
+      _invoker.InitRecursive();
 
-      Assert.That (_events, Is.EqualTo ("Child Init, Parent Init"));
+      Assert.That(_events, Is.EqualTo("Child Init, Parent Init"));
     }
 
     [Test]
@@ -145,43 +145,43 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls
       _child.Text = "Foo Bar";
       _invoker.PreRenderRecursive();
 
-      object viewState = _invoker.SaveViewStateRecursive (ViewStateMode.Enabled);
+      object viewState = _invoker.SaveViewStateRecursive(ViewStateMode.Enabled);
 
       _invokerAfterPostBack.InitRecursive();
-      Assert.That (_childAfterPostBack.Text, Is.EqualTo (string.Empty));
-      _invokerAfterPostBack.LoadViewStateRecursive (viewState);
-      Assert.That (_childAfterPostBack.Text, Is.EqualTo ("Foo Bar"));
+      Assert.That(_childAfterPostBack.Text, Is.EqualTo(string.Empty));
+      _invokerAfterPostBack.LoadViewStateRecursive(viewState);
+      Assert.That(_childAfterPostBack.Text, Is.EqualTo("Foo Bar"));
     }
 
     [Test]
     public void LoadRecursive ()
     {
-      _invoker.LoadRecursive ();
+      _invoker.LoadRecursive();
 
-      Assert.That (_events, Is.EqualTo ("Parent Load, Child Load"));
+      Assert.That(_events, Is.EqualTo("Parent Load, Child Load"));
     }
 
     [Test]
     public void PreRenderRecursive ()
     {
-      _invoker.PreRenderRecursive ();
+      _invoker.PreRenderRecursive();
 
-      Assert.That (_events, Is.EqualTo ("Parent PreRender, Child PreRender"));
+      Assert.That(_events, Is.EqualTo("Parent PreRender, Child PreRender"));
     }
 
     private void Control_Init (object sender, EventArgs e)
     {
-      _events = AppendEvents ((Control) sender, _events, "Init");
+      _events = AppendEvents((Control) sender, _events, "Init");
     }
 
     private void Control_Load (object sender, EventArgs e)
     {
-      _events = AppendEvents ((Control) sender, _events, "Load");
+      _events = AppendEvents((Control) sender, _events, "Load");
     }
 
     private void Control_PreRender (object sender, EventArgs e)
     {
-      _events = AppendEvents ((Control) sender, _events, "PreRender");
+      _events = AppendEvents((Control) sender, _events, "PreRender");
     }
 
     private string AppendEvents (Control control, string events, string eventName)

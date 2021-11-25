@@ -27,7 +27,7 @@ public class BocTextValueMock: BocTextValue
 {
 	public new void EvaluateWaiConformity ()
   {
-    base.EvaluateWaiConformity ();
+    base.EvaluateWaiConformity();
   }
 }
 

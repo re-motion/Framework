@@ -34,26 +34,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       _queryResultRowStub = MockRepository.GenerateStub<IQueryResultRow>();
 
-      _queryResultRowAdapter = new QueryResultRowAdapter (_queryResultRowStub);
+      _queryResultRowAdapter = new QueryResultRowAdapter(_queryResultRowStub);
     }
 
     [Test]
     public void GetValue ()
     {
-      _queryResultRowStub.Stub (stub => stub.GetConvertedValue<int> (4)).Return (10);
+      _queryResultRowStub.Stub(stub => stub.GetConvertedValue<int>(4)).Return(10);
 
-      var result = _queryResultRowAdapter.GetValue<int> (new ColumnID ("test", 4));
+      var result = _queryResultRowAdapter.GetValue<int>(new ColumnID("test", 4));
 
-      Assert.That (result, Is.EqualTo (10));
+      Assert.That(result, Is.EqualTo(10));
     }
 
     [Test]
     public void GetEntity ()
     {
-      Assert.That (
+      Assert.That(
           () => _queryResultRowAdapter.GetEntity<int>(),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "This LINQ provider does not support queries with complex projections that include DomainObjects.\r\n"
                   + "Either change the query to return just a sequence of DomainObjects " 
                   + "(e.g., 'from o in QueryFactory.CreateLinqQuery<Order>() select o') or change the complex projection to contain no DomainObjects " 

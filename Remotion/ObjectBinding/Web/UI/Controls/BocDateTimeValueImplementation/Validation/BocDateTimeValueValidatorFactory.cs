@@ -39,18 +39,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
     public IEnumerable<BaseValidator> CreateValidators (IBocDateTimeValue control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       if (isReadOnly)
         yield break;
 
       var resourceManager = control.GetResourceManager();
 
-      var requiredFieldValidator = CreateRequiredValidator (control, resourceManager);
+      var requiredFieldValidator = CreateRequiredValidator(control, resourceManager);
       if (requiredFieldValidator != null)
         yield return requiredFieldValidator;
 
-      yield return CreateFormatValidator (control, resourceManager);
+      yield return CreateFormatValidator(control, resourceManager);
     }
 
     private BocDateTimeRequiredValidator? CreateRequiredValidator (IBocDateTimeValue control, IResourceManager resourceManager)
@@ -64,10 +64,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         var validator = new BocDateTimeRequiredValidator();
         validator.ID = control.ID + "_RequiredDateTimeValidator";
         validator.ControlToValidate = control.ID;
-        validator.MissingDateAndTimeErrorMessage = resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.MissingDateAndTimeErrorMessage);
-        validator.MissingDateOrTimeErrorMessage = resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.MissingDateOrTimeErrorMessage);
-        validator.MissingDateErrorMessage = resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.MissingDateErrorMessage);
-        validator.MissingTimeErrorMessage = resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.MissingTimeErrorMessage);
+        validator.MissingDateAndTimeErrorMessage = resourceManager.GetString(BocDateTimeValue.ResourceIdentifier.MissingDateAndTimeErrorMessage);
+        validator.MissingDateOrTimeErrorMessage = resourceManager.GetString(BocDateTimeValue.ResourceIdentifier.MissingDateOrTimeErrorMessage);
+        validator.MissingDateErrorMessage = resourceManager.GetString(BocDateTimeValue.ResourceIdentifier.MissingDateErrorMessage);
+        validator.MissingTimeErrorMessage = resourceManager.GetString(BocDateTimeValue.ResourceIdentifier.MissingTimeErrorMessage);
         validator.EnableViewState = false;
 
         return validator;
@@ -83,9 +83,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       var validator = new BocDateTimeFormatValidator();
       validator.ID = control.ID + "_FormatDateTimeValidator";
       validator.ControlToValidate = control.ID;
-      validator.InvalidDateAndTimeErrorMessage = resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.InvalidDateAndTimeErrorMessage);
-      validator.InvalidDateErrorMessage = resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.InvalidDateErrorMessage);
-      validator.InvalidTimeErrorMessage = resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.InvalidTimeErrorMessage);
+      validator.InvalidDateAndTimeErrorMessage = resourceManager.GetString(BocDateTimeValue.ResourceIdentifier.InvalidDateAndTimeErrorMessage);
+      validator.InvalidDateErrorMessage = resourceManager.GetString(BocDateTimeValue.ResourceIdentifier.InvalidDateErrorMessage);
+      validator.InvalidTimeErrorMessage = resourceManager.GetString(BocDateTimeValue.ResourceIdentifier.InvalidTimeErrorMessage);
       validator.EnableViewState = false;
 
       return validator;

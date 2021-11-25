@@ -27,24 +27,24 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     [Test]
     public void GetEnum_WithUnknownKey_ReturnsUnknown ()
     {
-      var ruleID = AccessibilityRuleIDConverter.ConvertToEnum ("SomeUnknownKey");
+      var ruleID = AccessibilityRuleIDConverter.ConvertToEnum("SomeUnknownKey");
 
-      Assert.That (ruleID, Is.EqualTo (AccessibilityRuleID.Unknown));
+      Assert.That(ruleID, Is.EqualTo(AccessibilityRuleID.Unknown));
     }
 
     [Test]
     public void GetEnum_WithKnownKey_ReturnsKeyAsEnum ()
     {
-      var ruleID = AccessibilityRuleIDConverter.ConvertToEnum ("link-name");
+      var ruleID = AccessibilityRuleIDConverter.ConvertToEnum("link-name");
 
-      Assert.That (ruleID, Is.EqualTo (AccessibilityRuleID.LinkName));
+      Assert.That(ruleID, Is.EqualTo(AccessibilityRuleID.LinkName));
     }
 
     [Test]
     public void ConvertToString_Unknown_ThrowsArgumentException ()
     {
-      Assert.That (
-          () => AccessibilityRuleIDConverter.ConvertToString (AccessibilityRuleID.Unknown),
+      Assert.That(
+          () => AccessibilityRuleIDConverter.ConvertToString(AccessibilityRuleID.Unknown),
           Throws.ArgumentException);
     }
   }

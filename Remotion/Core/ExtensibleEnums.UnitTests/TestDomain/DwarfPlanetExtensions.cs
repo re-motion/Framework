@@ -24,13 +24,13 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
     [ExtensibleEnumPosition (4.0)]
     public static Planet Pluto (this ExtensibleEnumDefinition<Planet> definition)
     {
-      return new Planet (MethodBase.GetCurrentMethod ());
+      return new Planet(MethodBase.GetCurrentMethod());
     }
 
     [ExtensibleEnumPosition (5.0)]
     public static Planet Eris (this ExtensibleEnumDefinition<Planet> definition)
     {
-      return new Planet (MethodBase.GetCurrentMethod ());
+      return new Planet(MethodBase.GetCurrentMethod());
     }
   }
 }

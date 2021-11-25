@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      var element = fluentNavigation.Target.Element.FindCss ("span", Options.NoWait);
+      var element = fluentNavigation.Target.Element.FindCss("span", Options.NoWait);
       element.EnsureExistence();
 
       return element.ForElementScopeScreenshot();
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      var element = fluentNavigation.Target.Element.FindCss ("span > input", Options.NoWait);
+      var element = fluentNavigation.Target.Element.FindCss("span > input", Options.NoWait);
       element.EnsureExistence();
 
       return element.ForElementScopeScreenshot();
@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TCell : ControlObject
     {
       var scope = fluentNavigation.Target.List.Scope;
-      var element = scope.FindChild ("Navigation_First", Options.NoWait);
+      var element = scope.FindChild("Navigation_First", Options.NoWait);
       element.EnsureExistence();
 
       return element.ForElementScopeScreenshot();
@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TCell : ControlObject
     {
       var scope = fluentNavigation.Target.List.Scope;
-      var element = scope.FindChild ("Navigation_Previous", Options.NoWait);
+      var element = scope.FindChild("Navigation_Previous", Options.NoWait);
       element.EnsureExistence();
 
       return element.ForElementScopeScreenshot();
@@ -106,7 +106,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TCell : ControlObject
     {
       var scope = fluentNavigation.Target.List.Scope;
-      var element = scope.FindChild ("Navigation_Next", Options.NoWait);
+      var element = scope.FindChild("Navigation_Next", Options.NoWait);
       element.EnsureExistence();
 
       return element.ForElementScopeScreenshot();
@@ -123,7 +123,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TCell : ControlObject
     {
       var scope = fluentNavigation.Target.List.Scope;
-      var element = scope.FindChild ("Navigation_Last", Options.NoWait);
+      var element = scope.FindChild("Navigation_Last", Options.NoWait);
       element.EnsureExistence();
 
       return element.ForElementScopeScreenshot();

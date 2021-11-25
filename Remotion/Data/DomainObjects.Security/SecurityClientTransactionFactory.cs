@@ -29,10 +29,10 @@ namespace Remotion.Data.DomainObjects.Security
   {
     protected override void OnTransactionCreated (ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
 
       if (!SecurityConfiguration.Current.DisableAccessChecks)
-        transaction.Extensions.Add (new SecurityClientTransactionExtension ());
+        transaction.Extensions.Add(new SecurityClientTransactionExtension());
     }
   }
 }

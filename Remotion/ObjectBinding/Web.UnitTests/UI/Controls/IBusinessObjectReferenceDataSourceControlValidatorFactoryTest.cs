@@ -23,12 +23,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       var instance = _serviceLocator.GetInstance<IBusinessObjectReferenceDataSourceControlValidatorFactory>();
 
-      Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>>());
+      Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>>());
 
       var factories = ((CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>) instance).VlidatorFactories;
-      Assert.That (
-          factories.Select (f => f.GetType()),
-          Is.EqualTo (new[] { typeof (ValidationBocReferenceDataSourceValidatorFactory) }));
+      Assert.That(
+          factories.Select(f => f.GetType()),
+          Is.EqualTo(new[] { typeof (ValidationBocReferenceDataSourceValidatorFactory) }));
     }
 
     [Test]
@@ -37,8 +37,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var instance1 = _serviceLocator.GetInstance<IBusinessObjectReferenceDataSourceControlValidatorFactory>();
       var instance2 = _serviceLocator.GetInstance<IBusinessObjectReferenceDataSourceControlValidatorFactory>();
 
-      Assert.That (instance1, Is.InstanceOf<CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>>());
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.InstanceOf<CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>>());
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

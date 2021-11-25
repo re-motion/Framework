@@ -33,32 +33,32 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static IRelationEndPointManager GetRelationEndPointManager (IDataManager dataManager)
     {
-      return (IRelationEndPointManager) PrivateInvoke.GetNonPublicField (dataManager, "_relationEndPointManager");
+      return (IRelationEndPointManager) PrivateInvoke.GetNonPublicField(dataManager, "_relationEndPointManager");
     }
 
     public static void RemoveEndPoint (IDataManager dataManager, RelationEndPointID endPointID)
     {
-      RelationEndPointManagerTestHelper.RemoveEndPoint ((RelationEndPointManager) GetRelationEndPointManager (dataManager), endPointID);
+      RelationEndPointManagerTestHelper.RemoveEndPoint((RelationEndPointManager) GetRelationEndPointManager(dataManager), endPointID);
     }
 
     public static void AddEndPoint (DataManager dataManager, IRelationEndPoint endPoint)
     {
-      RelationEndPointManagerTestHelper.AddEndPoint ((RelationEndPointManager) GetRelationEndPointManager (dataManager), endPoint);
+      RelationEndPointManagerTestHelper.AddEndPoint((RelationEndPointManager) GetRelationEndPointManager(dataManager), endPoint);
     }
 
     public static IInvalidDomainObjectManager GetInvalidDomainObjectManager (DataManager dataManager)
     {
-      return (IInvalidDomainObjectManager) PrivateInvoke.GetNonPublicField (dataManager, "_invalidDomainObjectManager");
+      return (IInvalidDomainObjectManager) PrivateInvoke.GetNonPublicField(dataManager, "_invalidDomainObjectManager");
     }
 
     public static IObjectLoader GetObjectLoader (DataManager dataManager)
     {
-      return (IObjectLoader) PrivateInvoke.GetNonPublicField (dataManager, "_objectLoader");
+      return (IObjectLoader) PrivateInvoke.GetNonPublicField(dataManager, "_objectLoader");
     }
 
     public static void AddDataContainer (DataManager dataManager, DataContainer dataContainer)
     {
-      GetDataContainerMap (dataManager).Register (dataContainer);
+      GetDataContainerMap(dataManager).Register(dataContainer);
     }
   }
 }

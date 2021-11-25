@@ -32,9 +32,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var attributeName = "test-attribute";
       var attributeValue = "WithoutSingleQuote";
 
-      var foundElement = home.Scope.FindTagWithAttribute (tagSelector, attributeName, attributeValue);
+      var foundElement = home.Scope.FindTagWithAttribute(tagSelector, attributeName, attributeValue);
 
-      Assert.That (foundElement.Exists());
+      Assert.That(foundElement.Exists());
     }
     
     [Test]
@@ -45,9 +45,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var attributeName = "test-attribute";
       var attributeValue = "With'SingleQuote";
 
-      var foundElement = home.Scope.FindTagWithAttribute (tagSelector, attributeName, attributeValue);
+      var foundElement = home.Scope.FindTagWithAttribute(tagSelector, attributeName, attributeValue);
 
-      Assert.That (foundElement.Exists());
+      Assert.That(foundElement.Exists());
     }
     
     [Test]
@@ -59,9 +59,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var attributeName = "test-attribute";
       var attributeValue = "WithoutSingleQuote";
 
-      var foundElement = home.Scope.FindTagWithAttributeUsingOperator (tagSelector, op, attributeName, attributeValue);
+      var foundElement = home.Scope.FindTagWithAttributeUsingOperator(tagSelector, op, attributeName, attributeValue);
 
-      Assert.That (foundElement.Exists());
+      Assert.That(foundElement.Exists());
     }
     
     [Test]
@@ -73,9 +73,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var attributeName = "test-attribute";
       var attributeValue = "With'SingleQuote";
 
-      var foundElement = home.Scope.FindTagWithAttributeUsingOperator (tagSelector, op, attributeName, attributeValue);
+      var foundElement = home.Scope.FindTagWithAttributeUsingOperator(tagSelector, op, attributeName, attributeValue);
 
-      Assert.That (foundElement.Exists());
+      Assert.That(foundElement.Exists());
     }
     
     [Test]
@@ -84,11 +84,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
       var tagSelector = "span";
       var attributesDictionary = new Dictionary<string, string>();
-      attributesDictionary.Add ("test-attribute", "WithoutSingleQuote");
+      attributesDictionary.Add("test-attribute", "WithoutSingleQuote");
 
-      var foundElement = home.Scope.FindTagWithAttributes (tagSelector, attributesDictionary);
+      var foundElement = home.Scope.FindTagWithAttributes(tagSelector, attributesDictionary);
 
-      Assert.That (foundElement.Exists());
+      Assert.That(foundElement.Exists());
     }
     
     [Test]
@@ -97,16 +97,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
       var tagSelector = "span";
       var attributesDictionary = new Dictionary<string, string>();
-      attributesDictionary.Add ("test-attribute", "With'SingleQuote");
+      attributesDictionary.Add("test-attribute", "With'SingleQuote");
 
-      var foundElement = home.Scope.FindTagWithAttributes (tagSelector, attributesDictionary);
+      var foundElement = home.Scope.FindTagWithAttributes(tagSelector, attributesDictionary);
 
-      Assert.That (foundElement.Exists());
+      Assert.That(foundElement.Exists());
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("CoypuElementScopeFindExtensionsTest.wxe");
+      return Start<WxePageObject>("CoypuElementScopeFindExtensionsTest.wxe");
     }
   }
 }

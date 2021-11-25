@@ -34,8 +34,8 @@ namespace Remotion.Collections.Caching
 
     public InvalidationTokenBasedCacheDecorator (ICache<TKey, TValue> innerCache, InvalidationToken invalidationToken)
     {
-      ArgumentUtility.CheckNotNull ("innerCache", innerCache);
-      ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
+      ArgumentUtility.CheckNotNull("innerCache", innerCache);
+      ArgumentUtility.CheckNotNull("invalidationToken", invalidationToken);
 
       _innerCache = innerCache;
       _invalidationToken = invalidationToken;
@@ -50,20 +50,20 @@ namespace Remotion.Collections.Caching
 
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
 
       CheckRevision();
-      return _innerCache.GetOrCreateValue (key, valueFactory);
+      return _innerCache.GetOrCreateValue(key, valueFactory);
     }
 
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
       if (CheckRevision())
       {
-        return _innerCache.TryGetValue (key, out value);
+        return _innerCache.TryGetValue(key, out value);
       }
       else
       {
@@ -106,7 +106,7 @@ namespace Remotion.Collections.Caching
     private bool CheckRevision ()
     {
       // ReSharper disable InconsistentlySynchronizedField
-      if (_invalidationToken.IsCurrent (_revision))
+      if (_invalidationToken.IsCurrent(_revision))
         return true;
       // ReSharper restore InconsistentlySynchronizedField
 
@@ -115,7 +115,7 @@ namespace Remotion.Collections.Caching
         // If the code enters the lock, a different thread may already have cleared the cache. 
         // After the cache was successfully cleared, the revision will be up-to-date unless there has been another change in the meantime.
         // Therefor, we can skip the cache-clear if the revision is current.
-        if (_invalidationToken.IsCurrent (_revision))
+        if (_invalidationToken.IsCurrent(_revision))
           return true;
 
         ClearInternal();
@@ -130,7 +130,7 @@ namespace Remotion.Collections.Caching
       {
         _revision = _invalidationToken.GetCurrent();
         _innerCache.Clear();
-      } while (!_invalidationToken.IsCurrent (_revision));
+      } while (!_invalidationToken.IsCurrent(_revision));
     }
   }
 }

@@ -39,30 +39,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       base.SetUp();
 
-      _column1 = ColumnDefinitionObjectMother.CreateColumn ("Column1");
-      _column2 = ColumnDefinitionObjectMother.CreateColumn ("Column2");
-      _column3 = ColumnDefinitionObjectMother.CreateColumn ("Column3");
-      _specification = new SelectedColumnsSpecification (new[] { _column1, _column2, _column3 });
+      _column1 = ColumnDefinitionObjectMother.CreateColumn("Column1");
+      _column2 = ColumnDefinitionObjectMother.CreateColumn("Column2");
+      _column3 = ColumnDefinitionObjectMother.CreateColumn("Column3");
+      _specification = new SelectedColumnsSpecification(new[] { _column1, _column2, _column3 });
       _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect>();
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("Column1")).Return ("[delimited Column1]");
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("Column2")).Return ("[delimited Column2]");
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("Column3")).Return ("[delimited Column3]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Column1")).Return("[delimited Column1]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Column2")).Return("[delimited Column2]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Column3")).Return("[delimited Column3]");
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_specification.SelectedColumns, Is.EqualTo (new[] { _column1, _column2, _column3 }));
+      Assert.That(_specification.SelectedColumns, Is.EqualTo(new[] { _column1, _column2, _column3 }));
     }
 
     [Test]
     public void AppendProjection ()
     {
-      var sb = new StringBuilder ("xx");
+      var sb = new StringBuilder("xx");
 
-      _specification.AppendProjection (sb, _sqlDialectStub);
+      _specification.AppendProjection(sb, _sqlDialectStub);
 
-      Assert.That (sb.ToString(), Is.EqualTo ("xx[delimited Column1], [delimited Column2], [delimited Column3]"));
+      Assert.That(sb.ToString(), Is.EqualTo("xx[delimited Column1], [delimited Column2], [delimited Column3]"));
     }
 
     [Test]
@@ -70,44 +70,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       var sb = new StringBuilder();
 
-      var specification = new SelectedColumnsSpecification (new[] { null, _column2, null });
-      specification.AppendProjection (sb, _sqlDialectStub);
+      var specification = new SelectedColumnsSpecification(new[] { null, _column2, null });
+      specification.AppendProjection(sb, _sqlDialectStub);
 
-      Assert.That (sb.ToString(), Is.EqualTo ("NULL, [delimited Column2], NULL"));
+      Assert.That(sb.ToString(), Is.EqualTo("NULL, [delimited Column2], NULL"));
     }
 
     [Test]
     public void Union ()
     {
-      var column4 = ColumnDefinitionObjectMother.CreateColumn ("Column4");
-      var column5 = ColumnDefinitionObjectMother.CreateColumn ("Column5");
+      var column4 = ColumnDefinitionObjectMother.CreateColumn("Column4");
+      var column5 = ColumnDefinitionObjectMother.CreateColumn("Column5");
 
-      var result = (SelectedColumnsSpecification) _specification.Union (new[] { column4, column5 });
+      var result = (SelectedColumnsSpecification) _specification.Union(new[] { column4, column5 });
 
-      Assert.That (result.SelectedColumns, Is.EqualTo (new[] { _column1, _column2, _column3, column4, column5 }));
+      Assert.That(result.SelectedColumns, Is.EqualTo(new[] { _column1, _column2, _column3, column4, column5 }));
     }
 
     [Test]
     public void Union_DuplicatedColumns ()
     {
-      var column4 = ColumnDefinitionObjectMother.CreateColumn ("Column4");
+      var column4 = ColumnDefinitionObjectMother.CreateColumn("Column4");
 
-      var result = (SelectedColumnsSpecification) _specification.Union (new[] { column4, column4 });
+      var result = (SelectedColumnsSpecification) _specification.Union(new[] { column4, column4 });
 
-      Assert.That (result.SelectedColumns, Is.EqualTo (new[] { _column1, _column2, _column3, column4 }));
+      Assert.That(result.SelectedColumns, Is.EqualTo(new[] { _column1, _column2, _column3, column4 }));
     }
 
     [Test]
     public void AdjustForTable ()
     {
-      var table = TableDefinitionObjectMother.Create (
+      var table = TableDefinitionObjectMother.Create(
           TestDomainStorageProviderDefinition,
-          new[] { new SimpleStoragePropertyDefinition (typeof (int), _column1) });
+          new[] { new SimpleStoragePropertyDefinition(typeof (int), _column1) });
 
-      var result = _specification.AdjustForTable (table);
+      var result = _specification.AdjustForTable(table);
 
-      Assert.That (result, Is.TypeOf<SelectedColumnsSpecification>());
-      Assert.That (((SelectedColumnsSpecification) result).SelectedColumns, Is.EqualTo (new[] { _column1, null, null }));
+      Assert.That(result, Is.TypeOf<SelectedColumnsSpecification>());
+      Assert.That(((SelectedColumnsSpecification) result).SelectedColumns, Is.EqualTo(new[] { _column1, null, null }));
     }
   }
 }

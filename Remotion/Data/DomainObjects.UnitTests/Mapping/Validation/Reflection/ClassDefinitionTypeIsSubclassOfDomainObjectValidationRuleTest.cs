@@ -35,22 +35,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void ClassDefinitionTypeIsSubClassOfDomainObject ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (DerivedValidationDomainObjectClass));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (DerivedValidationDomainObjectClass));
       
-      var validationResult = _validationRule.Validate (classDefinition);
+      var validationResult = _validationRule.Validate(classDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void ClassDefinitionTypeIsNoSubClassOfDomainObject ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("String", typeof (string));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("String", typeof (string));
       
-      var validationResult = _validationRule.Validate (classDefinition);
+      var validationResult = _validationRule.Validate(classDefinition);
 
       var expectedMessage = "Type 'String' of class 'String' is not assignable to 'DomainObject'.\r\n\r\nDeclaring type: System.String";
-      AssertMappingValidationResult (validationResult, false, expectedMessage);
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
   }
 }

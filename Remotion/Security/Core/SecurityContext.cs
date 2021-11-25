@@ -42,9 +42,9 @@ namespace Remotion.Security
     /// <returns>A new instance of the <see cref="SecurityContext"/> type.</returns>
     public static SecurityContext CreateStateless (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (ISecurableObject));
 
-      return new SecurityContext (type, null, null, null, true, new Dictionary<string, EnumWrapper>(), new EnumWrapper[0]);
+      return new SecurityContext(type, null, null, null, true, new Dictionary<string, EnumWrapper>(), new EnumWrapper[0]);
     }
 
     /// <summary>
@@ -73,11 +73,11 @@ namespace Remotion.Security
     public static SecurityContext Create (
         Type type, string owner, string ownerGroup, string ownerTenant, IDictionary<string, Enum> states, ICollection<Enum> abstractRoles)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (ISecurableObject));
-      ArgumentUtility.CheckNotNull ("states", states);
-      ArgumentUtility.CheckNotNull ("abstractRoles", abstractRoles);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNull("states", states);
+      ArgumentUtility.CheckNotNull("abstractRoles", abstractRoles);
 
-      return new SecurityContext (type, owner, ownerGroup, ownerTenant, false, InitializeStates (states), InitializeAbstractRoles (abstractRoles));
+      return new SecurityContext(type, owner, ownerGroup, ownerTenant, false, InitializeStates(states), InitializeAbstractRoles(abstractRoles));
     }
 
     /// <summary>
@@ -109,11 +109,11 @@ namespace Remotion.Security
         IDictionary<string, EnumWrapper> states,
         ICollection<EnumWrapper> abstractRoles)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (ISecurableObject));
-      ArgumentUtility.CheckNotNull ("states", states);
-      ArgumentUtility.CheckNotNull ("abstractRoles", abstractRoles);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNull("states", states);
+      ArgumentUtility.CheckNotNull("abstractRoles", abstractRoles);
 
-      return new SecurityContext (type, owner, ownerGroup, ownerTenant, false, new Dictionary<string, EnumWrapper> (states), abstractRoles.ToArray());
+      return new SecurityContext(type, owner, ownerGroup, ownerTenant, false, new Dictionary<string, EnumWrapper>(states), abstractRoles.ToArray());
     }
 
     private static EnumWrapper[] InitializeAbstractRoles (ICollection<Enum> abstractRoles)
@@ -124,17 +124,17 @@ namespace Remotion.Security
       {
         Type roleType = abstractRole.GetType();
         // C# compiler 7.2 already provides caching for anonymous method.
-        if (!s_validAbstractRoleTypeCache.GetOrAdd (roleType, key => AttributeUtility.IsDefined<AbstractRoleAttribute> (key, false)))
+        if (!s_validAbstractRoleTypeCache.GetOrAdd(roleType, key => AttributeUtility.IsDefined<AbstractRoleAttribute>(key, false)))
         {
-          string message = string.Format (
+          string message = string.Format(
               "Enumerated Type '{0}' cannot be used as an abstract role. Valid abstract roles must have the {1} applied.",
               roleType,
               typeof (AbstractRoleAttribute).GetFullNameSafe());
 
-          throw new ArgumentException (message, "abstractRoles");
+          throw new ArgumentException(message, "abstractRoles");
         }
 
-        abstractRoleList.Add (EnumWrapper.Get(abstractRole));
+        abstractRoleList.Add(EnumWrapper.Get(abstractRole));
       }
       return abstractRoleList.ToArray();
     }
@@ -147,17 +147,17 @@ namespace Remotion.Security
       {
         Type stateType = valuePair.Value.GetType();
         // C# compiler 7.2 already provides caching for anonymous method.
-        if (!s_validSecurityStateTypeCache.GetOrAdd (stateType, key => AttributeUtility.IsDefined<SecurityStateAttribute> (key, false)))
+        if (!s_validSecurityStateTypeCache.GetOrAdd(stateType, key => AttributeUtility.IsDefined<SecurityStateAttribute>(key, false)))
         {
-          string message = string.Format (
+          string message = string.Format(
               "Enumerated Type '{0}' cannot be used as a security state. Valid security states must have the {1} applied.",
               stateType,
               typeof (SecurityStateAttribute).GetFullNameSafe());
 
-          throw new ArgumentException (message, "states");
+          throw new ArgumentException(message, "states");
         }
 
-        securityStates.Add (valuePair.Key, EnumWrapper.Get(valuePair.Value));
+        securityStates.Add(valuePair.Key, EnumWrapper.Get(valuePair.Value));
       }
       return securityStates;
     }
@@ -180,14 +180,14 @@ namespace Remotion.Security
         Dictionary<string, EnumWrapper> states,
         EnumWrapper[] abstractRoles)
     {
-      _class = TypeUtility.GetPartialAssemblyQualifiedName (classType);
-      _owner = StringUtility.EmptyToNull (owner);
-      _ownerGroup = StringUtility.EmptyToNull (ownerGroup);
-      _ownerTenant = StringUtility.EmptyToNull (ownerTenant);
+      _class = TypeUtility.GetPartialAssemblyQualifiedName(classType);
+      _owner = StringUtility.EmptyToNull(owner);
+      _ownerGroup = StringUtility.EmptyToNull(ownerGroup);
+      _ownerTenant = StringUtility.EmptyToNull(ownerTenant);
       _isStateless = isStateless;
       _states = states;
       _abstractRoles = abstractRoles;
-      _hashCode = EqualityUtility.GetRotatedHashCode (_class, _owner, _ownerGroup, _ownerTenant);
+      _hashCode = EqualityUtility.GetRotatedHashCode(_class, _owner, _ownerGroup, _ownerTenant);
     }
 
     public string Class
@@ -222,7 +222,7 @@ namespace Remotion.Security
 
     public bool ContainsState (string propertyName)
     {
-      return _states.ContainsKey (propertyName);
+      return _states.ContainsKey(propertyName);
     }
 
     public bool IsStateless
@@ -242,7 +242,7 @@ namespace Remotion.Security
 
     public override bool Equals (object? obj)
     {
-      return EqualityUtility.EqualsEquatable (this, obj);
+      return EqualityUtility.EqualsEquatable(this, obj);
     }
 
     bool IEquatable<SecurityContext>.Equals (SecurityContext? other)
@@ -253,22 +253,22 @@ namespace Remotion.Security
       if (this._isStateless != other._isStateless)
         return false;
 
-      if (!string.Equals (this._class, other._class, StringComparison.Ordinal))
+      if (!string.Equals(this._class, other._class, StringComparison.Ordinal))
         return false;
 
-      if (!string.Equals (this._owner, other._owner, StringComparison.Ordinal))
+      if (!string.Equals(this._owner, other._owner, StringComparison.Ordinal))
         return false;
 
-      if (!string.Equals (this._ownerGroup, other._ownerGroup, StringComparison.Ordinal))
+      if (!string.Equals(this._ownerGroup, other._ownerGroup, StringComparison.Ordinal))
         return false;
 
-      if (!string.Equals (this._ownerTenant, other._ownerTenant, StringComparison.Ordinal))
+      if (!string.Equals(this._ownerTenant, other._ownerTenant, StringComparison.Ordinal))
         return false;
 
-      if (!EqualsStates (this._states, other._states))
+      if (!EqualsStates(this._states, other._states))
         return false;
 
-      return EqualsAbstractRoles (this._abstractRoles, other._abstractRoles);
+      return EqualsAbstractRoles(this._abstractRoles, other._abstractRoles);
     }
 
     private bool EqualsStates (IDictionary<string, EnumWrapper> leftStates, IDictionary<string, EnumWrapper> rightStates)
@@ -279,9 +279,9 @@ namespace Remotion.Security
       foreach (KeyValuePair<string, EnumWrapper> leftValuePair in leftStates)
       {
         EnumWrapper rightValue;
-        if (!rightStates.TryGetValue (leftValuePair.Key, out rightValue))
+        if (!rightStates.TryGetValue(leftValuePair.Key, out rightValue))
           return false;
-        if (!leftValuePair.Value.Equals (rightValue))
+        if (!leftValuePair.Value.Equals(rightValue))
           return false;
       }
 
@@ -293,8 +293,8 @@ namespace Remotion.Security
       if (leftAbstractRoles.Length != rightAbstractRoles.Length)
         return false;
 
-      HashSet<EnumWrapper> left = new HashSet<EnumWrapper> (leftAbstractRoles);
-      return left.SetEquals (rightAbstractRoles);
+      HashSet<EnumWrapper> left = new HashSet<EnumWrapper>(leftAbstractRoles);
+      return left.SetEquals(rightAbstractRoles);
     }
   }
 }

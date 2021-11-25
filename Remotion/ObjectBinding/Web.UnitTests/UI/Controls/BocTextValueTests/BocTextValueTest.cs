@@ -19,10 +19,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       var control = new BocTextValue();
       var serviceLocatorMock = new Mock<IServiceLocator>();
       var factoryMock = new Mock<IBocTextValueValidatorFactory>();
-      serviceLocatorMock.Setup (m => m.GetInstance<IBocTextValueValidatorFactory>()).Returns (factoryMock.Object).Verifiable();
-      factoryMock.Setup (f => f.CreateValidators (control, false)).Returns (new List<BaseValidator>()).Verifiable();
+      serviceLocatorMock.Setup(m => m.GetInstance<IBocTextValueValidatorFactory>()).Returns(factoryMock.Object).Verifiable();
+      factoryMock.Setup(f => f.CreateValidators(control, false)).Returns(new List<BaseValidator>()).Verifiable();
 
-      using (new ServiceLocatorScope (serviceLocatorMock.Object))
+      using (new ServiceLocatorScope(serviceLocatorMock.Object))
       {
         control.CreateValidators();
       }

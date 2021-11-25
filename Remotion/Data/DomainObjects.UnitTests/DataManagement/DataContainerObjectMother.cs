@@ -24,53 +24,53 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
   {
     public static DataContainer Create (ObjectID objectID = null)
     {
-      return CreateNew (objectID);
+      return CreateNew(objectID);
     }
 
     public static DataContainer Create (DomainObject domainObject)
     {
-      var dataContainer = Create (domainObject.ID);
-      dataContainer.SetDomainObject (domainObject);
+      var dataContainer = Create(domainObject.ID);
+      dataContainer.SetDomainObject(domainObject);
       return dataContainer;
     }
 
     public static DataContainer CreateNew (ObjectID objectID = null)
     {
-      var dataContainer = DataContainer.CreateNew (objectID ?? new ObjectID(typeof (Order), Guid.NewGuid()));
+      var dataContainer = DataContainer.CreateNew(objectID ?? new ObjectID(typeof (Order), Guid.NewGuid()));
       return dataContainer;
     }
 
     public static DataContainer CreateNew (DomainObject domainObject)
     {
-      var dataContainer = CreateNew (domainObject.ID);
-      dataContainer.SetDomainObject (domainObject);
+      var dataContainer = CreateNew(domainObject.ID);
+      dataContainer.SetDomainObject(domainObject);
       return dataContainer;
     }
 
     public static DataContainer CreateExisting (ObjectID objectID = null)
     {
-      var dataContainer = DataContainer.CreateForExisting (objectID ?? new ObjectID(typeof (Order), Guid.NewGuid ()), 4711, pd => pd.DefaultValue);
+      var dataContainer = DataContainer.CreateForExisting(objectID ?? new ObjectID(typeof (Order), Guid.NewGuid()), 4711, pd => pd.DefaultValue);
       return dataContainer;
     }
 
     public static DataContainer CreateExisting (DomainObject domainObject)
     {
-      var dataContainer = CreateExisting (domainObject.ID);
-      dataContainer.SetDomainObject (domainObject);
+      var dataContainer = CreateExisting(domainObject.ID);
+      dataContainer.SetDomainObject(domainObject);
       return dataContainer;
     }
 
     public static DataContainer CreateDeleted (ObjectID objectID = null)
     {
-      var dataContainer = CreateExisting (objectID);
+      var dataContainer = CreateExisting(objectID);
       dataContainer.Delete();
       return dataContainer;
     }
 
     public static DataContainer CreateDeleted (DomainObject domainObject)
     {
-      var dataContainer = CreateDeleted (domainObject.ID);
-      dataContainer.SetDomainObject (domainObject);
+      var dataContainer = CreateDeleted(domainObject.ID);
+      dataContainer.SetDomainObject(domainObject);
       return dataContainer;
     }
   }

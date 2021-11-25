@@ -28,13 +28,13 @@ namespace Remotion.Web
   /// </summary>
   public class PlainTextStringConverter : TypeConverter
   {
-    private static readonly MethodInfo s_createFromTextMethodInfo = MemberInfoFromExpressionUtility.GetMethod (() => PlainTextString.CreateFromText (null));
+    private static readonly MethodInfo s_createFromTextMethodInfo = MemberInfoFromExpressionUtility.GetMethod(() => PlainTextString.CreateFromText(null));
 
     /// <inheritdoc />
     public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
     {
       return sourceType == typeof (string)
-             || base.CanConvertFrom (context, sourceType);
+             || base.CanConvertFrom(context, sourceType);
     }
 
     /// <inheritdoc />
@@ -42,7 +42,7 @@ namespace Remotion.Web
     {
       return destinationType == typeof (string)
              || destinationType == typeof (InstanceDescriptor)
-             || base.CanConvertTo (context, destinationType);
+             || base.CanConvertTo(context, destinationType);
     }
 
     /// <inheritdoc />
@@ -52,9 +52,9 @@ namespace Remotion.Web
         return null;
 
       if (value is string @string)
-        return PlainTextString.CreateFromText (@string);
+        return PlainTextString.CreateFromText(@string);
 
-      return base.ConvertFrom (context, culture, value);
+      return base.ConvertFrom(context, culture, value);
     }
 
     /// <inheritdoc />
@@ -69,15 +69,15 @@ namespace Remotion.Web
         return plainTextString.GetValue();
 
       if (destinationType == typeof (InstanceDescriptor))
-        return ConvertToInstanceDescriptor (in plainTextString);
+        return ConvertToInstanceDescriptor(in plainTextString);
 
-      return base.ConvertTo (context, culture, value, destinationType);
+      return base.ConvertTo(context, culture, value, destinationType);
     }
 
     private object ConvertToInstanceDescriptor (in PlainTextString input)
     {
       var rawString = input.GetValue();
-      return new InstanceDescriptor (s_createFromTextMethodInfo, new[] { rawString });
+      return new InstanceDescriptor(s_createFromTextMethodInfo, new[] { rawString });
     }
   }
 }

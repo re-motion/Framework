@@ -35,23 +35,23 @@ namespace Remotion.Validation.Merging
 
     public ObjectValidatorExtractor (IEnumerable<RemovingObjectValidatorRegistration> removingObjectValidatorRegistrations, ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull ("removingObjectValidatorRegistrations", removingObjectValidatorRegistrations);
-      ArgumentUtility.CheckNotNull ("logContext", logContext);
+      ArgumentUtility.CheckNotNull("removingObjectValidatorRegistrations", removingObjectValidatorRegistrations);
+      ArgumentUtility.CheckNotNull("logContext", logContext);
 
-      _validatorTypesToRemove = removingObjectValidatorRegistrations.ToLookup (r => r.ValidatorType);
+      _validatorTypesToRemove = removingObjectValidatorRegistrations.ToLookup(r => r.ValidatorType);
       _logContext = logContext;
     }
 
     public IEnumerable<IObjectValidator> ExtractObjectValidatorsToRemove (IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull ("addingObjectValidationRuleCollector", addingObjectValidationRuleCollector);
+      ArgumentUtility.CheckNotNull("addingObjectValidationRuleCollector", addingObjectValidationRuleCollector);
 
       foreach (var existingValidator in addingObjectValidationRuleCollector.Validators)
       {
-        var removingObjectValidatorRegistrations = GetRemovingObjectValidatorRegistrations (existingValidator, addingObjectValidationRuleCollector).ToArray();
+        var removingObjectValidatorRegistrations = GetRemovingObjectValidatorRegistrations(existingValidator, addingObjectValidationRuleCollector).ToArray();
         if (removingObjectValidatorRegistrations.Any())
         {
-          _logContext.ValidatorRemoved (existingValidator, removingObjectValidatorRegistrations, addingObjectValidationRuleCollector);
+          _logContext.ValidatorRemoved(existingValidator, removingObjectValidatorRegistrations, addingObjectValidationRuleCollector);
           yield return existingValidator;
         }
       }
@@ -62,14 +62,14 @@ namespace Remotion.Validation.Merging
         IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector)
     {
       return _validatorTypesToRemove[validator.GetType()]
-          .Where (rwc => IsTypeMatch (addingObjectValidationRuleCollector.ValidatedType, rwc.RemovingObjectValidationRuleCollector.ValidatedType))
-          .Where (rwc => IsCollectorTypeMatch (addingObjectValidationRuleCollector.CollectorType, rwc.CollectorTypeToRemoveFrom))
-          .Where (rwc => IsPredicateMatch (validator, rwc.ValidatorPredicate));
+          .Where(rwc => IsTypeMatch(addingObjectValidationRuleCollector.ValidatedType, rwc.RemovingObjectValidationRuleCollector.ValidatedType))
+          .Where(rwc => IsCollectorTypeMatch(addingObjectValidationRuleCollector.CollectorType, rwc.CollectorTypeToRemoveFrom))
+          .Where(rwc => IsPredicateMatch(validator, rwc.ValidatorPredicate));
 
       static bool IsTypeMatch (ITypeInformation currentType, ITypeInformation typeToMatch)
       {
         // TODO-5906: should the object validator removal be based on the inheritance hierarchy or constrained to the exact type?
-        return currentType.IsAssignableFrom (typeToMatch);
+        return currentType.IsAssignableFrom(typeToMatch);
       }
 
       static bool IsCollectorTypeMatch (Type currentCollectorType, Type? collectorTypeToMatch)
@@ -81,7 +81,7 @@ namespace Remotion.Validation.Merging
       static bool IsPredicateMatch (IObjectValidator currentValidator, Func<IObjectValidator, bool>? predicateToMatch)
       {
         return predicateToMatch == null
-               || predicateToMatch (currentValidator);
+               || predicateToMatch(currentValidator);
       }
     }
   }

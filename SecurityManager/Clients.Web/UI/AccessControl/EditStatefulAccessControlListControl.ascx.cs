@@ -42,7 +42,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     // member fields
     
-    private readonly List<EditStateCombinationControl> _editStateCombinationControls = new List<EditStateCombinationControl> ();
+    private readonly List<EditStateCombinationControl> _editStateCombinationControls = new List<EditStateCombinationControl>();
     private bool _isCreatingNewStateCombination;
 
     // construction and disposing
@@ -62,21 +62,21 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     protected override void OnPreRender (EventArgs e)
     {
       { // Base
-        var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
-        DeleteAccessControlListButton.Text = resourceManager.GetString (ResourceIdentifier.DeleteAccessControlListButtonText);
-        NewAccessControlEntryButton.Text = resourceManager.GetString (ResourceIdentifier.NewAccessControlEntryButtonText);
+        var resourceManager = GetResourceManager(typeof (ResourceIdentifier));
+        DeleteAccessControlListButton.Text = resourceManager.GetString(ResourceIdentifier.DeleteAccessControlListButtonText);
+        NewAccessControlEntryButton.Text = resourceManager.GetString(ResourceIdentifier.NewAccessControlEntryButtonText);
       }
 
       {// This
-        var resourceManager = GetResourceManager (typeof (StatefulAccessResourceIdentifier));
+        var resourceManager = GetResourceManager(typeof (StatefulAccessResourceIdentifier));
         MissingStateCombinationsValidator.ErrorMessage =
-            resourceManager.GetString (StatefulAccessResourceIdentifier.MissingStateCombinationsValidatorErrorMessage);
-        NewStateCombinationButton.Text = resourceManager.GetString (StatefulAccessResourceIdentifier.NewStateCombinationButtonText);
+            resourceManager.GetString(StatefulAccessResourceIdentifier.MissingStateCombinationsValidatorErrorMessage);
+        NewStateCombinationButton.Text = resourceManager.GetString(StatefulAccessResourceIdentifier.NewStateCombinationButtonText);
       }
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      EnableNewStateCombinationButton ();
+      EnableNewStateCombinationButton();
     }
 
     private void EnableNewStateCombinationButton ()
@@ -86,43 +86,43 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     public override void LoadValues (bool interim)
     {
-      base.LoadValues (interim);
+      base.LoadValues(interim);
 
-      LoadStateCombinations (interim);
+      LoadStateCombinations(interim);
     }
 
     private void LoadStateCombinations (bool interim)
     {
-      CreateEditStateCombinationControls (CurrentAccessControlList.StateCombinations);
+      CreateEditStateCombinationControls(CurrentAccessControlList.StateCombinations);
       foreach (var control in _editStateCombinationControls)
-        control.LoadValues (interim);
+        control.LoadValues(interim);
     }
 
     private void CreateEditStateCombinationControls (IList<StateCombination> stateCombinations)
     {
-      StateCombinationControls.Controls.Clear ();
-      _editStateCombinationControls.Clear ();
+      StateCombinationControls.Controls.Clear();
+      _editStateCombinationControls.Clear();
 
       for (int i = 0; i < stateCombinations.Count; i++)
       {
         StateCombination stateCombination = stateCombinations[i];
 
-        EditStateCombinationControl editStateCombinationControl = (EditStateCombinationControl) LoadControl ("EditStateCombinationControl.ascx");
+        EditStateCombinationControl editStateCombinationControl = (EditStateCombinationControl) LoadControl("EditStateCombinationControl.ascx");
         editStateCombinationControl.ID = "SC_" + i;
         editStateCombinationControl.BusinessObject = stateCombination;
         editStateCombinationControl.Delete += EditStateCombinationControl_Delete;
 
-        StateCombinationControls.Controls.Add (editStateCombinationControl);
+        StateCombinationControls.Controls.Add(editStateCombinationControl);
 
-        _editStateCombinationControls.Add (editStateCombinationControl);
+        _editStateCombinationControls.Add(editStateCombinationControl);
       }
     }
 
     public override bool SaveValues (bool interim)
     {
-      var hasSaved = base.SaveValues (interim);
+      var hasSaved = base.SaveValues(interim);
 
-      hasSaved &= SaveStateCombinations (interim);
+      hasSaved &= SaveStateCombinations(interim);
       return hasSaved;
     }
 
@@ -130,33 +130,33 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     {
       bool hasSaved = true;
       foreach (EditStateCombinationControl control in _editStateCombinationControls)
-        hasSaved &= control.SaveValues (interim);
+        hasSaved &= control.SaveValues(interim);
       return hasSaved;
     }
 
     public override bool Validate ()
     {
-      bool isValid = base.Validate ();
+      bool isValid = base.Validate();
 
-      isValid &= ValidateStateCombinations ();
+      isValid &= ValidateStateCombinations();
 
       return isValid;
     }
 
     private bool ValidateStateCombinations (params EditStateCombinationControl[] excludedControls)
     {
-      List<EditStateCombinationControl> excludedControlList = new List<EditStateCombinationControl> (excludedControls);
+      List<EditStateCombinationControl> excludedControlList = new List<EditStateCombinationControl>(excludedControls);
 
       bool isValid = true;
       foreach (EditStateCombinationControl control in _editStateCombinationControls)
       {
-        if (!excludedControlList.Contains (control))
-          isValid &= control.Validate ();
+        if (!excludedControlList.Contains(control))
+          isValid &= control.Validate();
       }
 
       if (!_isCreatingNewStateCombination)
       {
-        MissingStateCombinationsValidator.Validate ();
+        MissingStateCombinationsValidator.Validate();
         isValid &= MissingStateCombinationsValidator.IsValid;
       }
 
@@ -171,37 +171,37 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     protected void NewStateCombinationButton_Click (object sender, EventArgs e)
     {
       _isCreatingNewStateCombination = true;
-      Page.PrepareValidation ();
-      bool isValid = Validate ();
+      Page.PrepareValidation();
+      bool isValid = Validate();
       if (!isValid)
       {
         return;
       }
-      SaveValues (false);
+      SaveValues(false);
       Page.IsDirty = true;
 
-      CurrentAccessControlList.CreateStateCombination ();
+      CurrentAccessControlList.CreateStateCombination();
 
-      LoadStateCombinations (false);
+      LoadStateCombinations(false);
       _isCreatingNewStateCombination = false;
     }
 
     void EditStateCombinationControl_Delete (object sender, EventArgs e)
     {
       EditStateCombinationControl editStateCombinationControl = (EditStateCombinationControl) sender;
-      Page.PrepareValidation ();
-      bool isValid = ValidateStateCombinations (editStateCombinationControl);
+      Page.PrepareValidation();
+      bool isValid = ValidateStateCombinations(editStateCombinationControl);
       if (!isValid)
         return;
 
-      _editStateCombinationControls.Remove (editStateCombinationControl);
+      _editStateCombinationControls.Remove(editStateCombinationControl);
       StateCombination accessControlEntry = (StateCombination) editStateCombinationControl.DataSource.BusinessObject;
-      accessControlEntry.Delete ();
+      accessControlEntry.Delete();
 
-      SaveStateCombinations (false);
+      SaveStateCombinations(false);
       Page.IsDirty = true;
 
-      LoadStateCombinations (false);
+      LoadStateCombinations(false);
     }
   }
 }

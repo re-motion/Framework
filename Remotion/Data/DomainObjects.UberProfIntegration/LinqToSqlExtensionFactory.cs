@@ -29,15 +29,15 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
   {
     public IEnumerable<IPersistenceExtension> CreatePersistenceExtensions (Guid clientTransactionID)
     {
-      yield return new LinqToSqlExtension (clientTransactionID, LinqToSqlAppenderProxy.Instance);
+      yield return new LinqToSqlExtension(clientTransactionID, LinqToSqlAppenderProxy.Instance);
     }
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
 
       if (clientTransaction.ParentTransaction == null)
-        yield return new LinqToSqlExtension (clientTransaction.ID, LinqToSqlAppenderProxy.Instance);
+        yield return new LinqToSqlExtension(clientTransaction.ID, LinqToSqlAppenderProxy.Instance);
     }
   }
 }

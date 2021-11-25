@@ -41,108 +41,108 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
       _adapter = new InterceptedPropertyCollectorAdapter();
 
-      _classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (MyDomainObject));
+      _classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (MyDomainObject));
       _concreteBaseType = typeof (MyConcreteBaseType);
     }
 
     [Test]
     public void GetPropertyInterceptors_FiltersNonOverridableProperty ()
     {
-      var result = _adapter.GetPropertyInterceptors (_classDefinition, _concreteBaseType);
+      var result = _adapter.GetPropertyInterceptors(_classDefinition, _concreteBaseType);
 
-      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty ((MyDomainObject o) => o.NonOverridableProperty);
-      CheckAbsence (result, property.GetGetMethod(), property.GetSetMethod());
+      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty((MyDomainObject o) => o.NonOverridableProperty);
+      CheckAbsence(result, property.GetGetMethod(), property.GetSetMethod());
     }
 
     [Test]
     public void GetPropertyInterceptors_UsesMostDerivedOverride ()
     {
-      var result = _adapter.GetPropertyInterceptors (_classDefinition, _concreteBaseType);
+      var result = _adapter.GetPropertyInterceptors(_classDefinition, _concreteBaseType);
 
-      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty ((MyConcreteBaseType o) => o.OverriddenProperty);
-      CheckContains (result, property.GetGetMethod(), property.GetSetMethod());
+      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty((MyConcreteBaseType o) => o.OverriddenProperty);
+      CheckContains(result, property.GetGetMethod(), property.GetSetMethod());
     }
 
     [Test]
     public void GetPropertyInterceptors_ReturnsImplementingAccessor_ForAutomaticProperty ()
     {
-      var result = _adapter.GetPropertyInterceptors (_classDefinition, _concreteBaseType).ToArray();
+      var result = _adapter.GetPropertyInterceptors(_classDefinition, _concreteBaseType).ToArray();
 
-      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty ((MyDomainObject o) => o.AutomaticProperty);
+      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty((MyDomainObject o) => o.AutomaticProperty);
       var getter = property.GetGetMethod();
       var setter = property.GetSetMethod();
-      CheckContains (result, property.GetGetMethod(), property.GetSetMethod());
+      CheckContains(result, property.GetGetMethod(), property.GetSetMethod());
 
-      var getterInterceptor = result.Single (ai => GetInterceptedAccessorMethod (ai).Equals (getter));
-      var setterInterceptor = result.Single (ai => GetInterceptedAccessorMethod (ai).Equals (setter));
-      Assert.That (getterInterceptor, Is.TypeOf<ImplementingGetAccessorInterceptor>());
-      Assert.That (setterInterceptor, Is.TypeOf<ImplementingSetAccessorInterceptor>());
+      var getterInterceptor = result.Single(ai => GetInterceptedAccessorMethod(ai).Equals(getter));
+      var setterInterceptor = result.Single(ai => GetInterceptedAccessorMethod(ai).Equals(setter));
+      Assert.That(getterInterceptor, Is.TypeOf<ImplementingGetAccessorInterceptor>());
+      Assert.That(setterInterceptor, Is.TypeOf<ImplementingSetAccessorInterceptor>());
     }
 
     [Test]
     public void GetPropertyInterceptors_ReturnsWrappingAccessor_ForUserImplementedProperty ()
     {
-      var result = _adapter.GetPropertyInterceptors (_classDefinition, _concreteBaseType).ToArray();
+      var result = _adapter.GetPropertyInterceptors(_classDefinition, _concreteBaseType).ToArray();
 
-      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty ((MyDomainObject o) => o.UserImplementedProperty);
+      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty((MyDomainObject o) => o.UserImplementedProperty);
       var getter = property.GetGetMethod();
       var setter = property.GetSetMethod();
-      CheckContains (result, property.GetGetMethod(), property.GetSetMethod());
+      CheckContains(result, property.GetGetMethod(), property.GetSetMethod());
 
-      var getterInterceptor = result.Single (ai => GetInterceptedAccessorMethod (ai).Equals (getter));
-      var setterInterceptor = result.Single (ai => GetInterceptedAccessorMethod (ai).Equals (setter));
-      Assert.That (getterInterceptor, Is.TypeOf<WrappingAccessorInterceptor>());
-      Assert.That (setterInterceptor, Is.TypeOf<WrappingAccessorInterceptor>());
+      var getterInterceptor = result.Single(ai => GetInterceptedAccessorMethod(ai).Equals(getter));
+      var setterInterceptor = result.Single(ai => GetInterceptedAccessorMethod(ai).Equals(setter));
+      Assert.That(getterInterceptor, Is.TypeOf<WrappingAccessorInterceptor>());
+      Assert.That(setterInterceptor, Is.TypeOf<WrappingAccessorInterceptor>());
     }
 
     [Test]
     public void GetPropertyInterceptors_ConsideresNonPublicProperty ()
     {
-      var result = _adapter.GetPropertyInterceptors (_classDefinition, _concreteBaseType);
+      var result = _adapter.GetPropertyInterceptors(_classDefinition, _concreteBaseType);
 
-      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty ((MyDomainObject o) => o.NonPublicProperty);
-      CheckContains (result, property.GetGetMethod (true), property.GetSetMethod (true));
+      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty((MyDomainObject o) => o.NonPublicProperty);
+      CheckContains(result, property.GetGetMethod(true), property.GetSetMethod(true));
     }
 
     [Test]
     public void GetPropertyInterceptors_SupportsReadOnlyProperties ()
     {
-      var result = _adapter.GetPropertyInterceptors (_classDefinition, _concreteBaseType);
+      var result = _adapter.GetPropertyInterceptors(_classDefinition, _concreteBaseType);
 
-      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty ((MyDomainObject o) => o.ReadOnlyProperty);
-      CheckContains (result, property.GetGetMethod());
+      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty((MyDomainObject o) => o.ReadOnlyProperty);
+      CheckContains(result, property.GetGetMethod());
     }
 
     [Test]
     public void GetPropertyInterceptors_SupportsWriteOnlyProperties ()
     {
-      var result = _adapter.GetPropertyInterceptors (_classDefinition, _concreteBaseType);
+      var result = _adapter.GetPropertyInterceptors(_classDefinition, _concreteBaseType);
 
-      var property = typeof (MyDomainObject).GetProperty ("WriteOnlyProperty");
-      CheckContains (result, property.GetSetMethod());
+      var property = typeof (MyDomainObject).GetProperty("WriteOnlyProperty");
+      CheckContains(result, property.GetSetMethod());
     }
 
     private void CheckAbsence (IEnumerable<IAccessorInterceptor> accessorInterceptors, params MethodInfo[] expectedAbsentInterceptedAccessors)
     {
-      ArgumentUtility.CheckNotNull ("accessorInterceptors", accessorInterceptors);
-      ArgumentUtility.CheckNotNull ("expectedAbsentInterceptedAccessors", expectedAbsentInterceptedAccessors);
+      ArgumentUtility.CheckNotNull("accessorInterceptors", accessorInterceptors);
+      ArgumentUtility.CheckNotNull("expectedAbsentInterceptedAccessors", expectedAbsentInterceptedAccessors);
 
-      var actualInterceptedAccessors = accessorInterceptors.Select (GetInterceptedAccessorMethod);
-      Assert.That (actualInterceptedAccessors.Intersect (expectedAbsentInterceptedAccessors), Is.Empty);
+      var actualInterceptedAccessors = accessorInterceptors.Select(GetInterceptedAccessorMethod);
+      Assert.That(actualInterceptedAccessors.Intersect(expectedAbsentInterceptedAccessors), Is.Empty);
     }
 
     private void CheckContains (IEnumerable<IAccessorInterceptor> accessorInterceptors, params MethodInfo[] expectedInterceptedAccessors)
     {
-      ArgumentUtility.CheckNotNull ("accessorInterceptors", accessorInterceptors);
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("expectedInterceptedAccessors", expectedInterceptedAccessors);
+      ArgumentUtility.CheckNotNull("accessorInterceptors", accessorInterceptors);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("expectedInterceptedAccessors", expectedInterceptedAccessors);
 
-      var actualInterceptedAccessors = accessorInterceptors.Select (GetInterceptedAccessorMethod);
-      CollectionAssert.IsSubsetOf (expectedInterceptedAccessors, actualInterceptedAccessors);
+      var actualInterceptedAccessors = accessorInterceptors.Select(GetInterceptedAccessorMethod);
+      CollectionAssert.IsSubsetOf(expectedInterceptedAccessors, actualInterceptedAccessors);
     }
 
     private MethodInfo GetInterceptedAccessorMethod (IAccessorInterceptor accessorInterceptor)
     {
-      return (MethodInfo) PrivateInvoke.GetNonPublicField (accessorInterceptor, "_interceptedAccessorMethod");
+      return (MethodInfo) PrivateInvoke.GetNonPublicField(accessorInterceptor, "_interceptedAccessorMethod");
     }
 
     [DBTable]

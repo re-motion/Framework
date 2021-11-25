@@ -31,27 +31,27 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     public StorageConfiguration ()
     {
-      _storageProviderGroupsProperty = new ConfigurationProperty (
+      _storageProviderGroupsProperty = new ConfigurationProperty(
           "groups",
           typeof (ConfigurationElementCollection<StorageGroupElement>),
           null,
           ConfigurationPropertyOptions.None);
 
-      _defaultStorageProviderDefinitionHelper = new StorageProviderDefinitionHelper (this);
-      _providerHelpers.Add (_defaultStorageProviderDefinitionHelper);
+      _defaultStorageProviderDefinitionHelper = new StorageProviderDefinitionHelper(this);
+      _providerHelpers.Add(_defaultStorageProviderDefinitionHelper);
 
-      _properties.Add (_storageProviderGroupsProperty);
-      _providerHelpers.ForEach (current => current.InitializeProperties (_properties));
+      _properties.Add(_storageProviderGroupsProperty);
+      _providerHelpers.ForEach(current => current.InitializeProperties(_properties));
     }
 
     public StorageConfiguration (ProviderCollection<StorageProviderDefinition> providers, StorageProviderDefinition defaultProvider)
         : this()
     {
-      ArgumentUtility.CheckNotNull ("providers", providers);
+      ArgumentUtility.CheckNotNull("providers", providers);
 
       _defaultStorageProviderDefinitionHelper.Provider = defaultProvider;
 
-      ProviderCollection<StorageProviderDefinition> providersCopy = CopyProvidersAsReadOnly (providers);
+      ProviderCollection<StorageProviderDefinition> providersCopy = CopyProvidersAsReadOnly(providers);
       _defaultStorageProviderDefinitionHelper.Providers = providersCopy;
     }
 
@@ -74,12 +74,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     {
       base.PostDeserialize();
 
-      _providerHelpers.ForEach (current => current.PostDeserialze());
+      _providerHelpers.ForEach(current => current.PostDeserialze());
     }
 
     public ConfigurationException CreateMissingDefaultProviderException (string context)
     {
-      return new ConfigurationException (
+      return new ConfigurationException(
           "Missing default storage provider. " 
           + context 
           + Environment.NewLine
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     {
       ProviderCollection<StorageProviderDefinition> providersCopy = new ProviderCollection<StorageProviderDefinition>();
       foreach (StorageProviderDefinition provider in providers)
-        providersCopy.Add (provider);
+        providersCopy.Add(provider);
 
       providersCopy.SetReadOnly();
       return providersCopy;

@@ -32,14 +32,14 @@ namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
 
     public void CheckPageForError (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionParser();
-      var result = aspNetRequestErrorDetectionParser.Parse (scope);
+      var result = aspNetRequestErrorDetectionParser.Parse(scope);
 
       if (result.HasError)
       {
-        throw new WebTestException ("Request has failed due to a server error", new ServerErrorException (result.Message, result.Stacktrace));
+        throw new WebTestException("Request has failed due to a server error", new ServerErrorException(result.Message, result.Stacktrace));
       }
     }
   }

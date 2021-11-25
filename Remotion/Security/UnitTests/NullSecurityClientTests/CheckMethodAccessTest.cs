@@ -34,34 +34,34 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [SetUp]
     public void SetUp ()
     {
-      _testHelper = NullSecurityClientTestHelper.CreateForStatefulSecurity ();
-      _securityClient = _testHelper.CreateSecurityClient ();
-      _methodInfo = typeof (SecurableObject).GetMethod ("Show");
+      _testHelper = NullSecurityClientTestHelper.CreateForStatefulSecurity();
+      _securityClient = _testHelper.CreateSecurityClient();
+      _methodInfo = typeof (SecurableObject).GetMethod("Show");
       _methodInformation = new Mock<IMethodInformation>();
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "Show");
+      _securityClient.CheckMethodAccess(_testHelper.SecurableObject, "Show");
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_AccessGranted_WithMethodInfo ()
     {
-      _securityClient.CheckMethodAccess (_testHelper.SecurableObject, _methodInfo);
+      _securityClient.CheckMethodAccess(_testHelper.SecurableObject, _methodInfo);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_AccessGranted_WithMethodInformation ()
     {
-      _securityClient.CheckMethodAccess (_testHelper.SecurableObject, _methodInformation.Object);
+      _securityClient.CheckMethodAccess(_testHelper.SecurableObject, _methodInformation.Object);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
@@ -69,10 +69,10 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "Show");
+        _securityClient.CheckMethodAccess(_testHelper.SecurableObject, "Show");
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
@@ -80,10 +80,10 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckMethodAccess (_testHelper.SecurableObject, _methodInfo);
+        _securityClient.CheckMethodAccess(_testHelper.SecurableObject, _methodInfo);
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
@@ -91,34 +91,34 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckMethodAccess (_testHelper.SecurableObject, _methodInformation.Object);
+        _securityClient.CheckMethodAccess(_testHelper.SecurableObject, _methodInformation.Object);
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull ()
     {
-      _securityClient.CheckMethodAccess (new SecurableObject (null), "Show");
+      _securityClient.CheckMethodAccess(new SecurableObject(null), "Show");
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull_WithMethodInfo ()
     {
-      _securityClient.CheckMethodAccess (new SecurableObject (null), _methodInfo);
+      _securityClient.CheckMethodAccess(new SecurableObject(null), _methodInfo);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull_WithMethodInformation ()
     {
-      _securityClient.CheckMethodAccess (new SecurableObject (null), _methodInformation.Object);
+      _securityClient.CheckMethodAccess(new SecurableObject(null), _methodInformation.Object);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
   }
 }

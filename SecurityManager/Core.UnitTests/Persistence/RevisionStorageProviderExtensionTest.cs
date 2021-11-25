@@ -32,37 +32,37 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ();
+      ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope();
 
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateEmptyDomain ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      dbFixtures.CreateEmptyDomain();
       
-      _factory = new OrganizationalStructureFactory ();
+      _factory = new OrganizationalStructureFactory();
     }
 
     [Test]
     public void Saving_OneSecurityManagerDomainObject ()
     {
-      Dev.Null = _factory.CreateTenant ();
+      Dev.Null = _factory.CreateTenant();
 
-      ClientTransactionScope.CurrentTransaction.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit();
 
-      var value = ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetGetRevisionQuery (new RevisionKey()));
-      Assert.That (value, Is.InstanceOf<Guid>());
-      Assert.That (value, Is.Not.EqualTo (Guid.Empty));
+      var value = ClientTransaction.CreateRootTransaction().QueryManager.GetScalar(Revision.GetGetRevisionQuery(new RevisionKey()));
+      Assert.That(value, Is.InstanceOf<Guid>());
+      Assert.That(value, Is.Not.EqualTo(Guid.Empty));
     }
 
     [Test]
     public void Saving_DisacardedDomainObject ()
     {
-      Tenant tenant = _factory.CreateTenant ();
-      tenant.Delete ();
+      Tenant tenant = _factory.CreateTenant();
+      tenant.Delete();
 
-      ClientTransactionScope.CurrentTransaction.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit();
 
-      Assert.That (ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetGetRevisionQuery(new RevisionKey())), Is.Null);
+      Assert.That(ClientTransaction.CreateRootTransaction().QueryManager.GetScalar(Revision.GetGetRevisionQuery(new RevisionKey())), Is.Null);
     }
   }
 }

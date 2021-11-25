@@ -26,90 +26,90 @@ namespace Remotion.Globalization.UnitTests
     [Test]
     public void Initialize_WithLocalizedNameAndCultureSet ()
     {
-      var attribute = new MultiLingualNameAttribute ("The Name", "en-US");
+      var attribute = new MultiLingualNameAttribute("The Name", "en-US");
 
-      Assert.That (attribute.LocalizedName, Is.EqualTo ("The Name"));
-      Assert.That (attribute.Culture, Is.EqualTo (CultureInfo.GetCultureInfo ("en-US")));
+      Assert.That(attribute.LocalizedName, Is.EqualTo("The Name"));
+      Assert.That(attribute.Culture, Is.EqualTo(CultureInfo.GetCultureInfo("en-US")));
     }
 
     [Test]
     public void Initialize_WithCultureIsEmpty_UsesInvariantCulture ()
     {
-      var attribute = new MultiLingualNameAttribute ("The Name", "");
+      var attribute = new MultiLingualNameAttribute("The Name", "");
 
-      Assert.That (attribute.LocalizedName, Is.EqualTo ("The Name"));
-      Assert.That (attribute.Culture, Is.EqualTo (CultureInfo.InvariantCulture));
+      Assert.That(attribute.LocalizedName, Is.EqualTo("The Name"));
+      Assert.That(attribute.Culture, Is.EqualTo(CultureInfo.InvariantCulture));
     }
 
     [Test]
     public void Initialize_WithCultureIsNull_ThrowsArgumentNullException ()
     {
       // ReSharper disable AssignNullToNotNullAttribute
-      Assert.That (() => new MultiLingualNameAttribute ("The Name", null), Throws.TypeOf<ArgumentNullException>());
+      Assert.That(() => new MultiLingualNameAttribute("The Name", null), Throws.TypeOf<ArgumentNullException>());
       // ReSharper restore AssignNullToNotNullAttribute
     }
 
     [Test]
     public void Initialize_WithDe ()
     {
-      var attribute = new DeAttribute ("The Name");
+      var attribute = new DeAttribute("The Name");
 
-      Assert.That (attribute.LocalizedName, Is.EqualTo ("The Name"));
-      Assert.That (attribute.Culture, Is.EqualTo (CultureInfo.GetCultureInfo ("de")));
+      Assert.That(attribute.LocalizedName, Is.EqualTo("The Name"));
+      Assert.That(attribute.Culture, Is.EqualTo(CultureInfo.GetCultureInfo("de")));
     }
 
     [Test]
     public void Initialize_WithDeAT ()
     {
-      var attribute = new DeATAttribute ("The Name");
+      var attribute = new DeATAttribute("The Name");
 
-      Assert.That (attribute.LocalizedName, Is.EqualTo ("The Name"));
-      Assert.That (attribute.Culture, Is.EqualTo (CultureInfo.GetCultureInfo ("de-AT")));
+      Assert.That(attribute.LocalizedName, Is.EqualTo("The Name"));
+      Assert.That(attribute.Culture, Is.EqualTo(CultureInfo.GetCultureInfo("de-AT")));
     }
 
     [Test]
     public void Initialize_WithDeCH ()
     {
-      var attribute = new DeCHAttribute ("The Name");
+      var attribute = new DeCHAttribute("The Name");
 
-      Assert.That (attribute.LocalizedName, Is.EqualTo ("The Name"));
-      Assert.That (attribute.Culture, Is.EqualTo (CultureInfo.GetCultureInfo ("de-CH")));
+      Assert.That(attribute.LocalizedName, Is.EqualTo("The Name"));
+      Assert.That(attribute.Culture, Is.EqualTo(CultureInfo.GetCultureInfo("de-CH")));
     }
 
     [Test]
     public void Initialize_WithDeDE ()
     {
-      var attribute = new DeDEAttribute ("The Name");
+      var attribute = new DeDEAttribute("The Name");
 
-      Assert.That (attribute.LocalizedName, Is.EqualTo ("The Name"));
-      Assert.That (attribute.Culture, Is.EqualTo (CultureInfo.GetCultureInfo ("de-DE")));
+      Assert.That(attribute.LocalizedName, Is.EqualTo("The Name"));
+      Assert.That(attribute.Culture, Is.EqualTo(CultureInfo.GetCultureInfo("de-DE")));
     }
 
     [Test]
     public void Initialize_WithEn ()
     {
-      var attribute = new EnAttribute ("The Name");
+      var attribute = new EnAttribute("The Name");
 
-      Assert.That (attribute.LocalizedName, Is.EqualTo ("The Name"));
-      Assert.That (attribute.Culture, Is.EqualTo (CultureInfo.GetCultureInfo ("en")));
+      Assert.That(attribute.LocalizedName, Is.EqualTo("The Name"));
+      Assert.That(attribute.Culture, Is.EqualTo(CultureInfo.GetCultureInfo("en")));
     }
 
     [Test]
     public void Initialize_WithEnGB ()
     {
-      var attribute = new EnGBAttribute ("The Name");
+      var attribute = new EnGBAttribute("The Name");
 
-      Assert.That (attribute.LocalizedName, Is.EqualTo ("The Name"));
-      Assert.That (attribute.Culture, Is.EqualTo (CultureInfo.GetCultureInfo ("en-GB")));
+      Assert.That(attribute.LocalizedName, Is.EqualTo("The Name"));
+      Assert.That(attribute.Culture, Is.EqualTo(CultureInfo.GetCultureInfo("en-GB")));
     }
 
     [Test]
     public void Initialize_WithEnUS ()
     {
-      var attribute = new EnUSAttribute ("The Name");
+      var attribute = new EnUSAttribute("The Name");
 
-      Assert.That (attribute.LocalizedName, Is.EqualTo ("The Name"));
-      Assert.That (attribute.Culture, Is.EqualTo (CultureInfo.GetCultureInfo ("en-US")));
+      Assert.That(attribute.LocalizedName, Is.EqualTo("The Name"));
+      Assert.That(attribute.Culture, Is.EqualTo(CultureInfo.GetCultureInfo("en-US")));
     }
   }
 }

@@ -32,29 +32,29 @@ namespace Remotion.Mixins.Definitions
   /// </remarks>
   public static class TargetClassDefinitionFactory
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (LogManager));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof (LogManager));
 
     public static TargetClassDefinition CreateAndValidate (ClassContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      s_log.DebugFormat ("Creating a validated class definition for: {0}.", context);
+      s_log.DebugFormat("Creating a validated class definition for: {0}.", context);
 
-      using (StopwatchScope.CreateScope (s_log, LogLevel.Debug, "Time needed to create and validate class definition: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_log, LogLevel.Debug, "Time needed to create and validate class definition: {elapsed}."))
       {
-        var definition = CreateInternal (context);
-        Validate (definition);
+        var definition = CreateInternal(context);
+        Validate(definition);
         return definition;
       }
     }
 
     public static TargetClassDefinition CreateWithoutValidation (ClassContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      s_log.DebugFormat ("Creating an unvalidated class definition for: {0}.", context);
+      s_log.DebugFormat("Creating an unvalidated class definition for: {0}.", context);
 
-      using (StopwatchScope.CreateScope (s_log, LogLevel.Debug, "Time needed to create class definition: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_log, LogLevel.Debug, "Time needed to create class definition: {elapsed}."))
       {
         return CreateInternal(context);
       }
@@ -63,14 +63,14 @@ namespace Remotion.Mixins.Definitions
     private static TargetClassDefinition CreateInternal (ClassContext context)
     {
       var builder = SafeServiceLocator.Current.GetInstance<ITargetClassDefinitionBuilder>();
-      return builder.Build (context);
+      return builder.Build(context);
     }
 
     private static void Validate (TargetClassDefinition definition)
     {
-      var logData = Validator.Validate (definition);
-      if (logData.GetNumberOfFailures () > 0 || logData.GetNumberOfUnexpectedExceptions () > 0)
-        throw new ValidationException (logData);
+      var logData = Validator.Validate(definition);
+      if (logData.GetNumberOfFailures() > 0 || logData.GetNumberOfUnexpectedExceptions() > 0)
+        throw new ValidationException(logData);
     }
   }
 }

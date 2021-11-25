@@ -40,22 +40,22 @@ namespace Remotion.Web.UI.Controls.WebButtonImplementation.Rendering
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       string scriptKey = typeof (WebButtonRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (WebButtonRenderer), ResourceType.Html, "WebButton.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (scriptKey, scriptUrl);
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof (WebButtonRenderer), ResourceType.Html, "WebButton.js");
+      htmlHeadAppender.RegisterJavaScriptInclude(scriptKey, scriptUrl);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string styleKey = typeof (WebButtonRenderer).GetFullNameChecked() + "_Style";
-      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (WebButtonRenderer), ResourceType.Html, "WebButton.css");
-      htmlHeadAppender.RegisterStylesheetLink (styleKey, styleUrl, HtmlHeadAppender.Priority.Library);
+      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof (WebButtonRenderer), ResourceType.Html, "WebButton.css");
+      htmlHeadAppender.RegisterStylesheetLink(styleKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }
 
     public void Render (WebButtonRenderingContext renderingContext)
     {
-      throw new NotSupportedException ("The WebButton does not support customized rendering.");
+      throw new NotSupportedException("The WebButton does not support customized rendering.");
     }
   }
 }

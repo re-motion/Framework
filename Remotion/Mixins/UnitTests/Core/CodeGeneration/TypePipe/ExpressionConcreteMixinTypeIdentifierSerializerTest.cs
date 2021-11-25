@@ -41,70 +41,70 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       // base.SetUp ();
 
-      _simpleMethod1 = Assertion.IsNotNull (typeof (BT1Mixin1).GetMethod ("VirtualMethod"));
-      _simpleMethod2 = Assertion.IsNotNull (typeof (BT1Mixin2).GetMethod ("VirtualMethod"));
-      _genericMethod = Assertion.IsNotNull (typeof (BaseType7).GetMethod ("One"));
+      _simpleMethod1 = Assertion.IsNotNull(typeof (BT1Mixin1).GetMethod("VirtualMethod"));
+      _simpleMethod2 = Assertion.IsNotNull(typeof (BT1Mixin2).GetMethod("VirtualMethod"));
+      _genericMethod = Assertion.IsNotNull(typeof (BaseType7).GetMethod("One"));
       
-      _methodOnGenericClosedWithReferenceType = typeof (GenericClassWithAllKindsOfMembers<string>).GetMethod ("Method");
-      _methodOnGenericClosedWithValueType = typeof (GenericClassWithAllKindsOfMembers<int>).GetMethod ("Method");
+      _methodOnGenericClosedWithReferenceType = typeof (GenericClassWithAllKindsOfMembers<string>).GetMethod("Method");
+      _methodOnGenericClosedWithValueType = typeof (GenericClassWithAllKindsOfMembers<int>).GetMethod("Method");
     }
 
     [Test]
     public void IntegrationTest ()
     {
-      var referenceIdentifier = new ConcreteMixinTypeIdentifier (
+      var referenceIdentifier = new ConcreteMixinTypeIdentifier(
           typeof (BT1Mixin1),
           new HashSet<MethodInfo> { _simpleMethod1 },
           new HashSet<MethodInfo> { _simpleMethod2 });
 
       var serializer = new ExpressionConcreteMixinTypeIdentifierSerializer();
-      referenceIdentifier.Serialize (serializer);
+      referenceIdentifier.Serialize(serializer);
 
-      object result = BuildTypeAndInvokeMethod (serializer.CreateExpression());
+      object result = BuildTypeAndInvokeMethod(serializer.CreateExpression());
 
-      Assert.That (result, Is.EqualTo (referenceIdentifier));
+      Assert.That(result, Is.EqualTo(referenceIdentifier));
     }
 
     [Test]
     public void IntegrationTest_MethodsOnGenericType ()
     {
-      var referenceIdentifier = new ConcreteMixinTypeIdentifier (
+      var referenceIdentifier = new ConcreteMixinTypeIdentifier(
           typeof (BT1Mixin1),
           new HashSet<MethodInfo> { _methodOnGenericClosedWithReferenceType, _methodOnGenericClosedWithValueType },
           new HashSet<MethodInfo> { _methodOnGenericClosedWithReferenceType, _methodOnGenericClosedWithValueType });
 
       var serializer = new ExpressionConcreteMixinTypeIdentifierSerializer();
-      referenceIdentifier.Serialize (serializer);
+      referenceIdentifier.Serialize(serializer);
 
-      object result = BuildTypeAndInvokeMethod (serializer.CreateExpression());
+      object result = BuildTypeAndInvokeMethod(serializer.CreateExpression());
 
-      Assert.That (result, Is.EqualTo (referenceIdentifier));
+      Assert.That(result, Is.EqualTo(referenceIdentifier));
     }
 
     [Test]
     public void IntegrationTest_GenericMethods ()
     {
-      var referenceIdentifier = new ConcreteMixinTypeIdentifier (
+      var referenceIdentifier = new ConcreteMixinTypeIdentifier(
           typeof (BT1Mixin1),
           new HashSet<MethodInfo> { _genericMethod },
           new HashSet<MethodInfo> { _genericMethod });
 
       var serializer = new ExpressionConcreteMixinTypeIdentifierSerializer();
-      referenceIdentifier.Serialize (serializer);
+      referenceIdentifier.Serialize(serializer);
 
-      object result = BuildTypeAndInvokeMethod (serializer.CreateExpression());
+      object result = BuildTypeAndInvokeMethod(serializer.CreateExpression());
 
-      Assert.That (result, Is.EqualTo (referenceIdentifier));
+      Assert.That(result, Is.EqualTo(referenceIdentifier));
     }
 
     private ConcreteMixinTypeIdentifier BuildTypeAndInvokeMethod (Expression expressionToReturn)
     {
       // This needs to generate code into a TypeBuilder as dynamic methods won't trigger the code gen bug with generic methods (see comment in 
       // ExpressionConcreteMixinTypeIdentifierSerializer.ConcreteMixinTypeIdentifier).
-      var adHocCodeGenerator = new AdHocCodeGenerator (TestContext.CurrentContext.TestDirectory);
-      var lambda = Expression.Lambda<Func<ConcreteMixinTypeIdentifier>> (expressionToReturn);
+      var adHocCodeGenerator = new AdHocCodeGenerator(TestContext.CurrentContext.TestDirectory);
+      var lambda = Expression.Lambda<Func<ConcreteMixinTypeIdentifier>>(expressionToReturn);
 
-      return adHocCodeGenerator.CreateMethodAndRun<ConcreteMixinTypeIdentifier> (action: lambda.CompileToMethod, saveOnError: true);
+      return adHocCodeGenerator.CreateMethodAndRun<ConcreteMixinTypeIdentifier>(action: lambda.CompileToMethod, saveOnError: true);
     }
   }
 }

@@ -38,34 +38,34 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper = new SecurityClientTestHelper();
       _securityClient = _testHelper.CreateSecurityClient();
       _methodInformation = new Mock<IMethodInformation>();
-      _methodInformation.Setup (n => n.Name).Returns ("InstanceMethod");
-      _methodInfo = typeof (SecurableObject).GetMethod ("IsValid", new[] { typeof (SecurableObject) });
+      _methodInformation.Setup(n => n.Name).Returns("InstanceMethod");
+      _methodInfo = typeof (SecurableObject).GetMethod("IsValid", new[] { typeof (SecurableObject) });
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectMemberResolverGetMethodInformation (_methodInfo, MemberAffiliation.Instance, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation.Object, GeneralAccessTypes.Edit, TestAccessTypes.First);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (new Enum[] { GeneralAccessTypes.Edit, TestAccessTypes.First }, true);
+      _testHelper.ExpectMemberResolverGetMethodInformation(_methodInfo, MemberAffiliation.Instance, _methodInformation.Object);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, GeneralAccessTypes.Edit, TestAccessTypes.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new Enum[] { GeneralAccessTypes.Edit, TestAccessTypes.First }, true);
 
-      bool hasAccess = _securityClient.HasMethodAccess (_testHelper.SecurableObject, _methodInfo);
+      bool hasAccess = _securityClient.HasMethodAccess(_testHelper.SecurableObject, _methodInfo);
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_AccessDenied ()
     {
-      _testHelper.ExpectMemberResolverGetMethodInformation (_methodInfo, MemberAffiliation.Instance, _methodInformation.Object);
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation.Object, GeneralAccessTypes.Read, TestAccessTypes.First);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (new Enum[] { GeneralAccessTypes.Read, TestAccessTypes.First }, false);
+      _testHelper.ExpectMemberResolverGetMethodInformation(_methodInfo, MemberAffiliation.Instance, _methodInformation.Object);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, GeneralAccessTypes.Read, TestAccessTypes.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new Enum[] { GeneralAccessTypes.Read, TestAccessTypes.First }, false);
 
-      bool hasAccess = _securityClient.HasMethodAccess (_testHelper.SecurableObject, _methodInfo);
+      bool hasAccess = _securityClient.HasMethodAccess(_testHelper.SecurableObject, _methodInfo);
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.False);
+      Assert.That(hasAccess, Is.False);
     }
   }
 }

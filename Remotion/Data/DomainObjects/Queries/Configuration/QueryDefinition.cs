@@ -100,22 +100,22 @@ public class QueryDefinition : ISerializable, IObjectReference
       QueryType queryType, 
       Type collectionType)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("queryID", queryID);
-    ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-    ArgumentUtility.CheckNotNullOrEmpty ("statement", statement);
-    ArgumentUtility.CheckValidEnumValue ("queryType", queryType);
+    ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
+    ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+    ArgumentUtility.CheckNotNullOrEmpty("statement", statement);
+    ArgumentUtility.CheckValidEnumValue("queryType", queryType);
 
     if (queryType == QueryType.Scalar && collectionType != null)
-      throw new ArgumentException (string.Format ("The scalar query '{0}' must not specify a collectionType.", queryID), "collectionType");
+      throw new ArgumentException(string.Format("The scalar query '{0}' must not specify a collectionType.", queryID), "collectionType");
 
     if (queryType == QueryType.Collection && collectionType == null)
       collectionType = typeof (DomainObjectCollection);
 
     if (collectionType != null 
-        && !collectionType.Equals (typeof (DomainObjectCollection)) 
-        && !collectionType.IsSubclassOf (typeof (DomainObjectCollection)))
+        && !collectionType.Equals(typeof (DomainObjectCollection)) 
+        && !collectionType.IsSubclassOf(typeof (DomainObjectCollection)))
     {
-      throw new ArgumentException (string.Format (
+      throw new ArgumentException(string.Format(
           "The collectionType of query '{0}' must be 'Remotion.Data.DomainObjects.DomainObjectCollection' or derived from it.", queryID), "collectionType");
     }
 
@@ -133,17 +133,17 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <param name="context">The source and destination of a given serialized stream.</param>
   protected QueryDefinition (SerializationInfo info, StreamingContext context)
   {
-    _id = info.GetString ("ID");
-    _ispartOfQueryConfiguration = info.GetBoolean ("IsPartOfQueryConfiguration");
+    _id = info.GetString("ID");
+    _ispartOfQueryConfiguration = info.GetBoolean("IsPartOfQueryConfiguration");
 
     if (!_ispartOfQueryConfiguration)
     {
-       var storageProviderID = info.GetString ("StorageProviderID");
-       _storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory (storageProviderID);
+       var storageProviderID = info.GetString("StorageProviderID");
+       _storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
 
-      _statement = info.GetString ("Statement");
-      _queryType = (QueryType) info.GetValue ("QueryType", typeof (QueryType));
-      _collectionType = (Type) info.GetValue ("CollectionType", typeof (Type));
+      _statement = info.GetString("Statement");
+      _queryType = (QueryType) info.GetValue("QueryType", typeof (QueryType));
+      _collectionType = (Type) info.GetValue("CollectionType", typeof (Type));
     }
   }
 
@@ -200,7 +200,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <param name="context">The contextual information about the source or destination of the serialization.</param>
   void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
   {
-    GetObjectData (info, context);
+    GetObjectData(info, context);
   }
 
   /// <summary>
@@ -213,17 +213,17 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <note type="inheritinfo">Overwrite this method to support serialization of derived classes.</note>
   protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
   {
-    info.AddValue ("ID", _id);
+    info.AddValue("ID", _id);
 
-    bool isPartOfQueryConfiguration = DomainObjectsConfiguration.Current.Query.QueryDefinitions.Contains (this);
-    info.AddValue ("IsPartOfQueryConfiguration", isPartOfQueryConfiguration);
+    bool isPartOfQueryConfiguration = DomainObjectsConfiguration.Current.Query.QueryDefinitions.Contains(this);
+    info.AddValue("IsPartOfQueryConfiguration", isPartOfQueryConfiguration);
 
     if (!isPartOfQueryConfiguration)
     {
-      info.AddValue ("StorageProviderID", StorageProviderDefinition.Name);
-      info.AddValue ("Statement", _statement);
-      info.AddValue ("QueryType", _queryType);
-      info.AddValue ("CollectionType", _collectionType);
+      info.AddValue("StorageProviderID", StorageProviderDefinition.Name);
+      info.AddValue("Statement", _statement);
+      info.AddValue("QueryType", _queryType);
+      info.AddValue("CollectionType", _collectionType);
     }
   }
 
@@ -240,7 +240,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   object IObjectReference.GetRealObject (StreamingContext context)
   {
     if (_ispartOfQueryConfiguration)
-      return DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory (_id);
+      return DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory(_id);
     else
       return this;
   }

@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public static GroupType NewObject ()
     {
-      return NewObject<GroupType> ();
+      return NewObject<GroupType>();
     }
 
     public static IQueryable<GroupType> FindAll ()
@@ -57,7 +57,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     [EditorBrowsable (EditorBrowsableState.Never)]
     public static void Search ()
     {
-      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
+      throw new NotImplementedException("This method is only intended for framework support and should never be called.");
     }
 
     protected GroupType ()
@@ -72,26 +72,26 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     protected override void OnDeleting (EventArgs args)
     {
-      base.OnDeleting (args);
+      base.OnDeleting(args);
      
       using (DefaultTransactionContext.ClientTransaction.EnterNonDiscardingScope())
       {
-        if (QueryFactory.CreateLinqQuery<Group>().Where (g => g.GroupType == this).Any())
+        if (QueryFactory.CreateLinqQuery<Group>().Where(g => g.GroupType == this).Any())
         {
-          throw new InvalidOperationException (
-              string.Format (
+          throw new InvalidOperationException(
+              string.Format(
                   "The GroupType '{0}' is still assigned to at least one group. Please update or delete the dependent groups before proceeding.", Name));
         }
 
-        var aces = QueryFactory.CreateLinqQuery<AccessControlEntry> ().Where (ace => ace.SpecificGroupType == this);
+        var aces = QueryFactory.CreateLinqQuery<AccessControlEntry>().Where(ace => ace.SpecificGroupType == this);
         
-        _deleteHandler = new DomainObjectDeleteHandler (aces, Positions);
+        _deleteHandler = new DomainObjectDeleteHandler(aces, Positions);
       }
     }
 
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
       _deleteHandler.Delete();
     }

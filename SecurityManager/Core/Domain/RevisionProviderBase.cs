@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Domain
       // While this is a potential memory leak, the revision providers are used with singleton-semantics anyway when instantiated via IoC,
       // so this shouldn't be an issue.
 
-      _cachedRevisions = new SafeContextSingleton<Dictionary<TRevisionKey, GuidRevisionValue>> (
+      _cachedRevisions = new SafeContextSingleton<Dictionary<TRevisionKey, GuidRevisionValue>>(
           SafeContextKeys.SecurityManagerRevision + "_" + Guid.NewGuid().ToString(),
           () => new Dictionary<TRevisionKey, GuidRevisionValue>());
 
@@ -48,18 +48,18 @@ namespace Remotion.SecurityManager.Domain
 
     public GuidRevisionValue GetRevision (TRevisionKey key)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
+      ArgumentUtility.CheckNotNull("key", key);
 
       var revisions = GetCachedRevisions();
-      return revisions.GetOrCreateValue (key, _getRevisionFromDatabaseFunc);
+      return revisions.GetOrCreateValue(key, _getRevisionFromDatabaseFunc);
     }
 
     public void InvalidateRevision (TRevisionKey key)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
+      ArgumentUtility.CheckNotNull("key", key);
 
       var revisions = GetCachedRevisions();
-      revisions.Remove (key);
+      revisions.Remove(key);
     }
 
     public void InvalidateAllRevisions ()
@@ -75,12 +75,12 @@ namespace Remotion.SecurityManager.Domain
 
     private GuidRevisionValue GetRevisionFromDatabase (TRevisionKey key)
     {
-      var value = (Guid?) ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetGetRevisionQuery (key));
+      var value = (Guid?) ClientTransaction.CreateRootTransaction().QueryManager.GetScalar(Revision.GetGetRevisionQuery(key));
 
       if (value.HasValue)
-        return new GuidRevisionValue (value.Value);
+        return new GuidRevisionValue(value.Value);
 
-      return new GuidRevisionValue (Guid.Empty);
+      return new GuidRevisionValue(Guid.Empty);
     }
 
   }

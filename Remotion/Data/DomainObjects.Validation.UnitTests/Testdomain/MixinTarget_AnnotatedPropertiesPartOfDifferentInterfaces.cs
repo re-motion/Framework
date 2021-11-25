@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
   {
     public static MixinTarget_AnnotatedPropertiesPartOfDifferentInterfaces NewObject ()
     {
-      return NewObject<MixinTarget_AnnotatedPropertiesPartOfDifferentInterfaces> ();
+      return NewObject<MixinTarget_AnnotatedPropertiesPartOfDifferentInterfaces>();
     }
   }
 }

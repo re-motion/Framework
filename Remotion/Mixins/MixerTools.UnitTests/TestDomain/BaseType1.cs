@@ -68,7 +68,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests.TestDomain
     internal Delegate[] GetVirtualEventInvocationList ()
     {
       if (VirtualEvent != null)
-        return VirtualEvent.GetInvocationList ();
+        return VirtualEvent.GetInvocationList();
       else
         return null;
     }

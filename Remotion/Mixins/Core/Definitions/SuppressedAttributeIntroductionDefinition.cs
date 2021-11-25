@@ -30,9 +30,9 @@ namespace Remotion.Mixins.Definitions
     public SuppressedAttributeIntroductionDefinition (IAttributeIntroductionTarget target, AttributeDefinition attribute,
         AttributeDefinition suppressor)
     {
-      ArgumentUtility.CheckNotNull ("target", target);
-      ArgumentUtility.CheckNotNull ("attribute", attribute);
-      ArgumentUtility.CheckNotNull ("suppressor", suppressor);
+      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentUtility.CheckNotNull("suppressor", suppressor);
 
       _target = target;
       _attribute = attribute;
@@ -71,8 +71,8 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
     }
   }
 }

@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects
 
     public ClientTransactionExtensionCollection (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
 
       _key = key;
     }
@@ -51,9 +51,9 @@ namespace Remotion.Data.DomainObjects
     {
       get 
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+        ArgumentUtility.CheckNotNullOrEmpty("key", key);
 
-        return (IClientTransactionExtension) BaseGetObject (key); 
+        return (IClientTransactionExtension) BaseGetObject(key); 
       }
     }
 
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The <see cref="IClientTransactionExtension"/> of the given <paramref name="index"/>.</returns>
     public IClientTransactionExtension this[int index]
     {
-      get { return (IClientTransactionExtension) BaseGetObject (index); }
+      get { return (IClientTransactionExtension) BaseGetObject(index); }
     }
 
     string IClientTransactionExtension.Key
@@ -81,15 +81,15 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>The order of the extensions in the collection is the order in which they are notified.</remarks>
     public void Add (IClientTransactionExtension clientTransactionExtension)
     {
-      ArgumentUtility.CheckNotNull ("clientTransactionExtension", clientTransactionExtension);
+      ArgumentUtility.CheckNotNull("clientTransactionExtension", clientTransactionExtension);
       
       var key = clientTransactionExtension.Key;
-      Assertion.IsNotNull (key, "IClientTransactionExtension.Key must not return null");
+      Assertion.IsNotNull(key, "IClientTransactionExtension.Key must not return null");
 
-      if (BaseContainsKey (key)) 
-        throw new InvalidOperationException (string.Format ("An extension with key '{0}' is already part of the collection.", key));
+      if (BaseContainsKey(key)) 
+        throw new InvalidOperationException(string.Format("An extension with key '{0}' is already part of the collection.", key));
       
-      BaseAdd (key, clientTransactionExtension);
+      BaseAdd(key, clientTransactionExtension);
     }
 
     /// <summary>
@@ -98,9 +98,9 @@ namespace Remotion.Data.DomainObjects
     /// <param name="key">The name of the extension. Must not be <see langword="null"/> or <see cref="System.String.Empty"/>.</param>
     public void Remove (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
 
-      BaseRemove (key);
+      BaseRemove(key);
     }
 
     /// <summary>
@@ -110,9 +110,9 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The index of the extension, or -1 if <paramref name="key"/> is not found.</returns>
     public int IndexOf (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
 
-      return BaseIndexOfKey (key);
+      return BaseIndexOfKey(key);
     }
 
     /// <summary>
@@ -125,15 +125,15 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>The order of the extensions in the collection is the order in which they are notified.</remarks>
     public void Insert (int index, IClientTransactionExtension clientTransactionExtension)
     {
-      ArgumentUtility.CheckNotNull ("clientTransactionExtension", clientTransactionExtension);
+      ArgumentUtility.CheckNotNull("clientTransactionExtension", clientTransactionExtension);
       
       var key = clientTransactionExtension.Key;
-      Assertion.IsNotNull (key, "IClientTransactionExtension.Key must not return null");
+      Assertion.IsNotNull(key, "IClientTransactionExtension.Key must not return null");
 
-      if (BaseContainsKey (key))
-        throw new InvalidOperationException (string.Format ("An extension with key '{0}' is already part of the collection.", key));
+      if (BaseContainsKey(key))
+        throw new InvalidOperationException(string.Format("An extension with key '{0}' is already part of the collection.", key));
 
-      BaseInsert (index, key, clientTransactionExtension);
+      BaseInsert(index, key, clientTransactionExtension);
     }
 
     #region Notification methods
@@ -141,255 +141,255 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void TransactionInitialize (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.DebugCheckNotNull("clientTransaction", clientTransaction);
 
       for (int i = 0; i < Count; i++)
-        this[i].TransactionInitialize (clientTransaction);
+        this[i].TransactionInitialize(clientTransaction);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void TransactionDiscard (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.DebugCheckNotNull("clientTransaction", clientTransaction);
 
       for (int i = 0; i < Count; i++)
-        this[i].TransactionDiscard (clientTransaction);
+        this[i].TransactionDiscard(clientTransaction);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void SubTransactionCreating (ClientTransaction parentClientTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull ("parentClientTransaction", parentClientTransaction);
+      ArgumentUtility.DebugCheckNotNull("parentClientTransaction", parentClientTransaction);
 
       for (int i = 0; i < Count; i++)
-        this[i].SubTransactionCreating (parentClientTransaction);
+        this[i].SubTransactionCreating(parentClientTransaction);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void SubTransactionInitialize (ClientTransaction parentClientTransaction, ClientTransaction subTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull ("parentClientTransaction", parentClientTransaction);
-      ArgumentUtility.DebugCheckNotNull ("subTransaction", subTransaction);
+      ArgumentUtility.DebugCheckNotNull("parentClientTransaction", parentClientTransaction);
+      ArgumentUtility.DebugCheckNotNull("subTransaction", subTransaction);
 
       for (int i = 0; i < Count; i++)
-        this[i].SubTransactionInitialize (parentClientTransaction, subTransaction);
+        this[i].SubTransactionInitialize(parentClientTransaction, subTransaction);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void SubTransactionCreated (ClientTransaction parentClientTransaction, ClientTransaction subTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull ("parentClientTransaction", parentClientTransaction);
-      ArgumentUtility.DebugCheckNotNull ("subTransaction", subTransaction);
+      ArgumentUtility.DebugCheckNotNull("parentClientTransaction", parentClientTransaction);
+      ArgumentUtility.DebugCheckNotNull("subTransaction", subTransaction);
 
       for (int i = 0; i < Count; i++)
-        this[i].SubTransactionCreated (parentClientTransaction, subTransaction);
+        this[i].SubTransactionCreated(parentClientTransaction, subTransaction);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
-      ArgumentUtility.DebugCheckNotNull ("type", type);
+      ArgumentUtility.DebugCheckNotNull("type", type);
 
       for (int i = 0; i < Count; i++)
-        this[i].NewObjectCreating (clientTransaction, type);
+        this[i].NewObjectCreating(clientTransaction, type);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void ObjectsLoading (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
-      ArgumentUtility.DebugCheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.DebugCheckNotNull("objectIDs", objectIDs);
 
       for (int i = 0; i < Count; i++)
-        this[i].ObjectsLoading (clientTransaction, objectIDs);
+        this[i].ObjectsLoading(clientTransaction, objectIDs);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> loadedDomainObjects)
     {
-      ArgumentUtility.DebugCheckNotNullOrEmpty ("loadedDomainObjects", loadedDomainObjects);
+      ArgumentUtility.DebugCheckNotNullOrEmpty("loadedDomainObjects", loadedDomainObjects);
 
       for (int i = 0; i < Count; i++)
-        this[i].ObjectsLoaded (clientTransaction, loadedDomainObjects);
+        this[i].ObjectsLoaded(clientTransaction, loadedDomainObjects);
     }
 
     public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
-      ArgumentUtility.DebugCheckNotNull ("unloadedDomainObjects", unloadedDomainObjects);
+      ArgumentUtility.DebugCheckNotNull("unloadedDomainObjects", unloadedDomainObjects);
 
       for (int i = 0; i < Count; i++)
-        this[i].ObjectsUnloading (clientTransaction, unloadedDomainObjects);
+        this[i].ObjectsUnloading(clientTransaction, unloadedDomainObjects);
     }
 
     public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
-      ArgumentUtility.DebugCheckNotNull ("unloadedDomainObjects", unloadedDomainObjects);
+      ArgumentUtility.DebugCheckNotNull("unloadedDomainObjects", unloadedDomainObjects);
 
       for (int i = 0; i < Count; i++)
-        this[i].ObjectsUnloaded (clientTransaction, unloadedDomainObjects);
+        this[i].ObjectsUnloaded(clientTransaction, unloadedDomainObjects);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
       for (int i = 0; i < Count; i++)
-        this[i].ObjectDeleting (clientTransaction, domainObject);
+        this[i].ObjectDeleting(clientTransaction, domainObject);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
       for (int i = 0; i < Count; i++)
-        this[i].ObjectDeleted (clientTransaction, domainObject);
+        this[i].ObjectDeleted(clientTransaction, domainObject);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("propertyDefinition", propertyDefinition);
 
       for (int i = 0; i < Count; i++)
-        this[i].PropertyValueReading (clientTransaction, domainObject, propertyDefinition, valueAccess);
+        this[i].PropertyValueReading(clientTransaction, domainObject, propertyDefinition, valueAccess);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("propertyDefinition", propertyDefinition);
 
       for (int i = 0; i < Count; i++)
-        this[i].PropertyValueRead (clientTransaction, domainObject, propertyDefinition, value, valueAccess);
+        this[i].PropertyValueRead(clientTransaction, domainObject, propertyDefinition, value, valueAccess);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("propertyDefinition", propertyDefinition);
 
       for (int i = 0; i < Count; i++)
-        this[i].PropertyValueChanging (clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
+        this[i].PropertyValueChanging(clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("propertyDefinition", propertyDefinition);
 
       for (int i = 0; i < Count; i++)
-        this[i].PropertyValueChanged (clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
+        this[i].PropertyValueChanged(clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
       for (int i = 0; i < Count; i++)
-        this[i].RelationReading (clientTransaction, domainObject, relationEndPointDefinition, valueAccess);
+        this[i].RelationReading(clientTransaction, domainObject, relationEndPointDefinition, valueAccess);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
       for (int i = 0; i < Count; i++)
-        this[i].RelationRead (clientTransaction, domainObject, relationEndPointDefinition, relatedObject, valueAccess);
+        this[i].RelationRead(clientTransaction, domainObject, relationEndPointDefinition, relatedObject, valueAccess);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.DebugCheckNotNull ("relatedObjects", relatedObjects);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.DebugCheckNotNull("relatedObjects", relatedObjects);
 
       for (int i = 0; i < Count; i++)
-        this[i].RelationRead (clientTransaction, domainObject, relationEndPointDefinition, relatedObjects, valueAccess);
+        this[i].RelationRead(clientTransaction, domainObject, relationEndPointDefinition, relatedObjects, valueAccess);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
       for (int i = 0; i < Count; i++)
-        this[i].RelationChanging (clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
+        this[i].RelationChanging(clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
       for (int i = 0; i < Count; i++)
-        this[i].RelationChanged (clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
+        this[i].RelationChanged(clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull ("queryResult", queryResult);
+      ArgumentUtility.CheckNotNull("queryResult", queryResult);
 
       return this
           .Cast<IClientTransactionExtension>()
-          .Aggregate (queryResult, (current, extension) => extension.FilterQueryResult (clientTransaction, current));
+          .Aggregate(queryResult, (current, extension) => extension.FilterQueryResult(clientTransaction, current));
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void Committing (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects, ICommittingEventRegistrar eventRegistrar)
     {
-      ArgumentUtility.DebugCheckNotNull ("changedDomainObjects", changedDomainObjects);
+      ArgumentUtility.DebugCheckNotNull("changedDomainObjects", changedDomainObjects);
 
       for (int i = 0; i < Count; i++)
-        this[i].Committing (clientTransaction, changedDomainObjects, eventRegistrar);
+        this[i].Committing(clientTransaction, changedDomainObjects, eventRegistrar);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
-      ArgumentUtility.DebugCheckNotNull ("committedData", committedData);
+      ArgumentUtility.DebugCheckNotNull("committedData", committedData);
 
       for (int i = 0; i < Count; i++)
-        this[i].CommitValidate (clientTransaction, committedData);
+        this[i].CommitValidate(clientTransaction, committedData);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void Committed (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects)
     {
-      ArgumentUtility.DebugCheckNotNull ("changedDomainObjects", changedDomainObjects);
+      ArgumentUtility.DebugCheckNotNull("changedDomainObjects", changedDomainObjects);
 
       for (int i = 0; i < Count; i++)
-        this[i].Committed (clientTransaction, changedDomainObjects);
+        this[i].Committed(clientTransaction, changedDomainObjects);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void RollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects)
     {
-      ArgumentUtility.DebugCheckNotNull ("changedDomainObjects", changedDomainObjects);
+      ArgumentUtility.DebugCheckNotNull("changedDomainObjects", changedDomainObjects);
 
       for (int i = 0; i < Count; i++)
-        this[i].RollingBack (clientTransaction, changedDomainObjects);
+        this[i].RollingBack(clientTransaction, changedDomainObjects);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void RolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects)
     {
-      ArgumentUtility.DebugCheckNotNull ("changedDomainObjects", changedDomainObjects);
+      ArgumentUtility.DebugCheckNotNull("changedDomainObjects", changedDomainObjects);
 
       for (int i = 0; i < Count; i++)
-        this[i].RolledBack (clientTransaction, changedDomainObjects);
+        this[i].RolledBack(clientTransaction, changedDomainObjects);
     }
 
     #endregion

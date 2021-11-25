@@ -42,216 +42,216 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _factory = new SqlSynonymScriptElementFactory();
 
-      _tableDefinition1 = TableDefinitionObjectMother.Create (
+      _tableDefinition1 = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition ("SchemaName", "TableName1"));
-      _tableDefinition2 = TableDefinitionObjectMother.Create (
+          new EntityNameDefinition("SchemaName", "TableName1"));
+      _tableDefinition2 = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition (null, "TableName2"));
+          new EntityNameDefinition(null, "TableName2"));
 
-      _unionViewDefinition1 = UnionViewDefinitionObjectMother.Create (
+      _unionViewDefinition1 = UnionViewDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition ("SchemaName", "UnionView1"));
-      _unionViewDefinition2 = UnionViewDefinitionObjectMother.Create (
+          new EntityNameDefinition("SchemaName", "UnionView1"));
+      _unionViewDefinition2 = UnionViewDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition (null, "UnionView2"));
+          new EntityNameDefinition(null, "UnionView2"));
 
-      _filterViewDefinition1 = FilterViewDefinitionObjectMother.Create (
+      _filterViewDefinition1 = FilterViewDefinitionObjectMother.Create(
          SchemaGenerationFirstStorageProviderDefinition,
-         new EntityNameDefinition ("SchemaName", "FilterView1"));
-      _filterViewDefinition2 = FilterViewDefinitionObjectMother.Create (
+         new EntityNameDefinition("SchemaName", "FilterView1"));
+      _filterViewDefinition2 = FilterViewDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition (null, "FilterView2"));
+          new EntityNameDefinition(null, "FilterView2"));
 
-      _emptyViewDefinition1 = EmptyViewDefinitionObjectMother.Create (
+      _emptyViewDefinition1 = EmptyViewDefinitionObjectMother.Create(
          SchemaGenerationFirstStorageProviderDefinition,
-         new EntityNameDefinition ("SchemaName", "EmptyView1"));
-      _emptyViewDefinition2 = EmptyViewDefinitionObjectMother.Create (
+         new EntityNameDefinition("SchemaName", "EmptyView1"));
+      _emptyViewDefinition2 = EmptyViewDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition (null, "EmptyView2"));
+          new EntityNameDefinition(null, "EmptyView2"));
 
-      _synonymWithCustomSchema = new EntityNameDefinition ("SynonymSchemaName", "Synonym1");
-      _synonymWithDefaultSchema = new EntityNameDefinition (null, "Synonym2");
+      _synonymWithCustomSchema = new EntityNameDefinition("SynonymSchemaName", "Synonym1");
+      _synonymWithDefaultSchema = new EntityNameDefinition(null, "Synonym2");
     }
 
     [Test]
     public void GetCreateElement_TableDefinition_And_CustomSchema ()
     {
-      var result = _factory.GetCreateElement (_tableDefinition1, _synonymWithCustomSchema);
+      var result = _factory.GetCreateElement(_tableDefinition1, _synonymWithCustomSchema);
 
       var expectedResult = "CREATE SYNONYM [SynonymSchemaName].[Synonym1] FOR [SchemaName].[TableName1]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetCreateElement_TableDefinition_And_DefaultSchema ()
     {
-      var result = _factory.GetCreateElement (_tableDefinition2, _synonymWithDefaultSchema);
+      var result = _factory.GetCreateElement(_tableDefinition2, _synonymWithDefaultSchema);
 
       var expectedResult = "CREATE SYNONYM [dbo].[Synonym2] FOR [dbo].[TableName2]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_TableDefinition_And_CustomSchema ()
     {
-      var result = _factory.GetDropElement (_tableDefinition1, _synonymWithCustomSchema);
+      var result = _factory.GetDropElement(_tableDefinition1, _synonymWithCustomSchema);
 
       var expectedResult = 
         "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'SynonymSchemaName' AND SCHEMA_NAME(schema_id) = 'Synonym1')\r\n"
        +"  DROP SYNONYM [SynonymSchemaName].[Synonym1]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_TableDefinition_And_DefaultSchema ()
     {
-      var result = _factory.GetDropElement (_tableDefinition2, _synonymWithDefaultSchema);
+      var result = _factory.GetDropElement(_tableDefinition2, _synonymWithDefaultSchema);
 
       var expectedResult =
         "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'dbo' AND SCHEMA_NAME(schema_id) = 'Synonym2')\r\n"
        + "  DROP SYNONYM [dbo].[Synonym2]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetCreateElement_UnionViewDefinition_And_CustomSchema ()
     {
-      var result = _factory.GetCreateElement (_unionViewDefinition1, _synonymWithCustomSchema);
+      var result = _factory.GetCreateElement(_unionViewDefinition1, _synonymWithCustomSchema);
 
       var expectedResult = "CREATE SYNONYM [SynonymSchemaName].[Synonym1] FOR [SchemaName].[UnionView1]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
     
     [Test]
     public void GetCreateElement_UnionViewDefinition_And_DefaultSchema ()
     {
-      var result = _factory.GetCreateElement (_unionViewDefinition2, _synonymWithDefaultSchema);
+      var result = _factory.GetCreateElement(_unionViewDefinition2, _synonymWithDefaultSchema);
 
       var expectedResult = "CREATE SYNONYM [dbo].[Synonym2] FOR [dbo].[UnionView2]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_UnionViewDefinition_And_CustomSchema ()
     {
-      var result = _factory.GetDropElement (_unionViewDefinition1, _synonymWithCustomSchema);
+      var result = _factory.GetDropElement(_unionViewDefinition1, _synonymWithCustomSchema);
 
       var expectedResult =
         "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'SynonymSchemaName' AND SCHEMA_NAME(schema_id) = 'Synonym1')\r\n"
        + "  DROP SYNONYM [SynonymSchemaName].[Synonym1]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_UnionViewDefinition_And_DefaultSchema ()
     {
-      var result = _factory.GetDropElement (_unionViewDefinition2, _synonymWithDefaultSchema);
+      var result = _factory.GetDropElement(_unionViewDefinition2, _synonymWithDefaultSchema);
 
       var expectedResult =
         "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'dbo' AND SCHEMA_NAME(schema_id) = 'Synonym2')\r\n"
        + "  DROP SYNONYM [dbo].[Synonym2]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetCreateElement_FilterViewDefinition_And_CustomSchema ()
     {
-      var result = _factory.GetCreateElement (_filterViewDefinition1, _synonymWithCustomSchema);
+      var result = _factory.GetCreateElement(_filterViewDefinition1, _synonymWithCustomSchema);
 
       var expectedResult = "CREATE SYNONYM [SynonymSchemaName].[Synonym1] FOR [SchemaName].[FilterView1]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetCreateElement_FilterViewDefinition_And_DefaultSchema ()
     {
-      var result = _factory.GetCreateElement (_filterViewDefinition2, _synonymWithDefaultSchema);
+      var result = _factory.GetCreateElement(_filterViewDefinition2, _synonymWithDefaultSchema);
 
       var expectedResult = "CREATE SYNONYM [dbo].[Synonym2] FOR [dbo].[FilterView2]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_FilterViewDefinition_And_CustomSchema ()
     {
-      var result = _factory.GetDropElement (_filterViewDefinition1, _synonymWithCustomSchema);
+      var result = _factory.GetDropElement(_filterViewDefinition1, _synonymWithCustomSchema);
 
       var expectedResult =
         "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'SynonymSchemaName' AND SCHEMA_NAME(schema_id) = 'Synonym1')\r\n"
        + "  DROP SYNONYM [SynonymSchemaName].[Synonym1]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_FilterViewDefinition_And_DefaultSchema ()
     {
-      var result = _factory.GetDropElement (_filterViewDefinition2, _synonymWithDefaultSchema);
+      var result = _factory.GetDropElement(_filterViewDefinition2, _synonymWithDefaultSchema);
 
       var expectedResult =
         "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'dbo' AND SCHEMA_NAME(schema_id) = 'Synonym2')\r\n"
        + "  DROP SYNONYM [dbo].[Synonym2]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetCreateElement_EmptyViewDefinition_And_CustomSchema ()
     {
-      var result = _factory.GetCreateElement (_emptyViewDefinition1, _synonymWithCustomSchema);
+      var result = _factory.GetCreateElement(_emptyViewDefinition1, _synonymWithCustomSchema);
 
       var expectedResult = "CREATE SYNONYM [SynonymSchemaName].[Synonym1] FOR [SchemaName].[EmptyView1]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetCreateElement_EmptyViewDefinition_And_DefaultSchema ()
     {
-      var result = _factory.GetCreateElement (_emptyViewDefinition2, _synonymWithDefaultSchema);
+      var result = _factory.GetCreateElement(_emptyViewDefinition2, _synonymWithDefaultSchema);
 
       var expectedResult = "CREATE SYNONYM [dbo].[Synonym2] FOR [dbo].[EmptyView2]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_EmptyViewDefinition_And_CustomSchema ()
     {
-      var result = _factory.GetDropElement (_emptyViewDefinition1, _synonymWithCustomSchema);
+      var result = _factory.GetDropElement(_emptyViewDefinition1, _synonymWithCustomSchema);
 
       var expectedResult =
         "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'SynonymSchemaName' AND SCHEMA_NAME(schema_id) = 'Synonym1')\r\n"
        + "  DROP SYNONYM [SynonymSchemaName].[Synonym1]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_EmptyViewDefinition_And_DefaultSchema ()
     {
-      var result = _factory.GetDropElement (_emptyViewDefinition2, _synonymWithDefaultSchema);
+      var result = _factory.GetDropElement(_emptyViewDefinition2, _synonymWithDefaultSchema);
 
       var expectedResult =
         "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'dbo' AND SCHEMA_NAME(schema_id) = 'Synonym2')\r\n"
        + "  DROP SYNONYM [dbo].[Synonym2]";
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
   }

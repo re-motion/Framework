@@ -23,8 +23,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
     [DBBidirectionalRelation ("RelationProperty5", ContainsForeignKey = true)]
     private RelationTargetForPersistentMixin PrivateBaseRelationProperty
     {
-      get { return Properties[typeof (BaseForMixinAddingPersistentProperties), "PrivateBaseRelationProperty"].GetValue<RelationTargetForPersistentMixin> (); }
-      set { Properties[typeof (BaseForMixinAddingPersistentProperties), "PrivateBaseRelationProperty"].SetValue (value); }
+      get { return Properties[typeof (BaseForMixinAddingPersistentProperties), "PrivateBaseRelationProperty"].GetValue<RelationTargetForPersistentMixin>(); }
+      set { Properties[typeof (BaseForMixinAddingPersistentProperties), "PrivateBaseRelationProperty"].SetValue(value); }
     }
   }
 }

@@ -37,32 +37,32 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public IClientTransactionEventBroker EventBroker
     {
-      get { return (IClientTransactionEventBroker) PrivateInvoke.GetNonPublicProperty (this, typeof (ClientTransaction), "eventBroker"); }
+      get { return (IClientTransactionEventBroker) PrivateInvoke.GetNonPublicProperty(this, typeof (ClientTransaction), "eventBroker"); }
     }
 
     public new DomainObject GetObject (ObjectID id, bool includeDeleted)
     {
-      return base.GetObject (id, includeDeleted);
+      return base.GetObject(id, includeDeleted);
     }
 
     public new DomainObject TryGetObject (ObjectID id)
     {
-      return base.TryGetObject (id);
+      return base.TryGetObject(id);
     }
 
     public new DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
     {
-      return base.GetRelatedObject (relationEndPointID);
+      return base.GetRelatedObject(relationEndPointID);
     }
 
     public new IReadOnlyList<IDomainObject> GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
     {
-      return base.GetOriginalRelatedObjects (relationEndPointID);
+      return base.GetOriginalRelatedObjects(relationEndPointID);
     }
 
     public new IReadOnlyList<IDomainObject> GetRelatedObjects (RelationEndPointID relationEndPointID)
     {
-      return base.GetRelatedObjects (relationEndPointID);
+      return base.GetRelatedObjects(relationEndPointID);
     }
 
     public new DataManager DataManager
@@ -72,17 +72,17 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public new void AddListener (IClientTransactionListener listener)
     {
-      base.AddListener (listener);
+      base.AddListener(listener);
     }
 
     public new void RemoveListener (IClientTransactionListener listener)
     {
-      base.RemoveListener (listener);
+      base.RemoveListener(listener);
     }
 
     public new void Delete (DomainObject domainObject)
     {
-      base.Delete (domainObject);
+      base.Delete(domainObject);
     }
   }
 }

@@ -52,12 +52,12 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     internal static User NewObject ()
     {
-      return NewObject<User> ();
+      return NewObject<User>();
     }
 
     public static User FindByUserName (string userName)
     {
-      ArgumentUtility.CheckNotNull ("userName", userName);
+      ArgumentUtility.CheckNotNull("userName", userName);
 
       var result = from u in QueryFactory.CreateLinqQuery<User>()
                    where u.UserName == userName
@@ -68,7 +68,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public static IQueryable<User> FindByTenant (IDomainObjectHandle<Tenant> tenantHandle)
     {
-      ArgumentUtility.CheckNotNull ("tenantHandle", tenantHandle);
+      ArgumentUtility.CheckNotNull("tenantHandle", tenantHandle);
 
       return from u in QueryFactory.CreateLinqQuery<User>()
              where u.Tenant.ID == tenantHandle.ObjectID
@@ -86,7 +86,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     [EditorBrowsable (EditorBrowsableState.Never)]
     public static void Search ()
     {
-      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
+      throw new NotImplementedException("This method is only intended for framework support and should never be called.");
     }
 
     private DomainObjectDeleteHandler _deleteHandler;
@@ -125,45 +125,45 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public IEnumerable<Substitution> GetActiveSubstitutions ()
     {
-      var securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      if (!securityClient.HasAccess (this, AccessType.Get (GeneralAccessTypes.Read)))
+      var securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
+      if (!securityClient.HasAccess(this, AccessType.Get(GeneralAccessTypes.Read)))
         return new Substitution[0];
 
-      return SubstitutingFor.Where (s => s.IsActive);
+      return SubstitutingFor.Where(s => s.IsActive);
     }
 
     protected override void OnDeleting (EventArgs args)
     {
-      base.OnDeleting (args);
+      base.OnDeleting(args);
 
       using (DefaultTransactionContext.ClientTransaction.EnterNonDiscardingScope())
       {
-        var aces = QueryFactory.CreateLinqQuery<AccessControlEntry>().Where (ace => ace.SpecificUser == this);
+        var aces = QueryFactory.CreateLinqQuery<AccessControlEntry>().Where(ace => ace.SpecificUser == this);
 
-        _deleteHandler = new DomainObjectDeleteHandler (aces, Roles, SubstitutingFor, SubstitutedBy);
+        _deleteHandler = new DomainObjectDeleteHandler(aces, Roles, SubstitutingFor, SubstitutedBy);
       }
     }
 
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
       _deleteHandler.Delete();
     }
 
     public override string DisplayName
     {
-      get { return GetFormattedName (); }
+      get { return GetFormattedName(); }
     }
 
     private string GetFormattedName ()
     {
       string formattedName = LastName;
 
-      if (!string.IsNullOrEmpty (FirstName))
+      if (!string.IsNullOrEmpty(FirstName))
         formattedName += " " + FirstName;
 
-      if (!string.IsNullOrEmpty (Title))
+      if (!string.IsNullOrEmpty(Title))
         formattedName += ", " + Title;
 
       return formattedName;

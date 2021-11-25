@@ -35,32 +35,32 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeAnalyzers
     {
       _fakeEntity = "test entity";
 
-      _fakeConfigurationBuilder = MockRepository.GenerateStub<MixinConfigurationBuilder> (new object[] { null });
+      _fakeConfigurationBuilder = MockRepository.GenerateStub<MixinConfigurationBuilder>(new object[] { null });
     }
 
     [Test]
     public void Analyze ()
     {
-      var attributeMock1 = MockRepository.GenerateStrictMock<IMixinConfigurationAttribute<string>> ();
-      var attributeMock2 = MockRepository.GenerateStrictMock<IMixinConfigurationAttribute<string>> ();
+      var attributeMock1 = MockRepository.GenerateStrictMock<IMixinConfigurationAttribute<string>>();
+      var attributeMock2 = MockRepository.GenerateStrictMock<IMixinConfigurationAttribute<string>>();
 
       Func<string, IEnumerable<IMixinConfigurationAttribute<string>>> fakeAttributeProvider = s =>
       {
-        Assert.That (s, Is.EqualTo (_fakeEntity));
+        Assert.That(s, Is.EqualTo(_fakeEntity));
         return new[] { attributeMock1, attributeMock2 };
       };
-      var analyzer = new MixinConfigurationAttributeAnalyzer<string> (fakeAttributeProvider);
+      var analyzer = new MixinConfigurationAttributeAnalyzer<string>(fakeAttributeProvider);
 
-      attributeMock1.Stub (mock => mock.IgnoresDuplicates).Return (false);
-      attributeMock2.Stub (mock => mock.IgnoresDuplicates).Return (false);
+      attributeMock1.Stub(mock => mock.IgnoresDuplicates).Return(false);
+      attributeMock2.Stub(mock => mock.IgnoresDuplicates).Return(false);
 
-      attributeMock1.Expect (mock => mock.Apply (_fakeConfigurationBuilder, _fakeEntity));
-      attributeMock2.Expect (mock => mock.Apply (_fakeConfigurationBuilder, _fakeEntity));
+      attributeMock1.Expect(mock => mock.Apply(_fakeConfigurationBuilder, _fakeEntity));
+      attributeMock2.Expect(mock => mock.Apply(_fakeConfigurationBuilder, _fakeEntity));
       
-      analyzer.Analyze (_fakeEntity, _fakeConfigurationBuilder);
+      analyzer.Analyze(_fakeEntity, _fakeConfigurationBuilder);
 
-      attributeMock1.VerifyAllExpectations ();
-      attributeMock2.VerifyAllExpectations ();
+      attributeMock1.VerifyAllExpectations();
+      attributeMock2.VerifyAllExpectations();
     }
   }
 }

@@ -31,27 +31,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
 
     public string Property
     {
-      get { throw new Exception ("The method or operation is not implemented."); }
-      set { throw new Exception ("The method or operation is not implemented."); }
+      get { throw new Exception("The method or operation is not implemented."); }
+      set { throw new Exception("The method or operation is not implemented."); }
     }
 
     public string ImplicitProperty
     {
-      get { throw new Exception ("The method or operation is not implemented."); }
-      set { throw new Exception ("The method or operation is not implemented."); }
+      get { throw new Exception("The method or operation is not implemented."); }
+      set { throw new Exception("The method or operation is not implemented."); }
     }
 
     string IInterfaceWithProperties.ExplicitProperty
     {
-      get { throw new Exception ("The method or operation is not implemented."); }
-      set { throw new Exception ("The method or operation is not implemented."); }
+      get { throw new Exception("The method or operation is not implemented."); }
+      set { throw new Exception("The method or operation is not implemented."); }
     }
 
     [StorageClass (StorageClass.Persistent)]
     string IInterfaceWithProperties.ExplicitManagedProperty
     {
-      get { throw new Exception ("The method or operation is not implemented."); }
-      set { throw new Exception ("The method or operation is not implemented."); }
+      get { throw new Exception("The method or operation is not implemented."); }
+      set { throw new Exception("The method or operation is not implemented."); }
     }
   }
 }

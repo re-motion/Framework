@@ -50,22 +50,22 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       var bocListInlineEditingConfigurator = ServiceLocator.GetInstance<BocListInlineEditingConfigurator>();
 
       GroupTypesList.EditModeControlFactory = ServiceLocator.GetInstance<EditableRowAutoCompleteControlFactory>();
-      bocListInlineEditingConfigurator.Configure (GroupTypesList, GroupTypePosition.NewObject);
+      bocListInlineEditingConfigurator.Configure(GroupTypesList, GroupTypePosition.NewObject);
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (!IsPostBack)
       {
-        GroupTypesList.SetSortingOrder (
-            new BocListSortingOrderEntry ((IBocSortableColumnDefinition) GroupTypesList.FixedColumns.Find ("GroupType"), SortingDirection.Ascending));
+        GroupTypesList.SetSortingOrder(
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition) GroupTypesList.FixedColumns.Find("GroupType"), SortingDirection.Ascending));
       }
 
       if (GroupTypesList.IsReadOnly)
@@ -74,9 +74,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnPreRender (EventArgs e)
     {
-      PositionLabel.Text = GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.PositionLabelText);
+      PositionLabel.Text = GetResourceManager(typeof (ResourceIdentifier)).GetString(ResourceIdentifier.PositionLabelText);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
   }
 }

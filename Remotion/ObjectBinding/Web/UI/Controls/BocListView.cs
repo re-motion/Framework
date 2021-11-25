@@ -40,11 +40,11 @@ public class BocListView: BusinessObjectControlItem
       BocColumnDefinition[]? columnDefinitions)
   {
     _title = title;
-    _columnDefinitions = new BocColumnDefinitionCollection (
+    _columnDefinitions = new BocColumnDefinitionCollection(
       ownerControl);
     
     if (columnDefinitions != null)
-      _columnDefinitions.AddRange (columnDefinitions);
+      _columnDefinitions.AddRange(columnDefinitions);
   }
 
   /// <summary> Initialize a new instance. </summary>
@@ -68,12 +68,12 @@ public class BocListView: BusinessObjectControlItem
   public override string ToString ()
   {
     string? displayName = ItemID;
-    if (string.IsNullOrEmpty (displayName))
+    if (string.IsNullOrEmpty(displayName))
       displayName = Title;
-    if (string.IsNullOrEmpty (displayName))
+    if (string.IsNullOrEmpty(displayName))
       return DisplayedTypeName;
     else
-      return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+      return string.Format("{0}: {1}", displayName, DisplayedTypeName);
   }
 
   /// <summary> Gets or sets the programmatic name of the <see cref="BocListView"/>. </summary>

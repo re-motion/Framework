@@ -26,12 +26,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
   {
     public static TableDefinition Create (StorageProviderDefinition storageProviderDefinition)
     {
-      return Create (storageProviderDefinition, new EntityNameDefinition ("TestSchema", "TestTable"));
+      return Create(storageProviderDefinition, new EntityNameDefinition("TestSchema", "TestTable"));
     }
 
     public static TableDefinition Create (StorageProviderDefinition storageProviderDefinition, EntityNameDefinition tableName)
     {
-      return Create (
+      return Create(
           storageProviderDefinition,
           tableName,
           null);
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public static TableDefinition Create (
         StorageProviderDefinition storageProviderDefinition, EntityNameDefinition tableName, EntityNameDefinition viewName)
     {
-      return Create (
+      return Create(
           storageProviderDefinition,
           tableName,
           viewName,
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
         EntityNameDefinition viewName,
         IEnumerable<ITableConstraintDefinition> constraints)
     {
-      return Create (
+      return Create(
           storageProviderDefinition,
           tableName,
           viewName,
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
         SimpleStoragePropertyDefinition timestampPropertyDefinition,
         params IRdbmsStoragePropertyDefinition[] dataPropertyDefinitions)
     {
-      return Create (
+      return Create(
           storageProviderDefinition,
           tableName,
           viewName,
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
         IEnumerable<IRdbmsStoragePropertyDefinition> dataPropertyDefinitions,
         IEnumerable<ITableConstraintDefinition> tableConstraintDefinitions)
     {
-      return new TableDefinition (
+      return new TableDefinition(
                 storageProviderDefinition,
                 tableName,
                 viewName,
@@ -105,9 +105,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
     public static TableDefinition CreateWithIndexes (StorageProviderDefinition storageProviderDefinition, IEnumerable<IIndexDefinition> indexDefinitions)
     {
-      return new TableDefinition (
+      return new TableDefinition(
           storageProviderDefinition,
-          new EntityNameDefinition ("TestSchema", "TestTable"),
+          new EntityNameDefinition("TestSchema", "TestTable"),
           null,
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
@@ -119,9 +119,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
     public static TableDefinition CreateWithSynonyms (StorageProviderDefinition storageProviderDefinition, IEnumerable<EntityNameDefinition> synonyms)
     {
-      return new TableDefinition (
+      return new TableDefinition(
           storageProviderDefinition,
-          new EntityNameDefinition ("TestSchema", "TestTable"),
+          new EntityNameDefinition("TestSchema", "TestTable"),
           null,
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
@@ -133,9 +133,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
     public static TableDefinition Create (StorageProviderDefinition storageProviderDefinition, IRdbmsStoragePropertyDefinition[] dataPropertyDefinitions)
     {
-      return Create (
+      return Create(
           storageProviderDefinition,
-          new EntityNameDefinition (null, "Test"),
+          new EntityNameDefinition(null, "Test"),
           null,
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,

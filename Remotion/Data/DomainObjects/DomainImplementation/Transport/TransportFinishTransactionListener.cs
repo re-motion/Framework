@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     public TransportFinishTransactionListener (Func<DomainObject, bool> filter)
     {
-      ArgumentUtility.CheckNotNull ("filter", filter);
+      ArgumentUtility.CheckNotNull("filter", filter);
 
       _filter = filter;
     }
@@ -36,14 +36,14 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     {
       // Rollback the state of all objects not matched by the filter - we don't want those objects to be committed to the transaction
 
-      Assertion.IsTrue (
+      Assertion.IsTrue(
           clientTransaction.ActiveTransaction == clientTransaction, "It's not possible to invoke FinishTransport on an inactive transaction.");
-      using (clientTransaction.EnterNonDiscardingScope ()) // filter must be executed in scope of clientTransaction
+      using (clientTransaction.EnterNonDiscardingScope()) // filter must be executed in scope of clientTransaction
       {
         foreach (var domainObject in domainObjects)
         {
-          if (!_filter (domainObject))
-            RollbackObject (clientTransaction, domainObject);
+          if (!_filter(domainObject))
+            RollbackObject(clientTransaction, domainObject);
         }
       }
     }
@@ -53,12 +53,12 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       // Note that we do not roll back any end points - this will cause us to create dangling end points. Doesn't matter, though, the transaction
       // is discarded after transport anyway.
 
-      var dataContainer = clientTransaction.DataManager.GetDataContainerWithLazyLoad (domainObject.ID, throwOnNotFound: true);
+      var dataContainer = clientTransaction.DataManager.GetDataContainerWithLazyLoad(domainObject.ID, throwOnNotFound: true);
       if (dataContainer.State.IsNew)
       {
-        var deleteCommand = clientTransaction.DataManager.CreateDeleteCommand (domainObject);
+        var deleteCommand = clientTransaction.DataManager.CreateDeleteCommand(domainObject);
         deleteCommand.Perform(); // no events, no bidirectional changes
-        Assertion.IsTrue (dataContainer.State.IsDiscarded);
+        Assertion.IsTrue(dataContainer.State.IsDiscarded);
       }
       else
       {

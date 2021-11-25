@@ -36,41 +36,41 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     public void SetUp ()
     {
       WxeContextFactory wxeContextFactory = new WxeContextFactory();
-      _wxeContext = wxeContextFactory.CreateContext (new TestFunction());
+      _wxeContext = wxeContextFactory.CreateContext(new TestFunction());
       var transactionMock = new Mock<ITransaction>();
       var outerTransactionStrategyStub = new Mock<TransactionStrategyBase>();
       var executionContextStub = new Mock<IWxeFunctionExecutionContext>();
-      executionContextStub.Setup (stub => stub.GetInParameters()).Returns (new object[0]);
+      executionContextStub.Setup(stub => stub.GetInParameters()).Returns(new object[0]);
 
-      _transactionStrategyMock = new Mock<RootTransactionStrategy> (
+      _transactionStrategyMock = new Mock<RootTransactionStrategy>(
           false, (Func<ITransaction>) (() => transactionMock.Object), outerTransactionStrategyStub.Object, executionContextStub.Object);
 
       _innerListenerStub = new Mock<IWxeFunctionExecutionListener>();
-      _transactionListener = new RootTransactionExecutionListener (_transactionStrategyMock.Object, _innerListenerStub.Object);
+      _transactionListener = new RootTransactionExecutionListener(_transactionStrategyMock.Object, _innerListenerStub.Object);
     }
 
     [Test]
     public void OnExecutionPlay ()
     {
-      _transactionListener.OnExecutionPlay (_wxeContext);
+      _transactionListener.OnExecutionPlay(_wxeContext);
 
-      _transactionStrategyMock.Verify (mock => mock.OnExecutionPlay (_wxeContext, _innerListenerStub.Object), Times.AtLeastOnce());
+      _transactionStrategyMock.Verify(mock => mock.OnExecutionPlay(_wxeContext, _innerListenerStub.Object), Times.AtLeastOnce());
     }
 
     [Test]
     public void OnExecutionStop ()
     {
-      _transactionListener.OnExecutionStop (_wxeContext);
+      _transactionListener.OnExecutionStop(_wxeContext);
 
-      _transactionStrategyMock.Verify (mock => mock.OnExecutionStop (_wxeContext, _innerListenerStub.Object), Times.AtLeastOnce());
+      _transactionStrategyMock.Verify(mock => mock.OnExecutionStop(_wxeContext, _innerListenerStub.Object), Times.AtLeastOnce());
     }
 
     [Test]
     public void OnExecutionPause ()
     {
-      _transactionListener.OnExecutionPause (_wxeContext);
+      _transactionListener.OnExecutionPause(_wxeContext);
 
-      _transactionStrategyMock.Verify (mock => mock.OnExecutionPause (_wxeContext, _innerListenerStub.Object), Times.AtLeastOnce());
+      _transactionStrategyMock.Verify(mock => mock.OnExecutionPause(_wxeContext, _innerListenerStub.Object), Times.AtLeastOnce());
     }
 
     [Test]
@@ -78,15 +78,15 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     {
       Exception exception = new Exception();
 
-      _transactionListener.OnExecutionFail (_wxeContext, exception);
+      _transactionListener.OnExecutionFail(_wxeContext, exception);
 
-      _transactionStrategyMock.Verify (mock => mock.OnExecutionFail (_wxeContext, _innerListenerStub.Object, exception), Times.AtLeastOnce());
+      _transactionStrategyMock.Verify(mock => mock.OnExecutionFail(_wxeContext, _innerListenerStub.Object, exception), Times.AtLeastOnce());
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (_transactionListener.IsNull, Is.False);
+      Assert.That(_transactionListener.IsNull, Is.False);
     }
   }
 }

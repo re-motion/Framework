@@ -35,19 +35,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IBocCheckBoxRenderer> ();
+      var factory = _serviceLocator.GetInstance<IBocCheckBoxRenderer>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (BocCheckBoxRenderer)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof (BocCheckBoxRenderer)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IBocCheckBoxRenderer> ();
-      var factory2 = _serviceLocator.GetInstance<IBocCheckBoxRenderer> ();
+      var factory1 = _serviceLocator.GetInstance<IBocCheckBoxRenderer>();
+      var factory2 = _serviceLocator.GetInstance<IBocCheckBoxRenderer>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

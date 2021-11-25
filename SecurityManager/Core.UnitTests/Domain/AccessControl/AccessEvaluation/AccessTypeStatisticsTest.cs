@@ -30,14 +30,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     [SetUp]
     public void SetUp ()
     {
-      _testHelper = new AccessControlTestHelper ();
-      _testHelper.Transaction.EnterNonDiscardingScope ();
+      _testHelper = new AccessControlTestHelper();
+      _testHelper.Transaction.EnterNonDiscardingScope();
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      ClientTransactionScope.ResetActiveScope ();
+      ClientTransactionScope.ResetActiveScope();
     }
 
 
@@ -48,36 +48,36 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       var ace = _testHelper.CreateAceWithAbstractRole();
       var ace2 = _testHelper.CreateAceWithoutGroupCondition();
 
-      Assert.That (accessTypeStatistics.IsInAccessTypesContributingAces (ace), Is.False);
-      Assert.That (accessTypeStatistics.IsInAccessTypesContributingAces (ace2), Is.False);
+      Assert.That(accessTypeStatistics.IsInAccessTypesContributingAces(ace), Is.False);
+      Assert.That(accessTypeStatistics.IsInAccessTypesContributingAces(ace2), Is.False);
 
-      accessTypeStatistics.AddAccessTypesContributingAce (ace);
-      Assert.That (accessTypeStatistics.IsInAccessTypesContributingAces (ace), Is.True);
-      Assert.That (accessTypeStatistics.IsInAccessTypesContributingAces (ace2), Is.False);
+      accessTypeStatistics.AddAccessTypesContributingAce(ace);
+      Assert.That(accessTypeStatistics.IsInAccessTypesContributingAces(ace), Is.True);
+      Assert.That(accessTypeStatistics.IsInAccessTypesContributingAces(ace2), Is.False);
 
-      accessTypeStatistics.AddAccessTypesContributingAce (ace2);
-      Assert.That (accessTypeStatistics.IsInAccessTypesContributingAces (ace), Is.True);
-      Assert.That (accessTypeStatistics.IsInAccessTypesContributingAces (ace2), Is.True);
+      accessTypeStatistics.AddAccessTypesContributingAce(ace2);
+      Assert.That(accessTypeStatistics.IsInAccessTypesContributingAces(ace), Is.True);
+      Assert.That(accessTypeStatistics.IsInAccessTypesContributingAces(ace2), Is.True);
     }
 
 
     [Test]
     public void AddMatchingAceAndIsInMatchingAcesTest ()
     {
-      AccessTypeStatistics accessTypeStatistics = new AccessTypeStatistics ();
-      var ace = _testHelper.CreateAceWithAbstractRole ();
-      var ace2 = _testHelper.CreateAceWithoutGroupCondition ();
+      AccessTypeStatistics accessTypeStatistics = new AccessTypeStatistics();
+      var ace = _testHelper.CreateAceWithAbstractRole();
+      var ace2 = _testHelper.CreateAceWithoutGroupCondition();
 
-      Assert.That (accessTypeStatistics.IsInMatchingAces (ace), Is.False);
-      Assert.That (accessTypeStatistics.IsInMatchingAces (ace2), Is.False);
+      Assert.That(accessTypeStatistics.IsInMatchingAces(ace), Is.False);
+      Assert.That(accessTypeStatistics.IsInMatchingAces(ace2), Is.False);
 
-      accessTypeStatistics.AddMatchingAce (ace);
-      Assert.That (accessTypeStatistics.IsInMatchingAces (ace), Is.True);
-      Assert.That (accessTypeStatistics.IsInMatchingAces (ace2), Is.False);
+      accessTypeStatistics.AddMatchingAce(ace);
+      Assert.That(accessTypeStatistics.IsInMatchingAces(ace), Is.True);
+      Assert.That(accessTypeStatistics.IsInMatchingAces(ace2), Is.False);
 
-      accessTypeStatistics.AddMatchingAce (ace2);
-      Assert.That (accessTypeStatistics.IsInMatchingAces (ace), Is.True);
-      Assert.That (accessTypeStatistics.IsInMatchingAces (ace2), Is.True);
+      accessTypeStatistics.AddMatchingAce(ace2);
+      Assert.That(accessTypeStatistics.IsInMatchingAces(ace), Is.True);
+      Assert.That(accessTypeStatistics.IsInMatchingAces(ace2), Is.True);
     }
 
   }

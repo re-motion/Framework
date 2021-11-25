@@ -69,25 +69,25 @@ public class TestCreateInstance
   {
     PublicClass internalInstance;
 
-    internalInstance = (PublicClass) PrivateInvoke.CreateInstancePublicCtor (
+    internalInstance = (PublicClass) PrivateInvoke.CreateInstancePublicCtor(
         c_assemblyName, c_internalClassName, 
         "test 1");
-    Assert.That (PrivateInvoke.InvokeNonPublicMethod (internalInstance, "f"), Is.EqualTo ("test 1"));
+    Assert.That(PrivateInvoke.InvokeNonPublicMethod(internalInstance, "f"), Is.EqualTo("test 1"));
 
-    internalInstance = (PublicClass) PrivateInvoke.CreateInstanceNonPublicCtor (
+    internalInstance = (PublicClass) PrivateInvoke.CreateInstanceNonPublicCtor(
         c_assemblyName, c_internalClassName);
-    Assert.That (PrivateInvoke.InvokeNonPublicMethod (internalInstance, "f"), Is.EqualTo ("private ctor"));
+    Assert.That(PrivateInvoke.InvokeNonPublicMethod(internalInstance, "f"), Is.EqualTo("private ctor"));
 
-    PublicClass publicInstance = (PublicClass) PrivateInvoke.CreateInstancePublicCtor (
+    PublicClass publicInstance = (PublicClass) PrivateInvoke.CreateInstancePublicCtor(
         c_assemblyName, c_publicClassName);
-    Assert.That (PrivateInvoke.InvokeNonPublicMethod (publicInstance, "f"), Is.EqualTo ("PublicClass"));
+    Assert.That(PrivateInvoke.InvokeNonPublicMethod(publicInstance, "f"), Is.EqualTo("PublicClass"));
   }
 
   [Test]
   public void TestCreateInstanceAmbiguous ()
   {
-    Assert.That (
-        () => (PublicClass) PrivateInvoke.CreateInstancePublicCtor (c_assemblyName, c_internalClassName, null),
+    Assert.That(
+        () => (PublicClass) PrivateInvoke.CreateInstancePublicCtor(c_assemblyName, c_internalClassName, null),
         Throws.InstanceOf<AmbiguousMatchException>());
   }
 }

@@ -36,13 +36,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     [SetUp]
     public void Setup ()
     {
-      _mockWebSecurityAdapter = new Mock<IWebSecurityAdapter> (MockBehavior.Strict);
-      _mockNavigationCommand = new Mock<NavigationCommand> (MockBehavior.Strict);
+      _mockWebSecurityAdapter = new Mock<IWebSecurityAdapter>(MockBehavior.Strict);
+      _mockNavigationCommand = new Mock<NavigationCommand>(MockBehavior.Strict);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterMultiple<IWebSecurityAdapter> (() => _mockWebSecurityAdapter.Object);
+      serviceLocator.RegisterMultiple<IWebSecurityAdapter>(() => _mockWebSecurityAdapter.Object);
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
     public override void TearDown ()
@@ -54,101 +54,101 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     [Test]
     public void EvaluateTrue_FromTrueAndWithMissingPermissionBehaviorSetToDisabled ()
     {
-      MainMenuTab mainMenuTab = CreateMainMenuTab ();
+      MainMenuTab mainMenuTab = CreateMainMenuTab();
       mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Disabled;
       mainMenuTab.IsVisible = true;
-      _mockNavigationCommand.Setup (_ => _.HasAccess (null)).Verifiable();
+      _mockNavigationCommand.Setup(_ => _.HasAccess(null)).Verifiable();
 
-      bool isVisible = mainMenuTab.EvaluateVisible ();
+      bool isVisible = mainMenuTab.EvaluateVisible();
 
       _mockWebSecurityAdapter.Verify();
-      _mockNavigationCommand.Verify (_ => _.HasAccess (null), Times.Never());
-      Assert.That (isVisible, Is.True);
+      _mockNavigationCommand.Verify(_ => _.HasAccess(null), Times.Never());
+      Assert.That(isVisible, Is.True);
     }
 
     [Test]
     public void EvaluateFalse_FromFalseAndWithMissingPermissionBehaviorSetToDisabled ()
     {
-      MainMenuTab mainMenuTab = CreateMainMenuTab ();
+      MainMenuTab mainMenuTab = CreateMainMenuTab();
       mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Disabled;
       mainMenuTab.IsVisible = false;
-      _mockNavigationCommand.Setup (_ => _.HasAccess (null)).Verifiable();
+      _mockNavigationCommand.Setup(_ => _.HasAccess(null)).Verifiable();
 
-      bool isVisible = mainMenuTab.EvaluateVisible ();
+      bool isVisible = mainMenuTab.EvaluateVisible();
 
       _mockWebSecurityAdapter.Verify();
-      _mockNavigationCommand.Verify (_ => _.HasAccess (null), Times.Never());
-      Assert.That (isVisible, Is.False);
+      _mockNavigationCommand.Verify(_ => _.HasAccess(null), Times.Never());
+      Assert.That(isVisible, Is.False);
     }
 
 
     [Test]
     public void EvaluateTrue_FromTrueAndWithCommandSetNull ()
     {
-      MainMenuTab mainMenuTab = CreateMainMenuTabWithoutCommand ();
+      MainMenuTab mainMenuTab = CreateMainMenuTabWithoutCommand();
       mainMenuTab.IsVisible = true;
 
-      bool isVisible = mainMenuTab.EvaluateVisible ();
-      Assert.That (isVisible, Is.True);
+      bool isVisible = mainMenuTab.EvaluateVisible();
+      Assert.That(isVisible, Is.True);
     }
 
     [Test]
     public void EvaluateFalse_FromFalseAndWithCommandSetNull ()
     {
-      MainMenuTab mainMenuTab = CreateMainMenuTabWithoutCommand ();
+      MainMenuTab mainMenuTab = CreateMainMenuTabWithoutCommand();
       mainMenuTab.IsVisible = false;
 
-      bool isVisible = mainMenuTab.EvaluateVisible ();
-      Assert.That (isVisible, Is.False);
+      bool isVisible = mainMenuTab.EvaluateVisible();
+      Assert.That(isVisible, Is.False);
     }
 
 
     [Test]
     public void EvaluateTrue_FromTrueAndWithAccessGranted ()
     {
-      MainMenuTab mainMenuTab = CreateMainMenuTab ();
+      MainMenuTab mainMenuTab = CreateMainMenuTab();
       mainMenuTab.IsVisible = true;
-      _mockNavigationCommand.Setup (_ => _.HasAccess (null)).Returns (true).Verifiable();
+      _mockNavigationCommand.Setup(_ => _.HasAccess(null)).Returns(true).Verifiable();
 
-      bool isVisible = mainMenuTab.EvaluateVisible ();
+      bool isVisible = mainMenuTab.EvaluateVisible();
 
       _mockWebSecurityAdapter.Verify();
       _mockNavigationCommand.Verify();
-      Assert.That (isVisible, Is.True);
+      Assert.That(isVisible, Is.True);
     }
 
     [Test]
     public void EvaluateFalse_FromTrueAndWithAccessDenied ()
     {
-      MainMenuTab mainMenuTab = CreateMainMenuTab ();
+      MainMenuTab mainMenuTab = CreateMainMenuTab();
       mainMenuTab.IsVisible = true;
-      _mockNavigationCommand.Setup (_ => _.HasAccess (null)).Returns (false).Verifiable();
+      _mockNavigationCommand.Setup(_ => _.HasAccess(null)).Returns(false).Verifiable();
 
-      bool isVisible = mainMenuTab.EvaluateVisible ();
+      bool isVisible = mainMenuTab.EvaluateVisible();
 
       _mockWebSecurityAdapter.Verify();
       _mockNavigationCommand.Verify();
-      Assert.That (isVisible, Is.False);
+      Assert.That(isVisible, Is.False);
     }
 
 
     [Test]
     public void EvaluateFalse_FromFalse ()
     {
-      MainMenuTab mainMenuTab = CreateMainMenuTab ();
+      MainMenuTab mainMenuTab = CreateMainMenuTab();
       mainMenuTab.IsVisible = false;
 
-      bool isVisible = mainMenuTab.EvaluateVisible ();
+      bool isVisible = mainMenuTab.EvaluateVisible();
 
       _mockWebSecurityAdapter.Verify();
       _mockNavigationCommand.Verify();
-      Assert.That (isVisible, Is.False);
+      Assert.That(isVisible, Is.False);
     }
 
     private MainMenuTab CreateMainMenuTab ()
     {
-      MainMenuTab mainMenuTab = CreateMainMenuTabWithoutCommand ();
-      _mockNavigationCommand.Protected().SetupSet<IControl> ("OwnerControlImplementation", It.IsAny<IControl>());
+      MainMenuTab mainMenuTab = CreateMainMenuTabWithoutCommand();
+      _mockNavigationCommand.Protected().SetupSet<IControl>("OwnerControlImplementation", It.IsAny<IControl>());
       mainMenuTab.Command = _mockNavigationCommand.Object;
       _mockNavigationCommand.Reset();
       _mockWebSecurityAdapter.Reset();
@@ -158,7 +158,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
 
     private MainMenuTab CreateMainMenuTabWithoutCommand ()
     {
-      MainMenuTab mainMenuTab = new MainMenuTab ();
+      MainMenuTab mainMenuTab = new MainMenuTab();
       mainMenuTab.Command.Type = CommandType.None;
       mainMenuTab.Command = null;
       mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;

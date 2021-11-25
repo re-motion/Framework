@@ -47,20 +47,20 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     {
       base.SetUp();
 
-      _objectSecurityStrategyMock = new Mock<IObjectSecurityStrategy> (MockBehavior.Strict);
+      _objectSecurityStrategyMock = new Mock<IObjectSecurityStrategy>(MockBehavior.Strict);
 
-      _securableObject = new SecurableClassWithReferenceType<string> (_objectSecurityStrategyMock.Object);
+      _securableObject = new SecurableClassWithReferenceType<string>(_objectSecurityStrategyMock.Object);
 
       _securityProviderStub = new Mock<ISecurityProvider>();
 
       _principalStub = new Mock<ISecurityPrincipal>();
       var principalProviderStub = new Mock<IPrincipalProvider>();
-      principalProviderStub.Setup (_ => _.GetPrincipal()).Returns (_principalStub.Object);
+      principalProviderStub.Setup(_ => _.GetPrincipal()).Returns(_principalStub.Object);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => _securityProviderStub.Object);
-      serviceLocator.RegisterSingle (() => principalProviderStub.Object);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle(() => _securityProviderStub.Object);
+      serviceLocator.RegisterSingle(() => principalProviderStub.Object);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
       _strategy = new SecurityBasedBindablePropertyReadAccessStrategy();
     }
@@ -75,34 +75,34 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     [Test]
     public void CanRead_WithBusinessObjectIsNull_ReturnsTrue ()
     {
-      var bindableProperty = CreateBindableProperty ((() => ((ClassWithReferenceType<string>) null).Scalar));
+      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>) null).Scalar));
 
-      var result = _strategy.CanRead (null, bindableProperty);
+      var result = _strategy.CanRead(null, bindableProperty);
 
-      Assert.That (result, Is.True);
+      Assert.That(result, Is.True);
     }
 
     [Test]
     public void CanRead_WithNonSecurableObject_ReturnsTrue ()
     {
-      var bindableProperty = CreateBindableProperty ((() => ((ClassWithReferenceType<string>) null).Scalar));
+      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>) null).Scalar));
 
-      var result = _strategy.CanRead (new ClassWithReferenceType<string>(), bindableProperty);
+      var result = _strategy.CanRead(new ClassWithReferenceType<string>(), bindableProperty);
 
-      Assert.That (result, Is.True);
+      Assert.That(result, Is.True);
     }
 
     [Test]
     public void CanRead_WithSecurableObject_EvaluatesObjectSecurityStratey_ReturnsResult ()
     {
       var expectedResult = BooleanObjectMother.GetRandomBoolean();
-      ExpectHasAccessOnObjectSecurityStrategy (expectedResult, TestAccessTypes.TestRead);
+      ExpectHasAccessOnObjectSecurityStrategy(expectedResult, TestAccessTypes.TestRead);
 
-      var bindableProperty = CreateBindableProperty (() => ((SecurableClassWithReferenceType<string>) null).CustomPermissisons);
+      var bindableProperty = CreateBindableProperty(() => ((SecurableClassWithReferenceType<string>) null).CustomPermissisons);
 
-      var actualResult = _strategy.CanRead (_securableObject, bindableProperty);
+      var actualResult = _strategy.CanRead(_securableObject, bindableProperty);
 
-      Assert.That (actualResult, Is.EqualTo (expectedResult));
+      Assert.That(actualResult, Is.EqualTo(expectedResult));
       _objectSecurityStrategyMock.Verify();
     }
 
@@ -110,104 +110,104 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     public void CanRead_WithSecurableObject_WithoutSetter_UsesNullMethodInfo_ReturnsResult ()
     {
       var expectedResult = BooleanObjectMother.GetRandomBoolean();
-      ExpectHasAccessOnObjectSecurityStrategy (expectedResult, GeneralAccessTypes.Read);
+      ExpectHasAccessOnObjectSecurityStrategy(expectedResult, GeneralAccessTypes.Read);
 
-      var bindableProperty = new StubPropertyBase (
-          GetPropertyParameters (PropertyInfoAdapter.Create (typeof (ClassWithReferenceType<string>).GetProperty ("PropertyWithNoGetter"))));
+      var bindableProperty = new StubPropertyBase(
+          GetPropertyParameters(PropertyInfoAdapter.Create(typeof (ClassWithReferenceType<string>).GetProperty("PropertyWithNoGetter"))));
 
-      var actualResult = _strategy.CanRead (_securableObject, bindableProperty);
+      var actualResult = _strategy.CanRead(_securableObject, bindableProperty);
 
-      Assert.That (actualResult, Is.EqualTo (expectedResult));
+      Assert.That(actualResult, Is.EqualTo(expectedResult));
       _objectSecurityStrategyMock.Verify();
     }
 
     [Test]
     public void IsPropertyAccessException_WithPermissionDeniedException_WithIBusinessObject_ReturnsTrue ()
     {
-      var bindableProperty = CreateBindableProperty ((() => ((ClassWithReferenceType<string>) null).Scalar));
+      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>) null).Scalar));
 
       var businessObjectClassStub = new Mock<IBusinessObjectClass>();
-      businessObjectClassStub.Setup (_ => _.Identifier).Returns ("TheClass");
+      businessObjectClassStub.Setup(_ => _.Identifier).Returns("TheClass");
 
       var businessObjectStub = new Mock<IBusinessObject>();
-      businessObjectStub.Setup (_ => _.BusinessObjectClass).Returns (businessObjectClassStub.Object);
+      businessObjectStub.Setup(_ => _.BusinessObjectClass).Returns(businessObjectClassStub.Object);
 
-      var permissionDeniedException = new PermissionDeniedException ("The Exception");
+      var permissionDeniedException = new PermissionDeniedException("The Exception");
       BusinessObjectPropertyAccessException actualException;
-      var actualResult = _strategy.IsPropertyAccessException (
+      var actualResult = _strategy.IsPropertyAccessException(
           businessObjectStub.Object,
           bindableProperty,
           permissionDeniedException,
           out actualException);
 
-      Assert.That (actualResult, Is.True);
+      Assert.That(actualResult, Is.True);
 
-      Assert.That (actualException, Is.Not.Null);
-      Assert.That (
+      Assert.That(actualException, Is.Not.Null);
+      Assert.That(
           actualException.Message,
-          Is.EqualTo (
+          Is.EqualTo(
               "A PermissionDeniedException occured while getting the value of property 'Scalar' for business object type 'TheClass'."));
-      Assert.That (actualException.InnerException, Is.SameAs (permissionDeniedException));
+      Assert.That(actualException.InnerException, Is.SameAs(permissionDeniedException));
     }
 
     [Test]
     public void IsPropertyAccessException_WithPermissionDeniedException_WithIBusinessObjectWithIdentity_ReturnsTrue ()
     {
-      var bindableProperty = CreateBindableProperty ((() => ((ClassWithReferenceType<string>) null).Scalar));
+      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>) null).Scalar));
 
       var businessObjectStub = new Mock<IBusinessObjectWithIdentity>();
-      businessObjectStub.Setup (_ => _.UniqueIdentifier).Returns ("TheIdentifier");
+      businessObjectStub.Setup(_ => _.UniqueIdentifier).Returns("TheIdentifier");
 
-      var permissionDeniedException = new PermissionDeniedException ("The Exception");
+      var permissionDeniedException = new PermissionDeniedException("The Exception");
       BusinessObjectPropertyAccessException actualException;
-      var actualResult = _strategy.IsPropertyAccessException (
+      var actualResult = _strategy.IsPropertyAccessException(
           businessObjectStub.Object,
           bindableProperty,
           permissionDeniedException,
           out actualException);
 
-      Assert.That (actualResult, Is.True);
+      Assert.That(actualResult, Is.True);
 
-      Assert.That (actualException, Is.Not.Null);
-      Assert.That (
+      Assert.That(actualException, Is.Not.Null);
+      Assert.That(
           actualException.Message,
-          Is.EqualTo (
+          Is.EqualTo(
               "A PermissionDeniedException occured while getting the value of property 'Scalar' for business object with ID 'TheIdentifier'."));
-      Assert.That (actualException.InnerException, Is.SameAs (permissionDeniedException));
+      Assert.That(actualException.InnerException, Is.SameAs(permissionDeniedException));
     }
 
     [Test]
     public void IsPropertyAccessException_WithOtherException_ReturnsFalse ()
     {
-      var bindableProperty = CreateBindableProperty ((() => ((ClassWithReferenceType<string>) null).Scalar));
+      var bindableProperty = CreateBindableProperty((() => ((ClassWithReferenceType<string>) null).Scalar));
 
       var businessObjectStub = new Mock<IBusinessObject>();
 
-      var permissionDeniedException = new Exception ("The Exception");
+      var permissionDeniedException = new Exception("The Exception");
       BusinessObjectPropertyAccessException actualException;
-      var actualResult = _strategy.IsPropertyAccessException (
+      var actualResult = _strategy.IsPropertyAccessException(
           businessObjectStub.Object,
           bindableProperty,
           permissionDeniedException,
           out actualException);
 
-      Assert.That (actualResult, Is.False);
-      Assert.That (actualException, Is.Null);
+      Assert.That(actualResult, Is.False);
+      Assert.That(actualException, Is.Null);
     }
 
     private PropertyBase CreateBindableProperty<TPropertyType> (Expression<Func<TPropertyType>> propertyExpression)
     {
-      return new StubPropertyBase (
-          GetPropertyParameters (PropertyInfoAdapter.Create (MemberInfoFromExpressionUtility.GetProperty (propertyExpression))));
+      return new StubPropertyBase(
+          GetPropertyParameters(PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty(propertyExpression))));
     }
 
     private PropertyBase.Parameters GetPropertyParameters (IPropertyInformation propertyInformation)
     {
-      return new PropertyBase.Parameters (
+      return new PropertyBase.Parameters(
           CreateBindableObjectProviderWithStubBusinessObjectServiceFactory(),
           propertyInformation,
           typeof (IBusinessObject),
-          new Lazy<Type> (() => typeof (IBusinessObject)),
+          new Lazy<Type>(() => typeof (IBusinessObject)),
           null,
           true,
           false,
@@ -221,18 +221,18 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
 
     private void ExpectHasAccessOnObjectSecurityStrategy (bool expectedResult, Enum accessType)
     {
-      _objectSecurityStrategyMock.Setup (
-          _ => _.HasAccess (
+      _objectSecurityStrategyMock.Setup(
+          _ => _.HasAccess(
               _securityProviderStub.Object,
               _principalStub.Object,
-              new[] { AccessType.Get (accessType) }))
-          .Returns (expectedResult)
+              new[] { AccessType.Get(accessType) }))
+          .Returns(expectedResult)
           .Verifiable();
     }
 
     protected BindableObjectProvider CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ()
     {
-      return new BindableObjectProvider (BindableObjectMetadataFactory.Create(), new Mock<IBusinessObjectServiceFactory>().Object);
+      return new BindableObjectProvider(BindableObjectMetadataFactory.Create(), new Mock<IBusinessObjectServiceFactory>().Object);
     }
   }
 }

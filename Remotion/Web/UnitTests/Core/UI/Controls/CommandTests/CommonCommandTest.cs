@@ -32,27 +32,27 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     public virtual void SetUp ()
     {
       _testHelper = new CommandTestHelper();
-      HttpContextHelper.SetCurrent (_testHelper.HttpContext);
+      HttpContextHelper.SetCurrent(_testHelper.HttpContext);
     }
 
     [Test]
     public void Render_WithItemIDAndOwnerControl ()
     {
       Command command = _testHelper.CreateNoneCommand();
-      Assert.That (command.OwnerControl, Is.Not.Null);
-      Assert.That (command.ItemID, Is.Not.Empty);
+      Assert.That(command.OwnerControl, Is.Not.Null);
+      Assert.That(command.ItemID, Is.Not.Empty);
 
       var expectedID = _testHelper.OwnerControlClientID + "_" + _testHelper.ItemID;
 
-      command.RenderBegin (_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
+      command.RenderBegin(_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
-      Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
-      Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.AreEqual(HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
 
-      Assert.AreEqual (1, _testHelper.HtmlWriter.Attributes.Count, "Has wrong number of attributes");
+      Assert.AreEqual(1, _testHelper.HtmlWriter.Attributes.Count, "Has wrong number of attributes");
 
-      Assert.IsNotNull (_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Id], "Missing ID");
-      Assert.AreEqual (expectedID, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Id], "Wrong ID");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Id], "Missing ID");
+      Assert.AreEqual(expectedID, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Id], "Wrong ID");
     }
 
     [Test]
@@ -60,29 +60,29 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     {
       Command command = _testHelper.CreateNoneCommand();
       command.OwnerControl = null;
-      Assert.That (command.ItemID, Is.Not.Empty);
+      Assert.That(command.ItemID, Is.Not.Empty);
 
-      command.RenderBegin (_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
+      command.RenderBegin(_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
-      Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
-      Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.AreEqual(HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
 
-      Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has wrong number of attributes");
+      Assert.AreEqual(0, _testHelper.HtmlWriter.Attributes.Count, "Has wrong number of attributes");
     }
 
     [Test]
     public void Render_WithoutItemID_DoesNotRenderID ()
     {
-      Command command = _testHelper.CreateNoneCommand ();
+      Command command = _testHelper.CreateNoneCommand();
       command.ItemID = null;
-      Assert.That (command.OwnerControl, Is.Not.Null);
+      Assert.That(command.OwnerControl, Is.Not.Null);
 
-      command.RenderBegin (_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
+      command.RenderBegin(_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
-      Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
-      Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.AreEqual(HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
 
-      Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has wrong number of attributes");
+      Assert.AreEqual(0, _testHelper.HtmlWriter.Attributes.Count, "Has wrong number of attributes");
     }
   }
 }

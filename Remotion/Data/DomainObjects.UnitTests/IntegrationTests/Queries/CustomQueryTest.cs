@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     {
       base.SetUp();
 
-      _query = QueryFactory.CreateCustomQuery (
+      _query = QueryFactory.CreateCustomQuery(
           "CustomQuery",
           TestDomainStorageProviderDefinition,
           "SELECT String, Int16, Boolean, Enum, ExtensibleEnum FROM [TableWithAllDataTypes]",
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void WithRawValues ()
     {
-      var result = QueryManager.GetCustom (_query, QueryResultRowTestHelper.ExtractRawValues).ToList();
+      var result = QueryManager.GetCustom(_query, QueryResultRowTestHelper.ExtractRawValues).ToList();
 
       var expected = new object[]
                             {
@@ -52,22 +52,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
                                 new object[] { "abcdeföäü", 32767, false, 1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Red" }
                             };
 
-      Assert.That (result, Is.EquivalentTo (expected));
+      Assert.That(result, Is.EquivalentTo(expected));
     }
 
     [Test]
     public void WithConvertedValues ()
     {
-      var result = QueryManager.GetCustom (
+      var result = QueryManager.GetCustom(
          _query,
          queryResultRow => new
          {
-           StringValue = queryResultRow.GetConvertedValue<string> (0),
-           Int16Value = queryResultRow.GetConvertedValue<Int16> (1),
-           BoolValue = queryResultRow.GetConvertedValue<bool> (2),
-           EnumValue = queryResultRow.GetConvertedValue<ClassWithAllDataTypes.EnumType> (3),
-           ExtensibleEnumValue = queryResultRow.GetConvertedValue<Color> (4)
-         }).ToList ();
+           StringValue = queryResultRow.GetConvertedValue<string>(0),
+           Int16Value = queryResultRow.GetConvertedValue<Int16>(1),
+           BoolValue = queryResultRow.GetConvertedValue<bool>(2),
+           EnumValue = queryResultRow.GetConvertedValue<ClassWithAllDataTypes.EnumType>(3),
+           ExtensibleEnumValue = queryResultRow.GetConvertedValue<Color>(4)
+         }).ToList();
 
       var expected =
           new[]
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
               }
           };
 
-      Assert.That (result, Is.EquivalentTo (expected));
+      Assert.That(result, Is.EquivalentTo(expected));
     }
 
     [Test]
@@ -100,26 +100,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
       
       var fakeResult = new[] { new object[0] };
       listenerMock
-          .Expect (
-              mock => mock.FilterCustomQueryResult (
-                  Arg.Is (TestableClientTransaction), Arg.Is(_query), Arg<IEnumerable<object[]>>.Matches(e=>e.Count()==2)))
-          .Return (fakeResult);
+          .Expect(
+              mock => mock.FilterCustomQueryResult(
+                  Arg.Is(TestableClientTransaction), Arg.Is(_query), Arg<IEnumerable<object[]>>.Matches(e=>e.Count()==2)))
+          .Return(fakeResult);
 
-      TestableClientTransaction.AddListener (listenerMock);
+      TestableClientTransaction.AddListener(listenerMock);
       
-      var result = QueryManager.GetCustom (_query, QueryResultRowTestHelper.ExtractRawValues);
+      var result = QueryManager.GetCustom(_query, QueryResultRowTestHelper.ExtractRawValues);
 
-      Assert.That (result, Is.SameAs (fakeResult));
+      Assert.That(result, Is.SameAs(fakeResult));
     }
 
     [Test]
     public void FromXmlFile ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration ("CustomQuery");
+      var query = QueryFactory.CreateQueryFromConfiguration("CustomQuery");
 
-      var result = QueryManager.GetCustom (query, QueryResultRowTestHelper.ExtractRawValues);
+      var result = QueryManager.GetCustom(query, QueryResultRowTestHelper.ExtractRawValues);
 
-      Assert.That (result.Count(), Is.EqualTo (2));
+      Assert.That(result.Count(), Is.EqualTo(2));
     }
   }
 }

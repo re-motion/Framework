@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public BocListAsGridCellControlObject ([NotNull] ControlObjectContext context)
         : base (context)
     {
-      _impl = new BocListCellFunctionality (context);
+      _impl = new BocListCellFunctionality(context);
     }
 
     /// <summary>
@@ -60,26 +60,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public TControlObject GetControl<TControlObject> (IControlSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return _impl.GetControl (controlSelectionCommand);
+      return _impl.GetControl(controlSelectionCommand);
     }
 
     /// <inheritdoc/>
     public TControlObject? GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return _impl.GetControlOrNull (controlSelectionCommand);
+      return _impl.GetControlOrNull(controlSelectionCommand);
     }
 
     /// <inheritdoc/>
     public bool HasControl (IControlExistsCommand controlSelectionCommand)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return _impl.HasControl (controlSelectionCommand);
+      return _impl.HasControl(controlSelectionCommand);
     }
   }
 }

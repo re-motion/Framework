@@ -37,8 +37,8 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
     {
       var factory = _serviceLocator.GetInstance<IPipelineRegistry>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (RemotionPipelineRegistry)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof (RemotionPipelineRegistry)));
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
       var factory1 = _serviceLocator.GetInstance<IPipelineRegistry>();
       var factory2 = _serviceLocator.GetInstance<IPipelineRegistry>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

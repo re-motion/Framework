@@ -32,32 +32,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _inheritanceRootClass = TypeDefinitions[typeof (InheritanceRoot)];
       _relationTarget = TypeDefinitions[typeof (RelationTarget)];
 
-      _propertyOnClassAboveInheritanceRoot = GetPropertyInformation ((ClassAboveInheritanceRoot c) => c.RelationPropertyOnClassAboveInheritanceRoot);
-      _propertyOnRelationTarget = GetPropertyInformation ((RelationTarget t) => t.RelationProperty);
+      _propertyOnClassAboveInheritanceRoot = GetPropertyInformation((ClassAboveInheritanceRoot c) => c.RelationPropertyOnClassAboveInheritanceRoot);
+      _propertyOnRelationTarget = GetPropertyInformation((RelationTarget t) => t.RelationProperty);
     }
 
     [Test]
     public void GivenThat_TheRelationTarget_PointsBackToTheInheritanceRoot_WhichIsNotTheTypeDeclaringTheOppositeProperty ()
     {
-      Assert.That (_propertyOnRelationTarget.PropertyType, Is.SameAs (_inheritanceRootClass.ClassType));
-      Assert.That (_propertyOnClassAboveInheritanceRoot.DeclaringType, Is.Not.SameAs (_inheritanceRootClass.ClassType));
+      Assert.That(_propertyOnRelationTarget.PropertyType, Is.SameAs(_inheritanceRootClass.ClassType));
+      Assert.That(_propertyOnClassAboveInheritanceRoot.DeclaringType, Is.Not.SameAs(_inheritanceRootClass.ClassType));
     }
 
     [Test]
     public void ThereShouldBeAValidRelation_BetweenTheInheritanceRoot_AndTheRelationTarget ()
     {
-      var endPointOnInheritanceRoot = _inheritanceRootClass.ResolveRelationEndPoint (_propertyOnClassAboveInheritanceRoot);
-      Assert.That (endPointOnInheritanceRoot, Is.Not.Null);
+      var endPointOnInheritanceRoot = _inheritanceRootClass.ResolveRelationEndPoint(_propertyOnClassAboveInheritanceRoot);
+      Assert.That(endPointOnInheritanceRoot, Is.Not.Null);
 
-      var endPointOnRelationTarget = _relationTarget.ResolveRelationEndPoint (_propertyOnRelationTarget);
-      Assert.That (endPointOnRelationTarget, Is.Not.Null);
+      var endPointOnRelationTarget = _relationTarget.ResolveRelationEndPoint(_propertyOnRelationTarget);
+      Assert.That(endPointOnRelationTarget, Is.Not.Null);
 
-      Assert.That (endPointOnInheritanceRoot.RelationDefinition, Is.SameAs (endPointOnRelationTarget.RelationDefinition));
+      Assert.That(endPointOnInheritanceRoot.RelationDefinition, Is.SameAs(endPointOnRelationTarget.RelationDefinition));
     }
   }
 }

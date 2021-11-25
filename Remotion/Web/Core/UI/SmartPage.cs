@@ -100,7 +100,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <include file='..\doc\include\UI\SmartPage.xml' path='SmartPage/RegisterClientSidePageEventHandler/*' />
   public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
   {
-    _smartPageInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);
+    _smartPageInfo.RegisterClientSidePageEventHandler(pageEvent, key, function);
   }
 
   string? ISmartPage.CheckFormStateFunction
@@ -144,7 +144,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <param name="control"> A control implementing <see cref="IEditableControl"/> that will be tracked.  </param>
   public void RegisterControlForDirtyStateTracking (IEditableControl control)
   {
-    _smartPageInfo.RegisterControlForDirtyStateTracking (control);
+    _smartPageInfo.RegisterControlForDirtyStateTracking(control);
   }
 
   /// <summary>
@@ -153,17 +153,17 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <param name="clientID"> The ID of an HTML input/textarea/select element. </param>
   public void RegisterControlForClientSideDirtyStateTracking (string clientID)
   {
-    _smartPageInfo.RegisterControlForDirtyStateTracking (clientID);
+    _smartPageInfo.RegisterControlForDirtyStateTracking(clientID);
   }
 
   public void RegisterCommandForSynchronousPostBack (Control control, string eventArguments)
   {
-    _smartPageInfo.RegisterCommandForSynchronousPostBack (control, eventArguments);
+    _smartPageInfo.RegisterCommandForSynchronousPostBack(control, eventArguments);
   }
 
     public void RegisterControlForSynchronousPostBack (Control control)
     {
-      _smartPageInfo.RegisterControlForSynchronousPostBack (control);
+      _smartPageInfo.RegisterControlForSynchronousPostBack(control);
     }
 
     #endregion
@@ -173,7 +173,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <summary> Clears scrolling and focus information on the page. </summary>
   public void DiscardSmartNavigationData (SmartNavigationData smartNavigationData = SmartNavigationData.All)
   {
-    _smartPageInfo.DiscardSmartNavigationData (smartNavigationData);
+    _smartPageInfo.DiscardSmartNavigationData(smartNavigationData);
   }
 
   /// <summary> Sets the focus to the passed control. </summary>
@@ -182,7 +182,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// </param>
   public void SetFocus (IFocusableControl control)
   {
-    _smartPageInfo.SetFocus (control);
+    _smartPageInfo.SetFocus(control);
   }
 
   /// <summary> Sets the focus to the passed control ID. </summary>
@@ -191,14 +191,14 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// </param>
   public new void SetFocus (string id)
   {
-    _smartPageInfo.SetFocus (id);
+    _smartPageInfo.SetFocus(id);
   }
 
   /// <summary> Registers a <see cref="INavigationControl"/> with the <see cref="ISmartNavigablePage"/>. </summary>
   /// <param name="control"> The <see cref="INavigationControl"/> to register. Must not be <see langword="null"/>. </param>
   public void RegisterNavigationControl (INavigationControl control)
   {
-    _smartPageInfo.RegisterNavigationControl (control);
+    _smartPageInfo.RegisterNavigationControl(control);
   }
 
   /// <summary> 
@@ -211,7 +211,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// </returns>
   public string AppendNavigationUrlParameters (string url)
   {
-    return _smartPageInfo.AppendNavigationUrlParameters (url);
+    return _smartPageInfo.AppendNavigationUrlParameters(url);
   }
 
   /// <summary> 
@@ -243,10 +243,10 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   public SmartPage ()
   {
-    _smartPageInfo = new SmartPageInfo (this);
-    _validatableControlInitializer = new ValidatableControlInitializer (this);
-    _postLoadInvoker = new PostLoadInvoker (this);
-    _clientScriptManager = new SmartPageClientScriptManager (base.ClientScript);
+    _smartPageInfo = new SmartPageInfo(this);
+    _validatableControlInitializer = new ValidatableControlInitializer(this);
+    _postLoadInvoker = new PostLoadInvoker(this);
+    _clientScriptManager = new SmartPageClientScriptManager(base.ClientScript);
   }
 
   protected override NameValueCollection? DeterminePostBackMode ()
@@ -265,7 +265,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <remarks> Application developers should only rely on this collection for accessing the post-back data. </remarks>
   protected virtual NameValueCollection? GetPostBackCollection ()
   {
-    if (string.Compare (Request.HttpMethod, "POST", true) == 0)
+    if (string.Compare(Request.HttpMethod, "POST", true) == 0)
       return Request.Form;
     else
       return Request.QueryString;
@@ -290,7 +290,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <summary> Ensures that all validators are registered with their <see cref="IValidatableControl"/> controls. </summary>
   public void EnsureValidatableControlsInitialized ()
   {
-    _validatableControlInitializer.EnsureValidatableControlsInitialized ();
+    _validatableControlInitializer.EnsureValidatableControlsInitialized();
   }
 
 
@@ -523,14 +523,14 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   protected override void OnInit (EventArgs e)
   {
-    base.OnInit (e);
-    RegisterRequiresControlState (this);
+    base.OnInit(e);
+    RegisterRequiresControlState(this);
   }
 
   protected override void LoadControlState (object? savedState)
   {
     object?[] values = (object?[]) savedState!;
-    base.LoadControlState (values[0]);
+    base.LoadControlState(values[0]);
     _isDirty = (bool) values[1]!;
   }
 
@@ -544,7 +544,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   void ISmartPage.SaveAllState ()
   {
-    MemberCaller.SaveAllState (this);
+    MemberCaller.SaveAllState(this);
   }
 
   /// <summary>
@@ -552,16 +552,16 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// </summary>
   public sealed override void ProcessRequest (HttpContext httpContext)
   {
-    ArgumentUtility.CheckNotNull ("httpContext", httpContext);
-    _httpContext = new HttpContextWrapper (httpContext);
-    ProcessRequestImplementation (httpContext);
+    ArgumentUtility.CheckNotNull("httpContext", httpContext);
+    _httpContext = new HttpContextWrapper(httpContext);
+    ProcessRequestImplementation(httpContext);
   }
 
   /// <inheritdoc cref="Page.ProcessRequest"/>
   protected virtual void ProcessRequestImplementation (HttpContext httpContext)
   {
-    ArgumentUtility.CheckNotNull ("httpContext", httpContext);
-    base.ProcessRequest (httpContext);
+    ArgumentUtility.CheckNotNull("httpContext", httpContext);
+    base.ProcessRequest(httpContext);
   }
 
   protected virtual IServiceLocator ServiceLocator

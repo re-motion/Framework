@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       SecurableClassValidationResult result = new SecurableClassValidationResult();
 
-      Assert.That (result.IsValid, Is.True);
+      Assert.That(result.IsValid, Is.True);
     }
 
     [Test]
@@ -43,13 +43,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
-        StateCombination stateCombination = testHelper.CreateStateCombination (orderClass);
+        StateCombination stateCombination = testHelper.CreateStateCombination(orderClass);
 
         SecurableClassValidationResult result = new SecurableClassValidationResult();
 
-        result.AddDuplicateStateCombination (stateCombination);
+        result.AddDuplicateStateCombination(stateCombination);
 
-        Assert.That (result.IsValid, Is.False);
+        Assert.That(result.IsValid, Is.False);
       }
     }
 
@@ -58,7 +58,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       SecurableClassValidationResult result = new SecurableClassValidationResult();
 
-      Assert.That (result.DuplicateStateCombinations.Count, Is.EqualTo (0));
+      Assert.That(result.DuplicateStateCombinations.Count, Is.EqualTo(0));
     }
 
     [Test]
@@ -68,14 +68,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
-        StateCombination stateCombination = testHelper.CreateStateCombination (orderClass);
+        StateCombination stateCombination = testHelper.CreateStateCombination(orderClass);
 
         SecurableClassValidationResult result = new SecurableClassValidationResult();
 
-        result.AddDuplicateStateCombination (stateCombination);
+        result.AddDuplicateStateCombination(stateCombination);
 
-        Assert.That (result.DuplicateStateCombinations.Count, Is.EqualTo (1));
-        Assert.That (result.DuplicateStateCombinations, Has.Member (stateCombination));
+        Assert.That(result.DuplicateStateCombinations.Count, Is.EqualTo(1));
+        Assert.That(result.DuplicateStateCombinations, Has.Member(stateCombination));
       }
     }
 
@@ -86,19 +86,19 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
-        StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty (orderClass);
-        StateCombination statelessCombination = testHelper.CreateStateCombination (orderClass);
-        StateCombination paidStateCombination = testHelper.CreateStateCombination (
-            orderClass, paymentProperty[EnumWrapper.Get (PaymentState.Paid).Name]);
+        StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty(orderClass);
+        StateCombination statelessCombination = testHelper.CreateStateCombination(orderClass);
+        StateCombination paidStateCombination = testHelper.CreateStateCombination(
+            orderClass, paymentProperty[EnumWrapper.Get(PaymentState.Paid).Name]);
 
         SecurableClassValidationResult result = new SecurableClassValidationResult();
 
-        result.AddDuplicateStateCombination (statelessCombination);
-        result.AddDuplicateStateCombination (paidStateCombination);
+        result.AddDuplicateStateCombination(statelessCombination);
+        result.AddDuplicateStateCombination(paidStateCombination);
 
-        Assert.That (result.DuplicateStateCombinations.Count, Is.EqualTo (2));
-        Assert.That (result.DuplicateStateCombinations, Has.Member (statelessCombination));
-        Assert.That (result.DuplicateStateCombinations, Has.Member (paidStateCombination));
+        Assert.That(result.DuplicateStateCombinations.Count, Is.EqualTo(2));
+        Assert.That(result.DuplicateStateCombinations, Has.Member(statelessCombination));
+        Assert.That(result.DuplicateStateCombinations, Has.Member(paidStateCombination));
       }
     }
 
@@ -110,13 +110,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
-        StateCombination stateCombination = testHelper.CreateStateCombination (orderClass);
+        StateCombination stateCombination = testHelper.CreateStateCombination(orderClass);
 
         SecurableClassValidationResult result = new SecurableClassValidationResult();
 
-        result.AddInvalidStateCombination (stateCombination);
+        result.AddInvalidStateCombination(stateCombination);
 
-        Assert.That (result.IsValid, Is.False);
+        Assert.That(result.IsValid, Is.False);
       }
     }
 
@@ -125,7 +125,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       SecurableClassValidationResult result = new SecurableClassValidationResult();
 
-      Assert.That (result.InvalidStateCombinations.Count, Is.EqualTo (0));
+      Assert.That(result.InvalidStateCombinations.Count, Is.EqualTo(0));
     }
 
     [Test]
@@ -135,14 +135,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
-        StateCombination stateCombination = testHelper.CreateStateCombination (orderClass);
+        StateCombination stateCombination = testHelper.CreateStateCombination(orderClass);
 
         SecurableClassValidationResult result = new SecurableClassValidationResult();
 
-        result.AddInvalidStateCombination (stateCombination);
+        result.AddInvalidStateCombination(stateCombination);
 
-        Assert.That (result.InvalidStateCombinations.Count, Is.EqualTo (1));
-        Assert.That (result.InvalidStateCombinations, Has.Member (stateCombination));
+        Assert.That(result.InvalidStateCombinations.Count, Is.EqualTo(1));
+        Assert.That(result.InvalidStateCombinations, Has.Member(stateCombination));
       }
     }
 
@@ -153,19 +153,19 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
-        StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty (orderClass);
-        StateCombination statelessCombination = testHelper.CreateStateCombination (orderClass);
-        StateCombination paidStateCombination = testHelper.CreateStateCombination (
-            orderClass, paymentProperty[EnumWrapper.Get (PaymentState.Paid).Name]);
+        StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty(orderClass);
+        StateCombination statelessCombination = testHelper.CreateStateCombination(orderClass);
+        StateCombination paidStateCombination = testHelper.CreateStateCombination(
+            orderClass, paymentProperty[EnumWrapper.Get(PaymentState.Paid).Name]);
 
         SecurableClassValidationResult result = new SecurableClassValidationResult();
 
-        result.AddInvalidStateCombination (statelessCombination);
-        result.AddInvalidStateCombination (paidStateCombination);
+        result.AddInvalidStateCombination(statelessCombination);
+        result.AddInvalidStateCombination(paidStateCombination);
 
-        Assert.That (result.InvalidStateCombinations.Count, Is.EqualTo (2));
-        Assert.That (result.InvalidStateCombinations, Has.Member (statelessCombination));
-        Assert.That (result.InvalidStateCombinations, Has.Member (paidStateCombination));
+        Assert.That(result.InvalidStateCombinations.Count, Is.EqualTo(2));
+        Assert.That(result.InvalidStateCombinations, Has.Member(statelessCombination));
+        Assert.That(result.InvalidStateCombinations, Has.Member(paidStateCombination));
       }
     }
   }

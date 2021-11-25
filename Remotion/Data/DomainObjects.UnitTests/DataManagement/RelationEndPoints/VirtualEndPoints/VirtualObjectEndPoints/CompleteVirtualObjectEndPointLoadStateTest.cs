@@ -53,65 +53,65 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [SetUp]
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _definition = Configuration.GetTypeDefinition (typeof (Order)).GetRelationEndPointDefinition (typeof (Order).FullName + ".OrderTicket");
+      _definition = Configuration.GetTypeDefinition(typeof (Order)).GetRelationEndPointDefinition(typeof (Order).FullName + ".OrderTicket");
 
-      _virtualObjectEndPointMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPoint> ();
-      _dataManagerMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPointDataManager> ();
-      _dataManagerMock.Stub (stub => stub.EndPointID).Return (RelationEndPointID.Create (DomainObjectIDs.Order1, _definition));
-      _endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider> ();
+      _virtualObjectEndPointMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPoint>();
+      _dataManagerMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPointDataManager>();
+      _dataManagerMock.Stub(stub => stub.EndPointID).Return(RelationEndPointID.Create(DomainObjectIDs.Order1, _definition));
+      _endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider>();
       _transactionEventSinkStub = MockRepository.GenerateStub<IClientTransactionEventSink>();
 
-      _loadState = new CompleteVirtualObjectEndPointLoadState (_dataManagerMock, _endPointProviderStub, _transactionEventSinkStub);
+      _loadState = new CompleteVirtualObjectEndPointLoadState(_dataManagerMock, _endPointProviderStub, _transactionEventSinkStub);
 
-      _relatedObject = DomainObjectMother.CreateFakeObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
+      _relatedObject = DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket1);
 
-      _relatedEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint> ();
-      _relatedEndPointStub.Stub (stub => stub.GetDomainObjectReference ()).Return (_relatedObject);
-      _relatedEndPointStub.Stub (stub => stub.ObjectID).Return (_relatedObject.ID);
+      _relatedEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      _relatedEndPointStub.Stub(stub => stub.GetDomainObjectReference()).Return(_relatedObject);
+      _relatedEndPointStub.Stub(stub => stub.ObjectID).Return(_relatedObject.ID);
 
-      _relatedObject2 = DomainObjectMother.CreateFakeObject<OrderTicket> (DomainObjectIDs.OrderTicket2);
+      _relatedObject2 = DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket2);
 
-      _relatedEndPointStub2 = MockRepository.GenerateStub<IRealObjectEndPoint> ();
-      _relatedEndPointStub2.Stub (stub => stub.ID).Return (RelationEndPointID.Create (_relatedObject2.ID, typeof (OrderTicket), "Order"));
-      _relatedEndPointStub2.Stub (stub => stub.GetDomainObjectReference()).Return (_relatedObject2);
-      _relatedEndPointStub2.Stub (stub => stub.ObjectID).Return (_relatedObject2.ID);
+      _relatedEndPointStub2 = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      _relatedEndPointStub2.Stub(stub => stub.ID).Return(RelationEndPointID.Create(_relatedObject2.ID, typeof (OrderTicket), "Order"));
+      _relatedEndPointStub2.Stub(stub => stub.GetDomainObjectReference()).Return(_relatedObject2);
+      _relatedEndPointStub2.Stub(stub => stub.ObjectID).Return(_relatedObject2.ID);
 
-      _owningObject = DomainObjectMother.CreateFakeObject<Order> ();
+      _owningObject = DomainObjectMother.CreateFakeObject<Order>();
     }
 
     [Test]
     public void GetData ()
     {
-      _dataManagerMock.Stub (stub => stub.CurrentOppositeObject).Return (_relatedObject);
+      _dataManagerMock.Stub(stub => stub.CurrentOppositeObject).Return(_relatedObject);
       _dataManagerMock.Replay();
 
-      var result = _loadState.GetData (_virtualObjectEndPointMock);
+      var result = _loadState.GetData(_virtualObjectEndPointMock);
 
-      Assert.That (result, Is.SameAs (_relatedObject));
+      Assert.That(result, Is.SameAs(_relatedObject));
     }
 
     [Test]
     public void GetOriginalData ()
     {
-      _dataManagerMock.Stub (stub => stub.OriginalOppositeObject).Return (_relatedObject);
-      _dataManagerMock.Replay ();
+      _dataManagerMock.Stub(stub => stub.OriginalOppositeObject).Return(_relatedObject);
+      _dataManagerMock.Replay();
 
-      var result = _loadState.GetOriginalData (_virtualObjectEndPointMock);
+      var result = _loadState.GetOriginalData(_virtualObjectEndPointMock);
 
-      Assert.That (result, Is.SameAs (_relatedObject));
+      Assert.That(result, Is.SameAs(_relatedObject));
     }
 
     [Test]
     public void SetDataFromSubTransaction ()
     {
       var sourceDataManager = MockRepository.GenerateStub<IVirtualObjectEndPointDataManager>();
-      var sourceLoadState = new CompleteVirtualObjectEndPointLoadState (sourceDataManager, _endPointProviderStub, _transactionEventSinkStub);
-      _dataManagerMock.Expect (mock => mock.SetDataFromSubTransaction (sourceDataManager, _endPointProviderStub));
+      var sourceLoadState = new CompleteVirtualObjectEndPointLoadState(sourceDataManager, _endPointProviderStub, _transactionEventSinkStub);
+      _dataManagerMock.Expect(mock => mock.SetDataFromSubTransaction(sourceDataManager, _endPointProviderStub));
       _dataManagerMock.Replay();
 
-      _loadState.SetDataFromSubTransaction (_virtualObjectEndPointMock, sourceLoadState);
+      _loadState.SetDataFromSubTransaction(_virtualObjectEndPointMock, sourceLoadState);
 
       _dataManagerMock.VerifyAllExpectations();
     }
@@ -119,43 +119,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void MarkDataComplete_ThrowsException ()
     {
-      _dataManagerMock.Stub (stub => stub.CurrentOppositeObject).Return (_relatedObject);
-      _dataManagerMock.Replay ();
-      Assert.That (
-          () => _loadState.MarkDataComplete (_virtualObjectEndPointMock, _relatedObject, dataManager => Assert.Fail ("Must not be called")),
+      _dataManagerMock.Stub(stub => stub.CurrentOppositeObject).Return(_relatedObject);
+      _dataManagerMock.Replay();
+      Assert.That(
+          () => _loadState.MarkDataComplete(_virtualObjectEndPointMock, _relatedObject, dataManager => Assert.Fail("Must not be called")),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("The data is already complete."));
+              .With.Message.EqualTo("The data is already complete."));
     }
 
     [Test]
     public void SynchronizeOppositeEndPoint_NoExistingOppositeEndPoint ()
     {
-      var endPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint> ();
-      endPointMock.Stub (stub => stub.ObjectID).Return (DomainObjectIDs.Order1);
-      endPointMock.Expect (mock => mock.MarkSynchronized ());
-      endPointMock.Replay ();
-      AddUnsynchronizedOppositeEndPoint (_loadState, endPointMock);
+      var endPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
+      endPointMock.Stub(stub => stub.ObjectID).Return(DomainObjectIDs.Order1);
+      endPointMock.Expect(mock => mock.MarkSynchronized());
+      endPointMock.Replay();
+      AddUnsynchronizedOppositeEndPoint(_loadState, endPointMock);
 
-      _dataManagerMock.Stub (stub => stub.OriginalOppositeEndPoint).Return (null);
-      _dataManagerMock.Stub (stub => stub.ContainsOriginalObjectID (DomainObjectIDs.Order1)).Return (false);
-      _dataManagerMock.Expect (mock => mock.RegisterOriginalOppositeEndPoint (endPointMock));
-      _dataManagerMock.Replay ();
+      _dataManagerMock.Stub(stub => stub.OriginalOppositeEndPoint).Return(null);
+      _dataManagerMock.Stub(stub => stub.ContainsOriginalObjectID(DomainObjectIDs.Order1)).Return(false);
+      _dataManagerMock.Expect(mock => mock.RegisterOriginalOppositeEndPoint(endPointMock));
+      _dataManagerMock.Replay();
 
-      _loadState.SynchronizeOppositeEndPoint (_virtualObjectEndPointMock, endPointMock);
+      _loadState.SynchronizeOppositeEndPoint(_virtualObjectEndPointMock, endPointMock);
 
-      _dataManagerMock.VerifyAllExpectations ();
-      endPointMock.VerifyAllExpectations ();
-      Assert.That (_loadState.UnsynchronizedOppositeEndPoints, Has.No.Member (endPointMock));
+      _dataManagerMock.VerifyAllExpectations();
+      endPointMock.VerifyAllExpectations();
+      Assert.That(_loadState.UnsynchronizedOppositeEndPoints, Has.No.Member(endPointMock));
     }
 
     [Test]
     public void SynchronizeOppositeEndPoint_WithExistingOppositeEndPoint ()
     {
-      _dataManagerMock.Stub (stub => stub.OriginalOppositeEndPoint).Return (_relatedEndPointStub);
-      Assert.That (
-          () => _loadState.SynchronizeOppositeEndPoint (_virtualObjectEndPointMock, _relatedEndPointStub2),
+      _dataManagerMock.Stub(stub => stub.OriginalOppositeEndPoint).Return(_relatedEndPointStub);
+      Assert.That(
+          () => _loadState.SynchronizeOppositeEndPoint(_virtualObjectEndPointMock, _relatedEndPointStub2),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The object end-point "
                   + "'OrderTicket|0005bdf4-4ccc-4a41-b9b5-baab3eb95237|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' cannot "
                   + "be synchronized with the virtual object end-point "
@@ -169,41 +169,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateSetCommand_Same ()
     {
-      _dataManagerMock.Stub (stub => stub.CurrentOppositeObject).Return (_relatedObject);
-      _dataManagerMock.Stub (stub => stub.OriginalItemWithoutEndPoint).Return (null);
+      _dataManagerMock.Stub(stub => stub.CurrentOppositeObject).Return(_relatedObject);
+      _dataManagerMock.Stub(stub => stub.OriginalItemWithoutEndPoint).Return(null);
       _dataManagerMock.Replay();
       
-      _virtualObjectEndPointMock.Stub (mock => mock.GetDomainObject ()).Return (_owningObject);
-      _virtualObjectEndPointMock.Stub (mock => mock.GetOppositeObject ()).Return (_relatedObject);
-      _virtualObjectEndPointMock.Stub (mock => mock.IsNull).Return (false);
-      _virtualObjectEndPointMock.Replay ();
+      _virtualObjectEndPointMock.Stub(mock => mock.GetDomainObject()).Return(_owningObject);
+      _virtualObjectEndPointMock.Stub(mock => mock.GetOppositeObject()).Return(_relatedObject);
+      _virtualObjectEndPointMock.Stub(mock => mock.IsNull).Return(false);
+      _virtualObjectEndPointMock.Replay();
 
-      var command = (RelationEndPointModificationCommand) _loadState.CreateSetCommand (_virtualObjectEndPointMock, _relatedObject);
+      var command = (RelationEndPointModificationCommand) _loadState.CreateSetCommand(_virtualObjectEndPointMock, _relatedObject);
 
-      Assert.That (command, Is.TypeOf (typeof (ObjectEndPointSetSameCommand)));
-      Assert.That (command.DomainObject, Is.SameAs (_owningObject));
-      Assert.That (command.ModifiedEndPoint, Is.SameAs (_virtualObjectEndPointMock));
-      Assert.That (command.OldRelatedObject, Is.SameAs (_relatedObject));
-      Assert.That (command.NewRelatedObject, Is.SameAs (_relatedObject));
-      Assert.That (command.TransactionEventSink, Is.SameAs (_transactionEventSinkStub));
+      Assert.That(command, Is.TypeOf(typeof (ObjectEndPointSetSameCommand)));
+      Assert.That(command.DomainObject, Is.SameAs(_owningObject));
+      Assert.That(command.ModifiedEndPoint, Is.SameAs(_virtualObjectEndPointMock));
+      Assert.That(command.OldRelatedObject, Is.SameAs(_relatedObject));
+      Assert.That(command.NewRelatedObject, Is.SameAs(_relatedObject));
+      Assert.That(command.TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
     }
 
     [Test]
     public void CreateSetCommand_Same_WithItemWithoutEndPoint ()
     {
-      _dataManagerMock.Stub (stub => stub.CurrentOppositeObject).Return (_relatedObject);
-      _dataManagerMock.Stub (stub => stub.OriginalItemWithoutEndPoint).Return (_relatedObject);
-      _dataManagerMock.Replay ();
+      _dataManagerMock.Stub(stub => stub.CurrentOppositeObject).Return(_relatedObject);
+      _dataManagerMock.Stub(stub => stub.OriginalItemWithoutEndPoint).Return(_relatedObject);
+      _dataManagerMock.Replay();
 
-      _virtualObjectEndPointMock.Stub (mock => mock.GetDomainObject ()).Return (_owningObject);
-      _virtualObjectEndPointMock.Stub (mock => mock.GetOppositeObject ()).Return (_relatedObject);
-      _virtualObjectEndPointMock.Stub (mock => mock.IsNull).Return (false);
-      _virtualObjectEndPointMock.Replay ();
+      _virtualObjectEndPointMock.Stub(mock => mock.GetDomainObject()).Return(_owningObject);
+      _virtualObjectEndPointMock.Stub(mock => mock.GetOppositeObject()).Return(_relatedObject);
+      _virtualObjectEndPointMock.Stub(mock => mock.IsNull).Return(false);
+      _virtualObjectEndPointMock.Replay();
 
-      Assert.That (
-          () => (RelationEndPointModificationCommand) _loadState.CreateSetCommand (_virtualObjectEndPointMock, _relatedObject),
+      Assert.That(
+          () => (RelationEndPointModificationCommand) _loadState.CreateSetCommand(_virtualObjectEndPointMock, _relatedObject),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The virtual property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' of object "
                   + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be set because the property is out of sync with the opposite object "
                   + "property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'. To make this change, synchronize the two properties by "
@@ -214,60 +214,60 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateSetCommand_Same_Null ()
     {
-      _dataManagerMock.Stub (stub => stub.CurrentOppositeObject).Return (null);
-      _dataManagerMock.Stub (stub => stub.OriginalItemWithoutEndPoint).Return (null);
-      _dataManagerMock.Replay ();
+      _dataManagerMock.Stub(stub => stub.CurrentOppositeObject).Return(null);
+      _dataManagerMock.Stub(stub => stub.OriginalItemWithoutEndPoint).Return(null);
+      _dataManagerMock.Replay();
 
-      _virtualObjectEndPointMock.Stub (mock => mock.GetDomainObject ()).Return (_owningObject);
-      _virtualObjectEndPointMock.Stub (mock => mock.GetOppositeObject ()).Return (null);
-      _virtualObjectEndPointMock.Stub (mock => mock.IsNull).Return (false);
-      _virtualObjectEndPointMock.Replay ();
+      _virtualObjectEndPointMock.Stub(mock => mock.GetDomainObject()).Return(_owningObject);
+      _virtualObjectEndPointMock.Stub(mock => mock.GetOppositeObject()).Return(null);
+      _virtualObjectEndPointMock.Stub(mock => mock.IsNull).Return(false);
+      _virtualObjectEndPointMock.Replay();
 
-      var command = (RelationEndPointModificationCommand) _loadState.CreateSetCommand (_virtualObjectEndPointMock, null);
+      var command = (RelationEndPointModificationCommand) _loadState.CreateSetCommand(_virtualObjectEndPointMock, null);
 
-      Assert.That (command, Is.TypeOf (typeof (ObjectEndPointSetSameCommand)));
-      Assert.That (command.DomainObject, Is.SameAs (_owningObject));
-      Assert.That (command.ModifiedEndPoint, Is.SameAs (_virtualObjectEndPointMock));
-      Assert.That (command.OldRelatedObject, Is.Null);
-      Assert.That (command.NewRelatedObject, Is.Null);
+      Assert.That(command, Is.TypeOf(typeof (ObjectEndPointSetSameCommand)));
+      Assert.That(command.DomainObject, Is.SameAs(_owningObject));
+      Assert.That(command.ModifiedEndPoint, Is.SameAs(_virtualObjectEndPointMock));
+      Assert.That(command.OldRelatedObject, Is.Null);
+      Assert.That(command.NewRelatedObject, Is.Null);
     }
 
     [Test]
     public void CreateSetCommand_NotSame ()
     {
-      _dataManagerMock.Stub (stub => stub.CurrentOppositeObject).Return (_relatedObject);
-      _dataManagerMock.Stub (stub => stub.OriginalItemWithoutEndPoint).Return (null);
-      _dataManagerMock.Replay ();
+      _dataManagerMock.Stub(stub => stub.CurrentOppositeObject).Return(_relatedObject);
+      _dataManagerMock.Stub(stub => stub.OriginalItemWithoutEndPoint).Return(null);
+      _dataManagerMock.Replay();
 
-      _virtualObjectEndPointMock.Stub (mock => mock.GetDomainObject ()).Return (_owningObject);
-      _virtualObjectEndPointMock.Stub (mock => mock.GetOppositeObject ()).Return (_relatedObject);
-      _virtualObjectEndPointMock.Stub (mock => mock.IsNull).Return (false);
-      _virtualObjectEndPointMock.Stub (mock => mock.Definition).Return (_definition);
-      _virtualObjectEndPointMock.Replay ();
+      _virtualObjectEndPointMock.Stub(mock => mock.GetDomainObject()).Return(_owningObject);
+      _virtualObjectEndPointMock.Stub(mock => mock.GetOppositeObject()).Return(_relatedObject);
+      _virtualObjectEndPointMock.Stub(mock => mock.IsNull).Return(false);
+      _virtualObjectEndPointMock.Stub(mock => mock.Definition).Return(_definition);
+      _virtualObjectEndPointMock.Replay();
 
-      var newRelatedObject = DomainObjectMother.CreateFakeObject<OrderTicket> ();
+      var newRelatedObject = DomainObjectMother.CreateFakeObject<OrderTicket>();
 
-      var command = (RelationEndPointModificationCommand) _loadState.CreateSetCommand (_virtualObjectEndPointMock, newRelatedObject);
+      var command = (RelationEndPointModificationCommand) _loadState.CreateSetCommand(_virtualObjectEndPointMock, newRelatedObject);
 
-      Assert.That (command, Is.TypeOf (typeof (ObjectEndPointSetOneOneCommand)));
-      Assert.That (command.ModifiedEndPoint, Is.SameAs (_virtualObjectEndPointMock));
-      Assert.That (command.NewRelatedObject, Is.SameAs (newRelatedObject));
-      Assert.That (command.OldRelatedObject, Is.SameAs (_relatedObject));
-      Assert.That (command.TransactionEventSink, Is.SameAs (_transactionEventSinkStub));
+      Assert.That(command, Is.TypeOf(typeof (ObjectEndPointSetOneOneCommand)));
+      Assert.That(command.ModifiedEndPoint, Is.SameAs(_virtualObjectEndPointMock));
+      Assert.That(command.NewRelatedObject, Is.SameAs(newRelatedObject));
+      Assert.That(command.OldRelatedObject, Is.SameAs(_relatedObject));
+      Assert.That(command.TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
 
-      CheckOppositeObjectIDSetter ((ObjectEndPointSetCommand) command);
+      CheckOppositeObjectIDSetter((ObjectEndPointSetCommand) command);
     }
 
     [Test]
     public void CreateSetCommand_NotSame_WithItemWithoutEndPoint ()
     {
-      _dataManagerMock.Stub (stub => stub.CurrentOppositeObject).Return (_relatedObject);
-      _dataManagerMock.Stub (stub => stub.OriginalItemWithoutEndPoint).Return (_relatedObject);
-      _dataManagerMock.Replay ();
-      Assert.That (
-          () => _loadState.CreateSetCommand (_virtualObjectEndPointMock, _relatedObject2),
+      _dataManagerMock.Stub(stub => stub.CurrentOppositeObject).Return(_relatedObject);
+      _dataManagerMock.Stub(stub => stub.OriginalItemWithoutEndPoint).Return(_relatedObject);
+      _dataManagerMock.Replay();
+      Assert.That(
+          () => _loadState.CreateSetCommand(_virtualObjectEndPointMock, _relatedObject2),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The virtual property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' of object "
                   + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be set because the property is out of sync with the opposite object "
                   + "property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'. To make this change, synchronize the two properties by "
@@ -278,15 +278,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateSetCommand_NotSame_InputIsInUnsynchronizedOppositeEndPoints ()
     {
-      _dataManagerMock.Stub (stub => stub.CurrentOppositeObject).Return (_relatedObject);
-      _dataManagerMock.Stub (stub => stub.OriginalItemWithoutEndPoint).Return (null);
-      _dataManagerMock.Replay ();
+      _dataManagerMock.Stub(stub => stub.CurrentOppositeObject).Return(_relatedObject);
+      _dataManagerMock.Stub(stub => stub.OriginalItemWithoutEndPoint).Return(null);
+      _dataManagerMock.Replay();
 
-      AddUnsynchronizedOppositeEndPoint (_loadState, _relatedEndPointStub2);
-      Assert.That (
-          () => _loadState.CreateSetCommand (_virtualObjectEndPointMock, _relatedObject2),
+      AddUnsynchronizedOppositeEndPoint(_loadState, _relatedEndPointStub2);
+      Assert.That(
+          () => _loadState.CreateSetCommand(_virtualObjectEndPointMock, _relatedObject2),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The domain object with ID 'OrderTicket|0005bdf4-4ccc-4a41-b9b5-baab3eb95237|System.Guid' cannot be set into the virtual property "
                   + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' "
                   + "because its object property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' is out of sync with the virtual property. "
@@ -297,32 +297,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateDeleteCommand ()
     {
-      _dataManagerMock.Stub (stub => stub.OriginalItemWithoutEndPoint).Return (null);
+      _dataManagerMock.Stub(stub => stub.OriginalItemWithoutEndPoint).Return(null);
       _dataManagerMock.Replay();
 
-      _virtualObjectEndPointMock.Stub (mock => mock.GetDomainObject ()).Return (_owningObject);
-      _virtualObjectEndPointMock.Stub (mock => mock.IsNull).Return (false);
-      _virtualObjectEndPointMock.Replay ();
+      _virtualObjectEndPointMock.Stub(mock => mock.GetDomainObject()).Return(_owningObject);
+      _virtualObjectEndPointMock.Stub(mock => mock.IsNull).Return(false);
+      _virtualObjectEndPointMock.Replay();
 
-      var command = (RelationEndPointModificationCommand) _loadState.CreateDeleteCommand (_virtualObjectEndPointMock);
+      var command = (RelationEndPointModificationCommand) _loadState.CreateDeleteCommand(_virtualObjectEndPointMock);
 
-      Assert.That (command, Is.TypeOf (typeof (ObjectEndPointDeleteCommand)));
-      Assert.That (command.DomainObject, Is.SameAs (_owningObject));
-      Assert.That (command.ModifiedEndPoint, Is.SameAs (_virtualObjectEndPointMock));
-      Assert.That (command.TransactionEventSink, Is.SameAs (_transactionEventSinkStub));
+      Assert.That(command, Is.TypeOf(typeof (ObjectEndPointDeleteCommand)));
+      Assert.That(command.DomainObject, Is.SameAs(_owningObject));
+      Assert.That(command.ModifiedEndPoint, Is.SameAs(_virtualObjectEndPointMock));
+      Assert.That(command.TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
 
-      CheckOppositeObjectNullSetter ((ObjectEndPointDeleteCommand) command);
+      CheckOppositeObjectNullSetter((ObjectEndPointDeleteCommand) command);
     }
 
     [Test]
     public void CreateDeleteCommand_WithOriginalItemWithoutEndPoint ()
     {
-      _dataManagerMock.Stub (stub => stub.OriginalItemWithoutEndPoint).Return (_relatedObject);
+      _dataManagerMock.Stub(stub => stub.OriginalItemWithoutEndPoint).Return(_relatedObject);
       _dataManagerMock.Replay();
-      Assert.That (
-          () => _loadState.CreateDeleteCommand (_virtualObjectEndPointMock),
+      Assert.That(
+          () => _loadState.CreateDeleteCommand(_virtualObjectEndPointMock),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The domain object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be deleted because its virtual property "
                   + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' is out of sync with the opposite object property "
                   + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' of domain object "
@@ -334,11 +334,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateDeleteCommand_WithUnsynchronizedOppositeEndPoints ()
     {
-      AddUnsynchronizedOppositeEndPoint (_loadState, _relatedEndPointStub);
-      Assert.That (
-          () => _loadState.CreateDeleteCommand (_virtualObjectEndPointMock),
+      AddUnsynchronizedOppositeEndPoint(_loadState, _relatedEndPointStub);
+      Assert.That(
+          () => _loadState.CreateDeleteCommand(_virtualObjectEndPointMock),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The domain object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be deleted because the opposite object property "
                   + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' of domain object "
                   + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid' is out of sync with the virtual property "
@@ -350,45 +350,45 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetOriginalOppositeEndPoints ()
     {
-      _dataManagerMock.Stub (mock => mock.OriginalOppositeEndPoint).Return (_relatedEndPointStub);
-      _dataManagerMock.Replay ();
+      _dataManagerMock.Stub(mock => mock.OriginalOppositeEndPoint).Return(_relatedEndPointStub);
+      _dataManagerMock.Replay();
 
-      var result = (IEnumerable<IRealObjectEndPoint>) PrivateInvoke.InvokeNonPublicMethod (_loadState, "GetOriginalOppositeEndPoints");
+      var result = (IEnumerable<IRealObjectEndPoint>) PrivateInvoke.InvokeNonPublicMethod(_loadState, "GetOriginalOppositeEndPoints");
 
-      Assert.That (result, Is.EqualTo (new[] { _relatedEndPointStub }));
+      Assert.That(result, Is.EqualTo(new[] { _relatedEndPointStub }));
     }
 
     [Test]
     public void GetOriginalOppositeEndPoints_None ()
     {
-      _dataManagerMock.Stub (mock => mock.OriginalOppositeEndPoint).Return (null);
-      _dataManagerMock.Replay ();
+      _dataManagerMock.Stub(mock => mock.OriginalOppositeEndPoint).Return(null);
+      _dataManagerMock.Replay();
 
-      var result = (IEnumerable<IRealObjectEndPoint>) PrivateInvoke.InvokeNonPublicMethod (_loadState, "GetOriginalOppositeEndPoints");
+      var result = (IEnumerable<IRealObjectEndPoint>) PrivateInvoke.InvokeNonPublicMethod(_loadState, "GetOriginalOppositeEndPoints");
 
-      Assert.That (result, Is.Empty);
+      Assert.That(result, Is.Empty);
     }
 
     [Test]
     public void GetOriginalItemsWithoutEndPoints ()
     {
-      _dataManagerMock.Stub (mock => mock.OriginalItemWithoutEndPoint).Return (_relatedObject);
-      _dataManagerMock.Replay ();
+      _dataManagerMock.Stub(mock => mock.OriginalItemWithoutEndPoint).Return(_relatedObject);
+      _dataManagerMock.Replay();
 
-      var result = (IEnumerable<DomainObject>) PrivateInvoke.InvokeNonPublicMethod (_loadState, "GetOriginalItemsWithoutEndPoints");
+      var result = (IEnumerable<DomainObject>) PrivateInvoke.InvokeNonPublicMethod(_loadState, "GetOriginalItemsWithoutEndPoints");
 
-      Assert.That (result, Is.EqualTo (new[] { _relatedObject }));
+      Assert.That(result, Is.EqualTo(new[] { _relatedObject }));
     }
 
     [Test]
     public void GetOriginalItemsWithoutEndPoints_None ()
     {
-      _dataManagerMock.Stub (mock => mock.OriginalItemWithoutEndPoint).Return (null);
-      _dataManagerMock.Replay ();
+      _dataManagerMock.Stub(mock => mock.OriginalItemWithoutEndPoint).Return(null);
+      _dataManagerMock.Replay();
 
-      var result = (IEnumerable<DomainObject>) PrivateInvoke.InvokeNonPublicMethod (_loadState, "GetOriginalItemsWithoutEndPoints");
+      var result = (IEnumerable<DomainObject>) PrivateInvoke.InvokeNonPublicMethod(_loadState, "GetOriginalItemsWithoutEndPoints");
 
-      Assert.That (result, Is.Empty);
+      Assert.That(result, Is.Empty);
     }
 
     [Test]
@@ -396,55 +396,55 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      var state = new CompleteVirtualObjectEndPointLoadState (
+      var state = new CompleteVirtualObjectEndPointLoadState(
           new SerializableVirtualObjectEndPointDataManagerFake(),
           new SerializableRelationEndPointProviderFake(),
           new SerializableClientTransactionEventSinkFake());
 
-      var oppositeEndPoint = new SerializableRealObjectEndPointFake (null, _relatedObject);
-      AddUnsynchronizedOppositeEndPoint (state, oppositeEndPoint);
+      var oppositeEndPoint = new SerializableRealObjectEndPointFake(null, _relatedObject);
+      AddUnsynchronizedOppositeEndPoint(state, oppositeEndPoint);
 
-      var result = FlattenedSerializer.SerializeAndDeserialize (state);
+      var result = FlattenedSerializer.SerializeAndDeserialize(state);
 
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result.DataManager, Is.Not.Null);
-      Assert.That (result.TransactionEventSink, Is.Not.Null);
-      Assert.That (result.EndPointProvider, Is.Not.Null);
-      Assert.That (result.UnsynchronizedOppositeEndPoints.Count, Is.EqualTo (1));
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.DataManager, Is.Not.Null);
+      Assert.That(result.TransactionEventSink, Is.Not.Null);
+      Assert.That(result.EndPointProvider, Is.Not.Null);
+      Assert.That(result.UnsynchronizedOppositeEndPoints.Count, Is.EqualTo(1));
     }
 
     private void AddUnsynchronizedOppositeEndPoint (CompleteVirtualObjectEndPointLoadState loadState, IRealObjectEndPoint oppositeEndPoint)
     {
-      var dictionary = (Dictionary<ObjectID, IRealObjectEndPoint>) PrivateInvoke.GetNonPublicField (loadState, "_unsynchronizedOppositeEndPoints");
-      dictionary.Add (oppositeEndPoint.ObjectID, oppositeEndPoint);
+      var dictionary = (Dictionary<ObjectID, IRealObjectEndPoint>) PrivateInvoke.GetNonPublicField(loadState, "_unsynchronizedOppositeEndPoints");
+      dictionary.Add(oppositeEndPoint.ObjectID, oppositeEndPoint);
     }
 
     private void CheckOppositeObjectIDSetter (ObjectEndPointSetCommand command)
     {
-      var setter = (Action<DomainObject>) PrivateInvoke.GetNonPublicField (command, "_oppositeObjectSetter");
+      var setter = (Action<DomainObject>) PrivateInvoke.GetNonPublicField(command, "_oppositeObjectSetter");
 
-      var newRelatedObject = DomainObjectMother.CreateFakeObject<OrderTicket> ();
+      var newRelatedObject = DomainObjectMother.CreateFakeObject<OrderTicket>();
 
-      _dataManagerMock.BackToRecord ();
-      _dataManagerMock.Expect (mock => mock.CurrentOppositeObject = newRelatedObject);
-      _dataManagerMock.Replay ();
+      _dataManagerMock.BackToRecord();
+      _dataManagerMock.Expect(mock => mock.CurrentOppositeObject = newRelatedObject);
+      _dataManagerMock.Replay();
 
-      setter (newRelatedObject);
+      setter(newRelatedObject);
 
-      _dataManagerMock.VerifyAllExpectations ();
+      _dataManagerMock.VerifyAllExpectations();
     }
 
     private void CheckOppositeObjectNullSetter (ObjectEndPointDeleteCommand command)
     {
-      var setter = (Action) PrivateInvoke.GetNonPublicField (command, "_oppositeObjectNullSetter");
+      var setter = (Action) PrivateInvoke.GetNonPublicField(command, "_oppositeObjectNullSetter");
 
-      _dataManagerMock.BackToRecord ();
-      _dataManagerMock.Expect (mock => mock.CurrentOppositeObject = null);
-      _dataManagerMock.Replay ();
+      _dataManagerMock.BackToRecord();
+      _dataManagerMock.Expect(mock => mock.CurrentOppositeObject = null);
+      _dataManagerMock.Replay();
 
-      setter ();
+      setter();
 
-      _dataManagerMock.VerifyAllExpectations ();
+      _dataManagerMock.VerifyAllExpectations();
     }
   }
 }

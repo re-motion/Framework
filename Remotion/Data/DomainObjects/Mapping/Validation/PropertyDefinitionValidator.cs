@@ -33,9 +33,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
 
     public PropertyDefinitionValidator (params IPropertyDefinitionValidationRule[] validationRules)
     {
-      ArgumentUtility.CheckNotNull ("validationRules", validationRules);
+      ArgumentUtility.CheckNotNull("validationRules", validationRules);
 
-      _validationRules = Array.AsReadOnly (validationRules);
+      _validationRules = Array.AsReadOnly(validationRules);
     }
 
     public ReadOnlyCollection<IPropertyDefinitionValidationRule> ValidationRules
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
 
     public IEnumerable<MappingValidationResult> Validate (IEnumerable<ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
 
       return from rule in _validationRules
              from classDefinition in classDefinitions

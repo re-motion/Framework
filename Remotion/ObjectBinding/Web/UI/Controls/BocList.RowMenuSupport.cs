@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void CreateChildControlsForRowMenus ()
     {
-      Controls.Add (_rowMenusPlaceHolder);
+      Controls.Add(_rowMenusPlaceHolder);
     }
 
     private void ResetRowMenus ()
@@ -60,22 +60,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return;
       EnsureChildControls();
 
-      Assertion.IsTrue (_rowMenus.Length == 0);
-      Assertion.IsTrue (_rowMenusPlaceHolder.Controls.Count == 0);
+      Assertion.IsTrue(_rowMenus.Length == 0);
+      Assertion.IsTrue(_rowMenusPlaceHolder.Controls.Count == 0);
 
       var rowMenus = new List<BocListRowMenu>();
       foreach (var row in EnsureBocListRowsForCurrentPageGot())
       {
-        var rowMenu = new BocListRowMenu (this, row.ValueRow);
-        rowMenu.ID = GetRowMenuID (row.ValueRow);
-        rowMenu.EventCommandClick += (sender, e) => HandleRowMenuItemClick (sender, e, OnRowMenuItemEventCommandClick);
-        rowMenu.WxeFunctionCommandClick += (sender, e) => HandleRowMenuItemClick (sender, e, OnRowMenuItemWxeFunctionCommandClick);
+        var rowMenu = new BocListRowMenu(this, row.ValueRow);
+        rowMenu.ID = GetRowMenuID(row.ValueRow);
+        rowMenu.EventCommandClick += (sender, e) => HandleRowMenuItemClick(sender, e, OnRowMenuItemEventCommandClick);
+        rowMenu.WxeFunctionCommandClick += (sender, e) => HandleRowMenuItemClick(sender, e, OnRowMenuItemWxeFunctionCommandClick);
 
-        _rowMenusPlaceHolder.Controls.Add (rowMenu);
-        WebMenuItem[] menuItems = InitializeRowMenuItems (row.ValueRow.BusinessObject, row.ValueRow.Index);
-        rowMenu.MenuItems.AddRange (menuItems);
+        _rowMenusPlaceHolder.Controls.Add(rowMenu);
+        WebMenuItem[] menuItems = InitializeRowMenuItems(row.ValueRow.BusinessObject, row.ValueRow.Index);
+        rowMenu.MenuItems.AddRange(menuItems);
 
-        rowMenus.Add (rowMenu);
+        rowMenus.Add(rowMenu);
       }
 
       _rowMenus = rowMenus.ToArray();
@@ -97,8 +97,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       foreach (var rowMenu in _rowMenus)
       {
-        PreRenderRowMenuItems (rowMenu.MenuItems, rowMenu.Row.BusinessObject, rowMenu.Row.Index);
-        rowMenu.Visible = rowMenu.MenuItems.Cast<WebMenuItem>().Any (item => item.EvaluateVisible());
+        PreRenderRowMenuItems(rowMenu.MenuItems, rowMenu.Row.BusinessObject, rowMenu.Row.Index);
+        rowMenu.Visible = rowMenu.MenuItems.Cast<WebMenuItem>().Any(item => item.EvaluateVisible());
       }
     }
 
@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void HandleRowMenuItemClick (object sender, WebMenuItemClickEventArgs e, Action<WebMenuItem, IBusinessObject, int> handler)
     {
-      var rowMenu = ArgumentUtility.CheckNotNullAndType<BocListRowMenu> ("sender", sender);
+      var rowMenu = ArgumentUtility.CheckNotNullAndType<BocListRowMenu>("sender", sender);
 
       int listIndex;
       if (!HasValue)
@@ -125,22 +125,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         listIndex = -1;
       }
-      else if (Assertion.IsNotNull (Value[rowMenu.Row.Index]).Equals (rowMenu.Row.BusinessObject))
+      else if (Assertion.IsNotNull(Value[rowMenu.Row.Index]).Equals(rowMenu.Row.BusinessObject))
       {
         listIndex = rowMenu.Row.Index;
       }
       else
       {
         listIndex = Value
-            .Select ((obj, i) => (BusinessObject: obj, Index: i))
-            .Where (row => row.BusinessObject.Equals (rowMenu.Row.BusinessObject))
-            .Select (row => (int?) row.Index)
+            .Select((obj, i) => (BusinessObject: obj, Index: i))
+            .Where(row => row.BusinessObject.Equals(rowMenu.Row.BusinessObject))
+            .Select(row => (int?) row.Index)
             .FirstOrDefault() ?? -1;
       }
 
       var businessObject = rowMenu.Row.BusinessObject;
 
-      handler (e.Item, businessObject, listIndex);
+      handler(e.Item, businessObject, listIndex);
     }
 
     /// <summary> Handles the click on an Event command of a row menu. </summary>
@@ -150,7 +150,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (menuItem != null && menuItem.Command != null)
       {
         if (menuItem is BocMenuItem)
-          ((BocMenuItemCommand) menuItem.Command).OnClick ((BocMenuItem) menuItem);
+          ((BocMenuItemCommand) menuItem.Command).OnClick((BocMenuItem) menuItem);
         else
           menuItem.Command.OnClick();
       }
@@ -166,7 +166,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         {
           BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
           if (Page is IWxePage)
-            command.ExecuteWxeFunction ((IWxePage) Page, new[] { listIndex }, new[] { businessObject });
+            command.ExecuteWxeFunction((IWxePage) Page, new[] { listIndex }, new[] { businessObject });
           //else
           //  command.ExecuteWxeFunction (Page, new int[1] {listIndex}, new IBusinessObject[1] {businessObject});
         }
@@ -174,7 +174,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         {
           Command command = menuItem.Command;
           if (Page is IWxePage)
-            command.ExecuteWxeFunction ((IWxePage) Page, null);
+            command.ExecuteWxeFunction((IWxePage) Page, null);
           //else
           //  command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
         }
@@ -191,8 +191,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_rowMenuDisplay == RowMenuDisplay.Automatic)
       {
         BocDropDownMenuColumnDefinition dropDownMenuColumn = new BocDropDownMenuColumnDefinition();
-        dropDownMenuColumn.Width = Unit.Percentage (0);
-        dropDownMenuColumn.MenuTitleText = GetResourceManager().GetString (ResourceIdentifier.RowMenuTitle);
+        dropDownMenuColumn.Width = Unit.Percentage(0);
+        dropDownMenuColumn.MenuTitleText = GetResourceManager().GetString(ResourceIdentifier.RowMenuTitle);
         return dropDownMenuColumn;
       }
       return null;
@@ -211,13 +211,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (columnDefinitions[i] is BocDropDownMenuColumnDefinition)
         {
           if (isFound)
-            throw new InvalidOperationException ("Only a single BocDropDownMenuColumnDefinition is allowed in the BocList '" + ID + "'.");
+            throw new InvalidOperationException("Only a single BocDropDownMenuColumnDefinition is allowed in the BocList '" + ID + "'.");
           isFound = true;
         }
       }
       if (RowMenuDisplay == RowMenuDisplay.Manual && ! isFound)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "No BocDropDownMenuColumnDefinition was found in the BocList '" + ID + "' but the RowMenuDisplay was set to manual.");
       }
     }
@@ -241,7 +241,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private string GetRowMenuID (BocListRow row)
     {
-      return ID + c_rowMenuIDPrefix + RowIDProvider.GetControlRowID (row);
+      return ID + c_rowMenuIDPrefix + RowIDProvider.GetControlRowID(row);
     }
   }
 }

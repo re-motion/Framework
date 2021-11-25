@@ -32,42 +32,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     public void SetUp ()
     {
       _configurationWrapper = new FakeConfigurationWrapper();
-      _configurationWrapper.SetUpConnectionString ("Rdbms", "ConnectionString", null);
-      ConfigurationWrapper.SetCurrent (_configurationWrapper);
+      _configurationWrapper.SetUpConnectionString("Rdbms", "ConnectionString", null);
+      ConfigurationWrapper.SetCurrent(_configurationWrapper);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      ConfigurationWrapper.SetCurrent (null);
+      ConfigurationWrapper.SetCurrent(null);
     }
 
     [Test]
     public void GetConfigurationFileName ()
     {
-      _configurationWrapper.SetUpAppSetting ("ConfigurationFileThatDoesNotExist", @"C:\NonExistingConfigurationFile.xml");
+      _configurationWrapper.SetUpAppSetting("ConfigurationFileThatDoesNotExist", @"C:\NonExistingConfigurationFile.xml");
 
-      Assert.That (LoaderUtility.GetConfigurationFileName ("ConfigurationFileThatDoesNotExist", "Mapping.xml"), Is.EqualTo (@"C:\NonExistingConfigurationFile.xml"));
+      Assert.That(LoaderUtility.GetConfigurationFileName("ConfigurationFileThatDoesNotExist", "Mapping.xml"), Is.EqualTo(@"C:\NonExistingConfigurationFile.xml"));
     }
 
     [Test]
     public void GetEmptyConfigurationFileName ()
     {
-      _configurationWrapper.SetUpAppSetting ("EmptyConfigurationFileName", string.Empty);
+      _configurationWrapper.SetUpAppSetting("EmptyConfigurationFileName", string.Empty);
 
-      Assert.That (LoaderUtility.GetConfigurationFileName ("EmptyConfigurationFileName", "Mapping.xml"), Is.EqualTo (string.Empty));
+      Assert.That(LoaderUtility.GetConfigurationFileName("EmptyConfigurationFileName", "Mapping.xml"), Is.EqualTo(string.Empty));
     }
 
     [Test]
     public void GetConfigurationFileNameForNonExistingAppSettingsKey ()
     {
-      Assert.That (LoaderUtility.GetConfigurationFileName ("AppSettingKeyDoesNotExist", "Mapping.xml"), Is.EqualTo (Path.Combine (ReflectionUtility.GetConfigFileDirectory(), "Mapping.xml")));
+      Assert.That(LoaderUtility.GetConfigurationFileName("AppSettingKeyDoesNotExist", "Mapping.xml"), Is.EqualTo(Path.Combine(ReflectionUtility.GetConfigFileDirectory(), "Mapping.xml")));
     }
 
     [Test]
     public void GetTypeWithTypeUtilityNotation ()
     {
-      Assert.That (LoaderUtility.GetType ("Remotion.Data.DomainObjects::ConfigurationLoader.XmlBasedConfigurationLoader.LoaderUtility"), Is.EqualTo (typeof (LoaderUtility)));
+      Assert.That(LoaderUtility.GetType("Remotion.Data.DomainObjects::ConfigurationLoader.XmlBasedConfigurationLoader.LoaderUtility"), Is.EqualTo(typeof (LoaderUtility)));
     }
   }
 }

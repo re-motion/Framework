@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public ScriptPair (string setUpScript, string tearDownScript)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("setUpScript", setUpScript);
-      ArgumentUtility.CheckNotNullOrEmpty ("tearDownScript", tearDownScript);
+      ArgumentUtility.CheckNotNullOrEmpty("setUpScript", setUpScript);
+      ArgumentUtility.CheckNotNullOrEmpty("tearDownScript", tearDownScript);
 
       _setUpScript = setUpScript;
       _tearDownScript = tearDownScript;

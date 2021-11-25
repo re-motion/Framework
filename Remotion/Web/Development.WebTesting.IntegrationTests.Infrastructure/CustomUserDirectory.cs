@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       if (s_firstRun)
       {
         s_customUserDirectory = GetTemporaryDirectory();
-        EnsureDirectoryDoesNotExist (s_customUserDirectory);
+        EnsureDirectoryDoesNotExist(s_customUserDirectory);
         s_firstRun = false;
       }
 
@@ -38,14 +38,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     private static string GetTemporaryDirectory ()
     {
-      string tempDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
-      Directory.CreateDirectory (tempDirectory);
+      string tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+      Directory.CreateDirectory(tempDirectory);
       return tempDirectory;
     }
 
     private static void EnsureDirectoryDoesNotExist (string customUserDirectoryPath)
     {
-      Directory.Delete (customUserDirectoryPath);
+      Directory.Delete(customUserDirectoryPath);
     }
   }
 }

@@ -40,12 +40,12 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Domain
     /// <returns></returns>
     public static ISettlement NewObject ()
     {
-      return NewObject<Settlement> (ParamList.Empty);
+      return NewObject<Settlement>(ParamList.Empty);
     }
 
     protected override void OnReferenceInitializing ()
     {
-      base.OnReferenceInitializing ();
+      base.OnReferenceInitializing();
       Events.Committing += Committing;
     }
 
@@ -53,12 +53,12 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Domain
 
     public override string ToString ()
     {
-      return string.Format ("Settlement: {0} ({1}); Tenant: {2}", This.Title, This.SettlementKind, This.Tenant);
+      return string.Format("Settlement: {0} ({1}); Tenant: {2}", This.Title, This.SettlementKind, This.Tenant);
     }
 
     private void Committing (object sender, EventArgs e)
     {
-      if (string.IsNullOrEmpty (SettlementKind))
+      if (string.IsNullOrEmpty(SettlementKind))
         SettlementKind = "Ordinary";
     }
   }

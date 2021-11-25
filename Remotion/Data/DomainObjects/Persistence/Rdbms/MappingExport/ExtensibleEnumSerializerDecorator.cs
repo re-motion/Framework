@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public ExtensibleEnumSerializerDecorator (IEnumSerializer enumSerializer)
     {
-      ArgumentUtility.CheckNotNull ("enumSerializer", enumSerializer);
+      ArgumentUtility.CheckNotNull("enumSerializer", enumSerializer);
       _enumSerializer = enumSerializer;
     }
 
@@ -45,34 +45,34 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public void CollectPropertyType (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       var propertyType = propertyDefinition.PropertyType;
       if (ExtensibleEnumUtility.IsExtensibleEnumType(propertyType))
-        _enumTypes.Add (propertyType);
+        _enumTypes.Add(propertyType);
       else
-        _enumSerializer.CollectPropertyType (propertyDefinition);
+        _enumSerializer.CollectPropertyType(propertyDefinition);
     }
 
     public IEnumerable<XElement> Serialize ()
     {
-      var elements = _enumTypes.Select (
-          t => new XElement (
+      var elements = _enumTypes.Select(
+          t => new XElement(
               Constants.Namespace + "enumType",
-              new XAttribute ("type", TypeUtility.GetPartialAssemblyQualifiedName (t)),
-              GetValues (t))).ToList();
+              new XAttribute("type", TypeUtility.GetPartialAssemblyQualifiedName(t)),
+              GetValues(t))).ToList();
 
-      elements.AddRange (_enumSerializer.Serialize());
+      elements.AddRange(_enumSerializer.Serialize());
       return elements;
     }
 
     private IEnumerable<XElement> GetValues (Type type)
     {
-      return ExtensibleEnumUtility.GetDefinition (type).GetValueInfos().Select (
-          info => new XElement (
+      return ExtensibleEnumUtility.GetDefinition(type).GetValueInfos().Select(
+          info => new XElement(
               Constants.Namespace + "value",
-              new XAttribute ("name", info.Value.ValueName),
-              new XAttribute ("columnValue", info.Value.ID)));
+              new XAttribute("name", info.Value.ValueName),
+              new XAttribute("columnValue", info.Value.ID)));
     }
   }
 }

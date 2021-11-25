@@ -30,92 +30,92 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _newOrderItem = OrderItem.NewObject();
-      _orderWithUnloadedCollection = DomainObjectIDs.Order1.GetObject<Order> ();
+      _orderWithUnloadedCollection = DomainObjectIDs.Order1.GetObject<Order>();
       _originalOrderItemCount = _orderWithUnloadedCollection.OrderItems.Count;
-      UnloadService.UnloadVirtualEndPoint (TestableClientTransaction, _orderWithUnloadedCollection.OrderItems.AssociatedEndPointID);
+      UnloadService.UnloadVirtualEndPoint(TestableClientTransaction, _orderWithUnloadedCollection.OrderItems.AssociatedEndPointID);
     }
 
     [Test]
     public void Insert ()
     {
-      Assert.That (_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
+      Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
 
-      _orderWithUnloadedCollection.OrderItems.Insert (0, _newOrderItem);
+      _orderWithUnloadedCollection.OrderItems.Insert(0, _newOrderItem);
 
-      Assert.That (_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
-      Assert.That (_orderWithUnloadedCollection.OrderItems.Count, Is.EqualTo (_originalOrderItemCount + 1));
-      Assert.That (_orderWithUnloadedCollection.OrderItems[0], Is.SameAs (_newOrderItem));
+      Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
+      Assert.That(_orderWithUnloadedCollection.OrderItems.Count, Is.EqualTo(_originalOrderItemCount + 1));
+      Assert.That(_orderWithUnloadedCollection.OrderItems[0], Is.SameAs(_newOrderItem));
     }
 
     [Test]
     public void Remove ()
     {
-      Assert.That (_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
+      Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
 
-      _orderWithUnloadedCollection.OrderItems.Remove (_orderWithUnloadedCollection.OrderItems[0]);
+      _orderWithUnloadedCollection.OrderItems.Remove(_orderWithUnloadedCollection.OrderItems[0]);
 
-      Assert.That (_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
-      Assert.That (_orderWithUnloadedCollection.OrderItems.Count, Is.EqualTo (_originalOrderItemCount - 1));
+      Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
+      Assert.That(_orderWithUnloadedCollection.OrderItems.Count, Is.EqualTo(_originalOrderItemCount - 1));
     }
 
     [Test]
     public void Delete ()
     {
-      Assert.That (_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
+      Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
 
       _orderWithUnloadedCollection.Delete();
 
-      Assert.That (_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
-      Assert.That (_orderWithUnloadedCollection.OrderItems.Count, Is.EqualTo (0));
+      Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
+      Assert.That(_orderWithUnloadedCollection.OrderItems.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void Replace ()
     {
-      Assert.That (_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
+      Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
 
       _orderWithUnloadedCollection.OrderItems[0] = _newOrderItem;
 
-      Assert.That (_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
-      Assert.That (_orderWithUnloadedCollection.OrderItems[0], Is.SameAs (_newOrderItem));
+      Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
+      Assert.That(_orderWithUnloadedCollection.OrderItems[0], Is.SameAs(_newOrderItem));
     }
 
     [Test]
     public void SetCollection ()
     {
-      var newOrderItems = new ObjectList<OrderItem> (new[] { _newOrderItem });
-      Assert.That (_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
+      var newOrderItems = new ObjectList<OrderItem>(new[] { _newOrderItem });
+      Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
 
       _orderWithUnloadedCollection.OrderItems = newOrderItems;
 
-      Assert.That (_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
-      Assert.That (_orderWithUnloadedCollection.OrderItems, Is.SameAs (newOrderItems));
+      Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
+      Assert.That(_orderWithUnloadedCollection.OrderItems, Is.SameAs(newOrderItems));
     }
 
     [Test]
     public void GetEnumerator ()
     {
-      Assert.That (_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
+      Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
 
-      using (var enumerator = _orderWithUnloadedCollection.OrderItems.GetEnumerator ())
+      using (var enumerator = _orderWithUnloadedCollection.OrderItems.GetEnumerator())
       {
-        Assert.That (enumerator.MoveNext (), Is.True);
-        Assert.That (_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
+        Assert.That(enumerator.MoveNext(), Is.True);
+        Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
       }
     }
 
     [Test]
     public void GetOriginalValue ()
     {
-      Assert.That (_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
+      Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.False);
 
       var originalOrderItems = _orderWithUnloadedCollection.Properties[typeof (Order), "OrderItems"].GetOriginalValue<ObjectList<OrderItem>>();
 
-      Assert.That (_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
-      Assert.That (originalOrderItems.Count, Is.GreaterThan (0));
+      Assert.That(_orderWithUnloadedCollection.OrderItems.IsDataComplete, Is.True);
+      Assert.That(originalOrderItems.Count, Is.GreaterThan(0));
     }
   }
 }

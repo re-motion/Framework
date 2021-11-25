@@ -107,9 +107,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       object? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = DataSource.BusinessObject.GetProperty (Property);
+        value = DataSource.BusinessObject.GetProperty(Property);
 
-      LoadValueInternal (value, false);
+      LoadValueInternal(value, false);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='..\..\doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (string value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
@@ -127,7 +127,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='..\..\doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (int? value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='..\..\doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (double? value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
@@ -145,7 +145,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='..\..\doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (DateTime? value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="O:Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.LoadUnboundValue"/>. </summary>
@@ -154,7 +154,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (interim)
         return;
 
-      SetValue (value);
+      SetValue(value);
       IsDirty = false;
     }
 
@@ -182,15 +182,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
     {
-      return new BocTextValueConstraintVisitor (this);
+      return new BocTextValueConstraintVisitor(this);
     }
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     /// <summary> Gets or sets the current value. </summary>
@@ -219,7 +219,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         IsDirty = true;
 
-        SetValue (value);
+        SetValue(value);
       }
     }
     
@@ -251,7 +251,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (text != null)
         text = text.Trim();
 
-      if (string.IsNullOrEmpty (text))
+      if (string.IsNullOrEmpty(text))
         return null;
 
       var valueType = ActualValueType;
@@ -261,31 +261,31 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return text;
 
         case BocTextValueType.Byte:
-          return byte.Parse (text, GetNumberStyle (valueType));
+          return byte.Parse(text, GetNumberStyle(valueType));
 
         case BocTextValueType.Int16:
-          return short.Parse (text, GetNumberStyle (valueType));
+          return short.Parse(text, GetNumberStyle(valueType));
 
         case BocTextValueType.Int32:
-          return int.Parse (text, GetNumberStyle (valueType));
+          return int.Parse(text, GetNumberStyle(valueType));
 
         case BocTextValueType.Int64:
-          return long.Parse (text, GetNumberStyle (valueType));
+          return long.Parse(text, GetNumberStyle(valueType));
 
         case BocTextValueType.Date:
-          return DateTime.Parse (text).Date;
+          return DateTime.Parse(text).Date;
 
         case BocTextValueType.DateTime:
-          return DateTime.Parse (text);
+          return DateTime.Parse(text);
 
         case BocTextValueType.Decimal:
-          return decimal.Parse (text, GetNumberStyle (valueType));
+          return decimal.Parse(text, GetNumberStyle(valueType));
 
         case BocTextValueType.Double:
-          return double.Parse (text, GetNumberStyle (valueType));
+          return double.Parse(text, GetNumberStyle(valueType));
 
         case BocTextValueType.Single:
-          return float.Parse (text, GetNumberStyle (valueType));
+          return float.Parse(text, GetNumberStyle(valueType));
       }
       return text;
     }
@@ -316,7 +316,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           else if (ActualValueType == BocTextValueType.DateTime)
             format = "g";
         }
-        _text = formattable.ToString (format, null);
+        _text = formattable.ToString(format, null);
       }
       else
         _text = value.ToString();
@@ -332,7 +332,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>Gets a flag indicating whether the <see cref="BocTextValue"/> contains a value. </summary>
     public override bool HasValue
     {
-      get { return !string.IsNullOrWhiteSpace (_text); }
+      get { return !string.IsNullOrWhiteSpace(_text); }
     }
 
     /// <summary>
@@ -398,7 +398,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get
       {
         if (_valueType == BocTextValueType.Undefined && Property != null)
-          _actualValueType = GetBocTextValueType (Property);
+          _actualValueType = GetBocTextValueType(Property);
         return _actualValueType;
       }
     }
@@ -418,7 +418,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [DefaultValue ("")]
     public string? Format
     {
-      get { return StringUtility.EmptyToNull (_format); }
+      get { return StringUtility.EmptyToNull(_format); }
       set { _format = value; }
     }
 
@@ -437,12 +437,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         _errorMessage = value;
 
-        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
-        UpdateValidtaorErrorMessages<LengthValidator> (_errorMessage);
+        UpdateValidtaorErrorMessages<RequiredFieldValidator>(_errorMessage);
+        UpdateValidtaorErrorMessages<LengthValidator>(_errorMessage);
 
-        UpdateValidtaorErrorMessages<DateTimeValidator> (_errorMessage);
-        UpdateValidtaorErrorMessages<CompareValidator> (_errorMessage);
-        UpdateValidtaorErrorMessages<NumericValidator> (_errorMessage);
+        UpdateValidtaorErrorMessages<DateTimeValidator>(_errorMessage);
+        UpdateValidtaorErrorMessages<CompareValidator>(_errorMessage);
+        UpdateValidtaorErrorMessages<NumericValidator>(_errorMessage);
       }
     }
 
@@ -452,30 +452,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="e">ignored</param>
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
       Binding.BindingChanged += Binding_BindingChanged;
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      base.RegisterHtmlHeadContents (htmlHeadAppender);
+      base.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender, TextBoxStyle);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender, TextBoxStyle);
     }
 
     protected virtual IBocTextValueRenderer CreateRenderer ()
     {
-      return ServiceLocator.GetInstance<IBocTextValueRenderer> ();
+      return ServiceLocator.GetInstance<IBocTextValueRenderer>();
     }
 
     protected virtual BocTextValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      Assertion.IsNotNull (Context, "Context must not be null.");
+      Assertion.IsNotNull(Context, "Context must not be null.");
 
-      return new BocTextValueRenderingContext (Context, writer, this);
+      return new BocTextValueRenderingContext(Context, writer, this);
     }
 
     /// <summary>
@@ -485,7 +485,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void LoadControlState (object? savedState)
     {
       object?[] values = (object?[]) savedState!;
-      base.LoadControlState (values[0]);
+      base.LoadControlState(values[0]);
       _text = (string) values[1]!;
       _valueType = (BocTextValueType) values[2]!;
       _actualValueType = (BocTextValueType) values[3]!;
@@ -508,27 +508,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     public override IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (ResourceIdentifier));
+      return GetResourceManager(typeof (ResourceIdentifier));
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      base.LoadResources (resourceManager, globalizationService);
+      base.LoadResources(resourceManager, globalizationService);
 
       //  Dispatch simple properties
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
-      if (! string.IsNullOrEmpty (key))
-        ErrorMessage = resourceManager.GetString (key);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage);
+      if (! string.IsNullOrEmpty(key))
+        ErrorMessage = resourceManager.GetString(key);
     }
 
     [Obsolete ("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("For DependDB only.");
+      throw new NotImplementedException("For DependDB only.");
     }
 
     /// <summary>
@@ -565,7 +565,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = ServiceLocator.GetInstance<IBocTextValueValidatorFactory>();
-      _validators = validatorFactory.CreateValidators (this,isReadOnly).ToList().AsReadOnly();
+      _validators = validatorFactory.CreateValidators(this,isReadOnly).ToList().AsReadOnly();
 
       OverrideValidatorErrorMessages();
 
@@ -575,15 +575,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private void OverrideValidatorErrorMessages ()
     {
 
-      if (string.IsNullOrEmpty (_errorMessage))
+      if (string.IsNullOrEmpty(_errorMessage))
         return;
 
-      UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
-      UpdateValidtaorErrorMessages<LengthValidator> (_errorMessage);
+      UpdateValidtaorErrorMessages<RequiredFieldValidator>(_errorMessage);
+      UpdateValidtaorErrorMessages<LengthValidator>(_errorMessage);
 
-      UpdateValidtaorErrorMessages<DateTimeValidator> (_errorMessage);
-      UpdateValidtaorErrorMessages<CompareValidator> (_errorMessage);
-      UpdateValidtaorErrorMessages<NumericValidator> (_errorMessage);
+      UpdateValidtaorErrorMessages<DateTimeValidator>(_errorMessage);
+      UpdateValidtaorErrorMessages<CompareValidator>(_errorMessage);
+      UpdateValidtaorErrorMessages<NumericValidator>(_errorMessage);
     }
 
     private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
@@ -629,7 +629,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return NumberStyles.Number | NumberStyles.AllowExponent;
 
         default:
-          throw new ArgumentOutOfRangeException ("valueType", valueType, "Only numeric value types are supported.");
+          throw new ArgumentOutOfRangeException("valueType", valueType, "Only numeric value types are supported.");
       }
     }
 
@@ -650,7 +650,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (Property != null)
       {
         if (_valueType == BocTextValueType.Undefined)
-          _actualValueType = GetBocTextValueType (Property);
+          _actualValueType = GetBocTextValueType(Property);
 
         IBusinessObjectStringProperty? stringProperty = Property as IBusinessObjectStringProperty;
         if (stringProperty != null)
@@ -690,7 +690,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         else if (numericProperty.Type == typeof (float))
           return BocTextValueType.Single;
         else
-          throw new NotSupportedException ("BocTextValue does not support property type " + property.GetType());
+          throw new NotSupportedException("BocTextValue does not support property type " + property.GetType());
       }
       else if (property is IBusinessObjectDateTimeProperty)
       {
@@ -701,7 +701,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return BocTextValueType.DateTime;
       }
       else
-        throw new NotSupportedException ("BocTextValue does not support property type " + property.GetType());
+        throw new NotSupportedException("BocTextValue does not support property type " + property.GetType());
     }
 
     protected override string ControlType

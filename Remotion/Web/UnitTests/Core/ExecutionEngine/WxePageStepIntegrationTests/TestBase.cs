@@ -26,8 +26,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
     [TearDown]
     public virtual void TearDown ()
     {
-      WxeContext.SetCurrent (null);
-      UrlMappingConfiguration.SetCurrent (null);
+      WxeContext.SetCurrent(null);
+      UrlMappingConfiguration.SetCurrent(null);
     }
   }
 }

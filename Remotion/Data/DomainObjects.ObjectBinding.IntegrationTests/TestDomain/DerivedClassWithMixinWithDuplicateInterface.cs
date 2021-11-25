@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain
   {
     public new static DerivedClassWithMixinWithDuplicateInterface NewObject ()
     {
-      return NewObject<DerivedClassWithMixinWithDuplicateInterface> ();
+      return NewObject<DerivedClassWithMixinWithDuplicateInterface>();
     }
   }
 }

@@ -62,11 +62,11 @@ public class BocBooleanValueUserControl : BaseUserControl
   {
     base.RegisterEventHandlers();
 
-    DeceasedField.CheckedChanged += new EventHandler (DeceasedField_CheckedChanged);
-    DeceasedTestSetNullButton.Click += new EventHandler (DeceasedTestSetNullButton_Click);
-    DeceasedTestToggleValueButton.Click += new EventHandler (DeceasedTestToggleValueButton_Click);
-    ReadOnlyDeceasedTestSetNullButton.Click += new EventHandler (ReadOnlyDeceasedTestSetNullButton_Click);
-    ReadOnlyDeceasedTestToggleValueButton.Click += new EventHandler (ReadOnlyDeceasedTestToggleValueButton_Click);
+    DeceasedField.CheckedChanged += new EventHandler(DeceasedField_CheckedChanged);
+    DeceasedTestSetNullButton.Click += new EventHandler(DeceasedTestSetNullButton_Click);
+    DeceasedTestToggleValueButton.Click += new EventHandler(DeceasedTestToggleValueButton_Click);
+    ReadOnlyDeceasedTestSetNullButton.Click += new EventHandler(ReadOnlyDeceasedTestSetNullButton_Click);
+    ReadOnlyDeceasedTestToggleValueButton.Click += new EventHandler(ReadOnlyDeceasedTestToggleValueButton_Click);
   }
 
   public override IBusinessObjectDataSourceControl DataSource
@@ -81,34 +81,34 @@ public class BocBooleanValueUserControl : BaseUserControl
 
   override protected void OnLoad (EventArgs e)
   {
-    base.OnLoad (e);
+    base.OnLoad(e);
 
     Person person = (Person) CurrentObject.BusinessObject;
 
     //UnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    UnboundReadOnlyDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    DisabledUnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    DisabledUnboundReadOnlyDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
+    UnboundReadOnlyDeceasedField.LoadUnboundValue(person.Deceased, IsPostBack);
+    DisabledUnboundDeceasedField.LoadUnboundValue(person.Deceased, IsPostBack);
+    DisabledUnboundReadOnlyDeceasedField.LoadUnboundValue(person.Deceased, IsPostBack);
 
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus (DeceasedField);
+        ((ISmartNavigablePage) Page).SetFocus(DeceasedField);
     }
   }
 
   override protected void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    SetDebugLabel (DeceasedField, DeceasedFieldValueLabel);
-    SetDebugLabel (ReadOnlyDeceasedField, ReadOnlyDeceasedFieldValueLabel);
-    SetDebugLabel (UnboundDeceasedField, UnboundDeceasedFieldValueLabel);
-    SetDebugLabel (UnboundReadOnlyDeceasedField, UnboundReadOnlyDeceasedFieldValueLabel);
-    SetDebugLabel (DisabledDeceasedField, DisabledDeceasedFieldValueLabel);
-    SetDebugLabel (DisabledReadOnlyDeceasedField, DisabledReadOnlyDeceasedFieldValueLabel);
-    SetDebugLabel (DisabledUnboundDeceasedField, DisabledUnboundDeceasedFieldValueLabel);
-    SetDebugLabel (DisabledUnboundReadOnlyDeceasedField, DisabledUnboundReadOnlyDeceasedFieldValueLabel);
+    SetDebugLabel(DeceasedField, DeceasedFieldValueLabel);
+    SetDebugLabel(ReadOnlyDeceasedField, ReadOnlyDeceasedFieldValueLabel);
+    SetDebugLabel(UnboundDeceasedField, UnboundDeceasedFieldValueLabel);
+    SetDebugLabel(UnboundReadOnlyDeceasedField, UnboundReadOnlyDeceasedFieldValueLabel);
+    SetDebugLabel(DisabledDeceasedField, DisabledDeceasedFieldValueLabel);
+    SetDebugLabel(DisabledReadOnlyDeceasedField, DisabledReadOnlyDeceasedFieldValueLabel);
+    SetDebugLabel(DisabledUnboundDeceasedField, DisabledUnboundDeceasedFieldValueLabel);
+    SetDebugLabel(DisabledUnboundReadOnlyDeceasedField, DisabledUnboundReadOnlyDeceasedFieldValueLabel);
   }
 
   private void SetDebugLabel (IBusinessObjectBoundWebControl control, Label label)

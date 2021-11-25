@@ -27,7 +27,7 @@ namespace Remotion.Logging
   public static class LogExtensions
   {
     private static readonly DoubleCheckedLockingContainer<IEnumerationGlobalizationService> s_globalizationService =
-        new DoubleCheckedLockingContainer<IEnumerationGlobalizationService> (
+        new DoubleCheckedLockingContainer<IEnumerationGlobalizationService>(
             () => SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>());
     
 
@@ -41,13 +41,13 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public static void LogFormat (this ILog log, LogLevel logLevel, Enum messageEnum, Exception? exceptionObject, params object[] args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
+      ArgumentUtility.CheckNotNull("log", log);
 
-      log.LogFormat (
+      log.LogFormat(
           logLevel,
-          Convert.ToInt32 (messageEnum),
+          Convert.ToInt32(messageEnum),
           exceptionObject,
-          s_globalizationService.Value.GetEnumerationValueDisplayName (messageEnum),
+          s_globalizationService.Value.GetEnumerationValueDisplayName(messageEnum),
           args);
     }
 
@@ -60,8 +60,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public static void LogFormat (this ILog log, LogLevel logLevel, Enum messageEnum, params object[] args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (logLevel, messageEnum, (Exception?) null, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(logLevel, messageEnum, (Exception?) null, args);
     }
 
     /// <summary>
@@ -74,8 +74,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public static void DebugFormat (this ILog log, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Debug, messageEnum, exceptionObject, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Debug, messageEnum, exceptionObject, args);
     }
 
     /// <summary>
@@ -87,8 +87,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public static void DebugFormat (this ILog log, Enum messageEnum, params object[] args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Debug, messageEnum, (Exception?) null, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Debug, messageEnum, (Exception?) null, args);
     }
 
     /// <summary>
@@ -101,8 +101,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public static void InfoFormat (this ILog log, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Info, messageEnum, exceptionObject, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Info, messageEnum, exceptionObject, args);
     }
 
     /// <summary>
@@ -114,8 +114,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public static void InfoFormat (this ILog log, Enum messageEnum, params object[] args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Info, messageEnum, (Exception?) null, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Info, messageEnum, (Exception?) null, args);
     }
 
     /// <summary>
@@ -128,8 +128,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public static void WarnFormat (this ILog log, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Warn, messageEnum, exceptionObject, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Warn, messageEnum, exceptionObject, args);
     }
 
     /// <summary>
@@ -141,8 +141,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public static void WarnFormat (this ILog log, Enum messageEnum, params object[] args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Warn, messageEnum, (Exception?) null, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Warn, messageEnum, (Exception?) null, args);
     }
 
     /// <summary>
@@ -155,8 +155,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public static void ErrorFormat (this ILog log, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Error, messageEnum, exceptionObject, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Error, messageEnum, exceptionObject, args);
     }
 
     /// <summary>
@@ -168,8 +168,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public static void ErrorFormat (this ILog log, Enum messageEnum, params object[] args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Error, messageEnum, (Exception?) null, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Error, messageEnum, (Exception?) null, args);
     }
 
     /// <summary>
@@ -182,8 +182,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public static void FatalFormat (this ILog log, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Fatal, messageEnum, exceptionObject, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Fatal, messageEnum, exceptionObject, args);
     }
 
     /// <summary>
@@ -195,8 +195,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public static void FatalFormat (this ILog log, Enum messageEnum, params object[] args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Fatal, messageEnum, (Exception?) null, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Fatal, messageEnum, (Exception?) null, args);
     }
   }
 }

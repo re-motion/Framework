@@ -40,37 +40,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _fakeCreateElements = new ScriptElementCollection();
       _fakeDropElements = new ScriptElementCollection();
       _scriptBuilderStub = MockRepository.GenerateStub<IScriptBuilder>();
-      _scriptBuilderStub.Stub (stub => stub.GetCreateScript()).Return (_fakeCreateElements);
-      _scriptBuilderStub.Stub (stub => stub.GetDropScript()).Return (_fakeDropElements);
+      _scriptBuilderStub.Stub(stub => stub.GetCreateScript()).Return(_fakeCreateElements);
+      _scriptBuilderStub.Stub(stub => stub.GetDropScript()).Return(_fakeDropElements);
 
-      _scriptElement1 = new ScriptStatement ("Test1");
-      _scriptElement2 = new ScriptStatement ("Test2");
+      _scriptElement1 = new ScriptStatement("Test1");
+      _scriptElement2 = new ScriptStatement("Test2");
     }
 
     [Test]
     public void Convert_OneScriptElement ()
     {
-      _fakeCreateElements.AddElement (_scriptElement1);
-      _fakeDropElements.AddElement (_scriptElement2);
+      _fakeCreateElements.AddElement(_scriptElement1);
+      _fakeDropElements.AddElement(_scriptElement2);
 
-      var result = _converter.Convert (_scriptBuilderStub);
+      var result = _converter.Convert(_scriptBuilderStub);
 
-      Assert.That (result.SetUpScript, Is.EqualTo ("Test1\r\n"));
-      Assert.That (result.TearDownScript, Is.EqualTo ("Test2\r\n"));
+      Assert.That(result.SetUpScript, Is.EqualTo("Test1\r\n"));
+      Assert.That(result.TearDownScript, Is.EqualTo("Test2\r\n"));
     }
 
     [Test]
     public void Convert_SeveralScriptElements ()
     {
-      _fakeCreateElements.AddElement (_scriptElement1);
-      _fakeCreateElements.AddElement (_scriptElement2);
-      _fakeDropElements.AddElement (_scriptElement2);
-      _fakeDropElements.AddElement (_scriptElement1);
+      _fakeCreateElements.AddElement(_scriptElement1);
+      _fakeCreateElements.AddElement(_scriptElement2);
+      _fakeDropElements.AddElement(_scriptElement2);
+      _fakeDropElements.AddElement(_scriptElement1);
 
-      var result = _converter.Convert (_scriptBuilderStub);
+      var result = _converter.Convert(_scriptBuilderStub);
 
-      Assert.That (result.SetUpScript, Is.EqualTo ("Test1\r\nTest2\r\n"));
-      Assert.That (result.TearDownScript, Is.EqualTo ("Test2\r\nTest1\r\n"));
+      Assert.That(result.SetUpScript, Is.EqualTo("Test1\r\nTest2\r\n"));
+      Assert.That(result.TearDownScript, Is.EqualTo("Test2\r\nTest1\r\n"));
     }
   }
 }

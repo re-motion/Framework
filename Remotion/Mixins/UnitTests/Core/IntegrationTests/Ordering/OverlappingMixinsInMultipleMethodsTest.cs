@@ -25,25 +25,25 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     [Test]
     public void MixinsOverlappingInMultipleMethods_WithDependencies ()
     {
-      var instance1 = BuildMixedInstance<C> (
-          b => b.AddMixinDependency<MixinB, MixinA> ().AddMixinDependency<MixinC, MixinB> (),
+      var instance1 = BuildMixedInstance<C>(
+          b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinC, MixinB>(),
           typeof (MixinA), typeof (MixinB), typeof (MixinC));
-      Assert.That (instance1.Method1 (), Is.EqualTo ("MixinC.Method1 - MixinA.Method1 - C.Method1"));
-      Assert.That (instance1.Method2 (), Is.EqualTo ("MixinB.Method2 - MixinA.Method2 - C.Method2"));
-      Assert.That (instance1.Method4 (), Is.EqualTo ("MixinC.Method4 - MixinB.Method4 - MixinA.Method4 - C.Method4"));
-      CheckOrderedMixinTypes (instance1, typeof (MixinC), typeof (MixinB), typeof (MixinA));
+      Assert.That(instance1.Method1(), Is.EqualTo("MixinC.Method1 - MixinA.Method1 - C.Method1"));
+      Assert.That(instance1.Method2(), Is.EqualTo("MixinB.Method2 - MixinA.Method2 - C.Method2"));
+      Assert.That(instance1.Method4(), Is.EqualTo("MixinC.Method4 - MixinB.Method4 - MixinA.Method4 - C.Method4"));
+      CheckOrderedMixinTypes(instance1, typeof (MixinC), typeof (MixinB), typeof (MixinA));
     }
 
     [Test]
     public void TwoOverlappingMixins_WithoutDependencies_CauseException ()
     {
-      CheckOrderingException (
-          () => BuildMixedInstance<C> (typeof (MixinA), typeof (MixinB), typeof (MixinC)),
+      CheckOrderingException(
+          () => BuildMixedInstance<C>(typeof (MixinA), typeof (MixinB), typeof (MixinC)),
           typeof (C), 
-          Tuple.Create (new[] { typeof (MixinA), typeof (MixinC) }, "Method1"),
-          Tuple.Create (new[] { typeof (MixinA), typeof (MixinB) }, "Method2"),
-          Tuple.Create (new[] { typeof (MixinA), typeof (MixinB), typeof (MixinC) }, "Method4"),
-          Tuple.Create (new[] { typeof (MixinB), typeof (MixinC) }, "Method3"));
+          Tuple.Create(new[] { typeof (MixinA), typeof (MixinC) }, "Method1"),
+          Tuple.Create(new[] { typeof (MixinA), typeof (MixinB) }, "Method2"),
+          Tuple.Create(new[] { typeof (MixinA), typeof (MixinB), typeof (MixinC) }, "Method4"),
+          Tuple.Create(new[] { typeof (MixinB), typeof (MixinC) }, "Method3"));
     }
 
     public class C
@@ -67,29 +67,29 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
       [OverrideTarget]
       public string Method1 () { return "MixinA.Method1 - " + Next.Method1(); }
       [OverrideTarget]
-      public string Method2 () { return "MixinA.Method2 - " + Next.Method2 (); }
+      public string Method2 () { return "MixinA.Method2 - " + Next.Method2(); }
       [OverrideTarget]
-      public string Method4 () { return "MixinA.Method4 - " + Next.Method4 (); }
+      public string Method4 () { return "MixinA.Method4 - " + Next.Method4(); }
     }
 
     public class MixinB : Mixin<object, IC>
     {
       [OverrideTarget]
-      public string Method2 () { return "MixinB.Method2 - " + Next.Method2 (); }
+      public string Method2 () { return "MixinB.Method2 - " + Next.Method2(); }
       [OverrideTarget]
-      public string Method3 () { return "MixinB.Method3 - " + Next.Method3 (); }
+      public string Method3 () { return "MixinB.Method3 - " + Next.Method3(); }
       [OverrideTarget]
-      public string Method4 () { return "MixinB.Method4 - " + Next.Method4 (); }
+      public string Method4 () { return "MixinB.Method4 - " + Next.Method4(); }
     }
 
     public class MixinC : Mixin<object, IC>
     {
       [OverrideTarget]
-      public string Method1 () { return "MixinC.Method1 - " + Next.Method1 (); }
+      public string Method1 () { return "MixinC.Method1 - " + Next.Method1(); }
       [OverrideTarget]
-      public string Method3 () { return "MixinC.Method3 - " + Next.Method3 (); }
+      public string Method3 () { return "MixinC.Method3 - " + Next.Method3(); }
       [OverrideTarget]
-      public string Method4 () { return "MixinC.Method4 - " + Next.Method4 (); }
+      public string Method4 () { return "MixinC.Method4 - " + Next.Method4(); }
     }
   }
 }

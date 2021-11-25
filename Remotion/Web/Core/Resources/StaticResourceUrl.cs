@@ -28,7 +28,7 @@ namespace Remotion.Web.Resources
 
     public StaticResourceUrl (string url)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("url", url);
+      ArgumentUtility.CheckNotNullOrEmpty("url", url);
 
       _url = url;
     }

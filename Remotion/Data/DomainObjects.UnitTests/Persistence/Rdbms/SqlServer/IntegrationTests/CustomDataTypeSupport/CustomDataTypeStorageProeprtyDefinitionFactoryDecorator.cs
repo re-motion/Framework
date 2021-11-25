@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         IDataStoragePropertyDefinitionFactory innerDataStoragePropertyDefinitionFactory,
         IStorageNameProvider storageNameProvider)
     {
-      ArgumentUtility.CheckNotNull ("innerDataStoragePropertyDefinitionFactory", innerDataStoragePropertyDefinitionFactory);
-      ArgumentUtility.CheckNotNull ("storageNameProvider", storageNameProvider);
+      ArgumentUtility.CheckNotNull("innerDataStoragePropertyDefinitionFactory", innerDataStoragePropertyDefinitionFactory);
+      ArgumentUtility.CheckNotNull("storageNameProvider", storageNameProvider);
 
       _innerDataStoragePropertyDefinitionFactory = innerDataStoragePropertyDefinitionFactory;
       _storageNameProvider = storageNameProvider;
@@ -42,60 +42,60 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       if (propertyDefinition.PropertyType == typeof (CompoundDataType))
-        return CreateStoragePropertyDefinitionForCompoundDataType (_storageNameProvider.GetColumnName (propertyDefinition));
-      return _innerDataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition (propertyDefinition);
+        return CreateStoragePropertyDefinitionForCompoundDataType(_storageNameProvider.GetColumnName(propertyDefinition));
+      return _innerDataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(propertyDefinition);
     }
 
     public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (object value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
       if (value is CompoundDataType)
-        return CreateStoragePropertyDefinitionForCompoundDataType ("Value");
-      return _innerDataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition (value);
+        return CreateStoragePropertyDefinitionForCompoundDataType("Value");
+      return _innerDataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(value);
     }
 
     private IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinitionForCompoundDataType (string columnName)
     {
-      return new CompoundStoragePropertyDefinition (
+      return new CompoundStoragePropertyDefinition(
           typeof (CompoundDataType),
           new[]
           {
-              new CompoundStoragePropertyDefinition.NestedPropertyInfo (
-                  new SimpleStoragePropertyDefinition (
+              new CompoundStoragePropertyDefinition.NestedPropertyInfo(
+                  new SimpleStoragePropertyDefinition(
                     typeof (string),
-                    new ColumnDefinition (
+                    new ColumnDefinition(
                         columnName + "StringValue",
-                        new StorageTypeInformation (
+                        new StorageTypeInformation(
                         typeof (string),
                         "nvarchar (100)",
                         DbType.String,
                         true,
                         100,
                         typeof (string),
-                        new DefaultConverter (typeof (string))),
+                        new DefaultConverter(typeof (string))),
                     false)),
                   obj => obj == null ? null : ((CompoundDataType) obj).StringValue),
-              new CompoundStoragePropertyDefinition.NestedPropertyInfo (
-                  new SimpleStoragePropertyDefinition (
+              new CompoundStoragePropertyDefinition.NestedPropertyInfo(
+                  new SimpleStoragePropertyDefinition(
                       typeof (int),
-                      new ColumnDefinition (
+                      new ColumnDefinition(
                           columnName + "Int32Value",
-                          new StorageTypeInformation (
+                          new StorageTypeInformation(
                           typeof (int?),
                           "int",
                           DbType.Int32,
                           true,
                           null,
                           typeof (int?),
-                          new DefaultConverter (typeof (int?))),
+                          new DefaultConverter(typeof (int?))),
                       false)),
                   obj => obj == null ? (int?) null : ((CompoundDataType) obj).Int32Value)
           },
-          values =>  values[0] == null && values[1] == null ? null : new CompoundDataType ((string) values[0], (int) values[1]));
+          values =>  values[0] == null && values[1] == null ? null : new CompoundDataType((string) values[0], (int) values[1]));
     }
   }
 }

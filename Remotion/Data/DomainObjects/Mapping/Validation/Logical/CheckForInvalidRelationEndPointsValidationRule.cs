@@ -26,13 +26,13 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
   {
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       foreach (var endPointDefinition in relationDefinition.EndPointDefinitions)
       {
         if (endPointDefinition is PropertyNotFoundRelationEndPointDefinition)
         {
-          return MappingValidationResult.CreateInvalidResultForType (
+          return MappingValidationResult.CreateInvalidResultForType(
               endPointDefinition.ClassDefinition.ClassType,
               "Property '{0}' on class '{1}' could not be found.",
               endPointDefinition.PropertyName,
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
         }
         else if (endPointDefinition is TypeNotObjectIDRelationEndPointDefinition)
         {
-          return MappingValidationResult.CreateInvalidResultForType (
+          return MappingValidationResult.CreateInvalidResultForType(
             endPointDefinition.ClassDefinition.ClassType,
             "Relation property '{0}' on class '{1}' is of type '{2}', but non-virtual relation properties must be of type '{3}'.",
             endPointDefinition.PropertyName,
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
         }
         else if (endPointDefinition is TypeNotCompatibleWithVirtualRelationEndPointDefinition)
         {
-          return MappingValidationResult.CreateInvalidResultForType (
+          return MappingValidationResult.CreateInvalidResultForType(
               endPointDefinition.ClassDefinition.ClassType,
               "Relation property '{0}' on class '{1}' is of type '{2}', but virtual relation properties must be of type '{3}', '{4}', or '{5}'.",
               endPointDefinition.PropertyName,

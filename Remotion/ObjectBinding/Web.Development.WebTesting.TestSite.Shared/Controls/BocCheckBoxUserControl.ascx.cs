@@ -29,20 +29,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
       AlwaysInvalidValidator.ServerValidate += (source, args) => args.IsValid = false;
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
       SetTestOutput();
     }
 
     private void SetTestOutput ()
     {
-      TestOutput.SetCurrentValueNormal (DeceasedField_Normal.Value.ToString());
-      TestOutput.SetCurrentValueNoAutoPostBack (DeceasedField_NoAutoPostBack.Value.ToString());
+      TestOutput.SetCurrentValueNormal(DeceasedField_Normal.Value.ToString());
+      TestOutput.SetCurrentValueNoAutoPostBack(DeceasedField_NoAutoPostBack.Value.ToString());
     }
 
     private BocCheckBoxUserControlTestOutput TestOutput

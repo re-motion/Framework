@@ -37,8 +37,8 @@ namespace Remotion.UnitTests.Utilities
     {
       var instance = _serviceLocator.GetInstance<ITypeConversionProvider>();
 
-      Assert.That (instance, Is.Not.Null);
-      Assert.That (instance, Is.TypeOf (typeof (TypeConversionProvider)));
+      Assert.That(instance, Is.Not.Null);
+      Assert.That(instance, Is.TypeOf(typeof (TypeConversionProvider)));
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.UnitTests.Utilities
       var instance1 = _serviceLocator.GetInstance<ITypeConversionProvider>();
       var instance2 = _serviceLocator.GetInstance<ITypeConversionProvider>();
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

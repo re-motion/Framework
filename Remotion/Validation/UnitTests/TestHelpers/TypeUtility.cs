@@ -28,14 +28,14 @@ namespace Remotion.Validation.UnitTests.TestHelpers
     {
       var dynamicAssembly = new AssemblyName();
       dynamicAssembly.Name = "DynamicAssembly";
-      var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly (dynamicAssembly, AssemblyBuilderAccess.Run);
-      var moduleBuilder = assemblyBuilder.DefineDynamicModule ("DynamicModule");
+      var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(dynamicAssembly, AssemblyBuilderAccess.Run);
+      var moduleBuilder = assemblyBuilder.DefineDynamicModule("DynamicModule");
 
-      var typeBuilder = moduleBuilder.DefineType (className, TypeAttributes.Public | TypeAttributes.Class, classTypeToInstantiate);
+      var typeBuilder = moduleBuilder.DefineType(className, TypeAttributes.Public | TypeAttributes.Class, classTypeToInstantiate);
 
-      var attributeCtorInfo = attributeType.GetConstructor (attrParams);
-      var attributeBuilder = new CustomAttributeBuilder (attributeCtorInfo, attrValues);
-      typeBuilder.SetCustomAttribute (attributeBuilder);
+      var attributeCtorInfo = attributeType.GetConstructor(attrParams);
+      var attributeBuilder = new CustomAttributeBuilder(attributeCtorInfo, attrValues);
+      typeBuilder.SetCustomAttribute(attributeBuilder);
 
       var collectorType = typeBuilder.CreateType();
       return collectorType;

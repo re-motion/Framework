@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _filterViewElementFactoryStub = MockRepository.GenerateStub<IViewScriptElementFactory<FilterViewDefinition>>();
       _emptyViewElementFactoryStub = MockRepository.GenerateStub<IViewScriptElementFactory<EmptyViewDefinition>>();
 
-      _builder = new ViewScriptBuilder (
+      _builder = new ViewScriptBuilder(
           _tableViewElementFactoryStub,
           _unionViewElementFactoryStub,
           _filterViewElementFactoryStub,
@@ -62,13 +62,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
           new SqlCommentScriptElementFactory());
 
       _tableDefinition1 = TableDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
-      _tableDefinition2 = TableDefinitionObjectMother.Create (SchemaGenerationFirstStorageProviderDefinition);
-      _unionViewDefinition1 = UnionViewDefinitionObjectMother.Create (SchemaGenerationFirstStorageProviderDefinition);
-      _unionViewDefinition2 = UnionViewDefinitionObjectMother.Create (SchemaGenerationFirstStorageProviderDefinition);
-      _filterViewDefinition1 = FilterViewDefinitionObjectMother.Create (SchemaGenerationFirstStorageProviderDefinition);
-      _filterViewDefinition2 = FilterViewDefinitionObjectMother.Create (SchemaGenerationFirstStorageProviderDefinition);
-      _emptyViewDefinition1 = EmptyViewDefinitionObjectMother.Create (SchemaGenerationFirstStorageProviderDefinition);
-      _emptyViewDefinition2 = EmptyViewDefinitionObjectMother.Create (SchemaGenerationFirstStorageProviderDefinition);
+      _tableDefinition2 = TableDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
+      _unionViewDefinition1 = UnionViewDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
+      _unionViewDefinition2 = UnionViewDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
+      _filterViewDefinition1 = FilterViewDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
+      _filterViewDefinition2 = FilterViewDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
+      _emptyViewDefinition1 = EmptyViewDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
+      _emptyViewDefinition2 = EmptyViewDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
 
       _fakeElement1 = MockRepository.GenerateStub<IScriptElement>();
       _fakeElement2 = MockRepository.GenerateStub<IScriptElement>();
@@ -81,220 +81,220 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
       var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
 
-      Assert.That (createScriptResult.Elements.Count, Is.EqualTo (1));
-      Assert.That (((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Create a view for every class"));
-      Assert.That (dropScriptResult.Elements.Count, Is.EqualTo (1));
-      Assert.That (((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Drop all views"));
+      Assert.That(createScriptResult.Elements.Count, Is.EqualTo(1));
+      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create a view for every class"));
+      Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(1));
+      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all views"));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_OneTableDefinitionAdded ()
     {
-      _tableViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_tableDefinition1)).Return (_fakeElement1);
-      _tableViewElementFactoryStub.Stub (stub => stub.GetDropElement (_tableDefinition1)).Return (_fakeElement2);
+      _tableViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_tableDefinition1)).Return(_fakeElement1);
+      _tableViewElementFactoryStub.Stub(stub => stub.GetDropElement(_tableDefinition1)).Return(_fakeElement2);
 
-      _builder.AddEntityDefinition (_tableDefinition1);
+      _builder.AddEntityDefinition(_tableDefinition1);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript ();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript ();
+      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
 
-      Assert.That (createScriptResult.Elements.Count, Is.EqualTo (2));
-      Assert.That (((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Create a view for every class"));
-      Assert.That (createScriptResult.Elements[1], Is.SameAs (_fakeElement1));
+      Assert.That(createScriptResult.Elements.Count, Is.EqualTo(2));
+      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create a view for every class"));
+      Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
 
-      Assert.That (dropScriptResult.Elements.Count, Is.EqualTo (2));
-      Assert.That (((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Drop all views"));
-      Assert.That (dropScriptResult.Elements[1], Is.SameAs (_fakeElement2));
+      Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(2));
+      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all views"));
+      Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement2));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_SeveralTableDefinitionsAdded ()
     {
-      _tableViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_tableDefinition1)).Return (_fakeElement1);
-      _tableViewElementFactoryStub.Stub (stub => stub.GetDropElement (_tableDefinition1)).Return (_fakeElement2);
-      _tableViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_tableDefinition2)).Return (_fakeElement2);
-      _tableViewElementFactoryStub.Stub (stub => stub.GetDropElement (_tableDefinition2)).Return (_fakeElement1);
+      _tableViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_tableDefinition1)).Return(_fakeElement1);
+      _tableViewElementFactoryStub.Stub(stub => stub.GetDropElement(_tableDefinition1)).Return(_fakeElement2);
+      _tableViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_tableDefinition2)).Return(_fakeElement2);
+      _tableViewElementFactoryStub.Stub(stub => stub.GetDropElement(_tableDefinition2)).Return(_fakeElement1);
 
-      _builder.AddEntityDefinition (_tableDefinition1);
-      _builder.AddEntityDefinition (_tableDefinition2);
+      _builder.AddEntityDefinition(_tableDefinition1);
+      _builder.AddEntityDefinition(_tableDefinition2);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript ();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript ();
+      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
 
-      Assert.That (createScriptResult.Elements.Count, Is.EqualTo (3));
-      Assert.That (((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Create a view for every class"));
-      Assert.That (createScriptResult.Elements[1], Is.SameAs (_fakeElement1));
-      Assert.That (createScriptResult.Elements[2], Is.SameAs (_fakeElement2));
+      Assert.That(createScriptResult.Elements.Count, Is.EqualTo(3));
+      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create a view for every class"));
+      Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
+      Assert.That(createScriptResult.Elements[2], Is.SameAs(_fakeElement2));
 
-      Assert.That (dropScriptResult.Elements.Count, Is.EqualTo (3));
-      Assert.That (((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Drop all views"));
-      Assert.That (dropScriptResult.Elements[1], Is.SameAs (_fakeElement2));
-      Assert.That (dropScriptResult.Elements[2], Is.SameAs (_fakeElement1));
+      Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(3));
+      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all views"));
+      Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement2));
+      Assert.That(dropScriptResult.Elements[2], Is.SameAs(_fakeElement1));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_OneUnionViewDefinitionAdded ()
     {
-      _unionViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_unionViewDefinition1)).Return (_fakeElement1);
-      _unionViewElementFactoryStub.Stub (stub => stub.GetDropElement (_unionViewDefinition1)).Return (_fakeElement2);
+      _unionViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_unionViewDefinition1)).Return(_fakeElement1);
+      _unionViewElementFactoryStub.Stub(stub => stub.GetDropElement(_unionViewDefinition1)).Return(_fakeElement2);
 
-      _builder.AddEntityDefinition (_unionViewDefinition1);
+      _builder.AddEntityDefinition(_unionViewDefinition1);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript ();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript ();
+      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
 
-      Assert.That (createScriptResult.Elements.Count, Is.EqualTo (2));
-      Assert.That (((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Create a view for every class"));
-      Assert.That (createScriptResult.Elements[1], Is.SameAs (_fakeElement1));
+      Assert.That(createScriptResult.Elements.Count, Is.EqualTo(2));
+      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create a view for every class"));
+      Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
 
-      Assert.That (dropScriptResult.Elements.Count, Is.EqualTo (2));
-      Assert.That (((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Drop all views"));
-      Assert.That (dropScriptResult.Elements[1], Is.SameAs (_fakeElement2));
+      Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(2));
+      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all views"));
+      Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement2));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_SeveralUnionViewDefinitionsAdded ()
     {
-      _unionViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_unionViewDefinition1)).Return (_fakeElement1);
-      _unionViewElementFactoryStub.Stub (stub => stub.GetDropElement (_unionViewDefinition1)).Return (_fakeElement2);
-      _unionViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_unionViewDefinition2)).Return (_fakeElement2);
-      _unionViewElementFactoryStub.Stub (stub => stub.GetDropElement (_unionViewDefinition2)).Return (_fakeElement1);
+      _unionViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_unionViewDefinition1)).Return(_fakeElement1);
+      _unionViewElementFactoryStub.Stub(stub => stub.GetDropElement(_unionViewDefinition1)).Return(_fakeElement2);
+      _unionViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_unionViewDefinition2)).Return(_fakeElement2);
+      _unionViewElementFactoryStub.Stub(stub => stub.GetDropElement(_unionViewDefinition2)).Return(_fakeElement1);
 
-      _builder.AddEntityDefinition (_unionViewDefinition1);
-      _builder.AddEntityDefinition (_unionViewDefinition2);
+      _builder.AddEntityDefinition(_unionViewDefinition1);
+      _builder.AddEntityDefinition(_unionViewDefinition2);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript ();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript ();
+      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
 
-      Assert.That (createScriptResult.Elements.Count, Is.EqualTo (3));
-      Assert.That (((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Create a view for every class"));
-      Assert.That (createScriptResult.Elements[1], Is.SameAs (_fakeElement1));
-      Assert.That (createScriptResult.Elements[2], Is.SameAs (_fakeElement2));
+      Assert.That(createScriptResult.Elements.Count, Is.EqualTo(3));
+      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create a view for every class"));
+      Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
+      Assert.That(createScriptResult.Elements[2], Is.SameAs(_fakeElement2));
 
-      Assert.That (dropScriptResult.Elements.Count, Is.EqualTo (3));
-      Assert.That (((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Drop all views"));
-      Assert.That (dropScriptResult.Elements[1], Is.SameAs (_fakeElement2));
-      Assert.That (dropScriptResult.Elements[2], Is.SameAs (_fakeElement1));
+      Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(3));
+      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all views"));
+      Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement2));
+      Assert.That(dropScriptResult.Elements[2], Is.SameAs(_fakeElement1));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_OneFilterViewDefinitionAdded ()
     {
-      _filterViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_filterViewDefinition1)).Return (_fakeElement1);
-      _filterViewElementFactoryStub.Stub (stub => stub.GetDropElement (_filterViewDefinition1)).Return (_fakeElement2);
+      _filterViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_filterViewDefinition1)).Return(_fakeElement1);
+      _filterViewElementFactoryStub.Stub(stub => stub.GetDropElement(_filterViewDefinition1)).Return(_fakeElement2);
 
-      _builder.AddEntityDefinition (_filterViewDefinition1);
+      _builder.AddEntityDefinition(_filterViewDefinition1);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript ();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript ();
+      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
 
-      Assert.That (createScriptResult.Elements.Count, Is.EqualTo (2));
-      Assert.That (((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Create a view for every class"));
-      Assert.That (createScriptResult.Elements[1], Is.SameAs (_fakeElement1));
+      Assert.That(createScriptResult.Elements.Count, Is.EqualTo(2));
+      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create a view for every class"));
+      Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
 
-      Assert.That (dropScriptResult.Elements.Count, Is.EqualTo (2));
-      Assert.That (((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Drop all views"));
-      Assert.That (dropScriptResult.Elements[1], Is.SameAs (_fakeElement2));
+      Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(2));
+      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all views"));
+      Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement2));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_SeveralFilterViewDefinitionsAdded ()
     {
-      _filterViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_filterViewDefinition1)).Return (_fakeElement1);
-      _filterViewElementFactoryStub.Stub (stub => stub.GetDropElement (_filterViewDefinition1)).Return (_fakeElement2);
-      _filterViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_filterViewDefinition2)).Return (_fakeElement2);
-      _filterViewElementFactoryStub.Stub (stub => stub.GetDropElement (_filterViewDefinition2)).Return (_fakeElement1);
+      _filterViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_filterViewDefinition1)).Return(_fakeElement1);
+      _filterViewElementFactoryStub.Stub(stub => stub.GetDropElement(_filterViewDefinition1)).Return(_fakeElement2);
+      _filterViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_filterViewDefinition2)).Return(_fakeElement2);
+      _filterViewElementFactoryStub.Stub(stub => stub.GetDropElement(_filterViewDefinition2)).Return(_fakeElement1);
 
-      _builder.AddEntityDefinition (_filterViewDefinition1);
-      _builder.AddEntityDefinition (_filterViewDefinition2);
+      _builder.AddEntityDefinition(_filterViewDefinition1);
+      _builder.AddEntityDefinition(_filterViewDefinition2);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript ();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript ();
+      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
 
-      Assert.That (createScriptResult.Elements.Count, Is.EqualTo (3));
-      Assert.That (((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Create a view for every class"));
-      Assert.That (createScriptResult.Elements[1], Is.SameAs (_fakeElement1));
-      Assert.That (createScriptResult.Elements[2], Is.SameAs (_fakeElement2));
+      Assert.That(createScriptResult.Elements.Count, Is.EqualTo(3));
+      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create a view for every class"));
+      Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
+      Assert.That(createScriptResult.Elements[2], Is.SameAs(_fakeElement2));
 
-      Assert.That (dropScriptResult.Elements.Count, Is.EqualTo (3));
-      Assert.That (((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Drop all views"));
-      Assert.That (dropScriptResult.Elements[1], Is.SameAs (_fakeElement2));
-      Assert.That (dropScriptResult.Elements[2], Is.SameAs (_fakeElement1));
+      Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(3));
+      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all views"));
+      Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement2));
+      Assert.That(dropScriptResult.Elements[2], Is.SameAs(_fakeElement1));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_SeveralEntityDefinitionsAdded ()
     {
-      _tableViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_tableDefinition1)).Return (_fakeElement1);
-      _tableViewElementFactoryStub.Stub (stub => stub.GetDropElement (_tableDefinition1)).Return (_fakeElement3);
-      _unionViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_unionViewDefinition1)).Return (_fakeElement2);
-      _unionViewElementFactoryStub.Stub (stub => stub.GetDropElement (_unionViewDefinition1)).Return (_fakeElement2);
-      _filterViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_filterViewDefinition1)).Return (_fakeElement3);
-      _filterViewElementFactoryStub.Stub (stub => stub.GetDropElement (_filterViewDefinition1)).Return (_fakeElement1);
+      _tableViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_tableDefinition1)).Return(_fakeElement1);
+      _tableViewElementFactoryStub.Stub(stub => stub.GetDropElement(_tableDefinition1)).Return(_fakeElement3);
+      _unionViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_unionViewDefinition1)).Return(_fakeElement2);
+      _unionViewElementFactoryStub.Stub(stub => stub.GetDropElement(_unionViewDefinition1)).Return(_fakeElement2);
+      _filterViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_filterViewDefinition1)).Return(_fakeElement3);
+      _filterViewElementFactoryStub.Stub(stub => stub.GetDropElement(_filterViewDefinition1)).Return(_fakeElement1);
 
-      _builder.AddEntityDefinition (_tableDefinition1);
-      _builder.AddEntityDefinition (_unionViewDefinition1);
-      _builder.AddEntityDefinition (_filterViewDefinition1);
+      _builder.AddEntityDefinition(_tableDefinition1);
+      _builder.AddEntityDefinition(_unionViewDefinition1);
+      _builder.AddEntityDefinition(_filterViewDefinition1);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript ();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript ();
+      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
 
-      Assert.That (createScriptResult.Elements.Count, Is.EqualTo (4));
-      Assert.That (((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Create a view for every class"));
-      Assert.That (createScriptResult.Elements[1], Is.SameAs (_fakeElement1));
-      Assert.That (createScriptResult.Elements[2], Is.SameAs (_fakeElement2));
-      Assert.That (createScriptResult.Elements[3], Is.SameAs (_fakeElement3));
+      Assert.That(createScriptResult.Elements.Count, Is.EqualTo(4));
+      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create a view for every class"));
+      Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
+      Assert.That(createScriptResult.Elements[2], Is.SameAs(_fakeElement2));
+      Assert.That(createScriptResult.Elements[3], Is.SameAs(_fakeElement3));
 
-      Assert.That (dropScriptResult.Elements.Count, Is.EqualTo (4));
-      Assert.That (((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Drop all views"));
-      Assert.That (dropScriptResult.Elements[1], Is.SameAs (_fakeElement3));
-      Assert.That (dropScriptResult.Elements[2], Is.SameAs (_fakeElement2));
-      Assert.That (dropScriptResult.Elements[3], Is.SameAs (_fakeElement1));
+      Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(4));
+      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all views"));
+      Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement3));
+      Assert.That(dropScriptResult.Elements[2], Is.SameAs(_fakeElement2));
+      Assert.That(dropScriptResult.Elements[3], Is.SameAs(_fakeElement1));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_OneEmptyViewDefinitionAdded ()
     {
-      _emptyViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_emptyViewDefinition1)).Return (_fakeElement1);
-      _emptyViewElementFactoryStub.Stub (stub => stub.GetDropElement (_emptyViewDefinition1)).Return (_fakeElement2);
+      _emptyViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_emptyViewDefinition1)).Return(_fakeElement1);
+      _emptyViewElementFactoryStub.Stub(stub => stub.GetDropElement(_emptyViewDefinition1)).Return(_fakeElement2);
 
-      _builder.AddEntityDefinition (_emptyViewDefinition1);
+      _builder.AddEntityDefinition(_emptyViewDefinition1);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript ();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript ();
+      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
 
-      Assert.That (createScriptResult.Elements.Count, Is.EqualTo (2));
-      Assert.That (((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Create a view for every class"));
-      Assert.That (createScriptResult.Elements[1], Is.SameAs (_fakeElement1));
+      Assert.That(createScriptResult.Elements.Count, Is.EqualTo(2));
+      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create a view for every class"));
+      Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
 
-      Assert.That (dropScriptResult.Elements.Count, Is.EqualTo (2));
-      Assert.That (((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Drop all views"));
-      Assert.That (dropScriptResult.Elements[1], Is.SameAs (_fakeElement2));
+      Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(2));
+      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all views"));
+      Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement2));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_SeveralEmptyViewDefinitionsAdded ()
     {
-      _emptyViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_emptyViewDefinition1)).Return (_fakeElement1);
-      _emptyViewElementFactoryStub.Stub (stub => stub.GetDropElement (_emptyViewDefinition1)).Return (_fakeElement2);
-      _emptyViewElementFactoryStub.Stub (stub => stub.GetCreateElement (_emptyViewDefinition2)).Return (_fakeElement2);
-      _emptyViewElementFactoryStub.Stub (stub => stub.GetDropElement (_emptyViewDefinition2)).Return (_fakeElement1);
+      _emptyViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_emptyViewDefinition1)).Return(_fakeElement1);
+      _emptyViewElementFactoryStub.Stub(stub => stub.GetDropElement(_emptyViewDefinition1)).Return(_fakeElement2);
+      _emptyViewElementFactoryStub.Stub(stub => stub.GetCreateElement(_emptyViewDefinition2)).Return(_fakeElement2);
+      _emptyViewElementFactoryStub.Stub(stub => stub.GetDropElement(_emptyViewDefinition2)).Return(_fakeElement1);
 
-      _builder.AddEntityDefinition (_emptyViewDefinition1);
-      _builder.AddEntityDefinition (_emptyViewDefinition2);
+      _builder.AddEntityDefinition(_emptyViewDefinition1);
+      _builder.AddEntityDefinition(_emptyViewDefinition2);
 
-      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript ();
-      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript ();
+      var createScriptResult = (ScriptElementCollection) _builder.GetCreateScript();
+      var dropScriptResult = (ScriptElementCollection) _builder.GetDropScript();
 
-      Assert.That (createScriptResult.Elements.Count, Is.EqualTo (3));
-      Assert.That (((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Create a view for every class"));
-      Assert.That (createScriptResult.Elements[1], Is.SameAs (_fakeElement1));
-      Assert.That (createScriptResult.Elements[2], Is.SameAs (_fakeElement2));
+      Assert.That(createScriptResult.Elements.Count, Is.EqualTo(3));
+      Assert.That(((ScriptStatement) createScriptResult.Elements[0]).Statement, Is.EqualTo("-- Create a view for every class"));
+      Assert.That(createScriptResult.Elements[1], Is.SameAs(_fakeElement1));
+      Assert.That(createScriptResult.Elements[2], Is.SameAs(_fakeElement2));
 
-      Assert.That (dropScriptResult.Elements.Count, Is.EqualTo (3));
-      Assert.That (((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo ("-- Drop all views"));
-      Assert.That (dropScriptResult.Elements[1], Is.SameAs (_fakeElement2));
-      Assert.That (dropScriptResult.Elements[2], Is.SameAs (_fakeElement1));
+      Assert.That(dropScriptResult.Elements.Count, Is.EqualTo(3));
+      Assert.That(((ScriptStatement) dropScriptResult.Elements[0]).Statement, Is.EqualTo("-- Drop all views"));
+      Assert.That(dropScriptResult.Elements[1], Is.SameAs(_fakeElement2));
+      Assert.That(dropScriptResult.Elements[2], Is.SameAs(_fakeElement1));
     }
   }
 }

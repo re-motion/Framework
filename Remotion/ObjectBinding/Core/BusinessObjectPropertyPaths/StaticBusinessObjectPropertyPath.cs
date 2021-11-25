@@ -35,18 +35,18 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
 
     public static StaticBusinessObjectPropertyPath Parse (string propertyPathIdentifier, IBusinessObjectClass root)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
-      ArgumentUtility.CheckNotNull ("root", root);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyPathIdentifier", propertyPathIdentifier);
+      ArgumentUtility.CheckNotNull("root", root);
 
       var properties = new List<IBusinessObjectProperty>();
       var currentClass = root;
-      var propertyEnumerator = new StaticBusinessObjectPropertyPathPropertyEnumerator (propertyPathIdentifier);
+      var propertyEnumerator = new StaticBusinessObjectPropertyPathPropertyEnumerator(propertyPathIdentifier);
 
-      while (currentClass != null && propertyEnumerator.MoveNext (currentClass))
+      while (currentClass != null && propertyEnumerator.MoveNext(currentClass))
       {
         var currentProperty = propertyEnumerator.Current;
-        Assertion.IsNotNull (currentProperty, "StaticPropertyPathPropertyEnumerator never returns null on successful enumeration.");
-        properties.Add (currentProperty);
+        Assertion.IsNotNull(currentProperty, "StaticPropertyPathPropertyEnumerator never returns null on successful enumeration.");
+        properties.Add(currentProperty);
 
         var currentReferenceProperty = currentProperty as IBusinessObjectReferenceProperty;
         if (currentReferenceProperty != null)
@@ -55,12 +55,12 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
           currentClass = null;
       }
 
-      return new StaticBusinessObjectPropertyPath (properties.ToArray(), propertyPathIdentifier);
+      return new StaticBusinessObjectPropertyPath(properties.ToArray(), propertyPathIdentifier);
     }
 
     public static StaticBusinessObjectPropertyPath Create (IBusinessObjectProperty[] properties)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("properties", properties);
+      ArgumentUtility.CheckNotNullOrEmpty("properties", properties);
 
       var identifierBuilder = new StringBuilder();
       var currentClass = properties[0].ReflectedClass;
@@ -68,36 +68,36 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
       {
         var property = properties[index];
 
-        if (!property.Equals (currentClass.GetPropertyDefinition (property.Identifier)))
+        if (!property.Equals(currentClass.GetPropertyDefinition(property.Identifier)))
         {
-          throw new ArgumentException (
-              string.Format (
+          throw new ArgumentException(
+              string.Format(
                   "Property #{0} ('{1}') is not part of the previous business object class '{2}'. The property path must form a continuous chain.",
                   index,
                   property.Identifier,
                   currentClass.Identifier));
         }
 
-        identifierBuilder.Append (property.Identifier);
+        identifierBuilder.Append(property.Identifier);
 
         if (index < properties.Length - 1)
         {
           var referenceProperty = property as IBusinessObjectReferenceProperty;
           if (referenceProperty == null)
           {
-            throw new ArgumentException (
-                string.Format (
+            throw new ArgumentException(
+                string.Format(
                     "Property #{0} ('{1}') is not of type {2}. Every property except the last property must be a reference property.",
                     index, property.Identifier, typeof (IBusinessObjectReferenceProperty).Name),
                 "properties");
           }
 
-          identifierBuilder.Append (currentClass.BusinessObjectProvider.GetPropertyPathSeparator());
+          identifierBuilder.Append(currentClass.BusinessObjectProvider.GetPropertyPathSeparator());
           currentClass = referenceProperty.ReferenceClass;
         }
       }
 
-      return new StaticBusinessObjectPropertyPath (properties, identifierBuilder.ToString());
+      return new StaticBusinessObjectPropertyPath(properties, identifierBuilder.ToString());
     }
 
     private StaticBusinessObjectPropertyPath (IBusinessObjectProperty[] properties, string propertyPathIdentifier)
@@ -118,12 +118,12 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
 
     public override ReadOnlyCollection<IBusinessObjectProperty> Properties
     {
-      get { return new ReadOnlyCollection<IBusinessObjectProperty> (_properties); }
+      get { return new ReadOnlyCollection<IBusinessObjectProperty>(_properties); }
     }
 
     protected override IBusinessObjectPropertyPathPropertyEnumerator GetResultPropertyEnumerator ()
     {
-      return new ResolvedBusinessObjectPropertyPathPropertyEnumerator (_properties);
+      return new ResolvedBusinessObjectPropertyPathPropertyEnumerator(_properties);
     }
   }
 }

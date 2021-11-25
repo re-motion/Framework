@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public DeleteObjectServiceTypeAttribute (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (IDeleteObjectService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (IDeleteObjectService));
       _type = type;
     }
 

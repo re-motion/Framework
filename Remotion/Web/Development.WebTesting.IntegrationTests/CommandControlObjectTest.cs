@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [TestCaseSource (typeof (DisabledTestCaseFactory<CommandSelector, CommandControlObject>))]
     public void GenericTests (GenericSelectorTestAction<CommandSelector, CommandControlObject> testAction)
     {
-      testAction (Helper, e => e.Commands(), "command");
+      testAction(Helper, e => e.Commands(), "command");
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<CommandSelector, CommandControlObject> testAction)
     {
-      testAction (Helper, e => e.Commands(), "command");
+      testAction(Helper, e => e.Commands(), "command");
     }
 
     [Test]
@@ -55,12 +55,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var control = home.Commands().GetByLocalID ("TestCommand3");
+      var control = home.Commands().GetByLocalID("TestCommand3");
 
-      Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (
+      Assert.That(control.IsDisabled(), Is.True);
+      Assert.That(
           () => control.Click(), 
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "Click").Message));
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "Click").Message));
     }
 
     [Test]
@@ -69,25 +69,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       {
-        var command1 = home.Commands().GetByLocalID ("Command1");
-        var completionDetection = new CompletionDetectionStrategyTestHelper (command1);
+        var command1 = home.Commands().GetByLocalID("Command1");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(command1);
         home = command1.Click().Expect<WxePageObject>();
-        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-        Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Command1ItemID"));
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("Command1ItemID"));
       }
 
       {
-        var command2 = home.Commands().GetByLocalID ("Command2");
-        var completionDetection = new CompletionDetectionStrategyTestHelper (command2);
+        var command2 = home.Commands().GetByLocalID("Command2");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(command2);
         home = command2.Click().Expect<WxePageObject>();
-        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
-        Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.Empty);
       }
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("CommandTest.wxe");
+      return Start<WxePageObject>("CommandTest.wxe");
     }
   }
 }

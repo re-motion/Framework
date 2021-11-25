@@ -40,9 +40,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public bool GetState ()
     {
       if (IsReadOnly())
-        return ParseState (Scope.FindChild ("Value")["data-value"]);
+        return ParseState(Scope.FindChild("Value")["data-value"]);
 
-      return Scope.FindChild ("Value")["checked"] != null;
+      return Scope.FindChild("Value")["checked"] != null;
     }
 
     /// <summary>
@@ -52,32 +52,32 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public UnspecifiedPageObject SetTo (bool newState, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
       if (GetState() == newState)
         return UnspecifiedPage();
 
-      var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
 
       if (newState)
-        ExecuteAction (new CheckAction (this, Scope.FindChild ("Value")), actualActionOptions);
+        ExecuteAction(new CheckAction(this, Scope.FindChild("Value")), actualActionOptions);
       else
-        ExecuteAction (new UncheckAction (this, Scope.FindChild ("Value")), actualActionOptions);
+        ExecuteAction(new UncheckAction(this, Scope.FindChild("Value")), actualActionOptions);
 
       return UnspecifiedPage();
     }
 
     public IReadOnlyList<string> GetValidationErrors ()
     {
-      return GetValidationErrors (GetScopeWithReferenceInformation());
+      return GetValidationErrors(GetScopeWithReferenceInformation());
     }
 
     public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
     {
-      return GetValidationErrorsForReadOnly (GetScopeWithReferenceInformation());
+      return GetValidationErrorsForReadOnly(GetScopeWithReferenceInformation());
     }
 
     protected override ElementScope GetLabeledElementScope ()
@@ -90,7 +90,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     ICollection<string> IControlObjectWithFormElements.GetFormElementNames ()
     {
-      return new[] { string.Format ("{0}_Value", GetHtmlID()) };
+      return new[] { string.Format("{0}_Value", GetHtmlID()) };
     }
 
     private bool ParseState (string state)
@@ -101,12 +101,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (state == "True")
         return true;
 
-      throw new ArgumentException ("must be either 'True' or 'False'", "state");
+      throw new ArgumentException("must be either 'True' or 'False'", "state");
     }
 
     private ElementScope GetScopeWithReferenceInformation ()
     {
-      return Scope.FindChild ("Value");
+      return Scope.FindChild("Value");
     }
   }
 }

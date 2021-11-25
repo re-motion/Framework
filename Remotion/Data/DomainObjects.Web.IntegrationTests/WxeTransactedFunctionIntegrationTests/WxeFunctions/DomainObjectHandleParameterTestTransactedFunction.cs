@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
         ITransactionMode transactionMode,
         Action<WxeContext, DomainObjectHandleParameterTestTransactedFunction> testDelegate,
         IDomainObjectHandle<SampleObject> inParameter)
-      : base (transactionMode, (ctx, f) => testDelegate (ctx, (DomainObjectHandleParameterTestTransactedFunction) f), inParameter)
+      : base (transactionMode, (ctx, f) => testDelegate(ctx, (DomainObjectHandleParameterTestTransactedFunction) f), inParameter)
     {
     }
 

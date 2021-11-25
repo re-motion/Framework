@@ -43,27 +43,27 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     public static HttpContext CreateHttpContext (string httpMethod, string page, string? query)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("httpMethod", httpMethod);
-      ArgumentUtility.CheckNotNullOrEmpty ("page", page);
+      ArgumentUtility.CheckNotNullOrEmpty("httpMethod", httpMethod);
+      ArgumentUtility.CheckNotNullOrEmpty("page", page);
 
       SimpleWorkerRequest workerRequest =
-          new SimpleWorkerRequest (s_appVirtualDir, s_appPhysicalDir, page, query!, new System.IO.StringWriter());
+          new SimpleWorkerRequest(s_appVirtualDir, s_appPhysicalDir, page, query!, new System.IO.StringWriter());
 
-      object? httpRuntime = PrivateInvoke.GetNonPublicStaticField (typeof (HttpRuntime), "_theRuntime");
-      Assertion.DebugIsNotNull (httpRuntime, "'_theRuntime' must not be null.");
-      PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppPath", s_appPhysicalDir);
+      object? httpRuntime = PrivateInvoke.GetNonPublicStaticField(typeof (HttpRuntime), "_theRuntime");
+      Assertion.DebugIsNotNull(httpRuntime, "'_theRuntime' must not be null.");
+      PrivateInvoke.SetNonPublicField(httpRuntime, "_appDomainAppPath", s_appPhysicalDir);
       string assemblyName = typeof (HttpApplication).Assembly.GetFullNameChecked();
-      Type virtualPathType = Type.GetType ("System.Web.VirtualPath, " + assemblyName, true)!;
-      object virtualPath = PrivateInvoke.InvokePublicStaticMethod (virtualPathType, "Create", s_appVirtualDir)!;
-      PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppVPath", virtualPath);
-      PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppId", "Remotion.Web.UnitTests");
+      Type virtualPathType = Type.GetType("System.Web.VirtualPath, " + assemblyName, true)!;
+      object virtualPath = PrivateInvoke.InvokePublicStaticMethod(virtualPathType, "Create", s_appVirtualDir)!;
+      PrivateInvoke.SetNonPublicField(httpRuntime, "_appDomainAppVPath", virtualPath);
+      PrivateInvoke.SetNonPublicField(httpRuntime, "_appDomainAppId", "Remotion.Web.UnitTests");
       Type buildManagerType = typeof (System.Web.Compilation.BuildManager);
-      PrivateInvoke.SetNonPublicStaticProperty (buildManagerType, "SkipTopLevelCompilationExceptions", true);
-      HttpContext context = new HttpContext (workerRequest);
-      PrivateInvoke.SetNonPublicField (context.Request, "_httpMethod", httpMethod);
+      PrivateInvoke.SetNonPublicStaticProperty(buildManagerType, "SkipTopLevelCompilationExceptions", true);
+      HttpContext context = new HttpContext(workerRequest);
+      PrivateInvoke.SetNonPublicField(context.Request, "_httpMethod", httpMethod);
 
       HttpSessionState sessionState = CreateSession();
-      SetSession (context, sessionState);
+      SetSession(context, sessionState);
 
       context.Request.Browser = new HttpBrowserCapabilities
                                 {
@@ -76,40 +76,40 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
                                         }
                                 };
       context.Request.Browser.Capabilities["tables"] = "true";
-      Assertion.IsTrue (context.Request.Browser.W3CDomVersion == new Version (4, 0));
-      Assertion.IsTrue (context.Request.Browser.EcmaScriptVersion == new Version (5, 0));
-      Assertion.IsTrue (context.Request.Browser.SupportsCallback);
-      Assertion.IsTrue (context.Request.Browser.Tables);
+      Assertion.IsTrue(context.Request.Browser.W3CDomVersion == new Version(4, 0));
+      Assertion.IsTrue(context.Request.Browser.EcmaScriptVersion == new Version(5, 0));
+      Assertion.IsTrue(context.Request.Browser.SupportsCallback);
+      Assertion.IsTrue(context.Request.Browser.Tables);
 
       return context;
     }
 
     public static void SetQueryString (HttpContext context, NameValueCollection queryString)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("queryString", queryString);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("queryString", queryString);
 
-      PrivateInvoke.InvokeNonPublicMethod (context.Request.QueryString, "MakeReadWrite", new object[0]);
+      PrivateInvoke.InvokeNonPublicMethod(context.Request.QueryString, "MakeReadWrite", new object[0]);
       context.Request.QueryString.Clear();
       foreach (string key in queryString)
-        context.Request.QueryString.Set (key, queryString[key]);
-      PrivateInvoke.InvokeNonPublicMethod (context.Request.QueryString, "MakeReadOnly", new object[0]);
+        context.Request.QueryString.Set(key, queryString[key]);
+      PrivateInvoke.InvokeNonPublicMethod(context.Request.QueryString, "MakeReadOnly", new object[0]);
 
-      PrivateInvoke.SetNonPublicField (context.Request, "_params", null);
+      PrivateInvoke.SetNonPublicField(context.Request, "_params", null);
     }
 
     public static void SetForm (HttpContext context, NameValueCollection form)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("form", form);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("form", form);
 
-      PrivateInvoke.InvokeNonPublicMethod (context.Request.Form, "MakeReadWrite", new object[0]);
+      PrivateInvoke.InvokeNonPublicMethod(context.Request.Form, "MakeReadWrite", new object[0]);
       context.Request.Form.Clear();
       foreach (string key in form)
-        context.Request.Form.Set (key, form[key]);
-      PrivateInvoke.InvokeNonPublicMethod (context.Request.Form, "MakeReadOnly", new object[0]);
+        context.Request.Form.Set(key, form[key]);
+      PrivateInvoke.InvokeNonPublicMethod(context.Request.Form, "MakeReadOnly", new object[0]);
 
-      PrivateInvoke.SetNonPublicField (context.Request, "_params", null);
+      PrivateInvoke.SetNonPublicField(context.Request, "_params", null);
     }
  
     protected static HttpSessionState CreateSession ()
@@ -121,11 +121,11 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
       bool newSession = true;
       SessionStateMode mode = SessionStateMode.InProc;
       bool isReadOnly = false;
-      SessionStateItemCollection sessionItems = new SessionStateItemCollection ();
-      HttpSessionStateContainer httpSessionStateContainer = new HttpSessionStateContainer (
+      SessionStateItemCollection sessionItems = new SessionStateItemCollection();
+      HttpSessionStateContainer httpSessionStateContainer = new HttpSessionStateContainer(
           id, sessionItems, staticObjects, timeout, newSession, HttpCookieMode.UseCookies, mode, isReadOnly);
 
-      sessionState = (HttpSessionState) PrivateInvoke.CreateInstanceNonPublicCtor (typeof (HttpSessionState), httpSessionStateContainer);
+      sessionState = (HttpSessionState) PrivateInvoke.CreateInstanceNonPublicCtor(typeof (HttpSessionState), httpSessionStateContainer);
       return sessionState;
     }
 

@@ -114,7 +114,7 @@ namespace Remotion.Globalization
 
     public AvailableResourcesLanguagesAttribute (string[] cultureNames)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("cultureNames", cultureNames);
+      ArgumentUtility.CheckNotNullOrEmpty("cultureNames", cultureNames);
 
       _cultureNames = cultureNames;
     }

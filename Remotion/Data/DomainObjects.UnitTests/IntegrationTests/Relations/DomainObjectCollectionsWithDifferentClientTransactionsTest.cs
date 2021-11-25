@@ -32,37 +32,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _customer1 = DomainObjectIDs.Customer1.GetObject<Customer> ();
+      _customer1 = DomainObjectIDs.Customer1.GetObject<Customer>();
 
       _secondClientTransaction = ClientTransaction.CreateRootTransaction();
-      _secondCollection = new DomainObjectCollection ();
-      using (_secondClientTransaction.EnterDiscardingScope ())
+      _secondCollection = new DomainObjectCollection();
+      using (_secondClientTransaction.EnterDiscardingScope())
       {
-        _secondCustomer1 = DomainObjectIDs.Customer1.GetObject<Customer> ();
+        _secondCustomer1 = DomainObjectIDs.Customer1.GetObject<Customer>();
       }
     }
 
     [Test]
     public void Item_Set_WithDifferentClientTransaction ()
     {
-      _secondCollection.Add (_secondCustomer1);
-      Assert.That (
+      _secondCollection.Add(_secondCustomer1);
+      Assert.That(
           () => _secondCollection[0] = _customer1,
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The collection already contains an object with ID 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'."));
     }
 
     [Test]
     public void Add_SameObject_WithDifferentClientTransaction ()
     {
-      _secondCollection.Add (_secondCustomer1);
-      Assert.That (
-          () => _secondCollection.Add (_customer1),
+      _secondCollection.Add(_secondCustomer1);
+      Assert.That(
+          () => _secondCollection.Add(_customer1),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The collection already contains an object with ID 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'.",
                   "domainObject"));
     }
@@ -70,11 +70,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void Insert_SameObject_WithDifferentClientTransaction ()
     {
-      _secondCollection.Add (_secondCustomer1);
-      Assert.That (
-          () => _secondCollection.Insert (0, _customer1),
+      _secondCollection.Add(_secondCustomer1);
+      Assert.That(
+          () => _secondCollection.Insert(0, _customer1),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The collection already contains an object with ID 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'.",
                   "domainObject"));
     }
@@ -82,24 +82,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void Remove_ObjectFromOtherTransaction_WhoseIDIsInCollection ()
     {
-      var collection = new DomainObjectCollection (typeof (Customer));
-      Customer customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
-      collection.Add (customer);
+      var collection = new DomainObjectCollection(typeof (Customer));
+      Customer customer = DomainObjectIDs.Customer1.GetObject<Customer>();
+      collection.Add(customer);
 
       Customer customerInOtherTx;
-      using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
-        customerInOtherTx = customer.ID.GetObject<Customer> ();
+        customerInOtherTx = customer.ID.GetObject<Customer>();
       }
 
-      Assert.That (
-          () => collection.Remove (customerInOtherTx),
+      Assert.That(
+          () => collection.Remove(customerInOtherTx),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The object to be removed has the same ID as an object in this collection, but "
                   + "is a different object reference.", "domainObject"));
 
-      Assert.That (collection.ContainsObject (customer), Is.True);
+      Assert.That(collection.ContainsObject(customer), Is.True);
     }
 
   }

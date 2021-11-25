@@ -35,129 +35,129 @@ namespace Remotion.UnitTests.Utilities
       var resultTotalTimeSpan = TimeSpan.Zero;
       var resultCheckpointTimeSpan = TimeSpan.Zero;
 
-      using (StopwatchScope.CreateScope ((context, s) =>
+      using (StopwatchScope.CreateScope((context, s) =>
       {
         resultContext = context;
         resultTotalTimeSpan = s.ElapsedTotal;
         resultCheckpointTimeSpan = s.ElapsedSinceLastCheckpoint;
       }))
       {
-        Wait(TimeSpan.FromMilliseconds (5.0));
+        Wait(TimeSpan.FromMilliseconds(5.0));
       }
 
-      Assert.That (resultContext, Is.EqualTo ("end"));
-      Assert.That (resultTotalTimeSpan, Is.GreaterThan (TimeSpan.FromMilliseconds (5.0)));
-      Assert.That (resultTotalTimeSpan, Is.LessThan (TimeSpan.FromSeconds (10.0)));
-      Assert.That (resultCheckpointTimeSpan, Is.EqualTo (resultTotalTimeSpan));
+      Assert.That(resultContext, Is.EqualTo("end"));
+      Assert.That(resultTotalTimeSpan, Is.GreaterThan(TimeSpan.FromMilliseconds(5.0)));
+      Assert.That(resultTotalTimeSpan, Is.LessThan(TimeSpan.FromSeconds(10.0)));
+      Assert.That(resultCheckpointTimeSpan, Is.EqualTo(resultTotalTimeSpan));
     }
 
     [Test]
     public void Checkpoint ()
     {
-      var times = new List<Tuple<string, TimeSpan, TimeSpan>> ();
-      using (var scope = StopwatchScope.CreateScope ((context, s) => times.Add (Tuple.Create (context, s.ElapsedTotal, s.ElapsedSinceLastCheckpoint))))
+      var times = new List<Tuple<string, TimeSpan, TimeSpan>>();
+      using (var scope = StopwatchScope.CreateScope((context, s) => times.Add(Tuple.Create(context, s.ElapsedTotal, s.ElapsedSinceLastCheckpoint))))
       {
-        Wait (TimeSpan.FromMilliseconds (5.0));
-        scope.Checkpoint ("One");
-        Wait (TimeSpan.FromMilliseconds (5.0));
-        scope.Checkpoint ("Two");
-        Wait (TimeSpan.FromMilliseconds (5.0));
+        Wait(TimeSpan.FromMilliseconds(5.0));
+        scope.Checkpoint("One");
+        Wait(TimeSpan.FromMilliseconds(5.0));
+        scope.Checkpoint("Two");
+        Wait(TimeSpan.FromMilliseconds(5.0));
       }
-      Assert.That (times.Count, Is.EqualTo (3));
+      Assert.That(times.Count, Is.EqualTo(3));
       
-      Assert.That (times[0].Item1, Is.EqualTo ("One"));
-      Assert.That (times[0].Item2, Is.GreaterThan (TimeSpan.FromMilliseconds (5.0))); // total
-      Assert.That (times[0].Item3, Is.GreaterThan (TimeSpan.FromMilliseconds (5.0))); // since last checkpoint
+      Assert.That(times[0].Item1, Is.EqualTo("One"));
+      Assert.That(times[0].Item2, Is.GreaterThan(TimeSpan.FromMilliseconds(5.0))); // total
+      Assert.That(times[0].Item3, Is.GreaterThan(TimeSpan.FromMilliseconds(5.0))); // since last checkpoint
 
-      Assert.That (times[1].Item1, Is.EqualTo ("Two"));
-      Assert.That (times[1].Item2, Is.GreaterThan (times[0].Item2 + TimeSpan.FromMilliseconds (5.0))); // total
-      Assert.That (times[1].Item3, Is.GreaterThan (TimeSpan.FromMilliseconds (5.0))); // since last checkpoint
-      Assert.That (times[1].Item3, Is.LessThan (times[1].Item2));
+      Assert.That(times[1].Item1, Is.EqualTo("Two"));
+      Assert.That(times[1].Item2, Is.GreaterThan(times[0].Item2 + TimeSpan.FromMilliseconds(5.0))); // total
+      Assert.That(times[1].Item3, Is.GreaterThan(TimeSpan.FromMilliseconds(5.0))); // since last checkpoint
+      Assert.That(times[1].Item3, Is.LessThan(times[1].Item2));
 
-      Assert.That (times[2].Item1, Is.EqualTo ("end"));
-      Assert.That (times[2].Item2, Is.GreaterThan (times[1].Item2 + TimeSpan.FromMilliseconds (5.0))); // total
-      Assert.That (times[2].Item3, Is.GreaterThan (TimeSpan.FromMilliseconds (5.0))); // since last checkpoint
-      Assert.That (times[2].Item3, Is.LessThan (times[2].Item2));
+      Assert.That(times[2].Item1, Is.EqualTo("end"));
+      Assert.That(times[2].Item2, Is.GreaterThan(times[1].Item2 + TimeSpan.FromMilliseconds(5.0))); // total
+      Assert.That(times[2].Item3, Is.GreaterThan(TimeSpan.FromMilliseconds(5.0))); // since last checkpoint
+      Assert.That(times[2].Item3, Is.LessThan(times[2].Item2));
     }
 
     [Test]
     public void Checkpoint_AfterDispose ()
     {
-      var scope = StopwatchScope.CreateScope ((context, s) => { });
-      scope.Dispose ();
-      Assert.That (
-          () => scope.Checkpoint (""),
+      var scope = StopwatchScope.CreateScope((context, s) => { });
+      scope.Dispose();
+      Assert.That(
+          () => scope.Checkpoint(""),
           Throws.InstanceOf<ObjectDisposedException>());
     }
 
     [Test]
     public void ElapsedSinceLastCheckpoint_AfterScopeDisposed ()
     {
-      var scope = StopwatchScope.CreateScope ((context, s) => { });
-      scope.Checkpoint ("test");
-      Wait (TimeSpan.FromMilliseconds (1.0));
-      Assert.That (scope.ElapsedSinceLastCheckpoint, Is.GreaterThan (TimeSpan.Zero));
+      var scope = StopwatchScope.CreateScope((context, s) => { });
+      scope.Checkpoint("test");
+      Wait(TimeSpan.FromMilliseconds(1.0));
+      Assert.That(scope.ElapsedSinceLastCheckpoint, Is.GreaterThan(TimeSpan.Zero));
 
-      scope.Dispose ();
+      scope.Dispose();
 
-      Assert.That (scope.ElapsedSinceLastCheckpoint, Is.EqualTo (TimeSpan.Zero));
+      Assert.That(scope.ElapsedSinceLastCheckpoint, Is.EqualTo(TimeSpan.Zero));
     }
 
     [Test]
     public void Pause ()
     {
-      var scope = StopwatchScope.CreateScope ((context, s) => { });
+      var scope = StopwatchScope.CreateScope((context, s) => { });
 
-      scope.Pause ();
+      scope.Pause();
       var elapsedBefore = scope.ElapsedTotal;
-      Wait (TimeSpan.FromMilliseconds (5.0));
-      Assert.That (scope.ElapsedTotal, Is.EqualTo (elapsedBefore));
+      Wait(TimeSpan.FromMilliseconds(5.0));
+      Assert.That(scope.ElapsedTotal, Is.EqualTo(elapsedBefore));
     }
 
     [Test]
     public void Pause_Twice ()
     {
-      var scope = StopwatchScope.CreateScope ((context, s) => { });
+      var scope = StopwatchScope.CreateScope((context, s) => { });
 
-      scope.Pause ();
-      scope.Pause ();
+      scope.Pause();
+      scope.Pause();
       var elapsedBefore = scope.ElapsedTotal;
-      Wait (TimeSpan.FromMilliseconds (5.0));
-      Assert.That (scope.ElapsedTotal, Is.EqualTo (elapsedBefore));
+      Wait(TimeSpan.FromMilliseconds(5.0));
+      Assert.That(scope.ElapsedTotal, Is.EqualTo(elapsedBefore));
     }
 
     [Test]
     public void Pause_AfterDispose ()
     {
-      var scope = StopwatchScope.CreateScope ((context, s) => { });
-      scope.Dispose ();
-      Assert.That (
-          () => scope.Pause (),
+      var scope = StopwatchScope.CreateScope((context, s) => { });
+      scope.Dispose();
+      Assert.That(
+          () => scope.Pause(),
           Throws.InstanceOf<ObjectDisposedException>());
     }
 
     [Test]
     public void Resume ()
     {
-      var scope = StopwatchScope.CreateScope ((context, s) => { });
+      var scope = StopwatchScope.CreateScope((context, s) => { });
 
-      scope.Pause ();
+      scope.Pause();
       var elapsedBefore = scope.ElapsedTotal;
-      Wait (TimeSpan.FromMilliseconds (5.0));
-      Assert.That (scope.ElapsedTotal, Is.EqualTo (elapsedBefore));
+      Wait(TimeSpan.FromMilliseconds(5.0));
+      Assert.That(scope.ElapsedTotal, Is.EqualTo(elapsedBefore));
 
-      scope.Resume ();
-      Wait (TimeSpan.FromMilliseconds (1.0));
-      Assert.That (scope.ElapsedTotal, Is.GreaterThan (elapsedBefore));
+      scope.Resume();
+      Wait(TimeSpan.FromMilliseconds(1.0));
+      Assert.That(scope.ElapsedTotal, Is.GreaterThan(elapsedBefore));
     }
 
     [Test]
     public void Resume_AfterDispose ()
     {
-      var scope = StopwatchScope.CreateScope ((context, s) => { });
-      scope.Dispose ();
-      Assert.That (
-          () => scope.Resume (),
+      var scope = StopwatchScope.CreateScope((context, s) => { });
+      scope.Dispose();
+      Assert.That(
+          () => scope.Resume(),
           Throws.InstanceOf<ObjectDisposedException>());
     }
 
@@ -165,13 +165,13 @@ namespace Remotion.UnitTests.Utilities
     public void Dispose_AfterDispose ()
     {
       int counter = 0;
-      var scope = StopwatchScope.CreateScope ((context, s) => ++counter);
+      var scope = StopwatchScope.CreateScope((context, s) => ++counter);
       
-      scope.Dispose ();
-      Assert.That (counter, Is.EqualTo (1));
+      scope.Dispose();
+      Assert.That(counter, Is.EqualTo(1));
 
-      scope.Dispose ();
-      Assert.That (counter, Is.EqualTo (1));
+      scope.Dispose();
+      Assert.That(counter, Is.EqualTo(1));
     }
 
     [Test]
@@ -179,24 +179,24 @@ namespace Remotion.UnitTests.Utilities
     {
       var writerMock = new Mock<TextWriter>();
 
-      var scope = StopwatchScope.CreateScope (writerMock.Object, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
+      var scope = StopwatchScope.CreateScope(writerMock.Object, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
 
-      Wait (TimeSpan.FromMilliseconds (1.0));
+      Wait(TimeSpan.FromMilliseconds(1.0));
       
-      scope.Pause ();
+      scope.Pause();
 
       var firstElapsed = scope.ElapsedTotal;
       var firstElapsedCP = scope.ElapsedSinceLastCheckpoint;
-      scope.Checkpoint ("one");
+      scope.Checkpoint("one");
 
-      scope.Resume ();
+      scope.Resume();
 
-      Wait (TimeSpan.FromMilliseconds (1.0));
+      Wait(TimeSpan.FromMilliseconds(1.0));
 
-      scope.Pause ();
+      scope.Pause();
       var secondElapsed = scope.ElapsedTotal;
       var secondElapsedCP = scope.ElapsedSinceLastCheckpoint;
-      scope.Dispose ();
+      scope.Dispose();
 
       var expectedFirstArgs = new[] { 
           "one", 
@@ -205,7 +205,7 @@ namespace Remotion.UnitTests.Utilities
           firstElapsedCP.ToString(), 
           firstElapsedCP.TotalMilliseconds.ToString() 
       };
-      writerMock.Verify (mock => mock.WriteLine ("{0}#{1}#{2}#{3}#{4}", expectedFirstArgs), Times.AtLeastOnce());
+      writerMock.Verify(mock => mock.WriteLine("{0}#{1}#{2}#{3}#{4}", expectedFirstArgs), Times.AtLeastOnce());
 
       var expectedSecondArgs = new[] { 
           "end", 
@@ -214,7 +214,7 @@ namespace Remotion.UnitTests.Utilities
           secondElapsedCP.ToString(), 
           secondElapsedCP.TotalMilliseconds.ToString() 
       };
-      writerMock.Verify (mock => mock.WriteLine ("{0}#{1}#{2}#{3}#{4}", expectedSecondArgs), Times.AtLeastOnce());
+      writerMock.Verify(mock => mock.WriteLine("{0}#{1}#{2}#{3}#{4}", expectedSecondArgs), Times.AtLeastOnce());
     }
 
     [Test]
@@ -222,24 +222,24 @@ namespace Remotion.UnitTests.Utilities
     {
       var logMock = new Mock<ILog>();
 
-      var scope = StopwatchScope.CreateScope (logMock.Object, LogLevel.Error, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
+      var scope = StopwatchScope.CreateScope(logMock.Object, LogLevel.Error, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
 
-      Wait (TimeSpan.FromMilliseconds (1.0));
+      Wait(TimeSpan.FromMilliseconds(1.0));
 
-      scope.Pause ();
+      scope.Pause();
 
       var firstElapsed = scope.ElapsedTotal;
       var firstElapsedCP = scope.ElapsedSinceLastCheckpoint;
-      scope.Checkpoint ("one");
+      scope.Checkpoint("one");
 
-      scope.Resume ();
+      scope.Resume();
 
-      Wait (TimeSpan.FromMilliseconds (1.0));
+      Wait(TimeSpan.FromMilliseconds(1.0));
 
-      scope.Pause ();
+      scope.Pause();
       var secondElapsed = scope.ElapsedTotal;
       var secondElapsedCP = scope.ElapsedSinceLastCheckpoint;
-      scope.Dispose ();
+      scope.Dispose();
 
       var expectedFirstArgs = new[] { 
           "one", 
@@ -248,9 +248,9 @@ namespace Remotion.UnitTests.Utilities
           firstElapsedCP.ToString(), 
           firstElapsedCP.TotalMilliseconds.ToString() 
       };
-      logMock.Verify (
+      logMock.Verify(
           mock =>
-              mock.LogFormat (
+              mock.LogFormat(
                   LogLevel.Error,
                   null,
                   null,
@@ -265,8 +265,8 @@ namespace Remotion.UnitTests.Utilities
           secondElapsedCP.ToString(), 
           secondElapsedCP.TotalMilliseconds.ToString() 
       };
-      logMock.Verify (
-          mock => mock.LogFormat (
+      logMock.Verify(
+          mock => mock.LogFormat(
               LogLevel.Error,
               null,
               null,
@@ -280,28 +280,28 @@ namespace Remotion.UnitTests.Utilities
     {
       var oldOut = Console.Out;
       var writerMock = new Mock<TextWriter>();
-      Console.SetOut (writerMock.Object);
+      Console.SetOut(writerMock.Object);
 
       try
       {
-        var scope = StopwatchScope.CreateScope ("{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
+        var scope = StopwatchScope.CreateScope("{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
 
-        Wait (TimeSpan.FromMilliseconds (1.0));
+        Wait(TimeSpan.FromMilliseconds(1.0));
 
-        scope.Pause ();
+        scope.Pause();
 
         var firstElapsed = scope.ElapsedTotal;
         var firstElapsedCP = scope.ElapsedSinceLastCheckpoint;
-        scope.Checkpoint ("one");
+        scope.Checkpoint("one");
 
-        scope.Resume ();
+        scope.Resume();
 
-        Wait (TimeSpan.FromMilliseconds (1.0));
+        Wait(TimeSpan.FromMilliseconds(1.0));
 
-        scope.Pause ();
+        scope.Pause();
         var secondElapsed = scope.ElapsedTotal;
         var secondElapsedCP = scope.ElapsedSinceLastCheckpoint;
-        scope.Dispose ();
+        scope.Dispose();
 
         var expectedFirstArgs = new[]
                                 {
@@ -311,7 +311,7 @@ namespace Remotion.UnitTests.Utilities
                                     firstElapsedCP.ToString(),
                                     firstElapsedCP.TotalMilliseconds.ToString()
                                 };
-        writerMock.Verify (mock => mock.WriteLine ("{0}#{1}#{2}#{3}#{4}", expectedFirstArgs), Times.AtLeastOnce());
+        writerMock.Verify(mock => mock.WriteLine("{0}#{1}#{2}#{3}#{4}", expectedFirstArgs), Times.AtLeastOnce());
 
         var expectedSecondArgs = new[]
                                  {
@@ -321,21 +321,21 @@ namespace Remotion.UnitTests.Utilities
                                      secondElapsedCP.ToString(),
                                      secondElapsedCP.TotalMilliseconds.ToString()
                                  };
-        writerMock.Verify (mock => mock.WriteLine ("{0}#{1}#{2}#{3}#{4}", expectedSecondArgs), Times.AtLeastOnce());
+        writerMock.Verify(mock => mock.WriteLine("{0}#{1}#{2}#{3}#{4}", expectedSecondArgs), Times.AtLeastOnce());
       }
       finally
       {
-        Console.SetOut (oldOut);
+        Console.SetOut(oldOut);
       }
     }
 
     private void Wait (TimeSpan timeSpan)
     {
-      Stopwatch sw = Stopwatch.StartNew ();
+      Stopwatch sw = Stopwatch.StartNew();
       while (sw.Elapsed <= timeSpan)
       {
       }
-      sw.Stop ();
+      sw.Stop();
     }
   }
 }

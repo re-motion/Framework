@@ -26,21 +26,21 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void GetLogger_WithNameAsString ()
     {
-      ILog log = LogManager.GetLogger ("The Name");
+      ILog log = LogManager.GetLogger("The Name");
 
-      Assert.IsInstanceOf (typeof (Log4NetLog), log);
+      Assert.IsInstanceOf(typeof (Log4NetLog), log);
       Log4NetLog log4NetLog = (Log4NetLog) log;
-      Assert.That (log4NetLog.Logger.Name, Is.EqualTo ("The Name"));
+      Assert.That(log4NetLog.Logger.Name, Is.EqualTo("The Name"));
     }
 
     [Test]
     public void GetLogger_WithNameFromType ()
     {
-      ILog log = LogManager.GetLogger (typeof (SampleType));
+      ILog log = LogManager.GetLogger(typeof (SampleType));
 
-      Assert.IsInstanceOf (typeof (Log4NetLog), log);
+      Assert.IsInstanceOf(typeof (Log4NetLog), log);
       Log4NetLog log4NetLog = (Log4NetLog) log;
-      Assert.That (log4NetLog.Logger.Name, Is.EqualTo ("Remotion.UnitTests.Logging.SampleType"));
+      Assert.That(log4NetLog.Logger.Name, Is.EqualTo("Remotion.UnitTests.Logging.SampleType"));
     }
 
   }

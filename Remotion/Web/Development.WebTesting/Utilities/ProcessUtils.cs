@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       internal IntPtr InheritedFromUniqueProcessID;
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (ProcessUtils));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof (ProcessUtils));
 
     /// <summary>
     /// Retrieves information about the specified process. See https://msdn.microsoft.com/en-us/library/windows/desktop/ms684280.aspx .
@@ -72,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <returns>The process id of the parent process, or <c>-1</c> if no parent process could be found.</returns>
     public static int GetParentProcessID ([NotNull] Process target)
     {
-      ArgumentUtility.CheckNotNull ("target", target);
+      ArgumentUtility.CheckNotNull("target", target);
 
       // Query the process information
       var info = new ParentInfo();
@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       try
       {
         int returnLength;
-        status = NtQueryInformationProcess (target.Handle, 0, ref info, Marshal.SizeOf (info), out returnLength);
+        status = NtQueryInformationProcess(target.Handle, 0, ref info, Marshal.SizeOf(info), out returnLength);
       }
       catch (InvalidOperationException)
       {
@@ -119,9 +119,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </remarks>
     public static void GracefulProcessShutdown ([NotNull] Process process, TimeSpan timeout)
     {
-      ArgumentUtility.CheckNotNull ("process", process);
+      ArgumentUtility.CheckNotNull("process", process);
 
-      GracefulProcessShutdown (new[] { process }, timeout);
+      GracefulProcessShutdown(new[] { process }, timeout);
     }
 
     /// <summary>
@@ -147,29 +147,29 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </remarks>
     public static void GracefulProcessShutdown (IReadOnlyList<Process> processes, TimeSpan timeout)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull (nameof (processes), processes);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(processes), processes);
 
       var timeoutInMilliseconds = (int) timeout.TotalMilliseconds;
       if (timeoutInMilliseconds < 0)
-        throw new ArgumentOutOfRangeException ("timeout", "Timeout can not be smaller that zero.");
+        throw new ArgumentOutOfRangeException("timeout", "Timeout can not be smaller that zero.");
 
       IReadOnlyList<Process> remainingProcesses = processes.ToList();
 
       // Clear out any processes that already exited
-      remainingProcesses = WaitForProcessesExits (remainingProcesses, TimeSpan.Zero);
+      remainingProcesses = WaitForProcessesExits(remainingProcesses, TimeSpan.Zero);
 
       // Try to gracefully close the process
-      var anyMainWindowClosed = remainingProcesses.Any (CloseMainWindow);
+      var anyMainWindowClosed = remainingProcesses.Any(CloseMainWindow);
       if (anyMainWindowClosed)
-        remainingProcesses = WaitForProcessesExits (remainingProcesses, timeout);
+        remainingProcesses = WaitForProcessesExits(remainingProcesses, timeout);
 
       // Force closing the process and wait for process exits
       foreach (var remainingProcess in remainingProcesses)
-        KillProcess (remainingProcess);
+        KillProcess(remainingProcess);
 
-      remainingProcesses = WaitForProcessesExits (remainingProcesses, timeout);
+      remainingProcesses = WaitForProcessesExits(remainingProcesses, timeout);
       if (remainingProcesses.Any())
-        throw CreateProcessesDidNotExitInTimeException (remainingProcesses, timeout);
+        throw CreateProcessesDidNotExitInTimeException(remainingProcesses, timeout);
     }
 
     private static bool CloseMainWindow (Process process)
@@ -228,9 +228,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         var timeToTimeoutEnd = sharedTimeout - stopwatch.Elapsed;
 
         // Use 0 (process.WaitForExit returns instantly) if we exceeded our timeout, otherwise use the remaining timeout
-        var remainingTimeoutInMilliseconds = Math.Max ((int) timeToTimeoutEnd.TotalMilliseconds, 0);
-        if (!process.WaitForExit (remainingTimeoutInMilliseconds))
-          remainingProcesses.Add (process);
+        var remainingTimeoutInMilliseconds = Math.Max((int) timeToTimeoutEnd.TotalMilliseconds, 0);
+        if (!process.WaitForExit(remainingTimeoutInMilliseconds))
+          remainingProcesses.Add(process);
       }
 
       return remainingProcesses;
@@ -239,11 +239,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     private static Exception CreateProcessesDidNotExitInTimeException (IEnumerable<Process> processes, TimeSpan timeout)
     {
       var stringBuilder = new StringBuilder();
-      stringBuilder.AppendFormat ("The following processes did not exit within the timeout of {0:0.##} seconds:", timeout.TotalSeconds).AppendLine();
+      stringBuilder.AppendFormat("The following processes did not exit within the timeout of {0:0.##} seconds:", timeout.TotalSeconds).AppendLine();
       foreach (var process in processes)
-        stringBuilder.AppendFormat (" - Process '{0}' (id: {1})", process.ProcessName, process.Id).AppendLine();
+        stringBuilder.AppendFormat(" - Process '{0}' (id: {1})", process.ProcessName, process.Id).AppendLine();
 
-      return new InvalidOperationException (stringBuilder.ToString());
+      return new InvalidOperationException(stringBuilder.ToString());
     }
 
     /// <summary>
@@ -252,20 +252,20 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <param name="processName">The process name without the file extension.</param>
     public static void KillAllProcessesWithName ([NotNull] string processName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("processName", processName);
+      ArgumentUtility.CheckNotNullOrEmpty("processName", processName);
 
-      s_log.DebugFormat ("Process killing has been called for '{0}'...", processName);
+      s_log.DebugFormat("Process killing has been called for '{0}'...", processName);
 
-      foreach (var process in Process.GetProcessesByName (processName))
+      foreach (var process in Process.GetProcessesByName(processName))
       {
         try
         {
-          s_log.DebugFormat ("Killing process '{0}'...", processName);
+          s_log.DebugFormat("Killing process '{0}'...", processName);
           process.Kill();
         }
         catch (Exception ex)
         {
-          s_log.Warn (string.Format ("Killing process '{0}' failed.", processName), ex);
+          s_log.Warn(string.Format("Killing process '{0}' failed.", processName), ex);
           // Ignore exception, process is already closing or we do not have the required privileges anyway.
         }
       }

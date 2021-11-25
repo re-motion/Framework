@@ -42,19 +42,19 @@ namespace Remotion.Web.Services
     /// <exception cref="ArgumentException">Thrown if the <see cref="IconInfo.Url"/> of the <paramref name="iconInfo"/> is not set.</exception>
     public static IconProxy Create (HttpContextBase httpContext, IconInfo iconInfo)
     {
-      ArgumentUtility.CheckNotNull ("httpContext", httpContext);
-      ArgumentUtility.CheckNotNull ("iconInfo", iconInfo);
+      ArgumentUtility.CheckNotNull("httpContext", httpContext);
+      ArgumentUtility.CheckNotNull("iconInfo", iconInfo);
 
-      if (string.IsNullOrEmpty (iconInfo.Url))
-        throw new ArgumentException ("IconProxy does not support IconInfo objects without an empty Url.", "iconInfo");
-      var absoluteUrl = UrlUtility.ResolveUrlCaseSensitive (httpContext, iconInfo.Url);
+      if (string.IsNullOrEmpty(iconInfo.Url))
+        throw new ArgumentException("IconProxy does not support IconInfo objects without an empty Url.", "iconInfo");
+      var absoluteUrl = UrlUtility.ResolveUrlCaseSensitive(httpContext, iconInfo.Url);
 
-      return new IconProxy (
+      return new IconProxy(
           absoluteUrl,
-          StringUtility.EmptyToNull (iconInfo.AlternateText),
-          StringUtility.EmptyToNull (iconInfo.ToolTip),
-          StringUtility.EmptyToNull (iconInfo.Height.ToString()),
-          StringUtility.EmptyToNull (iconInfo.Width.ToString()));
+          StringUtility.EmptyToNull(iconInfo.AlternateText),
+          StringUtility.EmptyToNull(iconInfo.ToolTip),
+          StringUtility.EmptyToNull(iconInfo.Height.ToString()),
+          StringUtility.EmptyToNull(iconInfo.Width.ToString()));
     }
 
     private IconProxy (string url, string? alternateText, string? toolTip, string? height, string? width)

@@ -45,19 +45,19 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude ();
+      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
       string scriptFileKey = typeof (DatePickerButtonRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (DatePickerButtonRenderer), ResourceType.Html, "DatePicker.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (scriptFileKey, scriptUrl);
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof (DatePickerButtonRenderer), ResourceType.Html, "DatePicker.js");
+      htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptUrl);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string styleFileKey = typeof (DatePickerButtonRenderer).GetFullNameChecked() + "_Style";
-      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (DatePickerButtonRenderer), ResourceType.Html, "DatePicker.css");
-      htmlHeadAppender.RegisterStylesheetLink (styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
+      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof (DatePickerButtonRenderer), ResourceType.Html, "DatePicker.css");
+      htmlHeadAppender.RegisterStylesheetLink(styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }
 
 
@@ -70,54 +70,54 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
     /// </summary>
     public void Render (DatePickerButtonRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID);
 
-      string cssClass = string.IsNullOrEmpty (renderingContext.Control.CssClass) ? CssClassBase : renderingContext.Control.CssClass;
+      string cssClass = string.IsNullOrEmpty(renderingContext.Control.CssClass) ? CssClassBase : renderingContext.Control.CssClass;
       cssClass += " " + CssClassThemed;
       if (!renderingContext.Control.Enabled)
         cssClass += " " + CssClassDisabled;
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
 
       // TODO: hyperLink.ApplyStyle (Control.DatePickerButtonStyle);
 
-      string script = GetClickScript (renderingContext, true);
+      string script = GetClickScript(renderingContext, true);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Tabindex, "-1");
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, script);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, "-1");
 
       if (!renderingContext.Control.Enabled)
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Disabled, "disabled");
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Disabled, "disabled");
 
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.A);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.A);
 
-      var imageUrl = GetResolvedImageUrl ();
+      var imageUrl = GetResolvedImageUrl();
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl.GetUrl ());
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Alt, renderingContext.Control.AlternateText ?? string.Empty);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Img);
-      renderingContext.Writer.RenderEndTag ();
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Src, imageUrl.GetUrl());
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Alt, renderingContext.Control.AlternateText ?? string.Empty);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Img);
+      renderingContext.Writer.RenderEndTag();
 
-      renderingContext.Writer.RenderEndTag ();
+      renderingContext.Writer.RenderEndTag();
     }
 
     public IResourceUrl GetDatePickerUrl ()
     {
-      var datePickerUrl = string.Format (
+      var datePickerUrl = string.Format(
           "{0}?{1}={2}&{3}={4}",
           c_datePickerPopupForm,
           DatePickerPage.CultureParameterName,
           CultureInfo.CurrentCulture.Name,
           DatePickerPage.UICultureParameterName,
           CultureInfo.CurrentUICulture.Name);
-      return ResourceUrlFactory.CreateThemedResourceUrl (typeof (DatePickerPageRenderer), ResourceType.UI, datePickerUrl);
+      return ResourceUrlFactory.CreateThemedResourceUrl(typeof (DatePickerPageRenderer), ResourceType.UI, datePickerUrl);
     }
 
     public IResourceUrl GetResolvedImageUrl ()
     {
-      return ResourceUrlFactory.CreateThemedResourceUrl (typeof (DatePickerButtonRenderer), ResourceType.Image, c_datePickerIcon);
+      return ResourceUrlFactory.CreateThemedResourceUrl(typeof (DatePickerButtonRenderer), ResourceType.Image, c_datePickerIcon);
     }
 
     private string GetClickScript (DatePickerButtonRenderingContext renderingContext, bool hasClientScript)
@@ -127,8 +127,8 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
       {
         const string pickerActionButton = "this";
 
-        string pickerActionContainer = "document.getElementById ('" + renderingContext.Control.ContainerControlID!.Replace ('$', '_') + "')"; // TODO RM-8118: not null assertion
-        string pickerActionTarget = "document.getElementById ('" + renderingContext.Control.TargetControlID!.Replace ('$', '_') + "')"; // TODO RM-8118: not null assertion
+        string pickerActionContainer = "document.getElementById ('" + renderingContext.Control.ContainerControlID!.Replace('$', '_') + "')"; // TODO RM-8118: not null assertion
+        string pickerActionTarget = "document.getElementById ('" + renderingContext.Control.TargetControlID!.Replace('$', '_') + "')"; // TODO RM-8118: not null assertion
 
         string pickerUrl = "'" + GetDatePickerUrl().GetUrl() + "'";
 
@@ -169,12 +169,12 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 
     protected Unit PopUpWidth
     {
-      get { return new Unit (14, UnitType.Em); }
+      get { return new Unit(14, UnitType.Em); }
     }
 
     protected Unit PopUpHeight
     {
-      get { return new Unit (16, UnitType.Em); }
+      get { return new Unit(16, UnitType.Em); }
     }
   }
 }

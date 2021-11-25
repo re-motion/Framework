@@ -30,7 +30,7 @@ public class WxeParameterConverter
 
   public WxeParameterConverter (WxeParameterDeclaration parameter)
   {
-    ArgumentUtility.CheckNotNull ("parameter", parameter);
+    ArgumentUtility.CheckNotNull("parameter", parameter);
     _parameter = parameter;
   }
   
@@ -55,9 +55,9 @@ public class WxeParameterConverter
 
     WxeVariableReference? varRef = value as WxeVariableReference;
     if (varRef != null)
-      return ConvertVarRefToString (varRef, callerVariables);
+      return ConvertVarRefToString(varRef, callerVariables);
 
-    return ConvertObjectToString (value);
+    return ConvertObjectToString(value);
   }
 
   /// <summary> Converts a <see cref="WxeVariableReference"/>'s value to its string representation. </summary>
@@ -75,13 +75,13 @@ public class WxeParameterConverter
   /// <exception cref="WxeException"> Thrown if the value referenced by the <paramref name="varRef"/> could not be converted. </exception>
   protected string? ConvertVarRefToString (WxeVariableReference varRef, NameObjectCollection? callerVariables)
   {
-    ArgumentUtility.CheckNotNull ("varRef", varRef);
+    ArgumentUtility.CheckNotNull("varRef", varRef);
 
     if (callerVariables == null)
     {
       if (_parameter.Required)
       {
-        throw new WxeException (string.Format (
+        throw new WxeException(string.Format(
             "Required IN parameter '{0}' is a Variable Reference but no caller variables have been provided.", 
             _parameter.Name));
       }
@@ -94,14 +94,14 @@ public class WxeParameterConverter
     {
       if (_parameter.Required)
       {
-        throw new WxeException (string.Format (
+        throw new WxeException(string.Format(
             "Required IN parameter '{0}' is a Variable Reference but no caller variables have been provided.", 
             _parameter.Name));
       }
       return null;
     }
 
-    return ConvertObjectToString (value);
+    return ConvertObjectToString(value);
   }
 
   /// <summary> Converts a parameter's value to its string representation. </summary>
@@ -113,19 +113,19 @@ public class WxeParameterConverter
   /// <exception cref="WxeException"> Thrown if the <paramref name="value"/> could not be converted. </exception>
   protected string? ConvertObjectToString (object? value)
   {
-    if (value != null && ! _parameter.Type.IsAssignableFrom (value.GetType()))
-      throw ArgumentUtility.CreateArgumentTypeException ("value", value.GetType(), _parameter.Type);
+    if (value != null && ! _parameter.Type.IsAssignableFrom(value.GetType()))
+      throw ArgumentUtility.CreateArgumentTypeException("value", value.GetType(), _parameter.Type);
 
     if (! _parameter.Required && value == null)
       return null;
 
-    value = TryConvertObjectToString (value);
+    value = TryConvertObjectToString(value);
     if (value is string)
       return (string) value;
 
     if (_parameter.Required)
     {
-      throw new WxeException (string.Format (
+      throw new WxeException(string.Format(
           "Only parameters that can be restored from their string representation may be converted to a string. Parameter: '{0}'.",
           _parameter.Name));
     }
@@ -141,17 +141,17 @@ public class WxeParameterConverter
     Type destinationType = typeof (string);
 
     //TODO: #if DEBUG
-    if (! s_typeConversionProvider.CanConvert (sourceType, destinationType))
+    if (! s_typeConversionProvider.CanConvert(sourceType, destinationType))
       return value;
 
-    return s_typeConversionProvider.Convert (null, CultureInfo.InvariantCulture, sourceType, destinationType, value);
+    return s_typeConversionProvider.Convert(null, CultureInfo.InvariantCulture, sourceType, destinationType, value);
   }
 
   protected void CheckForRequiredOutParameter ()
   {
     if (_parameter.Required && _parameter.Direction == WxeParameterDirection.Out)
     {
-      throw new WxeException (string.Format (
+      throw new WxeException(string.Format(
           "Required OUT parameters cannot be converted to a string. Parameter: '{0}'", _parameter.Name));
     }
   }

@@ -30,23 +30,23 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      return Validate (classDefinition.ClassType);
+      return Validate(classDefinition.ClassType);
     }
 
     private MappingValidationResult Validate (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      if (AttributeUtility.IsDefined (type, typeof (StorageGroupAttribute), false)
-          && AttributeUtility.IsDefined (type.BaseType, typeof (StorageGroupAttribute), true))
+      if (AttributeUtility.IsDefined(type, typeof (StorageGroupAttribute), false)
+          && AttributeUtility.IsDefined(type.BaseType, typeof (StorageGroupAttribute), true))
       {
         Type baseType = type.BaseType;
-        while (!AttributeUtility.IsDefined<StorageGroupAttribute> (baseType, false)) //get base type which has the attribute applied
+        while (!AttributeUtility.IsDefined<StorageGroupAttribute>(baseType, false)) //get base type which has the attribute applied
           baseType = baseType.BaseType;
 
-        return MappingValidationResult.CreateInvalidResultForType (
+        return MappingValidationResult.CreateInvalidResultForType(
             type,
             "The domain object type cannot redefine the '{0}' already defined on base type '{1}'.",
             typeof (StorageGroupAttribute).Name,

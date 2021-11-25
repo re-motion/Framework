@@ -27,37 +27,37 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     [Test]
     public void IsMainMenuTabSetToEventInvisibleWithWcagOverride ()
     {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA ();
-      MainMenuTab mainMenuTab = new MainMenuTab ();
+      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
+      MainMenuTab mainMenuTab = new MainMenuTab();
       mainMenuTab.Command.Type = CommandType.Event;
-      Assert.That (mainMenuTab.EvaluateVisible (), Is.False);
+      Assert.That(mainMenuTab.EvaluateVisible(), Is.False);
     }
 
     [Test]
     public void IsMainMenuTabSetToEventVisibleWithoutWcagOverride ()
     {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined ();
-      MainMenuTab mainMenuTab = new MainMenuTab ();
+      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
+      MainMenuTab mainMenuTab = new MainMenuTab();
       mainMenuTab.Command.Type = CommandType.Event;
-      Assert.That (mainMenuTab.EvaluateVisible (), Is.True);
+      Assert.That(mainMenuTab.EvaluateVisible(), Is.True);
     }
 
     [Test]
     public void IsSubMenuTabSetToEventInvisibleWithWcagOverride ()
     {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA ();
-      SubMenuTab subMenuTab = new SubMenuTab ();
+      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
+      SubMenuTab subMenuTab = new SubMenuTab();
       subMenuTab.Command.Type = CommandType.Event;
-      Assert.That (subMenuTab.EvaluateVisible (), Is.False);
+      Assert.That(subMenuTab.EvaluateVisible(), Is.False);
     }
 
     [Test]
     public void IsSubMenuTabSetToEventVisibleWithoutWcagOverride ()
     {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined ();
-      SubMenuTab subMenuTab = new SubMenuTab ();
+      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
+      SubMenuTab subMenuTab = new SubMenuTab();
       subMenuTab.Command.Type = CommandType.Event;
-      Assert.That (subMenuTab.EvaluateVisible (), Is.True);
+      Assert.That(subMenuTab.EvaluateVisible(), Is.True);
     }
   }
 }

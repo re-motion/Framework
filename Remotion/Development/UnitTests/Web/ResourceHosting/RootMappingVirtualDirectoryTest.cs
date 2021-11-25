@@ -31,23 +31,23 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     {
       var factoryStub = MockRepository.GenerateStub<Func<string, ResourceVirtualDirectory>>();
 
-      var directory= new RootMappingVirtualDirectory (
+      var directory= new RootMappingVirtualDirectory(
           "~/test/",
           new[]
           {
-              new ResourcePathMapping ("dir1", "testResourceFolder"),
-              new ResourcePathMapping ("dir2", "testResourceFolder"),
+              new ResourcePathMapping("dir1", "testResourceFolder"),
+              new ResourcePathMapping("dir2", "testResourceFolder"),
           },
-          new DirectoryInfo ("c:\\temp"),
+          new DirectoryInfo("c:\\temp"),
           factoryStub);
 
       var expectedVirtualDirectory1 = new ResourceVirtualDirectory("~/test/dir1/", new DirectoryInfo("c:\\temp\\dir1"));
       var expectedVirtualDirectory2 = new ResourceVirtualDirectory("~/test/dir2/", new DirectoryInfo("c:\\temp\\dir2"));
 
-      factoryStub.Stub (_ => _ ("~/test/dir1/")).Return(expectedVirtualDirectory1);
-      factoryStub.Stub (_ => _ ("~/test/dir2/")).Return(expectedVirtualDirectory2);
+      factoryStub.Stub(_ => _("~/test/dir1/")).Return(expectedVirtualDirectory1);
+      factoryStub.Stub(_ => _("~/test/dir2/")).Return(expectedVirtualDirectory2);
 
-      Assert.That (directory.Directories, Is.EqualTo (new[] { expectedVirtualDirectory1, expectedVirtualDirectory2 }));
+      Assert.That(directory.Directories, Is.EqualTo(new[] { expectedVirtualDirectory1, expectedVirtualDirectory2 }));
     }
   }
 }

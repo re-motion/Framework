@@ -59,20 +59,20 @@ namespace Remotion.Web.UI.Controls.Hotkey
     /// </returns>
     public static TextWithHotkey Parse ([CanBeNull]string? value)
     {
-      if (String.IsNullOrEmpty (value))
-        return new TextWithHotkey (String.Empty, null);
+      if (String.IsNullOrEmpty(value))
+        return new TextWithHotkey(String.Empty, null);
 
-      var resultBuilder = new StringBuilder (value.Length);
+      var resultBuilder = new StringBuilder(value.Length);
       int? hotkeyIndex = null;
       for (int i = 0; i < value.Length; i++)
       {
         var currentChar = value[i];
         if (currentChar == c_hotkeyMarker && i + 1 < value.Length)
         {
-          if (IsValidHotkeyCharacter (value, i + 1))
+          if (IsValidHotkeyCharacter(value, i + 1))
           {
             if (hotkeyIndex.HasValue)
-              return new TextWithHotkey (value, null);
+              return new TextWithHotkey(value, null);
 
             hotkeyIndex = resultBuilder.Length;
             continue;
@@ -81,10 +81,10 @@ namespace Remotion.Web.UI.Controls.Hotkey
             i++;
         }
 
-        resultBuilder.Append (currentChar);
+        resultBuilder.Append(currentChar);
       }
 
-      return new TextWithHotkey (resultBuilder.ToString(), hotkeyIndex);
+      return new TextWithHotkey(resultBuilder.ToString(), hotkeyIndex);
     }
 
     /// <summary>
@@ -97,12 +97,12 @@ namespace Remotion.Web.UI.Controls.Hotkey
       if (value == null)
         return null;
 
-      return value.Replace (new string (c_hotkeyMarker, 1), new string (c_hotkeyMarker, 2));
+      return value.Replace(new string(c_hotkeyMarker, 1), new string(c_hotkeyMarker, 2));
     }
 
     internal static bool IsValidHotkeyCharacter (string text, int index)
     {
-      return Char.IsLetterOrDigit (text, index);
+      return Char.IsLetterOrDigit(text, index);
     }
   }
 }

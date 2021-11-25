@@ -53,8 +53,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
-            new Guid ("00000003-0001-0000-0000-000000000000"),
+        AbstractRoleDefinition role = AbstractRoleDefinition.NewObject(
+            new Guid("00000003-0001-0000-0000-000000000000"),
             "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain",
             0);
         role.Index = index;
@@ -67,8 +67,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
-            new Guid ("00000003-0002-0000-0000-000000000000"),
+        AbstractRoleDefinition role = AbstractRoleDefinition.NewObject(
+            new Guid("00000003-0002-0000-0000-000000000000"),
             "Secretary|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain",
             1);
         role.Index = index;
@@ -81,8 +81,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (
-            new Guid ("00000004-0001-0000-0000-000000000000"),
+        AbstractRoleDefinition role = AbstractRoleDefinition.NewObject(
+            new Guid("00000004-0001-0000-0000-000000000000"),
             "Administrator|Remotion.Security.UnitTests.TestDomain.SpecialAbstractRoles, Remotion.Security.UnitTests.TestDomain",
             0);
         role.Index = index;
@@ -95,8 +95,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        AccessTypeDefinition type = AccessTypeDefinition.NewObject (
-            new Guid ("1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"),
+        AccessTypeDefinition type = AccessTypeDefinition.NewObject(
+            new Guid("1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"),
             "Create|Remotion.Security.GeneralAccessTypes, Remotion.Security",
             0);
         type.Index = index;
@@ -109,8 +109,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        AccessTypeDefinition type = AccessTypeDefinition.NewObject (
-            new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a"),
+        AccessTypeDefinition type = AccessTypeDefinition.NewObject(
+            new Guid("62dfcd92-a480-4d57-95f1-28c0f5996b3a"),
             "Read|Remotion.Security.GeneralAccessTypes, Remotion.Security",
             1);
         type.Index = index;
@@ -123,8 +123,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        AccessTypeDefinition type = AccessTypeDefinition.NewObject (
-            new Guid ("11186122-6de0-4194-b434-9979230c41fd"),
+        AccessTypeDefinition type = AccessTypeDefinition.NewObject(
+            new Guid("11186122-6de0-4194-b434-9979230c41fd"),
             "Edit|Remotion.Security.GeneralAccessTypes, Remotion.Security",
             2);
         type.Index = index;
@@ -137,11 +137,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        StatePropertyDefinition property = StatePropertyDefinition.NewObject (new Guid ("00000000-0000-0000-0001-000000000001"), "Confidentiality");
+        StatePropertyDefinition property = StatePropertyDefinition.NewObject(new Guid("00000000-0000-0000-0001-000000000001"), "Confidentiality");
         property.Index = index;
-        property.AddState (CreateState (Confidentiality_NormalName, Confidentiality_NormalValue));
-        property.AddState (CreateState (Confidentiality_ConfidentialName, Confidentiality_ConfidentialValue));
-        property.AddState (CreateState (Confidentiality_PrivateName, Confidentiality_PrivateValue));
+        property.AddState(CreateState(Confidentiality_NormalName, Confidentiality_NormalValue));
+        property.AddState(CreateState(Confidentiality_ConfidentialName, Confidentiality_ConfidentialValue));
+        property.AddState(CreateState(Confidentiality_PrivateName, Confidentiality_PrivateValue));
 
         return property;
       }
@@ -151,11 +151,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        StatePropertyDefinition property = StatePropertyDefinition.NewObject (new Guid ("00000000-0000-0000-0002-000000000001"), "State");
+        StatePropertyDefinition property = StatePropertyDefinition.NewObject(new Guid("00000000-0000-0000-0002-000000000001"), "State");
         property.Index = index;
-        property.AddState (CreateState (State_NewName, State_NewValue));
-        property.AddState (CreateState (State_NormalName, State_NormalValue));
-        property.AddState (CreateState (State_ArchivedName, State_ArchivedValue));
+        property.AddState(CreateState(State_NewName, State_NewValue));
+        property.AddState(CreateState(State_NormalName, State_NormalValue));
+        property.AddState(CreateState(State_ArchivedName, State_ArchivedValue));
 
         return property;
       }
@@ -163,19 +163,19 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
     public StateDefinition CreateConfidentialState ()
     {
-      return CreateState (Confidentiality_ConfidentialName, Confidentiality_ConfidentialValue);
+      return CreateState(Confidentiality_ConfidentialName, Confidentiality_ConfidentialValue);
     }
 
     public StateDefinition CreatePrivateState ()
     {
-      return CreateState (Confidentiality_PrivateName, Confidentiality_PrivateValue);
+      return CreateState(Confidentiality_PrivateName, Confidentiality_PrivateValue);
     }
 
     public StatePropertyDefinition CreateNewStateProperty (string name)
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        return StatePropertyDefinition.NewObject (Guid.NewGuid(), name);
+        return StatePropertyDefinition.NewObject(Guid.NewGuid(), name);
       }
     }
 
@@ -183,7 +183,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        StateDefinition state = StateDefinition.NewObject (name, value);
+        StateDefinition state = StateDefinition.NewObject(name, value);
         state.Index = value;
 
         return state;

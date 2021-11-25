@@ -32,35 +32,35 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     public override void SetUp ()
     {
       base.SetUp();
-      ExecutionContextMock.Setup (stub => stub.GetInParameters()).Returns (new object[0]);
+      ExecutionContextMock.Setup(stub => stub.GetInParameters()).Returns(new object[0]);
 
-      TransactionMock.Setup (stub => stub.EnsureCompatibility (It.IsNotNull<IEnumerable>()));
+      TransactionMock.Setup(stub => stub.EnsureCompatibility(It.IsNotNull<IEnumerable>()));
 
-      _strategy = new Mock<ScopedTransactionStrategyBase> (
+      _strategy = new Mock<ScopedTransactionStrategyBase>(
           true, (Func<ITransaction>) (() => TransactionMock.Object), OuterTransactionStrategyMock.Object, ExecutionContextMock.Object) { CallBase = true };
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.That (_strategy.Object.ExecutionContext, Is.SameAs (ExecutionContextMock.Object));
-      Assert.That (_strategy.Object.AutoCommit, Is.True);
-      Assert.That (_strategy.Object.IsNull, Is.False);
-      Assert.That (_strategy.Object.OuterTransactionStrategy, Is.SameAs (OuterTransactionStrategyMock.Object));
-      Assert.That (_strategy.Object.Child, Is.SameAs (NullTransactionStrategy.Null));
+      Assert.That(_strategy.Object.ExecutionContext, Is.SameAs(ExecutionContextMock.Object));
+      Assert.That(_strategy.Object.AutoCommit, Is.True);
+      Assert.That(_strategy.Object.IsNull, Is.False);
+      Assert.That(_strategy.Object.OuterTransactionStrategy, Is.SameAs(OuterTransactionStrategyMock.Object));
+      Assert.That(_strategy.Object.Child, Is.SameAs(NullTransactionStrategy.Null));
     }
 
     [Test]
     public void GetTransaction ()
     {
-      TransactionMock.Setup (mock => mock.To<ITransaction>()).Returns (TransactionMock.Object).Verifiable();
-      Assert.That (_strategy.Object.GetNativeTransaction<ITransaction>(), Is.SameAs (TransactionMock.Object));
+      TransactionMock.Setup(mock => mock.To<ITransaction>()).Returns(TransactionMock.Object).Verifiable();
+      Assert.That(_strategy.Object.GetNativeTransaction<ITransaction>(), Is.SameAs(TransactionMock.Object));
     }
 
     [Test]
     public void Commit ()
     {
-      TransactionMock.Setup (mock => mock.Commit()).Verifiable();
+      TransactionMock.Setup(mock => mock.Commit()).Verifiable();
 
       _strategy.Object.Commit();
 
@@ -71,7 +71,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     [Test]
     public void Rollback ()
     {
-      TransactionMock.Setup (mock => mock.Rollback()).Verifiable();
+      TransactionMock.Setup(mock => mock.Rollback()).Verifiable();
 
       _strategy.Object.Rollback();
 
@@ -82,79 +82,79 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     [Test]
     public void GetChild ()
     {
-      SetChild (_strategy.Object, ChildTransactionStrategyMock.Object);
+      SetChild(_strategy.Object, ChildTransactionStrategyMock.Object);
 
-      Assert.That (_strategy.Object.Child, Is.SameAs (ChildTransactionStrategyMock.Object));
+      Assert.That(_strategy.Object.Child, Is.SameAs(ChildTransactionStrategyMock.Object));
     }
 
     [Test]
     public void CreateChildTransactionStrategy ()
     {
       var childTransaction = new Mock<ITransaction>();
-      TransactionMock.Setup (mock => mock.CreateChild()).Returns (childTransaction.Object).Verifiable();
+      TransactionMock.Setup(mock => mock.CreateChild()).Returns(childTransaction.Object).Verifiable();
 
       var childExecutionContextStub = new Mock<IWxeFunctionExecutionContext>();
-      childExecutionContextStub.Setup (stub => stub.GetInParameters()).Returns (new object[0]);
+      childExecutionContextStub.Setup(stub => stub.GetInParameters()).Returns(new object[0]);
 
-      TransactionStrategyBase childTransactionStrategy = _strategy.Object.CreateChildTransactionStrategy (true, childExecutionContextStub.Object, Context);
+      TransactionStrategyBase childTransactionStrategy = _strategy.Object.CreateChildTransactionStrategy(true, childExecutionContextStub.Object, Context);
 
       VerifyAll();
       _strategy.Verify();
       childTransaction.Verify();
       childExecutionContextStub.Verify();
-      Assert.That (childTransactionStrategy, Is.InstanceOf (typeof (ChildTransactionStrategy)));
-      Assert.That (((ChildTransactionStrategy)childTransactionStrategy).AutoCommit, Is.True);
-      Assert.That (((ChildTransactionStrategy) childTransactionStrategy).Transaction, Is.SameAs (childTransaction.Object));
-      Assert.That (childTransactionStrategy.OuterTransactionStrategy, Is.SameAs (_strategy.Object));
-      Assert.That (((ChildTransactionStrategy) childTransactionStrategy).ExecutionContext, Is.SameAs (childExecutionContextStub.Object));
-      Assert.That (((ChildTransactionStrategy) childTransactionStrategy).Scope, Is.Null);
-      Assert.That (_strategy.Object.Child, Is.SameAs (childTransactionStrategy));
+      Assert.That(childTransactionStrategy, Is.InstanceOf(typeof (ChildTransactionStrategy)));
+      Assert.That(((ChildTransactionStrategy)childTransactionStrategy).AutoCommit, Is.True);
+      Assert.That(((ChildTransactionStrategy) childTransactionStrategy).Transaction, Is.SameAs(childTransaction.Object));
+      Assert.That(childTransactionStrategy.OuterTransactionStrategy, Is.SameAs(_strategy.Object));
+      Assert.That(((ChildTransactionStrategy) childTransactionStrategy).ExecutionContext, Is.SameAs(childExecutionContextStub.Object));
+      Assert.That(((ChildTransactionStrategy) childTransactionStrategy).Scope, Is.Null);
+      Assert.That(_strategy.Object.Child, Is.SameAs(childTransactionStrategy));
     }
 
     [Test]
     public void CreateChildTransactionStrategy_AfterPlay ()
     {
-      InvokeOnExecutionPlay (_strategy.Object);
+      InvokeOnExecutionPlay(_strategy.Object);
 
       var childTransaction = new Mock<ITransaction>();
-      TransactionMock.Setup (mock => mock.CreateChild ()).Returns (childTransaction.Object).Verifiable();
+      TransactionMock.Setup(mock => mock.CreateChild()).Returns(childTransaction.Object).Verifiable();
 
       var childScope = new Mock<ITransactionScope>();
-      childTransaction.Setup (mock => mock.EnterScope ()).Returns (childScope.Object).Verifiable();
+      childTransaction.Setup(mock => mock.EnterScope()).Returns(childScope.Object).Verifiable();
 
       var childExecutionContextStub = new Mock<IWxeFunctionExecutionContext>();
-      childExecutionContextStub.Setup (stub => stub.GetInParameters ()).Returns (new object[0]);
+      childExecutionContextStub.Setup(stub => stub.GetInParameters()).Returns(new object[0]);
 
-      TransactionStrategyBase childTransactionStrategy = _strategy.Object.CreateChildTransactionStrategy (true, childExecutionContextStub.Object, Context);
+      TransactionStrategyBase childTransactionStrategy = _strategy.Object.CreateChildTransactionStrategy(true, childExecutionContextStub.Object, Context);
 
       VerifyAll();
       _strategy.Verify();
       childTransaction.Verify();
       childScope.Verify();
       childExecutionContextStub.Verify();
-      Assert.That (childTransactionStrategy, Is.InstanceOf (typeof (ChildTransactionStrategy)));
-      Assert.That (((ChildTransactionStrategy) childTransactionStrategy).AutoCommit, Is.True);
-      Assert.That (((ChildTransactionStrategy) childTransactionStrategy).Transaction, Is.SameAs (childTransaction.Object));
-      Assert.That (childTransactionStrategy.OuterTransactionStrategy, Is.SameAs (_strategy.Object));
-      Assert.That (((ChildTransactionStrategy) childTransactionStrategy).ExecutionContext, Is.SameAs (childExecutionContextStub.Object));
-      Assert.That (((ChildTransactionStrategy) childTransactionStrategy).Scope, Is.SameAs (childScope.Object));
-      Assert.That (_strategy.Object.Child, Is.SameAs (childTransactionStrategy));
+      Assert.That(childTransactionStrategy, Is.InstanceOf(typeof (ChildTransactionStrategy)));
+      Assert.That(((ChildTransactionStrategy) childTransactionStrategy).AutoCommit, Is.True);
+      Assert.That(((ChildTransactionStrategy) childTransactionStrategy).Transaction, Is.SameAs(childTransaction.Object));
+      Assert.That(childTransactionStrategy.OuterTransactionStrategy, Is.SameAs(_strategy.Object));
+      Assert.That(((ChildTransactionStrategy) childTransactionStrategy).ExecutionContext, Is.SameAs(childExecutionContextStub.Object));
+      Assert.That(((ChildTransactionStrategy) childTransactionStrategy).Scope, Is.SameAs(childScope.Object));
+      Assert.That(_strategy.Object.Child, Is.SameAs(childTransactionStrategy));
     }
 
     [Test]
     public void CreateChildTransactionStrategy_TwiceWithoutUnregister ()
     {
       var childTransaction = new Mock<ITransaction>();
-      TransactionMock.Setup (mock => mock.CreateChild()).Returns (childTransaction.Object).Verifiable();
+      TransactionMock.Setup(mock => mock.CreateChild()).Returns(childTransaction.Object).Verifiable();
 
       var childExecutionContextStub = new Mock<IWxeFunctionExecutionContext>();
-      childExecutionContextStub.Setup (stub => stub.GetInParameters()).Returns (new object[0]);
+      childExecutionContextStub.Setup(stub => stub.GetInParameters()).Returns(new object[0]);
 
-      _strategy.Object.CreateChildTransactionStrategy (true, childExecutionContextStub.Object, Context);
-      Assert.That (
-          () => _strategy.Object.CreateChildTransactionStrategy (true, childExecutionContextStub.Object, Context),
+      _strategy.Object.CreateChildTransactionStrategy(true, childExecutionContextStub.Object, Context);
+      Assert.That(
+          () => _strategy.Object.CreateChildTransactionStrategy(true, childExecutionContextStub.Object, Context),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The transaction strategy already has an active child transaction strategy. "
                   + "This child transaction strategy must first be unregistered before invoking CreateChildTransactionStrategy again."));
     }
@@ -162,21 +162,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     [Test]
     public void CreateChildTransactionStrategy_AfterPlay_Throws ()
     {
-      InvokeOnExecutionPlay (_strategy.Object);
+      InvokeOnExecutionPlay(_strategy.Object);
 
       var childTransaction = new Mock<ITransaction>();
-      TransactionMock.Setup (mock => mock.CreateChild ()).Returns (childTransaction.Object).Verifiable();
+      TransactionMock.Setup(mock => mock.CreateChild()).Returns(childTransaction.Object).Verifiable();
 
       ApplicationException innerException = new ApplicationException("EnterScope Exception");
-      childTransaction.Setup (mock => mock.EnterScope ()).Throws (innerException).Verifiable();
+      childTransaction.Setup(mock => mock.EnterScope()).Throws(innerException).Verifiable();
 
       var childExecutionContextStub = new Mock<IWxeFunctionExecutionContext>();
-      childExecutionContextStub.Setup (stub => stub.GetInParameters ()).Returns (new object[0]);
+      childExecutionContextStub.Setup(stub => stub.GetInParameters()).Returns(new object[0]);
 
       try
       {
-        _strategy.Object.CreateChildTransactionStrategy (true, childExecutionContextStub.Object, Context);
-        Assert.Fail ("Expected Exception");
+        _strategy.Object.CreateChildTransactionStrategy(true, childExecutionContextStub.Object, Context);
+        Assert.Fail("Expected Exception");
       }
       catch (WxeFatalExecutionException e)
       {
@@ -184,34 +184,34 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
         _strategy.Verify();
         childTransaction.Verify();
         childExecutionContextStub.Verify();
-        Assert.That (e.InnerException, Is.SameAs (innerException));
-        Assert.That (_strategy.Object.Child, Is.InstanceOf (typeof (ChildTransactionStrategy)));
+        Assert.That(e.InnerException, Is.SameAs(innerException));
+        Assert.That(_strategy.Object.Child, Is.InstanceOf(typeof (ChildTransactionStrategy)));
       }
     }
 
     [Test]
     public void UnregisterChildTransactionStrategy ()
     {
-      SetChild (_strategy.Object, ChildTransactionStrategyMock.Object);
-      Assert.That (_strategy.Object.Child, Is.SameAs (ChildTransactionStrategyMock.Object));
+      SetChild(_strategy.Object, ChildTransactionStrategyMock.Object);
+      Assert.That(_strategy.Object.Child, Is.SameAs(ChildTransactionStrategyMock.Object));
 
-      _strategy.Object.UnregisterChildTransactionStrategy (ChildTransactionStrategyMock.Object);
+      _strategy.Object.UnregisterChildTransactionStrategy(ChildTransactionStrategyMock.Object);
 
-      Assert.That (_strategy.Object.Child, Is.SameAs (NullTransactionStrategy.Null));
+      Assert.That(_strategy.Object.Child, Is.SameAs(NullTransactionStrategy.Null));
     }
 
     [Test]
     public void UnregisterChildTransactionStrategy_TryingToUnregisterDifferentChildThrows ()
     {
-      SetChild (_strategy.Object, ChildTransactionStrategyMock.Object);
-      Assert.That (_strategy.Object.Child, Is.SameAs (ChildTransactionStrategyMock.Object));
+      SetChild(_strategy.Object, ChildTransactionStrategyMock.Object);
+      Assert.That(_strategy.Object.Child, Is.SameAs(ChildTransactionStrategyMock.Object));
 
-      Assert.That (
-          () => _strategy.Object.UnregisterChildTransactionStrategy (NullTransactionStrategy.Null),
+      Assert.That(
+          () => _strategy.Object.UnregisterChildTransactionStrategy(NullTransactionStrategy.Null),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("Unregistering a child transaction strategy that is different from the presently registered strategy is not supported."));
+              .With.Message.EqualTo("Unregistering a child transaction strategy that is different from the presently registered strategy is not supported."));
 
-      Assert.That (_strategy.Object.Child, Is.SameAs (ChildTransactionStrategyMock.Object));
+      Assert.That(_strategy.Object.Child, Is.SameAs(ChildTransactionStrategyMock.Object));
     }
   }
 }

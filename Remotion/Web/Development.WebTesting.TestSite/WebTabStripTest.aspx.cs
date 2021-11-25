@@ -24,7 +24,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       MyTabStrip1.SelectedIndexChanged += MyTabStripOnSelectedIndexChanged;
       MyTabStrip2.SelectedIndexChanged += MyTabStripOnSelectedIndexChanged;
@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       var tabStrip = (WebTabStrip) sender;
 
       var testOutput = tabStrip.ID + "/" + tabStrip.SelectedTab.ItemID;
-      ((Layout) Master).SetTestOutput (testOutput);
+      ((Layout) Master).SetTestOutput(testOutput);
     }
   }
 }

@@ -34,13 +34,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       if (!classDefinition.IsClassTypeResolved)
       {
         yield return MappingValidationResult.CreateValidResult();
       }
-      else if (!IsAssociatedWithRdbmsStorageEntityDefinition (classDefinition))
+      else if (!IsAssociatedWithRdbmsStorageEntityDefinition(classDefinition))
       {
         yield return MappingValidationResult.CreateValidResult();
       }
@@ -48,13 +48,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
       {
         yield return MappingValidationResult.CreateValidResult();
       }
-      else if (IsAssociatedWithTable (classDefinition))
+      else if (IsAssociatedWithTable(classDefinition))
       {
         yield return MappingValidationResult.CreateValidResult();
       }
       else
       {
-        yield return MappingValidationResult.CreateInvalidResultForType (
+        yield return MappingValidationResult.CreateInvalidResultForType(
             classDefinition.ClassType,
             "Neither class '{0}' nor its base classes are mapped to a table. "
             + "Make class '{0}' abstract or define a table for it or one of its base classes.",

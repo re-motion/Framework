@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     [DBColumn ("NewName")]
     public new int Name
     {
-      get { return Properties[typeof (Shadower), "Name"].GetValue<int> (); }
+      get { return Properties[typeof (Shadower), "Name"].GetValue<int>(); }
     }
   }
 }

@@ -29,7 +29,7 @@ namespace Remotion.Mixins.UnitTests.Core
         IEnumerable<Type> explicitDependencies = null,
         MixinContextOrigin origin = null)
     {
-      return new MixinContext (
+      return new MixinContext(
           mixinKind,
           mixinType ?? typeof (UnspecifiedType),
           introducedMemberVisibility,

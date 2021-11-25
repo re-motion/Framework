@@ -44,14 +44,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       base.SetUp();
 
       _mockRepository = new MockRepository();
-      _virtualEndPointProviderMock = _mockRepository.StrictMock<IVirtualEndPointProvider> ();
+      _virtualEndPointProviderMock = _mockRepository.StrictMock<IVirtualEndPointProvider>();
       _state = new UnknownRealObjectEndPointSyncState(_virtualEndPointProviderMock);
 
-      _endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer");
-      _endPointMock = _mockRepository.StrictMock<IRealObjectEndPoint> ();
-      _endPointMock.Stub (stub => stub.ID).Return (_endPointID);
-      _endPointMock.Stub (stub => stub.Definition).Return (_endPointID.Definition);
-      _endPointMock.Stub (stub => stub.OppositeObjectID).Return (DomainObjectIDs.Customer1);
+      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "Customer");
+      _endPointMock = _mockRepository.StrictMock<IRealObjectEndPoint>();
+      _endPointMock.Stub(stub => stub.ID).Return(_endPointID);
+      _endPointMock.Stub(stub => stub.Definition).Return(_endPointID.Definition);
+      _endPointMock.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.Customer1);
 
       _oppositeEndPointMock = _mockRepository.StrictMock<IVirtualEndPoint>();
     }
@@ -59,95 +59,95 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void IsSynchronized ()
     {
-      var result = _state.IsSynchronized (_endPointMock);
-      Assert.That (result, Is.Null);
+      var result = _state.IsSynchronized(_endPointMock);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void Synchronize ()
     {
-      using (_mockRepository.Ordered ())
+      using (_mockRepository.Ordered())
       {
-        ExpectLoadOpposite ();
-        _endPointMock.Expect (mock => mock.Synchronize ());
+        ExpectLoadOpposite();
+        _endPointMock.Expect(mock => mock.Synchronize());
       }
 
       _mockRepository.ReplayAll();
 
       _state.Synchronize(_endPointMock, _oppositeEndPointMock);
 
-      _mockRepository.VerifyAll ();
+      _mockRepository.VerifyAll();
     }
 
     [Test]
     public void CreateDeleteCommand ()
     {
-      var fakeCommand = MockRepository.GenerateStub<IDataManagementCommand> ();
-      using (_mockRepository.Ordered ())
+      var fakeCommand = MockRepository.GenerateStub<IDataManagementCommand>();
+      using (_mockRepository.Ordered())
       {
-        ExpectLoadOpposite ();
-        _endPointMock.Expect (mock => mock.CreateDeleteCommand ()).Return(fakeCommand);
+        ExpectLoadOpposite();
+        _endPointMock.Expect(mock => mock.CreateDeleteCommand()).Return(fakeCommand);
       }
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
-      var result = _state.CreateDeleteCommand (_endPointMock, () => Assert.Fail ("should not be called."));
+      var result = _state.CreateDeleteCommand(_endPointMock, () => Assert.Fail("should not be called."));
 
-      _mockRepository.VerifyAll ();
-      Assert.That (result, Is.SameAs (fakeCommand));
+      _mockRepository.VerifyAll();
+      Assert.That(result, Is.SameAs(fakeCommand));
     }
 
     [Test]
     public void CreateSetCommand ()
     {
-      var newRelatedObject = DomainObjectMother.CreateFakeObject<Order> ();
-      var fakeCommand = MockRepository.GenerateStub<IDataManagementCommand> ();
-      using (_mockRepository.Ordered ())
+      var newRelatedObject = DomainObjectMother.CreateFakeObject<Order>();
+      var fakeCommand = MockRepository.GenerateStub<IDataManagementCommand>();
+      using (_mockRepository.Ordered())
       {
-        ExpectLoadOpposite ();
-        _endPointMock.Expect (mock => mock.CreateSetCommand (newRelatedObject)).Return (fakeCommand);
+        ExpectLoadOpposite();
+        _endPointMock.Expect(mock => mock.CreateSetCommand(newRelatedObject)).Return(fakeCommand);
       }
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
-      var result = _state.CreateSetCommand(_endPointMock, newRelatedObject, id => Assert.Fail ("should not be called."));
+      var result = _state.CreateSetCommand(_endPointMock, newRelatedObject, id => Assert.Fail("should not be called."));
 
-      _mockRepository.VerifyAll ();
-      Assert.That (result, Is.SameAs (fakeCommand));
+      _mockRepository.VerifyAll();
+      Assert.That(result, Is.SameAs(fakeCommand));
     }
 
     [Test]
     public void CreateSetCommand_Null ()
     {
-      var fakeCommand = MockRepository.GenerateStub<IDataManagementCommand> ();
-      using (_mockRepository.Ordered ())
+      var fakeCommand = MockRepository.GenerateStub<IDataManagementCommand>();
+      using (_mockRepository.Ordered())
       {
-        ExpectLoadOpposite ();
-        _endPointMock.Expect (mock => mock.CreateSetCommand (null)).Return (fakeCommand);
+        ExpectLoadOpposite();
+        _endPointMock.Expect(mock => mock.CreateSetCommand(null)).Return(fakeCommand);
       }
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
-      var result = _state.CreateSetCommand (_endPointMock, null, id => Assert.Fail ("should not be called."));
+      var result = _state.CreateSetCommand(_endPointMock, null, id => Assert.Fail("should not be called."));
 
-      _mockRepository.VerifyAll ();
-      Assert.That (result, Is.SameAs (fakeCommand));
+      _mockRepository.VerifyAll();
+      Assert.That(result, Is.SameAs(fakeCommand));
     }
 
     [Test]
     public void FlattenedSerializable ()
     {
       var fakeProvider = new SerializableRelationEndPointProviderFake();
-      var state = new UnknownRealObjectEndPointSyncState (fakeProvider);
+      var state = new UnknownRealObjectEndPointSyncState(fakeProvider);
 
-      var result = FlattenedSerializer.SerializeAndDeserialize (state);
+      var result = FlattenedSerializer.SerializeAndDeserialize(state);
 
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result.VirtualEndPointProvider, Is.Not.Null);
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.VirtualEndPointProvider, Is.Not.Null);
     }
 
     private void ExpectLoadOpposite ()
     {
-      var oppositeID = RelationEndPointID.CreateOpposite (_endPointID.Definition, DomainObjectIDs.Customer1);
-      _virtualEndPointProviderMock.Expect (mock => mock.GetOrCreateVirtualEndPoint (oppositeID)).Return (_oppositeEndPointMock);
-      _oppositeEndPointMock.Expect (mock => mock.EnsureDataComplete());
+      var oppositeID = RelationEndPointID.CreateOpposite(_endPointID.Definition, DomainObjectIDs.Customer1);
+      _virtualEndPointProviderMock.Expect(mock => mock.GetOrCreateVirtualEndPoint(oppositeID)).Return(_oppositeEndPointMock);
+      _oppositeEndPointMock.Expect(mock => mock.EnsureDataComplete());
     }
   }
 }

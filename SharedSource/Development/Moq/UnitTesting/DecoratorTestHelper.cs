@@ -35,10 +35,10 @@ namespace Remotion.Development.Moq.UnitTesting
     public DecoratorTestHelper (TInterface decorator, Mock<TInterface> decoratedMock)
     {
       if (decorator == null)
-        throw new ArgumentNullException ("decorator");
+        throw new ArgumentNullException("decorator");
 
       if (decoratedMock == null)
-        throw new ArgumentNullException ("decoratedMock");
+        throw new ArgumentNullException("decoratedMock");
 
       _decorator = decorator;
       _decoratedMock = decoratedMock;
@@ -46,43 +46,43 @@ namespace Remotion.Development.Moq.UnitTesting
 
     public void CheckDelegation<TR> (Expression<Func<TInterface, TR>> mockSetupExpression, TR fakeResult)
     {
-      CheckDelegation (mockSetupExpression, fakeResult, result => Assert.That (result, Is.EqualTo (fakeResult)));
+      CheckDelegation(mockSetupExpression, fakeResult, result => Assert.That(result, Is.EqualTo(fakeResult)));
     }
 
     public void CheckDelegation<TR> (Expression<Func<TInterface, TR>> mockSetupExpression, TR fakeResult, Action<TR> decoratorResultChecker)
     {
-      _decoratedMock.Setup (mockSetupExpression).Returns (fakeResult).Verifiable();
+      _decoratedMock.Setup(mockSetupExpression).Returns(fakeResult).Verifiable();
 
-      var result = mockSetupExpression.Compile().Invoke (_decorator);
+      var result = mockSetupExpression.Compile().Invoke(_decorator);
 
       _decoratedMock.Verify();
-      decoratorResultChecker (result);
+      decoratorResultChecker(result);
     }
 
     public void CheckDelegation (Expression<Action<TInterface>> mockSetupExpression)
     {
-      _decoratedMock.Setup (mockSetupExpression).Verifiable();
+      _decoratedMock.Setup(mockSetupExpression).Verifiable();
 
-      mockSetupExpression.Compile().Invoke (_decorator);
+      mockSetupExpression.Compile().Invoke(_decorator);
 
       _decoratedMock.Verify();
     }
 
     public void CheckDelegationWithContinuation<TR> (Expression<Func<TInterface, TR>> mockSetupExpression, TR fakeResult, Action whenCalled)
     {
-      _decoratedMock.Setup (mockSetupExpression).Returns (fakeResult).Callback (whenCalled).Verifiable();
+      _decoratedMock.Setup(mockSetupExpression).Returns(fakeResult).Callback(whenCalled).Verifiable();
 
-      var result = mockSetupExpression.Compile().Invoke (_decorator);
+      var result = mockSetupExpression.Compile().Invoke(_decorator);
 
       _decoratedMock.Verify();
-      Assert.That (result, Is.EqualTo (fakeResult));
+      Assert.That(result, Is.EqualTo(fakeResult));
     }
 
     public void CheckDelegationWithContinuation (Expression<Action<TInterface>> mockSetupExpression, Action whenCalled)
     {
-      _decoratedMock.Setup (mockSetupExpression).Callback (whenCalled).Verifiable();
+      _decoratedMock.Setup(mockSetupExpression).Callback(whenCalled).Verifiable();
 
-      mockSetupExpression.Compile().Invoke (_decorator);
+      mockSetupExpression.Compile().Invoke(_decorator);
 
       _decoratedMock.Verify();
     }

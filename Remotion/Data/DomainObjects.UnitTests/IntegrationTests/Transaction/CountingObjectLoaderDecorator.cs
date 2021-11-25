@@ -37,28 +37,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public ILoadedObjectData LoadObject (ObjectID id, bool throwOnNotFound)
     {
       ++NumberOfCallsToLoadObject;
-      return _decorated.LoadObject (id, throwOnNotFound);
+      return _decorated.LoadObject(id, throwOnNotFound);
     }
 
     public ICollection<ILoadedObjectData> LoadObjects (IEnumerable<ObjectID> idsToBeLoaded, bool throwOnNotFound)
     {
-      return _decorated.LoadObjects (idsToBeLoaded, throwOnNotFound);
+      return _decorated.LoadObjects(idsToBeLoaded, throwOnNotFound);
     }
 
     public ILoadedObjectData GetOrLoadRelatedObject (RelationEndPointID relationEndPointID)
     {
       ++NumberOfCallsToLoadRelatedObject;
-      return _decorated.GetOrLoadRelatedObject (relationEndPointID);
+      return _decorated.GetOrLoadRelatedObject(relationEndPointID);
     }
 
     public ICollection<ILoadedObjectData> GetOrLoadRelatedObjects (RelationEndPointID relationEndPointID)
     {
-      return _decorated.GetOrLoadRelatedObjects (relationEndPointID);
+      return _decorated.GetOrLoadRelatedObjects(relationEndPointID);
     }
 
     public ICollection<ILoadedObjectData> GetOrLoadCollectionQueryResult (IQuery query)
     {
-      return _decorated.GetOrLoadCollectionQueryResult (query);
+      return _decorated.GetOrLoadCollectionQueryResult(query);
     }
   }
 }

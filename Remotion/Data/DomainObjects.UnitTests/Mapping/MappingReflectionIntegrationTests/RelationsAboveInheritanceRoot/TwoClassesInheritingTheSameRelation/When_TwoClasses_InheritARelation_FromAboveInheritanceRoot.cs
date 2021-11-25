@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _derivedClass1 = TypeDefinitions[typeof (DerivedInheritanceRootClass1)];
       _derivedClass2 = TypeDefinitions[typeof (DerivedInheritanceRootClass2)];
@@ -37,22 +37,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     [Test]
     public void TheDerivedClasses_ShouldGetSeparateRelationDefinitions_WithDifferentIDs ()
     {
-      var endPointInDerivedClass1 = GetRelationEndPointDefinition (_derivedClass1, typeof (AboveInheritanceRootClassWithRelation), "RelationClass");
-      Assert.That (endPointInDerivedClass1, Is.Not.Null);
+      var endPointInDerivedClass1 = GetRelationEndPointDefinition(_derivedClass1, typeof (AboveInheritanceRootClassWithRelation), "RelationClass");
+      Assert.That(endPointInDerivedClass1, Is.Not.Null);
 
-      var endPointInDerivedClass2 = GetRelationEndPointDefinition (_derivedClass2, typeof (AboveInheritanceRootClassWithRelation), "RelationClass");
-      Assert.That (endPointInDerivedClass2, Is.Not.Null);
+      var endPointInDerivedClass2 = GetRelationEndPointDefinition(_derivedClass2, typeof (AboveInheritanceRootClassWithRelation), "RelationClass");
+      Assert.That(endPointInDerivedClass2, Is.Not.Null);
 
-      Assert.That (endPointInDerivedClass1.RelationDefinition, Is.Not.SameAs (endPointInDerivedClass2.RelationDefinition));
+      Assert.That(endPointInDerivedClass1.RelationDefinition, Is.Not.SameAs(endPointInDerivedClass2.RelationDefinition));
 
-      Assert.That (
+      Assert.That(
           endPointInDerivedClass1.RelationDefinition.ID,
-          Is.EqualTo (
+          Is.EqualTo(
               "Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegrationTests.RelationsAboveInheritanceRoot.TwoClassesInheritingTheSameRelation.DerivedInheritanceRootClass1:"
               + "Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegrationTests.RelationsAboveInheritanceRoot.TwoClassesInheritingTheSameRelation.AboveInheritanceRootClassWithRelation.RelationClass"));
-      Assert.That (
+      Assert.That(
           endPointInDerivedClass2.RelationDefinition.ID,
-          Is.EqualTo (
+          Is.EqualTo(
               "Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegrationTests.RelationsAboveInheritanceRoot.TwoClassesInheritingTheSameRelation.DerivedInheritanceRootClass2:"
               + "Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegrationTests.RelationsAboveInheritanceRoot.TwoClassesInheritingTheSameRelation.AboveInheritanceRootClassWithRelation.RelationClass"));
     }

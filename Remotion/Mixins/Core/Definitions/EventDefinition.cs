@@ -23,7 +23,7 @@ namespace Remotion.Mixins.Definitions
   public class EventDefinition : MemberDefinitionBase
   {
     public new readonly UniqueDefinitionCollection<Type, EventDefinition> Overrides =
-        new UniqueDefinitionCollection<Type, EventDefinition> (m => m.DeclaringClass.Type);
+        new UniqueDefinitionCollection<Type, EventDefinition>(m => m.DeclaringClass.Type);
 
     private EventDefinition? _base;
     private readonly MethodDefinition _addMethod;
@@ -32,8 +32,8 @@ namespace Remotion.Mixins.Definitions
     public EventDefinition (EventInfo memberInfo, ClassDefinitionBase declaringClass, MethodDefinition addMethod, MethodDefinition removeMethod)
         : base (memberInfo, declaringClass)
     {
-      ArgumentUtility.CheckNotNull ("addMethod", addMethod);
-      ArgumentUtility.CheckNotNull ("removeMethod", removeMethod);
+      ArgumentUtility.CheckNotNull("addMethod", addMethod);
+      ArgumentUtility.CheckNotNull("removeMethod", removeMethod);
 
       _addMethod = addMethod;
       _removeMethod = removeMethod;
@@ -59,7 +59,7 @@ namespace Remotion.Mixins.Definitions
           RemoveMethod.Base = _base == null ? null : _base.RemoveMethod;
         }
         else
-          throw new ArgumentException ("Base must be EventDefinition or null.", "value");
+          throw new ArgumentException("Base must be EventDefinition or null.", "value");
       }
     }
 
@@ -81,33 +81,33 @@ namespace Remotion.Mixins.Definitions
 
     internal override void AddOverride (MemberDefinitionBase member)
     {
-      ArgumentUtility.CheckNotNull ("member", member);
+      ArgumentUtility.CheckNotNull("member", member);
 
       var overrider = member as EventDefinition;
       if (overrider == null)
       {
-        string message = string.Format ("Member {0} cannot override event {1} - it is not an event.", member.FullName, FullName);
-        throw new ArgumentException (message);
+        string message = string.Format("Member {0} cannot override event {1} - it is not an event.", member.FullName, FullName);
+        throw new ArgumentException(message);
       }
 
-      Overrides.Add (overrider);
+      Overrides.Add(overrider);
 
-      AddMethod.AddOverride (overrider.AddMethod);
-      RemoveMethod.AddOverride (overrider.RemoveMethod);
+      AddMethod.AddOverride(overrider.AddMethod);
+      RemoveMethod.AddOverride(overrider.RemoveMethod);
     }
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
 
-      AddMethod.Accept (visitor);
-      RemoveMethod.Accept (visitor);
+      AddMethod.Accept(visitor);
+      RemoveMethod.Accept(visitor);
     }
 
     protected override IDefinitionCollection<Type, MemberDefinitionBase> GetInternalOverridesWrapper ()
     {
-      return new CovariantDefinitionCollectionWrapper<Type, EventDefinition, MemberDefinitionBase> (Overrides);
+      return new CovariantDefinitionCollectionWrapper<Type, EventDefinition, MemberDefinitionBase>(Overrides);
     }
   }
 }

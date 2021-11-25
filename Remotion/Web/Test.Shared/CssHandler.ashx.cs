@@ -31,10 +31,10 @@ namespace Remotion.Web.Test.Shared
     public void ProcessRequest (HttpContext context)
     {
       var cssClass = context.Request.QueryString["Class"];
-      if (!cssClass.EndsWith ("a"))
-        context.Response.Write ("@import url('CssHandler.ashx?Class=" + cssClass + "a');\r\n");
-      context.Response.Write ("." + cssClass + "{color:Red}\r\n");
-      Thread.Sleep (100);
+      if (!cssClass.EndsWith("a"))
+        context.Response.Write("@import url('CssHandler.ashx?Class=" + cssClass + "a');\r\n");
+      context.Response.Write("." + cssClass + "{color:Red}\r\n");
+      Thread.Sleep(100);
     }
 
     public bool IsReusable

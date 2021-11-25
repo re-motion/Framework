@@ -33,35 +33,35 @@ namespace Remotion.UnitTests.Configuration.ServiceLocation
     [Test]
     public void Deserialization_Default ()
     {
-      var section = Deserialize (_xmlFragmentDefault);
-      Assert.That (section.ServiceLocatorProvider.Type, Is.SameAs (typeof (DefaultServiceLocatorProvider)));
+      var section = Deserialize(_xmlFragmentDefault);
+      Assert.That(section.ServiceLocatorProvider.Type, Is.SameAs(typeof (DefaultServiceLocatorProvider)));
     }
 
     [Test]
     public void Deserialization_SpecificProvider ()
     {
-      var section = Deserialize (_xmlFragmentWithServiceLocatorProvider);
-      Assert.That (section.ServiceLocatorProvider.Type, Is.SameAs (typeof (FakeServiceLocatorProvider)));
+      var section = Deserialize(_xmlFragmentWithServiceLocatorProvider);
+      Assert.That(section.ServiceLocatorProvider.Type, Is.SameAs(typeof (FakeServiceLocatorProvider)));
     }
 
     [Test]
     public void CreateServiceLocatorProvider_Default ()
     {
-      var section = Deserialize (_xmlFragmentDefault);
-      Assert.That (section.CreateServiceLocatorProvider (), Is.TypeOf<DefaultServiceLocatorProvider> ());
+      var section = Deserialize(_xmlFragmentDefault);
+      Assert.That(section.CreateServiceLocatorProvider(), Is.TypeOf<DefaultServiceLocatorProvider>());
     }
 
     [Test]
     public void CreateServiceLocatorProvider_SpecificProvider ()
     {
-      var section = Deserialize (_xmlFragmentWithServiceLocatorProvider);
-      Assert.That (section.CreateServiceLocatorProvider (), Is.TypeOf<FakeServiceLocatorProvider>());
+      var section = Deserialize(_xmlFragmentWithServiceLocatorProvider);
+      Assert.That(section.CreateServiceLocatorProvider(), Is.TypeOf<FakeServiceLocatorProvider>());
     }
 
     private ServiceLocationConfiguration Deserialize (string xmlFragment)
     {
-      var section = new ServiceLocationConfiguration ();
-      ConfigurationHelper.DeserializeSection (section, xmlFragment);
+      var section = new ServiceLocationConfiguration();
+      ConfigurationHelper.DeserializeSection(section, xmlFragment);
       return section;
     }
   }

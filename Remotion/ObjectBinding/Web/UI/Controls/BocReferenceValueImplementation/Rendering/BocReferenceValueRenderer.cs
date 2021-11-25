@@ -77,48 +77,48 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         Func<DropDownList> dropDownListFactoryMethod)
         : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
     {
-      ArgumentUtility.CheckNotNull ("dropDownListFactoryMethod", dropDownListFactoryMethod);
+      ArgumentUtility.CheckNotNull("dropDownListFactoryMethod", dropDownListFactoryMethod);
       _dropDownListFactoryMethod = dropDownListFactoryMethod;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
-      RegisterBrowserCompatibilityScript (htmlHeadAppender);
-      RegisterJavaScriptFiles (htmlHeadAppender);
-      RegisterStylesheets (htmlHeadAppender);
+      RegisterBrowserCompatibilityScript(htmlHeadAppender);
+      RegisterJavaScriptFiles(htmlHeadAppender);
+      RegisterStylesheets(htmlHeadAppender);
     }
 
     public void Render (BocReferenceValueRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      base.Render (renderingContext);
+      base.Render(renderingContext);
 
-      RegisterInitializationScript (renderingContext);
+      RegisterInitializationScript(renderingContext);
     }
 
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<IBocReferenceValue> renderingContext)
     {
-      base.AddDiagnosticMetadataAttributes (renderingContext);
+      base.AddDiagnosticMetadataAttributes(renderingContext);
 
       var hasAutoPostBack = renderingContext.Control.DropDownListStyle.AutoPostBack.HasValue
                             && renderingContext.Control.DropDownListStyle.AutoPostBack.Value;
-      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, hasAutoPostBack.ToString().ToLower());
-      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.NullIdentifier, renderingContext.Control.NullValueString);
+      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, hasAutoPostBack.ToString().ToLower());
+      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.NullIdentifier, renderingContext.Control.NullValueString);
     }
 
     protected override void RegisterJavaScriptFiles (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      base.RegisterJavaScriptFiles (htmlHeadAppender);
+      base.RegisterJavaScriptFiles(htmlHeadAppender);
 
       string scriptFileKey = typeof (BocReferenceValueRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (BocReferenceValueRenderer), ResourceType.Html, "BocReferenceValue.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (scriptFileKey, scriptUrl);
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof (BocReferenceValueRenderer), ResourceType.Html, "BocReferenceValue.js");
+      htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptUrl);
     }
 
     private void RegisterStylesheets (HtmlHeadAppender htmlHeadAppender)
@@ -126,8 +126,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string styleFileKey = typeof (BocReferenceValueRenderer).GetFullNameChecked() + "_Style";
-      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocReferenceValueRenderer), ResourceType.Html, "BocReferenceValue.css");
-      htmlHeadAppender.RegisterStylesheetLink (styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
+      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocReferenceValueRenderer), ResourceType.Html, "BocReferenceValue.css");
+      htmlHeadAppender.RegisterStylesheetLink(styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }
 
     private void RegisterInitializationScript (BocReferenceValueRenderingContext renderingContext)
@@ -139,37 +139,37 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         return;
 
       string key = renderingContext.Control.ClientID + "_InitializationScript";
-      var controlServicePath = GetControlServicePath (renderingContext);
+      var controlServicePath = GetControlServicePath(renderingContext);
       var isIconUpdateEnabled = controlServicePath != null && renderingContext.Control.IsIconEnabled();
 
-      var script = new StringBuilder (1000);
-      script.Append ("BocReferenceValue.Initialize(");
-      script.AppendFormat ("'#{0}', ", renderingContext.Control.GetValueName());
+      var script = new StringBuilder(1000);
+      script.Append("BocReferenceValue.Initialize(");
+      script.AppendFormat("'#{0}', ", renderingContext.Control.GetValueName());
 
       if (renderingContext.Control.IsIconEnabled())
       {
-        script.AppendFormat ("'#{0} .{1}', ", renderingContext.Control.ClientID, CssClassInnerContent);
-        script.AppendFormat ("'#{0} .{1} img', ", renderingContext.Control.ClientID, CssClassIcon);
+        script.AppendFormat("'#{0} .{1}', ", renderingContext.Control.ClientID, CssClassInnerContent);
+        script.AppendFormat("'#{0} .{1} img', ", renderingContext.Control.ClientID, CssClassIcon);
       }
       else
       {
-        script.Append ("null, ");
-        script.Append ("null, ");
+        script.Append("null, ");
+        script.Append("null, ");
       }
 
-      script.AppendFormat ("'{0}', ", renderingContext.Control.NullValueString);
-      AppendBooleanValueToScript (script, renderingContext.Control.DropDownListStyle.AutoPostBack ?? false);
-      script.Append (", ");
-      AppendBooleanValueToScript (script, isIconUpdateEnabled );
-      script.Append (", ");
-      AppendStringValueOrNullToScript (script, controlServicePath);
-      script.Append (", ");
-      script.Append (isIconUpdateEnabled ? GetIconContextAsJson (renderingContext) : "null");
-      script.Append (", ");
-      script.Append (GetResourcesAsJson (renderingContext));
-      script.Append (");");
+      script.AppendFormat("'{0}', ", renderingContext.Control.NullValueString);
+      AppendBooleanValueToScript(script, renderingContext.Control.DropDownListStyle.AutoPostBack ?? false);
+      script.Append(", ");
+      AppendBooleanValueToScript(script, isIconUpdateEnabled );
+      script.Append(", ");
+      AppendStringValueOrNullToScript(script, controlServicePath);
+      script.Append(", ");
+      script.Append(isIconUpdateEnabled ? GetIconContextAsJson(renderingContext) : "null");
+      script.Append(", ");
+      script.Append(GetResourcesAsJson(renderingContext));
+      script.Append(");");
 
-      renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock (
+      renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock(
           renderingContext.Control,
           typeof (IBocReferenceValue),
           key,
@@ -178,33 +178,33 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private string GetResourcesAsJson (BocReferenceValueRenderingContext renderingContext)
     {
-      var resourceManager = GetResourceManager (renderingContext);
-      var jsonBuilder = new StringBuilder (1000);
+      var resourceManager = GetResourceManager(renderingContext);
+      var jsonBuilder = new StringBuilder(1000);
 
-      jsonBuilder.Append ("{ ");
-      jsonBuilder.Append ("LoadIconFailedErrorMessage : ");
-      AppendStringValueOrNullToScript (jsonBuilder, resourceManager.GetString (ResourceIdentifier.LoadIconFailedErrorMessage));
-      jsonBuilder.Append (" }");
+      jsonBuilder.Append("{ ");
+      jsonBuilder.Append("LoadIconFailedErrorMessage : ");
+      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetString(ResourceIdentifier.LoadIconFailedErrorMessage));
+      jsonBuilder.Append(" }");
 
       return jsonBuilder.ToString();
     }
 
     protected virtual IResourceManager GetResourceManager (BocReferenceValueRenderingContext renderingContext)
     {
-      return GetResourceManager (typeof (ResourceIdentifier), renderingContext.Control.GetResourceManager());
+      return GetResourceManager(typeof (ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
 
     protected override sealed void RenderEditModeValue (BocRenderingContext<IBocReferenceValue> renderingContext)
     {
-      DropDownList dropDownList = GetDropDownList (renderingContext);
-      var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
-      var validationErrorsID = GetValidationErrorsID (renderingContext);
+      DropDownList dropDownList = GetDropDownList(renderingContext);
+      var validationErrors = GetValidationErrorsToRender(renderingContext).ToArray();
+      var validationErrorsID = GetValidationErrorsID(renderingContext);
 
-      ValidationErrorRenderer.SetValidationErrorsReferenceOnControl (dropDownList, validationErrorsID, validationErrors);
+      ValidationErrorRenderer.SetValidationErrorsReferenceOnControl(dropDownList, validationErrorsID, validationErrors);
 
-      dropDownList.RenderControl (renderingContext.Writer);
+      dropDownList.RenderControl(renderingContext.Writer);
 
-      ValidationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
+      ValidationErrorRenderer.RenderValidationErrors(renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
     private DropDownList GetDropDownList (BocRenderingContext<IBocReferenceValue> renderingContext)
@@ -214,19 +214,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       dropDownList.ID = renderingContext.Control.GetValueName();
       dropDownList.EnableViewState = false;
       dropDownList.Page = renderingContext.Control.Page!.WrappedInstance;
-      renderingContext.Control.PopulateDropDownList (dropDownList);
+      renderingContext.Control.PopulateDropDownList(dropDownList);
 
       dropDownList.Enabled = renderingContext.Control.Enabled;
       dropDownList.Height = Unit.Empty;
       dropDownList.Width = Unit.Empty;
-      dropDownList.ApplyStyle (renderingContext.Control.CommonStyle);
-      renderingContext.Control.DropDownListStyle.ApplyStyle (dropDownList);
+      dropDownList.ApplyStyle(renderingContext.Control.CommonStyle);
+      renderingContext.Control.DropDownListStyle.ApplyStyle(dropDownList);
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
+      LabelReferenceRenderer.AddLabelsReference(renderingContext.Writer, labelIDs);
 
       if (renderingContext.Control.IsRequired)
-        dropDownList.Attributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
+        dropDownList.Attributes.Add(HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
 
       return dropDownList;
     }

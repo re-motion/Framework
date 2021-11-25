@@ -52,7 +52,7 @@ namespace Remotion.Web
     [Obsolete ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)", true)]
     public static string GetResourceUrl ([CanBeNull] IControl? control, Type definingType, ResourceType resourceType, string relativeUrl)
     {
-      throw new NotSupportedException ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)");
+      throw new NotSupportedException("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)");
     }
 
     /// <summary> Returns the root folder for all resources belonging to the <paramref name="assembly"/>. </summary>
@@ -65,7 +65,7 @@ namespace Remotion.Web
     [Obsolete ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)", true)]
     public static string GetAssemblyRoot (bool isDesignMode, Assembly assembly)
     {
-      throw new NotSupportedException ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)");
+      throw new NotSupportedException("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)");
     }
   }
 }

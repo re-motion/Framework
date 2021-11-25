@@ -39,18 +39,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
         : base (
-            ArgumentUtility.CheckNotNull ("modifiedEndPoint", modifiedEndPoint),
-            ArgumentUtility.CheckNotNull ("removedObject", removedObject),
+            ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
+            ArgumentUtility.CheckNotNull("removedObject", removedObject),
             null,
-            ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink))
+            ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
     {
-      ArgumentUtility.CheckNotNull ("collectionData", collectionData);
-      ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull("collectionData", collectionData);
+      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
 
       if (modifiedEndPoint.IsNull)
-        throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
+        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
-      _index = collectionData.IsDataComplete ? collectionData.IndexOf (removedObject.ID) : 0;
+      _index = collectionData.IsDataComplete ? collectionData.IndexOf(removedObject.ID) : 0;
       _modifiedCollectionData = collectionData;
       _endPointProvider = endPointProvider;
     }
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public override void Perform ()
     {
-      ModifiedCollectionData.Remove (OldRelatedObject);
+      ModifiedCollectionData.Remove(OldRelatedObject);
       ModifiedEndPoint.Touch();
     }
 
@@ -83,9 +83,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     /// </remarks>
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      var removedEndPoint = GetOppositeEndPoint (ModifiedEndPoint, OldRelatedObject, _endPointProvider);
-      return new ExpandedCommand (
-          removedEndPoint.CreateRemoveCommand (ModifiedEndPoint.GetDomainObject()),
+      var removedEndPoint = GetOppositeEndPoint(ModifiedEndPoint, OldRelatedObject, _endPointProvider);
+      return new ExpandedCommand(
+          removedEndPoint.CreateRemoveCommand(ModifiedEndPoint.GetDomainObject()),
           this);
     }
   }

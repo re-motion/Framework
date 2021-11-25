@@ -41,8 +41,8 @@ namespace Remotion.Globalization.Implementation
         IGlobalizationService globalizationService,
         IMemberInformationNameResolver memberInformationNameResolver)
     {
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      ArgumentUtility.CheckNotNull ("memberInformationNameResolver", memberInformationNameResolver);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("memberInformationNameResolver", memberInformationNameResolver);
       
       _globalizationService = globalizationService;
       _memberInformationNameResolver = memberInformationNameResolver;
@@ -50,17 +50,17 @@ namespace Remotion.Globalization.Implementation
 
     public bool TryGetEnumerationValueDisplayName (Enum value, [MaybeNullWhen (false)] out string result)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      var resourceManager = _globalizationService.GetResourceManager (value.GetType());
-      return resourceManager.TryGetString (_memberInformationNameResolver.GetEnumName (value), out result);
+      var resourceManager = _globalizationService.GetResourceManager(value.GetType());
+      return resourceManager.TryGetString(_memberInformationNameResolver.GetEnumName(value), out result);
     }
 
     public IReadOnlyDictionary<CultureInfo, string> GetAvailableEnumDisplayNames (Enum value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      var resourceManager = _globalizationService.GetResourceManager (value.GetType());
-      return resourceManager.GetAvailableStrings (_memberInformationNameResolver.GetEnumName (value));
+      ArgumentUtility.CheckNotNull("value", value);
+      var resourceManager = _globalizationService.GetResourceManager(value.GetType());
+      return resourceManager.GetAvailableStrings(_memberInformationNameResolver.GetEnumName(value));
     }
   }
 }

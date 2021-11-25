@@ -27,11 +27,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void Serialization ()
     {
-      ObjectDeletedException exception = new ObjectDeletedException (DomainObjectIDs.Order1);
+      ObjectDeletedException exception = new ObjectDeletedException(DomainObjectIDs.Order1);
 
-      var deserializedException = Serializer.SerializeAndDeserialize (exception);
+      var deserializedException = Serializer.SerializeAndDeserialize(exception);
 
-      Assert.That (deserializedException.ID, Is.EqualTo (DomainObjectIDs.Order1));
+      Assert.That(deserializedException.ID, Is.EqualTo(DomainObjectIDs.Order1));
     }
   }
 }

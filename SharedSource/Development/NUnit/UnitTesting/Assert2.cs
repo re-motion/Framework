@@ -27,7 +27,7 @@ namespace Remotion.Development.NUnit.UnitTesting
     public static void IgnoreIfFeatureSerializationIsDisabled ()
     {
 #if !FEATURE_SERIALIZATION
-      Assert.Ignore ("Binary serialization has been disabled.");
+      Assert.Ignore("Binary serialization has been disabled.");
 #endif
     }
   }

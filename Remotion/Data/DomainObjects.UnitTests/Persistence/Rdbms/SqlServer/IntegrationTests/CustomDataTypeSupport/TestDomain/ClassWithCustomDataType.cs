@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public static ClassWithCustomDataType GetObject (ClientTransaction clientTransaction, ObjectID id)
     {
-      return (ClassWithCustomDataType) LifetimeService.GetObject (clientTransaction, id, false);
+      return (ClassWithCustomDataType) LifetimeService.GetObject(clientTransaction, id, false);
     }
 
     protected ClassWithCustomDataType ()

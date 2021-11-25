@@ -40,13 +40,13 @@ namespace Remotion.Mixins.Context
     /// <returns>The types from which the given <paramref name="targetType"/> inherits its mixins.</returns>
     public IEnumerable<Type> GetTypesToInheritFrom (Type targetType)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
 
       if (targetType.IsGenericType && !targetType.IsGenericTypeDefinition)
-        yield return targetType.GetGenericTypeDefinition ();
+        yield return targetType.GetGenericTypeDefinition();
       if (targetType.BaseType != null)
         yield return targetType.BaseType;
-      foreach (Type interfaceType in targetType.GetInterfaces ())
+      foreach (Type interfaceType in targetType.GetInterfaces())
         yield return interfaceType;
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.Mixins.Context
     /// <returns><see cref="ClassContext"/> objects for the types from which the given <paramref name="targetType"/> inherits its mixins.</returns>
     public IEnumerable<ClassContext?> GetClassContextsToInheritFrom (Type targetType, Func<Type, ClassContext?> classContextRetriever)
     {
-      return GetTypesToInheritFrom (targetType).Select (classContextRetriever);
+      return GetTypesToInheritFrom(targetType).Select(classContextRetriever);
     }
   }
 }

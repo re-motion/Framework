@@ -38,8 +38,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         ISqlDialect sqlDialect)
         : base (sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
-      ArgumentUtility.CheckNotNull ("insertedColumnsSpecification", insertedColumnsSpecification);
+      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull("insertedColumnsSpecification", insertedColumnsSpecification);
 
       _tableDefinition = tableDefinition;
       _insertedColumnsSpecification = insertedColumnsSpecification;
@@ -57,19 +57,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     public override IDbCommand Create (IRdbmsProviderCommandExecutionContext commandExecutionContext)
     {
-      ArgumentUtility.CheckNotNull ("commandExecutionContext", commandExecutionContext);
+      ArgumentUtility.CheckNotNull("commandExecutionContext", commandExecutionContext);
 
       var command = commandExecutionContext.CreateDbCommand();
       var statement = new StringBuilder();
 
-      statement.Append ("INSERT INTO ");
-      AppendTableName (statement, command, _tableDefinition);
-      statement.Append (" (");
-      _insertedColumnsSpecification.AppendColumnNames (statement, command, SqlDialect);
-      statement.Append (") VALUES (");
-      _insertedColumnsSpecification.AppendColumnValues (statement, command, SqlDialect);
-      statement.Append (")");
-      statement.Append (SqlDialect.StatementDelimiter);
+      statement.Append("INSERT INTO ");
+      AppendTableName(statement, command, _tableDefinition);
+      statement.Append(" (");
+      _insertedColumnsSpecification.AppendColumnNames(statement, command, SqlDialect);
+      statement.Append(") VALUES (");
+      _insertedColumnsSpecification.AppendColumnValues(statement, command, SqlDialect);
+      statement.Append(")");
+      statement.Append(SqlDialect.StatementDelimiter);
 
       command.CommandText = statement.ToString();
 

@@ -76,27 +76,27 @@ namespace Remotion.Xml
 
     public override string ToString ()
     {
-      StringBuilder sb = new StringBuilder (200);
-      sb.Append ("Schema validation ");
-      sb.Append (_severity.ToString().ToLower());
+      StringBuilder sb = new StringBuilder(200);
+      sb.Append("Schema validation ");
+      sb.Append(_severity.ToString().ToLower());
 
       if (_context != null)
       {
-        sb.Append (" in ");
-        sb.Append (_context);
+        sb.Append(" in ");
+        sb.Append(_context);
       }
 
       if (_hasLineInfo)
       {
-        sb.Append (" (");
-        sb.Append (_lineNumber);
-        sb.Append (",");
-        sb.Append (_linePosition);
-        sb.Append (")");
+        sb.Append(" (");
+        sb.Append(_lineNumber);
+        sb.Append(",");
+        sb.Append(_linePosition);
+        sb.Append(")");
       }
 
-      sb.Append (": ");
-      sb.Append (_errorMessage);
+      sb.Append(": ");
+      sb.Append(_errorMessage);
 
       return sb.ToString();
     }

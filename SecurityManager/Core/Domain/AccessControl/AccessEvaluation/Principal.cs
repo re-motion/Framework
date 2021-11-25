@@ -42,7 +42,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private Principal ()
     {
       _isNull = true;
-      _roles = new ReadOnlyCollection<PrincipalRole> (new PrincipalRole[0]);
+      _roles = new ReadOnlyCollection<PrincipalRole>(new PrincipalRole[0]);
     }
 
     public Principal (
@@ -50,8 +50,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
         [CanBeNull] IDomainObjectHandle<User> user,
         [NotNull] IEnumerable<PrincipalRole> roles)
     {
-      ArgumentUtility.CheckNotNull ("tenant", tenant);
-      ArgumentUtility.CheckNotNull ("roles", roles);
+      ArgumentUtility.CheckNotNull("tenant", tenant);
+      ArgumentUtility.CheckNotNull("roles", roles);
 
       _isNull = false;
       _tenant = tenant;

@@ -51,12 +51,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private bool _cachedHasChangedFlag;
 
     public ChangeCachingDomainObjectCollectionDataDecorator (IDomainObjectCollectionData wrappedData)
-      : base (new ObservableDomainObjectCollectionDataDecorator (ArgumentUtility.CheckNotNull ("wrappedData", wrappedData)))
+      : base (new ObservableDomainObjectCollectionDataDecorator(ArgumentUtility.CheckNotNull("wrappedData", wrappedData)))
     {
       _observedWrappedData = (ObservableDomainObjectCollectionDataDecorator) WrappedData;
       _unobservedWrappedData = wrappedData;
 
-      _originalData = new CopyOnWriteDomainObjectDomainObjectCollectionData (_observedWrappedData);
+      _originalData = new CopyOnWriteDomainObjectDomainObjectCollectionData(_observedWrappedData);
       _observedWrappedData.CollectionChanged += WrappedData_CollectionChanged();
 
       _isCacheUpToDate = true;
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public ReadOnlyDomainObjectCollectionDataDecorator OriginalData
     {
-      get { return new ReadOnlyDomainObjectCollectionDataDecorator (_originalData); }
+      get { return new ReadOnlyDomainObjectCollectionDataDecorator(_originalData); }
     }
 
     public bool IsCacheUpToDate
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       if (!_isCacheUpToDate)
       {
         bool hasChanged = CalculateHasChangedFlag(strategy);
-        SetCachedHasChangedFlag (hasChanged);
+        SetCachedHasChangedFlag(hasChanged);
       }
 
       return _cachedHasChangedFlag;
@@ -94,20 +94,20 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       if (_originalData.Count != Count)
         return true;
 
-      return strategy.HasDataChanged (this, OriginalData);
+      return strategy.HasDataChanged(this, OriginalData);
     }
 
     public void Commit ()
     {
       _originalData.RevertToCopiedData();
-      SetCachedHasChangedFlag (false);
+      SetCachedHasChangedFlag(false);
     }
 
     public void Rollback ()
     {
-      this.ReplaceContents (_originalData);
-      _originalData.RevertToCopiedData ();
-      SetCachedHasChangedFlag (false);
+      this.ReplaceContents(_originalData);
+      _originalData.RevertToCopiedData();
+      SetCachedHasChangedFlag(false);
     }
 
     /// <summary>
@@ -119,41 +119,41 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// <param name="domainObject">The <see cref="DomainObject"/> to be registered.</param>
     public void RegisterOriginalItem (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       // Original collection must not contain this item
-      if (_originalData.ContainsObjectID (domainObject.ID))
+      if (_originalData.ContainsObjectID(domainObject.ID))
       {
-        var message = string.Format ("The original collection already contains a domain object with ID '{0}'.", domainObject.ID);
-        throw new InvalidOperationException (message);
+        var message = string.Format("The original collection already contains a domain object with ID '{0}'.", domainObject.ID);
+        throw new InvalidOperationException(message);
       }
 
       // Check if this collection does not contain the item
-      if (!_unobservedWrappedData.ContainsObjectID (domainObject.ID))
+      if (!_unobservedWrappedData.ContainsObjectID(domainObject.ID))
       {
         // Standard case: Neither collection contains the item; the item is added to both, and the state cache stays valid
 
         // Add the item to the unobserved inner collection to avoid copy on write: if the contents hasn't been copied, we want to modify both 
         // collections at the same time!
         // This way, if the original collection has not yet been copied, it will automatically contain the  item and the state cache remains valid.
-        _unobservedWrappedData.Add (domainObject);
+        _unobservedWrappedData.Add(domainObject);
 
         // If the original collection has already been copied, we must add the item manually. The state cache still remains valid because we always add
         // the item at the end. If the collections were equal before, they remain equal now. If they were different before, they remain different.
         if (_originalData.IsContentsCopied)
-          _originalData.Add (domainObject);
+          _originalData.Add(domainObject);
       }
       else
       {
         // Special case: The current collection already contains the item
 
         // We must add the item to the original collection only and raise a potential state change notification
-        _originalData.Add (domainObject);
-        OnChangeStateUnclear ();
+        _originalData.Add(domainObject);
+        OnChangeStateUnclear();
       }
 
-      Assertion.IsTrue (ContainsObjectID (domainObject.ID));
-      Assertion.IsTrue (_originalData.ContainsObjectID (domainObject.ID));
+      Assertion.IsTrue(ContainsObjectID(domainObject.ID));
+      Assertion.IsTrue(_originalData.ContainsObjectID(domainObject.ID));
     }
 
     /// <summary>
@@ -165,31 +165,31 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// <param name="objectID">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to be unregistered.</param>
     public void UnregisterOriginalItem (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
       // Original collection must contain this item
-      if (!_originalData.ContainsObjectID (objectID))
+      if (!_originalData.ContainsObjectID(objectID))
       {
-        var message = string.Format ("The original collection does not contain a domain object with ID '{0}'.", objectID);
-        throw new InvalidOperationException (message);
+        var message = string.Format("The original collection does not contain a domain object with ID '{0}'.", objectID);
+        throw new InvalidOperationException(message);
       }
 
       // Check if this collection contains the item
-      if (ContainsObjectID (objectID))
+      if (ContainsObjectID(objectID))
       {
         // Standard case: Both collections contain the item; the item is removed from both.
 
         // Remove the item from the unobserved inner collection to avoid copy on write: if the contents hasn't been copied, we want to modify both 
         // collections at the same time!
         // This way, if the original collection has not yet been copied, it will automatically not contain the item and the state cache remains valid.
-        _unobservedWrappedData.Remove (objectID);
+        _unobservedWrappedData.Remove(objectID);
 
         // If the original collection has already been copied, we must remove the item manually and invalidate the state cache: Collections previously 
         // different because the item was in different places might now be the same.
         if (_originalData.IsContentsCopied)
         {
-          _originalData.Remove (objectID);
-          OnChangeStateUnclear ();
+          _originalData.Remove(objectID);
+          OnChangeStateUnclear();
         }
       }
       else
@@ -197,8 +197,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         // Special case: The current collection does not contain the item
 
         // We must remove the item from the original collection only and raise a potential state change notification
-        _originalData.Remove (objectID);
-        OnChangeStateUnclear ();
+        _originalData.Remove(objectID);
+        OnChangeStateUnclear();
       }
     }
 
@@ -210,24 +210,24 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// <param name="comparison"></param>
     public void SortOriginalAndCurrent (Comparison<DomainObject> comparison)
     {
-      ArgumentUtility.CheckNotNull ("comparison", comparison);
+      ArgumentUtility.CheckNotNull("comparison", comparison);
 
       // Sort the unobserved inner collection to avoid copy on write: if the contents hasn't been copied, we want to sort both 
       // collections at the same time!
-      _unobservedWrappedData.Sort (comparison);
+      _unobservedWrappedData.Sort(comparison);
 
       // If the original collection has already been copied, we must sort it manually. This might cause the change state cache to be wrong, so it is 
       // invalidated (and a notification raised).
       if (_originalData.IsContentsCopied)
       {
-        _originalData.Sort (comparison);
-        OnChangeStateUnclear ();
+        _originalData.Sort(comparison);
+        OnChangeStateUnclear();
       }
     }
 
     private EventHandler<ObservableDomainObjectCollectionDataDecorator.DataChangeEventArgs> WrappedData_CollectionChanged ()
     {
-      return (sender, args) => OnChangeStateUnclear ();
+      return (sender, args) => OnChangeStateUnclear();
     }
 
     private void OnChangeStateUnclear ()

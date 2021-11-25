@@ -36,14 +36,14 @@ namespace Remotion.SecurityManager.Clients.Web.Test.Domain
     public IObjectSecurityStrategy GetSecurityStrategy ()
     {
       if (_objectSecurityStrategy == null)
-        _objectSecurityStrategy = ObjectSecurityStrategy.Create (this, InvalidationToken.Create());
+        _objectSecurityStrategy = ObjectSecurityStrategy.Create(this, InvalidationToken.Create());
 
       return _objectSecurityStrategy;
     }
 
     public Type GetSecurableType ()
     {
-      return GetPublicDomainObjectType ();
+      return GetPublicDomainObjectType();
     }
 
     public ISecurityContext CreateSecurityContext ()

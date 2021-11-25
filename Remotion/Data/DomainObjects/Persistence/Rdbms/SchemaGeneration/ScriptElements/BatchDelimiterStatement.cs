@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptE
 
     public BatchDelimiterStatement (string delimiter)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("delimiter", delimiter);
+      ArgumentUtility.CheckNotNullOrEmpty("delimiter", delimiter);
 
       _delimiter = delimiter;
     }
@@ -42,11 +42,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptE
 
     public void AppendToScript (List<ScriptStatement> script)
     {
-      ArgumentUtility.CheckNotNull ("script", script);
+      ArgumentUtility.CheckNotNull("script", script);
  
       var lastStatement = script.LastOrDefault();
       if (lastStatement != null && lastStatement.Statement != _delimiter)
-        script.Add (new ScriptStatement (_delimiter));
+        script.Add(new ScriptStatement(_delimiter));
     }
   }
 }

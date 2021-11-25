@@ -31,38 +31,38 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void BrowserLogEntry_ShouldWrapSeleniumLogEntry ()
     {
       if (!Helper.BrowserConfiguration.IsChrome())
-        Assert.Ignore ("Getting the browser log entries is currently only supported by Chrome.");
+        Assert.Ignore("Getting the browser log entries is currently only supported by Chrome.");
 
       var home = Start();
 
       var errorMessage = Guid.NewGuid().ToString();
-      var maxExpectedTestRunTime = TimeSpan.FromSeconds (10);
+      var maxExpectedTestRunTime = TimeSpan.FromSeconds(10);
 
-      var js = JavaScriptExecutor.GetJavaScriptExecutor (home.Context.Browser);
-      js.ExecuteScript ($"console.error('{errorMessage}')");
+      var js = JavaScriptExecutor.GetJavaScriptExecutor(home.Context.Browser);
+      js.ExecuteScript($"console.error('{errorMessage}')");
 
       var browserLogEntries = ((IWebDriver) home.Context.Browser.Driver.Native)
-          .Manage().Logs.GetLog (LogType.Browser);
+          .Manage().Logs.GetLog(LogType.Browser);
 
-      var errorLogEntry = browserLogEntries.Single (log => log.Message.Contains (errorMessage));
-      var wrappedErrorLogEntry = new BrowserLogEntry (errorLogEntry);
+      var errorLogEntry = browserLogEntries.Single(log => log.Message.Contains(errorMessage));
+      var wrappedErrorLogEntry = new BrowserLogEntry(errorLogEntry);
 
-      Assert.That (wrappedErrorLogEntry.Level, Is.EqualTo (LogLevel.Severe));
-      Assert.That (
+      Assert.That(wrappedErrorLogEntry.Level, Is.EqualTo(LogLevel.Severe));
+      Assert.That(
           wrappedErrorLogEntry.Timestamp,
-          Is.InRange (DateTime.UtcNow.Subtract (maxExpectedTestRunTime), DateTime.UtcNow.Add (maxExpectedTestRunTime)));
-      Assert.That (wrappedErrorLogEntry.Message, Does.Match ($@"^console-api \d+:\d+ ""{errorMessage}""$"));
+          Is.InRange(DateTime.UtcNow.Subtract(maxExpectedTestRunTime), DateTime.UtcNow.Add(maxExpectedTestRunTime)));
+      Assert.That(wrappedErrorLogEntry.Message, Does.Match($@"^console-api \d+:\d+ ""{errorMessage}""$"));
 
       var logAsStringPattern = $@"^\[\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ\] \[Severe\] console-api \d+:\d+ ""{errorMessage}""$";
 
-      Assert.That (
+      Assert.That(
           wrappedErrorLogEntry.ToString(),
-          Does.Match (logAsStringPattern));
+          Does.Match(logAsStringPattern));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("BrowserSessionTest.wxe");
+      return Start<WxePageObject>("BrowserSessionTest.wxe");
     }
   }
 }

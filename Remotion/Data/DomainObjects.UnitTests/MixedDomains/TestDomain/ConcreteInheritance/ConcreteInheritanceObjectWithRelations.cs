@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.Concrete
   {
     public static ConcreteInheritanceObjectWithRelations NewObject ()
     {
-      return NewObject<ConcreteInheritanceObjectWithRelations> ();
+      return NewObject<ConcreteInheritanceObjectWithRelations>();
     }
 
     [DBBidirectionalRelation ("ScalarOpposingProperty", ContainsForeignKey = true)]

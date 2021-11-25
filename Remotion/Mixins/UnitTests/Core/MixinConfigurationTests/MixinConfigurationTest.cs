@@ -29,66 +29,66 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     [SetUp]
     public void SetUp ()
     {
-      _oldMasterConfiguration = MixinConfiguration.GetMasterConfiguration ();
+      _oldMasterConfiguration = MixinConfiguration.GetMasterConfiguration();
       _oldActiveConfiguration = MixinConfiguration.ActiveConfiguration;
     }
 
     [TearDown]
     public void TearDown ()
     {
-      MixinConfiguration.SetMasterConfiguration (_oldMasterConfiguration);
-      MixinConfiguration.SetActiveConfiguration (_oldActiveConfiguration);
+      MixinConfiguration.SetMasterConfiguration(_oldMasterConfiguration);
+      MixinConfiguration.SetActiveConfiguration(_oldActiveConfiguration);
     }
 
     [Test]
     public void Initialization_Empty ()
     {
       var configuration = new MixinConfiguration();
-      Assert.That (configuration.ClassContexts, Is.Empty);
+      Assert.That(configuration.ClassContexts, Is.Empty);
     }
 
     [Test]
     public void GetContext_Configured ()
     {
-      var context = MixinConfiguration.ActiveConfiguration.GetContext (typeof (BaseType1));
-      Assert.That (context, Is.Not.Null);
+      var context = MixinConfiguration.ActiveConfiguration.GetContext(typeof (BaseType1));
+      Assert.That(context, Is.Not.Null);
     }
 
     [Test]
     public void GetContext_Configured_ButEmpty ()
     {
-      var configuration = MixinConfiguration.BuildNew ().ForClass<NullTarget> ().BuildConfiguration ();
-      Assert.That (configuration.ClassContexts.ContainsExact (typeof (NullTarget)), Is.True);
+      var configuration = MixinConfiguration.BuildNew().ForClass<NullTarget>().BuildConfiguration();
+      Assert.That(configuration.ClassContexts.ContainsExact(typeof (NullTarget)), Is.True);
 
-      var context = configuration.GetContext (typeof (NullTarget));
-      Assert.That (context, Is.Null);
+      var context = configuration.GetContext(typeof (NullTarget));
+      Assert.That(context, Is.Null);
     }
 
     [Test]
     public void GetContext_ReturnsNull_IfNotConfigured ()
     {
-      Assert.That (MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance (typeof (object)), Is.False);
+      Assert.That(MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance(typeof (object)), Is.False);
 
-      var context = MixinConfiguration.ActiveConfiguration.GetContext (typeof (object));
-      Assert.That (context, Is.Null);
+      var context = MixinConfiguration.ActiveConfiguration.GetContext(typeof (object));
+      Assert.That(context, Is.Null);
     }
 
     [Test]
     public void GetContext_NoNewContext_GeneratedForGeneratedType ()
     {
-      var expectedContext = MixinConfiguration.ActiveConfiguration.GetContext (typeof (BaseType1));
+      var expectedContext = MixinConfiguration.ActiveConfiguration.GetContext(typeof (BaseType1));
 
-      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType1));
-      var actualContext = MixinConfiguration.ActiveConfiguration.GetContext (generatedType);
-      Assert.That (actualContext, Is.EqualTo (expectedContext));
+      Type generatedType = TypeFactory.GetConcreteType(typeof (BaseType1));
+      var actualContext = MixinConfiguration.ActiveConfiguration.GetContext(generatedType);
+      Assert.That(actualContext, Is.EqualTo(expectedContext));
     }
 
     [Test]
     public void SetMasterConfiguration ()
     {
-      var mixinConfiguration = new MixinConfiguration ();
-      MixinConfiguration.SetMasterConfiguration (mixinConfiguration);
-      Assert.That (MixinConfiguration.GetMasterConfiguration (), Is.SameAs (mixinConfiguration));
+      var mixinConfiguration = new MixinConfiguration();
+      MixinConfiguration.SetMasterConfiguration(mixinConfiguration);
+      Assert.That(MixinConfiguration.GetMasterConfiguration(), Is.SameAs(mixinConfiguration));
     }
 
     [Test]
@@ -96,12 +96,12 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     {
       var oldMasterConfiguration = MixinConfiguration.GetMasterConfiguration();
       
-      MixinConfiguration.SetMasterConfiguration (null);
-      var newMasterConfiguration = MixinConfiguration.GetMasterConfiguration ();
+      MixinConfiguration.SetMasterConfiguration(null);
+      var newMasterConfiguration = MixinConfiguration.GetMasterConfiguration();
 
-      Assert.That (newMasterConfiguration, Is.Not.Null);
-      Assert.That (newMasterConfiguration, Is.Not.SameAs (oldMasterConfiguration));
-      Assert.That (newMasterConfiguration.GetContext (typeof (BaseType1)), Is.Not.Null);
+      Assert.That(newMasterConfiguration, Is.Not.Null);
+      Assert.That(newMasterConfiguration, Is.Not.SameAs(oldMasterConfiguration));
+      Assert.That(newMasterConfiguration.GetContext(typeof (BaseType1)), Is.Not.Null);
     }
   }
 }

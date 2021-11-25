@@ -28,8 +28,8 @@ namespace Remotion.Data.DomainObjects.Linq
   /// </summary>
   public class ExtendedSqlGeneratingOuterSelectExpressionVisitor : SqlGeneratingOuterSelectExpressionVisitor
   {
-    private static readonly MethodInfo s_getObjectIDOrNullMethod = MemberInfoFromExpressionUtility.GetMethod (() => GetObjectIDOrNull (null, null));
-    private static readonly ConstructorInfo s_objectIDConstructor = MemberInfoFromExpressionUtility.GetConstructor (() => new ObjectID ((string) null, null));
+    private static readonly MethodInfo s_getObjectIDOrNullMethod = MemberInfoFromExpressionUtility.GetMethod(() => GetObjectIDOrNull(null, null));
+    private static readonly ConstructorInfo s_objectIDConstructor = MemberInfoFromExpressionUtility.GetConstructor(() => new ObjectID((string) null, null));
 
     public static new void GenerateSql (
         Expression expression,
@@ -37,14 +37,14 @@ namespace Remotion.Data.DomainObjects.Linq
         ISqlGenerationStage stage,
         SetOperationsMode setOperationsMode)
     {
-      ArgumentUtility.CheckNotNull ("expression", expression);
-      ArgumentUtility.CheckNotNull ("commandBuilder", commandBuilder);
-      ArgumentUtility.CheckNotNull ("stage", stage);
+      ArgumentUtility.CheckNotNull("expression", expression);
+      ArgumentUtility.CheckNotNull("commandBuilder", commandBuilder);
+      ArgumentUtility.CheckNotNull("stage", stage);
 
-      EnsureNoCollectionExpression (expression);
+      EnsureNoCollectionExpression(expression);
 
-      var visitor = new ExtendedSqlGeneratingOuterSelectExpressionVisitor (commandBuilder, stage, setOperationsMode);
-      visitor.Visit (expression);
+      var visitor = new ExtendedSqlGeneratingOuterSelectExpressionVisitor(commandBuilder, stage, setOperationsMode);
+      visitor.Visit(expression);
     }
 
     public static ObjectID GetObjectIDOrNull (string classID, object value)
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Linq
       if (value == null)
         return null;
 
-      return new ObjectID (classID, value);
+      return new ObjectID(classID, value);
     }
 
     protected ExtendedSqlGeneratingOuterSelectExpressionVisitor (
@@ -65,21 +65,21 @@ namespace Remotion.Data.DomainObjects.Linq
 
     protected override Expression VisitNew (NewExpression expression)
     {
-      var baseResult = base.VisitNew (expression);
+      var baseResult = base.VisitNew(expression);
       if (expression.Type == typeof (ObjectID))
       {
         // If the NewExpression represents a selected ObjectID, we want to return null if the ID value is null. Therefore, change the projection
         // to use the GetObjectIDOrNull method.
 
         var originalObjectIDProjection = (NewExpression) CommandBuilder.GetInMemoryProjectionBody();
-        Assertion.IsNotNull (originalObjectIDProjection);
-        Assertion.IsTrue (originalObjectIDProjection.Constructor.Equals (s_objectIDConstructor));
+        Assertion.IsNotNull(originalObjectIDProjection);
+        Assertion.IsTrue(originalObjectIDProjection.Constructor.Equals(s_objectIDConstructor));
 
-        var nullSafeObjectIDProjection = Expression.Call (
+        var nullSafeObjectIDProjection = Expression.Call(
             s_getObjectIDOrNullMethod, 
             originalObjectIDProjection.Arguments[0], 
             originalObjectIDProjection.Arguments[1]);
-        CommandBuilder.SetInMemoryProjectionBody (nullSafeObjectIDProjection);
+        CommandBuilder.SetInMemoryProjectionBody(nullSafeObjectIDProjection);
       }
 
       return baseResult;

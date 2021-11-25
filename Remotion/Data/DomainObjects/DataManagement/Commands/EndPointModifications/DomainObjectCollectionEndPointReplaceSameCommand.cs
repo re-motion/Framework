@@ -32,13 +32,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         DomainObject selfReplacedObject, 
         IClientTransactionEventSink transactionEventSink)
         : base (
-            ArgumentUtility.CheckNotNull ("modifiedEndPoint", modifiedEndPoint),
-            ArgumentUtility.CheckNotNull ("selfReplacedObject", selfReplacedObject),
-            ArgumentUtility.CheckNotNull ("selfReplacedObject", selfReplacedObject),
-            ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink))
+            ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
+            ArgumentUtility.CheckNotNull("selfReplacedObject", selfReplacedObject),
+            ArgumentUtility.CheckNotNull("selfReplacedObject", selfReplacedObject),
+            ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
     {
       if (modifiedEndPoint.IsNull)
-        throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
+        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
     }
 
     public override void Perform ()
@@ -69,11 +69,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     /// </remarks>
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      var endPointOfRelatedObject = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint> (OldRelatedObject);
+      var endPointOfRelatedObject = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint>(OldRelatedObject);
 
-      return new ExpandedCommand (
+      return new ExpandedCommand(
           this,
-          new RelationEndPointTouchCommand (endPointOfRelatedObject));
+          new RelationEndPointTouchCommand(endPointOfRelatedObject));
     }
   }
 }

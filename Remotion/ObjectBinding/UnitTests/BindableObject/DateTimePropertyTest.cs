@@ -29,27 +29,27 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ();
+      _businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
     }
 
     [Test]
     public void Initialize_DateProperty ()
     {
-      IBusinessObjectDateTimeProperty property = new DateProperty (
-          GetPropertyParameters (GetPropertyInfo (typeof (ClassWithAllDataTypes), "Date"), _businessObjectProvider));
+      IBusinessObjectDateTimeProperty property = new DateProperty(
+          GetPropertyParameters(GetPropertyInfo(typeof (ClassWithAllDataTypes), "Date"), _businessObjectProvider));
 
-      Assert.That (property.Type, Is.EqualTo (DateTimeType.Date));
+      Assert.That(property.Type, Is.EqualTo(DateTimeType.Date));
     }
 
     [Test]
     public void Initialize_DateTimeProperty ()
     {
-      IBusinessObjectDateTimeProperty property = new DateTimeProperty (
-          GetPropertyParameters (GetPropertyInfo (typeof (ClassWithAllDataTypes), "DateTime"), _businessObjectProvider));
+      IBusinessObjectDateTimeProperty property = new DateTimeProperty(
+          GetPropertyParameters(GetPropertyInfo(typeof (ClassWithAllDataTypes), "DateTime"), _businessObjectProvider));
 
-      Assert.That (property.Type, Is.EqualTo (DateTimeType.DateTime));
+      Assert.That(property.Type, Is.EqualTo(DateTimeType.DateTime));
     }
   }
 }

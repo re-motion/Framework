@@ -28,10 +28,10 @@ namespace Remotion.Development.UnitTesting
   {
     public static byte[] XmlSerialize (object o)
     {
-      using (MemoryStream stream = new MemoryStream ())
+      using (MemoryStream stream = new MemoryStream())
       {
-        XmlSerializer serializer = new XmlSerializer (o.GetType());
-        serializer.Serialize (stream, o);
+        XmlSerializer serializer = new XmlSerializer(o.GetType());
+        serializer.Serialize(stream, o);
         return stream.ToArray();
       }
     }
@@ -39,13 +39,13 @@ namespace Remotion.Development.UnitTesting
     public static T XmlDeserialize<T> (byte[] bytes)
         where T : notnull
     {
-      using (MemoryStream stream = new MemoryStream (bytes))
+      using (MemoryStream stream = new MemoryStream(bytes))
       {
-        XmlSerializer serializer = new XmlSerializer (typeof (T));
+        XmlSerializer serializer = new XmlSerializer(typeof (T));
 
-        var result = serializer.Deserialize (stream);
+        var result = serializer.Deserialize(stream);
         if (result == null)
-          throw new InvalidOperationException ("Deserializing null values is not supported.");
+          throw new InvalidOperationException("Deserializing null values is not supported.");
 
         return (T) result;
       }
@@ -54,7 +54,7 @@ namespace Remotion.Development.UnitTesting
     public static T XmlSerializeAndDeserialize<T> (T t)
         where T : notnull
     {
-      return XmlDeserialize<T> (XmlSerialize (t));
+      return XmlDeserialize<T>(XmlSerialize(t));
     }
   }
 }

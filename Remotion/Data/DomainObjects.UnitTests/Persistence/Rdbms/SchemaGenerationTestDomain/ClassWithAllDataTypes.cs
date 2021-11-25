@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 
     public static ClassWithAllDataTypes NewObject ()
     {
-      return NewObject<ClassWithAllDataTypes> ();
+      return NewObject<ClassWithAllDataTypes>();
     }
 
     [DBColumn ("Boolean")]

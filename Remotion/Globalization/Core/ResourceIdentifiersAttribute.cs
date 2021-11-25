@@ -26,9 +26,9 @@ public class ResourceIdentifiersAttribute: Attribute
 {
   public static string GetResourceIdentifier (Enum enumValue)
   {
-    ArgumentUtility.CheckNotNull ("enumValue", enumValue);
+    ArgumentUtility.CheckNotNull("enumValue", enumValue);
     Type type = enumValue.GetType();
-    if (type.DeclaringType != null && IsEnumTypeNameSuppressed (type)) // if the enum is a nested type, suppress enum name
+    if (type.DeclaringType != null && IsEnumTypeNameSuppressed(type)) // if the enum is a nested type, suppress enum name
       type = type.DeclaringType;
     return type.GetFullNameChecked() + "." + enumValue.ToString();
 
@@ -41,7 +41,7 @@ public class ResourceIdentifiersAttribute: Attribute
 
   public static ResourceIdentifiersAttribute? GetAttribute (Type type)
   {
-    object[] attributes = type.GetCustomAttributes (typeof (ResourceIdentifiersAttribute), false);
+    object[] attributes = type.GetCustomAttributes(typeof (ResourceIdentifiersAttribute), false);
     if (attributes == null || attributes.Length == 0)
       return null;
     else
@@ -50,7 +50,7 @@ public class ResourceIdentifiersAttribute: Attribute
 
   private static bool IsEnumTypeNameSuppressed (Type type)
   {
-    ResourceIdentifiersAttribute? attrib = GetAttribute (type);
+    ResourceIdentifiersAttribute? attrib = GetAttribute(type);
     if (attrib == null)
       return false;
     else

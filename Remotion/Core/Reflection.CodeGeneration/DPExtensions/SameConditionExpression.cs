@@ -44,8 +44,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      _left.Emit (member, gen);
-      _right.Emit (member, gen);
+      _left.Emit(member, gen);
+      _right.Emit(member, gen);
     }
   }
 }

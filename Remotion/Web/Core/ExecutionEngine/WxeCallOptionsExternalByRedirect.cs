@@ -33,12 +33,12 @@ namespace Remotion.Web.ExecutionEngine
     private readonly NameValueCollection? _callerUrlParameters;
 
     public WxeCallOptionsExternalByRedirect ()
-        : this (new WxePermaUrlOptions (false, null), true, null)
+        : this (new WxePermaUrlOptions(false, null), true, null)
     {
     }
 
     public WxeCallOptionsExternalByRedirect (NameValueCollection urlParameters)
-        : this (new WxePermaUrlOptions (false, urlParameters), true, null)
+        : this (new WxePermaUrlOptions(false, urlParameters), true, null)
     {
     }
 
@@ -51,11 +51,11 @@ namespace Remotion.Web.ExecutionEngine
 
     public override void Dispatch (IWxeExecutor executor, WxeFunction function, Control sender)
     {
-      ArgumentUtility.CheckNotNull ("executor", executor);
-      ArgumentUtility.CheckNotNull ("function", function);
-      ArgumentUtility.CheckNotNull ("sender", sender);
+      ArgumentUtility.CheckNotNull("executor", executor);
+      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentUtility.CheckNotNull("sender", sender);
 
-      executor.ExecuteFunctionExternalByRedirect (function, sender, this);
+      executor.ExecuteFunctionExternalByRedirect(function, sender, this);
 
       throw new WxeCallExternalException();
     }

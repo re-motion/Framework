@@ -54,10 +54,10 @@ namespace Remotion.Configuration.TypeDiscovery
     /// <returns>A <see cref="CompositeRootAssemblyFinder"/> for the assembly specifications.</returns>
     public CompositeRootAssemblyFinder CreateRootAssemblyFinder (IAssemblyLoader assemblyLoader)
     {
-      var namedFinder = ByName.CreateRootAssemblyFinder (assemblyLoader);
-      var filePatternFinder = ByFile.CreateRootAssemblyFinder (assemblyLoader);
+      var namedFinder = ByName.CreateRootAssemblyFinder(assemblyLoader);
+      var filePatternFinder = ByFile.CreateRootAssemblyFinder(assemblyLoader);
 
-      return new CompositeRootAssemblyFinder (new IRootAssemblyFinder[] { namedFinder, filePatternFinder });
+      return new CompositeRootAssemblyFinder(new IRootAssemblyFinder[] { namedFinder, filePatternFinder });
     }
   }
 }

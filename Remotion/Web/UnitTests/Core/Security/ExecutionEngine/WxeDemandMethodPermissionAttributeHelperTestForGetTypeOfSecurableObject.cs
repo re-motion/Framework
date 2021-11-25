@@ -43,7 +43,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [SetUp]
     public void SetUp ()
     {
-      _attribute = new WxeDemandTargetMethodPermissionAttribute ("Show");
+      _attribute = new WxeDemandTargetMethodPermissionAttribute("Show");
     }
 
     [Test]
@@ -51,46 +51,46 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     {
       _attribute.ParameterName = "ThisObject";
 
-      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
           typeof (TestFunctionWithThisObjectAsSecondParameter),
           _attribute);
 
-      Assert.That (helper.GetTypeOfSecurableObject (), Is.SameAs (typeof (SecurableObject)));
+      Assert.That(helper.GetTypeOfSecurableObject(), Is.SameAs(typeof (SecurableObject)));
     }
 
     [Test]
     public void TestWithDefaultParameter ()
     {
-      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
           typeof (TestFunctionWithThisObject),
           _attribute);
 
-      Assert.That (helper.GetTypeOfSecurableObject (), Is.SameAs (typeof (SecurableObject)));
+      Assert.That(helper.GetTypeOfSecurableObject(), Is.SameAs(typeof (SecurableObject)));
     }
 
     [Test]
     public void TestWithParameterTypeIsBaseType ()
     {
-      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute ("ShowSpecial", typeof (DerivedSecurableObject));
-      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
+      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute("ShowSpecial", typeof (DerivedSecurableObject));
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
           typeof (TestFunctionWithThisObject),
           attribute);
 
-      Assert.That (helper.GetTypeOfSecurableObject (), Is.SameAs (typeof (DerivedSecurableObject)));
+      Assert.That(helper.GetTypeOfSecurableObject(), Is.SameAs(typeof (DerivedSecurableObject)));
     }
 
     [Test]
     public void TestWithParameterNotOfNotMatchingType ()
     {
-      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute ("Show", typeof (OtherSecurableObject));
+      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute("Show", typeof (OtherSecurableObject));
       attribute.ParameterName = "ThisObject";
-      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
           typeof (TestFunctionWithThisObjectAsSecondParameter),
           attribute);
-      Assert.That (
-          () => helper.GetTypeOfSecurableObject (),
+      Assert.That(
+          () => helper.GetTypeOfSecurableObject(),
           Throws.InstanceOf<WxeException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The parameter 'ThisObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
                   + " WxeFunction 'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' is of type 'Remotion.Web.UnitTests.Core.Security.Domain.SecurableObject',"
                   + " which is not a base type of type 'Remotion.Web.UnitTests.Core.Security.Domain.OtherSecurableObject'."));
@@ -101,13 +101,13 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     {
       _attribute.ParameterName = "SomeObject";
 
-      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
           typeof (TestFunctionWithThisObjectAsSecondParameter),
           _attribute);
-      Assert.That (
-          () => helper.GetTypeOfSecurableObject (),
+      Assert.That(
+          () => helper.GetTypeOfSecurableObject(),
           Throws.InstanceOf<WxeException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The parameter 'SomeObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
                   + " WxeFunction 'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' does not implement interface"
                   + " 'Remotion.Security.ISecurableObject'."));
@@ -116,13 +116,13 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void TestFromFunctionWithoutParameters ()
     {
-      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
           typeof (TestFunctionWithoutParameters),
           _attribute);
-      Assert.That (
-          () => helper.GetTypeOfSecurableObject (),
+      Assert.That(
+          () => helper.GetTypeOfSecurableObject(),
           Throws.InstanceOf<WxeException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "WxeFunction 'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithoutParameters' has"
                   + " a WxeDemandTargetMethodPermissionAttribute applied, but does not define any parameters to supply the 'this-object'."));
     }
@@ -132,13 +132,13 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     {
       _attribute.ParameterName = "Invalid";
 
-      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
           typeof (TestFunctionWithThisObjectAsSecondParameter),
           _attribute);
-      Assert.That (
-          () => helper.GetTypeOfSecurableObject (),
+      Assert.That(
+          () => helper.GetTypeOfSecurableObject(),
           Throws.InstanceOf<WxeException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The parameter 'Invalid' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
                   + " WxeFunction 'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' is not a valid parameter"
                   + " of this function."));
@@ -147,29 +147,29 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void TestWithHandle_PointingToSecurableObjectBase_ShouldReturnTypeDeclaredInInterface ()
     {
-      var attribute = new WxeDemandTargetMethodPermissionAttribute ("Some method", typeof (DerivedSecurableObject))
+      var attribute = new WxeDemandTargetMethodPermissionAttribute("Some method", typeof (DerivedSecurableObject))
                       {
                           ParameterName = "HandleWithSecurableObject"
                       };
-      var helper = new WxeDemandMethodPermissionAttributeHelper (typeof (TestFunctionWithHandleParameter), attribute);
+      var helper = new WxeDemandMethodPermissionAttributeHelper(typeof (TestFunctionWithHandleParameter), attribute);
 
       var result = helper.GetTypeOfSecurableObject();
 
-      Assert.That (result, Is.SameAs (typeof (DerivedSecurableObject)));
+      Assert.That(result, Is.SameAs(typeof (DerivedSecurableObject)));
     }
 
     [Test]
     public void TestWithHandle_PointingToNonSecurableObject_ShouldThrow ()
     {
-      var attribute = new WxeDemandTargetMethodPermissionAttribute ("Some method", typeof (SecurableObject))
+      var attribute = new WxeDemandTargetMethodPermissionAttribute("Some method", typeof (SecurableObject))
       {
         ParameterName = "HandleWithNonSecurableObject"
       };
-      var helper = new WxeDemandMethodPermissionAttributeHelper (typeof (TestFunctionWithHandleParameter), attribute);
+      var helper = new WxeDemandMethodPermissionAttributeHelper(typeof (TestFunctionWithHandleParameter), attribute);
 
-      Assert.That (
+      Assert.That(
           () => helper.GetTypeOfSecurableObject(),
-          Throws.TypeOf<WxeException>().With.Message.EqualTo (
+          Throws.TypeOf<WxeException>().With.Message.EqualTo(
               "The parameter 'HandleWithNonSecurableObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to WxeFunction "
               + "'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithHandleParameter' does not implement interface "
               + "'Remotion.Security.ISecurableObject'."));
@@ -177,15 +177,15 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void TestWithHandle_ReferencedTypeNotMatchingSecurableClass_ShouldThrow ()
     {
-      var attribute = new WxeDemandTargetMethodPermissionAttribute ("Some method", typeof (OtherSecurableObject))
+      var attribute = new WxeDemandTargetMethodPermissionAttribute("Some method", typeof (OtherSecurableObject))
       {
         ParameterName = "HandleWithSecurableObject"
       };
-      var helper = new WxeDemandMethodPermissionAttributeHelper (typeof (TestFunctionWithHandleParameter), attribute);
+      var helper = new WxeDemandMethodPermissionAttributeHelper(typeof (TestFunctionWithHandleParameter), attribute);
 
-      Assert.That (
-          () => helper.GetTypeOfSecurableObject (),
-          Throws.TypeOf<WxeException> ().With.Message.EqualTo (
+      Assert.That(
+          () => helper.GetTypeOfSecurableObject(),
+          Throws.TypeOf<WxeException>().With.Message.EqualTo(
               "The parameter 'HandleWithSecurableObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to WxeFunction "
               + "'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithHandleParameter' is of type "
               + "'Remotion.Web.UnitTests.Core.Security.Domain.SecurableObject', which is not a base type of type "
@@ -195,15 +195,15 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void TestWithHandle_InheritingHandleAttribute ()
     {
-      var attribute = new WxeDemandTargetMethodPermissionAttribute ("Some method", typeof (SecurableObject))
+      var attribute = new WxeDemandTargetMethodPermissionAttribute("Some method", typeof (SecurableObject))
       {
         ParameterName = "HandleInheritingAttribute"
       };
-      var helper = new WxeDemandMethodPermissionAttributeHelper (typeof (TestFunctionWithHandleParameter), attribute);
+      var helper = new WxeDemandMethodPermissionAttributeHelper(typeof (TestFunctionWithHandleParameter), attribute);
 
-      var result = helper.GetTypeOfSecurableObject ();
+      var result = helper.GetTypeOfSecurableObject();
 
-      Assert.That (result, Is.SameAs (typeof (SecurableObject)));
+      Assert.That(result, Is.SameAs(typeof (SecurableObject)));
     }
   }
 }

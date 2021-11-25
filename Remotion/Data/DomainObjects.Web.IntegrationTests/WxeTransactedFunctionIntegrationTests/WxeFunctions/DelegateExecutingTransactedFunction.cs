@@ -27,16 +27,16 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
         ITransactionMode transactionMode, Action<WxeContext, DelegateExecutingTransactedFunction> testDelegate, params object[] actualParameters)
         : base (transactionMode, actualParameters)
     {
-      Assertion.IsFalse (TransactionMode.AutoCommit);
+      Assertion.IsFalse(TransactionMode.AutoCommit);
 
       CurrentDelegateIndex = 0;
-      DelegateBatch = new List<Action<WxeContext, DelegateExecutingTransactedFunction>> ();
-      Add (new WxeMethodStep (() =>
+      DelegateBatch = new List<Action<WxeContext, DelegateExecutingTransactedFunction>>();
+      Add(new WxeMethodStep(() =>
       {
         CurrentDelegateIndex = 0;
       }));
 
-      AddDelegate (testDelegate);
+      AddDelegate(testDelegate);
     }
 
     public bool DelegatesExecuted
@@ -58,8 +58,8 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
 
     public void AddDelegate (Action<WxeContext, DelegateExecutingTransactedFunction> action)
     {
-      DelegateBatch.Add (action);
-      Add (new WxeMethodStep (ctx => DelegateBatch[CurrentDelegateIndex++] (ctx, this)));
+      DelegateBatch.Add(action);
+      Add(new WxeMethodStep(ctx => DelegateBatch[CurrentDelegateIndex++](ctx, this)));
     }
 
     public void Reset ()

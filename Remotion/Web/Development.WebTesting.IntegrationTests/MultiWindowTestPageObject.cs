@@ -30,8 +30,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       get
       {
-        var frameScope = Scope.FindFrame ("frame");
-        return new WxePageObject (Context.CloneForFrame (frameScope));
+        var frameScope = Scope.FindFrame("frame");
+        return new WxePageObject(Context.CloneForFrame(frameScope));
       }
     }
   }

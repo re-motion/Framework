@@ -36,12 +36,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DataContainerIsNotSerializable ()
     {
-      var objectID = new ObjectID("Customer", Guid.NewGuid ());
-      DataContainer dataContainer = DataContainer.CreateNew (objectID);
-      Assert.That (
-          () => Serializer.SerializeAndDeserialize (dataContainer),
+      var objectID = new ObjectID("Customer", Guid.NewGuid());
+      DataContainer dataContainer = DataContainer.CreateNew(objectID);
+      Assert.That(
+          () => Serializer.SerializeAndDeserialize(dataContainer),
           Throws.InstanceOf<SerializationException>()
-              .With.Message.Matches (
+              .With.Message.Matches(
                   "Type 'Remotion.Data.DomainObjects.DataManagement.DataContainer' in Assembly "
                   + ".* is not marked as serializable."));
     }
@@ -49,70 +49,70 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DataContainerIsFlattenedSerializable ()
     {
-      var objectID = new ObjectID("Customer", Guid.NewGuid ());
-      DataContainer dataContainer = DataContainer.CreateNew (objectID);
-      DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize (dataContainer);
-      Assert.That (deserializedDataContainer, Is.Not.SameAs (dataContainer));
-      Assert.That (deserializedDataContainer.ID, Is.EqualTo (dataContainer.ID));
+      var objectID = new ObjectID("Customer", Guid.NewGuid());
+      DataContainer dataContainer = DataContainer.CreateNew(objectID);
+      DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize(dataContainer);
+      Assert.That(deserializedDataContainer, Is.Not.SameAs(dataContainer));
+      Assert.That(deserializedDataContainer.ID, Is.EqualTo(dataContainer.ID));
     }
 
     [Test]
     public void DataContainer_Contents ()
     {
-      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
 
       Computer computer = employee.Computer;
       computer.SerialNumber = "abc";
 
       DataContainer dataContainer = computer.InternalDataContainer;
-      DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize (dataContainer);
+      DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize(dataContainer);
 
-      Assert.That (deserializedDataContainer.ID, Is.EqualTo (dataContainer.ID));
-      Assert.That (deserializedDataContainer.ClientTransaction, Is.Not.Null);
-      Assert.That (deserializedDataContainer.EventListener, Is.Not.Null);
-      Assert.That (deserializedDataContainer.Timestamp, Is.EqualTo (dataContainer.Timestamp));
-      Assert.That (deserializedDataContainer.DomainObject, Is.Not.Null);
-      Assert.That (deserializedDataContainer.DomainObject.ID, Is.EqualTo (dataContainer.DomainObject.ID));
-      Assert.That (deserializedDataContainer.State.IsChanged, Is.True);
-      Assert.That (GetPropertyValue (deserializedDataContainer, typeof (Computer), "SerialNumber"), Is.EqualTo ("abc"));
-      Assert.That (GetPropertyValue (deserializedDataContainer, typeof (Computer), "Employee"), Is.EqualTo (employee.ID));
+      Assert.That(deserializedDataContainer.ID, Is.EqualTo(dataContainer.ID));
+      Assert.That(deserializedDataContainer.ClientTransaction, Is.Not.Null);
+      Assert.That(deserializedDataContainer.EventListener, Is.Not.Null);
+      Assert.That(deserializedDataContainer.Timestamp, Is.EqualTo(dataContainer.Timestamp));
+      Assert.That(deserializedDataContainer.DomainObject, Is.Not.Null);
+      Assert.That(deserializedDataContainer.DomainObject.ID, Is.EqualTo(dataContainer.DomainObject.ID));
+      Assert.That(deserializedDataContainer.State.IsChanged, Is.True);
+      Assert.That(GetPropertyValue(deserializedDataContainer, typeof (Computer), "SerialNumber"), Is.EqualTo("abc"));
+      Assert.That(GetPropertyValue(deserializedDataContainer, typeof (Computer), "Employee"), Is.EqualTo(employee.ID));
     }
 
     [Test]
     public void DataContainer_MarkAsChanged_Contents ()
     {
-      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
       Computer computer = employee.Computer;
       DataContainer dataContainer = computer.InternalDataContainer;
       dataContainer.MarkAsChanged();
 
-      DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize (dataContainer);
+      DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize(dataContainer);
 
-      Assert.That (deserializedDataContainer.ID, Is.EqualTo (dataContainer.ID));
-      Assert.That (deserializedDataContainer.HasBeenMarkedChanged, Is.True);
-      Assert.That (deserializedDataContainer.State.IsChanged, Is.True);
+      Assert.That(deserializedDataContainer.ID, Is.EqualTo(dataContainer.ID));
+      Assert.That(deserializedDataContainer.HasBeenMarkedChanged, Is.True);
+      Assert.That(deserializedDataContainer.State.IsChanged, Is.True);
     }
 
     [Test]
     public void DataContainer_WithoutProperties_Contents ()
     {
-      var objectID = new ObjectID(typeof (ClassWithoutProperties), Guid.NewGuid ());
-      DataContainer dataContainer = DataContainer.CreateNew (objectID);
-      DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize (dataContainer);
+      var objectID = new ObjectID(typeof (ClassWithoutProperties), Guid.NewGuid());
+      DataContainer dataContainer = DataContainer.CreateNew(objectID);
+      DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize(dataContainer);
 
-      Assert.That (deserializedDataContainer.ID, Is.EqualTo (dataContainer.ID));
+      Assert.That(deserializedDataContainer.ID, Is.EqualTo(dataContainer.ID));
     }
 
     [Test]
     public void DataContainer_Discarded_Contents ()
     {
-      Computer computer = Computer.NewObject ();
+      Computer computer = Computer.NewObject();
       DataContainer dataContainer = computer.InternalDataContainer;
-      computer.Delete ();
-      Assert.That (dataContainer.State.IsDiscarded, Is.True);
+      computer.Delete();
+      Assert.That(dataContainer.State.IsDiscarded, Is.True);
 
-      DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize (dataContainer);
-      Assert.That (deserializedDataContainer.State.IsDiscarded, Is.True);
+      DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize(dataContainer);
+      Assert.That(deserializedDataContainer.State.IsDiscarded, Is.True);
     }
   }
 }

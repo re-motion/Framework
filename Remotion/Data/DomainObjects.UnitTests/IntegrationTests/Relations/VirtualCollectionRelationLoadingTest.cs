@@ -22,22 +22,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void AccessingRelatedVirtualCollection_ReturnsCollectionWithIncompleteContents_AndAlsoLoadsOriginatingObject ()
     {
-      Assert.That (_product.State.IsNotLoadedYet, Is.True);
+      Assert.That(_product.State.IsNotLoadedYet, Is.True);
 
       var orderItems = _product.Reviews;
 
-      Assert.That (orderItems.AssociatedEndPointID, Is.EqualTo (RelationEndPointID.Resolve (_product, o => o.Reviews)));
-      Assert.That (orderItems.IsDataComplete, Is.False);
-      Assert.That (_product.State.IsUnchanged, Is.True);
+      Assert.That(orderItems.AssociatedEndPointID, Is.EqualTo(RelationEndPointID.Resolve(_product, o => o.Reviews)));
+      Assert.That(orderItems.IsDataComplete, Is.False);
+      Assert.That(_product.State.IsUnchanged, Is.True);
     }
     [Test]
     public void AccessingRelatedVirtualCollection_ReturnsCollectionWithIncompleteContents_ContentsIsLoadedWhenNeeded ()
     {
-      Assert.That (_product.Reviews.IsDataComplete, Is.False);
+      Assert.That(_product.Reviews.IsDataComplete, Is.False);
 
-      Assert.That (_product.Reviews.Count, Is.EqualTo (3));
+      Assert.That(_product.Reviews.Count, Is.EqualTo(3));
 
-      Assert.That (_product.Reviews.IsDataComplete, Is.True);
+      Assert.That(_product.Reviews.IsDataComplete, Is.True);
     }
 
     [Test]
@@ -54,17 +54,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void AccessingRelatedVirtualCollection_ReturnsAlreadyLoadedCollection_IfAlreadyLoaded ()
     {
-      TestableClientTransaction.EnsureDataComplete (RelationEndPointID.Resolve (_product, o => o.Reviews));
+      TestableClientTransaction.EnsureDataComplete(RelationEndPointID.Resolve(_product, o => o.Reviews));
 
-      Assert.That (_product.Reviews.IsDataComplete, Is.True);
+      Assert.That(_product.Reviews.IsDataComplete, Is.True);
     }
 
     [Test]
     public void AccessingOriginalRelatedVirtualCollection_LoadsContentsForBothOriginalAndCurrentCollection ()
     {
-      Assert.That (_product.Properties[typeof (Product), "Reviews"].GetOriginalValue<IObjectList<ProductReview>>().IsDataComplete, Is.True);
+      Assert.That(_product.Properties[typeof (Product), "Reviews"].GetOriginalValue<IObjectList<ProductReview>>().IsDataComplete, Is.True);
       // Since the data had to be loaded for the original contents, it has also been loaded into the actual collection.
-      Assert.That (_product.Reviews.IsDataComplete, Is.True);
+      Assert.That(_product.Reviews.IsDataComplete, Is.True);
     }
 
   }

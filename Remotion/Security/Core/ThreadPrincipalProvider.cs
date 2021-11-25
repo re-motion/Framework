@@ -39,7 +39,7 @@ namespace Remotion.Security
         return s_nullSecurityPrincipal;
 
       // TODO RM-7873: Add notnull assertion
-      return new SecurityPrincipal (identity.Name!, null, null, null);
+      return new SecurityPrincipal(identity.Name!, null, null, null);
     }
 
     bool INullObject.IsNull

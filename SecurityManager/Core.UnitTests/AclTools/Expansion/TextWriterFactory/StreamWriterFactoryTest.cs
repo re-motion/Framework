@@ -29,27 +29,27 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TextWriterFactor
     [Test]
     public void NewTextWriterArgumentTest ()
     {
-      var streamWriterFactory = new StreamWriterFactory ();
-      string directory = Path.Combine (Path.GetTempPath (), "StreamWriterFactoryTest_DirectoryTest");
+      var streamWriterFactory = new StreamWriterFactory();
+      string directory = Path.Combine(Path.GetTempPath(), "StreamWriterFactoryTest_DirectoryTest");
       const string extension = "xyz";
       const string fileName = "someFile";
-      using (StreamWriter streamWriter = (StreamWriter) streamWriterFactory.CreateTextWriter (directory, fileName, extension))
+      using (StreamWriter streamWriter = (StreamWriter) streamWriterFactory.CreateTextWriter(directory, fileName, extension))
       {
         var fileStream = (FileStream) streamWriter.BaseStream;
-        string filePathExpected = Path.Combine (directory, fileName + "." + extension);
-        Assert.That (fileStream.Name, Is.EqualTo (filePathExpected));
+        string filePathExpected = Path.Combine(directory, fileName + "." + extension);
+        Assert.That(fileStream.Name, Is.EqualTo(filePathExpected));
       }
     }
 
     [Test]
     public void NewTextWriterWithNullDirectoryThrowsTest ()
     {
-      var streamWriterFactory = new StreamWriterFactory ();
+      var streamWriterFactory = new StreamWriterFactory();
       streamWriterFactory.Directory = null;
-      Assert.That (
-          () => streamWriterFactory.CreateTextWriter ("whatever"),
+      Assert.That(
+          () => streamWriterFactory.CreateTextWriter("whatever"),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Directory must not be null. Set using \"Directory\"-property before calling \"CreateTextWriter\""));
     }
 
@@ -57,13 +57,13 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TextWriterFactor
     public void NewTextWriterNameAlreadyExistsTest ()
     {
       const string textWriterName = "abc";
-      var streamWriterFactory = new StreamWriterFactory ();
+      var streamWriterFactory = new StreamWriterFactory();
       streamWriterFactory.Directory = "xyz";
-      streamWriterFactory.CreateTextWriter (textWriterName);
-      Assert.That (
-          () => streamWriterFactory.CreateTextWriter (textWriterName),
+      streamWriterFactory.CreateTextWriter(textWriterName);
+      Assert.That(
+          () => streamWriterFactory.CreateTextWriter(textWriterName),
           Throws.ArgumentException
-              .With.Message.EqualTo (@"TextWriter with name ""abc"" already exists."));
+              .With.Message.EqualTo(@"TextWriter with name ""abc"" already exists."));
     }
 
 
@@ -77,9 +77,9 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TextWriterFactor
       streamWriterFactoryMock.Object.Extension = extension;
       const string fileName = "someFile";
 
-      streamWriterFactoryMock.Setup (x => x.CreateTextWriter (directory, fileName, extension)).Returns (TextWriter.Null).Verifiable();
+      streamWriterFactoryMock.Setup(x => x.CreateTextWriter(directory, fileName, extension)).Returns(TextWriter.Null).Verifiable();
 
-      streamWriterFactoryMock.Object.CreateTextWriter (fileName);
+      streamWriterFactoryMock.Object.CreateTextWriter(fileName);
 
       streamWriterFactoryMock.Verify();
     }

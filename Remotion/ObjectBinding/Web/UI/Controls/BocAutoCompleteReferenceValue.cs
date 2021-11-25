@@ -56,16 +56,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public string SearchServicePath
     {
-      get { throw new NotSupportedException ("Use ControlServicePath instead. (Version 1.21.3)"); }
-      set { throw new NotSupportedException ("Use ControlServicePath instead. (Version 1.21.3)"); }
+      get { throw new NotSupportedException("Use ControlServicePath instead. (Version 1.21.3)"); }
+      set { throw new NotSupportedException("Use ControlServicePath instead. (Version 1.21.3)"); }
     }
 
     [Obsolete ("Use ControlServiceArguments instead. (Version 1.21.3)", true)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public string Args
     {
-      get { throw new NotSupportedException ("Use ControlServiceArguments instead. (Version 1.21.3)"); }
-      set { throw new NotSupportedException ("Use ControlServiceArguments instead. (Version 1.21.3)"); }
+      get { throw new NotSupportedException("Use ControlServiceArguments instead. (Version 1.21.3)"); }
+      set { throw new NotSupportedException("Use ControlServiceArguments instead. (Version 1.21.3)"); }
     }
 
     #endregion
@@ -137,7 +137,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         : base (webServiceFactory)
     {
       _textBoxStyle = new SingleRowTextBoxStyle();
-      _businessObjectWebServiceContextFromPreviousLifeCycle = BusinessObjectWebServiceContext.Create (null, null, null);
+      _businessObjectWebServiceContextFromPreviousLifeCycle = BusinessObjectWebServiceContext.Create(null, null, null);
     }
 
     // methods and properties
@@ -157,18 +157,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         _nullItemErrorMessage = value;
 
-        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_nullItemErrorMessage);
+        UpdateValidtaorErrorMessages<RequiredFieldValidator>(_nullItemErrorMessage);
       }
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      base.RegisterHtmlHeadContents (htmlHeadAppender);
+      base.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
     protected override string ValueContainingControlID
@@ -178,12 +178,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      var isDataChanged = base.LoadPostData (postDataKey, postCollection);
+      var isDataChanged = base.LoadPostData(postDataKey, postCollection);
 
-      string? newValue = PageUtility.GetPostBackCollectionItem (Page!, GetTextValueName());
+      string? newValue = PageUtility.GetPostBackCollectionItem(Page!, GetTextValueName());
       if (newValue != null)
       {
-        if (InternalDisplayName == null && !string.IsNullOrEmpty (newValue))
+        if (InternalDisplayName == null && !string.IsNullOrEmpty(newValue))
           isDataChanged = true;
         else if (InternalDisplayName != null && newValue != InternalDisplayName)
           isDataChanged = true;
@@ -192,11 +192,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       var searchAvailableObjectWebService = GetSearchAvailableObjectService();
       if (isDataChanged)
       {
-        InternalDisplayName = StringUtility.EmptyToNull (newValue);
+        InternalDisplayName = StringUtility.EmptyToNull(newValue);
 
         if (InternalDisplayName != null && InternalValue == null)
         {
-          var result = searchAvailableObjectWebService.SearchExact (
+          var result = searchAvailableObjectWebService.SearchExact(
               InternalDisplayName,
               _businessObjectWebServiceContextFromPreviousLifeCycle.BusinessObjectClass,
               _businessObjectWebServiceContextFromPreviousLifeCycle.BusinessObjectProperty,
@@ -227,13 +227,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected virtual void EvaluateWaiConformity ()
     {
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError (1, this);
+        WcagHelper.Instance.HandleError(1, this);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
       EnsureChildControls();
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       EnsureDisplayNameRefreshed();
 
@@ -242,32 +242,32 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private IBocAutoCompleteReferenceValueWebService GetSearchAvailableObjectService ()
     {
-      if (string.IsNullOrEmpty (ControlServicePath))
-        throw new InvalidOperationException (string.Format ("BocAutoCompleteReferenceValue '{0}' does not have a ControlServicePath set.", ID));
+      if (string.IsNullOrEmpty(ControlServicePath))
+        throw new InvalidOperationException(string.Format("BocAutoCompleteReferenceValue '{0}' does not have a ControlServicePath set.", ID));
 
-      var virtualServicePath = VirtualPathUtility.GetVirtualPath (this, ControlServicePath);
-      return WebServiceFactory.CreateJsonService<IBocAutoCompleteReferenceValueWebService> (virtualServicePath);
+      var virtualServicePath = VirtualPathUtility.GetVirtualPath(this, ControlServicePath);
+      return WebServiceFactory.CreateJsonService<IBocAutoCompleteReferenceValueWebService>(virtualServicePath);
     }
 
     protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
     {
-      return new BocAutoCompleteReferenceValueConstraintVisitor (this);
+      return new BocAutoCompleteReferenceValueConstraintVisitor(this);
     }
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       EvaluateWaiConformity();
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext (writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     [Obsolete ("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("For DependDB only.");
+      throw new NotImplementedException("For DependDB only.");
     }
 
     /// <summary>
@@ -286,7 +286,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = ServiceLocator.GetInstance<IBocAutoCompleteReferenceValueValidatorFactory>();
-      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList ().AsReadOnly ();
+      _validators = validatorFactory.CreateValidators(this, isReadOnly).ToList().AsReadOnly();
 
       OverrideValidatorErrorMessages();
 
@@ -295,11 +295,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OverrideValidatorErrorMessages ()
     {
-      if (!string.IsNullOrEmpty (InvalidItemErrorMessage))
-        UpdateValidtaorErrorMessages<BocAutoCompleteReferenceValueInvalidDisplayNameValidator> (InvalidItemErrorMessage);
+      if (!string.IsNullOrEmpty(InvalidItemErrorMessage))
+        UpdateValidtaorErrorMessages<BocAutoCompleteReferenceValueInvalidDisplayNameValidator>(InvalidItemErrorMessage);
 
-      if (!string.IsNullOrEmpty (NullItemErrorMessage))
-        UpdateValidtaorErrorMessages<RequiredFieldValidator> (NullItemErrorMessage);
+      if (!string.IsNullOrEmpty(NullItemErrorMessage))
+        UpdateValidtaorErrorMessages<RequiredFieldValidator>(NullItemErrorMessage);
     }
 
     private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
@@ -316,11 +316,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual BocAutoCompleteReferenceValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      Assertion.IsNotNull (Context, "Context must not be null.");
+      Assertion.IsNotNull(Context, "Context must not be null.");
 
-      return new BocAutoCompleteReferenceValueRenderingContext (
+      return new BocAutoCompleteReferenceValueRenderingContext(
           Context,
           writer,
           this,
@@ -331,7 +331,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       object?[] values = (object?[]) savedState!;
 
-      base.LoadControlState (values[0]);
+      base.LoadControlState(values[0]);
       InternalValue = (string?) values[1];
       _displayName = (string?) values[2];
       _businessObjectWebServiceContextFromPreviousLifeCycle = (BusinessObjectWebServiceContext) values[3]!;
@@ -366,16 +366,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       IBusinessObjectWithIdentity? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (IBusinessObjectWithIdentity?) DataSource.BusinessObject.GetProperty (Property);
+        value = (IBusinessObjectWithIdentity?) DataSource.BusinessObject.GetProperty(Property);
 
-      LoadValueInternal (value, false);
+      LoadValueInternal(value, false);
     }
 
     /// <summary> Populates the <see cref="BocReferenceValueBase.Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (IBusinessObjectWithIdentity value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
@@ -384,7 +384,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (interim)
         return;
 
-      SetValue (value);
+      SetValue(value);
       IsDirty = false;
     }
 
@@ -413,16 +413,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     protected override IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (ResourceIdentifier));
+      return GetResourceManager(typeof (ResourceIdentifier));
     }
 
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      base.LoadResources (resourceManager, globalizationService);
+      base.LoadResources(resourceManager, globalizationService);
 
-      var key = ResourceManagerUtility.GetGlobalResourceKey (NullItemErrorMessage);
-      if (!string.IsNullOrEmpty (key))
-        NullItemErrorMessage = resourceManager.GetString (key);
+      var key = ResourceManagerUtility.GetGlobalResourceKey(NullItemErrorMessage);
+      if (!string.IsNullOrEmpty(key))
+        NullItemErrorMessage = resourceManager.GetString(key);
     }
 
     protected override string? GetLabelText ()
@@ -440,7 +440,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         var businessObjectClass = GetBusinessObjectClass();
         if (businessObjectClass != null)
-          _value = businessObjectClass.GetObject (InternalValue);
+          _value = businessObjectClass.GetObject(InternalValue);
       }
       return _value;
     }
@@ -452,7 +452,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (value != null)
       {
         InternalValue = value.UniqueIdentifier;
-        InternalDisplayName = GetDisplayName (value);
+        InternalDisplayName = GetDisplayName(value);
       }
       else
       {
@@ -538,7 +538,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException ("value", "The CompletionSetCount must be greater than or equal to 0.");
+          throw new ArgumentOutOfRangeException("value", "The CompletionSetCount must be greater than or equal to 0.");
         _completionSetCount = value;
       }
     }
@@ -552,7 +552,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException ("value", "The DropDownDisplayDelay must be greater than or equal to 0.");
+          throw new ArgumentOutOfRangeException("value", "The DropDownDisplayDelay must be greater than or equal to 0.");
         _dropDownDisplayDelay = value;
       }
     }
@@ -566,7 +566,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException ("value", "The DropDownRefreshDelay must be greater than or equal to 0.");
+          throw new ArgumentOutOfRangeException("value", "The DropDownRefreshDelay must be greater than or equal to 0.");
         _dropDownRefreshDelay = value;
       }
     }
@@ -580,7 +580,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException ("value", "The SelectionUpdateDelay must be greater than or equal to 0.");
+          throw new ArgumentOutOfRangeException("value", "The SelectionUpdateDelay must be greater than or equal to 0.");
         _selectionUpdateDelay = value;
       }
     }
@@ -600,7 +600,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public string? ValidSearchStringRegex
     {
       get { return _validSearchStringRegex; }
-      set { _validSearchStringRegex = StringUtility.EmptyToNull (value); }
+      set { _validSearchStringRegex = StringUtility.EmptyToNull(value); }
     }
 
     /// <summary>
@@ -624,7 +624,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public string? ValidSearchStringForDropDownRegex
     {
       get { return _validSearchStringForDropDownRegex; }
-      set { _validSearchStringForDropDownRegex = StringUtility.EmptyToNull (value); }
+      set { _validSearchStringForDropDownRegex = StringUtility.EmptyToNull(value); }
     }
 
     /// <summary>
@@ -636,7 +636,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public string? SearchStringForDropDownDoesNotMatchRegexMessage
     {
       get { return _searchStringForDropDownDoesNotMatchRegexMessage; }
-      set { _searchStringForDropDownDoesNotMatchRegexMessage = StringUtility.EmptyToNull (value); }
+      set { _searchStringForDropDownDoesNotMatchRegexMessage = StringUtility.EmptyToNull(value); }
     }
 
     /// <summary>
@@ -661,7 +661,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return null;
 
         EnsureDisplayNameRefreshed();
-        return string.Format ("{0}\n{1}", InternalValue, InternalDisplayName);
+        return string.Format("{0}\n{1}", InternalValue, InternalDisplayName);
       }
     }
 
@@ -687,12 +687,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override sealed string GetNullItemErrorMessage ()
     {
-      return GetResourceManager().GetString (ResourceIdentifier.NullItemErrorMessage);
+      return GetResourceManager().GetString(ResourceIdentifier.NullItemErrorMessage);
     }
 
     protected override sealed string GetOptionsMenuTitle ()
     {
-      return GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
+      return GetResourceManager().GetString(ResourceIdentifier.OptionsTitle);
     }
 
     protected override sealed string GetSelectionCountScript ()
@@ -716,7 +716,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         var value = GetValue();
         if (value != null)
-          InternalDisplayName = GetDisplayName (value);
+          InternalDisplayName = GetDisplayName(value);
       }
     }
 

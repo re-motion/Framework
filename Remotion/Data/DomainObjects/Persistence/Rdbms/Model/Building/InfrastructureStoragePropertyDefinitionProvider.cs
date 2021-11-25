@@ -36,26 +36,26 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         IStorageTypeInformationProvider storageTypeInformationProvider,
         IStorageNameProvider storageNameProvider)
     {
-      ArgumentUtility.CheckNotNull ("storageTypeInformationProvider", storageTypeInformationProvider);
-      ArgumentUtility.CheckNotNull ("storageNameProvider", storageNameProvider);
+      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull("storageNameProvider", storageNameProvider);
 
-      _idColumnDefinition = new ColumnDefinition (
+      _idColumnDefinition = new ColumnDefinition(
           storageNameProvider.GetIDColumnName(),
-          storageTypeInformationProvider.GetStorageTypeForID (false),
+          storageTypeInformationProvider.GetStorageTypeForID(false),
           true);
-      _classIDColumnDefinition = new ColumnDefinition (
+      _classIDColumnDefinition = new ColumnDefinition(
           storageNameProvider.GetClassIDColumnName(),
-          storageTypeInformationProvider.GetStorageTypeForClassID (false),
+          storageTypeInformationProvider.GetStorageTypeForClassID(false),
           false);
-      _timestampColumnDefinition = new ColumnDefinition (
+      _timestampColumnDefinition = new ColumnDefinition(
           storageNameProvider.GetTimestampColumnName(),
-          storageTypeInformationProvider.GetStorageTypeForTimestamp (false),
+          storageTypeInformationProvider.GetStorageTypeForTimestamp(false),
           false);
 
-      _objectIDStoragePropertyDefinition = new ObjectIDStoragePropertyDefinition (
-          new SimpleStoragePropertyDefinition (typeof (object), _idColumnDefinition), 
-          new SimpleStoragePropertyDefinition (typeof (string), _classIDColumnDefinition));
-      _timestampStoragePropertyDefinition = new SimpleStoragePropertyDefinition (typeof (object), _timestampColumnDefinition);
+      _objectIDStoragePropertyDefinition = new ObjectIDStoragePropertyDefinition(
+          new SimpleStoragePropertyDefinition(typeof (object), _idColumnDefinition), 
+          new SimpleStoragePropertyDefinition(typeof (string), _classIDColumnDefinition));
+      _timestampStoragePropertyDefinition = new SimpleStoragePropertyDefinition(typeof (object), _timestampColumnDefinition);
     }
 
     public ObjectIDStoragePropertyDefinition GetObjectIDStoragePropertyDefinition ()

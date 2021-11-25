@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     public bool IsEnlisted (DomainObject domainObject)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public void EnlistDomainObject (DomainObject domainObject)
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     public void DisenlistDomainObject (DomainObject domainObject)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
   }
 }

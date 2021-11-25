@@ -40,28 +40,28 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public void Validate (ClientTransaction clientTransaction, PersistableData data)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("data", data);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("data", data);
 
       if (data.DomainObjectState.IsDeleted)
         return;
 
-      Assertion.IsFalse (data.DomainObjectState.IsNotLoadedYet, "No unloaded objects get this far.");
-      Assertion.IsFalse (data.DomainObjectState.IsInvalid, "No invalid objects get this far.");
+      Assertion.IsFalse(data.DomainObjectState.IsNotLoadedYet, "No unloaded objects get this far.");
+      Assertion.IsFalse(data.DomainObjectState.IsInvalid, "No invalid objects get this far.");
 
       foreach (var propertyDefinition in data.DomainObject.ID.ClassDefinition.GetPropertyDefinitions())
-        ValidatePropertyDefinition (data.DomainObject, data.DataContainer, propertyDefinition);
+        ValidatePropertyDefinition(data.DomainObject, data.DataContainer, propertyDefinition);
     }
 
     public void Validate (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
 
       foreach (var propertyDefinition in dataContainer.ID.ClassDefinition.GetPropertyDefinitions())
       {
         // Skip validation when loading StorageClass.Transaction properties to allow initialization with default value
         if (propertyDefinition.StorageClass == StorageClass.Persistent)
-          ValidatePropertyDefinition (null, dataContainer, propertyDefinition);
+          ValidatePropertyDefinition(null, dataContainer, propertyDefinition);
       }
     }
 
@@ -70,13 +70,13 @@ namespace Remotion.Data.DomainObjects.Validation
       if (propertyDefinition.IsNullable)
         return;
 
-      object propertyValue = dataContainer.GetValueWithoutEvents (propertyDefinition, ValueAccess.Current);
+      object propertyValue = dataContainer.GetValueWithoutEvents(propertyDefinition, ValueAccess.Current);
       if (propertyValue == null)
       {
-        throw new PropertyValueNotSetException (
+        throw new PropertyValueNotSetException(
             domainObject,
             propertyDefinition.PropertyName,
-            string.Format (
+            string.Format(
                 "Not-nullable property '{0}' of domain object '{1}' cannot be null.",
                 propertyDefinition.PropertyName,
                 dataContainer.ID));

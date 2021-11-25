@@ -40,7 +40,7 @@ namespace Remotion.Web.UnitTests.Core.Security.Domain
 
     public Type GetSecurableType ()
     {
-      return GetType ();
+      return GetType();
     }
   }
 }

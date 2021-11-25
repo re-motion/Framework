@@ -35,65 +35,65 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetEnumerationValueFilter_FromFilterTypeCtor ()
     {
-      DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute (typeof (StubEnumerationValueFilter));
+      DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute(typeof (StubEnumerationValueFilter));
 
-      Assert.That (attribute.GetEnumerationValueFilter (), Is.TypeOf (typeof (StubEnumerationValueFilter)));
+      Assert.That(attribute.GetEnumerationValueFilter(), Is.TypeOf(typeof (StubEnumerationValueFilter)));
     }
 
     [Test]
     public void GetEnumerationValueFilter_FromEnumValueCtorWithArray ()
     {
-      DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute (new object[] {TestEnum.Value1, TestEnum.Value3});
+      DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute(new object[] {TestEnum.Value1, TestEnum.Value3});
 
-      CheckConstantEnumerationValueFilter (attribute.GetEnumerationValueFilter(), TestEnum.Value1, TestEnum.Value3);
+      CheckConstantEnumerationValueFilter(attribute.GetEnumerationValueFilter(), TestEnum.Value1, TestEnum.Value3);
     }
 
     [Test]
     public void GetEnumerationValueFilter_FromEnumValueCtorWithOneParameter ()
     {
-      DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute (TestEnum.Value1);
+      DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute(TestEnum.Value1);
 
-      CheckConstantEnumerationValueFilter (attribute.GetEnumerationValueFilter(), TestEnum.Value1);
+      CheckConstantEnumerationValueFilter(attribute.GetEnumerationValueFilter(), TestEnum.Value1);
     }
 
     [Test]
     public void GetEnumerationValueFilter_FromEnumValueCtorWithTwoParameters ()
     {
-      DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute (TestEnum.Value1, TestEnum.Value2);
+      DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute(TestEnum.Value1, TestEnum.Value2);
 
-      CheckConstantEnumerationValueFilter (attribute.GetEnumerationValueFilter (), TestEnum.Value1, TestEnum.Value2);
+      CheckConstantEnumerationValueFilter(attribute.GetEnumerationValueFilter(), TestEnum.Value1, TestEnum.Value2);
     }
 
     [Test]
     public void GetEnumerationValueFilter_FromEnumValueCtorWithThreeParameters ()
     {
-      DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute (TestEnum.Value1, TestEnum.Value2, TestEnum.Value3);
+      DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute(TestEnum.Value1, TestEnum.Value2, TestEnum.Value3);
 
-      CheckConstantEnumerationValueFilter (attribute.GetEnumerationValueFilter (), TestEnum.Value1, TestEnum.Value2, TestEnum.Value3);
+      CheckConstantEnumerationValueFilter(attribute.GetEnumerationValueFilter(), TestEnum.Value1, TestEnum.Value2, TestEnum.Value3);
     }
 
     [Test]
     public void GetEnumerationValueFilter_FromEnumValueCtorWithFourParameters ()
     {
-      DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute (TestEnum.Value1, TestEnum.Value2, TestEnum.Value3, TestEnum.Value4);
+      DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute(TestEnum.Value1, TestEnum.Value2, TestEnum.Value3, TestEnum.Value4);
 
-      CheckConstantEnumerationValueFilter (attribute.GetEnumerationValueFilter(), TestEnum.Value1, TestEnum.Value2, TestEnum.Value3, TestEnum.Value4);
+      CheckConstantEnumerationValueFilter(attribute.GetEnumerationValueFilter(), TestEnum.Value1, TestEnum.Value2, TestEnum.Value3, TestEnum.Value4);
     }
 
     [Test]
     public void GetEnumerationValueFilter_FromEnumValueCtorWithFiveParameters ()
     {
       DisableEnumValuesAttribute attribute =
-          new DisableEnumValuesAttribute (TestEnum.Value1, TestEnum.Value2, TestEnum.Value3, TestEnum.Value4, TestEnum.Value5);
+          new DisableEnumValuesAttribute(TestEnum.Value1, TestEnum.Value2, TestEnum.Value3, TestEnum.Value4, TestEnum.Value5);
 
-      CheckConstantEnumerationValueFilter (
+      CheckConstantEnumerationValueFilter(
           attribute.GetEnumerationValueFilter(), TestEnum.Value1, TestEnum.Value2, TestEnum.Value3, TestEnum.Value4, TestEnum.Value5);
     }
 
     private void CheckConstantEnumerationValueFilter (IEnumerationValueFilter filter, params Enum[] expectedDisabledEnumValues)
     {
-      Assert.That (filter, Is.TypeOf (typeof (ConstantEnumerationValueFilter)));
-      Assert.That (((ConstantEnumerationValueFilter) filter).DisabledEnumValues, Is.EqualTo (expectedDisabledEnumValues));
+      Assert.That(filter, Is.TypeOf(typeof (ConstantEnumerationValueFilter)));
+      Assert.That(((ConstantEnumerationValueFilter) filter).DisabledEnumValues, Is.EqualTo(expectedDisabledEnumValues));
     }
   }
 }

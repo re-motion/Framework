@@ -29,10 +29,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// </summary>
   public abstract class ImplementingAccessorInterceptorBase : WrappingAccessorInterceptor
   {
-    private static readonly PropertyInfo s_properties = Assertion.IsNotNull (
-        typeof (DomainObject).GetProperty ("Properties", BindingFlags.Instance | BindingFlags.NonPublic),
+    private static readonly PropertyInfo s_properties = Assertion.IsNotNull(
+        typeof (DomainObject).GetProperty("Properties", BindingFlags.Instance | BindingFlags.NonPublic),
         "DomainObject.Properties was not found.");
-    private static readonly MethodInfo s_getPropertyAccessor = MemberInfoFromExpressionUtility.GetMethod ((PropertyIndexer i) => i["propertyName"]);
+    private static readonly MethodInfo s_getPropertyAccessor = MemberInfoFromExpressionUtility.GetMethod((PropertyIndexer i) => i["propertyName"]);
 
     private readonly string _propertyName;
     private readonly Type _propertyType;
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     protected ImplementingAccessorInterceptorBase (MethodInfo interceptedAccessorMethod, string propertyName, Type propertyType)
         : base (interceptedAccessorMethod, propertyName)
     {
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
 
       _propertyName = propertyName;
       _propertyType = propertyType;
@@ -48,9 +48,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     protected override Expression CreateBody (MethodBodyModificationContext ctx)
     {
-      var propertyIndexer = Expression.Property (ctx.This, s_properties);
-      var propertyAccessor = Expression.Call (propertyIndexer, s_getPropertyAccessor, Expression.Constant (_propertyName));
-      var body = Expression.Call (propertyAccessor, AccessorImplementationMethod.MakeGenericMethod (_propertyType), GetArguments (ctx));
+      var propertyIndexer = Expression.Property(ctx.This, s_properties);
+      var propertyAccessor = Expression.Call(propertyIndexer, s_getPropertyAccessor, Expression.Constant(_propertyName));
+      var body = Expression.Call(propertyAccessor, AccessorImplementationMethod.MakeGenericMethod(_propertyType), GetArguments(ctx));
 
       return body;
     }

@@ -44,6 +44,6 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl
     {
     }
 
-    WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (SecurableClassDefinitionListForm), "UI/AccessControl/SecurableClassDefinitionListForm.aspx");
+    WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof (SecurableClassDefinitionListForm), "UI/AccessControl/SecurableClassDefinitionListForm.aspx");
   }
 }

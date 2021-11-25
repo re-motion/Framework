@@ -31,15 +31,15 @@ namespace Remotion.Validation.UnitTests.Merging
     [SetUp]
     public void SetUp ()
     {
-      _factory = new PropertyValidatorExtractorFactory ();
+      _factory = new PropertyValidatorExtractorFactory();
     }
 
     [Test]
     public void Create ()
     {
-      var result = _factory.Create (new RemovingPropertyValidatorRegistration[0], new Mock<ILogContext>().Object);
+      var result = _factory.Create(new RemovingPropertyValidatorRegistration[0], new Mock<ILogContext>().Object);
 
-      Assert.That (result, Is.TypeOf (typeof (PropertyValidatorExtractor)));
+      Assert.That(result, Is.TypeOf(typeof (PropertyValidatorExtractor)));
     }
   }
 }

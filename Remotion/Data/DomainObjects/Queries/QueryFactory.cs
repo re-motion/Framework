@@ -38,9 +38,9 @@ namespace Remotion.Data.DomainObjects.Queries
     // Use DoubleCheckedLockingContainers to ensure that the registries are created as lazily as possible in order to allow users to register
     // customizers via IoC
     private static readonly DoubleCheckedLockingContainer<ILinqProviderComponentFactory> s_linqProviderComponentFactory =
-        new DoubleCheckedLockingContainer<ILinqProviderComponentFactory> (() => SafeServiceLocator.Current.GetInstance<ILinqProviderComponentFactory> ());
+        new DoubleCheckedLockingContainer<ILinqProviderComponentFactory>(() => SafeServiceLocator.Current.GetInstance<ILinqProviderComponentFactory>());
     private static readonly DoubleCheckedLockingContainer<IQueryParser> s_queryParser =
-        new DoubleCheckedLockingContainer<IQueryParser> (() => s_linqProviderComponentFactory.Value.CreateQueryParser());
+        new DoubleCheckedLockingContainer<IQueryParser>(() => s_linqProviderComponentFactory.Value.CreateQueryParser());
 
     /// <summary>
     /// Creates a <see cref="DomainObjectQueryable{T}"/> used as the entry point to a LINQ query with the default implementation of the SQL 
@@ -64,11 +64,11 @@ namespace Remotion.Data.DomainObjects.Queries
     public static IQueryable<T> CreateLinqQuery<T> ()
         where T: DomainObject
     {
-      var startingClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (T));
+      var startingClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (T));
       var providerDefinition = startingClassDefinition.StorageEntityDefinition.StorageProviderDefinition;
 
-      var executor = s_linqProviderComponentFactory.Value.CreateQueryExecutor (providerDefinition);
-      return CreateLinqQuery<T> (s_queryParser.Value, executor);
+      var executor = s_linqProviderComponentFactory.Value.CreateQueryExecutor(providerDefinition);
+      return CreateLinqQuery<T>(s_queryParser.Value, executor);
     }
 
     /// <summary>
@@ -84,10 +84,10 @@ namespace Remotion.Data.DomainObjects.Queries
     public static IQueryable<T> CreateLinqQuery<T> (IQueryParser queryParser, IQueryExecutor executor)
         where T: DomainObject
     {
-      ArgumentUtility.CheckNotNull ("executor", executor);
-      ArgumentUtility.CheckNotNull ("queryParser", queryParser);
+      ArgumentUtility.CheckNotNull("executor", executor);
+      ArgumentUtility.CheckNotNull("queryParser", queryParser);
 
-      return s_linqProviderComponentFactory.Value.CreateQueryable<T> (queryParser, executor);
+      return s_linqProviderComponentFactory.Value.CreateQueryable<T>(queryParser, executor);
     }
 
     /// <summary>
@@ -97,8 +97,8 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <returns>An implementation of <see cref="IQuery"/> corresponding to <paramref name="queryDefinition"/>.</returns>
     public static IQuery CreateQuery (QueryDefinition queryDefinition)
     {
-      ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
-      return CreateQuery (queryDefinition, new QueryParameterCollection());
+      ArgumentUtility.CheckNotNull("queryDefinition", queryDefinition);
+      return CreateQuery(queryDefinition, new QueryParameterCollection());
     }
 
     /// <summary>
@@ -109,10 +109,10 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <returns>An implementation of <see cref="IQuery"/> corresponding to <paramref name="queryDefinition"/>.</returns>
     public static IQuery CreateQuery (QueryDefinition queryDefinition, QueryParameterCollection queryParameterCollection)
     {
-      ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
-      ArgumentUtility.CheckNotNull ("queryParameterCollection", queryParameterCollection);
+      ArgumentUtility.CheckNotNull("queryDefinition", queryDefinition);
+      ArgumentUtility.CheckNotNull("queryParameterCollection", queryParameterCollection);
 
-      return new Query (queryDefinition, queryParameterCollection);
+      return new Query(queryDefinition, queryParameterCollection);
     }
 
     /// <summary>
@@ -137,28 +137,28 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </remarks>
     public static IQuery CreateQuery<T> (string id, IQueryable queryable)
     {
-      ArgumentUtility.CheckNotNull ("queryable", queryable);
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+      ArgumentUtility.CheckNotNull("queryable", queryable);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
 
       var provider = queryable.Provider as QueryProviderBase;
       var queryExecutor = provider != null ? provider.Executor as DomainObjectQueryExecutor : null;
 
       if (provider == null || queryExecutor == null)
       {
-        string message = string.Format (
+        string message = string.Format(
             "The given queryable must stem from an instance of DomainObjectQueryable. Instead, it is of type '{0}',"
             + " with a query provider of type '{1}'. Be sure to use QueryFactory.CreateLinqQuery to create the queryable instance, and only use "
             + "standard query methods on it.",
             queryable.GetType().Name,
             queryable.Provider.GetType().Name);
-        throw new ArgumentException (message, "queryable");
+        throw new ArgumentException(message, "queryable");
       }
 
       var expression = queryable.Expression;
-      var queryModel = provider.GenerateQueryModel (expression);
-      var fetchQueryModelBuilders = FetchFilteringQueryModelVisitor.RemoveFetchRequestsFromQueryModel (queryModel);
+      var queryModel = provider.GenerateQueryModel(expression);
+      var fetchQueryModelBuilders = FetchFilteringQueryModelVisitor.RemoveFetchRequestsFromQueryModel(queryModel);
 
-      return queryExecutor.QueryGenerator.CreateSequenceQuery<T> (
+      return queryExecutor.QueryGenerator.CreateSequenceQuery<T>(
           id,
           queryExecutor.StorageProviderDefinition,
           queryModel,
@@ -174,8 +174,8 @@ namespace Remotion.Data.DomainObjects.Queries
     /// held by the current <see cref="QueryConfiguration"/>.</returns>
     public static IQuery CreateQueryFromConfiguration (string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-      return CreateQueryFromConfiguration (id, new QueryParameterCollection());
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      return CreateQueryFromConfiguration(id, new QueryParameterCollection());
     }
 
     /// <summary>
@@ -187,9 +187,9 @@ namespace Remotion.Data.DomainObjects.Queries
     /// held by the current <see cref="QueryConfiguration"/>.</returns>
     public static IQuery CreateQueryFromConfiguration (string id, QueryParameterCollection queryParameterCollection)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-      var queryDefinition = DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory (id);
-      return new Query (queryDefinition, queryParameterCollection);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      var queryDefinition = DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory(id);
+      return new Query(queryDefinition, queryParameterCollection);
     }
 
     /// <summary>
@@ -206,13 +206,13 @@ namespace Remotion.Data.DomainObjects.Queries
     public static IQuery CreateScalarQuery (
         string id, StorageProviderDefinition storageProviderDefinition, string statement, QueryParameterCollection queryParameterCollection)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("queryParameterCollection", queryParameterCollection);
+      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("queryParameterCollection", queryParameterCollection);
 
-      var definition = new QueryDefinition (id, storageProviderDefinition, statement, QueryType.Scalar);
-      return new Query (definition, queryParameterCollection);
+      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.Scalar);
+      return new Query(definition, queryParameterCollection);
     }
 
     /// <summary>
@@ -235,14 +235,14 @@ namespace Remotion.Data.DomainObjects.Queries
         QueryParameterCollection queryParameterCollection,
         Type collectionType)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("queryParameterCollection", queryParameterCollection);
-      ArgumentUtility.CheckNotNull ("collectionType", collectionType);
+      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("queryParameterCollection", queryParameterCollection);
+      ArgumentUtility.CheckNotNull("collectionType", collectionType);
 
-      var definition = new QueryDefinition (id, storageProviderDefinition, statement, QueryType.Collection, collectionType);
-      return new Query (definition, queryParameterCollection);
+      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.Collection, collectionType);
+      return new Query(definition, queryParameterCollection);
     }
 
     /// <summary>
@@ -262,8 +262,8 @@ namespace Remotion.Data.DomainObjects.Queries
         string statement,
         QueryParameterCollection queryParameterCollection)
     {
-      var definition = new QueryDefinition (id, storageProviderDefinition, statement, QueryType.Custom, null);
-      return new Query (definition, queryParameterCollection);
+      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.Custom, null);
+      return new Query(definition, queryParameterCollection);
     }
   }
 }

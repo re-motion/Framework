@@ -29,7 +29,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     public RootAssembly (Assembly assembly, bool followReferences)
         : this()
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
 
       Assembly = assembly;
       FollowReferences = followReferences;
@@ -40,12 +40,12 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     public override bool Equals (object? obj)
     {
-      return obj is RootAssembly && Assembly.Equals (((RootAssembly) obj).Assembly);
+      return obj is RootAssembly && Assembly.Equals(((RootAssembly) obj).Assembly);
     }
 
     public override int GetHashCode ()
     {
-      return Assembly.GetHashCode ();
+      return Assembly.GetHashCode();
     }
 
     public override string ToString ()

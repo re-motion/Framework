@@ -35,13 +35,13 @@ namespace Remotion.Security.Metadata
     // construction and disposing
 
     public AbstractRoleReflector ()
-      : this (new EnumerationReflector ())
+      : this (new EnumerationReflector())
     {
     }
 
     public AbstractRoleReflector (IEnumerationReflector enumerationReflector)
     {
-      ArgumentUtility.CheckNotNull ("enumerationReflector", enumerationReflector);
+      ArgumentUtility.CheckNotNull("enumerationReflector", enumerationReflector);
       _enumerationReflector = enumerationReflector;
     }
 
@@ -54,20 +54,20 @@ namespace Remotion.Security.Metadata
 
     public List<EnumValueInfo> GetAbstractRoles (Assembly assembly, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
-      ArgumentUtility.CheckNotNull ("cache", cache);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull("cache", cache);
 
-      List<EnumValueInfo> abstractRoles = new List<EnumValueInfo> ();
-      foreach (Type type in AssemblyTypeCache.GetTypes (assembly))
+      List<EnumValueInfo> abstractRoles = new List<EnumValueInfo>();
+      foreach (Type type in AssemblyTypeCache.GetTypes(assembly))
       {
-        if (type.IsEnum && Attribute.IsDefined (type, typeof (AbstractRoleAttribute), false))
+        if (type.IsEnum && Attribute.IsDefined(type, typeof (AbstractRoleAttribute), false))
         {
-          Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues (type, cache);
+          Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues(type, cache);
           foreach (KeyValuePair<Enum, EnumValueInfo> entry in values)
           {
-            if (!cache.ContainsAbstractRole (entry.Key))
-              cache.AddAbstractRole (entry.Key, entry.Value);
-            abstractRoles.Add (entry.Value);
+            if (!cache.ContainsAbstractRole(entry.Key))
+              cache.AddAbstractRole(entry.Key, entry.Value);
+            abstractRoles.Add(entry.Value);
           }
         }
       }

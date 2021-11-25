@@ -51,8 +51,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Gene
     /// <inheritdoc />
     public override TestBocListWithRowMenuItems CreateControl (GenericTestOptions options)
     {
-      var control = base.CreateControl (options);
-      control.FixedColumns.Add (new BocSimpleColumnDefinition { ColumnTitle = "Last Name", PropertyPathIdentifier = "Title" });
+      var control = base.CreateControl(options);
+      control.FixedColumns.Add(new BocSimpleColumnDefinition { ColumnTitle = "Last Name", PropertyPathIdentifier = "Title" });
       return control;
     }
   }

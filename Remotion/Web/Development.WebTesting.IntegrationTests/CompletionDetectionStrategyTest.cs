@@ -30,12 +30,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webLinkButton = home.Anchors().GetByLocalID ("MyDelayedPostBack");
-      var completionDetection = new WxePostBackCompletionDetectionStrategy (1, TimeSpan.Zero);
+      var webLinkButton = home.Anchors().GetByLocalID("MyDelayedPostBack");
+      var completionDetection = new WxePostBackCompletionDetectionStrategy(1, TimeSpan.Zero);
 
-      Assert.That (
-          () => webLinkButton.Click (Opt.ContinueWhen (completionDetection)),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Expected WXE-PSN to be '3', but it actually is '2'"));
+      Assert.That(
+          () => webLinkButton.Click(Opt.ContinueWhen(completionDetection)),
+          Throws.InvalidOperationException.With.Message.EqualTo("Expected WXE-PSN to be '3', but it actually is '2'"));
 
       WaitForPostBackCompletion();
     }
@@ -45,12 +45,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webLinkButton = home.Anchors().GetByLocalID ("MyDelayedPostBack");
-      var completionDetection = new WxePostBackInCompletionDetectionStrategy (home.Context, 1, TimeSpan.Zero);
+      var webLinkButton = home.Anchors().GetByLocalID("MyDelayedPostBack");
+      var completionDetection = new WxePostBackInCompletionDetectionStrategy(home.Context, 1, TimeSpan.Zero);
 
-      Assert.That (
-          () => webLinkButton.Click (Opt.ContinueWhen (completionDetection)),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Expected WXE-PSN to be '3', but it actually is '2'"));
+      Assert.That(
+          () => webLinkButton.Click(Opt.ContinueWhen(completionDetection)),
+          Throws.InvalidOperationException.With.Message.EqualTo("Expected WXE-PSN to be '3', but it actually is '2'"));
 
       WaitForPostBackCompletion();
     }
@@ -60,12 +60,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webLinkButton = home.Anchors().GetByLocalID ("MyDelayedReset");
-      var completionDetection = new WxeResetCompletionDetectionStrategy (TimeSpan.Zero);
+      var webLinkButton = home.Anchors().GetByLocalID("MyDelayedReset");
+      var completionDetection = new WxeResetCompletionDetectionStrategy(TimeSpan.Zero);
 
-      Assert.That (
-          () => webLinkButton.Click (Opt.ContinueWhen (completionDetection)),
-          Throws.InvalidOperationException.With.Message.Matches ("Expected WXE-FT to be different to '[-a-z0-9]+', but it is equal\\."));
+      Assert.That(
+          () => webLinkButton.Click(Opt.ContinueWhen(completionDetection)),
+          Throws.InvalidOperationException.With.Message.Matches("Expected WXE-FT to be different to '[-a-z0-9]+', but it is equal\\."));
 
       WaitForPostBackCompletion();
     }
@@ -75,12 +75,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webLinkButton = home.Anchors().GetByLocalID ("MyDelayedReset");
-      var completionDetection = new WxeResetInCompletionDetectionStrategy (home.Context, TimeSpan.Zero);
+      var webLinkButton = home.Anchors().GetByLocalID("MyDelayedReset");
+      var completionDetection = new WxeResetInCompletionDetectionStrategy(home.Context, TimeSpan.Zero);
 
-      Assert.That (
-          () => webLinkButton.Click (Opt.ContinueWhen (completionDetection)),
-          Throws.InvalidOperationException.With.Message.Matches ("Expected WXE-FT to be different to '[-a-z0-9]+', but it is equal\\."));
+      Assert.That(
+          () => webLinkButton.Click(Opt.ContinueWhen(completionDetection)),
+          Throws.InvalidOperationException.With.Message.Matches("Expected WXE-FT to be different to '[-a-z0-9]+', but it is equal\\."));
 
       WaitForPostBackCompletion();
     }
@@ -90,12 +90,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// </summary>
     private void WaitForPostBackCompletion ()
     {
-      Thread.Sleep (TimeSpan.FromSeconds (1));
+      Thread.Sleep(TimeSpan.FromSeconds(1));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("CompletionDetectionStrategyTest.wxe");
+      return Start<WxePageObject>("CompletionDetectionStrategyTest.wxe");
     }
   }
 }

@@ -43,52 +43,52 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 
     public UrlMappingLoader (string configurationFile, Type type)
     {
-      Initialize (configurationFile, type, new UrlMappingSchema ());
+      Initialize(configurationFile, type, new UrlMappingSchema());
     }
 
     // methods and properties
 
     public UrlMappingConfiguration CreateUrlMappingConfiguration ()
     {
-      return (UrlMappingConfiguration) LoadConfiguration (_configurationFile!, _type!, _schemas!);
+      return (UrlMappingConfiguration) LoadConfiguration(_configurationFile!, _type!, _schemas!);
     }
 
-    [MemberNotNull (nameof (_configurationFile))]
-    [MemberNotNull (nameof (_type))]
-    [MemberNotNull (nameof (_schemas))]
+    [MemberNotNull (nameof(_configurationFile))]
+    [MemberNotNull (nameof(_type))]
+    [MemberNotNull (nameof(_schemas))]
     protected void Initialize (string configurationFile, Type type, params SchemaLoaderBase[] schemas)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("configurationFile", configurationFile);
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNullOrEmpty("configurationFile", configurationFile);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      _configurationFile = GetMappingFilePath (configurationFile);
-      if (!File.Exists (_configurationFile))
-        throw new FileNotFoundException (string.Format ("Configuration file '{0}' could not be found.", configurationFile), "configurationFile");
+      _configurationFile = GetMappingFilePath(configurationFile);
+      if (!File.Exists(_configurationFile))
+        throw new FileNotFoundException(string.Format("Configuration file '{0}' could not be found.", configurationFile), "configurationFile");
 
       _type = type;
-      _schemas = GetSchemas (schemas);
+      _schemas = GetSchemas(schemas);
     }
 
     private string GetMappingFilePath (string configurationFile)
     {
-      if (configurationFile.StartsWith ("~/"))
-        return HttpContext.Current.Server.MapPath (configurationFile);
+      if (configurationFile.StartsWith("~/"))
+        return HttpContext.Current.Server.MapPath(configurationFile);
       
-      if (!Path.IsPathRooted (configurationFile))
-        return Path.Combine (GetExecutingAssemblyPath (), configurationFile);
+      if (!Path.IsPathRooted(configurationFile))
+        return Path.Combine(GetExecutingAssemblyPath(), configurationFile);
       
       return configurationFile;
     }
 
     protected virtual object LoadConfiguration (string configurationFile, Type type, XmlSchemaSet schemas)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("configurationFile", configurationFile);
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("schemas", schemas);
+      ArgumentUtility.CheckNotNullOrEmpty("configurationFile", configurationFile);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("schemas", schemas);
 
-      using (XmlTextReader reader = new XmlTextReader (configurationFile))
+      using (XmlTextReader reader = new XmlTextReader(configurationFile))
       {
-        return XmlSerializationUtility.DeserializeUsingSchema (reader, type, schemas);
+        return XmlSerializationUtility.DeserializeUsingSchema(reader, type, schemas);
       }
       //    try
       //    {
@@ -106,11 +106,11 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 
     protected virtual XmlSchemaSet GetSchemas (SchemaLoaderBase[] schemas)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("schemas", schemas);
+      ArgumentUtility.CheckNotNullOrItemsNull("schemas", schemas);
 
-      XmlSchemaSet schemaSet = new XmlSchemaSet ();
+      XmlSchemaSet schemaSet = new XmlSchemaSet();
       foreach (SchemaLoaderBase schema in schemas)
-        schemaSet.Add (schema.LoadSchemaSet ());
+        schemaSet.Add(schema.LoadSchemaSet());
       return schemaSet;
     }
 
@@ -131,10 +131,10 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 
     private string GetExecutingAssemblyPath ()
     {
-      AssemblyName assemblyName = Assembly.GetExecutingAssembly ().GetName (copiedName: false);
+      AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName(copiedName: false);
 
-      Uri codeBaseUri = new Uri (assemblyName.EscapedCodeBase!);
-      return Path.GetDirectoryName (codeBaseUri.LocalPath)!; // TODO RM-8118: Add notnull assertion
+      Uri codeBaseUri = new Uri(assemblyName.EscapedCodeBase!);
+      return Path.GetDirectoryName(codeBaseUri.LocalPath)!; // TODO RM-8118: Add notnull assertion
     }
   }
 }

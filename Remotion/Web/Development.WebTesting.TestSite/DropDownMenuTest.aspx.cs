@@ -26,30 +26,30 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       MyDropDownMenu.EventCommandClick += MyDropDownMenuOnCommandClick;
       MyDropDownMenu.WxeFunctionCommandClick += MyDropDownMenuOnCommandClick;
 
-      MyDropDownMenu_Delayed.SetLoadMenuItemStatus (
+      MyDropDownMenu_Delayed.SetLoadMenuItemStatus(
           "DropDownMenuWebService.asmx",
-          nameof (DropDownMenuWebService.GetMenuItemStatusWithDelay),
+          nameof(DropDownMenuWebService.GetMenuItemStatusWithDelay),
           new Dictionary<string, string> { { "arguments", 500.ToString() } });
 
-      MyDropDownMenu_DelayedLongerThanTimeout.SetLoadMenuItemStatus (
+      MyDropDownMenu_DelayedLongerThanTimeout.SetLoadMenuItemStatus(
           "DropDownMenuWebService.asmx",
-          nameof (DropDownMenuWebService.GetMenuItemStatusWithDelay),
+          nameof(DropDownMenuWebService.GetMenuItemStatusWithDelay),
           new Dictionary<string, string> { { "arguments", (31 * 1000).ToString() } });
 
-      MyDropDownMenu_Error.SetLoadMenuItemStatus (
+      MyDropDownMenu_Error.SetLoadMenuItemStatus(
           "DropDownMenuWebService.asmx",
-          nameof (DropDownMenuWebService.GetMenuItemStatusWithError),
+          nameof(DropDownMenuWebService.GetMenuItemStatusWithError),
           new Dictionary<string, string>());
     }
 
     private void MyDropDownMenuOnCommandClick (object sender, WebMenuItemClickEventArgs webMenuItemClickEventArgs)
     {
-      ((Layout) Master).SetTestOutput (webMenuItemClickEventArgs.Item.ItemID + "|" + webMenuItemClickEventArgs.Command.Type);
+      ((Layout) Master).SetTestOutput(webMenuItemClickEventArgs.Item.ItemID + "|" + webMenuItemClickEventArgs.Command.Type);
     }
   }
 }

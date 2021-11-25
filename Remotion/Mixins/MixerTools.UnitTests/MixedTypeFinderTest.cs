@@ -49,10 +49,10 @@ namespace Remotion.Mixins.MixerTools.UnitTests
       _genericClassContext = CreateClassContext(typeof (GenericTargetClass<>), typeof (NullMixin));
       _interfaceClassContext = CreateClassContext(typeof (IBaseType2), typeof (NullMixin));
 
-      var classContexts = new ClassContextCollection (_configuredClassContext1, _configuredClassContext2, _genericClassContext, _interfaceClassContext);
-      _configuration = new MixinConfiguration (classContexts);
+      var classContexts = new ClassContextCollection(_configuredClassContext1, _configuredClassContext2, _genericClassContext, _interfaceClassContext);
+      _configuration = new MixinConfiguration(classContexts);
 
-      _configuredTypeDiscoveryServiceStub = CreateTypeDiscoveryServiceStub (
+      _configuredTypeDiscoveryServiceStub = CreateTypeDiscoveryServiceStub(
           _configuredClassContext1.Type, 
           _configuredClassContext2.Type, 
           _genericClassContext.Type, 
@@ -62,115 +62,115 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     [Test]
     public void FindMixedTypes_ConfiguredContexts ()
     {
-      var finder = new MixedTypeFinder (_configuredTypeDiscoveryServiceStub);
-      var result = finder.FindMixedTypes (_configuration).ToArray ();
+      var finder = new MixedTypeFinder(_configuredTypeDiscoveryServiceStub);
+      var result = finder.FindMixedTypes(_configuration).ToArray();
 
-      Assert.That (result, Has.Member(_configuredClassContext1.Type));
-      Assert.That (result, Has.Member (_configuredClassContext2.Type));
+      Assert.That(result, Has.Member(_configuredClassContext1.Type));
+      Assert.That(result, Has.Member(_configuredClassContext2.Type));
     }
 
     [Test]
     public void FindMixedTypes_ConfiguredContexts_NoGenerics ()
     {
-      var finder = new MixedTypeFinder (_configuredTypeDiscoveryServiceStub);
-      var result = finder.FindMixedTypes (_configuration).ToArray ();
+      var finder = new MixedTypeFinder(_configuredTypeDiscoveryServiceStub);
+      var result = finder.FindMixedTypes(_configuration).ToArray();
 
-      Assert.That (result, Has.No.Member (_genericClassContext.Type));
+      Assert.That(result, Has.No.Member(_genericClassContext.Type));
     }
 
     [Test]
     public void FindMixedTypes_ConfiguredContexts_NoInterfaces ()
     {
-      var finder = new MixedTypeFinder (_configuredTypeDiscoveryServiceStub);
-      var result = finder.FindMixedTypes (_configuration).ToArray ();
+      var finder = new MixedTypeFinder(_configuredTypeDiscoveryServiceStub);
+      var result = finder.FindMixedTypes(_configuration).ToArray();
 
-      Assert.That (result, Has.No.Member (_interfaceClassContext.Type));
+      Assert.That(result, Has.No.Member(_interfaceClassContext.Type));
     }
 
     [Test]
     public void FindMixedTypes_InheritedContexts ()
     {
-      var finder = new MixedTypeFinder (CreateTypeDiscoveryServiceStub (typeof (DerivedNullTarget)));
-      var result = finder.FindMixedTypes (_configuration);
+      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof (DerivedNullTarget)));
+      var result = finder.FindMixedTypes(_configuration);
 
-      Assert.That (result, Has.Member (typeof (DerivedNullTarget)));
+      Assert.That(result, Has.Member(typeof (DerivedNullTarget)));
     }
 
     [Test]
     public void FindMixedTypes_InheritedContexts_NoTypesMarkedWithIgnoreAttribute ()
     {
-      var finder = new MixedTypeFinder (CreateTypeDiscoveryServiceStub (typeof (ClassWithIgnoreAttribute)));
-      var result = finder.FindMixedTypes (_configuration);
+      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof (ClassWithIgnoreAttribute)));
+      var result = finder.FindMixedTypes(_configuration);
 
-      Assert.That (result, Has.No.Member (typeof (ClassWithIgnoreAttribute)));
+      Assert.That(result, Has.No.Member(typeof (ClassWithIgnoreAttribute)));
     }
 
     [Test]
     public void FindMixedTypes_InheritedContexts_NoDuplicates ()
     {
-      var finder = new MixedTypeFinder (CreateTypeDiscoveryServiceStub (typeof (NullTarget)));
-      var result = finder.FindMixedTypes (_configuration);
+      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof (NullTarget)));
+      var result = finder.FindMixedTypes(_configuration);
 
-      Assert.That (result, Has.Member (typeof (NullTarget)));
+      Assert.That(result, Has.Member(typeof (NullTarget)));
     }
 
     [Test]
     public void FindMixedTypes_InheritedContexts_NoNonInherited ()
     {
-      var finder = new MixedTypeFinder (CreateTypeDiscoveryServiceStub (typeof (object)));
-      var result = finder.FindMixedTypes (_configuration);
+      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof (object)));
+      var result = finder.FindMixedTypes(_configuration);
 
-      Assert.That (result, Has.No.Member (null));
-      Assert.That (result, Has.No.Member (typeof (object)));
+      Assert.That(result, Has.No.Member(null));
+      Assert.That(result, Has.No.Member(typeof (object)));
     }
 
     [Test]
     public void FindMixedTypes_InheritedContexts_NoGenerics ()
     {
-      var finder = new MixedTypeFinder (CreateTypeDiscoveryServiceStub (typeof (GenericDerivedNullTarget<>)));
-      var result = finder.FindMixedTypes (_configuration);
+      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof (GenericDerivedNullTarget<>)));
+      var result = finder.FindMixedTypes(_configuration);
 
-      Assert.That (result, Has.No.Member (typeof (GenericDerivedNullTarget<>)));
+      Assert.That(result, Has.No.Member(typeof (GenericDerivedNullTarget<>)));
     }
 
     [Test]
     public void FindMixedTypes_InheritedContexts_NoInterfaces ()
     {
-      var finder = new MixedTypeFinder (CreateTypeDiscoveryServiceStub (typeof (IDerivedIBaseType2)));
-      var result = finder.FindMixedTypes (_configuration);
+      var finder = new MixedTypeFinder(CreateTypeDiscoveryServiceStub(typeof (IDerivedIBaseType2)));
+      var result = finder.FindMixedTypes(_configuration);
 
-      Assert.That (result, Has.No.Member (typeof (IDerivedIBaseType2)));
+      Assert.That(result, Has.No.Member(typeof (IDerivedIBaseType2)));
     }
 
     [Test]
     public void FindMixedTypes_NoMixedTypes ()
     {
       var pipeline = SafeServiceLocator.Current.GetInstance<IPipelineFactory>()
-          .Create (
+          .Create(
               "FindMixedTypes_NoMixedTypes",
-              new MixinParticipant (
+              new MixinParticipant(
                   SafeServiceLocator.Current.GetInstance<IConfigurationProvider>(),
                   SafeServiceLocator.Current.GetInstance<IMixinTypeProvider>(),
                   SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
                   SafeServiceLocator.Current.GetInstance<IConcreteTypeMetadataImporter>()));
 
       var targetType = typeof (object);
-      var classContext = new ClassContext (targetType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
+      var classContext = new ClassContext(targetType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
       // Explicitly pass classContext in to the MixinParticipant; that way we generate a mixed type even if there are no mixins on the type.
-      var generatedType = pipeline.ReflectionService.GetAssembledType (new AssembledTypeID (targetType, new[] { classContext }));
+      var generatedType = pipeline.ReflectionService.GetAssembledType(new AssembledTypeID(targetType, new[] { classContext }));
 
-      var typeDiscoveryServiceStub = CreateTypeDiscoveryServiceStub (generatedType);
+      var typeDiscoveryServiceStub = CreateTypeDiscoveryServiceStub(generatedType);
 
-      var finder = new MixedTypeFinder (typeDiscoveryServiceStub);
-      var result = finder.FindMixedTypes (_configuration).ToArray ();
+      var finder = new MixedTypeFinder(typeDiscoveryServiceStub);
+      var result = finder.FindMixedTypes(_configuration).ToArray();
 
-      Assert.That (result, Is.Empty);
+      Assert.That(result, Is.Empty);
     }
 
     private ITypeDiscoveryService CreateTypeDiscoveryServiceStub (params Type[] stubResult)
     {
-      var typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService> ();
-      typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false)).Return (stubResult);
+      var typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService>();
+      typeDiscoveryServiceStub.Stub(stub => stub.GetTypes(null, false)).Return(stubResult);
       return typeDiscoveryServiceStub;
     }
 
@@ -178,15 +178,15 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     {
       var mixinContexts = new[]
                           {
-                              new MixinContext (
+                              new MixinContext(
                                   MixinKind.Extending,
                                   mixinType,
                                   MemberVisibility.Private,
                                   Enumerable.Empty<Type>(),
-                                  new MixinContextOrigin ("some kind", typeof (MixedTypeFinderTest).Assembly, "some location"))
+                                  new MixinContextOrigin("some kind", typeof (MixedTypeFinderTest).Assembly, "some location"))
                           };
       var composedInterfaces = Enumerable.Empty<Type>();
-      return new ClassContext (type, mixinContexts, composedInterfaces);
+      return new ClassContext(type, mixinContexts, composedInterfaces);
     }
   }
 }

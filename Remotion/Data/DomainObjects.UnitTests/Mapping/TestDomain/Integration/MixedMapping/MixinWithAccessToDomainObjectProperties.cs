@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
 
     public new Type GetPublicDomainObjectType ()
     {
-      return base.GetPublicDomainObjectType ();
+      return base.GetPublicDomainObjectType();
     }
 
     [StorageClassNone]

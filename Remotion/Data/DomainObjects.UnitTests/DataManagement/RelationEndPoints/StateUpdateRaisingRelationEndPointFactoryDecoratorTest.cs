@@ -40,70 +40,70 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _innerFactoryMock = MockRepository.GenerateStrictMock<IRelationEndPointFactory>();
       _listenerStub = MockRepository.GenerateStub<IVirtualEndPointStateUpdateListener>();
 
-      _decorator = new StateUpdateRaisingRelationEndPointFactoryDecorator (_innerFactoryMock, _listenerStub);
-      _decoratorTestHelper = new DecoratorTestHelper<IRelationEndPointFactory> (_decorator, _innerFactoryMock);
+      _decorator = new StateUpdateRaisingRelationEndPointFactoryDecorator(_innerFactoryMock, _listenerStub);
+      _decoratorTestHelper = new DecoratorTestHelper<IRelationEndPointFactory>(_decorator, _innerFactoryMock);
     }
 
     [Test]
     public void CreateRealObjectEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer");
-      var dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "Customer");
+      var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
 
-      _decoratorTestHelper.CheckDelegation (
-          f => f.CreateRealObjectEndPoint (endPointID, dataContainer), MockRepository.GenerateStub<IRealObjectEndPoint>());
+      _decoratorTestHelper.CheckDelegation(
+          f => f.CreateRealObjectEndPoint(endPointID, dataContainer), MockRepository.GenerateStub<IRealObjectEndPoint>());
     }
 
     [Test]
     public void CreateVirtualObjectEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
-      var fakeResult = MockRepository.GenerateStub<IVirtualObjectEndPoint> ();
-      _decoratorTestHelper.CheckDelegation (
-          f => f.CreateVirtualObjectEndPoint (endPointID),
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
+      var fakeResult = MockRepository.GenerateStub<IVirtualObjectEndPoint>();
+      _decoratorTestHelper.CheckDelegation(
+          f => f.CreateVirtualObjectEndPoint(endPointID),
           fakeResult,
-          result => Assert.That (
+          result => Assert.That(
               result,
-              Is.TypeOf<StateUpdateRaisingVirtualObjectEndPointDecorator> ()
-                .With.Property<StateUpdateRaisingVirtualObjectEndPointDecorator> (d => d.Listener).SameAs (_listenerStub)
-                .And.Property<StateUpdateRaisingVirtualObjectEndPointDecorator> (d => d.InnerEndPoint).SameAs (fakeResult)));
+              Is.TypeOf<StateUpdateRaisingVirtualObjectEndPointDecorator>()
+                .With.Property<StateUpdateRaisingVirtualObjectEndPointDecorator>(d => d.Listener).SameAs(_listenerStub)
+                .And.Property<StateUpdateRaisingVirtualObjectEndPointDecorator>(d => d.InnerEndPoint).SameAs(fakeResult)));
     }
 
     [Test]
     public void CreateVirtualCollectionEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "Reviews");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Product1, typeof (Product), "Reviews");
 
-      var fakeResult = MockRepository.GenerateStub<IVirtualCollectionEndPoint> ();
-      _decoratorTestHelper.CheckDelegation (
-          f => f.CreateVirtualCollectionEndPoint (endPointID), 
+      var fakeResult = MockRepository.GenerateStub<IVirtualCollectionEndPoint>();
+      _decoratorTestHelper.CheckDelegation(
+          f => f.CreateVirtualCollectionEndPoint(endPointID), 
           fakeResult,
-          result => Assert.That (
+          result => Assert.That(
               result, 
               Is.TypeOf<StateUpdateRaisingVirtualCollectionEndPointDecorator>()
-                  .With.Property<StateUpdateRaisingVirtualCollectionEndPointDecorator> (d => d.Listener).SameAs (_listenerStub)
-                  .And.Property<StateUpdateRaisingVirtualCollectionEndPointDecorator> (d => d.InnerEndPoint).SameAs (fakeResult)));
+                  .With.Property<StateUpdateRaisingVirtualCollectionEndPointDecorator>(d => d.Listener).SameAs(_listenerStub)
+                  .And.Property<StateUpdateRaisingVirtualCollectionEndPointDecorator>(d => d.InnerEndPoint).SameAs(fakeResult)));
     }
 
     [Test]
     public void CreateDomainObjectCollectionEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
 
-      var fakeResult = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint> ();
-      _decoratorTestHelper.CheckDelegation (
-          f => f.CreateDomainObjectCollectionEndPoint (endPointID), 
+      var fakeResult = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint>();
+      _decoratorTestHelper.CheckDelegation(
+          f => f.CreateDomainObjectCollectionEndPoint(endPointID), 
           fakeResult,
-          result => Assert.That (
+          result => Assert.That(
               result, 
               Is.TypeOf<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>()
-                .With.Property<StateUpdateRaisingDomainObjectCollectionEndPointDecorator> (d => d.Listener).SameAs (_listenerStub)
-                .And.Property<StateUpdateRaisingDomainObjectCollectionEndPointDecorator> (d => d.InnerEndPoint).SameAs (fakeResult)));
+                .With.Property<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(d => d.Listener).SameAs(_listenerStub)
+                .And.Property<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(d => d.InnerEndPoint).SameAs(fakeResult)));
     }
 
     [Test]
@@ -111,12 +111,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var innerFactory = new SerializableRelationEndPointFactoryFake();
       var listener = new SerializableVirtualEndPointStateUpdateListenerFake();
-      var decorator = new StateUpdateRaisingRelationEndPointFactoryDecorator (innerFactory, listener);
+      var decorator = new StateUpdateRaisingRelationEndPointFactoryDecorator(innerFactory, listener);
 
-      var deserializedInstance = FlattenedSerializer.SerializeAndDeserialize (decorator);
+      var deserializedInstance = FlattenedSerializer.SerializeAndDeserialize(decorator);
 
-      Assert.That (deserializedInstance.InnerFactory, Is.Not.Null);
-      Assert.That (deserializedInstance.Listener, Is.Not.Null);
+      Assert.That(deserializedInstance.InnerFactory, Is.Not.Null);
+      Assert.That(deserializedInstance.Listener, Is.Not.Null);
     }
   }
 }

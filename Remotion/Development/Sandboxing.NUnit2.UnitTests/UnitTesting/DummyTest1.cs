@@ -40,14 +40,14 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [Test]
     public void Test1 ()
     {
-      Assert.That (_value, Is.EqualTo (10));
+      Assert.That(_value, Is.EqualTo(10));
       _value = 100;
     }
 
     [Test]
     public void Test2 ()
     {
-      Assert.That (_value, Is.EqualTo (10));
+      Assert.That(_value, Is.EqualTo(10));
       _value = 200;
     }
 
@@ -55,13 +55,13 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [Ignore ("Ignored test")]
     public void IgnoreTest ()
     {
-      Assert.Fail ("IgnoredTest");
+      Assert.Fail("IgnoredTest");
     }
 
     [Test]
     public void ExpectedExceptionTest ()
     {
-      Assert.That (
+      Assert.That(
           () => { throw new NotImplementedException(); },
           Throws.InstanceOf<NotImplementedException>());
     }

@@ -31,36 +31,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _rootTransaction = ClientTransaction.CreateRootTransaction ();
+      _rootTransaction = ClientTransaction.CreateRootTransaction();
       _subTransaction = _rootTransaction.CreateSubTransaction();
       _subTransaction.EnterDiscardingScope();
 
-      _orderReference = DomainObjectIDs.Order1.GetObjectReference<Order> (_rootTransaction);
+      _orderReference = DomainObjectIDs.Order1.GetObjectReference<Order>(_rootTransaction);
     }
 
     [Test]
     public void OnLoaded_IsExecutedWithRightTransactionActivated ()
     {
       var eventReceiverMock = MockRepository.GenerateStrictMock<ILoadEventReceiver>();
-      _orderReference.SetLoadEventReceiver (eventReceiverMock);
+      _orderReference.SetLoadEventReceiver(eventReceiverMock);
 
       eventReceiverMock
-          .Expect (mock => mock.OnLoaded (_orderReference))
-          .WhenCalled (
+          .Expect(mock => mock.OnLoaded(_orderReference))
+          .WhenCalled(
               mi =>
               {
-                Assert.That (ClientTransaction.Current, Is.SameAs (_rootTransaction));
-                Assert.That (ClientTransaction.Current.ActiveTransaction, Is.SameAs (_rootTransaction));
+                Assert.That(ClientTransaction.Current, Is.SameAs(_rootTransaction));
+                Assert.That(ClientTransaction.Current.ActiveTransaction, Is.SameAs(_rootTransaction));
               });
       eventReceiverMock
-          .Expect (mock => mock.OnLoaded (_orderReference))
-          .WhenCalled (
+          .Expect(mock => mock.OnLoaded(_orderReference))
+          .WhenCalled(
               mi =>
               {
-                Assert.That (ClientTransaction.Current, Is.SameAs (_subTransaction));
-                Assert.That (ClientTransaction.Current.ActiveTransaction, Is.SameAs (_subTransaction));
+                Assert.That(ClientTransaction.Current, Is.SameAs(_subTransaction));
+                Assert.That(ClientTransaction.Current.ActiveTransaction, Is.SameAs(_subTransaction));
               });
 
       _orderReference.EnsureDataAvailable();
@@ -71,29 +71,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     [Test]
     public void TransactionOnLoaded_IsExecutedWithRightTransactionActivated ()
     {
-      var rootTransactionEventReceiverMock = MockRepository.GenerateStrictMock<ClientTransactionMockEventReceiver> (_rootTransaction);
-      var subTransactionEventReceiverMock = MockRepository.GenerateStrictMock<ClientTransactionMockEventReceiver> (_subTransaction);
+      var rootTransactionEventReceiverMock = MockRepository.GenerateStrictMock<ClientTransactionMockEventReceiver>(_rootTransaction);
+      var subTransactionEventReceiverMock = MockRepository.GenerateStrictMock<ClientTransactionMockEventReceiver>(_subTransaction);
       
       rootTransactionEventReceiverMock
-        .Expect (mock => mock.Loaded (new[] { _orderReference }))
-        .WhenCalled (
+        .Expect(mock => mock.Loaded(new[] { _orderReference }))
+        .WhenCalled(
           mi =>
           {
-            Assert.That (ClientTransaction.Current, Is.SameAs (_rootTransaction));
-            Assert.That (ClientTransaction.Current.ActiveTransaction, Is.SameAs (_rootTransaction));
+            Assert.That(ClientTransaction.Current, Is.SameAs(_rootTransaction));
+            Assert.That(ClientTransaction.Current.ActiveTransaction, Is.SameAs(_rootTransaction));
           });
       subTransactionEventReceiverMock
-          .Expect (mock => mock.Loaded (new[] { _orderReference })).WhenCalled (
+          .Expect(mock => mock.Loaded(new[] { _orderReference })).WhenCalled(
           mi =>
           {
-            Assert.That (ClientTransaction.Current, Is.SameAs (_subTransaction));
-            Assert.That (ClientTransaction.Current.ActiveTransaction, Is.SameAs (_subTransaction));
+            Assert.That(ClientTransaction.Current, Is.SameAs(_subTransaction));
+            Assert.That(ClientTransaction.Current.ActiveTransaction, Is.SameAs(_subTransaction));
           });
 
-      _orderReference.EnsureDataAvailable ();
+      _orderReference.EnsureDataAvailable();
 
-      rootTransactionEventReceiverMock.VerifyAllExpectations ();
-      subTransactionEventReceiverMock.VerifyAllExpectations ();
+      rootTransactionEventReceiverMock.VerifyAllExpectations();
+      subTransactionEventReceiverMock.VerifyAllExpectations();
     }
   }
 }

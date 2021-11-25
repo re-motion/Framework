@@ -24,7 +24,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 
     public TargetClassCallingIntroducedMethodFromCtor ()
     {
-      Result = ((IIntroducedMethodCalledFromCtor) this).IfcMethod ();
+      Result = ((IIntroducedMethodCalledFromCtor) this).IfcMethod();
     }
   }
 }

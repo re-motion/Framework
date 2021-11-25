@@ -40,11 +40,11 @@ public class WxeMethodStep: WxeStep
     var target = method.Target as WxeStepList;
     if (target == null)
     {
-      var message = string.Format (
+      var message = string.Format(
           "The delegate's target must be a non-null WxeStepList, but it was '{0}'. When used within a WxeFunction, the delegate should be a method "
           + "of the surrounding WxeFunction, and it must not be a closure.", 
           method.Target != null ? method.Target.GetType().ToString() : "null");
-      throw new ArgumentException (message, "method");
+      throw new ArgumentException(message, "method");
     }
     else
       return target;
@@ -52,8 +52,8 @@ public class WxeMethodStep: WxeStep
 
   private static MethodInfo GetMethodFromDelegate (Delegate method)
   {
-    if (method.GetInvocationList ().Length != 1)
-      throw new ArgumentException ("The delegate must contain a single method.", "method");
+    if (method.GetInvocationList().Length != 1)
+      throw new ArgumentException("The delegate must contain a single method.", "method");
     else
       return method.Method;
   }
@@ -75,21 +75,21 @@ public class WxeMethodStep: WxeStep
   /// <include file='..\doc\include\ExecutionEngine\WxeMethodStep.xml' path='WxeMethodStep/Ctor/*' />
   public WxeMethodStep (WxeStepList target, MethodInfo method)
   {
-    ArgumentUtility.CheckNotNull ("target", target);
-    ArgumentUtility.CheckNotNull ("method", method);
+    ArgumentUtility.CheckNotNull("target", target);
+    ArgumentUtility.CheckNotNull("method", method);
 
     Type targetType = target.GetType();
     Type declaringType = method.DeclaringType!; // TODO RM-8118: not null assertion
     
-    bool isAssignable = declaringType.IsAssignableFrom (targetType);
+    bool isAssignable = declaringType.IsAssignableFrom(targetType);
     if (! isAssignable || method.IsStatic)
-      throw new WxeException ("Method step '" + method.Name + "' is not an instance method of the type '" + targetType.GetFullNameSafe() + "'.");
+      throw new WxeException("Method step '" + method.Name + "' is not an instance method of the type '" + targetType.GetFullNameSafe() + "'.");
     
     ParameterInfo[] parameters = method.GetParameters();
     if (parameters.Length > 1)
-      throw new WxeException ("Method step '" + method.Name + "', declared in type '" + declaringType.GetFullNameSafe() + "', does not support more than one parameter.");
-    if (parameters.Length == 1 && ! typeof (WxeContext).IsAssignableFrom (parameters[0].ParameterType))
-      throw new WxeException ("Method step '" + method.Name + "', declared in type '" + declaringType.GetFullNameSafe() + "', may only have a parameter of type WxeContext.");
+      throw new WxeException("Method step '" + method.Name + "', declared in type '" + declaringType.GetFullNameSafe() + "', does not support more than one parameter.");
+    if (parameters.Length == 1 && ! typeof (WxeContext).IsAssignableFrom(parameters[0].ParameterType))
+      throw new WxeException("Method step '" + method.Name + "', declared in type '" + declaringType.GetFullNameSafe() + "', may only have a parameter of type WxeContext.");
 
     _target = target;
     _methodName = method.Name;
@@ -98,15 +98,15 @@ public class WxeMethodStep: WxeStep
 
   public WxeMethodStep (Action method)
       : this (
-          GetTargetFromDelegate (ArgumentUtility.CheckNotNull ("method", method)),
-          GetMethodFromDelegate (ArgumentUtility.CheckNotNull ("method", method)))
+          GetTargetFromDelegate(ArgumentUtility.CheckNotNull("method", method)),
+          GetMethodFromDelegate(ArgumentUtility.CheckNotNull("method", method)))
   {
   }
 
   public WxeMethodStep (Action<WxeContext> method)
       : this (
-          GetTargetFromDelegate (ArgumentUtility.CheckNotNull ("method", method)),
-          GetMethodFromDelegate (ArgumentUtility.CheckNotNull ("method", method)))
+          GetTargetFromDelegate(ArgumentUtility.CheckNotNull("method", method)),
+          GetMethodFromDelegate(ArgumentUtility.CheckNotNull("method", method)))
   {
   }
 
@@ -131,15 +131,15 @@ public class WxeMethodStep: WxeStep
       if (_methodWithContext == null)
       {
         _methodWithContext = 
-          (WxeMethodWithContext) Delegate.CreateDelegate (typeof (WxeMethodWithContext), _target, _methodName, false);
+          (WxeMethodWithContext) Delegate.CreateDelegate(typeof (WxeMethodWithContext), _target, _methodName, false);
       }
-      _methodWithContext (context);
+      _methodWithContext(context);
     }
     else
     {
       if (_method == null)
-        _method = (WxeMethod) Delegate.CreateDelegate (typeof (WxeMethod), _target, _methodName, false);
-      _method ();
+        _method = (WxeMethod) Delegate.CreateDelegate(typeof (WxeMethod), _target, _methodName, false);
+      _method();
     }
   }
 }

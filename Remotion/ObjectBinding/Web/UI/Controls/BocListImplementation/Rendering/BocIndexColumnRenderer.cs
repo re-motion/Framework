@@ -38,8 +38,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocIndexColumnRenderer (IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses)
     {
-      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
-      ArgumentUtility.CheckNotNull ("cssClasses", cssClasses);
+      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
 
       _renderingFeatures = renderingFeatures;
       _cssClasses = cssClasses;
@@ -52,26 +52,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderDataCell (BocListRenderingContext renderingContext, int originalRowIndex, int absoluteRowIndex, string cssClassTableCell)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("cssClassTableCell", cssClassTableCell);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("cssClassTableCell", cssClassTableCell);
 
       if (!renderingContext.Control.IsIndexEnabled)
         return;
 
-      string selectorControlID = renderingContext.Control.GetSelectorControlName().Replace ('$', '_') + "_" + originalRowIndex;
+      string selectorControlID = renderingContext.Control.GetSelectorControlName().Replace('$', '_') + "_" + originalRowIndex;
       string cssClass = cssClassTableCell + " " + CssClasses.DataCellIndex;
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
 #pragma warning disable CS0618 // Type or member is obsolete
       var ariaRoleForTableDataElement = GetAriaRoleForTableDataElement();
 #pragma warning restore CS0618 // Type or member is obsolete
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, ariaRoleForTableDataElement);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, ariaRoleForTableDataElement);
       if (_renderingFeatures.EnableDiagnosticMetadata)
-        AddDiagnosticMetadataListCellIndex (renderingContext);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
+        AddDiagnosticMetadataListCellIndex(renderingContext);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
       if (renderingContext.Control.Index == RowIndex.InitialOrder)
-        RenderRowIndex (renderingContext, originalRowIndex, selectorControlID);
+        RenderRowIndex(renderingContext, originalRowIndex, selectorControlID);
       else if (renderingContext.Control.Index == RowIndex.SortedOrder)
-        RenderRowIndex (renderingContext, absoluteRowIndex, selectorControlID);
+        RenderRowIndex(renderingContext, absoluteRowIndex, selectorControlID);
       renderingContext.Writer.RenderEndTag();
     }
 
@@ -84,35 +84,35 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private static void AddDiagnosticMetadataListCellIndex (BocListRenderingContext renderingContext)
     {
       const int oneBasedCellIndex = 1;
-      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedCellIndex.ToString());
+      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedCellIndex.ToString());
     }
 
     public void RenderTitleCell (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       if (!renderingContext.Control.IsIndexEnabled)
         return;
 
       string cssClass = CssClasses.TitleCell + " " + CssClasses.TitleCellIndex;
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.ColumnHeader);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.ColumnHeader);
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
         var columnTitle = renderingContext.Control.IndexColumnTitle;
-        if (!string.IsNullOrEmpty (columnTitle))
-          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (columnTitle));
+        if (!string.IsNullOrEmpty(columnTitle))
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(columnTitle));
 
-        AddDiagnosticMetadataListCellIndex (renderingContext);
+        AddDiagnosticMetadataListCellIndex(renderingContext);
       }
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Th);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Th);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       string? indexColumnTitle = renderingContext.Control.IndexColumnTitle;
-      if (string.IsNullOrEmpty (indexColumnTitle))
-        indexColumnTitle = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.IndexColumnTitle);
+      if (string.IsNullOrEmpty(indexColumnTitle))
+        indexColumnTitle = renderingContext.Control.GetResourceManager().GetString(BocList.ResourceIdentifier.IndexColumnTitle);
 
       // Do not HTML encode.
-      renderingContext.Writer.Write (indexColumnTitle);
+      renderingContext.Writer.Write(indexColumnTitle);
       renderingContext.Writer.RenderEndTag();
       renderingContext.Writer.RenderEndTag();
     }
@@ -120,12 +120,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary> Renders the zero-based row index normalized to a one-based format. </summary>
     private void RenderRowIndex (BocListRenderingContext renderingContext, int index, string selectorControlID)
     {
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.Content);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.Content);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       int renderedIndex = index + 1;
       if (renderingContext.Control.IndexOffset != null)
         renderedIndex += renderingContext.Control.IndexOffset.Value;
-      renderingContext.Writer.Write (renderedIndex);
+      renderingContext.Writer.Write(renderedIndex);
       renderingContext.Writer.RenderEndTag();
     }
   }

@@ -55,22 +55,22 @@ namespace Remotion.ServiceLocation
 
     public void Register (ServiceConfigurationEntry entry)
     {
-      ArgumentUtility.CheckNotNull ("entry", entry);
+      ArgumentUtility.CheckNotNull("entry", entry);
 
       lock (_lock)
       {
-        _bootstrapServiceLocator.Register (entry);
-        _registrations.Add (entry);
+        _bootstrapServiceLocator.Register(entry);
+        _registrations.Add(entry);
       }
     }
 
     public void Register (Type serviceType, Type implementationType, LifetimeKind lifetime)
     {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
-      ArgumentUtility.CheckNotNull ("implementationType", implementationType);
+      ArgumentUtility.CheckNotNull("serviceType", serviceType);
+      ArgumentUtility.CheckNotNull("implementationType", implementationType);
 
-      var entry = new ServiceConfigurationEntry (serviceType, new ServiceImplementationInfo (implementationType, lifetime));
-      Register (entry);
+      var entry = new ServiceConfigurationEntry(serviceType, new ServiceImplementationInfo(implementationType, lifetime));
+      Register(entry);
     }
 
     public void Reset ()
@@ -78,7 +78,7 @@ namespace Remotion.ServiceLocation
       lock (_lock)
       {
         _bootstrapServiceLocator = DefaultServiceLocator.Create();
-        _registrations.Clear ();
+        _registrations.Clear();
       }
     }
   }

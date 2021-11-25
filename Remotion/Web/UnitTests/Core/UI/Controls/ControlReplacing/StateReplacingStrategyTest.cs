@@ -35,33 +35,33 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     {
       base.SetUp();
 
-      _replacer = new ControlReplacer (MemberCallerMock.Object);
+      _replacer = new ControlReplacer(MemberCallerMock.Object);
 
-      Pair state = new Pair (new Hashtable(), new object());
-      LosFormatter formatter = new LosFormatter ();
-      StringWriter writer = new StringWriter ();
-      formatter.Serialize (writer, state);
+      Pair state = new Pair(new Hashtable(), new object());
+      LosFormatter formatter = new LosFormatter();
+      StringWriter writer = new StringWriter();
+      formatter.Serialize(writer, state);
 
-      _stateModificationStrategy = new StateReplacingStrategy (writer.ToString ());
+      _stateModificationStrategy = new StateReplacingStrategy(writer.ToString());
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.That (((StateReplacingStrategy)_stateModificationStrategy).ViewState, Is.Not.Null);
-      Assert.That (((StateReplacingStrategy) _stateModificationStrategy).ControlState, Is.Not.Null);
+      Assert.That(((StateReplacingStrategy)_stateModificationStrategy).ViewState, Is.Not.Null);
+      Assert.That(((StateReplacingStrategy) _stateModificationStrategy).ControlState, Is.Not.Null);
     }
 
     [Test]
     public void LoadControlState ()
     {
-      var testPageHolder = new TestPageHolder (false, RequestMode.PostBack);
+      var testPageHolder = new TestPageHolder(false, RequestMode.PostBack);
       _replacer.StateModificationStrategy = _stateModificationStrategy;
-      _replacer.Controls.Add (testPageHolder.NamingContainer);
+      _replacer.Controls.Add(testPageHolder.NamingContainer);
 
-      MemberCallerMock.Setup (mock => mock.SetChildControlState (_replacer, It.IsNotNull<Hashtable>())).Verifiable();
+      MemberCallerMock.Setup(mock => mock.SetChildControlState(_replacer, It.IsNotNull<Hashtable>())).Verifiable();
 
-      _stateModificationStrategy.LoadControlState (_replacer, MemberCallerMock.Object);
+      _stateModificationStrategy.LoadControlState(_replacer, MemberCallerMock.Object);
 
       MemberCallerMock.Verify();
     }
@@ -69,13 +69,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     [Test]
     public void LoadViewState ()
     {
-      var testPageHolder = new TestPageHolder (false, RequestMode.PostBack);
+      var testPageHolder = new TestPageHolder(false, RequestMode.PostBack);
       _replacer.StateModificationStrategy = _stateModificationStrategy;
-      _replacer.Controls.Add (testPageHolder.NamingContainer);
+      _replacer.Controls.Add(testPageHolder.NamingContainer);
 
-      MemberCallerMock.Setup (mock => mock.LoadViewStateRecursive (_replacer, It.IsNotNull<object>())).Verifiable();
+      MemberCallerMock.Setup(mock => mock.LoadViewStateRecursive(_replacer, It.IsNotNull<object>())).Verifiable();
 
-      _stateModificationStrategy.LoadViewState (_replacer, MemberCallerMock.Object);
+      _stateModificationStrategy.LoadViewState(_replacer, MemberCallerMock.Object);
 
       MemberCallerMock.Verify();
     }

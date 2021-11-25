@@ -34,13 +34,13 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     [Test]
     public void ShouldConsiderAssembly ()
     {
-      Assert.That (_filter.ShouldConsiderAssembly (typeof (object).Assembly.GetName()), Is.True);
+      Assert.That(_filter.ShouldConsiderAssembly(typeof (object).Assembly.GetName()), Is.True);
     }
 
     [Test]
     public void ShouldIncludeAssembly ()
     {
-      Assert.That (_filter.ShouldIncludeAssembly (typeof (object).Assembly), Is.True);
+      Assert.That(_filter.ShouldIncludeAssembly(typeof (object).Assembly), Is.True);
     }
   }
 }

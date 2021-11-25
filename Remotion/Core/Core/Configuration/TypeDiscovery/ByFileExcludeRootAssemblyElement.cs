@@ -31,7 +31,7 @@ namespace Remotion.Configuration.TypeDiscovery
 
     public override FilePatternSpecification CreateSpecification ()
     {
-      return new FilePatternSpecification (FilePattern, FilePatternSpecificationKind.Exclude);
+      return new FilePatternSpecification(FilePattern, FilePatternSpecificationKind.Exclude);
     }
   }
 }

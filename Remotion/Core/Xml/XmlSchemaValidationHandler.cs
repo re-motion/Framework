@@ -24,7 +24,7 @@ namespace Remotion.Xml
 {
   public class XmlSchemaValidationHandler
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (XmlSchemaValidationHandler));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof (XmlSchemaValidationHandler));
 
     private bool _failOnError;
 
@@ -53,7 +53,7 @@ namespace Remotion.Xml
 
     public ValidationEventHandler Handler
     {
-      get { return new ValidationEventHandler (HandleValidation); }
+      get { return new ValidationEventHandler(HandleValidation); }
     }
 
     private void HandleValidation (object? sender, ValidationEventArgs args)
@@ -63,9 +63,9 @@ namespace Remotion.Xml
 
       // WORKAROUND: known bug in .NET framework 1.x
       // TODO: verify for 2.0
-      if (args.Message.IndexOf ("http://www.w3.org/XML/1998/namespace:base") >= 0)
+      if (args.Message.IndexOf("http://www.w3.org/XML/1998/namespace:base") >= 0)
       {
-        s_log.DebugFormat (
+        s_log.DebugFormat(
             "Ignoring the following schema validation error in {0}, because it is considered a known .NET framework bug: {1}",
             reader.BaseURI,
             args.Message);
@@ -73,12 +73,12 @@ namespace Remotion.Xml
       }
 
       IXmlLineInfo? lineInfo = sender as IXmlLineInfo;
-      XmlSchemaValidationErrorInfo errorInfo = new XmlSchemaValidationErrorInfo (args.Message, reader.BaseURI, lineInfo, args.Severity);
-      _messages.Add (errorInfo);
+      XmlSchemaValidationErrorInfo errorInfo = new XmlSchemaValidationErrorInfo(args.Message, reader.BaseURI, lineInfo, args.Severity);
+      _messages.Add(errorInfo);
 
       if (args.Severity == XmlSeverityType.Error)
       {
-        s_log.Error (errorInfo);
+        s_log.Error(errorInfo);
         ++ _errors;
         if (_failOnError)
           throw args.Exception;
@@ -91,7 +91,7 @@ namespace Remotion.Xml
       }
       else
       {
-        s_log.Warn (errorInfo);
+        s_log.Warn(errorInfo);
         ++ _warnings;
       }
     }

@@ -27,7 +27,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   {
     public static StatelessAccessControlList NewObject ()
     {
-      return NewObject<StatelessAccessControlList> ();
+      return NewObject<StatelessAccessControlList>();
     }
 
     protected StatelessAccessControlList ()

@@ -35,23 +35,23 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     {
       if (modifiedEndPoint.Definition.GetOppositeEndPointDefinition().IsAnonymous)
       {
-        var message = string.Format ("EndPoint '{0}' is from a unidirectional relation - use a ObjectEndPointSetUnidirectionalCommand instead.",
+        var message = string.Format("EndPoint '{0}' is from a unidirectional relation - use a ObjectEndPointSetUnidirectionalCommand instead.",
             modifiedEndPoint.Definition.PropertyName);
-        throw new ArgumentException (message, "modifiedEndPoint");
+        throw new ArgumentException(message, "modifiedEndPoint");
       }
 
       if (modifiedEndPoint.Definition.GetOppositeEndPointDefinition().Cardinality == CardinalityType.Many)
       {
-        var message = string.Format ("EndPoint '{0}' is from a 1:n relation - use a ObjectEndPointSetOneManyCommand instead.",
+        var message = string.Format("EndPoint '{0}' is from a 1:n relation - use a ObjectEndPointSetOneManyCommand instead.",
             modifiedEndPoint.Definition.PropertyName);
-        throw new ArgumentException (message, "modifiedEndPoint");
+        throw new ArgumentException(message, "modifiedEndPoint");
       }
 
-      if (newRelatedObject == modifiedEndPoint.GetOppositeObject ())
+      if (newRelatedObject == modifiedEndPoint.GetOppositeObject())
       {
-        var message = string.Format ("New related object for EndPoint '{0}' is the same as its old value - use a ObjectEndPointSetSameCommand instead.",
+        var message = string.Format("New related object for EndPoint '{0}' is the same as its old value - use a ObjectEndPointSetSameCommand instead.",
             modifiedEndPoint.Definition.PropertyName);
-        throw new ArgumentException (message, "newRelatedObject");
+        throw new ArgumentException(message, "newRelatedObject");
       }
     }
 
@@ -70,21 +70,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     /// </remarks>
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      var newRelatedEndPoint = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint> (NewRelatedObject);
-      var oldRelatedEndPoint = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint> (OldRelatedObject);
+      var newRelatedEndPoint = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint>(NewRelatedObject);
+      var oldRelatedEndPoint = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint>(OldRelatedObject);
 
-      var oldRelatedObjectOfNewRelatedObject = NewRelatedObject == null ? null : newRelatedEndPoint.GetOppositeObject ();
-      var oldRelatedEndPointOfNewRelatedEndPoint = newRelatedEndPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint> (oldRelatedObjectOfNewRelatedObject);
+      var oldRelatedObjectOfNewRelatedObject = NewRelatedObject == null ? null : newRelatedEndPoint.GetOppositeObject();
+      var oldRelatedEndPointOfNewRelatedEndPoint = newRelatedEndPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint>(oldRelatedObjectOfNewRelatedObject);
 
-      var bidirectionalModification = new ExpandedCommand (
+      var bidirectionalModification = new ExpandedCommand(
         // => order.OrderTicket = newTicket
         this,
         // => oldTicket.Order = null (remove)
-        oldRelatedEndPoint.CreateRemoveCommand (ModifiedEndPoint.GetDomainObject ()),
+        oldRelatedEndPoint.CreateRemoveCommand(ModifiedEndPoint.GetDomainObject()),
         // => newTicket.Order = order
-        newRelatedEndPoint.CreateSetCommand (ModifiedEndPoint.GetDomainObject ()),
+        newRelatedEndPoint.CreateSetCommand(ModifiedEndPoint.GetDomainObject()),
         // => oldOrderOfNewTicket.OrderTicket = null (remove)
-        oldRelatedEndPointOfNewRelatedEndPoint.CreateRemoveCommand (NewRelatedObject));
+        oldRelatedEndPointOfNewRelatedEndPoint.CreateRemoveCommand(NewRelatedObject));
 
       return bidirectionalModification;
     }

@@ -27,7 +27,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
   {
     public static AclExpansionTreeNode<TParent, TChildren> New<TParent, TChildren> (TParent parent, int numberLeafNodes, IList<TChildren> children)
     {
-      return new AclExpansionTreeNode<TParent, TChildren> (parent, numberLeafNodes, children);
+      return new AclExpansionTreeNode<TParent, TChildren>(parent, numberLeafNodes, children);
     }
   }
 }

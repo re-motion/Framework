@@ -31,19 +31,19 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     
     public static int GetServerDelayUrlParameter (Page page)
     {
-      ArgumentUtility.CheckNotNull ("page", page);
+      ArgumentUtility.CheckNotNull("page", page);
 
       string serverDelayString = page.Request.QueryString[SutGenerator.ServerDelayParameter];
       if (serverDelayString != null)
-        return int.Parse (serverDelayString);
+        return int.Parse(serverDelayString);
       return 2000;
     }
 
     public static void GenerateSut (Page sutPage, ControlCollection controls)
     {
-      SutGenerator sutGenerator = new SutGenerator (sutPage);
-      foreach (Control control in sutGenerator.CreateSut ())
-        controls.Add (control);
+      SutGenerator sutGenerator = new SutGenerator(sutPage);
+      foreach (Control control in sutGenerator.CreateSut())
+        controls.Add(control);
     }
  
     private readonly Page _sutPage;
@@ -54,7 +54,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public SutGenerator (Page sutPage, int serverDelay)
     {
-      ArgumentUtility.CheckNotNull ("sutPage", sutPage);
+      ArgumentUtility.CheckNotNull("sutPage", sutPage);
       _sutPage = sutPage;
       _serverDelay = serverDelay;
     }
@@ -66,61 +66,61 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public Control[] CreateSut ()
     {
-      Assertion.IsFalse (WcagHelper.Instance.IsWaiConformanceLevelARequired ());
+      Assertion.IsFalse(WcagHelper.Instance.IsWaiConformanceLevelARequired());
 
       List<Control> controls = new List<Control>();
 
       _label = new Label();
       _label.Text = "Test Result: ###";
-      controls.Add (_label);
+      controls.Add(_label);
 
       _postBackEventHandler = new PostBackEventHandler();
       _postBackEventHandler.ID = "PostBackEventHandler";
       _postBackEventHandler.PostBack += HandlePostBack;
-      controls.Add (_postBackEventHandler);
+      controls.Add(_postBackEventHandler);
 
       Table sutTable = new Table();
       sutTable.ID = "SutTable";
       sutTable.EnableViewState = false;
-      _testControlGenerator = new TestControlGenerator (_sutPage, _postBackEventHandler);
+      _testControlGenerator = new TestControlGenerator(_sutPage, _postBackEventHandler);
       _testControlGenerator.Click += TestControlGeneratorOnClick;
-      foreach (Control initialControl in _testControlGenerator.GetTestControls (null))
-          sutTable.Rows.Add (CreateRow (initialControl));
-      controls.Add (sutTable);
+      foreach (Control initialControl in _testControlGenerator.GetTestControls(null))
+          sutTable.Rows.Add(CreateRow(initialControl));
+      controls.Add(sutTable);
 
       return controls.ToArray();
     }
 
     private void TestControlGeneratorOnClick (object sender, IDEventArgs idEventArgs)
     {
-      HandlePostBack (idEventArgs.ID);
+      HandlePostBack(idEventArgs.ID);
     }
 
     private void HandlePostBack (object sender, PostBackEventHandlerEventArgs e)
     {
-      HandlePostBack (e.EventArgument);
+      HandlePostBack(e.EventArgument);
     }
 
     private void HandlePostBack (string result)
     {
       _label.Text = "Test Result: " + result;
-      ScriptManager.RegisterHiddenField (_sutPage, LastClickFieldID, result);
-      System.Threading.Thread.Sleep (_serverDelay);
+      ScriptManager.RegisterHiddenField(_sutPage, LastClickFieldID, result);
+      System.Threading.Thread.Sleep(_serverDelay);
     }
 
     private TableRow CreateRow (Control initialControl)
     {
       TableRow row = new TableRow();
-      row.Cells.Add (CreateCell (initialControl));
-      foreach (Control followUpControl in _testControlGenerator.GetTestControls (initialControl.ID))
-        row.Cells.Add (CreateCell (followUpControl));
+      row.Cells.Add(CreateCell(initialControl));
+      foreach (Control followUpControl in _testControlGenerator.GetTestControls(initialControl.ID))
+        row.Cells.Add(CreateCell(followUpControl));
       return row;
     }
 
     private TableCell CreateCell (Control control)
     {
       TableCell cell = new TableCell();
-      cell.Controls.Add (control);
+      cell.Controls.Add(control);
       return cell;
     }
  }

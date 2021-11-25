@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     private void DisposeTransaction ()
     {
-      ClientTransactionScope.ResetActiveScope ();
+      ClientTransactionScope.ResetActiveScope();
     }
 
     protected void ReInitializeTransaction ()
@@ -76,15 +76,15 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       _testableClientTransaction = new TestableClientTransaction();
       _testableClientTransaction.EnterDiscardingScope();
-      _testDataContainerObjectMother = new TestDataContainerObjectMother ();
+      _testDataContainerObjectMother = new TestDataContainerObjectMother();
     }
 
     protected void CheckIfObjectIsDeleted (ObjectID id)
     {
       try
       {
-        DomainObject domainObject = id.GetObject<TestDomainBase> (includeDeleted: true);
-        Assert.IsNull (domainObject, string.Format ("Object '{0}' was not deleted.", id));
+        DomainObject domainObject = id.GetObject<TestDomainBase>(includeDeleted: true);
+        Assert.IsNull(domainObject, string.Format("Object '{0}' was not deleted.", id));
       }
       catch (ObjectsNotFoundException)
       {

@@ -60,7 +60,7 @@ public class BidirectionalStringConverter: TypeConverter
     if (sourceType == null)
       return false;
     // check whether we can _parse_ the source type; only then, we can perform round-tripping
-    return StringUtility.CanParse (sourceType);
+    return StringUtility.CanParse(sourceType);
   }
 
   /// <summary> Test: Can convert from <see cref="String"/> to <paramref name="destinationType"/>? </summary>
@@ -71,7 +71,7 @@ public class BidirectionalStringConverter: TypeConverter
   {
     if (destinationType == null)
       return false;
-    return StringUtility.CanParse (destinationType);
+    return StringUtility.CanParse(destinationType);
   }
 
   /// <summary> Converts <paramref name="value"/> into a <see cref="String"/>. </summary>
@@ -87,9 +87,9 @@ public class BidirectionalStringConverter: TypeConverter
   {
     if (value == null)
       return string.Empty;
-    if (CanConvertFrom (context, value.GetType()))
-      return StringUtility.Format (value, culture);
-    throw new NotSupportedException (string.Format ("Cannot convert from '{0}' to String.", value.GetType()));
+    if (CanConvertFrom(context, value.GetType()))
+      return StringUtility.Format(value, culture);
+    throw new NotSupportedException(string.Format("Cannot convert from '{0}' to String.", value.GetType()));
   }
 
   /// <summary> Convertes a <see cref="String"/> into the <paramref name="destinationType"/>. </summary>
@@ -101,14 +101,14 @@ public class BidirectionalStringConverter: TypeConverter
   /// <exception cref="NotSupportedException"> The conversion could not be performed. </exception>
   public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
   {
-    ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+    ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
     if (value == null)
       value = string.Empty;
 
-    if (value is string && CanConvertTo (context, destinationType))
-      return StringUtility.Parse (destinationType, (string) value, culture);
-    return base.ConvertTo (context, culture, value, destinationType);
+    if (value is string && CanConvertTo(context, destinationType))
+      return StringUtility.Parse(destinationType, (string) value, culture);
+    return base.ConvertTo(context, culture, value, destinationType);
   }
 
   /// <summary>

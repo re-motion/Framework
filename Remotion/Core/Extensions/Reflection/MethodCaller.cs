@@ -23,36 +23,36 @@ namespace Remotion.Reflection
   {
     public static FuncInvoker<TReturn> CallFunc<TReturn> (string methodName)
     {
-      return new FuncInvoker<TReturn> (new MethodLookupInfo (methodName).GetInstanceMethodDelegate);
+      return new FuncInvoker<TReturn>(new MethodLookupInfo(methodName).GetInstanceMethodDelegate);
     }
 
     public static FuncInvoker<TReturn> CallFunc<TReturn> (
         string methodName, BindingFlags bindingFlags, Binder binder, CallingConventions callingConvention, ParameterModifier[] parameterModifiers)
     {
-      return new FuncInvoker<TReturn> (new MethodLookupInfo (methodName, bindingFlags, binder, callingConvention, parameterModifiers).GetInstanceMethodDelegate);
+      return new FuncInvoker<TReturn>(new MethodLookupInfo(methodName, bindingFlags, binder, callingConvention, parameterModifiers).GetInstanceMethodDelegate);
     }
 
     public static FuncInvoker<TReturn> CallFunc<TReturn> (
         string methodName, BindingFlags bindingFlags)
     {
-      return new FuncInvoker<TReturn> (new MethodLookupInfo (methodName, bindingFlags).GetInstanceMethodDelegate);
+      return new FuncInvoker<TReturn>(new MethodLookupInfo(methodName, bindingFlags).GetInstanceMethodDelegate);
     }
 
     public static ActionInvoker CallAction (string methodName)
     {
-      return new ActionInvoker (new MethodLookupInfo (methodName).GetInstanceMethodDelegate);
+      return new ActionInvoker(new MethodLookupInfo(methodName).GetInstanceMethodDelegate);
     }
 
     public static ActionInvoker CallAction (
         string methodName, BindingFlags bindingFlags, Binder binder, CallingConventions callingConvention, ParameterModifier[] parameterModifiers)
     {
-      return new ActionInvoker (new MethodLookupInfo (methodName, bindingFlags, binder, callingConvention, parameterModifiers).GetInstanceMethodDelegate);
+      return new ActionInvoker(new MethodLookupInfo(methodName, bindingFlags, binder, callingConvention, parameterModifiers).GetInstanceMethodDelegate);
     }
 
     public static ActionInvoker CallAction (
         string methodName, BindingFlags bindingFlags)
     {
-      return new ActionInvoker (new MethodLookupInfo (methodName, bindingFlags).GetInstanceMethodDelegate);
+      return new ActionInvoker(new MethodLookupInfo(methodName, bindingFlags).GetInstanceMethodDelegate);
     }
   }
 }

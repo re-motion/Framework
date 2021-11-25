@@ -41,33 +41,33 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
 
     public EdgeBrowserFactory ([NotNull] IEdgeConfiguration edgeConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("edgeConfiguration", edgeConfiguration);
+      ArgumentUtility.CheckNotNull("edgeConfiguration", edgeConfiguration);
 
       _edgeConfiguration = edgeConfiguration;
       _extendedEdgeOptions = _edgeConfiguration.CreateEdgeOptions();
-      _registryCleanUpStrategy = ChromiumSecurityWarningsRegistryCleanUpStrategyFactory.CreateForEdge (_edgeConfiguration.DisableSecurityWarningsBehavior);
+      _registryCleanUpStrategy = ChromiumSecurityWarningsRegistryCleanUpStrategyFactory.CreateForEdge(_edgeConfiguration.DisableSecurityWarningsBehavior);
     }
 
     public IBrowserSession CreateBrowser (DriverConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
+      ArgumentUtility.CheckNotNull("configuration", configuration);
 
-      var sessionConfiguration = CreateSessionConfiguration (configuration);
+      var sessionConfiguration = CreateSessionConfiguration(configuration);
       var commandTimeout = configuration.CommandTimeout;
 
-      var driver = CreateEdgeDriver (out var driverProcessID, commandTimeout);
+      var driver = CreateEdgeDriver(out var driverProcessID, commandTimeout);
       driver.Manage().Timeouts().AsynchronousJavaScript = configuration.AsyncJavaScriptTimeout;
 
-      var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Edge));
+      var session = new Coypu.BrowserSession(sessionConfiguration, new CustomSeleniumWebDriver(driver, Browser.Edge));
 
-      return new EdgeBrowserSession (
+      return new EdgeBrowserSession(
           session,
           _edgeConfiguration,
           driverProcessID,
           new[]
           {
               _registryCleanUpStrategy,
-              new ChromiumUserDirectoryCleanUpStrategy (_edgeConfiguration.UserDirectoryRoot, _extendedEdgeOptions.UserDirectory!)
+              new ChromiumUserDirectoryCleanUpStrategy(_edgeConfiguration.UserDirectoryRoot, _extendedEdgeOptions.UserDirectory!)
           });
     }
 
@@ -88,7 +88,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
     private EdgeDriver CreateEdgeDriver (out int driverProcessID, TimeSpan commandTimeout)
     {
       var driverService = CreateEdgeDriverService();
-      var driver = new EdgeDriver (driverService, _extendedEdgeOptions, commandTimeout);
+      var driver = new EdgeDriver(driverService, _extendedEdgeOptions, commandTimeout);
       driverProcessID = driverService.ProcessId;
 
       return driver;
@@ -96,13 +96,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
 
     private EdgeDriverService CreateEdgeDriverService ()
     {
-      var driverDirectory = Path.GetDirectoryName (_edgeConfiguration.DriverBinaryPath);
-      var driverExecutable = Path.GetFileName (_edgeConfiguration.DriverBinaryPath);
+      var driverDirectory = Path.GetDirectoryName(_edgeConfiguration.DriverBinaryPath);
+      var driverExecutable = Path.GetFileName(_edgeConfiguration.DriverBinaryPath);
 
-      var driverService = EdgeDriverService.CreateChromiumService (driverDirectory, driverExecutable);
+      var driverService = EdgeDriverService.CreateChromiumService(driverDirectory, driverExecutable);
 
       driverService.UseVerboseLogging = false;
-      driverService.LogPath = WebDriverLogUtility.CreateLogFile (_edgeConfiguration.LogsDirectory, _edgeConfiguration.BrowserName);
+      driverService.LogPath = WebDriverLogUtility.CreateLogFile(_edgeConfiguration.LogsDirectory, _edgeConfiguration.BrowserName);
 
       return driverService;
     }

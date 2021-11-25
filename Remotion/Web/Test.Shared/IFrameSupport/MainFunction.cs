@@ -29,6 +29,6 @@ namespace Remotion.Web.Test.Shared.IFrameSupport
     }
 
     [UsedImplicitly]
-    private WxeStep Step1 = new WxeResourcePageStep (typeof (MainForm), "IFrameSupport/MainForm.aspx");
+    private WxeStep Step1 = new WxeResourcePageStep(typeof (MainForm), "IFrameSupport/MainForm.aspx");
   }
 }

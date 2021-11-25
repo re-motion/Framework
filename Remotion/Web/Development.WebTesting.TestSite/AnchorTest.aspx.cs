@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       MyWebLinkButton.Command += Command;
       MyAspLinkButton.Command += Command;
@@ -34,12 +34,12 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void Command (object sender, CommandEventArgs e)
     {
-      ((Layout) Master).SetTestOutput (((Control) sender).ID + "|" + e.CommandName);
+      ((Layout) Master).SetTestOutput(((Control) sender).ID + "|" + e.CommandName);
     }
 
     private void ServerClick (object sender, EventArgs eventArgs)
     {
-      ((Layout) Master).SetTestOutput (((Control) sender).ID);
+      ((Layout) Master).SetTestOutput(((Control) sender).ID);
     }
   }
 }

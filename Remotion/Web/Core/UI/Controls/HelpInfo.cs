@@ -48,7 +48,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="onClick">The javascript to be executed for the <c>OnClick</c> event on the client.</param>
     public HelpInfo (string navigateUrl, string? target, string? toolTip, string? onClick)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("navigateUrl", navigateUrl);
+      ArgumentUtility.CheckNotNullOrEmpty("navigateUrl", navigateUrl);
 
       NavigateUrl = navigateUrl;
       Target = target;

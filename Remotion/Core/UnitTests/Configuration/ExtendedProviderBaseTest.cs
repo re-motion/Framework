@@ -29,71 +29,71 @@ namespace Remotion.UnitTests.Configuration
     public void Initialize ()
     {
       NameValueCollection config = new NameValueCollection();
-      config.Add ("description", "The Description");
+      config.Add("description", "The Description");
 
-      ExtendedProviderBase provider = new StubExtendedProvider ("Provider", config);
+      ExtendedProviderBase provider = new StubExtendedProvider("Provider", config);
 
-      Assert.That (provider.Name, Is.EqualTo ("Provider"));
-      Assert.That (provider.Description, Is.EqualTo ("The Description"));
+      Assert.That(provider.Name, Is.EqualTo("Provider"));
+      Assert.That(provider.Description, Is.EqualTo("The Description"));
     }
 
     [Test]
     public void GetAndRemoveNonEmptyStringAttribute ()
     {
-      StubExtendedProvider provider = new StubExtendedProvider ("Provider", new NameValueCollection());
-      NameValueCollection config = new NameValueCollection ();
-      config.Add ("Name", "Value");
-      config.Add ("Other", "OtherValue");
+      StubExtendedProvider provider = new StubExtendedProvider("Provider", new NameValueCollection());
+      NameValueCollection config = new NameValueCollection();
+      config.Add("Name", "Value");
+      config.Add("Other", "OtherValue");
 
-      Assert.That (provider.GetAndRemoveNonEmptyStringAttribute (config, "Name", "Provider", true), Is.EqualTo ("Value"));
-      Assert.That (config.Get ("Other"), Is.EqualTo ("OtherValue"));
-      Assert.That (config["Name"], Is.Null);
+      Assert.That(provider.GetAndRemoveNonEmptyStringAttribute(config, "Name", "Provider", true), Is.EqualTo("Value"));
+      Assert.That(config.Get("Other"), Is.EqualTo("OtherValue"));
+      Assert.That(config["Name"], Is.Null);
     }
 
     [Test]
     public void GetAndRemoveNonEmptyStringAttribute_WithMissingAttributeAndRequired ()
     {
-      StubExtendedProvider provider = new StubExtendedProvider ("Provider", new NameValueCollection ());
-      NameValueCollection config = new NameValueCollection ();
-      Assert.That (
-          () => provider.GetAndRemoveNonEmptyStringAttribute (config, "Name", "Provider", true),
+      StubExtendedProvider provider = new StubExtendedProvider("Provider", new NameValueCollection());
+      NameValueCollection config = new NameValueCollection();
+      Assert.That(
+          () => provider.GetAndRemoveNonEmptyStringAttribute(config, "Name", "Provider", true),
           Throws.InstanceOf<ConfigurationErrorsException>()
-              .With.Message.EqualTo ("The attribute 'Name' is missing in the configuration of the 'Provider' provider."));
+              .With.Message.EqualTo("The attribute 'Name' is missing in the configuration of the 'Provider' provider."));
     }
 
     [Test]
     public void GetAndRemoveNonEmptyStringAttribute_WithEmptyAttributeAndRequired ()
     {
-      StubExtendedProvider provider = new StubExtendedProvider ("Provider", new NameValueCollection ());
-      NameValueCollection config = new NameValueCollection ();
-      config.Add ("Name", string.Empty);
+      StubExtendedProvider provider = new StubExtendedProvider("Provider", new NameValueCollection());
+      NameValueCollection config = new NameValueCollection();
+      config.Add("Name", string.Empty);
 
-      Assert.That (
-          () => provider.GetAndRemoveNonEmptyStringAttribute (config, "Name", "Provider", true),
+      Assert.That(
+          () => provider.GetAndRemoveNonEmptyStringAttribute(config, "Name", "Provider", true),
           Throws.InstanceOf<ConfigurationErrorsException>()
-              .With.Message.EqualTo ("The attribute 'Name' is missing in the configuration of the 'Provider' provider."));
-      Assert.That (config.AllKeys.Length, Is.EqualTo (1));
+              .With.Message.EqualTo("The attribute 'Name' is missing in the configuration of the 'Provider' provider."));
+      Assert.That(config.AllKeys.Length, Is.EqualTo(1));
     }
 
     [Test]
     public void GetAndRemoveNonEmptyStringAttribute_WithMissingAttributeAndNotRequired ()
     {
-      StubExtendedProvider provider = new StubExtendedProvider ("Provider", new NameValueCollection ());
-      NameValueCollection config = new NameValueCollection ();
+      StubExtendedProvider provider = new StubExtendedProvider("Provider", new NameValueCollection());
+      NameValueCollection config = new NameValueCollection();
 
-      Assert.That (provider.GetAndRemoveNonEmptyStringAttribute (config, "Name", "Provider", false), Is.Null);
+      Assert.That(provider.GetAndRemoveNonEmptyStringAttribute(config, "Name", "Provider", false), Is.Null);
     }
 
     [Test]
     public void GetAndRemoveNonEmptyStringAttribute_WithEmptyAttributeAndNotRequired ()
     {
-      StubExtendedProvider provider = new StubExtendedProvider ("Provider", new NameValueCollection ());
-      NameValueCollection config = new NameValueCollection ();
-      config.Add ("Name", string.Empty);
-      Assert.That (
-          () => provider.GetAndRemoveNonEmptyStringAttribute (config, "Name", "Provider", false),
+      StubExtendedProvider provider = new StubExtendedProvider("Provider", new NameValueCollection());
+      NameValueCollection config = new NameValueCollection();
+      config.Add("Name", string.Empty);
+      Assert.That(
+          () => provider.GetAndRemoveNonEmptyStringAttribute(config, "Name", "Provider", false),
           Throws.InstanceOf<ConfigurationErrorsException>()
-              .With.Message.EqualTo ("The attribute 'Name' is missing in the configuration of the 'Provider' provider."));
+              .With.Message.EqualTo("The attribute 'Name' is missing in the configuration of the 'Provider' provider."));
     }
   }
 }

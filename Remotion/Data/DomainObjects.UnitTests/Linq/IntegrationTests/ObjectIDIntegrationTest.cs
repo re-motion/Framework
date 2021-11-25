@@ -29,23 +29,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void CoalesceExpression_UsesIDValue ()
     {
-      var query = from e in QueryFactory.CreateLinqQuery<Employee> ()
+      var query = from e in QueryFactory.CreateLinqQuery<Employee>()
         where (e.Computer ?? (DomainObject) e).ID.Value == DomainObjectIDs.Employee2.Value
         select e;
 
-      CheckQueryResult (query, DomainObjectIDs.Employee2);
+      CheckQueryResult(query, DomainObjectIDs.Employee2);
     }
 
     [Test]
     public void CoalesceExpression_UsesCompoundID_ThrowsNotSupportedException ()
     {
-      var query = from e in QueryFactory.CreateLinqQuery<Employee> ()
+      var query = from e in QueryFactory.CreateLinqQuery<Employee>()
         where (e.Computer ?? (DomainObject) e).ID == DomainObjectIDs.Employee2
         select e;
-      Assert.That (
-          () => CheckQueryResult (query, DomainObjectIDs.Employee2),
+      Assert.That(
+          () => CheckQueryResult(query, DomainObjectIDs.Employee2),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
 #if NETFRAMEWORK
                   "There was an error preparing or resolving query "
                   + "'from Employee e in DomainObjectQueryable<Employee> "
@@ -65,23 +65,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void ConditionalExpression_UsesIDValue ()
     {
-      var query = from e in QueryFactory.CreateLinqQuery<Employee> ()
+      var query = from e in QueryFactory.CreateLinqQuery<Employee>()
         where (e.Computer.ID.Value == DomainObjectIDs.Computer1.Value ? e.Computer : (DomainObject) e).ID.Value == DomainObjectIDs.Computer1.Value
         select e;
 
-      CheckQueryResult (query, DomainObjectIDs.Employee3);
+      CheckQueryResult(query, DomainObjectIDs.Employee3);
     }
 
     [Test]
     public void ConditionalExpression_UsesCompundID_ThrowsNotSupportedException ()
     {
-      var query = from e in QueryFactory.CreateLinqQuery<Employee> ()
+      var query = from e in QueryFactory.CreateLinqQuery<Employee>()
         where (e.Computer.ID == DomainObjectIDs.Computer1 ? e.Computer : (DomainObject) e).ID == DomainObjectIDs.Computer1
         select e;
-      Assert.That (
-          () => CheckQueryResult (query, DomainObjectIDs.Employee3),
+      Assert.That(
+          () => CheckQueryResult(query, DomainObjectIDs.Employee3),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
 #if NETFRAMEWORK
                   "There was an error preparing or resolving query "
                   + "'from Employee e in DomainObjectQueryable<Employee> "
@@ -102,39 +102,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void Query_ReturnsCompoundID ()
     {
       var result =
-          (from o in QueryFactory.CreateLinqQuery<Order> ()
+          (from o in QueryFactory.CreateLinqQuery<Order>()
             where o.OrderNumber == 1
             select o.ID).Single();
 
-      Assert.That (result, Is.EqualTo (DomainObjectIDs.Order1));
+      Assert.That(result, Is.EqualTo(DomainObjectIDs.Order1));
     }
 
     [Test]
     public void Query_UsesCompoundID_InWhereClause ()
     {
-      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
       var computers =
           from c in QueryFactory.CreateLinqQuery<Computer>()
           where c.Employee.ID == employee.ID
           select c;
 
-      CheckQueryResult (computers, DomainObjectIDs.Computer1);
+      CheckQueryResult(computers, DomainObjectIDs.Computer1);
     }
 
     [Test]
     public void Query_UsesIDValue_InWhereClause ()
     {
-      var query = QueryFactory.CreateLinqQuery<Company> ().Where (c => c.ID.Value == DomainObjectIDs.Customer1.Value);
+      var query = QueryFactory.CreateLinqQuery<Company>().Where(c => c.ID.Value == DomainObjectIDs.Customer1.Value);
 
-      CheckQueryResult (query, DomainObjectIDs.Customer1);
+      CheckQueryResult(query, DomainObjectIDs.Customer1);
     }
 
     [Test]
     public void Query_UsesClassID_InWhereClause ()
     {
-      var query = QueryFactory.CreateLinqQuery<Company> ().Where (c => c.ID.ClassID == "Customer");
+      var query = QueryFactory.CreateLinqQuery<Company>().Where(c => c.ID.ClassID == "Customer");
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           DomainObjectIDs.Customer1,
           DomainObjectIDs.Customer2,
@@ -147,22 +147,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void Query_UsesIDValue_OnColumnOfReferencedEntity ()
     {
       var query = from x in
-                    (from c in QueryFactory.CreateLinqQuery<Company> () select new { A = c, B = c.ID }).Distinct ()
+                    (from c in QueryFactory.CreateLinqQuery<Company>() select new { A = c, B = c.ID }).Distinct()
                   where x.A.ID.Value == DomainObjectIDs.Customer1.Value
                   select x.A;
 
-      CheckQueryResult (query, DomainObjectIDs.Customer1);
+      CheckQueryResult(query, DomainObjectIDs.Customer1);
     }
 
     [Test]
     public void Query_UsesClassID_OnPropertyOfReferencedEntity ()
     {
       var query = from x in
-                    (from c in QueryFactory.CreateLinqQuery<Company> () select new { A = c, B = c.ID }).Distinct()
+                    (from c in QueryFactory.CreateLinqQuery<Company>() select new { A = c, B = c.ID }).Distinct()
                   where x.A.ID.ClassID == "Customer"
                   select x.A;
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           DomainObjectIDs.Customer1,
           DomainObjectIDs.Customer2,
@@ -175,22 +175,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void Query_UsesIDValue_OnReferencedValue ()
     {
       var query = from x in
-                    (from c in QueryFactory.CreateLinqQuery<Company> () select new { A = c, B = c.ID }).Distinct ()
+                    (from c in QueryFactory.CreateLinqQuery<Company>() select new { A = c, B = c.ID }).Distinct()
                   where x.B.Value == DomainObjectIDs.Customer1.Value
                   select x.A;
 
-      CheckQueryResult (query, DomainObjectIDs.Customer1);
+      CheckQueryResult(query, DomainObjectIDs.Customer1);
     }
 
     [Test]
     public void Query_UsesClassID_OnReferencedValue ()
     {
       var query = from x in
-                    (from c in QueryFactory.CreateLinqQuery<Company> () select new { A = c, B = c.ID }).Distinct ()
+                    (from c in QueryFactory.CreateLinqQuery<Company>() select new { A = c, B = c.ID }).Distinct()
                   where x.B.ClassID == "Customer"
                   select x.A;
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           DomainObjectIDs.Customer1,
           DomainObjectIDs.Customer2,
@@ -204,11 +204,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var possibleItems = new[] { DomainObjectIDs.Order1.Value, DomainObjectIDs.Order3.Value };
       var orders =
-          from o in QueryFactory.CreateLinqQuery<Order> ()
-          where possibleItems.Contains (o.ID.Value)
+          from o in QueryFactory.CreateLinqQuery<Order>()
+          where possibleItems.Contains(o.ID.Value)
           select o;
 
-      CheckQueryResult (orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3);
+      CheckQueryResult(orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3);
     }
 
     [Test]
@@ -216,13 +216,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var possibleItems = new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 };
       var orders =
-          from o in QueryFactory.CreateLinqQuery<Order> ()
-          where possibleItems.Contains (o.ID)
+          from o in QueryFactory.CreateLinqQuery<Order>()
+          where possibleItems.Contains(o.ID)
           select o;
-      Assert.That (
-          () => CheckQueryResult (orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3),
+      Assert.That(
+          () => CheckQueryResult(orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
 #if NETFRAMEWORK
                   "There was an error preparing or resolving query "
                   + "'from Order o in DomainObjectQueryable<Order> where {value(Remotion.Data.DomainObjects.ObjectID[]) => Contains([o].ID)} select [o]' for "
@@ -246,17 +246,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var possibleItems = new[]
                           {
-                              LifetimeService.GetObjectReference (ClientTransaction.Current, DomainObjectIDs.Order1),
-                              LifetimeService.GetObjectReference (ClientTransaction.Current, DomainObjectIDs.Order3)
+                              LifetimeService.GetObjectReference(ClientTransaction.Current, DomainObjectIDs.Order1),
+                              LifetimeService.GetObjectReference(ClientTransaction.Current, DomainObjectIDs.Order3)
                           };
       var orders =
-          from o in QueryFactory.CreateLinqQuery<Order> ()
-          where possibleItems.Contains (o)
+          from o in QueryFactory.CreateLinqQuery<Order>()
+          where possibleItems.Contains(o)
           select o;
-      Assert.That (
-          () => CheckQueryResult (orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3),
+      Assert.That(
+          () => CheckQueryResult(orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "There was an error preparing or resolving query "
                   + "'from Order o in DomainObjectQueryable<Order> where {value(Remotion.Data.DomainObjects.DomainObject[]) => Contains([o])} select [o]' for "
                   + "SQL generation. The SQL 'IN' operator (originally probably a call to a 'Contains' method) requires a single value, so the following "
@@ -267,13 +267,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void GroupBy_UsesObjectID_AsKey ()
     {
-      var query = from o in QueryFactory.CreateLinqQuery<Order> ()
+      var query = from o in QueryFactory.CreateLinqQuery<Order>()
                   group o by o.Customer.ID into ordersByCustomer
                   from c in QueryFactory.CreateLinqQuery<Customer>()
                   where c.ID == ordersByCustomer.Key
                   select c;
 
-      CheckQueryResult (query, DomainObjectIDs.Customer1, DomainObjectIDs.Customer3, DomainObjectIDs.Customer4, DomainObjectIDs.Customer5);
+      CheckQueryResult(query, DomainObjectIDs.Customer1, DomainObjectIDs.Customer3, DomainObjectIDs.Customer4, DomainObjectIDs.Customer5);
     }
   }
 }

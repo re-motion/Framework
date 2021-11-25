@@ -43,41 +43,41 @@ namespace Remotion.Tools.UnitTests
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
-      _testDllPath = CreateAssembly ("TestDll", "TestDll" + "." + "dll");
-      _testExePath = CreateAssembly ("TestExe", "TestExe" + "." + "exe");
-      _testInvalidDllPath = CreateAssembly ("TestDllWhatever", "TestDllInvalid" + "." + "dll");
+      _testDllPath = CreateAssembly("TestDll", "TestDll" + "." + "dll");
+      _testExePath = CreateAssembly("TestExe", "TestExe" + "." + "exe");
+      _testInvalidDllPath = CreateAssembly("TestDllWhatever", "TestDllInvalid" + "." + "dll");
     }
 
     [OneTimeTearDown]
     public void TestFixtureTearDown ()
     {
-      FileUtility.DeleteAndWaitForCompletion (_testDllPath);
-      FileUtility.DeleteAndWaitForCompletion (_testExePath);
-      FileUtility.DeleteAndWaitForCompletion (_testInvalidDllPath);
+      FileUtility.DeleteAndWaitForCompletion(_testDllPath);
+      FileUtility.DeleteAndWaitForCompletion(_testExePath);
+      FileUtility.DeleteAndWaitForCompletion(_testInvalidDllPath);
     }
 
     [SetUp]
     public void SetUp ()
     {
-      _domainBase = Path.Combine (AppContext.BaseDirectory, "AppDomainAsselbyResolverTest");
-      _appDomain = AppDomain.CreateDomain ("Test", null, _domainBase, null, false);
+      _domainBase = Path.Combine(AppContext.BaseDirectory, "AppDomainAsselbyResolverTest");
+      _appDomain = AppDomain.CreateDomain("Test", null, _domainBase, null, false);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      AppDomain.Unload (_appDomain);
+      AppDomain.Unload(_appDomain);
       
-      if (Directory.Exists (_domainBase))
-        Directory.Delete (_domainBase, true);
+      if (Directory.Exists(_domainBase))
+        Directory.Delete(_domainBase, true);
     }
 
     [Test]
     public void CreateInAppDomain ()
     {
-      var resolver = AppDomainAssemblyResolver.CreateInAppDomain (_appDomain, AppContext.BaseDirectory);
-      Assert.That (RemotingServices.IsTransparentProxy (resolver), Is.True);
-      Assert.That (resolver.AssemblyDirectory, Is.EqualTo (AppContext.BaseDirectory));
+      var resolver = AppDomainAssemblyResolver.CreateInAppDomain(_appDomain, AppContext.BaseDirectory);
+      Assert.That(RemotingServices.IsTransparentProxy(resolver), Is.True);
+      Assert.That(resolver.AssemblyDirectory, Is.EqualTo(AppContext.BaseDirectory));
     }
 
     [Test]
@@ -85,19 +85,19 @@ namespace Remotion.Tools.UnitTests
     {
       var setupInfo = AppDomain.CurrentDomain.SetupInformation;
       setupInfo.ShadowCopyFiles = "true";
-      var shadowCopiedAppDomain = AppDomain.CreateDomain ("ShadowCopier", AppDomain.CurrentDomain.Evidence, setupInfo);
+      var shadowCopiedAppDomain = AppDomain.CreateDomain("ShadowCopier", AppDomain.CurrentDomain.Evidence, setupInfo);
       try
       {
-        shadowCopiedAppDomain.DoCallBack (
+        shadowCopiedAppDomain.DoCallBack(
             delegate
             {
-              var resolver = AppDomainAssemblyResolver.CreateInAppDomain (_appDomain, AppContext.BaseDirectory);
-              Assert.That (resolver, Is.Not.Null);
+              var resolver = AppDomainAssemblyResolver.CreateInAppDomain(_appDomain, AppContext.BaseDirectory);
+              Assert.That(resolver, Is.Not.Null);
             });
       }
       finally
       {
-        AppDomain.Unload (shadowCopiedAppDomain);
+        AppDomain.Unload(shadowCopiedAppDomain);
       }
     }
 
@@ -107,71 +107,71 @@ namespace Remotion.Tools.UnitTests
       var resolver = CreateResolver();
 
       ExactTypeConstraint constraint = Throws.Exception.TypeOf<FileNotFoundException>().Or.TypeOf<SerializationException>();
-      Assert.That (() => _appDomain.DoCallBack (delegate { }), constraint); // Serialized type should not be available in the other AppDomain
+      Assert.That(() => _appDomain.DoCallBack(delegate { }), constraint); // Serialized type should not be available in the other AppDomain
 
-      resolver.Register (_appDomain);
+      resolver.Register(_appDomain);
 
-      _appDomain.DoCallBack (delegate { });
+      _appDomain.DoCallBack(delegate { });
     }
 
     [Test]
     public void Resolve_FindsDlls ()
     {
-      var resolver = CreateResolver ();
+      var resolver = CreateResolver();
 
-      resolver.Register (_appDomain);
+      resolver.Register(_appDomain);
 
-      _appDomain.DoCallBack (() => Assembly.Load ("TestDll"));
+      _appDomain.DoCallBack(() => Assembly.Load("TestDll"));
     }
 
     [Test]
     public void Resolve_FindsExes ()
     {
-      var resolver = CreateResolver ();
+      var resolver = CreateResolver();
 
-      resolver.Register (_appDomain);
+      resolver.Register(_appDomain);
 
-      _appDomain.DoCallBack (() => Assembly.Load ("TestExe"));
+      _appDomain.DoCallBack(() => Assembly.Load("TestExe"));
     }
 
     [Test]
     public void Resolve_NonExistingAssembly ()
     {
-      var resolver = CreateResolver ();
+      var resolver = CreateResolver();
 
-      resolver.Register (_appDomain);
-      Assert.That (
-          () => _appDomain.DoCallBack (() => Assembly.Load ("TestTxt")),
+      resolver.Register(_appDomain);
+      Assert.That(
+          () => _appDomain.DoCallBack(() => Assembly.Load("TestTxt")),
           Throws.InstanceOf<FileNotFoundException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Could not load file or assembly 'TestTxt' or one of its dependencies. The system cannot find the file specified."));
     }
 
     [Test]
     public void Resolve_ManifestDoesntMatch ()
     {
-      var resolver = CreateResolver ();
+      var resolver = CreateResolver();
 
-      resolver.Register (_appDomain);
-      Assert.That (
-          () => _appDomain.DoCallBack (() => Assembly.Load ("TestDllInvalid")),
+      resolver.Register(_appDomain);
+      Assert.That(
+          () => _appDomain.DoCallBack(() => Assembly.Load("TestDllInvalid")),
           Throws.InstanceOf<FileLoadException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Could not load file or assembly 'TestDllInvalid' or one of its dependencies. Could not find or load a specific file. (Exception from HRESULT: 0x80131621)"));
     }
 
     private AppDomainAssemblyResolver CreateResolver ()
     {
-      return AppDomainAssemblyResolver.CreateInAppDomain (_appDomain, AppContext.BaseDirectory);
+      return AppDomainAssemblyResolver.CreateInAppDomain(_appDomain, AppContext.BaseDirectory);
     }
 
     private string CreateAssembly (string assemblyName, string moduleName)
     {
       var targetDirectory = AppContext.BaseDirectory;
-      var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly (new AssemblyName (assemblyName), AssemblyBuilderAccess.Save, targetDirectory);
-      assemblyBuilder.DefineDynamicModule (moduleName);
-      assemblyBuilder.Save (moduleName);
-      return Path.Combine (targetDirectory, moduleName);
+      var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.Save, targetDirectory);
+      assemblyBuilder.DefineDynamicModule(moduleName);
+      assemblyBuilder.Save(moduleName);
+      return Path.Combine(targetDirectory, moduleName);
     }
   }
 }

@@ -52,26 +52,26 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     [Test]
     public void CreateAnalyzer_CopiesGivenConfig ()
     {
-      _configStub.Setup (_ => _.IFrameTimeout).Returns (TimeSpan.FromSeconds (5));
-      _configStub.Setup (_ => _.IncludeIFrames).Returns (true);
+      _configStub.Setup(_ => _.IFrameTimeout).Returns(TimeSpan.FromSeconds(5));
+      _configStub.Setup(_ => _.IncludeIFrames).Returns(true);
       var analyzer = CreateAccessibilityAnalyzer();
 
-      Assert.That (analyzer.IncludeIFrames, Is.True);
-      Assert.That (analyzer.IFrameTimeout, Is.EqualTo (TimeSpan.FromSeconds (5)));
+      Assert.That(analyzer.IncludeIFrames, Is.True);
+      Assert.That(analyzer.IFrameTimeout, Is.EqualTo(TimeSpan.FromSeconds(5)));
     }
 
     [Test]
     public void Initialize_ChangesDefaultConfiguration ()
     {
-      _configStub.Setup (_ => _.IFrameTimeout).Returns (TimeSpan.FromSeconds (5));
-      _configStub.Setup (_ => _.IncludeIFrames).Returns (true);
+      _configStub.Setup(_ => _.IFrameTimeout).Returns(TimeSpan.FromSeconds(5));
+      _configStub.Setup(_ => _.IncludeIFrames).Returns(true);
       var analyzer = CreateAccessibilityAnalyzer();
 
-      analyzer.IFrameTimeout = TimeSpan.FromSeconds (15);
+      analyzer.IFrameTimeout = TimeSpan.FromSeconds(15);
       analyzer.IncludeIFrames = false;
 
-      Assert.That (analyzer.IncludeIFrames, Is.False);
-      Assert.That (analyzer.IFrameTimeout, Is.EqualTo (TimeSpan.FromSeconds (15)));
+      Assert.That(analyzer.IncludeIFrames, Is.False);
+      Assert.That(analyzer.IFrameTimeout, Is.EqualTo(TimeSpan.FromSeconds(15)));
     }
 
     [Test]
@@ -79,30 +79,30 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     {
       var analyzer = CreateAccessibilityAnalyzer();
 
-      Assert.That (() => analyzer.Analyze (""), Throws.ArgumentException);
+      Assert.That(() => analyzer.Analyze(""), Throws.ArgumentException);
     }
 
     [Test]
     public void Analyze_ExecuteAsyncReturnsNull_ThrowsInvalidOperationException ()
     {
-      _jsExecutorStub.Setup (_ => _.ExecuteAsyncScript (It.IsAny<string>(), It.IsAny<object[]>())).Returns ((object) null);
-      _jsExecutorStub.Setup (_ => _.ExecuteScript ("return (typeof axe !== 'undefined')")).Returns (true);
-      _jsExecutorStub.Setup (_ => _.ExecuteScript ("return self.name;")).Returns ("TestFrame");
-      _webDriverStub.Setup (_ => _.FindElements (It.IsAny<By>())).Returns (new List<IWebElement>().AsReadOnly());
-      _webDriverStub.Setup (_ => _.SwitchTo().DefaultContent());
-      _configStub.Setup (_ => _.ConformanceLevel).Returns (AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
+      _jsExecutorStub.Setup(_ => _.ExecuteAsyncScript(It.IsAny<string>(), It.IsAny<object[]>())).Returns((object) null);
+      _jsExecutorStub.Setup(_ => _.ExecuteScript("return (typeof axe !== 'undefined')")).Returns(true);
+      _jsExecutorStub.Setup(_ => _.ExecuteScript("return self.name;")).Returns("TestFrame");
+      _webDriverStub.Setup(_ => _.FindElements(It.IsAny<By>())).Returns(new List<IWebElement>().AsReadOnly());
+      _webDriverStub.Setup(_ => _.SwitchTo().DefaultContent());
+      _configStub.Setup(_ => _.ConformanceLevel).Returns(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
       var analyzer = CreateAccessibilityAnalyzer();
 
-      Assert.That (
+      Assert.That(
           () => analyzer.Analyze(),
-          Throws.TypeOf (typeof (InvalidOperationException)).With.Message.EqualTo ("Could not obtain accessibility analysis result."));
+          Throws.TypeOf(typeof (InvalidOperationException)).With.Message.EqualTo("Could not obtain accessibility analysis result."));
     }
 
     [Test]
     public void Analyze_IEPath ()
     {
       var axeResult = new AxeResult();
-      var accessibilityResult = new AccessibilityResult (
+      var accessibilityResult = new AccessibilityResult(
           DateTime.MinValue,
           "url",
           "version",
@@ -114,20 +114,20 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
           true,
           AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA,
           new List<AccessibilityRuleResult>());
-      _jsExecutorStub.Setup (_ => _.ExecuteAsyncScript (It.IsAny<string>(),It.IsAny<object[]>())).Returns  (null);
-      _jsExecutorStub.Setup (_ => _.ExecuteAsyncScript (It.IsAny<string>(),It.IsAny<object[]>())).Returns  ("{}");
-      _jsExecutorStub.Setup (_ => _.ExecuteScript ("return (typeof axe !== 'undefined')")).Returns (true);
-      _jsExecutorStub.Setup (_ => _.ExecuteScript ("return self.name;")).Returns ("TestFrame");
-      _webDriverStub.Setup (_ => _.FindElements (It.IsAny<By>())).Returns  (new List<IWebElement>().AsReadOnly());
-      _webDriverStub.Setup (_ => _.SwitchTo().DefaultContent());
-      _resultParserStub.Setup (_ => _.Parse ("{}")).Returns (axeResult);
-      _resultMapperStub.Setup (_ => _.Map (axeResult)).Returns (accessibilityResult);
-      _configStub.Setup (_ => _.ConformanceLevel).Returns (AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
+      _jsExecutorStub.Setup(_ => _.ExecuteAsyncScript(It.IsAny<string>(),It.IsAny<object[]>())).Returns(null);
+      _jsExecutorStub.Setup(_ => _.ExecuteAsyncScript(It.IsAny<string>(),It.IsAny<object[]>())).Returns("{}");
+      _jsExecutorStub.Setup(_ => _.ExecuteScript("return (typeof axe !== 'undefined')")).Returns(true);
+      _jsExecutorStub.Setup(_ => _.ExecuteScript("return self.name;")).Returns("TestFrame");
+      _webDriverStub.Setup(_ => _.FindElements(It.IsAny<By>())).Returns(new List<IWebElement>().AsReadOnly());
+      _webDriverStub.Setup(_ => _.SwitchTo().DefaultContent());
+      _resultParserStub.Setup(_ => _.Parse("{}")).Returns(axeResult);
+      _resultMapperStub.Setup(_ => _.Map(axeResult)).Returns(accessibilityResult);
+      _configStub.Setup(_ => _.ConformanceLevel).Returns(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
       var analyzer = CreateAccessibilityAnalyzer();
 
       var result = analyzer.Analyze();
 
-      Assert.That (result, Is.SameAs (accessibilityResult));
+      Assert.That(result, Is.SameAs(accessibilityResult));
     }
 
     [Test]
@@ -136,18 +136,18 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
       var parsedAxeResult = new AxeResult();
       const string axeSource = "AxeSource";
       const string axeResult = "AxeResult";
-      _sourceProviderStub.Setup (_ => _.GetSource()).Returns (axeSource);
-      _jsExecutorStub.Setup (_ => _.ExecuteScript ("return (typeof axe !== 'undefined')")).Returns (false);
-      _jsExecutorStub.Setup (_ => _.ExecuteScript (axeSource)).Returns (true);
-      _jsExecutorStub.Setup (_ => _.ExecuteAsyncScript (It.IsAny<string>(), It.IsAny<object[]>())).Returns (axeResult);
-      _resultParserStub.Setup (_ => _.Parse (axeResult)).Returns (parsedAxeResult);
-      _resultMapperStub.Setup (_ => _.Map (parsedAxeResult)).Returns ((AccessibilityResult) null);
-      _configStub.Setup (_ => _.ConformanceLevel).Returns (AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
+      _sourceProviderStub.Setup(_ => _.GetSource()).Returns(axeSource);
+      _jsExecutorStub.Setup(_ => _.ExecuteScript("return (typeof axe !== 'undefined')")).Returns(false);
+      _jsExecutorStub.Setup(_ => _.ExecuteScript(axeSource)).Returns(true);
+      _jsExecutorStub.Setup(_ => _.ExecuteAsyncScript(It.IsAny<string>(), It.IsAny<object[]>())).Returns(axeResult);
+      _resultParserStub.Setup(_ => _.Parse(axeResult)).Returns(parsedAxeResult);
+      _resultMapperStub.Setup(_ => _.Map(parsedAxeResult)).Returns((AccessibilityResult) null);
+      _configStub.Setup(_ => _.ConformanceLevel).Returns(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
       var analyzer = CreateAccessibilityAnalyzer();
 
-      analyzer.Analyze ("SomeCssSelector");
+      analyzer.Analyze("SomeCssSelector");
 
-      _loggerStub.Verify (_ => _.DebugFormat ("aXe has been injected. [took: {0}]", It.IsAny<TimeSpan>()), Times.AtLeastOnce());
+      _loggerStub.Verify(_ => _.DebugFormat("aXe has been injected. [took: {0}]", It.IsAny<TimeSpan>()), Times.AtLeastOnce());
     }
 
     [Test]
@@ -156,23 +156,23 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
       var parsedAxeResult = new AxeResult();
       const string axeSource = "AxeSource";
       const string axeResult = "AxeResult";
-      _sourceProviderStub.Setup (_ => _.GetSource()).Returns (axeSource);
-      _jsExecutorStub.Setup (_ => _.ExecuteScript ("return (typeof axe !== 'undefined')")).Returns (false);
-      _jsExecutorStub.Setup (_ => _.ExecuteScript (axeSource)).Returns (true);
-      _jsExecutorStub.Setup (_ => _.ExecuteAsyncScript (It.IsAny<string>(), It.IsAny<object[]>())).Returns (axeResult);
-      _resultParserStub.Setup (_ => _.Parse (axeResult)).Returns (parsedAxeResult);
-      _resultMapperStub.Setup (_ => _.Map (parsedAxeResult)).Returns ((AccessibilityResult) null);
-      _configStub.Setup (_ => _.ConformanceLevel).Returns (AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
+      _sourceProviderStub.Setup(_ => _.GetSource()).Returns(axeSource);
+      _jsExecutorStub.Setup(_ => _.ExecuteScript("return (typeof axe !== 'undefined')")).Returns(false);
+      _jsExecutorStub.Setup(_ => _.ExecuteScript(axeSource)).Returns(true);
+      _jsExecutorStub.Setup(_ => _.ExecuteAsyncScript(It.IsAny<string>(), It.IsAny<object[]>())).Returns(axeResult);
+      _resultParserStub.Setup(_ => _.Parse(axeResult)).Returns(parsedAxeResult);
+      _resultMapperStub.Setup(_ => _.Map(parsedAxeResult)).Returns((AccessibilityResult) null);
+      _configStub.Setup(_ => _.ConformanceLevel).Returns(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
       var analyzer = CreateAccessibilityAnalyzer();
 
-      analyzer.Analyze ("SomeCssSelector");
+      analyzer.Analyze("SomeCssSelector");
 
-      _loggerStub.Verify (_ => _.DebugFormat ("Accessibility analysis has been performed. [took: {0}]", It.IsAny<TimeSpan>()), Times.AtLeastOnce());
+      _loggerStub.Verify(_ => _.DebugFormat("Accessibility analysis has been performed. [took: {0}]", It.IsAny<TimeSpan>()), Times.AtLeastOnce());
     }
 
     private TestableAccessibilityAnalyzer CreateAccessibilityAnalyzer ()
     {
-      return new TestableAccessibilityAnalyzer (
+      return new TestableAccessibilityAnalyzer(
           _webDriverStub.Object,
           _jsExecutorStub.Object,
           _resultParserStub.Object,

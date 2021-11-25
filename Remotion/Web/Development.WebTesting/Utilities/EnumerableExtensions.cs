@@ -35,13 +35,13 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <returns>The zero-based index of the matching item, or -1 if no item matches.</returns>
     public static int IndexOf<T> ([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
     {
-      ArgumentUtility.CheckNotNull ("enumerable", enumerable);
-      ArgumentUtility.CheckNotNull ("predicate", predicate);
+      ArgumentUtility.CheckNotNull("enumerable", enumerable);
+      ArgumentUtility.CheckNotNull("predicate", predicate);
 
       var zeroBasedIndex = 0;
       foreach (var item in enumerable)
       {
-        if (predicate (item))
+        if (predicate(item))
           return zeroBasedIndex;
 
         zeroBasedIndex++;

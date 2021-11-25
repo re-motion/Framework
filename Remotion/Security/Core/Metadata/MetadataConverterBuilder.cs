@@ -28,7 +28,7 @@ namespace Remotion.Security.Metadata
 
     public MetadataConverterBuilder ()
     {
-      _cultures = new List<CultureInfo> ();
+      _cultures = new List<CultureInfo>();
     }
 
     public bool ConvertMetadataToXml
@@ -40,31 +40,31 @@ namespace Remotion.Security.Metadata
     public IMetadataConverter Create ()
     {
       if (_cultures.Count == 0 && !_convertMetadataToXml)
-        throw new InvalidOperationException ("You must specify at least a localization or a metadata converter.");
+        throw new InvalidOperationException("You must specify at least a localization or a metadata converter.");
 
       if (_cultures.Count == 0)
-        return new MetadataToXmlConverter ();
+        return new MetadataToXmlConverter();
 
-      LocalizingMetadataConverter converter = new LocalizingMetadataConverter (new MetadataLocalizationToXmlConverter (), _cultures.ToArray ());
+      LocalizingMetadataConverter converter = new LocalizingMetadataConverter(new MetadataLocalizationToXmlConverter(), _cultures.ToArray());
 
       if (_convertMetadataToXml)
-        converter.MetadataConverter = new MetadataToXmlConverter ();
+        converter.MetadataConverter = new MetadataToXmlConverter();
 
       return converter;
     }
 
     public void AddLocalization (string cultureName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("cultureName", cultureName);
+      ArgumentUtility.CheckNotNullOrEmpty("cultureName", cultureName);
 
-      AddLocalization (new CultureInfo (cultureName.Trim ()));
+      AddLocalization(new CultureInfo(cultureName.Trim()));
     }
 
     public void AddLocalization (CultureInfo cultureInfo)
     {
-      ArgumentUtility.CheckNotNull ("cultureInfo", cultureInfo);
+      ArgumentUtility.CheckNotNull("cultureInfo", cultureInfo);
 
-      _cultures.Add (cultureInfo);
+      _cultures.Add(cultureInfo);
     }
   }
 }

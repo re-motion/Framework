@@ -21,8 +21,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
       base.SetUp();
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<IRenderingFeatures> (() => RenderingFeatures.WithDiagnosticMetadata);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle<IRenderingFeatures>(() => RenderingFeatures.WithDiagnosticMetadata);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
     public override void TearDown ()
@@ -36,13 +36,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     {
       var webButton = new TestWebButton { ID = "WebButton", Text = "My Button" };
 
-      var renderedText = RenderControl (webButton);
+      var renderedText = RenderControl(webButton);
 
-      Assert.That (renderedText, Does.Contain (DiagnosticMetadataAttributes.ControlType + "=\"WebButton\""));
-      Assert.That (renderedText, Does.Contain (DiagnosticMetadataAttributes.ItemID + "=\"" + webButton.ID + "\""));
-      Assert.That (renderedText, Does.Contain (DiagnosticMetadataAttributes.Content + "=\"" + webButton.Text + "\""));
-      Assert.That (renderedText, Does.Not.Contains (DiagnosticMetadataAttributes.CommandName));
-      Assert.That (renderedText, Does.Contain (DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
+      Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.ControlType + "=\"WebButton\""));
+      Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.ItemID + "=\"" + webButton.ID + "\""));
+      Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.Content + "=\"" + webButton.Text + "\""));
+      Assert.That(renderedText, Does.Not.Contains(DiagnosticMetadataAttributes.CommandName));
+      Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
     }
 
     [Test]
@@ -50,24 +50,24 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     {
       var webButton = new TestWebButton { ID = "WebButton", CommandName = "MyCommand" };
 
-      var renderedText = RenderControl (webButton);
+      var renderedText = RenderControl(webButton);
 
-      Assert.That (renderedText, Does.Contain (DiagnosticMetadataAttributes.ControlType + "=\"WebButton\""));
-      Assert.That (renderedText, Does.Contain (DiagnosticMetadataAttributes.CommandName + "=\"MyCommand\""));
-      Assert.That (renderedText, Does.Contain (DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
+      Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.ControlType + "=\"WebButton\""));
+      Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.CommandName + "=\"MyCommand\""));
+      Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
     }
 
     private string RenderControl (Control control)
     {
       var page = new Page();
-      page.Controls.Add (control);
+      page.Controls.Add(control);
 
-      var ci = new ControlInvoker (page);
+      var ci = new ControlInvoker(page);
       ci.InitRecursive();
       ci.LoadRecursive();
       ci.PreRenderRecursive();
       var stringWriter = new StringWriter();
-      control.RenderControl (new HtmlTextWriter (stringWriter));
+      control.RenderControl(new HtmlTextWriter(stringWriter));
 
       return stringWriter.ToString();
     }

@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 
     public FlattenedSerializationReader (T[] data)
     {
-      ArgumentUtility.CheckNotNull ("data", data);
+      ArgumentUtility.CheckNotNull("data", data);
 
       _data = data;
     }
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
     public T ReadValue ()
     {
       if (_readPosition >= _data.Length)
-        throw new InvalidOperationException (string.Format ("There is no more data in the serialization stream at position {0}.", _readPosition));
+        throw new InvalidOperationException(string.Format("There is no more data in the serialization stream at position {0}.", _readPosition));
 
       T value = _data[_readPosition];
       ++_readPosition;

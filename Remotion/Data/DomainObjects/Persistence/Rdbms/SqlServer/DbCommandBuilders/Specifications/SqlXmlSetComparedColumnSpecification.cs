@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
 
     public SqlXmlSetComparedColumnSpecification (ColumnDefinition columnDefinition, IEnumerable<object> objectValues)
     {
-      ArgumentUtility.CheckNotNull ("columnDefinition", columnDefinition);
-      ArgumentUtility.CheckNotNull ("objectValues", objectValues);
+      ArgumentUtility.CheckNotNull("columnDefinition", columnDefinition);
+      ArgumentUtility.CheckNotNull("objectValues", objectValues);
 
       _columnDefinition = columnDefinition;
       _objectValues = objectValues.ToArray();
@@ -56,49 +56,49 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
 
     public void AddParameters (IDbCommand command, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("command", command);
-      ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
+      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
 
-      var stringWriter = new StringWriter ();
-      var xmlWriter = new XmlTextWriter (stringWriter);
-      xmlWriter.WriteStartElement ("L");
+      var stringWriter = new StringWriter();
+      var xmlWriter = new XmlTextWriter(stringWriter);
+      xmlWriter.WriteStartElement("L");
       foreach (var value in ObjectValues)
       {
-        xmlWriter.WriteStartElement ("I");
+        xmlWriter.WriteStartElement("I");
         if (value == null)
-          throw new NotSupportedException ("SQL Server cannot represent NULL values in an XML data type.");
-        xmlWriter.WriteString (value.ToString ());
-        xmlWriter.WriteEndElement ();
+          throw new NotSupportedException("SQL Server cannot represent NULL values in an XML data type.");
+        xmlWriter.WriteString(value.ToString());
+        xmlWriter.WriteEndElement();
       }
-      xmlWriter.WriteEndElement ();
+      xmlWriter.WriteEndElement();
 
-      var parameter = command.CreateParameter ();
-      parameter.ParameterName = GetParameterName (sqlDialect);
+      var parameter = command.CreateParameter();
+      parameter.ParameterName = GetParameterName(sqlDialect);
       parameter.DbType = DbType.Xml;
-      parameter.Value = stringWriter.ToString ();
-      command.Parameters.Add (parameter);
+      parameter.Value = stringWriter.ToString();
+      command.Parameters.Add(parameter);
     }
 
     public void AppendComparisons (
         StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("command", command);
-      ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
 
-      statement.Append (sqlDialect.DelimitIdentifier (_columnDefinition.Name));
-      statement.Append (" IN (");
-      statement.Append ("SELECT T.c.value('.', '").Append (_columnDefinition.StorageTypeInfo.StorageTypeName).Append ("')");
-      statement.Append (" FROM ");
-      statement.Append (GetParameterName (sqlDialect));
-      statement.Append (".nodes('/L/I') T(c))");
+      statement.Append(sqlDialect.DelimitIdentifier(_columnDefinition.Name));
+      statement.Append(" IN (");
+      statement.Append("SELECT T.c.value('.', '").Append(_columnDefinition.StorageTypeInfo.StorageTypeName).Append("')");
+      statement.Append(" FROM ");
+      statement.Append(GetParameterName(sqlDialect));
+      statement.Append(".nodes('/L/I') T(c))");
 
       command.CommandText = statement.ToString();
     }
 
     private string GetParameterName (ISqlDialect sqlDialect)
     {
-      return sqlDialect.GetParameterName (_columnDefinition.Name);
+      return sqlDialect.GetParameterName(_columnDefinition.Name);
     }
   }
 }

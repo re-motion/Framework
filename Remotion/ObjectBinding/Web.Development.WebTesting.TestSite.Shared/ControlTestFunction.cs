@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
       get { return (string) Variables["UserControl"]; }
       set
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("UserControl", value);
+        ArgumentUtility.CheckNotNullOrEmpty("UserControl", value);
         Variables["UserControl"] = value;
       }
     }
@@ -52,18 +52,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
     // Steps
     private void Step1 ()
     {
-      ExceptionHandler.AppendCatchExceptionTypes (typeof (WxeUserCancelException));
+      ExceptionHandler.AppendCatchExceptionTypes(typeof (WxeUserCancelException));
     }
 
     private void Step2 ()
     {
       XmlReflectionBusinessObjectStorageProvider.Current.Reset();
 
-      var personID = new Guid (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-      _person = Person.GetObject (personID);
+      var personID = new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+      _person = Person.GetObject(personID);
     }
 
-    private WxeStep Step3 = new WxeResourcePageStep (typeof (ControlTestForm), "ControlTestForm.aspx");
+    private WxeStep Step3 = new WxeResourcePageStep(typeof (ControlTestForm), "ControlTestForm.aspx");
 
     private void Step4 ()
     {

@@ -43,162 +43,162 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       _stubContextFactory = _mocks.StrictMock<IDomainObjectSecurityContextFactory>();
 
       _stubUser = _mocks.Stub<ISecurityPrincipal>();
-      SetupResult.For (_stubUser.User).Return ("user");
-      _accessTypeResult = new[] { AccessType.Get (GeneralAccessTypes.Read), AccessType.Get (GeneralAccessTypes.Edit) };
+      SetupResult.For(_stubUser.User).Return("user");
+      _accessTypeResult = new[] { AccessType.Get(GeneralAccessTypes.Read), AccessType.Get(GeneralAccessTypes.Edit) };
     }
 
     [Test]
     public void Initialize ()
     {
-      var strategy = new DomainObjectSecurityStrategyDecorator (_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.New);
-      Assert.That (strategy.InnerStrategy, Is.SameAs (_mockObjectSecurityStrategy));
-      Assert.That (strategy.SecurityContextFactory, Is.SameAs (_stubContextFactory));
-      Assert.That (strategy.RequiredSecurityForStates, Is.EqualTo (RequiredSecurityForStates.New));
+      var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.New);
+      Assert.That(strategy.InnerStrategy, Is.SameAs(_mockObjectSecurityStrategy));
+      Assert.That(strategy.SecurityContextFactory, Is.SameAs(_stubContextFactory));
+      Assert.That(strategy.RequiredSecurityForStates, Is.EqualTo(RequiredSecurityForStates.New));
     }
 
     [Test]
     public void HasAccess_WithAccessGranted ()
     {
-      var strategy = new DomainObjectSecurityStrategyDecorator (_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.None);
+      var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.None);
       using (_mocks.Ordered())
       {
-        Expect.Call (_stubContextFactory.IsInvalid).Return (false);
-        Expect.Call (_stubContextFactory.IsNew).Return (false);
-        Expect.Call (_stubContextFactory.IsDeleted).Return (false);
-        Expect.Call (_mockObjectSecurityStrategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult)).Return (true);
+        Expect.Call(_stubContextFactory.IsInvalid).Return(false);
+        Expect.Call(_stubContextFactory.IsNew).Return(false);
+        Expect.Call(_stubContextFactory.IsDeleted).Return(false);
+        Expect.Call(_mockObjectSecurityStrategy.HasAccess(_stubSecurityProvider, _stubUser, _accessTypeResult)).Return(true);
       }
       _mocks.ReplayAll();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess(_stubSecurityProvider, _stubUser, _accessTypeResult);
 
       _mocks.VerifyAll();
-      Assert.That (hasAccess, Is.EqualTo (true));
+      Assert.That(hasAccess, Is.EqualTo(true));
     }
 
     [Test]
     public void HasAccess_StateIsNew ()
     {
-      var strategy = new DomainObjectSecurityStrategyDecorator (_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.None);
+      var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.None);
       using (_mocks.Ordered())
       {
-        Expect.Call (_stubContextFactory.IsInvalid).Return (false);
-        Expect.Call (_stubContextFactory.IsNew).Return (true);
+        Expect.Call(_stubContextFactory.IsInvalid).Return(false);
+        Expect.Call(_stubContextFactory.IsNew).Return(true);
       }
       _mocks.ReplayAll();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess(_stubSecurityProvider, _stubUser, _accessTypeResult);
 
       _mocks.VerifyAll();
-      Assert.That (hasAccess, Is.EqualTo (true));
+      Assert.That(hasAccess, Is.EqualTo(true));
     }
 
     [Test]
     public void HasAccess_StateIsDeleted ()
     {
-      var strategy = new DomainObjectSecurityStrategyDecorator (_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.None);
+      var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.None);
       using (_mocks.Ordered())
       {
-        Expect.Call (_stubContextFactory.IsInvalid).Return (false);
-        Expect.Call (_stubContextFactory.IsNew).Return (false);
-        Expect.Call (_stubContextFactory.IsDeleted).Return (true);
+        Expect.Call(_stubContextFactory.IsInvalid).Return(false);
+        Expect.Call(_stubContextFactory.IsNew).Return(false);
+        Expect.Call(_stubContextFactory.IsDeleted).Return(true);
       }
       _mocks.ReplayAll();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess(_stubSecurityProvider, _stubUser, _accessTypeResult);
 
       _mocks.VerifyAll();
-      Assert.That (hasAccess, Is.EqualTo (true));
+      Assert.That(hasAccess, Is.EqualTo(true));
     }
 
     [Test]
     public void HasAccess_SecurityRequiredForNew ()
     {
-      var strategy = new DomainObjectSecurityStrategyDecorator (_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.New);
+      var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.New);
       using (_mocks.Ordered())
       {
-        Expect.Call (_stubContextFactory.IsInvalid).Return (false);
-        Expect.Call (_stubContextFactory.IsDeleted).Return (false);
-        Expect.Call (_mockObjectSecurityStrategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult)).Return (true);
+        Expect.Call(_stubContextFactory.IsInvalid).Return(false);
+        Expect.Call(_stubContextFactory.IsDeleted).Return(false);
+        Expect.Call(_mockObjectSecurityStrategy.HasAccess(_stubSecurityProvider, _stubUser, _accessTypeResult)).Return(true);
       }
       _mocks.ReplayAll();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess(_stubSecurityProvider, _stubUser, _accessTypeResult);
 
       _mocks.VerifyAll();
-      Assert.That (hasAccess, Is.EqualTo (true));
+      Assert.That(hasAccess, Is.EqualTo(true));
     }
 
     [Test]
     public void HasAccess_SecurityRequiredForDeleted ()
     {
-      var strategy = new DomainObjectSecurityStrategyDecorator (_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.Deleted);
+      var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.Deleted);
       using (_mocks.Ordered())
       {
-        Expect.Call (_stubContextFactory.IsInvalid).Return (false);
-        Expect.Call (_stubContextFactory.IsNew).Return (false);
-        Expect.Call (_mockObjectSecurityStrategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult)).Return (true);
+        Expect.Call(_stubContextFactory.IsInvalid).Return(false);
+        Expect.Call(_stubContextFactory.IsNew).Return(false);
+        Expect.Call(_mockObjectSecurityStrategy.HasAccess(_stubSecurityProvider, _stubUser, _accessTypeResult)).Return(true);
       }
       _mocks.ReplayAll();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess(_stubSecurityProvider, _stubUser, _accessTypeResult);
 
       _mocks.VerifyAll();
-      Assert.That (hasAccess, Is.EqualTo (true));
+      Assert.That(hasAccess, Is.EqualTo(true));
     }
 
     [Test]
     public void HasAccess_SecurityRequiredForNewAndDeleted ()
     {
-      var strategy = new DomainObjectSecurityStrategyDecorator (
+      var strategy = new DomainObjectSecurityStrategyDecorator(
           _mockObjectSecurityStrategy,
           _stubContextFactory,
           RequiredSecurityForStates.NewAndDeleted);
       using (_mocks.Ordered())
       {
-        Expect.Call (_stubContextFactory.IsInvalid).Return (false);
-        Expect.Call (_mockObjectSecurityStrategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult)).Return (true);
+        Expect.Call(_stubContextFactory.IsInvalid).Return(false);
+        Expect.Call(_mockObjectSecurityStrategy.HasAccess(_stubSecurityProvider, _stubUser, _accessTypeResult)).Return(true);
       }
       _mocks.ReplayAll();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess(_stubSecurityProvider, _stubUser, _accessTypeResult);
 
       _mocks.VerifyAll();
-      Assert.That (hasAccess, Is.EqualTo (true));
+      Assert.That(hasAccess, Is.EqualTo(true));
     }
 
     [Test]
     public void HasAccess_WithAccessGrantedAndStateIsDiscarded ()
     {
-      var strategy = new DomainObjectSecurityStrategyDecorator (_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.None);
+      var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.None);
       using (_mocks.Ordered())
       {
-        Expect.Call (_stubContextFactory.IsInvalid).Return (true);
+        Expect.Call(_stubContextFactory.IsInvalid).Return(true);
       }
       _mocks.ReplayAll();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess(_stubSecurityProvider, _stubUser, _accessTypeResult);
 
       _mocks.VerifyAll();
-      Assert.That (hasAccess, Is.EqualTo (true));
+      Assert.That(hasAccess, Is.EqualTo(true));
     }
 
     [Test]
     public void HasAccess_WithAccessDenied ()
     {
-      var strategy = new DomainObjectSecurityStrategyDecorator (_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.None);
+      var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy, _stubContextFactory, RequiredSecurityForStates.None);
       using (_mocks.Ordered())
       {
-        Expect.Call (_stubContextFactory.IsInvalid).Return (false);
-        Expect.Call (_stubContextFactory.IsNew).Return (false);
-        Expect.Call (_stubContextFactory.IsDeleted).Return (false);
-        Expect.Call (_mockObjectSecurityStrategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult)).Return (false);
+        Expect.Call(_stubContextFactory.IsInvalid).Return(false);
+        Expect.Call(_stubContextFactory.IsNew).Return(false);
+        Expect.Call(_stubContextFactory.IsDeleted).Return(false);
+        Expect.Call(_mockObjectSecurityStrategy.HasAccess(_stubSecurityProvider, _stubUser, _accessTypeResult)).Return(false);
       }
       _mocks.ReplayAll();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess(_stubSecurityProvider, _stubUser, _accessTypeResult);
 
       _mocks.VerifyAll();
-      Assert.That (hasAccess, Is.EqualTo (false));
+      Assert.That(hasAccess, Is.EqualTo(false));
     }
 
     [Serializable]
@@ -240,15 +240,15 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IDomainObjectSecurityContextFactory factory = new SerializableFactory();
       IObjectSecurityStrategy objectSecurityStrategy = new SerializableObjectSecurityStrategy();
 
-      var strategy = new DomainObjectSecurityStrategyDecorator (objectSecurityStrategy, factory, RequiredSecurityForStates.NewAndDeleted);
-      var deserializedStrategy = Serializer.SerializeAndDeserialize (strategy);
+      var strategy = new DomainObjectSecurityStrategyDecorator(objectSecurityStrategy, factory, RequiredSecurityForStates.NewAndDeleted);
+      var deserializedStrategy = Serializer.SerializeAndDeserialize(strategy);
 
-      Assert.That (deserializedStrategy, Is.Not.SameAs (strategy));
-      Assert.That (deserializedStrategy.RequiredSecurityForStates, Is.EqualTo (RequiredSecurityForStates.NewAndDeleted));
-      Assert.That (deserializedStrategy.SecurityContextFactory, Is.Not.SameAs (factory));
-      Assert.IsInstanceOf (typeof (SerializableFactory), deserializedStrategy.SecurityContextFactory);
-      Assert.That (deserializedStrategy.InnerStrategy, Is.Not.SameAs (objectSecurityStrategy));
-      Assert.IsInstanceOf (typeof (SerializableObjectSecurityStrategy), deserializedStrategy.InnerStrategy);
+      Assert.That(deserializedStrategy, Is.Not.SameAs(strategy));
+      Assert.That(deserializedStrategy.RequiredSecurityForStates, Is.EqualTo(RequiredSecurityForStates.NewAndDeleted));
+      Assert.That(deserializedStrategy.SecurityContextFactory, Is.Not.SameAs(factory));
+      Assert.IsInstanceOf(typeof (SerializableFactory), deserializedStrategy.SecurityContextFactory);
+      Assert.That(deserializedStrategy.InnerStrategy, Is.Not.SameAs(objectSecurityStrategy));
+      Assert.IsInstanceOf(typeof (SerializableObjectSecurityStrategy), deserializedStrategy.InnerStrategy);
     }
   }
 }

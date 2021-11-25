@@ -35,19 +35,19 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IListMenuRenderer> ();
+      var factory = _serviceLocator.GetInstance<IListMenuRenderer>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (ListMenuRenderer)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof (ListMenuRenderer)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IListMenuRenderer> ();
-      var factory2 = _serviceLocator.GetInstance<IListMenuRenderer> ();
+      var factory1 = _serviceLocator.GetInstance<IListMenuRenderer>();
+      var factory2 = _serviceLocator.GetInstance<IListMenuRenderer>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

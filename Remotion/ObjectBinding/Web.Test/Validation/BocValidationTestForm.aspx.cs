@@ -71,18 +71,18 @@ namespace OBWTest.Validation
     protected override void OnLoad (EventArgs e)
     {
 
-      base.OnLoad (e);
+      base.OnLoad(e);
       CurrentObject.BusinessObject = (IBusinessObject) ((BocValidationTestWxeFunction)CurrentFunction).Person;
-      CurrentObject.LoadValues (IsPostBack);
+      CurrentObject.LoadValues(IsPostBack);
       
       
       if (!IsPostBack)
       {
-        GridBocList.SwitchListIntoEditMode ();
-        IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert (
-            XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (typeof (Person)),
+        GridBocList.SwitchListIntoEditMode();
+        IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert(
+            XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof (Person)),
             typeof (IBusinessObjectWithIdentity));
-        ReferenceField.SetBusinessObjectList (objects);
+        ReferenceField.SetBusinessObjectList(objects);
       }
       
     }
@@ -93,7 +93,7 @@ namespace OBWTest.Validation
       // CODEGEN: This call is required by the ASP.NET Web Form Designer.
       //
       InitializeComponent();
-      base.OnInit (e);
+      base.OnInit(e);
     }
 
     #region Web Form Designer generated code
@@ -104,8 +104,8 @@ namespace OBWTest.Validation
     /// </summary>
     private void InitializeComponent ()
     {
-      this.SaveButton.Click += new System.EventHandler (this.SaveButton_Click);
-      this.Load += new System.EventHandler (this.Page_Load);
+      this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+      this.Load += new System.EventHandler(this.Page_Load);
     }
 
     #endregion
@@ -113,41 +113,41 @@ namespace OBWTest.Validation
     private void SaveButton_Click (object sender, EventArgs e)
     {
       
-      PrepareValidation ();
+      PrepareValidation();
       //FormGridManager.Validate ();
-      if (CurrentObject.SaveValues (false))
+      if (CurrentObject.SaveValues(false))
       {
         var person = (Person) CurrentObject.BusinessObject;
-        var validationResult = ValidatorProvider.GetValidator (typeof (Person)).Validate (person);
+        var validationResult = ValidatorProvider.GetValidator(typeof (Person)).Validate(person);
         ValidationResult validationResultPartner = new ValidationResult();
         
         if (person.Partner != null)
-          validationResultPartner = ValidatorProvider.GetValidator (typeof (Person)).Validate (person.Partner);
-        var validationResultFather = ValidatorProvider.GetValidator (typeof (Person)).Validate (person.Father);
+          validationResultPartner = ValidatorProvider.GetValidator(typeof (Person)).Validate(person.Partner);
+        var validationResultFather = ValidatorProvider.GetValidator(typeof (Person)).Validate(person.Father);
 
-        var jobValidator = ValidatorProvider.GetValidator (typeof (Job));
+        var jobValidator = ValidatorProvider.GetValidator(typeof (Job));
         List<ValidationFailure> jobFailures = new List<ValidationFailure>();
         foreach (var job in person.Jobs)
         {
-          var result = jobValidator.Validate (job);
-          jobFailures.AddRange (result.Errors);
+          var result = jobValidator.Validate(job);
+          jobFailures.AddRange(result.Errors);
         }
 
-        var combinedValidationResult = new ValidationResult (
+        var combinedValidationResult = new ValidationResult(
             validationResult.Errors
-                .Concat (validationResultPartner.Errors)
-                .Concat (jobFailures)
-                .Concat (validationResultFather.Errors)
+                .Concat(validationResultPartner.Errors)
+                .Concat(jobFailures)
+                .Concat(validationResultFather.Errors)
                 .ToArray());
 
         if (combinedValidationResult.IsValid)
         {
-          person.SaveObject ();
+          person.SaveObject();
         }
         else
         {
-          var businessObjectValidationResult = BusinessObjectValidationResult.Create (combinedValidationResult);
-          DataSourceControlValidationResultDispatchingValidator.DispatchValidationFailures (businessObjectValidationResult);
+          var businessObjectValidationResult = BusinessObjectValidationResult.Create(combinedValidationResult);
+          DataSourceControlValidationResultDispatchingValidator.DispatchValidationFailures(businessObjectValidationResult);
           DataSourceControlValidationResultDispatchingValidator.Validate();
         }
       }

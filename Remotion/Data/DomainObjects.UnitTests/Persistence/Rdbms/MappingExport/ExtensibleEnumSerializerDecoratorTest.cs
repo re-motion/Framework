@@ -31,120 +31,120 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_CreatesEnumTypeElement ()
     {
       var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
-      var enumSerializer = new ExtensibleEnumSerializerDecorator (enumSerializerStub);
-      enumSerializer.CollectPropertyType (GetPropertyDefinition ((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
-      enumSerializerStub.Stub (_ => _.Serialize()).Return (new XElement[0]);
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub);
+      enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
+      enumSerializerStub.Stub(_ => _.Serialize()).Return(new XElement[0]);
       var actual = enumSerializer.Serialize().Single();
 
-      Assert.That (actual.Name.LocalName, Is.EqualTo ("enumType"));
+      Assert.That(actual.Name.LocalName, Is.EqualTo("enumType"));
     }
 
     [Test]
     public void Serialize_AddsElementsFromInnerEnumSerializer ()
     {
       var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
-      var enumSerializer = new ExtensibleEnumSerializerDecorator (enumSerializerStub);
-      enumSerializer.CollectPropertyType (GetPropertyDefinition ((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub);
+      enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
 
-      enumSerializerStub.Stub (_ => _.Serialize()).Return (new[] { new XElement ("innerResult1"), new XElement ("innerResult2") });
+      enumSerializerStub.Stub(_ => _.Serialize()).Return(new[] { new XElement("innerResult1"), new XElement("innerResult2") });
 
       var actual = enumSerializer.Serialize();
 
-      Assert.That (actual.Select (e => e.Name.LocalName), Is.EqualTo (new[] { "enumType", "innerResult1", "innerResult2" }));
+      Assert.That(actual.Select(e => e.Name.LocalName), Is.EqualTo(new[] { "enumType", "innerResult1", "innerResult2" }));
     }
 
     [Test]
     public void Serialize_AddsTypeAttribute ()
     {
       var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
-      var enumSerializer = new ExtensibleEnumSerializerDecorator (enumSerializerStub);
-      enumSerializer.CollectPropertyType (GetPropertyDefinition ((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub);
+      enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
 
-      enumSerializerStub.Stub (_ => _.Serialize()).Return (new XElement[0]);
+      enumSerializerStub.Stub(_ => _.Serialize()).Return(new XElement[0]);
       var actual = enumSerializer.Serialize().Single();
 
-      Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("type"));
-      Assert.That (
-          actual.Attribute ("type").Value,
-          Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Color, Remotion.Data.DomainObjects.UnitTests"));
+      Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("type"));
+      Assert.That(
+          actual.Attribute("type").Value,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Color, Remotion.Data.DomainObjects.UnitTests"));
     }
 
     [Test]
     public void Serialize_AddsValueElementsForExtensibleEnumType ()
     {
       var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
-      var enumSerializer = new ExtensibleEnumSerializerDecorator (enumSerializerStub);
-      enumSerializer.CollectPropertyType (GetPropertyDefinition ((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
-      enumSerializerStub.Stub (_ => _.Serialize()).Return (new XElement[0]);
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub);
+      enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
+      enumSerializerStub.Stub(_ => _.Serialize()).Return(new XElement[0]);
       var actual = enumSerializer.Serialize().Single();
 
-      Assert.That (actual.Elements().Count(), Is.EqualTo (3));
+      Assert.That(actual.Elements().Count(), Is.EqualTo(3));
 
-      var firstValueElement = actual.Elements().ElementAt (0);
-      Assert.That (firstValueElement.Name.LocalName, Is.EqualTo ("value"));
-      Assert.That (firstValueElement.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
-      Assert.That (firstValueElement.Attribute ("name").Value, Is.EqualTo ("Blue"));
-      Assert.That (firstValueElement.Attributes().Select (a => a.Name.LocalName), Contains.Item ("columnValue"));
-      Assert.That (
-          firstValueElement.Attribute ("columnValue").Value,
-          Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ColorExtensions.Blue"));
+      var firstValueElement = actual.Elements().ElementAt(0);
+      Assert.That(firstValueElement.Name.LocalName, Is.EqualTo("value"));
+      Assert.That(firstValueElement.Attributes().Select(a => a.Name.LocalName), Contains.Item("name"));
+      Assert.That(firstValueElement.Attribute("name").Value, Is.EqualTo("Blue"));
+      Assert.That(firstValueElement.Attributes().Select(a => a.Name.LocalName), Contains.Item("columnValue"));
+      Assert.That(
+          firstValueElement.Attribute("columnValue").Value,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ColorExtensions.Blue"));
 
-      var secondValueElement = actual.Elements().ElementAt (1);
-      Assert.That (secondValueElement.Name.LocalName, Is.EqualTo ("value"));
-      Assert.That (secondValueElement.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
-      Assert.That (secondValueElement.Attribute ("name").Value, Is.EqualTo ("Green"));
-      Assert.That (secondValueElement.Attributes().Select (a => a.Name.LocalName), Contains.Item ("columnValue"));
-      Assert.That (
-          secondValueElement.Attribute ("columnValue").Value,
-          Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ColorExtensions.Green"));
+      var secondValueElement = actual.Elements().ElementAt(1);
+      Assert.That(secondValueElement.Name.LocalName, Is.EqualTo("value"));
+      Assert.That(secondValueElement.Attributes().Select(a => a.Name.LocalName), Contains.Item("name"));
+      Assert.That(secondValueElement.Attribute("name").Value, Is.EqualTo("Green"));
+      Assert.That(secondValueElement.Attributes().Select(a => a.Name.LocalName), Contains.Item("columnValue"));
+      Assert.That(
+          secondValueElement.Attribute("columnValue").Value,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ColorExtensions.Green"));
 
-      var thirdValueElement = actual.Elements().ElementAt (2);
-      Assert.That (thirdValueElement.Name.LocalName, Is.EqualTo ("value"));
-      Assert.That (thirdValueElement.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
-      Assert.That (thirdValueElement.Attribute ("name").Value, Is.EqualTo ("Red"));
-      Assert.That (thirdValueElement.Attributes().Select (a => a.Name.LocalName), Contains.Item ("columnValue"));
-      Assert.That (
-          thirdValueElement.Attribute ("columnValue").Value,
-          Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ColorExtensions.Red"));
+      var thirdValueElement = actual.Elements().ElementAt(2);
+      Assert.That(thirdValueElement.Name.LocalName, Is.EqualTo("value"));
+      Assert.That(thirdValueElement.Attributes().Select(a => a.Name.LocalName), Contains.Item("name"));
+      Assert.That(thirdValueElement.Attribute("name").Value, Is.EqualTo("Red"));
+      Assert.That(thirdValueElement.Attributes().Select(a => a.Name.LocalName), Contains.Item("columnValue"));
+      Assert.That(
+          thirdValueElement.Attribute("columnValue").Value,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ColorExtensions.Red"));
     }
 
     [Test]
     public void CollectPropertyType_CollectsExtensibleEnumType ()
     {
-      var enumSerializer = new ExtensibleEnumSerializerDecorator (MockRepository.GenerateStub<IEnumSerializer>());
-      enumSerializer.CollectPropertyType (GetPropertyDefinition ((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(MockRepository.GenerateStub<IEnumSerializer>());
+      enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
 
-      Assert.That (enumSerializer.EnumTypes, Contains.Item (typeof (Color)));
+      Assert.That(enumSerializer.EnumTypes, Contains.Item(typeof (Color)));
     }
 
     [Test]
     public void CollectPropertyType_DoesNotCollectDuplicates ()
     {
-      var enumSerializer = new ExtensibleEnumSerializerDecorator (MockRepository.GenerateStub<IEnumSerializer>());
-      enumSerializer.CollectPropertyType (GetPropertyDefinition ((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
-      enumSerializer.CollectPropertyType (GetPropertyDefinition ((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(MockRepository.GenerateStub<IEnumSerializer>());
+      enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
+      enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
 
-      Assert.That (enumSerializer.EnumTypes.Count, Is.EqualTo (1));
+      Assert.That(enumSerializer.EnumTypes.Count, Is.EqualTo(1));
     }
 
     [Test]
     public void CollectPropertyType_DoesNotCollectNonEnumTypes ()
     {
-      var enumSerializer = new ExtensibleEnumSerializerDecorator (MockRepository.GenerateStub<IEnumSerializer>());
-      enumSerializer.CollectPropertyType (GetPropertyDefinition ((ClassWithAllDataTypes _) => _.Int32Property));
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(MockRepository.GenerateStub<IEnumSerializer>());
+      enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.Int32Property));
 
-      Assert.That (enumSerializer.EnumTypes, Is.Empty);
+      Assert.That(enumSerializer.EnumTypes, Is.Empty);
     }
 
     [Test]
     public void CollectPropertyType_DelegatesOtherTypesToInnerEnumSerializer ()
     {
       var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
-      var enumSerializer = new ExtensibleEnumSerializerDecorator (enumSerializerStub);
-      var expectedProperty = GetPropertyDefinition ((ClassWithAllDataTypes _) => _.ByteProperty);
-      enumSerializer.CollectPropertyType (expectedProperty);
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub);
+      var expectedProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.ByteProperty);
+      enumSerializer.CollectPropertyType(expectedProperty);
 
-      enumSerializerStub.AssertWasCalled (_ => _.CollectPropertyType (expectedProperty));
+      enumSerializerStub.AssertWasCalled(_ => _.CollectPropertyType(expectedProperty));
     }
   }
 }

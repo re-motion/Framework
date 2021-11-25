@@ -36,13 +36,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     public void Render ()
     {
       var resourceUrl = new Mock<IResourceUrl>();
-      resourceUrl.Setup (stub => stub.GetUrl()).Returns ("myStylesheetUrl.js");
+      resourceUrl.Setup(stub => stub.GetUrl()).Returns("myStylesheetUrl.js");
 
-      var javaScriptInclude = new StyleSheetImportRule (resourceUrl.Object);
+      var javaScriptInclude = new StyleSheetImportRule(resourceUrl.Object);
 
-      javaScriptInclude.Render (_htmlHelper.Writer);
+      javaScriptInclude.Render(_htmlHelper.Writer);
 
-      Assert.That (_htmlHelper.GetDocumentText(), Is.EqualTo ("@import url(\"myStylesheetUrl.js\");\r\n"));
+      Assert.That(_htmlHelper.GetDocumentText(), Is.EqualTo("@import url(\"myStylesheetUrl.js\");\r\n"));
     }
   }
 }

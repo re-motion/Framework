@@ -39,7 +39,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
 
     public new void SetExecutionListener (IWxeFunctionExecutionListener value)
     {
-      base.SetExecutionListener (value);
+      base.SetExecutionListener(value);
     }
 
     public new TransactionStrategyBase TransactionStrategy
@@ -49,7 +49,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
 
     public new void SetTransactionMode (ITransactionMode transactionMode)
     {
-      base.SetTransactionMode (transactionMode);
+      base.SetTransactionMode(transactionMode);
     }
   }
 }

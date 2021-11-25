@@ -37,17 +37,17 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       var factory = _serviceLocator.GetInstance<IClientScriptBehavior>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (ClientScriptBehavior)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof (ClientScriptBehavior)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IClientScriptBehavior> ();
+      var factory1 = _serviceLocator.GetInstance<IClientScriptBehavior>();
       var factory2 = _serviceLocator.GetInstance<IClientScriptBehavior>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

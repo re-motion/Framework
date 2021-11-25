@@ -48,15 +48,15 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </remarks>
     public IQuery GetQuery<T> (string id, Func<IQueryable<T>, IQueryable> queryGenerator) where T : DomainObject
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-      ArgumentUtility.CheckNotNull ("queryGenerator", queryGenerator);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNull("queryGenerator", queryGenerator);
 
       // C# compiler 7.2 does not provide caching for delegate but during query execution there is already a significant amount of GC pressure so the delegate creation does not matter
-      return _cache.GetOrAdd (id, delegate
+      return _cache.GetOrAdd(id, delegate
                                           {
-                                            var querySource = QueryFactory.CreateLinqQuery<T> ();
-                                            var query = queryGenerator (querySource);
-                                            return QueryFactory.CreateQuery<T> (id, query);
+                                            var querySource = QueryFactory.CreateLinqQuery<T>();
+                                            var query = queryGenerator(querySource);
+                                            return QueryFactory.CreateQuery<T>(id, query);
                                           });
     }
 
@@ -90,12 +90,12 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </remarks>
     public QueryResult<T> ExecuteCollectionQuery<T> (ClientTransaction transaction, string id, Func<IQueryable<T>, IQueryable> queryGenerator) where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-      ArgumentUtility.CheckNotNull ("queryGenerator", queryGenerator);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNull("queryGenerator", queryGenerator);
 
-      IQuery query = GetQuery (id, queryGenerator);
-      return transaction.QueryManager.GetCollection<T> (query);
+      IQuery query = GetQuery(id, queryGenerator);
+      return transaction.QueryManager.GetCollection<T>(query);
     }
 
     //public QueryResult<T> ExecuteCollectionQuery<T> (ClientTransaction transaction, string id, Func<LegacyDomainObjectQueryable<T>, IQueryable> queryGenerator) where T : DomainObject

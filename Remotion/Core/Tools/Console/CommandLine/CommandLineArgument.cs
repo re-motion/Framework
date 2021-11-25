@@ -86,7 +86,7 @@ public abstract class CommandLineArgument
 
   internal protected virtual void SetStringValue (string value)
   {
-    if (value == null) throw new ArgumentNullException ("value");
+    if (value == null) throw new ArgumentNullException("value");
 
     _stringValue = value;
   }
@@ -105,8 +105,8 @@ public abstract class CommandLineArgument
   
   public string GetSynopsis ()
   {
-    StringBuilder sb = new StringBuilder ();
-    AppendSynopsis (sb);
+    StringBuilder sb = new StringBuilder();
+    AppendSynopsis(sb);
     return sb.ToString();
   }
 
@@ -125,8 +125,8 @@ public abstract class CommandLineArgument
     get
     {
       if (_parser == null)
-        throw new InvalidOperationException ("Cannot determine Position because CommandLineArgument is not attached to a CommandLineParser");
-      return _parser.Arguments.IndexOf (this);
+        throw new InvalidOperationException("Cannot determine Position because CommandLineArgument is not attached to a CommandLineParser");
+      return _parser.Arguments.IndexOf(this);
     }
   }
 

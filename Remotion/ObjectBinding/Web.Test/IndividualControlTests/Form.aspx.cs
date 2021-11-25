@@ -42,15 +42,15 @@ namespace OBWTest.IndividualControlTests
     {
       base.RegisterEventHandlers();
 
-      PostBackButton.Click += new EventHandler (PostBackButton_Click);
-      SaveButton.Click += new EventHandler (SaveButton_Click);
-      SaveAndRestartButton.Click += new EventHandler (SaveAndRestartButton_Click);
-      CancelButton.Click += new EventHandler (CancelButton_Click);
+      PostBackButton.Click += new EventHandler(PostBackButton_Click);
+      SaveButton.Click += new EventHandler(SaveButton_Click);
+      SaveAndRestartButton.Click += new EventHandler(SaveAndRestartButton_Click);
+      CancelButton.Click += new EventHandler(CancelButton_Click);
     }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       //EnableAbort = false;
       EnableOutOfSequencePostBacks = true;
@@ -59,32 +59,32 @@ namespace OBWTest.IndividualControlTests
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       LoadUserControl();
       PopulateDataSources();
-      LoadValues (IsPostBack);
+      LoadValues(IsPostBack);
       string test = GetPermanentUrl();
 
-      if (ScriptManager.GetCurrent (this).IsInAsyncPostBack)
+      if (ScriptManager.GetCurrent(this).IsInAsyncPostBack)
         StackUpdatePanel.Update();
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       StringBuilder sb = new StringBuilder();
-      sb.Append ("<b>Stack:</b><br />");
+      sb.Append("<b>Stack:</b><br />");
       for (WxeStep step = CurrentPageStep; step != null; step = step.ParentStep)
-        sb.AppendFormat ("{0}<br />", step.ToString());
+        sb.AppendFormat("{0}<br />", step.ToString());
       Stack.Text = sb.ToString();
     }
 
     protected override object SaveControlState ()
     {
       if (! _isCurrentObjectSaved)
-        SaveValues (true);
+        SaveValues(true);
 
       return base.SaveControlState();
     }
@@ -96,14 +96,14 @@ namespace OBWTest.IndividualControlTests
     private void SaveButton_Click (object sender, EventArgs e)
     {
       PrepareValidation();
-      _isCurrentObjectSaved = SaveValues (false);
+      _isCurrentObjectSaved = SaveValues(false);
     }
 
 
     private void SaveAndRestartButton_Click (object sender, EventArgs e)
     {
       PrepareValidation();
-      if (SaveValues (false))
+      if (SaveValues(false))
       {
         _isCurrentObjectSaved = true;
         ExecuteNextStep();
@@ -117,11 +117,11 @@ namespace OBWTest.IndividualControlTests
 
     private void LoadUserControl ()
     {
-      _dataEditControl = (IDataEditControl) LoadControl (CurrentFunction.UserControl);
+      _dataEditControl = (IDataEditControl) LoadControl(CurrentFunction.UserControl);
       if (_dataEditControl == null)
-        throw new InvalidOperationException (string.Format ("IDataEditControl '{0}' could not be loaded.", CurrentFunction.UserControl));
+        throw new InvalidOperationException(string.Format("IDataEditControl '{0}' could not be loaded.", CurrentFunction.UserControl));
       _dataEditControl.ID = "DataEditControl";
-      UserControlPlaceHolder.Controls.Add ((Control) _dataEditControl);
+      UserControlPlaceHolder.Controls.Add((Control) _dataEditControl);
     }
 
     private void PopulateDataSources ()
@@ -133,17 +133,17 @@ namespace OBWTest.IndividualControlTests
 
     private void LoadValues (bool interim)
     {
-      CurrentObject.LoadValues (interim);
+      CurrentObject.LoadValues(interim);
       if (_dataEditControl != null)
-        _dataEditControl.LoadValues (interim);
+        _dataEditControl.LoadValues(interim);
     }
 
     private bool SaveValues (bool interim)
     {
       var hasSaved = true;
       if (_dataEditControl != null)
-        hasSaved &= _dataEditControl.SaveValues (interim);
-      hasSaved &= CurrentObject.SaveValues (interim);
+        hasSaved &= _dataEditControl.SaveValues(interim);
+      hasSaved &= CurrentObject.SaveValues(interim);
 
       if (hasSaved)
         hasSaved = PerformDomainValidation();
@@ -154,17 +154,17 @@ namespace OBWTest.IndividualControlTests
     private bool PerformDomainValidation ()
     {
       var businessObject = _dataEditControl.BusinessObject;
-      var validator = ValidatorProvider.GetValidator (businessObject.GetType());
-      var validationResult = validator.Validate (businessObject);
+      var validator = ValidatorProvider.GetValidator(businessObject.GetType());
+      var validationResult = validator.Validate(businessObject);
 
-      var combinedValidationResult = new ValidationResult (validationResult.Errors);
+      var combinedValidationResult = new ValidationResult(validationResult.Errors);
 
       if (!combinedValidationResult.IsValid)
       {
-        var businessObjectValidationResult = BusinessObjectValidationResult.Create (combinedValidationResult);
+        var businessObjectValidationResult = BusinessObjectValidationResult.Create(combinedValidationResult);
 
         var dataEditControlDispatchingValidator = (_dataEditControl as BaseUserControl)?.DataSourceValidationResultDispatchingValidator;
-        dataEditControlDispatchingValidator?.DispatchValidationFailures (businessObjectValidationResult);
+        dataEditControlDispatchingValidator?.DispatchValidationFailures(businessObjectValidationResult);
         dataEditControlDispatchingValidator?.Validate();
       }
 

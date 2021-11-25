@@ -43,23 +43,23 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     public BocListRow GetRowFromItemRowID (IReadOnlyList<IBusinessObject> rows, string rowID)
     {
-      var rowIndex = int.Parse (rowID);
+      var rowIndex = int.Parse(rowID);
       if (rowIndex >= rows.Count)
         return null;
       var obj = rows[rowIndex];
-      return new BocListRow (rowIndex, obj);
+      return new BocListRow(rowIndex, obj);
     }
 
     public void AddRow (BocListRow row)
     {
       if (NotifyAddRow != null)
-        NotifyAddRow (row);
+        NotifyAddRow(row);
     }
 
     public void RemoveRow (BocListRow row)
     {
       if (NotifyRemoveRow != null)
-        NotifyRemoveRow (row);
+        NotifyRemoveRow(row);
     }
   }
 }

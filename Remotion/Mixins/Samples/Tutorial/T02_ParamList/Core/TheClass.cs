@@ -37,7 +37,7 @@ namespace Remotion.Mixins.Samples.Tutorial.T02_ParamList.Core
         if (ss == null)
           ConstructionInfo = "Not many strings.";
         else
-          ConstructionInfo = "Many strings: " + ss.Aggregate ((s1, s2) => s1 + ", " + s2);
+          ConstructionInfo = "Many strings: " + ss.Aggregate((s1, s2) => s1 + ", " + s2);
     }
   }
 }

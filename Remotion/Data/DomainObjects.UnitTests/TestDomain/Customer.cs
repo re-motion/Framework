@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     public new static Customer NewObject ()
     {
-      return NewObject<Customer> ();
+      return NewObject<Customer>();
     }
 
     protected Customer ()

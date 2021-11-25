@@ -38,10 +38,10 @@ namespace Remotion.SecurityManager.Domain
         IDomainObjectHandle<User> userHandle,
         IDomainObjectHandle<Substitution> substitutionHandle)
     {
-      ArgumentUtility.CheckNotNull ("tenantHandle", tenantHandle);
-      ArgumentUtility.CheckNotNull ("userHandle", userHandle);
+      ArgumentUtility.CheckNotNull("tenantHandle", tenantHandle);
+      ArgumentUtility.CheckNotNull("userHandle", userHandle);
 
-      return new SecurityManagerPrincipal (tenantHandle, userHandle, null, substitutionHandle, null, null);
+      return new SecurityManagerPrincipal(tenantHandle, userHandle, null, substitutionHandle, null, null);
     }
   }
 }

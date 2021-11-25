@@ -34,7 +34,7 @@ namespace Remotion.Logging
     /// <returns>A logger for the <paramref name="name"/> specified.</returns>
     public static ILog GetLogger (string name)
     {
-      return SafeServiceLocator.Current.GetInstance<ILogManager>().GetLogger (name);
+      return SafeServiceLocator.Current.GetInstance<ILogManager>().GetLogger(name);
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ namespace Remotion.Logging
     /// </summary>
     public static void Initialize ()
     {
-      SafeServiceLocator.Current.GetInstance<ILogManager>().Initialize ();
+      SafeServiceLocator.Current.GetInstance<ILogManager>().Initialize();
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ namespace Remotion.Logging
     /// </summary>
     public static void InitializeConsole ()
     {
-      SafeServiceLocator.Current.GetInstance<ILogManager>().InitializeConsole ();
+      SafeServiceLocator.Current.GetInstance<ILogManager>().InitializeConsole();
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ namespace Remotion.Logging
     /// <param name="logThresholds">The thresholds for specific loggers.</param>
     public static void InitializeConsole (LogLevel defaultThreshold, params LogThreshold[] logThresholds)
     {
-      SafeServiceLocator.Current.GetInstance<ILogManager> ().InitializeConsole (defaultThreshold, logThresholds);
+      SafeServiceLocator.Current.GetInstance<ILogManager>().InitializeConsole(defaultThreshold, logThresholds);
     }
   }
 }

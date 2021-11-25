@@ -35,10 +35,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new WebTabStripControlObject (newControlObjectContext);
+      return new WebTabStripControlObject(newControlObjectContext);
     }
   }
 }

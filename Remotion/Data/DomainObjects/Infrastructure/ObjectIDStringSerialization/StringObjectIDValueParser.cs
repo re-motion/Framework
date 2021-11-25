@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
   /// </summary>
   public class StringObjectIDValueParser : IObjectIDValueParser
   {
-    public static readonly StringObjectIDValueParser Instance = new StringObjectIDValueParser ();
+    public static readonly StringObjectIDValueParser Instance = new StringObjectIDValueParser();
 
     private StringObjectIDValueParser ()
     {
@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 
     public bool TryParse (string stringValue, out object resultValue)
     {
-      ArgumentUtility.CheckNotNull ("stringValue", stringValue);
+      ArgumentUtility.CheckNotNull("stringValue", stringValue);
 
       if (stringValue == string.Empty)
       {

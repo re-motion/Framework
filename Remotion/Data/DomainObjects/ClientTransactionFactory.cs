@@ -28,11 +28,11 @@ namespace Remotion.Data.DomainObjects
     /// <returns>A new root transaction.</returns>
     public ITransaction CreateRootTransaction ()
     {
-      var transaction = ClientTransaction.CreateRootTransaction ();
+      var transaction = ClientTransaction.CreateRootTransaction();
 
-      OnTransactionCreated (transaction);
+      OnTransactionCreated(transaction);
 
-      return transaction.ToITransaction ();
+      return transaction.ToITransaction();
     }
 
     protected virtual void OnTransactionCreated (ClientTransaction transaction)

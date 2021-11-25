@@ -37,7 +37,7 @@ namespace Remotion.Configuration.TypeDiscovery
 
     protected override ConfigurationElement CreateNewElement ()
     {
-      throw new NotSupportedException ("Elements of this collection can only be created from an element name.");
+      throw new NotSupportedException("Elements of this collection can only be created from an element name.");
     }
 
     protected override ConfigurationElement CreateNewElement (string elementName)
@@ -45,9 +45,9 @@ namespace Remotion.Configuration.TypeDiscovery
       switch (elementName)
       {
         case "include":
-          return new ByNameRootAssemblyElement ();
+          return new ByNameRootAssemblyElement();
         default:
-          throw new NotSupportedException ("Only elements called 'include' are supported.");
+          throw new NotSupportedException("Only elements called 'include' are supported.");
       }
     }
 
@@ -71,24 +71,24 @@ namespace Remotion.Configuration.TypeDiscovery
 
     public void Add (ByNameRootAssemblyElement element)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
-      BaseAdd (element);
+      ArgumentUtility.CheckNotNull("element", element);
+      BaseAdd(element);
     }
 
     public void RemoveAt (int index)
     {
-      BaseRemoveAt (index);
+      BaseRemoveAt(index);
     }
 
     public void Clear ()
     {
-      BaseClear ();
+      BaseClear();
     }
 
     public NamedRootAssemblyFinder CreateRootAssemblyFinder (IAssemblyLoader assemblyLoader)
     {
-      ArgumentUtility.CheckNotNull ("assemblyLoader", assemblyLoader);
-      return new NamedRootAssemblyFinder (this.Select (element => element.CreateSpecification()), assemblyLoader);
+      ArgumentUtility.CheckNotNull("assemblyLoader", assemblyLoader);
+      return new NamedRootAssemblyFinder(this.Select(element => element.CreateSpecification()), assemblyLoader);
     }
   }
 }

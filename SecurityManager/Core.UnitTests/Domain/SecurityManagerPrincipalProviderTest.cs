@@ -43,12 +43,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     {
       var securityPrincipalStub = new Mock<ISecurityPrincipal>();
       var securityManagerPrincipalStub = new Mock<ISecurityManagerPrincipal>();
-      securityManagerPrincipalStub.Setup (stub => stub.GetSecurityPrincipal()).Returns (securityPrincipalStub.Object);
+      securityManagerPrincipalStub.Setup(stub => stub.GetSecurityPrincipal()).Returns(securityPrincipalStub.Object);
       SecurityManagerPrincipal.Current = securityManagerPrincipalStub.Object;
 
-      SecurityManagerPrincipalProvider provider = new SecurityManagerPrincipalProvider ();
+      SecurityManagerPrincipalProvider provider = new SecurityManagerPrincipalProvider();
 
-      Assert.That (provider.GetPrincipal(), Is.SameAs (securityPrincipalStub.Object));
+      Assert.That(provider.GetPrincipal(), Is.SameAs(securityPrincipalStub.Object));
     }
   }
 }

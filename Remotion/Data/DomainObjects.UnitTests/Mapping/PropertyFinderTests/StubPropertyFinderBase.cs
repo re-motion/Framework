@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
         IPersistentMixinFinder persistentMixinFinder,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      return new StubPropertyFinderBase (
+      return new StubPropertyFinderBase(
           type,
           includeBaseProperties,
           includeMixinProperties,

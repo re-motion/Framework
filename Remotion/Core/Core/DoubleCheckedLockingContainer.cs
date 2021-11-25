@@ -35,7 +35,7 @@ namespace Remotion
     /// <param name="defaultFactory">The delegate used to create the default value in case the value is <see langword="null" />.</param>
     public DoubleCheckedLockingContainer (Func<T> defaultFactory)
     {
-      ArgumentUtility.CheckNotNull ("defaultFactory", defaultFactory);
+      ArgumentUtility.CheckNotNull("defaultFactory", defaultFactory);
       _defaultFactory = defaultFactory;
     }
 
@@ -63,7 +63,7 @@ namespace Remotion
     {
       get
       {
-        T localValue = Volatile.Read (ref _value);
+        T localValue = Volatile.Read(ref _value);
         if (localValue == null)
         {
           lock (_sync)

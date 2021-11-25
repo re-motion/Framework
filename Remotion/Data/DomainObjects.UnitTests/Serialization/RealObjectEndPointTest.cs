@@ -36,9 +36,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       base.SetUp();
 
-      DomainObjectIDs.Computer1.GetObject<Computer> ();
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Computer1, ReflectionMappingHelper.GetPropertyName (typeof (Computer), "Employee"));
-      _endPoint = (RealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID);
+      DomainObjectIDs.Computer1.GetObject<Computer>();
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Computer1, ReflectionMappingHelper.GetPropertyName(typeof (Computer), "Employee"));
+      _endPoint = (RealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID);
 
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }
@@ -46,10 +46,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void RealObjectEndPoint_IsNotSerializable ()
     {
-      Assert.That (
-          () => Serializer.SerializeAndDeserialize (_endPoint),
+      Assert.That(
+          () => Serializer.SerializeAndDeserialize(_endPoint),
           Throws.InstanceOf<SerializationException>()
-              .With.Message.Matches (
+              .With.Message.Matches(
                   "Type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjectEndPoint' in Assembly "
                   + ".* is not marked as serializable."));
     }
@@ -57,75 +57,75 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void RealObjectEndPoint_IsFlattenedSerializable ()
     {
-      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
-      Assert.That (deserializedEndPoint, Is.Not.Null);
-      Assert.That (deserializedEndPoint, Is.Not.SameAs (_endPoint));
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
+      Assert.That(deserializedEndPoint, Is.Not.Null);
+      Assert.That(deserializedEndPoint, Is.Not.SameAs(_endPoint));
     }
 
     [Test]
     public void UntouchedContent ()
     {
-      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
-      Assert.That (deserializedEndPoint.HasBeenTouched, Is.False);
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
+      Assert.That(deserializedEndPoint.HasBeenTouched, Is.False);
     }
 
     [Test]
     public void TouchedContent ()
     {
-      RealObjectEndPointTestHelper.SetOppositeObjectID (_endPoint, DomainObjectIDs.Employee1);
+      RealObjectEndPointTestHelper.SetOppositeObjectID(_endPoint, DomainObjectIDs.Employee1);
 
-      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
-      Assert.That (deserializedEndPoint.Definition, Is.SameAs (_endPoint.Definition));
-      Assert.That (deserializedEndPoint.HasBeenTouched, Is.True);
-      Assert.That (_endPoint.OppositeObjectID, Is.EqualTo (DomainObjectIDs.Employee1));
-      Assert.That (_endPoint.OriginalOppositeObjectID, Is.EqualTo (DomainObjectIDs.Employee3));
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
+      Assert.That(deserializedEndPoint.Definition, Is.SameAs(_endPoint.Definition));
+      Assert.That(deserializedEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_endPoint.OppositeObjectID, Is.EqualTo(DomainObjectIDs.Employee1));
+      Assert.That(_endPoint.OriginalOppositeObjectID, Is.EqualTo(DomainObjectIDs.Employee3));
     }
 
     [Test]
     public void ForeignKeyProperty ()
     {
-      DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ();
+      DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
       var id = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1, typeof (OrderTicket) + ".Order");
-      var endPoint = (RealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad (id);
-      Assert.That (endPoint.PropertyDefinition, Is.Not.Null);
+      var endPoint = (RealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(id);
+      Assert.That(endPoint.PropertyDefinition, Is.Not.Null);
 
-      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (endPoint);
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(endPoint);
 
-      Assert.That (deserializedEndPoint.PropertyDefinition, Is.SameAs (endPoint.PropertyDefinition));
-      Assert.That (deserializedEndPoint.ForeignKeyDataContainer, Is.Not.Null);
+      Assert.That(deserializedEndPoint.PropertyDefinition, Is.SameAs(endPoint.PropertyDefinition));
+      Assert.That(deserializedEndPoint.ForeignKeyDataContainer, Is.Not.Null);
     }
 
     [Test]
     public void ForeignKeyDataContainer_IntegrationWithDataManager ()
     {
-      DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ();
+      DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
       var id = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1, typeof (OrderTicket) + ".Order");
 
-      var deserializedDataManager = Serializer.SerializeAndDeserialize (TestableClientTransaction.DataManager);
+      var deserializedDataManager = Serializer.SerializeAndDeserialize(TestableClientTransaction.DataManager);
 
-      var deserializedEndPoint = (RealObjectEndPoint) deserializedDataManager.GetRelationEndPointWithLazyLoad (id);
+      var deserializedEndPoint = (RealObjectEndPoint) deserializedDataManager.GetRelationEndPointWithLazyLoad(id);
 
-      Assert.That (deserializedEndPoint.ForeignKeyDataContainer, Is.Not.Null);
-      Assert.That (deserializedEndPoint.ForeignKeyDataContainer, Is.SameAs (deserializedDataManager.DataContainers[DomainObjectIDs.OrderTicket1]));
+      Assert.That(deserializedEndPoint.ForeignKeyDataContainer, Is.Not.Null);
+      Assert.That(deserializedEndPoint.ForeignKeyDataContainer, Is.SameAs(deserializedDataManager.DataContainers[DomainObjectIDs.OrderTicket1]));
           }
 
     [Test]
     public void SyncState ()
     {
-      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
 
-      var syncState = RealObjectEndPointTestHelper.GetSyncState (deserializedEndPoint);
-      Assert.That (syncState, Is.Not.Null);
-      Assert.That (syncState.GetType (), Is.SameAs (RealObjectEndPointTestHelper.GetSyncState (_endPoint).GetType ()));
+      var syncState = RealObjectEndPointTestHelper.GetSyncState(deserializedEndPoint);
+      Assert.That(syncState, Is.Not.Null);
+      Assert.That(syncState.GetType(), Is.SameAs(RealObjectEndPointTestHelper.GetSyncState(_endPoint).GetType()));
     }
 
     [Test]
     public void InjectedProperties ()
     {
-      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
 
-      Assert.That (deserializedEndPoint.EndPointProvider, Is.Not.Null);
-      Assert.That (deserializedEndPoint.TransactionEventSink, Is.Not.Null);
+      Assert.That(deserializedEndPoint.EndPointProvider, Is.Not.Null);
+      Assert.That(deserializedEndPoint.TransactionEventSink, Is.Not.Null);
     }
   }
 }

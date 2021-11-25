@@ -36,7 +36,7 @@ namespace Remotion.Configuration.TypeDiscovery
 
     protected override ConfigurationElement CreateNewElement ()
     {
-      throw new NotSupportedException ("Elements of this collection can only be created from an element name.");
+      throw new NotSupportedException("Elements of this collection can only be created from an element name.");
     }
 
     protected override ConfigurationElement CreateNewElement (string elementName)
@@ -48,7 +48,7 @@ namespace Remotion.Configuration.TypeDiscovery
         case "exclude":
           return new ByFileExcludeRootAssemblyElement();
         default:
-          throw new NotSupportedException ("Only elements called 'include' or 'exclude' are supported.");
+          throw new NotSupportedException("Only elements called 'include' or 'exclude' are supported.");
       }
     }
 
@@ -72,24 +72,24 @@ namespace Remotion.Configuration.TypeDiscovery
 
     public void Add (ByFileRootAssemblyElementBase element)
     {
-      BaseAdd (element);
+      BaseAdd(element);
     }
 
     public void RemoveAt (int index)
     {
-      BaseRemoveAt (index);
+      BaseRemoveAt(index);
     }
 
     public void Clear ()
     {
-      BaseClear ();
+      BaseClear();
     }
 
     public FilePatternRootAssemblyFinder CreateRootAssemblyFinder (IAssemblyLoader assemblyLoader)
     {
-      return new FilePatternRootAssemblyFinder (
+      return new FilePatternRootAssemblyFinder(
           AppContext.BaseDirectory, 
-          this.Select (element => element.CreateSpecification ()),
+          this.Select(element => element.CreateSpecification()),
           new FileSystemSearchService(),
           assemblyLoader);
     }

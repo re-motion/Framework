@@ -28,18 +28,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Schemas
     [Test]
     public void InitializeWithQueries ()
     {
-      Assert.That (SchemaLoader.Queries.SchemaUri, Is.EqualTo (PrefixNamespace.QueryConfigurationNamespace.Uri));
+      Assert.That(SchemaLoader.Queries.SchemaUri, Is.EqualTo(PrefixNamespace.QueryConfigurationNamespace.Uri));
     }
 
     [Test]
     public void LoadSchemaSetWithQueries ()
     {
-      XmlSchemaSet schemaSet = SchemaLoader.Queries.LoadSchemaSet ();
+      XmlSchemaSet schemaSet = SchemaLoader.Queries.LoadSchemaSet();
 
-      Assert.That (schemaSet, Is.Not.Null);
-      Assert.That (schemaSet.Count, Is.EqualTo (2));
-      Assert.That (schemaSet.Contains (PrefixNamespace.QueryConfigurationNamespace.Uri), Is.True);
-      Assert.That (schemaSet.Contains ("http://www.re-motion.org/Data/DomainObjects/Types"), Is.True);
+      Assert.That(schemaSet, Is.Not.Null);
+      Assert.That(schemaSet.Count, Is.EqualTo(2));
+      Assert.That(schemaSet.Contains(PrefixNamespace.QueryConfigurationNamespace.Uri), Is.True);
+      Assert.That(schemaSet.Contains("http://www.re-motion.org/Data/DomainObjects/Types"), Is.True);
     }
   }
 }

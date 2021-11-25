@@ -30,71 +30,71 @@ namespace Remotion.Web.IntegrationTests.DropDownMenu
     public void DropDownMenu ()
     {
       var home = Start();
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (dropDownMenu);
+      var result = analyzer.Analyze(dropDownMenu);
 
       // TODO RM-7341 remove ignore once issue is resolved
-      var violations = result.Violations.IgnoreByRuleIDAndXPath (AccessibilityRuleID.ButtonName, "/a[@id='body_MyDropDownMenu_DropDownMenuButton']");
-      Assert.That (violations, Is.Empty);
+      var violations = result.Violations.IgnoreByRuleIDAndXPath(AccessibilityRuleID.ButtonName, "/a[@id='body_MyDropDownMenu_DropDownMenuButton']");
+      Assert.That(violations, Is.Empty);
     }
 
     [Test]
     public void DropDownMenu_Open ()
     {
       var home = Start();
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu");
       dropDownMenu.Open();
-      Assert.That (dropDownMenu.IsOpen(), Is.True);
+      Assert.That(dropDownMenu.IsOpen(), Is.True);
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (dropDownMenu);
+      var result = analyzer.Analyze(dropDownMenu);
 
       // TODO RM-7341 remove ignore once issue is resolved
-      var violations = result.Violations.IgnoreByRuleIDAndXPath (AccessibilityRuleID.ButtonName, "/a[@id='body_MyDropDownMenu_DropDownMenuButton']");
-      Assert.That (violations, Is.Empty);
+      var violations = result.Violations.IgnoreByRuleIDAndXPath(AccessibilityRuleID.ButtonName, "/a[@id='body_MyDropDownMenu_DropDownMenuButton']");
+      Assert.That(violations, Is.Empty);
     }
 
     [Test]
     public void DropDownMenu2 ()
     {
       var home = Start();
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu2");
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu2");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (dropDownMenu);
+      var result = analyzer.Analyze(dropDownMenu);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void DropDownMenu_Disabled ()
     {
       var home = Start();
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu_Disabled");
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu_Disabled");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (dropDownMenu);
+      var result = analyzer.Analyze(dropDownMenu);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void DropDownMenu_Error ()
     {
       var home = Start();
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu_Error");
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu_Error");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (dropDownMenu);
+      var result = analyzer.Analyze(dropDownMenu);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("DropDownMenuTest.wxe");
+      return Start<WxePageObject>("DropDownMenuTest.wxe");
     }
   }
 }

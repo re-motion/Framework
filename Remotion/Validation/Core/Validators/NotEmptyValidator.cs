@@ -34,7 +34,7 @@ namespace Remotion.Validation.Validators
 
     public NotEmptyValidator ([NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
       ErrorMessage = "The value must not be empty.";
       ValidationMessage = validationMessage;
@@ -42,10 +42,10 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
-      if (IsValid (context))
+      if (IsValid(context))
         return Enumerable.Empty<PropertyValidationFailure>();
 
-      return EnumerableUtility.Singleton (CreateValidationError (context));
+      return EnumerableUtility.Singleton(CreateValidationError(context));
     }
 
     private bool IsValid (PropertyValidatorContext context)
@@ -55,7 +55,7 @@ namespace Remotion.Validation.Validators
       if (propertyValue == null)
         return true;
 
-      return !IsEmptyString (propertyValue) && !IsEmptyCollection (propertyValue);
+      return !IsEmptyString(propertyValue) && !IsEmptyCollection(propertyValue);
     }
 
     private bool IsEmptyCollection (object propertyValue)
@@ -76,12 +76,12 @@ namespace Remotion.Validation.Validators
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
-      return new PropertyValidationFailure (
+      return new PropertyValidationFailure(
           context.Instance,
           context.Property,
           context.PropertyValue,
           errorMessage: ErrorMessage,
-          localizedValidationMessage: ValidationMessage.Format (CultureInfo.CurrentUICulture, null, Array.Empty<object>()));
+          localizedValidationMessage: ValidationMessage.Format(CultureInfo.CurrentUICulture, null, Array.Empty<object>()));
     }
   }
 }

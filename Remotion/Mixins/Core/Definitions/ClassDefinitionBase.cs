@@ -25,24 +25,24 @@ namespace Remotion.Mixins.Definitions
   public abstract class ClassDefinitionBase : IAttributableDefinition, IVisitableDefinition
   {
     private readonly UniqueDefinitionCollection<MethodInfo, MethodDefinition> _methods =
-        new UniqueDefinitionCollection<MethodInfo, MethodDefinition> (m => m.MethodInfo);
+        new UniqueDefinitionCollection<MethodInfo, MethodDefinition>(m => m.MethodInfo);
     private readonly UniqueDefinitionCollection<PropertyInfo, PropertyDefinition> _properties =
-        new UniqueDefinitionCollection<PropertyInfo, PropertyDefinition> (p => p.PropertyInfo);
+        new UniqueDefinitionCollection<PropertyInfo, PropertyDefinition>(p => p.PropertyInfo);
     private readonly UniqueDefinitionCollection<EventInfo, EventDefinition> _events =
-        new UniqueDefinitionCollection<EventInfo, EventDefinition> (p => p.EventInfo);
+        new UniqueDefinitionCollection<EventInfo, EventDefinition>(p => p.EventInfo);
     private readonly MultiDefinitionCollection<Type, AttributeDefinition> _customAttributes =
-        new MultiDefinitionCollection<Type, AttributeDefinition> (a => a.AttributeType);
+        new MultiDefinitionCollection<Type, AttributeDefinition>(a => a.AttributeType);
 
     private readonly Type _type;
     private readonly HashSet<Type> _implementedInterfaces;
 
     protected ClassDefinitionBase (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
       if (type.ContainsGenericParameters)
-        throw new ArgumentException (string.Format ("The type {0} contains generic parameters, which is not allowed.", type), "type");
+        throw new ArgumentException(string.Format("The type {0} contains generic parameters, which is not allowed.", type), "type");
       _type = type;
-      _implementedInterfaces = new HashSet<Type> (_type.GetInterfaces());
+      _implementedInterfaces = new HashSet<Type>(_type.GetInterfaces());
     }
 
     public Type Type
@@ -59,7 +59,7 @@ namespace Remotion.Mixins.Definitions
     {
       get {
         if (Type.IsGenericType)
-          return Type.GetGenericTypeDefinition ().FullName;
+          return Type.GetGenericTypeDefinition().FullName;
         else
           return Type.FullName;
       }
@@ -75,7 +75,7 @@ namespace Remotion.Mixins.Definitions
     /// This method remedies this by aligning the returned <see cref="MethodInfo"/> instances with the stored ones.</remarks>
     public InterfaceMapping GetAdjustedInterfaceMap (Type interfaceType)
     {
-      InterfaceMapping mapping = Type.GetInterfaceMap (interfaceType);
+      InterfaceMapping mapping = Type.GetInterfaceMap(interfaceType);
       for (int i = 0; i < mapping.InterfaceMethods.Length; ++i)
       {
         MethodInfo targetMethod = mapping.TargetMethods[i];
@@ -83,10 +83,10 @@ namespace Remotion.Mixins.Definitions
         if (targetMethod.DeclaringType != Type)
         {
           // The MethodInfo objects returned by the Methods property has the ReflectedType == DeclaringType; the interface map must reflect this.
-          Assertion.IsFalse (targetMethod.ReflectedType == targetMethod.DeclaringType);
+          Assertion.IsFalse(targetMethod.ReflectedType == targetMethod.DeclaringType);
 
-          var newTargetMethod = (MethodInfo) MethodBase.GetMethodFromHandle (targetMethod.MethodHandle, targetMethod.DeclaringType!.TypeHandle)!;
-          Assertion.IsTrue (newTargetMethod.ReflectedType == newTargetMethod.DeclaringType);
+          var newTargetMethod = (MethodInfo) MethodBase.GetMethodFromHandle(targetMethod.MethodHandle, targetMethod.DeclaringType!.TypeHandle)!;
+          Assertion.IsTrue(newTargetMethod.ReflectedType == newTargetMethod.DeclaringType);
 
           mapping.TargetMethods[i] = newTargetMethod;
         }
@@ -158,21 +158,21 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
 
-      ChildSpecificAccept (visitor);
+      ChildSpecificAccept(visitor);
 
-      _methods.Accept (visitor);
-      _properties.Accept (visitor);
-      _events.Accept (visitor);
-      CustomAttributes.Accept (visitor);
+      _methods.Accept(visitor);
+      _properties.Accept(visitor);
+      _events.Accept(visitor);
+      CustomAttributes.Accept(visitor);
     }
 
     protected abstract void ChildSpecificAccept (IDefinitionVisitor visitor);
 
     public bool HasOverriddenMembers ()
     {
-      foreach (MemberDefinitionBase member in GetAllMembers ())
+      foreach (MemberDefinitionBase member in GetAllMembers())
       {
         if (member.Overrides.Count > 0)
           return true;
@@ -182,7 +182,7 @@ namespace Remotion.Mixins.Definitions
 
     public bool HasProtectedOverriders ()
     {
-      return GetProtectedOverriders ().Any ();
+      return GetProtectedOverriders().Any();
     }
 
     public IEnumerable<MethodDefinition> GetProtectedOverriders ()

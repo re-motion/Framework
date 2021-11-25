@@ -38,27 +38,27 @@ namespace Remotion.Diagnostics
     public override string ToString ()
     {
       if (MegaBytes > 1)
-        return MegaBytes.ToString ("N2") + " MB";
+        return MegaBytes.ToString("N2") + " MB";
       else
-        return Bytes.ToString ("N0") + " bytes";
+        return Bytes.ToString("N0") + " bytes";
     }
 
     public string ToDifferenceString ()
     {
       if (Bytes > 0)
-        return "+" + ToString ();
+        return "+" + ToString();
       else
-        return ToString ();
+        return ToString();
     }
 
     public static ByteValue operator + (ByteValue left, ByteValue right)
     {
-      return new ByteValue (left.Bytes + right.Bytes);
+      return new ByteValue(left.Bytes + right.Bytes);
     }
 
     public static ByteValue operator - (ByteValue left, ByteValue right)
     {
-      return new ByteValue (left.Bytes - right.Bytes);
+      return new ByteValue(left.Bytes - right.Bytes);
     }
   }
 }

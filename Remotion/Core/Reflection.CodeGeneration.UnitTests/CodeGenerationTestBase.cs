@@ -50,7 +50,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     {
       get
       {
-        return GetType ().Name + "." + s_counter++;
+        return GetType().Name + "." + s_counter++;
       }
     }
   }

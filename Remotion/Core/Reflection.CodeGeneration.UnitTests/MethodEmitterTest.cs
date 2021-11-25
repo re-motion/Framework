@@ -33,266 +33,266 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void SimpleMethod ()
     {
-      var method = ClassEmitter.CreateMethod ("SimpleMethod", MethodAttributes.Public, typeof (string), new[] { typeof (string) });
-      method.ImplementByReturning (
-              new MethodInvocationExpression (null, typeof (string).GetMethod ("Concat", new[] { typeof (string), typeof (string) }),
-              method.ArgumentReferences[0].ToExpression (), new ConstReference ("Simple").ToExpression ()));
+      var method = ClassEmitter.CreateMethod("SimpleMethod", MethodAttributes.Public, typeof (string), new[] { typeof (string) });
+      method.ImplementByReturning(
+              new MethodInvocationExpression(null, typeof (string).GetMethod("Concat", new[] { typeof (string), typeof (string) }),
+              method.ArgumentReferences[0].ToExpression(), new ConstReference("Simple").ToExpression()));
 
       object returnValue = BuildInstanceAndInvokeMethod(method, "Param");
-      Assert.That (returnValue, Is.EqualTo ("ParamSimple"));
+      Assert.That(returnValue, Is.EqualTo("ParamSimple"));
 
-      Assert.That (method.MethodBuilder, Is.Not.Null);
-      Assert.That (method.ParameterTypes, Is.EqualTo (new[] { typeof (string) }));
+      Assert.That(method.MethodBuilder, Is.Not.Null);
+      Assert.That(method.ParameterTypes, Is.EqualTo(new[] { typeof (string) }));
     }
 
     [Test]
     public void StaticMethod ()
     {
-      var method = ClassEmitter.CreateMethod (
+      var method = ClassEmitter.CreateMethod(
           "StaticMethod",
           MethodAttributes.Public | MethodAttributes.Static,
           typeof (string),
           new[] { typeof (string) });
-      method.ImplementByReturning (
-          new MethodInvocationExpression (null, typeof (string).GetMethod ("Concat", new[] { typeof (string), typeof (string) }),
-          method.ArgumentReferences[0].ToExpression (), new ConstReference ("Simple").ToExpression ()));
+      method.ImplementByReturning(
+          new MethodInvocationExpression(null, typeof (string).GetMethod("Concat", new[] { typeof (string), typeof (string) }),
+          method.ArgumentReferences[0].ToExpression(), new ConstReference("Simple").ToExpression()));
 
-      object returnValue = BuildTypeAndInvokeMethod (method, "Param");
-      Assert.That (returnValue, Is.EqualTo ("ParamSimple"));
+      object returnValue = BuildTypeAndInvokeMethod(method, "Param");
+      Assert.That(returnValue, Is.EqualTo("ParamSimple"));
     }
 
     [Test]
     public void CopiedMethod ()
     {
-      var method = ClassEmitter.CreateMethod ("SimpleMethod", MethodAttributes.Public, typeof (List<int>).GetMethod ("Contains", new[] { typeof (int) }));
-      method.ImplementByReturning (new ConstReference (false).ToExpression ());
+      var method = ClassEmitter.CreateMethod("SimpleMethod", MethodAttributes.Public, typeof (List<int>).GetMethod("Contains", new[] { typeof (int) }));
+      method.ImplementByReturning(new ConstReference(false).ToExpression());
 
-      object returnValue = BuildInstanceAndInvokeMethod (method, 12);
-      Assert.That (returnValue, Is.EqualTo (false));
+      object returnValue = BuildInstanceAndInvokeMethod(method, 12);
+      Assert.That(returnValue, Is.EqualTo(false));
 
-      Assert.That (method.MethodBuilder, Is.Not.Null);
-      Assert.That (method.ReturnType, Is.EqualTo (typeof (bool)));
-      Assert.That (method.ParameterTypes, Is.EqualTo (new[] { typeof (int) }));
+      Assert.That(method.MethodBuilder, Is.Not.Null);
+      Assert.That(method.ReturnType, Is.EqualTo(typeof (bool)));
+      Assert.That(method.ParameterTypes, Is.EqualTo(new[] { typeof (int) }));
     }
 
     [Test]
     public void CopiedMethod_Generic ()
     {
-      var method = ClassEmitter.CreateMethod ("SimpleMethod", MethodAttributes.Public, typeof (ClassWithSimpleGenericMethod).GetMethod ("GenericMethod"));
-      method.ImplementByReturning (new ConstReference ("done").ToExpression ());
+      var method = ClassEmitter.CreateMethod("SimpleMethod", MethodAttributes.Public, typeof (ClassWithSimpleGenericMethod).GetMethod("GenericMethod"));
+      method.ImplementByReturning(new ConstReference("done").ToExpression());
 
-      object returnValue = BuildInstanceAndInvokeMethod (method, new[] { typeof (int), typeof (string), typeof (bool) }, 12, "", false);
-      Assert.That (returnValue, Is.EqualTo ("done"));
+      object returnValue = BuildInstanceAndInvokeMethod(method, new[] { typeof (int), typeof (string), typeof (bool) }, 12, "", false);
+      Assert.That(returnValue, Is.EqualTo("done"));
 
-      Assert.That (method.MethodBuilder, Is.Not.Null);
-      Assert.That (method.ReturnType, Is.EqualTo (typeof (string)));
-      Assert.That (method.ParameterTypes, Has.Length.EqualTo (3));
-      Assert.That (method.ParameterTypes[0].IsGenericParameter, Is.True);
-      Assert.That (method.ParameterTypes[0].Name, Is.EqualTo ("T1"));
-      Assert.That (method.ParameterTypes[1].IsGenericParameter, Is.True);
-      Assert.That (method.ParameterTypes[1].Name, Is.EqualTo ("T2"));
-      Assert.That (method.ParameterTypes[2].IsGenericParameter, Is.True);
-      Assert.That (method.ParameterTypes[2].Name, Is.EqualTo ("T3"));
+      Assert.That(method.MethodBuilder, Is.Not.Null);
+      Assert.That(method.ReturnType, Is.EqualTo(typeof (string)));
+      Assert.That(method.ParameterTypes, Has.Length.EqualTo(3));
+      Assert.That(method.ParameterTypes[0].IsGenericParameter, Is.True);
+      Assert.That(method.ParameterTypes[0].Name, Is.EqualTo("T1"));
+      Assert.That(method.ParameterTypes[1].IsGenericParameter, Is.True);
+      Assert.That(method.ParameterTypes[1].Name, Is.EqualTo("T2"));
+      Assert.That(method.ParameterTypes[2].IsGenericParameter, Is.True);
+      Assert.That(method.ParameterTypes[2].Name, Is.EqualTo("T3"));
     }
 
     [Test]
     public void ILGenerator ()
     {
-      var method = ClassEmitter.CreateMethod ("StaticMethod", MethodAttributes.Public | MethodAttributes.Static, typeof (string), new Type[0]);
+      var method = ClassEmitter.CreateMethod("StaticMethod", MethodAttributes.Public | MethodAttributes.Static, typeof (string), new Type[0]);
       ILGenerator gen = method.ILGenerator;
-      Assert.That (gen, Is.Not.Null);
-      gen.Emit (OpCodes.Ldstr, "manual retval");
-      gen.Emit (OpCodes.Ret);
+      Assert.That(gen, Is.Not.Null);
+      gen.Emit(OpCodes.Ldstr, "manual retval");
+      gen.Emit(OpCodes.Ret);
 
-      object returnValue = BuildTypeAndInvokeMethod (method);
-      Assert.That (returnValue, Is.EqualTo ("manual retval"));
+      object returnValue = BuildTypeAndInvokeMethod(method);
+      Assert.That(returnValue, Is.EqualTo("manual retval"));
     }
 
     [Test]
     public void GetArgumentExpressions ()
     {
-      var method = ClassEmitter.CreateMethod (
+      var method = ClassEmitter.CreateMethod(
           "StaticMethod",
           MethodAttributes.Public | MethodAttributes.Static,
           typeof (string),
           new[] { typeof (string) });
-      Expression[] argumentExpressions = method.GetArgumentExpressions ();
+      Expression[] argumentExpressions = method.GetArgumentExpressions();
 
-      Assert.That (argumentExpressions.Length, Is.EqualTo (method.ArgumentReferences.Length));
+      Assert.That(argumentExpressions.Length, Is.EqualTo(method.ArgumentReferences.Length));
       for (int i = 0; i < argumentExpressions.Length; ++i)
-        Assert.That (PrivateInvoke.GetNonPublicField (argumentExpressions[i], "reference"), Is.EqualTo (method.ArgumentReferences[i]));
+        Assert.That(PrivateInvoke.GetNonPublicField(argumentExpressions[i], "reference"), Is.EqualTo(method.ArgumentReferences[i]));
     }
 
     [Test]
     public void ImplementByReturning ()
     {
-      var method = ClassEmitter.CreateMethod ("MethodReturning", MethodAttributes.Public, typeof (string), new Type[0])
-          .ImplementByReturning (new ConstReference ("none").ToExpression());
+      var method = ClassEmitter.CreateMethod("MethodReturning", MethodAttributes.Public, typeof (string), new Type[0])
+          .ImplementByReturning(new ConstReference("none").ToExpression());
 
-      Assert.That (BuildInstanceAndInvokeMethod (method), Is.EqualTo ("none"));
+      Assert.That(BuildInstanceAndInvokeMethod(method), Is.EqualTo("none"));
     }
 
     [Test]
     public void ImplementByReturningVoid ()
     {
-      var method = ClassEmitter.CreateMethod ("MethodReturningVoid", MethodAttributes.Public, typeof (void), new Type[0])
-          .ImplementByReturningVoid ();
+      var method = ClassEmitter.CreateMethod("MethodReturningVoid", MethodAttributes.Public, typeof (void), new Type[0])
+          .ImplementByReturningVoid();
 
-      Assert.That (BuildInstanceAndInvokeMethod (method), Is.EqualTo (null));
+      Assert.That(BuildInstanceAndInvokeMethod(method), Is.EqualTo(null));
     }
 
     [Test]
     public void ImplementByReturningDefaultValueType ()
     {
-      var intMethod = ClassEmitter.CreateMethod ("IntMethod", MethodAttributes.Public, typeof (int), new Type[0])
-          .ImplementByReturningDefault ();
-      var dateTimeMethod = ClassEmitter.CreateMethod ("DateTimeMethod", MethodAttributes.Public, typeof (DateTime), new Type[0])
-          .ImplementByReturningDefault ();
+      var intMethod = ClassEmitter.CreateMethod("IntMethod", MethodAttributes.Public, typeof (int), new Type[0])
+          .ImplementByReturningDefault();
+      var dateTimeMethod = ClassEmitter.CreateMethod("DateTimeMethod", MethodAttributes.Public, typeof (DateTime), new Type[0])
+          .ImplementByReturningDefault();
 
-      object instance = BuildInstance ();
+      object instance = BuildInstance();
 
-      Assert.That (InvokeMethod (instance, intMethod), Is.EqualTo (0));
-      Assert.That (InvokeMethod (instance, dateTimeMethod), Is.EqualTo (new DateTime ()));
+      Assert.That(InvokeMethod(instance, intMethod), Is.EqualTo(0));
+      Assert.That(InvokeMethod(instance, dateTimeMethod), Is.EqualTo(new DateTime()));
     }
 
     [Test]
     public void ImplementByReturningDefaultReferenceType ()
     {
-      var objectMethod = ClassEmitter.CreateMethod ("ObjectMethod", MethodAttributes.Public, typeof (object), new Type[0])
-          .ImplementByReturningDefault ();
-      var stringMethod = ClassEmitter.CreateMethod ("StringMethod", MethodAttributes.Public, typeof (string), new Type[0])
-          .ImplementByReturningDefault ();
+      var objectMethod = ClassEmitter.CreateMethod("ObjectMethod", MethodAttributes.Public, typeof (object), new Type[0])
+          .ImplementByReturningDefault();
+      var stringMethod = ClassEmitter.CreateMethod("StringMethod", MethodAttributes.Public, typeof (string), new Type[0])
+          .ImplementByReturningDefault();
 
-      object instance = BuildInstance ();
+      object instance = BuildInstance();
 
-      Assert.That (InvokeMethod (instance, objectMethod), Is.EqualTo (null));
-      Assert.That (InvokeMethod (instance, stringMethod), Is.EqualTo (null));
+      Assert.That(InvokeMethod(instance, objectMethod), Is.EqualTo(null));
+      Assert.That(InvokeMethod(instance, stringMethod), Is.EqualTo(null));
     }
 
     [Test]
     public void ImplementByReturningDefaultVoid ()
     {
-      var voidMethod = ClassEmitter.CreateMethod ("VoidMethod", MethodAttributes.Public, typeof (void), new Type[0])
-          .ImplementByReturningDefault ();
+      var voidMethod = ClassEmitter.CreateMethod("VoidMethod", MethodAttributes.Public, typeof (void), new Type[0])
+          .ImplementByReturningDefault();
 
-      object instance = BuildInstance ();
+      object instance = BuildInstance();
 
-      Assert.That (InvokeMethod (instance, voidMethod), Is.EqualTo (null));
-      Assert.That (GetMethod (instance, voidMethod).ReturnType, Is.EqualTo (typeof (void)));
+      Assert.That(InvokeMethod(instance, voidMethod), Is.EqualTo(null));
+      Assert.That(GetMethod(instance, voidMethod).ReturnType, Is.EqualTo(typeof (void)));
     }
 
     [Test]
     public void ImplementByDelegating ()
     {
-      var method = ClassEmitter.CreateMethod (
+      var method = ClassEmitter.CreateMethod(
           "EqualsSelf", MethodAttributes.Public | MethodAttributes.Static, typeof (bool), new[] { typeof (object) });
-      method.ImplementByDelegating (method.ArgumentReferences[0], typeof (object).GetMethod ("Equals", new[] {typeof (object)}));
+      method.ImplementByDelegating(method.ArgumentReferences[0], typeof (object).GetMethod("Equals", new[] {typeof (object)}));
 
-      object instance = BuildInstance ();
+      object instance = BuildInstance();
 
-      Assert.That (InvokeMethod (instance, method, 5), Is.EqualTo (true));
-      Assert.That (InvokeMethod (instance, method, "five"), Is.EqualTo (true));
+      Assert.That(InvokeMethod(instance, method, 5), Is.EqualTo(true));
+      Assert.That(InvokeMethod(instance, method, "five"), Is.EqualTo(true));
     }
 
     [Test]
     public void ImplementByDelegatingToValueType ()
     {
-      var method = ClassEmitter.CreateMethod (
+      var method = ClassEmitter.CreateMethod(
           "IntEqualsSelf", MethodAttributes.Public | MethodAttributes.Static, typeof (bool), new[] { typeof (int) });
-      LocalReference local = method.DeclareLocal (typeof (int));
-      method.AddStatement (new AssignStatement (local, method.ArgumentReferences[0].ToExpression()));
-      method.ImplementByDelegating (local, typeof (int).GetMethod ("Equals", new[] { typeof (int) }));
+      LocalReference local = method.DeclareLocal(typeof (int));
+      method.AddStatement(new AssignStatement(local, method.ArgumentReferences[0].ToExpression()));
+      method.ImplementByDelegating(local, typeof (int).GetMethod("Equals", new[] { typeof (int) }));
 
-      object instance = BuildInstance ();
-      Assert.That (InvokeMethod (instance, method, 5), Is.EqualTo (true));
+      object instance = BuildInstance();
+      Assert.That(InvokeMethod(instance, method, 5), Is.EqualTo(true));
     }
 
     [Test]
     public void ImplementByBaseCall ()
     {
-      var method = ClassEmitter.CreateMethod ("NewEquals", MethodAttributes.Public, typeof (bool), new[] { typeof (object) });
-      method.ImplementByBaseCall (typeof (object).GetMethod ("Equals", new[] { typeof (object) }));
+      var method = ClassEmitter.CreateMethod("NewEquals", MethodAttributes.Public, typeof (bool), new[] { typeof (object) });
+      method.ImplementByBaseCall(typeof (object).GetMethod("Equals", new[] { typeof (object) }));
 
-      object instance = BuildInstance ();
+      object instance = BuildInstance();
 
-      Assert.That (InvokeMethod (instance, method, 5), Is.EqualTo (false));
-      Assert.That (InvokeMethod (instance, method, instance), Is.EqualTo (true));
+      Assert.That(InvokeMethod(instance, method, 5), Is.EqualTo(false));
+      Assert.That(InvokeMethod(instance, method, instance), Is.EqualTo(true));
     }
 
     [Test]
     public void ImplementByBaseCallThrowsOnAbstractMethod ()
     {
-      var method = ClassEmitter.CreateMethod ("NewEquals", MethodAttributes.Public, typeof (bool), new[]{typeof (object)});
-      Assert.That (
-          () => method.ImplementByBaseCall (typeof (ICloneable).GetMethod ("Clone")),
+      var method = ClassEmitter.CreateMethod("NewEquals", MethodAttributes.Public, typeof (bool), new[]{typeof (object)});
+      Assert.That(
+          () => method.ImplementByBaseCall(typeof (ICloneable).GetMethod("Clone")),
           Throws.ArgumentException
-              .With.Message.Contains (
+              .With.Message.Contains(
                   "The given method System.ICloneable.Clone is abstract."));
     }
 
     [Test]
     public void ImplementByThrowing ()
     {
-      var method = ClassEmitter.CreateMethod ("ThrowingMethod", MethodAttributes.Public, typeof (void), new Type[0])
-          .ImplementByThrowing (typeof (NotFiniteNumberException), "Who would have expected this?");
+      var method = ClassEmitter.CreateMethod("ThrowingMethod", MethodAttributes.Public, typeof (void), new Type[0])
+          .ImplementByThrowing(typeof (NotFiniteNumberException), "Who would have expected this?");
 
-      var targetInvocationException = Assert.Throws<TargetInvocationException> (
-          () => BuildInstanceAndInvokeMethod (method));
-      Assert.That (targetInvocationException.InnerException, Is.InstanceOf<NotFiniteNumberException>());
-      Assert.That (targetInvocationException.InnerException?.Message, Is.EqualTo ("Who would have expected this?"));
+      var targetInvocationException = Assert.Throws<TargetInvocationException>(
+          () => BuildInstanceAndInvokeMethod(method));
+      Assert.That(targetInvocationException.InnerException, Is.InstanceOf<NotFiniteNumberException>());
+      Assert.That(targetInvocationException.InnerException?.Message, Is.EqualTo("Who would have expected this?"));
     }
 
     [Test]
     public void AddStatement ()
     {
-      var method = ClassEmitter.CreateMethod ("Statement", MethodAttributes.Public, typeof (void), new Type[0])
-        .AddStatement (new ReturnStatement ());
+      var method = ClassEmitter.CreateMethod("Statement", MethodAttributes.Public, typeof (void), new Type[0])
+        .AddStatement(new ReturnStatement());
 
-      BuildInstanceAndInvokeMethod (method);
+      BuildInstanceAndInvokeMethod(method);
     }
 
     [Test]
     public void DeclareLocal ()
     {
-      var method = ClassEmitter.CreateMethod ("Statement", MethodAttributes.Public, typeof (int), new Type[0]);
-      LocalReference local = method.DeclareLocal (typeof (int));
-      method.ImplementByReturning (local.ToExpression ());
+      var method = ClassEmitter.CreateMethod("Statement", MethodAttributes.Public, typeof (int), new Type[0]);
+      LocalReference local = method.DeclareLocal(typeof (int));
+      method.ImplementByReturning(local.ToExpression());
 
-      Assert.That (BuildInstanceAndInvokeMethod (method), Is.EqualTo (0));
+      Assert.That(BuildInstanceAndInvokeMethod(method), Is.EqualTo(0));
     }
 
     [Test]
     public void AddCustomAttribute ()
     {
-      var method = ClassEmitter.CreateMethod ("Statement", MethodAttributes.Public, typeof (void), new Type[0]);
-      method.AddCustomAttribute (new CustomAttributeBuilder (typeof (SimpleAttribute).GetConstructor (Type.EmptyTypes), new object[0]));
+      var method = ClassEmitter.CreateMethod("Statement", MethodAttributes.Public, typeof (void), new Type[0]);
+      method.AddCustomAttribute(new CustomAttributeBuilder(typeof (SimpleAttribute).GetConstructor(Type.EmptyTypes), new object[0]));
 
-      MethodInfo methodInfo = BuildTypeAndGetMethod (method);
-      Assert.That (methodInfo.GetCustomAttributes (typeof (SimpleAttribute), false).Length, Is.EqualTo (1));
+      MethodInfo methodInfo = BuildTypeAndGetMethod(method);
+      Assert.That(methodInfo.GetCustomAttributes(typeof (SimpleAttribute), false).Length, Is.EqualTo(1));
     }
 
     [Test]
     public void AcceptStatement ()
     {
-      var fakeGenerator = new DynamicMethod ("Test", typeof (void), Type.EmptyTypes).GetILGenerator ();
+      var fakeGenerator = new DynamicMethod("Test", typeof (void), Type.EmptyTypes).GetILGenerator();
       var statementMock = new Mock<Statement>();
 
-      var method = ClassEmitter.CreateMethod ("AcceptStatement", MethodAttributes.Public, typeof (void), new Type[0]);
-      method.AcceptStatement (statementMock.Object, fakeGenerator);
+      var method = ClassEmitter.CreateMethod("AcceptStatement", MethodAttributes.Public, typeof (void), new Type[0]);
+      method.AcceptStatement(statementMock.Object, fakeGenerator);
 
-      statementMock.Verify (mock => mock.Emit (It.Is<IMemberEmitter> (e => e.Member == method.MethodBuilder), fakeGenerator), Times.AtLeastOnce());
+      statementMock.Verify(mock => mock.Emit(It.Is<IMemberEmitter>(e => e.Member == method.MethodBuilder), fakeGenerator), Times.AtLeastOnce());
     }
 
     [Test]
     public void AcceptExpression ()
     {
-      var fakeGenerator = new DynamicMethod ("Test", typeof (void), Type.EmptyTypes).GetILGenerator ();
+      var fakeGenerator = new DynamicMethod("Test", typeof (void), Type.EmptyTypes).GetILGenerator();
       var expressionMock = new Mock<Expression>();
 
-      var method = ClassEmitter.CreateMethod ("AcceptStatement", MethodAttributes.Public, typeof (void), new Type[0]);
-      method.AcceptExpression (expressionMock.Object, fakeGenerator);
+      var method = ClassEmitter.CreateMethod("AcceptStatement", MethodAttributes.Public, typeof (void), new Type[0]);
+      method.AcceptExpression(expressionMock.Object, fakeGenerator);
 
-      expressionMock.Verify (mock => mock.Emit (It.Is<IMemberEmitter> (e => e.Member == method.MethodBuilder), fakeGenerator), Times.AtLeastOnce());
+      expressionMock.Verify(mock => mock.Emit(It.Is<IMemberEmitter>(e => e.Member == method.MethodBuilder), fakeGenerator), Times.AtLeastOnce());
     }
   }
 }

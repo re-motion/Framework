@@ -47,7 +47,7 @@ namespace Remotion.Mixins.Samples.Tutorial.T01_Configuration.Core.Mix
 
     public class IdentifiedObjectMixin : IIdentifiedObject
     {
-      private readonly string _id = Guid.NewGuid ().ToString ();
+      private readonly string _id = Guid.NewGuid().ToString();
 
       public string GetObjectID ()
       {

@@ -32,22 +32,22 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     StringCollection IFormGridRowProvider.GetHiddenRows (HtmlTable table)
     {
-      ArgumentUtility.CheckNotNull ("table", table);
+      ArgumentUtility.CheckNotNull("table", table);
 
       var providers = GetFormGridRowProvider();
       
-      var stringCollection = new StringCollection ();
-      stringCollection.AddRange (providers.SelectMany (p => p.GetHiddenRows ((TSelf) this, table, GetFormGridManager())).ToArray());
+      var stringCollection = new StringCollection();
+      stringCollection.AddRange(providers.SelectMany(p => p.GetHiddenRows((TSelf) this, table, GetFormGridManager())).ToArray());
 
       return stringCollection;
     }
 
     FormGridRowInfoCollection IFormGridRowProvider.GetAdditionalRows (HtmlTable table)
     {
-      ArgumentUtility.CheckNotNull ("table", table);
+      ArgumentUtility.CheckNotNull("table", table);
 
       var providers = GetFormGridRowProvider();
-      return new FormGridRowInfoCollection (providers.SelectMany (p => p.GetAdditionalRows ((TSelf) this, table, GetFormGridManager())).ToArray());
+      return new FormGridRowInfoCollection(providers.SelectMany(p => p.GetAdditionalRows((TSelf) this, table, GetFormGridManager())).ToArray());
     }
 
     private IEnumerable<IOrganizationalStructureEditControlFormGridRowProvider<TSelf>> GetFormGridRowProvider ()

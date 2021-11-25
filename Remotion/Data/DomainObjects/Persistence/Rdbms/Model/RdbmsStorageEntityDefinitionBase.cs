@@ -47,11 +47,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         IEnumerable<IIndexDefinition> indexes,
         IEnumerable<EntityNameDefinition> synonyms)
     {
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull ("objectIDProperty", objectIDProperty);
-      ArgumentUtility.CheckNotNull ("timestampProperty", timestampProperty);
-      ArgumentUtility.CheckNotNull ("dataProperties", dataProperties);
-      ArgumentUtility.CheckNotNull ("synonyms", synonyms);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("objectIDProperty", objectIDProperty);
+      ArgumentUtility.CheckNotNull("timestampProperty", timestampProperty);
+      ArgumentUtility.CheckNotNull("dataProperties", dataProperties);
+      ArgumentUtility.CheckNotNull("synonyms", synonyms);
 
       _storageProviderDefinition = storageProviderDefinition;
       _viewName = viewName;
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnDefinition> GetAllColumns ()
     {
-      return GetAllProperties().SelectMany (p => p.GetColumns());
+      return GetAllProperties().SelectMany(p => p.GetColumns());
     }
 
     public ReadOnlyCollection<IIndexDefinition> Indexes

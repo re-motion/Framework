@@ -47,55 +47,55 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       CommonInitialize();
 
       XmlNode tbody;
-      RenderAndAssertTable (out tbody);
+      RenderAndAssertTable(out tbody);
 
-      var trData1 = Html.GetAssertedChildElement (tbody, "tr", 0);
-      Html.AssertAttribute (trData1, "class", "dataStub");
+      var trData1 = Html.GetAssertedChildElement(tbody, "tr", 0);
+      Html.AssertAttribute(trData1, "class", "dataStub");
 
-      var trData2 = Html.GetAssertedChildElement (tbody, "tr", 1);
-      Html.AssertAttribute (trData2, "class", "dataStub");
+      var trData2 = Html.GetAssertedChildElement(tbody, "tr", 1);
+      Html.AssertAttribute(trData2, "class", "dataStub");
     }
 
 
     [Test]
     public void RenderEmptyList ()
     {
-      Initialize (false);
+      Initialize(false);
       CommonInitialize();
-      List.Setup (mock => mock.ShowEmptyListMessage).Returns (true);
-      List.Setup (mock => mock.ShowEmptyListEditMode).Returns (true);
+      List.Setup(mock => mock.ShowEmptyListMessage).Returns(true);
+      List.Setup(mock => mock.ShowEmptyListEditMode).Returns(true);
 
       XmlNode tbody;
-      RenderAndAssertTable (out tbody);
+      RenderAndAssertTable(out tbody);
 
-      var trData1 = Html.GetAssertedChildElement (tbody, "tr", 0);
-      Html.AssertAttribute (trData1, "class", "emptyStub");
+      var trData1 = Html.GetAssertedChildElement(tbody, "tr", 0);
+      Html.AssertAttribute(trData1, "class", "emptyStub");
     }
 
     [Test]
     public void RenderDummyTable ()
     {
-      Initialize (false);
+      Initialize(false);
       CommonInitialize();
 
       RenderList();
 
       var document = Html.GetResultDocument();
-      var outerSpan = Html.GetAssertedChildElement (document, "span", 0);
+      var outerSpan = Html.GetAssertedChildElement(document, "span", 0);
 
-      var table = Html.GetAssertedChildElement (outerSpan, "table", 0);
-      var tr = Html.GetAssertedChildElement (table, "tr", 0);
-      Html.AssertAttribute (table, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
-      Html.AssertAttribute (table, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
-      Html.AssertAttribute (table, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyList_ValidationErrors");
-      Html.AssertAttribute (table, StubValidationErrorRenderer.ValidationErrorsAttribute, "ValidationError");
+      var table = Html.GetAssertedChildElement(outerSpan, "table", 0);
+      var tr = Html.GetAssertedChildElement(table, "tr", 0);
+      Html.AssertAttribute(table, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
+      Html.AssertAttribute(table, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute(table, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyList_ValidationErrors");
+      Html.AssertAttribute(table, StubValidationErrorRenderer.ValidationErrorsAttribute, "ValidationError");
 
-      var td = Html.GetAssertedChildElement (tr, "td", 0);
-      Html.AssertTextNode (td, HtmlHelper.WhiteSpace, 0);
+      var td = Html.GetAssertedChildElement(tr, "td", 0);
+      Html.AssertTextNode(td, HtmlHelper.WhiteSpace, 0);
 
-      var validationErrors = Html.GetAssertedChildElement (outerSpan, "fake", 1);
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyList_ValidationErrors");
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, "ValidationError");
+      var validationErrors = Html.GetAssertedChildElement(outerSpan, "fake", 1);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyList_ValidationErrors");
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, "ValidationError");
     }
 
     private void RenderAndAssertTable (out XmlNode tbody)
@@ -103,83 +103,83 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       RenderList();
 
       var document = Html.GetResultDocument();
-      var outerSpan = Html.GetAssertedChildElement (document, "span", 0);
+      var outerSpan = Html.GetAssertedChildElement(document, "span", 0);
 
-      var tableContainer = Html.GetAssertedChildElement (outerSpan, "div", 0);
-      Html.AssertAttribute (tableContainer, "class", _bocListCssClassDefinition.TableContainer);
-      Html.AssertAttribute (tableContainer, "role", "table");
-      Html.AssertAttribute (tableContainer, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
-      Html.AssertAttribute (tableContainer, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
-      Html.AssertAttribute (tableContainer, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyList_ValidationErrors");
-      Html.AssertAttribute (tableContainer, StubValidationErrorRenderer.ValidationErrorsAttribute, "ValidationError");
+      var tableContainer = Html.GetAssertedChildElement(outerSpan, "div", 0);
+      Html.AssertAttribute(tableContainer, "class", _bocListCssClassDefinition.TableContainer);
+      Html.AssertAttribute(tableContainer, "role", "table");
+      Html.AssertAttribute(tableContainer, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
+      Html.AssertAttribute(tableContainer, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute(tableContainer, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyList_ValidationErrors");
+      Html.AssertAttribute(tableContainer, StubValidationErrorRenderer.ValidationErrorsAttribute, "ValidationError");
 
-      var tableScrollContainer = Html.GetAssertedChildElement (tableContainer, "div", 0);
-      Html.AssertAttribute (tableScrollContainer, "class", _bocListCssClassDefinition.TableScrollContainer);
-      Html.AssertAttribute (tableScrollContainer, "role", "none");
+      var tableScrollContainer = Html.GetAssertedChildElement(tableContainer, "div", 0);
+      Html.AssertAttribute(tableScrollContainer, "class", _bocListCssClassDefinition.TableScrollContainer);
+      Html.AssertAttribute(tableScrollContainer, "role", "none");
 
-      var table = Html.GetAssertedChildElement (tableScrollContainer, "table", 0);
-      Html.AssertAttribute (table, "class", _bocListCssClassDefinition.Table);
-      Html.AssertAttribute (table, "role", "none");
+      var table = Html.GetAssertedChildElement(tableScrollContainer, "table", 0);
+      Html.AssertAttribute(table, "class", _bocListCssClassDefinition.Table);
+      Html.AssertAttribute(table, "role", "none");
 
-      var colgroup = Html.GetAssertedChildElement (table, "colgroup", 0);
+      var colgroup = Html.GetAssertedChildElement(table, "colgroup", 0);
 
-      Html.GetAssertedChildElement (colgroup, "col", 0);
-      Html.GetAssertedChildElement (colgroup, "col", 1);
-      Html.GetAssertedChildElement (colgroup, "col", 2);
+      Html.GetAssertedChildElement(colgroup, "col", 0);
+      Html.GetAssertedChildElement(colgroup, "col", 1);
+      Html.GetAssertedChildElement(colgroup, "col", 2);
 
-      var thead = Html.GetAssertedChildElement (table, "thead", 1);
-      Html.AssertAttribute (thead, "role", "rowgroup");
+      var thead = Html.GetAssertedChildElement(table, "thead", 1);
+      Html.AssertAttribute(thead, "role", "rowgroup");
 
-      var trTitle = Html.GetAssertedChildElement (thead, "tr", 0);
-      Html.AssertAttribute (trTitle, "class", "titleStub");
+      var trTitle = Html.GetAssertedChildElement(thead, "tr", 0);
+      Html.AssertAttribute(trTitle, "class", "titleStub");
 
-      tbody = Html.GetAssertedChildElement (table, "tbody", 2);
-      Html.AssertAttribute (tbody, "role", "rowgroup");
+      tbody = Html.GetAssertedChildElement(table, "tbody", 2);
+      Html.AssertAttribute(tbody, "role", "rowgroup");
 
-      var validationErrors = Html.GetAssertedChildElement (outerSpan, "fake", 1);
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyList_ValidationErrors");
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, "ValidationError");
+      var validationErrors = Html.GetAssertedChildElement(outerSpan, "fake", 1);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyList_ValidationErrors");
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, "ValidationError");
     }
 
     private void RenderList ()
     {
-      Html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      IBocListTableBlockRenderer renderer = new BocListTableBlockRenderer (
+      Html.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      IBocListTableBlockRenderer renderer = new BocListTableBlockRenderer(
           _bocListCssClassDefinition,
           new StubRowRenderer(),
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
-      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, _stubColumnRenderers));
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      renderer.Render(new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, _stubColumnRenderers));
       Html.Writer.RenderEndTag();
     }
 
     private void CommonInitialize ()
     {
-      List.Setup (list => list.IsSelectionEnabled).Returns (true);
+      List.Setup(list => list.IsSelectionEnabled).Returns(true);
       var stubColumnDefinition1 = new StubColumnDefinition();
       var stubColumnDefinition2 = new StubColumnDefinition();
       var stubColumnDefinition3 = new StubColumnDefinition();
-      List.Setup (mock => mock.IsPagingEnabled).Returns (true);
-      List.Setup (mock => mock.PageSize).Returns (5);
+      List.Setup(mock => mock.IsPagingEnabled).Returns(true);
+      List.Setup(mock => mock.PageSize).Returns(5);
 
       _stubColumnRenderers = new[]
                              {
-                                 new BocColumnRenderer (new StubColumnRenderer (new FakeResourceUrlFactory ()),
+                                 new BocColumnRenderer(new StubColumnRenderer(new FakeResourceUrlFactory()),
                                      stubColumnDefinition1,
                                      0,
                                      0,
                                      false,
                                      SortingDirection.Ascending,
                                      0),
-                                 new BocColumnRenderer (new StubColumnRenderer (new FakeResourceUrlFactory ()),
+                                 new BocColumnRenderer(new StubColumnRenderer(new FakeResourceUrlFactory()),
                                      stubColumnDefinition2,
                                      1,
                                      1,
                                      false,
                                      SortingDirection.Ascending,
                                      1),
-                                 new BocColumnRenderer (new StubColumnRenderer (new FakeResourceUrlFactory ()),
+                                 new BocColumnRenderer(new StubColumnRenderer(new FakeResourceUrlFactory()),
                                      stubColumnDefinition2,
                                      2,
                                      2,
@@ -191,16 +191,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     private void InitializePopulatedList ()
     {
-      Initialize (true);
+      Initialize(true);
 
       IBusinessObject firstObject = (IBusinessObject) ((TypeWithReference) BusinessObject).FirstValue;
       IBusinessObject secondObject = (IBusinessObject) ((TypeWithReference) BusinessObject).SecondValue;
       BocListRowRenderingContext[] rows = new[]
                           {
-                            new BocListRowRenderingContext(new BocListRow (0, firstObject), 0, false),
-                            new BocListRowRenderingContext(new BocListRow (1, secondObject), 1, false)
+                            new BocListRowRenderingContext(new BocListRow(0, firstObject), 0, false),
+                            new BocListRowRenderingContext(new BocListRow(1, secondObject), 1, false)
                           };
-      List.Setup (list => list.GetRowsToRender ()).Returns (rows);
+      List.Setup(list => list.GetRowsToRender()).Returns(rows);
     }
   }
 }

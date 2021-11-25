@@ -37,44 +37,44 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [SetUp]
     public void SetUp ()
     {
-      _mcObject = MixinContextObjectMother.Create (mixinType: typeof (object));
-      _mcString = MixinContextObjectMother.Create (mixinType: typeof (string));
-      _mcList = MixinContextObjectMother.Create (mixinType: typeof (List<int>));
-      _mcGeneric = MixinContextObjectMother.Create (mixinType: typeof (DerivedGenericMixin<object>));
-      _mcDerived = MixinContextObjectMother.Create (mixinType: typeof (DerivedNullMixin));
-      _collection = new MixinContextCollection (new[] { _mcObject, _mcString, _mcList, _mcDerived });
-      _genericCollection = new MixinContextCollection (new[] { _mcGeneric });
+      _mcObject = MixinContextObjectMother.Create(mixinType: typeof (object));
+      _mcString = MixinContextObjectMother.Create(mixinType: typeof (string));
+      _mcList = MixinContextObjectMother.Create(mixinType: typeof (List<int>));
+      _mcGeneric = MixinContextObjectMother.Create(mixinType: typeof (DerivedGenericMixin<object>));
+      _mcDerived = MixinContextObjectMother.Create(mixinType: typeof (DerivedNullMixin));
+      _collection = new MixinContextCollection(new[] { _mcObject, _mcString, _mcList, _mcDerived });
+      _genericCollection = new MixinContextCollection(new[] { _mcGeneric });
     }
 
     [Test]
     public void ContainsAssignableMixin ()
     {
-      Assert.That (_collection.ContainsAssignableMixin (typeof (object)), Is.True);
-      Assert.That (_collection.ContainsAssignableMixin (typeof (string)), Is.True);
-      Assert.That (_collection.ContainsAssignableMixin (typeof (ICollection<int>)), Is.True);
-      Assert.That (_collection.ContainsAssignableMixin (typeof (ICollection<string>)), Is.False);
-      Assert.That (_collection.ContainsAssignableMixin (typeof (double)), Is.False);
-      Assert.That (_collection.ContainsAssignableMixin (typeof (MixinContextCollectionTest)), Is.False);
+      Assert.That(_collection.ContainsAssignableMixin(typeof (object)), Is.True);
+      Assert.That(_collection.ContainsAssignableMixin(typeof (string)), Is.True);
+      Assert.That(_collection.ContainsAssignableMixin(typeof (ICollection<int>)), Is.True);
+      Assert.That(_collection.ContainsAssignableMixin(typeof (ICollection<string>)), Is.False);
+      Assert.That(_collection.ContainsAssignableMixin(typeof (double)), Is.False);
+      Assert.That(_collection.ContainsAssignableMixin(typeof (MixinContextCollectionTest)), Is.False);
     }
 
     [Test]
     public void ContainsOverrideForMixin ()
     {
-      Assert.That (_collection.ContainsOverrideForMixin (typeof (NullMixin)), Is.True);
-      Assert.That (_collection.ContainsOverrideForMixin (typeof (DerivedDerivedNullMixin)), Is.False);
-      Assert.That (_collection.ContainsOverrideForMixin (typeof (object)), Is.True);
-      Assert.That (_collection.ContainsOverrideForMixin (typeof (int)), Is.False);
+      Assert.That(_collection.ContainsOverrideForMixin(typeof (NullMixin)), Is.True);
+      Assert.That(_collection.ContainsOverrideForMixin(typeof (DerivedDerivedNullMixin)), Is.False);
+      Assert.That(_collection.ContainsOverrideForMixin(typeof (object)), Is.True);
+      Assert.That(_collection.ContainsOverrideForMixin(typeof (int)), Is.False);
     }
 
     [Test]
     public void ContainsOverrideForMixin_DerivedAndSpecialized ()
     {
-      Assert.That (_genericCollection.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<>)), Is.True);
-      Assert.That (_genericCollection.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<object>)), Is.True);
-      Assert.That (_genericCollection.ContainsOverrideForMixin (typeof (GenericMixinWithVirtualMethod<string>)), Is.True);
-      Assert.That (_genericCollection.ContainsOverrideForMixin (typeof (DerivedGenericMixin<>)), Is.True);
-      Assert.That (_genericCollection.ContainsOverrideForMixin (typeof (DerivedGenericMixin<object>)), Is.True);
-      Assert.That (_genericCollection.ContainsOverrideForMixin (typeof (DerivedGenericMixin<string>)), Is.True);
+      Assert.That(_genericCollection.ContainsOverrideForMixin(typeof (GenericMixinWithVirtualMethod<>)), Is.True);
+      Assert.That(_genericCollection.ContainsOverrideForMixin(typeof (GenericMixinWithVirtualMethod<object>)), Is.True);
+      Assert.That(_genericCollection.ContainsOverrideForMixin(typeof (GenericMixinWithVirtualMethod<string>)), Is.True);
+      Assert.That(_genericCollection.ContainsOverrideForMixin(typeof (DerivedGenericMixin<>)), Is.True);
+      Assert.That(_genericCollection.ContainsOverrideForMixin(typeof (DerivedGenericMixin<object>)), Is.True);
+      Assert.That(_genericCollection.ContainsOverrideForMixin(typeof (DerivedGenericMixin<string>)), Is.True);
     }
   }
 }

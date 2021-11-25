@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         int columnIndex,
         bool includeHeader)
     {
-      ArgumentUtility.CheckNotNull ("fluentList", fluentList);
+      ArgumentUtility.CheckNotNull("fluentList", fluentList);
 
       _fluentList = fluentList;
       _columnIndex = columnIndex;
@@ -63,34 +63,34 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
 
     public ScreenshotBocListFluentColumnCellSelector<TList, TRow, TCell> GetCellSelector ()
     {
-      return new ScreenshotBocListFluentColumnCellSelector<TList, TRow, TCell> (_fluentList, _columnIndex);
+      return new ScreenshotBocListFluentColumnCellSelector<TList, TRow, TCell>(_fluentList, _columnIndex);
     }
 
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveBrowserCoordinates ()
     {
-      return ResolveInformation (CoordinateSystem.Browser, Point.Empty);
+      return ResolveInformation(CoordinateSystem.Browser, Point.Empty);
     }
 
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("locator", locator);
 
-      var window = locator.GetBrowserContentBounds (((IWrapsDriver) _fluentList.Target.List.Scope.Native).WrappedDriver);
-      return ResolveInformation (CoordinateSystem.Desktop, window.Location);
+      var window = locator.GetBrowserContentBounds(((IWrapsDriver) _fluentList.Target.List.Scope.Native).WrappedDriver);
+      return ResolveInformation(CoordinateSystem.Desktop, window.Location);
     }
 
     private ResolvedScreenshotElement ResolveInformation (CoordinateSystem coordinateSystem, Point offset)
     {
       var container = _fluentList.GetTableContainer();
 
-      var firstElement = ((IFluentScreenshotElement) container.GetRow (1).GetCell (_columnIndex)).ResolveBrowserCoordinates();
+      var firstElement = ((IFluentScreenshotElement) container.GetRow(1).GetCell(_columnIndex)).ResolveBrowserCoordinates();
       ResolvedScreenshotElement from;
       Rectangle? parent;
       if (_includeHeader)
       {
-        from = ((IFluentScreenshotElement) container.GetHeaderRow().GetCell (_columnIndex)).ResolveBrowserCoordinates();
+        from = ((IFluentScreenshotElement) container.GetHeaderRow().GetCell(_columnIndex)).ResolveBrowserCoordinates();
         parent = ((IFluentScreenshotElement) container).ResolveBrowserCoordinates().ElementBounds;
       }
       else
@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         parent = from.ParentBounds;
       }
 
-      var to = ((IFluentScreenshotElement) container.GetRow (container.GetRowCount()).GetCell (_columnIndex)).ResolveBrowserCoordinates();
+      var to = ((IFluentScreenshotElement) container.GetRow(container.GetRowCount()).GetCell(_columnIndex)).ResolveBrowserCoordinates();
 
       ElementVisibility visibility;
       if (firstElement.ElementVisibility == ElementVisibility.FullyVisible && from.ElementVisibility == ElementVisibility.FullyVisible)
@@ -107,22 +107,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       else
         visibility = ElementVisibility.PartiallyVisible;
 
-      var columnBounds = new Rectangle (
+      var columnBounds = new Rectangle(
           to.ElementBounds.X,
           from.ElementBounds.Y,
           to.ElementBounds.Width,
           to.ElementBounds.Y - from.ElementBounds.Y + to.ElementBounds.Height);
       var unresolvedBounds = columnBounds;
 
-      columnBounds.Offset (offset);
+      columnBounds.Offset(offset);
       if (parent.HasValue)
       {
         var parentBounds = parent.Value;
-        parentBounds.Offset (offset);
+        parentBounds.Offset(offset);
         parent = parentBounds;
       }
 
-      return new ResolvedScreenshotElement (coordinateSystem, columnBounds, visibility, parent, unresolvedBounds);
+      return new ResolvedScreenshotElement(coordinateSystem, columnBounds, visibility, parent, unresolvedBounds);
     }
   }
 }

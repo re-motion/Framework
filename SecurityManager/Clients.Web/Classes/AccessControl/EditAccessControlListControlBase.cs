@@ -41,15 +41,15 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     public event EventHandler Delete
     {
-      add { Events.AddHandler (s_deleteEvent, value); }
-      remove { Events.RemoveHandler (s_deleteEvent, value); }
+      add { Events.AddHandler(s_deleteEvent, value); }
+      remove { Events.RemoveHandler(s_deleteEvent, value); }
     }
 
     protected void DeleteAccessControlListButton_Click (object sender, EventArgs e)
     {
       EventHandler handler = (EventHandler) Events[s_deleteEvent];
       if (handler != null)
-        handler (this, e);
+        handler(this, e);
     }
 
     public abstract void ExpandAllAccessControlEntries ();
@@ -66,9 +66,9 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     public override void LoadValues (bool interim)
     {
-      base.LoadValues (interim);
+      base.LoadValues(interim);
 
-      LoadAccessControlEntries (interim);
+      LoadAccessControlEntries(interim);
     }
 
     protected TAccessControlList CurrentAccessControlList
@@ -78,10 +78,10 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     private void LoadAccessControlEntries (bool interim)
     {
-      CreateEditAccessControlEntryControls (CurrentAccessControlList.AccessControlEntries);
-      _editAccessControlEntryHeaderControl.LoadValues (interim);
+      CreateEditAccessControlEntryControls(CurrentAccessControlList.AccessControlEntries);
+      _editAccessControlEntryHeaderControl.LoadValues(interim);
       foreach (EditAccessControlEntryControl control in _editAccessControlEntryControls)
-        control.LoadValues (interim);
+        control.LoadValues(interim);
     }
 
     private void CreateEditAccessControlEntryControls (DomainObjectCollection accessControlEntries)
@@ -91,49 +91,49 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
       
       var collapsedStates = new Dictionary<ObjectID, bool>();
       foreach (var editAccessControlEntryControl in _editAccessControlEntryControls)
-        collapsedStates.Add (((AccessControlEntry) editAccessControlEntryControl.BusinessObject).ID, editAccessControlEntryControl.IsCollapsed);
+        collapsedStates.Add(((AccessControlEntry) editAccessControlEntryControl.BusinessObject).ID, editAccessControlEntryControl.IsCollapsed);
 
-      _editAccessControlEntryControls.Clear ();
+      _editAccessControlEntryControls.Clear();
 
       UpdatePanel updatePanel = new UpdatePanel();
       updatePanel.ID = "UpdatePanel";
       updatePanel.UpdateMode = UpdatePanelUpdateMode.Conditional;
-      accessControlEntryControls.Add (updatePanel);
+      accessControlEntryControls.Add(updatePanel);
 
-      HtmlGenericControl table = new HtmlGenericControl ("table");
-      table.Attributes.Add ("class", "accessControlEntriesTable");
-      updatePanel.ContentTemplateContainer.Controls.Add (table);
+      HtmlGenericControl table = new HtmlGenericControl("table");
+      table.Attributes.Add("class", "accessControlEntriesTable");
+      updatePanel.ContentTemplateContainer.Controls.Add(table);
 
-      _editAccessControlEntryHeaderControl = (EditAccessControlEntryHeaderControl) LoadControl ("EditAccessControlEntryHeaderControl.ascx");
+      _editAccessControlEntryHeaderControl = (EditAccessControlEntryHeaderControl) LoadControl("EditAccessControlEntryHeaderControl.ascx");
       _editAccessControlEntryHeaderControl.ID = "Ace_Header";
       _editAccessControlEntryHeaderControl.BusinessObject = CurrentAccessControlList.Class;
-      table.Controls.Add (_editAccessControlEntryHeaderControl);
+      table.Controls.Add(_editAccessControlEntryHeaderControl);
 
       for (int i = 0; i < accessControlEntries.Count; i++)
       {
         var accessControlEntry = (AccessControlEntry) accessControlEntries[i];
 
-        var editAccessControlEntryControl = (EditAccessControlEntryControl) LoadControl ("EditAccessControlEntryControl.ascx");
+        var editAccessControlEntryControl = (EditAccessControlEntryControl) LoadControl("EditAccessControlEntryControl.ascx");
         editAccessControlEntryControl.ID = "Ace_" + i;
         editAccessControlEntryControl.BusinessObject = accessControlEntry;
         editAccessControlEntryControl.Delete += EditAccessControlEntryControl_Delete;
         editAccessControlEntryControl.CssClass = ((i + 1 ) % 2 == 0) ? "even" : "odd";
         
-        table.Controls.Add (editAccessControlEntryControl);
+        table.Controls.Add(editAccessControlEntryControl);
 
         bool isCollapsed;
-        if (collapsedStates.TryGetValue (((AccessControlEntry) editAccessControlEntryControl.BusinessObject).ID, out isCollapsed))
+        if (collapsedStates.TryGetValue(((AccessControlEntry) editAccessControlEntryControl.BusinessObject).ID, out isCollapsed))
           editAccessControlEntryControl.IsCollapsed = isCollapsed;
         
-        _editAccessControlEntryControls.Add (editAccessControlEntryControl);
+        _editAccessControlEntryControls.Add(editAccessControlEntryControl);
       }
     }
 
     public override bool SaveValues (bool interim)
     {
-      var hasSaved = base.SaveValues (interim);
+      var hasSaved = base.SaveValues(interim);
 
-      hasSaved &= SaveAccessControlEntries (interim);
+      hasSaved &= SaveAccessControlEntries(interim);
       return hasSaved;
     }
 
@@ -141,7 +141,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
     {
       bool hasSaved = true;
       foreach (EditAccessControlEntryControl control in _editAccessControlEntryControls)
-        hasSaved &= control.SaveValues (interim);
+        hasSaved &= control.SaveValues(interim);
       return hasSaved;
     }
 
@@ -168,12 +168,12 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     private bool ValidateAccessControlEntries (params EditAccessControlEntryControl[] excludedControls)
     {
-      List<EditAccessControlEntryControl> excludedControlList = new List<EditAccessControlEntryControl> (excludedControls);
+      List<EditAccessControlEntryControl> excludedControlList = new List<EditAccessControlEntryControl>(excludedControls);
 
       bool isValid = true;
       foreach (EditAccessControlEntryControl control in _editAccessControlEntryControls)
       {
-        if (!excludedControlList.Contains (control))
+        if (!excludedControlList.Contains(control))
           isValid &= control.Validate();
       }
 
@@ -187,31 +187,31 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
       if (!isValid)
         return;
 
-      SaveAccessControlEntries (false);
+      SaveAccessControlEntries(false);
       Page.IsDirty = true;
 
       AccessControlEntry accessControlEntry = CurrentAccessControlList.CreateAccessControlEntry();
 
-      LoadAccessControlEntries (false);
-      _editAccessControlEntryControls.Where (o => o.BusinessObject == accessControlEntry).Single().IsCollapsed = false;
+      LoadAccessControlEntries(false);
+      _editAccessControlEntryControls.Where(o => o.BusinessObject == accessControlEntry).Single().IsCollapsed = false;
     }
 
     private void EditAccessControlEntryControl_Delete (object sender, EventArgs e)
     {
       EditAccessControlEntryControl editAccessControlEntryControl = (EditAccessControlEntryControl) sender;
       Page.PrepareValidation();
-      bool isValid = ValidateAccessControlEntries (editAccessControlEntryControl);
+      bool isValid = ValidateAccessControlEntries(editAccessControlEntryControl);
       if (!isValid)
         return;
 
-      _editAccessControlEntryControls.Remove (editAccessControlEntryControl);
+      _editAccessControlEntryControls.Remove(editAccessControlEntryControl);
       AccessControlEntry accessControlEntry = (AccessControlEntry) editAccessControlEntryControl.DataSource.BusinessObject;
       accessControlEntry.Delete();
 
-      SaveAccessControlEntries (false);
+      SaveAccessControlEntries(false);
       Page.IsDirty = true;
 
-      LoadAccessControlEntries (false);
+      LoadAccessControlEntries(false);
     }
   }
 }

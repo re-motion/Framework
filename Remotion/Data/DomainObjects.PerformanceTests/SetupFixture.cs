@@ -27,12 +27,12 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     {
       try
       {
-        StandardConfiguration.Initialize ();
+        StandardConfiguration.Initialize();
       }
       catch (Exception ex)
       {
-        Console.WriteLine ("SetUpFixture failed: " + ex);
-        Console.WriteLine ();
+        Console.WriteLine("SetUpFixture failed: " + ex);
+        Console.WriteLine();
         throw;
       }
     }

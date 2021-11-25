@@ -34,12 +34,12 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
       _transactionInStep1 = ClientTransactionScope.CurrentTransaction;
     }
 
-    private NestedPageStepTestTransactedFunction Step2 = new NestedPageStepTestTransactedFunction ();
+    private NestedPageStepTestTransactedFunction Step2 = new NestedPageStepTestTransactedFunction();
 
     private void Step3 ()
     {
       if (_transactionInStep1 != ClientTransactionScope.CurrentTransaction)
-        throw new TestFailureException ("Transaction in parent function was not restored.");
+        throw new TestFailureException("Transaction in parent function was not restored.");
     }
   }
 }

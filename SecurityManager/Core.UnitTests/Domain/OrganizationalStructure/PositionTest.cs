@@ -38,53 +38,53 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindAll ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.CreateRootTransaction());
-      using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.CreateRootTransaction());
+      using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
         var positions = Position.FindAll();
 
-        Assert.That (positions.Count(), Is.EqualTo (3));
+        Assert.That(positions.Count(), Is.EqualTo(3));
       }
     }
 
     [Test]
     public void DeletePosition_WithAccessControlEntry ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      using (testHelper.Transaction.EnterNonDiscardingScope ())
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      AccessControlTestHelper testHelper = new AccessControlTestHelper();
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Tenant tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.Current);
-        User user = User.FindByTenant (tenant.GetHandle()).First();
+        Tenant tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.Current);
+        User user = User.FindByTenant(tenant.GetHandle()).First();
         Role role = user.Roles[0];
         Position position = role.Position;
-        AccessControlEntry ace = testHelper.CreateAceWithPosition (position);
+        AccessControlEntry ace = testHelper.CreateAceWithPosition(position);
         ClientTransaction.Current.Commit();
 
         position.Delete();
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (ace.State.IsInvalid, Is.True);
+        Assert.That(ace.State.IsInvalid, Is.True);
       }
     }
 
     [Test]
     public void DeletePosition_WithRole ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
-        Tenant tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.Current);
-        User user = User.FindByTenant (tenant.GetHandle()).First();
+        Tenant tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.Current);
+        User user = User.FindByTenant(tenant.GetHandle()).First();
         Role role = user.Roles[0];
         Position position = role.Position;
-        position.Delete ();
+        position.Delete();
 
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
 
-        Assert.That (role.State.IsInvalid, Is.True);
+        Assert.That(role.State.IsInvalid, Is.True);
       }
     }
 
@@ -94,13 +94,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        GroupType groupType = testHelper.CreateGroupType ("GroupType");
-        Position position = testHelper.CreatePosition ("Position");
-        GroupTypePosition concretePosition = testHelper.CreateGroupTypePosition (groupType, position);
+        GroupType groupType = testHelper.CreateGroupType("GroupType");
+        Position position = testHelper.CreatePosition("Position");
+        GroupTypePosition concretePosition = testHelper.CreateGroupTypePosition(groupType, position);
 
         position.Delete();
 
-        Assert.That (concretePosition.State.IsInvalid, Is.True);
+        Assert.That(concretePosition.State.IsInvalid, Is.True);
       }
     }
 
@@ -110,9 +110,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Position position = testHelper.CreatePosition ("PositionName");
+        Position position = testHelper.CreatePosition("PositionName");
 
-        Assert.That (position.DisplayName, Is.EqualTo ("PositionName"));
+        Assert.That(position.DisplayName, Is.EqualTo("PositionName"));
       }
     }
 
@@ -122,13 +122,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        ISecurableObject position = testHelper.CreatePosition ("PositionName");
+        ISecurableObject position = testHelper.CreatePosition("PositionName");
 
         IObjectSecurityStrategy objectSecurityStrategy = position.GetSecurityStrategy();
-        Assert.That (objectSecurityStrategy, Is.Not.Null);
-        Assert.IsInstanceOf (typeof (DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
+        Assert.That(objectSecurityStrategy, Is.Not.Null);
+        Assert.IsInstanceOf(typeof (DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
         DomainObjectSecurityStrategyDecorator domainObjectSecurityStrategyDecorator = (DomainObjectSecurityStrategyDecorator) objectSecurityStrategy;
-        Assert.That (domainObjectSecurityStrategyDecorator.RequiredSecurityForStates, Is.EqualTo (RequiredSecurityForStates.None));
+        Assert.That(domainObjectSecurityStrategyDecorator.RequiredSecurityForStates, Is.EqualTo(RequiredSecurityForStates.None));
       }
     }
 
@@ -138,9 +138,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        ISecurableObject position = testHelper.CreatePosition ("PositionName");
+        ISecurableObject position = testHelper.CreatePosition("PositionName");
 
-        Assert.That (position.GetSecurityStrategy(), Is.SameAs (position.GetSecurityStrategy()));
+        Assert.That(position.GetSecurityStrategy(), Is.SameAs(position.GetSecurityStrategy()));
       }
     }
 
@@ -150,9 +150,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        ISecurableObject position = testHelper.CreatePosition ("PositionName");
+        ISecurableObject position = testHelper.CreatePosition("PositionName");
 
-        Assert.That (position.GetSecurableType(), Is.SameAs (typeof (Position)));
+        Assert.That(position.GetSecurableType(), Is.SameAs(typeof (Position)));
       }
     }
 
@@ -162,16 +162,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Position position = testHelper.CreatePosition ("PositionName");
+        Position position = testHelper.CreatePosition("PositionName");
         IDomainObjectSecurityContextFactory factory = position;
 
-        Assert.That (factory.IsInvalid, Is.False);
-        Assert.That (factory.IsNew, Is.True);
-        Assert.That (factory.IsDeleted, Is.False);
+        Assert.That(factory.IsInvalid, Is.False);
+        Assert.That(factory.IsNew, Is.True);
+        Assert.That(factory.IsDeleted, Is.False);
 
         position.Delete();
 
-        Assert.That (factory.IsInvalid, Is.True);
+        Assert.That(factory.IsInvalid, Is.True);
       }
     }
 
@@ -181,17 +181,17 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Position position = testHelper.CreatePosition ("PositionName");
+        Position position = testHelper.CreatePosition("PositionName");
         position.Delegation = Delegation.Enabled;
 
         ISecurityContext securityContext = ((ISecurityContextFactory) position).CreateSecurityContext();
-        Assert.That (Type.GetType (securityContext.Class), Is.EqualTo (position.GetPublicDomainObjectType()));
-        Assert.That (securityContext.Owner, Is.Null);
-        Assert.That (securityContext.OwnerGroup, Is.Null);
-        Assert.That (securityContext.OwnerTenant, Is.Null);
-        Assert.That (securityContext.AbstractRoles, Is.Empty);
-        Assert.That (securityContext.GetNumberOfStates (), Is.EqualTo (1));
-        Assert.That (securityContext.GetState ("Delegation"), Is.EqualTo (EnumWrapper.Get (Delegation.Enabled)));
+        Assert.That(Type.GetType(securityContext.Class), Is.EqualTo(position.GetPublicDomainObjectType()));
+        Assert.That(securityContext.Owner, Is.Null);
+        Assert.That(securityContext.OwnerGroup, Is.Null);
+        Assert.That(securityContext.OwnerTenant, Is.Null);
+        Assert.That(securityContext.AbstractRoles, Is.Empty);
+        Assert.That(securityContext.GetNumberOfStates(), Is.EqualTo(1));
+        Assert.That(securityContext.GetState("Delegation"), Is.EqualTo(EnumWrapper.Get(Delegation.Enabled)));
       }
     }
 
@@ -201,9 +201,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Position position = testHelper.CreatePosition ("Position");
+        Position position = testHelper.CreatePosition("Position");
 
-        Assert.IsNotEmpty (position.UniqueIdentifier);
+        Assert.IsNotEmpty(position.UniqueIdentifier);
       }
     }
 
@@ -213,13 +213,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Position position1 = testHelper.CreatePosition ("Position1");
+        Position position1 = testHelper.CreatePosition("Position1");
         position1.UniqueIdentifier = "UID";
 
-        Position position2 = testHelper.CreatePosition ("Position2");
+        Position position2 = testHelper.CreatePosition("Position2");
         position2.UniqueIdentifier = "UID";
 
-        Assert.That (
+        Assert.That(
             () => ClientTransactionScope.CurrentTransaction.Commit(),
             Throws.InstanceOf<RdbmsProviderException>());
       }
@@ -230,25 +230,25 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       var extensionStub = new Mock<IClientTransactionExtension>();
       bool propertyValueChangingCalled = false;
-      extensionStub.Setup (_ => _.Key).Returns ("STUB");
-      extensionStub.Setup (_ => _.PropertyValueChanging (It.IsAny<ClientTransaction>(), It.IsAny<DomainObject>(), It.IsAny<PropertyDefinition>(), It.IsAny<object>(), It.IsAny<object>()))
-          .Callback ((ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue) =>
+      extensionStub.Setup(_ => _.Key).Returns("STUB");
+      extensionStub.Setup(_ => _.PropertyValueChanging(It.IsAny<ClientTransaction>(), It.IsAny<DomainObject>(), It.IsAny<PropertyDefinition>(), It.IsAny<object>(), It.IsAny<object>()))
+          .Callback((ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue) =>
           {
             if (propertyDefinition.PropertyInfo.Name == "UniqueIdentifier")
             {
               propertyValueChangingCalled = true;
-              Assert.That (SecurityFreeSection.IsActive, Is.True);
+              Assert.That(SecurityFreeSection.IsActive, Is.True);
             }
           });
 
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        testHelper.Transaction.Extensions.Add (extensionStub.Object);
-        Assert.That (SecurityFreeSection.IsActive, Is.False);
-        testHelper.CreatePosition ("Position1");
-        Assert.That (SecurityFreeSection.IsActive, Is.False);
-        Assert.That (propertyValueChangingCalled, Is.True);
+        testHelper.Transaction.Extensions.Add(extensionStub.Object);
+        Assert.That(SecurityFreeSection.IsActive, Is.False);
+        testHelper.CreatePosition("Position1");
+        Assert.That(SecurityFreeSection.IsActive, Is.False);
+        Assert.That(propertyValueChangingCalled, Is.True);
       }
     }
 
@@ -258,10 +258,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Position position = testHelper.CreatePosition ("Position");
+        Position position = testHelper.CreatePosition("Position");
 
         position.Delegation = Delegation.Enabled;
-        Assert.That (position.Delegable, Is.True);
+        Assert.That(position.Delegable, Is.True);
       }
     }
 
@@ -271,10 +271,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Position position = testHelper.CreatePosition ("Position");
+        Position position = testHelper.CreatePosition("Position");
 
         position.Delegation = Delegation.Disabled;
-        Assert.That (position.Delegable, Is.False);
+        Assert.That(position.Delegable, Is.False);
       }
     }
 
@@ -284,10 +284,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Position position = testHelper.CreatePosition ("Position");
+        Position position = testHelper.CreatePosition("Position");
 
         position.Delegable = true;
-        Assert.That (position.Delegation, Is.EqualTo (Delegation.Enabled));
+        Assert.That(position.Delegation, Is.EqualTo(Delegation.Enabled));
       }
     }
 
@@ -297,10 +297,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Position position = testHelper.CreatePosition ("Position");
+        Position position = testHelper.CreatePosition("Position");
 
         position.Delegable = false;
-        Assert.That (position.Delegation, Is.EqualTo (Delegation.Disabled));
+        Assert.That(position.Delegation, Is.EqualTo(Delegation.Disabled));
       }
     }
 
@@ -310,12 +310,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Position position = testHelper.CreatePosition ("Position");
+        Position position = testHelper.CreatePosition("Position");
 
         IBusinessObject businessObject = position;
-        IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition ("Delegable");
+        IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition("Delegable");
 
-        Assert.That (businessObject.GetProperty (property), Is.Null);
+        Assert.That(businessObject.GetProperty(property), Is.Null);
       }
     }
 
@@ -325,14 +325,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Position position = testHelper.CreatePosition ("Position");
+        Position position = testHelper.CreatePosition("Position");
 
         IBusinessObject businessObject = position;
-        IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition ("Delegable");
+        IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition("Delegable");
 
         var value = BooleanObjectMother.GetRandomBoolean();
         position.Delegable = value;
-        Assert.That (businessObject.GetProperty (property), Is.EqualTo (value));
+        Assert.That(businessObject.GetProperty(property), Is.EqualTo(value));
       }
     }
   }

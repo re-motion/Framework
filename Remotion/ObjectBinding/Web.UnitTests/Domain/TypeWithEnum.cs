@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Domain
   {
     public static TypeWithEnum Create ()
     {
-      return ObjectFactory.Create<TypeWithEnum> (true, ParamList.Empty);
+      return ObjectFactory.Create<TypeWithEnum>(true, ParamList.Empty);
     }
 
     private TestEnum _enumValue;

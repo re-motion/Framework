@@ -38,11 +38,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var validator = _serviceLocator.GetInstance<IDataContainerValidator>();
 
-      Assert.That (validator, Is.TypeOf (typeof (CompoundDataContainerValidator)));
+      Assert.That(validator, Is.TypeOf(typeof (CompoundDataContainerValidator)));
       var compoundValidators = ((CompoundDataContainerValidator) validator).Validators;
-      Assert.That (
-          compoundValidators.Select (v => v.GetType()),
-          Is.EqualTo (
+      Assert.That(
+          compoundValidators.Select(v => v.GetType()),
+          Is.EqualTo(
               new[]
               {
                   typeof (NotNullablePropertyValidator),
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var validator1 = _serviceLocator.GetInstance<IDataContainerValidator>();
       var validator2 = _serviceLocator.GetInstance<IDataContainerValidator>();
 
-      Assert.That (validator1, Is.SameAs (validator2));
+      Assert.That(validator1, Is.SameAs(validator2));
     } 
   }
 }

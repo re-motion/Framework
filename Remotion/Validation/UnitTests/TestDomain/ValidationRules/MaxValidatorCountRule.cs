@@ -28,7 +28,7 @@ namespace Remotion.Validation.UnitTests.TestDomain.ValidationRules
     {
       if(validationRules.Count()>3)
         yield return
-            MetaValidationRuleValidationResult.CreateInvalidResult (
+            MetaValidationRuleValidationResult.CreateInvalidResult(
                 "More than three validators per property are not allowed!");
       else
         yield return MetaValidationRuleValidationResult.CreateValidResult();

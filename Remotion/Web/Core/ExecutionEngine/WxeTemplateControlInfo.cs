@@ -43,16 +43,16 @@ namespace Remotion.Web.ExecutionEngine
     
     public WxeTemplateControlInfo (IWxeTemplateControl control)
     {
-      ArgumentUtility.CheckNotNullAndType<TemplateControl> ("control", control);
+      ArgumentUtility.CheckNotNullAndType<TemplateControl>("control", control);
       
       _control = control;
     }
 
-    [MemberNotNull (nameof (_wxeHandler))]
-    [MemberNotNull (nameof (_currentPageFunction))]
+    [MemberNotNull (nameof(_wxeHandler))]
+    [MemberNotNull (nameof(_currentPageFunction))]
     public virtual void Initialize (HttpContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       if (_control is Page)
       {
@@ -62,14 +62,14 @@ namespace Remotion.Web.ExecutionEngine
       {
         IWxePage? wxePage = _control.Page as IWxePage;
         if (wxePage == null)
-          throw new InvalidOperationException (string.Format ("'{0}' can only be added to a Page implementing the IWxePage interface.", _control.GetType ().GetFullNameSafe()));
+          throw new InvalidOperationException(string.Format("'{0}' can only be added to a Page implementing the IWxePage interface.", _control.GetType().GetFullNameSafe()));
         _wxeHandler = wxePage.WxeHandler;
       }
       if (_wxeHandler == null)
       {
-        throw new HttpException (string.Format ("No current WxeHandler found. Most likely cause of the exception: "
+        throw new HttpException(string.Format("No current WxeHandler found. Most likely cause of the exception: "
             + "The page '{0}' has been called directly instead of using a WXE Handler to invoke the associated WXE Function.",
-            _control.Page!.GetType ()));
+            _control.Page!.GetType()));
       }
 
 
@@ -77,7 +77,7 @@ namespace Remotion.Web.ExecutionEngine
       if (executingStep is WxeUserControlStep)
       {
         _currentUserControlStep = (WxeUserControlStep) executingStep;
-        _currentUserControlFunction = WxeStep.GetFunction (_currentUserControlStep);
+        _currentUserControlFunction = WxeStep.GetFunction(_currentUserControlStep);
         _currentPageStep = _currentUserControlStep.PageStep;
       }
       else
@@ -87,17 +87,17 @@ namespace Remotion.Web.ExecutionEngine
         _currentPageStep = (WxePageStep) executingStep;
       }
 
-      _currentPageFunction = WxeStep.GetFunction (_currentPageStep)!; // TODO RM-8118: not null assertion
+      _currentPageFunction = WxeStep.GetFunction(_currentPageStep)!; // TODO RM-8118: not null assertion
     }
 
     public WxeHandler WxeHandler
     {
-      get { return Assertion.IsNotNull (_wxeHandler, "_wxeHandler must be initialized before accessing it."); }
+      get { return Assertion.IsNotNull(_wxeHandler, "_wxeHandler must be initialized before accessing it."); }
     }
 
     public WxePageStep CurrentPageStep
     {
-      get { return Assertion.IsNotNull (_currentPageStep, "_currentPageStep must be initialized before accessing it."); }
+      get { return Assertion.IsNotNull(_currentPageStep, "_currentPageStep must be initialized before accessing it."); }
     }
 
     public WxeUserControlStep? CurrentUserControlStep
@@ -107,7 +107,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeFunction CurrentPageFunction
     {
-      get { return Assertion.IsNotNull (_currentPageFunction, "_currentPageFunction must be initialized before accessing it."); }
+      get { return Assertion.IsNotNull(_currentPageFunction, "_currentPageFunction must be initialized before accessing it."); }
     }
 
     public WxeFunction CurrentFunction
@@ -119,8 +119,8 @@ namespace Remotion.Web.ExecutionEngine
     {
       get
       {
-        Assertion.IsNotNull (_currentPageStep);
-        return Assertion.IsNotNull (_currentPageStep.Variables, "_currentPageStep.Variables must not be null.");
+        Assertion.IsNotNull(_currentPageStep);
+        return Assertion.IsNotNull(_currentPageStep.Variables, "_currentPageStep.Variables must not be null.");
       }
     }
 
@@ -128,9 +128,9 @@ namespace Remotion.Web.ExecutionEngine
     {
       get 
       {
-        Assertion.IsNotNull (_currentPageStep);
+        Assertion.IsNotNull(_currentPageStep);
         var variables = ((WxeStep?) _currentUserControlStep ?? _currentPageStep).Variables;
-        return Assertion.IsNotNull (variables, "Variables of _currentUserControlStep or _currentPageStep must not be null.");
+        return Assertion.IsNotNull(variables, "Variables of _currentUserControlStep or _currentPageStep must not be null.");
       }
     }
 
@@ -149,7 +149,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </param>
     protected IResourceManager GetResourceManager (Type localResourcesType)
     {
-      ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
+      ArgumentUtility.CheckNotNull("localResourcesType", localResourcesType);
 
       //  Provider has already been identified.
       if (_cachedResourceManager != null)
@@ -157,11 +157,11 @@ namespace Remotion.Web.ExecutionEngine
 
       //  Get the resource managers
 
-      var localResourceManager = GlobalizationService.GetResourceManager (localResourcesType);
+      var localResourceManager = GlobalizationService.GetResourceManager(localResourcesType);
       var namingContainer = _control.NamingContainer ?? (Control) _control;
-      var namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (namingContainer, true);
+      var namingContainerResourceManager = ResourceManagerUtility.GetResourceManager(namingContainer, true);
 
-      _cachedResourceManager = ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
+      _cachedResourceManager = ResourceManagerSet.Create(namingContainerResourceManager, localResourceManager);
 
       return _cachedResourceManager;
     }

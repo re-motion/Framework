@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public ObjectIDReader (IRdbmsStoragePropertyDefinition idProperty, IColumnOrdinalProvider columnOrdinalProvider)
     {
-      ArgumentUtility.CheckNotNull ("idProperty", idProperty);
-      ArgumentUtility.CheckNotNull ("columnOrdinalProvider", columnOrdinalProvider);
+      ArgumentUtility.CheckNotNull("idProperty", idProperty);
+      ArgumentUtility.CheckNotNull("columnOrdinalProvider", columnOrdinalProvider);
 
       _idProperty = idProperty;
       _columnOrdinalProvider = columnOrdinalProvider;
@@ -52,22 +52,22 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public ObjectID Read (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
-      if (dataReader.Read ())
-        return (ObjectID) _idProperty.CombineValue (new ColumnValueReader (dataReader, _columnOrdinalProvider));
+      if (dataReader.Read())
+        return (ObjectID) _idProperty.CombineValue(new ColumnValueReader(dataReader, _columnOrdinalProvider));
       else
         return null;
     }
 
     public IEnumerable<ObjectID> ReadSequence (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
-      var columnValueReader = new ColumnValueReader (dataReader, _columnOrdinalProvider);
+      var columnValueReader = new ColumnValueReader(dataReader, _columnOrdinalProvider);
 
-      while (dataReader.Read ())
-        yield return (ObjectID) _idProperty.CombineValue (columnValueReader);
+      while (dataReader.Read())
+        yield return (ObjectID) _idProperty.CombineValue(columnValueReader);
     }
   }
 }

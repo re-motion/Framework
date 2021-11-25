@@ -37,10 +37,10 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyConstraints
     {
       var instance = _serviceLocator.GetInstance<IBusinessObjectPropertyConstraintProvider>();
 
-      Assert.That (instance, Is.InstanceOf<CompoundBusinessObjectPropertyConstraintProvider>());
+      Assert.That(instance, Is.InstanceOf<CompoundBusinessObjectPropertyConstraintProvider>());
 
       var compound = (CompoundBusinessObjectPropertyConstraintProvider) instance;
-      Assert.That (compound.BusinessObjectConstraintProviders, Is.Empty);
+      Assert.That(compound.BusinessObjectConstraintProviders, Is.Empty);
     }
 
     [Test]
@@ -49,8 +49,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyConstraints
       var instance1 = _serviceLocator.GetInstance<IBusinessObjectPropertyConstraintProvider>();
       var instance2 = _serviceLocator.GetInstance<IBusinessObjectPropertyConstraintProvider>();
 
-      Assert.That (instance1, Is.InstanceOf<CompoundBusinessObjectPropertyConstraintProvider>());
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.InstanceOf<CompoundBusinessObjectPropertyConstraintProvider>());
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

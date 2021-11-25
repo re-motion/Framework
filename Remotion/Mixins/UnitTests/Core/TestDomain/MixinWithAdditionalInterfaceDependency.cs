@@ -24,7 +24,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     [OverrideTarget]
     public string GetString ()
     {
-      return "MixinWithAdditionalInterfaceDependency-" + Next.GetString ();
+      return "MixinWithAdditionalInterfaceDependency-" + Next.GetString();
     }
   }
 }

@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private const string c_userNameParameter = "<userName>";
 
-    private static readonly ILog s_log = LogManager.GetLogger (MethodBase.GetCurrentMethod().DeclaringType);
+    private static readonly ILog s_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
     // Note: Parsing the query takes about 1/6 of the total query time when connected to a local database instance.
     // Unfortunately, the first query also causes the initialization of various caches in re-store, 
@@ -59,57 +59,57 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     public CachedUser (IRevisionProvider<UserRevisionKey, GuidRevisionValue> revisionProvider, string userName)
         : base(revisionProvider)
     {
-      ArgumentUtility.CheckNotNull ("userName", userName);
+      ArgumentUtility.CheckNotNull("userName", userName);
 
       _userName = userName;
     }
 
     public User GetValue ()
     {
-      return GetCachedData (new UserRevisionKey (_userName)).User;
+      return GetCachedData(new UserRevisionKey(_userName)).User;
     }
 
     protected override Data LoadData (GuidRevisionValue revision)
     {
-      s_log.InfoFormat ("Reset CachedUser for user '{0}'.", _userName);
-      return new Data (revision, GetUser (_userName));
+      s_log.InfoFormat("Reset CachedUser for user '{0}'.", _userName);
+      return new Data(revision, GetUser(_userName));
     }
 
     private User GetUser (string userName)
     {
-      using (StopwatchScope.CreateScope (
+      using (StopwatchScope.CreateScope(
           s_log,
           LogLevel.Info,
           "Refreshed data in CachedUser for user '" + userName + "'. Time taken: {elapsed:ms}ms"))
       {
         var clientTransaction = ClientTransaction.CreateRootTransaction();
-        return LoadUser (clientTransaction, userName);
+        return LoadUser(clientTransaction, userName);
       }
     }
 
     private User LoadUser (ClientTransaction clientTransaction, string userName)
     {
-      using (StopwatchScope.CreateScope (
+      using (StopwatchScope.CreateScope(
           s_log,
           LogLevel.Debug,
           "Fetched data into CachedUser for user '" + userName + "'. Time taken: {elapsed:ms}ms"))
       {
-        var queryTemplate = s_queryCache.GetQuery<User> (
+        var queryTemplate = s_queryCache.GetQuery<User>(
             MethodBase.GetCurrentMethod().Name,
-            users => users.Where (u => u.UserName == c_userNameParameter).Select (u => u)
-                          .FetchMany (u => u.Roles)
-                          .FetchMany (User.SelectSubstitutions()).ThenFetchOne (s => s.SubstitutedRole));
+            users => users.Where(u => u.UserName == c_userNameParameter).Select(u => u)
+                          .FetchMany(u => u.Roles)
+                          .FetchMany(User.SelectSubstitutions()).ThenFetchOne(s => s.SubstitutedRole));
 
-        var query = queryTemplate.CreateCopyFromTemplate (new Dictionary<object, object> { { c_userNameParameter, userName } });
-        return clientTransaction.QueryManager.GetCollection<User> (query)
+        var query = queryTemplate.CreateCopyFromTemplate(new Dictionary<object, object> { { c_userNameParameter, userName } });
+        return clientTransaction.QueryManager.GetCollection<User>(query)
                                 .AsEnumerable()
-                                .Single (() => CreateAccessControlException ("The user '{0}' could not be found.", userName));
+                                .Single(() => CreateAccessControlException("The user '{0}' could not be found.", userName));
       }
     }
 
     private AccessControlException CreateAccessControlException (string message, params object[] args)
     {
-      return new AccessControlException (string.Format (message, args));
+      return new AccessControlException(string.Format(message, args));
     }
   }
 }

@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.BindableObject
   {
     protected override Type GetTypeForBindableObjectClass ()
     {
-      return MixinTypeUtility.GetUnderlyingTargetType (Target.GetType());
+      return MixinTypeUtility.GetUnderlyingTargetType(Target.GetType());
     }
   }
 }

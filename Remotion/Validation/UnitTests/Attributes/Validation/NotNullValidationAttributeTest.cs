@@ -42,33 +42,33 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     [Test]
     public void GetPropertyValidator ()
     {
-      var propertyInformation = PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("LastName"));
+      var propertyInformation = PropertyInfoAdapter.Create(typeof (Customer).GetProperty("LastName"));
       var validationMessageStub = new Mock<ValidationMessage>();
       _validationMessageFactoryStub
-          .Setup (_ => _.CreateValidationMessageForPropertyValidator (It.IsAny<NotNullValidator>(), propertyInformation))
-          .Returns (validationMessageStub.Object);
+          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<NotNullValidator>(), propertyInformation))
+          .Returns(validationMessageStub.Object);
 
-      var result = _attribute.GetPropertyValidators (propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+      var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
 
-      Assert.That (result.Length, Is.EqualTo (1));
-      Assert.That (result[0], Is.TypeOf (typeof (NotNullValidator)));
-      Assert.That (((NotNullValidator) result[0]).ValidationMessage, Is.Not.Null);
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof (NotNullValidator)));
+      Assert.That(((NotNullValidator) result[0]).ValidationMessage, Is.Not.Null);
 
-      validationMessageStub.Setup (_ => _.ToString()).Returns ("Stub Message");
-      Assert.That (((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
+      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
+      Assert.That(((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
     [Test]
     public void GetPropertyValidator_CustomMessage ()
     {
-      var propertyInformation = PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("LastName"));
+      var propertyInformation = PropertyInfoAdapter.Create(typeof (Customer).GetProperty("LastName"));
       _attribute.ErrorMessage = "CustomMessage";
 
-      var result = _attribute.GetPropertyValidators (propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+      var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
 
-      Assert.That (result.Length, Is.EqualTo (1));
-      Assert.That (((NotNullValidator) result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
-      Assert.That (((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("CustomMessage"));
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(((NotNullValidator) result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
+      Assert.That(((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("CustomMessage"));
     }
 
     [Test]

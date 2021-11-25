@@ -33,18 +33,18 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       return from PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions
-             select Validate (propertyDefinition);
+             select Validate(propertyDefinition);
     }
 
     private MappingValidationResult Validate (PropertyDefinition propertyDefinition)
     {
       var nativePropertyType = propertyDefinition.PropertyType;
-      if (!PropertyValue.IsTypeSupported (nativePropertyType))
+      if (!PropertyValue.IsTypeSupported(nativePropertyType))
       {
-        return MappingValidationResult.CreateInvalidResultForProperty (
+        return MappingValidationResult.CreateInvalidResultForProperty(
             propertyDefinition.PropertyInfo,
             "The property type '{0}' is not supported. If you meant to declare a relation, '{0}' must be derived from '{1}'. " 
             + "For non-mapped properties, use the '{2}'.",

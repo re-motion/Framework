@@ -47,18 +47,18 @@ namespace Remotion.Mixins.Definitions
 
     public bool IsIntroducible
     {
-      get { return AttributeUtility.IsAttributeInherited (AttributeType) || IsCopyTemplate; }
+      get { return AttributeUtility.IsAttributeInherited(AttributeType) || IsCopyTemplate; }
     }
 
     public bool IsSuppressAttribute
     {
-      get { return typeof (SuppressAttributesAttribute).IsAssignableFrom (AttributeType); }
+      get { return typeof (SuppressAttributesAttribute).IsAssignableFrom(AttributeType); }
     }
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
     }
 
     public string? FullName
@@ -66,7 +66,7 @@ namespace Remotion.Mixins.Definitions
       get
       {
         var declaringType = _data.Constructor.DeclaringType;
-        Assertion.IsNotNull (declaringType);
+        Assertion.IsNotNull(declaringType);
         return declaringType.FullName;
       }
     }

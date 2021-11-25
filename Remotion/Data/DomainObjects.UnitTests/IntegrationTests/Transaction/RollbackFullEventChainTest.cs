@@ -25,118 +25,118 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void FullEventChain ()
     {
-      using (MockRepository.Ordered ())
+      using (MockRepository.Ordered())
       {
-        ExpectRollingBackEvents (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock),
-            Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock));
+        ExpectRollingBackEvents(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(NewObject, NewObjectEventReceiverMock),
+            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock));
 
-        ExpectRolledBackEvents (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock));
+        ExpectRolledBackEvents(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock));
       }
-      MockRepository.ReplayAll ();
+      MockRepository.ReplayAll();
 
-      Assert.That (ClientTransaction.Current, Is.Not.SameAs (Transaction));
+      Assert.That(ClientTransaction.Current, Is.Not.SameAs(Transaction));
 
-      Transaction.Rollback ();
+      Transaction.Rollback();
 
-      Assert.That (ClientTransaction.Current, Is.Not.SameAs (Transaction));
-      MockRepository.VerifyAll ();
+      Assert.That(ClientTransaction.Current, Is.Not.SameAs(Transaction));
+      MockRepository.VerifyAll();
     }
 
     [Test]
     public void FullEventChain_WithReiterationDueToAddedObject_InExtension ()
     {
-      using (MockRepository.Ordered ())
+      using (MockRepository.Ordered())
       {
-        ExpectRollingBackEventsWithCustomOptions (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock),
-            Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock))
+        ExpectRollingBackEventsWithCustomOptions(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(NewObject, NewObjectEventReceiverMock),
+            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock))
             .ExtensionOptions
           // This triggers one additional run
-            .WhenCalled (mi => Transaction.ExecuteInScope (() => UnchangedObject.RegisterForCommit()));
+            .WhenCalled(mi => Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit()));
 
-        ExpectRollingBackEventsWithCustomOptions (
-            Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock))
+        ExpectRollingBackEventsWithCustomOptions(
+            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock))
             .ExtensionOptions
           // This does not trigger an additional run because the object is no longer new to the Rollback set
-            .WhenCalled (mi => Transaction.ExecuteInScope (() => UnchangedObject.RegisterForCommit()));
+            .WhenCalled(mi => Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit()));
 
-        ExpectRolledBackEvents (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock),
-            Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock));
+        ExpectRolledBackEvents(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock),
+            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock));
       }
-      MockRepository.ReplayAll ();
+      MockRepository.ReplayAll();
 
-      Transaction.Rollback ();
+      Transaction.Rollback();
 
-      MockRepository.VerifyAll ();
+      MockRepository.VerifyAll();
     }
 
     [Test]
     public void FullEventChain_WithReiterationDueToAddedObject_InTransaction ()
     {
-      using (MockRepository.Ordered ())
+      using (MockRepository.Ordered())
       {
-        ExpectRollingBackEventsWithCustomOptions (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock),
-            Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock))
+        ExpectRollingBackEventsWithCustomOptions(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(NewObject, NewObjectEventReceiverMock),
+            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock))
             .TransactionOptions
           // This triggers one additional run
-            .WhenCalled (mi => RegisterForCommitWithDisabledListener (UnchangedObject));
+            .WhenCalled(mi => RegisterForCommitWithDisabledListener(UnchangedObject));
 
-        ExpectRollingBackEventsWithCustomOptions (
-            Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock))
+        ExpectRollingBackEventsWithCustomOptions(
+            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock))
             .TransactionOptions
           // This does not trigger an additional run because the object is no longer new to the Rollback set
-            .WhenCalled (mi => RegisterForCommitWithDisabledListener (UnchangedObject));
+            .WhenCalled(mi => RegisterForCommitWithDisabledListener(UnchangedObject));
 
-        ExpectRolledBackEvents (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock),
-            Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock));
+        ExpectRolledBackEvents(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock),
+            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock));
       }
-      MockRepository.ReplayAll ();
+      MockRepository.ReplayAll();
 
-      Transaction.Rollback ();
+      Transaction.Rollback();
 
-      MockRepository.VerifyAll ();
+      MockRepository.VerifyAll();
     }
 
      [Test]
     public void FullEventChain_WithReiterationDueToAddedObject_InDomainObject ()
     {
-      using (MockRepository.Ordered ())
+      using (MockRepository.Ordered())
       {
-        ExpectRollingBackEventsWithCustomOptions (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock),
-            Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock))
+        ExpectRollingBackEventsWithCustomOptions(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(NewObject, NewObjectEventReceiverMock),
+            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock))
             .DomainObjectOptions[1]
           // This triggers one additional run
-            .WhenCalled (mi => Transaction.ExecuteInScope (() => UnchangedObject.RegisterForCommit()));
+            .WhenCalled(mi => Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit()));
 
-        ExpectRollingBackEventsWithCustomOptions (
-            Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock))
+        ExpectRollingBackEventsWithCustomOptions(
+            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock))
             .DomainObjectOptions[0]
           // This does not trigger an additional run because the object is no longer new to the Rollback set
-            .WhenCalled (mi => Transaction.ExecuteInScope (() => UnchangedObject.RegisterForCommit()));
+            .WhenCalled(mi => Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit()));
 
-        ExpectRolledBackEvents (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock),
-            Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock));
+        ExpectRolledBackEvents(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock),
+            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock));
       }
-      MockRepository.ReplayAll ();
+      MockRepository.ReplayAll();
 
-      Transaction.Rollback ();
+      Transaction.Rollback();
 
-      MockRepository.VerifyAll ();
+      MockRepository.VerifyAll();
     }
   }
 }

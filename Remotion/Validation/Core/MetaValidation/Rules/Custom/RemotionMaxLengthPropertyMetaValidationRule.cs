@@ -31,7 +31,7 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
 
     public RemotionMaxLengthPropertyMetaValidationRule (PropertyInfo propertyInfo, int maxLength)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
       _maxLength = maxLength;
       _propertyInfo = propertyInfo;
@@ -49,16 +49,16 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
       if (!rules.Any())
       {
         yield return
-            MetaValidationRuleValidationResult.CreateInvalidResult (
+            MetaValidationRuleValidationResult.CreateInvalidResult(
                 "'{0}' failed for property '{1}.{2}': No max-length validation rules defined.",
                 GetType().Name,
                 _propertyInfo.ReflectedType!.GetFullNameSafe(),
                 _propertyInfo.Name);
       }
-      else if (rules.Where (r => r.Max > _maxLength).Any())
+      else if (rules.Where(r => r.Max > _maxLength).Any())
       {
         yield return
-            MetaValidationRuleValidationResult.CreateInvalidResult (
+            MetaValidationRuleValidationResult.CreateInvalidResult(
                 "'{0}' failed for property '{1}.{2}': Max-length validation rule value '{3}' exceeds meta validation rule max-length value of '{4}'.",
                 GetType().Name,
                 _propertyInfo.ReflectedType!.GetFullNameSafe(),

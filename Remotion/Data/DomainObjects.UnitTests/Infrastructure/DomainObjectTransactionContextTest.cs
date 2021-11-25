@@ -40,80 +40,80 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _loadedOrder1 = DomainObjectIDs.Order1.GetObject<Order> ();
-      _notYetLoadedOrder2 = (Order) LifetimeService.GetObjectReference (TestableClientTransaction, DomainObjectIDs.Order3);
+      _loadedOrder1 = DomainObjectIDs.Order1.GetObject<Order>();
+      _notYetLoadedOrder2 = (Order) LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.Order3);
       _newOrder = Order.NewObject();
 
-      _loadedOrder1Context = new DomainObjectTransactionContext (_loadedOrder1, TestableClientTransaction);
-      _notYetLoadedOrder2Context = new DomainObjectTransactionContext (_notYetLoadedOrder2, TestableClientTransaction);
-      _newOrderContext = new DomainObjectTransactionContext (_newOrder, TestableClientTransaction);
+      _loadedOrder1Context = new DomainObjectTransactionContext(_loadedOrder1, TestableClientTransaction);
+      _notYetLoadedOrder2Context = new DomainObjectTransactionContext(_notYetLoadedOrder2, TestableClientTransaction);
+      _newOrderContext = new DomainObjectTransactionContext(_newOrder, TestableClientTransaction);
 
-      var objectBeingInitialized = Order.NewObject ();
-      PrivateInvoke.SetNonPublicField (objectBeingInitialized, "_isReferenceInitializeEventExecuting", true);
-      _referenceInitializationContext = new DomainObjectTransactionContext (objectBeingInitialized, TestableClientTransaction);
+      var objectBeingInitialized = Order.NewObject();
+      PrivateInvoke.SetNonPublicField(objectBeingInitialized, "_isReferenceInitializeEventExecuting", true);
+      _referenceInitializationContext = new DomainObjectTransactionContext(objectBeingInitialized, TestableClientTransaction);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_loadedOrder1Context.DomainObject, Is.SameAs (_loadedOrder1));
-      Assert.That (_loadedOrder1Context.ClientTransaction, Is.SameAs (TestableClientTransaction));
+      Assert.That(_loadedOrder1Context.DomainObject, Is.SameAs(_loadedOrder1));
+      Assert.That(_loadedOrder1Context.ClientTransaction, Is.SameAs(TestableClientTransaction));
     }
 
     [Test]
     public void Initialization_InvalidTransaction ()
     {
-      Assert.That (
-          () => new DomainObjectTransactionContext (_newOrder, ClientTransaction.CreateRootTransaction()),
+      Assert.That(
+          () => new DomainObjectTransactionContext(_newOrder, ClientTransaction.CreateRootTransaction()),
           Throws.TypeOf<ClientTransactionsDifferException>());
     }
 
     [Test]
     public void State_IsInvalid_False ()
     {
-      Assert.That (_newOrderContext.State.IsInvalid, Is.False);
+      Assert.That(_newOrderContext.State.IsInvalid, Is.False);
     }
 
     [Test]
     public void State_IsInvalid_False_InvalidInCurrentTransaction ()
     {
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (_loadedOrder1.State.IsInvalid, Is.False);
-        Assert.That (_loadedOrder1Context.State.IsInvalid, Is.False);
+        Assert.That(_loadedOrder1.State.IsInvalid, Is.False);
+        Assert.That(_loadedOrder1Context.State.IsInvalid, Is.False);
 
         DeleteOrder(_loadedOrder1);
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
 
-        Assert.That (_loadedOrder1.State.IsInvalid, Is.True);
-        Assert.That (_loadedOrder1Context.State.IsInvalid, Is.False);
+        Assert.That(_loadedOrder1.State.IsInvalid, Is.True);
+        Assert.That(_loadedOrder1Context.State.IsInvalid, Is.False);
       }
     }
 
     [Test]
     public void State_IsInvalid_True ()
     {
-      _newOrder.Delete ();
-      Assert.That (_newOrderContext.State.IsInvalid, Is.True);
+      _newOrder.Delete();
+      Assert.That(_newOrderContext.State.IsInvalid, Is.True);
     }
 
     [Test]
     public void State_NotYetLoaded ()
     {
-      Assert.That (_notYetLoadedOrder2Context.State.IsNotLoadedYet, Is.True);
+      Assert.That(_notYetLoadedOrder2Context.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
     public void State_FromDataContainer ()
     {
-      Assert.That (_newOrderContext.State.IsNew, Is.True);
-      Assert.That (_loadedOrder1Context.State.IsUnchanged, Is.True);
+      Assert.That(_newOrderContext.State.IsNew, Is.True);
+      Assert.That(_loadedOrder1Context.State.IsUnchanged, Is.True);
 
       _loadedOrder1.OrderNumber = 2;
 
-      Assert.That (_loadedOrder1Context.State.IsChanged, Is.True);
+      Assert.That(_loadedOrder1Context.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -121,16 +121,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       _loadedOrder1.OrderItems.Clear();
 
-      Assert.That (_loadedOrder1Context.State.IsChanged, Is.True);
+      Assert.That(_loadedOrder1Context.State.IsChanged, Is.True);
     }
 
     [Test]
     public void RegisterForCommit_Unchanged ()
     {
-      Assert.That (_loadedOrder1Context.State.IsUnchanged, Is.True);
-      _loadedOrder1Context.RegisterForCommit ();
-      Assert.That (_loadedOrder1Context.State.IsChanged, Is.True);
-      Assert.That (GetDataContainer (_loadedOrder1Context).HasBeenMarkedChanged, Is.True);
+      Assert.That(_loadedOrder1Context.State.IsUnchanged, Is.True);
+      _loadedOrder1Context.RegisterForCommit();
+      Assert.That(_loadedOrder1Context.State.IsChanged, Is.True);
+      Assert.That(GetDataContainer(_loadedOrder1Context).HasBeenMarkedChanged, Is.True);
     }
 
     [Test]
@@ -138,83 +138,83 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       _loadedOrder1.OrderNumber = 2;
 
-      Assert.That (_loadedOrder1Context.State.IsChanged, Is.True);
-      _loadedOrder1Context.RegisterForCommit ();
-      Assert.That (_loadedOrder1Context.State.IsChanged, Is.True);
-      Assert.That (GetDataContainer (_loadedOrder1Context).HasBeenMarkedChanged, Is.True);
+      Assert.That(_loadedOrder1Context.State.IsChanged, Is.True);
+      _loadedOrder1Context.RegisterForCommit();
+      Assert.That(_loadedOrder1Context.State.IsChanged, Is.True);
+      Assert.That(GetDataContainer(_loadedOrder1Context).HasBeenMarkedChanged, Is.True);
 
       _loadedOrder1.OrderNumber = _loadedOrder1.Properties[typeof (Order), "OrderNumber"].GetOriginalValue<int>();
 
-      Assert.That (_loadedOrder1Context.State.IsChanged, Is.True);
+      Assert.That(_loadedOrder1Context.State.IsChanged, Is.True);
     }
 
     [Test]
     public void RegisterForCommit_New ()
     {
-      Assert.That (_newOrderContext.State.IsNew, Is.True);
-      _newOrderContext.RegisterForCommit ();
+      Assert.That(_newOrderContext.State.IsNew, Is.True);
+      _newOrderContext.RegisterForCommit();
 
-      Assert.That (_newOrderContext.State.IsNew, Is.True);
-      Assert.That (GetDataContainer (_newOrderContext).HasBeenMarkedChanged, Is.False);
+      Assert.That(_newOrderContext.State.IsNew, Is.True);
+      Assert.That(GetDataContainer(_newOrderContext).HasBeenMarkedChanged, Is.False);
     }
 
     [Test]
     public void RegisterForCommit_Deleted ()
     {
-      DeleteOrder (_loadedOrder1);
-      Assert.That (_loadedOrder1Context.State.IsDeleted, Is.True);
+      DeleteOrder(_loadedOrder1);
+      Assert.That(_loadedOrder1Context.State.IsDeleted, Is.True);
 
-      Assert.That (() => _loadedOrder1Context.RegisterForCommit(), Throws.Nothing);
+      Assert.That(() => _loadedOrder1Context.RegisterForCommit(), Throws.Nothing);
 
-      Assert.That (_loadedOrder1Context.State.IsDeleted, Is.True);
-      Assert.That (GetDataContainer (_loadedOrder1Context).HasBeenMarkedChanged, Is.False);
+      Assert.That(_loadedOrder1Context.State.IsDeleted, Is.True);
+      Assert.That(GetDataContainer(_loadedOrder1Context).HasBeenMarkedChanged, Is.False);
     }
 
     [Test]
     public void RegisterForCommit_Invalid ()
     {
-      _newOrder.Delete ();
+      _newOrder.Delete();
 
-      Assert.That (
+      Assert.That(
           () => _newOrderContext.RegisterForCommit(), 
-          Throws.TypeOf<ObjectInvalidException>().With.Message.Contains (_newOrder.ID.ToString()));
-      Assert.That (_newOrderContext.State.IsInvalid, Is.True);
+          Throws.TypeOf<ObjectInvalidException>().With.Message.Contains(_newOrder.ID.ToString()));
+      Assert.That(_newOrderContext.State.IsInvalid, Is.True);
     }
 
     [Test]
     public void RegisterForCommit_NotLoadedYet ()
     {
-      UnloadService.UnloadData (_loadedOrder1Context.ClientTransaction, _loadedOrder1.ID);
-      Assert.That (_loadedOrder1Context.State.IsNotLoadedYet, Is.True);
+      UnloadService.UnloadData(_loadedOrder1Context.ClientTransaction, _loadedOrder1.ID);
+      Assert.That(_loadedOrder1Context.State.IsNotLoadedYet, Is.True);
 
       _loadedOrder1Context.RegisterForCommit();
 
-      Assert.That (_loadedOrder1Context.State.IsChanged, Is.True);
-      var dataContainer = GetDataContainer (_loadedOrder1Context);
-      Assert.That (dataContainer, Is.Not.Null);
-      Assert.That (dataContainer.HasBeenMarkedChanged, Is.True);
+      Assert.That(_loadedOrder1Context.State.IsChanged, Is.True);
+      var dataContainer = GetDataContainer(_loadedOrder1Context);
+      Assert.That(dataContainer, Is.Not.Null);
+      Assert.That(dataContainer.HasBeenMarkedChanged, Is.True);
     }
 
     [Test]
     public void Timestamp_LoadedObject ()
     {
       var timestamp = _loadedOrder1Context.Timestamp;
-      Assert.That (timestamp, Is.Not.Null);
-      Assert.That (timestamp, Is.SameAs (_loadedOrder1.Timestamp));
+      Assert.That(timestamp, Is.Not.Null);
+      Assert.That(timestamp, Is.SameAs(_loadedOrder1.Timestamp));
     }
 
     [Test]
     public void Timestamp_NewObject ()
     {
       var timestamp = _newOrderContext.Timestamp;
-      Assert.That (timestamp, Is.Null);
+      Assert.That(timestamp, Is.Null);
     }
 
     [Test]
     public void Timestamp_Discarded ()
     {
-      _newOrder.Delete ();
-      Assert.That (
+      _newOrder.Delete();
+      Assert.That(
           () => _newOrderContext.Timestamp,
           Throws.InstanceOf<ObjectInvalidException>());
     }
@@ -222,75 +222,75 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void EnsureDataAvailable ()
     {
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[_notYetLoadedOrder2.ID], Is.Null);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers[_notYetLoadedOrder2.ID], Is.Null);
 
-      _notYetLoadedOrder2Context.EnsureDataAvailable ();
+      _notYetLoadedOrder2Context.EnsureDataAvailable();
 
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[_notYetLoadedOrder2.ID], Is.Not.Null);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[_notYetLoadedOrder2.ID].DomainObject, Is.SameAs (_notYetLoadedOrder2));
+      Assert.That(TestableClientTransaction.DataManager.DataContainers[_notYetLoadedOrder2.ID], Is.Not.Null);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers[_notYetLoadedOrder2.ID].DomainObject, Is.SameAs(_notYetLoadedOrder2));
     }
 
     [Test]
     public void EnsureDataAvailable_Discarded ()
     {
-      _newOrder.Delete ();
-      Assert.That (
-          () => _newOrderContext.EnsureDataAvailable (),
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrderContext.EnsureDataAvailable(),
           Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
     public void TryEnsureDataAvailable_True ()
     {
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[_notYetLoadedOrder2.ID], Is.Null);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers[_notYetLoadedOrder2.ID], Is.Null);
 
-      var result = _notYetLoadedOrder2Context.TryEnsureDataAvailable ();
+      var result = _notYetLoadedOrder2Context.TryEnsureDataAvailable();
 
-      Assert.That (result, Is.True);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[_notYetLoadedOrder2.ID], Is.Not.Null);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[_notYetLoadedOrder2.ID].DomainObject, Is.SameAs (_notYetLoadedOrder2));
+      Assert.That(result, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers[_notYetLoadedOrder2.ID], Is.Not.Null);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers[_notYetLoadedOrder2.ID].DomainObject, Is.SameAs(_notYetLoadedOrder2));
     }
 
     [Test]
     public void TryEnsureDataAvailable_False ()
     {
-      var notFoundObjectReference = DomainObjectMother.GetNotLoadedObject (TestableClientTransaction, new ObjectID(typeof (ClassWithAllDataTypes), Guid.NewGuid()));
-      var notFoundContext = new DomainObjectTransactionContext (notFoundObjectReference, TestableClientTransaction);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[notFoundObjectReference.ID], Is.Null);
+      var notFoundObjectReference = DomainObjectMother.GetNotLoadedObject(TestableClientTransaction, new ObjectID(typeof (ClassWithAllDataTypes), Guid.NewGuid()));
+      var notFoundContext = new DomainObjectTransactionContext(notFoundObjectReference, TestableClientTransaction);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers[notFoundObjectReference.ID], Is.Null);
 
-      var result = notFoundContext.TryEnsureDataAvailable ();
+      var result = notFoundContext.TryEnsureDataAvailable();
 
-      Assert.That (result, Is.False);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[notFoundObjectReference.ID], Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers[notFoundObjectReference.ID], Is.Null);
     }
 
     [Test]
     public void TryEnsureDataAvailable_Discarded ()
     {
-      _newOrder.Delete ();
-      Assert.That (
-          () => _newOrderContext.TryEnsureDataAvailable (),
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrderContext.TryEnsureDataAvailable(),
           Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
     public void ClientTransaction_DuringReferenceInitialization_Allowed ()
     {
-      Assert.That (_referenceInitializationContext.ClientTransaction, Is.SameAs (TestableClientTransaction));
+      Assert.That(_referenceInitializationContext.ClientTransaction, Is.SameAs(TestableClientTransaction));
     }
 
     private void DeleteOrder (Order order)
     {
       while (order.OrderItems.Count > 0)
-        order.OrderItems[0].Delete ();
+        order.OrderItems[0].Delete();
 
-      order.OrderTicket.Delete ();
-      order.Delete ();
+      order.OrderTicket.Delete();
+      order.Delete();
     }
 
     private DataContainer GetDataContainer (DomainObjectTransactionContext transactionContext)
     {
-      return ClientTransactionTestHelper.GetIDataManager (transactionContext.ClientTransaction).DataContainers[transactionContext.DomainObject.ID];
+      return ClientTransactionTestHelper.GetIDataManager(transactionContext.ClientTransaction).DataContainers[transactionContext.DomainObject.ID];
     }
   }
 }

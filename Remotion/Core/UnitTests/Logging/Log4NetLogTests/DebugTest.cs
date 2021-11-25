@@ -28,33 +28,33 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     public void IsEnabled_WithLevelAll ()
     {
       Logger.Repository.Threshold = Level.All;
-      Assert.That (Log.IsEnabled (LogLevel.Debug), Is.True);
+      Assert.That(Log.IsEnabled(LogLevel.Debug), Is.True);
     }
 
     [Test]
     public void IsEnabled_WithLevelDebug ()
     {
-      SetLoggingThreshold (Level.Debug);
-      Assert.That (Log.IsEnabled (LogLevel.Debug), Is.True);
+      SetLoggingThreshold(Level.Debug);
+      Assert.That(Log.IsEnabled(LogLevel.Debug), Is.True);
     }
 
     [Test]
     public void IsEnabled_WithLevelWarn ()
     {
-      SetLoggingThreshold (Level.Warn);
-      Assert.That (Log.IsEnabled (LogLevel.Debug), Is.False);
+      SetLoggingThreshold(Level.Warn);
+      Assert.That(Log.IsEnabled(LogLevel.Debug), Is.False);
     }
 
     [Test]
     public void Logger_Log ()
     {
-      SetLoggingThreshold (Level.Debug);
-      Log.Log (LogLevel.Debug, (int?) null, "The message.", (Exception) null);
+      SetLoggingThreshold(Level.Debug);
+      Log.Log(LogLevel.Debug, (int?) null, "The message.", (Exception) null);
 
-      LoggingEvent[] events = GetLoggingEvents ();
-      Assert.That (events.Length, Is.EqualTo (1));
-      Assert.That (events[0].Level, Is.EqualTo (Level.Debug));
-      Assert.That (events[0].MessageObject, Is.EqualTo ("The message."));
+      LoggingEvent[] events = GetLoggingEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
+      Assert.That(events[0].Level, Is.EqualTo(Level.Debug));
+      Assert.That(events[0].MessageObject, Is.EqualTo("The message."));
     }
   }
 }

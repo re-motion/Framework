@@ -34,11 +34,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IDataContainerMapReadOnlyView dataManager,
         ValueAccess valueAccess)
     {
-      ArgumentUtility.CheckNotNull ("sortedPropertySpecifications", sortedPropertySpecifications);
-      ArgumentUtility.CheckNotNull ("dataManager", dataManager);
+      ArgumentUtility.CheckNotNull("sortedPropertySpecifications", sortedPropertySpecifications);
+      ArgumentUtility.CheckNotNull("dataManager", dataManager);
 
-      var comparers = sortedPropertySpecifications.Select (sp => (IComparer<DomainObject>) new SortedPropertyComparer (sp, dataManager, valueAccess));
-      return new CompoundComparer<DomainObject> (comparers);
+      var comparers = sortedPropertySpecifications.Select(sp => (IComparer<DomainObject>) new SortedPropertyComparer(sp, dataManager, valueAccess));
+      return new CompoundComparer<DomainObject>(comparers);
     }
 
     public SortedPropertySpecification SortedPropertySpecification { get; }
@@ -50,8 +50,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IDataContainerMapReadOnlyView dataContainerMap,
         ValueAccess valueAccess)
     {
-      ArgumentUtility.CheckNotNull ("sortedPropertySpecification", sortedPropertySpecification);
-      ArgumentUtility.CheckNotNull ("dataContainerMap", dataContainerMap);
+      ArgumentUtility.CheckNotNull("sortedPropertySpecification", sortedPropertySpecification);
+      ArgumentUtility.CheckNotNull("dataContainerMap", dataContainerMap);
 
       SortedPropertySpecification = sortedPropertySpecification;
       DataContainerMap = dataContainerMap;
@@ -60,16 +60,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public int Compare (DomainObject x, DomainObject y)
     {
-      ArgumentUtility.CheckNotNull ("x", x);
-      ArgumentUtility.CheckNotNull ("y", y);
+      ArgumentUtility.CheckNotNull("x", x);
+      ArgumentUtility.CheckNotNull("y", y);
 
-      var valueX = GetComparedKey (x);
-      var valueY = GetComparedKey (y);
+      var valueX = GetComparedKey(x);
+      var valueY = GetComparedKey(y);
 
       if (SortedPropertySpecification.Order == SortOrder.Ascending)
-        return Comparer.Default.Compare (valueX, valueY);
+        return Comparer.Default.Compare(valueX, valueY);
       else
-        return -Comparer.Default.Compare (valueX, valueY);
+        return -Comparer.Default.Compare(valueX, valueY);
     }
 
     private object GetComparedKey (DomainObject domainObject)
@@ -78,10 +78,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       if (dataContainer == null)
         return null;
 
-      if (!SortedPropertySpecification.PropertyDefinition.ClassDefinition.IsSameOrBaseClassOf (dataContainer.ClassDefinition))
+      if (!SortedPropertySpecification.PropertyDefinition.ClassDefinition.IsSameOrBaseClassOf(dataContainer.ClassDefinition))
         return null;
 
-      return dataContainer.GetValueWithoutEvents (SortedPropertySpecification.PropertyDefinition, ValueAccess);
+      return dataContainer.GetValueWithoutEvents(SortedPropertySpecification.PropertyDefinition, ValueAccess);
     }
   }
 }

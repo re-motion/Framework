@@ -95,54 +95,54 @@ public class BocDateTimeValueUserControl : BaseUserControl
 
   override protected void OnLoad (EventArgs e)
   {
-    base.OnLoad (e);
+    base.OnLoad(e);
 
     Person person = (Person) CurrentObject.BusinessObject;
 
     //UnboundBirthdayField.LoadUnboundValue (person.DateOFBirth, IsPostBack);
-    UnboundReadOnlyBirthdayField.LoadUnboundValue (person.DateOfBirth, IsPostBack);
+    UnboundReadOnlyBirthdayField.LoadUnboundValue(person.DateOfBirth, IsPostBack);
 
-    UnboundDateOfDeathField.LoadUnboundValue (person.DateOfDeath, IsPostBack);
-    UnboundReadOnlyDateOfDeathField.LoadUnboundValue (person.DateOfDeath, IsPostBack);
+    UnboundDateOfDeathField.LoadUnboundValue(person.DateOfDeath, IsPostBack);
+    UnboundReadOnlyDateOfDeathField.LoadUnboundValue(person.DateOfDeath, IsPostBack);
 
-    DisabledUnboundBirthdayField.LoadUnboundValue (person.DateOfBirth, IsPostBack);
-    DisabledUnboundReadOnlyBirthdayField.LoadUnboundValue (person.DateOfBirth, IsPostBack);
+    DisabledUnboundBirthdayField.LoadUnboundValue(person.DateOfBirth, IsPostBack);
+    DisabledUnboundReadOnlyBirthdayField.LoadUnboundValue(person.DateOfBirth, IsPostBack);
 
-    DirectlySetBocDateTimeValueField.LoadUnboundValue (DateTime.Now, IsPostBack);
-    ReadOnlyDirectlySetBocDateTimeValueField.LoadUnboundValue (DateTime.Now, IsPostBack);
+    DirectlySetBocDateTimeValueField.LoadUnboundValue(DateTime.Now, IsPostBack);
+    ReadOnlyDirectlySetBocDateTimeValueField.LoadUnboundValue(DateTime.Now, IsPostBack);
 
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus (BirthdayField);
+        ((ISmartNavigablePage) Page).SetFocus(BirthdayField);
     }
   }
 
   public override bool Validate ()
   {
-    bool isValid = base.Validate ();
+    bool isValid = base.Validate();
     isValid &= FormGridManager.Validate();
     return isValid;
   }
 
   override protected void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    SetDebugLabel (BirthdayField, BirthdayFieldValueLabel);
-    SetDebugLabel (ReadOnlyBirthdayField, ReadOnlyBirthdayFieldValueLabel);
-    SetDebugLabel (UnboundBirthdayField, UnboundBirthdayFieldValueLabel);
-    SetDebugLabel (UnboundReadOnlyBirthdayField, UnboundReadOnlyBirthdayFieldValueLabel);
-    SetDebugLabel (DateOfDeathField, DateOfDeathFieldValueLabel);
-    SetDebugLabel (ReadOnlyDateOfDeathField, ReadOnlyDateOfDeathFieldValueLabel);
-    SetDebugLabel (UnboundDateOfDeathField, UnboundDateOfDeathFieldValueLabel);
-    SetDebugLabel (UnboundReadOnlyDateOfDeathField, UnboundReadOnlyDateOfDeathFieldValueLabel);
-    SetDebugLabel (DirectlySetBocDateTimeValueField, DirectlySetBocDateTimeValueFieldValueLabel);
-    SetDebugLabel (ReadOnlyDirectlySetBocDateTimeValueField, ReadOnlyDirectlySetBocDateTimeValueFieldValueLabel);
-    SetDebugLabel (DisabledBirthdayField, DisabledBirthdayFieldValueLabel);
-    SetDebugLabel (DisabledReadOnlyBirthdayField, DisabledReadOnlyBirthdayFieldValueLabel);
-    SetDebugLabel (DisabledUnboundBirthdayField, DisabledUnboundBirthdayFieldValueLabel);
-    SetDebugLabel (DisabledUnboundReadOnlyBirthdayField, DisabledUnboundReadOnlyBirthdayFieldValueLabel);
+    SetDebugLabel(BirthdayField, BirthdayFieldValueLabel);
+    SetDebugLabel(ReadOnlyBirthdayField, ReadOnlyBirthdayFieldValueLabel);
+    SetDebugLabel(UnboundBirthdayField, UnboundBirthdayFieldValueLabel);
+    SetDebugLabel(UnboundReadOnlyBirthdayField, UnboundReadOnlyBirthdayFieldValueLabel);
+    SetDebugLabel(DateOfDeathField, DateOfDeathFieldValueLabel);
+    SetDebugLabel(ReadOnlyDateOfDeathField, ReadOnlyDateOfDeathFieldValueLabel);
+    SetDebugLabel(UnboundDateOfDeathField, UnboundDateOfDeathFieldValueLabel);
+    SetDebugLabel(UnboundReadOnlyDateOfDeathField, UnboundReadOnlyDateOfDeathFieldValueLabel);
+    SetDebugLabel(DirectlySetBocDateTimeValueField, DirectlySetBocDateTimeValueFieldValueLabel);
+    SetDebugLabel(ReadOnlyDirectlySetBocDateTimeValueField, ReadOnlyDirectlySetBocDateTimeValueFieldValueLabel);
+    SetDebugLabel(DisabledBirthdayField, DisabledBirthdayFieldValueLabel);
+    SetDebugLabel(DisabledReadOnlyBirthdayField, DisabledReadOnlyBirthdayFieldValueLabel);
+    SetDebugLabel(DisabledUnboundBirthdayField, DisabledUnboundBirthdayFieldValueLabel);
+    SetDebugLabel(DisabledUnboundReadOnlyBirthdayField, DisabledUnboundReadOnlyBirthdayFieldValueLabel);
   }
 
   private void SetDebugLabel (IBusinessObjectBoundWebControl control, Label label)
@@ -160,7 +160,7 @@ public class BocDateTimeValueUserControl : BaseUserControl
 
   private void BirthdayTestSetNewValueButton_Click (object sender, EventArgs e)
   {
-    BirthdayField.Value = new DateTime (1950, 1, 1);
+    BirthdayField.Value = new DateTime(1950, 1, 1);
   }
 
   private void ReadOnlyBirthdayTestSetNullButton_Click (object sender, EventArgs e)
@@ -170,7 +170,7 @@ public class BocDateTimeValueUserControl : BaseUserControl
 
   private void ReadOnlyBirthdayTestSetNewValueButton_Click (object sender, EventArgs e)
   {
-    ReadOnlyBirthdayField.Value = new DateTime (1950, 1, 1);;
+    ReadOnlyBirthdayField.Value = new DateTime(1950, 1, 1);;
   }
 
   private void BirthdayField_DateTimeChanged (object sender, EventArgs e)

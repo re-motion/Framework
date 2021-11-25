@@ -34,179 +34,179 @@ namespace Remotion.Collections.DataStore.UnitTests
     public void SetUp ()
     {
       _store = new SimpleDataStore<string, int?>();
-      _store.Add ("a", 1);
-      _store.Add ("b", 2);
+      _store.Add("a", 1);
+      _store.Add("b", 2);
     }
 
     [Test]
     public void Initialize_WithCustomEqualityComparer ()
     {
       var comparer = StringComparer.InvariantCultureIgnoreCase;
-      var dataStore = new SimpleDataStore<string, int?> (comparer);
-      dataStore.Add ("a", 1);
+      var dataStore = new SimpleDataStore<string, int?>(comparer);
+      dataStore.Add("a", 1);
 
-      Assert.That (dataStore.ContainsKey ("a"));
-      Assert.That (dataStore.ContainsKey ("A"));
-      Assert.That (dataStore.Comparer, Is.SameAs (comparer));
+      Assert.That(dataStore.ContainsKey("a"));
+      Assert.That(dataStore.ContainsKey("A"));
+      Assert.That(dataStore.Comparer, Is.SameAs(comparer));
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (((INullObject) _store).IsNull, Is.False);
+      Assert.That(((INullObject) _store).IsNull, Is.False);
     }
 
     [Test]
     public void ContainsKey_True ()
     {
-      Assert.That (_store.ContainsKey ("a"));
-      Assert.That (_store.ContainsKey ("b"));
+      Assert.That(_store.ContainsKey("a"));
+      Assert.That(_store.ContainsKey("b"));
     }
 
     [Test]
     public void ContainsKey_False ()
     {
-      Assert.That (_store.ContainsKey ("c"), Is.False);
+      Assert.That(_store.ContainsKey("c"), Is.False);
     }
 
     [Test]
     public void Add ()
     {
-      _store.Add ("c", 5);
-      Assert.That (_store.ContainsKey ("c"));
-      Assert.That (_store["c"], Is.EqualTo (5));
+      _store.Add("c", 5);
+      Assert.That(_store.ContainsKey("c"));
+      Assert.That(_store["c"], Is.EqualTo(5));
     }
 
     [Test]
     public void Add_Null ()
     {
-      _store.Add ("d", null);
-      Assert.That (_store.ContainsKey ("d"));
-      Assert.That (_store["d"], Is.Null);
+      _store.Add("d", null);
+      Assert.That(_store.ContainsKey("d"));
+      Assert.That(_store["d"], Is.Null);
     }
 
     [Test]
     public void Add_Twice_ThrowsArgumentException ()
     {
-      _store.Add ("d", 1);
-      Assert.That (
-          () => _store.Add ("d", 2),
-          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo ("The store already contains an element with key \'d\'.", "key"));
+      _store.Add("d", 1);
+      Assert.That(
+          () => _store.Add("d", 2),
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo("The store already contains an element with key \'d\'.", "key"));
     }
 
     [Test]
     public void Remove_True ()
     {
-      Assert.That (_store.Remove ("a"), Is.True);
-      Assert.That (_store.ContainsKey ("a"), Is.False);
+      Assert.That(_store.Remove("a"), Is.True);
+      Assert.That(_store.ContainsKey("a"), Is.False);
     }
 
     [Test]
     public void Remove_False ()
     {
-      Assert.That (_store.Remove ("d"), Is.False);
+      Assert.That(_store.Remove("d"), Is.False);
     }
 
     [Test]
     public void Clear ()
     {
       _store.Clear();
-      Assert.That (_store.ContainsKey ("a"), Is.False);
-      Assert.That (_store.ContainsKey ("b"), Is.False);
+      Assert.That(_store.ContainsKey("a"), Is.False);
+      Assert.That(_store.ContainsKey("b"), Is.False);
     }
 
     [Test]
     public void Clear_Twice ()
     {
-      _store.Clear ();
-      _store.Clear ();
-      Assert.That (_store.ContainsKey ("a"), Is.False);
-      Assert.That (_store.ContainsKey ("b"), Is.False);
+      _store.Clear();
+      _store.Clear();
+      Assert.That(_store.ContainsKey("a"), Is.False);
+      Assert.That(_store.ContainsKey("b"), Is.False);
     }
 
     [Test]
     public void GetValue_Succeed ()
     {
-      Assert.That (_store["a"], Is.EqualTo (1));
+      Assert.That(_store["a"], Is.EqualTo(1));
     }
 
     [Test]
     public void GetValue_Fail ()
     {
-      Assert.That (
+      Assert.That(
           () => _store["c"],
-          Throws.Exception.TypeOf<KeyNotFoundException>().And.Message.EqualTo ("There is no element with key 'c' in the store."));
+          Throws.Exception.TypeOf<KeyNotFoundException>().And.Message.EqualTo("There is no element with key 'c' in the store."));
     }
 
     [Test]
     public void SetValue_New ()
     {
       _store["c"] = 5;
-      Assert.That (_store["c"], Is.EqualTo (5));
+      Assert.That(_store["c"], Is.EqualTo(5));
     }
 
     [Test]
     public void SetValue_Overwrite ()
     {
       _store["a"] = 5;
-      Assert.That (_store["a"], Is.EqualTo (5));
+      Assert.That(_store["a"], Is.EqualTo(5));
     }
 
     [Test]
     public void SetValue_Null ()
     {
       _store["c"] = null;
-      Assert.That (_store["c"], Is.Null);
+      Assert.That(_store["c"], Is.Null);
     }
 
     [Test]
     public void GetValueOrDefault_Value ()
     {
-      Assert.That (_store.GetValueOrDefault ("a"), Is.EqualTo (1));
+      Assert.That(_store.GetValueOrDefault("a"), Is.EqualTo(1));
     }
 
     [Test]
     public void GetValueOrDefault_Default ()
     {
-      Assert.That (_store.GetValueOrDefault ("c"), Is.Null);
+      Assert.That(_store.GetValueOrDefault("c"), Is.Null);
     }
 
     [Test]
     public void TryGetValue_True ()
     {
       int? value;
-      Assert.That (_store.TryGetValue ("a", out value));
-      Assert.That (value, Is.EqualTo (1));
+      Assert.That(_store.TryGetValue("a", out value));
+      Assert.That(value, Is.EqualTo(1));
     }
 
     [Test]
     public void TryGetValue_False ()
     {
       int? value;
-      Assert.That (_store.TryGetValue ("c", out value), Is.False);
-      Assert.That (value, Is.Null);
+      Assert.That(_store.TryGetValue("c", out value), Is.False);
+      Assert.That(value, Is.Null);
     }
 
     [Test]
     public void GetOrCreateValue_Get ()
     {
       bool delegateCalled = false;
-      Assert.That (_store.GetOrCreateValue ("a", delegate { delegateCalled = true; return 7; }), Is.EqualTo (1));
-      Assert.That (delegateCalled, Is.False);
+      Assert.That(_store.GetOrCreateValue("a", delegate { delegateCalled = true; return 7; }), Is.EqualTo(1));
+      Assert.That(delegateCalled, Is.False);
     }
 
     [Test]
     public void GetOrCreateValue_Create ()
     {
       bool delegateCalled = false;
-      Assert.That (_store.GetOrCreateValue ("c", delegate (string key)
+      Assert.That(_store.GetOrCreateValue("c", delegate (string key)
           {
             delegateCalled = true;
-            Assert.That (key, Is.EqualTo ("c"));
+            Assert.That(key, Is.EqualTo("c"));
             return 7;
           }),
-          Is.EqualTo (7));
-      Assert.That (delegateCalled);
+          Is.EqualTo(7));
+      Assert.That(delegateCalled);
     }
 
     [Test]
@@ -214,21 +214,21 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       int expected = 13;
 
-      var actualValue = _store.GetOrCreateValue (
+      var actualValue = _store.GetOrCreateValue(
           "key1",
           delegate (string key)
           {
-            Assert.That (
-                () => _store.TryGetValue (key, out _),
-                Throws.InvalidOperationException.With.Message.StartsWith (
+            Assert.That(
+                () => _store.TryGetValue(key, out _),
+                Throws.InvalidOperationException.With.Message.StartsWith(
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
             return expected;
           });
-      Assert.That (actualValue, Is.EqualTo (expected));
+      Assert.That(actualValue, Is.EqualTo(expected));
 
       int? actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
-      Assert.That (actualValue2, Is.EqualTo (expected));
+      Assert.That(_store.TryGetValue("key1", out actualValue2), Is.True);
+      Assert.That(actualValue2, Is.EqualTo(expected));
     }
 
     [Test]
@@ -236,21 +236,21 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       int expected = 13;
 
-      var actualValue = _store.GetOrCreateValue (
+      var actualValue = _store.GetOrCreateValue(
           "key1",
           delegate (string key)
           {
-            Assert.That (
-                () => _store.GetValueOrDefault (key),
-                Throws.InvalidOperationException.With.Message.StartsWith (
+            Assert.That(
+                () => _store.GetValueOrDefault(key),
+                Throws.InvalidOperationException.With.Message.StartsWith(
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
             return expected;
           });
-      Assert.That (actualValue, Is.EqualTo (expected));
+      Assert.That(actualValue, Is.EqualTo(expected));
 
       int? actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
-      Assert.That (actualValue2, Is.EqualTo (expected));
+      Assert.That(_store.TryGetValue("key1", out actualValue2), Is.True);
+      Assert.That(actualValue2, Is.EqualTo(expected));
     }
 
     [Test]
@@ -258,23 +258,23 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       int expected = 15;
 
-      var actualValue = _store.GetOrCreateValue (
+      var actualValue = _store.GetOrCreateValue(
               "key1",
               delegate (string key)
               {
-                Assert.That (
-                    () => _store.GetOrCreateValue (key, nestedKey => 13),
-                    Throws.InvalidOperationException.With.Message.StartsWith (
+                Assert.That(
+                    () => _store.GetOrCreateValue(key, nestedKey => 13),
+                    Throws.InvalidOperationException.With.Message.StartsWith(
                         "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
 
                 return expected;
               });
 
-      Assert.That (actualValue, Is.EqualTo (expected));
+      Assert.That(actualValue, Is.EqualTo(expected));
 
       int? actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
-      Assert.That (actualValue2, Is.EqualTo (expected));
+      Assert.That(_store.TryGetValue("key1", out actualValue2), Is.True);
+      Assert.That(actualValue2, Is.EqualTo(expected));
     }
 
     [Test]
@@ -282,21 +282,21 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       int expected = 15;
 
-      var actualValue = _store.GetOrCreateValue (
+      var actualValue = _store.GetOrCreateValue(
           "key1",
           delegate (string key)
           {
-            Assert.That (
-                () => _store.Add (key, 13),
-                Throws.InvalidOperationException.With.Message.StartsWith (
+            Assert.That(
+                () => _store.Add(key, 13),
+                Throws.InvalidOperationException.With.Message.StartsWith(
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
             return expected;
           });
-      Assert.That (actualValue, Is.EqualTo (expected));
+      Assert.That(actualValue, Is.EqualTo(expected));
 
       int? actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
-      Assert.That (actualValue2, Is.EqualTo (expected));
+      Assert.That(_store.TryGetValue("key1", out actualValue2), Is.True);
+      Assert.That(actualValue2, Is.EqualTo(expected));
     }
 
     [Test]
@@ -304,21 +304,21 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       int expected = 13;
 
-      var actualValue = _store.GetOrCreateValue (
+      var actualValue = _store.GetOrCreateValue(
           "key1",
           delegate (string key)
           {
-            Assert.That (
-                () => _store.ContainsKey (key),
-                Throws.InvalidOperationException.With.Message.StartsWith (
+            Assert.That(
+                () => _store.ContainsKey(key),
+                Throws.InvalidOperationException.With.Message.StartsWith(
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
             return expected;
           });
-      Assert.That (actualValue, Is.EqualTo (expected));
+      Assert.That(actualValue, Is.EqualTo(expected));
 
       int? actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
-      Assert.That (actualValue2, Is.EqualTo (expected));
+      Assert.That(_store.TryGetValue("key1", out actualValue2), Is.True);
+      Assert.That(actualValue2, Is.EqualTo(expected));
     }
 
     [Test]
@@ -326,21 +326,21 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       int expected = 13;
 
-      var actualValue = _store.GetOrCreateValue (
+      var actualValue = _store.GetOrCreateValue(
           "key1",
           delegate (string key)
           {
-            Assert.That (
-                () => _store.Remove (key),
-                Throws.InvalidOperationException.With.Message.StartsWith (
+            Assert.That(
+                () => _store.Remove(key),
+                Throws.InvalidOperationException.With.Message.StartsWith(
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
             return expected;
           });
-      Assert.That (actualValue, Is.EqualTo (expected));
+      Assert.That(actualValue, Is.EqualTo(expected));
 
       int? actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
-      Assert.That (actualValue2, Is.EqualTo (expected));
+      Assert.That(_store.TryGetValue("key1", out actualValue2), Is.True);
+      Assert.That(actualValue2, Is.EqualTo(expected));
     }
 
     [Test]
@@ -348,18 +348,18 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       int expected = 13;
 
-      var actualValue = _store.GetOrCreateValue (
+      var actualValue = _store.GetOrCreateValue(
           "key1",
           delegate
           {
             _store.Clear();
             return expected;
           });
-      Assert.That (actualValue, Is.EqualTo (expected));
+      Assert.That(actualValue, Is.EqualTo(expected));
 
       int? actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.False);
-      Assert.That (actualValue2, Is.Null);
+      Assert.That(_store.TryGetValue("key1", out actualValue2), Is.False);
+      Assert.That(actualValue2, Is.Null);
     }
 
     [Test]
@@ -368,7 +368,7 @@ namespace Remotion.Collections.DataStore.UnitTests
       int expected = 15;
       KeyValuePair<string, int?>[] nestedItems = null;
 
-      var actualValue = _store.GetOrCreateValue (
+      var actualValue = _store.GetOrCreateValue(
           "key1",
           delegate (string key)
           {
@@ -376,68 +376,68 @@ namespace Remotion.Collections.DataStore.UnitTests
             return expected;
           });
 
-      Assert.That (actualValue, Is.EqualTo (expected));
-      Assert.That (
+      Assert.That(actualValue, Is.EqualTo(expected));
+      Assert.That(
           nestedItems,
-          Is.EquivalentTo (
+          Is.EquivalentTo(
               new[]
               {
-                  new KeyValuePair<string, int?> ("a", 1),
-                  new KeyValuePair<string, int?> ("b", 2)
+                  new KeyValuePair<string, int?>("a", 1),
+                  new KeyValuePair<string, int?>("b", 2)
               }));
 
       int? actualValue2;
-      Assert.That (_store.TryGetValue ("key1", out actualValue2), Is.True);
-      Assert.That (actualValue2, Is.EqualTo (expected));
+      Assert.That(_store.TryGetValue("key1", out actualValue2), Is.True);
+      Assert.That(actualValue2, Is.EqualTo(expected));
     }
 
     [Test]
     public void GetOrCreateValue_WithException ()
     {
       var exception = new Exception();
-      Assert.That (
-          () => _store.GetOrCreateValue ("key1", key => throw exception),
-          Throws.Exception.SameAs (exception));
+      Assert.That(
+          () => _store.GetOrCreateValue("key1", key => throw exception),
+          Throws.Exception.SameAs(exception));
     }
 
     [Test]
     public void GetOrCreateValue_WithException_DoesNotCacheException ()
     {
       var exception1 = new Exception();
-      Assert.That (
-          () => _store.GetOrCreateValue ("key1", key => throw exception1),
-          Throws.Exception.SameAs (exception1));
+      Assert.That(
+          () => _store.GetOrCreateValue("key1", key => throw exception1),
+          Throws.Exception.SameAs(exception1));
 
       var exception2 = new Exception();
-      Assert.That (
-          () => _store.GetOrCreateValue ("key1", key => throw exception2),
-          Throws.Exception.SameAs (exception2));
+      Assert.That(
+          () => _store.GetOrCreateValue("key1", key => throw exception2),
+          Throws.Exception.SameAs(exception2));
     }
 
     [Test]
     public void GetOrCreateValue_WithException_TryGetValue_HasNoValue ()
     {
       var exception = new Exception();
-      Assert.That (
-          () => _store.GetOrCreateValue ("key1", key => throw exception),
-          Throws.Exception.SameAs (exception));
+      Assert.That(
+          () => _store.GetOrCreateValue("key1", key => throw exception),
+          Throws.Exception.SameAs(exception));
 
       int? actual;
-      Assert.That (_store.TryGetValue ("key1", out actual), Is.False);
-      Assert.That (actual, Is.Null);
+      Assert.That(_store.TryGetValue("key1", out actual), Is.False);
+      Assert.That(actual, Is.Null);
     }
 
     [Test]
     public void GetOrCreateValue_WithException_GetOrCreateValue_InsertsSecondValue ()
     {
       var exception = new Exception();
-      Assert.That (
-          () => _store.GetOrCreateValue ("key1", key => throw exception),
-          Throws.Exception.SameAs (exception));
+      Assert.That(
+          () => _store.GetOrCreateValue("key1", key => throw exception),
+          Throws.Exception.SameAs(exception));
 
       int? expected = 14;
-      object actual = _store.GetOrCreateValue ("key1", key => expected);
-      Assert.That (actual, Is.EqualTo (expected));
+      object actual = _store.GetOrCreateValue("key1", key => expected);
+      Assert.That(actual, Is.EqualTo(expected));
     }
 
     [Test]
@@ -447,27 +447,27 @@ namespace Remotion.Collections.DataStore.UnitTests
       {
         var expected = 13;
         Func<string, int?> valueFactory = key => expected;
-        Assert.That (_store.GetOrCreateValue ("key1", valueFactory),Is.EqualTo (expected));
-        return new WeakReference (valueFactory);
+        Assert.That(_store.GetOrCreateValue("key1", valueFactory),Is.EqualTo(expected));
+        return new WeakReference(valueFactory);
       }
 
       // The valueFactory must be created in a separate method: The x64 JITter in .NET 4.7.2 (DEBUG builds only) keeps the reference alive until the variable is out of scope.
       var valueFactoryReference = GetValueFactoryReference();
       GC.Collect();
       GC.WaitForFullGCComplete();
-      Assert.That (valueFactoryReference.IsAlive, Is.False);
+      Assert.That(valueFactoryReference.IsAlive, Is.False);
     }
 
     [Test]
     public void GetEnumerator_Generic ()
     {
-      Assert.That (
+      Assert.That(
           _store.ToArray(),
-          Is.EquivalentTo (
+          Is.EquivalentTo(
               new[]
               {
-                  new KeyValuePair<string, int?> ("a", 1),
-                  new KeyValuePair<string, int?> ("b", 2)
+                  new KeyValuePair<string, int?>("a", 1),
+                  new KeyValuePair<string, int?>("b", 2)
               }
               ));
     }
@@ -477,26 +477,26 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       using (var enumerator = _store.GetEnumerator())
       {
-        Assert.That (enumerator.MoveNext(), Is.True);
-        Assert.That (enumerator.Current, Is.EqualTo (new KeyValuePair<string, int?> ("a", 1)));
+        Assert.That(enumerator.MoveNext(), Is.True);
+        Assert.That(enumerator.Current, Is.EqualTo(new KeyValuePair<string, int?>("a", 1)));
         enumerator.Reset();
-        Assert.That (enumerator.MoveNext(), Is.True);
-        Assert.That (enumerator.Current, Is.EqualTo (new KeyValuePair<string, int?> ("a", 1)));
-        Assert.That (enumerator.MoveNext(), Is.True);
-        Assert.That (enumerator.Current, Is.EqualTo (new KeyValuePair<string, int?> ("b", 2)));
+        Assert.That(enumerator.MoveNext(), Is.True);
+        Assert.That(enumerator.Current, Is.EqualTo(new KeyValuePair<string, int?>("a", 1)));
+        Assert.That(enumerator.MoveNext(), Is.True);
+        Assert.That(enumerator.Current, Is.EqualTo(new KeyValuePair<string, int?>("b", 2)));
       }
     }
 
     [Test]
     public void GetEnumerator_NonGeneric ()
     {
-      Assert.That (
+      Assert.That(
           _store.ToNonGenericEnumerable(),
-          Is.EquivalentTo (
+          Is.EquivalentTo(
               new[]
               {
-                  new KeyValuePair<string, int?> ("a", 1),
-                  new KeyValuePair<string, int?> ("b", 2)
+                  new KeyValuePair<string, int?>("a", 1),
+                  new KeyValuePair<string, int?>("b", 2)
               }
               ));
     }
@@ -504,17 +504,17 @@ namespace Remotion.Collections.DataStore.UnitTests
     [Test]
     public void SerializeEmptyDataStore ()
     {
-      IDataStore<string, int?> deserializedDataStore = Serializer.SerializeAndDeserialize (_store);
-      Assert.That (deserializedDataStore, Is.Not.Null);
+      IDataStore<string, int?> deserializedDataStore = Serializer.SerializeAndDeserialize(_store);
+      Assert.That(deserializedDataStore, Is.Not.Null);
 
       int? result;
-      Assert.That (deserializedDataStore.TryGetValue ("bla", out result), Is.False);
-      deserializedDataStore.GetOrCreateValue ("bla", delegate { return 17; });
-      Assert.That (deserializedDataStore.TryGetValue ("bla", out result), Is.True);
+      Assert.That(deserializedDataStore.TryGetValue("bla", out result), Is.False);
+      deserializedDataStore.GetOrCreateValue("bla", delegate { return 17; });
+      Assert.That(deserializedDataStore.TryGetValue("bla", out result), Is.True);
 
-      Assert.That (result, Is.EqualTo (17));
+      Assert.That(result, Is.EqualTo(17));
 
-      Assert.That (_store.TryGetValue ("bla", out result), Is.False);
+      Assert.That(_store.TryGetValue("bla", out result), Is.False);
     }
 
     [Test]
@@ -522,18 +522,18 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       int? result;
 
-      _store.GetOrCreateValue ("bla", delegate { return 19; });
-      Assert.That (_store.TryGetValue ("bla", out result), Is.True);
+      _store.GetOrCreateValue("bla", delegate { return 19; });
+      Assert.That(_store.TryGetValue("bla", out result), Is.True);
 
-      IDataStore<string, int?> deserializedCache = Serializer.SerializeAndDeserialize (_store);
-      Assert.That (deserializedCache, Is.Not.Null);
+      IDataStore<string, int?> deserializedCache = Serializer.SerializeAndDeserialize(_store);
+      Assert.That(deserializedCache, Is.Not.Null);
 
-      Assert.That (deserializedCache.TryGetValue ("bla", out result), Is.True);
-      Assert.That (result, Is.EqualTo (19));
+      Assert.That(deserializedCache.TryGetValue("bla", out result), Is.True);
+      Assert.That(result, Is.EqualTo(19));
 
-      deserializedCache.GetOrCreateValue ("whatever", delegate { return 23; });
-      Assert.That (deserializedCache.TryGetValue ("whatever", out result), Is.True);
-      Assert.That (_store.TryGetValue ("whatever", out result), Is.False);
+      deserializedCache.GetOrCreateValue("whatever", delegate { return 23; });
+      Assert.That(deserializedCache.TryGetValue("whatever", out result), Is.True);
+      Assert.That(_store.TryGetValue("whatever", out result), Is.False);
     }
 
     [Test]
@@ -541,27 +541,27 @@ namespace Remotion.Collections.DataStore.UnitTests
     public void Performance ()
     {
       var store = new SimpleDataStore<string, object>();
-      store.GetOrCreateValue ("key", k => "value");
+      store.GetOrCreateValue("key", k => "value");
       object value;
-      store.TryGetValue ("key", out value);
+      store.TryGetValue("key", out value);
 
       var stopwatch = new Stopwatch();
       stopwatch.Start();
 
       for (int i = 0; i < 1000; i++)
       {
-        var key = i.ToString ("D9");
-        store.GetOrCreateValue (key, k => k + ": value");
+        var key = i.ToString("D9");
+        store.GetOrCreateValue(key, k => k + ": value");
         for (int j = 0; j < 100 * 1000; j++)
         {
-          store.TryGetValue (key, out value);
+          store.TryGetValue(key, out value);
         }
       }
 
       stopwatch.Stop();
       // Note: on x64, the time taken is 3000ms instead due to use of RyuJIT
-      Console.WriteLine ("Time expected: 3250ms (release build x86 on Intel Xeon E5-1620 v2 @ 3.70GHz)");
-      Console.WriteLine ("Time taken: {0:D}ms", stopwatch.ElapsedMilliseconds);
+      Console.WriteLine("Time expected: 3250ms (release build x86 on Intel Xeon E5-1620 v2 @ 3.70GHz)");
+      Console.WriteLine("Time taken: {0:D}ms", stopwatch.ElapsedMilliseconds);
     }
   }
 }

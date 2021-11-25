@@ -55,11 +55,11 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
     public virtual T CreateValueClone<T> (T source)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull ("source", source);
+      ArgumentUtility.CheckNotNull("source", source);
       
       T clone = CreateCloneHull(source);
-      CopyProperties (source, clone, null, null);
-      InvokeClonerCallback (source, clone, _cloneTransaction);
+      CopyProperties(source, clone, null, null);
+      InvokeClonerCallback(source, clone, _cloneTransaction);
       return clone;
     }
 
@@ -78,16 +78,16 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
         where T : DomainObject
     {
       var classType = source.ID.ClassDefinition.ClassType;
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (classType);
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(classType);
 
       // Get an object reference for a non-existing object, then register a new DataContainer for it. This, in effect, creates a New object that has
       // no ctor called.
-      var cloneObjectID = CloneTransaction.CreateNewObjectID (classDefinition);
-      var instance = CloneTransaction.GetObjectReference (cloneObjectID);
+      var cloneObjectID = CloneTransaction.CreateNewObjectID(classDefinition);
+      var instance = CloneTransaction.GetObjectReference(cloneObjectID);
 
-      var cloneDataContainer = DataContainer.CreateNew (cloneObjectID);
-      cloneDataContainer.SetDomainObject (instance);
-      CloneTransaction.DataManager.RegisterDataContainer (cloneDataContainer);
+      var cloneDataContainer = DataContainer.CreateNew(cloneObjectID);
+      cloneDataContainer.SetDomainObject(instance);
+      CloneTransaction.DataManager.RegisterDataContainer(cloneDataContainer);
 
       return (T) instance;
     }
@@ -108,10 +108,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
     public T CreateClone<T> (T source, ICloneStrategy strategy)
     where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull ("source", source);
-      ArgumentUtility.CheckNotNull ("strategy", strategy);
+      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull("strategy", strategy);
 
-      return CreateClone (source, strategy, new CloneContext (this));
+      return CreateClone(source, strategy, new CloneContext(this));
     }
 
     /// <summary>
@@ -131,19 +131,19 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
     public T CreateClone<T> (T source, ICloneStrategy strategy, CloneContext context)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull ("source", source);
-      ArgumentUtility.CheckNotNull ("strategy", strategy);
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull("strategy", strategy);
+      ArgumentUtility.CheckNotNull("context", context);
 
       if (context.Cloner != this)
-        throw new ArgumentException ("The given CloneContext must have been created for this DomainObjectCloner.", "context");
+        throw new ArgumentException("The given CloneContext must have been created for this DomainObjectCloner.", "context");
 
-      T clone = context.GetCloneFor (source);
+      T clone = context.GetCloneFor(source);
       while (context.CloneHulls.Count > 0)
       {
-        var shallowClone = context.CloneHulls.Dequeue ();
-        CopyProperties (source: shallowClone.Item1, clone: shallowClone.Item2, strategy: strategy, context: context);
-        InvokeClonerCallback (source: shallowClone.Item1, clone: shallowClone.Item2, cloneTransaction: _cloneTransaction);
+        var shallowClone = context.CloneHulls.Dequeue();
+        CopyProperties(source: shallowClone.Item1, clone: shallowClone.Item2, strategy: strategy, context: context);
+        InvokeClonerCallback(source: shallowClone.Item1, clone: shallowClone.Item2, cloneTransaction: _cloneTransaction);
       }
       return clone;
     }
@@ -152,9 +152,9 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
         where T : IDomainObject
     {
       var sourceTransaction = source.GetDefaultTransactionContext().ClientTransaction;
-      var sourceProperties = new PropertyIndexer (source);
-      var cloneProperties = new PropertyIndexer (clone);
-      CopyProperties (sourceProperties, sourceTransaction, cloneProperties.AsEnumerable (CloneTransaction), strategy, context);
+      var sourceProperties = new PropertyIndexer(source);
+      var cloneProperties = new PropertyIndexer(clone);
+      CopyProperties(sourceProperties, sourceTransaction, cloneProperties.AsEnumerable(CloneTransaction), strategy, context);
     }
 
     private void CopyProperties (
@@ -169,11 +169,11 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
         PropertyAccessor sourceProperty = sourceProperties[cloneProperty.PropertyData.PropertyIdentifier, sourceTransaction];
         if (cloneProperty.PropertyData.Kind == PropertyKind.PropertyValue)
         {
-          object sourceValue = sourceProperty.GetValueWithoutTypeCheck ();
-          cloneProperty.SetValueWithoutTypeCheck (sourceValue);
+          object sourceValue = sourceProperty.GetValueWithoutTypeCheck();
+          cloneProperty.SetValueWithoutTypeCheck(sourceValue);
         }
         else if (strategy != null && !cloneProperty.HasBeenTouched)
-          strategy.HandleReference (sourceProperty, cloneProperty, context);
+          strategy.HandleReference(sourceProperty, cloneProperty, context);
       }
     }
 
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
     {
       var callback = clone as IClonerCallback;
       if (callback != null)
-        callback.OnObjectCreatedAsClone (cloneTransaction, source);
+        callback.OnObjectCreatedAsClone(cloneTransaction, source);
     }
   }
 }

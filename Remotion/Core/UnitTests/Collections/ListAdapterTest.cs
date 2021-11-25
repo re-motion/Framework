@@ -34,28 +34,28 @@ namespace Remotion.UnitTests.Collections
     public void SetUp ()
     {
       _innerList = new List<int> { 1, 2, 3 };
-      _adapter = new ListAdapter<int, string> (_innerList, i => i.ToString(), s => int.Parse (s));
+      _adapter = new ListAdapter<int, string>(_innerList, i => i.ToString(), s => int.Parse(s));
     }
 
     [Test]
     public void Count ()
     {
-      Assert.That (_adapter.Count, Is.EqualTo (3));
+      Assert.That(_adapter.Count, Is.EqualTo(3));
     }
 
     [Test]
     public void IsReadOnly ()
     {
-      Assert.That (_adapter.IsReadOnly, Is.False);
+      Assert.That(_adapter.IsReadOnly, Is.False);
 
-      var readOnlyAdapter = new ListAdapter<int, string> (new ReadOnlyCollection<int> (_innerList), i => i.ToString(), s => int.Parse (s));
-      Assert.That (readOnlyAdapter.IsReadOnly, Is.True);
+      var readOnlyAdapter = new ListAdapter<int, string>(new ReadOnlyCollection<int>(_innerList), i => i.ToString(), s => int.Parse(s));
+      Assert.That(readOnlyAdapter.IsReadOnly, Is.True);
     }
 
     [Test]
     public void Item_Get ()
     {
-      Assert.That (_adapter[1], Is.EqualTo ("2"));
+      Assert.That(_adapter[1], Is.EqualTo("2"));
     }
 
     [Test]
@@ -63,7 +63,7 @@ namespace Remotion.UnitTests.Collections
     {
       _adapter[1] = "4";
       
-      Assert.That (_innerList, Is.EqualTo (new[] { 1, 4, 3 }));
+      Assert.That(_innerList, Is.EqualTo(new[] { 1, 4, 3 }));
     }
 
     [Test]
@@ -71,13 +71,13 @@ namespace Remotion.UnitTests.Collections
     {
       using (var enumerator = _adapter.GetEnumerator())
       {
-        Assert.That (enumerator.MoveNext(), Is.True);
-        Assert.That (enumerator.Current, Is.EqualTo ("1"));
-        Assert.That (enumerator.MoveNext(), Is.True);
-        Assert.That (enumerator.Current, Is.EqualTo ("2"));
-        Assert.That (enumerator.MoveNext(), Is.True);
-        Assert.That (enumerator.Current, Is.EqualTo ("3"));
-        Assert.That (enumerator.MoveNext(), Is.False);
+        Assert.That(enumerator.MoveNext(), Is.True);
+        Assert.That(enumerator.Current, Is.EqualTo("1"));
+        Assert.That(enumerator.MoveNext(), Is.True);
+        Assert.That(enumerator.Current, Is.EqualTo("2"));
+        Assert.That(enumerator.MoveNext(), Is.True);
+        Assert.That(enumerator.Current, Is.EqualTo("3"));
+        Assert.That(enumerator.MoveNext(), Is.False);
       }
     }
 
@@ -86,92 +86,92 @@ namespace Remotion.UnitTests.Collections
     {
       var enumerator = ((IEnumerable) _adapter).GetEnumerator();
 
-      Assert.That (enumerator.MoveNext(), Is.True);
-      Assert.That (enumerator.Current, Is.EqualTo ("1"));
-      Assert.That (enumerator.MoveNext(), Is.True);
-      Assert.That (enumerator.Current, Is.EqualTo ("2"));
-      Assert.That (enumerator.MoveNext(), Is.True);
-      Assert.That (enumerator.Current, Is.EqualTo ("3"));
-      Assert.That (enumerator.MoveNext(), Is.False);
+      Assert.That(enumerator.MoveNext(), Is.True);
+      Assert.That(enumerator.Current, Is.EqualTo("1"));
+      Assert.That(enumerator.MoveNext(), Is.True);
+      Assert.That(enumerator.Current, Is.EqualTo("2"));
+      Assert.That(enumerator.MoveNext(), Is.True);
+      Assert.That(enumerator.Current, Is.EqualTo("3"));
+      Assert.That(enumerator.MoveNext(), Is.False);
     }
 
     [Test]
     public void Insert ()
     {
-      _adapter.Insert (1, "5");
+      _adapter.Insert(1, "5");
 
-      Assert.That (_innerList, Is.EqualTo (new[] { 1, 5, 2, 3 }));
+      Assert.That(_innerList, Is.EqualTo(new[] { 1, 5, 2, 3 }));
     }
 
     [Test]
     public void Add ()
     {
-      _adapter.Add ("5");
+      _adapter.Add("5");
 
-      Assert.That (_innerList, Is.EqualTo (new[] { 1, 2, 3, 5 }));
+      Assert.That(_innerList, Is.EqualTo(new[] { 1, 2, 3, 5 }));
     }
 
     [Test]
     public void Remove ()
     {
-      var result = _adapter.Remove ("2");
+      var result = _adapter.Remove("2");
 
-      Assert.That (result, Is.True);
-      Assert.That (_innerList, Is.EqualTo (new[] { 1, 3 }));
+      Assert.That(result, Is.True);
+      Assert.That(_innerList, Is.EqualTo(new[] { 1, 3 }));
 
-      result = _adapter.Remove ("2");
+      result = _adapter.Remove("2");
 
-      Assert.That (result, Is.False);
+      Assert.That(result, Is.False);
     }
 
     [Test]
     public void RemoveAt ()
     {
-      _adapter.RemoveAt (0);
+      _adapter.RemoveAt(0);
 
-      Assert.That (_innerList, Is.EqualTo (new[] { 2, 3 }));
+      Assert.That(_innerList, Is.EqualTo(new[] { 2, 3 }));
     }
 
     [Test]
     public void Clear ()
     {
-      _adapter.Clear ();
+      _adapter.Clear();
 
-      Assert.That (_innerList, Is.Empty);
+      Assert.That(_innerList, Is.Empty);
     }
 
     [Test]
     public void Contains ()
     {
-      Assert.That (_adapter.Contains ("7"), Is.False);
-      Assert.That (_adapter.Contains ("1"), Is.True);
-      Assert.That (_adapter.Contains ("b"), Is.False);
+      Assert.That(_adapter.Contains("7"), Is.False);
+      Assert.That(_adapter.Contains("1"), Is.True);
+      Assert.That(_adapter.Contains("b"), Is.False);
     }
 
     [Test]
     public void Contains_WithReadOnlyAdapter ()
     {
-      var readOnlyAdapter = ListAdapter.AdaptReadOnly (_innerList, i => i.ToString());
-      Assert.That (readOnlyAdapter.Contains ("7"), Is.False);
-      Assert.That (readOnlyAdapter.Contains ("1"), Is.True);
-      Assert.That (readOnlyAdapter.Contains ("b"), Is.False);
+      var readOnlyAdapter = ListAdapter.AdaptReadOnly(_innerList, i => i.ToString());
+      Assert.That(readOnlyAdapter.Contains("7"), Is.False);
+      Assert.That(readOnlyAdapter.Contains("1"), Is.True);
+      Assert.That(readOnlyAdapter.Contains("b"), Is.False);
     }
 
     [Test]
     public void IndexOf ()
     {
-      Assert.That (_adapter.IndexOf ("1"), Is.EqualTo (0));
-      Assert.That (_adapter.IndexOf ("7"), Is.EqualTo (-1));
-      Assert.That (_adapter.IndexOf ("b"), Is.EqualTo (-1));
+      Assert.That(_adapter.IndexOf("1"), Is.EqualTo(0));
+      Assert.That(_adapter.IndexOf("7"), Is.EqualTo(-1));
+      Assert.That(_adapter.IndexOf("b"), Is.EqualTo(-1));
     }
 
     [Test]
     public void IndexOf_WithReadOnlyAdapter ()
     {
-      var readOnlyAdapter = ListAdapter.AdaptReadOnly (_innerList, i => i.ToString ());
-      Assert.That (readOnlyAdapter.IndexOf ("1"), Is.EqualTo (0));
-      Assert.That (readOnlyAdapter.IndexOf ("7"), Is.EqualTo (-1));
-      Assert.That (readOnlyAdapter.IndexOf ("b"), Is.EqualTo (-1));
+      var readOnlyAdapter = ListAdapter.AdaptReadOnly(_innerList, i => i.ToString());
+      Assert.That(readOnlyAdapter.IndexOf("1"), Is.EqualTo(0));
+      Assert.That(readOnlyAdapter.IndexOf("7"), Is.EqualTo(-1));
+      Assert.That(readOnlyAdapter.IndexOf("b"), Is.EqualTo(-1));
     }
 
     [Test]
@@ -179,19 +179,19 @@ namespace Remotion.UnitTests.Collections
     {
       var destArray = new[] { "x", "x", "x", "x", "x", "x" };
       
-      _adapter.CopyTo (destArray, 2);
+      _adapter.CopyTo(destArray, 2);
 
-      Assert.That (destArray, Is.EqualTo (new[] { "x", "x", "1", "2", "3", "x" }));
+      Assert.That(destArray, Is.EqualTo(new[] { "x", "x", "1", "2", "3", "x" }));
     }
 
     [Test]
     public void CopyTo_IndexLessThanZero ()
     {
       var destArray = new[] { "x", "x", "x", "x", "x", "x" };
-      Assert.That (
-          () => _adapter.CopyTo (destArray, -1),
+      Assert.That(
+          () => _adapter.CopyTo(destArray, -1),
           Throws.InstanceOf<ArgumentOutOfRangeException>()
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Index must not be negative.", "arrayIndex"));
     }
 
@@ -199,10 +199,10 @@ namespace Remotion.UnitTests.Collections
     public void CopyTo_ArrayIndexTooHigh ()
     {
       var destArray = new[] { "x", "x", "x", "x", "x", "x" };
-      Assert.That (
-          () => _adapter.CopyTo (destArray, 6),
+      Assert.That(
+          () => _adapter.CopyTo(destArray, 6),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo ("Index must be less than the length of the array.", "arrayIndex"));
+              .With.ArgumentExceptionMessageEqualTo("Index must be less than the length of the array.", "arrayIndex"));
     }
 
     [Test]
@@ -210,63 +210,63 @@ namespace Remotion.UnitTests.Collections
     {
       var destArray = new[] { "x", "x", "x", "x", "x", "x" };
 
-      _adapter.CopyTo (destArray, 3);
+      _adapter.CopyTo(destArray, 3);
 
-      Assert.That (destArray, Is.EqualTo (new[] { "x", "x", "x", "1", "2", "3" }));
+      Assert.That(destArray, Is.EqualTo(new[] { "x", "x", "x", "1", "2", "3" }));
     }
 
     [Test]
     public void CopyTo_NotEnoughSpace ()
     {
       var destArray = new[] { "x", "x", "x", "x", "x", "x" };
-      Assert.That (
-          () => _adapter.CopyTo (destArray, 4),
+      Assert.That(
+          () => _adapter.CopyTo(destArray, 4),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "There must be enough space to copy all items into the destination array starting at the given index.", "arrayIndex"));
     }
 
     [Test]
     public void Adapt ()
     {
-      var adapter = ListAdapter.Adapt (_innerList, i => i.ToString (), s => int.Parse (s));
+      var adapter = ListAdapter.Adapt(_innerList, i => i.ToString(), s => int.Parse(s));
 
-      Assert.That (adapter[1], Is.EqualTo ("2"));
+      Assert.That(adapter[1], Is.EqualTo("2"));
 
       adapter[1] = "5";
 
-      Assert.That (_innerList[1], Is.EqualTo (5));
+      Assert.That(_innerList[1], Is.EqualTo(5));
     }
 
     [Test]
     public void AdaptOneWay ()
     {
-      var adapter = ListAdapter.AdaptOneWay (_innerList, i => i.ToString ());
+      var adapter = ListAdapter.AdaptOneWay(_innerList, i => i.ToString());
 
-      Assert.That (adapter[1], Is.EqualTo ("2"));
+      Assert.That(adapter[1], Is.EqualTo("2"));
     }
 
     [Test]
     public void AdaptOneWay_ReverseNotSupported ()
     {
-      var adapter = ListAdapter.AdaptOneWay (_innerList, i => i.ToString ());
-      Assert.That (
+      var adapter = ListAdapter.AdaptOneWay(_innerList, i => i.ToString());
+      Assert.That(
           () => adapter[1] = "1",
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "This list does not support setting of 'String' values."));
     }
 
     [Test]
     public void AdaptReadOnly ()
     {
-      var adapter = ListAdapter.AdaptReadOnly (_innerList, i => i.ToString ());
+      var adapter = ListAdapter.AdaptReadOnly(_innerList, i => i.ToString());
 
-      Assert.That (adapter, Is.TypeOf (typeof (ReadOnlyCollection<string>)));
-      Assert.That (adapter[1], Is.EqualTo ("2"));
+      Assert.That(adapter, Is.TypeOf(typeof (ReadOnlyCollection<string>)));
+      Assert.That(adapter[1], Is.EqualTo("2"));
 
       _innerList[1] = 5;
-      Assert.That (adapter[1], Is.EqualTo ("5"));
+      Assert.That(adapter[1], Is.EqualTo("5"));
     }
   }
 }

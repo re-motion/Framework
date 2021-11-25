@@ -33,11 +33,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var result = provider.GetInstalledExecutable();
 
-      Assert.That (result.BrowserBinaryPath, Is.EqualTo (@"C:\Program Files\Mozilla Firefox\firefox.exe"));
-      Assert.That (
+      Assert.That(result.BrowserBinaryPath, Is.EqualTo(@"C:\Program Files\Mozilla Firefox\firefox.exe"));
+      Assert.That(
           result.DriverBinaryPath,
-          Does.Match (
-              Regex.Escape (Path.GetTempPath()) + @"Remotion.Web.Development.WebTesting.WebDriver\\geckodriver\\geckodriver_v\d+\.\d+\.\d+\\geckodriver.exe"));
+          Does.Match(
+              Regex.Escape(Path.GetTempPath()) + @"Remotion.Web.Development.WebTesting.WebDriver\\geckodriver\\geckodriver_v\d+\.\d+\.\d+\\geckodriver.exe"));
     }
   }
 }

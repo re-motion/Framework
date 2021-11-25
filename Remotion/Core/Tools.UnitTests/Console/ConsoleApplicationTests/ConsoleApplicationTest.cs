@@ -38,22 +38,22 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
 
       var stringWriterOut = new StringWriter();
       var stringWriterError = new StringWriter();
-      var consoleApplication = new ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings> (
+      var consoleApplication = new ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings>(
           stringWriterError, stringWriterOut, 1000, waitStub.Object);
 
-      consoleApplication.Main (args);
+      consoleApplication.Main(args);
 
       var outResult = stringWriterOut.ToString();
       var errorResult = stringWriterError.ToString();
 
-      Assert.That (outResult, Does.Contain("Application Usage:"));
-      Assert.That (outResult, Does.Contain ("[/stringArg:string_arg_sample] [/flagArg] [{/?}]"));
-      Assert.That (outResult, Does.Contain ("/stringArg  stringArg description."));
-      Assert.That (outResult, Does.Contain ("/flagArg    flagArg description."));
-      Assert.That (outResult, Does.Contain ("/?          Show usage"));
-      Assert.That (outResult, Does.Contain (Path.GetFileName (Process.GetCurrentProcess ().MainModule.FileName)));
+      Assert.That(outResult, Does.Contain("Application Usage:"));
+      Assert.That(outResult, Does.Contain("[/stringArg:string_arg_sample] [/flagArg] [{/?}]"));
+      Assert.That(outResult, Does.Contain("/stringArg  stringArg description."));
+      Assert.That(outResult, Does.Contain("/flagArg    flagArg description."));
+      Assert.That(outResult, Does.Contain("/?          Show usage"));
+      Assert.That(outResult, Does.Contain(Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName)));
 
-      Assert.That (errorResult, Is.EqualTo (""));
+      Assert.That(errorResult, Is.EqualTo(""));
     }
 
     [Test]
@@ -67,16 +67,16 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
       var waitMock = new Mock<IWaiter>();
 
       var consoleApplication =
-          new ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings> (
+          new ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings>(
               stringWriterError, stringWriterOut, 80, waitMock.Object
               );
 
 
-      consoleApplication.Main (args);
+      consoleApplication.Main(args);
 
       var errorResult = stringWriterError.ToString();
 
-      Assert.That (errorResult, Is.EqualTo (""));
+      Assert.That(errorResult, Is.EqualTo(""));
     }
 
     [Test]
@@ -90,15 +90,15 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
       var waitMock = new Mock<IWaiter>();
 
       var consoleApplication =
-          new ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings> (
+          new ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings>(
               stringWriterError, stringWriterOut, 80, waitMock.Object
               );
 
 
-      consoleApplication.Main (args);
+      consoleApplication.Main(args);
 
       var errorResult = stringWriterError.ToString();
-      Assert.That (errorResult, Does.Contain(@"An error occured: Argument /UNKNOWN_ARGUMENT: invalid argument name"));
+      Assert.That(errorResult, Does.Contain(@"An error occured: Argument /UNKNOWN_ARGUMENT: invalid argument name"));
     }
 
     [Test]
@@ -107,14 +107,14 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
       var args = new[] { "/wait+" };
 
       var waitMock = new Mock<IWaiter>();
-      waitMock.Setup (mock => mock.Wait()).Verifiable();
+      waitMock.Setup(mock => mock.Wait()).Verifiable();
 
-      var consoleApplication = new ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings> (
+      var consoleApplication = new ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings>(
           TextWriter.Null, TextWriter.Null, 80, waitMock.Object);
 
-      consoleApplication.Main (args);
+      consoleApplication.Main(args);
 
-      Assert.That (consoleApplication.Settings.WaitForKeypress, Is.True);
+      Assert.That(consoleApplication.Settings.WaitForKeypress, Is.True);
       waitMock.Verify();
     }
 
@@ -125,20 +125,20 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
 
       var waitMock = new Mock<IWaiter>();
 
-      var consoleApplication = new ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings> (
+      var consoleApplication = new ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings>(
           TextWriter.Null, TextWriter.Null, bufferWidth, waitMock.Object);
 
-      Assert.That (consoleApplication.BufferWidth, Is.EqualTo (bufferWidth));
+      Assert.That(consoleApplication.BufferWidth, Is.EqualTo(bufferWidth));
     }
 
     [Test]
     public void DefaultCtorTest ()
     {
       var consoleApplication = new ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings>();
-      Assert.That (PrivateInvoke.GetNonPublicField (consoleApplication, "_errorWriter"), Is.EqualTo (System.Console.Error));
-      Assert.That (PrivateInvoke.GetNonPublicField (consoleApplication, "_logWriter"), Is.EqualTo (System.Console.Out));
-      Assert.That (consoleApplication.BufferWidth, Is.EqualTo (80));
-      Assert.That (PrivateInvoke.GetNonPublicField (consoleApplication, "_waitAtEnd"), Is.TypeOf (typeof (ConsoleKeypressWaiter)));
+      Assert.That(PrivateInvoke.GetNonPublicField(consoleApplication, "_errorWriter"), Is.EqualTo(System.Console.Error));
+      Assert.That(PrivateInvoke.GetNonPublicField(consoleApplication, "_logWriter"), Is.EqualTo(System.Console.Out));
+      Assert.That(consoleApplication.BufferWidth, Is.EqualTo(80));
+      Assert.That(PrivateInvoke.GetNonPublicField(consoleApplication, "_waitAtEnd"), Is.TypeOf(typeof (ConsoleKeypressWaiter)));
     }
 
     [Test]
@@ -151,17 +151,17 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
 
       var applicationRunnerMock = new Mock<IApplicationRunner<ConsoleApplicationTestSettings>>();
       var consoleApplicationMock =
-          new Mock<ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings>> (
+          new Mock<ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings>>(
               stringWriterError, stringWriterOut, 80, waitStub.Object) { CallBase = true };
 
-      consoleApplicationMock.Setup (x => x.CreateApplication()).Returns (applicationRunnerMock.Object).Verifiable();
-      applicationRunnerMock.Setup (
-          x => x.Run (
+      consoleApplicationMock.Setup(x => x.CreateApplication()).Returns(applicationRunnerMock.Object).Verifiable();
+      applicationRunnerMock.Setup(
+          x => x.Run(
                    It.IsAny<ConsoleApplicationTestSettings>(),
                    stringWriterError,
                    stringWriterOut)).Verifiable();
 
-      consoleApplicationMock.Object.Main (new string[0]);
+      consoleApplicationMock.Object.Main(new string[0]);
 
       applicationRunnerMock.Verify();
       consoleApplicationMock.Verify();
@@ -177,23 +177,23 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
 
       var applicationRunnerMock = new Mock<IApplicationRunner<ConsoleApplicationTestSettings>>();
       var consoleApplicationMock =
-          new Mock<ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings>> (
+          new Mock<ConsoleApplication<ConsoleApplicationTestApplicationRunner, ConsoleApplicationTestSettings>>(
               stringWriterError, stringWriterOut, 80, waitStub.Object) { CallBase = true };
 
-      consoleApplicationMock.Setup (x => x.CreateApplication()).Returns (applicationRunnerMock.Object).Verifiable();
-      applicationRunnerMock.Setup (
-          x => x.Run (
+      consoleApplicationMock.Setup(x => x.CreateApplication()).Returns(applicationRunnerMock.Object).Verifiable();
+      applicationRunnerMock.Setup(
+          x => x.Run(
                    It.IsAny<ConsoleApplicationTestSettings>(),
                    It.IsAny<TextWriter>(),
-                   It.IsAny<TextWriter>())).Throws (new Exception ("The valve just came loose...")).Verifiable();
+                   It.IsAny<TextWriter>())).Throws(new Exception("The valve just came loose...")).Verifiable();
 
-      consoleApplicationMock.Object.Main (new string[0]);
+      consoleApplicationMock.Object.Main(new string[0]);
 
       applicationRunnerMock.Verify();
       consoleApplicationMock.Verify();
 
       var result = stringWriterError.ToString();
-      Assert.That (result, Does.StartWith("Execution aborted. Exception stack:\r\nSystem.Exception: The valve just came loose..."));
+      Assert.That(result, Does.StartWith("Execution aborted. Exception stack:\r\nSystem.Exception: The valve just came loose..."));
     }
   }
 }

@@ -44,88 +44,88 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
       _commandStub = MockRepository.GenerateStub<IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>>();
       _executionContext = MockRepository.GenerateStub<IRdbmsProviderCommandExecutionContext>();
 
-      _order1Container = DataContainerObjectMother.Create (DomainObjectIDs.Order1);
-      _order2Container = DataContainerObjectMother.Create (DomainObjectIDs.Order3);
-      _order3Container = DataContainerObjectMother.Create (DomainObjectIDs.Order4);
+      _order1Container = DataContainerObjectMother.Create(DomainObjectIDs.Order1);
+      _order2Container = DataContainerObjectMother.Create(DomainObjectIDs.Order3);
+      _order3Container = DataContainerObjectMother.Create(DomainObjectIDs.Order4);
     }
 
     [Test]
     public void Execute ()
     {
-      var command = new MultiDataContainerAssociateWithIDsCommand (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1 }, _commandStub);
-      _commandStub.Stub (stub => stub.Execute (_executionContext)).Return (new[] { _order2Container, _order1Container });
+      var command = new MultiDataContainerAssociateWithIDsCommand(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1 }, _commandStub);
+      _commandStub.Stub(stub => stub.Execute(_executionContext)).Return(new[] { _order2Container, _order1Container });
 
-      var result = command.Execute (_executionContext).ToList ();
+      var result = command.Execute(_executionContext).ToList();
 
-      Assert.That (result.Count, Is.EqualTo (3));
-      Assert.That (result[0].LocatedObject, Is.SameAs (_order1Container));
-      Assert.That (result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
-      Assert.That (result[1].LocatedObject, Is.SameAs (_order2Container));
-      Assert.That (result[1].ObjectID, Is.EqualTo(DomainObjectIDs.Order3));
-      Assert.That (result[2].LocatedObject, Is.Null);
-      Assert.That (result[2].ObjectID, Is.EqualTo(DomainObjectIDs.OrderItem1));
+      Assert.That(result.Count, Is.EqualTo(3));
+      Assert.That(result[0].LocatedObject, Is.SameAs(_order1Container));
+      Assert.That(result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
+      Assert.That(result[1].LocatedObject, Is.SameAs(_order2Container));
+      Assert.That(result[1].ObjectID, Is.EqualTo(DomainObjectIDs.Order3));
+      Assert.That(result[2].LocatedObject, Is.Null);
+      Assert.That(result[2].ObjectID, Is.EqualTo(DomainObjectIDs.OrderItem1));
     }
 
     [Test]
     public void Execute_DuplicatedObjectID ()
     {
-      var command = new MultiDataContainerAssociateWithIDsCommand (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order1 }, _commandStub);
+      var command = new MultiDataContainerAssociateWithIDsCommand(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order1 }, _commandStub);
 
-      _commandStub.Stub (stub => stub.Execute (_executionContext)).Return (new[] { _order1Container });
+      _commandStub.Stub(stub => stub.Execute(_executionContext)).Return(new[] { _order1Container });
 
-      var result = command.Execute (_executionContext).ToList ();
+      var result = command.Execute(_executionContext).ToList();
 
-      Assert.That (result.Count, Is.EqualTo (2));
-      Assert.That (result[0].LocatedObject, Is.SameAs(_order1Container));
-      Assert.That (result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
-      Assert.That (result[1].LocatedObject, Is.SameAs (_order1Container));
-      Assert.That (result[1].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
+      Assert.That(result.Count, Is.EqualTo(2));
+      Assert.That(result[0].LocatedObject, Is.SameAs(_order1Container));
+      Assert.That(result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
+      Assert.That(result[1].LocatedObject, Is.SameAs(_order1Container));
+      Assert.That(result[1].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
     }
 
     [Test]
     public void Execute_DuplicatedDataContainer ()
     {
-      var command = new MultiDataContainerAssociateWithIDsCommand (new[] { DomainObjectIDs.Order1 }, _commandStub);
+      var command = new MultiDataContainerAssociateWithIDsCommand(new[] { DomainObjectIDs.Order1 }, _commandStub);
 
-      var otherOrder1DataContainer = DataContainerObjectMother.Create (_order1Container.ID);
+      var otherOrder1DataContainer = DataContainerObjectMother.Create(_order1Container.ID);
 
-      _commandStub.Stub (stub => stub.Execute (_executionContext)).Return (new[] { _order1Container, otherOrder1DataContainer });
+      _commandStub.Stub(stub => stub.Execute(_executionContext)).Return(new[] { _order1Container, otherOrder1DataContainer });
 
-      var result = command.Execute (_executionContext).ToList ();
+      var result = command.Execute(_executionContext).ToList();
 
-      Assert.That (result.Count, Is.EqualTo (1));
-      Assert.That (result[0].LocatedObject, Is.SameAs (otherOrder1DataContainer));
-      Assert.That (result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
+      Assert.That(result.Count, Is.EqualTo(1));
+      Assert.That(result[0].LocatedObject, Is.SameAs(otherOrder1DataContainer));
+      Assert.That(result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
     }
 
     [Test]
     public void Execute_NullDataContainer ()
     {
-      var command = new MultiDataContainerAssociateWithIDsCommand (new[] { DomainObjectIDs.Order1 }, _commandStub);
+      var command = new MultiDataContainerAssociateWithIDsCommand(new[] { DomainObjectIDs.Order1 }, _commandStub);
 
-      _commandStub.Stub (stub => stub.Execute (_executionContext)).Return (new[] { _order1Container, null });
+      _commandStub.Stub(stub => stub.Execute(_executionContext)).Return(new[] { _order1Container, null });
 
-      var result = command.Execute (_executionContext).ToList ();
+      var result = command.Execute(_executionContext).ToList();
 
-      Assert.That (result.Count, Is.EqualTo (1));
-      Assert.That (result[0].LocatedObject, Is.SameAs(_order1Container));
-      Assert.That (result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
+      Assert.That(result.Count, Is.EqualTo(1));
+      Assert.That(result[0].LocatedObject, Is.SameAs(_order1Container));
+      Assert.That(result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
     }
 
     [Test]
     public void Execute_NullObjectID ()
     {
-      var command = new MultiDataContainerAssociateWithIDsCommand (new[] { DomainObjectIDs.Order1, null }, _commandStub);
+      var command = new MultiDataContainerAssociateWithIDsCommand(new[] { DomainObjectIDs.Order1, null }, _commandStub);
 
-      _commandStub.Stub (stub => stub.Execute (_executionContext)).Return (new[] { _order1Container });
+      _commandStub.Stub(stub => stub.Execute(_executionContext)).Return(new[] { _order1Container });
 
-      var result = command.Execute (_executionContext).ToList ();
+      var result = command.Execute(_executionContext).ToList();
 
-      Assert.That (result.Count, Is.EqualTo (2));
-      Assert.That (result[0].LocatedObject, Is.SameAs (_order1Container));
-      Assert.That (result[0].ObjectID, Is.EqualTo (DomainObjectIDs.Order1));
-      Assert.That (result[1].LocatedObject, Is.Null);
-      Assert.That (result[1].ObjectID, Is.Null);
+      Assert.That(result.Count, Is.EqualTo(2));
+      Assert.That(result[0].LocatedObject, Is.SameAs(_order1Container));
+      Assert.That(result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
+      Assert.That(result[1].LocatedObject, Is.Null);
+      Assert.That(result[1].ObjectID, Is.Null);
     }
 
     [Test]
@@ -134,13 +134,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
       var wrongID1 = new ObjectID(typeof (OrderItem), _order1Container.ID.Value);
       var wrongID2 = new ObjectID(typeof (OrderTicket), _order1Container.ID.Value);
 
-      var command = new MultiDataContainerAssociateWithIDsCommand (new[] { wrongID1, wrongID1, wrongID2, _order3Container.ID }, _commandStub);
+      var command = new MultiDataContainerAssociateWithIDsCommand(new[] { wrongID1, wrongID1, wrongID2, _order3Container.ID }, _commandStub);
 
-      _commandStub.Stub (stub => stub.Execute (_executionContext)).Return (new[] { _order1Container, _order2Container, _order3Container });
+      _commandStub.Stub(stub => stub.Execute(_executionContext)).Return(new[] { _order1Container, _order2Container, _order3Container });
 
-      Assert.That (
-          () => command.Execute (_executionContext).ToList(), 
-          Throws.TypeOf<PersistenceException>().With.Message.EqualTo (
+      Assert.That(
+          () => command.Execute(_executionContext).ToList(), 
+          Throws.TypeOf<PersistenceException>().With.Message.EqualTo(
               "The ObjectID of one or more loaded DataContainers does not match the expected ObjectIDs:\r\n"
               + "Loaded DataContainer ID: Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, expected ObjectID(s): "
               + "OrderItem|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, OrderTicket|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid\r\n"

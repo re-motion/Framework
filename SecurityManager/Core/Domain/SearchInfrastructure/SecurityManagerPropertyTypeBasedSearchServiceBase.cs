@@ -45,19 +45,19 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public override sealed bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("property", property);
 
-      return typeof (TReferencedObject).IsAssignableFrom (property.PropertyType);
+      return typeof (TReferencedObject).IsAssignableFrom(property.PropertyType);
     }
 
     protected override sealed QueryFactory GetQueryFactory (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("property", property);
 
-      if (!SupportsProperty (property))
+      if (!SupportsProperty(property))
       {
-        throw new ArgumentException (
-            string.Format (
+        throw new ArgumentException(
+            string.Format(
                 "The type of the property '{0}', declared on '{1}', is not supported by the '{2}' type.",
                 property.Identifier,
                 property.ReflectedClass.Identifier,

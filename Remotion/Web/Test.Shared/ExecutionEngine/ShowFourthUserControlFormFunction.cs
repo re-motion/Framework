@@ -28,6 +28,6 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     {
     }
 
-    private WxeResourceUserControlStep Step1 = new WxeResourceUserControlStep (typeof (FourthControl), "ExecutionEngine/FourthControl.ascx");
+    private WxeResourceUserControlStep Step1 = new WxeResourceUserControlStep(typeof (FourthControl), "ExecutionEngine/FourthControl.ascx");
   }
 }

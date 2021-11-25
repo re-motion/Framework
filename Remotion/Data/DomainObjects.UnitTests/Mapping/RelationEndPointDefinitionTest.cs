@@ -29,17 +29,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       RelationDefinition customerToOrder = FakeMappingConfiguration.Current.RelationDefinitions[
         "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order:Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain."
         + "Integration.Order.Customer->Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain."
         + "Integration.Customer.Orders"];
 
-      _customerEndPoint = (DomainObjectCollectionRelationEndPointDefinition) customerToOrder.GetEndPointDefinition (
+      _customerEndPoint = (DomainObjectCollectionRelationEndPointDefinition) customerToOrder.GetEndPointDefinition(
           "Customer", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders");
 
-      _orderEndPoint = (RelationEndPointDefinition) customerToOrder.GetEndPointDefinition (
+      _orderEndPoint = (RelationEndPointDefinition) customerToOrder.GetEndPointDefinition(
           "Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer");
     }
 
@@ -48,10 +48,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var companyDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Company)];
       var propertyDefinition = companyDefinition["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Name"];
-      Assert.That (
-          () => new RelationEndPointDefinition (propertyDefinition, false),
+      Assert.That(
+          () => new RelationEndPointDefinition(propertyDefinition, false),
           Throws.InstanceOf<MappingException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Relation definition error: Property 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Name' of class 'Company' is of type "
                   + "'System.String', but non-virtual properties must be of type 'Remotion.Data.DomainObjects.ObjectID'."));
     }
@@ -59,18 +59,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void Initialize ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order));
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID (classDefinition);
-      classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection { propertyDefinition });
-      var endPoint = new RelationEndPointDefinition (propertyDefinition, true);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Order));
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(classDefinition);
+      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection { propertyDefinition });
+      var endPoint = new RelationEndPointDefinition(propertyDefinition, true);
 
-      Assert.That (endPoint.PropertyInfo, Is.SameAs (propertyDefinition.PropertyInfo));
+      Assert.That(endPoint.PropertyInfo, Is.SameAs(propertyDefinition.PropertyInfo));
     }
 
     [Test]
     public void IsAnonymous ()
     {
-      Assert.That (_orderEndPoint.IsAnonymous, Is.False);
+      Assert.That(_orderEndPoint.IsAnonymous, Is.False);
     }
 
     [Test]
@@ -79,15 +79,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (OrderTicket)];
       var propertyDefinition = classDefinition["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderTicket.Order"];
 
-      var definition = new RelationEndPointDefinition (propertyDefinition, true);
+      var definition = new RelationEndPointDefinition(propertyDefinition, true);
 
-      Assert.That (definition.RelationDefinition, Is.Null);
+      Assert.That(definition.RelationDefinition, Is.Null);
     }
 
     [Test]
     public void RelationDefinitionNotNull ()
     {
-      Assert.That (_orderEndPoint.RelationDefinition, Is.Not.Null);
+      Assert.That(_orderEndPoint.RelationDefinition, Is.Not.Null);
     }
   }
 }

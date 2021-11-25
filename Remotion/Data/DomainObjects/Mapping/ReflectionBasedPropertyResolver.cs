@@ -32,24 +32,24 @@ namespace Remotion.Data.DomainObjects.Mapping
     public static T ResolveDefinition<T> (IPropertyInformation propertyInformation, ClassDefinition classDefinition, Func<string, T> definitionGetter) 
         where T : class
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull ("definitionGetter", definitionGetter);
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull("definitionGetter", definitionGetter);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      var matchingImplementations = GetMatchingDefinitions (propertyInformation, classDefinition, definitionGetter);
+      var matchingImplementations = GetMatchingDefinitions(propertyInformation, classDefinition, definitionGetter);
 
       if (matchingImplementations.Count > 1)
       {
-        var implementingTypeNames = matchingImplementations.Select (tuple => "'" + tuple.Item1.DeclaringType + "'").OrderBy (name => name);
-        var message = string.Format (
+        var implementingTypeNames = matchingImplementations.Select(tuple => "'" + tuple.Item1.DeclaringType + "'").OrderBy(name => name);
+        var message = string.Format(
             "The property '{0}' is ambiguous, it is implemented by the following types valid in the context of class '{1}': {2}.",
             propertyInformation.Name,
             classDefinition.ClassType.Name,
-            string.Join (", ", implementingTypeNames));
-        throw new InvalidOperationException (message);
+            string.Join(", ", implementingTypeNames));
+        throw new InvalidOperationException(message);
       }
 
-      return matchingImplementations.Select (tuple => tuple.Item2).SingleOrDefault();
+      return matchingImplementations.Select(tuple => tuple.Item2).SingleOrDefault();
     }
 
     private static List<Tuple<IPropertyInformation, T>> GetMatchingDefinitions<T> (
@@ -60,10 +60,10 @@ namespace Remotion.Data.DomainObjects.Mapping
       IEnumerable<IPropertyInformation> propertyImplementationCandidates;
       if (propertyInformation.DeclaringType.IsInterface)
       {
-        var implementingTypes = GetImplementingTypes (classDefinition, propertyInformation);
+        var implementingTypes = GetImplementingTypes(classDefinition, propertyInformation);
         propertyImplementationCandidates = implementingTypes
-            .Select (propertyInformation.FindInterfaceImplementation)
-            .Where (pi => pi != null);
+            .Select(propertyInformation.FindInterfaceImplementation)
+            .Where(pi => pi != null);
       }
       else
       {
@@ -71,27 +71,27 @@ namespace Remotion.Data.DomainObjects.Mapping
       }
 
       return (from pi in propertyImplementationCandidates
-              let propertyIdentifier = MappingConfiguration.Current.NameResolver.GetPropertyName (pi)
-              let definition = definitionGetter (propertyIdentifier)
+              let propertyIdentifier = MappingConfiguration.Current.NameResolver.GetPropertyName(pi)
+              let definition = definitionGetter(propertyIdentifier)
               where definition != null
-              select Tuple.Create (pi, definition))
-          .Distinct (new DelegateBasedEqualityComparer<Tuple<IPropertyInformation, T>> (
-                         (x, y) => object.Equals (x.Item1, y.Item1), 
+              select Tuple.Create(pi, definition))
+          .Distinct(new DelegateBasedEqualityComparer<Tuple<IPropertyInformation, T>>(
+                         (x, y) => object.Equals(x.Item1, y.Item1), 
                          x => x.Item1.GetHashCode()))
           .ToList();
     }
 
     private static IEnumerable<Type> GetImplementingTypes (ClassDefinition classDefinition, IPropertyInformation interfaceProperty)
     {
-      Assertion.IsTrue (interfaceProperty.DeclaringType.IsInterface);
+      Assertion.IsTrue(interfaceProperty.DeclaringType.IsInterface);
 
-      if (interfaceProperty.DeclaringType.IsAssignableFrom (TypeAdapter.Create (classDefinition.ClassType)))
+      if (interfaceProperty.DeclaringType.IsAssignableFrom(TypeAdapter.Create(classDefinition.ClassType)))
         yield return classDefinition.ClassType;
 
       var implementingPersistentMixins = 
-          from cd in classDefinition.CreateSequence (cd => cd.BaseClass)
+          from cd in classDefinition.CreateSequence(cd => cd.BaseClass)
           from mixinType in cd.PersistentMixins
-          where interfaceProperty.DeclaringType.IsAssignableFrom (TypeAdapter.Create (mixinType))
+          where interfaceProperty.DeclaringType.IsAssignableFrom(TypeAdapter.Create(mixinType))
           select mixinType;
 
       foreach (var implementingPersistentMixin in implementingPersistentMixins)

@@ -31,11 +31,11 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       foreach (var endPointDefinition in relationDefinition.EndPointDefinitions)
       {
-        var validationResult = Validate (endPointDefinition);
+        var validationResult = Validate(endPointDefinition);
         if (!validationResult.IsValid)
           return validationResult;
       }
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
       {
         try
         {
-          domainObjectCollectionRelationEndPointDefinition.GetSortExpression ();
+          domainObjectCollectionRelationEndPointDefinition.GetSortExpression();
         }
         catch (MappingException ex)
         {
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
       {
         try
         {
-          virtualCollectionRelationEndPointDefinition.GetSortExpression ();
+          virtualCollectionRelationEndPointDefinition.GetSortExpression();
         }
         catch (MappingException ex)
         {

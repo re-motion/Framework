@@ -29,7 +29,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
     {
       var mixinTarget = (IMixinTarget) this;
       FirstNextCallProxy = mixinTarget.FirstNextCallProxy;
-      Assert.That (FirstNextCallProxy, Is.Not.Null);
+      Assert.That(FirstNextCallProxy, Is.Not.Null);
     }
   }
 }

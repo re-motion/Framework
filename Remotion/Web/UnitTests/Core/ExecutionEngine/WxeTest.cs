@@ -41,18 +41,18 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [SetUp]
     public virtual void SetUp ()
     {
-      _currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "default.html", null);
-      HttpContextHelper.SetCurrent (_currentHttpContext);
+      _currentHttpContext = HttpContextHelper.CreateHttpContext("GET", "default.html", null);
+      HttpContextHelper.SetCurrent(_currentHttpContext);
 
-      _currentWxeContext = new WxeContextMock (_currentHttpContext);
-      WxeContext.SetCurrent (_currentWxeContext);
+      _currentWxeContext = new WxeContextMock(_currentHttpContext);
+      WxeContext.SetCurrent(_currentWxeContext);
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      HttpContextHelper.SetCurrent (null);
-      WxeContext.SetCurrent (null);
+      HttpContextHelper.SetCurrent(null);
+      WxeContext.SetCurrent(null);
     }
   }
 }

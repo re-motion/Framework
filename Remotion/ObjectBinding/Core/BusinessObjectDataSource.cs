@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding
     public void LoadValues (bool interim)
     {
       foreach (var control in GetBoundControlsWithValidBinding())
-        control.LoadValue (interim);
+        control.LoadValue(interim);
     }
 
     /// <summary> 
@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding
     {
       bool hasSaved = true;
       foreach (var control in GetBoundControlsWithValidBinding().OfType<IBusinessObjectBoundEditableControl>())
-        hasSaved &= control.SaveValue (interim);
+        hasSaved &= control.SaveValue(interim);
       return hasSaved;
     }
 
@@ -119,7 +119,7 @@ namespace Remotion.ObjectBinding
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public IEnumerable<IBusinessObjectBoundControl> GetBoundControlsWithValidBinding ()
     {
-      return _boundControls.Where (c => c.HasValidBinding);
+      return _boundControls.Where(c => c.HasValidBinding);
     }
 
     /// <summary>
@@ -130,9 +130,9 @@ namespace Remotion.ObjectBinding
     /// </param>
     public void Register (IBusinessObjectBoundControl control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      if (!_boundControls.Contains (control))
-        _boundControls.Add (control);
+      ArgumentUtility.CheckNotNull("control", control);
+      if (!_boundControls.Contains(control))
+        _boundControls.Add(control);
     }
 
     /// <summary>
@@ -143,8 +143,8 @@ namespace Remotion.ObjectBinding
     /// </param>
     public void Unregister (IBusinessObjectBoundControl control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      _boundControls.Remove (control);
+      ArgumentUtility.CheckNotNull("control", control);
+      _boundControls.Remove(control);
     }
   }
 }

@@ -42,7 +42,7 @@ namespace Remotion.Web
     /// <returns>The newly created <see cref="PlainTextString"/> containing the <paramref name="text"/>.</returns>
     public static PlainTextString CreateFromText ([CanBeNull] string? text)
     {
-      return new PlainTextString (text);
+      return new PlainTextString(text);
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ namespace Remotion.Web
     /// </returns>
     public static bool operator == (PlainTextString left, PlainTextString right)
     {
-      return left.Equals (right);
+      return left.Equals(right);
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ namespace Remotion.Web
     /// </returns>
     public static bool operator != (PlainTextString left, PlainTextString right)
     {
-      return !left.Equals (right);
+      return !left.Equals(right);
     }
 
     /// <summary>
@@ -78,7 +78,7 @@ namespace Remotion.Web
     /// <returns>A <see cref="WebString"/> of type <see cref="WebStringType"/>.<see cref="WebStringType.PlainText"/>.</returns>
     public static implicit operator WebString (PlainTextString value)
     {
-      return WebString.CreateFromText (value._value);
+      return WebString.CreateFromText(value._value);
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ namespace Remotion.Web
     /// <returns>A <see cref="PlainTextString"/> with the specified <paramref name="value"/>.</returns>
     public static explicit operator PlainTextString (string value)
     {
-      return new PlainTextString (value);
+      return new PlainTextString(value);
     }
 
     [CanBeNull]
@@ -102,7 +102,7 @@ namespace Remotion.Web
     /// <summary>
     /// Tests whether the <see cref="PlainTextString"/>s value is <see langword="null" /> or an empty string.
     /// </summary>
-    public bool IsEmpty => string.IsNullOrEmpty (_value);
+    public bool IsEmpty => string.IsNullOrEmpty(_value);
 
     /// <summary>
     /// Gets the raw string value of the <see cref="PlainTextString"/> or an empty string if there is no value.
@@ -117,9 +117,9 @@ namespace Remotion.Web
     /// <param name="writer">The <see cref="HtmlTextWriter"/> where the value will be appended to. Must not be <see langword="null" />.</param>
     public void Write ([NotNull] HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull (nameof (writer), writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
-      ((WebString) this).Write (writer);
+      ((WebString) this).Write(writer);
     }
 
     /// <summary>
@@ -133,9 +133,9 @@ namespace Remotion.Web
     /// <param name="attribute">The attribute that is to be added.</param>
     public void AddAttribute ([NotNull] HtmlTextWriter writer, HtmlTextWriterAttribute attribute)
     {
-      ArgumentUtility.CheckNotNull (nameof (writer), writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
-      ((WebString) this).AddAttribute (writer, attribute);
+      ((WebString) this).AddAttribute(writer, attribute);
     }
 
     /// <summary>
@@ -149,10 +149,10 @@ namespace Remotion.Web
     /// <param name="attribute">The name of the attribute that is to be added. Must not be <see langword="null" /> or empty.</param>
     public void AddAttribute ([NotNull] HtmlTextWriter writer, [NotNull] string attribute)
     {
-      ArgumentUtility.CheckNotNull (nameof (writer), writer);
-      ArgumentUtility.CheckNotNullOrEmpty (nameof (attribute), attribute);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(attribute), attribute);
 
-      ((WebString) this).AddAttribute (writer, attribute);
+      ((WebString) this).AddAttribute(writer, attribute);
     }
 
     /// <inheritdoc />
@@ -164,7 +164,7 @@ namespace Remotion.Web
     /// <inheritdoc />
     public override bool Equals (object? obj)
     {
-      return obj is PlainTextString other && Equals (other);
+      return obj is PlainTextString other && Equals(other);
     }
 
     /// <inheritdoc />
@@ -188,7 +188,7 @@ namespace Remotion.Web
     /// <returns>A string that represents the current <see cref="PlainTextString"/> in the specified <paramref name="encoding"/>.</returns>
     public string ToString (WebStringEncoding encoding)
     {
-      return ((WebString) this).ToString (encoding);
+      return ((WebString) this).ToString(encoding);
     }
   }
 }

@@ -35,18 +35,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       var dummyPersonWithNoJobs = Person.CreateObject();
       dummyPersonWithNoJobs.Jobs = new Job[0];
       EmptyObject.BusinessObject = (IBusinessObject) dummyPersonWithNoJobs;
-      EmptyObject.LoadValues (false);
+      EmptyObject.LoadValues(false);
 
       var view1 = new BocListView { ItemID = "ViewCmd1", Title = "View 1" };
       var view2 = new BocListView { ItemID = "ViewCmd2", Title = "View 2" };
-      JobList_Normal.AvailableViews.AddRange (view1, view2);
+      JobList_Normal.AvailableViews.AddRange(view1, view2);
       JobList_Normal.SelectedView = view2;
-      JobList_ReadOnly.AvailableViews.AddRange (view1, view2);
+      JobList_ReadOnly.AvailableViews.AddRange(view1, view2);
 
       JobList_Normal.MenuItemClick += MenuItemClickHandler;
       JobList_ReadOnly.MenuItemClick += MenuItemClickHandler;
@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
       JobList_ReadOnly.CustomCellClick += CustomCellClickHandler;
 
       AlwaysInvalidValidator.ServerValidate += (source, args) => args.IsValid = false;
-      JobList_AlwaysInvalid.RegisterValidator (AlwaysInvalidValidator);
+      JobList_AlwaysInvalid.RegisterValidator(AlwaysInvalidValidator);
 
       var variableColumnsColumnDefinitions = new[]
                                              {
@@ -77,17 +77,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
                                              };
       var variableColumnsViews = new[]
                                  {
-                                     new BocListView ("View 1", variableColumnsColumnDefinitions.Take(2).ToArray()) { ItemID = "ViewCmd1" },
-                                     new BocListView ("View 2", variableColumnsColumnDefinitions.Take(3).ToArray()) { ItemID = "ViewCmd2" },
+                                     new BocListView("View 1", variableColumnsColumnDefinitions.Take(2).ToArray()) { ItemID = "ViewCmd1" },
+                                     new BocListView("View 2", variableColumnsColumnDefinitions.Take(3).ToArray()) { ItemID = "ViewCmd2" },
                                  };
-      JobList_Empty_VariableColumns.AvailableViews.AddRange (variableColumnsViews);
+      JobList_Empty_VariableColumns.AvailableViews.AddRange(variableColumnsViews);
 
-      SampleIconUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl (typeof (BocListUserControl), ResourceType.Image, "SampleIcon.gif").GetUrl();
+      SampleIconUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl(typeof (BocListUserControl), ResourceType.Image, "SampleIcon.gif").GetUrl();
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
       SetTestOutput();
     }
 
@@ -95,37 +95,37 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     {
       var bocList = (BocList) sender;
       var command = e.Item.ItemID + "|" + e.Item.Text;
-      TestOutput.SetActionPerformed (bocList.ID, -1, "ListMenuOrOptionsClick", command);
+      TestOutput.SetActionPerformed(bocList.ID, -1, "ListMenuOrOptionsClick", command);
     }
 
     private void SortingOrderChangedHandler (object sender, BocListSortingOrderChangeEventArgs bocListSortingOrderChangeEventArgs)
     {
       var bocList = (BocList) sender;
-      TestOutput.SetActionPerformed (
+      TestOutput.SetActionPerformed(
           bocList.ID,
           -1,
           "SortingOrderChanged",
-          string.Join (", ", bocListSortingOrderChangeEventArgs.NewSortingOrder.Select (nso => nso.Column.ItemID + "-" + nso.Direction.ToString()))
+          string.Join(", ", bocListSortingOrderChangeEventArgs.NewSortingOrder.Select(nso => nso.Column.ItemID + "-" + nso.Direction.ToString()))
           );
     }
 
     private void EditableRowChangedSavedHandler (object sender, BocListItemEventArgs bocListItemEventArgs)
     {
       var bocList = (BocList) sender;
-      TestOutput.SetActionPerformed (bocList.ID, bocListItemEventArgs.ListIndex, "InLineEdit", "Saved");
+      TestOutput.SetActionPerformed(bocList.ID, bocListItemEventArgs.ListIndex, "InLineEdit", "Saved");
     }
 
     private void EditableRowChangesCanceledHandler (object sender, BocListItemEventArgs bocListItemEventArgs)
     {
       var bocList = (BocList) sender;
-      TestOutput.SetActionPerformed (bocList.ID, bocListItemEventArgs.ListIndex, "InLineEdit", "Canceled");
+      TestOutput.SetActionPerformed(bocList.ID, bocListItemEventArgs.ListIndex, "InLineEdit", "Canceled");
     }
 
     private void ListItemCommandClickHandler (object sender, BocListItemCommandClickEventArgs bocListItemCommandClickEventArgs)
     {
       var bocList = (BocList) sender;
       var cell = bocListItemCommandClickEventArgs.Column.ItemID;
-      TestOutput.SetActionPerformed (
+      TestOutput.SetActionPerformed(
           bocList.ID,
           bocListItemCommandClickEventArgs.ListIndex,
           "CellCommandClick",
@@ -136,13 +136,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     {
       var bocList = (BocList) sender;
       var cell = bocCustomCellClickEventArgs.Column.ItemID + "|" + bocCustomCellClickEventArgs.Column.ColumnTitleDisplayValue;
-      TestOutput.SetActionPerformed (bocList.ID, -1, "CustomCellClick", cell);
+      TestOutput.SetActionPerformed(bocList.ID, -1, "CustomCellClick", cell);
     }
 
     private void SetTestOutput ()
     {
-      TestOutput.SetInfoForNormalBocList (JobList_Normal);
-      TestOutput.SetInfoForRadioButtonBocList (JobList_WithRadioButtons);
+      TestOutput.SetInfoForNormalBocList(JobList_Normal);
+      TestOutput.SetInfoForRadioButtonBocList(JobList_WithRadioButtons);
     }
 
     private BocListUserControlTestOutput TestOutput

@@ -61,18 +61,18 @@ namespace Remotion.Data.DomainObjects.DataManagement
     protected ObjectInvalidException (SerializationInfo info, StreamingContext context)
         : base (info, context)
     {
-      _id = (ObjectID) info.GetValue ("ID", typeof (ObjectID));
+      _id = (ObjectID) info.GetValue("ID", typeof (ObjectID));
     }
 
     public ObjectInvalidException (ObjectID id)
-        : this (string.Format ("Object '{0}' is invalid in this transaction.", id), id)
+        : this (string.Format("Object '{0}' is invalid in this transaction.", id), id)
     {
     }
 
     public ObjectInvalidException (string message, ObjectID id)
         : base (message)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
+      ArgumentUtility.CheckNotNull("id", id);
 
       _id = id;
     }
@@ -87,9 +87,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      base.GetObjectData (info, context);
+      base.GetObjectData(info, context);
 
-      info.AddValue ("ID", _id);
+      info.AddValue("ID", _id);
     }
   }
 }

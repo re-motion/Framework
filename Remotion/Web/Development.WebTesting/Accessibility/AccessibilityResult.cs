@@ -99,11 +99,11 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         AccessibilityConformanceLevel conformanceLevel,
         [NotNull] IReadOnlyCollection<AccessibilityRuleResult> violations)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("url", url);
-      ArgumentUtility.CheckNotNullOrEmpty ("axeVersion", axeVersion);
-      ArgumentUtility.CheckNotEmpty ("orientationType", orientationType); // Is null in IE
-      ArgumentUtility.CheckNotNullOrEmpty ("userAgent", userAgent);
-      ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
+      ArgumentUtility.CheckNotNullOrEmpty("url", url);
+      ArgumentUtility.CheckNotNullOrEmpty("axeVersion", axeVersion);
+      ArgumentUtility.CheckNotEmpty("orientationType", orientationType); // Is null in IE
+      ArgumentUtility.CheckNotNullOrEmpty("userAgent", userAgent);
+      ArgumentUtility.CheckNotNullOrItemsNull("violations", violations);
 
 
       Timestamp = timestamp;
@@ -124,7 +124,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// </summary>
     public override string ToString ()
     {
-      var violations = string.Join (", ", Violations.Select (x => "<" + x.ToString() + ">"));
+      var violations = string.Join(", ", Violations.Select(x => "<" + x.ToString() + ">"));
       return $"Tag: <{ConformanceLevel}>, Violations: <{violations}>";
     }
   }

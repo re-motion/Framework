@@ -33,27 +33,27 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public TableSerializer (IPropertySerializer propertySerializer)
     {
-      ArgumentUtility.CheckNotNull ("propertySerializer", propertySerializer);
+      ArgumentUtility.CheckNotNull("propertySerializer", propertySerializer);
 
       _propertySerializer = propertySerializer;
     }
 
     public IEnumerable<XElement> Serialize (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       var tableDefinition = GetTableDefinition(classDefinition);
       if (tableDefinition == null)
         yield break;
 
       var storageProviderDefinition = (RdbmsProviderDefinition) classDefinition.StorageEntityDefinition.StorageProviderDefinition;
-      var persistenceModelProvider = storageProviderDefinition.Factory.CreateRdbmsPersistenceModelProvider (storageProviderDefinition);
+      var persistenceModelProvider = storageProviderDefinition.Factory.CreateRdbmsPersistenceModelProvider(storageProviderDefinition);
 
-      yield return new XElement (
+      yield return new XElement(
           Constants.Namespace + "table",
-          new XAttribute ("name", tableDefinition.TableName.EntityName),
-          GetPersistentPropertyDefinitions (classDefinition)
-              .Select (p => _propertySerializer.Serialize (p, persistenceModelProvider))
+          new XAttribute("name", tableDefinition.TableName.EntityName),
+          GetPersistentPropertyDefinitions(classDefinition)
+              .Select(p => _propertySerializer.Serialize(p, persistenceModelProvider))
           );
     }
 
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     private IEnumerable<PropertyDefinition> GetPersistentPropertyDefinitions (ClassDefinition classDefinition)
     {
-      return classDefinition.GetPropertyDefinitions().Where (p => p.StorageClass == StorageClass.Persistent);
+      return classDefinition.GetPropertyDefinitions().Where(p => p.StorageClass == StorageClass.Persistent);
     }
   }
 }

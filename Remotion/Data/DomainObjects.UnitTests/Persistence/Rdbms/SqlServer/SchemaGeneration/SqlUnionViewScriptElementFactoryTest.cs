@@ -33,38 +33,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
  
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _factory = new SqlUnionViewScriptElementFactory();
 
-      var property1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Column1");
-      var property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Column2");
+      var property1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column1");
+      var property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column2");
 
-      var tableDefinition1 = TableDefinitionObjectMother.Create (
+      var tableDefinition1 = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition ("SchemaName", "TableName1"),
+          new EntityNameDefinition("SchemaName", "TableName1"),
           null,
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
           new[] { property1 });
-      var tableDefinition2 = TableDefinitionObjectMother.Create (
+      var tableDefinition2 = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition (null, "TableName2"),
+          new EntityNameDefinition(null, "TableName2"),
           null,
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
           new[] { property1, property2 });
 
-      _unionViewDefinitionWithCustomSchema = UnionViewDefinitionObjectMother.Create (
+      _unionViewDefinitionWithCustomSchema = UnionViewDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition ("SchemaName", "UnionView1"),
+          new EntityNameDefinition("SchemaName", "UnionView1"),
           new[] { tableDefinition1 },
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
           new[] { property1 });
-      _unionViewDefinitionWithDefaultSchema = UnionViewDefinitionObjectMother.Create (
+      _unionViewDefinitionWithDefaultSchema = UnionViewDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition (null, "UnionView2"),
+          new EntityNameDefinition(null, "UnionView2"),
           new[] { tableDefinition1, tableDefinition2 },
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
@@ -74,21 +74,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     [Test]
     public void GetCreateElement_OneUnionedEntity_CustomSchemaWithSchemaBinding ()
     {
-      var result = _factory.GetCreateElement (_unionViewDefinitionWithCustomSchema);
+      var result = _factory.GetCreateElement(_unionViewDefinitionWithCustomSchema);
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptElementCollection)));
+      Assert.That(result, Is.TypeOf(typeof (ScriptElementCollection)));
       var elements = ((ScriptElementCollection) result).Elements;
-      Assert.That (elements.Count, Is.EqualTo (3));
-      Assert.That (elements[0], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[2], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[1], Is.TypeOf (typeof (ScriptStatement)));
+      Assert.That(elements.Count, Is.EqualTo(3));
+      Assert.That(elements[0], Is.TypeOf(typeof (BatchDelimiterStatement)));
+      Assert.That(elements[2], Is.TypeOf(typeof (BatchDelimiterStatement)));
+      Assert.That(elements[1], Is.TypeOf(typeof (ScriptStatement)));
       var expectedResult =
           "CREATE VIEW [SchemaName].[UnionView1] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
           +"  WITH SCHEMABINDING AS\r\n"
           + "  SELECT [ID], [ClassID], [Timestamp], [Column1]\r\n"
           +"    FROM [SchemaName].[TableName1]\r\n"
           +"  WITH CHECK OPTION";
-      Assert.That (((ScriptStatement) elements[1]).Statement, Is.EqualTo (expectedResult));
+      Assert.That(((ScriptStatement) elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -96,34 +96,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     {
       var factory = new ExtendedSqlUnionViewScriptElementFactory();
 
-      var result = factory.GetCreateElement (_unionViewDefinitionWithCustomSchema);
+      var result = factory.GetCreateElement(_unionViewDefinitionWithCustomSchema);
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptElementCollection)));
+      Assert.That(result, Is.TypeOf(typeof (ScriptElementCollection)));
       var elements = ((ScriptElementCollection) result).Elements;
-      Assert.That (elements.Count, Is.EqualTo (3));
-      Assert.That (elements[0], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[2], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[1], Is.TypeOf (typeof (ScriptStatement)));
+      Assert.That(elements.Count, Is.EqualTo(3));
+      Assert.That(elements[0], Is.TypeOf(typeof (BatchDelimiterStatement)));
+      Assert.That(elements[2], Is.TypeOf(typeof (BatchDelimiterStatement)));
+      Assert.That(elements[1], Is.TypeOf(typeof (ScriptStatement)));
       var expectedResult =
           "CREATE VIEW [SchemaName].[UnionView1] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
           + "  AS\r\n"
           + "  SELECT [ID], [ClassID], [Timestamp], [Column1]\r\n"
           + "    FROM [SchemaName].[TableName1]\r\n"
           + "  WITH CHECK OPTION";
-      Assert.That (((ScriptStatement) elements[1]).Statement, Is.EqualTo (expectedResult));
+      Assert.That(((ScriptStatement) elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetCreateElement_SeveralUnionedEntities_DefaultSchemaWithSchemaBinding ()
     {
-      var result = _factory.GetCreateElement (_unionViewDefinitionWithDefaultSchema);
+      var result = _factory.GetCreateElement(_unionViewDefinitionWithDefaultSchema);
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptElementCollection)));
+      Assert.That(result, Is.TypeOf(typeof (ScriptElementCollection)));
       var elements = ((ScriptElementCollection) result).Elements;
-      Assert.That (elements.Count, Is.EqualTo (3));
-      Assert.That (elements[0], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[2], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[1], Is.TypeOf (typeof (ScriptStatement)));
+      Assert.That(elements.Count, Is.EqualTo(3));
+      Assert.That(elements[0], Is.TypeOf(typeof (BatchDelimiterStatement)));
+      Assert.That(elements[2], Is.TypeOf(typeof (BatchDelimiterStatement)));
+      Assert.That(elements[1], Is.TypeOf(typeof (ScriptStatement)));
 
       var expectedResult =
           "CREATE VIEW [dbo].[UnionView2] ([ID], [ClassID], [Timestamp], [Column1], [Column2])\r\n"
@@ -134,22 +134,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  SELECT [ID], [ClassID], [Timestamp], [Column1], [Column2]\r\n"
           +"    FROM [dbo].[TableName2]";
 
-      Assert.That (((ScriptStatement) elements[1]).Statement, Is.EqualTo (expectedResult));
+      Assert.That(((ScriptStatement) elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetCreateElement_SeveralUnionedEntities_DefaultSchemaWithoutSchemaBinding ()
     {
-      var factory = new ExtendedSqlUnionViewScriptElementFactory ();
+      var factory = new ExtendedSqlUnionViewScriptElementFactory();
 
-      var result = factory.GetCreateElement (_unionViewDefinitionWithDefaultSchema);
+      var result = factory.GetCreateElement(_unionViewDefinitionWithDefaultSchema);
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptElementCollection)));
+      Assert.That(result, Is.TypeOf(typeof (ScriptElementCollection)));
       var elements = ((ScriptElementCollection) result).Elements;
-      Assert.That (elements.Count, Is.EqualTo (3));
-      Assert.That (elements[0], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[2], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[1], Is.TypeOf (typeof (ScriptStatement)));
+      Assert.That(elements.Count, Is.EqualTo(3));
+      Assert.That(elements[0], Is.TypeOf(typeof (BatchDelimiterStatement)));
+      Assert.That(elements[2], Is.TypeOf(typeof (BatchDelimiterStatement)));
+      Assert.That(elements[1], Is.TypeOf(typeof (ScriptStatement)));
 
       var expectedResult =
           "CREATE VIEW [dbo].[UnionView2] ([ID], [ClassID], [Timestamp], [Column1], [Column2])\r\n"
@@ -160,33 +160,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  SELECT [ID], [ClassID], [Timestamp], [Column1], [Column2]\r\n"
           + "    FROM [dbo].[TableName2]";
 
-      Assert.That (((ScriptStatement) elements[1]).Statement, Is.EqualTo (expectedResult));
+      Assert.That(((ScriptStatement) elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_CustomSchema ()
     {
-      var result = _factory.GetDropElement (_unionViewDefinitionWithCustomSchema);
+      var result = _factory.GetDropElement(_unionViewDefinitionWithCustomSchema);
 
       var expectedResult =
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'UnionView1' AND TABLE_SCHEMA = 'SchemaName')\r\n"
           + "  DROP VIEW [SchemaName].[UnionView1]";
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_DefaultSchema ()
     {
-      var result = _factory.GetDropElement (_unionViewDefinitionWithDefaultSchema);
+      var result = _factory.GetDropElement(_unionViewDefinitionWithDefaultSchema);
 
       var expectedResult =
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'UnionView2' AND TABLE_SCHEMA = 'dbo')\r\n"
           + "  DROP VIEW [dbo].[UnionView2]";
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
   }
 }

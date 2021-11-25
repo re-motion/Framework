@@ -27,8 +27,8 @@ namespace Remotion.Development.UnitTesting
   {
     public static void Run (ThreadStart threadStart)
     {
-      ArgumentUtility.CheckNotNull ("threadStart", threadStart);
-      new ThreadRunner (threadStart).Run();
+      ArgumentUtility.CheckNotNull("threadStart", threadStart);
+      new ThreadRunner(threadStart).Run();
     }
 
     private readonly ThreadStart _threadStart;
@@ -41,7 +41,7 @@ namespace Remotion.Development.UnitTesting
 
     public ThreadRunner (ThreadStart threadStart, TimeSpan timeoutTimeSpan)
     {
-      ArgumentUtility.CheckNotNull ("threadStart", threadStart);
+      ArgumentUtility.CheckNotNull("threadStart", threadStart);
       _threadStart = threadStart;
       _timeoutTimeSpan = timeoutTimeSpan;
     }
@@ -57,7 +57,7 @@ namespace Remotion.Development.UnitTesting
 
       // Use anonymous delegate to catch and store exceptions from the thread in the current scope.
       Thread otherThread = 
-        new Thread ((ThreadStart)
+        new Thread((ThreadStart)
           delegate
           {
             try
@@ -67,7 +67,7 @@ namespace Remotion.Development.UnitTesting
             catch (ThreadAbortException)
             {
               // Explicitely reset the ThreadAbortException
-              Thread.ResetAbort ();
+              Thread.ResetAbort();
               // Do not report exception in lastException, since aborting is expected behavior.
             }
             catch (Exception e)
@@ -77,15 +77,15 @@ namespace Remotion.Development.UnitTesting
           }
          );
 
-      otherThread.Start ();
+      otherThread.Start();
       bool timedOut = !JoinThread(otherThread);
 
       // If the thread has timed out, it remains running since a Thread cannot be aborted in .NET Core.
 
       if (timedOut)
       {
-        throw new TimeoutException (
-            string.Format ("The thread has not finished executing within the timeout ({0}) and was not cleaned up.", Timeout),
+        throw new TimeoutException(
+            string.Format("The thread has not finished executing within the timeout ({0}) and was not cleaned up.", Timeout),
             lastException);
       }
 
@@ -95,7 +95,7 @@ namespace Remotion.Development.UnitTesting
 
     protected virtual bool JoinThread (Thread otherThread)
     {
-      return otherThread.Join (_timeoutTimeSpan);
+      return otherThread.Join(_timeoutTimeSpan);
     }
   }
 }

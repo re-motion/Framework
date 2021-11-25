@@ -28,14 +28,14 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
     public int Prop1
     {
-      get { throw new Exception ("The method or operation is not implemented."); }
-      set { throw new Exception ("The method or operation is not implemented."); }
+      get { throw new Exception("The method or operation is not implemented."); }
+      set { throw new Exception("The method or operation is not implemented."); }
     }
 
     public int Prop2
     {
-      get { throw new Exception ("The method or operation is not implemented."); }
-      set { throw new Exception ("The method or operation is not implemented."); }
+      get { throw new Exception("The method or operation is not implemented."); }
+      set { throw new Exception("The method or operation is not implemented."); }
     }
   }
 }

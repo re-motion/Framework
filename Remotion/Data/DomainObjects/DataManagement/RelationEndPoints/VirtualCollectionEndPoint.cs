@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// </summary>
   public class VirtualCollectionEndPoint : RelationEndPoint, IVirtualCollectionEndPoint
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (VirtualCollectionEndPoint));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof (VirtualCollectionEndPoint));
 
     private readonly IVirtualCollectionEndPointCollectionManager _collectionManager;
     private readonly ILazyLoader _lazyLoader;
@@ -58,21 +58,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink,
         IVirtualCollectionEndPointDataManagerFactory dataManagerFactory)
-        : base (ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction), ArgumentUtility.CheckNotNull ("id", id))
+        : base (ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction), ArgumentUtility.CheckNotNull("id", id))
     {
-      ArgumentUtility.CheckNotNull ("collectionManager", collectionManager);
-      ArgumentUtility.CheckNotNull ("lazyLoader", lazyLoader);
-      ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
-      ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink);
-      ArgumentUtility.CheckNotNull ("dataManagerFactory", dataManagerFactory);
+      ArgumentUtility.CheckNotNull("collectionManager", collectionManager);
+      ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
+      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+      ArgumentUtility.CheckNotNull("dataManagerFactory", dataManagerFactory);
 
       if (id.Definition.Cardinality != CardinalityType.Many)
-        throw new ArgumentException ("End point ID must refer to an end point with cardinality 'Many'.", "id");
+        throw new ArgumentException("End point ID must refer to an end point with cardinality 'Many'.", "id");
 
       if (id.Definition.IsAnonymous)
-        throw new ArgumentException ("End point ID must not refer to an anonymous end point.", "id");
+        throw new ArgumentException("End point ID must not refer to an anonymous end point.", "id");
 
-      Assertion.IsTrue (ID.Definition.IsVirtual);
+      Assertion.IsTrue(ID.Definition.IsVirtual);
 
       _hasBeenTouched = false;
       _collectionManager = collectionManager;
@@ -117,21 +117,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IObjectList<IDomainObject> GetCollectionWithOriginalData ()
     {
-      return CreateCollection (GetOriginalData());
+      return CreateCollection(GetOriginalData());
     }
 
     public ReadOnlyVirtualCollectionDataDecorator GetData ()
     {
-      EnsureDataComplete ();
-      Assertion.IsNotNull (_dataManager);
+      EnsureDataComplete();
+      Assertion.IsNotNull(_dataManager);
 
-      return new ReadOnlyVirtualCollectionDataDecorator (_dataManager.CollectionData);
+      return new ReadOnlyVirtualCollectionDataDecorator(_dataManager.CollectionData);
     }
 
     public ReadOnlyVirtualCollectionDataDecorator GetOriginalData ()
     {
-      EnsureDataComplete ();
-      Assertion.IsNotNull (_dataManager);
+      EnsureDataComplete();
+      Assertion.IsNotNull(_dataManager);
 
       return _dataManager.GetOriginalCollectionData();
     }
@@ -169,22 +169,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       if (_dataManager == null)
       {
-        _lazyLoader.LoadLazyCollectionEndPoint (ID);
-        Assertion.IsNotNull (_dataManager, "LazyLoad did not complete the collection endpoint");
+        _lazyLoader.LoadLazyCollectionEndPoint(ID);
+        Assertion.IsNotNull(_dataManager, "LazyLoad did not complete the collection endpoint");
       }
     }
 
     public void MarkDataComplete (DomainObject[] items)
     {
-      ArgumentUtility.CheckNotNull ("items", items);
+      ArgumentUtility.CheckNotNull("items", items);
 
       if (_dataManager != null)
-        throw new InvalidOperationException ("The data is already complete.");
+        throw new InvalidOperationException("The data is already complete.");
 
       if (s_log.IsInfoEnabled())
-        s_log.InfoFormat ("Virtual end-point '{0}' is transitioned to complete state.", ID);
+        s_log.InfoFormat("Virtual end-point '{0}' is transitioned to complete state.", ID);
 
-      var dataManager = _dataManagerFactory.CreateEndPointDataManager (ID);
+      var dataManager = _dataManagerFactory.CreateEndPointDataManager(ID);
 
       _dataManager = dataManager;
     }
@@ -194,9 +194,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (_dataManager == null)
         return;
 
-      _transactionEventSink.RaiseRelationEndPointBecomingIncompleteEvent (ID);
+      _transactionEventSink.RaiseRelationEndPointBecomingIncompleteEvent(ID);
 
-      Assertion.DebugIsNotNull (_dataManager, "_dataManager has already been checked.");
+      Assertion.DebugIsNotNull(_dataManager, "_dataManager has already been checked.");
 
       _dataManager = null;
     }
@@ -240,21 +240,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (GetData().Count == 0)
       {
         var objectReference = GetDomainObjectReference();
-        var message = string.Format (
+        var message = string.Format(
             "Mandatory relation property '{0}' of domain object '{1}' contains no items.",
             Definition.PropertyName,
             ObjectID);
-        throw new MandatoryRelationNotSetException (objectReference, Definition.PropertyName, message);
+        throw new MandatoryRelationNotSetException(objectReference, Definition.PropertyName, message);
       }
     }
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
 
       if (_dataManager != null)
       {
-        _dataManager.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
+        _dataManager.RegisterOriginalOppositeEndPoint(oppositeEndPoint);
       }
 
       oppositeEndPoint.MarkSynchronized();
@@ -262,26 +262,26 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
 
-      if (s_log.IsInfoEnabled ())
+      if (s_log.IsInfoEnabled())
       {
-        s_log.InfoFormat (
+        s_log.InfoFormat(
             "RealObjectEndPoint '{0}' is unregistered from VirtualCollectionEndPoint '{1}'. The VirtualCollectionEndPoint is transitioned to incomplete state.",
             oppositeEndPoint.ID,
             ID);
       }
-      MarkDataIncomplete ();
+      MarkDataIncomplete();
     }
 
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
     }
 
     public void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
     }
 
     public override bool? IsSynchronized
@@ -292,7 +292,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     public override void Synchronize ()
     {
       if (s_log.IsDebugEnabled())
-        s_log.DebugFormat ("End-point '{0}' is being synchronized.", ID);
+        s_log.DebugFormat("End-point '{0}' is being synchronized.", ID);
 
       if (_dataManager != null)
       {
@@ -302,31 +302,31 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       else
       {
         EnsureDataComplete();
-        Assertion.DebugIsNotNull (_dataManager, "EnsureDataComplete sets _dataManager.");
+        Assertion.DebugIsNotNull(_dataManager, "EnsureDataComplete sets _dataManager.");
       }
     }
 
     public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
 
-      Assertion.IsNotNull (_dataManager, "Cannot synchronize an opposite end-point with a virtual end-point in incomplete state.");
+      Assertion.IsNotNull(_dataManager, "Cannot synchronize an opposite end-point with a virtual end-point in incomplete state.");
 
       if (s_log.IsDebugEnabled())
-        s_log.DebugFormat ("ObjectEndPoint '{0}' is being marked as synchronized.", oppositeEndPoint.ID);
+        s_log.DebugFormat("ObjectEndPoint '{0}' is being marked as synchronized.", oppositeEndPoint.ID);
 
-      _dataManager.SynchronizeOppositeEndPoint (oppositeEndPoint);
+      _dataManager.SynchronizeOppositeEndPoint(oppositeEndPoint);
       oppositeEndPoint.MarkSynchronized();
     }
 
     public override IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull ("removedRelatedObject", removedRelatedObject);
+      ArgumentUtility.CheckNotNull("removedRelatedObject", removedRelatedObject);
 
       IVirtualCollectionData virtualCollectionData;
       if (_dataManager == null)
       {
-        virtualCollectionData = new IncompleteEndPointModificationVirtualCollectionData (ID);
+        virtualCollectionData = new IncompleteEndPointModificationVirtualCollectionData(ID);
       }
       else
       {
@@ -334,12 +334,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       }
 
       //TODO: RM-7294: merge ChangeTrackingVirtualCollectionDataDecorator into DataManager and make DataManager work for loaded and unloaded state
-      var changeTrackingVirtualCollectionData = new ChangeTrackingVirtualCollectionDataDecorator (
+      var changeTrackingVirtualCollectionData = new ChangeTrackingVirtualCollectionDataDecorator(
           virtualCollectionData,
           addedDomainObjects: _addedDomainObjects,
           removedDomainObjects: _removedDomainObjects);
 
-      return new VirtualCollectionEndPointRemoveCommand (
+      return new VirtualCollectionEndPointRemoveCommand(
           this,
           removedRelatedObject,
           changeTrackingVirtualCollectionData,
@@ -350,27 +350,27 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     public override IDataManagementCommand CreateDeleteCommand ()
     {
       EnsureDataComplete();
-      Assertion.DebugIsNotNull (_dataManager, "EnsureDataComplete sets _dataManager.");
+      Assertion.DebugIsNotNull(_dataManager, "EnsureDataComplete sets _dataManager.");
 
       var virtualCollectionData = _dataManager.CollectionData;
 
       //TODO: RM-7294: merge ChangeTrackingVirtualCollectionDataDecorator into DataManager and make DataManager work for loaded and unloaded state
-      var changeTrackingVirtualCollectionData = new ChangeTrackingVirtualCollectionDataDecorator (
+      var changeTrackingVirtualCollectionData = new ChangeTrackingVirtualCollectionDataDecorator(
           virtualCollectionData,
           addedDomainObjects: _addedDomainObjects,
           removedDomainObjects: _removedDomainObjects);
 
-      return new VirtualCollectionEndPointDeleteCommand (this, changeTrackingVirtualCollectionData, _transactionEventSink);
+      return new VirtualCollectionEndPointDeleteCommand(this, changeTrackingVirtualCollectionData, _transactionEventSink);
     }
 
     public virtual IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull ("addedRelatedObject", addedRelatedObject);
+      ArgumentUtility.CheckNotNull("addedRelatedObject", addedRelatedObject);
 
       IVirtualCollectionData virtualCollectionData;
       if (_dataManager == null)
       {
-        virtualCollectionData = new IncompleteEndPointModificationVirtualCollectionData (ID);
+        virtualCollectionData = new IncompleteEndPointModificationVirtualCollectionData(ID);
       }
       else
       {
@@ -378,12 +378,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       }
 
       //TODO: RM-7294: merge ChangeTrackingVirtualCollectionDataDecorator into DataManager and make DataManager work for loaded and unloaded state
-      var changeTrackingVirtualCollectionData = new ChangeTrackingVirtualCollectionDataDecorator (
+      var changeTrackingVirtualCollectionData = new ChangeTrackingVirtualCollectionDataDecorator(
           virtualCollectionData,
           addedDomainObjects: _addedDomainObjects,
           removedDomainObjects: _removedDomainObjects);
 
-      return new VirtualCollectionEndPointAddCommand (
+      return new VirtualCollectionEndPointAddCommand(
           this,
           addedRelatedObject,
           changeTrackingVirtualCollectionData,
@@ -395,24 +395,24 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       var oppositeEndPointDefinition = Definition.GetOppositeEndPointDefinition();
 
-      Assertion.IsFalse (oppositeEndPointDefinition.IsAnonymous);
+      Assertion.IsFalse(oppositeEndPointDefinition.IsAnonymous);
 
-      EnsureDataComplete ();
-      Assertion.IsNotNull (_dataManager);
+      EnsureDataComplete();
+      Assertion.IsNotNull(_dataManager);
 
       return _dataManager.CollectionData
-          .Select (oppositeDomainObject => RelationEndPointID.Create (oppositeDomainObject.ID, oppositeEndPointDefinition));
+          .Select(oppositeDomainObject => RelationEndPointID.Create(oppositeDomainObject.ID, oppositeEndPointDefinition));
     }
 
     public override void SetDataFromSubTransaction (IRelationEndPoint source)
     {
-      var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualCollectionEndPoint> ("source", source);
+      var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualCollectionEndPoint>("source", source);
       if (Definition != sourceCollectionEndPoint.Definition)
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot set this end point's value from '{0}'; the end points do not have the same end point definition.",
             source.ID);
-        throw new ArgumentException (message, "source");
+        throw new ArgumentException(message, "source");
       }
 
       if (_dataManager != null)
@@ -420,7 +420,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         var sourceDataManager = sourceCollectionEndPoint._dataManager;
         if (sourceDataManager != null)
         {
-          _dataManager.SetDataFromSubTransaction (sourceDataManager, _endPointProvider);
+          _dataManager.SetDataFromSubTransaction(sourceDataManager, _endPointProvider);
         }
         else
         {
@@ -432,7 +432,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
           else
           {
             //TODO: RM-7294: Hack for supporting unloaded collections. Will be reworked with changes to IVirtualCollectionEndPointDataManager.
-            throw new InvalidOperationException ($"VirtualCollectionEndPoint can only handle collection data of type '{typeof (VirtualCollectionData)}' but collection data type was '{_dataManager.CollectionData.GetType()}'.");
+            throw new InvalidOperationException($"VirtualCollectionEndPoint can only handle collection data of type '{typeof (VirtualCollectionData)}' but collection data type was '{_dataManager.CollectionData.GetType()}'.");
           }
         }
       }
@@ -444,7 +444,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     private IObjectList<IDomainObject> CreateCollection (IVirtualCollectionData dataStrategy)
     {
-      return ObjectListFactory.Create (dataStrategy);
+      return ObjectListFactory.Create(dataStrategy);
     }
 
     #region Serialization
@@ -462,25 +462,25 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _hasBeenTouched = info.GetBoolValue();
 
       _addedDomainObjects = new HashSet<ObjectID>();
-      info.FillCollection (_addedDomainObjects);
+      info.FillCollection(_addedDomainObjects);
 
       _removedDomainObjects = new HashSet<ObjectID>();
-      info.FillCollection (_removedDomainObjects);
+      info.FillCollection(_removedDomainObjects);
     }
 
     protected override void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddHandle (_collectionManager);
-      info.AddHandle (_lazyLoader);
-      info.AddHandle (_endPointProvider);
-      info.AddHandle (_transactionEventSink);
-      info.AddHandle (_dataManagerFactory);
+      info.AddHandle(_collectionManager);
+      info.AddHandle(_lazyLoader);
+      info.AddHandle(_endPointProvider);
+      info.AddHandle(_transactionEventSink);
+      info.AddHandle(_dataManagerFactory);
 
-      info.AddHandle (_dataManager);
-      info.AddBoolValue (_hasBeenTouched);
+      info.AddHandle(_dataManager);
+      info.AddBoolValue(_hasBeenTouched);
 
-      info.AddCollection (_addedDomainObjects);
-      info.AddCollection (_removedDomainObjects);
+      info.AddCollection(_addedDomainObjects);
+      info.AddCollection(_removedDomainObjects);
     }
 
     #endregion

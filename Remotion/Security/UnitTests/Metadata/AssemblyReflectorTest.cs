@@ -51,19 +51,19 @@ namespace Remotion.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _accessTypeReflectorMock = new Mock<IAccessTypeReflector> (MockBehavior.Strict);
-      _classReflectorMock = new Mock<IClassReflector> (MockBehavior.Strict);
-      _abstractRoleReflectorMock = new Mock<IAbstractRoleReflector> (MockBehavior.Strict);
-      _assemblyReflector = new AssemblyReflector (_accessTypeReflectorMock.Object, _classReflectorMock.Object, _abstractRoleReflectorMock.Object);
-      _cache = new MetadataCache ();
+      _accessTypeReflectorMock = new Mock<IAccessTypeReflector>(MockBehavior.Strict);
+      _classReflectorMock = new Mock<IClassReflector>(MockBehavior.Strict);
+      _abstractRoleReflectorMock = new Mock<IAbstractRoleReflector>(MockBehavior.Strict);
+      _assemblyReflector = new AssemblyReflector(_accessTypeReflectorMock.Object, _classReflectorMock.Object, _abstractRoleReflectorMock.Object);
+      _cache = new MetadataCache();
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.That (_assemblyReflector.ClassReflector, Is.SameAs (_classReflectorMock.Object));
-      Assert.That (_assemblyReflector.AccessTypeReflector, Is.SameAs (_accessTypeReflectorMock.Object));
-      Assert.That (_assemblyReflector.AbstractRoleReflector, Is.SameAs (_abstractRoleReflectorMock.Object));
+      Assert.That(_assemblyReflector.ClassReflector, Is.SameAs(_classReflectorMock.Object));
+      Assert.That(_assemblyReflector.AccessTypeReflector, Is.SameAs(_accessTypeReflectorMock.Object));
+      Assert.That(_assemblyReflector.AbstractRoleReflector, Is.SameAs(_abstractRoleReflectorMock.Object));
     }
 
     [Test]
@@ -73,22 +73,22 @@ namespace Remotion.Security.UnitTests.Metadata
       Assembly assembly = typeof (File).Assembly;
 
       _accessTypeReflectorMock
-          .Setup (_ => _.GetAccessTypesFromAssembly(securityAssembly, _cache))
-          .Returns (new List<EnumValueInfo> (new EnumValueInfo[] {AccessTypes.Read, AccessTypes.Write}))
+          .Setup(_ => _.GetAccessTypesFromAssembly(securityAssembly, _cache))
+          .Returns(new List<EnumValueInfo>(new EnumValueInfo[] {AccessTypes.Read, AccessTypes.Write}))
           .Verifiable();
       _accessTypeReflectorMock
-        .Setup (_ => _.GetAccessTypesFromAssembly (assembly, _cache))
-        .Returns (new List<EnumValueInfo> (new EnumValueInfo[] { AccessTypes.Journalize, AccessTypes.Archive }))
+        .Setup(_ => _.GetAccessTypesFromAssembly(assembly, _cache))
+        .Returns(new List<EnumValueInfo>(new EnumValueInfo[] { AccessTypes.Journalize, AccessTypes.Archive }))
         .Verifiable();
-      _abstractRoleReflectorMock.Setup (_ => _.GetAbstractRoles (securityAssembly, _cache)).Returns (new List<EnumValueInfo>()).Verifiable();
+      _abstractRoleReflectorMock.Setup(_ => _.GetAbstractRoles(securityAssembly, _cache)).Returns(new List<EnumValueInfo>()).Verifiable();
       _abstractRoleReflectorMock
-          .Setup (_ => _.GetAbstractRoles (assembly, _cache))
-          .Returns (new List<EnumValueInfo> (new EnumValueInfo[] { AbstractRoles.Clerk, AbstractRoles.Secretary, AbstractRoles.Administrator }))
+          .Setup(_ => _.GetAbstractRoles(assembly, _cache))
+          .Returns(new List<EnumValueInfo>(new EnumValueInfo[] { AbstractRoles.Clerk, AbstractRoles.Secretary, AbstractRoles.Administrator }))
           .Verifiable();
-      _classReflectorMock.Setup (_ => _.GetMetadata (typeof (File), _cache)).Returns (new SecurableClassInfo()).Verifiable();
-      _classReflectorMock.Setup (_ => _.GetMetadata (typeof (PaperFile), _cache)).Returns (new SecurableClassInfo ()).Verifiable();
+      _classReflectorMock.Setup(_ => _.GetMetadata(typeof (File), _cache)).Returns(new SecurableClassInfo()).Verifiable();
+      _classReflectorMock.Setup(_ => _.GetMetadata(typeof (PaperFile), _cache)).Returns(new SecurableClassInfo()).Verifiable();
 
-      _assemblyReflector.GetMetadata (assembly, _cache);
+      _assemblyReflector.GetMetadata(assembly, _cache);
 
       _accessTypeReflectorMock.Verify();
       _classReflectorMock.Verify();

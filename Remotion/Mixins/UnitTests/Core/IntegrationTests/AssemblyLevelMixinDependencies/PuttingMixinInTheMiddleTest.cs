@@ -25,15 +25,15 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     [Test]
     public void AssemblyLevelAttribute_CanBeUsedToPutAMixinInTheMiddle ()
     {
-      PrepareMixinConfigurationWithAttributeDeclarations (
-          new AdditionalMixinDependencyAttribute (typeof (C), typeof (M1), typeof (M3)),
-          new AdditionalMixinDependencyAttribute (typeof (C), typeof (M3), typeof (M2)));
+      PrepareMixinConfigurationWithAttributeDeclarations(
+          new AdditionalMixinDependencyAttribute(typeof (C), typeof (M1), typeof (M3)),
+          new AdditionalMixinDependencyAttribute(typeof (C), typeof (M3), typeof (M2)));
 
-      var instance = ObjectFactory.Create<C> ();
+      var instance = ObjectFactory.Create<C>();
 
-      var result = instance.M ();
+      var result = instance.M();
 
-      Assert.That (result, Is.EqualTo ("M1 M3 M2 C"));
+      Assert.That(result, Is.EqualTo("M1 M3 M2 C"));
     }
 
     public class C : IC
@@ -55,7 +55,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       [OverrideTarget]
       public string M ()
       {
-        return "M1 " + Next.M ();
+        return "M1 " + Next.M();
       }
     }
 
@@ -65,7 +65,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       [OverrideTarget]
       public string M ()
       {
-        return "M2 " + Next.M ();
+        return "M2 " + Next.M();
       }
     }
 
@@ -75,7 +75,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       [OverrideTarget]
       public string M ()
       {
-        return "M3 " + Next.M ();
+        return "M3 " + Next.M();
       }
     }
   }

@@ -32,14 +32,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public SecurityClient CreatedStubbedSecurityClient<T> (params Enum[] accessTypes)
         where T: ISecurableObject
     {
-      ArgumentUtility.CheckNotNull ("accessTypes", accessTypes);
+      ArgumentUtility.CheckNotNull("accessTypes", accessTypes);
 
       var principalStub = CreatePrincipalStub();
 
-      return new SecurityClient (
-          CreateSecurityProviderStub (typeof (T), principalStub, accessTypes),
+      return new SecurityClient(
+          CreateSecurityProviderStub(typeof (T), principalStub, accessTypes),
           new PermissionReflector(),
-          CreateUserProviderStub (principalStub),
+          CreateUserProviderStub(principalStub),
           new Mock<IFunctionalSecurityStrategy>().Object,
           new ReflectionBasedMemberResolver());
     }
@@ -47,11 +47,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     private ISecurityProvider CreateSecurityProviderStub (Type securableClassType, ISecurityPrincipal principal, Enum[] returnedAccessTypes)
     {
       var securityProviderStub = new Mock<ISecurityProvider>();
-      securityProviderStub.Setup (
-          stub => stub.GetAccess (
-                      It.Is<ISecurityContext> (sc => TypeUtility.GetType (sc.Class, true) == securableClassType),
+      securityProviderStub.Setup(
+          stub => stub.GetAccess(
+                      It.Is<ISecurityContext>(sc => TypeUtility.GetType(sc.Class, true) == securableClassType),
                       principal))
-          .Returns (returnedAccessTypes.Select (accessType => AccessType.Get (accessType)).ToArray());
+          .Returns(returnedAccessTypes.Select(accessType => AccessType.Get(accessType)).ToArray());
       
       return securityProviderStub.Object;
     }
@@ -59,7 +59,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     private IPrincipalProvider CreateUserProviderStub (ISecurityPrincipal principal)
     {
       var userProviderStub = new Mock<IPrincipalProvider>();
-      userProviderStub.Setup (stub => stub.GetPrincipal()).Returns (principal);
+      userProviderStub.Setup(stub => stub.GetPrincipal()).Returns(principal);
       
       return userProviderStub.Object;
     }
@@ -68,7 +68,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       var principalStub = new Mock<ISecurityPrincipal>();
 
-      principalStub.Setup (stub => stub.User).Returns ("user");
+      principalStub.Setup(stub => stub.User).Returns("user");
 
       return principalStub.Object;
     }

@@ -36,7 +36,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageTests
 
       protected override void OnPreInit (EventArgs e)
       {
-        base.OnPreInit (e);
+        base.OnPreInit(e);
         if (_exception != null)
           throw _exception;
       }
@@ -46,21 +46,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageTests
     public void ThrowInfrastructureException_DoesNotGetWrappedInHttpException ()
     {
       var expectedException = new WxeUserCancelException();
-      var handler = new ThrowingPage (expectedException);
+      var handler = new ThrowingPage(expectedException);
 
-      var actualException = Assert.Throws<WxeUserCancelException> (() => handler.ProcessRequest (CurrentHttpContext));
-      Assert.That (actualException, Is.SameAs (expectedException));
+      var actualException = Assert.Throws<WxeUserCancelException>(() => handler.ProcessRequest(CurrentHttpContext));
+      Assert.That(actualException, Is.SameAs(expectedException));
     }
 
     [Test]
     public void ThrowAnyException_WrappedsInHttpUnhandledException ()
     {
       var expectedException = new ApplicationException();
-      var handler = new ThrowingPage (expectedException);
+      var handler = new ThrowingPage(expectedException);
 
-      var httpException = Assert.Throws<HttpUnhandledException> (() => handler.ProcessRequest (CurrentHttpContext));
-      Assert.That (httpException.InnerException, Is.SameAs (expectedException));
-      Assert.That (httpException.GetHttpCode(), Is.EqualTo (500));
+      var httpException = Assert.Throws<HttpUnhandledException>(() => handler.ProcessRequest(CurrentHttpContext));
+      Assert.That(httpException.InnerException, Is.SameAs(expectedException));
+      Assert.That(httpException.GetHttpCode(), Is.EqualTo(500));
     }
   }
 }

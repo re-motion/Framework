@@ -35,7 +35,7 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
 
     public AnyRuleAppliedPropertyMetaValidationRule (PropertyInfo property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("property", property);
 
       // TODO RM-5906: Replace PropertyInfo with IPropertyInformation
       _property = property;
@@ -43,18 +43,18 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
 
     public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<IPropertyValidator> validationRules)
     {
-      if (!validationRules.Any ())
+      if (!validationRules.Any())
       {
         yield return
-            MetaValidationRuleValidationResult.CreateInvalidResult (
+            MetaValidationRuleValidationResult.CreateInvalidResult(
                 "'{0}' failed for property '{1}.{2}': No validation rules defined.",
-                GetType ().Name,
+                GetType().Name,
                 _property.ReflectedType!.GetFullNameSafe(),
                 _property.Name);
       }
       else
       {
-        yield return MetaValidationRuleValidationResult.CreateValidResult ();
+        yield return MetaValidationRuleValidationResult.CreateValidResult();
       }
     }
   }

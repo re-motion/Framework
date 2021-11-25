@@ -30,8 +30,8 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void TestWithObjectNull ()
     {
       object o = null;
-      Assert.That (
-          () => TypesafeActivator.CreateInstance<TestClass>().With (o),
+      Assert.That(
+          () => TypesafeActivator.CreateInstance<TestClass>().With(o),
           Throws.InstanceOf<MissingMethodException>());
     }
 
@@ -39,68 +39,68 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void TestWithANull ()
     {
       Base a = null;
-      TestClass testObject = TypesafeActivator.CreateInstance<TestClass> ().With (a);
-      Assert.That (testObject.InvocationType, Is.EqualTo (typeof (Base)));
+      TestClass testObject = TypesafeActivator.CreateInstance<TestClass>().With(a);
+      Assert.That(testObject.InvocationType, Is.EqualTo(typeof (Base)));
     }
 
     [Test]
     public void TestWithBNull ()
     {
       Derived b = null;
-      TestClass testObject = TypesafeActivator.CreateInstance<TestClass> ().With (b);
-      Assert.That (testObject.InvocationType, Is.EqualTo (typeof (Derived)));
+      TestClass testObject = TypesafeActivator.CreateInstance<TestClass>().With(b);
+      Assert.That(testObject.InvocationType, Is.EqualTo(typeof (Derived)));
     }
 
     [Test]
     public void TestWithCNull ()
     {
       DerivedDerived c = null;
-      TestClass testObject = TypesafeActivator.CreateInstance<TestClass> ().With (c);
-      Assert.That (testObject.InvocationType, Is.EqualTo (typeof (Derived)));
+      TestClass testObject = TypesafeActivator.CreateInstance<TestClass>().With(c);
+      Assert.That(testObject.InvocationType, Is.EqualTo(typeof (Derived)));
     }
 
     [Test]
     public void TestWithUntypedANull ()
     {
       Base a = null;
-      TestClass testObject = (TestClass) TypesafeActivator.CreateInstance (typeof (TestClass)).With (a);
-      Assert.That (testObject.InvocationType, Is.EqualTo (typeof (Base)));
+      TestClass testObject = (TestClass) TypesafeActivator.CreateInstance(typeof (TestClass)).With(a);
+      Assert.That(testObject.InvocationType, Is.EqualTo(typeof (Base)));
     }
 
     [Test]
     public void TestWithUntypedDerivedAndTMinimal ()
     {
-      Base a = TypesafeActivator.CreateInstance<Base> (typeof (Derived)).With ();
+      Base a = TypesafeActivator.CreateInstance<Base>(typeof (Derived)).With();
 
-      Assert.That (a, Is.Not.Null);
-      Assert.That (a.GetType (), Is.EqualTo (typeof (Derived)));
+      Assert.That(a, Is.Not.Null);
+      Assert.That(a.GetType(), Is.EqualTo(typeof (Derived)));
     }
 
     [Test]
     public void TestWithUntypedDerivedAndTMinimalWithBindingFlags ()
     {
-      Base a = TypesafeActivator.CreateInstance<Base> (typeof (Derived), BindingFlags.Public | BindingFlags.Instance).With ();
+      Base a = TypesafeActivator.CreateInstance<Base>(typeof (Derived), BindingFlags.Public | BindingFlags.Instance).With();
 
-      Assert.That (a, Is.Not.Null);
-      Assert.That (a.GetType (), Is.EqualTo (typeof (Derived)));
+      Assert.That(a, Is.Not.Null);
+      Assert.That(a.GetType(), Is.EqualTo(typeof (Derived)));
     }
 
     [Test]
     public void TestWithUntypedDerivedAndTMinimalWithFullSignature ()
     {
-      Base a = TypesafeActivator.CreateInstance<Base> (typeof (Derived), BindingFlags.Public | BindingFlags.Instance, null, CallingConventions.Any, null).With ();
+      Base a = TypesafeActivator.CreateInstance<Base>(typeof (Derived), BindingFlags.Public | BindingFlags.Instance, null, CallingConventions.Any, null).With();
 
-      Assert.That (a, Is.Not.Null);
-      Assert.That (a.GetType (), Is.EqualTo (typeof (Derived)));
+      Assert.That(a, Is.Not.Null);
+      Assert.That(a.GetType(), Is.EqualTo(typeof (Derived)));
     }
 
     [Test]
     public void TestWithUntypedAndTMinimalThrowsOnIncompatibleTypes ()
     {
-      Assert.That (
-          () => TypesafeActivator.CreateInstance<Derived> (typeof (Base)).With(),
+      Assert.That(
+          () => TypesafeActivator.CreateInstance<Derived>(typeof (Base)).With(),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'type' is a 'Remotion.Extensions.UnitTests.Reflection.TestDomain.Base', "
                   + "which cannot be assigned to type 'Remotion.Extensions.UnitTests.Reflection.TestDomain.Derived'.", "type"));
     }
@@ -109,14 +109,14 @@ namespace Remotion.Extensions.UnitTests.Reflection
     public void TestValueTypeDefaultCtor ()
     {
       Struct @struct = TypesafeActivator.CreateInstance<Struct>().With();
-      Assert.That (0, Is.EqualTo (@struct.Value));
+      Assert.That(0, Is.EqualTo(@struct.Value));
     }
 
     [Test]
     public void TestValueTypeCustomCtor ()
     {
-      Struct @struct = TypesafeActivator.CreateInstance<Struct> ().With (1);
-      Assert.That (1, Is.EqualTo (@struct.Value));
+      Struct @struct = TypesafeActivator.CreateInstance<Struct>().With(1);
+      Assert.That(1, Is.EqualTo(@struct.Value));
     }
   }
 }

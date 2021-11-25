@@ -36,35 +36,35 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       _testHelper = NullSecurityClientTestHelper.CreateForStatelessSecurity();
       _securityClient = _testHelper.CreateSecurityClient();
-      _methodInfo = typeof (SecurableObject).GetMethod ("IsValid", new[] { typeof (SecurableObject) });
+      _methodInfo = typeof (SecurableObject).GetMethod("IsValid", new[] { typeof (SecurableObject) });
       _methodInformation = new Mock<IMethodInformation>();
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      bool hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), "IsValid");
+      bool hasAccess = _securityClient.HasStaticMethodAccess(typeof (SecurableObject), "IsValid");
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_AccessGranted_WithMethodInfo ()
     {
-      bool hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), _methodInfo);
+      bool hasAccess = _securityClient.HasStaticMethodAccess(typeof (SecurableObject), _methodInfo);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_AccessGranted_WithMethodInfo_WithMethodInformation ()
     {
-      bool hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), _methodInformation.Object);
+      bool hasAccess = _securityClient.HasStaticMethodAccess(typeof (SecurableObject), _methodInformation.Object);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
@@ -73,11 +73,11 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), "IsValid");
+        hasAccess = _securityClient.HasStaticMethodAccess(typeof (SecurableObject), "IsValid");
       }
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
@@ -86,11 +86,11 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), _methodInfo);
+        hasAccess = _securityClient.HasStaticMethodAccess(typeof (SecurableObject), _methodInfo);
       }
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
@@ -99,11 +99,11 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), _methodInformation.Object);
+        hasAccess = _securityClient.HasStaticMethodAccess(typeof (SecurableObject), _methodInformation.Object);
       }
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
   }
 }

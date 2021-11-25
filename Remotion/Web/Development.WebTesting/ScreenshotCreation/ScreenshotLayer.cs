@@ -35,10 +35,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public static ScreenshotLayer Create ([NotNull] Screenshot screenshot, [NotNull] IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("screenshot", screenshot);
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("screenshot", screenshot);
+      ArgumentUtility.CheckNotNull("locator", locator);
 
-      return new ScreenshotLayer (screenshot, locator);
+      return new ScreenshotLayer(screenshot, locator);
     }
 
     /// <summary>
@@ -47,13 +47,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public static ScreenshotLayer CreateTransparent ([NotNull] Screenshot screenshot, [NotNull] IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("screenshot", screenshot);
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("screenshot", screenshot);
+      ArgumentUtility.CheckNotNull("locator", locator);
 
-      var bitmapOfScreenshotSize = new Bitmap (screenshot.Image.Width, screenshot.Image.Height);
+      var bitmapOfScreenshotSize = new Bitmap(screenshot.Image.Width, screenshot.Image.Height);
       bitmapOfScreenshotSize.MakeTransparent();
 
-      return new ScreenshotLayer (screenshot, locator, bitmapOfScreenshotSize);
+      return new ScreenshotLayer(screenshot, locator, bitmapOfScreenshotSize);
     }
 
     private readonly IBrowserContentLocator _locator;
@@ -77,7 +77,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       _locator = locator;
       _layerImage = imageOverride;
-      _layerGraphics = Graphics.FromImage (_layerImage);
+      _layerGraphics = Graphics.FromImage(_layerImage);
 
       _screenshotOffset = screenshot.DesktopOffset;
       _screenshotBounds = screenshot.ScreenshotBounds;
@@ -91,10 +91,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     public void Annotate ([NotNull] IScreenshotAnnotation annotation)
     {
-      ArgumentUtility.CheckNotNull ("annotation", annotation);
+      ArgumentUtility.CheckNotNull("annotation", annotation);
 
-      var resolvedElement = new ResolvedScreenshotElement (_coordinateSystem, _imageBounds, ElementVisibility.FullyVisible, _imageBounds, _imageBounds);
-      annotation.Draw (_layerGraphics, resolvedElement);
+      var resolvedElement = new ResolvedScreenshotElement(_coordinateSystem, _imageBounds, ElementVisibility.FullyVisible, _imageBounds, _imageBounds);
+      annotation.Draw(_layerGraphics, resolvedElement);
     }
 
     /// <summary>
@@ -108,17 +108,17 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         ElementVisibility? minimumElementVisibility = null)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull ("target", target);
-      ArgumentUtility.CheckNotNull ("resolver", resolver);
-      ArgumentUtility.CheckNotNull ("annotation", annotation);
+      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull("resolver", resolver);
+      ArgumentUtility.CheckNotNull("annotation", annotation);
 
-      using (var helper = CreateTransformationHelper (ScreenshotManipulation.Annotate, resolver, target, transformation))
+      using (var helper = CreateTransformationHelper(ScreenshotManipulation.Annotate, resolver, target, transformation))
       {
         var context = helper.Context;
 
-        ValidateResolvedElement (context.ResolvedElement, minimumElementVisibility);
+        ValidateResolvedElement(context.ResolvedElement, minimumElementVisibility);
 
-        annotation.Draw (context.Graphics, context.ResolvedElement);
+        annotation.Draw(context.Graphics, context.ResolvedElement);
       }
     }
 
@@ -133,23 +133,23 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         ElementVisibility? minimumElementVisibility = null)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull ("target", target);
-      ArgumentUtility.CheckNotNull ("resolver", resolver);
-      ArgumentUtility.CheckNotNull ("cropping", cropping);
+      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull("resolver", resolver);
+      ArgumentUtility.CheckNotNull("cropping", cropping);
 
 
-      using (var helper = CreateTransformationHelper (ScreenshotManipulation.Annotate, resolver, target, transformation))
+      using (var helper = CreateTransformationHelper(ScreenshotManipulation.Annotate, resolver, target, transformation))
       {
         var context = helper.Context;
 
-        ValidateResolvedElement (context.ResolvedElement, minimumElementVisibility);
+        ValidateResolvedElement(context.ResolvedElement, minimumElementVisibility);
 
-        var croppingRegion = cropping.ApplyOnElement (_imageBounds, context.ResolvedElement);
+        var croppingRegion = cropping.ApplyOnElement(_imageBounds, context.ResolvedElement);
 
         if (croppingRegion.IsEmpty)
-          throw new InvalidOperationException ("Cropping must result in an image which is not empty.");
+          throw new InvalidOperationException("Cropping must result in an image which is not empty.");
 
-        CropRectangle (croppingRegion);
+        CropRectangle(croppingRegion);
       }
     }
 
@@ -172,13 +172,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     private void PrepareScreenshotLayer ()
     {
-      _normalizationVector = new Size (-_screenshotOffset.Width, -_screenshotOffset.Height);
+      _normalizationVector = new Size(-_screenshotOffset.Width, -_screenshotOffset.Height);
 
       var transformationMatrix = new Matrix();
-      transformationMatrix.Translate (_normalizationVector.Width, _normalizationVector.Height);
+      transformationMatrix.Translate(_normalizationVector.Width, _normalizationVector.Height);
       _layerGraphics.Transform = transformationMatrix;
 
-      _imageBounds = new Rectangle (
+      _imageBounds = new Rectangle(
           _screenshotOffset.Width,
           _screenshotOffset.Height,
           _layerImage.Width,
@@ -187,17 +187,17 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     private void CropRectangle (Rectangle croppingRectangle)
     {
-      _layerGraphics.Flush (FlushIntention.Sync);
+      _layerGraphics.Flush(FlushIntention.Sync);
 
-      var newImage = new Bitmap (croppingRectangle.Size.Width, croppingRectangle.Size.Height);
-      var newGraphics = Graphics.FromImage (newImage);
-      var newImageBounds = new Rectangle (Point.Empty, croppingRectangle.Size);
+      var newImage = new Bitmap(croppingRectangle.Size.Width, croppingRectangle.Size.Height);
+      var newGraphics = Graphics.FromImage(newImage);
+      var newImageBounds = new Rectangle(Point.Empty, croppingRectangle.Size);
 
-      var normalizedCroppingRectangle = new Rectangle (croppingRectangle.Location + _normalizationVector, croppingRectangle.Size);
-      newGraphics.FillRectangle (Brushes.Transparent, newImageBounds);
-      newGraphics.DrawImage (_layerImage, newImageBounds, normalizedCroppingRectangle, GraphicsUnit.Pixel);
+      var normalizedCroppingRectangle = new Rectangle(croppingRectangle.Location + _normalizationVector, croppingRectangle.Size);
+      newGraphics.FillRectangle(Brushes.Transparent, newImageBounds);
+      newGraphics.DrawImage(_layerImage, newImageBounds, normalizedCroppingRectangle, GraphicsUnit.Pixel);
 
-      _screenshotOffset = new Size (croppingRectangle.Location);
+      _screenshotOffset = new Size(croppingRectangle.Location);
       _screenshotBounds = new[] { croppingRectangle };
 
       _layerImage?.Dispose();
@@ -215,18 +215,18 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
       if (resolvedElement.ElementVisibility < visibility)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The visibility of the resolved element is smaller than the specified minimum visibility. (visibility: {0}; required: {1})",
                 resolvedElement.ElementVisibility,
                 ElementVisibility.FullyVisible));
       }
 
       if (resolvedElement.ElementBounds.Width == 0 || resolvedElement.ElementBounds.Height == 0)
-        throw new InvalidOperationException ("The specified target is empty.");
+        throw new InvalidOperationException("The specified target is empty.");
 
-      if (!_screenshotBounds.Any (b => b.Contains (resolvedElement.ElementBounds)))
-        throw new InvalidOperationException ("The specified target is not part of the screenshot.");
+      if (!_screenshotBounds.Any(b => b.Contains(resolvedElement.ElementBounds)))
+        throw new InvalidOperationException("The specified target is not part of the screenshot.");
     }
 
     private ScreenshotTransformationHelper<T> CreateTransformationHelper<T> (
@@ -236,7 +236,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [CanBeNull] IScreenshotTransformation<T>? transformation)
         where T : notnull
     {
-      return new ScreenshotTransformationHelper<T> (
+      return new ScreenshotTransformationHelper<T>(
           manipulation,
           _layerGraphics,
           resolver,

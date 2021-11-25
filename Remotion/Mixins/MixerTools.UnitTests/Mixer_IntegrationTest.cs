@@ -37,53 +37,53 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _assemblyOutputDirectory = Path.Combine (AppContext.BaseDirectory, "Mixer_IntegrationTest");
+      _assemblyOutputDirectory = Path.Combine(AppContext.BaseDirectory, "Mixer_IntegrationTest");
     }
 
     [TearDown]
     public void TearDown ()
     {
-      if (Directory.Exists (_assemblyOutputDirectory))
-        Directory.Delete (_assemblyOutputDirectory, true);
+      if (Directory.Exists(_assemblyOutputDirectory))
+        Directory.Delete(_assemblyOutputDirectory, true);
     }
 
     [Test]
     [Ignore ("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
     public void SavesMixedTypes ()
     {
-      AppDomainRunner.Run (
+      AppDomainRunner.Run(
           delegate
           {
             using (MixinConfiguration.BuildNew()
-                .ForClass<BaseType1>().AddMixins (typeof (BT1Mixin1))
-                .ForClass<Page> ().AddMixin (typeof (NullMixin))
+                .ForClass<BaseType1>().AddMixins(typeof (BT1Mixin1))
+                .ForClass<Page>().AddMixin(typeof (NullMixin))
                 .EnterScope())
             {
-              Mixer mixer = Mixer.Create ("Assembly", _assemblyOutputDirectory, 1);
+              Mixer mixer = Mixer.Create("Assembly", _assemblyOutputDirectory, 1);
               mixer.PrepareOutputDirectory();
-              mixer.Execute (MixinConfiguration.ActiveConfiguration);
+              mixer.Execute(MixinConfiguration.ActiveConfiguration);
 
-              Assembly theAssembly = Assembly.LoadFile (mixer.MixerPipelineFactory.GetModulePaths (_assemblyOutputDirectory).Single());
+              Assembly theAssembly = Assembly.LoadFile(mixer.MixerPipelineFactory.GetModulePaths(_assemblyOutputDirectory).Single());
               var types = theAssembly.GetTypes();
 
               var concreteType = types.SingleOrDefault(t => t.BaseType == typeof (BaseType1));
               Assert.NotNull(concreteType);
-              Assert.That (
-                  MixinTypeUtility.GetClassContextForConcreteType (concreteType),
-                  Is.EqualTo (MixinConfiguration.ActiveConfiguration.GetContext (typeof (BaseType1))));
+              Assert.That(
+                  MixinTypeUtility.GetClassContextForConcreteType(concreteType),
+                  Is.EqualTo(MixinConfiguration.ActiveConfiguration.GetContext(typeof (BaseType1))));
 
-              object instance = Activator.CreateInstance (concreteType);
-              Assert.That (Mixin.Get<BT1Mixin1> (instance), Is.Not.Null);
+              object instance = Activator.CreateInstance(concreteType);
+              Assert.That(Mixin.Get<BT1Mixin1>(instance), Is.Not.Null);
 
               var concreteTypeFromSystemAssembly = types.SingleOrDefault(t => t.BaseType == typeof (Page));
-              Assert.That (concreteTypeFromSystemAssembly, Is.Not.Null);
+              Assert.That(concreteTypeFromSystemAssembly, Is.Not.Null);
 
-              SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline.CodeManager.LoadFlushedCode (theAssembly);
+              SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline.CodeManager.LoadFlushedCode(theAssembly);
 
-              Type concreteTypeFromFactory = TypeFactory.GetConcreteType (typeof (BaseType1));
-              Assert.That (concreteTypeFromFactory, Is.SameAs (concreteType));
+              Type concreteTypeFromFactory = TypeFactory.GetConcreteType(typeof (BaseType1));
+              Assert.That(concreteTypeFromFactory, Is.SameAs(concreteType));
 
-              Assert.That (theAssembly.IsDefined (typeof (NonApplicationAssemblyAttribute), false), Is.True);
+              Assert.That(theAssembly.IsDefined(typeof (NonApplicationAssemblyAttribute), false), Is.True);
             }
           });
     }

@@ -40,10 +40,10 @@ namespace Remotion.Validation.Implementation
 
     public static IValidationRuleCollectorReflector Create (ITypeDiscoveryService typeDiscoveryService, IValidatedTypeResolver validatedTypeResolver)
     {
-      ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
-      ArgumentUtility.CheckNotNull ("validatedTypeResolver", validatedTypeResolver);
+      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
+      ArgumentUtility.CheckNotNull("validatedTypeResolver", validatedTypeResolver);
 
-      return new DiscoveryServiceBasedValidationRuleCollectorReflector (typeDiscoveryService, validatedTypeResolver);
+      return new DiscoveryServiceBasedValidationRuleCollectorReflector(typeDiscoveryService, validatedTypeResolver);
     }
 
     public DiscoveryServiceBasedValidationRuleCollectorReflector (IValidatedTypeResolver validatedTypeResolver)
@@ -60,33 +60,33 @@ namespace Remotion.Validation.Implementation
         ITypeDiscoveryService typeDiscoveryService,
         IValidatedTypeResolver validatedTypeResolver)
     {
-      ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
-      ArgumentUtility.CheckNotNull ("validatedTypeResolver", validatedTypeResolver);
+      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
+      ArgumentUtility.CheckNotNull("validatedTypeResolver", validatedTypeResolver);
 
       _typeDiscoveryService = typeDiscoveryService;
       _validatedTypeResolver = validatedTypeResolver;
-      _validationCollectors = new Lazy<ILookup<Type, Type>> (GetValidationCollectors, LazyThreadSafetyMode.ExecutionAndPublication);
+      _validationCollectors = new Lazy<ILookup<Type, Type>>(GetValidationCollectors, LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
     public IEnumerable<Type> GetCollectorsForType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       return _validationCollectors.Value[type];
     }
 
     private ILookup<Type, Type> GetValidationCollectors ()
     {
-      return _typeDiscoveryService.GetTypes (typeof (IValidationRuleCollector), excludeGlobalTypes: false).Cast<Type>()
-          .Where (IsRelevant)
-          .ToLookup (GetValidatedType, collectorType => collectorType);
+      return _typeDiscoveryService.GetTypes(typeof (IValidationRuleCollector), excludeGlobalTypes: false).Cast<Type>()
+          .Where(IsRelevant)
+          .ToLookup(GetValidatedType, collectorType => collectorType);
     }
 
     private Type GetValidatedType (Type collectorType)
     {
-      var type = _validatedTypeResolver.GetValidatedType (collectorType);
+      var type = _validatedTypeResolver.GetValidatedType(collectorType);
       if (type == null)
-        throw new InvalidOperationException (string.Format ("No validated type could be resolved for collector '{0}'.", collectorType.GetFullNameSafe()));
+        throw new InvalidOperationException(string.Format("No validated type could be resolved for collector '{0}'.", collectorType.GetFullNameSafe()));
       return type;
     }
 
@@ -95,7 +95,7 @@ namespace Remotion.Validation.Implementation
       return !(collectorType.IsAbstract
                || collectorType.IsInterface
                || collectorType.IsGenericTypeDefinition
-               || collectorType.IsDefined (typeof (ApplyProgrammaticallyAttribute), false));
+               || collectorType.IsDefined(typeof (ApplyProgrammaticallyAttribute), false));
     }
   }
 }

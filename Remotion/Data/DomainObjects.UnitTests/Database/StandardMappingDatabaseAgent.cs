@@ -32,26 +32,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Database
 
     protected override int ExecuteBatchString (IDbConnection connection, string commandBatch, IDbTransaction transaction)
     {
-      int batch =  base.ExecuteBatchString (connection, commandBatch, transaction);
-      LoadBlobs (connection, transaction);
+      int batch =  base.ExecuteBatchString(connection, commandBatch, transaction);
+      LoadBlobs(connection, transaction);
       return batch;
     }
 
     private void LoadBlobs (IDbConnection connection, IDbTransaction transaction)
     {
       DomainObjectIDs domainObjectIDs = StandardConfiguration.Instance.GetDomainObjectIDs();
-      UpdateClassWithAllDataTypes (connection, transaction, domainObjectIDs.ClassWithAllDataTypes1, ResourceManager.GetImage1 ());
-      UpdateClassWithAllDataTypes (connection, transaction, domainObjectIDs.ClassWithAllDataTypes2, ResourceManager.GetImage2 ());
+      UpdateClassWithAllDataTypes(connection, transaction, domainObjectIDs.ClassWithAllDataTypes1, ResourceManager.GetImage1());
+      UpdateClassWithAllDataTypes(connection, transaction, domainObjectIDs.ClassWithAllDataTypes2, ResourceManager.GetImage2());
     }
 
     private void UpdateClassWithAllDataTypes (IDbConnection connection, IDbTransaction transaction, ObjectID id, byte[] binary)
     {
       string updateText = "Update [TableWithAllDataTypes] set [Binary] = @binary where [ID] = @id";
-      using (SqlCommand command = (SqlCommand) CreateCommand (connection, updateText, transaction))
+      using (SqlCommand command = (SqlCommand) CreateCommand(connection, updateText, transaction))
       {
-        command.Parameters.AddWithValue ("@binary", binary);
-        command.Parameters.AddWithValue ("@id", id.Value);
-        command.ExecuteNonQuery ();
+        command.Parameters.AddWithValue("@binary", binary);
+        command.Parameters.AddWithValue("@id", id.Value);
+        command.ExecuteNonQuery();
       }
     }
   }

@@ -50,14 +50,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
             indexes,
             synonyms)
     {
-      ArgumentUtility.CheckNotNull ("baseEntity", baseEntity);
-      ArgumentUtility.CheckNotNull ("classIDs", classIDs);
+      ArgumentUtility.CheckNotNull("baseEntity", baseEntity);
+      ArgumentUtility.CheckNotNull("classIDs", classIDs);
 
       var classIDsList = classIDs.ToList().AsReadOnly();
-      ArgumentUtility.CheckNotNullOrEmpty ("classIDs", classIDsList);
+      ArgumentUtility.CheckNotNullOrEmpty("classIDs", classIDsList);
       
       if (!(baseEntity is TableDefinition || baseEntity is FilterViewDefinition))
-        throw new ArgumentException ("The base entity must either be a TableDefinition or a FilterViewDefinition.", "baseEntity");
+        throw new ArgumentException("The base entity must either be a TableDefinition or a FilterViewDefinition.", "baseEntity");
 
       _baseEntity = baseEntity;
       _classIDs = classIDsList;
@@ -85,8 +85,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public override void Accept (IRdbmsStorageEntityDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.VisitFilterViewDefinition (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.VisitFilterViewDefinition(this);
     }
   }
 }

@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
     public virtual string PropertyInDerivedType
     {
       get { return Properties[s_type, "PropertyInDerivedType"].GetValue<string>(); }
-      set { Properties[s_type, "PropertyInDerivedType"].SetValue (value); }
+      set { Properties[s_type, "PropertyInDerivedType"].SetValue(value); }
     }
   }
 }

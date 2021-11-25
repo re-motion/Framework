@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
       {
         var securityManagerPrincipal = SecurityManagerPrincipal.Current;
         if (securityManagerPrincipal.IsNull)
-          throw new InvalidOperationException ("The Seucrity Manager principal is not set. Possible reason: session timeout");
+          throw new InvalidOperationException("The Seucrity Manager principal is not set. Possible reason: session timeout");
         return securityManagerPrincipal.Tenant.Handle;
       }
     }
@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
 
     protected virtual void Initialize ()
     {
-      ExceptionHandler.SetCatchExceptionTypes (typeof (WxeUserCancelException));
+      ExceptionHandler.SetCatchExceptionTypes(typeof (WxeUserCancelException));
     }
   }
 }

@@ -36,8 +36,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         [NotNull] ScreenshotTooltipStyle style,
         WebPadding padding)
     {
-      ArgumentUtility.CheckNotNull ("content", content);
-      ArgumentUtility.CheckNotNull ("style", style);
+      ArgumentUtility.CheckNotNull("content", content);
+      ArgumentUtility.CheckNotNull("style", style);
 
       _content = content;
       _style = style;
@@ -69,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       get
       {
         if (!_tooltipBounds.HasValue)
-          throw new InvalidOperationException ("The tooltip needs to be drawn before its bounds can be accessed.");
+          throw new InvalidOperationException("The tooltip needs to be drawn before its bounds can be accessed.");
 
         return _tooltipBounds.Value;
       }
@@ -78,8 +78,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// <inheritdoc />
     public void Draw (Graphics graphics, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull ("graphics", graphics);
-      ArgumentUtility.CheckNotNull ("resolvedScreenshotElement", resolvedScreenshotElement);
+      ArgumentUtility.CheckNotNull("graphics", graphics);
+      ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
 
       // Prepare the StringFormat for laying out the text
       var stringFormat = new StringFormat();
@@ -95,22 +95,22 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       }
 
       // Calculate the maximum size of the tooltip
-      var border = (int) Math.Round (_style.Border.Width);
-      var maximumSize = new Size (
+      var border = (int) Math.Round(_style.Border.Width);
+      var maximumSize = new Size(
           2 * border + _style.ContentPadding.Horizontal + _style.MaximumSize.Width,
           2 * border + _style.ContentPadding.Vertical + _style.MaximumSize.Height);
 
       // calculate the layout of the content
-      var layoutArea = maximumSize - new Size (border * 2 + _style.ContentPadding.Horizontal, border * 2 + _style.ContentPadding.Vertical);
+      var layoutArea = maximumSize - new Size(border * 2 + _style.ContentPadding.Horizontal, border * 2 + _style.ContentPadding.Vertical);
 
       // Measure how much space the text needs
-      var contentSizeF = graphics.MeasureString (_content, _style.Font, layoutArea, stringFormat);
-      var contentSize = new Size ((int) Math.Ceiling (contentSizeF.Width) + 1, (int) Math.Ceiling (contentSizeF.Height));
+      var contentSizeF = graphics.MeasureString(_content, _style.Font, layoutArea, stringFormat);
+      var contentSize = new Size((int) Math.Ceiling(contentSizeF.Width) + 1, (int) Math.Ceiling(contentSizeF.Height));
 
       // Calculate the bounds of the tooltip with border
-      var desktopOffset = new Size (1 + _style.ContentPadding.Left, 1 + _style.ContentPadding.Top);
-      var tooltipBounds = _style.ContentPadding.Apply (new Rectangle (resolvedScreenshotElement.ElementBounds.Location, contentSize));
-      tooltipBounds.Offset (_style.ContentPadding.Left, _style.ContentPadding.Top);
+      var desktopOffset = new Size(1 + _style.ContentPadding.Left, 1 + _style.ContentPadding.Top);
+      var tooltipBounds = _style.ContentPadding.Apply(new Rectangle(resolvedScreenshotElement.ElementBounds.Location, contentSize));
+      tooltipBounds.Offset(_style.ContentPadding.Left, _style.ContentPadding.Top);
 
       // Make sure the tooltip is as least as big as the minimum size
       if (tooltipBounds.Width < _style.MinimumSize.Width)
@@ -119,22 +119,22 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         tooltipBounds.Height = _style.MinimumSize.Height;
 
       // Reposition the tooltip based on the content alignment
-      tooltipBounds.Location = PositionTooltipWithAlignment (_style.Positioning, resolvedScreenshotElement.ElementBounds, tooltipBounds);
+      tooltipBounds.Location = PositionTooltipWithAlignment(_style.Positioning, resolvedScreenshotElement.ElementBounds, tooltipBounds);
 
       // Remember the original tooltip bounds needed to annotate the tooltip
-      var originalTooltipLocation = PositionTooltipWithAlignment (_style.Positioning, resolvedScreenshotElement.UnresolvedBounds, tooltipBounds);
-      _tooltipBounds = new Rectangle (originalTooltipLocation, tooltipBounds.Size);
+      var originalTooltipLocation = PositionTooltipWithAlignment(_style.Positioning, resolvedScreenshotElement.UnresolvedBounds, tooltipBounds);
+      _tooltipBounds = new Rectangle(originalTooltipLocation, tooltipBounds.Size);
 
       // Draw the box of the tooltip
-      var boxAnnotation = new ScreenshotBoxAnnotation (_style.Border, WebPadding.None, _style.BackgroundBrush);
-      boxAnnotation.Draw (graphics, new ResolvedScreenshotElement (CoordinateSystem.Browser, tooltipBounds, ElementVisibility.FullyVisible, null, _tooltipBounds.Value));
+      var boxAnnotation = new ScreenshotBoxAnnotation(_style.Border, WebPadding.None, _style.BackgroundBrush);
+      boxAnnotation.Draw(graphics, new ResolvedScreenshotElement(CoordinateSystem.Browser, tooltipBounds, ElementVisibility.FullyVisible, null, _tooltipBounds.Value));
 
       // Draw the text content
-      graphics.DrawString (
+      graphics.DrawString(
           _content,
           _style.Font,
           _style.ForegroundBrush,
-          new Rectangle (tooltipBounds.Location + desktopOffset, contentSize),
+          new Rectangle(tooltipBounds.Location + desktopOffset, contentSize),
           stringFormat);
     }
 
@@ -145,19 +145,19 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       switch (alignment)
       {
         case TooltipPositioning.TopLeft:
-          return new Point (centerX - tooltip.Width + _padding.Left - _padding.Right, element.Y - _padding.Top - tooltip.Height);
+          return new Point(centerX - tooltip.Width + _padding.Left - _padding.Right, element.Y - _padding.Top - tooltip.Height);
         case TooltipPositioning.TopCenter:
-          return new Point (centerX - tooltip.Width / 2, element.Y - _padding.Top - tooltip.Height);
+          return new Point(centerX - tooltip.Width / 2, element.Y - _padding.Top - tooltip.Height);
         case TooltipPositioning.TopRight:
-          return new Point (centerX + _padding.Left - _padding.Right, element.Y - _padding.Top - tooltip.Height);
+          return new Point(centerX + _padding.Left - _padding.Right, element.Y - _padding.Top - tooltip.Height);
         case TooltipPositioning.BottomLeft:
-          return new Point (centerX - tooltip.Width + _padding.Left - _padding.Right, element.Bottom + _padding.Bottom);
+          return new Point(centerX - tooltip.Width + _padding.Left - _padding.Right, element.Bottom + _padding.Bottom);
         case TooltipPositioning.BottomCenter:
-          return new Point (centerX - tooltip.Width / 2, element.Bottom + _padding.Bottom);
+          return new Point(centerX - tooltip.Width / 2, element.Bottom + _padding.Bottom);
         case TooltipPositioning.BottomRight:
-          return new Point (centerX + _padding.Left - _padding.Right, element.Bottom + _padding.Bottom);
+          return new Point(centerX + _padding.Left - _padding.Right, element.Bottom + _padding.Bottom);
         default:
-          throw new ArgumentOutOfRangeException ("alignment", alignment, null);
+          throw new ArgumentOutOfRangeException("alignment", alignment, null);
       }
     }
   }

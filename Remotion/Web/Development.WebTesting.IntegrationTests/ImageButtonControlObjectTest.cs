@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [TestCaseSource (typeof (DisabledTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
     public void GenericTests (GenericSelectorTestAction<ImageButtonSelector, ImageButtonControlObject> testAction)
     {
-      testAction (Helper, e => e.ImageButtons(), "imageButton");
+      testAction(Helper, e => e.ImageButtons(), "imageButton");
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<ImageButtonSelector, ImageButtonControlObject> testAction)
     {
-      testAction (Helper, e => e.ImageButtons(), "imageButton");
+      testAction(Helper, e => e.ImageButtons(), "imageButton");
     }
 
     [Test]
@@ -55,10 +55,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var control = home.ImageButtons().GetByLocalID ("ImageButtonDisabled");
+      var control = home.ImageButtons().GetByLocalID("ImageButtonDisabled");
 
-      Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.Click(), Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "Click").Message));
+      Assert.That(control.IsDisabled(), Is.True);
+      Assert.That(() => control.Click(), Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "Click").Message));
     }
 
     [Test]
@@ -66,8 +66,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var imageButton = home.ImageButtons().GetByLocalID ("MyImageButton");
-      Assert.That (imageButton.GetImageSourceUrl(), Does.EndWith ("/Images/SampleIcon.gif"));
+      var imageButton = home.ImageButtons().GetByLocalID("MyImageButton");
+      Assert.That(imageButton.GetImageSourceUrl(), Does.EndWith("/Images/SampleIcon.gif"));
     }
 
     [Test]
@@ -76,25 +76,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       {
-        var imageButton2 = home.ImageButtons().GetByLocalID ("MyImageButton2");
-        var completionDetection = new CompletionDetectionStrategyTestHelper (imageButton2);
+        var imageButton2 = home.ImageButtons().GetByLocalID("MyImageButton2");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(imageButton2);
         home = imageButton2.Click().Expect<WxePageObject>();
-        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-        Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("MyImageButton2|MyImageButton2Command"));
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("MyImageButton2|MyImageButton2Command"));
       }
 
       {
-        var imageButton3 = home.ImageButtons().GetByLocalID ("MyImageButton3");
-        var completionDetection = new CompletionDetectionStrategyTestHelper (imageButton3);
+        var imageButton3 = home.ImageButtons().GetByLocalID("MyImageButton3");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(imageButton3);
         home = imageButton3.Click().Expect<WxePageObject>();
-        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
-        Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.Empty);
       }
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("ImageButtonTest.wxe");
+      return Start<WxePageObject>("ImageButtonTest.wxe");
     }
   }
 }

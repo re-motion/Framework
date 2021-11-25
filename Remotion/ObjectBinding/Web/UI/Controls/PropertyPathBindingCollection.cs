@@ -30,8 +30,8 @@ public class PropertyPathBindingCollection : BusinessObjectControlItemCollection
 
   public new PropertyPathBinding[] ToArray ()
   {
-    ArrayList arrayList = new ArrayList (List);
-    return (PropertyPathBinding[]) arrayList.ToArray (typeof (PropertyPathBinding));
+    ArrayList arrayList = new ArrayList(List);
+    return (PropertyPathBinding[]) arrayList.ToArray(typeof (PropertyPathBinding));
   }
 
   //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.

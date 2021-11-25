@@ -50,13 +50,13 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Initalizes a new instance. </summary>
     public WebTreeNode (string itemID, string? text, string? toolTip, IconInfo icon)
     {
-      ValidateItemId (itemID);
+      ValidateItemId(itemID);
       _itemID = itemID;
       _text = text ?? string.Empty;
       _toolTip = toolTip ?? string.Empty;
       _icon = icon;
-      _children = new WebTreeNodeCollection (null);
-      _children.SetParent (null, this);
+      _children = new WebTreeNodeCollection(null);
+      _children.SetParent(null, this);
     }
 
     /// <summary> Initalizes a new instance. </summary>
@@ -67,7 +67,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Initalizes a new instance. </summary>
     public WebTreeNode (string itemID, string text, string iconUrl)
-        : this (itemID, text, new IconInfo (iconUrl, Unit.Empty, Unit.Empty))
+        : this (itemID, text, new IconInfo(iconUrl, Unit.Empty, Unit.Empty))
     {
     }
 
@@ -83,8 +83,8 @@ namespace Remotion.Web.UI.Controls
     [EditorBrowsable (EditorBrowsableState.Never)]
     public WebTreeNode ()
     {
-      _children = new WebTreeNodeCollection (null);
-      _children.SetParent (null, this);
+      _children = new WebTreeNodeCollection(null);
+      _children.SetParent(null, this);
     }
 #nullable restore
 
@@ -118,7 +118,7 @@ namespace Remotion.Web.UI.Controls
     public void Evaluate ()
     {
       if (_treeView != null)
-        _treeView.EvaluateTreeNodeInternal (this);
+        _treeView.EvaluateTreeNodeInternal(this);
     }
 
     /// <summary> Evaluates the current node's children. </summary>
@@ -155,10 +155,10 @@ namespace Remotion.Web.UI.Controls
         IsSelected = false;
       }
       _parentNode = parentNode;
-      _children.SetParent (_treeView, this);
+      _children.SetParent(_treeView, this);
 
       if (_treeView != null)
-        _treeView.EnsureTreeNodeMenuInitialized (this);
+        _treeView.EnsureTreeNodeMenuInitialized(this);
     }
 
     /// <summary> Sets the node's selection state. </summary>
@@ -172,12 +172,12 @@ namespace Remotion.Web.UI.Controls
     public override string ToString ()
     {
       string displayName = ItemID;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         displayName = Text;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         return DisplayedTypeName;
       else
-        return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+        return string.Format("{0}: {1}", displayName, DisplayedTypeName);
     }
 
     /// <summary> Gets or sets the ID of this node. </summary>
@@ -199,8 +199,8 @@ namespace Remotion.Web.UI.Controls
 
     private void ValidateItemId (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-      if (! string.IsNullOrEmpty (value))
+      ArgumentUtility.CheckNotNullOrEmpty("value", value);
+      if (! string.IsNullOrEmpty(value))
       {
         WebTreeNodeCollection? nodes = null;
         if (ParentNode != null)
@@ -209,8 +209,8 @@ namespace Remotion.Web.UI.Controls
           nodes = TreeView.Nodes;
         if (nodes != null)
         {
-          if (nodes.Find (value) != null)
-            throw new ArgumentException ("The collection already contains a node with ItemID '" + value + "'.", "value");
+          if (nodes.Find(value) != null)
+            throw new ArgumentException("The collection already contains a node with ItemID '" + value + "'.", "value");
         }
       }
     }
@@ -271,7 +271,7 @@ namespace Remotion.Web.UI.Controls
 
     private bool ShouldSerializeIcon ()
     {
-      return IconInfo.ShouldSerialize (_icon);
+      return IconInfo.ShouldSerialize(_icon);
     }
 
     private void ResetIcon ()
@@ -355,13 +355,13 @@ namespace Remotion.Web.UI.Controls
       get { return _isSelected; }
       set
       {
-        SetSelected (value);
+        SetSelected(value);
         if (_treeView != null)
         {
           if (value)
-            _treeView.SetSelectedNode (this);
+            _treeView.SetSelectedNode(this);
           else if (this == _treeView.SelectedNode)
-            _treeView.SetSelectedNode (null);
+            _treeView.SetSelectedNode(null);
         }
       }
     }
@@ -398,15 +398,15 @@ namespace Remotion.Web.UI.Controls
 
     public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-      if (! string.IsNullOrEmpty (key))
-        Text = resourceManager.GetString (key);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(Text);
+      if (! string.IsNullOrEmpty(key))
+        Text = resourceManager.GetString(key);
 
       if (Icon != null)
-        Icon.LoadResources (resourceManager);
+        Icon.LoadResources(resourceManager);
     }
   }
 }

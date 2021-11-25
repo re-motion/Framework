@@ -40,26 +40,26 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     protected void RegisterQueryFactory (string propertyName, QueryFactory queryFactory)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-      ArgumentUtility.CheckNotNull ("queryFactory", queryFactory);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentUtility.CheckNotNull("queryFactory", queryFactory);
 
-      _queryFactories.Add (propertyName, queryFactory);
+      _queryFactories.Add(propertyName, queryFactory);
     }
 
     public override sealed bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("property", property);
 
-      return _queryFactories.ContainsKey (property.Identifier);
+      return _queryFactories.ContainsKey(property.Identifier);
     }
 
     protected override sealed QueryFactory GetQueryFactory (IBusinessObjectReferenceProperty property)
     {
       QueryFactory queryFactory;
-      if (!_queryFactories.TryGetValue (property.Identifier, out queryFactory))
+      if (!_queryFactories.TryGetValue(property.Identifier, out queryFactory))
       {
-        throw new ArgumentException (
-            string.Format ("The property '{0}' is not supported by the '{1}' type.", property.Identifier, GetType().GetFullNameSafe()));
+        throw new ArgumentException(
+            string.Format("The property '{0}' is not supported by the '{1}' type.", property.Identifier, GetType().GetFullNameSafe()));
       }
       return queryFactory;
     }

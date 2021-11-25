@@ -42,70 +42,70 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public override void Insert (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       if (index < 0 || index > Count)
       {
-        throw new ArgumentOutOfRangeException (
+        throw new ArgumentOutOfRangeException(
             "index",
             index,
             "Index is out of range. Must be non-negative and less than or equal to the size of the collection.");
       }
 
-      if (ContainsObjectID (domainObject.ID))
-        throw new ArgumentException (string.Format ("The collection already contains an object with ID '{0}'.", domainObject.ID), "domainObject");
+      if (ContainsObjectID(domainObject.ID))
+        throw new ArgumentException(string.Format("The collection already contains an object with ID '{0}'.", domainObject.ID), "domainObject");
 
-      CheckItemType (domainObject, "domainObject");
+      CheckItemType(domainObject, "domainObject");
 
-      base.Insert (index, domainObject);
+      base.Insert(index, domainObject);
     }
 
     public override bool Remove (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      var existingObject = GetObject (domainObject.ID);
+      var existingObject = GetObject(domainObject.ID);
       if (existingObject != null && existingObject != domainObject)
       {
         var message = "The object to be removed has the same ID as an object in this collection, but is a different object reference.";
-        throw new ArgumentException (message, "domainObject");
+        throw new ArgumentException(message, "domainObject");
       }
 
-      return base.Remove (domainObject);
+      return base.Remove(domainObject);
     }
 
     public override void Replace (int index, DomainObject value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
       if (index < 0 || index >= Count)
       {
-        throw new ArgumentOutOfRangeException (
+        throw new ArgumentOutOfRangeException(
             "index",
             index,
             "Index is out of range. Must be non-negative and less than the size of the collection.");
       }
 
-      if (ContainsObjectID (value.ID) && !ReferenceEquals (GetObject (index), value))
+      if (ContainsObjectID(value.ID) && !ReferenceEquals(GetObject(index), value))
       {
-        var message = string.Format ("The collection already contains an object with ID '{0}'.", value.ID);
-        throw new InvalidOperationException (message);
+        var message = string.Format("The collection already contains an object with ID '{0}'.", value.ID);
+        throw new InvalidOperationException(message);
       }
 
-      CheckItemType (value, "value");
+      CheckItemType(value, "value");
 
-      base.Replace (index, value);
+      base.Replace(index, value);
     }
 
     private void CheckItemType (DomainObject domainObject, string argumentName)
     {
-      if (_requiredItemType != null && !_requiredItemType.IsInstanceOfType (domainObject))
+      if (_requiredItemType != null && !_requiredItemType.IsInstanceOfType(domainObject))
       {
-        string message = string.Format (
+        string message = string.Format(
             "Values of type '{0}' cannot be added to this collection. Values must be of type '{1}' or derived from '{1}'.",
             domainObject.GetPublicDomainObjectType(),
             _requiredItemType);
-        throw new ArgumentException (message, argumentName);
+        throw new ArgumentException(message, argumentName);
       }
     }
   }

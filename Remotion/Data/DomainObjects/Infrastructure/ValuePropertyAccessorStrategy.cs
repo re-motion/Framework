@@ -31,61 +31,61 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public Type GetPropertyType (PropertyDefinition propertyDefinition, IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
       return propertyDefinition.PropertyType;
     }
 
     public bool HasChanged (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
 
-      return GetDataContainer (propertyAccessor, transaction).HasValueChanged (propertyAccessor.PropertyData.PropertyDefinition);
+      return GetDataContainer(propertyAccessor, transaction).HasValueChanged(propertyAccessor.PropertyData.PropertyDefinition);
     }
 
     public bool HasBeenTouched (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
 
-      return GetDataContainer (propertyAccessor, transaction).HasValueBeenTouched (propertyAccessor.PropertyData.PropertyDefinition);
+      return GetDataContainer(propertyAccessor, transaction).HasValueBeenTouched(propertyAccessor.PropertyData.PropertyDefinition);
     }
 
     public bool IsNull (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
 
-      return GetValueWithoutTypeCheck (propertyAccessor, transaction) == null;
+      return GetValueWithoutTypeCheck(propertyAccessor, transaction) == null;
     }
 
     public object GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
 
-      return GetDataContainer (propertyAccessor, transaction).GetValue (propertyAccessor.PropertyData.PropertyDefinition);
+      return GetDataContainer(propertyAccessor, transaction).GetValue(propertyAccessor.PropertyData.PropertyDefinition);
     }
 
     public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object value)
     {
-      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
 
-      GetDataContainer (propertyAccessor, transaction).SetValue (propertyAccessor.PropertyData.PropertyDefinition, value);
+      GetDataContainer(propertyAccessor, transaction).SetValue(propertyAccessor.PropertyData.PropertyDefinition, value);
     }
 
     public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
 
-      return GetDataContainer (propertyAccessor, transaction).GetValue (propertyAccessor.PropertyData.PropertyDefinition, ValueAccess.Original);
+      return GetDataContainer(propertyAccessor, transaction).GetValue(propertyAccessor.PropertyData.PropertyDefinition, ValueAccess.Original);
     }
 
     private DataContainer GetDataContainer (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      return transaction.DataManager.GetDataContainerWithLazyLoad (propertyAccessor.DomainObject.ID, throwOnNotFound: true);
+      return transaction.DataManager.GetDataContainerWithLazyLoad(propertyAccessor.DomainObject.ID, throwOnNotFound: true);
     }
   }
 }

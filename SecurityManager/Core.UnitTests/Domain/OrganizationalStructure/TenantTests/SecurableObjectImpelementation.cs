@@ -29,73 +29,73 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     [Test]
     public void GetSecurityStrategy ()
     {
-      ISecurableObject tenant = TestHelper.CreateTenant ("Tenant", "UID: Tenant");
+      ISecurableObject tenant = TestHelper.CreateTenant("Tenant", "UID: Tenant");
 
       IObjectSecurityStrategy objectSecurityStrategy = tenant.GetSecurityStrategy();
-      Assert.That (objectSecurityStrategy, Is.Not.Null);
-      Assert.IsInstanceOf (typeof (DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
+      Assert.That(objectSecurityStrategy, Is.Not.Null);
+      Assert.IsInstanceOf(typeof (DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
       DomainObjectSecurityStrategyDecorator domainObjectSecurityStrategyDecorator = (DomainObjectSecurityStrategyDecorator) objectSecurityStrategy;
-      Assert.That (domainObjectSecurityStrategyDecorator.RequiredSecurityForStates, Is.EqualTo (RequiredSecurityForStates.None));
+      Assert.That(domainObjectSecurityStrategyDecorator.RequiredSecurityForStates, Is.EqualTo(RequiredSecurityForStates.None));
     }
 
     [Test]
     public void GetSecurityStrategy_SameTwice ()
     {
-      ISecurableObject tenant = TestHelper.CreateTenant ("Tenant", "UID: Tenant");
+      ISecurableObject tenant = TestHelper.CreateTenant("Tenant", "UID: Tenant");
 
-      Assert.That (tenant.GetSecurityStrategy(), Is.SameAs (tenant.GetSecurityStrategy()));
+      Assert.That(tenant.GetSecurityStrategy(), Is.SameAs(tenant.GetSecurityStrategy()));
     }
 
     [Test]
     public void GetSecurableType ()
     {
-      ISecurableObject tenant = TestHelper.CreateTenant ("Tenant", "UID: Tenant");
+      ISecurableObject tenant = TestHelper.CreateTenant("Tenant", "UID: Tenant");
 
-      Assert.That (tenant.GetSecurableType(), Is.SameAs (typeof (Tenant)));
+      Assert.That(tenant.GetSecurableType(), Is.SameAs(typeof (Tenant)));
     }
 
     [Test]
     public void DomainObjectSecurityContextFactoryImplementation ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("Tenant", "UID: Tenant");
+      Tenant tenant = TestHelper.CreateTenant("Tenant", "UID: Tenant");
       IDomainObjectSecurityContextFactory factory = tenant;
 
-      Assert.That (factory.IsInvalid, Is.False);
-      Assert.That (factory.IsNew, Is.True);
-      Assert.That (factory.IsDeleted, Is.False);
+      Assert.That(factory.IsInvalid, Is.False);
+      Assert.That(factory.IsNew, Is.True);
+      Assert.That(factory.IsDeleted, Is.False);
 
       tenant.Delete();
 
-      Assert.That (factory.IsInvalid, Is.True);
+      Assert.That(factory.IsInvalid, Is.True);
     }
 
     [Test]
     public void CreateSecurityContext ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("Tenant", "UID: Tenant");
-      tenant.Parent = TestHelper.CreateTenant ("ParentTenant", "UID: ParentTenant");
+      Tenant tenant = TestHelper.CreateTenant("Tenant", "UID: Tenant");
+      tenant.Parent = TestHelper.CreateTenant("ParentTenant", "UID: ParentTenant");
 
       ISecurityContext securityContext = ((ISecurityContextFactory) tenant).CreateSecurityContext();
-      Assert.That (Type.GetType (securityContext.Class), Is.EqualTo (tenant.GetPublicDomainObjectType()));
-      Assert.That (securityContext.Owner, Is.Null);
-      Assert.That (securityContext.OwnerGroup, Is.Null);
-      Assert.That (securityContext.OwnerTenant, Is.EqualTo (tenant.UniqueIdentifier));
-      Assert.That (securityContext.AbstractRoles, Is.Empty);
-      Assert.That (securityContext.IsStateless, Is.False);
+      Assert.That(Type.GetType(securityContext.Class), Is.EqualTo(tenant.GetPublicDomainObjectType()));
+      Assert.That(securityContext.Owner, Is.Null);
+      Assert.That(securityContext.OwnerGroup, Is.Null);
+      Assert.That(securityContext.OwnerTenant, Is.EqualTo(tenant.UniqueIdentifier));
+      Assert.That(securityContext.AbstractRoles, Is.Empty);
+      Assert.That(securityContext.IsStateless, Is.False);
     }
 
     [Test]
     public void CreateSecurityContext_WithoutParent ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("Tenant", "UID: Tenant");
+      Tenant tenant = TestHelper.CreateTenant("Tenant", "UID: Tenant");
 
       ISecurityContext securityContext = ((ISecurityContextFactory) tenant).CreateSecurityContext();
-      Assert.That (Type.GetType (securityContext.Class), Is.EqualTo (tenant.GetPublicDomainObjectType()));
-      Assert.That (securityContext.Owner, Is.Null);
-      Assert.That (securityContext.OwnerGroup, Is.Null);
-      Assert.That (securityContext.OwnerTenant, Is.EqualTo (tenant.UniqueIdentifier));
-      Assert.That (securityContext.AbstractRoles, Is.Empty);
-      Assert.That (securityContext.IsStateless, Is.False);
+      Assert.That(Type.GetType(securityContext.Class), Is.EqualTo(tenant.GetPublicDomainObjectType()));
+      Assert.That(securityContext.Owner, Is.Null);
+      Assert.That(securityContext.OwnerGroup, Is.Null);
+      Assert.That(securityContext.OwnerTenant, Is.EqualTo(tenant.UniqueIdentifier));
+      Assert.That(securityContext.AbstractRoles, Is.Empty);
+      Assert.That(securityContext.IsStateless, Is.False);
     }
   }
 }

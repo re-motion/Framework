@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   {
     public static Computer NewObject ()
     {
-      return NewObject<Computer> ();
+      return NewObject<Computer>();
     }
 
     protected Computer ()

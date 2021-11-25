@@ -28,21 +28,21 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// A <see cref="WebPadding"/> where all sides are set to <c>0</c>.
     /// </summary>
-    public static readonly WebPadding None = new WebPadding (0);
+    public static readonly WebPadding None = new WebPadding(0);
 
     /// <summary>
     /// A <see cref="WebPadding"/> where all sides are set to <c>-1</c>.
     /// </summary>
-    public static readonly WebPadding Inner = new WebPadding (-1);
+    public static readonly WebPadding Inner = new WebPadding(-1);
 
     public static bool operator == (WebPadding left, WebPadding right)
     {
-      return left.Equals (right);
+      return left.Equals(right);
     }
 
     public static bool operator != (WebPadding left, WebPadding right)
     {
-      return !left.Equals (right);
+      return !left.Equals(right);
     }
 
     private readonly int _left;
@@ -117,7 +117,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [Pure]
     public Rectangle Apply (Rectangle target)
     {
-      return new Rectangle (
+      return new Rectangle(
           target.X - _left,
           target.Y - _top,
           target.Width + Horizontal,
@@ -133,9 +133,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public override bool Equals (object? obj)
     {
-      if (ReferenceEquals (null, obj))
+      if (ReferenceEquals(null, obj))
         return false;
-      return obj is WebPadding && Equals ((WebPadding) obj);
+      return obj is WebPadding && Equals((WebPadding) obj);
     }
 
     /// <inheritdoc />

@@ -35,7 +35,7 @@ namespace Remotion.SecurityManager.Clients.Web.Test.Classes
 
     public IEnumerable<FormGridRowInfo> GetAdditionalRows (EditUserControl dataEditControl, HtmlTable formGrid, FormGridManager formGridManager)
     {
-      yield return new FormGridRowInfo (
+      yield return new FormGridRowInfo(
           new BocTextValue { ID = "ReadOnlyUserNameField", ReadOnly = true, PropertyIdentifier = "UserName", DataSource = dataEditControl.DataSource },
           FormGridRowInfo.RowType.ControlInRowWithLabel,
           "UserNameField",

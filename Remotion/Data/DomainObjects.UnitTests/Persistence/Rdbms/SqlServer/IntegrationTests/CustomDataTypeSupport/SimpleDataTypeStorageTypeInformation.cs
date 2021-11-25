@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         bool isStorageTypeNullable,
         int? storageTypeLength)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("storageTypeName", storageTypeName);
+      ArgumentUtility.CheckNotNullOrEmpty("storageTypeName", storageTypeName);
 
       _storageTypeName = storageTypeName;
       _storageDbType = storageDbType;
@@ -77,9 +77,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public IDbDataParameter CreateDataParameter (IDbCommand command, object value)
     {
-      ArgumentUtility.CheckNotNull ("command", command);
+      ArgumentUtility.CheckNotNull("command", command);
 
-      var convertedValue = ConvertToStorageType (value);
+      var convertedValue = ConvertToStorageType(value);
 
       var parameter = command.CreateParameter();
       parameter.Value = convertedValue;
@@ -98,10 +98,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public object Read (IDataReader dataReader, int ordinal)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
       var value = dataReader[ordinal];
-      return ConvertFromStorageType (value);
+      return ConvertFromStorageType(value);
     }
 
     public object ConvertToStorageType (object dotNetValue)
@@ -117,28 +117,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       if (storageValue == DBNull.Value)
         return null;
 
-      return new SimpleDataType ((string) storageValue);
+      return new SimpleDataType((string) storageValue);
     }
 
     public IStorageTypeInformation UnifyForEquivalentProperties (IEnumerable<IStorageTypeInformation> equivalentStorageTypes)
     {
-      ArgumentUtility.CheckNotNull ("equivalentStorageTypes", equivalentStorageTypes);
+      ArgumentUtility.CheckNotNull("equivalentStorageTypes", equivalentStorageTypes);
       var castStorageTypes =
-          equivalentStorageTypes.Select (
+          equivalentStorageTypes.Select(
               equivalentInfo =>
-                  StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty (
+                  StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
                       this,
                       equivalentInfo,
                       "equivalentStorageTypes",
-                      info => Tuple.Create<string, object> ("storage type name", info.StorageTypeName),
-                      info => Tuple.Create<string, object> ("storage DbType", info.StorageDbType),
-                      info => Tuple.Create<string, object> ("storage type length", info.StorageTypeLength)))
+                      info => Tuple.Create<string, object>("storage type name", info.StorageTypeName),
+                      info => Tuple.Create<string, object>("storage DbType", info.StorageDbType),
+                      info => Tuple.Create<string, object>("storage type length", info.StorageTypeLength)))
               .ToArray();
 
-      return new SimpleDataTypeStorageTypeInformation (
+      return new SimpleDataTypeStorageTypeInformation(
           _storageTypeName,
           _storageDbType,
-          _isStorageTypeNullable || castStorageTypes.Any (x => x._isStorageTypeNullable),
+          _isStorageTypeNullable || castStorageTypes.Any(x => x._isStorageTypeNullable),
           _storageTypeLength);
     }
   }

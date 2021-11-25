@@ -36,19 +36,19 @@ namespace Remotion.Data.DomainObjects.UnitTests
   {
     public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
-      ArgumentUtility.CheckNotNull ("persistenceExtension", persistenceExtension);
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
-      var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition> (
+      var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
           "storageProviderDefinition", storageProviderDefinition);
-      return new UnitTestStorageProviderStub (providerDefiniton, persistenceExtension);
+      return new UnitTestStorageProviderStub(providerDefiniton, persistenceExtension);
     }
 
     public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition, IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
     {
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
-      return new SqlStorageObjectFactory().CreatePersistenceModelLoader (storageProviderDefinition, storageProviderDefinitionFinder);
+      return new SqlStorageObjectFactory().CreatePersistenceModelLoader(storageProviderDefinition, storageProviderDefinitionFinder);
     }
 
     public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (StorageProviderDefinition storageProviderDefinition, IMethodCallTransformerProvider methodCallTransformerProvider, ResultOperatorHandlerRegistry resultOperatorHandlerRegistry, IMappingConfiguration mappingConfiguration)

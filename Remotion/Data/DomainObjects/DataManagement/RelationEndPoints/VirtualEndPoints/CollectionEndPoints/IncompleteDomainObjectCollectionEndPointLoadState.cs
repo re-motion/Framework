@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IDomainObjectCollectionEndPointDataManagerFactory dataManagerFactory)
       : base (endPointLoader)
     {
-      ArgumentUtility.CheckNotNull ("dataManagerFactory", dataManagerFactory);
+      ArgumentUtility.CheckNotNull("dataManagerFactory", dataManagerFactory);
       _dataManagerFactory = dataManagerFactory;
     }
 
@@ -53,18 +53,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void EnsureDataComplete (IDomainObjectCollectionEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
 
-      EndPointLoader.LoadEndPointAndGetNewState (endPoint);
+      EndPointLoader.LoadEndPointAndGetNewState(endPoint);
     }
 
     public new void MarkDataComplete (IDomainObjectCollectionEndPoint collectionEndPoint, IEnumerable<DomainObject> items, Action<IDomainObjectCollectionEndPointDataManager> stateSetter)
     {
-      ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
-      ArgumentUtility.CheckNotNull ("items", items);
-      ArgumentUtility.CheckNotNull ("stateSetter", stateSetter);
+      ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
+      ArgumentUtility.CheckNotNull("items", items);
+      ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
 
-      base.MarkDataComplete (collectionEndPoint, items, stateSetter);
+      base.MarkDataComplete(collectionEndPoint, items, stateSetter);
 
       var eventRaiser = collectionEndPoint.GetCollectionEventRaiser();
       eventRaiser.WithinReplaceData();
@@ -72,11 +72,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void SortCurrentData (IDomainObjectCollectionEndPoint collectionEndPoint, Comparison<DomainObject> comparison)
     {
-      ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
-      ArgumentUtility.CheckNotNull ("comparison", comparison);
+      ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
+      ArgumentUtility.CheckNotNull("comparison", comparison);
 
-      var completeState = EndPointLoader.LoadEndPointAndGetNewState (collectionEndPoint);
-      completeState.SortCurrentData (collectionEndPoint, comparison);
+      var completeState = EndPointLoader.LoadEndPointAndGetNewState(collectionEndPoint);
+      completeState.SortCurrentData(collectionEndPoint, comparison);
     }
 
     public IDataManagementCommand CreateSetCollectionCommand (
@@ -84,61 +84,61 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         DomainObjectCollection newCollection, 
         IDomainObjectCollectionEndPointCollectionManager collectionEndPointCollectionManager)
     {
-      ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
-      ArgumentUtility.CheckNotNull ("newCollection", newCollection);
+      ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
+      ArgumentUtility.CheckNotNull("newCollection", newCollection);
 
-      var completeState = EndPointLoader.LoadEndPointAndGetNewState (collectionEndPoint);
-      return completeState.CreateSetCollectionCommand (collectionEndPoint, newCollection, collectionEndPointCollectionManager);
+      var completeState = EndPointLoader.LoadEndPointAndGetNewState(collectionEndPoint);
+      return completeState.CreateSetCollectionCommand(collectionEndPoint, newCollection, collectionEndPointCollectionManager);
     }
 
     public IDataManagementCommand CreateRemoveCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject removedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
-      ArgumentUtility.CheckNotNull ("removedRelatedObject", removedRelatedObject);
+      ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
+      ArgumentUtility.CheckNotNull("removedRelatedObject", removedRelatedObject);
 
-      var completeState = EndPointLoader.LoadEndPointAndGetNewState (collectionEndPoint);
-      return completeState.CreateRemoveCommand (collectionEndPoint, removedRelatedObject);
+      var completeState = EndPointLoader.LoadEndPointAndGetNewState(collectionEndPoint);
+      return completeState.CreateRemoveCommand(collectionEndPoint, removedRelatedObject);
     }
 
     public IDataManagementCommand CreateDeleteCommand (IDomainObjectCollectionEndPoint collectionEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
+      ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       
-      var completeState = EndPointLoader.LoadEndPointAndGetNewState (collectionEndPoint);
-      return completeState.CreateDeleteCommand (collectionEndPoint);
+      var completeState = EndPointLoader.LoadEndPointAndGetNewState(collectionEndPoint);
+      return completeState.CreateDeleteCommand(collectionEndPoint);
     }
 
     public IDataManagementCommand CreateInsertCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject insertedRelatedObject, int index)
     {
-      ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
-      ArgumentUtility.CheckNotNull ("insertedRelatedObject", insertedRelatedObject);
+      ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
+      ArgumentUtility.CheckNotNull("insertedRelatedObject", insertedRelatedObject);
 
-      var completeState = EndPointLoader.LoadEndPointAndGetNewState (collectionEndPoint);
-      return completeState.CreateInsertCommand (collectionEndPoint, insertedRelatedObject, index);
+      var completeState = EndPointLoader.LoadEndPointAndGetNewState(collectionEndPoint);
+      return completeState.CreateInsertCommand(collectionEndPoint, insertedRelatedObject, index);
     }
 
     public IDataManagementCommand CreateAddCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject addedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
-      ArgumentUtility.CheckNotNull ("addedRelatedObject", addedRelatedObject);
+      ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
+      ArgumentUtility.CheckNotNull("addedRelatedObject", addedRelatedObject);
       
-      var completeState = EndPointLoader.LoadEndPointAndGetNewState (collectionEndPoint);
-      return completeState.CreateAddCommand (collectionEndPoint, addedRelatedObject);
+      var completeState = EndPointLoader.LoadEndPointAndGetNewState(collectionEndPoint);
+      return completeState.CreateAddCommand(collectionEndPoint, addedRelatedObject);
     }
 
     public IDataManagementCommand CreateReplaceCommand (IDomainObjectCollectionEndPoint collectionEndPoint, int index, DomainObject replacementObject)
     {
-      ArgumentUtility.CheckNotNull ("collectionEndPoint", collectionEndPoint);
-      ArgumentUtility.CheckNotNull ("replacementObject", replacementObject);
+      ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
+      ArgumentUtility.CheckNotNull("replacementObject", replacementObject);
 
-      var completeState = EndPointLoader.LoadEndPointAndGetNewState (collectionEndPoint);
-      return completeState.CreateReplaceCommand (collectionEndPoint, index, replacementObject);
+      var completeState = EndPointLoader.LoadEndPointAndGetNewState(collectionEndPoint);
+      return completeState.CreateReplaceCommand(collectionEndPoint, index, replacementObject);
     }
 
     protected override IDomainObjectCollectionEndPointDataManager CreateEndPointDataManager (IDomainObjectCollectionEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-      return _dataManagerFactory.CreateEndPointDataManager (endPoint.ID);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      return _dataManagerFactory.CreateEndPointDataManager(endPoint.ID);
     }
 
     #region Serialization
@@ -151,8 +151,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     protected override void SerializeSubclassData (FlattenedSerializationInfo info)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
-      info.AddHandle (_dataManagerFactory);
+      ArgumentUtility.CheckNotNull("info", info);
+      info.AddHandle(_dataManagerFactory);
     }
 
     #endregion

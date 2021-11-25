@@ -41,10 +41,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentException">The domain object does not have a property with the given identifier.</exception>
     public PropertyAccessor (IDomainObject domainObject, PropertyAccessorData propertyData, ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull ("propertyData", propertyData);
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      DomainObjectCheckUtility.CheckIfRightTransaction (domainObject, clientTransaction);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("propertyData", propertyData);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      DomainObjectCheckUtility.CheckIfRightTransaction(domainObject, clientTransaction);
 
       _domainObject = domainObject;
       _clientTransaction = clientTransaction;
@@ -88,8 +88,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       get
       {
-        CheckTransactionalStatus (ClientTransaction);
-        return PropertyData.GetStrategy().HasChanged (this, ClientTransaction);
+        CheckTransactionalStatus(ClientTransaction);
+        return PropertyData.GetStrategy().HasChanged(this, ClientTransaction);
       }
     }
 
@@ -107,8 +107,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       get
       {
-        CheckTransactionalStatus (ClientTransaction);
-        return PropertyData.GetStrategy().HasBeenTouched (this, ClientTransaction);
+        CheckTransactionalStatus(ClientTransaction);
+        return PropertyData.GetStrategy().HasBeenTouched(this, ClientTransaction);
       }
     }
 
@@ -124,8 +124,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       get
       {
-        CheckTransactionalStatus (ClientTransaction);
-        return PropertyData.GetStrategy().IsNull (this, ClientTransaction);
+        CheckTransactionalStatus(ClientTransaction);
+        return PropertyData.GetStrategy().IsNull(this, ClientTransaction);
       }
     }
 
@@ -149,10 +149,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       CheckType(typeof (T));
 
-      object value = GetValueWithoutTypeCheck ();
+      object value = GetValueWithoutTypeCheck();
 
-      Assertion.DebugAssert (
-          value != null || NullableTypeUtility.IsNullableType (PropertyData.PropertyType),
+      Assertion.DebugAssert(
+          value != null || NullableTypeUtility.IsNullableType(PropertyData.PropertyType),
           "Property '{0}' is a value type but the DataContainer returned null.",
           PropertyData.PropertyIdentifier);
 
@@ -162,13 +162,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
       catch (InvalidCastException ex)
       {
-        Assertion.IsNotNull (value, "Otherwise, the cast would have succeeded (ref type) or thrown a NullReferenceException (value type).");
-        var message = string.Format (
+        Assertion.IsNotNull(value, "Otherwise, the cast would have succeeded (ref type) or thrown a NullReferenceException (value type).");
+        var message = string.Format(
             "The property '{0}' was expected to hold an object of type '{1}', but it returned an object of type '{2}'.",
             PropertyData.PropertyIdentifier,
             PropertyData.PropertyType,
             value.GetType());
-        throw new InvalidTypeException (message, ex);
+        throw new InvalidTypeException(message, ex);
       }
     }
 
@@ -182,8 +182,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
     public object GetValueWithoutTypeCheck ()
     {
-      CheckTransactionalStatus (ClientTransaction);
-      return PropertyData.GetStrategy ().GetValueWithoutTypeCheck (this, ClientTransaction);
+      CheckTransactionalStatus(ClientTransaction);
+      return PropertyData.GetStrategy().GetValueWithoutTypeCheck(this, ClientTransaction);
     }
 
 
@@ -197,15 +197,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
     public ObjectID GetRelatedObjectID ()
     {
-      CheckTransactionalStatus (ClientTransaction);
+      CheckTransactionalStatus(ClientTransaction);
 
       if (PropertyData.Kind != PropertyKind.RelatedObject)
-        throw new InvalidOperationException ("This operation can only be used on related object properties.");
+        throw new InvalidOperationException("This operation can only be used on related object properties.");
 
       if (PropertyData.RelationEndPointDefinition.IsVirtual)
-        throw new InvalidOperationException ("ObjectIDs only exist on the real side of a relation, not on the virtual side.");
+        throw new InvalidOperationException("ObjectIDs only exist on the real side of a relation, not on the virtual side.");
 
-      return (ObjectID) ValuePropertyAccessorStrategy.Instance.GetValueWithoutTypeCheck (this, ClientTransaction);
+      return (ObjectID) ValuePropertyAccessorStrategy.Instance.GetValueWithoutTypeCheck(this, ClientTransaction);
     }
 
     /// <summary>
@@ -225,8 +225,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
     public T GetOriginalValue<T> ()
     {
-      CheckType (typeof (T));
-      return (T) GetOriginalValueWithoutTypeCheck ();
+      CheckType(typeof (T));
+      return (T) GetOriginalValueWithoutTypeCheck();
     }
 
     /// <summary>
@@ -237,8 +237,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
     public object GetOriginalValueWithoutTypeCheck ()
     {
-      CheckTransactionalStatus (ClientTransaction);
-      return PropertyData.GetStrategy().GetOriginalValueWithoutTypeCheck (this, ClientTransaction);
+      CheckTransactionalStatus(ClientTransaction);
+      return PropertyData.GetStrategy().GetOriginalValueWithoutTypeCheck(this, ClientTransaction);
     }
 
     /// <summary>
@@ -251,15 +251,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
     public ObjectID GetOriginalRelatedObjectID ()
     {
-      CheckTransactionalStatus (ClientTransaction);
+      CheckTransactionalStatus(ClientTransaction);
 
       if (PropertyData.Kind != PropertyKind.RelatedObject)
-        throw new InvalidOperationException ("This operation can only be used on related object properties.");
+        throw new InvalidOperationException("This operation can only be used on related object properties.");
 
       if (PropertyData.RelationEndPointDefinition.IsVirtual)
-        throw new InvalidOperationException ("ObjectIDs only exist on the real side of a relation, not on the virtual side.");
+        throw new InvalidOperationException("ObjectIDs only exist on the real side of a relation, not on the virtual side.");
 
-      return (ObjectID) ValuePropertyAccessorStrategy.Instance.GetOriginalValueWithoutTypeCheck (this, ClientTransaction);
+      return (ObjectID) ValuePropertyAccessorStrategy.Instance.GetOriginalValueWithoutTypeCheck(this, ClientTransaction);
     }
 
     /// <summary>
@@ -282,8 +282,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
     public void SetValue<T> (T value)
     {
-      CheckType (typeof (T));
-      SetValueWithoutTypeCheck (value);
+      CheckType(typeof (T));
+      SetValueWithoutTypeCheck(value);
     }
 
     /// <summary>
@@ -301,8 +301,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
     public void SetValueWithoutTypeCheck (object value)
     {
-      CheckTransactionalStatus (ClientTransaction);
-      PropertyData.GetStrategy().SetValueWithoutTypeCheck (this, ClientTransaction, value);
+      CheckTransactionalStatus(ClientTransaction);
+      PropertyData.GetStrategy().SetValueWithoutTypeCheck(this, ClientTransaction, value);
     }
 
     /// <summary>
@@ -319,15 +319,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     [AssertionMethod]
     private void CheckTransactionalStatus (ClientTransaction clientTransaction)
     {
-      Assertion.DebugAssert (ReferenceEquals (ClientTransaction, clientTransaction));
-      DomainObjectCheckUtility.EnsureNotInvalid (_domainObject, clientTransaction);
+      Assertion.DebugAssert(ReferenceEquals(ClientTransaction, clientTransaction));
+      DomainObjectCheckUtility.EnsureNotInvalid(_domainObject, clientTransaction);
     }
 
     private void CheckType (Type typeToCheck)
     {
-      ArgumentUtility.CheckNotNull ("typeToCheck", typeToCheck);
+      ArgumentUtility.CheckNotNull("typeToCheck", typeToCheck);
       if (PropertyData.PropertyType != typeToCheck)
-        throw new InvalidTypeException (PropertyData.PropertyIdentifier, typeToCheck, PropertyData.PropertyType);
+        throw new InvalidTypeException(PropertyData.PropertyIdentifier, typeToCheck, PropertyData.PropertyType);
     }
   }
 }

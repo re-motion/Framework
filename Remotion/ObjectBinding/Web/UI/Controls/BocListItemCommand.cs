@@ -149,8 +149,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (Click != null)
       {
-        BocListItemCommandClickEventArgs e = new BocListItemCommandClickEventArgs (this, column, listIndex, businessObject);
-        Click (OwnerControl, e);
+        BocListItemCommandClickEventArgs e = new BocListItemCommandClickEventArgs(this, column, listIndex, businessObject);
+        Click(OwnerControl, e);
       }
     }
 
@@ -183,7 +183,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         string? businessObjectID,
         ISecurableObject? securableObject)
     {
-      base.RenderBegin (writer, renderingFeatures, postBackLink, new string?[] { listIndex.ToString(), businessObjectID }, onClick, securableObject);
+      base.RenderBegin(writer, renderingFeatures, postBackLink, new string?[] { listIndex.ToString(), businessObjectID }, onClick, securableObject);
     }
 
     /// <summary>
@@ -198,11 +198,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void ExecuteWxeFunction (IWxePage wxePage, int listIndex, IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull ("wxePage", wxePage);
+      ArgumentUtility.CheckNotNull("wxePage", wxePage);
       if (!wxePage.IsReturningPostBack)
       {
-        NameObjectCollection parameters = PrepareWxeFunctionParameters (listIndex, businessObject);
-        ExecuteWxeFunction (wxePage, parameters);
+        NameObjectCollection parameters = PrepareWxeFunctionParameters(listIndex, businessObject);
+        ExecuteWxeFunction(wxePage, parameters);
       }
     }
 
@@ -254,10 +254,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        if (_commandState == null && !string.IsNullOrEmpty (_commandStateType))
+        if (_commandState == null && !string.IsNullOrEmpty(_commandStateType))
         {
-          Type type = WebTypeUtility.GetType (_commandStateType, true)!;
-          _commandState = (IBocListItemCommandState) Activator.CreateInstance (type, null)!;
+          Type type = WebTypeUtility.GetType(_commandStateType, true)!;
+          _commandState = (IBocListItemCommandState) Activator.CreateInstance(type, null)!;
         }
         return _commandState;
       }

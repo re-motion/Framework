@@ -37,12 +37,12 @@ public abstract class CommandLineValueArgument: CommandLineArgument
   {
     if (! IsPositional)
     {
-      sb.Append (Parser!.ArgumentDeclarationPrefix);
-      sb.Append (Name);
+      sb.Append(Parser!.ArgumentDeclarationPrefix);
+      sb.Append(Name);
       if (Placeholder != null)
-        sb.Append (Parser.Separator);
+        sb.Append(Parser.Separator);
     }
-    sb.Append (Placeholder);
+    sb.Append(Placeholder);
   }
 }
 
@@ -95,7 +95,7 @@ public class CommandLineInt32Argument: CommandLineValueArgument
 
   protected internal override void SetStringValue (string value)
   {
-    if (value == null) throw new ArgumentNullException ("value");
+    if (value == null) throw new ArgumentNullException("value");
     string strValue = value.Trim();
     if (strValue.Length == 0)
     {
@@ -104,12 +104,12 @@ public class CommandLineInt32Argument: CommandLineValueArgument
     else
     {
       double result;
-      if (! double.TryParse (value, NumberStyles.Integer, null, out result))
-        throw new InvalidCommandLineArgumentValueException (this, "Specify a valid integer number.");
+      if (! double.TryParse(value, NumberStyles.Integer, null, out result))
+        throw new InvalidCommandLineArgumentValueException(this, "Specify a valid integer number.");
       _value = (int) result;
     }
 
-    base.SetStringValue (value);
+    base.SetStringValue(value);
   }
 
 }

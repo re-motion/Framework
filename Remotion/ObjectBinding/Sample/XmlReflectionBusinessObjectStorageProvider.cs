@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Sample
   public class XmlReflectionBusinessObjectStorageProvider : IGetObjectService
   {
     private static readonly DoubleCheckedLockingContainer<XmlReflectionBusinessObjectStorageProvider> s_current
-        = new DoubleCheckedLockingContainer<XmlReflectionBusinessObjectStorageProvider> (delegate { return null; });
+        = new DoubleCheckedLockingContainer<XmlReflectionBusinessObjectStorageProvider>(delegate { return null; });
 
     public static XmlReflectionBusinessObjectStorageProvider Current
     {
@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public static void SetCurrent (XmlReflectionBusinessObjectStorageProvider provider)
     {
-      ArgumentUtility.CheckNotNull ("provider", provider);
+      ArgumentUtility.CheckNotNull("provider", provider);
       s_current.Value = provider;
     }
 
@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public XmlReflectionBusinessObjectStorageProvider (IReflectionBusinessObjectStorageProvider reflectionBusinessObjectStorageProvider)
     {
-      ArgumentUtility.CheckNotNull ("reflectionBusinessObjectStorageProvider", reflectionBusinessObjectStorageProvider);
+      ArgumentUtility.CheckNotNull("reflectionBusinessObjectStorageProvider", reflectionBusinessObjectStorageProvider);
 
       _reflectionBusinessObjectStorageProvider = reflectionBusinessObjectStorageProvider;
     }
@@ -61,95 +61,95 @@ namespace Remotion.ObjectBinding.Sample
 
     public BindableXmlObject GetObject (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       if (id == Guid.Empty)
         return null;
 
       lock (_reflectionBusinessObjectStorageProvider)
       {
-        BindableXmlObject obj = GetFromIdentityMap (id);
+        BindableXmlObject obj = GetFromIdentityMap(id);
         if (obj != null)
           return obj;
 
-        using (var stream = _reflectionBusinessObjectStorageProvider.GetReadObjectStream (type, id))
+        using (var stream = _reflectionBusinessObjectStorageProvider.GetReadObjectStream(type, id))
         {
           if (stream == null)
             return null;
 
-          Type concreteType = GetConcreteType (type);
-          XmlSerializer serializer = GetXmlSerializer (concreteType);
+          Type concreteType = GetConcreteType(type);
+          XmlSerializer serializer = GetXmlSerializer(concreteType);
 
-          obj = (BindableXmlObject) serializer.Deserialize (stream);
+          obj = (BindableXmlObject) serializer.Deserialize(stream);
         }
 
         obj._id = id;
-        AddToIdentityMap (obj);
+        AddToIdentityMap(obj);
         return obj;
       }
     }
 
     public BindableXmlObject[] GetObjects (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       lock (_reflectionBusinessObjectStorageProvider)
       {
-        return _reflectionBusinessObjectStorageProvider.GetObjectIDsForType (type)
-            .Select (objectId => GetObject (type, objectId))
+        return _reflectionBusinessObjectStorageProvider.GetObjectIDsForType(type)
+            .Select(objectId => GetObject(type, objectId))
             .ToArray();
       }
     }
 
     public void SaveObject (BindableXmlObject obj)
     {
-      ArgumentUtility.CheckNotNull ("obj", obj);
+      ArgumentUtility.CheckNotNull("obj", obj);
 
 
-      Type targetType = GetTargetType (obj);
+      Type targetType = GetTargetType(obj);
       lock (_reflectionBusinessObjectStorageProvider)
       {
-        using (var stream = _reflectionBusinessObjectStorageProvider.GetWriteObjectStream (targetType, obj.ID))
+        using (var stream = _reflectionBusinessObjectStorageProvider.GetWriteObjectStream(targetType, obj.ID))
         {
           Type concreteType = obj.GetType();
-          XmlSerializer serializer = GetXmlSerializer (concreteType);
-          serializer.Serialize (stream, obj);
+          XmlSerializer serializer = GetXmlSerializer(concreteType);
+          serializer.Serialize(stream, obj);
         }
       }
     }
 
     public T CreateObject<T> () where T: BindableXmlObject
     {
-      return (T) CreateObject (typeof (T), Guid.NewGuid());
+      return (T) CreateObject(typeof (T), Guid.NewGuid());
     }
 
     public T CreateObject<T> (Guid id) where T: BindableXmlObject
     {
-      return (T) CreateObject (typeof (T), id);
+      return (T) CreateObject(typeof (T), id);
     }
 
     public BindableXmlObject CreateObject (Type concreteType)
     {
-      return CreateObject (concreteType, Guid.NewGuid());
+      return CreateObject(concreteType, Guid.NewGuid());
     }
 
     protected BindableXmlObject CreateObject (Type type, Guid id)
     {
       lock (_reflectionBusinessObjectStorageProvider)
       {
-        BindableXmlObject obj = (BindableXmlObject) ObjectFactory.Create (true, type, ParamList.Empty);
+        BindableXmlObject obj = (BindableXmlObject) ObjectFactory.Create(true, type, ParamList.Empty);
         obj._id = id;
-        AddToIdentityMap (obj);
+        AddToIdentityMap(obj);
         return obj;
       }
     }
 
     private void AddToIdentityMap (BindableXmlObject obj)
     {
-      if (_identityMap.ContainsKey (obj.ID))
+      if (_identityMap.ContainsKey(obj.ID))
         return;
 
-      _identityMap.Add (obj.ID, obj);
+      _identityMap.Add(obj.ID, obj);
     }
 
     private BindableXmlObject GetFromIdentityMap (Guid id)
@@ -162,7 +162,7 @@ namespace Remotion.ObjectBinding.Sample
 
     private Type GetConcreteType (Type targetType)
     {
-      return TypeFactory.GetConcreteType (targetType);
+      return TypeFactory.GetConcreteType(targetType);
     }
 
     private Type GetTargetType (BindableXmlObject obj)
@@ -172,15 +172,15 @@ namespace Remotion.ObjectBinding.Sample
 
     private XmlSerializer GetXmlSerializer (Type concreteType)
     {
-      return _attributeOverridesCache.GetOrAdd (
+      return _attributeOverridesCache.GetOrAdd(
           concreteType,
           delegate (Type type)
           {
-            return new XmlSerializer (
+            return new XmlSerializer(
                 type,
-                CreateAttributeOverrides (type),
+                CreateAttributeOverrides(type),
                 new Type[0],
-                AttributeUtility.GetCustomAttribute<XmlRootAttribute> (type, true),
+                AttributeUtility.GetCustomAttribute<XmlRootAttribute>(type, true),
                 null);
           });
     }
@@ -188,19 +188,19 @@ namespace Remotion.ObjectBinding.Sample
     private XmlAttributeOverrides CreateAttributeOverrides (Type concreteType)
     {
       XmlAttributeOverrides attributeOverrides = new XmlAttributeOverrides();
-      foreach (MemberInfo memberInfo in concreteType.FindMembers (
+      foreach (MemberInfo memberInfo in concreteType.FindMembers(
           MemberTypes.Field | MemberTypes.Property,
           BindingFlags.Instance | BindingFlags.Public,
           delegate { return true; },
           null))
       {
         XmlAttributes attributes = new XmlAttributes();
-        foreach (XmlElementAttribute attribute in AttributeUtility.GetCustomAttributes<XmlElementAttribute> (memberInfo, true))
-          attributes.XmlElements.Add (attribute);
-        attributes.XmlAttribute = AttributeUtility.GetCustomAttribute<XmlAttributeAttribute> (memberInfo, true);
+        foreach (XmlElementAttribute attribute in AttributeUtility.GetCustomAttributes<XmlElementAttribute>(memberInfo, true))
+          attributes.XmlElements.Add(attribute);
+        attributes.XmlAttribute = AttributeUtility.GetCustomAttribute<XmlAttributeAttribute>(memberInfo, true);
         attributes.XmlIgnore = attributes.XmlAttribute == null && attributes.XmlElements.Count == 0;
 
-        attributeOverrides.Add (concreteType, memberInfo.Name, attributes);
+        attributeOverrides.Add(concreteType, memberInfo.Name, attributes);
       }
 
       return attributeOverrides;
@@ -208,10 +208,10 @@ namespace Remotion.ObjectBinding.Sample
 
     IBusinessObjectWithIdentity IGetObjectService.GetObject (BindableObjectClassWithIdentity classWithIdentity, string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("classWithIdentity", classWithIdentity);
-      ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNull("classWithIdentity", classWithIdentity);
+      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
 
-      return (IBusinessObjectWithIdentity) GetObject (classWithIdentity.TargetType, new Guid (uniqueIdentifier));
+      return (IBusinessObjectWithIdentity) GetObject(classWithIdentity.TargetType, new Guid(uniqueIdentifier));
     }
   }
 }

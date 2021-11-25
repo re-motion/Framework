@@ -34,15 +34,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     protected override IEnumerable<RelationEndPointID> GetOwnedEndPointIDs (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
 
       return dataContainer.AssociatedRelationEndPointIDs;
     }
 
     protected override string GetUnregisterProblem (IRelationEndPoint endPoint, RelationEndPointMap relationEndPointMap)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull ("relationEndPointMap", relationEndPointMap);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("relationEndPointMap", relationEndPointMap);
 
       if (endPoint is IObjectEndPoint objectEndPoint)
       {
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       }
       else if (endPoint is IDomainObjectCollectionEndPoint domainObjectCollectionEndPoint)
       {
-        if (domainObjectCollectionEndPoint.GetData ().Count == 0 && domainObjectCollectionEndPoint.GetOriginalData ().Count == 0)
+        if (domainObjectCollectionEndPoint.GetData().Count == 0 && domainObjectCollectionEndPoint.GetOriginalData().Count == 0)
           return null;
       }
       else if (endPoint is IVirtualCollectionEndPoint)
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         return null;
       }
 
-      return string.Format ("Relation end-point '{0}' would leave a dangling reference.", endPoint.ID);
+      return string.Format("Relation end-point '{0}' would leave a dangling reference.", endPoint.ID);
     }
   }
 }

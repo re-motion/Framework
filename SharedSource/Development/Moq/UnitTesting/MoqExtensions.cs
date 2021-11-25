@@ -28,12 +28,12 @@ namespace Remotion.Development.Moq.UnitTesting
         where T : ICallback
     {
       var counter = sequenceCounter;
-      var callbackResult = mock.Callback (
+      var callbackResult = mock.Callback(
           () =>
           {
             if (counter != expectedPosition)
             {
-              throw new InvalidOperationException (
+              throw new InvalidOperationException(
                   "Method call was not in the right position of the sequence.\r\n"
                   + $"Expected position {expectedPosition}.\r\nActual position {counter}");
             }

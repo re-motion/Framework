@@ -26,8 +26,8 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     [Test]
     public void Initialize_NegativeIFrameTimeout_ThrowsArgumentOutOfRangeException ()
     {
-      Assert.That (
-          () => new AccessibilityConfiguration (iframeTimeout: TimeSpan.FromSeconds (-5)),
+      Assert.That(
+          () => new AccessibilityConfiguration(iframeTimeout: TimeSpan.FromSeconds(-5)),
           Throws.TypeOf<ArgumentOutOfRangeException>());
     }
 
@@ -36,25 +36,25 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     {
       var configuration = new AccessibilityConfiguration();
 
-      Assert.That (configuration.IFrameTimeout, Is.EqualTo (TimeSpan.FromSeconds (5)));
-      Assert.That (configuration.IncludeIFrames, Is.True);
-      Assert.That (configuration.EnableXPath, Is.True);
-      Assert.That (configuration.EnableAbsolutePaths, Is.True);
-      Assert.That (configuration.EnableScrollToInitialPosition, Is.True);
-      Assert.That (configuration.ConformanceLevel, Is.EqualTo (AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA));
+      Assert.That(configuration.IFrameTimeout, Is.EqualTo(TimeSpan.FromSeconds(5)));
+      Assert.That(configuration.IncludeIFrames, Is.True);
+      Assert.That(configuration.EnableXPath, Is.True);
+      Assert.That(configuration.EnableAbsolutePaths, Is.True);
+      Assert.That(configuration.EnableScrollToInitialPosition, Is.True);
+      Assert.That(configuration.ConformanceLevel, Is.EqualTo(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA));
     }
 
     [Test]
     public void Initialize_WithParameters_OverridesDefaults ()
     {
-      var configuration = new AccessibilityConfiguration (includeIframes: false);
+      var configuration = new AccessibilityConfiguration(includeIframes: false);
 
-      Assert.That (configuration.IFrameTimeout, Is.EqualTo (TimeSpan.FromSeconds (5)));
-      Assert.That (configuration.IncludeIFrames, Is.False);
-      Assert.That (configuration.EnableXPath, Is.True);
-      Assert.That (configuration.EnableAbsolutePaths, Is.True);
-      Assert.That (configuration.EnableScrollToInitialPosition, Is.True);
-      Assert.That (configuration.ConformanceLevel, Is.EqualTo (AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA));
+      Assert.That(configuration.IFrameTimeout, Is.EqualTo(TimeSpan.FromSeconds(5)));
+      Assert.That(configuration.IncludeIFrames, Is.False);
+      Assert.That(configuration.EnableXPath, Is.True);
+      Assert.That(configuration.EnableAbsolutePaths, Is.True);
+      Assert.That(configuration.EnableScrollToInitialPosition, Is.True);
+      Assert.That(configuration.ConformanceLevel, Is.EqualTo(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA));
     }
   }
 }

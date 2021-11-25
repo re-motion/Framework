@@ -57,8 +57,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter br ()
     {
-      _htmlTagWriter.Tag ("br");
-      _htmlTagWriter.TagEnd ("br");
+      _htmlTagWriter.Tag("br");
+      _htmlTagWriter.TagEnd("br");
       return _htmlTagWriter;
     }
 
@@ -68,7 +68,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter body ()
     {
-      _htmlTagWriter.Tag ("body");
+      _htmlTagWriter.Tag("body");
       return _htmlTagWriter;
     }
 
@@ -78,7 +78,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter bodyEnd ()
     {
-      _htmlTagWriter.TagEnd ("body");
+      _htmlTagWriter.TagEnd("body");
       return _htmlTagWriter;
     }
 
@@ -88,7 +88,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter table ()
     {
-      _htmlTagWriter.Tag ("table");
+      _htmlTagWriter.Tag("table");
       return _htmlTagWriter;
     }
 
@@ -98,7 +98,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter tableEnd ()
     {
-      _htmlTagWriter.TagEnd ("table");
+      _htmlTagWriter.TagEnd("table");
       return _htmlTagWriter;
     }
 
@@ -108,7 +108,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter tr ()
     {
-      _htmlTagWriter.Tag ("tr");
+      _htmlTagWriter.Tag("tr");
       return _htmlTagWriter;
     }
 
@@ -118,7 +118,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter trEnd ()
     {
-      _htmlTagWriter.TagEnd ("tr");
+      _htmlTagWriter.TagEnd("tr");
       return _htmlTagWriter;
     }
 
@@ -128,7 +128,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter td ()
     {
-      _htmlTagWriter.Tag ("td");
+      _htmlTagWriter.Tag("td");
       return _htmlTagWriter;
     }
 
@@ -138,7 +138,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter tdEnd ()
     {
-      _htmlTagWriter.TagEnd ("td");
+      _htmlTagWriter.TagEnd("td");
       return _htmlTagWriter;
     }
 
@@ -148,7 +148,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter th ()
     {
-      _htmlTagWriter.Tag ("th");
+      _htmlTagWriter.Tag("th");
       return _htmlTagWriter;
     }
 
@@ -158,7 +158,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter thEnd ()
     {
-      _htmlTagWriter.TagEnd ("th");
+      _htmlTagWriter.TagEnd("th");
       return _htmlTagWriter;
     }
 
@@ -168,7 +168,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter head ()
     {
-      _htmlTagWriter.Tag ("head");
+      _htmlTagWriter.Tag("head");
       return _htmlTagWriter;
     }
 
@@ -178,7 +178,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter headEnd ()
     {
-      _htmlTagWriter.TagEnd ("head");
+      _htmlTagWriter.TagEnd("head");
       return _htmlTagWriter;
     }
 
@@ -188,7 +188,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter title ()
     {
-      _htmlTagWriter.Tag ("title");
+      _htmlTagWriter.Tag("title");
       return _htmlTagWriter;
     }
 
@@ -198,7 +198,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter titleEnd ()
     {
-      _htmlTagWriter.TagEnd ("title");
+      _htmlTagWriter.TagEnd("title");
       return _htmlTagWriter;
     }
 
@@ -208,7 +208,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter html ()
     {
-      _htmlTagWriter.Tag ("html");
+      _htmlTagWriter.Tag("html");
       return _htmlTagWriter;
     }
 
@@ -218,7 +218,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter htmlEnd ()
     {
-      _htmlTagWriter.TagEnd ("html");
+      _htmlTagWriter.TagEnd("html");
       return _htmlTagWriter;
     }
 
@@ -229,7 +229,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter style ()
     {
-      _htmlTagWriter.Tag ("style");
+      _htmlTagWriter.Tag("style");
       return _htmlTagWriter;
     }
 
@@ -239,7 +239,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter styleEnd ()
     {
-      _htmlTagWriter.TagEnd ("style");
+      _htmlTagWriter.TagEnd("style");
       return _htmlTagWriter;
     }
 
@@ -249,7 +249,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter p ()
     {
-      _htmlTagWriter.Tag ("p");
+      _htmlTagWriter.Tag("p");
       return _htmlTagWriter;
     }
 
@@ -259,7 +259,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter pEnd ()
     {
-      _htmlTagWriter.TagEnd ("p");
+      _htmlTagWriter.TagEnd("p");
       return _htmlTagWriter;
     }
 
@@ -270,7 +270,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter a ()
     {
-      _htmlTagWriter.Tag ("a");
+      _htmlTagWriter.Tag("a");
       return _htmlTagWriter;
     }
 
@@ -280,7 +280,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     /// <returns></returns>
     public HtmlTagWriter aEnd ()
     {
-      _htmlTagWriter.TagEnd ("a");
+      _htmlTagWriter.TagEnd("a");
       return _htmlTagWriter;
     }
   }

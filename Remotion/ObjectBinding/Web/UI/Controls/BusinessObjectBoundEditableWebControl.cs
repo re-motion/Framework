@@ -54,9 +54,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="e">ignored</param>
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
       if (Page is ISmartPage)
-        ((ISmartPage) Page).RegisterControlForDirtyStateTracking (this);
+        ((ISmartPage) Page).RegisterControlForDirtyStateTracking(this);
     }
 
     /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>
@@ -116,8 +116,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (value && DataSource != null && Property != null && IsReadOnlyInDomainModel)
         {
-          throw new InvalidOperationException (
-              string.Format (
+          throw new InvalidOperationException(
+              string.Format(
                   "The {0} '{1}' could not be marked as dirty because the bound property '{2}' is read only.",
                   GetType().Name,
                   ID,
@@ -280,7 +280,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (EnableOptionalValidators.HasValue)
           return EnableOptionalValidators.Value;
 
-        return ValidatorConfiguration.AreOptionalValidatorsEnabled (this);
+        return ValidatorConfiguration.AreOptionalValidatorsEnabled(this);
       }
     }
 
@@ -288,7 +288,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> Override <see cref="CreateValidators(bool)"/> to define the validators for this control.</remarks>
     public IEnumerable<BaseValidator> CreateValidators ()
     {
-      return CreateValidators (IsReadOnly);
+      return CreateValidators(IsReadOnly);
     }
 
     /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
@@ -312,7 +312,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_validators == null)
         _validators = new HashSet<BaseValidator>();
 
-      _validators.Add (validator);
+      _validators.Add(validator);
     }
 
     /// <summary>
@@ -323,7 +323,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_validators == null)
         return Enumerable.Empty<IValidator>();
 
-      return _validators.Select (v => v);
+      return _validators.Select(v => v);
     }
 
     /// <summary>
@@ -356,7 +356,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="e">ignored</param>
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
       ApplyConstraints();
       _isRenderedInCurrentLifecycle = true;
     }
@@ -370,9 +370,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return;
 
       var visitor = CreateBusinessObjectConstraintVisitor();
-      var constraints = Property.GetConstraints (DataSource.BusinessObject);
+      var constraints = Property.GetConstraints(DataSource.BusinessObject);
       foreach (var constraint in constraints)
-        constraint.Accept (visitor);
+        constraint.Accept(visitor);
     }
 
     /// <summary>
@@ -401,7 +401,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void LoadControlState (object? savedState)
     {
       object?[] values = (object?[]) savedState!;
-      base.LoadControlState (values[0]);
+      base.LoadControlState(values[0]);
       _isDirty = (bool) values[1]!;
       _hasBeenRenderedInPreviousLifecycle = (bool) values[2]!;
     }
@@ -447,8 +447,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (IsReadOnlyInDomainModel) // also check when setting IsDirty
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The value of the {0} '{1}' could not be saved into the domain model because the property '{2}' is read only.",
                 GetType().Name,
                 ID,
@@ -457,7 +457,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       var requiresWriteBack = !Property.IsList || Property.ListInfo.RequiresWriteBack;
       if (requiresWriteBack)
-        DataSource.BusinessObject.SetProperty (Property, Value);
+        DataSource.BusinessObject.SetProperty(Property, Value);
 
       return true;
     }
@@ -468,10 +468,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         var dataSource = DataSource;
         var property = Property;
-        Assertion.IsNotNull (dataSource, "DataSource is null.");
-        Assertion.IsNotNull (property, "Property is null.");
+        Assertion.IsNotNull(dataSource, "DataSource is null.");
+        Assertion.IsNotNull(property, "Property is null.");
 
-        return property.IsReadOnly (dataSource.BusinessObject);
+        return property.IsReadOnly(dataSource.BusinessObject);
       }
     }
 

@@ -25,9 +25,9 @@ namespace Remotion.Validation.UnitTests.Rules
     public void ToString_Overridden ()
     {
       PropertyValidationRule<Customer, string> validationRule = null;
-      Assert.That (
+      Assert.That(
           validationRule.ToString(),
-          Is.EqualTo ("PropertyValidationRule: Remotion.Validation.IntegrationTests.TestDomain.ComponentA.Address#PostalCode"));
+          Is.EqualTo("PropertyValidationRule: Remotion.Validation.IntegrationTests.TestDomain.ComponentA.Address#PostalCode"));
     }
   }
 }

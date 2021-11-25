@@ -42,34 +42,34 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _securityProviderStub = MockRepository.GenerateStub<ISecurityProvider> ();
-      _securityProviderStub.Stub (stub => stub.IsNull).Return (false);
+      _securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
+      _securityProviderStub.Stub(stub => stub.IsNull).Return(false);
 
-      _securityPrincipalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
-      var principalProviderStub = MockRepository.GenerateStub<IPrincipalProvider> ();
-      principalProviderStub.Stub (stub => stub.GetPrincipal ()).Return (_securityPrincipalStub);
+      _securityPrincipalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
+      var principalProviderStub = MockRepository.GenerateStub<IPrincipalProvider>();
+      principalProviderStub.Stub(stub => stub.GetPrincipal()).Return(_securityPrincipalStub);
 
-      _functionalSecurityStrategyStub = MockRepository.GenerateStub<IFunctionalSecurityStrategy> ();
-      _objectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy> ();
+      _functionalSecurityStrategyStub = MockRepository.GenerateStub<IFunctionalSecurityStrategy>();
+      _objectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => _securityProviderStub);
-      serviceLocator.RegisterSingle (() => principalProviderStub);
-      serviceLocator.RegisterSingle (() => _functionalSecurityStrategyStub);
+      serviceLocator.RegisterSingle(() => _securityProviderStub);
+      serviceLocator.RegisterSingle(() => principalProviderStub);
+      serviceLocator.RegisterSingle(() => _functionalSecurityStrategyStub);
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
-      serviceLocator.RegisterMultiple<IWxeSecurityAdapter> (() => new WxeSecurityAdapter());
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterMultiple<IWxeSecurityAdapter>(() => new WxeSecurityAdapter());
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
-      _testAccessTypeValue = AccessType.Get (TestAccessTypes.Value);
+      _testAccessTypeValue = AccessType.Get(TestAccessTypes.Value);
     }
 
     public override void TearDown ()
     {
       _serviceLocatorScope.Dispose();
 
-      base.TearDown ();
+      base.TearDown();
     }
 
     protected ISecurityProvider SecurityProviderStub
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       clientTransaction = clientTransaction ?? ClientTransaction.CreateRootTransaction();
 
       var securableDomainObject =
-          (SecurableDomainObject) LifetimeService.NewObject (clientTransaction, typeof (SecurableDomainObject), ParamList.Empty);
+          (SecurableDomainObject) LifetimeService.NewObject(clientTransaction, typeof (SecurableDomainObject), ParamList.Empty);
       securableDomainObject.SecurableType = typeof (SecurableDomainObject);
       securableDomainObject.SecurityStrategy = _objectSecurityStrategyStub;
       return securableDomainObject;
@@ -111,10 +111,10 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     protected static ITransactionMode CreateTransactionModeForClientTransaction (ClientTransaction clientTransaction)
     {
       var mode = MockRepository.GenerateStub<ITransactionMode>();
-      mode.Stub (stub => stub.CreateTransactionStrategy (Arg<WxeFunction>.Is.Anything, Arg<WxeContext>.Is.Anything))
-          .Do (
+      mode.Stub(stub => stub.CreateTransactionStrategy(Arg<WxeFunction>.Is.Anything, Arg<WxeContext>.Is.Anything))
+          .Do(
               (Func<WxeFunction, WxeContext, TransactionStrategyBase>)
-              ((function, context) => new RootTransactionStrategy (false, clientTransaction.ToITransaction, NullTransactionStrategy.Null, function)));
+              ((function, context) => new RootTransactionStrategy(false, clientTransaction.ToITransaction, NullTransactionStrategy.Null, function)));
       return mode;
     }
   }

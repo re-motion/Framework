@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 
     protected OrderTicket (Order order)
     {
-      ArgumentUtility.CheckNotNull ("order", order);
+      ArgumentUtility.CheckNotNull("order", order);
       Order = order;
     }
 

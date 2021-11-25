@@ -30,51 +30,51 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     [SetUp]
     public void SetUp ()
     {
-      _stringFormatterService = new BusinessObjectStringFormatterService ();
-      _mockBusinessObject = new Mock<IBusinessObject> (MockBehavior.Strict);
-      _mockProperty = new Mock<IBusinessObjectNumericProperty> (MockBehavior.Strict);
+      _stringFormatterService = new BusinessObjectStringFormatterService();
+      _mockBusinessObject = new Mock<IBusinessObject>(MockBehavior.Strict);
+      _mockProperty = new Mock<IBusinessObjectNumericProperty>(MockBehavior.Strict);
     }
 
     [Test]
     public void Scalar_WithValue ()
     {
-      _mockProperty.Setup (_ => _.IsList).Returns (false).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (100).Verifiable();
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(100).Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, null);
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
       _mockBusinessObject.Verify();
       _mockProperty.Verify();
-      Assert.That (actual, Is.EqualTo ("100"));
+      Assert.That(actual, Is.EqualTo("100"));
     }
 
     [Test]
     public void Scalar_WithFormattableValue ()
     {
-      var mockValue = new Mock<IFormattable> (MockBehavior.Strict);
-      _mockProperty.Setup (_ => _.IsList).Returns (false).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (mockValue.Object).Verifiable();
-      mockValue.Setup (_ => _.ToString ("FormatString", null)).Returns ("ExpectedStringValue").Verifiable();
+      var mockValue = new Mock<IFormattable>(MockBehavior.Strict);
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(mockValue.Object).Verifiable();
+      mockValue.Setup(_ => _.ToString("FormatString", null)).Returns("ExpectedStringValue").Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, "FormatString");
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, "FormatString");
 
       _mockBusinessObject.Verify();
       _mockProperty.Verify();
       mockValue.Verify();
-      Assert.That (actual, Is.EqualTo ("ExpectedStringValue"));
+      Assert.That(actual, Is.EqualTo("ExpectedStringValue"));
     }
 
     [Test]
     public void Scalar_WithNull ()
     {
-      _mockProperty.Setup (_ => _.IsList).Returns (false).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns ((object) null).Verifiable();
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns((object) null).Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, "FormatString");
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, "FormatString");
 
       _mockBusinessObject.Verify();
       _mockProperty.Verify();
-      Assert.That (actual, Is.Empty);
+      Assert.That(actual, Is.Empty);
     }
   }
 }

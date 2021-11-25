@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public EntityNameDefinition (string schemaName, string entityName)
     {
-      ArgumentUtility.CheckNotEmpty ("schemaName", schemaName);
-      ArgumentUtility.CheckNotNullOrEmpty ("entityName", entityName);
+      ArgumentUtility.CheckNotEmpty("schemaName", schemaName);
+      ArgumentUtility.CheckNotNullOrEmpty("entityName", entityName);
 
       _schemaName = schemaName;
       _entityName = entityName;
@@ -48,10 +48,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public override bool Equals (object obj)
     {
-      if (ReferenceEquals (obj, null))
+      if (ReferenceEquals(obj, null))
         return false;
 
-      if (obj.GetType () != GetType ())
+      if (obj.GetType() != GetType())
         return false;
 
       var other = (EntityNameDefinition) obj;
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public override int GetHashCode ()
     {
-      return EqualityUtility.GetRotatedHashCode (SchemaName, EntityName);
+      return EqualityUtility.GetRotatedHashCode(SchemaName, EntityName);
     }
   }
 }

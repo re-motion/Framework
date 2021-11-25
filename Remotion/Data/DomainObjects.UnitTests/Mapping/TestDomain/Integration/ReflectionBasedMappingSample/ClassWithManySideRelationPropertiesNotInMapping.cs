@@ -51,15 +51,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     [DBBidirectionalRelation ("BasePrivateBidirectionalOneToManyForDomainObjectCollection")]
     private ClassWithVirtualRelationEndPoints BasePrivateBidirectionalOneToManyForDomainObjectCollection
     {
-      get { throw new NotImplementedException (); }
-      set { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
+      set { throw new NotImplementedException(); }
     }
 
     [DBBidirectionalRelation ("BasePrivateBidirectionalOneToManyForVirtualCollection")]
     private ClassWithVirtualRelationEndPoints BasePrivateBidirectionalOneToManyForVirtualCollection
     {
-      get { throw new NotImplementedException (); }
-      set { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
+      set { throw new NotImplementedException(); }
     }
   }
 }

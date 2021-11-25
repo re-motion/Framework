@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public ScalarResultRowAdapter (object scalarValue, IStorageTypeInformationProvider storageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull ("scalarValue", scalarValue);
-      ArgumentUtility.CheckNotNull ("storageTypeInformationProvider", storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull("scalarValue", scalarValue);
+      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
 
       _scalarValue = scalarValue;
       _storageTypeInformationProvider = storageTypeInformationProvider;
@@ -50,21 +50,21 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public T GetValue<T> (ColumnID columnID)
     {
-      ArgumentUtility.CheckNotNull ("columnID", columnID);
+      ArgumentUtility.CheckNotNull("columnID", columnID);
 
       if (columnID.Position != 0)
       {
-        var message = String.Format ("Only one scalar value is available, column ID '{0}' is invalid.", columnID);
-        throw new IndexOutOfRangeException (message);
+        var message = String.Format("Only one scalar value is available, column ID '{0}' is invalid.", columnID);
+        throw new IndexOutOfRangeException(message);
       }
 
-      var storageTypeInformation = _storageTypeInformationProvider.GetStorageType (typeof (T));
-      return (T) storageTypeInformation.ConvertFromStorageType (_scalarValue);
+      var storageTypeInformation = _storageTypeInformationProvider.GetStorageType(typeof (T));
+      return (T) storageTypeInformation.ConvertFromStorageType(_scalarValue);
     }
 
     public T GetEntity<T> (params ColumnID[] columnIDs)
     {
-      throw new NotSupportedException ("Scalar queries cannot return entities.");
+      throw new NotSupportedException("Scalar queries cannot return entities.");
     }
   }
 }

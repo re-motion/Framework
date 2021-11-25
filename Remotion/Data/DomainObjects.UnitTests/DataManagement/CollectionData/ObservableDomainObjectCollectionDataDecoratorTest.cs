@@ -33,10 +33,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       base.SetUp();
 
-      _order1 = DomainObjectIDs.Order1.GetObject<Order> ();
+      _order1 = DomainObjectIDs.Order1.GetObject<Order>();
 
-      var realContent = new DomainObjectCollectionData ();
-      _observableDomainObjectDecorator = new ObservableDomainObjectCollectionDataDecorator (realContent);
+      var realContent = new DomainObjectCollectionData();
+      _observableDomainObjectDecorator = new ObservableDomainObjectCollectionDataDecorator(realContent);
     }
 
     [Test]
@@ -51,20 +51,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
         eventArgs = args;
       };
 
-      PrivateInvoke.InvokeNonPublicMethod (
+      PrivateInvoke.InvokeNonPublicMethod(
           _observableDomainObjectDecorator, "OnDataChanging", ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert, _order1, 12);
 
-      Assert.That (eventSender, Is.Not.Null);
-      Assert.That (eventSender, Is.SameAs (_observableDomainObjectDecorator));
-      Assert.That (eventArgs.Operation, Is.EqualTo (ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert));
-      Assert.That (eventArgs.AffectedObject, Is.SameAs (_order1));
-      Assert.That (eventArgs.Index, Is.EqualTo (12));
+      Assert.That(eventSender, Is.Not.Null);
+      Assert.That(eventSender, Is.SameAs(_observableDomainObjectDecorator));
+      Assert.That(eventArgs.Operation, Is.EqualTo(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert));
+      Assert.That(eventArgs.AffectedObject, Is.SameAs(_order1));
+      Assert.That(eventArgs.Index, Is.EqualTo(12));
     }
 
     [Test]
     public void OnDataChanging_NoRegistration ()
     {
-      PrivateInvoke.InvokeNonPublicMethod (
+      PrivateInvoke.InvokeNonPublicMethod(
           _observableDomainObjectDecorator, "OnDataChanging", ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert, _order1, 12);
     }
 
@@ -80,27 +80,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
         eventArgs = args;
       };
 
-      PrivateInvoke.InvokeNonPublicMethod (
+      PrivateInvoke.InvokeNonPublicMethod(
           _observableDomainObjectDecorator, "OnDataChanged", ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert, _order1, 12);
 
-      Assert.That (eventSender, Is.Not.Null);
-      Assert.That (eventSender, Is.SameAs (_observableDomainObjectDecorator));
-      Assert.That (eventArgs.Operation, Is.EqualTo (ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert));
-      Assert.That (eventArgs.AffectedObject, Is.SameAs (_order1));
-      Assert.That (eventArgs.Index, Is.EqualTo (12));
+      Assert.That(eventSender, Is.Not.Null);
+      Assert.That(eventSender, Is.SameAs(_observableDomainObjectDecorator));
+      Assert.That(eventArgs.Operation, Is.EqualTo(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert));
+      Assert.That(eventArgs.AffectedObject, Is.SameAs(_order1));
+      Assert.That(eventArgs.Index, Is.EqualTo(12));
     }
 
     [Test]
     public void OnDataChanged_NoRegistration ()
     {
-      PrivateInvoke.InvokeNonPublicMethod (
+      PrivateInvoke.InvokeNonPublicMethod(
           _observableDomainObjectDecorator, "OnDataChanged", ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert, _order1, 12);
     }
 
     [Test]
     public void Serialization ()
     {
-      Serializer.SerializeAndDeserialize (_observableDomainObjectDecorator);
+      Serializer.SerializeAndDeserialize(_observableDomainObjectDecorator);
     }
   }
 }

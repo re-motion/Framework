@@ -59,28 +59,28 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
     public void CreateFromWebTestConfigurationSection_WithRelativePaths ()
     {
       var currentBasePath = AppContext.BaseDirectory;
-      var configurationSection = (WebTestConfigurationSection) Activator.CreateInstance (typeof (WebTestConfigurationSection), true);
-      ConfigurationHelper.DeserializeSection (configurationSection, c_configurationXmlWithRelativePaths);
+      var configurationSection = (WebTestConfigurationSection) Activator.CreateInstance(typeof (WebTestConfigurationSection), true);
+      ConfigurationHelper.DeserializeSection(configurationSection, c_configurationXmlWithRelativePaths);
 
-      var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration (configurationSection);
+      var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(configurationSection);
 
-      Assert.That (testSiteLayoutConfiguration.RootPath, Is.EqualTo (Path.Combine (currentBasePath, @"Some\Path")));
-      Assert.That (testSiteLayoutConfiguration.Resources.Count, Is.EqualTo (1));
-      Assert.That (testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo (Path.Combine (currentBasePath, @"Some\Path\Some\Resource")));
+      Assert.That(testSiteLayoutConfiguration.RootPath, Is.EqualTo(Path.Combine(currentBasePath, @"Some\Path")));
+      Assert.That(testSiteLayoutConfiguration.Resources.Count, Is.EqualTo(1));
+      Assert.That(testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo(Path.Combine(currentBasePath, @"Some\Path\Some\Resource")));
     }
 
     [Test]
     public void CreateFromWebTestConfigurationSection_WithAbsolutePaths ()
     {
-      var configurationSection = (WebTestConfigurationSection) Activator.CreateInstance (typeof (WebTestConfigurationSection), true);
-      ConfigurationHelper.DeserializeSection (configurationSection, c_configurationXmlWithAbsolutePaths);
+      var configurationSection = (WebTestConfigurationSection) Activator.CreateInstance(typeof (WebTestConfigurationSection), true);
+      ConfigurationHelper.DeserializeSection(configurationSection, c_configurationXmlWithAbsolutePaths);
 
-      var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration (configurationSection);
+      var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(configurationSection);
 
-      Assert.That (testSiteLayoutConfiguration.RootPath, Is.EqualTo (@"C:\Some\Path"));
-      Assert.That (testSiteLayoutConfiguration.Resources.Count, Is.EqualTo (2));
-      Assert.That (testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo (@"C:\Some\Resource"));
-      Assert.That (testSiteLayoutConfiguration.Resources[1].Path, Is.EqualTo (@"C:\Some\Path\Some\Other\Resource"));
+      Assert.That(testSiteLayoutConfiguration.RootPath, Is.EqualTo(@"C:\Some\Path"));
+      Assert.That(testSiteLayoutConfiguration.Resources.Count, Is.EqualTo(2));
+      Assert.That(testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo(@"C:\Some\Resource"));
+      Assert.That(testSiteLayoutConfiguration.Resources[1].Path, Is.EqualTo(@"C:\Some\Path\Some\Other\Resource"));
     }
   }
 }

@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   {
     public static Address NewObject ()
     {
-      return DomainObject.NewObject<Address> ();
+      return DomainObject.NewObject<Address>();
     }
 
     protected Address ()

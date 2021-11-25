@@ -16,12 +16,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       var propertyStub = new Mock<IBusinessObjectProperty>();
       var dataSourceStub = new Mock<IBusinessObjectDataSource>();
       var controlStub = new Mock<IBusinessObjectBoundEditableWebControl>();
-      controlStub.SetupProperty (_ => _.DataSource);
-      controlStub.SetupProperty (_ => _.Property);
+      controlStub.SetupProperty(_ => _.DataSource);
+      controlStub.SetupProperty(_ => _.Property);
       controlStub.Object.DataSource = dataSourceStub.Object;
       controlStub.Object.Property = propertyStub.Object;
 
-      Assert.That (configuration.AreOptionalValidatorsEnabled (controlStub.Object), Is.False);
+      Assert.That(configuration.AreOptionalValidatorsEnabled(controlStub.Object), Is.False);
     }
 
     [Test]
@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       controlStub.Object.DataSource = null;
       controlStub.Object.Property = null;
 
-      Assert.That (configuration.AreOptionalValidatorsEnabled (controlStub.Object), Is.True);
+      Assert.That(configuration.AreOptionalValidatorsEnabled(controlStub.Object), Is.True);
     }
 
     [Test]
@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       controlStub.Object.DataSource = null;
       controlStub.Object.Property = propertyStub.Object;
 
-      Assert.That (configuration.AreOptionalValidatorsEnabled (controlStub.Object), Is.True);
+      Assert.That(configuration.AreOptionalValidatorsEnabled(controlStub.Object), Is.True);
     }
 
     [Test]
@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       controlStub.Object.DataSource = dataSourceStub.Object;
       controlStub.Object.Property = null;
 
-      Assert.That (configuration.AreOptionalValidatorsEnabled (controlStub.Object), Is.True);
+      Assert.That(configuration.AreOptionalValidatorsEnabled(controlStub.Object), Is.True);
     }
   }
 }

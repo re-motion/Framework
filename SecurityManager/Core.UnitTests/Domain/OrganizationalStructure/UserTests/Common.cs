@@ -29,8 +29,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
     public void UserName_SameNameTwice ()
     {
       CreateUser();
-      CreateUser ();
-      Assert.That (
+      CreateUser();
+      Assert.That(
           () => ClientTransactionScope.CurrentTransaction.Commit(),
           Throws.InstanceOf<RdbmsProviderException>());
     }

@@ -27,26 +27,26 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   {
     public static T GetEndPointWithOppositeDefinition<T> (this IRelationEndPoint endPoint, DomainObject oppositeObject) where T : IRelationEndPoint
     {
-      return endPoint.GetEndPointWithOppositeDefinition<T> (oppositeObject.GetSafeID());
+      return endPoint.GetEndPointWithOppositeDefinition<T>(oppositeObject.GetSafeID());
     }
 
     public static T GetEndPointWithOppositeDefinition<T> (this IRelationEndPoint endPoint, ObjectID oppositeObjectID) where T : IRelationEndPoint
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
 
-      var oppositeDefinition = endPoint.Definition.GetOppositeEndPointDefinition ();
+      var oppositeDefinition = endPoint.Definition.GetOppositeEndPointDefinition();
 
       var id = RelationEndPointID.Create(oppositeObjectID, oppositeDefinition);
-      var oppositeEndPoint = endPoint.ClientTransaction.DataManager.GetRelationEndPointWithLazyLoad (id);
+      var oppositeEndPoint = endPoint.ClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(id);
 
       if (!(oppositeEndPoint is T))
       {
-        var message = String.Format (
+        var message = String.Format(
             "The opposite end point '{0}' is of type '{1}', not of type '{2}'.", 
             oppositeEndPoint.ID, 
             oppositeEndPoint.GetType(), 
             typeof (T));
-        throw new InvalidOperationException (message);
+        throw new InvalidOperationException(message);
       }
 
       return (T) oppositeEndPoint;

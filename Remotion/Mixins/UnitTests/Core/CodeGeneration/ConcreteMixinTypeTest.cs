@@ -35,11 +35,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [SetUp]
     public void SetUp ()
     {
-      var identifier = new ConcreteMixinTypeIdentifier (typeof (object), new HashSet<MethodInfo> (), new HashSet<MethodInfo> ());
+      var identifier = new ConcreteMixinTypeIdentifier(typeof (object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
       _nonPublicMethod = ReflectionObjectMother.GetSomeNonPublicMethod();
       _publicMethod = ReflectionObjectMother.GetSomePublicMethod();
       _wrapperOrInterfaceMethod = ReflectionObjectMother.GetSomeMethod();
-      _concreteMixinType = new ConcreteMixinType (
+      _concreteMixinType = new ConcreteMixinType(
           identifier, 
           typeof (object),
           typeof (IServiceProvider),
@@ -50,40 +50,40 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [Test]
     public void GetPubliclyCallableMixinMethod ()
     {
-      Assert.That (_concreteMixinType.GetPubliclyCallableMixinMethod (_nonPublicMethod), Is.SameAs (_wrapperOrInterfaceMethod));
+      Assert.That(_concreteMixinType.GetPubliclyCallableMixinMethod(_nonPublicMethod), Is.SameAs(_wrapperOrInterfaceMethod));
     }
 
     [Test]
     public void GetPubliclyCallableMixinMethod_ForPublicMethod ()
     {
-      Assert.That (_concreteMixinType.GetPubliclyCallableMixinMethod (_publicMethod), Is.SameAs (_publicMethod));
+      Assert.That(_concreteMixinType.GetPubliclyCallableMixinMethod(_publicMethod), Is.SameAs(_publicMethod));
     }
 
     [Test]
     public void GetPubliclyCallableMixinMethod_NotFound ()
     {
-      var method = typeof (StringBuilder).GetMethod ("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance);
-      Assert.That (
-          () => _concreteMixinType.GetPubliclyCallableMixinMethod (method),
+      var method = typeof (StringBuilder).GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance);
+      Assert.That(
+          () => _concreteMixinType.GetPubliclyCallableMixinMethod(method),
           Throws.InstanceOf<KeyNotFoundException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "No public wrapper was generated for method 'System.Object.MemberwiseClone'."));
     }
 
     [Test]
     public void GetOverrideInterfaceMethod ()
     {
-      Assert.That (_concreteMixinType.GetOverrideInterfaceMethod (_nonPublicMethod), Is.SameAs (_wrapperOrInterfaceMethod));
+      Assert.That(_concreteMixinType.GetOverrideInterfaceMethod(_nonPublicMethod), Is.SameAs(_wrapperOrInterfaceMethod));
     }
 
     [Test]
     public void GetOverrideInterfaceMethod_NotFound ()
     {
-      var method = typeof (object).GetMethod ("ToString");
-      Assert.That (
-          () => _concreteMixinType.GetOverrideInterfaceMethod (method),
+      var method = typeof (object).GetMethod("ToString");
+      Assert.That(
+          () => _concreteMixinType.GetOverrideInterfaceMethod(method),
           Throws.InstanceOf<KeyNotFoundException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "No override interface method was generated for method 'System.Object.ToString'."));
     }
 

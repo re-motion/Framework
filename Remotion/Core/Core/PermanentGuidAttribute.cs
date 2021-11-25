@@ -43,9 +43,9 @@ namespace Remotion
     /// <param name="value"> The <see cref="String"/> representation of a <see cref="Guid"/>. </param>
     public PermanentGuidAttribute (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty("value", value);
 
-      _value = new Guid (value);
+      _value = new Guid(value);
     }
 
     /// <summary>

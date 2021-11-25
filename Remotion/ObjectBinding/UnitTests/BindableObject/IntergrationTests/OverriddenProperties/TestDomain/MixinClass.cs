@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Over
     [OverrideTarget]
     public string MixinOverrideTargetProperty
     {
-      get { return string.Concat (Next.MixinOverrideTargetProperty ?? "", " (mixed)"); }
+      get { return string.Concat(Next.MixinOverrideTargetProperty ?? "", " (mixed)"); }
       set { Next.MixinOverrideTargetProperty = value; }
     }
 
@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Over
     [TestPropertyAttribute]
     public string MixinOverrideTargetPropertyWithPropertyMetadata
     {
-      get { return string.Concat (Next.MixinOverrideTargetPropertyWithPropertyMetadata ?? "", " (mixed)"); }
+      get { return string.Concat(Next.MixinOverrideTargetPropertyWithPropertyMetadata ?? "", " (mixed)"); }
       set { Next.MixinOverrideTargetPropertyWithPropertyMetadata = value; }
     }
   }

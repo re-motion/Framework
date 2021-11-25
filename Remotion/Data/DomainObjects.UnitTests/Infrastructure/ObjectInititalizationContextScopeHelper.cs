@@ -24,9 +24,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
   {
     public static T CallWithNewObjectInitializationContext<T> (ClientTransaction clientTransaction, ObjectID objectID, Func<T> func)
     {
-      var initializationContext = CreateNewObjectInitializationContext (clientTransaction, objectID);
+      var initializationContext = CreateNewObjectInitializationContext(clientTransaction, objectID);
 
-      using (new ObjectInititalizationContextScope (initializationContext))
+      using (new ObjectInititalizationContextScope(initializationContext))
       {
         return func();
       }
@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
     public static void CallWithNewObjectInitializationContext (ClientTransaction clientTransaction, ObjectID objectID, Action action)
     {
-      var initializationContext = CreateNewObjectInitializationContext (clientTransaction, objectID);
-      using (new ObjectInititalizationContextScope (initializationContext))
+      var initializationContext = CreateNewObjectInitializationContext(clientTransaction, objectID);
+      using (new ObjectInititalizationContextScope(initializationContext))
       {
         action();
       }
@@ -43,11 +43,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
     private static NewObjectInitializationContext CreateNewObjectInitializationContext (ClientTransaction rootTransaction, ObjectID objectID)
     {
-      var initializationContext = new NewObjectInitializationContext (
+      var initializationContext = new NewObjectInitializationContext(
           objectID,
           rootTransaction,
-          ClientTransactionTestHelper.GetEnlistedDomainObjectManager (rootTransaction),
-          ClientTransactionTestHelper.GetIDataManager (rootTransaction));
+          ClientTransactionTestHelper.GetEnlistedDomainObjectManager(rootTransaction),
+          ClientTransactionTestHelper.GetIDataManager(rootTransaction));
       return initializationContext;
     }
   }

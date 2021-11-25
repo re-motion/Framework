@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.In
     /// <inheritdoc />
     public override IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
     {
-      return new[] { new BrowserLogEntry (LogLevel.Info, "Internet Explorer does not support getting browser logs.", DateTime.Now) };
+      return new[] { new BrowserLogEntry(LogLevel.Info, "Internet Explorer does not support getting browser logs.", DateTime.Now) };
     }
   }
 }

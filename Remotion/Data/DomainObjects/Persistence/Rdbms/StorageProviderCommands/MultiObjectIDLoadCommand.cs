@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public MultiObjectIDLoadCommand (IEnumerable<IDbCommandBuilder> dbCommandBuilders, IObjectReader<ObjectID> objectIDReader)
     {
-      ArgumentUtility.CheckNotNull ("dbCommandBuilders", dbCommandBuilders);
-      ArgumentUtility.CheckNotNull ("objectIDReader", objectIDReader);
+      ArgumentUtility.CheckNotNull("dbCommandBuilders", dbCommandBuilders);
+      ArgumentUtility.CheckNotNull("objectIDReader", objectIDReader);
 
       _dbCommandBuilders = dbCommandBuilders;
       _objectIDReader = objectIDReader;
@@ -54,20 +54,20 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public IEnumerable<ObjectID> Execute (IRdbmsProviderCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull ("executionContext", executionContext);
-      return _dbCommandBuilders.SelectMany (b => LoadObjectIDsFromCommandBuilder (b, executionContext));
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      return _dbCommandBuilders.SelectMany(b => LoadObjectIDsFromCommandBuilder(b, executionContext));
     }
 
     private IEnumerable<ObjectID> LoadObjectIDsFromCommandBuilder (
         IDbCommandBuilder commandBuilder, IRdbmsProviderCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull ("commandBuilder", commandBuilder);
+      ArgumentUtility.CheckNotNull("commandBuilder", commandBuilder);
 
-      using (var command = commandBuilder.Create (executionContext))
+      using (var command = commandBuilder.Create(executionContext))
       {
-        using (var reader = executionContext.ExecuteReader (command, CommandBehavior.SingleResult))
+        using (var reader = executionContext.ExecuteReader(command, CommandBehavior.SingleResult))
         {
-          foreach (var objectID in _objectIDReader.ReadSequence (reader))
+          foreach (var objectID in _objectIDReader.ReadSequence(reader))
             yield return objectID;
         }
       }

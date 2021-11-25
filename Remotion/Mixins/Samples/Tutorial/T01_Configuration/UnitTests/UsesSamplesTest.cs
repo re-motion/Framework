@@ -27,8 +27,8 @@ namespace Remotion.Mixins.Samples.Tutorial.T01_Configuration.UnitTests
     [Test]
     public void MyCloneableClass_IsICloneable ()
     {
-      var instance = ObjectFactory.Create<MyCloneableClass> (ParamList.Empty);
-      Assert.That (instance, Is.InstanceOf (typeof (ICloneable)));
+      var instance = ObjectFactory.Create<MyCloneableClass>(ParamList.Empty);
+      Assert.That(instance, Is.InstanceOf(typeof (ICloneable)));
     }
   }
 }

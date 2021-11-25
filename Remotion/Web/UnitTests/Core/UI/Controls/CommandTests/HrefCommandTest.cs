@@ -34,37 +34,37 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     [SetUp]
     public virtual void SetUp ()
     {
-      _testHelper = new CommandTestHelper ();
-      HttpContextHelper.SetCurrent (_testHelper.HttpContext);
+      _testHelper = new CommandTestHelper();
+      HttpContextHelper.SetCurrent(_testHelper.HttpContext);
     }
 
     [Test]
     public void HasAccess_WithoutSeucrityProvider ()
     {
-      Command command = _testHelper.CreateHrefCommand ();
+      Command command = _testHelper.CreateHrefCommand();
 
-      bool hasAccess = command.HasAccess (null);
+      bool hasAccess = command.HasAccess(null);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Render_WithAccessGranted ()
     {
-      var command = _testHelper.CreateHrefCommandAsPartialMock ();
+      var command = _testHelper.CreateHrefCommandAsPartialMock();
       string[] parameters = new string[] { "Value1", "Value2" };
 
-      NameValueCollection additionalUrlParameters = new NameValueCollection ();
-      additionalUrlParameters.Add ("Parameter3", "Value3");
+      NameValueCollection additionalUrlParameters = new NameValueCollection();
+      additionalUrlParameters.Add("Parameter3", "Value3");
 
-      string expectedHref = command.Object.HrefCommand.FormatHref (parameters);
-      expectedHref = UrlUtility.AddParameter (expectedHref, additionalUrlParameters.GetKey (0), additionalUrlParameters.Get (0));
+      string expectedHref = command.Object.HrefCommand.FormatHref(parameters);
+      expectedHref = UrlUtility.AddParameter(expectedHref, additionalUrlParameters.GetKey(0), additionalUrlParameters.Get(0));
       string expectedOnClick = _testHelper.OnClick;
 
-      _testHelper.ExpectOnceOnHasAccess (command, true);
+      _testHelper.ExpectOnceOnHasAccess(command, true);
 
-      command.Object.RenderBegin (
+      command.Object.RenderBegin(
           _testHelper.HtmlWriter, 
           RenderingFeatures.Default,
           _testHelper.PostBackEvent, 
@@ -76,34 +76,34 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
           new Style(),
           new NameValueCollection());
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
 
-      Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
-      Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.AreEqual(HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
 
-      Assert.IsNotNull (_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], "Missing Href");
-      Assert.AreEqual (expectedHref, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], "Wrong Href");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], "Missing Href");
+      Assert.AreEqual(expectedHref, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], "Wrong Href");
 
-      Assert.IsNotNull (_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], "Missing OnClick");
-      Assert.AreEqual (expectedOnClick, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], "Wrong OnClick");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], "Missing OnClick");
+      Assert.AreEqual(expectedOnClick, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], "Wrong OnClick");
 
-      Assert.IsNotNull (_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], "Missing Title");
-      Assert.AreEqual (_testHelper.ToolTip, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], "Wrong Title");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], "Missing Title");
+      Assert.AreEqual(_testHelper.ToolTip, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], "Wrong Title");
 
-      Assert.IsNotNull (_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Missing Target");
-      Assert.AreEqual (_testHelper.Target, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Wrong Target");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Missing Target");
+      Assert.AreEqual(_testHelper.Target, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Wrong Target");
     }
 
     [Test]
     public void Render_WithAccessDenied ()
     {
-      var command = _testHelper.CreateHrefCommandAsPartialMock ();
+      var command = _testHelper.CreateHrefCommandAsPartialMock();
       string[] parameters = new string[] { "Value1", "Value2" };
-      NameValueCollection additionalUrlParameters = new NameValueCollection ();
-      additionalUrlParameters.Add ("Parameter3", "Value3");
-      _testHelper.ExpectOnceOnHasAccess (command, false);
+      NameValueCollection additionalUrlParameters = new NameValueCollection();
+      additionalUrlParameters.Add("Parameter3", "Value3");
+      _testHelper.ExpectOnceOnHasAccess(command, false);
 
-      command.Object.RenderBegin (
+      command.Object.RenderBegin(
           _testHelper.HtmlWriter, 
           RenderingFeatures.Default,
           _testHelper.PostBackEvent, 
@@ -115,10 +115,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
           new Style(),
           new NameValueCollection());
 
-      _testHelper.VerifyAll ();
-      Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
-      Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
-      Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");
+      _testHelper.VerifyAll();
+      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.AreEqual(HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
+      Assert.AreEqual(0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");
     }
   }
 }

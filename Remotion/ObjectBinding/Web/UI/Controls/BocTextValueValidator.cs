@@ -33,7 +33,7 @@ public class DateTimeValidator: BaseValidator
 {
   protected override bool EvaluateIsValid ()
   {
-    string text = GetControlValidationValue (ControlToValidate);
+    string text = GetControlValidationValue(ControlToValidate);
     if (text == null )
       return true;
     text = text.Trim();
@@ -42,7 +42,7 @@ public class DateTimeValidator: BaseValidator
 
     try
     {
-      DateTime.Parse (text);
+      DateTime.Parse(text);
     }
     catch (FormatException)
     {

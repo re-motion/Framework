@@ -169,8 +169,8 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Initalizes a new instance. </summary>
     public WebTreeView (IControl? ownerControl)
     {
-      _nodes = new WebTreeNodeCollection (ownerControl);
-      _nodes.SetParent (this, null);
+      _nodes = new WebTreeNodeCollection(ownerControl);
+      _nodes.SetParent(this, null);
       _menuPlaceHolder = new PlaceHolder();
       _renderingFeatures = SafeServiceLocator.Current.GetInstance<IRenderingFeatures>();
 
@@ -189,7 +189,7 @@ namespace Remotion.Web.UI.Controls
 
       _menuPlaceHolder.ID = ID + "_Menus";
       _menuPlaceHolder.EnableViewState = false;
-      Controls.Add (_menuPlaceHolder);
+      Controls.Add(_menuPlaceHolder);
     }
 
     //  methods and properties
@@ -207,16 +207,16 @@ namespace Remotion.Web.UI.Controls
     /// <param name="eventArgument"> &lt;command prefix&gt;&lt;node path&gt;</param>
     void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
       EnsureTreeNodesCreated();
 
       eventArgument = eventArgument.Trim();
-      if (eventArgument.StartsWith (c_expansionCommandPrefix))
-        HandleExpansionCommandEvent (eventArgument.Substring (c_expansionCommandPrefix.Length));
-      else if (eventArgument.StartsWith (c_clickCommandPrefix))
-        HandleClickCommandEvent (eventArgument.Substring (c_clickCommandPrefix.Length));
+      if (eventArgument.StartsWith(c_expansionCommandPrefix))
+        HandleExpansionCommandEvent(eventArgument.Substring(c_expansionCommandPrefix.Length));
+      else if (eventArgument.StartsWith(c_clickCommandPrefix))
+        HandleClickCommandEvent(eventArgument.Substring(c_clickCommandPrefix.Length));
       else
-        throw new ArgumentException ("Argument 'eventArgument' has unknown prefix: '" + eventArgument + "'.");
+        throw new ArgumentException("Argument 'eventArgument' has unknown prefix: '" + eventArgument + "'.");
     }
 
     /// <summary> Handles the expansion command (i.e. expands/collapses the clicked tree node). </summary>
@@ -224,7 +224,7 @@ namespace Remotion.Web.UI.Controls
     private void HandleExpansionCommandEvent (string eventArgument)
     {
       string[] pathSegments;
-      WebTreeNode? clickedNode = ParseNodePath (eventArgument, out pathSegments);
+      WebTreeNode? clickedNode = ParseNodePath(eventArgument, out pathSegments);
       if (clickedNode != null)
       {
         _focusededNode = clickedNode;
@@ -242,7 +242,7 @@ namespace Remotion.Web.UI.Controls
         }
 
         if (clickedNode.IsExpanded)
-          InitializeTreeNodeMenus (clickedNode.Children);
+          InitializeTreeNodeMenus(clickedNode.Children);
       }
     }
 
@@ -251,12 +251,12 @@ namespace Remotion.Web.UI.Controls
     private void HandleClickCommandEvent (string eventArgument)
     {
       string[] pathSegments;
-      WebTreeNode? clickedNode = ParseNodePath (eventArgument, out pathSegments);
+      WebTreeNode? clickedNode = ParseNodePath(eventArgument, out pathSegments);
       bool isSelectionChanged = _selectedNode != clickedNode;
-      SetSelectedNode (clickedNode);
-      OnClick (clickedNode, pathSegments);
+      SetSelectedNode(clickedNode);
+      OnClick(clickedNode, pathSegments);
       if (isSelectionChanged)
-        OnSelectionChanged (clickedNode);
+        OnSelectionChanged(clickedNode);
     }
 
     /// <summary> Fires the <see cref="Click"/> event. </summary>
@@ -265,8 +265,8 @@ namespace Remotion.Web.UI.Controls
       WebTreeNodeClickEventHandler? handler = (WebTreeNodeClickEventHandler?) Events[s_clickEvent];
       if (handler != null)
       {
-        WebTreeNodeClickEventArgs e = new WebTreeNodeClickEventArgs (node, path);
-        handler (this, e);
+        WebTreeNodeClickEventArgs e = new WebTreeNodeClickEventArgs(node, path);
+        handler(this, e);
       }
     }
 
@@ -276,8 +276,8 @@ namespace Remotion.Web.UI.Controls
       WebTreeNodeEventHandler? handler = (WebTreeNodeEventHandler?) Events[s_selectionChangedEvent];
       if (handler != null)
       {
-        WebTreeNodeEventArgs e = new WebTreeNodeEventArgs (node);
-        handler (this, e);
+        WebTreeNodeEventArgs e = new WebTreeNodeEventArgs(node);
+        handler(this, e);
       }
     }
 
@@ -324,7 +324,7 @@ namespace Remotion.Web.UI.Controls
         _initializeRootTreeNodes();
 
       if (_nodesControlState != null)
-        LoadNodesControlStateRecursive (_nodesControlState, _nodes);
+        LoadNodesControlStateRecursive(_nodesControlState, _nodes);
 
       if (_nodes.Count == 0)
         _hasTreeNodesCreated = false;
@@ -342,13 +342,13 @@ namespace Remotion.Web.UI.Controls
     /// </exception>
     protected internal void EvaluateTreeNodeInternal (WebTreeNode node)
     {
-      ArgumentUtility.CheckNotNull ("node", node);
+      ArgumentUtility.CheckNotNull("node", node);
 
       if (_evaluateTreeNode == null)
-        throw new NullReferenceException ("EvaluateTreeNode has no method registered but tree node '" + node.ItemID + "' is not evaluated.");
-      _evaluateTreeNode (node);
+        throw new NullReferenceException("EvaluateTreeNode has no method registered but tree node '" + node.ItemID + "' is not evaluated.");
+      _evaluateTreeNode(node);
       if (!node.IsEvaluated)
-        throw new InvalidOperationException ("EvaluateTreeNode called for tree node '" + node.ItemID + "' but did not evaluate the tree node.");
+        throw new InvalidOperationException("EvaluateTreeNode called for tree node '" + node.ItemID + "' but did not evaluate the tree node.");
     }
 
     public void ResetNodes ()
@@ -360,12 +360,12 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
-      Page!.RegisterRequiresControlState (this);
+      base.OnInit(e);
+      Page!.RegisterRequiresControlState(this);
       if (Page != null && !Page.IsPostBack)
         _isLoadControlStateCompleted = true;
 
-      RegisterHtmlHeadContents (HtmlHeadAppender.Current, Context);
+      RegisterHtmlHeadContents(HtmlHeadAppender.Current, Context);
     }
 
 
@@ -373,7 +373,7 @@ namespace Remotion.Web.UI.Controls
     {
       object?[] values = (object?[]) savedState!;
 
-      base.LoadControlState (values[0]);
+      base.LoadControlState(values[0]);
       if (_enableTreeNodeControlState)
         _nodesControlState = (Triplet[]) values[1]!;
       else
@@ -389,7 +389,7 @@ namespace Remotion.Web.UI.Controls
 
       values[0] = base.SaveControlState();
       if (_enableTreeNodeControlState)
-        values[1] = SaveNodesControlStateRecursive (_nodes);
+        values[1] = SaveNodesControlStateRecursive(_nodes);
       values[2] = _menuCounter;
 
       return values;
@@ -402,7 +402,7 @@ namespace Remotion.Web.UI.Controls
       {
         Triplet nodeState = nodesState[i];
         string nodeID = (string) nodeState.First!; // TODO RM-8118: not null assertion
-        WebTreeNode? node = nodes.Find (nodeID);
+        WebTreeNode? node = nodes.Find(nodeID);
         if (node != null)
         {
           object[] values = (object[]) nodeState.Second!; // TODO RM-8118: not null assertion
@@ -411,13 +411,13 @@ namespace Remotion.Web.UI.Controls
           {
             bool isEvaluated = (bool) values[1];
             if (isEvaluated)
-              EvaluateTreeNodeInternal (node);
+              EvaluateTreeNodeInternal(node);
           }
           bool isSelected = (bool) values[2];
           if (isSelected)
             node.IsSelected = true;
           node.MenuID = (string) values[3];
-          LoadNodesControlStateRecursive ((Triplet[]) nodeState.Third!, node.Children); // TODO RM-8118: not null assertion
+          LoadNodesControlStateRecursive((Triplet[]) nodeState.Third!, node.Children); // TODO RM-8118: not null assertion
         }
       }
     }
@@ -438,7 +438,7 @@ namespace Remotion.Web.UI.Controls
         values[2] = node.IsSelected;
         values[3] = node.MenuID;
         nodeControlState.Second = values;
-        nodeControlState.Third = SaveNodesControlStateRecursive (node.Children);
+        nodeControlState.Third = SaveNodesControlStateRecursive(node.Children);
         nodesState[i] = nodeControlState;
       }
       return nodesState;
@@ -449,8 +449,8 @@ namespace Remotion.Web.UI.Controls
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
     void IResourceDispatchTarget.Dispatch (IDictionary values)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
-      Dispatch (values);
+      ArgumentUtility.CheckNotNull("values", values);
+      Dispatch(values);
     }
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
@@ -458,40 +458,40 @@ namespace Remotion.Web.UI.Controls
     protected virtual void Dispatch (IDictionary values)
     {
       //  Dispatch simple properties
-      ResourceDispatcher.DispatchGeneric (this, values);
+      ResourceDispatcher.DispatchGeneric(this, values);
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>
     protected virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
-      if (!string.IsNullOrEmpty (key))
-        AccessKey = resourceManager.GetString (key);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(AccessKey);
+      if (!string.IsNullOrEmpty(key))
+        AccessKey = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
-      if (!string.IsNullOrEmpty (key))
-        ToolTip = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(ToolTip);
+      if (!string.IsNullOrEmpty(key))
+        ToolTip = resourceManager.GetString(key);
 
-      Nodes.LoadResources (resourceManager, globalizationService);
+      Nodes.LoadResources(resourceManager, globalizationService);
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       EnsureTreeNodesCreated();
       EnsureChildControls();
-      InitializeTreeNodeMenus (_nodes);
+      InitializeTreeNodeMenus(_nodes);
       _hasTreeNodeMenusCreated = true;
     }
 
     public virtual void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, HttpContextBase? httpContext)
     {
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
     protected virtual IWebTreeViewRenderer CreateRenderer ()
@@ -504,16 +504,16 @@ namespace Remotion.Web.UI.Controls
     {
       EnsureTreeNodesCreated();
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      var resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
+      var resourceManager = ResourceManagerUtility.GetResourceManager(this, true);
       var globalizationService = SafeServiceLocator.Current.GetInstance<IGlobalizationService>();
 
-      LoadResources (resourceManager, globalizationService);
+      LoadResources(resourceManager, globalizationService);
 
       if (_requiresSynchronousPostBack)
       {
-        var scriptManager = ScriptManager.GetCurrent (Page!);
+        var scriptManager = ScriptManager.GetCurrent(Page!);
         if (scriptManager != null)
         {
           bool hasUpdatePanelAsParent = false;
@@ -531,12 +531,12 @@ namespace Remotion.Web.UI.Controls
             ISmartPage? smartPage = Page as ISmartPage;
             if (smartPage == null)
             {
-              throw new InvalidOperationException (
-                  string.Format (
+              throw new InvalidOperationException(
+                  string.Format(
                       "{0}: WebTreeViews with RequiresSynchronousPostBack set to true are only supported on pages implementing ISmartPage when used within an UpdatePanel.",
                       ID));
             }
-            RegisterTreeNodesForSynchronousPostback (smartPage, _nodes);
+            RegisterTreeNodesForSynchronousPostback(smartPage, _nodes);
           }
         }
       }
@@ -548,8 +548,8 @@ namespace Remotion.Web.UI.Controls
     {
       foreach (WebTreeNode node in nodes)
       {
-        smartPage.RegisterCommandForSynchronousPostBack (this, GetClickCommandArgument (FormatNodePath (node)));
-        RegisterTreeNodesForSynchronousPostback (smartPage, node.Children);
+        smartPage.RegisterCommandForSynchronousPostBack(this, GetClickCommandArgument(FormatNodePath(node)));
+        RegisterTreeNodesForSynchronousPostback(smartPage, node.Children);
       }
     }
 
@@ -561,11 +561,11 @@ namespace Remotion.Web.UI.Controls
 
     protected override void AddAttributesToRender (HtmlTextWriter writer)
     {
-      base.AddAttributesToRender (writer);
+      base.AddAttributesToRender(writer);
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
         IControlWithDiagnosticMetadata controlWithDiagnosticMetadata = this;
-        writer.AddAttribute (DiagnosticMetadataAttributes.ControlType, controlWithDiagnosticMetadata.ControlType);
+        writer.AddAttribute(DiagnosticMetadataAttributes.ControlType, controlWithDiagnosticMetadata.ControlType);
       }
     }
 
@@ -576,7 +576,7 @@ namespace Remotion.Web.UI.Controls
       if (_enableScrollBars)
         CssClass += " " + CssClassDefinition.Themed + " " + "scrollable";
 
-      base.Render (writer);
+      base.Render(writer);
 
       CssClass = cssClassBackup;
     }
@@ -585,13 +585,13 @@ namespace Remotion.Web.UI.Controls
     protected override void RenderContents (HtmlTextWriter writer)
     {
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError (1, this);
+        WcagHelper.Instance.HandleError(1, this);
 
-      ((IControl) this).Page!.ClientScript.RegisterStartupScriptBlock (
+      ((IControl) this).Page!.ClientScript.RegisterStartupScriptBlock(
           this,
           typeof (WebTreeView),
           Guid.NewGuid().ToString(),
-          string.Format ("WebTreeView.Initialize ('#{0}');", ClientID));
+          string.Format("WebTreeView.Initialize ('#{0}');", ClientID));
 
       ResolveNodeIcons();
 
@@ -599,29 +599,29 @@ namespace Remotion.Web.UI.Controls
       if (!_enableWordWrap)
         rootCssClass += " whitespaceNoWrap";
 
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, rootCssClass);
-      writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Tree);
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, rootCssClass);
+      writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Tree);
 
       var labelIDs = GetLabelIDs().ToArray();
-      _labelReferenceRenderer.AddLabelsReference (writer, labelIDs);
+      _labelReferenceRenderer.AddLabelsReference(writer, labelIDs);
 
-      writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin child nodes
+      writer.RenderBeginTag(HtmlTextWriterTag.Ul); // Begin child nodes
       if (_focusededNode == null)
         _focusededNode = _selectedNode;
       using (var nodeIDAlgorithm = CreateNodeIDAlgorithm())
       {
-        RenderNodes (writer, _nodes, true, nodeIDAlgorithm, 0);
+        RenderNodes(writer, _nodes, true, nodeIDAlgorithm, 0);
       }
       writer.RenderEndTag();
       foreach (DropDownMenu menu in _menuPlaceHolder.Controls)
-        menu.RenderAsContextMenu (writer);
+        menu.RenderAsContextMenu(writer);
     }
 
     /// <summary> Renders the <paremref name="nodes"/> onto the <paremref name="writer"/>. </summary>
     private void RenderNodes (HtmlTextWriter writer, WebTreeNodeCollection webTreeNodes, bool isTopLevel, HashAlgorithm nodeIDAlgorithm, int nestingDepth)
     {
       var nodes = EnableTopLevelGrouping && isTopLevel
-          ? WebTreeNodeCollection.GroupByCategory (webTreeNodes)
+          ? WebTreeNodeCollection.GroupByCategory(webTreeNodes)
           : webTreeNodes.Cast<WebTreeNode>().ToArray();
 
       for (int i = 0; i < nodes.Count; i++)
@@ -633,57 +633,57 @@ namespace Remotion.Web.UI.Controls
         bool hasExpander = !isTopLevel || _enableTopLevelExpander;
         if (!hasExpander)
           node.IsExpanded = true;
-        string nodePath = FormatNodePath (node);
-        string nodeID = CreateNodeID (nodeIDAlgorithm, nodePath);
+        string nodePath = FormatNodePath(node);
+        string nodeID = CreateNodeID(nodeIDAlgorithm, nodePath);
 
         if (_renderingFeatures.EnableDiagnosticMetadata)
         {
-          if (!string.IsNullOrEmpty (node.ItemID))
-            writer.AddAttribute (DiagnosticMetadataAttributes.ItemID, node.ItemID);
-          if (!string.IsNullOrEmpty (node.Text))
-            writer.AddAttribute (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (node.Text));
+          if (!string.IsNullOrEmpty(node.ItemID))
+            writer.AddAttribute(DiagnosticMetadataAttributes.ItemID, node.ItemID);
+          if (!string.IsNullOrEmpty(node.Text))
+            writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(node.Text));
           if (node.IsSelected)
-            writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewIsSelectedNode, "true");
+            writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewIsSelectedNode, "true");
           if (node.IsEvaluated)
-            writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren, node.Children.Count.ToString());
+            writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren, node.Children.Count.ToString());
           else
-            writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren, DiagnosticMetadataAttributes.Null);
-          writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewIsExpanded, node.IsExpanded ? "true" : "false");
-          writer.AddAttribute (DiagnosticMetadataAttributes.IndexInCollection, (i + 1).ToString());
-          if (!string.IsNullOrEmpty (node.Badge?.Value))
+            writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren, DiagnosticMetadataAttributes.Null);
+          writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewIsExpanded, node.IsExpanded ? "true" : "false");
+          writer.AddAttribute(DiagnosticMetadataAttributes.IndexInCollection, (i + 1).ToString());
+          if (!string.IsNullOrEmpty(node.Badge?.Value))
           {
-            writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewBadgeValue, node.Badge.Value);
-            if (!string.IsNullOrEmpty (node.Badge.Description))
-              writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewBadgeDescription, node.Badge.Description);
+            writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewBadgeValue, node.Badge.Value);
+            if (!string.IsNullOrEmpty(node.Badge.Description))
+              writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewBadgeDescription, node.Badge.Description);
           }
-          if (!string.IsNullOrEmpty (node.Category))
-            writer.AddAttribute (DiagnosticMetadataAttributes.WebTreeViewNodeCategory, node.Category);
+          if (!string.IsNullOrEmpty(node.Category))
+            writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewNodeCategory, node.Category);
         }
 
-        writer.AddAttribute (HtmlTextWriterAttribute.Id, "Node_" + nodeID);
-        writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.TreeItem);
+        writer.AddAttribute(HtmlTextWriterAttribute.Id, "Node_" + nodeID);
+        writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.TreeItem);
         if (hasChildren || !node.IsEvaluated)
         {
-          writer.AddAttribute (
+          writer.AddAttribute(
               HtmlTextWriterAttribute2.AriaExpanded,
               node.IsExpanded ? HtmlAriaExpandedAttributeValue.True : HtmlAriaExpandedAttributeValue.False);
         }
         if (node.IsSelected)
         {
-          writer.AddAttribute (HtmlTextWriterAttribute2.AriaSelected, HtmlAriaSelectedAttributeValue.True);
+          writer.AddAttribute(HtmlTextWriterAttribute2.AriaSelected, HtmlAriaSelectedAttributeValue.True);
         }
-        writer.AddAttribute ("tabindex", _focusededNode == node ? "0" : "-1");
+        writer.AddAttribute("tabindex", _focusededNode == node ? "0" : "-1");
         if (EnableTopLevelGrouping && isTopLevel && !isLastNode && nodes[i].Category != nodes[i + 1].Category)
-          writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeCategorySeparator);
+          writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeCategorySeparator);
 
-        writer.RenderBeginTag (HtmlTextWriterTag.Li); // Begin node block
+        writer.RenderBeginTag(HtmlTextWriterTag.Li); // Begin node block
 
-        if (!isTopLevel && !string.IsNullOrEmpty (node.Category))
-          throw new InvalidOperationException ("Only root nodes may have a category set.");
+        if (!isTopLevel && !string.IsNullOrEmpty(node.Category))
+          throw new InvalidOperationException("Only root nodes may have a category set.");
 
-        RenderNodeHead (writer, node, isFirstNode, isLastNode, hasExpander, node.IsSelected, nodePath, nodeID, nestingDepth);
+        RenderNodeHead(writer, node, isFirstNode, isLastNode, hasExpander, node.IsSelected, nodePath, nodeID, nestingDepth);
         if (hasChildren && node.IsExpanded)
-          RenderNodeChildren (writer, node, isLastNode, hasExpander, nodeIDAlgorithm, nestingDepth);
+          RenderNodeChildren(writer, node, isLastNode, hasExpander, nodeIDAlgorithm, nestingDepth);
 
         writer.RenderEndTag(); // End node block
       }
@@ -702,10 +702,10 @@ namespace Remotion.Web.UI.Controls
         int nestingDepth)
     {
       bool isMenuVisible = false;
-      if (_menus.TryGetValue (node, out var menu))
+      if (_menus.TryGetValue(node, out var menu))
       {
         if (_treeNodeMenuRenderMethod != null)
-          _treeNodeMenuRenderMethod (writer, node, menu);
+          _treeNodeMenuRenderMethod(writer, node, menu);
 
         for (int i = 0; i < menu.MenuItems.Count; i++)
         {
@@ -717,32 +717,32 @@ namespace Remotion.Web.UI.Controls
         }
       }
 
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNode);
-      writer.AddStyleAttribute ("--nesting-depth", nestingDepth.ToString());
-      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNode);
+      writer.AddStyleAttribute("--nesting-depth", nestingDepth.ToString());
+      writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       if (hasExpander)
-        RenderNodeExpander (writer, node, nodePath, nodeID, isFirstNode, isLastNode);
+        RenderNodeExpander(writer, node, nodePath, nodeID, isFirstNode, isLastNode);
 
       if (isMenuVisible)
       {
-        writer.AddAttribute ("oncontextmenu", "return false;");
-        writer.AddAttribute ("id", menu!.ClientID);
+        writer.AddAttribute("oncontextmenu", "return false;");
+        writer.AddAttribute("id", menu!.ClientID);
       }
-      RenderNodeLabel (writer, node, nodePath, nodeID);
+      RenderNodeLabel(writer, node, nodePath, nodeID);
 
       if (isSelected)
       {
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
-        writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
+        writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
         var resourceManager= GetResourceManager();
-        writer.Write (resourceManager.GetString (ResourceIdentifier.ScreenReaderNodeSelectedLabelText));
+        writer.Write(resourceManager.GetString(ResourceIdentifier.ScreenReaderNodeSelectedLabelText));
 
         writer.RenderEndTag();
       }
 
-      RenderNodeBadge (writer, node);
+      RenderNodeBadge(writer, node);
 
       writer.RenderEndTag();
     }
@@ -756,24 +756,24 @@ namespace Remotion.Web.UI.Controls
         bool isFirstNode,
         bool isLastNode)
     {
-      IconInfo nodeIcon = GetNodeIcon (node, isFirstNode, isLastNode)!;
+      IconInfo nodeIcon = GetNodeIcon(node, isFirstNode, isLastNode)!;
       bool hasChildren = node.Children.Count > 0;
       bool isEvaluated = node.IsEvaluated;
       bool hasExpansionLink = hasChildren || !isEvaluated;
       if (hasExpansionLink)
       {
         string argument = c_expansionCommandPrefix + nodePath;
-        string postBackEventReference = Page!.ClientScript.GetPostBackEventReference (this, argument) + ";return false;";
-        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEventReference);
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+        string postBackEventReference = Page!.ClientScript.GetPostBackEventReference(this, argument) + ";return false;";
+        writer.AddAttribute(HtmlTextWriterAttribute.Onclick, postBackEventReference);
+        writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
         if (_renderingFeatures.EnableDiagnosticMetadata)
-          writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, "true");
+          writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, "true");
       }
-      writer.AddAttribute ("tabindex", "-1");
-      writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
-      writer.RenderBeginTag (HtmlTextWriterTag.A);
+      writer.AddAttribute("tabindex", "-1");
+      writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+      writer.RenderBeginTag(HtmlTextWriterTag.A);
 
-      nodeIcon.Render (writer, this);
+      nodeIcon.Render(writer, this);
       writer.RenderEndTag();
     }
 
@@ -781,40 +781,40 @@ namespace Remotion.Web.UI.Controls
     private void RenderNodeLabel (HtmlTextWriter writer, WebTreeNode node, string nodePath, string nodeID)
     {
       if (node.IsSelected)
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeHeadSelected);
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeHeadSelected);
       else
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeHead);
-      if (!string.IsNullOrEmpty (node.ToolTip))
-        writer.AddAttribute (HtmlTextWriterAttribute.Title, node.ToolTip);
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeHead);
+      if (!string.IsNullOrEmpty(node.ToolTip))
+        writer.AddAttribute(HtmlTextWriterAttribute.Title, node.ToolTip);
 
-      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-      string argument = GetClickCommandArgument (nodePath);
-      string postBackEventReference = Page!.ClientScript.GetPostBackEventReference (this, argument) + ";return false;";
-      writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEventReference);
-      writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+      string argument = GetClickCommandArgument(nodePath);
+      string postBackEventReference = Page!.ClientScript.GetPostBackEventReference(this, argument) + ";return false;";
+      writer.AddAttribute(HtmlTextWriterAttribute.Onclick, postBackEventReference);
+      writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
       if (_renderingFeatures.EnableDiagnosticMetadata)
-        writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, "true");
-      writer.AddAttribute (HtmlTextWriterAttribute.Id, "Head_" + nodeID);
-      writer.AddAttribute ("tabindex", "-1");
-      writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
-      writer.RenderBeginTag (HtmlTextWriterTag.A);
+        writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, "true");
+      writer.AddAttribute(HtmlTextWriterAttribute.Id, "Head_" + nodeID);
+      writer.AddAttribute("tabindex", "-1");
+      writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+      writer.RenderBeginTag(HtmlTextWriterTag.A);
       if (_treeNodeRenderMethod == null)
       {
         if (node.Icon != null && node.Icon.HasRenderingInformation)
         {
-          node.Icon.Render (writer, this);
-          writer.Write ("&nbsp;");
+          node.Icon.Render(writer, this);
+          writer.Write("&nbsp;");
         }
-        if (!string.IsNullOrEmpty (node.Text))
+        if (!string.IsNullOrEmpty(node.Text))
         {
-          writer.RenderBeginTag (HtmlTextWriterTag.Span);
-          writer.WriteEncodedText (node.Text);
+          writer.RenderBeginTag(HtmlTextWriterTag.Span);
+          writer.WriteEncodedText(node.Text);
           writer.RenderEndTag();
         }
       }
       else
-        _treeNodeRenderMethod.Invoke (writer, node);
+        _treeNodeRenderMethod.Invoke(writer, node);
       writer.RenderEndTag();
 
       writer.RenderEndTag();
@@ -824,26 +824,26 @@ namespace Remotion.Web.UI.Controls
     private void RenderNodeBadge (HtmlTextWriter writer, WebTreeNode node)
     {
       var badge = node.Badge;
-      if (string.IsNullOrEmpty (badge?.Value))
+      if (string.IsNullOrEmpty(badge?.Value))
         return;
 
-      writer.AddAttribute (HtmlTextWriterAttribute.Title, badge.Description);
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeBadge);
-      writer.AddAttribute (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
-      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.AddAttribute(HtmlTextWriterAttribute.Title, badge.Description);
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeBadge);
+      writer.AddAttribute(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+      writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       writer.RenderBeginTag(HtmlTextWriterTag.Span);
-      writer.Write (badge.Value);
+      writer.Write(badge.Value);
       writer.RenderEndTag();
 
       writer.RenderEndTag();
 
-      if (!string.IsNullOrEmpty (badge.Description))
+      if (!string.IsNullOrEmpty(badge.Description))
       {
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
-        writer.RenderBeginTag (HtmlTextWriterTag.Span);
-        writer.Write (".");
-        writer.Write (badge.Description);
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
+        writer.RenderBeginTag(HtmlTextWriterTag.Span);
+        writer.Write(".");
+        writer.Write(badge.Description);
         writer.RenderEndTag();
       }
     }
@@ -857,15 +857,15 @@ namespace Remotion.Web.UI.Controls
     private void RenderNodeChildren (HtmlTextWriter writer, WebTreeNode node, bool isLastNode, bool hasExpander, HashAlgorithm nodeIDAlgorithm, int nestingDepth)
     {
       if (!hasExpander)
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTopLevelNodeChildren);
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTopLevelNodeChildren);
       else if (isLastNode || !_showLines)
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeChildrenNoLines);
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeChildrenNoLines);
       else
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeChildren);
-      writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Group);
-      writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin child nodes
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeChildren);
+      writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Group);
+      writer.RenderBeginTag(HtmlTextWriterTag.Ul); // Begin child nodes
 
-      RenderNodes (writer, node.Children, false, nodeIDAlgorithm, nestingDepth + 1);
+      RenderNodes(writer, node.Children, false, nodeIDAlgorithm, nestingDepth + 1);
 
       writer.RenderEndTag(); // End child nodes
     }
@@ -873,15 +873,15 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Renders a dummy tree for design mode. </summary>
     private void RenderDesignModeContents (HtmlTextWriter writer)
     {
-      WebTreeNodeCollection designModeNodes = new WebTreeNodeCollection (null);
-      designModeNodes.SetParent (this, null);
+      WebTreeNodeCollection designModeNodes = new WebTreeNodeCollection(null);
+      designModeNodes.SetParent(this, null);
       WebTreeNodeCollection nodes = designModeNodes;
-      nodes.Add (new WebTreeNode ("node0", "Node 0"));
-      nodes.Add (new WebTreeNode ("node1", "Node 1"));
-      nodes.Add (new WebTreeNode ("node2", "Node 2"));
+      nodes.Add(new WebTreeNode("node0", "Node 0"));
+      nodes.Add(new WebTreeNode("node1", "Node 1"));
+      nodes.Add(new WebTreeNode("node2", "Node 2"));
       using (var nodeIDAlgorithm = MD5CryptoServiceProvider.Create())
       {
-        RenderNodes (writer, designModeNodes, true, nodeIDAlgorithm, 0);
+        RenderNodes(writer, designModeNodes, true, nodeIDAlgorithm, 0);
       }
     }
 
@@ -894,9 +894,9 @@ namespace Remotion.Web.UI.Controls
 
       //  Get the resource managers
 
-      IResourceManager localResourceManager = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier));
-      IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
-      _cachedResourceManager = ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
+      IResourceManager localResourceManager = GlobalizationService.GetResourceManager(typeof (ResourceIdentifier));
+      IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager(NamingContainer, true);
+      _cachedResourceManager = ResourceManagerSet.Create(namingContainerResourceManager, localResourceManager);
 
       return _cachedResourceManager;
     }
@@ -913,7 +913,7 @@ namespace Remotion.Web.UI.Controls
 
     private string CreateNodeID (HashAlgorithm nodeIDAlgorithm, string nodePath)
     {
-      return BitConverter.ToString (nodeIDAlgorithm.ComputeHash (Encoding.Unicode.GetBytes (ClientID + ":" + nodePath))).Replace ("-", "");
+      return BitConverter.ToString(nodeIDAlgorithm.ComputeHash(Encoding.Unicode.GetBytes(ClientID + ":" + nodePath))).Replace("-", "");
     }
 
     /// <summary> Generates the string representation of the <paramref name="node"/>'s path. </summary>
@@ -926,7 +926,7 @@ namespace Remotion.Web.UI.Controls
       string parentPath = string.Empty;
       if (node.ParentNode != null)
       {
-        parentPath = FormatNodePath (node.ParentNode);
+        parentPath = FormatNodePath(node.ParentNode);
         parentPath += c_pathSeparator;
       }
       return parentPath + node.ItemID;
@@ -941,13 +941,13 @@ namespace Remotion.Web.UI.Controls
     /// <returns> The <see cref="WebTreeNode"/> to which <paramref name="path"/> pointed. </returns>
     public WebTreeNode? ParseNodePath (string path, out string[] pathSegments)
     {
-      pathSegments = path.Split (c_pathSeparator);
+      pathSegments = path.Split(c_pathSeparator);
       WebTreeNode? currentNode = null;
       WebTreeNodeCollection currentNodes = _nodes;
       for (int i = 0; i < pathSegments.Length; i++)
       {
         string nodeID = pathSegments[i];
-        WebTreeNode? node = currentNodes.Find (nodeID);
+        WebTreeNode? node = currentNodes.Find(nodeID);
         if (node == null)
           return currentNode;
         currentNode = node;
@@ -1040,44 +1040,44 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Resolves the URLs for the node icons. </summary>
-    [MemberNotNull (nameof (_resolvedNodeIconF))]
-    [MemberNotNull (nameof (_resolvedNodeIconFMinus))]
-    [MemberNotNull (nameof (_resolvedNodeIconFPlus))]
-    [MemberNotNull (nameof (_resolvedNodeIconI))]
-    [MemberNotNull (nameof (_resolvedNodeIconL))]
-    [MemberNotNull (nameof (_resolvedNodeIconLMinus))]
-    [MemberNotNull (nameof (_resolvedNodeIconLPlus))]
-    [MemberNotNull (nameof (_resolvedNodeIconMinus))]
-    [MemberNotNull (nameof (_resolvedNodeIconPlus))]
-    [MemberNotNull (nameof (_resolvedNodeIconR))]
-    [MemberNotNull (nameof (_resolvedNodeIconRMinus))]
-    [MemberNotNull (nameof (_resolvedNodeIconRPlus))]
-    [MemberNotNull (nameof (_resolvedNodeIconT))]
-    [MemberNotNull (nameof (_resolvedNodeIconTMinus))]
-    [MemberNotNull (nameof (_resolvedNodeIconTPlus))]
-    [MemberNotNull (nameof (_resolvedNodeIconWhite))]
+    [MemberNotNull (nameof(_resolvedNodeIconF))]
+    [MemberNotNull (nameof(_resolvedNodeIconFMinus))]
+    [MemberNotNull (nameof(_resolvedNodeIconFPlus))]
+    [MemberNotNull (nameof(_resolvedNodeIconI))]
+    [MemberNotNull (nameof(_resolvedNodeIconL))]
+    [MemberNotNull (nameof(_resolvedNodeIconLMinus))]
+    [MemberNotNull (nameof(_resolvedNodeIconLPlus))]
+    [MemberNotNull (nameof(_resolvedNodeIconMinus))]
+    [MemberNotNull (nameof(_resolvedNodeIconPlus))]
+    [MemberNotNull (nameof(_resolvedNodeIconR))]
+    [MemberNotNull (nameof(_resolvedNodeIconRMinus))]
+    [MemberNotNull (nameof(_resolvedNodeIconRPlus))]
+    [MemberNotNull (nameof(_resolvedNodeIconT))]
+    [MemberNotNull (nameof(_resolvedNodeIconTMinus))]
+    [MemberNotNull (nameof(_resolvedNodeIconTPlus))]
+    [MemberNotNull (nameof(_resolvedNodeIconWhite))]
     private void ResolveNodeIcons ()
     {
-      _resolvedNodeIconF = new IconInfo (InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconF).GetUrl());
-      _resolvedNodeIconFMinus = new IconInfo (
-          InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconFMinus).GetUrl());
-      _resolvedNodeIconFPlus = new IconInfo (InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconFPlus).GetUrl());
-      _resolvedNodeIconI = new IconInfo (InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconI).GetUrl());
-      _resolvedNodeIconL = new IconInfo (InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconL).GetUrl());
-      _resolvedNodeIconLMinus = new IconInfo (
-          InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconLMinus).GetUrl());
-      _resolvedNodeIconLPlus = new IconInfo (InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconLPlus).GetUrl());
-      _resolvedNodeIconMinus = new IconInfo (InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconMinus).GetUrl());
-      _resolvedNodeIconPlus = new IconInfo (InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconPlus).GetUrl());
-      _resolvedNodeIconR = new IconInfo (InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconR).GetUrl());
-      _resolvedNodeIconRMinus = new IconInfo (
-          InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconRMinus).GetUrl());
-      _resolvedNodeIconRPlus = new IconInfo (InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconRPlus).GetUrl());
-      _resolvedNodeIconT = new IconInfo (InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconT).GetUrl());
-      _resolvedNodeIconTMinus = new IconInfo (
-          InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconTMinus).GetUrl());
-      _resolvedNodeIconTPlus = new IconInfo (InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconTPlus).GetUrl());
-      _resolvedNodeIconWhite = new IconInfo (InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, c_nodeIconWhite).GetUrl());
+      _resolvedNodeIconF = new IconInfo(InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconF).GetUrl());
+      _resolvedNodeIconFMinus = new IconInfo(
+          InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconFMinus).GetUrl());
+      _resolvedNodeIconFPlus = new IconInfo(InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconFPlus).GetUrl());
+      _resolvedNodeIconI = new IconInfo(InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconI).GetUrl());
+      _resolvedNodeIconL = new IconInfo(InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconL).GetUrl());
+      _resolvedNodeIconLMinus = new IconInfo(
+          InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconLMinus).GetUrl());
+      _resolvedNodeIconLPlus = new IconInfo(InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconLPlus).GetUrl());
+      _resolvedNodeIconMinus = new IconInfo(InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconMinus).GetUrl());
+      _resolvedNodeIconPlus = new IconInfo(InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconPlus).GetUrl());
+      _resolvedNodeIconR = new IconInfo(InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconR).GetUrl());
+      _resolvedNodeIconRMinus = new IconInfo(
+          InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconRMinus).GetUrl());
+      _resolvedNodeIconRPlus = new IconInfo(InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconRPlus).GetUrl());
+      _resolvedNodeIconT = new IconInfo(InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconT).GetUrl());
+      _resolvedNodeIconTMinus = new IconInfo(
+          InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconTMinus).GetUrl());
+      _resolvedNodeIconTPlus = new IconInfo(InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconTPlus).GetUrl());
+      _resolvedNodeIconWhite = new IconInfo(InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Image, c_nodeIconWhite).GetUrl());
     }
 
     public new HttpContextBase? Context
@@ -1099,14 +1099,14 @@ namespace Remotion.Web.UI.Controls
     internal void SetSelectedNode (WebTreeNode? node)
     {
       if (node != null && node.TreeView != this)
-        throw new InvalidOperationException ("Only tree nodes that are part of this tree can be selected.");
+        throw new InvalidOperationException("Only tree nodes that are part of this tree can be selected.");
       if (_selectedNode != node)
       {
         if ((_selectedNode != null) && _selectedNode.IsSelected)
-          _selectedNode.SetSelected (false);
+          _selectedNode.SetSelected(false);
         _selectedNode = node;
         if ((_selectedNode != null) && !_selectedNode.IsSelected)
-          _selectedNode.SetSelected (true);
+          _selectedNode.SetSelected(true);
       }
     }
 
@@ -1232,8 +1232,8 @@ namespace Remotion.Web.UI.Controls
     [Description ("Occurs when a node is clicked.")]
     public event WebTreeNodeClickEventHandler Click
     {
-      add { Events.AddHandler (s_clickEvent, value); }
-      remove { Events.RemoveHandler (s_clickEvent, value); }
+      add { Events.AddHandler(s_clickEvent, value); }
+      remove { Events.RemoveHandler(s_clickEvent, value); }
     }
 
     /// <summary> Occurs when the selected node is changed. </summary>
@@ -1241,8 +1241,8 @@ namespace Remotion.Web.UI.Controls
     [Description ("Occurs when the selected node is changed.")]
     public event WebTreeNodeEventHandler SelectionChanged
     {
-      add { Events.AddHandler (s_selectionChangedEvent, value); }
-      remove { Events.RemoveHandler (s_selectionChangedEvent, value); }
+      add { Events.AddHandler(s_selectionChangedEvent, value); }
+      remove { Events.RemoveHandler(s_selectionChangedEvent, value); }
     }
 
     /// <summary> Gets the currently selected tree node. </summary>
@@ -1271,23 +1271,23 @@ namespace Remotion.Web.UI.Controls
       get
       {
         if (_page == null)
-          _page = PageWrapper.CastOrCreate (Page);
+          _page = PageWrapper.CastOrCreate(Page);
         return _page;
       }
     }
 
     public void AssignLabel (string labelID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("labelID", labelID);
+      ArgumentUtility.CheckNotNullOrEmpty("labelID", labelID);
 
       _assignedLabelID = labelID;
     }
 
     protected virtual IEnumerable<string> GetLabelIDs ()
     {
-      if (string.IsNullOrEmpty (_assignedLabelID))
+      if (string.IsNullOrEmpty(_assignedLabelID))
         return Enumerable.Empty<string>();
-      return EnumerableUtility.Singleton (_assignedLabelID);
+      return EnumerableUtility.Singleton(_assignedLabelID);
     }
 
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()
@@ -1319,9 +1319,9 @@ namespace Remotion.Web.UI.Controls
       for (int i = 0; i < nodes.Count; i++)
       {
         WebTreeNode node = nodes[i];
-        InitializeTreeNodeMenu (node);
+        InitializeTreeNodeMenu(node);
         if (node.IsExpanded)
-          InitializeTreeNodeMenus (node.Children);
+          InitializeTreeNodeMenus(node.Children);
       }
     }
 
@@ -1330,23 +1330,23 @@ namespace Remotion.Web.UI.Controls
       if (_menuItemProvider == null)
         return;
 
-      if (_menus.ContainsKey (node))
+      if (_menus.ContainsKey(node))
         return;
 
       DropDownMenu menu = new DropDownMenu();
-      if (string.IsNullOrEmpty (node.MenuID))
+      if (string.IsNullOrEmpty(node.MenuID))
       {
         node.MenuID = ID + "_Menu_" + _menuCounter;
         _menuCounter++;
       }
       menu.ID = node.MenuID;
-      menu.MenuItems.AddRange (_menuItemProvider.InitalizeMenuItems (node));
+      menu.MenuItems.AddRange(_menuItemProvider.InitalizeMenuItems(node));
       menu.EventCommandClick += Menu_EventCommandClick;
       menu.WxeFunctionCommandClick += Menu_WxeFunctionCommandClick;
       menu.Mode = MenuMode.ContextMenu;
 
-      _menus.Add (node, menu);
-      _menuPlaceHolder.Controls.Add (menu);
+      _menus.Add(node, menu);
+      _menuPlaceHolder.Controls.Add(menu);
     }
 
     internal void EnsureTreeNodeMenuInitialized (WebTreeNode node)
@@ -1357,8 +1357,8 @@ namespace Remotion.Web.UI.Controls
       if (_menuItemProvider == null)
         return;
 
-      if (IsTreeNodeReachable (node))
-        InitializeTreeNodeMenu (node);
+      if (IsTreeNodeReachable(node))
+        InitializeTreeNodeMenu(node);
     }
 
     private void PreRenderTreeNodeMenus ()
@@ -1367,12 +1367,12 @@ namespace Remotion.Web.UI.Controls
 
       DropDownMenu? anyNodeContextMenu = null;
       if (_menus.Values.Count > 0)
-        anyNodeContextMenu = _menus.Values.First (menu => (menu != null), () => new Exception());
+        anyNodeContextMenu = _menus.Values.First(menu => (menu != null), () => new Exception());
 
       if (anyNodeContextMenu != null)
       {
         string script =
-            string.Format (
+            string.Format(
                 @"document.getElementById('{0}').querySelectorAll('span.treeViewNodeHead, span.treeViewNodeHeadSelected').forEach(
   el => {{
     var menuID = el.id;
@@ -1381,29 +1381,29 @@ namespace Remotion.Web.UI.Controls
   }}
 );",
                 ClientID,
-                anyNodeContextMenu.GetBindOpenEventScript ("el", "menuID", true));
-        ((IControl) this).Page!.ClientScript.RegisterStartupScriptBlock (this, typeof (WebTreeView), key, script);
+                anyNodeContextMenu.GetBindOpenEventScript("el", "menuID", true));
+        ((IControl) this).Page!.ClientScript.RegisterStartupScriptBlock(this, typeof (WebTreeView), key, script);
       }
 
       List<WebTreeNode> unreachableNodes = new List<WebTreeNode>();
       foreach (KeyValuePair<WebTreeNode, DropDownMenu> entry in _menus)
       {
-        if (IsTreeNodeReachable (entry.Key))
-          PreRenderTreeNodeMenus (entry.Key, entry.Value.MenuItems);
+        if (IsTreeNodeReachable(entry.Key))
+          PreRenderTreeNodeMenus(entry.Key, entry.Value.MenuItems);
         else
         {
-          _menuPlaceHolder.Controls.Remove (entry.Value);
-          unreachableNodes.Add (entry.Key);
+          _menuPlaceHolder.Controls.Remove(entry.Value);
+          unreachableNodes.Add(entry.Key);
         }
       }
 
       foreach (WebTreeNode node in unreachableNodes)
-        _menus.Remove (node);
+        _menus.Remove(node);
     }
 
     private void PreRenderTreeNodeMenus (WebTreeNode node, WebMenuItemCollection menuItems)
     {
-      _menuItemProvider!.PreRenderMenuItems (node, menuItems);
+      _menuItemProvider!.PreRenderMenuItems(node, menuItems);
     }
 
     private void Menu_EventCommandClick (object sender, WebMenuItemClickEventArgs e)
@@ -1413,7 +1413,7 @@ namespace Remotion.Web.UI.Controls
       {
         if (entry.Value == menu)
         {
-          _menuItemProvider!.OnMenuItemEventCommandClick (e.Item, entry.Key);
+          _menuItemProvider!.OnMenuItemEventCommandClick(e.Item, entry.Key);
           return;
         }
       }
@@ -1426,7 +1426,7 @@ namespace Remotion.Web.UI.Controls
       {
         if (entry.Value == menu)
         {
-          _menuItemProvider!.OnMenuItemWxeFunctionCommandClick (e.Item, entry.Key);
+          _menuItemProvider!.OnMenuItemWxeFunctionCommandClick(e.Item, entry.Key);
           return;
         }
       }

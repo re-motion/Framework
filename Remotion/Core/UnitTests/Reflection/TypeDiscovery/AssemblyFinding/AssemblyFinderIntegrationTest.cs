@@ -60,32 +60,32 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     public void OneTimeSetUp ()
     {
       Environment.CurrentDirectory = TestContext.CurrentContext.TestDirectory;
-      var searchPathForDlls = Path.Combine (AppContext.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Dlls");
-      var searchPathForExes = Path.Combine (AppContext.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Exes");
-      var dynamicBase = Path.Combine (AppContext.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Dynamic");
+      var searchPathForDlls = Path.Combine(AppContext.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Dlls");
+      var searchPathForExes = Path.Combine(AppContext.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Exes");
+      var dynamicBase = Path.Combine(AppContext.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Dynamic");
 
-      _baseDirectoryBuildOutputManager = CreateAssemblyCompilerBuildOutputManager (AppContext.BaseDirectory);
-      _dynamicDirectoryBuildOutputManager = CreateAssemblyCompilerBuildOutputManager (dynamicBase);
-      _searchPathForDllsBuildOutputManager = CreateAssemblyCompilerBuildOutputManager (searchPathForDlls);
-      _searchPathForExesBuildOutputManager = CreateAssemblyCompilerBuildOutputManager (searchPathForExes);
+      _baseDirectoryBuildOutputManager = CreateAssemblyCompilerBuildOutputManager(AppContext.BaseDirectory);
+      _dynamicDirectoryBuildOutputManager = CreateAssemblyCompilerBuildOutputManager(dynamicBase);
+      _searchPathForDllsBuildOutputManager = CreateAssemblyCompilerBuildOutputManager(searchPathForDlls);
+      _searchPathForExesBuildOutputManager = CreateAssemblyCompilerBuildOutputManager(searchPathForExes);
 
-      _markedReferencedAssemblyPath = _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain ("MarkedReferencedAssembly.dll");
-      _markedAssemblyPath = _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain ("MarkedAssembly.dll", _markedReferencedAssemblyPath);
-      _markedExeAssemblyPath = _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain ("MarkedExeAssembly.dll");
-      _markedAssemblyWithDerivedAttributePath = _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain ("MarkedAssemblyWithDerivedAttribute.dll");
-      _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain ("UnmarkedAssembly.dll");
+      _markedReferencedAssemblyPath = _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain("MarkedReferencedAssembly.dll");
+      _markedAssemblyPath = _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain("MarkedAssembly.dll", _markedReferencedAssemblyPath);
+      _markedExeAssemblyPath = _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain("MarkedExeAssembly.dll");
+      _markedAssemblyWithDerivedAttributePath = _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain("MarkedAssemblyWithDerivedAttribute.dll");
+      _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain("UnmarkedAssembly.dll");
 
-      _markedAssemblyInSearchPathPath = _searchPathForDllsBuildOutputManager.CompileInSeparateAppDomain ("MarkedAssemblyInRelativeSearchPath.dll");
+      _markedAssemblyInSearchPathPath = _searchPathForDllsBuildOutputManager.CompileInSeparateAppDomain("MarkedAssemblyInRelativeSearchPath.dll");
       _markedExeAssemblyInSearchPathPath =
-          _searchPathForExesBuildOutputManager.CompileInSeparateAppDomain ("MarkedExeAssemblyInRelativeSearchPath.exe");
+          _searchPathForExesBuildOutputManager.CompileInSeparateAppDomain("MarkedExeAssemblyInRelativeSearchPath.exe");
 
       _markedAssemblyInSearchPathWithNameMismatchPath =
-          _searchPathForDllsBuildOutputManager.CompileInSeparateAppDomain ("MarkedAssemblyWithOtherFilenameInRelativeSearchPath.dll");
-      _markedAssemblyInSearchPathWithNameMismatchPath = _searchPathForDllsBuildOutputManager.RenameGeneratedAssembly (
+          _searchPathForDllsBuildOutputManager.CompileInSeparateAppDomain("MarkedAssemblyWithOtherFilenameInRelativeSearchPath.dll");
+      _markedAssemblyInSearchPathWithNameMismatchPath = _searchPathForDllsBuildOutputManager.RenameGeneratedAssembly(
           "MarkedAssemblyWithOtherFilenameInRelativeSearchPath.dll", "_MarkedAssemblyWithOtherFilenameInRelativeSearchPath.dll");
 
-      _markedAssemblyInDynamicDirectoryPath = _dynamicDirectoryBuildOutputManager.CompileInSeparateAppDomain ("MarkedAssemblyInDynamicDirectory.dll");
-      _markedExeAssemblyInDynamicDirectoryPath = _dynamicDirectoryBuildOutputManager.CompileInSeparateAppDomain (
+      _markedAssemblyInDynamicDirectoryPath = _dynamicDirectoryBuildOutputManager.CompileInSeparateAppDomain("MarkedAssemblyInDynamicDirectory.dll");
+      _markedExeAssemblyInDynamicDirectoryPath = _dynamicDirectoryBuildOutputManager.CompileInSeparateAppDomain(
           "MarkedExeAssemblyInDynamicDirectory.exe");
     }
 
@@ -94,42 +94,42 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     {
       _baseDirectoryBuildOutputManager.Dispose();
       _dynamicDirectoryBuildOutputManager.Dispose();
-      _searchPathForDllsBuildOutputManager.Dispose ();
-      _searchPathForExesBuildOutputManager.Dispose ();
+      _searchPathForDllsBuildOutputManager.Dispose();
+      _searchPathForExesBuildOutputManager.Dispose();
     }
 
     [Test]
     public void FindRootAssemblies_ForAppDomain_WithConsiderDynamicDirectoryTrue ()
     {
-      ExecuteInSeparateAppDomain (delegate
+      ExecuteInSeparateAppDomain(delegate
       {
-        Assembly firstInMemoryAssembly = CompileTestAssemblyInMemory ("FirstInMemoryAssembly", _markedReferencedAssemblyPath);
-        Assembly secondInMemoryAssembly = CompileTestAssemblyInMemory ("SecondInMemoryAssembly");
-        CompileTestAssemblyInMemory ("UnmarkedInMemoryAssembly");
+        Assembly firstInMemoryAssembly = CompileTestAssemblyInMemory("FirstInMemoryAssembly", _markedReferencedAssemblyPath);
+        Assembly secondInMemoryAssembly = CompileTestAssemblyInMemory("SecondInMemoryAssembly");
+        CompileTestAssemblyInMemory("UnmarkedInMemoryAssembly");
 
-        InitializeDynamicDirectory ();
+        InitializeDynamicDirectory();
 
-        var assemblyLoader = CreateLoaderForMarkedAssemblies ();
-        var rootAssemblyFinder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain (true, assemblyLoader);
-        var rootAssemblies = rootAssemblyFinder.FindRootAssemblies ();
+        var assemblyLoader = CreateLoaderForMarkedAssemblies();
+        var rootAssemblyFinder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain(true, assemblyLoader);
+        var rootAssemblies = rootAssemblyFinder.FindRootAssemblies();
 
-        Assert.That (rootAssemblies, Has.No.Member(firstInMemoryAssembly));
-        Assert.That (rootAssemblies, Has.No.Member(secondInMemoryAssembly));
+        Assert.That(rootAssemblies, Has.No.Member(firstInMemoryAssembly));
+        Assert.That(rootAssemblies, Has.No.Member(secondInMemoryAssembly));
 
-        Assert.That (
-            rootAssemblies.Select (root => root.Assembly).ToArray(),
-            Is.EquivalentTo (
+        Assert.That(
+            rootAssemblies.Select(root => root.Assembly).ToArray(),
+            Is.EquivalentTo(
                 new[]
                 {
-                    Load (_markedAssemblyPath),
-                    Load (_markedExeAssemblyPath),
-                    Load (_markedAssemblyWithDerivedAttributePath),
-                    Load (_markedReferencedAssemblyPath),
-                    Load (_markedAssemblyInSearchPathPath),
-                    Load (_markedExeAssemblyInSearchPathPath),
-                    Load (_markedAssemblyInDynamicDirectoryPath),
-                    Load (_markedExeAssemblyInDynamicDirectoryPath),
-                    LoadFile (_markedAssemblyInSearchPathWithNameMismatchPath)
+                    Load(_markedAssemblyPath),
+                    Load(_markedExeAssemblyPath),
+                    Load(_markedAssemblyWithDerivedAttributePath),
+                    Load(_markedReferencedAssemblyPath),
+                    Load(_markedAssemblyInSearchPathPath),
+                    Load(_markedExeAssemblyInSearchPathPath),
+                    Load(_markedAssemblyInDynamicDirectoryPath),
+                    Load(_markedExeAssemblyInDynamicDirectoryPath),
+                    LoadFile(_markedAssemblyInSearchPathWithNameMismatchPath)
                 }));
       });
     }
@@ -137,33 +137,33 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [Test]
     public void FindRootAssemblies_WithConsiderDynamicDirectoryFalse ()
     {
-      ExecuteInSeparateAppDomain (delegate
+      ExecuteInSeparateAppDomain(delegate
       {
-        Assembly firstInMemoryAssembly = CompileTestAssemblyInMemory ("FirstInMemoryAssembly", _markedReferencedAssemblyPath);
-        Assembly secondInMemoryAssembly = CompileTestAssemblyInMemory ("SecondInMemoryAssembly");
-        CompileTestAssemblyInMemory ("UnmarkedInMemoryAssembly");
+        Assembly firstInMemoryAssembly = CompileTestAssemblyInMemory("FirstInMemoryAssembly", _markedReferencedAssemblyPath);
+        Assembly secondInMemoryAssembly = CompileTestAssemblyInMemory("SecondInMemoryAssembly");
+        CompileTestAssemblyInMemory("UnmarkedInMemoryAssembly");
 
-        InitializeDynamicDirectory ();
+        InitializeDynamicDirectory();
 
-        var assemblyLoader = CreateLoaderForMarkedAssemblies ();
-        var rootAssemblyFinder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain (false, assemblyLoader);
-        var rootAssemblies = rootAssemblyFinder.FindRootAssemblies ();
+        var assemblyLoader = CreateLoaderForMarkedAssemblies();
+        var rootAssemblyFinder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain(false, assemblyLoader);
+        var rootAssemblies = rootAssemblyFinder.FindRootAssemblies();
 
-        Assert.That (rootAssemblies, Has.No.Member(firstInMemoryAssembly));
-        Assert.That (rootAssemblies, Has.No.Member(secondInMemoryAssembly));
+        Assert.That(rootAssemblies, Has.No.Member(firstInMemoryAssembly));
+        Assert.That(rootAssemblies, Has.No.Member(secondInMemoryAssembly));
 
-        Assert.That (
-            rootAssemblies.Select (root => root.Assembly).ToArray (),
-            Is.EquivalentTo (
+        Assert.That(
+            rootAssemblies.Select(root => root.Assembly).ToArray(),
+            Is.EquivalentTo(
                 new[]
                 {
-                    Load (_markedAssemblyPath),
-                    Load (_markedExeAssemblyPath),
-                    Load (_markedAssemblyWithDerivedAttributePath),
-                    Load (_markedReferencedAssemblyPath),
-                    Load (_markedAssemblyInSearchPathPath),
-                    Load (_markedExeAssemblyInSearchPathPath),
-                    LoadFile (_markedAssemblyInSearchPathWithNameMismatchPath)
+                    Load(_markedAssemblyPath),
+                    Load(_markedExeAssemblyPath),
+                    Load(_markedAssemblyWithDerivedAttributePath),
+                    Load(_markedReferencedAssemblyPath),
+                    Load(_markedAssemblyInSearchPathPath),
+                    Load(_markedExeAssemblyInSearchPathPath),
+                    LoadFile(_markedAssemblyInSearchPathWithNameMismatchPath)
                 }));
       });
     }
@@ -171,61 +171,61 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [Test]
     public void FindAssemblies_References ()
     {
-      ExecuteInSeparateAppDomain (delegate
+      ExecuteInSeparateAppDomain(delegate
       {
-        Assembly markedAssembly = Load (_markedAssemblyPath);
+        Assembly markedAssembly = Load(_markedAssemblyPath);
 
-        var loader = CreateLoaderForMarkedAssemblies ();
+        var loader = CreateLoaderForMarkedAssemblies();
         var rootAssemblyFinderStub = new Mock<IRootAssemblyFinder>();
-        rootAssemblyFinderStub.Setup (stub => stub.FindRootAssemblies ()).Returns (new[] { new RootAssembly (markedAssembly, true) });
+        rootAssemblyFinderStub.Setup(stub => stub.FindRootAssemblies()).Returns(new[] { new RootAssembly(markedAssembly, true) });
 
-        var assemblyFinder = new AssemblyFinder (rootAssemblyFinderStub.Object, loader);
+        var assemblyFinder = new AssemblyFinder(rootAssemblyFinderStub.Object, loader);
 
         Assembly[] assemblies = assemblyFinder.FindAssemblies().ToArray();
-        Assert.That (assemblies, Is.EquivalentTo (new[] { markedAssembly, Load (_markedReferencedAssemblyPath) }));
+        Assert.That(assemblies, Is.EquivalentTo(new[] { markedAssembly, Load(_markedReferencedAssemblyPath) }));
       });
     }
 
     [Test]
     public void FindAssemblies_WithSpecificFiler_ConsiderAssemblyFalse ()
     {
-      ExecuteInSeparateAppDomain (delegate
+      ExecuteInSeparateAppDomain(delegate
       {
-        InitializeDynamicDirectory ();
+        InitializeDynamicDirectory();
 
-        var filterMock = new Mock<IAssemblyLoaderFilter> (MockBehavior.Strict);
-        filterMock.Setup (mock => mock.ShouldConsiderAssembly (It.IsAny<AssemblyName>())).Returns (false).Verifiable();
+        var filterMock = new Mock<IAssemblyLoaderFilter>(MockBehavior.Strict);
+        filterMock.Setup(mock => mock.ShouldConsiderAssembly(It.IsAny<AssemblyName>())).Returns(false).Verifiable();
 
-        var assemblyLoader = new FilteringAssemblyLoader (filterMock.Object);
-        var rootAssemblyFinder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain (true, assemblyLoader);
-        var assemblyFinder = new AssemblyFinder (rootAssemblyFinder, assemblyLoader);
+        var assemblyLoader = new FilteringAssemblyLoader(filterMock.Object);
+        var rootAssemblyFinder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain(true, assemblyLoader);
+        var assemblyFinder = new AssemblyFinder(rootAssemblyFinder, assemblyLoader);
 
         Assembly[] assemblies = assemblyFinder.FindAssemblies().ToArray();
 
-        filterMock.Verify (mock => mock.ShouldConsiderAssembly (It.IsAny<AssemblyName>()), Times.AtLeastOnce());
-        Assert.That (assemblies, Is.Empty);
+        filterMock.Verify(mock => mock.ShouldConsiderAssembly(It.IsAny<AssemblyName>()), Times.AtLeastOnce());
+        Assert.That(assemblies, Is.Empty);
       });
     }
 
     [Test]
     public void FindAssemblies_WithSpecificFiler_ConsiderAssemblyTrueIncludeAssemblyFalse ()
     {
-      ExecuteInSeparateAppDomain (delegate
+      ExecuteInSeparateAppDomain(delegate
       {
-        InitializeDynamicDirectory ();
+        InitializeDynamicDirectory();
 
-        var filterMock = new Mock<IAssemblyLoaderFilter> (MockBehavior.Strict);
-        filterMock.Setup (mock => mock.ShouldConsiderAssembly (It.IsNotNull<AssemblyName>())).Returns (true).Verifiable();
-        filterMock.Setup (mock => mock.ShouldIncludeAssembly (It.IsNotNull<Assembly>())).Returns (false).Verifiable();
+        var filterMock = new Mock<IAssemblyLoaderFilter>(MockBehavior.Strict);
+        filterMock.Setup(mock => mock.ShouldConsiderAssembly(It.IsNotNull<AssemblyName>())).Returns(true).Verifiable();
+        filterMock.Setup(mock => mock.ShouldIncludeAssembly(It.IsNotNull<Assembly>())).Returns(false).Verifiable();
 
-        var assemblyLoader = new FilteringAssemblyLoader (filterMock.Object);
-        var rootAssemblyFinder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain (true, assemblyLoader);
-        var assemblyFinder = new AssemblyFinder (rootAssemblyFinder, assemblyLoader);
+        var assemblyLoader = new FilteringAssemblyLoader(filterMock.Object);
+        var rootAssemblyFinder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain(true, assemblyLoader);
+        var assemblyFinder = new AssemblyFinder(rootAssemblyFinder, assemblyLoader);
 
         Assembly[] assemblies = assemblyFinder.FindAssemblies().ToArray();
 
-        filterMock.Verify (mock => mock.ShouldIncludeAssembly (It.IsNotNull<Assembly>()), Times.AtLeastOnce());
-        Assert.That (assemblies, Is.Empty);
+        filterMock.Verify(mock => mock.ShouldIncludeAssembly(It.IsNotNull<Assembly>()), Times.AtLeastOnce());
+        Assert.That(assemblies, Is.Empty);
       });
     }
 
@@ -236,30 +236,30 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
       try
       {
-        var appDomainSetup = new AppDomainSetup ();
+        var appDomainSetup = new AppDomainSetup();
         appDomainSetup.ApplicationName = "Test";
         appDomainSetup.ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
         appDomainSetup.PrivateBinPath = _searchPathForDllsBuildOutputManager.BuildOutputDirectory + ";" + _searchPathForExesBuildOutputManager.BuildOutputDirectory;
         appDomainSetup.DynamicBase = _dynamicDirectoryBuildOutputManager.BuildOutputDirectory;
         appDomainSetup.ShadowCopyFiles = AppDomain.CurrentDomain.SetupInformation.ShadowCopyFiles;
 
-        appDomain = AppDomain.CreateDomain ("Test", null, appDomainSetup);
+        appDomain = AppDomain.CreateDomain("Test", null, appDomainSetup);
 
-        appDomain.DoCallBack (test);
+        appDomain.DoCallBack(test);
       }
       finally
       {
         if (appDomain != null)
-          AppDomain.Unload (appDomain);
+          AppDomain.Unload(appDomain);
       }
 #else
-      throw new PlatformNotSupportedException ("This API is not supported on the current platform.");
+      throw new PlatformNotSupportedException("This API is not supported on the current platform.");
 #endif
     }
 
     private void InitializeDynamicDirectory ()
     {
-      _dynamicDirectoryBuildOutputManager.CopyAllGeneratedAssembliesToNewDirectory (
+      _dynamicDirectoryBuildOutputManager.CopyAllGeneratedAssembliesToNewDirectory(
 #if NETFRAMEWORK
           AppDomain.CurrentDomain.DynamicDirectory
 #else
@@ -270,37 +270,37 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
     private Assembly CompileTestAssemblyInMemory (string assemblyName, params string[] referencedAssemblies)
     {
-      AssemblyCompiler assemblyCompiler = AssemblyCompiler.CreateInMemoryAssemblyCompiler (
+      AssemblyCompiler assemblyCompiler = AssemblyCompiler.CreateInMemoryAssemblyCompiler(
           c_testAssemblySourceDirectoryRoot + "\\" + assemblyName,
-          ArrayUtility.Combine (new[] { typeof (MarkerAttribute).Module.Name }, 
+          ArrayUtility.Combine(new[] { typeof (MarkerAttribute).Module.Name }, 
           referencedAssemblies));
-      assemblyCompiler.Compile ();
+      assemblyCompiler.Compile();
       return assemblyCompiler.CompiledAssembly;
     }
 
     private AssemblyCompilerBuildOutputManager CreateAssemblyCompilerBuildOutputManager (string buildOutputDirectory)
     {
       var createBuildOutputDirectory = buildOutputDirectory != AppContext.BaseDirectory;
-      return new AssemblyCompilerBuildOutputManager (
+      return new AssemblyCompilerBuildOutputManager(
           buildOutputDirectory, createBuildOutputDirectory, c_testAssemblySourceDirectoryRoot, typeof (MarkerAttribute).Module.Name);
     }
 
     private FilteringAssemblyLoader CreateLoaderForMarkedAssemblies ()
     {
       var markerAttributeType = typeof (MarkerAttribute);
-      var attributeFilter = new AttributeAssemblyLoaderFilter (markerAttributeType);
-      return new FilteringAssemblyLoader (attributeFilter);
+      var attributeFilter = new AttributeAssemblyLoaderFilter(markerAttributeType);
+      return new FilteringAssemblyLoader(attributeFilter);
     }
 
     private Assembly Load (string assemblyPath)
     {
-      var assemblyName = Path.GetFileNameWithoutExtension (assemblyPath);
-      return Assembly.Load (assemblyName);
+      var assemblyName = Path.GetFileNameWithoutExtension(assemblyPath);
+      return Assembly.Load(assemblyName);
     }
 
     private Assembly LoadFile (string assemblyPath)
     {
-      return Assembly.LoadFile (assemblyPath);
+      return Assembly.LoadFile(assemblyPath);
     }
   }
 }

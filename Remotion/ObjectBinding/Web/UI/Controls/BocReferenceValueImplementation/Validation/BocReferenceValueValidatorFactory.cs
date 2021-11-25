@@ -37,14 +37,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     public IEnumerable<BaseValidator> CreateValidators (IBocReferenceValue control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       if (isReadOnly)
         yield break;
 
-      var resourceManager = control.GetResourceManager ();
+      var resourceManager = control.GetResourceManager();
 
-      var requiredFieldValidator = CreateRequiredFieldValidator (control, resourceManager);
+      var requiredFieldValidator = CreateRequiredFieldValidator(control, resourceManager);
       if (requiredFieldValidator != null)
         yield return requiredFieldValidator;
     }
@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         var requiredFieldValidator = new RequiredFieldValidator();
         requiredFieldValidator.ID = control.ID + "_ValidatorNotNullItem";
         requiredFieldValidator.ControlToValidate = control.ID;
-        requiredFieldValidator.ErrorMessage = resourceManage.GetString (BocReferenceValue.ResourceIdentifier.NullItemErrorMessage);
+        requiredFieldValidator.ErrorMessage = resourceManage.GetString(BocReferenceValue.ResourceIdentifier.NullItemErrorMessage);
         requiredFieldValidator.EnableViewState = false;
 
         return requiredFieldValidator;

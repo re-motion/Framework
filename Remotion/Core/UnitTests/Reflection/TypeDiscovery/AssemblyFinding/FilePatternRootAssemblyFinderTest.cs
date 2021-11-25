@@ -48,158 +48,158 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [Test]
     public void FindAssemblies ()
     {
-      var specification1 = new FilePatternSpecification ("*.dll", FilePatternSpecificationKind.IncludeFollowReferences);
-      var specification2 = new FilePatternSpecification ("*.exe", FilePatternSpecificationKind.IncludeFollowReferences);
+      var specification1 = new FilePatternSpecification("*.dll", FilePatternSpecificationKind.IncludeFollowReferences);
+      var specification2 = new FilePatternSpecification("*.exe", FilePatternSpecificationKind.IncludeFollowReferences);
 
-      StubSearchService ("*.dll", "1.dll", "2.dll");
-      StubSearchService ("*.exe", "1.exe");
+      StubSearchService("*.dll", "1.dll", "2.dll");
+      StubSearchService("*.exe", "1.exe");
 
-      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.dll")).Returns (_assembly1).Verifiable();
-      _loaderMock.Setup (mock => mock.TryLoadAssembly ("2.dll")).Returns (_assembly2).Verifiable();
-      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.exe")).Returns (_assembly3).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("1.dll")).Returns(_assembly1).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("2.dll")).Returns(_assembly2).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("1.exe")).Returns(_assembly3).Verifiable();
 
-      var finder = CreateRootAssemblyFinder (specification1, specification2);
+      var finder = CreateRootAssemblyFinder(specification1, specification2);
 
-      var rootAssemblies = finder.FindRootAssemblies ().Select (ra => ra.Assembly).ToArray();
+      var rootAssemblies = finder.FindRootAssemblies().Select(ra => ra.Assembly).ToArray();
 
       _loaderMock.Verify();
-      Assert.That (rootAssemblies, Is.EquivalentTo (new[] { _assembly1, _assembly2, _assembly3 }));
+      Assert.That(rootAssemblies, Is.EquivalentTo(new[] { _assembly1, _assembly2, _assembly3 }));
     }
 
     [Test]
     public void FindAssemblies_Exclude ()
     {
-      var specification1 = new FilePatternSpecification ("*.1", FilePatternSpecificationKind.IncludeFollowReferences);
-      var specification2 = new FilePatternSpecification ("*.2", FilePatternSpecificationKind.Exclude);
+      var specification1 = new FilePatternSpecification("*.1", FilePatternSpecificationKind.IncludeFollowReferences);
+      var specification2 = new FilePatternSpecification("*.2", FilePatternSpecificationKind.Exclude);
 
-      StubSearchService ("*.1", "1.dll", "2.dll"); // included
-      StubSearchService ("*.2", "2.dll", "3.dll"); // excluded
+      StubSearchService("*.1", "1.dll", "2.dll"); // included
+      StubSearchService("*.2", "2.dll", "3.dll"); // excluded
 
-      var finder = CreateRootAssemblyFinder (specification1, specification2);
+      var finder = CreateRootAssemblyFinder(specification1, specification2);
 
-      finder.FindRootAssemblies ().ForceEnumeration();
+      finder.FindRootAssemblies().ForceEnumeration();
 
-      _loaderMock.Verify (mock => mock.TryLoadAssembly ("1.dll"), Times.AtLeastOnce());
-      _loaderMock.Verify (mock => mock.TryLoadAssembly ("2.dll"), Times.Never());
-      _loaderMock.Verify (mock => mock.TryLoadAssembly ("3.dll"), Times.Never());
+      _loaderMock.Verify(mock => mock.TryLoadAssembly("1.dll"), Times.AtLeastOnce());
+      _loaderMock.Verify(mock => mock.TryLoadAssembly("2.dll"), Times.Never());
+      _loaderMock.Verify(mock => mock.TryLoadAssembly("3.dll"), Times.Never());
     }
 
     [Test]
     public void FindAssemblies_Exclude_WithDifferentFollowKinds ()
     {
-      var specification1 = new FilePatternSpecification ("*.1", FilePatternSpecificationKind.IncludeFollowReferences);
-      var specification2 = new FilePatternSpecification ("*.2", FilePatternSpecificationKind.IncludeNoFollow);
-      var specification3 = new FilePatternSpecification ("*.3", FilePatternSpecificationKind.Exclude);
+      var specification1 = new FilePatternSpecification("*.1", FilePatternSpecificationKind.IncludeFollowReferences);
+      var specification2 = new FilePatternSpecification("*.2", FilePatternSpecificationKind.IncludeNoFollow);
+      var specification3 = new FilePatternSpecification("*.3", FilePatternSpecificationKind.Exclude);
 
-      StubSearchService ("*.1", "1.dll", "2.dll"); // included
-      StubSearchService ("*.2", "3.dll", "4.dll"); // included
-      StubSearchService ("*.3", "2.dll", "3.dll"); // excluded
+      StubSearchService("*.1", "1.dll", "2.dll"); // included
+      StubSearchService("*.2", "3.dll", "4.dll"); // included
+      StubSearchService("*.3", "2.dll", "3.dll"); // excluded
 
-      var finder = CreateRootAssemblyFinder (specification1, specification2, specification3);
+      var finder = CreateRootAssemblyFinder(specification1, specification2, specification3);
 
-      finder.FindRootAssemblies ().ForceEnumeration();
+      finder.FindRootAssemblies().ForceEnumeration();
 
-      _loaderMock.Verify (mock => mock.TryLoadAssembly ("1.dll"), Times.AtLeastOnce());
-      _loaderMock.Verify (mock => mock.TryLoadAssembly ("4.dll"), Times.AtLeastOnce());
-      _loaderMock.Verify (mock => mock.TryLoadAssembly ("2.dll"), Times.Never());
-      _loaderMock.Verify (mock => mock.TryLoadAssembly ("3.dll"), Times.Never());
+      _loaderMock.Verify(mock => mock.TryLoadAssembly("1.dll"), Times.AtLeastOnce());
+      _loaderMock.Verify(mock => mock.TryLoadAssembly("4.dll"), Times.AtLeastOnce());
+      _loaderMock.Verify(mock => mock.TryLoadAssembly("2.dll"), Times.Never());
+      _loaderMock.Verify(mock => mock.TryLoadAssembly("3.dll"), Times.Never());
     }
 
     [Test]
     public void FindAssemblies_Exclude_OnlyAffectsPreviousIncludes ()
     {
-      var specification1 = new FilePatternSpecification ("*.1", FilePatternSpecificationKind.IncludeFollowReferences);
-      var specification2 = new FilePatternSpecification ("*.2", FilePatternSpecificationKind.Exclude);
-      var specification3 = new FilePatternSpecification ("*.3", FilePatternSpecificationKind.IncludeFollowReferences);
+      var specification1 = new FilePatternSpecification("*.1", FilePatternSpecificationKind.IncludeFollowReferences);
+      var specification2 = new FilePatternSpecification("*.2", FilePatternSpecificationKind.Exclude);
+      var specification3 = new FilePatternSpecification("*.3", FilePatternSpecificationKind.IncludeFollowReferences);
 
-      StubSearchService ("*.1", "1.dll", "2.dll"); // included
-      StubSearchService ("*.2", "1.dll", "2.dll"); // excluded
-      StubSearchService ("*.3", "2.dll", "3.dll"); // included
+      StubSearchService("*.1", "1.dll", "2.dll"); // included
+      StubSearchService("*.2", "1.dll", "2.dll"); // excluded
+      StubSearchService("*.3", "2.dll", "3.dll"); // included
 
-      var finder = CreateRootAssemblyFinder (specification1, specification2, specification3);
+      var finder = CreateRootAssemblyFinder(specification1, specification2, specification3);
 
-      finder.FindRootAssemblies ().ForceEnumeration();
+      finder.FindRootAssemblies().ForceEnumeration();
 
-      _loaderMock.Verify (mock => mock.TryLoadAssembly ("2.dll"), Times.AtLeastOnce());
-      _loaderMock.Verify (mock => mock.TryLoadAssembly ("3.dll"), Times.AtLeastOnce());
-      _loaderMock.Verify (mock => mock.TryLoadAssembly ("1.dll"), Times.Never());
+      _loaderMock.Verify(mock => mock.TryLoadAssembly("2.dll"), Times.AtLeastOnce());
+      _loaderMock.Verify(mock => mock.TryLoadAssembly("3.dll"), Times.AtLeastOnce());
+      _loaderMock.Verify(mock => mock.TryLoadAssembly("1.dll"), Times.Never());
     }
 
     [Test]
     public void FindAssemblies_NullsRemoved ()
     {
-      var specification1 = new FilePatternSpecification ("*.dll", FilePatternSpecificationKind.IncludeFollowReferences);
-      var specification2 = new FilePatternSpecification ("*.exe", FilePatternSpecificationKind.IncludeFollowReferences);
+      var specification1 = new FilePatternSpecification("*.dll", FilePatternSpecificationKind.IncludeFollowReferences);
+      var specification2 = new FilePatternSpecification("*.exe", FilePatternSpecificationKind.IncludeFollowReferences);
 
-      StubSearchService ("*.dll", "1.dll", "2.dll");
-      StubSearchService ("*.exe", "1.exe", "2.exe");
+      StubSearchService("*.dll", "1.dll", "2.dll");
+      StubSearchService("*.exe", "1.exe", "2.exe");
 
-      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.dll")).Returns (_assembly1).Verifiable();
-      _loaderMock.Setup (mock => mock.TryLoadAssembly ("2.dll")).Returns ((Assembly) null).Verifiable();
-      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.exe")).Returns (_assembly3).Verifiable();
-      _loaderMock.Setup (mock => mock.TryLoadAssembly ("2.exe")).Returns ((Assembly) null).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("1.dll")).Returns(_assembly1).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("2.dll")).Returns((Assembly) null).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("1.exe")).Returns(_assembly3).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("2.exe")).Returns((Assembly) null).Verifiable();
 
-      var finder = CreateRootAssemblyFinder (specification1, specification2);
+      var finder = CreateRootAssemblyFinder(specification1, specification2);
 
-      var rootAssemblies = finder.FindRootAssemblies ().Select (ra => ra.Assembly).ToArray ();
+      var rootAssemblies = finder.FindRootAssemblies().Select(ra => ra.Assembly).ToArray();
 
       _loaderMock.Verify();
-      Assert.That (rootAssemblies.Length, Is.EqualTo (2));
-      Assert.That (rootAssemblies, Is.EquivalentTo (new[] { _assembly1, _assembly3 }));
+      Assert.That(rootAssemblies.Length, Is.EqualTo(2));
+      Assert.That(rootAssemblies, Is.EquivalentTo(new[] { _assembly1, _assembly3 }));
     }
 
     [Test]
     public void FindAssemblies_DuplicatesAreNotRemoved ()
     {
-      var specification1 = new FilePatternSpecification ("*.dll", FilePatternSpecificationKind.IncludeFollowReferences);
-      var specification2 = new FilePatternSpecification ("*.exe", FilePatternSpecificationKind.IncludeFollowReferences);
+      var specification1 = new FilePatternSpecification("*.dll", FilePatternSpecificationKind.IncludeFollowReferences);
+      var specification2 = new FilePatternSpecification("*.exe", FilePatternSpecificationKind.IncludeFollowReferences);
 
-      StubSearchService ("*.dll", "1.dll", "2.dll");
-      StubSearchService ("*.exe", "1.exe", "2.exe");
+      StubSearchService("*.dll", "1.dll", "2.dll");
+      StubSearchService("*.exe", "1.exe", "2.exe");
 
-      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.dll")).Returns (_assembly1).Verifiable();
-      _loaderMock.Setup (mock => mock.TryLoadAssembly ("2.dll")).Returns (_assembly2).Verifiable();
-      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.exe")).Returns (_assembly1).Verifiable();
-      _loaderMock.Setup (mock => mock.TryLoadAssembly ("2.exe")).Returns (_assembly2).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("1.dll")).Returns(_assembly1).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("2.dll")).Returns(_assembly2).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("1.exe")).Returns(_assembly1).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("2.exe")).Returns(_assembly2).Verifiable();
 
-      var finder = CreateRootAssemblyFinder (specification1, specification2);
+      var finder = CreateRootAssemblyFinder(specification1, specification2);
 
-      var rootAssemblies = finder.FindRootAssemblies ().Select (ra => ra.Assembly).ToArray ();
+      var rootAssemblies = finder.FindRootAssemblies().Select(ra => ra.Assembly).ToArray();
 
       _loaderMock.Verify();
-      Assert.That (rootAssemblies.Length, Is.EqualTo (4));
-      Assert.That (rootAssemblies.Distinct(), Is.EquivalentTo (new[] { _assembly1, _assembly2 }));
+      Assert.That(rootAssemblies.Length, Is.EqualTo(4));
+      Assert.That(rootAssemblies.Distinct(), Is.EquivalentTo(new[] { _assembly1, _assembly2 }));
     }
 
     [Test]
     public void FindAssemblies_FollowReferences ()
     {
-      var specification1 = new FilePatternSpecification ("*.dll", FilePatternSpecificationKind.IncludeFollowReferences);
-      var specification2 = new FilePatternSpecification ("*.exe", FilePatternSpecificationKind.IncludeNoFollow);
+      var specification1 = new FilePatternSpecification("*.dll", FilePatternSpecificationKind.IncludeFollowReferences);
+      var specification2 = new FilePatternSpecification("*.exe", FilePatternSpecificationKind.IncludeNoFollow);
 
-      StubSearchService ("*.dll", "1.dll");
-      StubSearchService ("*.exe", "1.exe");
+      StubSearchService("*.dll", "1.dll");
+      StubSearchService("*.exe", "1.exe");
 
-      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.dll")).Returns (_assembly1).Verifiable();
-      _loaderMock.Setup (mock => mock.TryLoadAssembly ("1.exe")).Returns (_assembly2).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("1.dll")).Returns(_assembly1).Verifiable();
+      _loaderMock.Setup(mock => mock.TryLoadAssembly("1.exe")).Returns(_assembly2).Verifiable();
 
-      var finder = CreateRootAssemblyFinder (specification1, specification2);
+      var finder = CreateRootAssemblyFinder(specification1, specification2);
 
-      var rootAssemblies = finder.FindRootAssemblies ().ToDictionary (ra => ra.Assembly);
+      var rootAssemblies = finder.FindRootAssemblies().ToDictionary(ra => ra.Assembly);
 
       _loaderMock.Verify();
-      Assert.That (rootAssemblies[_assembly1].FollowReferences, Is.True);
-      Assert.That (rootAssemblies[_assembly2].FollowReferences, Is.False);
+      Assert.That(rootAssemblies[_assembly1].FollowReferences, Is.True);
+      Assert.That(rootAssemblies[_assembly2].FollowReferences, Is.False);
     }
 
     private FilePatternRootAssemblyFinder CreateRootAssemblyFinder (params FilePatternSpecification[] specifications)
     {
-      return new FilePatternRootAssemblyFinder ("searchPath", specifications.AsOneTime (), _searchServiceStub.Object, _loaderMock.Object);
+      return new FilePatternRootAssemblyFinder("searchPath", specifications.AsOneTime(), _searchServiceStub.Object, _loaderMock.Object);
     }
 
     private void StubSearchService (string expectedPattern, params string[] fakeFiles)
     {
-      _searchServiceStub.Setup (stub => stub.GetFiles ("searchPath", expectedPattern, SearchOption.TopDirectoryOnly)).Returns (fakeFiles);
+      _searchServiceStub.Setup(stub => stub.GetFiles("searchPath", expectedPattern, SearchOption.TopDirectoryOnly)).Returns(fakeFiles);
     }
   }
 }

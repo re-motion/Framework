@@ -29,33 +29,33 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
     protected override void OnInit (EventArgs e)
     {
-      Init += delegate { Assertion.IsNotNull (Page, "Page was null."); };
+      Init += delegate { Assertion.IsNotNull(Page, "Page was null."); };
 
       if (Replacer == null)
       {
-        OnInitParameters.Item1.ReplaceAndWrap (this, this, OnInitParameters.Item2);
+        OnInitParameters.Item1.ReplaceAndWrap(this, this, OnInitParameters.Item2);
 
         if (IsInitialized)
         {
           EnsureLazyInitializationContainer();
-          base.OnInit (e);
+          base.OnInit(e);
         }
       }
       else
       {
-        EnsureLazyInitializationContainer ();
-        base.OnInit (e);
+        EnsureLazyInitializationContainer();
+        base.OnInit(e);
       }
     }
 
     public void EnsureLazyInitializationContainer ()
     {
-      _lazyInitializationContainer.Ensure (base.Controls);
+      _lazyInitializationContainer.Ensure(base.Controls);
     }
 
     public override ControlCollection Controls
     {
-      get { return _lazyInitializationContainer.GetControls (base.Controls); }
+      get { return _lazyInitializationContainer.GetControls(base.Controls); }
     }
 
     public bool IsInitialized

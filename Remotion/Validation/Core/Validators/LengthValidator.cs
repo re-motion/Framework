@@ -41,12 +41,12 @@ namespace Remotion.Validation.Validators
 
     protected LengthValidator (int min, int? max, [NotNull] string errorMessage, [NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("errorMessage", errorMessage);
-      ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNullOrEmpty("errorMessage", errorMessage);
+      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
       if (min < 0)
-        throw new ArgumentOutOfRangeException ("min", "Value cannot be less than zero.");
+        throw new ArgumentOutOfRangeException("min", "Value cannot be less than zero.");
       if (max != null && max < min)
-        throw new ArgumentOutOfRangeException ("max", "Max should be larger than min.");
+        throw new ArgumentOutOfRangeException("max", "Max should be larger than min.");
 
       Max = max;
       Min = min;
@@ -56,10 +56,10 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
-      if (IsValid (context))
+      if (IsValid(context))
         return Enumerable.Empty<PropertyValidationFailure>();
 
-      return EnumerableUtility.Singleton (CreateValidationError (context));
+      return EnumerableUtility.Singleton(CreateValidationError(context));
     }
 
     private bool IsValid (PropertyValidatorContext context)
@@ -76,13 +76,13 @@ namespace Remotion.Validation.Validators
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
-      string localizedValidationMessage = ValidationMessage.Format (
+      string localizedValidationMessage = ValidationMessage.Format(
           CultureInfo.CurrentUICulture,
           (IFormatProvider) CultureInfo.CurrentCulture,
           Min,
           Max);
 
-      return new PropertyValidationFailure (
+      return new PropertyValidationFailure(
           context.Instance,
           context.Property,
           context.PropertyValue,

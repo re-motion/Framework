@@ -33,43 +33,43 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     [Test]
     public void SingleAclSingleUserExpansionTest ()
     {
-      using (new CultureScope ("de-DE"))
+      using (new CultureScope("de-DE"))
       {
-        var users = ListObjectMother.New (User);
+        var users = ListObjectMother.New(User);
 
-        var acls = ListObjectMother.New<AccessControlList> (Acl);
+        var acls = ListObjectMother.New<AccessControlList>(Acl);
 
-        List<AclExpansionEntry> aclExpansion = GetAclExpansionEntryList (users, acls, false);
+        List<AclExpansionEntry> aclExpansion = GetAclExpansionEntryList(users, acls, false);
 
         //WriteAclExpansionAsHtmlToDisk(aclExpansion, "c:\\temp\\aaa.html");
 
-        var aclExpansionTree = new AclExpansionTree (aclExpansion);
+        var aclExpansionTree = new AclExpansionTree(aclExpansion);
 
         //WriteAclExpansionTreeToConsole(aclExpansionTree);
 
         var userNodes = aclExpansionTree.Tree;
-        Assert.That (userNodes.Count, Is.EqualTo (1)); // # users
-        Assert.That (userNodes[0].Key, Is.EqualTo (User));
+        Assert.That(userNodes.Count, Is.EqualTo(1)); // # users
+        Assert.That(userNodes[0].Key, Is.EqualTo(User));
         
         var roleNodes = userNodes[0].Children;
-        Assert.That (roleNodes.Count, Is.EqualTo (1)); // # roles
-        Assert.That (roleNodes[0].Key, Is.EqualTo (User.Roles[0]));
+        Assert.That(roleNodes.Count, Is.EqualTo(1)); // # roles
+        Assert.That(roleNodes[0].Key, Is.EqualTo(User.Roles[0]));
         
         var classNodes = roleNodes[0].Children;
-        Assert.That (classNodes.Count, Is.EqualTo (1)); // # classes
-        Assert.That (classNodes[0].Key.StatefulAccessControlLists, Has.Member(Acl));
+        Assert.That(classNodes.Count, Is.EqualTo(1)); // # classes
+        Assert.That(classNodes[0].Key.StatefulAccessControlLists, Has.Member(Acl));
 
         var stateNodes = classNodes[0].Children;
-        Assert.That (stateNodes.Count, Is.EqualTo (2)); // # states
+        Assert.That(stateNodes.Count, Is.EqualTo(2)); // # states
 
-        Assert.That (stateNodes[0].Children.Count, Is.EqualTo (2)); // # states in group with same AclExpansionEntry ignoring StateCombinations
-        Assert.That (stateNodes[1].Children.Count, Is.EqualTo (1)); // # states in group with same AclExpansionEntry ignoring StateCombinations
+        Assert.That(stateNodes[0].Children.Count, Is.EqualTo(2)); // # states in group with same AclExpansionEntry ignoring StateCombinations
+        Assert.That(stateNodes[1].Children.Count, Is.EqualTo(1)); // # states in group with same AclExpansionEntry ignoring StateCombinations
 
         foreach (var aclExpansionEntryTreeNode in stateNodes)
         {
           foreach (AclExpansionEntry aee in aclExpansionEntryTreeNode.Children)
           {
-            Assert.That (aee.GetStateCombinations(), Is.SubsetOf (Acl.StateCombinations));
+            Assert.That(aee.GetStateCombinations(), Is.SubsetOf(Acl.StateCombinations));
           }
         }
       }
@@ -79,24 +79,24 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     [Test]
     public void StatelessAccessControlListSortOrderTest ()
     {
-      using (new CultureScope ("de-DE"))
+      using (new CultureScope("de-DE"))
       {
-        var users = ListObjectMother.New (User);
+        var users = ListObjectMother.New(User);
         
-        var statelessAcl = CreateStatelessAcl (Ace);
-        var acls = ListObjectMother.New (Acl, statelessAcl);
+        var statelessAcl = CreateStatelessAcl(Ace);
+        var acls = ListObjectMother.New(Acl, statelessAcl);
 
-        List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList (users, acls, false);
+        List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(users, acls, false);
 
-        var aclExpansionTreeInverseSorted = new AclExpansionTree (
+        var aclExpansionTreeInverseSorted = new AclExpansionTree(
             aclExpansionEntryList,
             (classEntry => (classEntry.AccessControlList is StatefulAccessControlList) ? "A" : "B")); // sort stateful before stateless
-        Assert.That (aclExpansionTreeInverseSorted.Tree[0].Children[0].Children.Count, Is.EqualTo (2));
-        Assert.That (aclExpansionTreeInverseSorted.Tree[0].Children[0].Children[0].Children[0].Children[0].AccessControlList, Is.EqualTo (Acl));
+        Assert.That(aclExpansionTreeInverseSorted.Tree[0].Children[0].Children.Count, Is.EqualTo(2));
+        Assert.That(aclExpansionTreeInverseSorted.Tree[0].Children[0].Children[0].Children[0].Children[0].AccessControlList, Is.EqualTo(Acl));
 
-        var aclExpansionTreeDefaultSorted = new AclExpansionTree (aclExpansionEntryList);
-        Assert.That (aclExpansionTreeDefaultSorted.Tree[0].Children[0].Children.Count, Is.EqualTo (2));
-        Assert.That (aclExpansionTreeDefaultSorted.Tree[0].Children[0].Children[0].Children[0].Children[0].AccessControlList, Is.EqualTo (statelessAcl));
+        var aclExpansionTreeDefaultSorted = new AclExpansionTree(aclExpansionEntryList);
+        Assert.That(aclExpansionTreeDefaultSorted.Tree[0].Children[0].Children.Count, Is.EqualTo(2));
+        Assert.That(aclExpansionTreeDefaultSorted.Tree[0].Children[0].Children[0].Children[0].Children[0].AccessControlList, Is.EqualTo(statelessAcl));
 
       }
     }
@@ -107,17 +107,17 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     {
       var comparer = AclExpansionTree.AclExpansionEntryIgnoreStateEqualityComparer;
       var aclExpansionEntry1 =
-          new AclExpansionEntry (
-              User, Role, Acl, new AclExpansionAccessConditions (), new[] { WriteAccessType }, new[] { ReadAccessType, DeleteAccessType });
+          new AclExpansionEntry(
+              User, Role, Acl, new AclExpansionAccessConditions(), new[] { WriteAccessType }, new[] { ReadAccessType, DeleteAccessType });
       var aclExpansionEntry2 =
-          new AclExpansionEntry (
-              User, Role, Acl2, new AclExpansionAccessConditions (), new[] { WriteAccessType }, new[] { ReadAccessType, DeleteAccessType });
+          new AclExpansionEntry(
+              User, Role, Acl2, new AclExpansionAccessConditions(), new[] { WriteAccessType }, new[] { ReadAccessType, DeleteAccessType });
       var aclExpansionEntry3 =
-         new AclExpansionEntry (
-             User, Role, Acl, new AclExpansionAccessConditions (), new[] { ReadAccessType, WriteAccessType }, new[] { DeleteAccessType });
-      Assert.That (comparer.Equals (aclExpansionEntry1, aclExpansionEntry1), Is.True);
-      Assert.That (comparer.Equals (aclExpansionEntry1, aclExpansionEntry2), Is.True);
-      Assert.That (comparer.Equals (aclExpansionEntry1, aclExpansionEntry3), Is.False);
+         new AclExpansionEntry(
+             User, Role, Acl, new AclExpansionAccessConditions(), new[] { ReadAccessType, WriteAccessType }, new[] { DeleteAccessType });
+      Assert.That(comparer.Equals(aclExpansionEntry1, aclExpansionEntry1), Is.True);
+      Assert.That(comparer.Equals(aclExpansionEntry1, aclExpansionEntry2), Is.True);
+      Assert.That(comparer.Equals(aclExpansionEntry1, aclExpansionEntry3), Is.False);
     }
 
 
@@ -126,42 +126,42 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     {
       var comparer = AclExpansionTree.AclExpansionEntryIgnoreStateEqualityComparer;
 
-      var aclSameClassDiffernenStates = TestHelper.CreateStatefulAcl (Acl.Class, new StateDefinition[] { });
-      var aclDifferentClass = TestHelper.CreateStatefulAcl (TestHelper.CreateClassDefinition ("2008-11-26, 16:41"), new StateDefinition[] { });
+      var aclSameClassDiffernenStates = TestHelper.CreateStatefulAcl(Acl.Class, new StateDefinition[] { });
+      var aclDifferentClass = TestHelper.CreateStatefulAcl(TestHelper.CreateClassDefinition("2008-11-26, 16:41"), new StateDefinition[] { });
 
       var a =
-          new AclExpansionEntry (
-              User, Role, Acl, new AclExpansionAccessConditions (), new[] { WriteAccessType }, new[] { ReadAccessType, DeleteAccessType });
+          new AclExpansionEntry(
+              User, Role, Acl, new AclExpansionAccessConditions(), new[] { WriteAccessType }, new[] { ReadAccessType, DeleteAccessType });
       var aDifferent =
-          new AclExpansionEntry (
+          new AclExpansionEntry(
               User2, Role2, aclDifferentClass, new AclExpansionAccessConditions { OwningTenant = Tenant }, new[] { ReadAccessType }, new[] { DeleteAccessType });
 
-      Assert.That (comparer.Equals (a,
-        new AclExpansionEntry (a.User, a.Role, a.AccessControlList, a.AccessConditions, a.AllowedAccessTypes, a.DeniedAccessTypes)), Is.True);
-      Assert.That (comparer.Equals (a,
-        new AclExpansionEntry (a.User, a.Role, aclSameClassDiffernenStates, a.AccessConditions, a.AllowedAccessTypes, a.DeniedAccessTypes)), Is.True);
+      Assert.That(comparer.Equals(a,
+        new AclExpansionEntry(a.User, a.Role, a.AccessControlList, a.AccessConditions, a.AllowedAccessTypes, a.DeniedAccessTypes)), Is.True);
+      Assert.That(comparer.Equals(a,
+        new AclExpansionEntry(a.User, a.Role, aclSameClassDiffernenStates, a.AccessConditions, a.AllowedAccessTypes, a.DeniedAccessTypes)), Is.True);
 
-      Assert.That (comparer.Equals (a,
-        new AclExpansionEntry (aDifferent.User, a.Role, a.AccessControlList, a.AccessConditions, a.AllowedAccessTypes, a.DeniedAccessTypes)), Is.False);
-      Assert.That (comparer.Equals (a,
-        new AclExpansionEntry (a.User, aDifferent.Role, a.AccessControlList, a.AccessConditions, a.AllowedAccessTypes, a.DeniedAccessTypes)), Is.False);
-      Assert.That (comparer.Equals (a,
-        new AclExpansionEntry (a.User, a.Role, aDifferent.AccessControlList, a.AccessConditions, a.AllowedAccessTypes, a.DeniedAccessTypes)), Is.False);
-      Assert.That (comparer.Equals (a,
-        new AclExpansionEntry (a.User, a.Role, a.AccessControlList, aDifferent.AccessConditions, a.AllowedAccessTypes, a.DeniedAccessTypes)), Is.False);
-      Assert.That (comparer.Equals (a,
-        new AclExpansionEntry (a.User, a.Role, a.AccessControlList, a.AccessConditions, aDifferent.AllowedAccessTypes, a.DeniedAccessTypes)), Is.False);
-      Assert.That (comparer.Equals (a,
-        new AclExpansionEntry (a.User, a.Role, a.AccessControlList, a.AccessConditions, a.AllowedAccessTypes, aDifferent.DeniedAccessTypes)), Is.False);
+      Assert.That(comparer.Equals(a,
+        new AclExpansionEntry(aDifferent.User, a.Role, a.AccessControlList, a.AccessConditions, a.AllowedAccessTypes, a.DeniedAccessTypes)), Is.False);
+      Assert.That(comparer.Equals(a,
+        new AclExpansionEntry(a.User, aDifferent.Role, a.AccessControlList, a.AccessConditions, a.AllowedAccessTypes, a.DeniedAccessTypes)), Is.False);
+      Assert.That(comparer.Equals(a,
+        new AclExpansionEntry(a.User, a.Role, aDifferent.AccessControlList, a.AccessConditions, a.AllowedAccessTypes, a.DeniedAccessTypes)), Is.False);
+      Assert.That(comparer.Equals(a,
+        new AclExpansionEntry(a.User, a.Role, a.AccessControlList, aDifferent.AccessConditions, a.AllowedAccessTypes, a.DeniedAccessTypes)), Is.False);
+      Assert.That(comparer.Equals(a,
+        new AclExpansionEntry(a.User, a.Role, a.AccessControlList, a.AccessConditions, aDifferent.AllowedAccessTypes, a.DeniedAccessTypes)), Is.False);
+      Assert.That(comparer.Equals(a,
+        new AclExpansionEntry(a.User, a.Role, a.AccessControlList, a.AccessConditions, a.AllowedAccessTypes, aDifferent.DeniedAccessTypes)), Is.False);
     }
 
     private AccessControlList CreateStatelessAcl (params AccessControlEntry[] aces)
     {
-      SecurableClassDefinition classDefinition = TestHelper.CreateOrderClassDefinition ();
-      var statlessAcl = TestHelper.CreateStatelessAcl (classDefinition);
+      SecurableClassDefinition classDefinition = TestHelper.CreateOrderClassDefinition();
+      var statlessAcl = TestHelper.CreateStatelessAcl(classDefinition);
       foreach (AccessControlEntry ace in aces)
       {
-        TestHelper.AttachAces (statlessAcl, ace);
+        TestHelper.AttachAces(statlessAcl, ace);
       }
       return statlessAcl;
     }

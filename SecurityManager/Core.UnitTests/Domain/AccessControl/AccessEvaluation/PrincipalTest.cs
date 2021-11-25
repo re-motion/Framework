@@ -42,70 +42,70 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     [Test]
     public void Initialize_WithRoles ()
     {
-      Tenant tenant = _testHelper.CreateTenant ("tenant");
-      User user = _testHelper.CreateUser ("userName", null, "lastName", null, null, null);
-      Role[] roles = new[] { CreateRole (tenant), CreateRole (tenant) };
-      Principal principal = PrincipalTestHelper.Create (tenant, user, roles);
+      Tenant tenant = _testHelper.CreateTenant("tenant");
+      User user = _testHelper.CreateUser("userName", null, "lastName", null, null, null);
+      Role[] roles = new[] { CreateRole(tenant), CreateRole(tenant) };
+      Principal principal = PrincipalTestHelper.Create(tenant, user, roles);
 
-      Assert.That (principal.Tenant, Is.EqualTo (tenant).Using (DomainObjectHandleComparer.Instance));
-      Assert.That (principal.User, Is.EqualTo (user).Using (DomainObjectHandleComparer.Instance));
-      Assert.That (principal.Roles, Is.EquivalentTo (roles).Using (PrincipalRoleComparer.Instance));
-      Assert.That (principal.IsNull, Is.False);
+      Assert.That(principal.Tenant, Is.EqualTo(tenant).Using(DomainObjectHandleComparer.Instance));
+      Assert.That(principal.User, Is.EqualTo(user).Using(DomainObjectHandleComparer.Instance));
+      Assert.That(principal.Roles, Is.EquivalentTo(roles).Using(PrincipalRoleComparer.Instance));
+      Assert.That(principal.IsNull, Is.False);
     }
 
     [Test]
     public void Initialize_WithoutRoles ()
     {
-      Tenant tenant = _testHelper.CreateTenant ("tenant");
-      User user = _testHelper.CreateUser ("userName", null, "lastName", null, null, null);
-      Principal principal = PrincipalTestHelper.Create (tenant, user, new Role[0]);
+      Tenant tenant = _testHelper.CreateTenant("tenant");
+      User user = _testHelper.CreateUser("userName", null, "lastName", null, null, null);
+      Principal principal = PrincipalTestHelper.Create(tenant, user, new Role[0]);
 
-      Assert.That (principal.Tenant, Is.EqualTo (tenant).Using (DomainObjectHandleComparer.Instance));
-      Assert.That (principal.User, Is.EqualTo (user).Using (DomainObjectHandleComparer.Instance));
-      Assert.That (principal.Roles, Is.Empty);
-      Assert.That (principal.IsNull, Is.False);
+      Assert.That(principal.Tenant, Is.EqualTo(tenant).Using(DomainObjectHandleComparer.Instance));
+      Assert.That(principal.User, Is.EqualTo(user).Using(DomainObjectHandleComparer.Instance));
+      Assert.That(principal.Roles, Is.Empty);
+      Assert.That(principal.IsNull, Is.False);
     }
 
     [Test]
     public void Initialize_CopiesRoles ()
     {
-      Tenant tenant = _testHelper.CreateTenant ("tenant");
+      Tenant tenant = _testHelper.CreateTenant("tenant");
       var roles = new[]
                   {
-                      new PrincipalRole (
-                          new DomainObjectHandle<Position> (new ObjectID (typeof (Position), Guid.NewGuid())),
-                          new DomainObjectHandle<Group> (new ObjectID (typeof (Group), Guid.NewGuid())))
+                      new PrincipalRole(
+                          new DomainObjectHandle<Position>(new ObjectID(typeof (Position), Guid.NewGuid())),
+                          new DomainObjectHandle<Group>(new ObjectID(typeof (Group), Guid.NewGuid())))
                   };
-      Principal principal = new Principal (tenant.GetHandle(), null, roles);
+      Principal principal = new Principal(tenant.GetHandle(), null, roles);
 
-      Assert.That (principal.Roles, Is.Not.SameAs (roles));
-      Assert.That (principal.Roles, Is.EquivalentTo (roles));
-      Assert.That (principal.IsNull, Is.False);
+      Assert.That(principal.Roles, Is.Not.SameAs(roles));
+      Assert.That(principal.Roles, Is.EquivalentTo(roles));
+      Assert.That(principal.IsNull, Is.False);
     }
 
     [Test]
     public void Initialize_WithTenantAndWithoutUserAndWithRoles ()
     {
-      Tenant tenant = _testHelper.CreateTenant ("tenant");
-      Role[] roles = new[] { CreateRole (tenant), CreateRole (tenant) };
-      Principal principal = PrincipalTestHelper.Create (tenant, null, roles);
+      Tenant tenant = _testHelper.CreateTenant("tenant");
+      Role[] roles = new[] { CreateRole(tenant), CreateRole(tenant) };
+      Principal principal = PrincipalTestHelper.Create(tenant, null, roles);
 
-      Assert.That (principal.Tenant, Is.EqualTo (tenant).Using (DomainObjectHandleComparer.Instance));
-      Assert.That (principal.User, Is.Null);
-      Assert.That (principal.Roles, Is.EquivalentTo (roles).Using (PrincipalRoleComparer.Instance));
-      Assert.That (principal.IsNull, Is.False);
+      Assert.That(principal.Tenant, Is.EqualTo(tenant).Using(DomainObjectHandleComparer.Instance));
+      Assert.That(principal.User, Is.Null);
+      Assert.That(principal.Roles, Is.EquivalentTo(roles).Using(PrincipalRoleComparer.Instance));
+      Assert.That(principal.IsNull, Is.False);
     }
 
     [Test]
     public void Initialize_WithTenantAndWithoutUserAndWithoutRoles ()
     {
-      Tenant tenant = _testHelper.CreateTenant ("tenant");
-      Principal principal = PrincipalTestHelper.Create (tenant, null, new Role[0]);
+      Tenant tenant = _testHelper.CreateTenant("tenant");
+      Principal principal = PrincipalTestHelper.Create(tenant, null, new Role[0]);
 
-      Assert.That (principal.Tenant, Is.EqualTo (tenant).Using (DomainObjectHandleComparer.Instance));
-      Assert.That (principal.User, Is.Null);
-      Assert.That (principal.Roles, Is.Empty);
-      Assert.That (principal.IsNull, Is.False);
+      Assert.That(principal.Tenant, Is.EqualTo(tenant).Using(DomainObjectHandleComparer.Instance));
+      Assert.That(principal.User, Is.Null);
+      Assert.That(principal.Roles, Is.Empty);
+      Assert.That(principal.IsNull, Is.False);
     }
 
     [Test]
@@ -113,18 +113,18 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     {
       Principal principal = Principal.Null;
 
-      Assert.That (principal.Tenant, Is.Null);
-      Assert.That (principal.User, Is.Null);
-      Assert.That (principal.Roles, Is.Empty);
-      Assert.That (principal.IsNull, Is.True);
+      Assert.That(principal.Tenant, Is.Null);
+      Assert.That(principal.User, Is.Null);
+      Assert.That(principal.Roles, Is.Empty);
+      Assert.That(principal.IsNull, Is.True);
     }
 
     private Role CreateRole (Tenant tenant)
     {
-      return _testHelper.CreateRole (
+      return _testHelper.CreateRole(
           null,
-          _testHelper.CreateGroup (Guid.NewGuid().ToString(), null, tenant),
-          _testHelper.CreatePosition (Guid.NewGuid().ToString()));
+          _testHelper.CreateGroup(Guid.NewGuid().ToString(), null, tenant),
+          _testHelper.CreatePosition(Guid.NewGuid().ToString()));
     }
   }
 }

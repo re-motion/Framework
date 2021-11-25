@@ -27,19 +27,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
     {
       var requestUrl = Request.Url;
 
-      var query = HttpUtility.ParseQueryString (requestUrl.Query);
+      var query = HttpUtility.ParseQueryString(requestUrl.Query);
       query["GuaranteeRefresh"] = Guid.NewGuid().ToString();
 
-      RefreshButton.NavigateUrl = requestUrl.GetLeftPart (UriPartial.Path) + "?" + query;
+      RefreshButton.NavigateUrl = requestUrl.GetLeftPart(UriPartial.Path) + "?" + query;
 
-      base.OnInit (e);
+      base.OnInit(e);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
       HtmlHeadAppender.Current.RegisterPageStylesheetLink();
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     public void SetTestInformation (string testHelpOutput)

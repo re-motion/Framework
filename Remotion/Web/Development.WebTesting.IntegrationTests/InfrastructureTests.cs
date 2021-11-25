@@ -32,21 +32,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void TestCoypuElementScopeFillInWithAndSendKeysExtensions_FillWithAndWait (string ignore, string input)
     {
       if (ignore != null)
-        Assert.Ignore (ignore);
+        Assert.Ignore(ignore);
 
       var home = Start();
 
-      var textBox = home.TextBoxes().GetByLocalID ("MyTextBox");
+      var textBox = home.TextBoxes().GetByLocalID("MyTextBox");
 
-      textBox.FillWith (input, FinishInput.WithTab);
+      textBox.FillWith(input, FinishInput.WithTab);
 
-      Assert.That (home.Scope.FindId ("dmaWxePostBackSequenceNumberField").Value, Is.EqualTo ("3"));
-      Assert.That (textBox.GetText(), Is.EqualTo (input));
+      Assert.That(home.Scope.FindId("dmaWxePostBackSequenceNumberField").Value, Is.EqualTo("3"));
+      Assert.That(textBox.GetText(), Is.EqualTo(input));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("InfrastructureTests.wxe");
+      return Start<WxePageObject>("InfrastructureTests.wxe");
     }
   }
 }

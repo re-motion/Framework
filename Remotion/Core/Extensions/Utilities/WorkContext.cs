@@ -52,7 +52,7 @@ public class WorkContext: IDisposable
     /// </returns>
     public WorkContext[] ToArray ()
     {
-      return (WorkContext[]) _stack.ToArray (typeof (WorkContext)); 
+      return (WorkContext[]) _stack.ToArray(typeof (WorkContext)); 
     }
 
     /// <summary>
@@ -72,10 +72,10 @@ public class WorkContext: IDisposable
         if (context == _lastLeft)
           pastLast = true;
         if (sb.Length > 0)
-          sb.Append ('\n');
+          sb.Append('\n');
         if (pastLast)
-          sb.Append ("? ");
-        sb.Append (context.Text);
+          sb.Append("? ");
+        sb.Append(context.Text);
       }
       return sb.ToString();
     }
@@ -84,11 +84,11 @@ public class WorkContext: IDisposable
     {
       if (_lastLeft != null)
       {
-        PopIncluding (_lastLeft);
+        PopIncluding(_lastLeft);
         _lastLeft = null;
       }
 
-      _stack.Add (context);
+      _stack.Add(context);
     }
 
     internal void PopIncluding (WorkContext context)
@@ -106,8 +106,8 @@ public class WorkContext: IDisposable
         return;
 
       object[] newStack = new object[contextIndex];
-      _stack.CopyTo (0, newStack, 0, contextIndex);
-      _stack = new ArrayList (newStack);
+      _stack.CopyTo(0, newStack, 0, contextIndex);
+      _stack = new ArrayList(newStack);
     }
 
     internal void Leave (WorkContext context)
@@ -139,7 +139,7 @@ public class WorkContext: IDisposable
         {
           if (! s_enableTracingFlagInitialized)
           {
-            if (0 == string.Compare (ConfigurationManager.AppSettings["Remotion.WorkContext.EnableTracing"], "true", true, CultureInfo.InvariantCulture))
+            if (0 == string.Compare(ConfigurationManager.AppSettings["Remotion.WorkContext.EnableTracing"], "true", true, CultureInfo.InvariantCulture))
               s_enableTracing = true;
             s_enableTracingFlagInitialized = true;
           }
@@ -184,8 +184,8 @@ public class WorkContext: IDisposable
   /// <param name="text">The description of the context.</param>
   public static WorkContext EnterNew (string text)
   {
-    WorkContext context = new WorkContext ();
-    context.Enter (text);
+    WorkContext context = new WorkContext();
+    context.Enter(text);
     return context;
   }
 
@@ -196,7 +196,7 @@ public class WorkContext: IDisposable
   /// <param name="args">An array containing zero or more objects to format.</param>
   public static WorkContext EnterNew (string format, params object[] args)
   {
-    return EnterNew (string.Format (format, args));
+    return EnterNew(string.Format(format, args));
   }
 
   // member fields
@@ -223,10 +223,10 @@ public class WorkContext: IDisposable
     _entered = true;
     if (EnableTracing)
     {
-      Trace.WriteLine ("Enter Context: " + text);
+      Trace.WriteLine("Enter Context: " + text);
       Trace.Indent();
     }
-    Stack.Push (this);
+    Stack.Push(this);
   }
 
   /// <summary>
@@ -236,7 +236,7 @@ public class WorkContext: IDisposable
   /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Format_Args/*' />
   void Enter (string format, params object[] args)
   {
-    Enter (string.Format (format, args));
+    Enter(string.Format(format, args));
   }
 
   /// <summary>
@@ -247,7 +247,7 @@ public class WorkContext: IDisposable
   /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Text/*' />
   void EnterIfDebug (string text)
   {
-    Enter (text);
+    Enter(text);
   }
 
   /// <summary>
@@ -258,7 +258,7 @@ public class WorkContext: IDisposable
   /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Format_Args/*' />
   void EnterIfDebug (string format, params object[] args)
   {
-    Enter (format, args);
+    Enter(format, args);
   }
 
   /// <summary>
@@ -269,7 +269,7 @@ public class WorkContext: IDisposable
   /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Text/*' />
   void EnterIfTrace (string text)
   {
-    Enter (text);
+    Enter(text);
   }
 
   /// <summary>
@@ -280,7 +280,7 @@ public class WorkContext: IDisposable
   /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Format_Args/*' />
   void EnterIfTrace (string format, params object[] args)
   {
-    Enter (format, args);
+    Enter(format, args);
   }
 
   /// <summary>
@@ -291,7 +291,7 @@ public class WorkContext: IDisposable
   /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Text/*' />
   void EnterIfWorkContext (string text)
   {
-    Enter (text);
+    Enter(text);
   }
 
   /// <summary>
@@ -302,7 +302,7 @@ public class WorkContext: IDisposable
   /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Format_Args/*' />
   void EnterIfWorkContext (string format, params object[] args)
   {
-    Enter (format, args);
+    Enter(format, args);
   }
 
   /// <summary>
@@ -335,9 +335,9 @@ public class WorkContext: IDisposable
       if (EnableTracing)
       {
         Trace.Unindent();
-        Trace.WriteLine ("Leave Context: " + _text);
+        Trace.WriteLine("Leave Context: " + _text);
       }
-      Stack.Leave (this);
+      Stack.Leave(this);
       _entered = false;
       }
   }
@@ -358,8 +358,8 @@ public class WorkContext: IDisposable
     if (_entered)
     {
       if (EnableTracing)
-        Trace.WriteLine ("Work done in Context: " + _text);
-      Stack.PopIncluding (this);
+        Trace.WriteLine("Work done in Context: " + _text);
+      Stack.PopIncluding(this);
     }
   }
 

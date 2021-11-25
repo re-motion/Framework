@@ -26,33 +26,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void LoadInReadOnlyRootTransaction_IsAllowed ()
     {
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      var order1 = ExecuteInReadOnlyRootTransaction (() => DomainObjectIDs.Order1.GetObject<Order> ());
+      var order1 = ExecuteInReadOnlyRootTransaction(() => DomainObjectIDs.Order1.GetObject<Order>());
 
-      Assert.That (order1.ID, Is.EqualTo (DomainObjectIDs.Order1));
+      Assert.That(order1.ID, Is.EqualTo(DomainObjectIDs.Order1));
 
-      CheckDataLoaded (ReadOnlyRootTransaction, order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, order1);
-      CheckDataNotLoaded (WriteableSubTransaction, order1);
+      CheckDataLoaded(ReadOnlyRootTransaction, order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, order1);
+      CheckDataNotLoaded(WriteableSubTransaction, order1);
     }
 
     [Test]
     public void LoadInReadOnlyMiddleTransaction_IsAllowed ()
     {
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      var order1 = ExecuteInReadOnlyMiddleTransaction (() => DomainObjectIDs.Order1.GetObject<Order>());
+      var order1 = ExecuteInReadOnlyMiddleTransaction(() => DomainObjectIDs.Order1.GetObject<Order>());
 
-      Assert.That (order1.ID, Is.EqualTo (DomainObjectIDs.Order1));
+      Assert.That(order1.ID, Is.EqualTo(DomainObjectIDs.Order1));
 
-      CheckDataLoaded (ReadOnlyRootTransaction, order1);
-      CheckDataLoaded (ReadOnlyMiddleTransaction, order1);
-      CheckDataNotLoaded (WriteableSubTransaction, order1);
+      CheckDataLoaded(ReadOnlyRootTransaction, order1);
+      CheckDataLoaded(ReadOnlyMiddleTransaction, order1);
+      CheckDataNotLoaded(WriteableSubTransaction, order1);
     }
   }
 }

@@ -30,9 +30,9 @@ namespace Remotion.Validation.RuleCollectors
   {
     public static ObjectMetaValidationRuleCollector Create<TValidatedType> (Type collectorType)
     {
-      ArgumentUtility.CheckNotNull ("collectorType", collectorType);
+      ArgumentUtility.CheckNotNull("collectorType", collectorType);
 
-      return new ObjectMetaValidationRuleCollector (TypeAdapter.Create (typeof (TValidatedType)), collectorType);
+      return new ObjectMetaValidationRuleCollector(TypeAdapter.Create(typeof (TValidatedType)), collectorType);
     }
 
     public ITypeInformation ValidatedType { get; }
@@ -41,8 +41,8 @@ namespace Remotion.Validation.RuleCollectors
 
     public ObjectMetaValidationRuleCollector (ITypeInformation validatedType, Type collectorType)
     {
-      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
-      ArgumentUtility.CheckNotNull ("collectorType", collectorType); // TODO RM-5906: Add type check for IComponentValidationCollector
+      ArgumentUtility.CheckNotNull("validatedType", validatedType);
+      ArgumentUtility.CheckNotNull("collectorType", collectorType); // TODO RM-5906: Add type check for IComponentValidationCollector
 
       ValidatedType = validatedType;
       CollectorType = collectorType;
@@ -56,16 +56,16 @@ namespace Remotion.Validation.RuleCollectors
 
     public void RegisterMetaValidationRule (IObjectMetaValidationRule metaValidationRule)
     {
-      ArgumentUtility.CheckNotNull ("metaValidationRule", metaValidationRule);
+      ArgumentUtility.CheckNotNull("metaValidationRule", metaValidationRule);
 
-      _metaValidationRules.Add (metaValidationRule);
+      _metaValidationRules.Add(metaValidationRule);
     }
 
     public override string ToString ()
     {
-      var sb = new StringBuilder (GetType().Name);
-      sb.Append (": ");
-      sb.Append (ValidatedType.GetFullNameSafe());
+      var sb = new StringBuilder(GetType().Name);
+      sb.Append(": ");
+      sb.Append(ValidatedType.GetFullNameSafe());
 
       return sb.ToString();
     }

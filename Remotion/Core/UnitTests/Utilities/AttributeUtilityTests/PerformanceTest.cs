@@ -34,31 +34,31 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [SetUp]
     public void SetUp ()
     {
-      _types = AppDomain.CurrentDomain.GetAssemblies().SelectMany (a => a.GetTypes()).ToArray();
-      _types = _types.Concat (_types).Concat (_types).Concat (_types).Concat (_types).ToArray();
+      _types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).ToArray();
+      _types = _types.Concat(_types).Concat(_types).Concat(_types).Concat(_types).ToArray();
 
       var bindingFlags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-      _properties = _types.SelectMany (t => t.GetProperties (bindingFlags)).ToArray();
-      _properties = _properties.Concat (_properties).Concat (_properties).Concat (_properties).Concat (_properties).ToArray();
+      _properties = _types.SelectMany(t => t.GetProperties(bindingFlags)).ToArray();
+      _properties = _properties.Concat(_properties).Concat(_properties).Concat(_properties).Concat(_properties).ToArray();
     }
 
     [Test]
     public void GetCustomAttributes_Unfiltered_Types ()
     {
-      PerformMeasurement (
+      PerformMeasurement(
           _types,
           items =>
           {
             var counter = 0;
             for (int i = 0; i < items.Length; ++i)
-              counter += AttributeUtility.GetCustomAttributes (items[i], typeof (Attribute), true).Length;
+              counter += AttributeUtility.GetCustomAttributes(items[i], typeof (Attribute), true).Length;
             return counter;
           },
           items =>
           {
             var counter = 0;
             for (int i = 0; i < items.Length; ++i)
-              counter += Attribute.GetCustomAttributes (items[i], true).Length;
+              counter += Attribute.GetCustomAttributes(items[i], true).Length;
             return counter;
           });
     }
@@ -66,20 +66,20 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void GetCustomAttributes_Filtered_Types ()
     {
-      PerformMeasurement (
+      PerformMeasurement(
           _types,
           items =>
           {
             var counter = 0;
             for (int i = 0; i < items.Length; ++i)
-              counter += AttributeUtility.GetCustomAttributes (items[i], typeof (SerializableAttribute), true).Length;
+              counter += AttributeUtility.GetCustomAttributes(items[i], typeof (SerializableAttribute), true).Length;
             return counter;
           },
           items =>
           {
             var counter = 0;
             for (int i = 0; i < items.Length; ++i)
-              counter += Attribute.GetCustomAttributes (items[i], typeof (SerializableAttribute), true).Length;
+              counter += Attribute.GetCustomAttributes(items[i], typeof (SerializableAttribute), true).Length;
             return counter;
           });
     }
@@ -87,7 +87,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void GetCustomAttributes_Unfiltered_Properties ()
     {
-      PerformMeasurement (
+      PerformMeasurement(
           _properties,
           items =>
           {
@@ -95,7 +95,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
             for (int i = 0; i < items.Length; ++i)
               try
               {
-                counter += AttributeUtility.GetCustomAttributes (items[i], typeof (Attribute), true).Length;
+                counter += AttributeUtility.GetCustomAttributes(items[i], typeof (Attribute), true).Length;
               }
               catch (AmbiguousMatchException)
               {
@@ -108,7 +108,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
             for (int i = 0; i < items.Length; ++i)
               try
               {
-                counter += Attribute.GetCustomAttributes (items[i], true).Length;
+                counter += Attribute.GetCustomAttributes(items[i], true).Length;
               }
               catch (AmbiguousMatchException)
               {
@@ -120,7 +120,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void GetCustomAttributes_Filtered_Properties ()
     {
-      PerformMeasurement (
+      PerformMeasurement(
           _properties,
           items =>
           {
@@ -128,7 +128,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
             for (int i = 0; i < items.Length; ++i)
               try
               {
-                counter += AttributeUtility.GetCustomAttributes (items[i], typeof (NonSerializedAttribute), true).Length;
+                counter += AttributeUtility.GetCustomAttributes(items[i], typeof (NonSerializedAttribute), true).Length;
               }
               catch (AmbiguousMatchException)
               {
@@ -142,7 +142,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
             for (int i = 0; i < items.Length; ++i)
               try
               {
-                counter += Attribute.GetCustomAttributes (items[i], typeof (NonSerializedAttribute), true).Length;
+                counter += Attribute.GetCustomAttributes(items[i], typeof (NonSerializedAttribute), true).Length;
               }
               catch (AmbiguousMatchException)
               {
@@ -154,12 +154,12 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     private static TimeSpan MeasureTime (string description, MemberInfo[] members, Func<MemberInfo[], int> func)
     {
       // Warm up:
-      func (members);
+      func(members);
 
       var sw = Stopwatch.StartNew();
-      var result = func (members);
+      var result = func(members);
       var elapsed = sw.Elapsed;
-      Console.WriteLine (
+      Console.WriteLine(
           "{0}: {1} for {2} items; i.e., {3:n} ns per item; i.e., {4:n} item per second; result: {5}",
           description,
           elapsed,
@@ -173,16 +173,16 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [MethodImpl (MethodImplOptions.NoInlining)]
     private void PerformMeasurement (MemberInfo[] members, Func<MemberInfo[], int> utilityFunc, Func<MemberInfo[], int> referenceFunc)
     {
-      var callingMethod = new StackFrame (1).GetMethod().Name;
-      var utilityTime = MeasureTime (
+      var callingMethod = new StackFrame(1).GetMethod().Name;
+      var utilityTime = MeasureTime(
           callingMethod + " - AttributeUtility",
           members,
           utilityFunc);
-      var referenceTime = MeasureTime (
+      var referenceTime = MeasureTime(
           callingMethod + " - Attribute class ",
           members,
           referenceFunc);
-      Console.WriteLine ("Factor: " + utilityTime.TotalMilliseconds / referenceTime.TotalMilliseconds);
+      Console.WriteLine("Factor: " + utilityTime.TotalMilliseconds / referenceTime.TotalMilliseconds);
     }
   }
 }

@@ -42,8 +42,8 @@ namespace Remotion.UnitTests.Configuration
         string providerCollectionName
         )
     {
-      _stubProviderHelper = new StubProviderHelper (this, wellKnownProviderID, defaultProviderName, defaultProviderID, providerCollectionName);
-      _stubProviderHelper.InitializeProperties (_properties);
+      _stubProviderHelper = new StubProviderHelper(this, wellKnownProviderID, defaultProviderName, defaultProviderID, providerCollectionName);
+      _stubProviderHelper.InitializeProperties(_properties);
     }
 
     // methods and properties

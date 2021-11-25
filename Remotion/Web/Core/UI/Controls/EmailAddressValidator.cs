@@ -54,7 +54,7 @@ public class EmailAddressValidator : BaseValidator
 
   protected override bool EvaluateIsValid ()
   {
-    string text = base.GetControlValidationValue (base.ControlToValidate);
+    string text = base.GetControlValidationValue(base.ControlToValidate);
     
     if (text == null)
       return true;
@@ -63,7 +63,7 @@ public class EmailAddressValidator : BaseValidator
     if (text.Length == 0)
       return true;
 
-    return IsMatchComplete (text);
+    return IsMatchComplete(text);
   }
  
   /// <summary> Tests the passed <paramref name="emailAddress"/> if it is valid. </summary>
@@ -75,12 +75,12 @@ public class EmailAddressValidator : BaseValidator
   /// </returns>
   protected bool IsMatchComplete (string emailAddress)
   {
-    string[] parts = emailAddress.Split (new char[]{'@'});
+    string[] parts = emailAddress.Split(new char[]{'@'});
     if (parts.Length != 2)
       return false;
-    if (! IsMatchUserPart (parts[0]))
+    if (! IsMatchUserPart(parts[0]))
       return false;
-    if (! IsMatchDomainPart (parts[1]))
+    if (! IsMatchDomainPart(parts[1]))
       return false;
     return true;
   }
@@ -93,7 +93,7 @@ public class EmailAddressValidator : BaseValidator
   protected bool IsMatchUserPart (string userPart)
   {
     string expression = "^(" + ValidationExpressionUserPart + ")$";
-    return IsMatch (userPart, expression);
+    return IsMatch(userPart, expression);
   }
 
   /// <summary> 
@@ -104,7 +104,7 @@ public class EmailAddressValidator : BaseValidator
   protected bool IsMatchDomainPart (string domainPart)
   {
     string expression = "^(" + ValidationExpressionDomainPart + ")$";
-    return IsMatch (domainPart, expression);
+    return IsMatch(domainPart, expression);
   }
 
   /// <summary> Tests the <paramref name="text"/> against the <paramref name="expression"/>.</summary>
@@ -113,7 +113,7 @@ public class EmailAddressValidator : BaseValidator
   /// <returns> <see langword="true"/> if the regular expression matches. </returns>
   protected bool IsMatch (string text, string expression)
   {
-    Match match = Regex.Match (text, expression);
+    Match match = Regex.Match(text, expression);
     bool isMatch = match.Success && match.Index == 0 && match.Length == text.Length;
     return isMatch;
   }

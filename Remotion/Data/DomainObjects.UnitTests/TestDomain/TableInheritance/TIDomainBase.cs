@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 
     public new void Delete ()
     {
-      base.Delete ();
+      base.Delete();
     }
   }
 }

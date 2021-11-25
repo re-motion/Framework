@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<AnchorSelector, AnchorControlObject> testAction)
     {
-      testAction (Helper, e => e.Anchors(), "anchor");
+      testAction(Helper, e => e.Anchors(), "anchor");
     }
 
     [Test]
@@ -46,23 +46,23 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webLinkButton = home.Anchors().GetByID ("body_MyWebLinkButton");
-      Assert.That (webLinkButton.Scope.Id, Is.EqualTo ("body_MyWebLinkButton"));
+      var webLinkButton = home.Anchors().GetByID("body_MyWebLinkButton");
+      Assert.That(webLinkButton.Scope.Id, Is.EqualTo("body_MyWebLinkButton"));
 
-      var smartHyperLink = home.Anchors().GetByID ("body_MySmartHyperLink");
-      Assert.That (smartHyperLink.Scope.Id, Is.EqualTo ("body_MySmartHyperLink"));
+      var smartHyperLink = home.Anchors().GetByID("body_MySmartHyperLink");
+      Assert.That(smartHyperLink.Scope.Id, Is.EqualTo("body_MySmartHyperLink"));
 
-      var aspLinkButton = home.Anchors().GetByID ("body_MyAspLinkButton");
-      Assert.That (aspLinkButton.Scope.Id, Is.EqualTo ("body_MyAspLinkButton"));
+      var aspLinkButton = home.Anchors().GetByID("body_MyAspLinkButton");
+      Assert.That(aspLinkButton.Scope.Id, Is.EqualTo("body_MyAspLinkButton"));
 
-      var aspHyperLink = home.Anchors().GetByID ("body_MyAspHyperLink");
-      Assert.That (aspHyperLink.Scope.Id, Is.EqualTo ("body_MyAspHyperLink"));
+      var aspHyperLink = home.Anchors().GetByID("body_MyAspHyperLink");
+      Assert.That(aspHyperLink.Scope.Id, Is.EqualTo("body_MyAspHyperLink"));
 
-      var htmlAnchor = home.Anchors().GetByID ("body_MyHtmlAnchor");
-      Assert.That (htmlAnchor.Scope.Id, Is.EqualTo ("body_MyHtmlAnchor"));
+      var htmlAnchor = home.Anchors().GetByID("body_MyHtmlAnchor");
+      Assert.That(htmlAnchor.Scope.Id, Is.EqualTo("body_MyHtmlAnchor"));
 
-      var htmlAnchorWithJavaScriptLink = home.Anchors().GetByID ("body_MyHtmlAnchorWithJavaScriptLink");
-      Assert.That (htmlAnchorWithJavaScriptLink.Scope.Id, Is.EqualTo ("body_MyHtmlAnchorWithJavaScriptLink"));
+      var htmlAnchorWithJavaScriptLink = home.Anchors().GetByID("body_MyHtmlAnchorWithJavaScriptLink");
+      Assert.That(htmlAnchorWithJavaScriptLink.Scope.Id, Is.EqualTo("body_MyHtmlAnchorWithJavaScriptLink"));
     }
 
     [Test]
@@ -70,23 +70,23 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webLinkButton = home.Anchors().GetByLocalID ("MyWebLinkButton");
-      Assert.That (webLinkButton.Scope.Id, Is.EqualTo ("body_MyWebLinkButton"));
+      var webLinkButton = home.Anchors().GetByLocalID("MyWebLinkButton");
+      Assert.That(webLinkButton.Scope.Id, Is.EqualTo("body_MyWebLinkButton"));
 
-      var smartHyperLink = home.Anchors().GetByLocalID ("MySmartHyperLink");
-      Assert.That (smartHyperLink.Scope.Id, Is.EqualTo ("body_MySmartHyperLink"));
+      var smartHyperLink = home.Anchors().GetByLocalID("MySmartHyperLink");
+      Assert.That(smartHyperLink.Scope.Id, Is.EqualTo("body_MySmartHyperLink"));
 
-      var aspLinkButton = home.Anchors().GetByLocalID ("MyAspLinkButton");
-      Assert.That (aspLinkButton.Scope.Id, Is.EqualTo ("body_MyAspLinkButton"));
+      var aspLinkButton = home.Anchors().GetByLocalID("MyAspLinkButton");
+      Assert.That(aspLinkButton.Scope.Id, Is.EqualTo("body_MyAspLinkButton"));
 
-      var aspHyperLink = home.Anchors().GetByLocalID ("MyAspHyperLink");
-      Assert.That (aspHyperLink.Scope.Id, Is.EqualTo ("body_MyAspHyperLink"));
+      var aspHyperLink = home.Anchors().GetByLocalID("MyAspHyperLink");
+      Assert.That(aspHyperLink.Scope.Id, Is.EqualTo("body_MyAspHyperLink"));
 
-      var htmlAnchor = home.Anchors().GetByLocalID ("MyHtmlAnchor");
-      Assert.That (htmlAnchor.Scope.Id, Is.EqualTo ("body_MyHtmlAnchor"));
+      var htmlAnchor = home.Anchors().GetByLocalID("MyHtmlAnchor");
+      Assert.That(htmlAnchor.Scope.Id, Is.EqualTo("body_MyHtmlAnchor"));
 
-      var htmlAnchorWithJavaScriptLink = home.Anchors().GetByLocalID ("MyHtmlAnchorWithJavaScriptLink");
-      Assert.That (htmlAnchorWithJavaScriptLink.Scope.Id, Is.EqualTo ("body_MyHtmlAnchorWithJavaScriptLink"));
+      var htmlAnchorWithJavaScriptLink = home.Anchors().GetByLocalID("MyHtmlAnchorWithJavaScriptLink");
+      Assert.That(htmlAnchorWithJavaScriptLink.Scope.Id, Is.EqualTo("body_MyHtmlAnchorWithJavaScriptLink"));
     }
 
     [Test]
@@ -94,23 +94,23 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webLinkButton = home.Anchors().GetByLocalID ("MyWebLinkButton");
-      Assert.That (webLinkButton.GetText(), Is.EqualTo ("MyWebLinkButton"));
+      var webLinkButton = home.Anchors().GetByLocalID("MyWebLinkButton");
+      Assert.That(webLinkButton.GetText(), Is.EqualTo("MyWebLinkButton"));
 
-      var smartHyperLink = home.Anchors().GetByLocalID ("MySmartHyperLink");
-      Assert.That (smartHyperLink.GetText(), Is.EqualTo ("MySmartHyperLink"));
+      var smartHyperLink = home.Anchors().GetByLocalID("MySmartHyperLink");
+      Assert.That(smartHyperLink.GetText(), Is.EqualTo("MySmartHyperLink"));
 
-      var aspLinkButton = home.Anchors().GetByLocalID ("MyAspLinkButton");
-      Assert.That (aspLinkButton.GetText(), Is.EqualTo ("MyAspLinkButton"));
+      var aspLinkButton = home.Anchors().GetByLocalID("MyAspLinkButton");
+      Assert.That(aspLinkButton.GetText(), Is.EqualTo("MyAspLinkButton"));
 
-      var aspHyperLink = home.Anchors().GetByLocalID ("MyAspHyperLink");
-      Assert.That (aspHyperLink.GetText(), Is.EqualTo ("MyAspHyperLink"));
+      var aspHyperLink = home.Anchors().GetByLocalID("MyAspHyperLink");
+      Assert.That(aspHyperLink.GetText(), Is.EqualTo("MyAspHyperLink"));
 
-      var htmlAnchor = home.Anchors().GetByLocalID ("MyHtmlAnchor");
-      Assert.That (htmlAnchor.GetText(), Is.EqualTo ("MyHtmlAnchor"));
+      var htmlAnchor = home.Anchors().GetByLocalID("MyHtmlAnchor");
+      Assert.That(htmlAnchor.GetText(), Is.EqualTo("MyHtmlAnchor"));
 
-      var htmlAnchorWithJavaScriptLink = home.Anchors().GetByLocalID ("MyHtmlAnchorWithJavaScriptLink");
-      Assert.That (htmlAnchorWithJavaScriptLink.GetText(), Is.EqualTo ("MyHtmlAnchorWithJavaScriptLink"));
+      var htmlAnchorWithJavaScriptLink = home.Anchors().GetByLocalID("MyHtmlAnchorWithJavaScriptLink");
+      Assert.That(htmlAnchorWithJavaScriptLink.GetText(), Is.EqualTo("MyHtmlAnchorWithJavaScriptLink"));
     }
 
     [Test]
@@ -118,31 +118,31 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webLinkButton = home.Anchors().GetByLocalID ("MyWebLinkButton");
-      var completionDetection = new CompletionDetectionStrategyTestHelper (webLinkButton);
+      var webLinkButton = home.Anchors().GetByLocalID("MyWebLinkButton");
+      var completionDetection = new CompletionDetectionStrategyTestHelper(webLinkButton);
       home = webLinkButton.Click().Expect<WxePageObject>();
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("MyWebLinkButton|MyWebLinkButtonCommand"));
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("MyWebLinkButton|MyWebLinkButtonCommand"));
 
-      var smartHyperLink = home.Anchors().GetByLocalID ("MySmartHyperLink");
+      var smartHyperLink = home.Anchors().GetByLocalID("MySmartHyperLink");
       home = smartHyperLink.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.Empty);
 
-      var aspLinkButton = home.Anchors().GetByLocalID ("MyAspLinkButton");
+      var aspLinkButton = home.Anchors().GetByLocalID("MyAspLinkButton");
       home = aspLinkButton.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("MyAspLinkButton|MyAspLinkButtonCommand"));
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("MyAspLinkButton|MyAspLinkButtonCommand"));
 
-      var aspHyperLink = home.Anchors().GetByLocalID ("MyAspHyperLink");
+      var aspHyperLink = home.Anchors().GetByLocalID("MyAspHyperLink");
       home = aspHyperLink.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.Empty);
 
-      var htmlAnchor = home.Anchors().GetByLocalID ("MyHtmlAnchor");
+      var htmlAnchor = home.Anchors().GetByLocalID("MyHtmlAnchor");
       home = htmlAnchor.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("MyHtmlAnchor"));
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("MyHtmlAnchor"));
 
-      var htmlAnchorWithJavaScriptLink = home.Anchors().GetByLocalID ("MyHtmlAnchorWithJavaScriptLink");
+      var htmlAnchorWithJavaScriptLink = home.Anchors().GetByLocalID("MyHtmlAnchorWithJavaScriptLink");
       home = htmlAnchorWithJavaScriptLink.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("MyHtmlAnchorWithJavaScriptLink"));
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("MyHtmlAnchorWithJavaScriptLink"));
     }
 
     [Test]
@@ -150,9 +150,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var anchor = home.Anchors().GetByTextContent ("With'SingleQuote");
+      var anchor = home.Anchors().GetByTextContent("With'SingleQuote");
       
-      Assert.That (anchor.GetText(), Is.EqualTo ("With'SingleQuote"));
+      Assert.That(anchor.GetText(), Is.EqualTo("With'SingleQuote"));
     }
     
     [Test]
@@ -160,9 +160,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var anchor = home.Anchors().GetByTextContentOrNull ("With'SingleQuote");
+      var anchor = home.Anchors().GetByTextContentOrNull("With'SingleQuote");
       
-      Assert.That (anchor.GetText(), Is.EqualTo ("With'SingleQuote"));
+      Assert.That(anchor.GetText(), Is.EqualTo("With'SingleQuote"));
     }
     
     [Test]
@@ -170,9 +170,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var anchorExists = home.Anchors().ExistsByTextContent ("With'SingleQuote");
+      var anchorExists = home.Anchors().ExistsByTextContent("With'SingleQuote");
       
-      Assert.That (anchorExists, Is.True);
+      Assert.That(anchorExists, Is.True);
     }
 
     [Test]
@@ -180,9 +180,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var anchor = home.Anchors().GetByTextContent ("With'SingleQuoteAnd\"DoubleQuote");
+      var anchor = home.Anchors().GetByTextContent("With'SingleQuoteAnd\"DoubleQuote");
       
-      Assert.That (anchor.GetText(), Is.EqualTo ("With'SingleQuoteAnd\"DoubleQuote"));
+      Assert.That(anchor.GetText(), Is.EqualTo("With'SingleQuoteAnd\"DoubleQuote"));
     }
     
     [Test]
@@ -190,9 +190,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var anchor = home.Anchors().GetByTextContentOrNull ("With'SingleQuoteAnd\"DoubleQuote");
+      var anchor = home.Anchors().GetByTextContentOrNull("With'SingleQuoteAnd\"DoubleQuote");
       
-      Assert.That (anchor.GetText(), Is.EqualTo ("With'SingleQuoteAnd\"DoubleQuote"));
+      Assert.That(anchor.GetText(), Is.EqualTo("With'SingleQuoteAnd\"DoubleQuote"));
     }
     
     [Test]
@@ -200,14 +200,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var anchorExists = home.Anchors().ExistsByTextContent ("With'SingleQuoteAnd\"DoubleQuote");
+      var anchorExists = home.Anchors().ExistsByTextContent("With'SingleQuoteAnd\"DoubleQuote");
       
-      Assert.That (anchorExists, Is.True);
+      Assert.That(anchorExists, Is.True);
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("AnchorTest.wxe");
+      return Start<WxePageObject>("AnchorTest.wxe");
     }
   }
 }

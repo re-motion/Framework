@@ -45,46 +45,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     [SetUp]
     public void SetUp ()
     {
-      _interceptedMethod = NormalizingMemberInfoFromExpressionUtility.GetMethod ((object o) => o.Equals (null));
+      _interceptedMethod = NormalizingMemberInfoFromExpressionUtility.GetMethod((object o) => o.Equals(null));
       _propertyName = "abc";
       _propertyType = typeof (int);
 
-      _interceptorPartialMock = MockRepository.GeneratePartialMock<ImplementingAccessorInterceptorBase> (
+      _interceptorPartialMock = MockRepository.GeneratePartialMock<ImplementingAccessorInterceptorBase>(
           _interceptedMethod, _propertyName, _propertyType);
 
-      _proxyType = MutableTypeObjectMother.Create (typeof (DomainObject));
+      _proxyType = MutableTypeObjectMother.Create(typeof (DomainObject));
     }
 
     [Test]
     public void CreateBody_BuildsCorrectBody_UsingAbstractTemplateMembers ()
     {
       var accessorImplementationMethod =
-          NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition ((PropertyAccessor a) => a.SetValue<object> (null));
-      var arguments = new Expression[] { Expression.Parameter (typeof (int), "param") };
-      var ctx = new MethodBodyModificationContext (_proxyType, false, new ParameterExpression[0], Type.EmptyTypes, typeof (int), null, null);
+          NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition((PropertyAccessor a) => a.SetValue<object>(null));
+      var arguments = new Expression[] { Expression.Parameter(typeof (int), "param") };
+      var ctx = new MethodBodyModificationContext(_proxyType, false, new ParameterExpression[0], Type.EmptyTypes, typeof (int), null, null);
       _interceptorPartialMock
-          .Stub (stub => PrivateInvoke.GetNonPublicProperty (stub, "AccessorImplementationMethod"))
-          .Return (accessorImplementationMethod);
+          .Stub(stub => PrivateInvoke.GetNonPublicProperty(stub, "AccessorImplementationMethod"))
+          .Return(accessorImplementationMethod);
       _interceptorPartialMock
-          .Stub (stub => PrivateInvoke.InvokeNonPublicMethod (stub, "GetArguments", Arg<MethodBaseBodyContextBase>.Is.Anything))
-          .WhenCalled (mi => Assert.That (mi.Arguments[0], Is.SameAs (ctx)))
-          .Return (arguments);
+          .Stub(stub => PrivateInvoke.InvokeNonPublicMethod(stub, "GetArguments", Arg<MethodBaseBodyContextBase>.Is.Anything))
+          .WhenCalled(mi => Assert.That(mi.Arguments[0], Is.SameAs(ctx)))
+          .Return(arguments);
 
-      var result = (Expression) PrivateInvoke.InvokeNonPublicMethod (_interceptorPartialMock, "CreateBody", ctx);
+      var result = (Expression) PrivateInvoke.InvokeNonPublicMethod(_interceptorPartialMock, "CreateBody", ctx);
 
       var expectedbody =
-          Expression.Call (
-              Expression.Call (
-                  Expression.Property (
-                      new ThisExpression (_proxyType),
-                      typeof (DomainObject).GetProperty ("Properties", BindingFlags.Instance | BindingFlags.NonPublic)),
+          Expression.Call(
+              Expression.Call(
+                  Expression.Property(
+                      new ThisExpression(_proxyType),
+                      typeof (DomainObject).GetProperty("Properties", BindingFlags.Instance | BindingFlags.NonPublic)),
                   "get_Item",
                   null,
-                  Expression.Constant ("abc")),
+                  Expression.Constant("abc")),
               "SetValue",
               new[] { typeof (int) },
               arguments);
-      ExpressionTreeComparer.CheckAreEqualTrees (expectedbody, result);
+      ExpressionTreeComparer.CheckAreEqualTrees(expectedbody, result);
     }
   }
 }

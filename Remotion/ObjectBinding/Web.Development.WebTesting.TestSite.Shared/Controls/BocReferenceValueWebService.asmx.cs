@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
     public IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments)
     {
-      return _iconServiceImplementation.GetIcon (new HttpContextWrapper (Context), businessObjectClass, businessObject, arguments);
+      return _iconServiceImplementation.GetIcon(new HttpContextWrapper(Context), businessObjectClass, businessObject, arguments);
     }
 
     [WebMethod]
@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         string arguments,
         string[] itemIDs)
     {
-      return itemIDs.Select (itemID => WebMenuItemProxy.Create (itemID, isDisabled: false)).ToArray();
+      return itemIDs.Select(itemID => WebMenuItemProxy.Create(itemID, isDisabled: false)).ToArray();
     }
   }
 }

@@ -69,11 +69,11 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
         ((ICustomerIntroduced) customer).Address = Address.NewObject();
         ((ICustomerIntroduced) customer).Title = "Chef1";
 
-        using (new CultureScope ("de-AT"))
+        using (new CultureScope("de-AT"))
         {
-          Assert.That (
+          Assert.That(
               () => ClientTransaction.Current.Commit(),
-              Throws.TypeOf<ExtendedDomainObjectValidationException>().And.Message.Matches (
+              Throws.TypeOf<ExtendedDomainObjectValidationException>().And.Message.Matches(
                   "One or more DomainObject contain inconsistent data:\r\n\r\n"
                   + "Object 'Order.*':\r\n"
                   + " -- Number: The value must have between 3 and 8 characters.\r\n\r\n"
@@ -90,14 +90,14 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
       {
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
-          Assert.That (ClientTransaction.Current.ParentTransaction, Is.Not.Null);
+          Assert.That(ClientTransaction.Current.ParentTransaction, Is.Not.Null);
 
           var order = Order.NewObject();
           order.Number = "er";
 
           Customer.NewObject();
 
-          Assert.That (() => ClientTransaction.Current.Commit(), Throws.Nothing);
+          Assert.That(() => ClientTransaction.Current.Commit(), Throws.Nothing);
         }
       }
     }

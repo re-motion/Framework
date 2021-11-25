@@ -40,15 +40,15 @@ namespace Remotion
     {
       if (! _disposed)
       {
-        Dispose (true);
-        GC.SuppressFinalize (this);
+        Dispose(true);
+        GC.SuppressFinalize(this);
         _disposed = true;
       }
     }
 
     ~DisposableExplicitBase()
     {
-      Dispose (false);
+      Dispose(false);
     }
 
     protected bool Disposed
@@ -59,7 +59,7 @@ namespace Remotion
     protected void AssertNotDisposed ()
     {
       if (_disposed)
-        throw new InvalidOperationException ("Object disposed.");
+        throw new InvalidOperationException("Object disposed.");
     }
 
     protected void Resurrect ()
@@ -67,7 +67,7 @@ namespace Remotion
       if (_disposed)
       {
         _disposed = false;
-        GC.ReRegisterForFinalize (this);
+        GC.ReRegisterForFinalize(this);
       }
     }
   }

@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
 
     public DisplayNameControlSelectionCommandBuilder ([NotNull] string displayName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("displayName", displayName);
+      ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
 
       _displayName = displayName;
     }
@@ -48,25 +48,25 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     /// <inheritdoc/>
     IControlSelectionCommand<TControlObject> IControlSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
 
-      return new DisplayNameControlSelectionCommand<TControlObject> (controlSelector, _displayName);
+      return new DisplayNameControlSelectionCommand<TControlObject>(controlSelector, _displayName);
     }
 
     /// <inheritdoc/>
     IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
 
-      return new DisplayNameControlSelectionCommand<TControlObject> (controlSelector, _displayName);
+      return new DisplayNameControlSelectionCommand<TControlObject>(controlSelector, _displayName);
     }
 
     /// <inheritdoc/>
     IControlExistsCommand IControlExistsCommandBuilder<TControlSelector>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
 
-      return new DisplayNameControlSelectionCommand<TControlObject> (controlSelector, _displayName);
+      return new DisplayNameControlSelectionCommand<TControlObject>(controlSelector, _displayName);
     }
   }
 }

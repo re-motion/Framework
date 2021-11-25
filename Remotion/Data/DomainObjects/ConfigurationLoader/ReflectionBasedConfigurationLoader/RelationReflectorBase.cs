@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyMetadataProvider propertyMetadataProvider)
         : base (classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
-      BidirectionalRelationAttribute = PropertyInfo.GetCustomAttribute<T> (true);
+      BidirectionalRelationAttribute = PropertyInfo.GetCustomAttribute<T>(true);
     }
 
     public T BidirectionalRelationAttribute { get; private set; }
@@ -43,14 +43,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     protected IPropertyInformation GetOppositePropertyInfo ()
     {
-      var type = ReflectionUtility.GetRelatedObjectTypeFromRelationProperty (PropertyInfo);
-      var propertyFinder = new NameBasedPropertyFinder (
+      var type = ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(PropertyInfo);
+      var propertyFinder = new NameBasedPropertyFinder(
           BidirectionalRelationAttribute.OppositeProperty, 
           type, 
           true, 
           true, 
           NameResolver, 
-          new PersistentMixinFinder (type, true),
+          new PersistentMixinFinder(type, true),
           PropertyMetadataProvider);
       
       return propertyFinder.FindPropertyInfos().LastOrDefault();

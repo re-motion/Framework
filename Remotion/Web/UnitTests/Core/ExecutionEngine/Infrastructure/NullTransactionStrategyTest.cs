@@ -34,8 +34,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [SetUp]
     public void SetUp ()
     {
-      WxeContextFactory wxeContextFactory = new WxeContextFactory ();
-      _context = wxeContextFactory.CreateContext (new TestFunction ());
+      WxeContextFactory wxeContextFactory = new WxeContextFactory();
+      _context = wxeContextFactory.CreateContext(new TestFunction());
 
       _executionListenerMock = new Mock<IWxeFunctionExecutionListener>();
 
@@ -45,37 +45,37 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void IsNull ()
     {
-      Assert.That (_strategy.IsNull, Is.True);
+      Assert.That(_strategy.IsNull, Is.True);
     }
 
     [Test]
     public void GetOuterTransactionStrategy ()
     {
-      Assert.That (_strategy.OuterTransactionStrategy, Is.Null);
+      Assert.That(_strategy.OuterTransactionStrategy, Is.Null);
     }
 
     [Test]
     public void GetNativeTransaction ()
     {
-      Assert.That (_strategy.GetNativeTransaction<ITransaction>(), Is.Null);
+      Assert.That(_strategy.GetNativeTransaction<ITransaction>(), Is.Null);
     }
 
     [Test]
     public void CreateChildTransactionStrategy ()
     {
-      Assert.That (_strategy.CreateChildTransactionStrategy (true, new Mock<IWxeFunctionExecutionContext>().Object, _context), Is.Null);
+      Assert.That(_strategy.CreateChildTransactionStrategy(true, new Mock<IWxeFunctionExecutionContext>().Object, _context), Is.Null);
     }
 
     [Test]
     public void UnregisterChildTransactionStrategy ()
     {
-      _strategy.UnregisterChildTransactionStrategy (new Mock<TransactionStrategyBase>().Object);
+      _strategy.UnregisterChildTransactionStrategy(new Mock<TransactionStrategyBase>().Object);
     }
 
     [Test]
     public void EnsureCompatibility ()
     {
-      _strategy.EnsureCompatibility (null);
+      _strategy.EnsureCompatibility(null);
     }
 
     [Test]
@@ -87,42 +87,42 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void Rollback ()
     {
-      _strategy.Rollback ();
+      _strategy.Rollback();
     }
 
     [Test]
     public void Reset ()
     {
-      _strategy.Reset ();
+      _strategy.Reset();
     }
 
     [Test]
     public void OnExecutionPlay ()
     {
-      _strategy.OnExecutionPlay (_context, _executionListenerMock.Object);
-      _executionListenerMock.Verify (mock => mock.OnExecutionPlay (_context), Times.AtLeastOnce());
+      _strategy.OnExecutionPlay(_context, _executionListenerMock.Object);
+      _executionListenerMock.Verify(mock => mock.OnExecutionPlay(_context), Times.AtLeastOnce());
     }
 
     [Test]
     public void OnExecutionStop ()
     {
-      _strategy.OnExecutionStop (_context, _executionListenerMock.Object);
-      _executionListenerMock.Verify (mock => mock.OnExecutionStop (_context), Times.AtLeastOnce());
+      _strategy.OnExecutionStop(_context, _executionListenerMock.Object);
+      _executionListenerMock.Verify(mock => mock.OnExecutionStop(_context), Times.AtLeastOnce());
     }
 
     [Test]
     public void OnExecutionPause ()
     {
-      _strategy.OnExecutionPause (_context, _executionListenerMock.Object);
-      _executionListenerMock.Verify (mock => mock.OnExecutionPause (_context), Times.AtLeastOnce());
+      _strategy.OnExecutionPause(_context, _executionListenerMock.Object);
+      _executionListenerMock.Verify(mock => mock.OnExecutionPause(_context), Times.AtLeastOnce());
     }
 
     [Test]
     public void OnExecutionFail ()
     {
-      var exception = new Exception ();
-      _strategy.OnExecutionFail (_context, _executionListenerMock.Object, exception);
-      _executionListenerMock.Verify (mock => mock.OnExecutionFail (_context, exception), Times.AtLeastOnce());
+      var exception = new Exception();
+      _strategy.OnExecutionFail(_context, _executionListenerMock.Object, exception);
+      _executionListenerMock.Verify(mock => mock.OnExecutionFail(_context, exception), Times.AtLeastOnce());
     }
   }
 }

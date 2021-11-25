@@ -25,14 +25,14 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentB.ValidationC
   {
     public SpecialCustomerValidationRuleCollector1 ()
     {
-      RemoveRule (c => c.LastName).Validator<NotNullValidator>();
-      RemoveRule (c => c.FirstName).Validator<NotNullValidator> ();
-      RemoveRule (c => c.UserName).Validator<EqualValidator>(); //Customer-Equal Validator HardConstraint!
+      RemoveRule(c => c.LastName).Validator<NotNullValidator>();
+      RemoveRule(c => c.FirstName).Validator<NotNullValidator>();
+      RemoveRule(c => c.UserName).Validator<EqualValidator>(); //Customer-Equal Validator HardConstraint!
 
-      RemoveRule (c => c.PhoneNumber).Validator<LengthValidator, CustomerValidationRuleCollector1> ();
-      RemoveRule (c => c.PhoneNumber).Validator<LengthValidator, CustomerValidationRuleCollector2> ();
-      RemoveRule (c => c.PhoneNumber).Validator<LengthValidator, CustomerValidationRuleCollector1> ();
-      RemoveRule (c => c.PhoneNumber).Validator<LengthValidator> ();
+      RemoveRule(c => c.PhoneNumber).Validator<LengthValidator, CustomerValidationRuleCollector1>();
+      RemoveRule(c => c.PhoneNumber).Validator<LengthValidator, CustomerValidationRuleCollector2>();
+      RemoveRule(c => c.PhoneNumber).Validator<LengthValidator, CustomerValidationRuleCollector1>();
+      RemoveRule(c => c.PhoneNumber).Validator<LengthValidator>();
     }
   }
 }

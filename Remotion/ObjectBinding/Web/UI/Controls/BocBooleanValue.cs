@@ -99,37 +99,37 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
     {
-      return new BocBooleanValueConstraintVisitor (this);
+      return new BocBooleanValueConstraintVisitor(this);
     }
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      EvaluateWaiConformity ();
+      EvaluateWaiConformity();
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     protected virtual IBocBooleanValueRenderer CreateRenderer ()
     {
-      return ServiceLocator.GetInstance<IBocBooleanValueRenderer> ();
+      return ServiceLocator.GetInstance<IBocBooleanValueRenderer>();
     }
 
     protected virtual BocBooleanValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      Assertion.IsNotNull (Context, "Context must not be null.");
+      Assertion.IsNotNull(Context, "Context must not be null.");
 
-      return new BocBooleanValueRenderingContext (Context, writer, this);
+      return new BocBooleanValueRenderingContext(Context, writer, this);
     }
 
     [Obsolete ("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("For DependDB only.");
+      throw new NotImplementedException("For DependDB only.");
     }
 
     /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
@@ -144,8 +144,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators()">BusinessObjectBoundEditableWebControl.CreateValidators()</seealso>
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
-      var validatorFactory = ServiceLocator.GetInstance<IBocBooleanValueValidatorFactory> ();
-      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList ().AsReadOnly();
+      var validatorFactory = ServiceLocator.GetInstance<IBocBooleanValueValidatorFactory>();
+      _validators = validatorFactory.CreateValidators(this, isReadOnly).ToList().AsReadOnly();
 
       OverrideValidatorErrorMessages();
 
@@ -154,8 +154,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OverrideValidatorErrorMessages ()
     {
-      if (!string.IsNullOrEmpty (_errorMessage) )
-        UpdateValidtaorErrorMessages<CompareValidator> (_errorMessage);
+      if (!string.IsNullOrEmpty(_errorMessage) )
+        UpdateValidtaorErrorMessages<CompareValidator>(_errorMessage);
     }
 
     private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
@@ -167,12 +167,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      base.RegisterHtmlHeadContents (htmlHeadAppender);
+      base.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
     /// <summary> 
@@ -186,7 +186,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
     public override string[] GetTrackedClientIDs ()
     {
-      return IsReadOnly ? new string[0] : new[] { GetValueName () };
+      return IsReadOnly ? new string[0] : new[] { GetValueName() };
     }
 
     string IBocBooleanValue.GetValueName ()
@@ -247,7 +247,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _errorMessage = value;
-        UpdateValidtaorErrorMessages<CompareValidator> (_errorMessage);
+        UpdateValidtaorErrorMessages<CompareValidator>(_errorMessage);
       }
     }
 
@@ -280,7 +280,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public override string? FocusID
     {
-      get { return IsReadOnly ? null : GetDisplayValueName (); }
+      get { return IsReadOnly ? null : GetDisplayValueName(); }
     }
 
     /// <summary>
@@ -325,13 +325,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='..\..\doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadPostData/*' />
     protected override bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      string? newValueAsString = PageUtility.GetPostBackCollectionItem (Page!, GetValueName());
+      string? newValueAsString = PageUtility.GetPostBackCollectionItem(Page!, GetValueName());
       bool? newValue = null;
       bool isDataChanged = false;
       if (newValueAsString != null)
       {
         if (newValueAsString != c_nullString)
-          newValue = bool.Parse (newValueAsString);
+          newValue = bool.Parse(newValueAsString);
         isDataChanged = _value != newValue;
       }
       if (isDataChanged)
@@ -347,7 +347,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected virtual void EvaluateWaiConformity ()
     {
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError (1, this);
+        WcagHelper.Instance.HandleError(1, this);
     }
 
     /// <summary>
@@ -357,10 +357,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void OnPreRender (EventArgs e)
     {
       EnsureChildControls();
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       var resourceManager = GetResourceManager();
-      LoadResources (resourceManager, GlobalizationService);
+      LoadResources(resourceManager, GlobalizationService);
     }
 
     /// <summary>
@@ -371,7 +371,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       object?[] values = (object?[]) savedState!;
 
-      base.LoadControlState (values[0]);
+      base.LoadControlState(values[0]);
       _value = (bool?) values[1];
     }
 
@@ -402,38 +402,38 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     public override IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (ResourceIdentifier));
+      return GetResourceManager(typeof (ResourceIdentifier));
     }
 
     IResourceManager IControlWithResourceManager.GetResourceManager ()
     {
-      return GetResourceManager ();
+      return GetResourceManager();
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      base.LoadResources (resourceManager, globalizationService);
+      base.LoadResources(resourceManager, globalizationService);
 
       string? key;
-      key = ResourceManagerUtility.GetGlobalResourceKey (TrueDescription);
-      if (! string.IsNullOrEmpty (key))
-        TrueDescription = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(TrueDescription);
+      if (! string.IsNullOrEmpty(key))
+        TrueDescription = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (FalseDescription);
-      if (! string.IsNullOrEmpty (key))
-        FalseDescription = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(FalseDescription);
+      if (! string.IsNullOrEmpty(key))
+        FalseDescription = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (NullDescription);
-      if (! string.IsNullOrEmpty (key))
-        NullDescription = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(NullDescription);
+      if (! string.IsNullOrEmpty(key))
+        NullDescription = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
-      if (! string.IsNullOrEmpty (key))
-        ErrorMessage = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage);
+      if (! string.IsNullOrEmpty(key))
+        ErrorMessage = resourceManager.GetString(key);
     }
 
     /// <summary> <see cref="BocBooleanValue"/> supports only scalar properties. </summary>
@@ -447,7 +447,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     BocBooleanValueResourceSet? IBocBooleanValue.CreateResourceSet ()
     {
-      return CreateResourceSet ();
+      return CreateResourceSet();
     }
 
     protected override string ControlType

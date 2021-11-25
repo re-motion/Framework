@@ -57,28 +57,28 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     
     public void WriteAclExpansion (List<AclExpansionEntry> aclExpansion)
     {
-      ArgumentUtility.CheckNotNull ("aclExpansion", aclExpansion);
-      using (var textWriter = _textWriterFactory.CreateTextWriter (MasterFileName))
+      ArgumentUtility.CheckNotNull("aclExpansion", aclExpansion);
+      using (var textWriter = _textWriterFactory.CreateTextWriter(MasterFileName))
       {
-        _implementation = new AclExpansionHtmlWriterImplementationBase (textWriter, _indentXml);
+        _implementation = new AclExpansionHtmlWriterImplementationBase(textWriter, _indentXml);
 
-        _implementation.WritePageStart (AclToolsExpansion.PageTitle);
-        _implementation.WriteTableStart ("remotion-user-table");
-        WriteTableHeaders ();
-        WriteTableBody (aclExpansion);
-        _implementation.WriteTableEnd ();
-        _implementation.WritePageEnd ();
+        _implementation.WritePageStart(AclToolsExpansion.PageTitle);
+        _implementation.WriteTableStart("remotion-user-table");
+        WriteTableHeaders();
+        WriteTableBody(aclExpansion);
+        _implementation.WriteTableEnd();
+        _implementation.WritePageEnd();
       }
     }
 
     private void WriteTableHeaders ()
     {
-      _implementation.HtmlTagWriter.Tags.tr ();
-      _implementation.WriteHeaderCell (AclToolsExpansion.UserTableHeader);  
-      _implementation.WriteHeaderCell (AclToolsExpansion.FirstNameTableHeader);
-      _implementation.WriteHeaderCell (AclToolsExpansion.LastNameTableHeader);
-      _implementation.WriteHeaderCell (AclToolsExpansion.AccessRightsNameTableHeader);
-      _implementation.HtmlTagWriter.Tags.trEnd ();
+      _implementation.HtmlTagWriter.Tags.tr();
+      _implementation.WriteHeaderCell(AclToolsExpansion.UserTableHeader);  
+      _implementation.WriteHeaderCell(AclToolsExpansion.FirstNameTableHeader);
+      _implementation.WriteHeaderCell(AclToolsExpansion.LastNameTableHeader);
+      _implementation.WriteHeaderCell(AclToolsExpansion.AccessRightsNameTableHeader);
+      _implementation.HtmlTagWriter.Tags.trEnd();
     }
 
 
@@ -86,43 +86,43 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     private void WriteTableBody (List<AclExpansionEntry> aclExpansion)
     {
-      var users = GetUsers (aclExpansion);
+      var users = GetUsers(aclExpansion);
 
       foreach (var user in users)
       {
         // Note: Due to HTML-table-cells using rowspan attribute it is not safe to assume that we are already in a table row here
         // (i.e. that a <tr>-tag has already been written).
-        _implementation.WriteTableRowBeginIfNotInTableRow (); 
-        WriteTableBody_ProcessUser (user, aclExpansion);
-        _implementation.WriteTableRowEnd ();
+        _implementation.WriteTableRowBeginIfNotInTableRow(); 
+        WriteTableBody_ProcessUser(user, aclExpansion);
+        _implementation.WriteTableRowEnd();
       }
     }
 
     // Note: Method name has been picked in analogy to method names in AclExpansionHtmlWriter.
     private void WriteTableBody_ProcessUser (User user, List<AclExpansionEntry> aclExpansion)
     {
-      _implementation.WriteTableData (user.UserName);
-      _implementation.WriteTableData (user.FirstName);
-      _implementation.WriteTableData (user.LastName);
+      _implementation.WriteTableData(user.UserName);
+      _implementation.WriteTableData(user.FirstName);
+      _implementation.WriteTableData(user.LastName);
 
-      string userDetailFileName = AclExpansionHtmlWriterImplementationBase.ToValidFileName (user.UserName); 
-      using (var detailTextWriter = _textWriterFactory.CreateTextWriter (userDetailFileName))
+      string userDetailFileName = AclExpansionHtmlWriterImplementationBase.ToValidFileName(user.UserName); 
+      using (var detailTextWriter = _textWriterFactory.CreateTextWriter(userDetailFileName))
       {
 
-        var aclExpansionSingleUser = GetAccessControlEntriesForUser (aclExpansion, user);
-        var detailAclExpansionHtmlWriter = new AclExpansionHtmlWriter (detailTextWriter, false, _detailHtmlWriterSettings);
-        detailAclExpansionHtmlWriter.WriteAclExpansion (aclExpansionSingleUser);
+        var aclExpansionSingleUser = GetAccessControlEntriesForUser(aclExpansion, user);
+        var detailAclExpansionHtmlWriter = new AclExpansionHtmlWriter(detailTextWriter, false, _detailHtmlWriterSettings);
+        detailAclExpansionHtmlWriter.WriteAclExpansion(aclExpansionSingleUser);
       }
 
-      string relativePath = _textWriterFactory.GetRelativePath (MasterFileName, userDetailFileName);
-      _implementation.WriteTableRowBeginIfNotInTableRow (); 
-      _implementation.HtmlTagWriter.Tags.td ();
+      string relativePath = _textWriterFactory.GetRelativePath(MasterFileName, userDetailFileName);
+      _implementation.WriteTableRowBeginIfNotInTableRow(); 
+      _implementation.HtmlTagWriter.Tags.td();
       _implementation.HtmlTagWriter.Tags.a();
-      _implementation.HtmlTagWriter.Attribute ("href", relativePath);
-      _implementation.HtmlTagWriter.Attribute ("target", "_blank");
-      _implementation.HtmlTagWriter.Value (relativePath);
-      _implementation.HtmlTagWriter.Tags.aEnd ();
-      _implementation.HtmlTagWriter.Tags.tdEnd ();
+      _implementation.HtmlTagWriter.Attribute("href", relativePath);
+      _implementation.HtmlTagWriter.Attribute("target", "_blank");
+      _implementation.HtmlTagWriter.Value(relativePath);
+      _implementation.HtmlTagWriter.Tags.aEnd();
+      _implementation.HtmlTagWriter.Tags.tdEnd();
     }
 
 
@@ -131,7 +131,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       return (from aee in aclExpansion
              let user = aee.User
              orderby user.LastName, user.FirstName, user.UserName
-              select user).Distinct ().ToList ();
+              select user).Distinct().ToList();
     }
 
     public static List<AclExpansionEntry> GetAccessControlEntriesForUser (IEnumerable<AclExpansionEntry> aclExpansion, User user)

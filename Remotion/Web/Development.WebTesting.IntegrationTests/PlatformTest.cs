@@ -29,16 +29,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var currentServerPlatform = home.Labels().GetByID ("body_CurrentPlatform");
+      var currentServerPlatform = home.Labels().GetByID("body_CurrentPlatform");
 
       var testPlatform = Environment.Is64BitProcess ? "x64" : "x86";
 
-      Assert.That (currentServerPlatform.GetText(), Is.EqualTo (testPlatform));
+      Assert.That(currentServerPlatform.GetText(), Is.EqualTo(testPlatform));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("PlatformTest.wxe");
+      return Start<WxePageObject>("PlatformTest.wxe");
     }
   }
 }

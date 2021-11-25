@@ -29,10 +29,10 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public virtual TransactionStrategyBase CreateTransactionStrategy (WxeFunction function, WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("function", function);
+      ArgumentUtility.CheckNotNull("function", function);
 
       var outerTransactionStrategy = function.ParentFunction != null? function.ParentFunction.TransactionStrategy : NullTransactionStrategy.Null;
-      return new NoneTransactionStrategy (outerTransactionStrategy);
+      return new NoneTransactionStrategy(outerTransactionStrategy);
     }
 
     public bool AutoCommit

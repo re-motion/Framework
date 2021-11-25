@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
       VisibleControlID = data.Arguments[0];
       HiddenControlID = data.Arguments[1];

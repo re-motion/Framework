@@ -31,58 +31,58 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefinit
 
     public override void OneTimeSetUp ()
     {
-      base.OneTimeSetUp ();
+      base.OneTimeSetUp();
     
-      _dbFixtures = new DatabaseFixtures ();
-      _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.CreateRootTransaction());
+      _dbFixtures = new DatabaseFixtures();
+      _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.CreateRootTransaction());
     }
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ();
+      ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope();
     }
 
     [Test]
     public void Find_EmptyResult ()
     {
-      var result = AbstractRoleDefinition.Find (new EnumWrapper[0]);
+      var result = AbstractRoleDefinition.Find(new EnumWrapper[0]);
 
-      Assert.That (result, Is.Empty);
+      Assert.That(result, Is.Empty);
     }
 
     [Test]
     public void Find_ValidOneAbstractRole ()
     {
-      var abstractRoles = new[] { EnumWrapper.Get (ProjectRoles.QualityManager) };
-      var result = AbstractRoleDefinition.Find (abstractRoles);
+      var abstractRoles = new[] { EnumWrapper.Get(ProjectRoles.QualityManager) };
+      var result = AbstractRoleDefinition.Find(abstractRoles);
 
-      Assert.That (result.Count, Is.EqualTo (1));
-      Assert.That (result[0].Name, Is.EqualTo (abstractRoles[0].Name));
+      Assert.That(result.Count, Is.EqualTo(1));
+      Assert.That(result[0].Name, Is.EqualTo(abstractRoles[0].Name));
     }
 
     [Test]
     public void Find_ValidTwoAbstractRoles ()
     {
-      var abstractRoles = new[] { EnumWrapper.Get (ProjectRoles.QualityManager), EnumWrapper.Get (ProjectRoles.Developer) };
-      var result = AbstractRoleDefinition.Find (abstractRoles);
+      var abstractRoles = new[] { EnumWrapper.Get(ProjectRoles.QualityManager), EnumWrapper.Get(ProjectRoles.Developer) };
+      var result = AbstractRoleDefinition.Find(abstractRoles);
 
-      Assert.That (result.Count, Is.EqualTo (2));
-      Assert.That (result[0].Name, Is.EqualTo (abstractRoles[1].Name));
-      Assert.That (result[1].Name, Is.EqualTo (abstractRoles[0].Name));
+      Assert.That(result.Count, Is.EqualTo(2));
+      Assert.That(result[0].Name, Is.EqualTo(abstractRoles[1].Name));
+      Assert.That(result[1].Name, Is.EqualTo(abstractRoles[0].Name));
     }
 
     [Test]
     public void FindAll_TwoFound ()
     {
-      var result = AbstractRoleDefinition.FindAll ();
+      var result = AbstractRoleDefinition.FindAll();
 
-      Assert.That (result.Count, Is.EqualTo (2));
+      Assert.That(result.Count, Is.EqualTo(2));
       for (int i = 0; i < result.Count; i++)
       {
         AbstractRoleDefinition abstractRole = result[i];
-        Assert.AreEqual (i, abstractRole.Index, "Wrong Index.");
+        Assert.AreEqual(i, abstractRole.Index, "Wrong Index.");
       }
     }
   }

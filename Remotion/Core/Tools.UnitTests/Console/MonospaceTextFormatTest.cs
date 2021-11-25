@@ -28,21 +28,21 @@ public class MonospaceTextFormatTest
   [Test]
   public void TestSplitTextOnSeparator ()
   {
-    AssertTextSplit ("12345 abcde",         10, "12345",        "abcde");
-    AssertTextSplit ("1234567890 abcde",    10, "1234567890",   "abcde");
-    AssertTextSplit ("12345678901 abcde",   10, "1234567890",   "1 abcde");
-    AssertTextSplit ("1234 6789 bcde fghi", 10, "1234 6789",    "bcde fghi");
-    AssertTextSplit ("1234567",             10, "1234567",      null);
-    AssertTextSplit ("1234567890",          10, "1234567890",   null);
-    AssertTextSplit ("12345678901",         10, "1234567890",   "1");
-    AssertTextSplit ("",                     0, "",             null);
+    AssertTextSplit("12345 abcde",         10, "12345",        "abcde");
+    AssertTextSplit("1234567890 abcde",    10, "1234567890",   "abcde");
+    AssertTextSplit("12345678901 abcde",   10, "1234567890",   "1 abcde");
+    AssertTextSplit("1234 6789 bcde fghi", 10, "1234 6789",    "bcde fghi");
+    AssertTextSplit("1234567",             10, "1234567",      null);
+    AssertTextSplit("1234567890",          10, "1234567890",   null);
+    AssertTextSplit("12345678901",         10, "1234567890",   "1");
+    AssertTextSplit("",                     0, "",             null);
   }
 
   private void AssertTextSplit (string text, int splitAt, string expectedBefore, string expectedAfter)
   {
-    MonospaceTextFormat.SplitTextOnSeparator (text, out var before, out var after, splitAt, new char[] {' '});
-    Assert.That (before, Is.EqualTo (expectedBefore));
-    Assert.That (after, Is.EqualTo (expectedAfter));
+    MonospaceTextFormat.SplitTextOnSeparator(text, out var before, out var after, splitAt, new char[] {' '});
+    Assert.That(before, Is.EqualTo(expectedBefore));
+    Assert.That(after, Is.EqualTo(expectedAfter));
   }
 
   [Test]
@@ -50,8 +50,8 @@ public class MonospaceTextFormatTest
   {
     string label = "this is the label  ";
     string description = "the quick brown fox jumps over the lazy dog. THE (VERY QUICK) FOX JUMPS OVER THE LAZY DOG.";
-    StringBuilder sb = new StringBuilder (label);
-    MonospaceTextFormat.AppendIndentedText (sb, label.Length, 30, description);
+    StringBuilder sb = new StringBuilder(label);
+    MonospaceTextFormat.AppendIndentedText(sb, label.Length, 30, description);
     string expectedText = 
             "this is the label  the quick"
         + "\n                   brown fox"
@@ -63,7 +63,7 @@ public class MonospaceTextFormatTest
         + "\n                   JUMPS OVER"
         + "\n                   THE LAZY"
         + "\n                   DOG.";
-    Assert.That (sb.ToString(), Is.EqualTo (expectedText));
+    Assert.That(sb.ToString(), Is.EqualTo(expectedText));
   }
 }
 

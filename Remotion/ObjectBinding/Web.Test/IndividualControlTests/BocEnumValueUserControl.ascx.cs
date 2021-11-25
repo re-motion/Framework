@@ -100,23 +100,23 @@ public class BocEnumValueUserControl : BaseUserControl
 
   override protected void OnLoad (EventArgs e)
   {
-    base.OnLoad (e);
+    base.OnLoad(e);
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    GenderField.LoadUnboundValue ((Gender?)null, IsPostBack);
+    GenderField.LoadUnboundValue((Gender?)null, IsPostBack);
 
     UnboundMarriageStatusField.Property = (IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     //UnboundMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-    UnboundReadOnlyMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
+    UnboundReadOnlyMarriageStatusField.LoadUnboundValue(person.MarriageStatus, IsPostBack);
     DisabledUnboundMarriageStatusField.Property = (IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
-    DisabledUnboundMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-    DisabledUnboundReadOnlyMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
+    DisabledUnboundMarriageStatusField.LoadUnboundValue(person.MarriageStatus, IsPostBack);
+    DisabledUnboundReadOnlyMarriageStatusField.LoadUnboundValue(person.MarriageStatus, IsPostBack);
 
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus (MarriageStatusField);
+        ((ISmartNavigablePage) Page).SetFocus(MarriageStatusField);
     }
 
     EnumObject.BusinessObject = (IBusinessObject) ClassWithEnums.CreateObject();
@@ -130,20 +130,20 @@ public class BocEnumValueUserControl : BaseUserControl
 
   override protected void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    SetDebugLabel (GenderField, GenderFieldValueLabel);
-    SetDebugLabel (ReadOnlyGenderField, ReadOnlyGenderFieldValueLabel);
-    SetDebugLabel (MarriageStatusField, MarriageStatusFieldValueLabel);
-    SetDebugLabel (UnboundMarriageStatusField, UnboundMarriageStatusFieldValueLabel);
-    SetDebugLabel (UnboundReadOnlyMarriageStatusField, UnboundReadOnlyMarriageStatusFieldValueLabel);
-    SetDebugLabel (DeceasedAsEnumField, DeceasedAsEnumFieldValueLabel);
-    SetDebugLabel (DisabledGenderField, DisabledGenderFieldValueLabel);
-    SetDebugLabel (DisabledReadOnlyGenderField, DisabledReadOnlyGenderFieldValueLabel);
-    SetDebugLabel (DisabledMarriageStatusField, DisabledMarriageStatusFieldValueLabel);
-    SetDebugLabel (DisabledUnboundMarriageStatusField, DisabledUnboundMarriageStatusFieldValueLabel);
-    SetDebugLabel (DisabledUnboundReadOnlyMarriageStatusField, DisabledUnboundReadOnlyMarriageStatusFieldValueLabel);
-    SetDebugLabel (InstanceEnumField, InstanceEnumFieldValueLabel);
+    SetDebugLabel(GenderField, GenderFieldValueLabel);
+    SetDebugLabel(ReadOnlyGenderField, ReadOnlyGenderFieldValueLabel);
+    SetDebugLabel(MarriageStatusField, MarriageStatusFieldValueLabel);
+    SetDebugLabel(UnboundMarriageStatusField, UnboundMarriageStatusFieldValueLabel);
+    SetDebugLabel(UnboundReadOnlyMarriageStatusField, UnboundReadOnlyMarriageStatusFieldValueLabel);
+    SetDebugLabel(DeceasedAsEnumField, DeceasedAsEnumFieldValueLabel);
+    SetDebugLabel(DisabledGenderField, DisabledGenderFieldValueLabel);
+    SetDebugLabel(DisabledReadOnlyGenderField, DisabledReadOnlyGenderFieldValueLabel);
+    SetDebugLabel(DisabledMarriageStatusField, DisabledMarriageStatusFieldValueLabel);
+    SetDebugLabel(DisabledUnboundMarriageStatusField, DisabledUnboundMarriageStatusFieldValueLabel);
+    SetDebugLabel(DisabledUnboundReadOnlyMarriageStatusField, DisabledUnboundReadOnlyMarriageStatusFieldValueLabel);
+    SetDebugLabel(InstanceEnumField, InstanceEnumFieldValueLabel);
   }
 
   private void SetDebugLabel (IBusinessObjectBoundWebControl control, Label label)

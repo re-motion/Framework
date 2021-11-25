@@ -22,7 +22,7 @@ namespace Remotion.Security.UnitTests.XmlAsserter
 
     public override void WriteMessageTo (MessageWriter writer)
     {
-      writer.Write (String.Join ("\n", _messages));
+      writer.Write(String.Join("\n", _messages));
     }
   }
 }

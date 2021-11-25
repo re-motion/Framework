@@ -29,9 +29,9 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     {
       var factory = new ObjectMetaValidationRuleValidatorFactory();
 
-      var result = factory.CreateObjectMetaValidationRuleValidator (new IObjectMetaValidationRuleCollector[0]);
+      var result = factory.CreateObjectMetaValidationRuleValidator(new IObjectMetaValidationRuleCollector[0]);
 
-      Assert.That (result, Is.TypeOf (typeof (ObjectMetaValidationRuleValidator)));
+      Assert.That(result, Is.TypeOf(typeof (ObjectMetaValidationRuleValidator)));
     }
   }
 }

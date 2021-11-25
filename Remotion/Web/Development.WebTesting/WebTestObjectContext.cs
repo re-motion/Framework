@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </exception>
     protected WebTestObjectContext ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       _scope = scope;
       _scope.EnsureExistence();

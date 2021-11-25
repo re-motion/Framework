@@ -34,58 +34,58 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       base.SetUp();
 
       _eventSinkWithDynamicMock = MockRepository.GenerateMock<IClientTransactionEventSink>();
-      _map = new DataContainerMap (_eventSinkWithDynamicMock);
+      _map = new DataContainerMap(_eventSinkWithDynamicMock);
     }
 
     [Test]
     public void CommitAllDataContainers_CommitsDataContainers ()
     {
-      var dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      _map.Register (dataContainer);
-      Assert.That (dataContainer.State.IsNew, Is.True);
+      var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
+      _map.Register(dataContainer);
+      Assert.That(dataContainer.State.IsNew, Is.True);
 
       _map.CommitAllDataContainers();
 
-      Assert.That (dataContainer.State.IsUnchanged, Is.True);
+      Assert.That(dataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void RollbackAllDataContainers_RollsbackDataContainers ()
     {
-      var dataContainer = DataContainer.CreateForExisting (DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
+      var dataContainer = DataContainer.CreateForExisting(DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
       dataContainer.Delete();
-      _map.Register (dataContainer);
-      Assert.That (dataContainer.State.IsDeleted, Is.True);
+      _map.Register(dataContainer);
+      Assert.That(dataContainer.State.IsDeleted, Is.True);
 
       _map.RollbackAllDataContainers();
 
-      Assert.That (dataContainer.State.IsUnchanged, Is.True);
+      Assert.That(dataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void Remove_RemovesDataContainer ()
     {
-      var dataContainer = DataContainer.CreateForExisting (DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
-      _map.Register (dataContainer);
-      Assert.That (_map[DomainObjectIDs.Order1], Is.Not.Null);
+      var dataContainer = DataContainer.CreateForExisting(DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
+      _map.Register(dataContainer);
+      Assert.That(_map[DomainObjectIDs.Order1], Is.Not.Null);
 
-      _map.Remove (dataContainer.ID);
+      _map.Remove(dataContainer.ID);
 
-      Assert.That (_map[DomainObjectIDs.Order1], Is.Null);
+      Assert.That(_map[DomainObjectIDs.Order1], Is.Null);
     }
 
     [Test]
     public void Remove_RaisesNotification_BeforeRemoving ()
     {
-      var dataContainer = DataContainer.CreateForExisting (DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
-      _map.Register (dataContainer);
+      var dataContainer = DataContainer.CreateForExisting(DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
+      _map.Register(dataContainer);
 
-      Assert.That (_map[dataContainer.ID], Is.Not.Null);
+      Assert.That(_map[dataContainer.ID], Is.Not.Null);
 
-      _eventSinkWithDynamicMock.Expect (mock => mock.RaiseDataContainerMapUnregisteringEvent ( dataContainer))
-          .WhenCalled (mi => Assert.That (_map[dataContainer.ID], Is.Not.Null));
+      _eventSinkWithDynamicMock.Expect(mock => mock.RaiseDataContainerMapUnregisteringEvent( dataContainer))
+          .WhenCalled(mi => Assert.That(_map[dataContainer.ID], Is.Not.Null));
 
-      _map.Remove (dataContainer.ID);
+      _map.Remove(dataContainer.ID);
 
       _eventSinkWithDynamicMock.VerifyAllExpectations();
     }
@@ -93,10 +93,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void Remove_NonExistingDataContainer ()
     {
-      Assert.That (
-          () => _map.Remove (DomainObjectIDs.Order1),
+      Assert.That(
+          () => _map.Remove(DomainObjectIDs.Order1),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Data container 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not part of this map.", "id"));
     }
   }

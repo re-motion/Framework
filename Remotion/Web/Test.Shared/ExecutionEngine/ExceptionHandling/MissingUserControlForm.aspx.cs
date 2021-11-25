@@ -23,8 +23,8 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
   {
     protected override void OnPreInit (EventArgs e)
     {
-      base.OnPreInit (e);
-      LoadControl ("MissingUserControl.ascx");
+      base.OnPreInit(e);
+      LoadControl("MissingUserControl.ascx");
     }
   }
 }

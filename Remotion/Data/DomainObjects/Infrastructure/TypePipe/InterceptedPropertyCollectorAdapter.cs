@@ -41,10 +41,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public IEnumerable<IAccessorInterceptor> GetPropertyInterceptors (ClassDefinition classDefinition, Type concreteBaseType)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("concreteBaseType", concreteBaseType, typeof (DomainObject));
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("concreteBaseType", concreteBaseType, typeof (DomainObject));
 
-      var properties = new InterceptedPropertyCollector (classDefinition, _typeConversionProvider).GetProperties();
+      var properties = new InterceptedPropertyCollector(classDefinition, _typeConversionProvider).GetProperties();
 
       var interceptors = new List<IAccessorInterceptor>();
       foreach (var propertyEntry in properties)
@@ -52,11 +52,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
         var property = propertyEntry.Item1;
         var propertyName = propertyEntry.Item2;
 
-        var getter = property.GetGetMethod (true);
-        var setter = property.GetSetMethod (true);
+        var getter = property.GetGetMethod(true);
+        var setter = property.GetSetMethod(true);
 
-        AddAccessorInterceptor (interceptors, concreteBaseType, getter, propertyName, property.PropertyType, isGetter: true);
-        AddAccessorInterceptor (interceptors, concreteBaseType, setter, propertyName, property.PropertyType, isGetter: false);
+        AddAccessorInterceptor(interceptors, concreteBaseType, getter, propertyName, property.PropertyType, isGetter: true);
+        AddAccessorInterceptor(interceptors, concreteBaseType, setter, propertyName, property.PropertyType, isGetter: false);
       }
 
       return interceptors;
@@ -68,25 +68,25 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       if (accessor == null)
         return;
 
-      var mostDerivedAccessor = s_relatedMethodFinder.GetMostDerivedOverride (accessor, concreteBaseType);
-      if (!InterceptedPropertyCollector.IsOverridable (mostDerivedAccessor))
+      var mostDerivedAccessor = s_relatedMethodFinder.GetMostDerivedOverride(accessor, concreteBaseType);
+      if (!InterceptedPropertyCollector.IsOverridable(mostDerivedAccessor))
         return;
 
-      var interceptor = CreateAccessorInterceptor (mostDerivedAccessor, propertyName, propertyType, isGetter);
-      interceptors.Add (interceptor);
+      var interceptor = CreateAccessorInterceptor(mostDerivedAccessor, propertyName, propertyType, isGetter);
+      interceptors.Add(interceptor);
     }
 
     private IAccessorInterceptor CreateAccessorInterceptor (MethodInfo interceptedAccessor, string propertyName, Type propertyType, bool isGetter)
     {
-      if (InterceptedPropertyCollector.IsAutomaticPropertyAccessor (interceptedAccessor))
+      if (InterceptedPropertyCollector.IsAutomaticPropertyAccessor(interceptedAccessor))
       {
         if (isGetter)
-          return new ImplementingGetAccessorInterceptor (interceptedAccessor, propertyName, propertyType);
+          return new ImplementingGetAccessorInterceptor(interceptedAccessor, propertyName, propertyType);
         else
-          return new ImplementingSetAccessorInterceptor (interceptedAccessor, propertyName, propertyType);
+          return new ImplementingSetAccessorInterceptor(interceptedAccessor, propertyName, propertyType);
       }
       else
-        return new WrappingAccessorInterceptor (interceptedAccessor, propertyName);
+        return new WrappingAccessorInterceptor(interceptedAccessor, propertyName);
     }
   }
 }

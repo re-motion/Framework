@@ -37,7 +37,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithParamsArray ()
     {
-      _securityClient.CheckAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessTypes.First));
+      _securityClient.CheckAccess(_testHelper.SecurableObject, AccessType.Get(TestAccessTypes.First));
 
       _testHelper.VerifyAll();
     }
@@ -46,7 +46,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     public void Test_WithParamsArray_AndSecurityPrincipal ()
     {
       var securityPrincipal = _securityClient.PrincipalProvider.GetPrincipal();
-      _securityClient.CheckAccess (_testHelper.SecurableObject, securityPrincipal, AccessType.Get (TestAccessTypes.First));
+      _securityClient.CheckAccess(_testHelper.SecurableObject, securityPrincipal, AccessType.Get(TestAccessTypes.First));
 
       _testHelper.VerifyAll();
     }
@@ -55,7 +55,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted ()
     {
-      _securityClient.CheckAccess (_testHelper.SecurableObject, (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
+      _securityClient.CheckAccess(_testHelper.SecurableObject, (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
     }
@@ -65,7 +65,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckAccess (_testHelper.SecurableObject, (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
+        _securityClient.CheckAccess(_testHelper.SecurableObject, (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
       }
 
       _testHelper.VerifyAll();
@@ -74,7 +74,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithSecurityStrategyIsNull ()
     {
-      _securityClient.CheckAccess (new SecurableObject (null), (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
+      _securityClient.CheckAccess(new SecurableObject(null), (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
     }

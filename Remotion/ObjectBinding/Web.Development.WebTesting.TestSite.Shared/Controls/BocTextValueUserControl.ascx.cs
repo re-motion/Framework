@@ -28,14 +28,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
       SetTestOutput();
     }
 
     private void SetTestOutput ()
     {
-      TestOutput.SetCurrentValueNormal ((string) LastNameField_Normal.Value);
-      TestOutput.SetCurrentValueNoAutoPostBack ((string) LastNameField_NoAutoPostBack.Value);
+      TestOutput.SetCurrentValueNormal((string) LastNameField_Normal.Value);
+      TestOutput.SetCurrentValueNoAutoPostBack((string) LastNameField_NoAutoPostBack.Value);
     }
 
     private BocTextValueUserControlTestOutput TestOutput

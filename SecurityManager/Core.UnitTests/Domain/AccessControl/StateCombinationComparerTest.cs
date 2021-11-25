@@ -31,85 +31,85 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      _testHelper = new AccessControlTestHelper ();
+      base.SetUp();
+      _testHelper = new AccessControlTestHelper();
       _testHelper.Transaction.EnterNonDiscardingScope();
     }
 
     [Test]
     public void Equals_TwoStatelessCombinations ()
     {
-      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
-      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass);
-      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass);
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
+      StateCombination combination1 = _testHelper.CreateStateCombination(orderClass);
+      StateCombination combination2 = _testHelper.CreateStateCombination(orderClass);
 
-      StateCombinationComparer comparer = new StateCombinationComparer ();
+      StateCombinationComparer comparer = new StateCombinationComparer();
 
-      Assert.That (comparer.Equals (combination1, combination2), Is.True);
+      Assert.That(comparer.Equals(combination1, combination2), Is.True);
     }
 
     [Test]
     public void Equals_OneStatelessAndOneWithAState ()
     {
-      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
-      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
-      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass);
-      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, paymentProperty[EnumWrapper.Get (PaymentState.Paid).Name]);
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
+      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty(orderClass);
+      StateCombination combination1 = _testHelper.CreateStateCombination(orderClass);
+      StateCombination combination2 = _testHelper.CreateStateCombination(orderClass, paymentProperty[EnumWrapper.Get(PaymentState.Paid).Name]);
 
-      StateCombinationComparer comparer = new StateCombinationComparer ();
+      StateCombinationComparer comparer = new StateCombinationComparer();
 
-      Assert.That (comparer.Equals (combination1, combination2), Is.False);
+      Assert.That(comparer.Equals(combination1, combination2), Is.False);
     }
 
     [Test]
     public void Equals_TwoDifferent ()
     {
-      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
-      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
-      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass, paymentProperty[EnumWrapper.Get(PaymentState.None).Name]);
-      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, paymentProperty[EnumWrapper.Get (PaymentState.Paid).Name]);
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
+      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty(orderClass);
+      StateCombination combination1 = _testHelper.CreateStateCombination(orderClass, paymentProperty[EnumWrapper.Get(PaymentState.None).Name]);
+      StateCombination combination2 = _testHelper.CreateStateCombination(orderClass, paymentProperty[EnumWrapper.Get(PaymentState.Paid).Name]);
 
-      StateCombinationComparer comparer = new StateCombinationComparer ();
+      StateCombinationComparer comparer = new StateCombinationComparer();
 
-      Assert.That (comparer.Equals (combination1, combination2), Is.False);
+      Assert.That(comparer.Equals(combination1, combination2), Is.False);
     }
 
     [Test]
     public void GetHashCode_TwoStatelessCombinations ()
     {
-      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
-      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass);
-      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass);
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
+      StateCombination combination1 = _testHelper.CreateStateCombination(orderClass);
+      StateCombination combination2 = _testHelper.CreateStateCombination(orderClass);
 
-      StateCombinationComparer comparer = new StateCombinationComparer ();
+      StateCombinationComparer comparer = new StateCombinationComparer();
 
-      Assert.That (comparer.GetHashCode (combination2), Is.EqualTo (comparer.GetHashCode (combination1)));
+      Assert.That(comparer.GetHashCode(combination2), Is.EqualTo(comparer.GetHashCode(combination1)));
     }
 
     [Test]
     public void GetHashCode_OneStatelessAndOneWithAState ()
     {
-      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
-      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
-      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass);
-      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, paymentProperty[EnumWrapper.Get (PaymentState.Paid).Name]);
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
+      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty(orderClass);
+      StateCombination combination1 = _testHelper.CreateStateCombination(orderClass);
+      StateCombination combination2 = _testHelper.CreateStateCombination(orderClass, paymentProperty[EnumWrapper.Get(PaymentState.Paid).Name]);
 
-      StateCombinationComparer comparer = new StateCombinationComparer ();
+      StateCombinationComparer comparer = new StateCombinationComparer();
 
-      Assert.That (comparer.GetHashCode (combination2), Is.Not.EqualTo (comparer.GetHashCode (combination1)));
+      Assert.That(comparer.GetHashCode(combination2), Is.Not.EqualTo(comparer.GetHashCode(combination1)));
     }
 
     [Test]
     public void GetHashCode_TwoDifferent ()
     {
-      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
-      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
-      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass, paymentProperty[EnumWrapper.Get(PaymentState.None).Name]);
-      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, paymentProperty[EnumWrapper.Get (PaymentState.Paid).Name]);
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
+      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty(orderClass);
+      StateCombination combination1 = _testHelper.CreateStateCombination(orderClass, paymentProperty[EnumWrapper.Get(PaymentState.None).Name]);
+      StateCombination combination2 = _testHelper.CreateStateCombination(orderClass, paymentProperty[EnumWrapper.Get(PaymentState.Paid).Name]);
 
-      StateCombinationComparer comparer = new StateCombinationComparer ();
+      StateCombinationComparer comparer = new StateCombinationComparer();
 
-      Assert.That (comparer.GetHashCode (combination2), Is.Not.EqualTo (comparer.GetHashCode (combination1)));
+      Assert.That(comparer.GetHashCode(combination2), Is.Not.EqualTo(comparer.GetHashCode(combination1)));
     }
   }
 }

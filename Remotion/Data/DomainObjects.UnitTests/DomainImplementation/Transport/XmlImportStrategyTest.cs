@@ -31,60 +31,60 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     [Test]
     public void Import_DeserializesData ()
     {
-      var orderNumberPropertyDefinition = GetPropertyDefinition (typeof (Order), "OrderNumber");
+      var orderNumberPropertyDefinition = GetPropertyDefinition(typeof (Order), "OrderNumber");
 
-      DataContainer expectedContainer1 = DomainObjectIDs.Order1.GetObject<Order> ().InternalDataContainer;
-      DataContainer expectedContainer2 = DomainObjectIDs.Order3.GetObject<Order> ().InternalDataContainer;
+      DataContainer expectedContainer1 = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
+      DataContainer expectedContainer2 = DomainObjectIDs.Order3.GetObject<Order>().InternalDataContainer;
 
-      byte[] data = Encoding.UTF8.GetBytes (XmlSerializationStrings.XmlForOrder1Order2);
+      byte[] data = Encoding.UTF8.GetBytes(XmlSerializationStrings.XmlForOrder1Order2);
 
-      TransportItem[] items = Import (data);
-      Assert.That (items.Length, Is.EqualTo (2));
+      TransportItem[] items = Import(data);
+      Assert.That(items.Length, Is.EqualTo(2));
 
-      Assert.That (items[0].ID, Is.EqualTo (expectedContainer1.ID));
-      Assert.That (items[0].Properties[orderNumberPropertyDefinition.PropertyName], Is.EqualTo (expectedContainer1.GetValue (orderNumberPropertyDefinition)));
+      Assert.That(items[0].ID, Is.EqualTo(expectedContainer1.ID));
+      Assert.That(items[0].Properties[orderNumberPropertyDefinition.PropertyName], Is.EqualTo(expectedContainer1.GetValue(orderNumberPropertyDefinition)));
 
-      Assert.That (items[1].ID, Is.EqualTo (expectedContainer2.ID));
-      Assert.That (items[1].Properties[orderNumberPropertyDefinition.PropertyName], Is.EqualTo (expectedContainer2.GetValue (orderNumberPropertyDefinition)));
+      Assert.That(items[1].ID, Is.EqualTo(expectedContainer2.ID));
+      Assert.That(items[1].Properties[orderNumberPropertyDefinition.PropertyName], Is.EqualTo(expectedContainer2.GetValue(orderNumberPropertyDefinition)));
     }
 
     [Test]
     public void Import_ThrowsOnInvalidFormat ()
     {
       var data = new byte[0];
-      Assert.That (
-          () => Import (data),
+      Assert.That(
+          () => Import(data),
           Throws.InstanceOf<TransportationException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Invalid data specified: There is an error in XML document (0, 0)."));
     }
 
     [Test]
     public void Import_ExportStrategy_IntegrationTest ()
     {
-      var item1 = new TransportItem (DomainObjectIDs.Order1);
-      item1.Properties.Add ("Foo", 12);
-      var item2 = new TransportItem (DomainObjectIDs.Order3);
-      item2.Properties.Add ("Bar", "42");
+      var item1 = new TransportItem(DomainObjectIDs.Order1);
+      item1.Properties.Add("Foo", 12);
+      var item2 = new TransportItem(DomainObjectIDs.Order3);
+      item2.Properties.Add("Bar", "42");
 
-      byte[] package = XmlExportStrategyTest.Export (item1, item2);
-      TransportItem[] importedItems = Import (package);
+      byte[] package = XmlExportStrategyTest.Export(item1, item2);
+      TransportItem[] importedItems = Import(package);
 
-      Assert.That (importedItems.Length, Is.EqualTo (2));
-      Assert.That (importedItems[0].ID, Is.EqualTo (item1.ID));
-      Assert.That (importedItems[0].Properties.Count, Is.EqualTo (1));
-      Assert.That (importedItems[0].Properties["Foo"], Is.EqualTo (item1.Properties["Foo"]));
+      Assert.That(importedItems.Length, Is.EqualTo(2));
+      Assert.That(importedItems[0].ID, Is.EqualTo(item1.ID));
+      Assert.That(importedItems[0].Properties.Count, Is.EqualTo(1));
+      Assert.That(importedItems[0].Properties["Foo"], Is.EqualTo(item1.Properties["Foo"]));
 
-      Assert.That (importedItems[1].ID, Is.EqualTo (item2.ID));
-      Assert.That (importedItems[1].Properties.Count, Is.EqualTo (1));
-      Assert.That (importedItems[1].Properties["Bar"], Is.EqualTo (item2.Properties["Bar"]));
+      Assert.That(importedItems[1].ID, Is.EqualTo(item2.ID));
+      Assert.That(importedItems[1].Properties.Count, Is.EqualTo(1));
+      Assert.That(importedItems[1].Properties["Bar"], Is.EqualTo(item2.Properties["Bar"]));
     }
 
     public static TransportItem[] Import (byte[] data)
     {
-      using (var stream = new MemoryStream (data))
+      using (var stream = new MemoryStream(data))
       {
-        return XmlImportStrategy.Instance.Import (stream).ToArray ();
+        return XmlImportStrategy.Instance.Import(stream).ToArray();
       }
     }
   }

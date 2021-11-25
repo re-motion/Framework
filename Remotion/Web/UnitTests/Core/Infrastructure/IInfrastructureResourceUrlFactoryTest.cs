@@ -37,8 +37,8 @@ namespace Remotion.Web.UnitTests.Core.Infrastructure
     {
       var factory = _serviceLocator.GetInstance<IInfrastructureResourceUrlFactory>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (InfrastructureResourceUrlFactory)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof (InfrastructureResourceUrlFactory)));
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.Web.UnitTests.Core.Infrastructure
       var factory1 = _serviceLocator.GetInstance<IInfrastructureResourceUrlFactory>();
       var factory2 = _serviceLocator.GetInstance<IInfrastructureResourceUrlFactory>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

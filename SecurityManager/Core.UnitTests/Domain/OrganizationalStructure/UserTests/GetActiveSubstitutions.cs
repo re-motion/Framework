@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
       Substitution disabledFromDateSubstitution = Substitution.NewObject();
       disabledFromDateSubstitution.SubstitutingUser = substitutingUser;
       disabledFromDateSubstitution.SubstitutedUser = CreateUser();
-      disabledFromDateSubstitution.BeginDate = DateTime.Today.AddDays (1);
+      disabledFromDateSubstitution.BeginDate = DateTime.Today.AddDays(1);
 
       Substitution changedSubstitution = Substitution.NewObject();
       changedSubstitution.SubstitutedUser = CreateUser();
@@ -61,7 +61,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
       {
         changedSubstitution.SubstitutingUser = substitutingUser;
 
-        Assert.That (substitutingUser.GetActiveSubstitutions(), Is.EquivalentTo (new[] { enabledSubstitution1, enabledSubstitution2 }));
+        Assert.That(substitutingUser.GetActiveSubstitutions(), Is.EquivalentTo(new[] { enabledSubstitution1, enabledSubstitution2 }));
       }
     }
 
@@ -76,19 +76,19 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
 
       var securityProviderStub = new Mock<ISecurityProvider>();
       securityProviderStub
-          .Setup (stub => stub.GetAccess (It.IsAny<SecurityContext>(), It.IsAny<ISecurityPrincipal>()))
-          .Returns (new AccessType[0]);
+          .Setup(stub => stub.GetAccess(It.IsAny<SecurityContext>(), It.IsAny<ISecurityPrincipal>()))
+          .Returns(new AccessType[0]);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => securityProviderStub.Object);
-      serviceLocator.RegisterSingle<IPrincipalProvider> (() => new NullPrincipalProvider());
-      using (new ServiceLocatorScope (serviceLocator))
+      serviceLocator.RegisterSingle(() => securityProviderStub.Object);
+      serviceLocator.RegisterSingle<IPrincipalProvider>(() => new NullPrincipalProvider());
+      using (new ServiceLocatorScope(serviceLocator))
       {
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
-          ClientTransaction.Current.Extensions.Add (new SecurityClientTransactionExtension());
+          ClientTransaction.Current.Extensions.Add(new SecurityClientTransactionExtension());
 
-          Assert.That (substitutingUser.GetActiveSubstitutions(), Is.Empty);
+          Assert.That(substitutingUser.GetActiveSubstitutions(), Is.Empty);
         }
       }
     }

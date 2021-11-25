@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.Services
 
     public BusinessObjectWithIdentityProxy (IBusinessObjectWithIdentity obj)
     {
-      ArgumentUtility.CheckNotNull ("obj", obj);
+      ArgumentUtility.CheckNotNull("obj", obj);
 
       _uniqueIdentifier = obj.UniqueIdentifier;
       _displayName = obj.GetAccessibleDisplayName();
@@ -51,20 +51,20 @@ namespace Remotion.ObjectBinding.Web.Services
     public string? UniqueIdentifier
     {
       get { return _uniqueIdentifier; }
-      set { _uniqueIdentifier = ArgumentUtility.CheckNotNullOrEmpty ("value", value); }
+      set { _uniqueIdentifier = ArgumentUtility.CheckNotNullOrEmpty("value", value); }
     }
 
     [DisallowNull]
     public string? DisplayName
     {
       get { return _displayName; }
-      set { _displayName = ArgumentUtility.CheckNotNullOrEmpty ("value", value); }
+      set { _displayName = ArgumentUtility.CheckNotNullOrEmpty("value", value); }
     }
 
     public string IconUrl
     {
       get { return _iconUrl; }
-      set { _iconUrl = ArgumentUtility.CheckNotNull ("value", value); }
+      set { _iconUrl = ArgumentUtility.CheckNotNull("value", value); }
     }
   }
 }

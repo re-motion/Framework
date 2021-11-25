@@ -27,12 +27,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           typeof (Tuple<int, string>),
           new[]
           {
-              new CompoundStoragePropertyDefinition.NestedPropertyInfo (
-                  SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("one"), t => ((Tuple<int, string>) t).Item1), 
-              new CompoundStoragePropertyDefinition.NestedPropertyInfo (
-                  SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("two"), t => ((Tuple<int, string>) t).Item2), 
+              new CompoundStoragePropertyDefinition.NestedPropertyInfo(
+                  SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("one"), t => ((Tuple<int, string>) t).Item1), 
+              new CompoundStoragePropertyDefinition.NestedPropertyInfo(
+                  SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("two"), t => ((Tuple<int, string>) t).Item2), 
           },
-          values => Tuple.Create ((int) values[0], (string) values[1]));
+          values => Tuple.Create((int) values[0], (string) values[1]));
     }
   }
 }

@@ -31,19 +31,19 @@ namespace OBWTest.IndividualControlTests
       if (businessObjectClass == null)
         return null;
 
-      Type type = TypeUtility.GetType (businessObjectClass, true);
-      var businessObjectProvider = BindableObjectProvider.GetProviderForBindableObjectType (type);
-      var bindableObjectClass = businessObjectProvider.GetBindableObjectClass (type);
+      Type type = TypeUtility.GetType(businessObjectClass, true);
+      var businessObjectProvider = BindableObjectProvider.GetProviderForBindableObjectType(type);
+      var bindableObjectClass = businessObjectProvider.GetBindableObjectClass(type);
       IBusinessObjectWithIdentity businessObjectWithIdentity = null;
-      if (!string.IsNullOrEmpty (businessObject))
+      if (!string.IsNullOrEmpty(businessObject))
       {
         var businessObjectClassWithIdentity = (IBusinessObjectClassWithIdentity) bindableObjectClass;
-        businessObjectWithIdentity = businessObjectClassWithIdentity.GetObject (businessObject);
+        businessObjectWithIdentity = businessObjectClassWithIdentity.GetObject(businessObject);
       }
 
-      var iconInfo = BusinessObjectBoundWebControl.GetIcon (businessObjectWithIdentity, bindableObjectClass.BusinessObjectProvider);
+      var iconInfo = BusinessObjectBoundWebControl.GetIcon(businessObjectWithIdentity, bindableObjectClass.BusinessObjectProvider);
       if (iconInfo != null)
-        return IconProxy.Create (httpContext, iconInfo);
+        return IconProxy.Create(httpContext, iconInfo);
 
       return null;
     }

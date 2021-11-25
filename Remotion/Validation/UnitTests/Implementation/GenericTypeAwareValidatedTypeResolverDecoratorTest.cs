@@ -32,19 +32,19 @@ namespace Remotion.Validation.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _decoratedResolverMock = new Mock<IValidatedTypeResolver> (MockBehavior.Strict);
-      _resolver = new GenericTypeAwareValidatedTypeResolverDecorator (_decoratedResolverMock.Object);
+      _decoratedResolverMock = new Mock<IValidatedTypeResolver>(MockBehavior.Strict);
+      _resolver = new GenericTypeAwareValidatedTypeResolverDecorator(_decoratedResolverMock.Object);
     }
 
     [Test]
     public void GetValidatedType_CollectorWithoutGenericArgument ()
     {
-      _decoratedResolverMock.Setup (mock => mock.GetValidatedType (typeof (IValidationRuleCollector))).Returns (typeof (string)).Verifiable();
+      _decoratedResolverMock.Setup(mock => mock.GetValidatedType(typeof (IValidationRuleCollector))).Returns(typeof (string)).Verifiable();
 
-      var result = _resolver.GetValidatedType (typeof (IValidationRuleCollector));
+      var result = _resolver.GetValidatedType(typeof (IValidationRuleCollector));
 
       _decoratedResolverMock.Verify();
-      Assert.That (result, Is.EqualTo (typeof (string)));
+      Assert.That(result, Is.EqualTo(typeof (string)));
     }
 
     [Test]
@@ -52,10 +52,10 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var collectorTypeWithApplyWithClassAttribute = typeof (PersonValidationRuleCollector2);
 
-      var result = _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute);
+      var result = _resolver.GetValidatedType(collectorTypeWithApplyWithClassAttribute);
 
       _decoratedResolverMock.Verify();
-      Assert.That (result, Is.EqualTo (typeof (IPerson)));
+      Assert.That(result, Is.EqualTo(typeof (IPerson)));
     }
     
   }

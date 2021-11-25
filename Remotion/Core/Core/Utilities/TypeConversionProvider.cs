@@ -45,26 +45,26 @@ namespace Remotion.Utilities
 
     public TypeConversionProvider (ITypeConverterFactory typeConverterFactory)
     {
-      ArgumentUtility.CheckNotNull ("typeConverterFactory", typeConverterFactory);
+      ArgumentUtility.CheckNotNull("typeConverterFactory", typeConverterFactory);
 
       _typeConverterFactory = typeConverterFactory;
     }
 
     public virtual TypeConverterResult GetTypeConverter (Type sourceType, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
-      TypeConverterResult additionalTypeConverterResult = GetAdditionalTypeConverter (sourceType, destinationType);
-      if (!additionalTypeConverterResult.Equals (TypeConverterResult.Empty))
+      TypeConverterResult additionalTypeConverterResult = GetAdditionalTypeConverter(sourceType, destinationType);
+      if (!additionalTypeConverterResult.Equals(TypeConverterResult.Empty))
         return additionalTypeConverterResult;
 
-      TypeConverterResult typeConverterResult = GetTypeConverterFromFactory (sourceType, destinationType);
-      if (!typeConverterResult.Equals (TypeConverterResult.Empty))
+      TypeConverterResult typeConverterResult = GetTypeConverterFromFactory(sourceType, destinationType);
+      if (!typeConverterResult.Equals(TypeConverterResult.Empty))
         return typeConverterResult;
 
-      TypeConverterResult stringConverterResult = GetStringConverter (sourceType, destinationType);
-      if (!stringConverterResult.Equals (TypeConverterResult.Empty))
+      TypeConverterResult stringConverterResult = GetStringConverter(sourceType, destinationType);
+      if (!stringConverterResult.Equals(TypeConverterResult.Empty))
         return stringConverterResult;
 
       return TypeConverterResult.Empty;
@@ -72,13 +72,13 @@ namespace Remotion.Utilities
 
     public virtual TypeConverter? GetTypeConverter (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      TypeConverter? converter = GetAdditionalTypeConverter (type);
+      TypeConverter? converter = GetAdditionalTypeConverter(type);
       if (converter != null)
         return converter;
 
-      converter = GetTypeConverterFromFactory (type);
+      converter = GetTypeConverterFromFactory(type);
       if (converter != null)
         return converter;
 
@@ -98,8 +98,8 @@ namespace Remotion.Utilities
     /// <param name="converter"> The <see cref="TypeConverter"/> to register. Must not be <see langword="null"/>. </param>
     public void AddTypeConverter (Type type, TypeConverter converter)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("converter", converter);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("converter", converter);
       _additionalTypeConverters[type] = converter;
     }
 
@@ -113,61 +113,61 @@ namespace Remotion.Utilities
     /// <remarks> If no <see cref="TypeConverter"/> has been registered, the method has no effect. </remarks>
     public void RemoveTypeConverter (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      _additionalTypeConverters.Remove (type);
+      ArgumentUtility.CheckNotNull("type", type);
+      _additionalTypeConverters.Remove(type);
     }
 
     public virtual bool CanConvert (Type sourceType, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
       if (sourceType == typeof (DBNull))
-        return NullableTypeUtility.IsNullableType (destinationType);
+        return NullableTypeUtility.IsNullableType(destinationType);
       
-      if (AreUnderlyingTypesEqual (destinationType, sourceType))
+      if (AreUnderlyingTypesEqual(destinationType, sourceType))
         return true;
 
-      TypeConverterResult typeConverterResult = GetTypeConverter (sourceType, destinationType);
-      return !typeConverterResult.Equals (TypeConverterResult.Empty);
+      TypeConverterResult typeConverterResult = GetTypeConverter(sourceType, destinationType);
+      return !typeConverterResult.Equals(TypeConverterResult.Empty);
     }
 
     public object? Convert (Type sourceType, Type destinationType, object? value)
     {
-      return Convert (null, null, sourceType, destinationType, value);
+      return Convert(null, null, sourceType, destinationType, value);
     }
 
     public virtual object? Convert (ITypeDescriptorContext? context, CultureInfo? culture, Type sourceType, Type destinationType, object? value)
     {
-      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
-      bool isNullableDestinationType = NullableTypeUtility.IsNullableType (destinationType);
+      bool isNullableDestinationType = NullableTypeUtility.IsNullableType(destinationType);
       if (value == DBNull.Value && isNullableDestinationType)
-        return GetValueOrEmptyString (destinationType, null);
+        return GetValueOrEmptyString(destinationType, null);
 
       if (value == null && !isNullableDestinationType)
-        throw new NotSupportedException (string.Format ("Cannot convert value 'null' to non-nullable type '{0}'.", destinationType));
-      else if (value != null && !sourceType.IsInstanceOfType (value))
-        throw ArgumentUtility.CreateArgumentTypeException ("value", value.GetType(), sourceType);
+        throw new NotSupportedException(string.Format("Cannot convert value 'null' to non-nullable type '{0}'.", destinationType));
+      else if (value != null && !sourceType.IsInstanceOfType(value))
+        throw ArgumentUtility.CreateArgumentTypeException("value", value.GetType(), sourceType);
       
-      if (AreUnderlyingTypesEqual (sourceType, destinationType))
-        return GetValueOrEmptyString (destinationType, value);
+      if (AreUnderlyingTypesEqual(sourceType, destinationType))
+        return GetValueOrEmptyString(destinationType, value);
 
-      TypeConverterResult typeConverterResult = GetTypeConverter (sourceType, destinationType);
-      if (!typeConverterResult.Equals (TypeConverterResult.Empty))
+      TypeConverterResult typeConverterResult = GetTypeConverter(sourceType, destinationType);
+      if (!typeConverterResult.Equals(TypeConverterResult.Empty))
       {
         switch (typeConverterResult.TypeConverterType)
         {
           case TypeConverterType.SourceTypeConverter:
-            return typeConverterResult.TypeConverter.ConvertTo (context, culture, value, destinationType);
+            return typeConverterResult.TypeConverter.ConvertTo(context, culture, value, destinationType);
           default:
-            Assertion.IsTrue (typeConverterResult.TypeConverterType == TypeConverterType.DestinationTypeConverter);
-            return typeConverterResult.TypeConverter.ConvertFrom (context, culture, value);
+            Assertion.IsTrue(typeConverterResult.TypeConverterType == TypeConverterType.DestinationTypeConverter);
+            return typeConverterResult.TypeConverter.ConvertFrom(context, culture, value);
         }
       }
 
-      throw new NotSupportedException (string.Format ("Cannot convert value '{0}' to type '{1}'.", value, destinationType));
+      throw new NotSupportedException(string.Format("Cannot convert value '{0}' to type '{1}'.", value, destinationType));
     }
 
     [return: NotNullIfNotNull ("value")]
@@ -180,26 +180,26 @@ namespace Remotion.Utilities
 
     protected TypeConverterResult GetAdditionalTypeConverter (Type sourceType, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
-      TypeConverter? sourceTypeConverter = GetAdditionalTypeConverter (sourceType);
-      if (sourceTypeConverter != null && sourceTypeConverter.CanConvertTo (destinationType))
-        return new TypeConverterResult (TypeConverterType.SourceTypeConverter, sourceTypeConverter);
+      TypeConverter? sourceTypeConverter = GetAdditionalTypeConverter(sourceType);
+      if (sourceTypeConverter != null && sourceTypeConverter.CanConvertTo(destinationType))
+        return new TypeConverterResult(TypeConverterType.SourceTypeConverter, sourceTypeConverter);
 
-      TypeConverter? destinationTypeConverter = GetAdditionalTypeConverter (destinationType);
-      if (destinationTypeConverter != null && destinationTypeConverter.CanConvertFrom (sourceType))
-        return new TypeConverterResult (TypeConverterType.DestinationTypeConverter, destinationTypeConverter);
+      TypeConverter? destinationTypeConverter = GetAdditionalTypeConverter(destinationType);
+      if (destinationTypeConverter != null && destinationTypeConverter.CanConvertFrom(sourceType))
+        return new TypeConverterResult(TypeConverterType.DestinationTypeConverter, destinationTypeConverter);
 
       return TypeConverterResult.Empty;
     }
 
     protected TypeConverter? GetAdditionalTypeConverter (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       TypeConverter typeConverter;
-      if (_additionalTypeConverters.TryGetValue (type, out typeConverter!))
+      if (_additionalTypeConverters.TryGetValue(type, out typeConverter!))
         return typeConverter;
 
       return null;
@@ -207,59 +207,59 @@ namespace Remotion.Utilities
 
     protected TypeConverterResult GetTypeConverterFromFactory (Type sourceType, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
-      TypeConverter? sourceTypeConverter = GetTypeConverterFromFactory (sourceType);
-      if (sourceTypeConverter != null && sourceTypeConverter.CanConvertTo (destinationType))
-        return new TypeConverterResult (TypeConverterType.SourceTypeConverter, sourceTypeConverter);
+      TypeConverter? sourceTypeConverter = GetTypeConverterFromFactory(sourceType);
+      if (sourceTypeConverter != null && sourceTypeConverter.CanConvertTo(destinationType))
+        return new TypeConverterResult(TypeConverterType.SourceTypeConverter, sourceTypeConverter);
 
-      TypeConverter? destinationTypeConverter = GetTypeConverterFromFactory (destinationType);
-      if (destinationTypeConverter != null && destinationTypeConverter.CanConvertFrom (sourceType))
-        return new TypeConverterResult (TypeConverterType.DestinationTypeConverter, destinationTypeConverter);
+      TypeConverter? destinationTypeConverter = GetTypeConverterFromFactory(destinationType);
+      if (destinationTypeConverter != null && destinationTypeConverter.CanConvertFrom(sourceType))
+        return new TypeConverterResult(TypeConverterType.DestinationTypeConverter, destinationTypeConverter);
 
       return TypeConverterResult.Empty;
     }
 
     protected TypeConverter? GetTypeConverterFromFactory (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      TypeConverter? converter = GetTypeConverterFromCache (type);
-      if (converter == null && !HasTypeInCache (type))
+      TypeConverter? converter = GetTypeConverterFromCache(type);
+      if (converter == null && !HasTypeInCache(type))
       {
-        converter = _typeConverterFactory.CreateTypeConverterOrDefault (type);
-        AddTypeConverterToCache (type, converter);
+        converter = _typeConverterFactory.CreateTypeConverterOrDefault(type);
+        AddTypeConverterToCache(type, converter);
       }
       return converter;
     }
 
     protected TypeConverterResult GetStringConverter (Type sourceType, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
       
-      if (sourceType == typeof (string) && _stringConverter.CanConvertTo (destinationType))
-        return new TypeConverterResult (TypeConverterType.SourceTypeConverter, _stringConverter);
+      if (sourceType == typeof (string) && _stringConverter.CanConvertTo(destinationType))
+        return new TypeConverterResult(TypeConverterType.SourceTypeConverter, _stringConverter);
 
-      if (destinationType == typeof (string) && _stringConverter.CanConvertFrom (sourceType))
-        return new TypeConverterResult (TypeConverterType.DestinationTypeConverter, _stringConverter);
+      if (destinationType == typeof (string) && _stringConverter.CanConvertFrom(sourceType))
+        return new TypeConverterResult(TypeConverterType.DestinationTypeConverter, _stringConverter);
 
       return TypeConverterResult.Empty;
     }
 
     protected void AddTypeConverterToCache (Type type, TypeConverter? converter)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      _typeConverters.AddOrUpdate (type, converter, (key, existingConverter) => converter);
+      _typeConverters.AddOrUpdate(type, converter, (key, existingConverter) => converter);
     }
 
     protected TypeConverter? GetTypeConverterFromCache (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
      
-      if (_typeConverters.TryGetValue (type, out var typeConverter))
+      if (_typeConverters.TryGetValue(type, out var typeConverter))
         return typeConverter;
 
       return null;
@@ -267,8 +267,8 @@ namespace Remotion.Utilities
 
     protected bool HasTypeInCache (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      return _typeConverters.ContainsKey (type);
+      ArgumentUtility.CheckNotNull("type", type);
+      return _typeConverters.ContainsKey(type);
     }
 
     private bool AreUnderlyingTypesEqual (Type destinationType, Type sourceType)
@@ -276,7 +276,7 @@ namespace Remotion.Utilities
       if (sourceType == destinationType)
         return true;
 
-      if ((Nullable.GetUnderlyingType (sourceType) ?? sourceType) == (Nullable.GetUnderlyingType (destinationType) ?? destinationType))
+      if ((Nullable.GetUnderlyingType(sourceType) ?? sourceType) == (Nullable.GetUnderlyingType(destinationType) ?? destinationType))
         return true;
 
       return false;

@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// <summary>
     /// First Chrome version supported by <see cref="ChromeBinariesProvider"/>.
     /// </summary>
-    private static readonly Version s_minimumSupportedChromeVersion = new Version (73, 0);
+    private static readonly Version s_minimumSupportedChromeVersion = new Version(73, 0);
 
     /// <summary>
     /// Returns the <see cref="ChromeExecutable"/> that contains the installed Chrome browser location, the corresponding ChromeDriver location,
@@ -50,10 +50,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     public ChromeExecutable GetInstalledExecutable ()
     {
       var browserPath = GetInstalledChromePath();
-      var driverPath = GetDriverPathAndDownloadIfMissing (browserPath);
+      var driverPath = GetDriverPathAndDownloadIfMissing(browserPath);
       var userDirectory = GetUserDirectoryTempPath();
 
-      return new ChromeExecutable (browserPath, driverPath, userDirectory);
+      return new ChromeExecutable(browserPath, driverPath, userDirectory);
     }
 
     /// <summary>
@@ -62,12 +62,12 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     private string GetInstalledChromePath ()
     {
       //Even 64 bit Chrome is installed in the 32bit location
-      var defaultStableChromePath = Path.Combine (Get32BitProgramFilesPath(), "Google", "Chrome", "Application", c_chromeExecutableName);
+      var defaultStableChromePath = Path.Combine(Get32BitProgramFilesPath(), "Google", "Chrome", "Application", c_chromeExecutableName);
 
-      if (File.Exists (defaultStableChromePath))
+      if (File.Exists(defaultStableChromePath))
         return defaultStableChromePath;
 
-      throw new InvalidOperationException ($"No stable Chrome version could be found at '{defaultStableChromePath}'.");
+      throw new InvalidOperationException($"No stable Chrome version could be found at '{defaultStableChromePath}'.");
     }
 
     private string Get32BitProgramFilesPath ()
@@ -76,7 +76,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
           ? Environment.SpecialFolder.ProgramFilesX86
           : Environment.SpecialFolder.ProgramFiles;
 
-      return Environment.GetFolderPath (programFiles32BitFolder);
+      return Environment.GetFolderPath(programFiles32BitFolder);
     }
 
     /// <summary>
@@ -84,124 +84,124 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// </summary>
     private string GetDriverPathAndDownloadIfMissing ([NotNull] string chromePath)
     {
-      var chromeVersion = GetFileVersion (chromePath);
+      var chromeVersion = GetFileVersion(chromePath);
 
       if (chromeVersion < s_minimumSupportedChromeVersion)
       {
-        throw new NotSupportedException (
-            string.Format (
+        throw new NotSupportedException(
+            string.Format(
                 "The installed Chrome version ({0}) is lower than the minimum required version of {1}.",
                 chromeVersion,
                 s_minimumSupportedChromeVersion));
       }
 
-      var strippedChromeDriverVersion = StripRevisionFromVersion (chromeVersion);
-      var chromeDriverVersion = GetChromeDriverVersion (strippedChromeDriverVersion);
-      var driverPath = GetChromeDriverTempPath (chromeDriverVersion);
+      var strippedChromeDriverVersion = StripRevisionFromVersion(chromeVersion);
+      var chromeDriverVersion = GetChromeDriverVersion(strippedChromeDriverVersion);
+      var driverPath = GetChromeDriverTempPath(chromeDriverVersion);
 
-      if (!ChromeDriverExists (chromeDriverVersion))
-        DownloadChromeDriver (chromeDriverVersion);
+      if (!ChromeDriverExists(chromeDriverVersion))
+        DownloadChromeDriver(chromeDriverVersion);
 
       return driverPath;
     }
 
     private Version GetFileVersion (string filePath)
     {
-      var fileVersion = Assertion.IsNotNull (FileVersionInfo.GetVersionInfo (filePath).FileVersion, "File version could not be read from '{0}'.", filePath);
-      return Version.Parse (fileVersion);
+      var fileVersion = Assertion.IsNotNull(FileVersionInfo.GetVersionInfo(filePath).FileVersion, "File version could not be read from '{0}'.", filePath);
+      return Version.Parse(fileVersion);
     }
 
     private string StripRevisionFromVersion (Version chromeVersion)
     {
-      return chromeVersion.ToString (3);
+      return chromeVersion.ToString(3);
     }
 
     private string GetChromeDriverVersion (string chromeVersion)
     {
-      var chromeDriverVersionUrl = new Uri (string.Format (c_fetchChromeDriverVersionUrlFormat, chromeVersion));
+      var chromeDriverVersionUrl = new Uri(string.Format(c_fetchChromeDriverVersionUrlFormat, chromeVersion));
 
       try
       {
         using (var webClient = new WebClient())
         {
-          return webClient.DownloadString (chromeDriverVersionUrl);
+          return webClient.DownloadString(chromeDriverVersionUrl);
         }
       }
       catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             $"No matching ChromeDriver could be found for the installed Chrome version {chromeVersion}."
             + "This could mean that no corresponding ChromeDriver has been released for the version of Chrome you are using.",
             ex);
       }
       catch (WebException ex)
       {
-        throw new WebException ($"Could not fetch the latest ChromeDriver version from '{chromeDriverVersionUrl}': {ex.Message}", ex.Status);
+        throw new WebException($"Could not fetch the latest ChromeDriver version from '{chromeDriverVersionUrl}': {ex.Message}", ex.Status);
       }
     }
 
     private bool ChromeDriverExists (string chromeDriverVersion)
     {
-      return File.Exists (GetChromeDriverTempPath (chromeDriverVersion));
+      return File.Exists(GetChromeDriverTempPath(chromeDriverVersion));
     }
 
     private string GetChromeDriverTempPath (string chromeDriverVersion)
     {
-      return Path.Combine (GetChromeDriverTempDirectory (chromeDriverVersion), c_driverExecutableName);
+      return Path.Combine(GetChromeDriverTempDirectory(chromeDriverVersion), c_driverExecutableName);
     }
 
     private string GetUserDirectoryTempPath ()
     {
-      return Path.Combine (Path.GetTempPath(), Guid.NewGuid().ToString());
+      return Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
     }
 
     private string GetChromeDriverRootDirectory ()
     {
-      return Path.Combine (Path.GetTempPath(), c_webDriverFolderName);
+      return Path.Combine(Path.GetTempPath(), c_webDriverFolderName);
     }
 
     private string GetChromeDriverTempDirectory (string chromeDriverVersion)
     {
-      return Path.Combine (GetChromeDriverRootDirectory(), string.Format ("chromedriver_v{0}", chromeDriverVersion));
+      return Path.Combine(GetChromeDriverRootDirectory(), string.Format("chromedriver_v{0}", chromeDriverVersion));
     }
 
     private void RemoveChromeDriverRootDirectoryIfExists ()
     {
       var chromeDriverRootDirectory = GetChromeDriverRootDirectory();
-      if (Directory.Exists (chromeDriverRootDirectory))
-        Directory.Delete (chromeDriverRootDirectory, true);
+      if (Directory.Exists(chromeDriverRootDirectory))
+        Directory.Delete(chromeDriverRootDirectory, true);
     }
 
     private void DownloadChromeDriver (string chromeDriverVersion)
     {
-      var tempPath = GetChromeDriverTempDirectory (chromeDriverVersion);
-      var fullZipPath = Path.Combine (Path.GetTempPath(), c_zipFileName);
+      var tempPath = GetChromeDriverTempDirectory(chromeDriverVersion);
+      var fullZipPath = Path.Combine(Path.GetTempPath(), c_zipFileName);
 
-      var url = GetDriverDownloadUrl (chromeDriverVersion);
+      var url = GetDriverDownloadUrl(chromeDriverVersion);
 
       RemoveChromeDriverRootDirectoryIfExists();
-      Directory.CreateDirectory (tempPath);
+      Directory.CreateDirectory(tempPath);
 
       try
       {
         using (var webClient = new WebClient())
         {
-          webClient.DownloadFile (url, fullZipPath);
+          webClient.DownloadFile(url, fullZipPath);
         }
       }
       catch (WebException ex)
       {
-        throw new WebException ($"Could not download the ChromeDriver for Chrome v{chromeDriverVersion} from '{url}': {ex.Message}", ex.Status);
+        throw new WebException($"Could not download the ChromeDriver for Chrome v{chromeDriverVersion} from '{url}': {ex.Message}", ex.Status);
       }
 
-      ZipFile.ExtractToDirectory (fullZipPath, tempPath);
+      ZipFile.ExtractToDirectory(fullZipPath, tempPath);
 
-      File.Delete (fullZipPath);
+      File.Delete(fullZipPath);
     }
 
     private string GetDriverDownloadUrl (string chromeDriverVersion)
     {
-      return string.Format (c_driverDownloadUrlFormat, chromeDriverVersion);
+      return string.Format(c_driverDownloadUrlFormat, chromeDriverVersion);
     }
   }
 }

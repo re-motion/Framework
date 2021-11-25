@@ -41,48 +41,48 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     public void SetUp ()
     {
       _asserter = MockRepository.GenerateStub<IAsserter>();
-      _asserter.Stub (stub => stub.NotNull (null, null, null)).IgnoreArguments().WhenCalled (
+      _asserter.Stub(stub => stub.NotNull(null, null, null)).IgnoreArguments().WhenCalled(
           invocation =>
           {
             if (invocation.Arguments[0] == null)
-              throw new Exception (string.Format ((string) invocation.Arguments[1], (object[]) invocation.Arguments[2]));
+              throw new Exception(string.Format((string) invocation.Arguments[1], (object[]) invocation.Arguments[2]));
           });
-      _asserter.Stub (stub => stub.IsNull (null, null, null)).IgnoreArguments().WhenCalled (
+      _asserter.Stub(stub => stub.IsNull(null, null, null)).IgnoreArguments().WhenCalled(
           invocation =>
           {
             if (invocation.Arguments[0] != null)
-              throw new Exception (string.Format ((string) invocation.Arguments[1], (object[]) invocation.Arguments[2]));
+              throw new Exception(string.Format((string) invocation.Arguments[1], (object[]) invocation.Arguments[2]));
           });
-      _asserter.Stub (stub => stub.AreEqual (null, null, null, null)).IgnoreArguments().WhenCalled (
+      _asserter.Stub(stub => stub.AreEqual(null, null, null, null)).IgnoreArguments().WhenCalled(
           invocation =>
           {
             if (invocation.Arguments[0] != null)
             {
-              if (!invocation.Arguments[0].Equals (invocation.Arguments[1]))
-                throw new Exception (string.Format ((string) invocation.Arguments[2], (object[]) invocation.Arguments[3]));
+              if (!invocation.Arguments[0].Equals(invocation.Arguments[1]))
+                throw new Exception(string.Format((string) invocation.Arguments[2], (object[]) invocation.Arguments[3]));
             }
             else if (invocation.Arguments[1] != null)
-              throw new Exception (string.Format ((string) invocation.Arguments[2], (object[]) invocation.Arguments[3]));
+              throw new Exception(string.Format((string) invocation.Arguments[2], (object[]) invocation.Arguments[3]));
           });
-      _asserter.Stub (stub => stub.GreaterThan (null, null, null, null)).IgnoreArguments().WhenCalled (
+      _asserter.Stub(stub => stub.GreaterThan(null, null, null, null)).IgnoreArguments().WhenCalled(
           invocation =>
           {
             if (invocation.Arguments[0] != null)
             {
-              if (((IComparable) invocation.Arguments[0]).CompareTo (invocation.Arguments[1]) <= 0)
-                throw new Exception (string.Format ((string) invocation.Arguments[2], (object[]) invocation.Arguments[3]));
+              if (((IComparable) invocation.Arguments[0]).CompareTo(invocation.Arguments[1]) <= 0)
+                throw new Exception(string.Format((string) invocation.Arguments[2], (object[]) invocation.Arguments[3]));
             }
           });
-      _asserter.Stub (stub => stub.IsTrue (true, null, new object[3])).IgnoreArguments().WhenCalled (
+      _asserter.Stub(stub => stub.IsTrue(true, null, new object[3])).IgnoreArguments().WhenCalled(
           invocation =>
           {
             if (!((bool) invocation.Arguments[0]))
-              throw new Exception (string.Format ((string) invocation.Arguments[1], (object[]) invocation.Arguments[2]));
+              throw new Exception(string.Format((string) invocation.Arguments[1], (object[]) invocation.Arguments[2]));
           })
           ;
 
-      _htmlHelper = new ConcreteHtmlHelper (_asserter);
-      _htmlHelper.Writer.Write (c_document);
+      _htmlHelper = new ConcreteHtmlHelper(_asserter);
+      _htmlHelper.Writer.Write(c_document);
     }
 
     [TearDown]
@@ -94,57 +94,57 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     [Test]
     public void Succeed_GetDocumentText ()
     {
-      Assert.That (_htmlHelper.GetDocumentText(), Is.EqualTo (c_document));
+      Assert.That(_htmlHelper.GetDocumentText(), Is.EqualTo(c_document));
     }
 
     [Test]
     public void Succeed_GetResultDocument ()
     {
       var document = _htmlHelper.GetResultDocument();
-      Assert.That (document, Is.Not.Null);
-      Assert.That (document.DocumentElement, Is.Not.Null);
-      Assert.That (document.DocumentElement.Name, Is.EqualTo ("TopLevelElement"));
+      Assert.That(document, Is.Not.Null);
+      Assert.That(document.DocumentElement, Is.Not.Null);
+      Assert.That(document.DocumentElement.Name, Is.EqualTo("TopLevelElement"));
     }
 
     [Test]
     public void Succeed_GetAssertedElement ()
     {
       var document = _htmlHelper.GetResultDocument();
-      var topLevelElement = _htmlHelper.GetAssertedChildElement (document, "TopLevelElement", 0);
-      Assert.That (topLevelElement, Is.Not.Null);
-      Assert.That (topLevelElement.Name, Is.EqualTo ("TopLevelElement"));
+      var topLevelElement = _htmlHelper.GetAssertedChildElement(document, "TopLevelElement", 0);
+      Assert.That(topLevelElement, Is.Not.Null);
+      Assert.That(topLevelElement.Name, Is.EqualTo("TopLevelElement"));
 
-      var midLevelElement = _htmlHelper.GetAssertedChildElement (topLevelElement, "MidLevelElement", 0);
-      Assert.That (midLevelElement, Is.Not.Null);
-      Assert.That (midLevelElement.Name, Is.EqualTo ("MidLevelElement"));
+      var midLevelElement = _htmlHelper.GetAssertedChildElement(topLevelElement, "MidLevelElement", 0);
+      Assert.That(midLevelElement, Is.Not.Null);
+      Assert.That(midLevelElement.Name, Is.EqualTo("MidLevelElement"));
 
-      var innerElement1 = _htmlHelper.GetAssertedChildElement (midLevelElement, "InnerElement1", 0);
-      Assert.That (innerElement1, Is.Not.Null);
-      Assert.That (innerElement1.Name, Is.EqualTo ("InnerElement1"));
+      var innerElement1 = _htmlHelper.GetAssertedChildElement(midLevelElement, "InnerElement1", 0);
+      Assert.That(innerElement1, Is.Not.Null);
+      Assert.That(innerElement1.Name, Is.EqualTo("InnerElement1"));
 
-      var innerElement2 = _htmlHelper.GetAssertedChildElement (midLevelElement, "InnerElement2", 2);
-      Assert.That (innerElement2, Is.Not.Null);
-      Assert.That (innerElement2.Name, Is.EqualTo ("InnerElement2"));
+      var innerElement2 = _htmlHelper.GetAssertedChildElement(midLevelElement, "InnerElement2", 2);
+      Assert.That(innerElement2, Is.Not.Null);
+      Assert.That(innerElement2.Name, Is.EqualTo("InnerElement2"));
     }
 
     [Test]
     public void Fail_GetAssertedElement_WrongTag ()
     {
       var document = _htmlHelper.GetResultDocument();
-      Assert.That (
-          () => _htmlHelper.GetAssertedChildElement (document, "dummy", 0),
+      Assert.That(
+          () => _htmlHelper.GetAssertedChildElement(document, "dummy", 0),
           Throws.Exception
-              .With.Message.EqualTo ("Unexpected element tag."));
+              .With.Message.EqualTo("Unexpected element tag."));
     }
 
     [Test]
     public void Fail_GetAssertedElement_IndexOutOfRange ()
     {
       var document = _htmlHelper.GetResultDocument();
-      Assert.That (
-          () => _htmlHelper.GetAssertedChildElement (document, "TopLevelElement", 2),
+      Assert.That(
+          () => _htmlHelper.GetAssertedChildElement(document, "TopLevelElement", 2),
           Throws.Exception
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Node #document has only 1 children - index 2 out of range."));
     }
 
@@ -153,10 +153,10 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     {
       var document = _htmlHelper.GetResultDocument();
       var midLevelElement = document.DocumentElement.ChildNodes[0];
-      Assert.That (
-          () => _htmlHelper.GetAssertedChildElement (midLevelElement, "Text", 1),
+      Assert.That(
+          () => _htmlHelper.GetAssertedChildElement(midLevelElement, "Text", 1),
           Throws.Exception
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "MidLevelElement.ChildNodes[1].NodeType is Text, not Element."));
     }
 
@@ -165,13 +165,13 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     {
       var document = _htmlHelper.GetResultDocument();
       var topLevelElement = document.DocumentElement;
-      _htmlHelper.AssertChildElementCount (topLevelElement, 1);
+      _htmlHelper.AssertChildElementCount(topLevelElement, 1);
 
       var midLevelElement = topLevelElement.ChildNodes[0];
-      _htmlHelper.AssertChildElementCount (midLevelElement, 2);
+      _htmlHelper.AssertChildElementCount(midLevelElement, 2);
 
       var innerElement1 = midLevelElement.ChildNodes[0];
-      _htmlHelper.AssertChildElementCount (innerElement1, 0);
+      _htmlHelper.AssertChildElementCount(innerElement1, 0);
     }
 
     [Test]
@@ -180,10 +180,10 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
       var document = _htmlHelper.GetResultDocument();
       var topLevelElement = document.DocumentElement;
       var midLevelElement = topLevelElement.ChildNodes[0];
-      Assert.That (
-          () => _htmlHelper.AssertChildElementCount (midLevelElement, 3),
+      Assert.That(
+          () => _htmlHelper.AssertChildElementCount(midLevelElement, 3),
           Throws.Exception
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Element 'MidLevelElement' has 2 child elements instead of the expected 3."));
     }
 
@@ -192,9 +192,9 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     {
       var document = _htmlHelper.GetResultDocument();
       var topLevelElement = document.DocumentElement;
-      _htmlHelper.AssertAttribute (topLevelElement, "topLevelAttribute", "topLevelAttributeValue");
-      _htmlHelper.AssertAttribute (topLevelElement, "topLevelAttribute", "topLevelAttributeValue", HtmlHelperBase.AttributeValueCompareMode.Equal);
-      _htmlHelper.AssertAttribute (topLevelElement, "topLevelAttribute", "topLevelAttributeValue", HtmlHelperBase.AttributeValueCompareMode.Contains);
+      _htmlHelper.AssertAttribute(topLevelElement, "topLevelAttribute", "topLevelAttributeValue");
+      _htmlHelper.AssertAttribute(topLevelElement, "topLevelAttribute", "topLevelAttributeValue", HtmlHelperBase.AttributeValueCompareMode.Equal);
+      _htmlHelper.AssertAttribute(topLevelElement, "topLevelAttribute", "topLevelAttributeValue", HtmlHelperBase.AttributeValueCompareMode.Contains);
     }
 
     [Test]
@@ -204,13 +204,13 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
       var topLevelElement = document.DocumentElement;
       var midLevelElement = topLevelElement.ChildNodes[0];
 
-      _htmlHelper.AssertAttribute (
+      _htmlHelper.AssertAttribute(
           midLevelElement,
           "midLevelAttribute",
           "midLevelAttributeValue1",
           HtmlHelperBase.AttributeValueCompareMode.Contains);
 
-      _htmlHelper.AssertAttribute (
+      _htmlHelper.AssertAttribute(
           midLevelElement,
           "midLevelAttribute",
           "midLevelAttributeValue2",
@@ -222,13 +222,13 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     {
       var document = _htmlHelper.GetResultDocument();
       var topLevelElement = document.DocumentElement;
-      _htmlHelper.AssertAttribute (topLevelElement, "topLevelAttribute", "topLevelAttributeValue");
+      _htmlHelper.AssertAttribute(topLevelElement, "topLevelAttribute", "topLevelAttributeValue");
 
       var midLevelElement = topLevelElement.ChildNodes[0];
-      Assert.That (
-          () => _htmlHelper.AssertAttribute (midLevelElement, "midLevelAttribute", "midLevelAttributeValue1"),
+      Assert.That(
+          () => _htmlHelper.AssertAttribute(midLevelElement, "midLevelAttribute", "midLevelAttributeValue1"),
           Throws.Exception
-              .With.Message.EqualTo ("Attribute MidLevelElement.midLevelAttribute"));
+              .With.Message.EqualTo("Attribute MidLevelElement.midLevelAttribute"));
     }
 
     [Test]
@@ -236,10 +236,10 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     {
       var document = _htmlHelper.GetResultDocument();
       var topLevelElement = document.DocumentElement;
-      Assert.That (
-          () => _htmlHelper.AssertAttribute (topLevelElement, "topLevelAttribute", "otherAttributeValue"),
+      Assert.That(
+          () => _htmlHelper.AssertAttribute(topLevelElement, "topLevelAttribute", "otherAttributeValue"),
           Throws.Exception
-              .With.Message.EqualTo ("Attribute TopLevelElement.topLevelAttribute"));
+              .With.Message.EqualTo("Attribute TopLevelElement.topLevelAttribute"));
     }
 
     [Test]
@@ -247,10 +247,10 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     {
       var document = _htmlHelper.GetResultDocument();
       var topLevelElement = document.DocumentElement;
-      Assert.That (
-          () => _htmlHelper.AssertAttribute (topLevelElement, "topLevelAttribute", "otherAttributeValue", HtmlHelperBase.AttributeValueCompareMode.Contains),
+      Assert.That(
+          () => _htmlHelper.AssertAttribute(topLevelElement, "topLevelAttribute", "otherAttributeValue", HtmlHelperBase.AttributeValueCompareMode.Contains),
           Throws.Exception
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Unexpected attribute value in TopLevelElement.topLevelAttribute: " +
                   "should contain otherAttributeValue, but was topLevelAttributeValue"));
     }
@@ -260,7 +260,7 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     {
       var document = _htmlHelper.GetResultDocument();
       var topLevelElement = document.DocumentElement;
-      _htmlHelper.AssertNoAttribute (topLevelElement, "nonExistingAttribute");
+      _htmlHelper.AssertNoAttribute(topLevelElement, "nonExistingAttribute");
     }
 
     [Test]
@@ -268,10 +268,10 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     {
       var document = _htmlHelper.GetResultDocument();
       var topLevelElement = document.DocumentElement;
-      Assert.That (
-          () => _htmlHelper.AssertNoAttribute (topLevelElement, "topLevelAttribute"),
+      Assert.That(
+          () => _htmlHelper.AssertNoAttribute(topLevelElement, "topLevelAttribute"),
           Throws.Exception
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Attribute 'topLevelAttribute' is present although it should not be."));
     }
 
@@ -280,8 +280,8 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     {
       var document = _htmlHelper.GetResultDocument();
       var innerElement1 = document.DocumentElement.ChildNodes[0].ChildNodes[0];
-      _htmlHelper.AssertStyleAttribute (innerElement1, "styleAttribute1", "styleAttributeValue1");
-      _htmlHelper.AssertStyleAttribute (innerElement1, "styleAttribute2", "styleAttributeValue2");
+      _htmlHelper.AssertStyleAttribute(innerElement1, "styleAttribute1", "styleAttributeValue1");
+      _htmlHelper.AssertStyleAttribute(innerElement1, "styleAttribute2", "styleAttributeValue2");
     }
 
     [Test]
@@ -289,10 +289,10 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     {
       var document = _htmlHelper.GetResultDocument();
       var innerElement1 = document.DocumentElement.ChildNodes[0].ChildNodes[0];
-      Assert.That (
-          () => _htmlHelper.AssertStyleAttribute (innerElement1, "styleAttribute1", "otherStyleAttributeValue"),
+      Assert.That(
+          () => _htmlHelper.AssertStyleAttribute(innerElement1, "styleAttribute1", "otherStyleAttributeValue"),
           Throws.Exception
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Attribute InnerElement1.style does not contain 'styleAttribute1:otherStyleAttributeValue;'" +
                   " - value is 'styleAttribute1:styleAttributeValue1;styleAttribute2:styleAttributeValue2;'."));
     }
@@ -302,10 +302,10 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     {
       var document = _htmlHelper.GetResultDocument();
       var innerElement1 = document.DocumentElement.ChildNodes[0].ChildNodes[0];
-      Assert.That (
-          () => _htmlHelper.AssertStyleAttribute (innerElement1, "otherStyleAttribute", "dummyValue"),
+      Assert.That(
+          () => _htmlHelper.AssertStyleAttribute(innerElement1, "otherStyleAttribute", "dummyValue"),
           Throws.Exception
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Attribute InnerElement1.style does not contain 'otherStyleAttribute:dummyValue;'" +
                   " - value is 'styleAttribute1:styleAttributeValue1;styleAttribute2:styleAttributeValue2;'."));
     }
@@ -315,36 +315,36 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
     {
       var document = _htmlHelper.GetResultDocument();
       var midLevelElement = document.DocumentElement.ChildNodes[0];
-      _htmlHelper.AssertTextNode (midLevelElement, "MidLevelTextContent", 1);
+      _htmlHelper.AssertTextNode(midLevelElement, "MidLevelTextContent", 1);
 
       var innerElement1 = midLevelElement.ChildNodes[0];
-      _htmlHelper.AssertTextNode (innerElement1, "InnerElement1TextContent", 0);
+      _htmlHelper.AssertTextNode(innerElement1, "InnerElement1TextContent", 0);
 
       var innerElement2 = midLevelElement.ChildNodes[2];
-      _htmlHelper.AssertTextNode (innerElement2, "InnerElement2TextContent", 0);
+      _htmlHelper.AssertTextNode(innerElement2, "InnerElement2TextContent", 0);
     }
 
     [Test]
     public void Fail_AssertTextNode_WrongIndex ()
     {
-      var document = _htmlHelper.GetResultDocument ();
+      var document = _htmlHelper.GetResultDocument();
       var midLevelElement = document.DocumentElement.ChildNodes[0];
-      Assert.That (
-          () => _htmlHelper.AssertTextNode (midLevelElement, "MidLevelTextContent", 0),
+      Assert.That(
+          () => _htmlHelper.AssertTextNode(midLevelElement, "MidLevelTextContent", 0),
           Throws.Exception
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "MidLevelElement.ChildNodes[0].NodeType is Element, not Text."));
     }
 
     [Test]
     public void Fail_AssertTextNode_WrongContent ()
     {
-      var document = _htmlHelper.GetResultDocument ();
+      var document = _htmlHelper.GetResultDocument();
       var midLevelElement = document.DocumentElement.ChildNodes[0];
-      Assert.That (
-          () => _htmlHelper.AssertTextNode (midLevelElement, "OtherTextContent", 1),
+      Assert.That(
+          () => _htmlHelper.AssertTextNode(midLevelElement, "OtherTextContent", 1),
           Throws.Exception
-              .With.Message.EqualTo ("Unexpected text node content."));
+              .With.Message.EqualTo("Unexpected text node content."));
     }
   }
 }

@@ -34,18 +34,18 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var dbFixtures = new DatabaseFixtures();
-        var tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.Current);
-        var user = User.FindByTenant (tenant.GetHandle()).First();
+        var tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.Current);
+        var user = User.FindByTenant(tenant.GetHandle()).First();
 
         var factory = new SecurityManagerPrincipalFactory();
 
-        var principal = factory.Create (tenant.GetHandle(), user.GetHandle(), null);
+        var principal = factory.Create(tenant.GetHandle(), user.GetHandle(), null);
 
-        Assert.That (principal, Is.TypeOf<SecurityManagerPrincipal>());
-        Assert.That (principal.Tenant.ID, Is.EqualTo (tenant.ID));
-        Assert.That (principal.User.ID, Is.EqualTo (user.ID));
-        Assert.That (principal.Roles, Is.Null);
-        Assert.That (principal.Substitution, Is.Null);
+        Assert.That(principal, Is.TypeOf<SecurityManagerPrincipal>());
+        Assert.That(principal.Tenant.ID, Is.EqualTo(tenant.ID));
+        Assert.That(principal.User.ID, Is.EqualTo(user.ID));
+        Assert.That(principal.Roles, Is.Null);
+        Assert.That(principal.Substitution, Is.Null);
       }
     }
 
@@ -55,31 +55,31 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var dbFixtures = new DatabaseFixtures();
-        var tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.Current);
-        var user = User.FindByTenant (tenant.GetHandle()).AsEnumerable().First (u => u.Roles.Any() && u.GetActiveSubstitutions().Any());
-        var substitution = user.GetActiveSubstitutions().First (s => s.SubstitutedRole != null);
+        var tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.Current);
+        var user = User.FindByTenant(tenant.GetHandle()).AsEnumerable().First(u => u.Roles.Any() && u.GetActiveSubstitutions().Any());
+        var substitution = user.GetActiveSubstitutions().First(s => s.SubstitutedRole != null);
 
         var factory = new SecurityManagerPrincipalFactory();
 
-        var principal = factory.Create (
+        var principal = factory.Create(
             tenant.GetHandle(),
             user.GetHandle(),
             substitution.GetHandle());
 
-        Assert.That (principal, Is.TypeOf<SecurityManagerPrincipal>());
-        Assert.That (principal.Tenant.ID, Is.EqualTo (tenant.ID));
-        Assert.That (principal.User.ID, Is.EqualTo (user.ID));
-        Assert.That (principal.Roles, Is.Null);
-        Assert.That (principal.Substitution, Is.Not.Null);
+        Assert.That(principal, Is.TypeOf<SecurityManagerPrincipal>());
+        Assert.That(principal.Tenant.ID, Is.EqualTo(tenant.ID));
+        Assert.That(principal.User.ID, Is.EqualTo(user.ID));
+        Assert.That(principal.Roles, Is.Null);
+        Assert.That(principal.Substitution, Is.Not.Null);
         var securityPrincipal = principal.GetSecurityPrincipal();
 
-        Assert.That (securityPrincipal.SubstitutedUser, Is.EqualTo (substitution.SubstitutedUser.UserName));
-        Assert.That (
+        Assert.That(securityPrincipal.SubstitutedUser, Is.EqualTo(substitution.SubstitutedUser.UserName));
+        Assert.That(
             securityPrincipal.SubstitutedRoles,
-            Is.EquivalentTo (
+            Is.EquivalentTo(
                 new ISecurityPrincipalRole[]
                 {
-                  new SecurityPrincipalRole (
+                  new SecurityPrincipalRole(
                       substitution.SubstitutedRole.Group.UniqueIdentifier,
                       substitution.SubstitutedRole.Position.UniqueIdentifier)
                 }));

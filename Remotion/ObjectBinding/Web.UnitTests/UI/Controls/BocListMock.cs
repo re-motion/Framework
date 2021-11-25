@@ -28,7 +28,7 @@ public class BocListMock: BocList
 {
 	public new void EvaluateWaiConformity (BocColumnDefinition[] columns)
   {
-    base.EvaluateWaiConformity (columns);
+    base.EvaluateWaiConformity(columns);
   }
 
   public new bool HasOptionsMenu
@@ -66,12 +66,12 @@ public class BocListMock: BocList
 
     return new[]
            {
-               new WebMenuItem (
+               new WebMenuItem(
                    "item0",
                    null,
                    "WebMenuItem1",
-                   new IconInfo ("~/Images/RowMenuItem.gif", 16, 16),
-                   new IconInfo ("~/Images/RowMenuItemDisabled.gif", 16, 16),
+                   new IconInfo("~/Images/RowMenuItem.gif", 16, 16),
+                   new IconInfo("~/Images/RowMenuItemDisabled.gif", 16, 16),
                    WebMenuItemStyle.Text,
                    RequiredSelection.Any,
                    false,
@@ -81,12 +81,12 @@ public class BocListMock: BocList
 
   public void OnLoad ()
   {
-    base.OnLoad (EventArgs.Empty);
+    base.OnLoad(EventArgs.Empty);
   }
 
   public void OnPreRender ()
   {
-    base.OnPreRender (EventArgs.Empty);
+    base.OnPreRender(EventArgs.Empty);
   }
 }
 

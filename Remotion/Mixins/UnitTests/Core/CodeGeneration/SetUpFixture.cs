@@ -43,7 +43,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       get
       {
         if (s_pipeline == null)
-          throw new InvalidOperationException ("SetUp must be executed first.");
+          throw new InvalidOperationException("SetUp must be executed first.");
         return s_pipeline;
       }
     }
@@ -64,9 +64,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     /// </summary>
     public static void AddSavedAssembly (string assemblyPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("assemblyPath", assemblyPath);
+      ArgumentUtility.CheckNotNullOrEmpty("assemblyPath", assemblyPath);
 #if FEATURE_ASSEMBLYBUILDER_SAVE
-      s_assemblyTrackingCodeManager.AddSavedAssembly (assemblyPath);
+      s_assemblyTrackingCodeManager.AddSavedAssembly(assemblyPath);
 #endif
     }
 
@@ -76,12 +76,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       // Force-initialize ObjectFactory to ensure it does not default onto the test pipeline.
       Dev.Null = ObjectFactory.Create<object>();
       // Force-initialize TestFactory to ensure it does not default onto the test pipeline.
-      Dev.Null = TypeFactory.GetConcreteType (typeof (object));
+      Dev.Null = TypeFactory.GetConcreteType(typeof (object));
 
-      var settings = PipelineSettings.New().SetEnableSerializationWithoutAssemblySaving (true).SetAssemblyDirectory (TestContext.CurrentContext.TestDirectory).Build();
+      var settings = PipelineSettings.New().SetEnableSerializationWithoutAssemblySaving(true).SetAssemblyDirectory(TestContext.CurrentContext.TestDirectory).Build();
       var participants = new IParticipant[]
                          {
-                           new MixinParticipant (
+                           new MixinParticipant(
                                SafeServiceLocator.Current.GetInstance<IConfigurationProvider>(),
                                SafeServiceLocator.Current.GetInstance<IMixinTypeProvider>(),
                                SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
@@ -91,16 +91,16 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 #if FEATURE_ASSEMBLYBUILDER_SAVE
       var assemblyTrackingPipelineFactory = new Remotion.TypePipe.Development.AssemblyTrackingPipelineFactory();
 
-      s_pipeline = assemblyTrackingPipelineFactory.Create (pipelineName, settings, participants);
+      s_pipeline = assemblyTrackingPipelineFactory.Create(pipelineName, settings, participants);
       s_assemblyTrackingCodeManager = assemblyTrackingPipelineFactory.AssemblyTrackingCodeManager;
 #else
       var defaultPipelineFactory = new DefaultPipelineFactory();
-      s_pipeline = defaultPipelineFactory.Create (pipelineName, settings, participants);
+      s_pipeline = defaultPipelineFactory.Create(pipelineName, settings, participants);
 #endif
-      var pipelineRegistry = new DefaultPipelineRegistry (s_pipeline);
+      var pipelineRegistry = new DefaultPipelineRegistry(s_pipeline);
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<IPipelineRegistry> (() => pipelineRegistry);
-      s_serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle<IPipelineRegistry>(() => pipelineRegistry);
+      s_serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
     [OneTimeTearDown]
@@ -113,7 +113,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       }
       catch (Exception ex)
       {
-        Assert.Fail ("Error when saving assemblies: {0}", ex);
+        Assert.Fail("Error when saving assemblies: {0}", ex);
       }
 
 #if !NO_PEVERIFY
@@ -126,9 +126,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       }
       else
       {
-        Console.WriteLine (
+        Console.WriteLine(
             "Assemblies saved to: " + Environment.NewLine
-            + string.Join (Environment.NewLine, s_assemblyTrackingCodeManager.SavedAssemblies));
+            + string.Join(Environment.NewLine, s_assemblyTrackingCodeManager.SavedAssemblies));
       }
 #endif
       s_serviceLocatorScope.Dispose();

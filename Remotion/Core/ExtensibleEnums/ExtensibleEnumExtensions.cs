@@ -29,7 +29,7 @@ namespace Remotion.ExtensibleEnums
     [Obsolete ("Retrieve IExtensibleEnumerationGlobalizationService from IoC container and use IExtensibleEnumerationGlobalizationService.GetExtensibleEnumerationValueDisplayName (...). (Version 1.13.223.0)", true)]
     public static string GetLocalizedName (this IExtensibleEnum extensibleEnum)
     {
-      throw new NotSupportedException ("Retrieve IExtensibleEnumerationGlobalizationService from IoC container and use IExtensibleEnumerationGlobalizationService.GetExtensibleEnumerationValueDisplayName (...). (Version 1.13.223.0)");
+      throw new NotSupportedException("Retrieve IExtensibleEnumerationGlobalizationService from IoC container and use IExtensibleEnumerationGlobalizationService.GetExtensibleEnumerationValueDisplayName (...). (Version 1.13.223.0)");
     }
   }
 }

@@ -31,12 +31,12 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
     private readonly Func<object, T> _resultConversion;
 
     public ScalarQueryAdapter (IQuery query, Func<object, T> resultConversion)
-      : base (ArgumentUtility.CheckNotNull ("query", query))
+      : base (ArgumentUtility.CheckNotNull("query", query))
     {
-      ArgumentUtility.CheckNotNull ("resultConversion", resultConversion);
+      ArgumentUtility.CheckNotNull("resultConversion", resultConversion);
 
       if (query.QueryType != QueryType.Scalar)
-        throw new ArgumentException ("Only scalar queries can be used to load scalar results.", "query");
+        throw new ArgumentException("Only scalar queries can be used to load scalar results.", "query");
 
       _resultConversion = resultConversion;
     }
@@ -48,10 +48,10 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
 
     public override T Execute (IQueryManager queryManager)
     {
-      ArgumentUtility.CheckNotNull ("queryManager", queryManager);
+      ArgumentUtility.CheckNotNull("queryManager", queryManager);
 
-      var scalarValue = queryManager.GetScalar (this);
-      return _resultConversion (scalarValue);
+      var scalarValue = queryManager.GetScalar(this);
+      return _resultConversion(scalarValue);
     }
   }
 }

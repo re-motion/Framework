@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
   {
     public static AccessTypeReference NewObject ()
     {
-      return NewObject<AccessTypeReference> ();
+      return NewObject<AccessTypeReference>();
     }
 
     protected AccessTypeReference ()
@@ -48,7 +48,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
       if (Class != null)
         Class.RegisterForCommit();

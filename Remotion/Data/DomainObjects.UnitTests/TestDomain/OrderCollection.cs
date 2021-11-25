@@ -60,57 +60,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     protected override void OnAdding (DomainObjectCollectionChangeEventArgs args)
     {
-      base.OnAdding (args);
+      base.OnAdding(args);
       if (_eventReceiver != null)
-        _eventReceiver.OnAdding (args);
+        _eventReceiver.OnAdding(args);
     }
 
     protected override void OnAdded (DomainObjectCollectionChangeEventArgs args)
     {
-      base.OnAdded (args);
+      base.OnAdded(args);
       if (_eventReceiver != null)
-        _eventReceiver.OnAdded (args);
+        _eventReceiver.OnAdded(args);
     }
 
     protected override void OnRemoving (DomainObjectCollectionChangeEventArgs args)
     {
-      base.OnRemoving (args);
+      base.OnRemoving(args);
       if (_eventReceiver != null)
-        _eventReceiver.OnRemoving (args);
+        _eventReceiver.OnRemoving(args);
     }
 
     protected override void OnRemoved (DomainObjectCollectionChangeEventArgs args)
     {
-      base.OnRemoved (args);
+      base.OnRemoved(args);
       if (_eventReceiver != null)
-        _eventReceiver.OnRemoved (args);
+        _eventReceiver.OnRemoved(args);
     }
 
     protected override void OnDeleting ()
     {
       base.OnDeleting();
       if (_eventReceiver != null)
-        _eventReceiver.OnDeleting ();
+        _eventReceiver.OnDeleting();
     }
 
     protected override void OnDeleted ()
     {
       base.OnDeleted();
       if (_eventReceiver != null)
-        _eventReceiver.OnDeleted ();
+        _eventReceiver.OnDeleted();
     }
 
     protected override void OnReplaceData ()
     {
-      base.OnReplaceData ();
+      base.OnReplaceData();
       if (_eventReceiver != null)
-        _eventReceiver.OnReplaceData ();
+        _eventReceiver.OnReplaceData();
     }
 
     public new void Sort (Comparison<DomainObject> comparison)
     {
 #pragma warning disable 612,618
-      base.Sort (comparison);
+      base.Sort(comparison);
 #pragma warning restore 612,618
     }
   }

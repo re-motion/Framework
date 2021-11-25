@@ -51,8 +51,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
 
     public IEnumerator<UserRoleAclAceCombination> GetEnumerator ()
     {
-      var users = UserFinder.FindUsers ();
-      var acls = AccessControlListFinder.FindAccessControlLists ();
+      var users = UserFinder.FindUsers();
+      var acls = AccessControlListFinder.FindAccessControlLists();
 
       foreach (var user in users)
       {
@@ -66,7 +66,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
             foreach (var ace in acl.AccessControlEntries)
             {
               //To.ConsoleLine.s ("\t\t\t").e (() => ace);
-              yield return new UserRoleAclAceCombination (role, ace);
+              yield return new UserRoleAclAceCombination(role, ace);
             }
           }
         }

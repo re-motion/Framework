@@ -34,7 +34,7 @@ namespace Remotion.Validation.MetaValidation
     public PropertyMetaValidationRuleValidatorFactory (
         ISystemPropertyMetaValidationRuleProviderFactory systemPropertyMetaValidationRuleProviderFactory)
     {
-      ArgumentUtility.CheckNotNull ("systemPropertyMetaValidationRuleProviderFactory", systemPropertyMetaValidationRuleProviderFactory);
+      ArgumentUtility.CheckNotNull("systemPropertyMetaValidationRuleProviderFactory", systemPropertyMetaValidationRuleProviderFactory);
 
       _systemPropertyMetaValidationRuleProviderFactory = systemPropertyMetaValidationRuleProviderFactory;
     }
@@ -42,9 +42,9 @@ namespace Remotion.Validation.MetaValidation
     public IPropertyMetaValidationRuleValidator CreatePropertyMetaValidationRuleValidator (
         IEnumerable<IPropertyMetaValidationRuleCollector> propertyMetaValidationRuleCollectors)
     {
-      ArgumentUtility.CheckNotNull ("propertyMetaValidationRuleCollectors", propertyMetaValidationRuleCollectors);
+      ArgumentUtility.CheckNotNull("propertyMetaValidationRuleCollectors", propertyMetaValidationRuleCollectors);
 
-      return new PropertyMetaValidationRuleValidator (
+      return new PropertyMetaValidationRuleValidator(
           propertyMetaValidationRuleCollectors.ToArray(),
           _systemPropertyMetaValidationRuleProviderFactory);
     }

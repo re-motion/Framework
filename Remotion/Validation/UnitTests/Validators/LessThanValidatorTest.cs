@@ -30,40 +30,40 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void Validate_WithPropertyValueEqualsComparisonValue_ReturnsSingleValidationFailure ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (3);
-      var validator = new LessThanValidator (3, new InvariantValidationMessage ("Custom validation message: '{0}'."));
+      var propertyValidatorContext = CreatePropertyValidatorContext(3);
+      var validator = new LessThanValidator(3, new InvariantValidationMessage("Custom validation message: '{0}'."));
 
-      var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
+      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
-      Assert.That (validationFailures.Length, Is.EqualTo (1));
+      Assert.That(validationFailures.Length, Is.EqualTo(1));
       //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
-      Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must be less than '3'."));
-      Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '3'."));
+      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must be less than '3'."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '3'."));
     }
 
     [Test]
     public void Validate_WithPropertyValueLessThanComparisonValue_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (2);
-      var validator = new LessThanValidator (3, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(2);
+      var validator = new LessThanValidator(3, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueGreaterThanComparisonValue_ReturnsSingleValidationFailure ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (4);
-      var validator = new LessThanValidator (3, new InvariantValidationMessage ("Custom validation message: '{0}'."));
+      var propertyValidatorContext = CreatePropertyValidatorContext(4);
+      var validator = new LessThanValidator(3, new InvariantValidationMessage("Custom validation message: '{0}'."));
 
-      var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
+      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
-      Assert.That (validationFailures.Length, Is.EqualTo (1));
+      Assert.That(validationFailures.Length, Is.EqualTo(1));
       //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
-      Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must be less than '3'."));
-      Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '3'."));
+      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must be less than '3'."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '3'."));
     }
 
     [Test]
@@ -75,23 +75,23 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void Validate_WithPropertyValueDifferentTypeThanComparisonValue_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (new object());
-      var validator = new LessThanValidator (3, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(new object());
+      var validator = new LessThanValidator(3, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (null);
-      var validator = new LessThanValidator (3, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(null);
+      var validator = new LessThanValidator(3, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
@@ -99,16 +99,16 @@ namespace Remotion.Validation.UnitTests.Validators
     {
       var comparerMock = new Mock<IComparer>();
       comparerMock
-          .Setup (_ => _.Compare ("propertyValue", "comparisonValue"))
-          .Returns (-1)
+          .Setup(_ => _.Compare("propertyValue", "comparisonValue"))
+          .Returns(-1)
           .Verifiable();
-      var propertyValidatorContext = CreatePropertyValidatorContext ("propertyValue");
-      var validator = new LessThanValidator ("comparisonValue", new InvariantValidationMessage ("Fake Message"), comparerMock.Object);
+      var propertyValidatorContext = CreatePropertyValidatorContext("propertyValue");
+      var validator = new LessThanValidator("comparisonValue", new InvariantValidationMessage("Fake Message"), comparerMock.Object);
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
       comparerMock.Verify();
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
   }
 }

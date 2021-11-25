@@ -50,20 +50,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
       
       _endPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
       _endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider>();
       _transactionEventSinkStub = MockRepository.GenerateStub<IClientTransactionEventSink>();
 
-      _state = new SynchronizedRealObjectEndPointSyncState (_endPointProviderStub, _transactionEventSinkStub);
+      _state = new SynchronizedRealObjectEndPointSyncState(_endPointProviderStub, _transactionEventSinkStub);
 
-      _order = DomainObjectMother.CreateFakeObject<Order> ();
-      _location = DomainObjectMother.CreateFakeObject<Location> ();
+      _order = DomainObjectMother.CreateFakeObject<Order>();
+      _location = DomainObjectMother.CreateFakeObject<Location>();
 
       _orderOrderTicketEndPointDefinition = GetRelationEndPointDefinition(typeof (Order), "OrderTicket");
-      _locationClientEndPointDefinition = GetRelationEndPointDefinition (typeof (Location), "Client");
-      _orderCustomerEndPointDefinition = GetRelationEndPointDefinition (typeof (Order), "Customer");
+      _locationClientEndPointDefinition = GetRelationEndPointDefinition(typeof (Location), "Client");
+      _orderCustomerEndPointDefinition = GetRelationEndPointDefinition(typeof (Order), "Customer");
 
       _fakeSetter = domainObject => { };
       _fakeNullSetter = () => { };
@@ -72,253 +72,253 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void IsSynchronized ()
     {
-      Assert.That (_state.IsSynchronized(_endPointMock), Is.True);
+      Assert.That(_state.IsSynchronized(_endPointMock), Is.True);
     }
 
     [Test]
     public void Synchronize ()
     {
-      var oppositeEndPointMock = MockRepository.GenerateStrictMock<IVirtualEndPoint> ();
+      var oppositeEndPointMock = MockRepository.GenerateStrictMock<IVirtualEndPoint>();
       oppositeEndPointMock.Replay();
       
-      _state.Synchronize (_endPointMock, oppositeEndPointMock);
+      _state.Synchronize(_endPointMock, oppositeEndPointMock);
 
-      oppositeEndPointMock.AssertWasNotCalled(mock=>mock.SynchronizeOppositeEndPoint (_endPointMock));
+      oppositeEndPointMock.AssertWasNotCalled(mock=>mock.SynchronizeOppositeEndPoint(_endPointMock));
     }
 
     [Test]
     public void CreateDeleteCommand_NonVirtualOpposite ()
     {
-      var virtualDefinition = RelationEndPointObjectMother.GetEndPointDefinition (typeof (Order), "OrderTicket");
+      var virtualDefinition = RelationEndPointObjectMother.GetEndPointDefinition(typeof (Order), "OrderTicket");
 
-      _endPointMock.Stub (stub => stub.GetDomainObject ()).Return (_order);
-      _endPointMock.Stub (stub => stub.IsNull).Return (false);
-      _endPointMock.Stub (stub => stub.Definition).Return (virtualDefinition);
+      _endPointMock.Stub(stub => stub.GetDomainObject()).Return(_order);
+      _endPointMock.Stub(stub => stub.IsNull).Return(false);
+      _endPointMock.Stub(stub => stub.Definition).Return(virtualDefinition);
       _endPointMock.Replay();
 
-      var command = (RelationEndPointModificationCommand) _state.CreateDeleteCommand (_endPointMock, _fakeNullSetter);
+      var command = (RelationEndPointModificationCommand) _state.CreateDeleteCommand(_endPointMock, _fakeNullSetter);
 
-      Assert.That (command, Is.TypeOf (typeof (ObjectEndPointDeleteCommand)));
-      Assert.That (command.DomainObject, Is.SameAs (_order));
-      Assert.That (command.ModifiedEndPoint, Is.SameAs (_endPointMock));
-      Assert.That (GetOppositeObjectNullSetter ((ObjectEndPointDeleteCommand) command), Is.SameAs (_fakeNullSetter));
+      Assert.That(command, Is.TypeOf(typeof (ObjectEndPointDeleteCommand)));
+      Assert.That(command.DomainObject, Is.SameAs(_order));
+      Assert.That(command.ModifiedEndPoint, Is.SameAs(_endPointMock));
+      Assert.That(GetOppositeObjectNullSetter((ObjectEndPointDeleteCommand) command), Is.SameAs(_fakeNullSetter));
     }
 
     [Test]
     public void CreateDeleteCommand_VirtualOpposite ()
     {
-      var realDefinition = RelationEndPointObjectMother.GetEndPointDefinition (typeof (OrderTicket), "Order");
+      var realDefinition = RelationEndPointObjectMother.GetEndPointDefinition(typeof (OrderTicket), "Order");
 
-      _endPointMock.Stub (stub => stub.GetDomainObject ()).Return (_order);
-      _endPointMock.Stub (stub => stub.IsNull).Return (false);
-      _endPointMock.Stub (stub => stub.Definition).Return (realDefinition);
-      _endPointMock.Stub (stub => stub.OppositeObjectID).Return (DomainObjectIDs.Order1);
-      _endPointMock.Replay ();
+      _endPointMock.Stub(stub => stub.GetDomainObject()).Return(_order);
+      _endPointMock.Stub(stub => stub.IsNull).Return(false);
+      _endPointMock.Stub(stub => stub.Definition).Return(realDefinition);
+      _endPointMock.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.Order1);
+      _endPointMock.Replay();
 
       var oldOppositeEndPointStub = MockRepository.GenerateStrictMock<IVirtualEndPoint>();
-      var newOppositeEndPointStub = MockRepository.GenerateStrictMock<IVirtualEndPoint> ();
+      var newOppositeEndPointStub = MockRepository.GenerateStrictMock<IVirtualEndPoint>();
 
-      var oldOppositeEndPointID = RelationEndPointID.CreateOpposite (realDefinition, DomainObjectIDs.Order1);
-      var newOppositeEndPointID = RelationEndPointID.CreateOpposite (realDefinition, null);
+      var oldOppositeEndPointID = RelationEndPointID.CreateOpposite(realDefinition, DomainObjectIDs.Order1);
+      var newOppositeEndPointID = RelationEndPointID.CreateOpposite(realDefinition, null);
 
       _endPointProviderStub
-          .Stub (stub => stub.GetRelationEndPointWithLazyLoad (oldOppositeEndPointID))
-          .Return (oldOppositeEndPointStub);
+          .Stub(stub => stub.GetRelationEndPointWithLazyLoad(oldOppositeEndPointID))
+          .Return(oldOppositeEndPointStub);
       _endPointProviderStub
-          .Stub (stub => stub.GetRelationEndPointWithLazyLoad (newOppositeEndPointID))
-          .Return (newOppositeEndPointStub);
+          .Stub(stub => stub.GetRelationEndPointWithLazyLoad(newOppositeEndPointID))
+          .Return(newOppositeEndPointStub);
 
-      var command = _state.CreateDeleteCommand (_endPointMock, _fakeNullSetter);
+      var command = _state.CreateDeleteCommand(_endPointMock, _fakeNullSetter);
 
-      Assert.That (command, Is.TypeOf (typeof (RealObjectEndPointRegistrationCommandDecorator)));
+      Assert.That(command, Is.TypeOf(typeof (RealObjectEndPointRegistrationCommandDecorator)));
       var decorator = (RealObjectEndPointRegistrationCommandDecorator) command;
-      Assert.That (decorator.RealObjectEndPoint, Is.SameAs (_endPointMock));
-      Assert.That (decorator.OldRelatedEndPoint, Is.SameAs (oldOppositeEndPointStub));
-      Assert.That (decorator.NewRelatedEndPoint, Is.SameAs (newOppositeEndPointStub));
+      Assert.That(decorator.RealObjectEndPoint, Is.SameAs(_endPointMock));
+      Assert.That(decorator.OldRelatedEndPoint, Is.SameAs(oldOppositeEndPointStub));
+      Assert.That(decorator.NewRelatedEndPoint, Is.SameAs(newOppositeEndPointStub));
 
-      Assert.That (decorator.DecoratedCommand, Is.TypeOf (typeof (ObjectEndPointDeleteCommand)));
+      Assert.That(decorator.DecoratedCommand, Is.TypeOf(typeof (ObjectEndPointDeleteCommand)));
       var decoratedCommand = (ObjectEndPointDeleteCommand) decorator.DecoratedCommand;
-      Assert.That (decoratedCommand.DomainObject, Is.SameAs (_order));
-      Assert.That (decoratedCommand.ModifiedEndPoint, Is.SameAs (_endPointMock));
-      Assert.That (GetOppositeObjectNullSetter (decoratedCommand), Is.SameAs (_fakeNullSetter));
+      Assert.That(decoratedCommand.DomainObject, Is.SameAs(_order));
+      Assert.That(decoratedCommand.ModifiedEndPoint, Is.SameAs(_endPointMock));
+      Assert.That(GetOppositeObjectNullSetter(decoratedCommand), Is.SameAs(_fakeNullSetter));
     }
 
     [Test]
     public void CreateSetCommand_Same ()
     {
-      var relatedObject = DomainObjectMother.CreateFakeObject<OrderTicket> ();
+      var relatedObject = DomainObjectMother.CreateFakeObject<OrderTicket>();
 
-      _endPointMock.Stub (stub => stub.Definition).Return (_orderOrderTicketEndPointDefinition);
-      _endPointMock.Stub (stub => stub.GetDomainObject ()).Return (_order);
-      _endPointMock.Stub (stub => stub.IsNull).Return (false);
+      _endPointMock.Stub(stub => stub.Definition).Return(_orderOrderTicketEndPointDefinition);
+      _endPointMock.Stub(stub => stub.GetDomainObject()).Return(_order);
+      _endPointMock.Stub(stub => stub.IsNull).Return(false);
 
-      _endPointMock.Stub (stub => stub.OppositeObjectID).Return (relatedObject.ID);
-      _endPointMock.Stub (stub => stub.GetOppositeObject ()).Return (relatedObject);
+      _endPointMock.Stub(stub => stub.OppositeObjectID).Return(relatedObject.ID);
+      _endPointMock.Stub(stub => stub.GetOppositeObject()).Return(relatedObject);
 
-      var command = (RelationEndPointModificationCommand) _state.CreateSetCommand (_endPointMock, relatedObject, _fakeSetter);
+      var command = (RelationEndPointModificationCommand) _state.CreateSetCommand(_endPointMock, relatedObject, _fakeSetter);
 
-      Assert.That (command, Is.TypeOf (typeof (ObjectEndPointSetSameCommand)));
-      Assert.That (command.DomainObject, Is.SameAs (_order));
-      Assert.That (command.ModifiedEndPoint, Is.SameAs (_endPointMock));
-      Assert.That (command.OldRelatedObject, Is.SameAs (relatedObject));
-      Assert.That (command.NewRelatedObject, Is.SameAs (relatedObject));
+      Assert.That(command, Is.TypeOf(typeof (ObjectEndPointSetSameCommand)));
+      Assert.That(command.DomainObject, Is.SameAs(_order));
+      Assert.That(command.ModifiedEndPoint, Is.SameAs(_endPointMock));
+      Assert.That(command.OldRelatedObject, Is.SameAs(relatedObject));
+      Assert.That(command.NewRelatedObject, Is.SameAs(relatedObject));
     }
 
     [Test]
     public void CreateSetCommand_Same_Null ()
     {
-      _endPointMock.Stub (stub => stub.Definition).Return (_orderOrderTicketEndPointDefinition);
-      _endPointMock.Stub (stub => stub.GetDomainObject ()).Return (_order);
-      _endPointMock.Stub (stub => stub.IsNull).Return (false);
+      _endPointMock.Stub(stub => stub.Definition).Return(_orderOrderTicketEndPointDefinition);
+      _endPointMock.Stub(stub => stub.GetDomainObject()).Return(_order);
+      _endPointMock.Stub(stub => stub.IsNull).Return(false);
 
-      _endPointMock.Stub (stub => stub.OppositeObjectID).Return (null);
-      _endPointMock.Stub (stub => stub.GetOppositeObject ()).Return (null);
+      _endPointMock.Stub(stub => stub.OppositeObjectID).Return(null);
+      _endPointMock.Stub(stub => stub.GetOppositeObject()).Return(null);
 
-      var command = (RelationEndPointModificationCommand) _state.CreateSetCommand (_endPointMock, null, _fakeSetter);
+      var command = (RelationEndPointModificationCommand) _state.CreateSetCommand(_endPointMock, null, _fakeSetter);
 
-      Assert.That (command, Is.TypeOf (typeof (ObjectEndPointSetSameCommand)));
-      Assert.That (command.DomainObject, Is.SameAs (_order));
-      Assert.That (command.ModifiedEndPoint, Is.SameAs (_endPointMock));
-      Assert.That (command.OldRelatedObject, Is.Null);
-      Assert.That (command.NewRelatedObject, Is.Null);
+      Assert.That(command, Is.TypeOf(typeof (ObjectEndPointSetSameCommand)));
+      Assert.That(command.DomainObject, Is.SameAs(_order));
+      Assert.That(command.ModifiedEndPoint, Is.SameAs(_endPointMock));
+      Assert.That(command.OldRelatedObject, Is.Null);
+      Assert.That(command.NewRelatedObject, Is.Null);
     }
 
     [Test]
     public void CreateSetCommand_Unidirectional ()
     {
-      var oldRelatedObject = DomainObjectMother.CreateFakeObject<Client> ();
-      var newRelatedObject = DomainObjectMother.CreateFakeObject<Client> ();
+      var oldRelatedObject = DomainObjectMother.CreateFakeObject<Client>();
+      var newRelatedObject = DomainObjectMother.CreateFakeObject<Client>();
 
-      _endPointMock.Stub (stub => stub.Definition).Return (_locationClientEndPointDefinition);
-      _endPointMock.Stub (stub => stub.GetDomainObject ()).Return (_location);
-      _endPointMock.Stub (stub => stub.IsNull).Return (false);
+      _endPointMock.Stub(stub => stub.Definition).Return(_locationClientEndPointDefinition);
+      _endPointMock.Stub(stub => stub.GetDomainObject()).Return(_location);
+      _endPointMock.Stub(stub => stub.IsNull).Return(false);
 
-      _endPointMock.Stub (stub => stub.OppositeObjectID).Return (oldRelatedObject.ID);
-      _endPointMock.Stub (stub => stub.GetOppositeObject ()).Return (oldRelatedObject);
+      _endPointMock.Stub(stub => stub.OppositeObjectID).Return(oldRelatedObject.ID);
+      _endPointMock.Stub(stub => stub.GetOppositeObject()).Return(oldRelatedObject);
 
-      var command = (RelationEndPointModificationCommand) _state.CreateSetCommand (_endPointMock, newRelatedObject, _fakeSetter);
+      var command = (RelationEndPointModificationCommand) _state.CreateSetCommand(_endPointMock, newRelatedObject, _fakeSetter);
 
-      Assert.That (command.GetType (), Is.EqualTo (typeof (ObjectEndPointSetUnidirectionalCommand)));
-      Assert.That (command.ModifiedEndPoint, Is.SameAs (_endPointMock));
-      Assert.That (command.NewRelatedObject, Is.SameAs (newRelatedObject));
-      Assert.That (command.OldRelatedObject, Is.SameAs (oldRelatedObject));
-      Assert.That (GetOppositeObjectIDSetter ((ObjectEndPointSetCommand) command), Is.SameAs (_fakeSetter));
+      Assert.That(command.GetType(), Is.EqualTo(typeof (ObjectEndPointSetUnidirectionalCommand)));
+      Assert.That(command.ModifiedEndPoint, Is.SameAs(_endPointMock));
+      Assert.That(command.NewRelatedObject, Is.SameAs(newRelatedObject));
+      Assert.That(command.OldRelatedObject, Is.SameAs(oldRelatedObject));
+      Assert.That(GetOppositeObjectIDSetter((ObjectEndPointSetCommand) command), Is.SameAs(_fakeSetter));
     }
 
     [Test]
     public void CreateSetCommand_OneOne ()
     {
       var oldRelatedObject = DomainObjectMother.CreateFakeObject<OrderTicket>();
-      var newRelatedObject = DomainObjectMother.CreateFakeObject<OrderTicket> ();
+      var newRelatedObject = DomainObjectMother.CreateFakeObject<OrderTicket>();
 
-      _endPointMock.Stub (stub => stub.Definition).Return (_orderOrderTicketEndPointDefinition);
-      _endPointMock.Stub (stub => stub.GetDomainObject ()).Return (_order);
-      _endPointMock.Stub (stub => stub.IsNull).Return (false);
+      _endPointMock.Stub(stub => stub.Definition).Return(_orderOrderTicketEndPointDefinition);
+      _endPointMock.Stub(stub => stub.GetDomainObject()).Return(_order);
+      _endPointMock.Stub(stub => stub.IsNull).Return(false);
 
-      _endPointMock.Stub (stub => stub.OppositeObjectID).Return (oldRelatedObject.ID);
-      _endPointMock.Stub (stub => stub.GetOppositeObject ()).Return (oldRelatedObject);
+      _endPointMock.Stub(stub => stub.OppositeObjectID).Return(oldRelatedObject.ID);
+      _endPointMock.Stub(stub => stub.GetOppositeObject()).Return(oldRelatedObject);
 
-      var oldOppositeEndPointStub = MockRepository.GenerateStub<IVirtualEndPoint> ();
-      var newOppositeEndPointStub = MockRepository.GenerateStub<IVirtualEndPoint> ();
+      var oldOppositeEndPointStub = MockRepository.GenerateStub<IVirtualEndPoint>();
+      var newOppositeEndPointStub = MockRepository.GenerateStub<IVirtualEndPoint>();
 
-      var oldOppositeEndPointID = RelationEndPointID.CreateOpposite (_orderOrderTicketEndPointDefinition, oldRelatedObject.ID);
-      var newOppositeEndPointID = RelationEndPointID.CreateOpposite (_orderOrderTicketEndPointDefinition, newRelatedObject.ID);
+      var oldOppositeEndPointID = RelationEndPointID.CreateOpposite(_orderOrderTicketEndPointDefinition, oldRelatedObject.ID);
+      var newOppositeEndPointID = RelationEndPointID.CreateOpposite(_orderOrderTicketEndPointDefinition, newRelatedObject.ID);
 
       _endPointProviderStub
-          .Stub (stub => stub.GetRelationEndPointWithLazyLoad (oldOppositeEndPointID))
-          .Return (oldOppositeEndPointStub);
+          .Stub(stub => stub.GetRelationEndPointWithLazyLoad(oldOppositeEndPointID))
+          .Return(oldOppositeEndPointStub);
       _endPointProviderStub
-          .Stub (stub => stub.GetRelationEndPointWithLazyLoad (newOppositeEndPointID))
-          .Return (newOppositeEndPointStub);
+          .Stub(stub => stub.GetRelationEndPointWithLazyLoad(newOppositeEndPointID))
+          .Return(newOppositeEndPointStub);
 
-      var command = _state.CreateSetCommand (_endPointMock, newRelatedObject, _fakeSetter);
+      var command = _state.CreateSetCommand(_endPointMock, newRelatedObject, _fakeSetter);
 
-      Assert.That (command, Is.TypeOf (typeof (RealObjectEndPointRegistrationCommandDecorator)));
+      Assert.That(command, Is.TypeOf(typeof (RealObjectEndPointRegistrationCommandDecorator)));
       var decorator = (RealObjectEndPointRegistrationCommandDecorator) command;
-      Assert.That (decorator.RealObjectEndPoint, Is.SameAs (_endPointMock));
-      Assert.That (decorator.OldRelatedEndPoint, Is.SameAs (oldOppositeEndPointStub));
-      Assert.That (decorator.NewRelatedEndPoint, Is.SameAs (newOppositeEndPointStub));
+      Assert.That(decorator.RealObjectEndPoint, Is.SameAs(_endPointMock));
+      Assert.That(decorator.OldRelatedEndPoint, Is.SameAs(oldOppositeEndPointStub));
+      Assert.That(decorator.NewRelatedEndPoint, Is.SameAs(newOppositeEndPointStub));
 
-      Assert.That (decorator.DecoratedCommand, Is.TypeOf (typeof (ObjectEndPointSetOneOneCommand)));
+      Assert.That(decorator.DecoratedCommand, Is.TypeOf(typeof (ObjectEndPointSetOneOneCommand)));
       var decoratedCommand = (ObjectEndPointSetOneOneCommand) decorator.DecoratedCommand;
-      Assert.That (decoratedCommand.ModifiedEndPoint, Is.SameAs (_endPointMock));
-      Assert.That (decoratedCommand.NewRelatedObject, Is.SameAs (newRelatedObject));
-      Assert.That (decoratedCommand.OldRelatedObject, Is.SameAs (oldRelatedObject));
+      Assert.That(decoratedCommand.ModifiedEndPoint, Is.SameAs(_endPointMock));
+      Assert.That(decoratedCommand.NewRelatedObject, Is.SameAs(newRelatedObject));
+      Assert.That(decoratedCommand.OldRelatedObject, Is.SameAs(oldRelatedObject));
 
-      Assert.That (GetOppositeObjectIDSetter (decoratedCommand), Is.SameAs (_fakeSetter));
+      Assert.That(GetOppositeObjectIDSetter(decoratedCommand), Is.SameAs(_fakeSetter));
     }
 
     [Test]
     public void CreateSetCommand_OneMany ()
     {
-      var oldRelatedObject = DomainObjectMother.CreateFakeObject<Customer> ();
-      var newRelatedObject = DomainObjectMother.CreateFakeObject<Customer> ();
+      var oldRelatedObject = DomainObjectMother.CreateFakeObject<Customer>();
+      var newRelatedObject = DomainObjectMother.CreateFakeObject<Customer>();
 
-      _endPointMock.Stub (stub => stub.Definition).Return (_orderCustomerEndPointDefinition);
-      _endPointMock.Stub (stub => stub.GetDomainObject ()).Return (_order);
-      _endPointMock.Stub (stub => stub.IsNull).Return (false);
+      _endPointMock.Stub(stub => stub.Definition).Return(_orderCustomerEndPointDefinition);
+      _endPointMock.Stub(stub => stub.GetDomainObject()).Return(_order);
+      _endPointMock.Stub(stub => stub.IsNull).Return(false);
 
-      _endPointMock.Stub (stub => stub.OppositeObjectID).Return (oldRelatedObject.ID);
-      _endPointMock.Stub (stub => stub.GetOppositeObject ()).Return (oldRelatedObject);
+      _endPointMock.Stub(stub => stub.OppositeObjectID).Return(oldRelatedObject.ID);
+      _endPointMock.Stub(stub => stub.GetOppositeObject()).Return(oldRelatedObject);
 
-      var oldOppositeEndPointStub = MockRepository.GenerateStub<IVirtualEndPoint> ();
-      var newOppositeEndPointStub = MockRepository.GenerateStub<IVirtualEndPoint> ();
+      var oldOppositeEndPointStub = MockRepository.GenerateStub<IVirtualEndPoint>();
+      var newOppositeEndPointStub = MockRepository.GenerateStub<IVirtualEndPoint>();
 
-      var oldOppositeEndPointID = RelationEndPointID.CreateOpposite (_orderCustomerEndPointDefinition, oldRelatedObject.ID);
-      var newOppositeEndPointID = RelationEndPointID.CreateOpposite (_orderCustomerEndPointDefinition, newRelatedObject.ID);
+      var oldOppositeEndPointID = RelationEndPointID.CreateOpposite(_orderCustomerEndPointDefinition, oldRelatedObject.ID);
+      var newOppositeEndPointID = RelationEndPointID.CreateOpposite(_orderCustomerEndPointDefinition, newRelatedObject.ID);
 
       _endPointProviderStub
-          .Stub (stub => stub.GetRelationEndPointWithLazyLoad (oldOppositeEndPointID))
-          .Return (oldOppositeEndPointStub);
+          .Stub(stub => stub.GetRelationEndPointWithLazyLoad(oldOppositeEndPointID))
+          .Return(oldOppositeEndPointStub);
       _endPointProviderStub
-          .Stub (stub => stub.GetRelationEndPointWithLazyLoad (newOppositeEndPointID))
-          .Return (newOppositeEndPointStub);
+          .Stub(stub => stub.GetRelationEndPointWithLazyLoad(newOppositeEndPointID))
+          .Return(newOppositeEndPointStub);
 
-      var command = _state.CreateSetCommand (_endPointMock, newRelatedObject, _fakeSetter);
+      var command = _state.CreateSetCommand(_endPointMock, newRelatedObject, _fakeSetter);
 
-      Assert.That (command, Is.TypeOf (typeof (RealObjectEndPointRegistrationCommandDecorator)));
+      Assert.That(command, Is.TypeOf(typeof (RealObjectEndPointRegistrationCommandDecorator)));
       var decorator = (RealObjectEndPointRegistrationCommandDecorator) command;
-      Assert.That (decorator.RealObjectEndPoint, Is.SameAs (_endPointMock));
-      Assert.That (decorator.OldRelatedEndPoint, Is.SameAs (oldOppositeEndPointStub));
-      Assert.That (decorator.NewRelatedEndPoint, Is.SameAs (newOppositeEndPointStub));
+      Assert.That(decorator.RealObjectEndPoint, Is.SameAs(_endPointMock));
+      Assert.That(decorator.OldRelatedEndPoint, Is.SameAs(oldOppositeEndPointStub));
+      Assert.That(decorator.NewRelatedEndPoint, Is.SameAs(newOppositeEndPointStub));
 
-      Assert.That (decorator.DecoratedCommand, Is.TypeOf (typeof (ObjectEndPointSetOneManyCommand)));
+      Assert.That(decorator.DecoratedCommand, Is.TypeOf(typeof (ObjectEndPointSetOneManyCommand)));
       var decoratedCommand = (ObjectEndPointSetOneManyCommand) decorator.DecoratedCommand;
 
-      Assert.That (decoratedCommand, Is.TypeOf (typeof (ObjectEndPointSetOneManyCommand)));
-      Assert.That (decoratedCommand.ModifiedEndPoint, Is.SameAs (_endPointMock));
-      Assert.That (decoratedCommand.NewRelatedObject, Is.SameAs (newRelatedObject));
-      Assert.That (decoratedCommand.OldRelatedObject, Is.SameAs (oldRelatedObject));
-      Assert.That (decoratedCommand.EndPointProvider, Is.SameAs (_endPointProviderStub));
-      Assert.That (GetOppositeObjectIDSetter (decoratedCommand), Is.SameAs (_fakeSetter));
+      Assert.That(decoratedCommand, Is.TypeOf(typeof (ObjectEndPointSetOneManyCommand)));
+      Assert.That(decoratedCommand.ModifiedEndPoint, Is.SameAs(_endPointMock));
+      Assert.That(decoratedCommand.NewRelatedObject, Is.SameAs(newRelatedObject));
+      Assert.That(decoratedCommand.OldRelatedObject, Is.SameAs(oldRelatedObject));
+      Assert.That(decoratedCommand.EndPointProvider, Is.SameAs(_endPointProviderStub));
+      Assert.That(GetOppositeObjectIDSetter(decoratedCommand), Is.SameAs(_fakeSetter));
     }
 
     [Test]
     public void FlattenedSerializable ()
     {
-      var state = new SynchronizedRealObjectEndPointSyncState (
+      var state = new SynchronizedRealObjectEndPointSyncState(
           new SerializableRelationEndPointProviderFake(), new SerializableClientTransactionEventSinkFake());
 
-      var result = FlattenedSerializer.SerializeAndDeserialize (state);
+      var result = FlattenedSerializer.SerializeAndDeserialize(state);
 
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result.EndPointProvider, Is.Not.Null);
-      Assert.That (result.TransactionEventSink, Is.Not.Null);
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.EndPointProvider, Is.Not.Null);
+      Assert.That(result.TransactionEventSink, Is.Not.Null);
     }
 
     private IRelationEndPointDefinition GetRelationEndPointDefinition (Type classType, string shortPropertyName)
     {
-      return Configuration.GetTypeDefinition (classType).GetRelationEndPointDefinition (classType.FullName + "." + shortPropertyName);
+      return Configuration.GetTypeDefinition(classType).GetRelationEndPointDefinition(classType.FullName + "." + shortPropertyName);
     }
 
     private Action<DomainObject> GetOppositeObjectIDSetter (ObjectEndPointSetCommand command)
     {
-      return (Action<DomainObject>) PrivateInvoke.GetNonPublicField (command, "_oppositeObjectSetter");
+      return (Action<DomainObject>) PrivateInvoke.GetNonPublicField(command, "_oppositeObjectSetter");
     }
 
     private Action GetOppositeObjectNullSetter (ObjectEndPointDeleteCommand command)
     {
-      return (Action) PrivateInvoke.GetNonPublicField (command, "_oppositeObjectNullSetter");
+      return (Action) PrivateInvoke.GetNonPublicField(command, "_oppositeObjectNullSetter");
     }
 
   }

@@ -44,73 +44,73 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       _comparedColumnsSpecificationStrictMock = MockRepository.GenerateStrictMock<IComparedColumnsSpecification>();
 
       _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect>();
-      _sqlDialectStub.Stub (stub => stub.StatementDelimiter).Return (";");
+      _sqlDialectStub.Stub(stub => stub.StatementDelimiter).Return(";");
       _dbDataParameterStub = MockRepository.GenerateStub<IDbDataParameter>();
       _dataParameterCollectionMock = MockRepository.GenerateStrictMock<IDataParameterCollection>();
 
       _dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
-      _dbCommandStub.Stub (stub => stub.CreateParameter()).Return (_dbDataParameterStub);
-      _dbCommandStub.Stub (stub => stub.Parameters).Return (_dataParameterCollectionMock);
+      _dbCommandStub.Stub(stub => stub.CreateParameter()).Return(_dbDataParameterStub);
+      _dbCommandStub.Stub(stub => stub.Parameters).Return(_dataParameterCollectionMock);
 
       _commandExecutionContextStub = MockRepository.GenerateStub<IRdbmsProviderCommandExecutionContext>();
-      _commandExecutionContextStub.Stub (stub => stub.CreateDbCommand()).Return (_dbCommandStub);
+      _commandExecutionContextStub.Stub(stub => stub.CreateDbCommand()).Return(_dbCommandStub);
     }
 
     [Test]
     public void Create_WithDefaultSchema ()
     {
-      var tableDefinition = TableDefinitionObjectMother.Create (TestDomainStorageProviderDefinition, new EntityNameDefinition (null, "Table"));
-      var builder = new DeleteDbCommandBuilder (
+      var tableDefinition = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table"));
+      var builder = new DeleteDbCommandBuilder(
           tableDefinition,
           _comparedColumnsSpecificationStrictMock,
           _sqlDialectStub);
 
-      _sqlDialectStub.Stub (mock => mock.DelimitIdentifier ("Table")).Return ("[delimited Table]");
+      _sqlDialectStub.Stub(mock => mock.DelimitIdentifier("Table")).Return("[delimited Table]");
 
-      _comparedColumnsSpecificationStrictMock.Expect (stub => stub.AddParameters (_dbCommandStub, _sqlDialectStub));
+      _comparedColumnsSpecificationStrictMock.Expect(stub => stub.AddParameters(_dbCommandStub, _sqlDialectStub));
       _comparedColumnsSpecificationStrictMock
-          .Expect (
+          .Expect(
               stub =>
-              stub.AppendComparisons (
+              stub.AppendComparisons(
                   Arg<StringBuilder>.Is.Anything,
-                  Arg.Is (_dbCommandStub),
-                  Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("[ID] = @ID"));
+                  Arg.Is(_dbCommandStub),
+                  Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[ID] = @ID"));
       _comparedColumnsSpecificationStrictMock.Replay();
 
-      var result = builder.Create (_commandExecutionContextStub);
+      var result = builder.Create(_commandExecutionContextStub);
 
       _comparedColumnsSpecificationStrictMock.VerifyAllExpectations();
-      Assert.That (result.CommandText, Is.EqualTo ("DELETE FROM [delimited Table] WHERE [ID] = @ID;"));
+      Assert.That(result.CommandText, Is.EqualTo("DELETE FROM [delimited Table] WHERE [ID] = @ID;"));
     }
 
     [Test]
     public void Create_WithCustomSchema ()
     {
-      var tableDefinition = TableDefinitionObjectMother.Create (
-          TestDomainStorageProviderDefinition, new EntityNameDefinition ("customSchema", "Table"));
-      var builder = new DeleteDbCommandBuilder (
+      var tableDefinition = TableDefinitionObjectMother.Create(
+          TestDomainStorageProviderDefinition, new EntityNameDefinition("customSchema", "Table"));
+      var builder = new DeleteDbCommandBuilder(
           tableDefinition,
           _comparedColumnsSpecificationStrictMock,
           _sqlDialectStub);
 
-      _sqlDialectStub.Expect (mock => mock.DelimitIdentifier ("Table")).Return ("[delimited Table]");
-      _sqlDialectStub.Expect (mock => mock.DelimitIdentifier ("customSchema")).Return ("[delimited customSchema]");
+      _sqlDialectStub.Expect(mock => mock.DelimitIdentifier("Table")).Return("[delimited Table]");
+      _sqlDialectStub.Expect(mock => mock.DelimitIdentifier("customSchema")).Return("[delimited customSchema]");
 
-      _comparedColumnsSpecificationStrictMock.Expect (stub => stub.AddParameters (_dbCommandStub, _sqlDialectStub));
+      _comparedColumnsSpecificationStrictMock.Expect(stub => stub.AddParameters(_dbCommandStub, _sqlDialectStub));
       _comparedColumnsSpecificationStrictMock
-          .Expect (
-              stub => stub.AppendComparisons (
+          .Expect(
+              stub => stub.AppendComparisons(
                   Arg<StringBuilder>.Is.Anything,
-                  Arg.Is (_dbCommandStub),
-                  Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("[ID] = @ID"));
-      _comparedColumnsSpecificationStrictMock.Replay ();
+                  Arg.Is(_dbCommandStub),
+                  Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder) mi.Arguments[0]).Append("[ID] = @ID"));
+      _comparedColumnsSpecificationStrictMock.Replay();
 
-      var result = builder.Create (_commandExecutionContextStub);
+      var result = builder.Create(_commandExecutionContextStub);
 
-      _comparedColumnsSpecificationStrictMock.VerifyAllExpectations ();
-      Assert.That (result.CommandText, Is.EqualTo ("DELETE FROM [delimited customSchema].[delimited Table] WHERE [ID] = @ID;"));
+      _comparedColumnsSpecificationStrictMock.VerifyAllExpectations();
+      Assert.That(result.CommandText, Is.EqualTo("DELETE FROM [delimited customSchema].[delimited Table] WHERE [ID] = @ID;"));
     }
   }
 }

@@ -23,7 +23,7 @@ namespace Remotion.Web.Test.Shared
   {
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
     }
   }
 }

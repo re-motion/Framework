@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         IValueStoragePropertyDefinitionFactory valueStoragePropertyDefinitionFactory,
         IRelationStoragePropertyDefinitionFactory relationStoragePropertyDefinitionFactory)
     {
-      ArgumentUtility.CheckNotNull ("valueStoragePropertyDefinitionFactory", valueStoragePropertyDefinitionFactory);
-      ArgumentUtility.CheckNotNull ("relationStoragePropertyDefinitionFactory", relationStoragePropertyDefinitionFactory);
+      ArgumentUtility.CheckNotNull("valueStoragePropertyDefinitionFactory", valueStoragePropertyDefinitionFactory);
+      ArgumentUtility.CheckNotNull("relationStoragePropertyDefinitionFactory", relationStoragePropertyDefinitionFactory);
 
       _valueStoragePropertyDefinitionFactory = valueStoragePropertyDefinitionFactory;
       _relationStoragePropertyDefinitionFactory = relationStoragePropertyDefinitionFactory;
@@ -53,18 +53,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public virtual IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       var relationEndPointDefinition =
-          (RelationEndPointDefinition) propertyDefinition.ClassDefinition.GetRelationEndPointDefinition (propertyDefinition.PropertyName);
+          (RelationEndPointDefinition) propertyDefinition.ClassDefinition.GetRelationEndPointDefinition(propertyDefinition.PropertyName);
       if (relationEndPointDefinition != null)
       {
-        Assertion.IsTrue (propertyDefinition.PropertyType == typeof (ObjectID));
-        return _relationStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition (relationEndPointDefinition);
+        Assertion.IsTrue(propertyDefinition.PropertyType == typeof (ObjectID));
+        return _relationStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(relationEndPointDefinition);
       }
       else
       {
-        return _valueStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition (propertyDefinition);
+        return _valueStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(propertyDefinition);
       }
     }
 
@@ -72,9 +72,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     {
       var objectID = value as ObjectID;
       if (objectID != null)
-        return _relationStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition (objectID.ClassDefinition, "Value", "ValueClassID");
+        return _relationStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(objectID.ClassDefinition, "Value", "ValueClassID");
 
-      return _valueStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition (value, "Value");
+      return _valueStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(value, "Value");
     }
   }
 }

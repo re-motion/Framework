@@ -27,17 +27,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Domain
   {
     public static TypeWithReference Create ()
     {
-      return ObjectFactory.Create<TypeWithReference> (true, ParamList.Empty);
+      return ObjectFactory.Create<TypeWithReference>(true, ParamList.Empty);
     }
 
     public static TypeWithReference Create (TypeWithReference firstValue, TypeWithReference secondValue)
     {
-      return ObjectFactory.Create<TypeWithReference> (true, ParamList.Create (firstValue, secondValue));
+      return ObjectFactory.Create<TypeWithReference>(true, ParamList.Create(firstValue, secondValue));
     }
 
     public static TypeWithReference Create (string displayName)
     {
-      return ObjectFactory.Create<TypeWithReference> (true, ParamList.Create (displayName));
+      return ObjectFactory.Create<TypeWithReference>(true, ParamList.Create(displayName));
     }
 
     private TypeWithReference _referenceValue;
@@ -108,22 +108,22 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Domain
 
     IBusinessObjectClass IBusinessObject.BusinessObjectClass
     {
-      get { return Mixin.Get<BindableObjectWithIdentityMixin> (this).BusinessObjectClass; }
+      get { return Mixin.Get<BindableObjectWithIdentityMixin>(this).BusinessObjectClass; }
     }
 
     object IBusinessObject.GetProperty (IBusinessObjectProperty property)
     {
-      return Mixin.Get<BindableObjectWithIdentityMixin> (this).GetProperty (property);
+      return Mixin.Get<BindableObjectWithIdentityMixin>(this).GetProperty(property);
     }
 
     string IBusinessObject.GetPropertyString (IBusinessObjectProperty property, string format)
     {
-      return Mixin.Get<BindableObjectWithIdentityMixin> (this).GetPropertyString (property, format);
+      return Mixin.Get<BindableObjectWithIdentityMixin>(this).GetPropertyString(property, format);
     }
 
     void IBusinessObject.SetProperty (IBusinessObjectProperty property, object value)
     {
-      Mixin.Get<BindableObjectWithIdentityMixin> (this).SetProperty (property, value);
+      Mixin.Get<BindableObjectWithIdentityMixin>(this).SetProperty(property, value);
     }
   }
 }

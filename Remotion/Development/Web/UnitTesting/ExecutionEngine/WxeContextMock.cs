@@ -29,35 +29,35 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine
   {
     public static HttpContext CreateHttpContext (NameValueCollection queryString)
     {
-      HttpContext context = HttpContextHelper.CreateHttpContext ("GET", "Other.wxe", null);
+      HttpContext context = HttpContextHelper.CreateHttpContext("GET", "Other.wxe", null);
       context.Response.ContentEncoding = Encoding.UTF8;
-      HttpContextHelper.SetQueryString (context, queryString);
-      HttpContextHelper.SetCurrent (context);
+      HttpContextHelper.SetQueryString(context, queryString);
+      HttpContextHelper.SetCurrent(context);
       return context;
     }
 
     public static HttpContext CreateHttpContext ()
     {
       NameValueCollection queryString = new NameValueCollection();
-      queryString.Add (WxeHandler.Parameters.ReturnUrl, "/Root.wxe");
+      queryString.Add(WxeHandler.Parameters.ReturnUrl, "/Root.wxe");
 
-      return CreateHttpContext (queryString);
+      return CreateHttpContext(queryString);
     }
 
     public WxeContextMock (HttpContext context)
         : base (
-            new HttpContextWrapper (context),
-            new WxeFunctionStateManager (new HttpSessionStateWrapper (context.Session)),
-            new WxeFunctionState (new TestFunction(), false),
+            new HttpContextWrapper(context),
+            new WxeFunctionStateManager(new HttpSessionStateWrapper(context.Session)),
+            new WxeFunctionState(new TestFunction(), false),
             null!)
     {
     }
 
     public WxeContextMock (HttpContext context, NameValueCollection queryString)
         : base (
-            new HttpContextWrapper (context),
-            new WxeFunctionStateManager (new HttpSessionStateWrapper (context.Session)),
-            new WxeFunctionState (new TestFunction(), false),
+            new HttpContextWrapper(context),
+            new WxeFunctionStateManager(new HttpSessionStateWrapper(context.Session)),
+            new WxeFunctionState(new TestFunction(), false),
             queryString)
     {
     }

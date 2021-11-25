@@ -33,9 +33,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
 
     public PersistenceMappingValidator (params IPersistenceMappingValidationRule[] validationRules)
     {
-      ArgumentUtility.CheckNotNull ("validationRules", validationRules);
+      ArgumentUtility.CheckNotNull("validationRules", validationRules);
 
-      _validationRules = Array.AsReadOnly (validationRules);
+      _validationRules = Array.AsReadOnly(validationRules);
     }
 
     public ReadOnlyCollection<IPersistenceMappingValidationRule> ValidationRules
@@ -45,11 +45,11 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
 
     public IEnumerable<MappingValidationResult> Validate (IEnumerable<ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
 
       return from rule in _validationRules
              from classDefinition in classDefinitions
-             from result in rule.Validate (classDefinition)
+             from result in rule.Validate(classDefinition)
              where !result.IsValid
              select result;
     }

@@ -25,32 +25,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   {
     public static void SetOppositeObjectID (RealObjectEndPoint objectEndPoint, ObjectID newID)
     {
-      PrivateInvoke.InvokeNonPublicMethod (objectEndPoint, "SetOppositeObjectID", newID);
+      PrivateInvoke.InvokeNonPublicMethod(objectEndPoint, "SetOppositeObjectID", newID);
     }
 
     public static IRealObjectEndPointSyncState GetSyncState (RealObjectEndPoint objectEndPoint)
     {
-      return (IRealObjectEndPointSyncState) PrivateInvoke.GetNonPublicField (objectEndPoint, "_syncState");
+      return (IRealObjectEndPointSyncState) PrivateInvoke.GetNonPublicField(objectEndPoint, "_syncState");
     }
 
     public static object GetValueViaDataContainer (RealObjectEndPoint realObjectEndPoint)
     {
-      return realObjectEndPoint.ForeignKeyDataContainer.GetValue (realObjectEndPoint.PropertyDefinition);
+      return realObjectEndPoint.ForeignKeyDataContainer.GetValue(realObjectEndPoint.PropertyDefinition);
     }
 
     public static void SetValueViaDataContainer (RealObjectEndPoint realObjectEndPoint, ObjectID objectID)
     {
-      realObjectEndPoint.ForeignKeyDataContainer.SetValue (realObjectEndPoint.PropertyDefinition, objectID);
+      realObjectEndPoint.ForeignKeyDataContainer.SetValue(realObjectEndPoint.PropertyDefinition, objectID);
     }
 
     public static bool HasChangedViaDataContainer (RealObjectEndPoint realObjectEndPoint)
     {
-      return realObjectEndPoint.ForeignKeyDataContainer.HasValueChanged (realObjectEndPoint.PropertyDefinition);
+      return realObjectEndPoint.ForeignKeyDataContainer.HasValueChanged(realObjectEndPoint.PropertyDefinition);
     }
 
     public static bool HasBeenTouchedViaDataContainer (RealObjectEndPoint realObjectEndPoint)
     {
-      return realObjectEndPoint.ForeignKeyDataContainer.HasValueBeenTouched (realObjectEndPoint.PropertyDefinition);
+      return realObjectEndPoint.ForeignKeyDataContainer.HasValueBeenTouched(realObjectEndPoint.PropertyDefinition);
     }
   }
 }

@@ -28,14 +28,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
 
     public BocMultilineTextValueConstraintVisitor (BocMultilineTextValue control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       Control = control;
     }
 
     public void Visit (BusinessObjectPropertyValueRequiredConstraint constraint)
     {
-      ArgumentUtility.CheckNotNull ("constraint", constraint);
+      ArgumentUtility.CheckNotNull("constraint", constraint);
 
       if (Control.Required.HasValue)
         return;
@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
 
     public void Visit (BusinessObjectPropertyValueLengthConstraint constraint)
     {
-      ArgumentUtility.CheckNotNull ("constraint", constraint);
+      ArgumentUtility.CheckNotNull("constraint", constraint);
 
       if (Control.TextBoxStyle.MaxLength.HasValue)
         return;

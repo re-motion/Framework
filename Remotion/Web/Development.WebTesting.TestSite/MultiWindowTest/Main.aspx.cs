@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       LoadFrameFunctionInFrame.Click += LoadFrameFunctionInFrameOnClick;
       LoadFrameFunctionAsSubInFrame.Click += LoadFrameFunctionAsSubInFrameOnClick;
@@ -37,44 +37,44 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
-      SetTestOutput (MainLabel);
+      base.OnPreRender(e);
+      SetTestOutput(MainLabel);
     }
 
     protected override void AddPostBackEventHandlerToPage (PostBackEventHandler postBackEventHandler)
     {
-      UpdatePanel.ContentTemplateContainer.Controls.Add (postBackEventHandler);
+      UpdatePanel.ContentTemplateContainer.Controls.Add(postBackEventHandler);
     }
 
     private void LoadFrameFunctionInFrameOnClick (object sender, EventArgs e)
     {
-      var function = new FrameFunction (false);
-      LoadFunctionInFrame (function);
+      var function = new FrameFunction(false);
+      LoadFunctionInFrame(function);
     }
 
     private void LoadFrameFunctionAsSubInFrameOnClick (object sender, EventArgs e)
     {
-      var function = new FrameFunction (false);
-      LoadFunctionInFrame (function, true);
+      var function = new FrameFunction(false);
+      LoadFunctionInFrame(function, true);
     }
 
     private void LoadWindowFunctionInFrameOnClick (object sender, EventArgs e)
     {
       var function = new WindowFunction();
-      LoadFunctionInFrame (function);
+      LoadFunctionInFrame(function);
     }
 
     private void LoadFunctionInFrame (WxeFunction function, bool asSub = false)
     {
       var variableKey = "WxeFunctionToOpen_" + Guid.NewGuid();
       Variables[variableKey] = function;
-      ExecuteCommandOnClient_InFrame ("frame", ExecuteFunctionCommand, true, CurrentFunction.FunctionToken, variableKey, asSub.ToString());
+      ExecuteCommandOnClient_InFrame("frame", ExecuteFunctionCommand, true, CurrentFunction.FunctionToken, variableKey, asSub.ToString());
     }
 
     private void LoadMainAutoRefreshingFrameFunctionInFrameOnClick (object sender, EventArgs e)
     {
-      var function = new FrameFunction (true);
-      LoadFunctionInFrame (function);
+      var function = new FrameFunction(true);
+      LoadFunctionInFrame(function);
     }
 
     private void LoadWindowFunctionInNewWindowOnClick (object sender, EventArgs eventArgs)
@@ -82,7 +82,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
       if (IsReturningPostBack)
         return;
 
-      this.ExecuteFunctionExternal (new WindowFunction(), "_blank", WindowOpenFeatures, (Control) sender, true, false, false);
+      this.ExecuteFunctionExternal(new WindowFunction(), "_blank", WindowOpenFeatures, (Control) sender, true, false, false);
     }
   }
 }

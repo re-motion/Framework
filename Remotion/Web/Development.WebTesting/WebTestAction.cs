@@ -39,11 +39,11 @@ namespace Remotion.Web.Development.WebTesting
 
       public static int GetNextSequenceNumber ()
       {
-        return Interlocked.Increment (ref s_sequenceNumber);
+        return Interlocked.Increment(ref s_sequenceNumber);
       }
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (WebTestAction));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof (WebTestAction));
 
     private readonly ControlObject _control;
     private readonly ElementScope _scope;
@@ -51,8 +51,8 @@ namespace Remotion.Web.Development.WebTesting
 
     protected WebTestAction ([NotNull] ControlObject control, [NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       _control = control;
       _scope = scope;
@@ -70,31 +70,31 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="options">See <see cref="IWebTestActionOptions"/> for more information.</param>
     public void Execute ([NotNull] IWebTestActionOptions options)
     {
-      ArgumentUtility.CheckNotNull ("options", options);
+      ArgumentUtility.CheckNotNull("options", options);
 
       _actionID = WebTestActionSequenceNumberGenerator.GetNextSequenceNumber();
       var completionDetectionStrategy = options.CompletionDetectionStrategy ?? new NullCompletionDetectionStrategy();
       var modalDialogHandler = options.ModalDialogHandler;
       var pageObjectContext = _control.Context.PageObject.Context;
 
-      OutputDebugMessage ("Started.");
+      OutputDebugMessage("Started.");
 
-      OutputDebugMessage ("Collecting state for completion detection...");
-      var state = completionDetectionStrategy.PrepareWaitForCompletion (pageObjectContext);
+      OutputDebugMessage("Collecting state for completion detection...");
+      var state = completionDetectionStrategy.PrepareWaitForCompletion(pageObjectContext);
 
-      OutputDebugMessage (string.Format ("Performing '{0}'...", ActionName));
-      ExecuteInteraction (_scope);
+      OutputDebugMessage(string.Format("Performing '{0}'...", ActionName));
+      ExecuteInteraction(_scope);
 
       if (modalDialogHandler != null)
       {
-        OutputDebugMessage ("Handling modal dialog...");
-        modalDialogHandler.HandleModalDialog (pageObjectContext);
+        OutputDebugMessage("Handling modal dialog...");
+        modalDialogHandler.HandleModalDialog(pageObjectContext);
       }
 
-      OutputDebugMessage ("Waiting for completion...");
-      completionDetectionStrategy.WaitForCompletion (pageObjectContext, state);
+      OutputDebugMessage("Waiting for completion...");
+      completionDetectionStrategy.WaitForCompletion(pageObjectContext, state);
 
-      OutputDebugMessage ("Finished.");
+      OutputDebugMessage("Finished.");
     }
 
     /// <summary>
@@ -107,9 +107,9 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     protected void OutputDebugMessage ([NotNull] string message)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("message", message);
+      ArgumentUtility.CheckNotNullOrEmpty("message", message);
 
-      s_log.DebugFormat ("Action {0}: {1}", _actionID, message);
+      s_log.DebugFormat("Action {0}: {1}", _actionID, message);
     }
   }
 }

@@ -32,22 +32,22 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      _fakeILGenerator = (ILGenerator) FormatterServices.GetSafeUninitializedObject (typeof (ILGenerator));
+      base.SetUp();
+      _fakeILGenerator = (ILGenerator) FormatterServices.GetSafeUninitializedObject(typeof (ILGenerator));
     }
 
     [Test]
     public void EmitMethodBody_OutParameter ()
     {
       Type declaringType = typeof (ClassWithMethods);
-      var methodInfo = declaringType.GetMethod ("InstanceMethodWithOutParameter", BindingFlags.Public | BindingFlags.Instance);
+      var methodInfo = declaringType.GetMethod("InstanceMethodWithOutParameter", BindingFlags.Public | BindingFlags.Instance);
 
       Type returnType = typeof (void);
       Type[] parameterTypes = new[] { typeof (object), typeof (object).MakeByRefType() };
-      Assert.That (
-          () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
+      Assert.That(
+          () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'value' of the wrappedMethod is an out parameter, but out parameters are not supported by the MethodWrapperGenerator.",
                   "wrappedMethod"));
     }
@@ -56,14 +56,14 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     public void EmitMethodBody_ByRefParameter ()
     {
       Type declaringType = typeof (ClassWithMethods);
-      var methodInfo = declaringType.GetMethod ("InstanceMethodWithByRefParameter", BindingFlags.Public | BindingFlags.Instance);
+      var methodInfo = declaringType.GetMethod("InstanceMethodWithByRefParameter", BindingFlags.Public | BindingFlags.Instance);
 
       Type returnType = typeof (void);
       Type[] parameterTypes = new[] { typeof (object), typeof (object).MakeByRefType() };
-      Assert.That (
-          () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
+      Assert.That(
+          () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'value' of the wrappedMethod is a by-ref parameter, but by-ref parameters are not supported by the MethodWrapperGenerator.",
                   "wrappedMethod"));
     }
@@ -72,14 +72,14 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     public void EmitMethodBody_OptionalParameter ()
     {
       Type declaringType = typeof (ClassWithMethods);
-      var methodInfo = declaringType.GetMethod ("InstanceMethodWithOptionalParameter", BindingFlags.Public | BindingFlags.Instance);
+      var methodInfo = declaringType.GetMethod("InstanceMethodWithOptionalParameter", BindingFlags.Public | BindingFlags.Instance);
 
       Type returnType = typeof (void);
       Type[] parameterTypes = new[] { typeof (object), typeof (object) };
-      Assert.That (
-          () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
+      Assert.That(
+          () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'value' of the wrappedMethod is an optional parameter, but optional parameters are not supported by the MethodWrapperGenerator.",
                   "wrappedMethod"));
     }
@@ -88,14 +88,14 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     public void EmitMethodBody_OpenGeneric ()
     {
       Type declaringType = typeof (ClassWithMethods);
-      var methodInfo = declaringType.GetMethod ("GenericInstanceMethod", BindingFlags.Public | BindingFlags.Instance);
+      var methodInfo = declaringType.GetMethod("GenericInstanceMethod", BindingFlags.Public | BindingFlags.Instance);
 
       Type returnType = typeof (object);
       Type[] parameterTypes = new[] { typeof (object), typeof (object) };
-      Assert.That (
-          () => new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType),
+      Assert.That(
+          () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Open generic method definitions are not supported by the MethodWrapperGenerator.",
                   "wrappedMethod"));
     }

@@ -46,14 +46,14 @@ namespace Remotion.ServiceLocation
     public static void RegisterSingle<TService> (this IServiceConfigurationRegistry serviceConfigurationRegistry, Func<TService> instanceFactory)
         where TService : class
     {
-      ArgumentUtility.CheckNotNull ("serviceConfigurationRegistry", serviceConfigurationRegistry);
-      ArgumentUtility.CheckNotNull ("instanceFactory", instanceFactory);
+      ArgumentUtility.CheckNotNull("serviceConfigurationRegistry", serviceConfigurationRegistry);
+      ArgumentUtility.CheckNotNull("instanceFactory", instanceFactory);
 
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (
+      var serviceConfigurationEntry = new ServiceConfigurationEntry(
           typeof (TService),
-          ServiceImplementationInfo.CreateSingle (instanceFactory, LifetimeKind.InstancePerDependency));
+          ServiceImplementationInfo.CreateSingle(instanceFactory, LifetimeKind.InstancePerDependency));
 
-      serviceConfigurationRegistry.Register (serviceConfigurationEntry);
+      serviceConfigurationRegistry.Register(serviceConfigurationEntry);
     }
 
     /// <summary>
@@ -70,10 +70,10 @@ namespace Remotion.ServiceLocation
     public static void RegisterMultiple<TService> (this IServiceConfigurationRegistry serviceConfigurationRegistry, params Func<TService>[] instanceFactories)
         where TService : class
     {
-      ArgumentUtility.CheckNotNull ("serviceConfigurationRegistry", serviceConfigurationRegistry);
-      ArgumentUtility.CheckNotNull ("instanceFactories", instanceFactories);
+      ArgumentUtility.CheckNotNull("serviceConfigurationRegistry", serviceConfigurationRegistry);
+      ArgumentUtility.CheckNotNull("instanceFactories", instanceFactories);
 
-      serviceConfigurationRegistry.RegisterMultiple ((IEnumerable<Func<TService>>) instanceFactories);
+      serviceConfigurationRegistry.RegisterMultiple((IEnumerable<Func<TService>>) instanceFactories);
     }
 
     //as extension for IServiceConfigurationRegistry, or drop if did not exist before feature branch or if no longer needed. Obsolete if old API was used in many projects
@@ -91,14 +91,14 @@ namespace Remotion.ServiceLocation
     public static void RegisterMultiple<TService> (this IServiceConfigurationRegistry serviceConfigurationRegistry, IEnumerable<Func<TService>> instanceFactories)
         where TService : class
     {
-      ArgumentUtility.CheckNotNull ("serviceConfigurationRegistry", serviceConfigurationRegistry);
-      ArgumentUtility.CheckNotNull ("instanceFactories", instanceFactories);
+      ArgumentUtility.CheckNotNull("serviceConfigurationRegistry", serviceConfigurationRegistry);
+      ArgumentUtility.CheckNotNull("instanceFactories", instanceFactories);
 
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (
+      var serviceConfigurationEntry = new ServiceConfigurationEntry(
           typeof (TService),
-          instanceFactories.Select (f => ServiceImplementationInfo.CreateMultiple (f, LifetimeKind.InstancePerDependency)));
+          instanceFactories.Select(f => ServiceImplementationInfo.CreateMultiple(f, LifetimeKind.InstancePerDependency)));
 
-      serviceConfigurationRegistry.Register (serviceConfigurationEntry);
+      serviceConfigurationRegistry.Register(serviceConfigurationEntry);
     }
 
     /// <summary>
@@ -114,22 +114,22 @@ namespace Remotion.ServiceLocation
     /// or concrete implementations can only be done before any instances are retrieved.</exception>
     public static void Register (this IServiceConfigurationRegistry serviceConfigurationRegistry, Type serviceType, Type concreteImplementationType, LifetimeKind lifetime, RegistrationType registrationType = RegistrationType.Single)
     {
-      ArgumentUtility.CheckNotNull ("serviceConfigurationRegistry", serviceConfigurationRegistry);
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
-      ArgumentUtility.CheckNotNull ("concreteImplementationType", concreteImplementationType);
+      ArgumentUtility.CheckNotNull("serviceConfigurationRegistry", serviceConfigurationRegistry);
+      ArgumentUtility.CheckNotNull("serviceType", serviceType);
+      ArgumentUtility.CheckNotNull("concreteImplementationType", concreteImplementationType);
 
-      var serviceImplemetation = new ServiceImplementationInfo (concreteImplementationType, lifetime, registrationType);
+      var serviceImplemetation = new ServiceImplementationInfo(concreteImplementationType, lifetime, registrationType);
       ServiceConfigurationEntry serviceConfigurationEntry;
       try
       {
-        serviceConfigurationEntry = new ServiceConfigurationEntry (serviceType, serviceImplemetation);
+        serviceConfigurationEntry = new ServiceConfigurationEntry(serviceType, serviceImplemetation);
       }
       catch (ArgumentException ex)
       {
-        throw new ArgumentException ("Implementation type must implement service type.", "concreteImplementationType", ex);
+        throw new ArgumentException("Implementation type must implement service type.", "concreteImplementationType", ex);
       }
 
-      serviceConfigurationRegistry.Register (serviceConfigurationEntry);
+      serviceConfigurationRegistry.Register(serviceConfigurationEntry);
     } 
   }
 }

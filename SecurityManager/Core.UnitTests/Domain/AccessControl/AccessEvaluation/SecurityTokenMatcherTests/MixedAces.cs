@@ -29,31 +29,31 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     [Test]
     public void AceForOwningTenantAndAbstractRole_DoesNotMatch ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("Testtenant");
-      Group group = TestHelper.CreateGroup ("Testgroup", null, tenant);
-      User user = CreateUser (tenant, group);
-      AccessControlEntry entry = TestHelper.CreateAceWithOwningTenant ();
-      entry.SpecificAbstractRole = TestHelper.CreateTestAbstractRole ();
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (entry);
-      SecurityToken token = TestHelper.CreateTokenWithOwningTenant (user, tenant);
+      Tenant tenant = TestHelper.CreateTenant("Testtenant");
+      Group group = TestHelper.CreateGroup("Testgroup", null, tenant);
+      User user = CreateUser(tenant, group);
+      AccessControlEntry entry = TestHelper.CreateAceWithOwningTenant();
+      entry.SpecificAbstractRole = TestHelper.CreateTestAbstractRole();
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(entry);
+      SecurityToken token = TestHelper.CreateTokenWithOwningTenant(user, tenant);
 
-      Assert.That (matcher.MatchesToken (token), Is.False);
+      Assert.That(matcher.MatchesToken(token), Is.False);
     }
 
     [Test]
     public void AceForPositionFromOwningGroupAndAbstractRole_DoesNotMatch ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("Testtenant");
-      Position managerPosition = TestHelper.CreatePosition ("Manager");
-      Group group = TestHelper.CreateGroup ("Testgroup", null, tenant);
-      User user = CreateUser (tenant, group);
-      Role role = TestHelper.CreateRole (user, group, managerPosition);
-      AccessControlEntry entry = TestHelper.CreateAceWithPositionAndGroupCondition (managerPosition, GroupCondition.OwningGroup);
-      entry.SpecificAbstractRole = TestHelper.CreateTestAbstractRole ();
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (entry);
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, group);
+      Tenant tenant = TestHelper.CreateTenant("Testtenant");
+      Position managerPosition = TestHelper.CreatePosition("Manager");
+      Group group = TestHelper.CreateGroup("Testgroup", null, tenant);
+      User user = CreateUser(tenant, group);
+      Role role = TestHelper.CreateRole(user, group, managerPosition);
+      AccessControlEntry entry = TestHelper.CreateAceWithPositionAndGroupCondition(managerPosition, GroupCondition.OwningGroup);
+      entry.SpecificAbstractRole = TestHelper.CreateTestAbstractRole();
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(entry);
+      SecurityToken token = TestHelper.CreateTokenWithOwningGroup(user, group);
 
-      Assert.That (matcher.MatchesToken (token), Is.False);
+      Assert.That(matcher.MatchesToken(token), Is.False);
     }
   }
 }

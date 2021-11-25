@@ -31,59 +31,59 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
       
-      _companyHelper = new CompanyStructureHelper (TestHelper.Transaction);
+      _companyHelper = new CompanyStructureHelper(TestHelper.Transaction);
 
-      _ace = TestHelper.CreateAceWithPositionAndGroupCondition (_companyHelper.HeadPosition, GroupCondition.BranchOfOwningGroup);
+      _ace = TestHelper.CreateAceWithPositionAndGroupCondition(_companyHelper.HeadPosition, GroupCondition.BranchOfOwningGroup);
       _ace.SpecificGroupType = _companyHelper.DivisionGroupType;
 
-      Assert.That (_ace.TenantCondition, Is.EqualTo (TenantCondition.None));
-      Assert.That (_ace.GroupCondition, Is.EqualTo (GroupCondition.BranchOfOwningGroup));
-      Assert.That (_ace.SpecificGroupType, Is.SameAs (_companyHelper.DivisionGroupType));
-      Assert.That (_ace.GroupHierarchyCondition, Is.EqualTo (GroupHierarchyCondition.Undefined));
-      Assert.That (_ace.UserCondition, Is.EqualTo (UserCondition.SpecificPosition));
-      Assert.That (_ace.SpecificPosition, Is.SameAs (_companyHelper.HeadPosition));
-      Assert.That (_ace.SpecificAbstractRole, Is.Null);
+      Assert.That(_ace.TenantCondition, Is.EqualTo(TenantCondition.None));
+      Assert.That(_ace.GroupCondition, Is.EqualTo(GroupCondition.BranchOfOwningGroup));
+      Assert.That(_ace.SpecificGroupType, Is.SameAs(_companyHelper.DivisionGroupType));
+      Assert.That(_ace.GroupHierarchyCondition, Is.EqualTo(GroupHierarchyCondition.Undefined));
+      Assert.That(_ace.UserCondition, Is.EqualTo(UserCondition.SpecificPosition));
+      Assert.That(_ace.SpecificPosition, Is.SameAs(_companyHelper.HeadPosition));
+      Assert.That(_ace.SpecificAbstractRole, Is.Null);
     }
 
     [Test]
     public void TokenWithPositionInBranchRoot_Matches ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
-      TestHelper.CreateRole (user, _companyHelper.AustrianDivsion, _companyHelper.HeadPosition);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
+      TestHelper.CreateRole(user, _companyHelper.AustrianDivsion, _companyHelper.HeadPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, _companyHelper.AustrianProjectsDepartment);
+      SecurityToken token = TestHelper.CreateTokenWithOwningGroup(user, _companyHelper.AustrianProjectsDepartment);
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(_ace);
 
-      Assert.That (matcher.MatchesToken (token), Is.True);
+      Assert.That(matcher.MatchesToken(token), Is.True);
     }
 
     [Test]
     public void TokenWithOtherPositionInBranchRoot_DoesNotMatch ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
-      TestHelper.CreateRole (user, _companyHelper.AustrianDivsion, _companyHelper.MemberPosition);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
+      TestHelper.CreateRole(user, _companyHelper.AustrianDivsion, _companyHelper.MemberPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, _companyHelper.AustrianDivsion);
+      SecurityToken token = TestHelper.CreateTokenWithOwningGroup(user, _companyHelper.AustrianDivsion);
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(_ace);
 
-      Assert.That (matcher.MatchesToken (token), Is.False);
+      Assert.That(matcher.MatchesToken(token), Is.False);
     }
 
     [Test]
     public void TokenWithPositionBelowBranchRoot_DoesNotMatch ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
-      TestHelper.CreateRole (user, _companyHelper.AustrianProjectsDepartment, _companyHelper.HeadPosition);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
+      TestHelper.CreateRole(user, _companyHelper.AustrianProjectsDepartment, _companyHelper.HeadPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, _companyHelper.AustrianProjectsDepartment);
+      SecurityToken token = TestHelper.CreateTokenWithOwningGroup(user, _companyHelper.AustrianProjectsDepartment);
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(_ace);
 
-      Assert.That (matcher.MatchesToken (token), Is.False);
+      Assert.That(matcher.MatchesToken(token), Is.False);
     }
   }
 }

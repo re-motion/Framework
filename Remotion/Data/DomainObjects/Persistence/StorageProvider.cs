@@ -49,8 +49,8 @@ namespace Remotion.Data.DomainObjects.Persistence
         StorageProviderDefinition storageProviderDefinition,
         IPersistenceExtension persistenceExtension)
     {
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull ("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
 
       _storageProviderDefinition = storageProviderDefinition;
       _persistenceExtension = persistenceExtension;
@@ -58,13 +58,13 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     ~StorageProvider ()
     {
-      Dispose (false);
+      Dispose(false);
     }
 
     public void Dispose ()
     {
-      Dispose (true);
-      GC.SuppressFinalize (this);
+      Dispose(true);
+      GC.SuppressFinalize(this);
     }
 
     protected virtual void Dispose (bool disposing)
@@ -104,11 +104,11 @@ namespace Remotion.Data.DomainObjects.Persistence
     protected virtual void CheckQuery (IQuery query, QueryType expectedQueryType, string argumentName)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
       if (query.StorageProviderDefinition != StorageProviderDefinition)
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             "query",
             "The StorageProviderID '{0}' of the provided query '{1}' does not match with this StorageProvider's ID '{2}'.",
             query.StorageProviderDefinition.Name,
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       }
 
       if (query.QueryType != expectedQueryType)
-        throw CreateArgumentException (argumentName, "Expected query type is '{0}', but was '{1}'.", expectedQueryType, query.QueryType);
+        throw CreateArgumentException(argumentName, "Expected query type is '{0}', but was '{1}'.", expectedQueryType, query.QueryType);
     }
 
     protected bool IsDisposed
@@ -133,12 +133,12 @@ namespace Remotion.Data.DomainObjects.Persistence
     protected void CheckDisposed ()
     {
       if (_disposed)
-        throw new ObjectDisposedException ("StorageProvider", "A disposed StorageProvider cannot be accessed.");
+        throw new ObjectDisposedException("StorageProvider", "A disposed StorageProvider cannot be accessed.");
     }
 
     protected ArgumentException CreateArgumentException (string argumentName, string formatString, params object[] args)
     {
-      return new ArgumentException (string.Format (formatString, args), argumentName);
+      return new ArgumentException(string.Format(formatString, args), argumentName);
     }
   }
 }

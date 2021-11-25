@@ -31,7 +31,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.ExternalDomainMixins
   {
     protected override void OnTargetReferenceInitializing ()
     {
-      base.OnTargetReferenceInitializing ();
+      base.OnTargetReferenceInitializing();
       MunicipalityID = 12;
     }
     
@@ -39,7 +39,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.ExternalDomainMixins
 
     public virtual string GetDescriptionForMayors ()
     {
-      return string.Format ("MunicipalSettlement: {0} ({1}), {2}", Target.Title, Target.SettlementKind, MunicipalityID);
+      return string.Format("MunicipalSettlement: {0} ({1}), {2}", Target.Title, Target.SettlementKind, MunicipalityID);
     }
   }
 }

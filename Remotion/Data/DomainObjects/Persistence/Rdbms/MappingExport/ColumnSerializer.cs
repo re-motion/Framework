@@ -34,16 +34,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public IEnumerable<XElement> Serialize (PropertyDefinition propertyDefinition, IRdbmsPersistenceModelProvider persistenceModelProvider)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-      ArgumentUtility.CheckNotNull ("persistenceModelProvider", persistenceModelProvider);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("persistenceModelProvider", persistenceModelProvider);
 
-      var storagePropertyDefinition = persistenceModelProvider.GetStoragePropertyDefinition (propertyDefinition);
-      return storagePropertyDefinition.GetColumns().Select (
+      var storagePropertyDefinition = persistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition);
+      return storagePropertyDefinition.GetColumns().Select(
           columnDefinition =>
-              new XElement (
+              new XElement(
                   Constants.Namespace + "column",
-                  new XAttribute ("name", columnDefinition.Name),
-                  new XAttribute ("dbType", columnDefinition.StorageTypeInfo.StorageDbType)
+                  new XAttribute("name", columnDefinition.Name),
+                  new XAttribute("dbType", columnDefinition.StorageTypeInfo.StorageDbType)
                   ));
     }
   }

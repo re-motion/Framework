@@ -22,9 +22,9 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
-      SutGenerator.GenerateSut (this, SutPlaceHolder.Controls);
+      SutGenerator.GenerateSut(this, SutPlaceHolder.Controls);
     }
   }
 }

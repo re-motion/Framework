@@ -38,11 +38,11 @@ namespace Remotion.Globalization.UnitTests
     {
       var service = _serviceLocator.GetInstance<IMemberInformationGlobalizationService>();
 
-      Assert.That (service, Is.Not.Null);
-      Assert.That (service, Is.TypeOf (typeof (CompoundMemberInformationGlobalizationService)));
-      Assert.That (
-          ((CompoundMemberInformationGlobalizationService) service).MemberInformationGlobalizationServices.Select (s => s.GetType()),
-          Is.EqualTo (
+      Assert.That(service, Is.Not.Null);
+      Assert.That(service, Is.TypeOf(typeof (CompoundMemberInformationGlobalizationService)));
+      Assert.That(
+          ((CompoundMemberInformationGlobalizationService) service).MemberInformationGlobalizationServices.Select(s => s.GetType()),
+          Is.EqualTo(
               new[]
               {
                   typeof (ResourceManagerBasedMemberInformationGlobalizationService),
@@ -53,10 +53,10 @@ namespace Remotion.Globalization.UnitTests
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var service1 = _serviceLocator.GetInstance<IMemberInformationGlobalizationService> ();
-      var service2 = _serviceLocator.GetInstance<IMemberInformationGlobalizationService> ();
+      var service1 = _serviceLocator.GetInstance<IMemberInformationGlobalizationService>();
+      var service2 = _serviceLocator.GetInstance<IMemberInformationGlobalizationService>();
 
-      Assert.That (service1, Is.SameAs (service2));
+      Assert.That(service1, Is.SameAs(service2));
     }
   }
 }

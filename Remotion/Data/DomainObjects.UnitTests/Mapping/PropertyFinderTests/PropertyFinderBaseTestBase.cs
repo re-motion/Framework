@@ -27,15 +27,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
     protected IPropertyInformation GetProperty (Type type, string propertyName)
     {
       var propertyInfo =
-          PropertyInfoAdapter.Create(type.GetProperty (propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
-      Assert.That (propertyInfo, Is.Not.Null, "Property '{0}' was not found on type '{1}'.", propertyName, type);
+          PropertyInfoAdapter.Create(type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+      Assert.That(propertyInfo, Is.Not.Null, "Property '{0}' was not found on type '{1}'.", propertyName, type);
 
       return propertyInfo;
     }
 
     protected ClassDefinition CreateClassDefinition (Type type)
     {
-      return ClassDefinitionObjectMother.CreateClassDefinition (classType: type, persistentMixinFinder: new PersistentMixinFinder (type));
+      return ClassDefinitionObjectMother.CreateClassDefinition(classType: type, persistentMixinFinder: new PersistentMixinFinder(type));
     }
   }
 }

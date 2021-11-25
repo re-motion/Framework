@@ -32,65 +32,65 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public static FluentControlSelector<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject> AutoCompletes (
         this IControlHost host)
     {
-      return new FluentControlSelector<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject> (
+      return new FluentControlSelector<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>(
           host,
           new BocAutoCompleteReferenceValueSelector());
     }
 
     public static FluentControlSelector<BocBooleanValueSelector, BocBooleanValueControlObject> BooleanValues (this IControlHost host)
     {
-      return new FluentControlSelector<BocBooleanValueSelector, BocBooleanValueControlObject> (host, new BocBooleanValueSelector());
+      return new FluentControlSelector<BocBooleanValueSelector, BocBooleanValueControlObject>(host, new BocBooleanValueSelector());
     }
 
     public static FluentControlSelector<BocCheckBoxSelector, BocCheckBoxControlObject> CheckBoxes (this IControlHost host)
     {
-      return new FluentControlSelector<BocCheckBoxSelector, BocCheckBoxControlObject> (host, new BocCheckBoxSelector());
+      return new FluentControlSelector<BocCheckBoxSelector, BocCheckBoxControlObject>(host, new BocCheckBoxSelector());
     }
 
     public static FluentControlSelector<BocDateTimeValueSelector, BocDateTimeValueControlObject> DateTimeValues (this IControlHost host)
     {
-      return new FluentControlSelector<BocDateTimeValueSelector, BocDateTimeValueControlObject> (host, new BocDateTimeValueSelector());
+      return new FluentControlSelector<BocDateTimeValueSelector, BocDateTimeValueControlObject>(host, new BocDateTimeValueSelector());
     }
 
     public static FluentControlSelector<BocEnumValueSelector, BocEnumValueControlObject> EnumValues (this IControlHost host)
     {
-      return new FluentControlSelector<BocEnumValueSelector, BocEnumValueControlObject> (host, new BocEnumValueSelector());
+      return new FluentControlSelector<BocEnumValueSelector, BocEnumValueControlObject>(host, new BocEnumValueSelector());
     }
 
     public static FluentControlSelector<BocListSelector, BocListControlObject> Lists (this IControlHost host)
     {
-      return new FluentControlSelector<BocListSelector, BocListControlObject> (host, new BocListSelector());
+      return new FluentControlSelector<BocListSelector, BocListControlObject>(host, new BocListSelector());
     }
 
     public static FluentControlSelector<BocListAsGridSelector, BocListAsGridControlObject> ListAsGrids (this IControlHost host)
     {
-      return new FluentControlSelector<BocListAsGridSelector, BocListAsGridControlObject> (host, new BocListAsGridSelector());
+      return new FluentControlSelector<BocListAsGridSelector, BocListAsGridControlObject>(host, new BocListAsGridSelector());
     }
 
     public static FluentControlSelector<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> MultilineTextValues (
         this IControlHost host)
     {
-      return new FluentControlSelector<BocMultilineTextValueSelector, BocMultilineTextValueControlObject> (host, new BocMultilineTextValueSelector());
+      return new FluentControlSelector<BocMultilineTextValueSelector, BocMultilineTextValueControlObject>(host, new BocMultilineTextValueSelector());
     }
 
     public static FluentControlSelector<BocReferenceValueSelector, BocReferenceValueControlObject> ReferenceValues (this IControlHost host)
     {
-      return new FluentControlSelector<BocReferenceValueSelector, BocReferenceValueControlObject> (host, new BocReferenceValueSelector());
+      return new FluentControlSelector<BocReferenceValueSelector, BocReferenceValueControlObject>(host, new BocReferenceValueSelector());
     }
 
     public static FluentControlSelector<BocTextValueSelector, BocTextValueControlObject> TextValues (this IControlHost host)
     {
-      return new FluentControlSelector<BocTextValueSelector, BocTextValueControlObject> (host, new BocTextValueSelector());
+      return new FluentControlSelector<BocTextValueSelector, BocTextValueControlObject>(host, new BocTextValueSelector());
     }
 
     public static FluentControlSelector<BocTreeViewSelector, BocTreeViewControlObject> TreeViews (this IControlHost host)
     {
-      return new FluentControlSelector<BocTreeViewSelector, BocTreeViewControlObject> (host, new BocTreeViewSelector());
+      return new FluentControlSelector<BocTreeViewSelector, BocTreeViewControlObject>(host, new BocTreeViewSelector());
     }
 
     public static FluentControlSelector<WebButtonSelector, WebButtonControlObject> WebButtons (this IControlHost host)
     {
-      return new FluentControlSelector<WebButtonSelector, WebButtonControlObject> (host, new WebButtonSelector());
+      return new FluentControlSelector<WebButtonSelector, WebButtonControlObject>(host, new WebButtonSelector());
     }
   }
 }

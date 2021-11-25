@@ -29,26 +29,26 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     public ExtensibleEnumerationProperty (Parameters parameters)
         : base(parameters)
     {
-      _definition = ExtensibleEnumUtility.GetDefinition (PropertyType);
+      _definition = ExtensibleEnumUtility.GetDefinition(PropertyType);
 
-      var filterProvider = new EnumValueFilterProvider<DisableExtensibleEnumValuesAttribute> (
+      var filterProvider = new EnumValueFilterProvider<DisableExtensibleEnumValuesAttribute>(
           PropertyInfo,
-          t => _definition.GetCustomAttributes<DisableExtensibleEnumValuesAttribute> ());
-      _enumerationValueFilter = filterProvider.GetEnumerationValueFilter ();
+          t => _definition.GetCustomAttributes<DisableExtensibleEnumValuesAttribute>());
+      _enumerationValueFilter = filterProvider.GetEnumerationValueFilter();
     }
 
     public IEnumerationValueInfo[] GetAllValues (IBusinessObject? businessObject)
     {
-      return _definition.GetValueInfos ()
-          .Select (info => CreateEnumerationValueInfo (info, businessObject))
+      return _definition.GetValueInfos()
+          .Select(info => CreateEnumerationValueInfo(info, businessObject))
           .ToArray();
     }
 
     public IEnumerationValueInfo[] GetEnabledValues (IBusinessObject? businessObject)
     {
-      return _definition.GetValueInfos ()
-          .Select (info => CreateEnumerationValueInfo (info, businessObject))
-          .Where (valueInfo => valueInfo.IsEnabled)
+      return _definition.GetValueInfos()
+          .Select(info => CreateEnumerationValueInfo(info, businessObject))
+          .Where(valueInfo => valueInfo.IsEnabled)
           .ToArray();
     }
 
@@ -58,46 +58,46 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       if (enumValue == null)
         return null;
 
-      if (!_definition.TryGetValueInfoByID (enumValue.ID, out var extensibleEnumInfo))
+      if (!_definition.TryGetValueInfoByID(enumValue.ID, out var extensibleEnumInfo))
         return null;
 
-      return CreateEnumerationValueInfo (extensibleEnumInfo, businessObject);
+      return CreateEnumerationValueInfo(extensibleEnumInfo, businessObject);
     }
 
     public IEnumerationValueInfo? GetValueInfoByIdentifier (string? identifier, IBusinessObject? businessObject)
     {
-      if (string.IsNullOrEmpty (identifier))
+      if (string.IsNullOrEmpty(identifier))
         return null;
 
-      if (!_definition.TryGetValueInfoByID (identifier, out var extensibleEnumInfo))
+      if (!_definition.TryGetValueInfoByID(identifier, out var extensibleEnumInfo))
       {
-        var message = string.Format ("The identifier '{0}' does not identify a defined value for type '{1}'.", identifier, _definition.GetEnumType());
-        throw new ArgumentException (message, "identifier");
+        var message = string.Format("The identifier '{0}' does not identify a defined value for type '{1}'.", identifier, _definition.GetEnumType());
+        throw new ArgumentException(message, "identifier");
       }
 
-      return CreateEnumerationValueInfo (extensibleEnumInfo, businessObject);
+      return CreateEnumerationValueInfo(extensibleEnumInfo, businessObject);
     }
 
     public EnumerationValueInfo CreateEnumerationValueInfo (IExtensibleEnumInfo extensibleEnumInfo, IBusinessObject? businessObject)
     {
-      ArgumentUtility.CheckNotNull ("extensibleEnumInfo", extensibleEnumInfo);
+      ArgumentUtility.CheckNotNull("extensibleEnumInfo", extensibleEnumInfo);
       
-      return new EnumerationValueInfo (
+      return new EnumerationValueInfo(
           extensibleEnumInfo.Value, 
           extensibleEnumInfo.Value.ID, 
-          GetDisplayName (extensibleEnumInfo), 
-          IsEnabled (extensibleEnumInfo.Value, businessObject));
+          GetDisplayName(extensibleEnumInfo), 
+          IsEnabled(extensibleEnumInfo.Value, businessObject));
     }
 
     private string GetDisplayName (IExtensibleEnumInfo extensibleEnumInfo)
     {
-      return BindableObjectGlobalizationService.GetExtensibleEnumerationValueDisplayName (extensibleEnumInfo.Value);
+      return BindableObjectGlobalizationService.GetExtensibleEnumerationValueDisplayName(extensibleEnumInfo.Value);
     }
 
     private bool IsEnabled (IExtensibleEnum value, IBusinessObject? businessObject)
     {
-      return _enumerationValueFilter.IsEnabled (
-          new EnumerationValueInfo (value, value.ID, string.Empty, true),
+      return _enumerationValueFilter.IsEnabled(
+          new EnumerationValueInfo(value, value.ID, string.Empty, true),
           businessObject,
           this);
     }

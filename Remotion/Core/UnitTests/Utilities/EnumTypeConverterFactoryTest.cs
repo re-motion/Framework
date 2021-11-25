@@ -41,24 +41,24 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void CreateTypeConverterOrDefault_WithEnum_ReturnsAdvancedEnumConverter ()
     {
-      var typeConverter = _factory.CreateTypeConverterOrDefault (typeof (Int32Enum));
-      Assert.That (typeConverter, Is.TypeOf<AdvancedEnumConverter>());
-      Assert.That (((AdvancedEnumConverter) typeConverter).EnumType, Is.EqualTo (typeof (Int32Enum)));
+      var typeConverter = _factory.CreateTypeConverterOrDefault(typeof (Int32Enum));
+      Assert.That(typeConverter, Is.TypeOf<AdvancedEnumConverter>());
+      Assert.That(((AdvancedEnumConverter) typeConverter).EnumType, Is.EqualTo(typeof (Int32Enum)));
     }
 
     [Test]
     public void CreateTypeConverterOrDefault_WithNullableEnum_ReturnsAdvancedEnumConverter ()
     {
-      var typeConverter = _factory.CreateTypeConverterOrDefault (typeof (Int32Enum?));
-      Assert.That (typeConverter, Is.TypeOf<AdvancedEnumConverter>());
-      Assert.That (((AdvancedEnumConverter) typeConverter).EnumType, Is.EqualTo (typeof (Int32Enum?)));
+      var typeConverter = _factory.CreateTypeConverterOrDefault(typeof (Int32Enum?));
+      Assert.That(typeConverter, Is.TypeOf<AdvancedEnumConverter>());
+      Assert.That(((AdvancedEnumConverter) typeConverter).EnumType, Is.EqualTo(typeof (Int32Enum?)));
     }
 
     [Test]
     public void CreateTypeConverterOrDefault_WithOtherType_ReturnsNull ()
     {
-      var typeConverter = _factory.CreateTypeConverterOrDefault (typeof (Int32));
-      Assert.That (typeConverter, Is.Null);
+      var typeConverter = _factory.CreateTypeConverterOrDefault(typeof (Int32));
+      Assert.That(typeConverter, Is.Null);
     }
   }
 }

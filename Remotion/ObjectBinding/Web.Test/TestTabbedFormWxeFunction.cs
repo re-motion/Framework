@@ -26,16 +26,16 @@ namespace OBWTest
 public class TestTabbedFormWxeFunction: WxeFunction
 {
   public TestTabbedFormWxeFunction ()
-    : base (new NoneTransactionMode ())
+    : base (new NoneTransactionMode())
   {
-    Object = Person.GetObject (new Guid (0,0,0,0,0,0,0,0,0,0,1));
+    Object = Person.GetObject(new Guid(0,0,0,0,0,0,0,0,0,0,1));
     ReturnUrl = "StartForm.aspx";
   }
 
   public TestTabbedFormWxeFunction (params object[] parameters)
-    : base (new NoneTransactionMode (), parameters)
+    : base (new NoneTransactionMode(), parameters)
   {
-    Object = Person.GetObject (new Guid (0,0,0,0,0,0,0,0,0,0,1));
+    Object = Person.GetObject(new Guid(0,0,0,0,0,0,0,0,0,0,1));
   }
 
 //  public TestTabbedFormWxeFunction (object Object, object ReadOnly, object Action)
@@ -44,7 +44,7 @@ public class TestTabbedFormWxeFunction: WxeFunction
 //  }
 
   public TestTabbedFormWxeFunction (object ReadOnly)
-    : base (new NoneTransactionMode (), ReadOnly)
+    : base (new NoneTransactionMode(), ReadOnly)
   {
   }
 
@@ -77,7 +77,7 @@ public class TestTabbedFormWxeFunction: WxeFunction
   {
     TestTabbedFormWxeFunction Function { get { return (TestTabbedFormWxeFunction) ParentFunction; } }
 
-    WxeStep Step1_ = new WxePageStep ("TestTabbedForm.aspx");
+    WxeStep Step1_ = new WxePageStep("TestTabbedForm.aspx");
   }
 }
 

@@ -31,8 +31,8 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private void Step1 (WxeContext context)
     {
-      var redirectUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl (typeof (Start), TestResourceType.Root, "Start.aspx?Redirected").GetUrl();
-      context.HttpContext.Response.Redirect (redirectUrl);
+      var redirectUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl(typeof (Start), TestResourceType.Root, "Start.aspx?Redirected").GetUrl();
+      context.HttpContext.Response.Redirect(redirectUrl);
     }
   }
 
@@ -52,6 +52,6 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private WxeStep Step1 = new RedirectedSubWxeFunction();
 
-    private WxeStep Step2 = new WxeResourcePageStep (typeof (SessionForm), "ExecutionEngine/SessionForm.aspx");
+    private WxeStep Step2 = new WxeResourcePageStep(typeof (SessionForm), "ExecutionEngine/SessionForm.aspx");
   }
 }

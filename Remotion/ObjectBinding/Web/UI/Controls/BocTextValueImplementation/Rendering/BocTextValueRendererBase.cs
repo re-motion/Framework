@@ -50,8 +50,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
         IValidationErrorRenderer validationErrorRenderer)
         : base (resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull ("validationErrorRenderer", validationErrorRenderer);
+      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
 
       _labelReferenceRenderer = labelReferenceRenderer;
       _validationErrorRenderer = validationErrorRenderer;
@@ -74,43 +74,43 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
     /// </summary>    
     protected void Render (BocRenderingContext<T> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      AddAttributesToRender (renderingContext);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      AddAttributesToRender(renderingContext);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-      var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
-      var validationErrorsID = GetValidationErrorsID (renderingContext);
+      var validationErrors = GetValidationErrorsToRender(renderingContext).ToArray();
+      var validationErrorsID = GetValidationErrorsID(renderingContext);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassContent);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-      bool isControlHeightEmpty = renderingContext.Control.Height.IsEmpty && string.IsNullOrEmpty (renderingContext.Control.Style["height"]);
+      bool isControlHeightEmpty = renderingContext.Control.Height.IsEmpty && string.IsNullOrEmpty(renderingContext.Control.Style["height"]);
 
-      WebControl innerControl = renderingContext.Control.IsReadOnly ? (WebControl) GetLabel (renderingContext) : GetTextBox (renderingContext);
+      WebControl innerControl = renderingContext.Control.IsReadOnly ? (WebControl) GetLabel(renderingContext) : GetTextBox(renderingContext);
       innerControl.Page = renderingContext.Control.Page!.WrappedInstance;
 
-      bool isInnerControlHeightEmpty = innerControl.Height.IsEmpty && string.IsNullOrEmpty (innerControl.Style["height"]);
+      bool isInnerControlHeightEmpty = innerControl.Height.IsEmpty && string.IsNullOrEmpty(innerControl.Style["height"]);
 
       if (!isControlHeightEmpty && isInnerControlHeightEmpty)
-        renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+        renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Height, "100%");
 
-      _validationErrorRenderer.SetValidationErrorsReferenceOnControl (innerControl, validationErrorsID, validationErrors);
+      _validationErrorRenderer.SetValidationErrorsReferenceOnControl(innerControl, validationErrorsID, validationErrors);
 
-      innerControl.RenderControl (renderingContext.Writer);
+      innerControl.RenderControl(renderingContext.Writer);
 
-      _validationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
+      _validationErrorRenderer.RenderValidationErrors(renderingContext.Writer, validationErrorsID, validationErrors);
 
-      renderingContext.Writer.RenderEndTag (); // Content Span
-      renderingContext.Writer.RenderEndTag ();
+      renderingContext.Writer.RenderEndTag(); // Content Span
+      renderingContext.Writer.RenderEndTag();
     }
 
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<T> renderingContext)
     {
-      base.AddDiagnosticMetadataAttributes (renderingContext);
+      base.AddDiagnosticMetadataAttributes(renderingContext);
       
       var hasAutoPostBack = renderingContext.Control.TextBoxStyle.AutoPostBack.HasValue && renderingContext.Control.TextBoxStyle.AutoPostBack.Value;
-      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, hasAutoPostBack.ToString().ToLower());
+      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, hasAutoPostBack.ToString().ToLower());
     }
 
     /// <summary>
@@ -119,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
     /// <returns>A <see cref="TextBox"/> control with the all relevant properties set and all appropriate styles applied to it.</returns>
     protected virtual TextBox GetTextBox (BocRenderingContext<T> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
       
       TextBox textBox = new RenderOnlyTextBox { ClientIDMode = ClientIDMode.Static };
       textBox.Text = renderingContext.Control.Text;
@@ -129,14 +129,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       textBox.ReadOnly = !renderingContext.Control.Enabled;
       textBox.Width = Unit.Empty;
       textBox.Height = Unit.Empty;
-      textBox.ApplyStyle (renderingContext.Control.CommonStyle);
-      renderingContext.Control.TextBoxStyle.ApplyStyle (textBox);
+      textBox.ApplyStyle(renderingContext.Control.CommonStyle);
+      renderingContext.Control.TextBoxStyle.ApplyStyle(textBox);
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      _labelReferenceRenderer.SetLabelReferenceOnControl (textBox, labelIDs);
+      _labelReferenceRenderer.SetLabelReferenceOnControl(textBox, labelIDs);
 
       if (renderingContext.Control.IsRequired)
-        textBox.Attributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
+        textBox.Attributes.Add(HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
 
       return textBox;
     }

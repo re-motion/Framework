@@ -35,18 +35,18 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IExtensibleEnumValueDiscoveryService> ();
+      var factory = _serviceLocator.GetInstance<IExtensibleEnumValueDiscoveryService>();
 
-      Assert.That (factory, Is.TypeOf (typeof (ExtensibleEnumValueDiscoveryService)));
+      Assert.That(factory, Is.TypeOf(typeof (ExtensibleEnumValueDiscoveryService)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsNotSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IExtensibleEnumValueDiscoveryService> ();
-      var factory2 = _serviceLocator.GetInstance<IExtensibleEnumValueDiscoveryService> ();
+      var factory1 = _serviceLocator.GetInstance<IExtensibleEnumValueDiscoveryService>();
+      var factory2 = _serviceLocator.GetInstance<IExtensibleEnumValueDiscoveryService>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

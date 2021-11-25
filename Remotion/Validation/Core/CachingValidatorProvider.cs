@@ -37,11 +37,11 @@ namespace Remotion.Validation
 
     public IValidator GetValidator (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      var cachedResult = _cache.GetOrAdd (
+      var cachedResult = _cache.GetOrAdd(
           type,
-          key => new Lazy<IValidator> (() => _validatorBuilder.BuildValidator (key), LazyThreadSafetyMode.ExecutionAndPublication));
+          key => new Lazy<IValidator>(() => _validatorBuilder.BuildValidator(key), LazyThreadSafetyMode.ExecutionAndPublication));
 
       return cachedResult.Value;
     }

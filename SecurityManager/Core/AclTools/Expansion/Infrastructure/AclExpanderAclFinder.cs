@@ -28,9 +28,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
   {
     public List<AccessControlList> FindAccessControlLists ()
     {
-      var findAllAclsQuery = from acl in QueryFactory.CreateLinqQuery<AccessControlList> ()
+      var findAllAclsQuery = from acl in QueryFactory.CreateLinqQuery<AccessControlList>()
                              select acl;
-      return findAllAclsQuery.ToList ();
+      return findAllAclsQuery.ToList();
     }
   }
 }

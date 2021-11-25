@@ -47,16 +47,16 @@ namespace Remotion.Data.DomainObjects.Mapping
         int? maxLength,
         StorageClass storageClass)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
       _classDefinition = classDefinition;
       _propertyInfo = propertyInfo;
       _propertyType = isObjectID ? typeof (ObjectID) : propertyInfo.PropertyType;
       _propertyName = propertyName;
       _isObjectID = isObjectID;
-      _isNullablePropertyType = NullableTypeUtility.IsNullableType (propertyInfo.PropertyType);
+      _isNullablePropertyType = NullableTypeUtility.IsNullableType(propertyInfo.PropertyType);
       _isNullable = isNullable;
       _maxLength = maxLength;
       _storageClass = storageClass;
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get
       {
         if (StorageClass != StorageClass.Persistent)
-          throw new InvalidOperationException ("Cannot access property 'storagePropertyDefinition' for non-persistent property definitions.");
+          throw new InvalidOperationException("Cannot access property 'storagePropertyDefinition' for non-persistent property definitions.");
 
         return _storagePropertyDefinition;
       }
@@ -101,18 +101,18 @@ namespace Remotion.Data.DomainObjects.Mapping
           return null;
 
         if (_propertyType.IsArray)
-          return Array.CreateInstance (_propertyType.GetElementType(), 0);
+          return Array.CreateInstance(_propertyType.GetElementType(), 0);
 
         if (_propertyType == typeof (string))
           return string.Empty;
 
         if (_propertyType.IsEnum)
         {
-          var firstValueOrNull = EnumUtility.GetEnumMetadata (_propertyType).OrderedValues.FirstOrDefault();
+          var firstValueOrNull = EnumUtility.GetEnumMetadata(_propertyType).OrderedValues.FirstOrDefault();
           if (firstValueOrNull == null)
           {
-            throw new InvalidOperationException (
-                string.Format (
+            throw new InvalidOperationException(
+                string.Format(
                     ".NET enum type '{0}' does not define any values. Properties based on this type must be declared as nullable.",
                     _propertyType.GetFullNameSafe()));
           }
@@ -120,13 +120,13 @@ namespace Remotion.Data.DomainObjects.Mapping
           return firstValueOrNull;
         }
 
-        if (ExtensibleEnumUtility.IsExtensibleEnumType (_propertyType))
+        if (ExtensibleEnumUtility.IsExtensibleEnumType(_propertyType))
         {
-          var firstValueOrNull = ExtensibleEnumUtility.GetDefinition (_propertyType).GetValueInfos().FirstOrDefault();
+          var firstValueOrNull = ExtensibleEnumUtility.GetDefinition(_propertyType).GetValueInfos().FirstOrDefault();
           if (firstValueOrNull == null)
           {
-            throw new InvalidOperationException (
-                string.Format (
+            throw new InvalidOperationException(
+                string.Format(
                     "Extensible enum type '{0}' does not define any values. Properties based on this type must be declared as nullable.",
                     _propertyType.GetFullNameSafe()));
           }
@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.Mapping
           return firstValueOrNull.Value;
         }
 
-        return Activator.CreateInstance (_propertyType, new object[0]);
+        return Activator.CreateInstance(_propertyType, new object[0]);
       }
     }
 
@@ -174,14 +174,14 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void SetStorageProperty (IStoragePropertyDefinition storagePropertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("storagePropertyDefinition", storagePropertyDefinition);
+      ArgumentUtility.CheckNotNull("storagePropertyDefinition", storagePropertyDefinition);
 
       _storagePropertyDefinition = storagePropertyDefinition;
     }
 
     public override string ToString ()
     {
-      return GetType ().GetFullNameSafe() + ": " + _propertyName;
+      return GetType().GetFullNameSafe() + ": " + _propertyName;
     }
   }
 }

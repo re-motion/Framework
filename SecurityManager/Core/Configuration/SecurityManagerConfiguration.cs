@@ -28,8 +28,8 @@ namespace Remotion.SecurityManager.Configuration
 
     static SecurityManagerConfiguration ()
     {
-      s_current = new DoubleCheckedLockingContainer<SecurityManagerConfiguration> (
-          delegate { return (SecurityManagerConfiguration) ConfigurationManager.GetSection ("remotion.securityManager") ?? new SecurityManagerConfiguration (); });
+      s_current = new DoubleCheckedLockingContainer<SecurityManagerConfiguration>(
+          delegate { return (SecurityManagerConfiguration) ConfigurationManager.GetSection("remotion.securityManager") ?? new SecurityManagerConfiguration(); });
     }
 
     public static SecurityManagerConfiguration Current
@@ -52,24 +52,24 @@ namespace Remotion.SecurityManager.Configuration
 
     public SecurityManagerConfiguration ()
     {
-      _xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
+      _xmlnsProperty = new ConfigurationProperty("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
 
-      _organizationalStructureFactory = new DoubleCheckedLockingContainer<IOrganizationalStructureFactory> (
+      _organizationalStructureFactory = new DoubleCheckedLockingContainer<IOrganizationalStructureFactory>(
           delegate { return OrganizationalStructureFactoryElement.CreateInstance(); });
-      _organizationalStructureFactoryProperty = new ConfigurationProperty (
+      _organizationalStructureFactoryProperty = new ConfigurationProperty(
           "organizationalStructureFactory",
           typeof (TypeElement<IOrganizationalStructureFactory, OrganizationalStructureFactory>),
           null,
           ConfigurationPropertyOptions.None);
-      _accessControlProperty = new ConfigurationProperty (
+      _accessControlProperty = new ConfigurationProperty(
           "accessControl",
           typeof (AccessControlElement),
           null,
           ConfigurationPropertyOptions.None);
 
-      _properties.Add (_xmlnsProperty);
-      _properties.Add (_organizationalStructureFactoryProperty);
-      _properties.Add (_accessControlProperty);
+      _properties.Add(_xmlnsProperty);
+      _properties.Add(_organizationalStructureFactoryProperty);
+      _properties.Add(_accessControlProperty);
     }
 
     protected override ConfigurationPropertyCollection Properties

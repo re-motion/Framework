@@ -31,81 +31,81 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       base.SetUp();
 
-      _newIndustrialSector = IndustrialSector.NewObject ();
-      _newCompany1 = Company.NewObject ();
-      _newCompany2 = Company.NewObject ();
+      _newIndustrialSector = IndustrialSector.NewObject();
+      _newCompany1 = Company.NewObject();
+      _newCompany2 = Company.NewObject();
     }
 
     [Test]
     public void ReplaceCollectionProperty ()
     {
       var oldCompanies = _newIndustrialSector.Companies;
-      var newCompanies = new ObjectList<Company> ();
+      var newCompanies = new ObjectList<Company>();
       _newIndustrialSector.Companies = newCompanies;
 
-      Assert.That (_newIndustrialSector.Companies, Is.SameAs (newCompanies));
-      _newIndustrialSector.Companies.Add (_newCompany1);
+      Assert.That(_newIndustrialSector.Companies, Is.SameAs(newCompanies));
+      _newIndustrialSector.Companies.Add(_newCompany1);
       _newCompany2.IndustrialSector = _newIndustrialSector;
 
-      Assert.That (oldCompanies, Is.Empty);
-      Assert.That (newCompanies, Is.EqualTo (new[] { _newCompany1, _newCompany2 }));
+      Assert.That(oldCompanies, Is.Empty);
+      Assert.That(newCompanies, Is.EqualTo(new[] { _newCompany1, _newCompany2 }));
     }
 
     [Test]
     public void ReplaceCollectionProperty_HasChanged ()
     {
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope())
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        _newIndustrialSector.EnsureDataAvailable ();
+        _newIndustrialSector.EnsureDataAvailable();
 
-        Assert.That (_newIndustrialSector.State.IsUnchanged, Is.True);
-        var newCompanies = new ObjectList<Company> ();
+        Assert.That(_newIndustrialSector.State.IsUnchanged, Is.True);
+        var newCompanies = new ObjectList<Company>();
         _newIndustrialSector.Companies = newCompanies;
-        Assert.That (_newIndustrialSector.State.IsChanged, Is.True);
-        _newIndustrialSector.Companies.Add (_newCompany1);
-        Assert.That (_newIndustrialSector.State.IsChanged, Is.True);
+        Assert.That(_newIndustrialSector.State.IsChanged, Is.True);
+        _newIndustrialSector.Companies.Add(_newCompany1);
+        Assert.That(_newIndustrialSector.State.IsChanged, Is.True);
       }
     }
 
     [Test]
     public void ReplaceCollectionProperty_Commit ()
     {
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         var oldCompanies = _newIndustrialSector.Companies;
-        var newCompanies = new ObjectList<Company> ();
+        var newCompanies = new ObjectList<Company>();
         _newIndustrialSector.Companies = newCompanies;
-        _newIndustrialSector.Companies.Add (_newCompany1);
-        _newIndustrialSector.Companies.Add (_newCompany2);
-        Assert.That (_newIndustrialSector.State.IsChanged, Is.True);
-        ClientTransaction.Current.Commit ();
+        _newIndustrialSector.Companies.Add(_newCompany1);
+        _newIndustrialSector.Companies.Add(_newCompany2);
+        Assert.That(_newIndustrialSector.State.IsChanged, Is.True);
+        ClientTransaction.Current.Commit();
 
-        Assert.That (_newIndustrialSector.State.IsUnchanged, Is.True);
-        Assert.That (newCompanies, Is.EquivalentTo (new[] { _newCompany1, _newCompany2 }));
-        Assert.That (oldCompanies, Is.Empty);
+        Assert.That(_newIndustrialSector.State.IsUnchanged, Is.True);
+        Assert.That(newCompanies, Is.EquivalentTo(new[] { _newCompany1, _newCompany2 }));
+        Assert.That(oldCompanies, Is.Empty);
       }
-      Assert.That (_newIndustrialSector.Companies, Is.EquivalentTo (new[] { _newCompany1, _newCompany2 }));
+      Assert.That(_newIndustrialSector.Companies, Is.EquivalentTo(new[] { _newCompany1, _newCompany2 }));
     }
 
     [Test]
     public void ReplaceCollectionProperty_Rollback ()
     {
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        _newIndustrialSector.EnsureDataAvailable ();
+        _newIndustrialSector.EnsureDataAvailable();
 
-        Assert.That (_newIndustrialSector.State.IsUnchanged, Is.True);
+        Assert.That(_newIndustrialSector.State.IsUnchanged, Is.True);
         var oldCompanies = _newIndustrialSector.Companies;
-        var newCompanies = new ObjectList<Company> ();
+        var newCompanies = new ObjectList<Company>();
         _newIndustrialSector.Companies = newCompanies;
-        _newIndustrialSector.Companies.Add (_newCompany1);
-        _newIndustrialSector.Companies.Add (_newCompany2);
+        _newIndustrialSector.Companies.Add(_newCompany1);
+        _newIndustrialSector.Companies.Add(_newCompany2);
         ClientTransaction.Current.Rollback();
         
-        Assert.That (_newIndustrialSector.State.IsUnchanged, Is.True);
-        Assert.That (_newIndustrialSector.Companies, Is.Empty);
-        Assert.That (_newIndustrialSector.Companies, Is.SameAs (oldCompanies));
-        Assert.That (newCompanies, Is.EquivalentTo (new[] { _newCompany1, _newCompany2 }), "list is detached during commit, but keeps its values");
+        Assert.That(_newIndustrialSector.State.IsUnchanged, Is.True);
+        Assert.That(_newIndustrialSector.Companies, Is.Empty);
+        Assert.That(_newIndustrialSector.Companies, Is.SameAs(oldCompanies));
+        Assert.That(newCompanies, Is.EquivalentTo(new[] { _newCompany1, _newCompany2 }), "list is detached during commit, but keeps its values");
       }
     }
 
@@ -114,13 +114,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       var oldCompanies = _newIndustrialSector.Companies;
 
-      _newIndustrialSector.Companies.Add (_newCompany1);
-      _newIndustrialSector.Companies.Add (_newCompany2);
-      _newIndustrialSector.Companies = new ObjectList<Company> ();
+      _newIndustrialSector.Companies.Add(_newCompany1);
+      _newIndustrialSector.Companies.Add(_newCompany2);
+      _newIndustrialSector.Companies = new ObjectList<Company>();
 
-      Assert.That (_newCompany1.IndustrialSector, Is.Null);
-      Assert.That (_newCompany2.IndustrialSector, Is.Null);
-      Assert.That (oldCompanies, Is.EqualTo (new[] { _newCompany1, _newCompany2 }));
+      Assert.That(_newCompany1.IndustrialSector, Is.Null);
+      Assert.That(_newCompany2.IndustrialSector, Is.Null);
+      Assert.That(oldCompanies, Is.EqualTo(new[] { _newCompany1, _newCompany2 }));
     }
 
     [Test]
@@ -131,19 +131,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       var newCompanies = new ObjectList<Company> {_newCompany1, _newCompany2};
       _newIndustrialSector.Companies = newCompanies;
 
-      Assert.That (_newCompany1.IndustrialSector, Is.SameAs (_newIndustrialSector));
-      Assert.That (_newCompany2.IndustrialSector, Is.SameAs (_newIndustrialSector));
-      Assert.That (oldCompanies, Is.Empty);
+      Assert.That(_newCompany1.IndustrialSector, Is.SameAs(_newIndustrialSector));
+      Assert.That(_newCompany2.IndustrialSector, Is.SameAs(_newIndustrialSector));
+      Assert.That(oldCompanies, Is.Empty);
     }
 
     [Test]
     public void ReplaceCollectionProperty_Cascade_Rollback ()
     {
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        var customer1 = DomainObjectIDs.Customer1.GetObject<Customer> (); // Order1, Order2
-        var customer3 = DomainObjectIDs.Customer3.GetObject<Customer> (); // Order3
-        var newCollection = new OrderCollection { DomainObjectIDs.Order5.GetObject<Order> () };
+        var customer1 = DomainObjectIDs.Customer1.GetObject<Customer>(); // Order1, Order2
+        var customer3 = DomainObjectIDs.Customer3.GetObject<Customer>(); // Order3
+        var newCollection = new OrderCollection { DomainObjectIDs.Order5.GetObject<Order>() };
 
         var oldCollectionReferenceOfCustomer1 = customer1.Orders;
         var oldCollectionContentOfCustomer1 = customer1.Orders.ToArray();
@@ -152,18 +152,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
         customer1.Orders = newCollection;
         customer3.Orders = oldCollectionReferenceOfCustomer1;
-        Assert.That (oldCollectionReferenceOfCustomer3.AssociatedEndPointID, Is.Null);
+        Assert.That(oldCollectionReferenceOfCustomer3.AssociatedEndPointID, Is.Null);
 
-        ClientTransaction.Current.Rollback ();
+        ClientTransaction.Current.Rollback();
 
-        Assert.That (customer1.Orders, Is.SameAs (oldCollectionReferenceOfCustomer1));
-        Assert.That (customer1.Orders, Is.EqualTo (oldCollectionContentOfCustomer1));
-        Assert.That (customer3.Orders, Is.SameAs (oldCollectionReferenceOfCustomer3));
-        Assert.That (customer3.Orders, Is.EqualTo (oldCollectionContentOfCustomer3));
+        Assert.That(customer1.Orders, Is.SameAs(oldCollectionReferenceOfCustomer1));
+        Assert.That(customer1.Orders, Is.EqualTo(oldCollectionContentOfCustomer1));
+        Assert.That(customer3.Orders, Is.SameAs(oldCollectionReferenceOfCustomer3));
+        Assert.That(customer3.Orders, Is.EqualTo(oldCollectionContentOfCustomer3));
 
-        Assert.That (customer1.Orders.AssociatedEndPointID.ObjectID, Is.EqualTo (customer1.ID));
-        Assert.That (customer3.Orders.AssociatedEndPointID.ObjectID, Is.EqualTo (customer3.ID));
-        Assert.That (newCollection.AssociatedEndPointID, Is.Null);
+        Assert.That(customer1.Orders.AssociatedEndPointID.ObjectID, Is.EqualTo(customer1.ID));
+        Assert.That(customer3.Orders.AssociatedEndPointID.ObjectID, Is.EqualTo(customer3.ID));
+        Assert.That(newCollection.AssociatedEndPointID, Is.Null);
       }
     }
   }

@@ -29,7 +29,7 @@ namespace Remotion.Globalization.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _globalizationServiceMock = new Mock<IGlobalizationService> (MockBehavior.Strict);
+      _globalizationServiceMock = new Mock<IGlobalizationService>(MockBehavior.Strict);
     }
 
     [Test]
@@ -37,14 +37,14 @@ namespace Remotion.Globalization.UnitTests
     {
       var fakeResult = new Mock<IResourceManager>();
       _globalizationServiceMock
-          .Setup (mock => mock.GetResourceManager (It.Is<ITypeInformation> (ti => ((TypeAdapter) ti).Type == typeof (string))))
-          .Returns (fakeResult.Object)
+          .Setup(mock => mock.GetResourceManager(It.Is<ITypeInformation>(ti => ((TypeAdapter) ti).Type == typeof (string))))
+          .Returns(fakeResult.Object)
           .Verifiable();
 
-      var result = _globalizationServiceMock.Object.GetResourceManager (typeof (string));
+      var result = _globalizationServiceMock.Object.GetResourceManager(typeof (string));
 
       _globalizationServiceMock.Verify();
-      Assert.That (result, Is.SameAs (fakeResult.Object));
+      Assert.That(result, Is.SameAs(fakeResult.Object));
     }
   }
 }

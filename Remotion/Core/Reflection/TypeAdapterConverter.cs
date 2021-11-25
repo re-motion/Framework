@@ -39,7 +39,7 @@ namespace Remotion.Reflection
     /// </returns>
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
       return sourceType == typeof (Type);
     }
 
@@ -55,7 +55,7 @@ namespace Remotion.Reflection
     /// </returns>
     public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
       return destinationType == typeof (Type);
     }
 
@@ -81,11 +81,11 @@ namespace Remotion.Reflection
       var type = value as Type;
       if (type == null)
       {
-        var message = string.Format ("Cannot convert value from type '{0}' to type '{1}'.", value.GetType (), typeof (TypeAdapter));
-        throw new NotSupportedException (message);
+        var message = string.Format("Cannot convert value from type '{0}' to type '{1}'.", value.GetType(), typeof (TypeAdapter));
+        throw new NotSupportedException(message);
       }
 
-      return TypeAdapter.Create (type);
+      return TypeAdapter.Create(type);
     }
 
     /// <summary>
@@ -110,15 +110,15 @@ namespace Remotion.Reflection
     [return: NotNullIfNotNull ("value")] 
     public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
       if (destinationType != typeof (Type))
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot convert values to type '{0}'. This converter only supports converting to type '{1}'.",
             destinationType,
             typeof (Type));
-        throw new NotSupportedException (message);
+        throw new NotSupportedException(message);
       }
 
       if (value == null)
@@ -127,12 +127,12 @@ namespace Remotion.Reflection
       var typeAdapter = value as TypeAdapter;
       if (typeAdapter == null)
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot convert values of type '{0}' to type '{1}'. This converter only supports values of type '{2}'.",
-            value.GetType (),
+            value.GetType(),
             destinationType,
             typeof (TypeAdapter));
-        throw new NotSupportedException (message);
+        throw new NotSupportedException(message);
       }
 
       return typeAdapter.Type;

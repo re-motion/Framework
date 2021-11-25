@@ -27,22 +27,22 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public NonPersistentProviderDefinition (string name, INonPersistentStorageObjectFactory factory)
         : base (name, factory)
     {
-      ArgumentUtility.CheckNotNull ("factory", factory);
+      ArgumentUtility.CheckNotNull("factory", factory);
     }
 
     public NonPersistentProviderDefinition (string name, NameValueCollection config)
         : base (name, config)
     {
-      ArgumentUtility.CheckNotNull ("config", config);
+      ArgumentUtility.CheckNotNull("config", config);
 
       if (!(base.Factory is INonPersistentStorageObjectFactory))
       {
-        var message = string.Format (
+        var message = string.Format(
             "The factory type for the storage provider defined by '{0}' must implement the 'INonPersistentStorageObjectFactory' interface. "
             + "'{1}' does not implement that interface.", 
             name,
             base.Factory.GetType().Name);
-        throw new ConfigurationErrorsException (message);
+        throw new ConfigurationErrorsException(message);
       }
     }
 
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 
     public override bool IsIdentityTypeSupported (Type identityType)
     {
-      ArgumentUtility.CheckNotNull ("identityType", identityType);
+      ArgumentUtility.CheckNotNull("identityType", identityType);
 
       return (identityType == typeof (Guid));
     }

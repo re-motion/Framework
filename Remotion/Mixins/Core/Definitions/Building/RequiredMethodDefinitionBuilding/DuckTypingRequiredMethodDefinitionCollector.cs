@@ -25,39 +25,39 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
 {
   public class DuckTypingRequiredMethodDefinitionCollector : IRequiredMethodDefinitionCollector
   {
-    private static readonly MemberSignatureEqualityComparer s_signatureComparer = new MemberSignatureEqualityComparer ();
+    private static readonly MemberSignatureEqualityComparer s_signatureComparer = new MemberSignatureEqualityComparer();
 
     private readonly TargetClassDefinition _targetClassDefinition;
     private readonly ILookup<string, MethodDefinition> _allTargetMethodsByName;
 
     public DuckTypingRequiredMethodDefinitionCollector (TargetClassDefinition targetClassDefinition)
     {
-      ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
       _targetClassDefinition = targetClassDefinition;
-      _allTargetMethodsByName = targetClassDefinition.GetAllMethods ().ToLookup (method => method.Name);
+      _allTargetMethodsByName = targetClassDefinition.GetAllMethods().ToLookup(method => method.Name);
     }
 
     public IEnumerable<RequiredMethodDefinition> CreateRequiredMethodDefinitions (RequirementDefinitionBase requirement)
     {
-      ArgumentUtility.CheckNotNull ("requirement", requirement);
+      ArgumentUtility.CheckNotNull("requirement", requirement);
 
-      Assertion.IsTrue (requirement.Type.IsInterface);
+      Assertion.IsTrue(requirement.Type.IsInterface);
 
-      return from interfaceMethod in requirement.Type.GetMethods () 
-             let implementingMethod = FindMethod (interfaceMethod, requirement) 
-             select new RequiredMethodDefinition (requirement, interfaceMethod, implementingMethod);
+      return from interfaceMethod in requirement.Type.GetMethods() 
+             let implementingMethod = FindMethod(interfaceMethod, requirement) 
+             select new RequiredMethodDefinition(requirement, interfaceMethod, implementingMethod);
     }
 
     private MethodDefinition FindMethod (MethodInfo interfaceMethod, RequirementDefinitionBase requirement)
     {
       var candidatesByInheritanceOffset = from candidate in _allTargetMethodsByName[interfaceMethod.Name]
-                                          where s_signatureComparer.Equals (candidate.MethodInfo, interfaceMethod)
-                                          let offset = GetInheritanceOffset (candidate.MethodInfo.DeclaringType!)
+                                          where s_signatureComparer.Equals(candidate.MethodInfo, interfaceMethod)
+                                          let offset = GetInheritanceOffset(candidate.MethodInfo.DeclaringType!)
                                           group candidate by offset;
 
-      IGrouping<int, MethodDefinition> candidateGroup = ChooseCandidateGroup (candidatesByInheritanceOffset, interfaceMethod, requirement);
+      IGrouping<int, MethodDefinition> candidateGroup = ChooseCandidateGroup(candidatesByInheritanceOffset, interfaceMethod, requirement);
       // Unless the signature comparer is broken, each group can only hold one match.
-      return candidateGroup.Single ();
+      return candidateGroup.Single();
     }
 
     private IGrouping<int, MethodDefinition> ChooseCandidateGroup (
@@ -67,23 +67,23 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
     {
       try
       {
-        return candidatesByInheritanceOffset.OrderBy (group => group.Key).First (); // take the group with the lowest distance from the target class
+        return candidatesByInheritanceOffset.OrderBy(group => group.Key).First(); // take the group with the lowest distance from the target class
       }
       catch (InvalidOperationException)
       {
-        string requiringEntityString = requirement.GetRequiringEntityDescription ();
+        string requiringEntityString = requirement.GetRequiringEntityDescription();
         // In practice, every requirement should know its requiring entities. However, this is not enforced, so provide a fallback...
-        if (string.IsNullOrEmpty (requiringEntityString))
+        if (string.IsNullOrEmpty(requiringEntityString))
           requiringEntityString = "<unknown>";
 
-        string message = string.Format (
+        string message = string.Format(
             "The dependency '{0}' (required by {1} on class '{2}') is not fulfilled - public or protected method '{3}' could not be "
             + "found on the target class.",
             requirement.Type.Name,
             requiringEntityString,
             requirement.TargetClass,
             interfaceMethod);
-        throw new ConfigurationException (message);
+        throw new ConfigurationException(message);
       }
     }
 
@@ -95,7 +95,7 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
       while (type != currentBaseType)
       {
         currentBaseType = currentBaseType.BaseType;
-        Assertion.IsNotNull (currentBaseType, "Types declaring methods of a target class must be in the inheritance hierarchy of that class.");
+        Assertion.IsNotNull(currentBaseType, "Types declaring methods of a target class must be in the inheritance hierarchy of that class.");
         ++index;
       }
 

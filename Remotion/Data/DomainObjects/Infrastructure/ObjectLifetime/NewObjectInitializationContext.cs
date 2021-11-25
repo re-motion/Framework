@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
         IDataManager dataManager)
       : base (objectID, rootTransaction, enlistedDomainObjectManager)
     {
-      ArgumentUtility.CheckNotNull ("dataManager", dataManager);
+      ArgumentUtility.CheckNotNull("dataManager", dataManager);
 
       _dataManager = dataManager;
     }
@@ -47,17 +47,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 
     public override void RegisterObject (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      base.RegisterObject (domainObject);
+      base.RegisterObject(domainObject);
 
       // The rest of this method should never throw.
 
-      var newDataContainer = DataContainer.CreateNew (domainObject.ID);
-      newDataContainer.SetDomainObject (domainObject);
+      var newDataContainer = DataContainer.CreateNew(domainObject.ID);
+      newDataContainer.SetDomainObject(domainObject);
 
-      Assertion.IsNull (_dataManager.DataContainers[newDataContainer.ID], "since the registration succeeded, there cannot be a DataContainer with this ID.");
-      _dataManager.RegisterDataContainer (newDataContainer);
+      Assertion.IsNull(_dataManager.DataContainers[newDataContainer.ID], "since the registration succeeded, there cannot be a DataContainer with this ID.");
+      _dataManager.RegisterDataContainer(newDataContainer);
     }
   }
 }

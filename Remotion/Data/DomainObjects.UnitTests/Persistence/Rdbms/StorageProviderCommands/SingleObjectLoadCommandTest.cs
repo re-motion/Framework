@@ -45,31 +45,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _commandExecutionContextMock = MockRepository.GenerateStrictMock<IRdbmsProviderCommandExecutionContext>();
       _dbCommandMock = MockRepository.GenerateStrictMock<IDbCommand>();
       _dbCommandBuilderMock = MockRepository.GenerateStrictMock<IDbCommandBuilder>();
-      _objectReaderMock = MockRepository.GenerateStrictMock<IObjectReader<object>> ();
+      _objectReaderMock = MockRepository.GenerateStrictMock<IObjectReader<object>>();
 
-      _command = new SingleObjectLoadCommand<object> (_dbCommandBuilderMock, _objectReaderMock);
+      _command = new SingleObjectLoadCommand<object>(_dbCommandBuilderMock, _objectReaderMock);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_command.DbCommandBuilder, Is.SameAs (_dbCommandBuilderMock));
-      Assert.That (_command.ObjectReader, Is.SameAs(_objectReaderMock));
+      Assert.That(_command.DbCommandBuilder, Is.SameAs(_dbCommandBuilderMock));
+      Assert.That(_command.ObjectReader, Is.SameAs(_objectReaderMock));
     }
 
     [Test]
     public void Execute ()
     {
-      _commandExecutionContextMock.Expect (mock => mock.ExecuteReader (_dbCommandMock, CommandBehavior.SingleRow)).Return (_dataReaderMock);
+      _commandExecutionContextMock.Expect(mock => mock.ExecuteReader(_dbCommandMock, CommandBehavior.SingleRow)).Return(_dataReaderMock);
       _commandExecutionContextMock.Replay();
 
-      _objectReaderMock.Expect (mock => mock.Read (_dataReaderMock)).Return (_fakeResult);
+      _objectReaderMock.Expect(mock => mock.Read(_dataReaderMock)).Return(_fakeResult);
       _objectReaderMock.Replay();
 
-      _dbCommandBuilderMock.Expect (mock => mock.Create (_commandExecutionContextMock)).Return (_dbCommandMock);
+      _dbCommandBuilderMock.Expect(mock => mock.Create(_commandExecutionContextMock)).Return(_dbCommandMock);
       _dbCommandBuilderMock.Replay();
 
-      _dbCommandMock.Expect (mock => mock.Dispose());
+      _dbCommandMock.Expect(mock => mock.Dispose());
       _dbCommandMock.Replay();
       
       var result = _command.Execute(_commandExecutionContextMock);
@@ -78,31 +78,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _objectReaderMock.VerifyAllExpectations();
       _dbCommandBuilderMock.VerifyAllExpectations();
       _dbCommandMock.VerifyAllExpectations();
-      Assert.That (result, Is.SameAs (_fakeResult));
+      Assert.That(result, Is.SameAs(_fakeResult));
     }
 
     [Test]
     public void Execute_NullContainer ()
     {
-      _commandExecutionContextMock.Expect (mock => mock.ExecuteReader (_dbCommandMock, CommandBehavior.SingleRow)).Return (_dataReaderMock);
-      _commandExecutionContextMock.Replay ();
+      _commandExecutionContextMock.Expect(mock => mock.ExecuteReader(_dbCommandMock, CommandBehavior.SingleRow)).Return(_dataReaderMock);
+      _commandExecutionContextMock.Replay();
 
-      _objectReaderMock.Expect (mock => mock.Read (_dataReaderMock)).Return (null);
-      _objectReaderMock.Replay ();
+      _objectReaderMock.Expect(mock => mock.Read(_dataReaderMock)).Return(null);
+      _objectReaderMock.Replay();
 
-      _dbCommandBuilderMock.Expect (mock => mock.Create (_commandExecutionContextMock)).Return (_dbCommandMock);
-      _dbCommandBuilderMock.Replay ();
+      _dbCommandBuilderMock.Expect(mock => mock.Create(_commandExecutionContextMock)).Return(_dbCommandMock);
+      _dbCommandBuilderMock.Replay();
 
-      _dbCommandMock.Expect (mock => mock.Dispose ());
-      _dbCommandMock.Replay ();
+      _dbCommandMock.Expect(mock => mock.Dispose());
+      _dbCommandMock.Replay();
 
-      var result = _command.Execute (_commandExecutionContextMock);
+      var result = _command.Execute(_commandExecutionContextMock);
 
-      _commandExecutionContextMock.VerifyAllExpectations ();
-      _objectReaderMock.VerifyAllExpectations ();
-      _dbCommandBuilderMock.VerifyAllExpectations ();
-      _dbCommandMock.VerifyAllExpectations ();
-      Assert.That (result, Is.Null);
+      _commandExecutionContextMock.VerifyAllExpectations();
+      _objectReaderMock.VerifyAllExpectations();
+      _dbCommandBuilderMock.VerifyAllExpectations();
+      _dbCommandMock.VerifyAllExpectations();
+      Assert.That(result, Is.Null);
     }
     
   }

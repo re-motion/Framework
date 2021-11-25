@@ -27,23 +27,23 @@ namespace Remotion.Mixins.Definitions
   public class MixinDefinition : ClassDefinitionBase, IAttributeIntroductionSource
   {
     private readonly UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> _interfaceIntroductions =
-        new UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> (i => i.InterfaceType);
+        new UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition>(i => i.InterfaceType);
     private readonly UniqueDefinitionCollection<Type, NonInterfaceIntroductionDefinition> _nonInterfaceIntroductions =
-        new UniqueDefinitionCollection<Type, NonInterfaceIntroductionDefinition> (i => i.InterfaceType);
+        new UniqueDefinitionCollection<Type, NonInterfaceIntroductionDefinition>(i => i.InterfaceType);
 
     private readonly UniqueDefinitionCollection<Type, TargetCallDependencyDefinition> _targetCallDependencies =
-        new UniqueDefinitionCollection<Type, TargetCallDependencyDefinition> (d => d.RequiredType.Type);
+        new UniqueDefinitionCollection<Type, TargetCallDependencyDefinition>(d => d.RequiredType.Type);
     private readonly UniqueDefinitionCollection<Type, NextCallDependencyDefinition> _nextCallDependencies =
-        new UniqueDefinitionCollection<Type, NextCallDependencyDefinition> (d => d.RequiredType.Type);
+        new UniqueDefinitionCollection<Type, NextCallDependencyDefinition>(d => d.RequiredType.Type);
     private readonly UniqueDefinitionCollection<Type, MixinDependencyDefinition> _mixinDependencies =
-        new UniqueDefinitionCollection<Type, MixinDependencyDefinition> (d => d.RequiredType.Type);
+        new UniqueDefinitionCollection<Type, MixinDependencyDefinition>(d => d.RequiredType.Type);
 
     private readonly MultiDefinitionCollection<Type, AttributeIntroductionDefinition> _attributeIntroductions = 
-        new MultiDefinitionCollection<Type, AttributeIntroductionDefinition> (a => a.AttributeType);
+        new MultiDefinitionCollection<Type, AttributeIntroductionDefinition>(a => a.AttributeType);
     private readonly MultiDefinitionCollection<Type, NonAttributeIntroductionDefinition> _nonAttributeIntroductions =
-        new MultiDefinitionCollection<Type, NonAttributeIntroductionDefinition> (a => a.AttributeType);
+        new MultiDefinitionCollection<Type, NonAttributeIntroductionDefinition>(a => a.AttributeType);
     private readonly MultiDefinitionCollection<Type, SuppressedAttributeIntroductionDefinition> _suppressedAttributeIntroductions =
-        new MultiDefinitionCollection<Type, SuppressedAttributeIntroductionDefinition> (a => a.AttributeType);
+        new MultiDefinitionCollection<Type, SuppressedAttributeIntroductionDefinition>(a => a.AttributeType);
 
     private readonly TargetClassDefinition _targetClass;
     private readonly MixinKind _mixinKind;
@@ -54,7 +54,7 @@ namespace Remotion.Mixins.Definitions
     public MixinDefinition (MixinKind mixinKind, Type type, TargetClassDefinition targetClass, bool acceptsAlphabeticOrdering)
         : base (type)
     {
-      ArgumentUtility.CheckNotNull ("targetClass", targetClass);
+      ArgumentUtility.CheckNotNull("targetClass", targetClass);
 
       _mixinKind = mixinKind;
       _targetClass = targetClass;
@@ -125,7 +125,7 @@ namespace Remotion.Mixins.Definitions
 
     public IEnumerable<MemberDefinitionBase> GetAllOverrides ()
     {
-      foreach (MemberDefinitionBase member in GetAllMembers ())
+      foreach (MemberDefinitionBase member in GetAllMembers())
       {
         if (member.BaseAsMember != null)
           yield return member;
@@ -134,20 +134,20 @@ namespace Remotion.Mixins.Definitions
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
 
-      visitor.Visit (this);
+      visitor.Visit(this);
 
-      _interfaceIntroductions.Accept (visitor);
-      _nonInterfaceIntroductions.Accept (visitor);
+      _interfaceIntroductions.Accept(visitor);
+      _nonInterfaceIntroductions.Accept(visitor);
       
-      AttributeIntroductions.Accept (visitor);
-      NonAttributeIntroductions.Accept (visitor);
-      SuppressedAttributeIntroductions.Accept (visitor);
+      AttributeIntroductions.Accept(visitor);
+      NonAttributeIntroductions.Accept(visitor);
+      SuppressedAttributeIntroductions.Accept(visitor);
 
-      _targetCallDependencies.Accept (visitor);
-      _nextCallDependencies.Accept (visitor);
-      _mixinDependencies.Accept (visitor);
+      _targetCallDependencies.Accept(visitor);
+      _nextCallDependencies.Accept(visitor);
+      _mixinDependencies.Accept(visitor);
     }
 
     public IEnumerable<DependencyDefinitionBase> GetOrderRelevantDependencies ()
@@ -160,34 +160,34 @@ namespace Remotion.Mixins.Definitions
 
     public bool NeedsDerivedMixinType ()
     {
-      return Type.IsAbstract || HasOverriddenMembers () || HasProtectedOverriders ();
+      return Type.IsAbstract || HasOverriddenMembers() || HasProtectedOverriders();
     }
 
     public ConcreteMixinTypeIdentifier GetConcreteMixinTypeIdentifier ()
     {
       if (_concreteTypeIdentifier == null)
-        _concreteTypeIdentifier = CalculateConcreteTypeIdentifier ();
+        _concreteTypeIdentifier = CalculateConcreteTypeIdentifier();
       return _concreteTypeIdentifier;
     }
 
     private ConcreteMixinTypeIdentifier CalculateConcreteTypeIdentifier ()
     {
-      var overriders = new HashSet<MethodInfo> ();
-      var overridden = new HashSet<MethodInfo> ();
+      var overriders = new HashSet<MethodInfo>();
+      var overridden = new HashSet<MethodInfo>();
 
       foreach (var methodDefinition in GetAllMethods())
       {
         if (methodDefinition.Base != null)
         {
-          overriders.Add (methodDefinition.MethodInfo);
+          overriders.Add(methodDefinition.MethodInfo);
         }
         else if (methodDefinition.Overrides.Count != 0)
         {
-          overridden.Add (methodDefinition.MethodInfo);
+          overridden.Add(methodDefinition.MethodInfo);
         }
       }
 
-      return new ConcreteMixinTypeIdentifier (Type, overriders, overridden);
+      return new ConcreteMixinTypeIdentifier(Type, overriders, overridden);
     }
   }
 }

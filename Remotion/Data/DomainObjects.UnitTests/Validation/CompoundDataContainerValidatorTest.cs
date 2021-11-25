@@ -33,9 +33,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
                            MockRepository.GenerateStub<IDataContainerValidator>(),
                            MockRepository.GenerateStub<IDataContainerValidator>()
                        };
-      var compoundValidator = new CompoundDataContainerValidator (validators);
+      var compoundValidator = new CompoundDataContainerValidator(validators);
 
-      Assert.That (compoundValidator.Validators, Is.EqualTo (validators));
+      Assert.That(compoundValidator.Validators, Is.EqualTo(validators));
     }
 
     [Test]
@@ -47,14 +47,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
                            MockRepository.GenerateStub<IDataContainerValidator>()
                        };
 
-      var dataContainer = DataContainer.CreateNew (DomainObjectIDs.ClassWithAllDataTypes1);
+      var dataContainer = DataContainer.CreateNew(DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var compoundValidator = new CompoundDataContainerValidator (validators);
+      var compoundValidator = new CompoundDataContainerValidator(validators);
 
-      compoundValidator.Validate (dataContainer);
+      compoundValidator.Validate(dataContainer);
 
-      validators[0].AssertWasCalled (_ => _.Validate (dataContainer));
-      validators[1].AssertWasCalled (_ => _.Validate (dataContainer));
+      validators[0].AssertWasCalled(_ => _.Validate(dataContainer));
+      validators[1].AssertWasCalled(_ => _.Validate(dataContainer));
     }
   }
 }

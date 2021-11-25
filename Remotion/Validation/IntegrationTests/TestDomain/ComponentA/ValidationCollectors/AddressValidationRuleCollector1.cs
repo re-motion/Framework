@@ -22,14 +22,14 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationC
   {
     public AddressValidationRuleCollector1 ()
     {
-      AddRule (o => o.PostalCode).SetCondition (IsCountryEqualToDeutschland).Matches ("^DE");
+      AddRule(o => o.PostalCode).SetCondition(IsCountryEqualToDeutschland).Matches("^DE");
 
-      AddRule (a => a.City).SetCondition (IsStreetEqualToMariaHilferstrasse145).Matches ("Wien");
-      AddRule (a => a.PostalCode).SetCondition (IsStreetEqualToMariaHilferstrasse145).Matches ("1090");
+      AddRule(a => a.City).SetCondition(IsStreetEqualToMariaHilferstrasse145).Matches("Wien");
+      AddRule(a => a.PostalCode).SetCondition(IsStreetEqualToMariaHilferstrasse145).Matches("1090");
 
-      AddRule (a => a.PostalCode).NotNull();
+      AddRule(a => a.PostalCode).NotNull();
 
-      AddRule (a => a.Street).Length (0, 25);
+      AddRule(a => a.Street).Length(0, 25);
 
       bool IsCountryEqualToDeutschland (Address o) => o.Country == "Deutschland";
 

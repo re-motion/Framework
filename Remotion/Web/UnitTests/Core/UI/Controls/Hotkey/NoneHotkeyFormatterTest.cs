@@ -28,9 +28,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Hotkey
     public void Format_NoEncoding_WithHotkey ()
     {
       var formatter = new NoneHotkeyFormatter();
-      var textWithHotkey = new TextWithHotkey ("foo bar", 4);
+      var textWithHotkey = new TextWithHotkey("foo bar", 4);
 
-      Assert.That (formatter.FormatText (textWithHotkey, false), Is.EqualTo ("foo bar"));
+      Assert.That(formatter.FormatText(textWithHotkey, false), Is.EqualTo("foo bar"));
     }
   }
 }

@@ -40,79 +40,79 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     {
       base.SetUp();
 
-      _storageTypeInformationProviderStub = MockRepository.GenerateStub<IStorageTypeInformationProvider> ();
+      _storageTypeInformationProviderStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
-      _idStorageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation ();
+      _idStorageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation();
       _storageTypeInformationProviderStub
-          .Stub (stub => stub.GetStorageTypeForID (false))
-          .Return (_idStorageTypeInformation);
+          .Stub(stub => stub.GetStorageTypeForID(false))
+          .Return(_idStorageTypeInformation);
 
-      _classIDStorageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation ();
+      _classIDStorageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation();
       _storageTypeInformationProviderStub
-          .Stub (stub => stub.GetStorageTypeForClassID (false))
-          .Return (_classIDStorageTypeInformation);
+          .Stub(stub => stub.GetStorageTypeForClassID(false))
+          .Return(_classIDStorageTypeInformation);
 
-      _timestampStorageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation ();
+      _timestampStorageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation();
       _storageTypeInformationProviderStub
-          .Stub (stub => stub.GetStorageTypeForTimestamp (false))
-          .Return (_timestampStorageTypeInformation);
+          .Stub(stub => stub.GetStorageTypeForTimestamp(false))
+          .Return(_timestampStorageTypeInformation);
 
       _storageNameProviderStub = MockRepository.GenerateStub<IStorageNameProvider>();
-      _storageNameProviderStub.Stub (stub => stub.GetIDColumnName()).Return ("ID");
-      _storageNameProviderStub.Stub (stub => stub.GetClassIDColumnName()).Return ("ClassID");
-      _storageNameProviderStub.Stub (stub => stub.GetTimestampColumnName()).Return ("Timestamp");
+      _storageNameProviderStub.Stub(stub => stub.GetIDColumnName()).Return("ID");
+      _storageNameProviderStub.Stub(stub => stub.GetClassIDColumnName()).Return("ClassID");
+      _storageNameProviderStub.Stub(stub => stub.GetTimestampColumnName()).Return("Timestamp");
 
       _infrastructureStoragePropertyDefinitionProvider = 
-          new InfrastructureStoragePropertyDefinitionProvider (_storageTypeInformationProviderStub, _storageNameProviderStub);
+          new InfrastructureStoragePropertyDefinitionProvider(_storageTypeInformationProviderStub, _storageNameProviderStub);
     }
 
     [Test]
     public void GetObjectIDStoragePropertyDefinition ()
     {
-      var result = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition ();
+      var result = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition();
 
-      Assert.That (result.ValueProperty, Is.TypeOf<SimpleStoragePropertyDefinition> ());
-      Assert.That (result.ValueProperty.PropertyType, Is.SameAs (typeof (object)));
-      var idColumn = StoragePropertyDefinitionTestHelper.GetSingleColumn (result.ValueProperty);
-      Assert.That (idColumn.Name, Is.EqualTo ("ID"));
-      Assert.That (idColumn.IsPartOfPrimaryKey, Is.True);
-      Assert.That (idColumn.StorageTypeInfo, Is.SameAs (_idStorageTypeInformation));
+      Assert.That(result.ValueProperty, Is.TypeOf<SimpleStoragePropertyDefinition>());
+      Assert.That(result.ValueProperty.PropertyType, Is.SameAs(typeof (object)));
+      var idColumn = StoragePropertyDefinitionTestHelper.GetSingleColumn(result.ValueProperty);
+      Assert.That(idColumn.Name, Is.EqualTo("ID"));
+      Assert.That(idColumn.IsPartOfPrimaryKey, Is.True);
+      Assert.That(idColumn.StorageTypeInfo, Is.SameAs(_idStorageTypeInformation));
 
-      Assert.That (result.ClassIDProperty, Is.TypeOf<SimpleStoragePropertyDefinition> ());
-      Assert.That (result.ClassIDProperty.PropertyType, Is.SameAs (typeof (string)));
-      var classIDColumn = StoragePropertyDefinitionTestHelper.GetSingleColumn (result.ClassIDProperty);
-      Assert.That (classIDColumn.Name, Is.EqualTo ("ClassID"));
-      Assert.That (classIDColumn.StorageTypeInfo, Is.SameAs (_classIDStorageTypeInformation));
-      Assert.That (classIDColumn.IsPartOfPrimaryKey, Is.False);
+      Assert.That(result.ClassIDProperty, Is.TypeOf<SimpleStoragePropertyDefinition>());
+      Assert.That(result.ClassIDProperty.PropertyType, Is.SameAs(typeof (string)));
+      var classIDColumn = StoragePropertyDefinitionTestHelper.GetSingleColumn(result.ClassIDProperty);
+      Assert.That(classIDColumn.Name, Is.EqualTo("ClassID"));
+      Assert.That(classIDColumn.StorageTypeInfo, Is.SameAs(_classIDStorageTypeInformation));
+      Assert.That(classIDColumn.IsPartOfPrimaryKey, Is.False);
     }
 
     [Test]
     public void GetObjectIDStoragePropertyDefinition_CachedInstance ()
     {
-      var result = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition ();
-      var result2 = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition ();
-      Assert.That (result2, Is.SameAs (result));
+      var result = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition();
+      var result2 = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition();
+      Assert.That(result2, Is.SameAs(result));
     }
 
     [Test]
     public void GetTimestampStoragePropertyDefinition ()
     {
-      var result = _infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition ();
+      var result = _infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition();
 
-      Assert.That (result, Is.TypeOf<SimpleStoragePropertyDefinition> ());
-      Assert.That (result.PropertyType, Is.SameAs (typeof (object)));
+      Assert.That(result, Is.TypeOf<SimpleStoragePropertyDefinition>());
+      Assert.That(result.PropertyType, Is.SameAs(typeof (object)));
       var column = ((SimpleStoragePropertyDefinition) result).ColumnDefinition;
-      Assert.That (column.Name, Is.EqualTo ("Timestamp"));
-      Assert.That (column.StorageTypeInfo, Is.SameAs (_timestampStorageTypeInformation));
-      Assert.That (column.IsPartOfPrimaryKey, Is.False);
+      Assert.That(column.Name, Is.EqualTo("Timestamp"));
+      Assert.That(column.StorageTypeInfo, Is.SameAs(_timestampStorageTypeInformation));
+      Assert.That(column.IsPartOfPrimaryKey, Is.False);
     }
 
     [Test]
     public void GetTimestampStoragePropertyDefinition_CachedInstance ()
     {
-      var result = _infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition ();
-      var result2 = _infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition ();
-      Assert.That (result2, Is.SameAs (result));
+      var result = _infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition();
+      var result2 = _infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition();
+      Assert.That(result2, Is.SameAs(result));
     }
   }
 }

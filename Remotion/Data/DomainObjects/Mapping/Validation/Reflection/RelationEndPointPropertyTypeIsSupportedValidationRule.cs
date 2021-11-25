@@ -25,11 +25,11 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   {
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       foreach (var endPointDefinition in relationDefinition.EndPointDefinitions)
       {
-        var validationResult = Validate (endPointDefinition);
+        var validationResult = Validate(endPointDefinition);
         if (!validationResult.IsValid)
           return validationResult;
       }
@@ -39,15 +39,15 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     private MappingValidationResult Validate (IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
       if (!relationEndPointDefinition.IsAnonymous
           && relationEndPointDefinition.PropertyInfo != null)
       {
-        var hasRelationAttribute = relationEndPointDefinition.PropertyInfo.IsDefined<BidirectionalRelationAttribute> (true);
-        if (!hasRelationAttribute && !ReflectionUtility.IsDomainObject (relationEndPointDefinition.PropertyInfo.PropertyType))
+        var hasRelationAttribute = relationEndPointDefinition.PropertyInfo.IsDefined<BidirectionalRelationAttribute>(true);
+        if (!hasRelationAttribute && !ReflectionUtility.IsDomainObject(relationEndPointDefinition.PropertyInfo.PropertyType))
         {
-          return MappingValidationResult.CreateInvalidResultForProperty (
+          return MappingValidationResult.CreateInvalidResultForProperty(
               relationEndPointDefinition.PropertyInfo,
               "The property type of an uni-directional relation property must be assignable to '{0}'.",
               typeof (DomainObject).Name);

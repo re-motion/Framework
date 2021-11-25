@@ -25,26 +25,26 @@ namespace Remotion.Utilities
   {
     public static IEnumerable<AttributeWithMetadata> IncludeAll (IEnumerable<AttributeWithMetadata> source, Type attributeType)
     {
-      ArgumentUtility.CheckNotNull ("source", source);
-      ArgumentUtility.CheckNotNull ("attributeType", attributeType);
+      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull("attributeType", attributeType);
 
-      return source.Where (a => a.IsInstanceOfType (attributeType));
+      return source.Where(a => a.IsInstanceOfType(attributeType));
     }
 
     public static IEnumerable<AttributeWithMetadata> ExcludeAll (IEnumerable<AttributeWithMetadata> source, Type attributeType)
     {
-      ArgumentUtility.CheckNotNull ("source", source);
-      ArgumentUtility.CheckNotNull ("attributeType", attributeType);
+      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull("attributeType", attributeType);
 
-      return source.Where (a => !a.IsInstanceOfType (attributeType));
+      return source.Where(a => !a.IsInstanceOfType(attributeType));
     }
 
     public static IEnumerable<AttributeWithMetadata> Suppress (
           IEnumerable<AttributeWithMetadata> source,
           IReadOnlyCollection<AttributeWithMetadata> suppressAttributes)
     {
-      ArgumentUtility.CheckNotNull ("source", source);
-      ArgumentUtility.CheckNotNull ("suppressAttributes", suppressAttributes);
+      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull("suppressAttributes", suppressAttributes);
 
       bool IsSuppressed (AttributeWithMetadata attribute)
       {
@@ -52,19 +52,19 @@ namespace Remotion.Utilities
         foreach (AttributeWithMetadata suppressAttribute in suppressAttributes) // assume that there are only few suppressAttributes, if any
         {
           SuppressAttributesAttribute suppressAttributeInstance = (SuppressAttributesAttribute) suppressAttribute.AttributeInstance;
-          if (suppressAttributeInstance.IsSuppressed (attribute.AttributeInstance.GetType(), attribute.DeclaringType, suppressAttribute.DeclaringType))
+          if (suppressAttributeInstance.IsSuppressed(attribute.AttributeInstance.GetType(), attribute.DeclaringType, suppressAttribute.DeclaringType))
             suppressed = true;
         }
 
         return suppressed;
       }
 
-      return source.Where (a => !IsSuppressed (a));
+      return source.Where(a => !IsSuppressed(a));
     }
 
     public static IEnumerable<Attribute> ExtractInstances (IEnumerable<AttributeWithMetadata> source)
     {
-      return source.Select (a => a.AttributeInstance);
+      return source.Select(a => a.AttributeInstance);
     }
 
     private readonly Type _declaringType;
@@ -72,8 +72,8 @@ namespace Remotion.Utilities
 
     public AttributeWithMetadata (Type declaringType, Attribute attribute)
     {
-      ArgumentUtility.CheckNotNull ("declaringType", declaringType);
-      ArgumentUtility.CheckNotNull ("attribute", attribute);
+      ArgumentUtility.CheckNotNull("declaringType", declaringType);
+      ArgumentUtility.CheckNotNull("attribute", attribute);
 
       _declaringType = declaringType;
       _attribute = attribute;
@@ -91,9 +91,9 @@ namespace Remotion.Utilities
 
     public bool IsInstanceOfType (Type attributeType)
     {
-      ArgumentUtility.CheckNotNull ("attributeType", attributeType);
+      ArgumentUtility.CheckNotNull("attributeType", attributeType);
 
-      return attributeType.IsInstanceOfType (AttributeInstance);
+      return attributeType.IsInstanceOfType(AttributeInstance);
     }
 
     public override string ToString ()

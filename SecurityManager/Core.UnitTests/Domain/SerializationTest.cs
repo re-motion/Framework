@@ -37,27 +37,27 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     {
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      CheckDomainObjectSerializability (delegate { return AccessControlEntry.NewObject (); });
-      CheckDomainObjectSerializability (delegate { return StatefulAccessControlList.NewObject (); });
-      CheckDomainObjectSerializability (delegate { return Permission.NewObject (); });
-      CheckDomainObjectSerializability (delegate { return StateCombination.NewObject (); });
-      CheckDomainObjectSerializability (delegate { return StateUsage.NewObject (); });
-      CheckDomainObjectSerializability (delegate { return AbstractRoleDefinition.NewObject (); });
-      CheckDomainObjectSerializability (delegate { return AccessTypeDefinition.NewObject (); });
-      CheckDomainObjectSerializability (delegate { return AccessTypeReference.NewObject (); });
-      CheckDomainObjectSerializability (delegate { return Culture.NewObject ("DE-DE"); });
-      CheckDomainObjectSerializability (delegate { return SecurableClassDefinition.NewObject (); });
-      CheckDomainObjectSerializability (delegate { return LocalizedName.NewObject ("foo", Culture.NewObject ("DE-DE"), SecurableClassDefinition.NewObject ()); });
-      CheckDomainObjectSerializability (delegate { return StateDefinition.NewObject (); });
-      CheckDomainObjectSerializability (delegate { return StatePropertyDefinition.NewObject (); });
-      CheckDomainObjectSerializability (delegate { return StatePropertyReference.NewObject (); });
-      CheckDomainObjectSerializability (delegate { return (Group) LifetimeService.NewObject (ClientTransaction.Current, typeof (Group), ParamList.Empty); });
-      CheckDomainObjectSerializability (delegate { return (GroupType) LifetimeService.NewObject (ClientTransaction.Current, typeof (GroupType), ParamList.Empty); });
-      CheckDomainObjectSerializability (delegate { return GroupTypePosition.NewObject (); });
-      CheckDomainObjectSerializability (delegate { return (Position) LifetimeService.NewObject (ClientTransaction.Current, typeof (Position), ParamList.Empty); });
-      CheckDomainObjectSerializability (delegate { return Role.NewObject (); });
-      CheckDomainObjectSerializability (delegate { return (Tenant) LifetimeService.NewObject (ClientTransaction.Current, typeof (Tenant), ParamList.Empty); });
-      CheckDomainObjectSerializability (delegate { return (User) LifetimeService.NewObject (ClientTransaction.Current, typeof (User), ParamList.Empty); });
+      CheckDomainObjectSerializability(delegate { return AccessControlEntry.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return StatefulAccessControlList.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return Permission.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return StateCombination.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return StateUsage.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return AbstractRoleDefinition.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return AccessTypeDefinition.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return AccessTypeReference.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return Culture.NewObject("DE-DE"); });
+      CheckDomainObjectSerializability(delegate { return SecurableClassDefinition.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return LocalizedName.NewObject("foo", Culture.NewObject("DE-DE"), SecurableClassDefinition.NewObject()); });
+      CheckDomainObjectSerializability(delegate { return StateDefinition.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return StatePropertyDefinition.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return StatePropertyReference.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return (Group) LifetimeService.NewObject(ClientTransaction.Current, typeof (Group), ParamList.Empty); });
+      CheckDomainObjectSerializability(delegate { return (GroupType) LifetimeService.NewObject(ClientTransaction.Current, typeof (GroupType), ParamList.Empty); });
+      CheckDomainObjectSerializability(delegate { return GroupTypePosition.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return (Position) LifetimeService.NewObject(ClientTransaction.Current, typeof (Position), ParamList.Empty); });
+      CheckDomainObjectSerializability(delegate { return Role.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return (Tenant) LifetimeService.NewObject(ClientTransaction.Current, typeof (Tenant), ParamList.Empty); });
+      CheckDomainObjectSerializability(delegate { return (User) LifetimeService.NewObject(ClientTransaction.Current, typeof (User), ParamList.Empty); });
     }
 
     private void CheckDomainObjectSerializability<T> (Func<T> creator)
@@ -65,24 +65,24 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     {
       using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
-        T instance = creator ();
+        T instance = creator();
 
-        Tuple<T, ClientTransaction> deserializedTuple = Serializer.SerializeAndDeserialize (Tuple.Create (instance, ClientTransaction.Current));
+        Tuple<T, ClientTransaction> deserializedTuple = Serializer.SerializeAndDeserialize(Tuple.Create(instance, ClientTransaction.Current));
         T deserializedT = deserializedTuple.Item1;
-        Assert.That (deserializedT, Is.Not.Null);
+        Assert.That(deserializedT, Is.Not.Null);
 
         IBusinessObject bindableOriginal = (IBusinessObject) instance;
         IBusinessObject bindableDeserialized = (IBusinessObject) deserializedT;
 
         foreach (IBusinessObjectProperty property in bindableOriginal.BusinessObjectClass.GetPropertyDefinitions())
         {
-          Assert.That (bindableDeserialized.BusinessObjectClass.GetPropertyDefinition (property.Identifier), Is.Not.Null);
+          Assert.That(bindableDeserialized.BusinessObjectClass.GetPropertyDefinition(property.Identifier), Is.Not.Null);
 
           object value = null;
           bool propertyCanBeRetrieved;
           try
           {
-            value = bindableOriginal.GetProperty (property);
+            value = bindableOriginal.GetProperty(property);
             propertyCanBeRetrieved = true;
           }
           catch (Exception)
@@ -95,12 +95,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain
             object newValue;
             using (deserializedTuple.Item2.EnterNonDiscardingScope())
             {
-              newValue = bindableDeserialized.GetProperty (property);
+              newValue = bindableDeserialized.GetProperty(property);
             }
-            if (value != null && ReflectionUtility.IsDomainObject (property.PropertyType))
-              Assert.That (((DomainObject) newValue).ID, Is.EqualTo (((DomainObject) value).ID));
+            if (value != null && ReflectionUtility.IsDomainObject(property.PropertyType))
+              Assert.That(((DomainObject) newValue).ID, Is.EqualTo(((DomainObject) value).ID));
             else
-              Assert.That (newValue, Is.EqualTo (value));
+              Assert.That(newValue, Is.EqualTo(value));
           }
         }
       }

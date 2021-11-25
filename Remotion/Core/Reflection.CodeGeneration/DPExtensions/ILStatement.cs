@@ -32,7 +32,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      _ilSource (member, gen);
+      _ilSource(member, gen);
     }
   }
 }

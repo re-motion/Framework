@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
     private readonly CompositeCommand _compositeCommand;
 
     public ExpandedCommand (IEnumerable<IDataManagementCommand> commands)
-      : this (new CompositeCommand (commands))
+      : this (new CompositeCommand(commands))
     {
     }
 
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     private ExpandedCommand (CompositeCommand compositeCommand)
     {
-      ArgumentUtility.CheckNotNull ("compositeCommand", compositeCommand);
+      ArgumentUtility.CheckNotNull("compositeCommand", compositeCommand);
 
       _compositeCommand = compositeCommand;
     }
@@ -79,12 +79,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public ExpandedCommand CombineWith (IEnumerable<IDataManagementCommand> commands)
     {
-      return new ExpandedCommand (_compositeCommand.CombineWith (commands));
+      return new ExpandedCommand(_compositeCommand.CombineWith(commands));
     }
 
     public ExpandedCommand CombineWith (params IDataManagementCommand[] commands)
     {
-      return CombineWith ((IEnumerable<IDataManagementCommand>) commands);
+      return CombineWith((IEnumerable<IDataManagementCommand>) commands);
     }
   }
 }

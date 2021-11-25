@@ -51,9 +51,9 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public IReadOnlyList<OptionDefinition> GetOptionDefinitions ()
     {
-      return RetryUntilTimeout.Run (
-          () => Scope.FindAllCss ("option")
-              .Select ((optionScope, i) => new OptionDefinition (optionScope.Value, i + 1, optionScope.Text, optionScope.Selected))
+      return RetryUntilTimeout.Run(
+          () => Scope.FindAllCss("option")
+              .Select((optionScope, i) => new OptionDefinition(optionScope.Value, i + 1, optionScope.Text, optionScope.Selected))
               .ToList());
     }
 
@@ -78,46 +78,46 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject SelectOption (string value, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty("value", value);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption(value)");
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption(value)");
 
-      return SelectOption().WithItemID (value, actionOptions);
+      return SelectOption().WithItemID(value, actionOptions);
     }
 
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithItemID (string value, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption.WithItemID");
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithItemID");
 
-      Action<ElementScope> selectAction = s => s.SelectOptionByValue (value);
-      return SelectOption (selectAction, actionOptions);
+      Action<ElementScope> selectAction = s => s.SelectOptionByValue(value);
+      return SelectOption(selectAction, actionOptions);
     }
 
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int oneBasedIndex, IWebTestActionOptions? actionOptions)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption.WithIndex");
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithIndex");
 
-      Action<ElementScope> selectAction = s => s.SelectOptionByIndex (oneBasedIndex);
-      return SelectOption (selectAction, actionOptions);
+      Action<ElementScope> selectAction = s => s.SelectOptionByIndex(oneBasedIndex);
+      return SelectOption(selectAction, actionOptions);
     }
 
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNull ("displayText", displayText);
+      ArgumentUtility.CheckNotNull("displayText", displayText);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption.WithDisplayText");
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithDisplayText");
 
-      Action<ElementScope> selectAction = s => s.SelectOptionByDisplayText (displayText);
-      return SelectOption (selectAction, actionOptions);
+      Action<ElementScope> selectAction = s => s.SelectOptionByDisplayText(displayText);
+      return SelectOption(selectAction, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -128,10 +128,10 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
 
     private UnspecifiedPageObject SelectOption ([NotNull] Action<ElementScope> selectAction, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("selectAction", selectAction);
+      ArgumentUtility.CheckNotNull("selectAction", selectAction);
 
-      var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      ExecuteAction (new CustomAction (this, Scope, "Select", selectAction), actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
+      ExecuteAction(new CustomAction(this, Scope, "Select", selectAction), actualActionOptions);
       return UnspecifiedPage();
     }
   }

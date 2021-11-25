@@ -133,15 +133,15 @@ public class BocMenuItemCommand: BocCommand
   /// <summary> Fires the <see cref="Click"/> event. </summary>
   public virtual void OnClick (BocMenuItem menuItem)
   {
-    base.OnClick (null);
+    base.OnClick(null);
     if (_hasClickFired)
       return;
     _hasClickFired = true;
     if (Click != null)
     {
-      Assertion.IsNotNull (OwnerControl, "OwnerControl must not be null.");
-      WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);
-      Click (OwnerControl, e);
+      Assertion.IsNotNull(OwnerControl, "OwnerControl must not be null.");
+      WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs(menuItem);
+      Click(OwnerControl, e);
     }
   }
 
@@ -158,11 +158,11 @@ public class BocMenuItemCommand: BocCommand
   /// </param>
   public void ExecuteWxeFunction (IWxePage wxePage, int[] listIndices, IBusinessObject[] businessObjects)
   {
-    ArgumentUtility.CheckNotNull ("wxePage", wxePage);
+    ArgumentUtility.CheckNotNull("wxePage", wxePage);
     if (!wxePage.IsReturningPostBack)
     {
-      NameObjectCollection parameters = PrepareWxeFunctionParameters (listIndices, businessObjects);
-      ExecuteWxeFunction (wxePage, parameters);
+      NameObjectCollection parameters = PrepareWxeFunctionParameters(listIndices, businessObjects);
+      ExecuteWxeFunction(wxePage, parameters);
     }
   }
 

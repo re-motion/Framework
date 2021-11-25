@@ -45,12 +45,12 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
 
     public IDownloadedFile HandleDownloadWithExpectedFileName (string fileName, TimeSpan? downloadStartedTimeout = null, TimeSpan? downloadUpdatedTimeout = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("fileName", fileName);
+      ArgumentUtility.CheckNotNullOrEmpty("fileName", fileName);
 
       var localDownloadStartedTimeout = downloadStartedTimeout ?? _downloadStartedTimeout;
       var localDownloadUpdatedTimeout = downloadUpdatedTimeout ?? _downloadUpdatedTimeout;
 
-      return HandleDownload (CreateDownloadedFileFinderForExpectedFileName (fileName), localDownloadStartedTimeout, localDownloadUpdatedTimeout);
+      return HandleDownload(CreateDownloadedFileFinderForExpectedFileName(fileName), localDownloadStartedTimeout, localDownloadUpdatedTimeout);
     }
 
     public IDownloadedFile HandleDownloadWithDetectedFileName (TimeSpan? downloadStartedTimeout = null, TimeSpan? downloadUpdatedTimeout = null)
@@ -58,18 +58,18 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
       var localDownloadStartedTimeout = downloadStartedTimeout ?? _downloadStartedTimeout;
       var localDownloadUpdatedTimeout = downloadUpdatedTimeout ?? _downloadUpdatedTimeout;
       
-      return HandleDownload (CreateDownloadedFileFinderForUnknownFileName(), localDownloadStartedTimeout, localDownloadUpdatedTimeout);
+      return HandleDownload(CreateDownloadedFileFinderForUnknownFileName(), localDownloadStartedTimeout, localDownloadUpdatedTimeout);
     }
     
     public void DeleteFiles ()
     {
       foreach (var tempDirectory in _tempDirectories)
       {
-        if (Directory.Exists (tempDirectory))
+        if (Directory.Exists(tempDirectory))
         {
           try
           {
-            Directory.Delete (tempDirectory, true);
+            Directory.Delete(tempDirectory, true);
           }
           catch (Exception)
           {
@@ -87,15 +87,15 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     [NotNull] 
     protected IDownloadedFile MoveDownloadedFile ([NotNull] DownloadedFile downloadedFile)
     {
-      ArgumentUtility.CheckNotNull ("downloadedFile", downloadedFile);
+      ArgumentUtility.CheckNotNull("downloadedFile", downloadedFile);
 
-      var tempDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
-      Directory.CreateDirectory (tempDirectory);
-      _tempDirectories.Add (tempDirectory);
+      var tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+      Directory.CreateDirectory(tempDirectory);
+      _tempDirectories.Add(tempDirectory);
 
-      var newFilePath = Path.Combine (tempDirectory, Path.GetFileName (downloadedFile.FullFilePath));
+      var newFilePath = Path.Combine(tempDirectory, Path.GetFileName(downloadedFile.FullFilePath));
 
-      return downloadedFile.Move (newFilePath);
+      return downloadedFile.Move(newFilePath);
     }
   }
 }

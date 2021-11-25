@@ -24,14 +24,14 @@ namespace Remotion.Mixins.Validation.Rules
 {
   public class DefaultEventIntroductionRules: RuleSetBase
   {
-    private readonly ContextStoreMemberLookupUtility<EventDefinition> _memberLookupUtility = new ContextStoreMemberLookupUtility<EventDefinition> ();
+    private readonly ContextStoreMemberLookupUtility<EventDefinition> _memberLookupUtility = new ContextStoreMemberLookupUtility<EventDefinition>();
     private readonly ContextStoreMemberIntroductionLookupUtility<EventIntroductionDefinition> _introductionLookupUtility =
-        new ContextStoreMemberIntroductionLookupUtility<EventIntroductionDefinition> ();
+        new ContextStoreMemberIntroductionLookupUtility<EventIntroductionDefinition>();
 
     public override void Install (ValidatingVisitor visitor)
     {
-      visitor.EventIntroductionRules.Add (new DelegateValidationRule<EventIntroductionDefinition> (PublicEventNameMustBeUniqueInTargetClass));
-      visitor.EventIntroductionRules.Add (new DelegateValidationRule<EventIntroductionDefinition> (PublicEventNameMustBeUniqueInOtherMixins));
+      visitor.EventIntroductionRules.Add(new DelegateValidationRule<EventIntroductionDefinition>(PublicEventNameMustBeUniqueInTargetClass));
+      visitor.EventIntroductionRules.Add(new DelegateValidationRule<EventIntroductionDefinition>(PublicEventNameMustBeUniqueInOtherMixins));
     }
 
     [DelegateRuleDescription (Message = "An event introduced by a mixin cannot be public if the target class already has an event of the same name.")]
@@ -40,14 +40,14 @@ namespace Remotion.Mixins.Validation.Rules
       if (args.Definition.Visibility == MemberVisibility.Public)
       {
         EventInfo introducedMember = args.Definition.InterfaceMember;
-        if (_memberLookupUtility.GetCachedMembersByName (
-                args.Log.ContextStore, args.Definition.DeclaringInterface.TargetClass, introducedMember.Name).FirstOrDefault () != null)
+        if (_memberLookupUtility.GetCachedMembersByName(
+                args.Log.ContextStore, args.Definition.DeclaringInterface.TargetClass, introducedMember.Name).FirstOrDefault() != null)
         {
-          args.Log.Fail (args.Self);
+          args.Log.Fail(args.Self);
           return;
         }
       }
-      args.Log.Succeed (args.Self);
+      args.Log.Succeed(args.Self);
     }
 
     [DelegateRuleDescription (Message = "An event introduced by a mixin cannot be public if another mixin also introduces a public event of the same name.")]
@@ -57,18 +57,18 @@ namespace Remotion.Mixins.Validation.Rules
       {
         EventInfo introducedEvent = args.Definition.InterfaceMember;
         IEnumerable<EventIntroductionDefinition> otherIntroductionsWithSameName =
-            _introductionLookupUtility.GetCachedPublicIntroductionsByName (
+            _introductionLookupUtility.GetCachedPublicIntroductionsByName(
             args.Log.ContextStore, args.Definition.DeclaringInterface.TargetClass, introducedEvent.Name);
 
         foreach (EventIntroductionDefinition eventIntroductionDefinition in otherIntroductionsWithSameName)
         {
           if (eventIntroductionDefinition != args.Definition)
           {
-            args.Log.Fail (args.Self);
+            args.Log.Fail(args.Self);
             return;
           }
         }
-        args.Log.Succeed (args.Self);
+        args.Log.Succeed(args.Self);
       }
     }
   }

@@ -33,22 +33,22 @@ namespace Remotion.Web.IntegrationTests.TabbedMultiView
     public void TabbedMultiView ()
     {
       var home = Start();
-      var tabbedMultiView = home.TabbedMultiViews().GetByLocalID ("MyTabbedMultiView");
+      var tabbedMultiView = home.TabbedMultiViews().GetByLocalID("MyTabbedMultiView");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (tabbedMultiView);
+      var result = analyzer.Analyze(tabbedMultiView);
 
       var violations = result.Violations.AsEnumerable();
 
       if (Helper.BrowserConfiguration.IsInternetExplorer())
-        violations = result.Violations.IgnoreByRuleID (AccessibilityRuleID.AriaHiddenFocus);
+        violations = result.Violations.IgnoreByRuleID(AccessibilityRuleID.AriaHiddenFocus);
 
-      Assert.That (violations, Is.Empty);
+      Assert.That(violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("TabbedMultiViewTest.wxe");
+      return Start<WxePageObject>("TabbedMultiViewTest.wxe");
     }
   }
 }

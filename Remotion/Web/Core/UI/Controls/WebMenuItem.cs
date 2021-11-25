@@ -33,7 +33,7 @@ namespace Remotion.Web.UI.Controls
 
     public static WebMenuItem GetSeparator ()
     {
-      return new WebMenuItem (
+      return new WebMenuItem(
           null, null, c_separator, new IconInfo(), new IconInfo(), WebMenuItemStyle.IconAndText, RequiredSelection.Any, false, null);
     }
 
@@ -76,9 +76,9 @@ namespace Remotion.Web.UI.Controls
       _style = style;
       _requiredSelection = requiredSelection;
       _isDisabled = isDisabled;
-      _command = new SingleControlItemCollection (command, new[] { typeof (Command) });
+      _command = new SingleControlItemCollection(command, new[] { typeof (Command) });
 
-      _commandClick = new CommandClickEventHandler (Command_Click);
+      _commandClick = new CommandClickEventHandler(Command_Click);
       if (_command.ControlItem != null)
         ((Command) _command.ControlItem).Click += _commandClick;
     }
@@ -93,7 +93,7 @@ namespace Remotion.Web.UI.Controls
             WebMenuItemStyle.IconAndText,
             RequiredSelection.Any,
             false,
-            new Command (CommandType.Event))
+            new Command(CommandType.Event))
     {
     }
 
@@ -129,12 +129,12 @@ namespace Remotion.Web.UI.Controls
     public override string ToString ()
     {
       string displayName = ItemID;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         displayName = Text;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         return DisplayedTypeName;
       else
-        return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+        return string.Format("{0}: {1}", displayName, DisplayedTypeName);
     }
 
     /// <summary> Gets the human readable name of this type. </summary>
@@ -198,17 +198,17 @@ namespace Remotion.Web.UI.Controls
     public IconInfo Icon
     {
       get { return _icon; }
-      [MemberNotNull (nameof (_icon))]
+      [MemberNotNull (nameof(_icon))]
       set
       {
-        ArgumentUtility.CheckNotNull ("Icon", value);
+        ArgumentUtility.CheckNotNull("Icon", value);
         _icon = value;
       }
     }
 
     private bool ShouldSerializeIcon ()
     {
-      return IconInfo.ShouldSerialize (_icon);
+      return IconInfo.ShouldSerialize(_icon);
     }
 
     private void ResetIcon ()
@@ -228,17 +228,17 @@ namespace Remotion.Web.UI.Controls
     public IconInfo DisabledIcon
     {
       get { return _disabledIcon; }
-      [MemberNotNull (nameof (_disabledIcon))]
+      [MemberNotNull (nameof(_disabledIcon))]
       set
       {
-        ArgumentUtility.CheckNotNull ("DisabledIcon", value);
+        ArgumentUtility.CheckNotNull("DisabledIcon", value);
         _disabledIcon = value;
       }
     }
 
     private bool ShouldSerializeDisabledIcon ()
     {
-      return IconInfo.ShouldSerialize (_disabledIcon);
+      return IconInfo.ShouldSerialize(_disabledIcon);
     }
 
     private void ResetDisabledIcon ()
@@ -347,7 +347,7 @@ namespace Remotion.Web.UI.Controls
     {
       if (Command != null)
       {
-        Command = (Command) Activator.CreateInstance (Command.GetType())!;
+        Command = (Command) Activator.CreateInstance(Command.GetType())!;
         Command.Type = CommandType.None;
       }
     }
@@ -404,7 +404,7 @@ namespace Remotion.Web.UI.Controls
       if (Command != null)
       {
         if (MissingPermissionBehavior == MissingPermissionBehavior.Invisible)
-          return Command.HasAccess (_securableObject);
+          return Command.HasAccess(_securableObject);
       }
 
       return true;
@@ -418,7 +418,7 @@ namespace Remotion.Web.UI.Controls
       if (Command != null)
       {
         if (MissingPermissionBehavior == MissingPermissionBehavior.Disabled)
-          return Command.HasAccess (_securableObject);
+          return Command.HasAccess(_securableObject);
       }
 
       return true;
@@ -426,22 +426,22 @@ namespace Remotion.Web.UI.Controls
 
     public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
       
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (Category);
-      if (!string.IsNullOrEmpty (key))
-        Category = resourceManager.GetString (key);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(Category);
+      if (!string.IsNullOrEmpty(key))
+        Category = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-      if (!string.IsNullOrEmpty (key))
-        Text = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(Text);
+      if (!string.IsNullOrEmpty(key))
+        Text = resourceManager.GetString(key);
 
-      Icon.LoadResources (resourceManager);
-      DisabledIcon.LoadResources (resourceManager);
+      Icon.LoadResources(resourceManager);
+      DisabledIcon.LoadResources(resourceManager);
 
       if (Command != null)
-        Command.LoadResources (resourceManager, globalizationService);
+        Command.LoadResources(resourceManager, globalizationService);
     }
   }
 
@@ -475,7 +475,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Initializes an instance. </summary>
     public WebMenuItemClickEventArgs (WebMenuItem item)
     {
-      ArgumentUtility.CheckNotNull ("item", item);
+      ArgumentUtility.CheckNotNull("item", item);
       _item = item;
     }
 

@@ -42,8 +42,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
         [NotNull] IFluentScreenshotElement<TRow> fluentRow)
     {
-      ArgumentUtility.CheckNotNull ("fluentList", fluentList);
-      ArgumentUtility.CheckNotNull ("fluentRow", fluentRow);
+      ArgumentUtility.CheckNotNull("fluentList", fluentList);
+      ArgumentUtility.CheckNotNull("fluentRow", fluentRow);
 
       _fluentList = fluentList;
       _fluentRow = fluentRow;
@@ -52,46 +52,46 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public FluentScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("itemID", itemID);
 
       return
-          SelfResolvableFluentScreenshot.Create (
-              new ScreenshotBocListCell<TList, TRow, TCell> (_fluentList, _fluentRow.Target.GetCell (itemID).ForControlObjectScreenshot()),
+          SelfResolvableFluentScreenshot.Create(
+              new ScreenshotBocListCell<TList, TRow, TCell>(_fluentList, _fluentRow.Target.GetCell(itemID).ForControlObjectScreenshot()),
               ElementVisibility.PartiallyVisible);
     }
 
     /// <inheritdoc />
     public FluentScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>> WithIndex (int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("oneBasedIndex", oneBasedIndex);
+      ArgumentUtility.CheckNotNull("oneBasedIndex", oneBasedIndex);
 
       return
-          SelfResolvableFluentScreenshot.Create (
-              new ScreenshotBocListCell<TList, TRow, TCell> (_fluentList, _fluentRow.Target.GetCell (oneBasedIndex).ForControlObjectScreenshot()),
+          SelfResolvableFluentScreenshot.Create(
+              new ScreenshotBocListCell<TList, TRow, TCell>(_fluentList, _fluentRow.Target.GetCell(oneBasedIndex).ForControlObjectScreenshot()),
               ElementVisibility.PartiallyVisible);
     }
 
     /// <inheritdoc />
     public FluentScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>> WithTitle (string title)
     {
-      ArgumentUtility.CheckNotNull ("title", title);
+      ArgumentUtility.CheckNotNull("title", title);
 
       return
-          SelfResolvableFluentScreenshot.Create (
-              new ScreenshotBocListCell<TList, TRow, TCell> (_fluentList, _fluentRow.Target.GetCell().WithColumnTitle (title).ForControlObjectScreenshot()),
+          SelfResolvableFluentScreenshot.Create(
+              new ScreenshotBocListCell<TList, TRow, TCell>(_fluentList, _fluentRow.Target.GetCell().WithColumnTitle(title).ForControlObjectScreenshot()),
               ElementVisibility.PartiallyVisible);
     }
 
     /// <inheritdoc />
     public FluentScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>> WithTitleContains (string content)
     {
-      ArgumentUtility.CheckNotNull ("content", content);
+      ArgumentUtility.CheckNotNull("content", content);
 
       return
-          SelfResolvableFluentScreenshot.Create (
-              new ScreenshotBocListCell<TList, TRow, TCell> (
+          SelfResolvableFluentScreenshot.Create(
+              new ScreenshotBocListCell<TList, TRow, TCell>(
                   _fluentList,
-                  _fluentRow.Target.GetCell().WithColumnTitleContains (content).ForControlObjectScreenshot()),
+                  _fluentRow.Target.GetCell().WithColumnTitleContains(content).ForControlObjectScreenshot()),
               ElementVisibility.PartiallyVisible);
     }
   }

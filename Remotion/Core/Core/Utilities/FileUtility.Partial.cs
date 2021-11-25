@@ -34,16 +34,16 @@ namespace Remotion.Utilities
         string stringResourceName,
         string filePath)
     {
-      ArgumentUtility.CheckNotNull ("typeWhoseNamespaceTheStringResourceResidesIn", typeWhoseNamespaceTheStringResourceResidesIn);
-      ArgumentUtility.CheckNotNull ("stringResourceName", stringResourceName);
-      ArgumentUtility.CheckNotNull ("filePath", filePath);
+      ArgumentUtility.CheckNotNull("typeWhoseNamespaceTheStringResourceResidesIn", typeWhoseNamespaceTheStringResourceResidesIn);
+      ArgumentUtility.CheckNotNull("stringResourceName", stringResourceName);
+      ArgumentUtility.CheckNotNull("filePath", filePath);
       Assembly assembly = typeWhoseNamespaceTheStringResourceResidesIn.Assembly;
       using (
-          Stream from = assembly.GetManifestResourceStream (typeWhoseNamespaceTheStringResourceResidesIn, stringResourceName)!,
-              to = new FileStream (filePath, FileMode.Create))
+          Stream from = assembly.GetManifestResourceStream(typeWhoseNamespaceTheStringResourceResidesIn, stringResourceName)!,
+              to = new FileStream(filePath, FileMode.Create))
       {
-        Assertion.IsNotNull (from, "Resource '{0}' does not exist in assembly '{1}'.", stringResourceName, assembly.GetFullNameSafe());
-        from.CopyTo (to);
+        Assertion.IsNotNull(from, "Resource '{0}' does not exist in assembly '{1}'.", stringResourceName, assembly.GetFullNameSafe());
+        from.CopyTo(to);
       }
     }
   }

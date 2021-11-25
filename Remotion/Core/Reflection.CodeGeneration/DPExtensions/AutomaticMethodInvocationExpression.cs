@@ -35,9 +35,9 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
     protected override void EmitCall (IMemberEmitter member, ILGenerator gen)
     {
       if (_owner.Type.IsValueType || Method.IsStatic)
-        gen.Emit (OpCodes.Call, Method);
+        gen.Emit(OpCodes.Call, Method);
       else
-        gen.Emit (OpCodes.Callvirt, Method);
+        gen.Emit(OpCodes.Callvirt, Method);
     }
   }
 }

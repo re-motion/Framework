@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
 
     public ReadOnlyCollection<IBusinessObjectProperty> Properties
     {
-      get { return new ReadOnlyCollection<IBusinessObjectProperty> (new IBusinessObjectProperty[0]); }
+      get { return new ReadOnlyCollection<IBusinessObjectProperty>(new IBusinessObjectProperty[0]); }
     }
 
     public bool IsDynamic

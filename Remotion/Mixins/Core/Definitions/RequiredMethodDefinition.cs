@@ -30,9 +30,9 @@ namespace Remotion.Mixins.Definitions
 
     public RequiredMethodDefinition (RequirementDefinitionBase declaringRequirement, MethodInfo interfaceMethod, MethodDefinition implementingMethod)
     {
-      ArgumentUtility.CheckNotNull ("declaringRequirement", declaringRequirement);
-      ArgumentUtility.CheckNotNull ("implementingMethod", implementingMethod);
-      ArgumentUtility.CheckNotNull ("interfaceMethod", interfaceMethod);
+      ArgumentUtility.CheckNotNull("declaringRequirement", declaringRequirement);
+      ArgumentUtility.CheckNotNull("implementingMethod", implementingMethod);
+      ArgumentUtility.CheckNotNull("interfaceMethod", interfaceMethod);
 
       _declaringRequirement = declaringRequirement;
       _interfaceMethod = interfaceMethod;
@@ -66,8 +66,8 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
     }
   }
 }

@@ -56,41 +56,41 @@ public class TestWxeBasePage:
 
     _nextButton.ID = "NextButton";
     _nextButton.Text = "Next";
-    WxeControls.AddAt (0, _nextButton);
+    WxeControls.AddAt(0, _nextButton);
 
     ShowAbortConfirmation = ShowAbortConfirmation.Always;
     EnableAbort = false;
-    base.OnInit (e);
+    base.OnInit(e);
     RegisterEventHandlers();
   }
 
   protected override void OnPreRender (EventArgs e)
   {
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched
-    ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
+    ResourceDispatcher.Dispatch(this, ResourceManagerUtility.GetResourceManager(this));
 
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    HtmlHeadAppender.Current.RegisterPageStylesheetLink ();
+    HtmlHeadAppender.Current.RegisterPageStylesheetLink();
 
     var key = GetType().FullName + "_Global";
-    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    if (! HtmlHeadAppender.Current.IsRegistered(key))
     {
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, new StaticResourceUrl ("Html/global.css"));
+      HtmlHeadAppender.Current.RegisterStylesheetLink(key, new StaticResourceUrl("Html/global.css"));
     }
 
 
     LiteralControl stack = new LiteralControl();
 
     StringBuilder sb = new StringBuilder();
-    sb.Append ("<br /><div>");
-    sb.Append ("<b>Stack:</b><br />");
+    sb.Append("<br /><div>");
+    sb.Append("<b>Stack:</b><br />");
     for (WxeStep step = CurrentPageStep; step != null; step = step.ParentStep)
-      sb.AppendFormat ("{0}<br />", step.ToString());      
-    sb.Append ("</div>");
+      sb.AppendFormat("{0}<br />", step.ToString());      
+    sb.Append("</div>");
     stack.Text = sb.ToString();
     
-    WxeControls.Add (stack);
+    WxeControls.Add(stack);
   }
 
   protected virtual void RegisterEventHandlers ()
@@ -101,7 +101,7 @@ public class TestWxeBasePage:
   protected virtual IResourceManager GetResourceManager ()
   {
     Type type = GetType();
-    return GlobalizationService.GetResourceManager (type);
+    return GlobalizationService.GetResourceManager(type);
   }
 
   protected IGlobalizationService GlobalizationService

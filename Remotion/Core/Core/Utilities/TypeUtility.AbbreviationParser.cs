@@ -29,9 +29,9 @@ namespace Remotion.Utilities
     {
       public static bool IsAbbreviatedTypeName (string typeName)
       {
-        ArgumentUtility.DebugCheckNotNull ("typeName", typeName);
+        ArgumentUtility.DebugCheckNotNull("typeName", typeName);
         
-        return typeName.Contains ("::");
+        return typeName.Contains("::");
       }
 
       private readonly Regex _enclosedQualifiedTypeRegex;
@@ -91,31 +91,31 @@ namespace Remotion.Utilities
         // Do not use RegexOptions.Compiled because it takes 200ms to compile which is not offset by the calls made after cache lookups.
         // This is an issue in .NET up to at least version 4.5.1 in x64 mode.
         const RegexOptions options = RegexOptions.ExplicitCapture | RegexOptions.IgnorePatternWhitespace;
-        _enclosedQualifiedTypeRegex = new Regex (enclosedQualifiedTypePattern, options);
-        _enclosedTypeRegex = new Regex (enclosedTypePattern, options);
-        _typeRegex = new Regex (typePattern, options);
+        _enclosedQualifiedTypeRegex = new Regex(enclosedQualifiedTypePattern, options);
+        _enclosedTypeRegex = new Regex(enclosedTypePattern, options);
+        _typeRegex = new Regex(typePattern, options);
       }
 
       public string ParseAbbreviatedTypeName (string abbreviatedTypeName)
       {
-        ArgumentUtility.DebugCheckNotNull ("abbreviatedTypeName", abbreviatedTypeName);
+        ArgumentUtility.DebugCheckNotNull("abbreviatedTypeName", abbreviatedTypeName);
 
         string fullTypeName = abbreviatedTypeName;
         const string replace = @"${asm}.${type}${br}, ${asm}";
-        fullTypeName = ReplaceRecursive (_enclosedQualifiedTypeRegex, fullTypeName, replace + "${sn}");
-        fullTypeName = ReplaceRecursive (_enclosedTypeRegex, fullTypeName, "[" + replace + "]");
-        fullTypeName = _typeRegex.Replace (fullTypeName, replace);
+        fullTypeName = ReplaceRecursive(_enclosedQualifiedTypeRegex, fullTypeName, replace + "${sn}");
+        fullTypeName = ReplaceRecursive(_enclosedTypeRegex, fullTypeName, "[" + replace + "]");
+        fullTypeName = _typeRegex.Replace(fullTypeName, replace);
 
         return fullTypeName;
       }
 
       private string ReplaceRecursive (Regex regex, string input, string replacement)
       {
-        string result = regex.Replace (input, replacement);
+        string result = regex.Replace(input, replacement);
         while (result != input)
         {
           input = result;
-          result = regex.Replace (input, replacement);
+          result = regex.Replace(input, replacement);
         }
         return result;
       }

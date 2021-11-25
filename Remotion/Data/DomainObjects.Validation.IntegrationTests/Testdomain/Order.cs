@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
   {
     public static Order NewObject ()
     {
-      return NewObject<Order> ();
+      return NewObject<Order>();
     }
 
     [StringProperty(IsNullable = false, MaximumLength = 10)]

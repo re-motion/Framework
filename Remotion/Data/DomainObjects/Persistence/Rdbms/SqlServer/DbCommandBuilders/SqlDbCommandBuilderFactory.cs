@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
     /// <param name="sqlDialect">The SQL dialect.</param>
     public SqlDbCommandBuilderFactory (ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
+      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
       _sqlDialect = sqlDialect;
     }
 
@@ -49,16 +49,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
         IEnumerable<ColumnValue> comparedColumnValues,
         IEnumerable<OrderedColumn> orderedColumns)
     {
-      ArgumentUtility.CheckNotNull ("table", table);
-      ArgumentUtility.CheckNotNull ("selectedColumns", selectedColumns);
-      ArgumentUtility.CheckNotNull ("comparedColumnValues", comparedColumnValues);
-      ArgumentUtility.CheckNotNull ("orderedColumns", orderedColumns);
+      ArgumentUtility.CheckNotNull("table", table);
+      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
+      ArgumentUtility.CheckNotNull("comparedColumnValues", comparedColumnValues);
+      ArgumentUtility.CheckNotNull("orderedColumns", orderedColumns);
 
-      return new SelectDbCommandBuilder (
+      return new SelectDbCommandBuilder(
           table,
-          new SelectedColumnsSpecification (selectedColumns),
-          new ComparedColumnsSpecification (comparedColumnValues),
-          new OrderedColumnsSpecification (orderedColumns),
+          new SelectedColumnsSpecification(selectedColumns),
+          new ComparedColumnsSpecification(comparedColumnValues),
+          new OrderedColumnsSpecification(orderedColumns),
           _sqlDialect);
     }
     
@@ -68,17 +68,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
         ColumnValueTable comparedColumnValueTable,
         IEnumerable<OrderedColumn> orderedColumns)
     {
-      ArgumentUtility.CheckNotNull ("table", table);
-      ArgumentUtility.CheckNotNull ("selectedColumns", selectedColumns);
-      ArgumentUtility.CheckNotNull ("orderedColumns", orderedColumns);
+      ArgumentUtility.CheckNotNull("table", table);
+      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
+      ArgumentUtility.CheckNotNull("orderedColumns", orderedColumns);
 
-      var comparedValues = GetValuesForSingleColumnDefinition (comparedColumnValueTable);
+      var comparedValues = GetValuesForSingleColumnDefinition(comparedColumnValueTable);
 
-      return new SelectDbCommandBuilder (
+      return new SelectDbCommandBuilder(
           table,
-          new SelectedColumnsSpecification (selectedColumns),
-          new SqlXmlSetComparedColumnSpecification (comparedValues.Item1, comparedValues.Item2),
-          new OrderedColumnsSpecification (orderedColumns),
+          new SelectedColumnsSpecification(selectedColumns),
+          new SqlXmlSetComparedColumnSpecification(comparedValues.Item1, comparedValues.Item2),
+          new OrderedColumnsSpecification(orderedColumns),
           _sqlDialect);
     }
 
@@ -88,33 +88,33 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
         IEnumerable<ColumnValue> comparedColumnValues,
         IEnumerable<OrderedColumn> orderedColumns)
     {
-      ArgumentUtility.CheckNotNull ("view", view);
-      ArgumentUtility.CheckNotNull ("selectedColumns", selectedColumns);
-      ArgumentUtility.CheckNotNull ("comparedColumnValues", comparedColumnValues);
-      ArgumentUtility.CheckNotNull ("orderedColumns", orderedColumns);
+      ArgumentUtility.CheckNotNull("view", view);
+      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
+      ArgumentUtility.CheckNotNull("comparedColumnValues", comparedColumnValues);
+      ArgumentUtility.CheckNotNull("orderedColumns", orderedColumns);
 
-      return new UnionSelectDbCommandBuilder (
+      return new UnionSelectDbCommandBuilder(
           view,
-          new SelectedColumnsSpecification (selectedColumns),
-          new ComparedColumnsSpecification (comparedColumnValues),
-          new OrderedColumnsSpecification (orderedColumns),
+          new SelectedColumnsSpecification(selectedColumns),
+          new ComparedColumnsSpecification(comparedColumnValues),
+          new OrderedColumnsSpecification(orderedColumns),
           _sqlDialect);
     }
 
     public IDbCommandBuilder CreateForQuery (string statement, IEnumerable<QueryParameterWithType> parametersWithType)
     {
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("parametersWithType", parametersWithType);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("parametersWithType", parametersWithType);
 
-      return new QueryDbCommandBuilder (statement, parametersWithType, _sqlDialect);
+      return new QueryDbCommandBuilder(statement, parametersWithType, _sqlDialect);
     }
 
     public IDbCommandBuilder CreateForInsert (TableDefinition tableDefinition, IEnumerable<ColumnValue> insertedColumns)
     {
-      ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
-      ArgumentUtility.CheckNotNull ("insertedColumns", insertedColumns);
+      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull("insertedColumns", insertedColumns);
 
-      return new InsertDbCommandBuilder (tableDefinition, new InsertedColumnsSpecification (insertedColumns), _sqlDialect);
+      return new InsertDbCommandBuilder(tableDefinition, new InsertedColumnsSpecification(insertedColumns), _sqlDialect);
     }
 
     public IDbCommandBuilder CreateForUpdate (
@@ -122,23 +122,23 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
         IEnumerable<ColumnValue> updatedColumns,
         IEnumerable<ColumnValue> comparedColumnValues)
     {
-      ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
-      ArgumentUtility.CheckNotNull ("updatedColumns", updatedColumns);
-      ArgumentUtility.CheckNotNull ("comparedColumnValues", comparedColumnValues);
+      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull("updatedColumns", updatedColumns);
+      ArgumentUtility.CheckNotNull("comparedColumnValues", comparedColumnValues);
 
-      return new UpdateDbCommandBuilder (
+      return new UpdateDbCommandBuilder(
           tableDefinition,
-          new UpdatedColumnsSpecification (updatedColumns),
-          new ComparedColumnsSpecification (comparedColumnValues),
+          new UpdatedColumnsSpecification(updatedColumns),
+          new ComparedColumnsSpecification(comparedColumnValues),
           _sqlDialect);
     }
 
     public IDbCommandBuilder CreateForDelete (TableDefinition tableDefinition, IEnumerable<ColumnValue> comparedColumnValues)
     {
-      ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
-      ArgumentUtility.CheckNotNull ("comparedColumnValues", comparedColumnValues);
+      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull("comparedColumnValues", comparedColumnValues);
 
-      return new DeleteDbCommandBuilder (tableDefinition, new ComparedColumnsSpecification (comparedColumnValues), _sqlDialect);
+      return new DeleteDbCommandBuilder(tableDefinition, new ComparedColumnsSpecification(comparedColumnValues), _sqlDialect);
     }
 
     private Tuple<ColumnDefinition, IEnumerable<object>> GetValuesForSingleColumnDefinition (ColumnValueTable comparedColumnValueTable)
@@ -146,17 +146,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
       ColumnDefinition singleColumn;
       try
       {
-        singleColumn = comparedColumnValueTable.Columns.Single ();
+        singleColumn = comparedColumnValueTable.Columns.Single();
       }
       catch (InvalidOperationException ex)
       {
-        throw new NotSupportedException ("The SQL provider can only handle multi-value comparisons with a single ColumnDefinition.", ex);
+        throw new NotSupportedException("The SQL provider can only handle multi-value comparisons with a single ColumnDefinition.", ex);
       }
 
       // We assume that the Single below can never throw when the Single above didn't throw. (Otherwise, the ColumnValueTable wouldn't be correct.)
-      var values = comparedColumnValueTable.Rows.Select (r => r.Values.Single ());
+      var values = comparedColumnValueTable.Rows.Select(r => r.Values.Single());
 
-      return Tuple.Create (singleColumn, values);
+      return Tuple.Create(singleColumn, values);
     }
   }
 }

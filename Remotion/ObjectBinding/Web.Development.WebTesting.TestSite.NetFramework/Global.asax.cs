@@ -34,12 +34,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.NetFramewor
 
     protected void Application_Start (object sender, EventArgs e)
     {
-      var objectPath = Server.MapPath ("~/objects");
-      if (!Directory.Exists (objectPath))
-        Directory.CreateDirectory (objectPath);
+      var objectPath = Server.MapPath("~/objects");
+      if (!Directory.Exists(objectPath))
+        Directory.CreateDirectory(objectPath);
 
-      SetRenderingFeatures (RenderingFeatures.WithDiagnosticMetadata, new ResourceTheme.NovaGray());
-      SetObjectStorageProvider (objectPath);
+      SetRenderingFeatures(RenderingFeatures.WithDiagnosticMetadata, new ResourceTheme.NovaGray());
+      SetObjectStorageProvider(objectPath);
       RegisterAutoCompleteService();
       RegisterIconService();
       RegisterResourceVirtualPathProvider();
@@ -53,27 +53,27 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.NetFramewor
     private static void SetObjectStorageProvider (string objectPath)
     {
       var httpContextProvider = SafeServiceLocator.Current.GetInstance<IHttpContextProvider>();
-      var reflectionBusinessObjectStorageProvider = new SessionStateReflectionBusinessObjectStorageProvider (
+      var reflectionBusinessObjectStorageProvider = new SessionStateReflectionBusinessObjectStorageProvider(
           httpContextProvider,
-          new InMemoryWithFileSystemReadFallbackReflectionBusinessObjectStorageProviderFactory (objectPath));
+          new InMemoryWithFileSystemReadFallbackReflectionBusinessObjectStorageProviderFactory(objectPath));
 
-      var provider = new XmlReflectionBusinessObjectStorageProvider (reflectionBusinessObjectStorageProvider);
-      XmlReflectionBusinessObjectStorageProvider.SetCurrent (provider);
-      BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>().AddService (typeof (IGetObjectService), provider);
+      var provider = new XmlReflectionBusinessObjectStorageProvider(reflectionBusinessObjectStorageProvider);
+      XmlReflectionBusinessObjectStorageProvider.SetCurrent(provider);
+      BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>().AddService(typeof (IGetObjectService), provider);
     }
 
     private static void RegisterAutoCompleteService ()
     {
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()
-          .AddService (typeof (ISearchAvailableObjectsService), new BindableXmlObjectSearchService());
+          .AddService(typeof (ISearchAvailableObjectsService), new BindableXmlObjectSearchService());
     }
 
     private static void RegisterIconService ()
     {
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
-      var reflectionBusinessObjectWebUiService = new ReflectionBusinessObjectWebUIService (resourceUrlFactory);
+      var reflectionBusinessObjectWebUiService = new ReflectionBusinessObjectWebUIService(resourceUrlFactory);
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()
-          .AddService (typeof (IBusinessObjectWebUIService), reflectionBusinessObjectWebUiService);
+          .AddService(typeof (IBusinessObjectWebUIService), reflectionBusinessObjectWebUiService);
     }
 
     private static void RegisterResourceVirtualPathProvider ()
@@ -84,17 +84,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.NetFramewor
       const string configuration = "Release";
 #endif
 
-      _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
+      _resourceVirtualPathProvider = new ResourceVirtualPathProvider(
           new[]
           {
-              new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
-              new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
-              new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Sample/Image", @$"..\..\ObjectBinding\Sample\res\Image"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared", @"..\..\ObjectBinding\Web.Development.WebTesting.TestSite.Shared"),
+              new ResourcePathMapping("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
+              new ResourcePathMapping("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
+              new ResourcePathMapping("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
+              new ResourcePathMapping("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
+              new ResourcePathMapping("Remotion.ObjectBinding.Sample/Image", @$"..\..\ObjectBinding\Sample\res\Image"),
+              new ResourcePathMapping("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
+              new ResourcePathMapping("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
+              new ResourcePathMapping("Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared", @"..\..\ObjectBinding\Web.Development.WebTesting.TestSite.Shared"),
           },
           FileExtensionHandlerMapping.Default);
       _resourceVirtualPathProvider.Register();
@@ -103,9 +103,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.NetFramewor
     private void SetRenderingFeatures (IRenderingFeatures renderingFeatures, ResourceTheme resourceTheme)
     {
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => renderingFeatures);
-      serviceLocator.RegisterSingle (() => resourceTheme);
-      ServiceLocator.SetLocatorProvider (() => serviceLocator);
+      serviceLocator.RegisterSingle(() => renderingFeatures);
+      serviceLocator.RegisterSingle(() => resourceTheme);
+      ServiceLocator.SetLocatorProvider(() => serviceLocator);
     }
   }
 }

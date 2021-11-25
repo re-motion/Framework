@@ -26,14 +26,14 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
   {
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       foreach (var endPointDefinition in relationDefinition.EndPointDefinitions)
       {
         var classDefinitionAsTypeNotFoundClassDefinition = endPointDefinition.ClassDefinition as ClassDefinitionForUnresolvedRelationPropertyType;
         if (classDefinitionAsTypeNotFoundClassDefinition!=null)
         {
-          return MappingValidationResult.CreateInvalidResultForProperty (
+          return MappingValidationResult.CreateInvalidResultForProperty(
               classDefinitionAsTypeNotFoundClassDefinition.RelationProperty,
               "The relation property '{0}' has return type '{1}', which is not a part of the mapping. Relation properties must not point to "
               + "classes above the inheritance root.",

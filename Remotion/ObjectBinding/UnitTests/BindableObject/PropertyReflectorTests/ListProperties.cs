@@ -35,10 +35,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _businessObjectProvider = new BindableObjectProvider ();
-      _bindableObjectClass = new BindableObjectClass (
+      _businessObjectProvider = new BindableObjectProvider();
+      _bindableObjectClass = new BindableObjectClass(
           typeof (ClassWithReferenceType<SimpleReferenceType>),
           _businessObjectProvider,
           SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
@@ -48,221 +48,221 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithArray ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithListProperties), "Array");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof (ClassWithListProperties), "Array");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleReferenceType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof (SimpleReferenceType)));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (NotSupportedProperty)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Array"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleReferenceType[])));
-      Assert.That (businessObjectProperty.IsList, Is.True);
-      Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
-      Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleReferenceType)));
-      Assert.That (businessObjectProperty.IsNullable, Is.True);
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof (NotSupportedProperty)));
+      Assert.That(((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Array"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof (SimpleReferenceType[])));
+      Assert.That(businessObjectProperty.IsList, Is.True);
+      Assert.That(businessObjectProperty.ListInfo, Is.Not.Null);
+      Assert.That(businessObjectProperty.ListInfo.ItemType, Is.SameAs(typeof (SimpleReferenceType)));
+      Assert.That(businessObjectProperty.IsNullable, Is.True);
+      Assert.That(businessObjectProperty.IsRequired, Is.False);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.False);
     }
 
     [Test]
     public void GetMetadata_WithReadOnlyArray ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithListProperties), "ReadOnlyArray");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof (ClassWithListProperties), "ReadOnlyArray");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleReferenceType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof (SimpleReferenceType)));
 
-      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (NotSupportedProperty)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ReadOnlyArray"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleReferenceType[])));
-      Assert.That (businessObjectProperty.IsList, Is.True);
-      Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
-      Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleReferenceType)));
-      Assert.That (businessObjectProperty.IsNullable, Is.True);
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.True);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof (NotSupportedProperty)));
+      Assert.That(((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("ReadOnlyArray"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof (SimpleReferenceType[])));
+      Assert.That(businessObjectProperty.IsList, Is.True);
+      Assert.That(businessObjectProperty.ListInfo, Is.Not.Null);
+      Assert.That(businessObjectProperty.ListInfo.ItemType, Is.SameAs(typeof (SimpleReferenceType)));
+      Assert.That(businessObjectProperty.IsNullable, Is.True);
+      Assert.That(businessObjectProperty.IsRequired, Is.False);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.True);
     }
 
     [Test]
     public void GetMetadata_WithListOfT ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithListProperties), "ListOfT");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof (ClassWithListProperties), "ListOfT");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleReferenceType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof (SimpleReferenceType)));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (NotSupportedProperty)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ListOfT"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (List<SimpleReferenceType>)));
-      Assert.That (businessObjectProperty.IsList, Is.True);
-      Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
-      Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleReferenceType)));
-      Assert.That (businessObjectProperty.IsNullable, Is.True);
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof (NotSupportedProperty)));
+      Assert.That(((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("ListOfT"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof (List<SimpleReferenceType>)));
+      Assert.That(businessObjectProperty.IsList, Is.True);
+      Assert.That(businessObjectProperty.ListInfo, Is.Not.Null);
+      Assert.That(businessObjectProperty.ListInfo.ItemType, Is.SameAs(typeof (SimpleReferenceType)));
+      Assert.That(businessObjectProperty.IsNullable, Is.True);
+      Assert.That(businessObjectProperty.IsRequired, Is.False);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.False);
     }
 
     [Test]
     public void GetMetadata_WithListOfTForValueType ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithListProperties), "ListOfTForValueType");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof (ClassWithListProperties), "ListOfTForValueType");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleValueType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof (SimpleValueType)));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (NotSupportedProperty)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ListOfTForValueType"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (List<SimpleValueType>)));
-      Assert.That (businessObjectProperty.IsList, Is.True);
-      Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
-      Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleValueType)));
-      Assert.That (businessObjectProperty.IsNullable, Is.True);
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof (NotSupportedProperty)));
+      Assert.That(((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("ListOfTForValueType"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof (List<SimpleValueType>)));
+      Assert.That(businessObjectProperty.IsList, Is.True);
+      Assert.That(businessObjectProperty.ListInfo, Is.Not.Null);
+      Assert.That(businessObjectProperty.ListInfo.ItemType, Is.SameAs(typeof (SimpleValueType)));
+      Assert.That(businessObjectProperty.IsNullable, Is.True);
+      Assert.That(businessObjectProperty.IsRequired, Is.False);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.False);
     }
 
     [Test]
     public void GetMetadata_WithReadOnlyListOfT ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithListProperties), "ReadOnlyListOfT");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof (ClassWithListProperties), "ReadOnlyListOfT");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleReferenceType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof (SimpleReferenceType)));
 
-      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (NotSupportedProperty)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ReadOnlyListOfT"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (List<SimpleReferenceType>)));
-      Assert.That (businessObjectProperty.IsList, Is.True);
-      Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
-      Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleReferenceType)));
-      Assert.That (businessObjectProperty.IsNullable, Is.True);
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.True);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof (NotSupportedProperty)));
+      Assert.That(((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("ReadOnlyListOfT"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof (List<SimpleReferenceType>)));
+      Assert.That(businessObjectProperty.IsList, Is.True);
+      Assert.That(businessObjectProperty.ListInfo, Is.Not.Null);
+      Assert.That(businessObjectProperty.ListInfo.ItemType, Is.SameAs(typeof (SimpleReferenceType)));
+      Assert.That(businessObjectProperty.IsNullable, Is.True);
+      Assert.That(businessObjectProperty.IsRequired, Is.False);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.True);
     }
 
     [Test]
     public void GetMetadata_WithIReadOnlyListOfT ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithListProperties), "IReadOnlyListOfT");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof (ClassWithListProperties), "IReadOnlyListOfT");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleReferenceType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof (SimpleReferenceType)));
 
-      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (NotSupportedProperty)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("IReadOnlyListOfT"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (IReadOnlyList<SimpleReferenceType>)));
-      Assert.That (businessObjectProperty.IsList, Is.True);
-      Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
-      Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleReferenceType)));
-      Assert.That (businessObjectProperty.IsNullable, Is.True);
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False); // TODO: RM-7294: Consider new logic for IsReadOnly on IReadOnlyList properties
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof (NotSupportedProperty)));
+      Assert.That(((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("IReadOnlyListOfT"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof (IReadOnlyList<SimpleReferenceType>)));
+      Assert.That(businessObjectProperty.IsList, Is.True);
+      Assert.That(businessObjectProperty.ListInfo, Is.Not.Null);
+      Assert.That(businessObjectProperty.ListInfo.ItemType, Is.SameAs(typeof (SimpleReferenceType)));
+      Assert.That(businessObjectProperty.IsNullable, Is.True);
+      Assert.That(businessObjectProperty.IsRequired, Is.False);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.False); // TODO: RM-7294: Consider new logic for IsReadOnly on IReadOnlyList properties
     }
 
     [Test]
     public void GetMetadata_WithIReadOnlyListOfTForValueType ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithListProperties), "IReadOnlyListOfTForValueType");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof (ClassWithListProperties), "IReadOnlyListOfTForValueType");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleValueType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof (SimpleValueType)));
 
-      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (NotSupportedProperty)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("IReadOnlyListOfTForValueType"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (IReadOnlyList<SimpleValueType>)));
-      Assert.That (businessObjectProperty.IsList, Is.True);
-      Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
-      Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleValueType)));
-      Assert.That (businessObjectProperty.IsNullable, Is.True);
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False); // TODO: RM-7294: Consider new logic for IsReadOnly on IReadOnlyList properties
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof (NotSupportedProperty)));
+      Assert.That(((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("IReadOnlyListOfTForValueType"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof (IReadOnlyList<SimpleValueType>)));
+      Assert.That(businessObjectProperty.IsList, Is.True);
+      Assert.That(businessObjectProperty.ListInfo, Is.Not.Null);
+      Assert.That(businessObjectProperty.ListInfo.ItemType, Is.SameAs(typeof (SimpleValueType)));
+      Assert.That(businessObjectProperty.IsNullable, Is.True);
+      Assert.That(businessObjectProperty.IsRequired, Is.False);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.False); // TODO: RM-7294: Consider new logic for IsReadOnly on IReadOnlyList properties
     }
 
     [Test]
     public void GetMetadata_WithReadOnlyCollectionOfT ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithListProperties), "ReadOnlyCollectionOfT");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof (ClassWithListProperties), "ReadOnlyCollectionOfT");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleReferenceType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof (SimpleReferenceType)));
 
-      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (NotSupportedProperty)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ReadOnlyCollectionOfT"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (ReadOnlyCollection<SimpleReferenceType>)));
-      Assert.That (businessObjectProperty.IsList, Is.True);
-      Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
-      Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleReferenceType)));
-      Assert.That (businessObjectProperty.IsNullable, Is.True);
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.True);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof (NotSupportedProperty)));
+      Assert.That(((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("ReadOnlyCollectionOfT"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof (ReadOnlyCollection<SimpleReferenceType>)));
+      Assert.That(businessObjectProperty.IsList, Is.True);
+      Assert.That(businessObjectProperty.ListInfo, Is.Not.Null);
+      Assert.That(businessObjectProperty.ListInfo.ItemType, Is.SameAs(typeof (SimpleReferenceType)));
+      Assert.That(businessObjectProperty.IsNullable, Is.True);
+      Assert.That(businessObjectProperty.IsRequired, Is.False);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.True);
     }
 
     [Test]
     public void GetMetadata_WithArrayList ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithListProperties), "ArrayList");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof (ClassWithListProperties), "ArrayList");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleReferenceType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof (SimpleReferenceType)));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (NotSupportedProperty)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ArrayList"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (ArrayList)));
-      Assert.That (businessObjectProperty.IsList, Is.True);
-      Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
-      Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleReferenceType)));
-      Assert.That (businessObjectProperty.IsNullable, Is.True);
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof (NotSupportedProperty)));
+      Assert.That(((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("ArrayList"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof (ArrayList)));
+      Assert.That(businessObjectProperty.IsList, Is.True);
+      Assert.That(businessObjectProperty.ListInfo, Is.Not.Null);
+      Assert.That(businessObjectProperty.ListInfo.ItemType, Is.SameAs(typeof (SimpleReferenceType)));
+      Assert.That(businessObjectProperty.IsNullable, Is.True);
+      Assert.That(businessObjectProperty.IsRequired, Is.False);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.False);
     }
 
     [Test]
     public void GetMetadata_WithReadOnlyArrayList ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithListProperties), "ReadOnlyArrayList");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof (ClassWithListProperties), "ReadOnlyArrayList");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleReferenceType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof (SimpleReferenceType)));
 
-      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (NotSupportedProperty)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ReadOnlyArrayList"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (ArrayList)));
-      Assert.That (businessObjectProperty.IsList, Is.True);
-      Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
-      Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleReferenceType)));
-      Assert.That (businessObjectProperty.IsNullable, Is.True);
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.True);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof (NotSupportedProperty)));
+      Assert.That(((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("ReadOnlyArrayList"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof (ArrayList)));
+      Assert.That(businessObjectProperty.IsList, Is.True);
+      Assert.That(businessObjectProperty.ListInfo, Is.Not.Null);
+      Assert.That(businessObjectProperty.ListInfo.ItemType, Is.SameAs(typeof (SimpleReferenceType)));
+      Assert.That(businessObjectProperty.IsNullable, Is.True);
+      Assert.That(businessObjectProperty.IsRequired, Is.False);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.True);
     }
 
     [Test]

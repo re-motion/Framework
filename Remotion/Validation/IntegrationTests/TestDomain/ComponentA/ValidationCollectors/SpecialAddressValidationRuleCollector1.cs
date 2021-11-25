@@ -6,8 +6,8 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationC
   {
     public SpecialAddressValidationRuleCollector1 ()
     {
-      AddRule (o => o.SpecialAddressIntroducedProperty).NotNull();
-      AddRule (o => o.PostalCode).Matches ("1337");
+      AddRule(o => o.SpecialAddressIntroducedProperty).NotNull();
+      AddRule(o => o.PostalCode).Matches("1337");
     }
   }
 }

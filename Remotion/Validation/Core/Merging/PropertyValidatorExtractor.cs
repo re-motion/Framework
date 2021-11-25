@@ -36,23 +36,23 @@ namespace Remotion.Validation.Merging
 
     public PropertyValidatorExtractor (IEnumerable<RemovingPropertyValidatorRegistration> removingPropertyValidatorRegistrations, ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull ("removingPropertyValidatorRegistrations", removingPropertyValidatorRegistrations);
-      ArgumentUtility.CheckNotNull ("logContext", logContext);
+      ArgumentUtility.CheckNotNull("removingPropertyValidatorRegistrations", removingPropertyValidatorRegistrations);
+      ArgumentUtility.CheckNotNull("logContext", logContext);
 
-      _validatorTypesToRemove = removingPropertyValidatorRegistrations.ToLookup (r => r.ValidatorType);
+      _validatorTypesToRemove = removingPropertyValidatorRegistrations.ToLookup(r => r.ValidatorType);
       _logContext = logContext;
     }
 
     public IEnumerable<IPropertyValidator> ExtractPropertyValidatorsToRemove (IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull ("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
+      ArgumentUtility.CheckNotNull("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
 
       foreach (var existingValidator in addingPropertyValidationRuleCollector.Validators)
       {
-        var removingPropertyValidatorRegistrations = GetRemovingPropertyRegistrations (existingValidator, addingPropertyValidationRuleCollector).ToArray();
+        var removingPropertyValidatorRegistrations = GetRemovingPropertyRegistrations(existingValidator, addingPropertyValidationRuleCollector).ToArray();
         if (removingPropertyValidatorRegistrations.Any())
         {
-          _logContext.ValidatorRemoved (existingValidator, removingPropertyValidatorRegistrations, addingPropertyValidationRuleCollector);
+          _logContext.ValidatorRemoved(existingValidator, removingPropertyValidatorRegistrations, addingPropertyValidationRuleCollector);
           yield return existingValidator;
         }
       }
@@ -63,9 +63,9 @@ namespace Remotion.Validation.Merging
         IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector)
     {
       return _validatorTypesToRemove[validator.GetType()]
-          .Where (rwc => IsPropertyMatch (addingPropertyValidationRuleCollector.Property, rwc.RemovingPropertyValidationRuleCollector.Property))
-          .Where (rwc => IsCollectorTypeMatch (addingPropertyValidationRuleCollector.CollectorType, rwc.CollectorTypeToRemoveFrom))
-          .Where (rwc => IsPredicateMatch (validator, rwc.ValidatorPredicate));
+          .Where(rwc => IsPropertyMatch(addingPropertyValidationRuleCollector.Property, rwc.RemovingPropertyValidationRuleCollector.Property))
+          .Where(rwc => IsCollectorTypeMatch(addingPropertyValidationRuleCollector.CollectorType, rwc.CollectorTypeToRemoveFrom))
+          .Where(rwc => IsPredicateMatch(validator, rwc.ValidatorPredicate));
 
       static bool IsPropertyMatch (IPropertyInformation currentProperty, IPropertyInformation propertyToMatch)
       {
@@ -73,7 +73,7 @@ namespace Remotion.Validation.Merging
 
         return propertyToMatch.Name == currentProperty.Name
                // ReSharper disable PossibleNullReferenceException
-               && currentProperty.DeclaringType!.IsAssignableFrom (propertyToMatch.DeclaringType!);
+               && currentProperty.DeclaringType!.IsAssignableFrom(propertyToMatch.DeclaringType!);
         // ReSharper restore PossibleNullReferenceException
       }
 
@@ -86,7 +86,7 @@ namespace Remotion.Validation.Merging
       static bool IsPredicateMatch (IPropertyValidator currentValidator, Func<IPropertyValidator, bool>? predicateToMatch)
       {
         return predicateToMatch == null 
-               || predicateToMatch (currentValidator);
+               || predicateToMatch(currentValidator);
       }
     }
   }

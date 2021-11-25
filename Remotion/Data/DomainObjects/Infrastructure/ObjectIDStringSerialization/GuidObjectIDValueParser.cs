@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
   /// </summary>
   public class GuidObjectIDValueParser : IObjectIDValueParser
   {
-    public static readonly GuidObjectIDValueParser Instance = new GuidObjectIDValueParser ();
+    public static readonly GuidObjectIDValueParser Instance = new GuidObjectIDValueParser();
 
     private GuidObjectIDValueParser ()
     {
@@ -32,10 +32,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 
     public bool TryParse (string stringValue, out object resultValue)
     {
-      ArgumentUtility.CheckNotNull ("stringValue", stringValue);
+      ArgumentUtility.CheckNotNull("stringValue", stringValue);
 
       Guid guidValue;
-      if (Guid.TryParse (stringValue, out guidValue))
+      if (Guid.TryParse(stringValue, out guidValue))
       {
         resultValue = guidValue;
         return true;

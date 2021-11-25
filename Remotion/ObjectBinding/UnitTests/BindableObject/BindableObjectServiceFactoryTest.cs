@@ -37,21 +37,21 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetService_FromIBusinessObjectStringFormatterService ()
     {
-      Assert.That (
-          _serviceFactory.CreateService (_provider.Object, typeof (IBusinessObjectStringFormatterService)),
-          Is.InstanceOf (typeof (BusinessObjectStringFormatterService)));
+      Assert.That(
+          _serviceFactory.CreateService(_provider.Object, typeof (IBusinessObjectStringFormatterService)),
+          Is.InstanceOf(typeof (BusinessObjectStringFormatterService)));
     }
 
     [Test]
     public void GetService_FromIGetObjectService ()
     {
-      Assert.That (_serviceFactory.CreateService (_provider.Object, typeof (IGetObjectService)), Is.Null);
+      Assert.That(_serviceFactory.CreateService(_provider.Object, typeof (IGetObjectService)), Is.Null);
     }
 
     [Test]
     public void GetService_FromISearchAvailableObjectsService ()
     {
-      Assert.That (_serviceFactory.CreateService (_provider.Object, typeof (ISearchAvailableObjectsService)), Is.Null);
+      Assert.That(_serviceFactory.CreateService(_provider.Object, typeof (ISearchAvailableObjectsService)), Is.Null);
     }
   }
 }
