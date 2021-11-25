@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Web.IntegrationTests.TestDomain;
 using Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests.WxeFunctions;
@@ -27,16 +28,15 @@ using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.Security.ExecutionEngine;
 using Remotion.Web.UI;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests
 {
   public class SecuredFunctionTestBase : WxeTransactedFunctionIntegrationTestBase
   {
-    private ISecurityProvider _securityProviderStub;
-    private ISecurityPrincipal _securityPrincipalStub;
-    private IFunctionalSecurityStrategy _functionalSecurityStrategyStub;
-    private IObjectSecurityStrategy _objectSecurityStrategyStub;
+    private Mock<ISecurityProvider> _securityProviderStub;
+    private Mock<ISecurityPrincipal> _securityPrincipalStub;
+    private Mock<IFunctionalSecurityStrategy> _functionalSecurityStrategyStub;
+    private Mock<IObjectSecurityStrategy> _objectSecurityStrategyStub;
     private AccessType _testAccessTypeValue;
     private ServiceLocatorScope _serviceLocatorScope;
 
@@ -44,20 +44,20 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     {
       base.SetUp();
 
-      _securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
-      _securityProviderStub.Stub(stub => stub.IsNull).Return(false);
+      _securityProviderStub = new Mock<ISecurityProvider>();
+      _securityProviderStub.Setup(stub => stub.IsNull).Returns(false);
 
-      _securityPrincipalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
-      var principalProviderStub = MockRepository.GenerateStub<IPrincipalProvider>();
-      principalProviderStub.Stub(stub => stub.GetPrincipal()).Return(_securityPrincipalStub);
+      _securityPrincipalStub = new Mock<ISecurityPrincipal>();
+      var principalProviderStub = new Mock<IPrincipalProvider>();
+      principalProviderStub.Setup(stub => stub.GetPrincipal()).Returns(_securityPrincipalStub.Object);
 
-      _functionalSecurityStrategyStub = MockRepository.GenerateStub<IFunctionalSecurityStrategy>();
-      _objectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
+      _functionalSecurityStrategyStub = new Mock<IFunctionalSecurityStrategy>();
+      _objectSecurityStrategyStub = new Mock<IObjectSecurityStrategy>();
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle(() => _securityProviderStub);
-      serviceLocator.RegisterSingle(() => principalProviderStub);
-      serviceLocator.RegisterSingle(() => _functionalSecurityStrategyStub);
+      serviceLocator.RegisterSingle(() => _securityProviderStub.Object);
+      serviceLocator.RegisterSingle(() => principalProviderStub.Object);
+      serviceLocator.RegisterSingle(() => _functionalSecurityStrategyStub.Object);
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>(() => new WxeSecurityAdapter());
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
@@ -72,22 +72,22 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       base.TearDown();
     }
 
-    protected ISecurityProvider SecurityProviderStub
+    protected Mock<ISecurityProvider> SecurityProviderStub
     {
       get { return _securityProviderStub; }
     }
 
-    protected ISecurityPrincipal SecurityPrincipalStub
+    protected Mock<ISecurityPrincipal> SecurityPrincipalStub
     {
       get { return _securityPrincipalStub; }
     }
 
-    protected IFunctionalSecurityStrategy FunctionalSecurityStrategyStub
+    protected Mock<IFunctionalSecurityStrategy> FunctionalSecurityStrategyStub
     {
       get { return _functionalSecurityStrategyStub; }
     }
 
-    protected IObjectSecurityStrategy ObjectSecurityStrategyStub
+    protected Mock<IObjectSecurityStrategy> ObjectSecurityStrategyStub
     {
       get { return _objectSecurityStrategyStub; }
     }
@@ -104,17 +104,17 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       var securableDomainObject =
           (SecurableDomainObject)LifetimeService.NewObject(clientTransaction, typeof(SecurableDomainObject), ParamList.Empty);
       securableDomainObject.SecurableType = typeof(SecurableDomainObject);
-      securableDomainObject.SecurityStrategy = _objectSecurityStrategyStub;
+      securableDomainObject.SecurityStrategy = _objectSecurityStrategyStub.Object;
       return securableDomainObject;
     }
 
     protected static ITransactionMode CreateTransactionModeForClientTransaction (ClientTransaction clientTransaction)
     {
-      var mode = MockRepository.GenerateStub<ITransactionMode>();
-      mode.Stub(stub => stub.CreateTransactionStrategy(Arg<WxeFunction>.Is.Anything, Arg<WxeContext>.Is.Anything))
-          .Do(
+      var mode = new Mock<ITransactionMode>();
+      mode.Setup(stub => stub.CreateTransactionStrategy(It.IsAny<WxeFunction>(), It.IsAny<WxeContext>()))
+          .Returns(
               (Func<WxeFunction, WxeContext, TransactionStrategyBase>)((function, context) => new RootTransactionStrategy(false, clientTransaction.ToITransaction, NullTransactionStrategy.Null, function)));
-      return mode;
+      return mode.Object;
     }
   }
 }
