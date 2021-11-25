@@ -29,18 +29,18 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
     public void Serialization ()
     {
       var log = new DefaultValidationLog();
-      var rule = new DelegateValidationRule<TargetClassDefinition> (DummyRule);
+      var rule = new DelegateValidationRule<TargetClassDefinition>(DummyRule);
 
-      var definition = DefinitionObjectMother.CreateTargetClassDefinition (typeof (object));
-      log.ValidationStartsFor (definition);
-      log.Succeed (rule);
-      log.ValidationEndsFor (definition);
+      var definition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (object));
+      log.ValidationStartsFor(definition);
+      log.Succeed(rule);
+      log.ValidationEndsFor(definition);
 
-      var exception = new ValidationException (log.GetData());
+      var exception = new ValidationException(log.GetData());
 
-      var deserializedException = Serializer.SerializeAndDeserialize (exception);
-      Assert.That (deserializedException.Message, Is.EqualTo (exception.Message));
-      Assert.That (deserializedException.ValidationLogData, Is.Not.Null);
+      var deserializedException = Serializer.SerializeAndDeserialize(exception);
+      Assert.That(deserializedException.Message, Is.EqualTo(exception.Message));
+      Assert.That(deserializedException.ValidationLogData, Is.Not.Null);
     }
 
     private void DummyRule (DelegateValidationRule<TargetClassDefinition>.Args args)

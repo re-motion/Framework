@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
   {
     public static InheritanceRootInheritingPersistentMixin NewObject ()
     {
-      return NewObject<InheritanceRootInheritingPersistentMixin> ();
+      return NewObject<InheritanceRootInheritingPersistentMixin>();
     }
   }
 }

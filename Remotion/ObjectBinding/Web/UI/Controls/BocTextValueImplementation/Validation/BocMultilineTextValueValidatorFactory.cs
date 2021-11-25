@@ -38,21 +38,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
 
     public IEnumerable<BaseValidator> CreateValidators (IBocMultilineTextValue control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       if (isReadOnly)
         yield break;
 
       IResourceManager resourceManager = control.GetResourceManager();
-      var requiredFieldValidator = CreateRequiredFieldValidator (control, resourceManager);
+      var requiredFieldValidator = CreateRequiredFieldValidator(control, resourceManager);
       if (requiredFieldValidator != null)
         yield return requiredFieldValidator;
 
-      var lengthValidator = CreateLengthValidator (control, resourceManager);
+      var lengthValidator = CreateLengthValidator(control, resourceManager);
       if (lengthValidator != null)
         yield return lengthValidator;
 
-      yield return CreateTypeIsStringValidator (control, resourceManager);
+      yield return CreateTypeIsStringValidator(control, resourceManager);
     }
 
     private RequiredFieldValidator? CreateRequiredFieldValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
         requiredValidator.ID = control.ID + "_ValidatorRequired";
         requiredValidator.ControlToValidate = control.TargetControl.ID;
-        requiredValidator.ErrorMessage = resourceManager.GetString (BocMultilineTextValue.ResourceIdentifier.RequiredValidationMessage);
+        requiredValidator.ErrorMessage = resourceManager.GetString(BocMultilineTextValue.ResourceIdentifier.RequiredValidationMessage);
         requiredValidator.EnableViewState = false;
 
         return requiredValidator;
@@ -88,8 +88,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         lengthValidator.ID = control.ID + "_ValidatorMaxLength";
         lengthValidator.ControlToValidate = control.TargetControl.ID;
         lengthValidator.MaximumLength = maxLength!.Value;
-        lengthValidator.ErrorMessage = string.Format (
-            resourceManager.GetString (BocMultilineTextValue.ResourceIdentifier.MaxLengthValidationMessage),
+        lengthValidator.ErrorMessage = string.Format(
+            resourceManager.GetString(BocMultilineTextValue.ResourceIdentifier.MaxLengthValidationMessage),
             maxLength.Value);
         lengthValidator.EnableViewState = false;
 
@@ -108,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       typeValidator.ControlToValidate = control.TargetControl.ID;
       typeValidator.SampleTextLength = 5;
       typeValidator.EnableMultilineText = true;
-      typeValidator.ErrorMessageFormat = resourceManager.GetString (BocMultilineTextValue.ResourceIdentifier.InvalidCharactersErrorMessage);
+      typeValidator.ErrorMessageFormat = resourceManager.GetString(BocMultilineTextValue.ResourceIdentifier.InvalidCharactersErrorMessage);
       typeValidator.EnableViewState = false;
 
       return typeValidator;

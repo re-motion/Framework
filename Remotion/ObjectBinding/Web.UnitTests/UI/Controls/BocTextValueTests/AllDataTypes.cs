@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
       base.SetUp();
       _bocTextValue = new BocTextValueMock();
       _bocTextValue.ID = "BocTextValue";
-      NamingContainer.Controls.Add (_bocTextValue);
+      NamingContainer.Controls.Add(_bocTextValue);
 
       _businessObject = (IBusinessObject) TypeWithAllDataTypes.Create();
 
@@ -55,136 +55,136 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
     [Test]
     public void LoadAndSaveValue_WithString ()
     {
-      LoadAndSaveValue ("String", "Foo", "Bar");
+      LoadAndSaveValue("String", "Foo", "Bar");
     }
 
     [Test]
     public void LoadAndSaveValue_WithByte ()
     {
-      LoadAndSaveValue ("Byte", (Byte) 1, (Byte) 2);
+      LoadAndSaveValue("Byte", (Byte) 1, (Byte) 2);
     }
 
     [Test]
     public void LoadAndSaveValue_WithByte_NumberFormat ()
     {
-      LoadAndSaveValue ("Byte", (Byte) 1, (Byte) 100, " +100 ");
+      LoadAndSaveValue("Byte", (Byte) 1, (Byte) 100, " +100 ");
     }
 
     [Test]
     public void LoadAndSaveValue_WithInt16 ()
     {
-      LoadAndSaveValue ("Int16", (Int16) 1, (Int16) 2);
+      LoadAndSaveValue("Int16", (Int16) 1, (Int16) 2);
     }
 
     [Test]
     public void LoadAndSaveValue_WithInt16_NumberFormat ()
     {
-      LoadAndSaveValue ("Int16", (Int16) 1, (Int16) 20000, " +20,000 ");
+      LoadAndSaveValue("Int16", (Int16) 1, (Int16) 20000, " +20,000 ");
     }
 
     [Test]
     public void LoadAndSaveValue_WithInt32 ()
     {
-      LoadAndSaveValue ("Int32", 1, 2);
+      LoadAndSaveValue("Int32", 1, 2);
     }
 
     [Test]
     public void LoadAndSaveValue_WithInt23_NumberFormat ()
     {
-      LoadAndSaveValue ("Int32", 1, 20000, " +20,000 ");
+      LoadAndSaveValue("Int32", 1, 20000, " +20,000 ");
     }
 
     [Test]
     public void LoadAndSaveValue_WithInt64 ()
     {
-      LoadAndSaveValue ("Int64", 1L, 2L);
+      LoadAndSaveValue("Int64", 1L, 2L);
     }
 
     [Test]
     public void LoadAndSaveValue_WithInt64_NumberFormat ()
     {
-      LoadAndSaveValue ("Int64", 1L, 20000001L, " +20,000,001 ");
+      LoadAndSaveValue("Int64", 1L, 20000001L, " +20,000,001 ");
     }
 
     [Test]
     public void LoadAndSaveValue_WithDecimal ()
     {
-      LoadAndSaveValue ("Decimal", 1.1m, 2.1m);
+      LoadAndSaveValue("Decimal", 1.1m, 2.1m);
     }
 
     [Test]
     public void LoadAndSaveValue_WithDecimal_NumberFormat ()
     {
-      LoadAndSaveValue ("Decimal", 1m, 20000001.456m, " +20,000,001.456 ");
+      LoadAndSaveValue("Decimal", 1m, 20000001.456m, " +20,000,001.456 ");
     }
 
     [Test]
     public void LoadAndSaveValue_WithDouble ()
     {
-      LoadAndSaveValue ("Double", 1.1, 2.1);
+      LoadAndSaveValue("Double", 1.1, 2.1);
     }
 
     [Test]
     public void LoadAndSaveValue_WithDouble_NumberFormat ()
     {
-      LoadAndSaveValue ("Double", 1.1, 20000001.456, " +20,000,001.456 ");
+      LoadAndSaveValue("Double", 1.1, 20000001.456, " +20,000,001.456 ");
     }
 
     [Test]
     public void LoadAndSaveValue_WithDouble_Exponent ()
     {
-      LoadAndSaveValue ("Single", 1.1f, 20234001.45E3f, " +20,234,001.45E3 ");
+      LoadAndSaveValue("Single", 1.1f, 20234001.45E3f, " +20,234,001.45E3 ");
     }
 
     [Test]
     public void LoadAndSaveValue_WithSingle ()
     {
-      LoadAndSaveValue ("Single", 1.1f, 2.1f);
+      LoadAndSaveValue("Single", 1.1f, 2.1f);
     }
 
     [Test]
     public void LoadAndSaveValue_WithSingle_NumberFormat ()
     {
-      LoadAndSaveValue ("Single", 1.1f, 20001.456f, " +20,001.456 ");
+      LoadAndSaveValue("Single", 1.1f, 20001.456f, " +20,001.456 ");
     }
 
     [Test]
     public void LoadAndSaveValue_WithSingle_Exponent ()
     {
-      LoadAndSaveValue ("Single", 1.1f, 20001.45E3f, " +20,001.45E3 ");
+      LoadAndSaveValue("Single", 1.1f, 20001.45E3f, " +20,001.45E3 ");
     }
 
     [Test]
     public void LoadAndSaveValue_WithDate ()
     {
-      LoadAndSaveValue ("Date", new DateTime (2000, 1, 1).Date, new DateTime (2000, 1, 2).Date);
+      LoadAndSaveValue("Date", new DateTime(2000, 1, 1).Date, new DateTime(2000, 1, 2).Date);
     }
 
     [Test]
     public void LoadAndSaveValue_WithDateTime ()
     {
-      LoadAndSaveValue ("DateTime", new DateTime (2000, 1, 1, 1, 1, 0), new DateTime (2000, 1, 2, 1, 1, 0));
+      LoadAndSaveValue("DateTime", new DateTime(2000, 1, 1, 1, 1, 0), new DateTime(2000, 1, 2, 1, 1, 0));
     }
     
     private void LoadAndSaveValue<T> (string propertyidentifier, T initialValue, T newValue, string newValueAsString = null)
     {
-      _businessObject.SetProperty (propertyidentifier, initialValue);
+      _businessObject.SetProperty(propertyidentifier, initialValue);
       _bocTextValue.DataSource = _dataSource;
-      _bocTextValue.Property = _businessObject.BusinessObjectClass.GetPropertyDefinition (propertyidentifier);
+      _bocTextValue.Property = _businessObject.BusinessObjectClass.GetPropertyDefinition(propertyidentifier);
 
-      _bocTextValue.LoadValue (false);
-      Assert.That (_bocTextValue.Value, Is.EqualTo (initialValue));
-      Assert.That (_bocTextValue.IsDirty, Is.False);
+      _bocTextValue.LoadValue(false);
+      Assert.That(_bocTextValue.Value, Is.EqualTo(initialValue));
+      Assert.That(_bocTextValue.IsDirty, Is.False);
 
       _bocTextValue.Text = newValueAsString ?? newValue.ToString();
-      Assert.That (_bocTextValue.IsDirty, Is.True);
+      Assert.That(_bocTextValue.IsDirty, Is.True);
 
-      _bocTextValue.SaveValue (false);
-      Assert.That (_bocTextValue.Value, Is.EqualTo (newValue));
-      Assert.That (_bocTextValue.IsDirty, Is.False);
-      _bocTextValue.SaveValue (false);
+      _bocTextValue.SaveValue(false);
+      Assert.That(_bocTextValue.Value, Is.EqualTo(newValue));
+      Assert.That(_bocTextValue.IsDirty, Is.False);
+      _bocTextValue.SaveValue(false);
 
-      Assert.That (_businessObject.GetProperty (propertyidentifier), Is.EqualTo (newValue));
+      Assert.That(_businessObject.GetProperty(propertyidentifier), Is.EqualTo(newValue));
     }
   }
 }

@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   {
     public static TIClient NewObject ()
     {
-      return NewObject<TIClient> ();
+      return NewObject<TIClient>();
     }
 
     protected TIClient ()

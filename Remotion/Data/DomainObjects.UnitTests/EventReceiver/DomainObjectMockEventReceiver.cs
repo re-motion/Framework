@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     protected DomainObjectMockEventReceiver (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       _domainObject = domainObject;
 
@@ -56,10 +56,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void RelationChanging (IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
     {
-      this.Expect (
-          mock => RelationChanging (
-              Arg.Is (_domainObject),
-              Arg<RelationChangingEventArgs>.Matches (args =>
+      this.Expect(
+          mock => RelationChanging(
+              Arg.Is(_domainObject),
+              Arg<RelationChangingEventArgs>.Matches(args =>
                   args.RelationEndPointDefinition == relationEndPointDefinition 
                       && args.OldRelatedObject == oldRelatedObject
                       && args.NewRelatedObject == newRelatedObject)));
@@ -67,10 +67,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void RelationChanged (IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
     {
-      this.Expect (
-          mock => RelationChanged (
-              Arg.Is (_domainObject),
-              Arg<RelationChangedEventArgs>.Matches (args =>
+      this.Expect(
+          mock => RelationChanged(
+              Arg.Is(_domainObject),
+              Arg<RelationChangedEventArgs>.Matches(args =>
                   args.RelationEndPointDefinition == relationEndPointDefinition 
                       && args.OldRelatedObject == oldRelatedObject
                       && args.NewRelatedObject == newRelatedObject)));
@@ -78,10 +78,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void PropertyChanging (PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
-      this.Expect (
-          mock => mock.PropertyChanging (
-              Arg.Is (_domainObject),
-              Arg<PropertyChangeEventArgs>.Matches (
+      this.Expect(
+          mock => mock.PropertyChanging(
+              Arg.Is(_domainObject),
+              Arg<PropertyChangeEventArgs>.Matches(
                   args => args.PropertyDefinition == propertyDefinition
                           && args.OldValue == oldValue
                           && args.NewValue == newValue)));
@@ -89,10 +89,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void PropertyChanged (PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
-      this.Expect (
-          mock => mock.PropertyChanged (
-              Arg.Is (_domainObject),
-              Arg<PropertyChangeEventArgs>.Matches (
+      this.Expect(
+          mock => mock.PropertyChanged(
+              Arg.Is(_domainObject),
+              Arg<PropertyChangeEventArgs>.Matches(
                   args => args.PropertyDefinition == propertyDefinition
                           && args.OldValue == oldValue
                           && args.NewValue == newValue)));
@@ -100,22 +100,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Committing ()
     {
-      this.Expect (mock => mock.Committing (Arg.Is (_domainObject), Arg<DomainObjectCommittingEventArgs>.Is.Anything));
+      this.Expect(mock => mock.Committing(Arg.Is(_domainObject), Arg<DomainObjectCommittingEventArgs>.Is.Anything));
     }
 
     public void Committed ()
     {
-      this.Expect (mock => mock.Committed (Arg.Is (_domainObject), Arg<EventArgs>.Is.Anything));
+      this.Expect(mock => mock.Committed(Arg.Is(_domainObject), Arg<EventArgs>.Is.Anything));
     }
 
     public void RollingBack ()
     {
-      this.Expect (mock => mock.RollingBack (Arg.Is (_domainObject), Arg<EventArgs>.Is.Anything));
+      this.Expect(mock => mock.RollingBack(Arg.Is(_domainObject), Arg<EventArgs>.Is.Anything));
     }
 
     public void RolledBack ()
     {
-      this.Expect (mock => mock.RolledBack (Arg.Is (_domainObject), Arg<EventArgs>.Is.Anything));
+      this.Expect(mock => mock.RolledBack(Arg.Is(_domainObject), Arg<EventArgs>.Is.Anything));
     }
   }
 }

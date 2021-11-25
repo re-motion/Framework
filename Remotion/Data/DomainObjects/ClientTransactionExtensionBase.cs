@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects
 
     protected ClientTransactionExtensionBase (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
       _key = key;
     }
 
@@ -191,7 +191,7 @@ namespace Remotion.Data.DomainObjects
       if (clientTransaction.Extensions[Key] != null)
         return false;
       
-      clientTransaction.Extensions.Add (this);
+      clientTransaction.Extensions.Add(this);
       return true;
     }
   }

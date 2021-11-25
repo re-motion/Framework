@@ -32,15 +32,15 @@ public static class ResourceManagerUtility
 
   public static bool IsGlobalResourceKey ([NotNullWhen (true)]string? elementValue)
   {
-    if (string.IsNullOrEmpty (elementValue))
+    if (string.IsNullOrEmpty(elementValue))
       return false;
-    return elementValue.StartsWith (c_globalResourceKeyPrefix);
+    return elementValue.StartsWith(c_globalResourceKeyPrefix);
   }
 
   public static string? GetGlobalResourceKey (string? elementValue)
   {
-    if (IsGlobalResourceKey (elementValue))
-      return elementValue.Substring (c_globalResourceKeyPrefix.Length);
+    if (IsGlobalResourceKey(elementValue))
+      return elementValue.Substring(c_globalResourceKeyPrefix.Length);
     else
       return null;
   }
@@ -59,7 +59,7 @@ public static class ResourceManagerUtility
   /// <remarks> Uses a cache for the individual <see cref="IResourceManager"/> instances. </remarks>
   public static IResourceManager GetResourceManager (Control control)
   {
-    return GetResourceManager (control, true);
+    return GetResourceManager(control, true);
   }
 
   /// <summary>
@@ -85,14 +85,14 @@ public static class ResourceManagerUtility
       return NullResourceManager.Instance;
 
     var resourceManagers = new List<IResourceManager>();
-    GetResourceManagersRecursive (control, resourceManagers, alwaysIncludeParents);
+    GetResourceManagersRecursive(control, resourceManagers, alwaysIncludeParents);
 
     if (resourceManagers.Count == 0)
       return NullResourceManager.Instance;
     else if (resourceManagers.Count == 1)
       return resourceManagers[0];
     else
-      return new ResourceManagerSet (resourceManagers);
+      return new ResourceManagerSet(resourceManagers);
   }
 
   private static void GetResourceManagersRecursive ([CanBeNull]Control? control, List<IResourceManager> resourceManagers, bool alwaysIncludeParents)
@@ -103,10 +103,10 @@ public static class ResourceManagerUtility
     var objectWithResources = control as IObjectWithResources;
 
     if (objectWithResources == null || alwaysIncludeParents)
-      GetResourceManagersRecursive (control.Parent, resourceManagers, alwaysIncludeParents);
+      GetResourceManagersRecursive(control.Parent, resourceManagers, alwaysIncludeParents);
 
     if (objectWithResources != null)
-      resourceManagers.Add (objectWithResources.GetResourceManager() ?? NullResourceManager.Instance);
+      resourceManagers.Add(objectWithResources.GetResourceManager() ?? NullResourceManager.Instance);
   }
 }
 }

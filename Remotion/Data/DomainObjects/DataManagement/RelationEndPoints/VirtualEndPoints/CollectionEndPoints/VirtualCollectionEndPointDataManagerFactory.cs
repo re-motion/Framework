@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public VirtualCollectionEndPointDataManagerFactory (IDataContainerMapReadOnlyView dataContainerMap)
     {
-      ArgumentUtility.CheckNotNull ("dataContainerMap", dataContainerMap);
+      ArgumentUtility.CheckNotNull("dataContainerMap", dataContainerMap);
 
       DataContainerMap = dataContainerMap;
     }
@@ -37,9 +37,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public IVirtualCollectionEndPointDataManager CreateEndPointDataManager (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
-      return new VirtualCollectionEndPointDataManager (endPointID, DataContainerMap);
+      return new VirtualCollectionEndPointDataManager(endPointID, DataContainerMap);
     }
 
     #region Serialization
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddHandle (DataContainerMap);
+      info.AddHandle(DataContainerMap);
     }
 
     #endregion

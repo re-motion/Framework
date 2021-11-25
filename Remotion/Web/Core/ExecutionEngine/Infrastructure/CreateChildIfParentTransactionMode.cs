@@ -31,17 +31,17 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override TransactionStrategyBase CreateTransactionStrategy (WxeFunction function, WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("function", function);
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentUtility.CheckNotNull("context", context);
 
       if (function.ParentFunction != null)
       {
-        var childTransactionStrategy = function.ParentFunction.TransactionStrategy.CreateChildTransactionStrategy (AutoCommit, function, context);
+        var childTransactionStrategy = function.ParentFunction.TransactionStrategy.CreateChildTransactionStrategy(AutoCommit, function, context);
         if (childTransactionStrategy != null)
           return childTransactionStrategy;
       }
 
-      return base.CreateTransactionStrategy (function, context);
+      return base.CreateTransactionStrategy(function, context);
     }
   }
 }

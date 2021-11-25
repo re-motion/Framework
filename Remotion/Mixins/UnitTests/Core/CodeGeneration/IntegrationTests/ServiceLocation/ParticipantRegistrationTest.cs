@@ -31,7 +31,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Service
     {
       var serviceLocator = DefaultServiceLocator.Create();
       var participants = serviceLocator.GetAllInstances<IParticipant>().ToArray();
-      Assert.That (participants.Select (p => p.GetType()), Is.EqualTo (new[] { typeof (MixinParticipant) }));
+      Assert.That(participants.Select(p => p.GetType()), Is.EqualTo(new[] { typeof (MixinParticipant) }));
     }
 
     [Test]
@@ -40,8 +40,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Service
       var discoveryService = DefaultServiceConfigurationDiscoveryService.Create();
       var participantService = discoveryService.GetDefaultConfiguration(typeof (IParticipant));
 
-      Assert.That (participantService, Is.Not.Null);
-      Assert.That (participantService.ImplementationInfos.Select (i => i.ImplementationType), Is.EqualTo (new[] { typeof (MixinParticipant) }));
+      Assert.That(participantService, Is.Not.Null);
+      Assert.That(participantService.ImplementationInfos.Select(i => i.ImplementationType), Is.EqualTo(new[] { typeof (MixinParticipant) }));
     }
   }
 }

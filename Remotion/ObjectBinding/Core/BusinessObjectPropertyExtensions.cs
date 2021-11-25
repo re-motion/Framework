@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding
     [Obsolete ("Use IBusinessObjectProperty.IsAccessible (IBusinessObject) instead. (Version 1.15.20.0)", true)]
     public static bool IsAccessible (this IBusinessObjectProperty property, [CanBeNull] IBusinessObjectClass? objectClass, [CanBeNull] IBusinessObject? obj)
     {
-      throw new NotSupportedException ("Use IBusinessObjectProperty.IsAccessible (IBusinessObject) instead. (Version 1.15.20.0)");
+      throw new NotSupportedException("Use IBusinessObjectProperty.IsAccessible (IBusinessObject) instead. (Version 1.15.20.0)");
     }
   }
 }

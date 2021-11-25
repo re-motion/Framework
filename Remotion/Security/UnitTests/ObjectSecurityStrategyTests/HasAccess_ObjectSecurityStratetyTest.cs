@@ -38,42 +38,42 @@ namespace Remotion.Security.UnitTests.ObjectSecurityStrategyTests
     [SetUp]
     public void SetUp ()
     {
-      _securityProviderMock = new Mock<ISecurityProvider> (MockBehavior.Strict);
+      _securityProviderMock = new Mock<ISecurityProvider>(MockBehavior.Strict);
       _securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
       _principalStub = new Mock<ISecurityPrincipal>();
-      _principalStub.Setup (_ => _.User).Returns ("user");
-      _context = SecurityContext.Create (typeof (SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum>(), new Enum[0]);
-      _securityContextFactoryStub.Setup (_ => _.CreateSecurityContext()).Returns (_context);
+      _principalStub.Setup(_ => _.User).Returns("user");
+      _context = SecurityContext.Create(typeof (SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum>(), new Enum[0]);
+      _securityContextFactoryStub.Setup(_ => _.CreateSecurityContext()).Returns(_context);
 
       _invalidationToken = InvalidationToken.Create();
-      _strategy = ObjectSecurityStrategy.Create (_securityContextFactoryStub.Object, _invalidationToken);
+      _strategy = ObjectSecurityStrategy.Create(_securityContextFactoryStub.Object, _invalidationToken);
     }
 
     [Test]
     public void HasAccess_WithRequiredAccessTypesMatchingAllowedAccessTypes_ReturnsTrue ()
     {
       _securityProviderMock
-          .Setup (_ => _.GetAccess (_context, _principalStub.Object))
-          .Returns (
+          .Setup(_ => _.GetAccess(_context, _principalStub.Object))
+          .Returns(
               new[]
               {
-                  AccessType.Get (GeneralAccessTypes.Create),
-                  AccessType.Get (GeneralAccessTypes.Delete),
-                  AccessType.Get (GeneralAccessTypes.Read)
+                  AccessType.Get(GeneralAccessTypes.Create),
+                  AccessType.Get(GeneralAccessTypes.Delete),
+                  AccessType.Get(GeneralAccessTypes.Read)
               })
           .Verifiable();
 
-      bool hasAccess = _strategy.HasAccess (
+      bool hasAccess = _strategy.HasAccess(
           _securityProviderMock.Object,
           _principalStub.Object,
           new[]
           {
-              AccessType.Get (GeneralAccessTypes.Delete),
-              AccessType.Get (GeneralAccessTypes.Create)
+              AccessType.Get(GeneralAccessTypes.Delete),
+              AccessType.Get(GeneralAccessTypes.Create)
           });
 
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
       _securityProviderMock.Verify();
     }
 
@@ -81,42 +81,42 @@ namespace Remotion.Security.UnitTests.ObjectSecurityStrategyTests
     public void HasAccess_WithoutRequiredAccessTypesMatchingAllowedAccessTypes_ReturnsFalse ()
     {
       _securityProviderMock
-          .Setup (_ => _.GetAccess (_context, _principalStub.Object))
-          .Returns (
+          .Setup(_ => _.GetAccess(_context, _principalStub.Object))
+          .Returns(
               new[]
               {
-                  AccessType.Get (GeneralAccessTypes.Create),
-                  AccessType.Get (GeneralAccessTypes.Delete),
+                  AccessType.Get(GeneralAccessTypes.Create),
+                  AccessType.Get(GeneralAccessTypes.Delete),
               })
           .Verifiable();
-      bool hasAccess = _strategy.HasAccess (
+      bool hasAccess = _strategy.HasAccess(
           _securityProviderMock.Object,
           _principalStub.Object,
           new[]
           {
-              AccessType.Get (GeneralAccessTypes.Create),
-              AccessType.Get (GeneralAccessTypes.Delete),
-              AccessType.Get (GeneralAccessTypes.Read)
+              AccessType.Get(GeneralAccessTypes.Create),
+              AccessType.Get(GeneralAccessTypes.Delete),
+              AccessType.Get(GeneralAccessTypes.Read)
           });
 
-      Assert.That (hasAccess, Is.False);
+      Assert.That(hasAccess, Is.False);
       _securityProviderMock.Verify();
     }
 
     [Test]
     public void HasAccess_WithAllowedAccessTypesAreNull_ThrowsInvalidOperationException ()
     {
-      _securityProviderMock.Setup (_ => _.GetAccess (_context, _principalStub.Object)).Returns ((AccessType[]) null).Verifiable();
+      _securityProviderMock.Setup(_ => _.GetAccess(_context, _principalStub.Object)).Returns((AccessType[]) null).Verifiable();
 
-      Assert.That (
-          () => _strategy.HasAccess (
+      Assert.That(
+          () => _strategy.HasAccess(
               _securityProviderMock.Object,
               _principalStub.Object,
               new[]
               {
-                  AccessType.Get (GeneralAccessTypes.Find)
+                  AccessType.Get(GeneralAccessTypes.Find)
               }),
-          Throws.InvalidOperationException.With.Message.EqualTo ("GetAccess evaluated and returned null."));
+          Throws.InvalidOperationException.With.Message.EqualTo("GetAccess evaluated and returned null."));
 
       _securityProviderMock.Verify();
     }
@@ -126,36 +126,36 @@ namespace Remotion.Security.UnitTests.ObjectSecurityStrategyTests
     {
       _securityContextFactoryStub.Reset();
       _securityContextFactoryStub
-          .Setup (_ => _.CreateSecurityContext())
-          .Returns (
+          .Setup(_ => _.CreateSecurityContext())
+          .Returns(
               () =>
               {
-                Assert.That (SecurityFreeSection.IsActive);
+                Assert.That(SecurityFreeSection.IsActive);
                 return _context;
               });
 
-      _securityProviderMock.Setup (_ => _.GetAccess (_context, _principalStub.Object)).Returns (new[] { AccessType.Get (GeneralAccessTypes.Edit) }).Verifiable();
+      _securityProviderMock.Setup(_ => _.GetAccess(_context, _principalStub.Object)).Returns(new[] { AccessType.Get(GeneralAccessTypes.Edit) }).Verifiable();
 
-      bool hasAccess = _strategy.HasAccess (_securityProviderMock.Object, _principalStub.Object, new[] { AccessType.Get (GeneralAccessTypes.Edit) });
+      bool hasAccess = _strategy.HasAccess(_securityProviderMock.Object, _principalStub.Object, new[] { AccessType.Get(GeneralAccessTypes.Edit) });
 
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void HasAccess_WithRequiredAccessTypesEmpty_ThrowsArgumentException ()
     {
       _securityProviderMock
-          .Setup (_ => _.GetAccess (_context, _principalStub.Object))
-          .Returns (
+          .Setup(_ => _.GetAccess(_context, _principalStub.Object))
+          .Returns(
               new[]
               {
-                  AccessType.Get (GeneralAccessTypes.Read)
+                  AccessType.Get(GeneralAccessTypes.Read)
               })
           .Verifiable();
 
-      Assert.That (
-          () => _strategy.HasAccess (_securityProviderMock.Object, _principalStub.Object, new AccessType[0]),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("Parameter 'requiredAccessTypes' cannot be empty.", "requiredAccessTypes"));
+      Assert.That(
+          () => _strategy.HasAccess(_securityProviderMock.Object, _principalStub.Object, new AccessType[0]),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Parameter 'requiredAccessTypes' cannot be empty.", "requiredAccessTypes"));
     }
   }
 }

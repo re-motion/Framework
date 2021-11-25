@@ -48,38 +48,38 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (!IsPostBack)
       {
-        GroupTypeList.SetSortingOrder (
-            new BocListSortingOrderEntry ((IBocSortableColumnDefinition) GroupTypeList.FixedColumns[0], SortingDirection.Ascending));
+        GroupTypeList.SetSortingOrder(
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition) GroupTypeList.FixedColumns[0], SortingDirection.Ascending));
       }
-      GroupTypeList.LoadUnboundValue (GetValues(), false);
+      GroupTypeList.LoadUnboundValue(GetValues(), false);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
-      NewGroupTypeButton.Visible = securityClient.HasConstructorAccess (typeof (GroupType));
+      NewGroupTypeButton.Visible = securityClient.HasConstructorAccess(typeof (GroupType));
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
+      var resourceManager = GetResourceManager(typeof (ResourceIdentifier));
       GroupTypeListLabel.Text = resourceManager.GetString(ResourceIdentifier.GroupTypeListLabelText);
       NewGroupTypeButton.Text = resourceManager.GetString(ResourceIdentifier.NewGroupTypeButtonText);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      ResetListOnTenantChange (GroupTypeList);
+      ResetListOnTenantChange(GroupTypeList);
     }
 
     protected void GroupTypeList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
     {
-      HandleEditItemClick (GroupTypeList, e);
+      HandleEditItemClick(GroupTypeList, e);
     }
 
     protected void NewGroupTypeButton_Click (object sender, EventArgs e)
     {
-      HandleNewButtonClick (GroupTypeList);
+      HandleNewButtonClick(GroupTypeList);
     }
 
     protected override IReadOnlyList<GroupType> GetValues ()
@@ -89,9 +89,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override FormFunction<GroupType> CreateEditFunction (ITransactionMode transactionMode, IDomainObjectHandle<GroupType> editedObject)
     {
-      ArgumentUtility.CheckNotNull ("transactionMode", transactionMode);
+      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
 
-      return new EditGroupTypeFormFunction (transactionMode, editedObject);
+      return new EditGroupTypeFormFunction(transactionMode, editedObject);
     }
   }
 }

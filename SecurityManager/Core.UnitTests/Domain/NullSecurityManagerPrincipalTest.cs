@@ -30,17 +30,17 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     {
       ISecurityManagerPrincipal principal = SecurityManagerPrincipal.Null;
 
-      Assert.That (principal.Tenant, Is.Null);
-      Assert.That (principal.User, Is.Null);
-      Assert.That (principal.Roles, Is.Null);
-      Assert.That (principal.Substitution, Is.Null);
+      Assert.That(principal.Tenant, Is.Null);
+      Assert.That(principal.User, Is.Null);
+      Assert.That(principal.Roles, Is.Null);
+      Assert.That(principal.Substitution, Is.Null);
     }
 
     [Test]
     public void GetRefreshedInstance ()
     {
       ISecurityManagerPrincipal principal = SecurityManagerPrincipal.Null;
-      Assert.That (principal.GetRefreshedInstance(), Is.SameAs (principal));
+      Assert.That(principal.GetRefreshedInstance(), Is.SameAs(principal));
     }
 
     [Test]
@@ -48,7 +48,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     {
       ISecurityManagerPrincipal principal = SecurityManagerPrincipal.Null;
 
-      Assert.That (principal.GetTenants (true), Is.Empty);
+      Assert.That(principal.GetTenants(true), Is.Empty);
     }
 
     [Test]
@@ -56,7 +56,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     {
       ISecurityManagerPrincipal principal = SecurityManagerPrincipal.Null;
 
-      Assert.That (principal.GetActiveSubstitutions(), Is.Empty);
+      Assert.That(principal.GetActiveSubstitutions(), Is.Empty);
     }
 
     [Test]
@@ -64,7 +64,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     {
       ISecurityManagerPrincipal principal = SecurityManagerPrincipal.Null;
 
-      Assert.That (principal.GetSecurityPrincipal().IsNull, Is.True);
+      Assert.That(principal.GetSecurityPrincipal().IsNull, Is.True);
     }
 
     [Test]
@@ -72,16 +72,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     {
       var principal = SecurityManagerPrincipal.Null;
      
-      var deserializedPrincipal = Serializer.SerializeAndDeserialize (principal);
+      var deserializedPrincipal = Serializer.SerializeAndDeserialize(principal);
 
-      Assert.That (principal, Is.SameAs (deserializedPrincipal));
+      Assert.That(principal, Is.SameAs(deserializedPrincipal));
     }
 
     [Test]
     public void Get_IsNull ()
     {
       ISecurityManagerPrincipal principal = SecurityManagerPrincipal.Null;
-      Assert.That (principal.IsNull, Is.True);
+      Assert.That(principal.IsNull, Is.True);
     }
   }
 }

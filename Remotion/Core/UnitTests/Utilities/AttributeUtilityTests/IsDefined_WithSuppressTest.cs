@@ -27,19 +27,19 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void IsDefined_NoAttributes ()
     {
-      Assert.That (AttributeUtility.IsDefined (typeof (DerivedDerivedDerivedSuppressed),typeof(Attribute), true), Is.False);
+      Assert.That(AttributeUtility.IsDefined(typeof (DerivedDerivedDerivedSuppressed),typeof(Attribute), true), Is.False);
     }
 
     [Test]
     public void IsDefined_WithAttributesAndSuppressed ()
     {
-      Assert.That (AttributeUtility.IsDefined (typeof (DerivedWithAttributesAndSuppressed), typeof (Attribute), true), Is.True);
+      Assert.That(AttributeUtility.IsDefined(typeof (DerivedWithAttributesAndSuppressed), typeof (Attribute), true), Is.True);
     }
 
     [Test]
     public void IsDefined_WithAttributesAndNoSuppressed ()
     {
-      Assert.That (AttributeUtility.IsDefined (typeof (BaseClassWithAttribute), typeof (Attribute), true), Is.True);
+      Assert.That(AttributeUtility.IsDefined(typeof (BaseClassWithAttribute), typeof (Attribute), true), Is.True);
     }
   }
 }

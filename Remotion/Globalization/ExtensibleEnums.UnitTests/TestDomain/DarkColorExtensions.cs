@@ -25,12 +25,12 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
     [MultiLingualName ("The en-US Dark Red", "en-US")]
     public static Color DarkRed (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new Color ("DarkColor", "DarkRed");
+      return new Color("DarkColor", "DarkRed");
     }
 
     public static Color DarkBlue (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new Color ("DarkColor", "DarkBlue");
+      return new Color("DarkColor", "DarkBlue");
     }
   }
 }

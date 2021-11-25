@@ -54,7 +54,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Framework
 
     void IDomainObjectMixin.OnTargetReferenceInitializing ()
     {
-      OnTargetReferenceInitializing ();
+      OnTargetReferenceInitializing();
     }
   }
 }

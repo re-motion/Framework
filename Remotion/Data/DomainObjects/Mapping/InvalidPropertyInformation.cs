@@ -33,9 +33,9 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public InvalidPropertyInformation (ITypeInformation declaringType, string name, Type propertyType)
     {
-      ArgumentUtility.CheckNotNull ("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull("declaringType", declaringType);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
 
       _declaringType = declaringType;
       _name = name;
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public IPropertyInformation FindInterfaceImplementation (Type implementationType)
     {
-      throw new InvalidOperationException ("FindInterfaceImplementation can only be called on inteface properties.");
+      throw new InvalidOperationException("FindInterfaceImplementation can only be called on inteface properties.");
     }
 
     public IEnumerable<IPropertyInformation> FindInterfaceDeclarations ()
@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public override bool Equals (object obj)
     {
-      return ReferenceEquals (this, obj);
+      return ReferenceEquals(this, obj);
     }
 
     public override int GetHashCode ()
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public override string ToString ()
     {
-      return string.Format ("{0} (invalid property)", _name);
+      return string.Format("{0} (invalid property)", _name);
     }
 
     bool INullObject.IsNull

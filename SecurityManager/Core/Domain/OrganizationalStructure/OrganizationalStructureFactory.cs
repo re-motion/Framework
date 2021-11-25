@@ -23,22 +23,22 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   {
     public virtual Tenant CreateTenant ()
     {
-      return Tenant.NewObject ();
+      return Tenant.NewObject();
     }
 
     public virtual Group CreateGroup ()
     {
-      return Group.NewObject ();
+      return Group.NewObject();
     }
 
     public virtual User CreateUser ()
     {
-      return User.NewObject ();
+      return User.NewObject();
     }
 
     public virtual Position CreatePosition ()
     {
-      return Position.NewObject ();
+      return Position.NewObject();
     }
 
     public virtual Type GetTenantType ()

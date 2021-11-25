@@ -33,117 +33,117 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _order1 = (Order) LifetimeService.GetObjectReference (WriteableSubTransaction, DomainObjectIDs.Order1);
-      _relationEndPointID = RelationEndPointID.Resolve (_order1, o => o.OrderItems);
-      _oppositeRelationEndPointID = RelationEndPointID.Create (DomainObjectIDs.OrderItem1, _relationEndPointID.Definition.GetOppositeEndPointDefinition ());
+      _order1 = (Order) LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Order1);
+      _relationEndPointID = RelationEndPointID.Resolve(_order1, o => o.OrderItems);
+      _oppositeRelationEndPointID = RelationEndPointID.Create(DomainObjectIDs.OrderItem1, _relationEndPointID.Definition.GetOppositeEndPointDefinition());
     }
 
     [Test]
     public void RelationReadInReadOnlyRootTransaction_WithoutLoading_IsAllowed ()
     {
-      WriteableSubTransaction.EnsureDataAvailable (DomainObjectIDs.Order1);
-      WriteableSubTransaction.EnsureDataComplete (_relationEndPointID);
-      WriteableSubTransaction.EnsureDataAvailable (DomainObjectIDs.OrderItem1);
-      WriteableSubTransaction.EnsureDataAvailable (DomainObjectIDs.OrderItem2);
+      WriteableSubTransaction.EnsureDataAvailable(DomainObjectIDs.Order1);
+      WriteableSubTransaction.EnsureDataComplete(_relationEndPointID);
+      WriteableSubTransaction.EnsureDataAvailable(DomainObjectIDs.OrderItem1);
+      WriteableSubTransaction.EnsureDataAvailable(DomainObjectIDs.OrderItem2);
 
-      var orderItems = ExecuteInReadOnlyRootTransaction (() => _order1.OrderItems.ToList ());
+      var orderItems = ExecuteInReadOnlyRootTransaction(() => _order1.OrderItems.ToList());
 
-      Assert.That (orderItems.Select (oi => oi.ID), Is.EquivalentTo (new[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
+      Assert.That(orderItems.Select(oi => oi.ID), Is.EquivalentTo(new[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
     }
 
     [Test]
     public void RelationReadInReadOnlyMiddleTransaction_WithoutLoading_IsAllowed ()
     {
-      WriteableSubTransaction.EnsureDataAvailable (DomainObjectIDs.Order1);
-      WriteableSubTransaction.EnsureDataComplete (_relationEndPointID);
-      WriteableSubTransaction.EnsureDataAvailable (DomainObjectIDs.OrderItem1);
-      WriteableSubTransaction.EnsureDataAvailable (DomainObjectIDs.OrderItem2);
+      WriteableSubTransaction.EnsureDataAvailable(DomainObjectIDs.Order1);
+      WriteableSubTransaction.EnsureDataComplete(_relationEndPointID);
+      WriteableSubTransaction.EnsureDataAvailable(DomainObjectIDs.OrderItem1);
+      WriteableSubTransaction.EnsureDataAvailable(DomainObjectIDs.OrderItem2);
 
-      var orderItems = ExecuteInReadOnlyMiddleTransaction (() => _order1.OrderItems.ToList ());
+      var orderItems = ExecuteInReadOnlyMiddleTransaction(() => _order1.OrderItems.ToList());
 
-      Assert.That (orderItems.Select (oi => oi.ID), Is.EquivalentTo (new[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
+      Assert.That(orderItems.Select(oi => oi.ID), Is.EquivalentTo(new[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
     }
 
     [Test]
     public void RelationReadInReadOnlyRootTransaction_WithLoading_IsAllowed ()
     {
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.OrderItem1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.OrderItem1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.OrderItem1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.OrderItem1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.OrderItem1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.OrderItem1);
 
-      CheckEndPointNull (ReadOnlyRootTransaction, _relationEndPointID);
-      CheckEndPointNull (ReadOnlyMiddleTransaction, _relationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _relationEndPointID);
+      CheckEndPointNull(ReadOnlyRootTransaction, _relationEndPointID);
+      CheckEndPointNull(ReadOnlyMiddleTransaction, _relationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _relationEndPointID);
 
-      CheckEndPointNull (ReadOnlyRootTransaction, _oppositeRelationEndPointID);
-      CheckEndPointNull (ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(ReadOnlyRootTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _oppositeRelationEndPointID);
 
-      var orderItems = ExecuteInReadOnlyRootTransaction (() => _order1.OrderItems.ToList ());
+      var orderItems = ExecuteInReadOnlyRootTransaction(() => _order1.OrderItems.ToList());
 
-      Assert.That (orderItems.Select (oi => oi.ID), Is.EquivalentTo (new[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
+      Assert.That(orderItems.Select(oi => oi.ID), Is.EquivalentTo(new[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
 
-      CheckDataLoaded (ReadOnlyRootTransaction, _order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, _order1);
-      CheckDataNotLoaded (WriteableSubTransaction, _order1);
+      CheckDataLoaded(ReadOnlyRootTransaction, _order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, _order1);
+      CheckDataNotLoaded(WriteableSubTransaction, _order1);
 
-      CheckDataLoaded (ReadOnlyRootTransaction, orderItems[0]);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, orderItems[0]);
-      CheckDataNotLoaded (WriteableSubTransaction, orderItems[0]);
+      CheckDataLoaded(ReadOnlyRootTransaction, orderItems[0]);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, orderItems[0]);
+      CheckDataNotLoaded(WriteableSubTransaction, orderItems[0]);
 
-      CheckEndPointComplete (ReadOnlyRootTransaction, _relationEndPointID);
-      CheckEndPointNull (ReadOnlyMiddleTransaction, _relationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _relationEndPointID);
+      CheckEndPointComplete(ReadOnlyRootTransaction, _relationEndPointID);
+      CheckEndPointNull(ReadOnlyMiddleTransaction, _relationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _relationEndPointID);
 
-      CheckEndPointComplete (ReadOnlyRootTransaction, _oppositeRelationEndPointID);
-      CheckEndPointNull (ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _oppositeRelationEndPointID);
+      CheckEndPointComplete(ReadOnlyRootTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _oppositeRelationEndPointID);
     }
 
     [Test]
     public void RelationReadInReadOnlyMiddleTransaction_WithLoading_IsAllowed ()
     {
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.OrderItem1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.OrderItem1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.OrderItem1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.OrderItem1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.OrderItem1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.OrderItem1);
 
-      CheckEndPointNull (ReadOnlyRootTransaction, _relationEndPointID);
-      CheckEndPointNull (ReadOnlyMiddleTransaction, _relationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _relationEndPointID);
+      CheckEndPointNull(ReadOnlyRootTransaction, _relationEndPointID);
+      CheckEndPointNull(ReadOnlyMiddleTransaction, _relationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _relationEndPointID);
 
-      CheckEndPointNull (ReadOnlyRootTransaction, _oppositeRelationEndPointID);
-      CheckEndPointNull (ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(ReadOnlyRootTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _oppositeRelationEndPointID);
 
-      var orderItems = ExecuteInReadOnlyMiddleTransaction (() => _order1.OrderItems.ToList ());
+      var orderItems = ExecuteInReadOnlyMiddleTransaction(() => _order1.OrderItems.ToList());
 
-      Assert.That (orderItems.Select (oi => oi.ID), Is.EquivalentTo (new[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
+      Assert.That(orderItems.Select(oi => oi.ID), Is.EquivalentTo(new[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
 
-      CheckDataLoaded (ReadOnlyRootTransaction, _order1);
-      CheckDataLoaded (ReadOnlyMiddleTransaction, _order1);
-      CheckDataNotLoaded (WriteableSubTransaction, _order1);
+      CheckDataLoaded(ReadOnlyRootTransaction, _order1);
+      CheckDataLoaded(ReadOnlyMiddleTransaction, _order1);
+      CheckDataNotLoaded(WriteableSubTransaction, _order1);
 
-      CheckDataLoaded (ReadOnlyRootTransaction, orderItems[0]);
-      CheckDataLoaded (ReadOnlyMiddleTransaction, orderItems[0]);
-      CheckDataNotLoaded (WriteableSubTransaction, orderItems[0]);
+      CheckDataLoaded(ReadOnlyRootTransaction, orderItems[0]);
+      CheckDataLoaded(ReadOnlyMiddleTransaction, orderItems[0]);
+      CheckDataNotLoaded(WriteableSubTransaction, orderItems[0]);
 
-      CheckEndPointComplete (ReadOnlyRootTransaction, _relationEndPointID);
-      CheckEndPointComplete (ReadOnlyMiddleTransaction, _relationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _relationEndPointID);
+      CheckEndPointComplete(ReadOnlyRootTransaction, _relationEndPointID);
+      CheckEndPointComplete(ReadOnlyMiddleTransaction, _relationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _relationEndPointID);
 
-      CheckEndPointComplete (ReadOnlyRootTransaction, _oppositeRelationEndPointID);
-      CheckEndPointComplete (ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _oppositeRelationEndPointID);
+      CheckEndPointComplete(ReadOnlyRootTransaction, _oppositeRelationEndPointID);
+      CheckEndPointComplete(ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _oppositeRelationEndPointID);
     }
   }
 }

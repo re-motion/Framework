@@ -62,7 +62,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
     public string InvokeInheritedMethods ()
     {
-      return ProtectedInheritedMethod () + "-" + ProtectedInternalInheritedMethod() + "-" + PublicInheritedMethod();
+      return ProtectedInheritedMethod() + "-" + ProtectedInternalInheritedMethod() + "-" + PublicInheritedMethod();
     }
   }
 }

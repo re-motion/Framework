@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   {
     public static OrderItem NewObject ()
     {
-      return DomainObject.NewObject<OrderItem> ();
+      return DomainObject.NewObject<OrderItem>();
     }
 
     protected OrderItem ()

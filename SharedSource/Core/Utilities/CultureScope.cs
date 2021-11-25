@@ -45,7 +45,7 @@ namespace Remotion.Utilities
     /// </summary>
     public static CultureScope CreateInvariantCultureScope ()
     {
-      return new CultureScope (CultureInfo.InvariantCulture, CultureInfo.InvariantCulture);
+      return new CultureScope(CultureInfo.InvariantCulture, CultureInfo.InvariantCulture);
     }
 
 
@@ -56,8 +56,8 @@ namespace Remotion.Utilities
     /// <param name="uiCultureName">User interface culture name string. <see langword="null" /> to not switch UI-culture.</param>
     public CultureScope (string? cultureName, string? uiCultureName)
       : this (
-      cultureName == null ? null : CultureInfo.GetCultureInfo (cultureName),
-      uiCultureName == null ? null : CultureInfo.GetCultureInfo (uiCultureName))
+      cultureName == null ? null : CultureInfo.GetCultureInfo(cultureName),
+      uiCultureName == null ? null : CultureInfo.GetCultureInfo(uiCultureName))
     {
     }
 

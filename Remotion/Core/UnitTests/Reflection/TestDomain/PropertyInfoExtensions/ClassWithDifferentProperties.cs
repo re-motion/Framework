@@ -50,7 +50,7 @@ namespace Remotion.UnitTests.Reflection.TestDomain.PropertyInfoExtensions
 
     public virtual object Object2
     {
-      get { return new object (); }
+      get { return new object(); }
       set { Dev.Null = value; }
     }
   }

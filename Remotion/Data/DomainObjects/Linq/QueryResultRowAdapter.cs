@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public QueryResultRowAdapter (IQueryResultRow queryResultRow)
     {
-      ArgumentUtility.CheckNotNull ("queryResultRow", queryResultRow);
+      ArgumentUtility.CheckNotNull("queryResultRow", queryResultRow);
 
       _queryResultRow = queryResultRow;
     }
@@ -42,14 +42,14 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public T GetValue<T> (ColumnID columnID)
     {
-      ArgumentUtility.CheckNotNull ("columnID", columnID);
+      ArgumentUtility.CheckNotNull("columnID", columnID);
 
-      return _queryResultRow.GetConvertedValue<T> (columnID.Position);
+      return _queryResultRow.GetConvertedValue<T>(columnID.Position);
     }
 
     public T GetEntity<T> (params ColumnID[] columnIDs)
     {
-      throw new NotSupportedException (
+      throw new NotSupportedException(
           "This LINQ provider does not support queries with complex projections that include DomainObjects."
           + Environment.NewLine
           + "Either change the query to return just a sequence of DomainObjects (e.g., 'from o in QueryFactory.CreateLinqQuery<Order>() select o') "

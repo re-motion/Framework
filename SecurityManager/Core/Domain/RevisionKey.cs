@@ -23,7 +23,7 @@ namespace Remotion.SecurityManager.Domain
   public sealed class RevisionKey : IRevisionKey
   {
     private const string c_permanentGuid = "{446DF534-DBEA-420E-9AC1-0B19D51B0ED3}";
-    private static readonly Guid s_globalKey = new Guid (c_permanentGuid);
+    private static readonly Guid s_globalKey = new Guid(c_permanentGuid);
 
     public RevisionKey ()
     {

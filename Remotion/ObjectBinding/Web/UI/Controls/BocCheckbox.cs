@@ -90,9 +90,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      base.RegisterHtmlHeadContents (htmlHeadAppender);
+      base.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var renderer = CreateRenderer();
       renderer.RegisterHtmlHeadContents(htmlHeadAppender);
@@ -100,31 +100,31 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
     {
-      return new BocCheckBoxConstraintVisitor (this);
+      return new BocCheckBoxConstraintVisitor(this);
     }
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      EvaluateWaiConformity ();
+      EvaluateWaiConformity();
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     protected virtual IBocCheckBoxRenderer CreateRenderer ()
     {
-      return ServiceLocator.GetInstance<IBocCheckBoxRenderer> ();
+      return ServiceLocator.GetInstance<IBocCheckBoxRenderer>();
     }
 
     protected virtual BocCheckBoxRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      Assertion.IsNotNull (Context, "Context must not be null.");
+      Assertion.IsNotNull(Context, "Context must not be null.");
 
-      return new BocCheckBoxRenderingContext (Context, writer, this);
+      return new BocCheckBoxRenderingContext(Context, writer, this);
     }
 
     /// <summary>
@@ -137,8 +137,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (! _isActive)
         return false;
 
-      string? newValue = PageUtility.GetPostBackCollectionItem (Page!, GetValueName());
-      bool newBooleanValue = ! string.IsNullOrEmpty (newValue);
+      string? newValue = PageUtility.GetPostBackCollectionItem(Page!, GetValueName());
+      bool newBooleanValue = ! string.IsNullOrEmpty(newValue);
       bool isDataChanged = _value != newBooleanValue;
       if (isDataChanged)
       {
@@ -162,19 +162,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
       {
         if (_showDescription == true)
-          WcagHelper.Instance.HandleError (1, this, "ShowDescription");
+          WcagHelper.Instance.HandleError(1, this, "ShowDescription");
 
         if (IsAutoPostBackEnabled)
-          WcagHelper.Instance.HandleWarning (1, this, "AutoPostBack");
+          WcagHelper.Instance.HandleWarning(1, this, "AutoPostBack");
       }
     }
 
     protected override void OnPreRender (EventArgs e)
     {
       EnsureChildControls();
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      LoadResources (GetResourceManager(), GlobalizationService);
+      LoadResources(GetResourceManager(), GlobalizationService);
 
       _isActive = !IsReadOnly && Enabled;
     }
@@ -187,7 +187,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       object?[] values = (object?[]) savedState!;
 
-      base.LoadControlState (values[0]);
+      base.LoadControlState(values[0]);
       _value = (bool) values[1]!;
       _isActive = (bool) values[2]!;
     }
@@ -210,25 +210,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     public override IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (ResourceIdentifier));
+      return GetResourceManager(typeof (ResourceIdentifier));
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      base.LoadResources (resourceManager, globalizationService);
+      base.LoadResources(resourceManager, globalizationService);
 
       string? key;
-      key = ResourceManagerUtility.GetGlobalResourceKey (TrueDescription);
-      if (! string.IsNullOrEmpty (key))
-        TrueDescription = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(TrueDescription);
+      if (! string.IsNullOrEmpty(key))
+        TrueDescription = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (FalseDescription);
-      if (! string.IsNullOrEmpty (key))
-        FalseDescription = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(FalseDescription);
+      if (! string.IsNullOrEmpty(key))
+        FalseDescription = resourceManager.GetString(key);
     }
 
     /// <summary> 
@@ -394,7 +394,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_defaultValue == null)
       {
         if (DataSource != null && DataSource.BusinessObjectClass != null && DataSource.BusinessObject != null && Property != null)
-          return Property.GetDefaultValue (DataSource.BusinessObjectClass) ?? false;
+          return Property.GetDefaultValue(DataSource.BusinessObjectClass) ?? false;
         else
           return false;
       }
@@ -405,7 +405,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = ServiceLocator.GetInstance<IBocCheckBoxValidatorFactory>();
-      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+      _validators = validatorFactory.CreateValidators(this, isReadOnly).ToList().AsReadOnly();
       return _validators;
     }
 
@@ -436,12 +436,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     string IBocCheckBox.DefaultTrueDescription
     {
-      get { return GetResourceManager().GetString (ResourceIdentifier.TrueDescription); }
+      get { return GetResourceManager().GetString(ResourceIdentifier.TrueDescription); }
     }
 
     string IBocCheckBox.DefaultFalseDescription
     {
-      get { return GetResourceManager().GetString (ResourceIdentifier.FalseDescription); }
+      get { return GetResourceManager().GetString(ResourceIdentifier.FalseDescription); }
     }
 
     protected override string ControlType

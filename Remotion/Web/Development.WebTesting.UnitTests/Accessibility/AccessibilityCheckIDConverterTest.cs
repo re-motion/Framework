@@ -27,17 +27,17 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     [Test]
     public void GetEnum_WithUnknownKey_ReturnsUnknown ()
     {
-      var checkID = AccessibilityCheckIDConverter.ConvertToEnum ("SomeUnknownKey");
+      var checkID = AccessibilityCheckIDConverter.ConvertToEnum("SomeUnknownKey");
 
-      Assert.That (checkID, Is.EqualTo (AccessibilityRequirementID.Unknown));
+      Assert.That(checkID, Is.EqualTo(AccessibilityRequirementID.Unknown));
     }
 
     [Test]
     public void GetEnum_WithKnownKey_ReturnsKeyAsEnum ()
     {
-      var checkID = AccessibilityCheckIDConverter.ConvertToEnum ("explicit-label");
+      var checkID = AccessibilityCheckIDConverter.ConvertToEnum("explicit-label");
 
-      Assert.That (checkID, Is.EqualTo (AccessibilityRequirementID.ExplicitLabel));
+      Assert.That(checkID, Is.EqualTo(AccessibilityRequirementID.ExplicitLabel));
     }
   }
 }

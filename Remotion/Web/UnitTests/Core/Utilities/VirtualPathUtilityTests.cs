@@ -31,32 +31,32 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     public void SetUp ()
     {
       _controlStub = new Mock<IControl>();
-      _controlStub.SetupProperty (_ => _.AppRelativeTemplateSourceDirectory);
+      _controlStub.SetupProperty(_ => _.AppRelativeTemplateSourceDirectory);
       _controlStub.Object.AppRelativeTemplateSourceDirectory = "~/base/Path";
     }
 
     [Test]
     public void GetVirtualPath_RelativePath ()
     {
-      Assert.That (VirtualPathUtility.GetVirtualPath (_controlStub.Object, "relative/path/file.txt"), Is.EqualTo ("~/base/Path/relative/path/file.txt"));
+      Assert.That(VirtualPathUtility.GetVirtualPath(_controlStub.Object, "relative/path/file.txt"), Is.EqualTo("~/base/Path/relative/path/file.txt"));
     }
 
     [Test]
     public void GetVirtualPath_VirtualPath ()
     {
-      Assert.That (VirtualPathUtility.GetVirtualPath (_controlStub.Object, "~/virtual/path/file.txt"), Is.EqualTo ("~/virtual/path/file.txt"));
+      Assert.That(VirtualPathUtility.GetVirtualPath(_controlStub.Object, "~/virtual/path/file.txt"), Is.EqualTo("~/virtual/path/file.txt"));
     }
 
     [Test]
     public void GetVirtualPath_FilePath ()
     {
-      Assert.That (VirtualPathUtility.GetVirtualPath (_controlStub.Object, "file.txt"), Is.EqualTo ("~/base/Path/file.txt"));
+      Assert.That(VirtualPathUtility.GetVirtualPath(_controlStub.Object, "file.txt"), Is.EqualTo("~/base/Path/file.txt"));
     }
 
     [Test]
     public void GetVirtualPath_HierchyPath ()
     {
-      Assert.That (VirtualPathUtility.GetVirtualPath (_controlStub.Object, "../relative/file.txt"), Is.EqualTo ("~/base/relative/file.txt"));
+      Assert.That(VirtualPathUtility.GetVirtualPath(_controlStub.Object, "../relative/file.txt"), Is.EqualTo("~/base/relative/file.txt"));
     }
 
     [Test]
@@ -65,10 +65,10 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var controlStub = new WebButton();
       controlStub.ID = "ControlID";
       controlStub.AppRelativeTemplateSourceDirectory = "";
-      Assert.That (
-          () => VirtualPathUtility.GetVirtualPath (controlStub, "../relative/file.txt"),
+      Assert.That(
+          () => VirtualPathUtility.GetVirtualPath(controlStub, "../relative/file.txt"),
           Throws.InvalidOperationException
-              .And.Message.StartsWith ("The 'AppRelativeTemplateSourceDirectory' property of the WebButton 'ControlID' is not set."));
+              .And.Message.StartsWith("The 'AppRelativeTemplateSourceDirectory' property of the WebButton 'ControlID' is not set."));
     }
 
     [Test]
@@ -77,7 +77,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       var controlStub = new WebButton();
       controlStub.ID = "ControlID";
       controlStub.AppRelativeTemplateSourceDirectory = null;
-      Assert.That (() => VirtualPathUtility.GetVirtualPath (controlStub, "../relative/file.txt"), Throws.InvalidOperationException);
+      Assert.That(() => VirtualPathUtility.GetVirtualPath(controlStub, "../relative/file.txt"), Throws.InvalidOperationException);
     }
   }
 }

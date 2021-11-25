@@ -30,18 +30,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public override IScriptElement GetCreateElement (SqlPrimaryXmlIndexDefinition indexDefinition, EntityNameDefinition ownerName)
     {
-      ArgumentUtility.CheckNotNull ("indexDefinition", indexDefinition);
-      ArgumentUtility.CheckNotNull ("ownerName", ownerName);
+      ArgumentUtility.CheckNotNull("indexDefinition", indexDefinition);
+      ArgumentUtility.CheckNotNull("ownerName", ownerName);
 
       return new ScriptStatement(
-      string.Format (
+      string.Format(
           "CREATE PRIMARY XML INDEX [{0}]\r\n"
           + "  ON [{1}].[{2}] ([{3}]){4}",
           indexDefinition.IndexName,
           ownerName.SchemaName ?? DefaultSchema,
           ownerName.EntityName,
           indexDefinition.XmlColumn.Name,
-          GetCreateIndexOptions (GetCreateIndexOptionItems (indexDefinition))));
+          GetCreateIndexOptions(GetCreateIndexOptionItems(indexDefinition))));
     }
   }
 }

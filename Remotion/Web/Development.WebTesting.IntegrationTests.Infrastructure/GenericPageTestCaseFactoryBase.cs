@@ -49,9 +49,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       /// <inheritdoc />
       public override void Apply (TestCaseData data)
       {
-        base.Apply (data);
+        base.Apply(data);
 
-        data.SetCategory ("GenericTest");
+        data.SetCategory("GenericTest");
       }
     }
   }

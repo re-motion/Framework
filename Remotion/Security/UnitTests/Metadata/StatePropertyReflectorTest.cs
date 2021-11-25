@@ -49,73 +49,73 @@ namespace Remotion.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _enumeratedTypeReflectorMock = new Mock<IEnumerationReflector> (MockBehavior.Strict);
-      _statePropertyReflector = new StatePropertyReflector (_enumeratedTypeReflectorMock.Object);
-      _cache = new MetadataCache ();
+      _enumeratedTypeReflectorMock = new Mock<IEnumerationReflector>(MockBehavior.Strict);
+      _statePropertyReflector = new StatePropertyReflector(_enumeratedTypeReflectorMock.Object);
+      _cache = new MetadataCache();
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.IsInstanceOf (typeof (IStatePropertyReflector), _statePropertyReflector);
-      Assert.That (_statePropertyReflector.EnumerationTypeReflector, Is.SameAs (_enumeratedTypeReflectorMock.Object));
+      Assert.IsInstanceOf(typeof (IStatePropertyReflector), _statePropertyReflector);
+      Assert.That(_statePropertyReflector.EnumerationTypeReflector, Is.SameAs(_enumeratedTypeReflectorMock.Object));
     }
 
     [Test]
     public void GetMetadata ()
     {
-      Dictionary<Enum, EnumValueInfo> values = new Dictionary<Enum, EnumValueInfo> ();
-      values.Add (Confidentiality.Normal, PropertyStates.ConfidentialityNormal);
-      values.Add (Confidentiality.Confidential, PropertyStates.ConfidentialityConfidential);
-      values.Add (Confidentiality.Private, PropertyStates.ConfidentialityPrivate);
+      Dictionary<Enum, EnumValueInfo> values = new Dictionary<Enum, EnumValueInfo>();
+      values.Add(Confidentiality.Normal, PropertyStates.ConfidentialityNormal);
+      values.Add(Confidentiality.Confidential, PropertyStates.ConfidentialityConfidential);
+      values.Add(Confidentiality.Private, PropertyStates.ConfidentialityPrivate);
 
-      _enumeratedTypeReflectorMock.Setup (_ => _.GetValues (typeof (Confidentiality), _cache)).Returns (values).Verifiable();
+      _enumeratedTypeReflectorMock.Setup(_ => _.GetValues(typeof (Confidentiality), _cache)).Returns(values).Verifiable();
 
-      StatePropertyInfo info = _statePropertyReflector.GetMetadata (typeof (PaperFile).GetProperty ("Confidentiality"), _cache);
+      StatePropertyInfo info = _statePropertyReflector.GetMetadata(typeof (PaperFile).GetProperty("Confidentiality"), _cache);
 
       _enumeratedTypeReflectorMock.Verify();
 
-      Assert.That (info, Is.Not.Null);
-      Assert.That (info.Name, Is.EqualTo ("Confidentiality"));
-      Assert.That (info.ID, Is.EqualTo ("00000000-0000-0000-0001-000000000001"));
+      Assert.That(info, Is.Not.Null);
+      Assert.That(info.Name, Is.EqualTo("Confidentiality"));
+      Assert.That(info.ID, Is.EqualTo("00000000-0000-0000-0001-000000000001"));
 
-      Assert.That (info.Values, Is.Not.Null);
-      Assert.That (info.Values.Count, Is.EqualTo (3));
-      Assert.That (info.Values, Has.Member (PropertyStates.ConfidentialityNormal));
-      Assert.That (info.Values, Has.Member (PropertyStates.ConfidentialityPrivate));
-      Assert.That (info.Values, Has.Member (PropertyStates.ConfidentialityConfidential));
+      Assert.That(info.Values, Is.Not.Null);
+      Assert.That(info.Values.Count, Is.EqualTo(3));
+      Assert.That(info.Values, Has.Member(PropertyStates.ConfidentialityNormal));
+      Assert.That(info.Values, Has.Member(PropertyStates.ConfidentialityPrivate));
+      Assert.That(info.Values, Has.Member(PropertyStates.ConfidentialityConfidential));
     }
 
     [Test]
     public void GetMetadataFromCache ()
     {
-      StatePropertyReflector reflector = new StatePropertyReflector ();
-      reflector.GetMetadata (typeof (PaperFile).GetProperty ("Confidentiality"), _cache);
-      reflector.GetMetadata (typeof (File).GetProperty ("Confidentiality"), _cache);
+      StatePropertyReflector reflector = new StatePropertyReflector();
+      reflector.GetMetadata(typeof (PaperFile).GetProperty("Confidentiality"), _cache);
+      reflector.GetMetadata(typeof (File).GetProperty("Confidentiality"), _cache);
 
-      StatePropertyInfo paperFileConfidentialityInfo = _cache.GetStatePropertyInfo (typeof (PaperFile).GetProperty ("Confidentiality"));
-      Assert.That (paperFileConfidentialityInfo, Is.Not.Null);
-      Assert.That (paperFileConfidentialityInfo.Name, Is.EqualTo ("Confidentiality"));
-      Assert.That (_cache.GetStatePropertyInfo (typeof (File).GetProperty ("Confidentiality")), Is.SameAs (paperFileConfidentialityInfo));
+      StatePropertyInfo paperFileConfidentialityInfo = _cache.GetStatePropertyInfo(typeof (PaperFile).GetProperty("Confidentiality"));
+      Assert.That(paperFileConfidentialityInfo, Is.Not.Null);
+      Assert.That(paperFileConfidentialityInfo.Name, Is.EqualTo("Confidentiality"));
+      Assert.That(_cache.GetStatePropertyInfo(typeof (File).GetProperty("Confidentiality")), Is.SameAs(paperFileConfidentialityInfo));
     }
 
     [Test]
     public void GetMetadataWithInvalidType ()
     {
-      Assert.That (
-          () => new StatePropertyReflector().GetMetadata (typeof (PaperFile).GetProperty ("ID"), _cache),
+      Assert.That(
+          () => new StatePropertyReflector().GetMetadata(typeof (PaperFile).GetProperty("ID"), _cache),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The type of the property 'ID' in type 'Remotion.Security.UnitTests.TestDomain.File' is not an enumerated type.", "property"));
     }
 
     [Test]
     public void GetMetadataWithInvalidEnum ()
     {
-      Assert.That (
-          () => new StatePropertyReflector ().GetMetadata (typeof (PaperFile).GetProperty ("SimpleEnum"), _cache),
+      Assert.That(
+          () => new StatePropertyReflector().GetMetadata(typeof (PaperFile).GetProperty("SimpleEnum"), _cache),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The type of the property 'SimpleEnum' in type 'Remotion.Security.UnitTests.TestDomain.File' does not have the Remotion.Security.SecurityStateAttribute applied.", "property"));
     }
   }

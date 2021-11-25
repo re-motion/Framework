@@ -27,9 +27,9 @@ namespace Remotion.ObjectBinding.BindableObject
   {
     public static BindableObjectWithIdentityBaseImplementation Create (BindableObjectWithIdentityBase wrapper)
     {
-      ArgumentUtility.CheckNotNull ("wrapper", wrapper);
-      var impl = new BindableObjectWithIdentityBaseImplementation (wrapper);
-      ((IInitializableMixin) impl).Initialize (wrapper, null, false);
+      ArgumentUtility.CheckNotNull("wrapper", wrapper);
+      var impl = new BindableObjectWithIdentityBaseImplementation(wrapper);
+      ((IInitializableMixin) impl).Initialize(wrapper, null, false);
       return impl;
     }
 
@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected BindableObjectWithIdentityBaseImplementation (BindableObjectWithIdentityBase wrapper)
     {
-      ArgumentUtility.CheckNotNull ("wrapper", wrapper);
+      ArgumentUtility.CheckNotNull("wrapper", wrapper);
       _wrapper = wrapper;
     }
 
@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     void IDeserializationCallback.OnDeserialization (object? sender)
     {
-      MixinTargetMockUtility.MockMixinTargetAfterDeserialization (this, _wrapper);
+      MixinTargetMockUtility.MockMixinTargetAfterDeserialization(this, _wrapper);
     }
 
     public string BaseDisplayName

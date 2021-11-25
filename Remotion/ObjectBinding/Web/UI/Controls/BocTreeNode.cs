@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 public abstract class BocTreeNode: WebTreeNode
 {
   public BocTreeNode (string itemID, string? text, string? toolTip, IconInfo? icon)
-    : base (itemID, text, toolTip, icon ?? new IconInfo (string.Empty))
+    : base (itemID, text, toolTip, icon ?? new IconInfo(string.Empty))
   {
   }
 
@@ -135,10 +135,10 @@ public class BusinessObjectTreeNode: BocTreeNode
     //  Is root node?
     if (ParentNode == null)
     {
-      Assertion.IsNotNull (BocTreeView, "BocTreeView must not be null.");
+      Assertion.IsNotNull(BocTreeView, "BocTreeView must not be null.");
 
       if (BocTreeView.Value == null)
-        throw new InvalidOperationException ("Cannot evaluate the tree node hierarchy because the value collection is null.");
+        throw new InvalidOperationException("Cannot evaluate the tree node hierarchy because the value collection is null.");
 
       for (int i = 0; i < BocTreeView.Value.Count; i++)
       {
@@ -154,23 +154,23 @@ public class BusinessObjectTreeNode: BocTreeNode
       {
         //  Required business object has not been part of the values collection in this post back, get it from the class
         if (BocTreeView.DataSource == null)
-          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + ItemID + "': DataSoure is null.");
+          throw new InvalidOperationException("Cannot look-up IBusinessObjectWithIdentity '" + ItemID + "': DataSoure is null.");
         if (BocTreeView.DataSource.BusinessObjectClass == null)
-          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + ItemID + "': DataSource.BusinessObjectClass is null.");
+          throw new InvalidOperationException("Cannot look-up IBusinessObjectWithIdentity '" + ItemID + "': DataSource.BusinessObjectClass is null.");
         if (! (BocTreeView.DataSource.BusinessObjectClass is IBusinessObjectClassWithIdentity))
-          throw new InvalidOperationException ("Cannot look-up IBusinessObjectWithIdentity '" + ItemID + "': DataSource.BusinessObjectClass is of type '" + BocTreeView.DataSource.BusinessObjectClass.GetType() + "' but must be of type IBusinessObjectClassWithIdentity.");
+          throw new InvalidOperationException("Cannot look-up IBusinessObjectWithIdentity '" + ItemID + "': DataSource.BusinessObjectClass is of type '" + BocTreeView.DataSource.BusinessObjectClass.GetType() + "' but must be of type IBusinessObjectClassWithIdentity.");
         
         BusinessObject = 
-            ((IBusinessObjectClassWithIdentity) BocTreeView.DataSource.BusinessObjectClass).GetObject (ItemID);
+            ((IBusinessObjectClassWithIdentity) BocTreeView.DataSource.BusinessObjectClass).GetObject(ItemID);
         if (_businessObject == null) // This test could be omitted if graceful recovery is wanted.
-          throw new InvalidOperationException ("Could not find IBusinessObjectWithIdentity '" + ItemID + "' via the DataSource.");
+          throw new InvalidOperationException("Could not find IBusinessObjectWithIdentity '" + ItemID + "' via the DataSource.");
       }
     }
     else
     {
-      IBusinessObjectReferenceProperty property = Assertion.IsNotNull (Property, "Property != null");
+      IBusinessObjectReferenceProperty property = Assertion.IsNotNull(Property, "Property != null");
       string businessObjectID = ItemID;
-      BusinessObject = ((IBusinessObjectClassWithIdentity) property.ReferenceClass).GetObject (businessObjectID);
+      BusinessObject = ((IBusinessObjectClassWithIdentity) property.ReferenceClass).GetObject(businessObjectID);
     }
   }
 
@@ -184,15 +184,15 @@ public class BusinessObjectTreeNode: BocTreeNode
     
     if (businessObjectParentNode != null)
     {
-      Assertion.IsNotNull (businessObjectParentNode.BusinessObject, "businessObjectParentNode.BusinessObject is not null.");
-      Assertion.IsNotNull (_propertyIdentifier, "_propertyIdentifier must not be null.");
+      Assertion.IsNotNull(businessObjectParentNode.BusinessObject, "businessObjectParentNode.BusinessObject is not null.");
+      Assertion.IsNotNull(_propertyIdentifier, "_propertyIdentifier must not be null.");
 
       IBusinessObjectProperty? property = 
-          businessObjectParentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier);
+          businessObjectParentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition(_propertyIdentifier);
       Property = (IBusinessObjectReferenceProperty?) property;
 
       if (_property == null) // This test could be omitted if graceful recovery is wanted.
-        throw new InvalidOperationException ("Could not find IBusinessObjectReferenceProperty '" + _propertyIdentifier + "'.");
+        throw new InvalidOperationException("Could not find IBusinessObjectReferenceProperty '" + _propertyIdentifier + "'.");
     }
     else if (propertyParentNode != null)
     {
@@ -230,7 +230,7 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
   [AllowNull]
   public IBusinessObjectReferenceProperty Property
   {
-    [MemberNotNull (nameof (_property))]
+    [MemberNotNull (nameof(_property))]
     get 
     {
       EnsureProperty();
@@ -248,7 +248,7 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
     get { return "PropertyNode"; }
   }
 
-  [MemberNotNull (nameof (_property))]
+  [MemberNotNull (nameof(_property))]
   private void EnsureProperty ()
   {
     if (_property != null)
@@ -256,12 +256,12 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
 
     BusinessObjectTreeNode? parentNode = (BusinessObjectTreeNode?) ParentNode;
     if (parentNode == null)
-      throw new InvalidOperationException ("BusinessObjectPropertyTreeNode with ItemID '" + ItemID + "' has no parent node but property nodes cannot be used as root nodes.");
+      throw new InvalidOperationException("BusinessObjectPropertyTreeNode with ItemID '" + ItemID + "' has no parent node but property nodes cannot be used as root nodes.");
 
-    Assertion.IsNotNull (parentNode.BusinessObject, "parentNode.BusinessObject must not be null.");
+    Assertion.IsNotNull(parentNode.BusinessObject, "parentNode.BusinessObject must not be null.");
 
-    IBusinessObjectProperty? property = parentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition (ItemID);
-    _property = (IBusinessObjectReferenceProperty) Assertion.IsNotNull (
+    IBusinessObjectProperty? property = parentNode.BusinessObject.BusinessObjectClass.GetPropertyDefinition(ItemID);
+    _property = (IBusinessObjectReferenceProperty) Assertion.IsNotNull(
         property,
         "Property '{0}' does not exist on class '{1}'.",
         ItemID,

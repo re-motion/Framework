@@ -35,33 +35,33 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      _textWithHotkey = HotkeyParser.Parse (Text);
+      _textWithHotkey = HotkeyParser.Parse(Text);
 
-      base.Render (writer);
+      base.Render(writer);
     }
 
     protected override void AddAttributesToRender (HtmlTextWriter writer)
     {
-      if (string.IsNullOrEmpty (AccessKey) && _textWithHotkey!.Hotkey.HasValue) // TODO RM-8118: not null assertion
-        writer.AddAttribute (HtmlTextWriterAttribute.Accesskey, HotkeyFormatter.FormatHotkey (_textWithHotkey));
+      if (string.IsNullOrEmpty(AccessKey) && _textWithHotkey!.Hotkey.HasValue) // TODO RM-8118: not null assertion
+        writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, HotkeyFormatter.FormatHotkey(_textWithHotkey));
 
-      base.AddAttributesToRender (writer);
+      base.AddAttributesToRender(writer);
     }
 
     protected override void RenderContents (HtmlTextWriter writer)
     {
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError (1, this);
+        WcagHelper.Instance.HandleError(1, this);
 
       if (HasControls())
-        base.RenderContents (writer);
+        base.RenderContents(writer);
       else
-        writer.Write (HotkeyFormatter.FormatText (_textWithHotkey!, false)); // TODO RM-8118: not null assertion
+        writer.Write(HotkeyFormatter.FormatText(_textWithHotkey!, false)); // TODO RM-8118: not null assertion
     }
 
     public new IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
     protected virtual IServiceLocator ServiceLocator

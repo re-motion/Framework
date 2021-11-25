@@ -66,11 +66,11 @@ public class DesignTestCheckBoxForm : DesignTestWxeBasePage
   private void Page_Load (object sender, EventArgs e)
 	{
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
-    Person person = Person.GetObject (personID);
+    Person person = Person.GetObject(personID);
     Person partner = person.Partner;
 
     CurrentObject.BusinessObject = (IBusinessObject) person;
-    CurrentObject.LoadValues (IsPostBack);
+    CurrentObject.LoadValues(IsPostBack);
   }
 
 	override protected void OnInit (EventArgs e)

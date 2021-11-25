@@ -48,38 +48,38 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         int rowIndex,
         bool showIcon)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("dataRowRenderEventArgs", dataRowRenderEventArgs);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
       int originalRowIndex = dataRowRenderEventArgs.ListIndex;
       IBusinessObject businessObject = dataRowRenderEventArgs.BusinessObject;
 
-      IEditableRow? editableRow = renderingContext.Control.EditModeController.GetEditableRow (originalRowIndex);
+      IEditableRow? editableRow = renderingContext.Control.EditModeController.GetEditableRow(originalRowIndex);
 
-      bool hasEditModeControl = editableRow != null && editableRow.HasEditControl (renderingContext.ColumnIndex);
-      bool showEditModeControl = hasEditModeControl && !editableRow!.GetEditControl (renderingContext.ColumnIndex)!.IsReadOnly;
+      bool hasEditModeControl = editableRow != null && editableRow.HasEditControl(renderingContext.ColumnIndex);
+      bool showEditModeControl = hasEditModeControl && !editableRow!.GetEditControl(renderingContext.ColumnIndex)!.IsReadOnly;
 
       string? valueColumnText = null;
       if (!showEditModeControl)
-        valueColumnText = renderingContext.ColumnDefinition.GetStringValue (businessObject);
+        valueColumnText = renderingContext.ColumnDefinition.GetStringValue(businessObject);
 
-      bool enforceWidth = RenderCropSpanBeginTag (renderingContext, showEditModeControl, valueColumnText);
-      bool isCommandEnabled = RenderBeginTag (renderingContext, originalRowIndex, businessObject, valueColumnText);
+      bool enforceWidth = RenderCropSpanBeginTag(renderingContext, showEditModeControl, valueColumnText);
+      bool isCommandEnabled = RenderBeginTag(renderingContext, originalRowIndex, businessObject, valueColumnText);
 
       if (!hasEditModeControl)
       {
         if (showIcon)
-          RenderCellIcon (renderingContext, businessObject);
+          RenderCellIcon(renderingContext, businessObject);
 
-        RenderOtherIcons (renderingContext, businessObject);
+        RenderOtherIcons(renderingContext, businessObject);
       }
       if (showEditModeControl)
-        RenderCellDataForEditMode (renderingContext, businessObject, editableRow!);
+        RenderCellDataForEditMode(renderingContext, businessObject, editableRow!);
       else
-        RenderValueColumnCellText (renderingContext, valueColumnText!);
+        RenderValueColumnCellText(renderingContext, valueColumnText!);
 
-      RenderEndTag (renderingContext, isCommandEnabled);
-      RenderCropSpanEndTag (renderingContext, enforceWidth);
+      RenderEndTag(renderingContext, isCommandEnabled);
+      RenderCropSpanEndTag(renderingContext, enforceWidth);
     }
 
     protected abstract void RenderCellDataForEditMode (
@@ -98,18 +98,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     protected void RenderValueColumnCellText (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, string contents)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("contents", contents);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("contents", contents);
 
-      renderingContext.Writer.AddAttribute ("class", CssClasses.CommandText);
+      renderingContext.Writer.AddAttribute("class", CssClasses.CommandText);
       if (RenderingFeatures.EnableDiagnosticMetadata)
-        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, contents);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, contents);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-      if (string.IsNullOrWhiteSpace (contents))
-        renderingContext.Writer.Write ("&nbsp;");
+      if (string.IsNullOrWhiteSpace(contents))
+        renderingContext.Writer.Write("&nbsp;");
       else
-        renderingContext.Writer.WriteEncodedLines (StringUtility.ParseNewLineSeparatedString (contents));
+        renderingContext.Writer.WriteEncodedLines(StringUtility.ParseNewLineSeparatedString(contents));
 
       renderingContext.Writer.RenderEndTag();
     }
@@ -131,12 +131,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (enforceWidth)
       {
-        renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, renderingContext.ColumnDefinition.Width.ToString());
-        renderingContext.Writer.AddStyleAttribute ("overflow", "hidden");
-        renderingContext.Writer.AddStyleAttribute ("white-space", "nowrap");
-        renderingContext.Writer.AddStyleAttribute ("display", "block");
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Title, spanTitle);
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Width, renderingContext.ColumnDefinition.Width.ToString());
+        renderingContext.Writer.AddStyleAttribute("overflow", "hidden");
+        renderingContext.Writer.AddStyleAttribute("white-space", "nowrap");
+        renderingContext.Writer.AddStyleAttribute("display", "block");
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Title, spanTitle);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       }
       return enforceWidth;
     }
@@ -157,12 +157,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         BocColumnRenderingContext<TBocColumnDefinition> renderingContext, int originalRowIndex, IBusinessObject businessObject, string? valueColumnText)
     {
       bool isCommandEnabled = false;
-      if (!string.IsNullOrEmpty (valueColumnText))
-        isCommandEnabled = RenderBeginTagDataCellCommand (renderingContext, businessObject, originalRowIndex);
+      if (!string.IsNullOrEmpty(valueColumnText))
+        isCommandEnabled = RenderBeginTagDataCellCommand(renderingContext, businessObject, originalRowIndex);
       if (!isCommandEnabled)
       {
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.Content);
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.Content);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       }
       return isCommandEnabled;
     }
@@ -170,7 +170,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void RenderEndTag (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, bool isCommandEnabled)
     {
       if (isCommandEnabled)
-        RenderEndTagDataCellCommand (renderingContext);
+        RenderEndTagDataCellCommand(renderingContext);
       else
         renderingContext.Writer.RenderEndTag();
     }

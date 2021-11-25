@@ -44,13 +44,13 @@ namespace Remotion.Validation.Merging
         IValidatorFormatter validatorFormatter,
         ILogManager logManager)
     {
-      ArgumentUtility.CheckNotNull ("validationRuleCollectorMerger", validationRuleCollectorMerger);
-      ArgumentUtility.CheckNotNull ("validatorFormatter", validatorFormatter);
-      ArgumentUtility.CheckNotNull ("logManager", logManager);
+      ArgumentUtility.CheckNotNull("validationRuleCollectorMerger", validationRuleCollectorMerger);
+      ArgumentUtility.CheckNotNull("validatorFormatter", validatorFormatter);
+      ArgumentUtility.CheckNotNull("logManager", logManager);
 
       _validationRuleCollectorMerger = validationRuleCollectorMerger;
       _validatorFormatter = validatorFormatter;
-      _logger = logManager.GetLogger (typeof (DiagnosticOutputValidationRuleMergeDecorator));
+      _logger = logManager.GetLogger(typeof (DiagnosticOutputValidationRuleMergeDecorator));
     }
 
     public IValidationRuleCollectorMerger ValidationRuleCollectorMerger
@@ -65,19 +65,19 @@ namespace Remotion.Validation.Merging
 
     public ValidationCollectorMergeResult Merge (IEnumerable<IEnumerable<ValidationRuleCollectorInfo>> validationCollectorInfos)
     {
-      ArgumentUtility.CheckNotNull ("validationCollectorInfos", validationCollectorInfos);
+      ArgumentUtility.CheckNotNull("validationCollectorInfos", validationCollectorInfos);
 
       var collectorInfos = validationCollectorInfos.ToArray();
 
       var beforeMergeLog = string.Empty;
       if (_logger.IsInfoEnabled())
-        beforeMergeLog = GetLogBefore (collectorInfos);
+        beforeMergeLog = GetLogBefore(collectorInfos);
 
-      var validationCollectorMergeResult = _validationRuleCollectorMerger.Merge (collectorInfos);
+      var validationCollectorMergeResult = _validationRuleCollectorMerger.Merge(collectorInfos);
 
       var afterMergeLog = string.Empty;
       if (_logger.IsInfoEnabled())
-        afterMergeLog = GetLogAfter (
+        afterMergeLog = GetLogAfter(
             validationCollectorMergeResult.CollectedPropertyValidationRules,
             validationCollectorMergeResult.CollectedObjectValidationRules,
             validationCollectorMergeResult.LogContext);
@@ -86,8 +86,8 @@ namespace Remotion.Validation.Merging
       {
         //"after"-output provides better initial diagnostics. 
         //"before"-output is usually only analyzed when the problem is not obvious from the "after"-output.
-        _logger.Info (afterMergeLog);
-        _logger.Info (beforeMergeLog);
+        _logger.Info(afterMergeLog);
+        _logger.Info(beforeMergeLog);
       }
 
       return validationCollectorMergeResult;
@@ -107,17 +107,17 @@ namespace Remotion.Validation.Merging
     {
       var sb = new StringBuilder();
       sb.AppendLine();
-      sb.Append ("BEFORE MERGE:");
-      foreach (var validationCollectorInfo in validationCollectorInfos.SelectMany (v => v))
+      sb.Append("BEFORE MERGE:");
+      foreach (var validationCollectorInfo in validationCollectorInfos.SelectMany(v => v))
       {
-        var allProperties = GetAllPropertiesForCollector (validationCollectorInfo).ToArray();
+        var allProperties = GetAllPropertiesForCollector(validationCollectorInfo).ToArray();
         if (!allProperties.Any())
           continue;
 
         sb.AppendLine().AppendLine();
-        sb.Append ("-> " + GetTypeName (validationCollectorInfo.ProviderType) + "#" + DisplayCollectorType (validationCollectorInfo));
+        sb.Append("-> " + GetTypeName(validationCollectorInfo.ProviderType) + "#" + DisplayCollectorType(validationCollectorInfo));
 
-        AppendPropertyCollectionOutput (allProperties, validationCollectorInfo, sb);
+        AppendPropertyCollectionOutput(allProperties, validationCollectorInfo, sb);
         //AppendObjectCollectionOutput (allProperties, validationCollectorInfo, sb);
         //TODO RM-5906 implement diagnostic output for object rules
       }
@@ -131,18 +131,18 @@ namespace Remotion.Validation.Merging
     {
       var sb = new StringBuilder();
       sb.AppendLine();
-      sb.Append ("AFTER MERGE:");
+      sb.Append("AFTER MERGE:");
 
-      foreach (var propertyRulesForMember in mergedPropertyRules.ToLookup (pr => pr.Property))
+      foreach (var propertyRulesForMember in mergedPropertyRules.ToLookup(pr => pr.Property))
       {
-        var validators = propertyRulesForMember.SelectMany (pr => pr.Validators).ToArray();
-        var logContextInfos = propertyRulesForMember.SelectMany (logContext.GetLogContextInfos).ToArray();
-        AppendPropertyRuleOutput (propertyRulesForMember.Key, validators, logContextInfos, sb);
+        var validators = propertyRulesForMember.SelectMany(pr => pr.Validators).ToArray();
+        var logContextInfos = propertyRulesForMember.SelectMany(logContext.GetLogContextInfos).ToArray();
+        AppendPropertyRuleOutput(propertyRulesForMember.Key, validators, logContextInfos, sb);
       }
 
       {
-        var validators = mergedObjectRules.SelectMany (pr => pr.Validators).ToArray();
-        var logContextInfos = mergedObjectRules.SelectMany (logContext.GetLogContextInfos).ToArray();
+        var validators = mergedObjectRules.SelectMany(pr => pr.Validators).ToArray();
+        var logContextInfos = mergedObjectRules.SelectMany(logContext.GetLogContextInfos).ToArray();
         //AppendObjectRuleOutput (mergedObjectRules.Key, validators, logContextInfos, sb);
         //TODO RM-5906 implement diagnostic output for object rules
       }
@@ -155,27 +155,27 @@ namespace Remotion.Validation.Merging
         ValidationRuleCollectorInfo validationRuleCollectorInfo,
         StringBuilder sb)
     {
-      var loggedProperties = new Dictionary<IPropertyInformation, bool> ();
+      var loggedProperties = new Dictionary<IPropertyInformation, bool>();
       foreach (var property in allProperties)
       {
-        if (!loggedProperties.ContainsKey (property))
+        if (!loggedProperties.ContainsKey(property))
         {
           IPropertyInformation actualProperty = property;
           var removedRegistrations = validationRuleCollectorInfo.Collector.RemovedPropertyRules
-              .Where (pr => pr.Property.Equals(actualProperty))
-              .SelectMany (pr => pr.Validators).ToArray();
+              .Where(pr => pr.Property.Equals(actualProperty))
+              .SelectMany(pr => pr.Validators).ToArray();
           var addedNonRemovableValidators = validationRuleCollectorInfo.Collector.AddedPropertyRules
-              .Where (pr => !pr.IsRemovable && pr.Property.Equals(actualProperty))
-              .SelectMany (pr => pr.Validators).ToArray();
+              .Where(pr => !pr.IsRemovable && pr.Property.Equals(actualProperty))
+              .SelectMany(pr => pr.Validators).ToArray();
           var addedRemovableValidators = validationRuleCollectorInfo.Collector.AddedPropertyRules
-              .Where (pr => pr.IsRemovable && pr.Property.Equals(actualProperty))
-              .SelectMany (pr => pr.Validators).ToArray();
+              .Where(pr => pr.IsRemovable && pr.Property.Equals(actualProperty))
+              .SelectMany(pr => pr.Validators).ToArray();
           var addedMetaValidations = validationRuleCollectorInfo.Collector.PropertyMetaValidationRules
-              .Where (pr => pr.Property.Equals(actualProperty))
-              .SelectMany (pr => pr.MetaValidationRules).ToArray();
+              .Where(pr => pr.Property.Equals(actualProperty))
+              .SelectMany(pr => pr.MetaValidationRules).ToArray();
 
           if (removedRegistrations.Any() || addedNonRemovableValidators.Any() || addedRemovableValidators.Any() || addedMetaValidations.Any())
-            AppendPropertyOutput (actualProperty, removedRegistrations, addedNonRemovableValidators, addedRemovableValidators, addedMetaValidations, sb);
+            AppendPropertyOutput(actualProperty, removedRegistrations, addedNonRemovableValidators, addedRemovableValidators, addedMetaValidations, sb);
 
           loggedProperties[property] = true;
         }
@@ -190,11 +190,11 @@ namespace Remotion.Validation.Merging
         IPropertyMetaValidationRule[] addedPropertyMetaValidationRules,
         StringBuilder sb)
     {
-      AppendPropertyName (actualProperty, sb);
-      AppendGroupedRemovingPropertyValidatorRegistrationsOutput (removingPropertyValidatorRegistrations, "REMOVED VALIDATORS:", sb);
-      AppendGroupedValidatorsOutput (addedNonRemovableValidators, "ADDED NON-REMOVABLE VALIDATORS:", sb);
-      AppendGroupedValidatorsOutput (addedRemovableValidators, "ADDED REMOVABLE VALIDATORS:", sb);
-      AppendCollectionData (sb, addedPropertyMetaValidationRules, "ADDED META VALIDATION RULES:", i => GetTypeName (i.GetType()));
+      AppendPropertyName(actualProperty, sb);
+      AppendGroupedRemovingPropertyValidatorRegistrationsOutput(removingPropertyValidatorRegistrations, "REMOVED VALIDATORS:", sb);
+      AppendGroupedValidatorsOutput(addedNonRemovableValidators, "ADDED NON-REMOVABLE VALIDATORS:", sb);
+      AppendGroupedValidatorsOutput(addedRemovableValidators, "ADDED REMOVABLE VALIDATORS:", sb);
+      AppendCollectionData(sb, addedPropertyMetaValidationRules, "ADDED META VALIDATION RULES:", i => GetTypeName(i.GetType()));
     }
 
     private void AppendPropertyRuleOutput (
@@ -203,9 +203,9 @@ namespace Remotion.Validation.Merging
         PropertyValidatorLogContextInfo[] logContextInfos,
         StringBuilder sb)
     {
-      AppendPropertyName (actualProperty, sb);
-      AppendGroupedValidatorsOutput (validators, "VALIDATORS:", sb);
-      AppendMergeOutput (logContextInfos, sb);
+      AppendPropertyName(actualProperty, sb);
+      AppendGroupedValidatorsOutput(validators, "VALIDATORS:", sb);
+      AppendMergeOutput(logContextInfos, sb);
     }
 
     private void AppendMergeOutput (PropertyValidatorLogContextInfo[] logContextInfos, StringBuilder sb)
@@ -214,44 +214,44 @@ namespace Remotion.Validation.Merging
         return;
 
       sb.AppendLine();
-      sb.Append (new string (' ', 8) + "MERGE LOG:");
+      sb.Append(new string(' ', 8) + "MERGE LOG:");
       foreach (var logContextInfo in logContextInfos)
       {
         var removingCollectors =
-            logContextInfo.RemovingPropertyValidatorRegistrations.Select (ci => ci.RemovingPropertyValidationRuleCollector.CollectorType.Name)
+            logContextInfo.RemovingPropertyValidatorRegistrations.Select(ci => ci.RemovingPropertyValidationRuleCollector.CollectorType.Name)
                 .Distinct()
                 .ToArray();
-        var logEntry = string.Format (
+        var logEntry = string.Format(
             "'{0}' was removed from {1} '{2}'",
-            GetTypeName (logContextInfo.RemovedValidator.GetType()),
+            GetTypeName(logContextInfo.RemovedValidator.GetType()),
             removingCollectors.Count() > 1 ? "collectors" : "collector",
-            string.Join (", ", removingCollectors));
+            string.Join(", ", removingCollectors));
         sb.AppendLine();
-        sb.Append (new string (' ', 8) + "-> " + logEntry);
+        sb.Append(new string(' ', 8) + "-> " + logEntry);
       }
     }
 
     private void AppendGroupedValidatorsOutput (IPropertyValidator[] validators, string title, StringBuilder sb)
     {
       var groupedValidators =
-          validators.Select (v => _validatorFormatter.Format (v, GetTypeName))
-              .GroupBy (f => f, (f, elements) => Tuple.Create (f, elements.Count()))
+          validators.Select(v => _validatorFormatter.Format(v, GetTypeName))
+              .GroupBy(f => f, (f, elements) => Tuple.Create(f, elements.Count()))
               .ToArray();
-      AppendCollectionData (sb, groupedValidators, title, i => i.Item1 + " (x" + i.Item2 + ")");
+      AppendCollectionData(sb, groupedValidators, title, i => i.Item1 + " (x" + i.Item2 + ")");
     }
 
     private void AppendGroupedRemovingPropertyValidatorRegistrationsOutput (RemovingPropertyValidatorRegistration[] validatorRegistrations, string title, StringBuilder sb)
     {
       var groupedValidatorRegistrations =
           validatorRegistrations
-              .Select (
+              .Select(
                   vr =>
-                      GetTypeName (vr.ValidatorType)
-                      + (vr.CollectorTypeToRemoveFrom != null ? "#" + GetTypeName (vr.CollectorTypeToRemoveFrom) : string.Empty)
+                      GetTypeName(vr.ValidatorType)
+                      + (vr.CollectorTypeToRemoveFrom != null ? "#" + GetTypeName(vr.CollectorTypeToRemoveFrom) : string.Empty)
                       + (vr.ValidatorPredicate != null ? "#Conditional" : string.Empty)
                   )
-              .GroupBy (f => f, (f, elements) => Tuple.Create (f, elements.Count())).ToArray();
-      AppendCollectionData (sb, groupedValidatorRegistrations, title, i => i.Item1 + " (x" + i.Item2 + ")");
+              .GroupBy(f => f, (f, elements) => Tuple.Create(f, elements.Count())).ToArray();
+      AppendCollectionData(sb, groupedValidatorRegistrations, title, i => i.Item1 + " (x" + i.Item2 + ")");
     }
 
     private void AppendCollectionData<TValidatedType> (StringBuilder sb, TValidatedType[] data, string title, Func<TValidatedType, string> formater)
@@ -260,32 +260,32 @@ namespace Remotion.Validation.Merging
         return;
 
       sb.AppendLine();
-      sb.Append (new string (' ', 8) + title);
+      sb.Append(new string(' ', 8) + title);
       foreach (var item in data)
       {
         sb.AppendLine();
-        sb.Append (new string (' ', 8) + "-> ");
-        sb.Append (formater (item));
+        sb.Append(new string(' ', 8) + "-> ");
+        sb.Append(formater(item));
       }
     }
 
     private IEnumerable<IPropertyInformation> GetAllPropertiesForCollector (ValidationRuleCollectorInfo validationRuleCollectorInfo)
     {
-      return validationRuleCollectorInfo.Collector.RemovedPropertyRules.Select (pr => pr.Property)
-          .Concat (validationRuleCollectorInfo.Collector.AddedPropertyRules.Select (pr => pr.Property))
-          .Concat (validationRuleCollectorInfo.Collector.PropertyMetaValidationRules.Select (pr => pr.Property))
-          .Distinct ();
+      return validationRuleCollectorInfo.Collector.RemovedPropertyRules.Select(pr => pr.Property)
+          .Concat(validationRuleCollectorInfo.Collector.AddedPropertyRules.Select(pr => pr.Property))
+          .Concat(validationRuleCollectorInfo.Collector.PropertyMetaValidationRules.Select(pr => pr.Property))
+          .Distinct();
     }
 
     private string DisplayCollectorType (ValidationRuleCollectorInfo validationRuleCollectorInfo)
     {
       var collectorType = validationRuleCollectorInfo.Collector.GetType();
-      var typeName = GetTypeName (collectorType);
+      var typeName = GetTypeName(collectorType);
 
       if (collectorType.IsGenericType)
       {
-        if (typeName.IndexOf ('`') > 0)
-          return string.Format ("{0}<{1}>", typeName.Remove (typeName.IndexOf ('`')), GetTypeName (collectorType.GetGenericArguments()[0]));
+        if (typeName.IndexOf('`') > 0)
+          return string.Format("{0}<{1}>", typeName.Remove(typeName.IndexOf('`')), GetTypeName(collectorType.GetGenericArguments()[0]));
       }
 
       return typeName;
@@ -294,9 +294,9 @@ namespace Remotion.Validation.Merging
     private void AppendPropertyName (IPropertyInformation actualProperty, StringBuilder sb)
     {
       sb.AppendLine().AppendLine();
-      sb.Append (new string (' ', 4) + "-> ");
-      sb.Append (actualProperty.DeclaringType != null ? GetDomainTypeName (actualProperty.DeclaringType.ConvertToRuntimeType()) + "#" : string.Empty);
-      sb.Append (actualProperty.Name);
+      sb.Append(new string(' ', 4) + "-> ");
+      sb.Append(actualProperty.DeclaringType != null ? GetDomainTypeName(actualProperty.DeclaringType.ConvertToRuntimeType()) + "#" : string.Empty);
+      sb.Append(actualProperty.Name);
     }
   }
 }

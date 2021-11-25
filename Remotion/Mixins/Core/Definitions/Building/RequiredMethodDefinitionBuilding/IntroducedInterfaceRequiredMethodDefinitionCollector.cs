@@ -24,16 +24,16 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
   {
     public IEnumerable<RequiredMethodDefinition> CreateRequiredMethodDefinitions (RequirementDefinitionBase requirement)
     {
-      ArgumentUtility.CheckNotNull ("requirement", requirement);
+      ArgumentUtility.CheckNotNull("requirement", requirement);
 
-      Assertion.IsTrue (requirement.Type.IsInterface);
+      Assertion.IsTrue(requirement.Type.IsInterface);
       
       InterfaceIntroductionDefinition introduction = requirement.TargetClass.ReceivedInterfaces[requirement.Type];
       foreach (EventIntroductionDefinition eventIntroduction in introduction.IntroducedEvents)
       {
         // TODO: Assert AddMethod & RemoveMethod notnull
-        yield return new RequiredMethodDefinition (requirement, eventIntroduction.InterfaceMember.GetAddMethod()!, eventIntroduction.ImplementingMember.AddMethod);
-        yield return new RequiredMethodDefinition (requirement, eventIntroduction.InterfaceMember.GetRemoveMethod()!, eventIntroduction.ImplementingMember.RemoveMethod);
+        yield return new RequiredMethodDefinition(requirement, eventIntroduction.InterfaceMember.GetAddMethod()!, eventIntroduction.ImplementingMember.AddMethod);
+        yield return new RequiredMethodDefinition(requirement, eventIntroduction.InterfaceMember.GetRemoveMethod()!, eventIntroduction.ImplementingMember.RemoveMethod);
       }
 
       foreach (PropertyIntroductionDefinition propertyIntroduction in introduction.IntroducedProperties)
@@ -41,20 +41,20 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
         var getMethod = propertyIntroduction.InterfaceMember.GetGetMethod();
         if (getMethod != null)
         {
-          var implementedGetMethod = Assertion.IsNotNull (propertyIntroduction.ImplementingMember.GetMethod);
-          yield return new RequiredMethodDefinition (requirement, getMethod, implementedGetMethod);
+          var implementedGetMethod = Assertion.IsNotNull(propertyIntroduction.ImplementingMember.GetMethod);
+          yield return new RequiredMethodDefinition(requirement, getMethod, implementedGetMethod);
         }
 
         var setMethod = propertyIntroduction.InterfaceMember.GetSetMethod();
         if (setMethod != null)
         {
-          var implementedSetMethod = Assertion.IsNotNull (propertyIntroduction.ImplementingMember.SetMethod);
-          yield return new RequiredMethodDefinition (requirement, setMethod, implementedSetMethod);
+          var implementedSetMethod = Assertion.IsNotNull(propertyIntroduction.ImplementingMember.SetMethod);
+          yield return new RequiredMethodDefinition(requirement, setMethod, implementedSetMethod);
         }
       }
       
       foreach (MethodIntroductionDefinition methodIntroduction in introduction.IntroducedMethods)
-        yield return new RequiredMethodDefinition (requirement, methodIntroduction.InterfaceMember, methodIntroduction.ImplementingMember);
+        yield return new RequiredMethodDefinition(requirement, methodIntroduction.InterfaceMember, methodIntroduction.ImplementingMember);
     }
   }
 }

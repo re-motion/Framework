@@ -33,11 +33,11 @@ namespace Remotion.Tools
   {
     public static AppDomainAssemblyResolver CreateInAppDomain (AppDomain appDomain, string applicationBase)
     {
-      ArgumentUtility.CheckNotNull ("appDomain", appDomain);
-      ArgumentUtility.CheckNotNullOrEmpty ("applicationBase", applicationBase);
+      ArgumentUtility.CheckNotNull("appDomain", appDomain);
+      ArgumentUtility.CheckNotNullOrEmpty("applicationBase", applicationBase);
 
       // TODO RM-7761: null guard should be added.
-      return (AppDomainAssemblyResolver) appDomain.CreateInstanceFromAndUnwrap (
+      return (AppDomainAssemblyResolver) appDomain.CreateInstanceFromAndUnwrap(
                                              typeof (AppDomainAssemblyResolver).Assembly.Location,
                                              typeof (AppDomainAssemblyResolver).GetFullNameChecked(),
                                              false,
@@ -54,9 +54,9 @@ namespace Remotion.Tools
     {
       // Must not access any other assemblies before AssemblyResolve is registered - perform argument check manually
       if (assemblyDirectory == null)
-        throw new ArgumentNullException ("assemblyDirectory");
+        throw new ArgumentNullException("assemblyDirectory");
       if (assemblyDirectory == string.Empty)
-        throw new ArgumentException ("Assembly directory must not be empty.", "assemblyDirectory");
+        throw new ArgumentException("Assembly directory must not be empty.", "assemblyDirectory");
 
       _assemblyDirectory = assemblyDirectory;
     }
@@ -70,37 +70,37 @@ namespace Remotion.Tools
     {
       // Must not access any other assemblies before AssemblyResolve is registered - perform argument check manually
       if (appDomain == null)
-        throw new ArgumentNullException ("appDomain");
+        throw new ArgumentNullException("appDomain");
 
       appDomain.AssemblyResolve += ResolveAssembly;
     }
 
     public Assembly? ResolveAssembly (object? sender, ResolveEventArgs args)
     {
-      ArgumentUtility.CheckNotNull ("sender", sender!);
-      ArgumentUtility.CheckNotNull ("args", args);
+      ArgumentUtility.CheckNotNull("sender", sender!);
+      ArgumentUtility.CheckNotNull("args", args);
 
-      var reference = new AssemblyName (args.Name);
-      var assemblyLocation = GetAssemblyLocation (reference);
+      var reference = new AssemblyName(args.Name);
+      var assemblyLocation = GetAssemblyLocation(reference);
 
       if (assemblyLocation == null)
         return null;
 
-      var assemblyName = AssemblyName.GetAssemblyName (assemblyLocation);
-      if (!AssemblyName.ReferenceMatchesDefinition (reference, assemblyName))
-        throw CreateFileLoadException (args.Name);
+      var assemblyName = AssemblyName.GetAssemblyName(assemblyLocation);
+      if (!AssemblyName.ReferenceMatchesDefinition(reference, assemblyName))
+        throw CreateFileLoadException(args.Name);
 
-      return Assembly.LoadFile (assemblyLocation);
+      return Assembly.LoadFile(assemblyLocation);
     }
 
     private string? GetAssemblyLocation (AssemblyName assemblyName)
     {
-      var dllLocation = Path.Combine (_assemblyDirectory, assemblyName.GetNameChecked() + ".dll");
-      if (File.Exists (dllLocation))
+      var dllLocation = Path.Combine(_assemblyDirectory, assemblyName.GetNameChecked() + ".dll");
+      if (File.Exists(dllLocation))
         return dllLocation;
 
-      var exeLocation = Path.Combine (_assemblyDirectory, assemblyName.GetNameChecked() + ".exe");
-      if (File.Exists (exeLocation))
+      var exeLocation = Path.Combine(_assemblyDirectory, assemblyName.GetNameChecked() + ".exe");
+      if (File.Exists(exeLocation))
         return exeLocation;
 
       return null;
@@ -108,8 +108,8 @@ namespace Remotion.Tools
 
     private FileLoadException CreateFileLoadException (string assemblyName)
     {
-      return new FileLoadException (
-          String.Format (
+      return new FileLoadException(
+          String.Format(
               "Could not load file or assembly '{0}'. The located assembly's manifest definition does not match the assembly reference.", 
               assemblyName));
     }

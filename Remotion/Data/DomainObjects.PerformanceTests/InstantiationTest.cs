@@ -30,26 +30,26 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public void GetObjectReference ()
     {
-      Console.WriteLine ("Expected average duration of GetObjectReference on reference system: ~15 µs (release build), ~20 µs (debug build)");
+      Console.WriteLine("Expected average duration of GetObjectReference on reference system: ~15 µs (release build), ~20 µs (debug build)");
 
       bool found = true;
-      var stopwatch = new Stopwatch ();
+      var stopwatch = new Stopwatch();
       
-      var transaction = ClientTransaction.CreateRootTransaction ();
-      LifetimeService.GetObjectReference (transaction, new ObjectID(typeof (Person), Guid.NewGuid ()));
+      var transaction = ClientTransaction.CreateRootTransaction();
+      LifetimeService.GetObjectReference(transaction, new ObjectID(typeof (Person), Guid.NewGuid()));
 
-      stopwatch.Start ();
+      stopwatch.Start();
       for (int i = 0; i < TestRepititions; i++)
-        found &= LifetimeService.GetObjectReference (transaction, new ObjectID(typeof (Person), Guid.NewGuid())) != null;
-      stopwatch.Stop ();
+        found &= LifetimeService.GetObjectReference(transaction, new ObjectID(typeof (Person), Guid.NewGuid())) != null;
+      stopwatch.Stop();
 
-      Console.WriteLine (found);
+      Console.WriteLine(found);
 
       double averageMicroseconds = stopwatch.Elapsed.TotalMilliseconds * 1000.0 / TestRepititions;
-      Console.WriteLine (
+      Console.WriteLine(
           "GetObjectReference (executed {0}x): Average duration: {1} µs",
           TestRepititions,
-          averageMicroseconds.ToString ("n"));
+          averageMicroseconds.ToString("n"));
     }
   }
 }

@@ -58,48 +58,48 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         int rowIndex,
         bool showIcon)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("dataRowRenderEventArgs", dataRowRenderEventArgs);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
       int originalRowIndex = dataRowRenderEventArgs.ListIndex;
       IBusinessObject businessObject = dataRowRenderEventArgs.BusinessObject;
 
-      IEditableRow? editableRow = renderingContext.Control.EditModeController.GetEditableRow (originalRowIndex);
+      IEditableRow? editableRow = renderingContext.Control.EditModeController.GetEditableRow(originalRowIndex);
 
-      bool hasEditModeControl = editableRow != null && editableRow.HasEditControl (renderingContext.ColumnIndex);
+      bool hasEditModeControl = editableRow != null && editableRow.HasEditControl(renderingContext.ColumnIndex);
 
-      bool isCommandEnabled = RenderBeginTag (renderingContext, originalRowIndex, businessObject);
+      bool isCommandEnabled = RenderBeginTag(renderingContext, originalRowIndex, businessObject);
 
-      RenderCellIcon (renderingContext, businessObject, hasEditModeControl, showIcon);
-      RenderCellCommand (renderingContext);
+      RenderCellIcon(renderingContext, businessObject, hasEditModeControl, showIcon);
+      RenderCellCommand(renderingContext);
 
-      RenderEndTag (renderingContext, isCommandEnabled);
+      RenderEndTag(renderingContext, isCommandEnabled);
     }
 
     private void RenderCellCommand (BocColumnRenderingContext<BocCommandColumnDefinition> renderingContext)
     {
       if (renderingContext.ColumnDefinition.Icon.HasRenderingInformation)
-        renderingContext.ColumnDefinition.Icon.Render (renderingContext.Writer, renderingContext.Control);
+        renderingContext.ColumnDefinition.Icon.Render(renderingContext.Writer, renderingContext.Control);
 
-      if (!string.IsNullOrEmpty (renderingContext.ColumnDefinition.Text))
-        renderingContext.Writer.Write (renderingContext.ColumnDefinition.Text); // Do not HTML encode
+      if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.Text))
+        renderingContext.Writer.Write(renderingContext.ColumnDefinition.Text); // Do not HTML encode
     }
 
     private void RenderCellIcon (
         BocColumnRenderingContext<BocCommandColumnDefinition> renderingContext, IBusinessObject businessObject, bool hasEditModeControl, bool showIcon)
     {
       if (!hasEditModeControl && showIcon)
-        RenderCellIcon (renderingContext, businessObject);
+        RenderCellIcon(renderingContext, businessObject);
     }
 
     private bool RenderBeginTag (
         BocColumnRenderingContext<BocCommandColumnDefinition> renderingContext, int originalRowIndex, IBusinessObject businessObject)
     {
-      bool isCommandEnabled = RenderBeginTagDataCellCommand (renderingContext, businessObject, originalRowIndex);
+      bool isCommandEnabled = RenderBeginTagDataCellCommand(renderingContext, businessObject, originalRowIndex);
       if (!isCommandEnabled)
       {
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.Content);
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.Content);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       }
       return isCommandEnabled;
     }
@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     protected void RenderEndTag (BocColumnRenderingContext<BocCommandColumnDefinition> renderingContext, bool isCommandEnabled)
     {
       if (isCommandEnabled)
-        RenderEndTagDataCellCommand (renderingContext);
+        RenderEndTagDataCellCommand(renderingContext);
       else
         renderingContext.Writer.RenderEndTag();
     }

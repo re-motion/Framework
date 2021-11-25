@@ -50,21 +50,21 @@ namespace Remotion.ObjectBinding.BindableObject
         BindableObjectGlobalizationService bindableObjectGlobalizationService,
         IEnumerable<PropertyBase> properties)
     {
-      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
-      Assertion.IsFalse (concreteType.IsValueType, "mixed types cannot be value types");
-      ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
-      ArgumentUtility.CheckNotNull ("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
-      ArgumentUtility.CheckNotNull ("properties", properties);
+      ArgumentUtility.CheckNotNull("concreteType", concreteType);
+      Assertion.IsFalse(concreteType.IsValueType, "mixed types cannot be value types");
+      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
+      ArgumentUtility.CheckNotNull("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
+      ArgumentUtility.CheckNotNull("properties", properties);
 
-      _targetType = MixinTypeUtility.GetUnderlyingTargetType (concreteType);
+      _targetType = MixinTypeUtility.GetUnderlyingTargetType(concreteType);
       _concreteType = concreteType;
       _businessObjectProvider = businessObjectProvider;
-      _businessObjectProviderAttribute = AttributeUtility.GetCustomAttribute<BusinessObjectProviderAttribute> (concreteType, true);
-      _properties = new PropertyCollection (properties);
+      _businessObjectProviderAttribute = AttributeUtility.GetCustomAttribute<BusinessObjectProviderAttribute>(concreteType, true);
+      _properties = new PropertyCollection(properties);
       _bindableObjectGlobalizationService = bindableObjectGlobalizationService;
 
       foreach (PropertyBase property in _properties.ToArray())
-        property.SetReflectedClass (this);
+        property.SetReflectedClass(this);
     }
 
     /// <summary> Gets the type name as presented to the user. </summary>
@@ -72,8 +72,8 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <remarks> The result of this method may depend on the current culture. </remarks>
     public string GetDisplayName ()
     {
-      var type = TypeAdapter.Create (_targetType);
-      return _bindableObjectGlobalizationService.GetTypeDisplayName (type, type);
+      var type = TypeAdapter.Create(_targetType);
+      return _bindableObjectGlobalizationService.GetTypeDisplayName(type, type);
     }
 
     /// <summary> Returns the <see cref="IBusinessObjectProperty"/> for the passed <paramref name="propertyIdentifier"/>. </summary>
@@ -86,9 +86,9 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </returns>
     public IBusinessObjectProperty? GetPropertyDefinition (string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
 
-      if (!Properties.Contains (propertyIdentifier))
+      if (!Properties.Contains(propertyIdentifier))
         return null;
 
       return Properties[propertyIdentifier];
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </value>
     public string Identifier
     {
-      get { return TypeUtility.GetPartialAssemblyQualifiedName (_targetType); }
+      get { return TypeUtility.GetPartialAssemblyQualifiedName(_targetType); }
     }
 
     public Type TargetType

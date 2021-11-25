@@ -48,8 +48,8 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
 
     public HostingConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection, [NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
-      ArgumentUtility.CheckNotNull ("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
+      ArgumentUtility.CheckNotNull("webTestConfigurationSection", webTestConfigurationSection);
+      ArgumentUtility.CheckNotNull("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
 
       _hostingProviderSettings = webTestConfigurationSection.HostingProviderSettings;
       _verifyWebApplicationStartedTimeout = webTestConfigurationSection.VerifyWebApplicationStartedTimeout;
@@ -60,24 +60,24 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
 
     public IHostingStrategy GetHostingStrategy ()
     {
-      if (string.IsNullOrEmpty (_hostingProviderSettings.Type))
-        return new NullHostingStrategy ();
+      if (string.IsNullOrEmpty(_hostingProviderSettings.Type))
+        return new NullHostingStrategy();
 
       var hostingStrategyTypeName = _hostingProviderSettings.Type;
-      var hostingStrategyType = GetHostingStrategyType (hostingStrategyTypeName);
-      Assertion.IsNotNull (hostingStrategyType, string.Format ("Hosting strategy '{0}' could not be loaded.", hostingStrategyTypeName));
+      var hostingStrategyType = GetHostingStrategyType(hostingStrategyTypeName);
+      Assertion.IsNotNull(hostingStrategyType, string.Format("Hosting strategy '{0}' could not be loaded.", hostingStrategyTypeName));
 
-      var hostingStrategy = (IHostingStrategy) Activator.CreateInstance (hostingStrategyType, new object[] { _testSiteLayoutConfiguration, _hostingProviderSettings.Parameters })!;
+      var hostingStrategy = (IHostingStrategy) Activator.CreateInstance(hostingStrategyType, new object[] { _testSiteLayoutConfiguration, _hostingProviderSettings.Parameters })!;
       return hostingStrategy;
     }
 
     [CanBeNull]
     private Type? GetHostingStrategyType (string hostingStrategyTypeName)
     {
-      if (s_wellKnownHostingStrategyTypes.ContainsKey (hostingStrategyTypeName))
+      if (s_wellKnownHostingStrategyTypes.ContainsKey(hostingStrategyTypeName))
         return s_wellKnownHostingStrategyTypes [hostingStrategyTypeName];
 
-      return Type.GetType (hostingStrategyTypeName, throwOnError: false, ignoreCase: false);
+      return Type.GetType(hostingStrategyTypeName, throwOnError: false, ignoreCase: false);
     }
   }
 }

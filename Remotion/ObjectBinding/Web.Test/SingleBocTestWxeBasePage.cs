@@ -26,7 +26,7 @@ public class SingleBocTestWxeBasePage: TestWxeBasePage
 {
   protected override void OnInit (EventArgs e)
   {
-    base.OnInit (e);
+    base.OnInit(e);
     this.EnableAbort = true;
     this.ShowAbortConfirmation = ShowAbortConfirmation.OnlyIfDirty;
   }

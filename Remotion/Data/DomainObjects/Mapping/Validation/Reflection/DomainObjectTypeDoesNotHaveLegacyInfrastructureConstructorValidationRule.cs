@@ -33,22 +33,22 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      return Validate (classDefinition.ClassType);
+      return Validate(classDefinition.ClassType);
     }
 
     private MappingValidationResult Validate (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      if (!type.IsAbstract || (type.IsAbstract && Attribute.IsDefined (type, typeof (InstantiableAttribute), false)))
+      if (!type.IsAbstract || (type.IsAbstract && Attribute.IsDefined(type, typeof (InstantiableAttribute), false)))
       {
         BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.ExactBinding;
-        ConstructorInfo legacyLoadConstructor = type.GetConstructor (flags, null, new[] { typeof (DataContainer) }, null);
+        ConstructorInfo legacyLoadConstructor = type.GetConstructor(flags, null, new[] { typeof (DataContainer) }, null);
         if (legacyLoadConstructor != null)
         {
-          return MappingValidationResult.CreateInvalidResultForType (
+          return MappingValidationResult.CreateInvalidResultForType(
               type,
               "The domain object type has a legacy infrastructure constructor for loading (a nonpublic constructor taking a single DataContainer "
               + "argument). The reflection-based mapping does not use this constructor any longer and requires it to be removed.");

@@ -76,23 +76,23 @@ public class WxeParameterDeclaration
   public void CopyToCallee (string actualParameterName, NameObjectCollection callerVariables, NameObjectCollection calleeVariables)
   {
     if (_direction != WxeParameterDirection.Out)
-      CopyParameter (actualParameterName, callerVariables, _name, calleeVariables, _required);
+      CopyParameter(actualParameterName, callerVariables, _name, calleeVariables, _required);
   }
 
   /// <summary> Copy a value to a callee parameter. </summary>
   public void CopyToCallee (object parameterValue, NameObjectCollection calleeVariables)
   {
     if (_direction == WxeParameterDirection.Out)
-      throw new ApplicationException ("Constant provided for output parameter.");
+      throw new ApplicationException("Constant provided for output parameter.");
 
-    SetParameter (_name, parameterValue, calleeVariables); 
+    SetParameter(_name, parameterValue, calleeVariables); 
   }
 
   /// <summary> Copy a single callee parameter back to a caller variable. </summary>
   public void CopyToCaller (string actualParameterName, NameObjectCollection calleeVariables, NameObjectCollection callerVariables)
   {
     if (_direction != WxeParameterDirection.In)
-      CopyParameter (_name, calleeVariables, actualParameterName, callerVariables, false);
+      CopyParameter(_name, calleeVariables, actualParameterName, callerVariables, false);
   }
 
   /// <summary> Copy fromVariables[fromName] to toVariables[toName]. </summary>
@@ -100,15 +100,15 @@ public class WxeParameterDeclaration
   {
     object? value = fromVariables[fromName];
     if (value == null && required)
-      throw new ApplicationException ("Parameter '" + fromName + "' is missing.");
-    SetParameter (toName, value, toVariables);
+      throw new ApplicationException("Parameter '" + fromName + "' is missing.");
+    SetParameter(toName, value, toVariables);
   }
 
   /// <summary> Set the parameter variables[parameterName] to the specified value. </summary>
   private void SetParameter (string parameterName, object? value, NameObjectCollection variables)
   {
-    if (value != null && _type != null && ! _type.IsAssignableFrom (value.GetType()))
-      throw new ApplicationException ("Parameter '" + parameterName + "' has unexpected type " + value.GetType().GetFullNameSafe() + " (" + _type.GetFullNameSafe() + " was expected).");
+    if (value != null && _type != null && ! _type.IsAssignableFrom(value.GetType()))
+      throw new ApplicationException("Parameter '" + parameterName + "' has unexpected type " + value.GetType().GetFullNameSafe() + " (" + _type.GetFullNameSafe() + " was expected).");
     variables[parameterName] = value;
   }
 
@@ -118,7 +118,7 @@ public class WxeParameterDeclaration
   /// <param name="variables">The variable list to get the parameter value from.</param>
   public object? GetValue (NameObjectCollection variables)
   {
-    ArgumentUtility.CheckNotNull ("variables", variables);
+    ArgumentUtility.CheckNotNull("variables", variables);
     return variables[_name];
   }
 
@@ -127,7 +127,7 @@ public class WxeParameterDeclaration
     get
     {
       if (_converter == null)
-        _converter = new WxeParameterConverter (this);
+        _converter = new WxeParameterConverter(this);
       return _converter;
     }
   }

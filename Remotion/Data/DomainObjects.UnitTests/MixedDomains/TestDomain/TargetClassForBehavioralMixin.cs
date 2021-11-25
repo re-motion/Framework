@@ -30,13 +30,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
   {
     public static TargetClassForBehavioralMixin NewObject ()
     {
-      return NewObject<TargetClassForBehavioralMixin> ();
+      return NewObject<TargetClassForBehavioralMixin>();
     }
 
     public virtual string Property
     {
-      get { return CurrentProperty.GetValue<string> (); }
-      set { CurrentProperty.SetValue (value); }
+      get { return CurrentProperty.GetValue<string>(); }
+      set { CurrentProperty.SetValue(value); }
     }
 
     public virtual string GetSomething ()

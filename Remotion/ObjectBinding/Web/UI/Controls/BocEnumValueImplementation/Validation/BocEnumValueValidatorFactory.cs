@@ -38,14 +38,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Vali
 
     public IEnumerable<BaseValidator> CreateValidators (IBocEnumValue control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       if (isReadOnly)
         yield break;
 
       var resourceManager = control.GetResourceManager();
 
-      var requiredFieldValidator = CreateRequiredFieldValidator (control, resourceManager);
+      var requiredFieldValidator = CreateRequiredFieldValidator(control, resourceManager);
       if (requiredFieldValidator != null)
         yield return requiredFieldValidator;
     }
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Vali
         var requiredValidator = new RequiredFieldValidator();
         requiredValidator.ID = control.ID + "_ValidatorRequried";
         requiredValidator.ControlToValidate = control.TargetControl.ID;
-        requiredValidator.ErrorMessage = resourceManager.GetString (BocEnumValue.ResourceIdentifier.NullItemValidationMessage);
+        requiredValidator.ErrorMessage = resourceManager.GetString(BocEnumValue.ResourceIdentifier.NullItemValidationMessage);
         requiredValidator.EnableViewState = false;
 
         return requiredValidator;

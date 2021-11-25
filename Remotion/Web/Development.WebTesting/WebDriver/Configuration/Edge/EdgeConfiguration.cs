@@ -42,13 +42,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     private const string c_userDataFolderPrefix = "userdata";
 
     private static readonly Lazy<EdgeExecutable> s_edgeExecutable =
-        new Lazy<EdgeExecutable> (() => new EdgeBinariesProvider().GetInstalledExecutable(), LazyThreadSafetyMode.ExecutionAndPublication);
+        new Lazy<EdgeExecutable>(() => new EdgeBinariesProvider().GetInstalledExecutable(), LazyThreadSafetyMode.ExecutionAndPublication);
 
-    private static readonly Lazy<FieldInfo> s_knownCapabilityNamesField = new Lazy<FieldInfo> (
+    private static readonly Lazy<FieldInfo> s_knownCapabilityNamesField = new Lazy<FieldInfo>(
         () =>
         {
-          var knownCapabilityNamesField = typeof (DriverOptions).GetField ("knownCapabilityNames", BindingFlags.Instance | BindingFlags.NonPublic);
-          Assertion.IsNotNull (knownCapabilityNamesField, "Selenium has changed, please update s_knownCapabilityNamesField field.");
+          var knownCapabilityNamesField = typeof (DriverOptions).GetField("knownCapabilityNames", BindingFlags.Instance | BindingFlags.NonPublic);
+          Assertion.IsNotNull(knownCapabilityNamesField, "Selenium has changed, please update s_knownCapabilityNamesField field.");
           return knownCapabilityNamesField;
         },
         LazyThreadSafetyMode.ExecutionAndPublication);
@@ -76,17 +76,17 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
         [NotNull] EdgeExecutable edgeExecutable)
         : base (webTestConfigurationSection)
     {
-      ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
-      ArgumentUtility.CheckNotNull ("edgeExecutable", edgeExecutable);
+      ArgumentUtility.CheckNotNull("webTestConfigurationSection", webTestConfigurationSection);
+      ArgumentUtility.CheckNotNull("edgeExecutable", edgeExecutable);
 
       BrowserBinaryPath = edgeExecutable.BrowserBinaryPath;
       DriverBinaryPath = edgeExecutable.DriverBinaryPath;
       UserDirectoryRoot = edgeExecutable.UserDirectory;
 
-      DownloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
+      DownloadDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 
-      var downloadStartedGracePeriod = TimeSpan.FromMinutes (1);
-      DownloadHelper = new DefaultDownloadHelper (
+      var downloadStartedGracePeriod = TimeSpan.FromMinutes(1);
+      DownloadHelper = new DefaultDownloadHelper(
           DownloadDirectory,
           ".crdownload",
           webTestConfigurationSection.DownloadStartedTimeout,
@@ -107,25 +107,25 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
                               UserDirectory = userDirectory
                           };
 
-      DisableSpecCompliance (edgeOptions);
+      DisableSpecCompliance(edgeOptions);
 
-      edgeOptions.AddArgument ($"user-data-dir={userDirectory}");
+      edgeOptions.AddArgument($"user-data-dir={userDirectory}");
 
-      edgeOptions.AddArgument ("no-first-run");
-      edgeOptions.AddArgument ("force-device-scale-factor=1");
+      edgeOptions.AddArgument("no-first-run");
+      edgeOptions.AddArgument("force-device-scale-factor=1");
 
-      edgeOptions.AddUserProfilePreference ("safebrowsing.enabled", true);
-      edgeOptions.AddUserProfilePreference ("download.default_directory", DownloadDirectory);
+      edgeOptions.AddUserProfilePreference("safebrowsing.enabled", true);
+      edgeOptions.AddUserProfilePreference("download.default_directory", DownloadDirectory);
 
       return edgeOptions;
     }
 
     private void DisableSpecCompliance (ExtendedEdgeOptions edgeOptions)
     {
-      var knownCapabilityNames = (Dictionary<string, string>) s_knownCapabilityNamesField.Value.GetValue (edgeOptions)!;
-      knownCapabilityNames.Remove ("w3c");
+      var knownCapabilityNames = (Dictionary<string, string>) s_knownCapabilityNamesField.Value.GetValue(edgeOptions)!;
+      knownCapabilityNames.Remove("w3c");
 
-      edgeOptions.AddAdditionalCapability ("w3c", false);
+      edgeOptions.AddAdditionalCapability("w3c", false);
     }
 
     private string CreateUnusedUserDirectoryPath ()
@@ -134,13 +134,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
       var userDirectoryID = 0;
       do
       {
-        userDirectory = Path.Combine (UserDirectoryRoot, string.Join (c_userDataFolderPrefix, userDirectoryID));
+        userDirectory = Path.Combine(UserDirectoryRoot, string.Join(c_userDataFolderPrefix, userDirectoryID));
         userDirectoryID++;
-      } while (Directory.Exists (userDirectory));
+      } while (Directory.Exists(userDirectory));
 
       return userDirectory;
     }
 
-    public override IBrowserFactory BrowserFactory => new EdgeBrowserFactory (this);
+    public override IBrowserFactory BrowserFactory => new EdgeBrowserFactory(this);
   }
 }

@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [TestCaseSource (typeof (DisabledTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
     public void GenericTests (GenericSelectorTestAction<WebButtonSelector, WebButtonControlObject> testAction)
     {
-      testAction (Helper, e => e.WebButtons(), "webButton");
+      testAction(Helper, e => e.WebButtons(), "webButton");
     }
 
     [Test]
@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebButtonSelector, WebButtonControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<WebButtonSelector, WebButtonControlObject> testAction)
     {
-      testAction (Helper, e => e.WebButtons(), "webButton");
+      testAction(Helper, e => e.WebButtons(), "webButton");
     }
 
     [Test]
@@ -56,12 +56,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var control = home.WebButtons().GetByLocalID ("MyDisabledWebButton");
+      var control = home.WebButtons().GetByLocalID("MyDisabledWebButton");
 
-      Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (
+      Assert.That(control.IsDisabled(), Is.True);
+      Assert.That(
           () => control.Click(), 
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "Click").Message));
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "Click").Message));
     }
 
     [Test]
@@ -69,8 +69,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
       
-      var webButton = home.WebButtons().GetByLocalID ("MyWebButton1Sync");
-      Assert.That (webButton.GetText(), Is.EqualTo ("SyncButton"));
+      var webButton = home.WebButtons().GetByLocalID("MyWebButton1Sync");
+      Assert.That(webButton.GetText(), Is.EqualTo("SyncButton"));
     }
 
     [Test]
@@ -79,27 +79,27 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       {
-        var syncWebButton = home.WebButtons().GetByLocalID ("MyWebButton1Sync");
-        var completionDetection = new CompletionDetectionStrategyTestHelper (syncWebButton);
+        var syncWebButton = home.WebButtons().GetByLocalID("MyWebButton1Sync");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(syncWebButton);
         home = syncWebButton.Click().Expect<WxePageObject>();
-        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-        Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Sync"));
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("Sync"));
       }
 
       {
-        var asyncWebButton = home.WebButtons().GetByLocalID ("MyWebButton2Async");
-        var completionDetection = new CompletionDetectionStrategyTestHelper (asyncWebButton);
+        var asyncWebButton = home.WebButtons().GetByLocalID("MyWebButton2Async");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(asyncWebButton);
         home = asyncWebButton.Click().Expect<WxePageObject>();
-        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-        Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Async"));
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("Async"));
       }
 
       {
-        var hrefWebButton = home.WebButtons().GetByTextContent ("HrefButton");
-        var completionDetection = new CompletionDetectionStrategyTestHelper (hrefWebButton);
+        var hrefWebButton = home.WebButtons().GetByTextContent("HrefButton");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(hrefWebButton);
         home = hrefWebButton.Click().Expect<WxePageObject>();
-        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-        Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.Empty);
       }
     }
 
@@ -108,8 +108,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.WebButtons().GetByID ("body_MyWebButton1Sync");
-      Assert.That (webButton.GetButtonType(), Is.EqualTo (ButtonType.Standard));
+      var webButton = home.WebButtons().GetByID("body_MyWebButton1Sync");
+      Assert.That(webButton.GetButtonType(), Is.EqualTo(ButtonType.Standard));
     }
 
     [Test]
@@ -117,8 +117,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.WebButtons().GetByID ("body_MyWebButtonPrimary1Sync");
-      Assert.That (webButton.GetButtonType(), Is.EqualTo (ButtonType.Primary));
+      var webButton = home.WebButtons().GetByID("body_MyWebButtonPrimary1Sync");
+      Assert.That(webButton.GetButtonType(), Is.EqualTo(ButtonType.Primary));
     }
 
     [Test]
@@ -126,8 +126,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.WebButtons().GetByID ("body_MyWebButtonSupplemental1Sync");
-      Assert.That (webButton.GetButtonType(), Is.EqualTo (ButtonType.Supplemental));
+      var webButton = home.WebButtons().GetByID("body_MyWebButtonSupplemental1Sync");
+      Assert.That(webButton.GetButtonType(), Is.EqualTo(ButtonType.Supplemental));
     }
 
     [Test]
@@ -135,9 +135,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.WebButtons().GetByID ("body_MyWebButton1Sync");
-      Assert.That (webButton.StyleInfo.HasCssClass ("buttonBody"), Is.True);
-      Assert.That (webButton.StyleInfo.HasCssClass ("doesNotHaveThisClass"), Is.False);
+      var webButton = home.WebButtons().GetByID("body_MyWebButton1Sync");
+      Assert.That(webButton.StyleInfo.HasCssClass("buttonBody"), Is.True);
+      Assert.That(webButton.StyleInfo.HasCssClass("doesNotHaveThisClass"), Is.False);
     }
 
     [Test]
@@ -145,8 +145,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.WebButtons().GetByID ("body_MyWebButton1Sync");
-      Assert.That (webButton.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.FromRgb (230, 229, 231)));
+      var webButton = home.WebButtons().GetByID("body_MyWebButton1Sync");
+      Assert.That(webButton.StyleInfo.GetBackgroundColor(), Is.EqualTo(WebColor.FromRgb(230, 229, 231)));
     }
 
     [Test]
@@ -154,8 +154,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.WebButtons().GetByID ("body_MyWebButton1Sync");
-      Assert.That (webButton.StyleInfo.GetTextColor(), Is.EqualTo (WebColor.Black));
+      var webButton = home.WebButtons().GetByID("body_MyWebButton1Sync");
+      Assert.That(webButton.StyleInfo.GetTextColor(), Is.EqualTo(WebColor.Black));
     }
 
     [Test]
@@ -163,13 +163,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.WebButtons().GetByItemID ("MyWebButtonWithUseLegacyButton");
-      Assert.That (webButton.GetText(), Is.EqualTo ("LegacyButton"));
+      var webButton = home.WebButtons().GetByItemID("MyWebButtonWithUseLegacyButton");
+      Assert.That(webButton.GetText(), Is.EqualTo("LegacyButton"));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("WebButtonTest.wxe");
+      return Start<WxePageObject>("WebButtonTest.wxe");
     }
   }
 }

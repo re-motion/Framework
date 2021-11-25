@@ -63,58 +63,58 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (!IsPostBack)
       {
         var tenants = GetPossibleTenants();
-        CurrentTenantField.SetBusinessObjectList (tenants);
+        CurrentTenantField.SetBusinessObjectList(tenants);
         var currentTenant = SecurityManagerPrincipal.Current.Tenant;
 
-        CurrentTenantField.LoadUnboundValue (currentTenant, false);
+        CurrentTenantField.LoadUnboundValue(currentTenant, false);
 
-        bool isCurrentTenantTheOnlyTenantInTheCollection = tenants.Length == 1 && currentTenant != null && tenants[0].ID.Equals (currentTenant.ID);
+        bool isCurrentTenantTheOnlyTenantInTheCollection = tenants.Length == 1 && currentTenant != null && tenants[0].ID.Equals(currentTenant.ID);
         bool isCurrentTenantTheOnlyTenant = tenants.Length == 0 && currentTenant != null;
         bool hasExactlyOneTenant = isCurrentTenantTheOnlyTenantInTheCollection || isCurrentTenantTheOnlyTenant;
         IsTenantSelectionEnabled = !hasExactlyOneTenant;
 
         var substitutions = GetPossibleSubstitutions();
-        CurrentSubstitutionField.SetBusinessObjectList (substitutions);
+        CurrentSubstitutionField.SetBusinessObjectList(substitutions);
         var currentSubstitution = SecurityManagerPrincipal.Current.Substitution;
 
-        CurrentSubstitutionField.LoadUnboundValue (currentSubstitution, false);
+        CurrentSubstitutionField.LoadUnboundValue(currentSubstitution, false);
         IsSubstitutionSelectionEnabled = substitutions.Length > 0;
       }
     }
 
     private TenantProxy[] GetPossibleTenants ()
     {
-      return SecurityManagerPrincipal.Current.GetTenants (EnableAbstractTenants).OrderBy (t => t.DisplayName).ToArray();
+      return SecurityManagerPrincipal.Current.GetTenants(EnableAbstractTenants).OrderBy(t => t.DisplayName).ToArray();
     }
 
     private SubstitutionProxy[] GetPossibleSubstitutions ()
     {
-      return SecurityManagerPrincipal.Current.GetActiveSubstitutions().OrderBy (s => s.DisplayName).ToArray();
+      return SecurityManagerPrincipal.Current.GetActiveSubstitutions().OrderBy(s => s.DisplayName).ToArray();
     }
 
     protected void CurrentTenantField_SelectionChanged (object sender, EventArgs e)
     {
       string tenantID = CurrentTenantField.BusinessObjectUniqueIdentifier;
-      Assertion.IsNotNull (tenantID);
+      Assertion.IsNotNull(tenantID);
       var possibleTenants = GetPossibleTenants();
-      CurrentTenantField.SetBusinessObjectList (possibleTenants);
-      if (!possibleTenants.Where (s=>s.UniqueIdentifier == tenantID).Any())
+      CurrentTenantField.SetBusinessObjectList(possibleTenants);
+      if (!possibleTenants.Where(s=>s.UniqueIdentifier == tenantID).Any())
       {
         CurrentTenantField.Value = null;
         return;
       }
 
       var oldSecurityManagerPrincipal = SecurityManagerPrincipal.Current;
-      var newSecurityManagerPrincipal = ApplicationInstance.SecurityManagerPrincipalFactory.Create (
-          ObjectID.Parse (tenantID).GetHandle<Tenant> (),
+      var newSecurityManagerPrincipal = ApplicationInstance.SecurityManagerPrincipalFactory.Create(
+          ObjectID.Parse(tenantID).GetHandle<Tenant>(),
           oldSecurityManagerPrincipal.User.Handle,
           oldSecurityManagerPrincipal.Substitution != null ? oldSecurityManagerPrincipal.Substitution.Handle : null);
-      ApplicationInstance.SetCurrentPrincipal (newSecurityManagerPrincipal);
+      ApplicationInstance.SetCurrentPrincipal(newSecurityManagerPrincipal);
 
       CurrentTenantField.IsDirty = false;
     }
@@ -123,39 +123,39 @@ namespace Remotion.SecurityManager.Clients.Web.UI
     {
       string substitutionID = CurrentSubstitutionField.BusinessObjectUniqueIdentifier;
       var possibleSubstitutions = GetPossibleSubstitutions();
-      CurrentSubstitutionField.SetBusinessObjectList (possibleSubstitutions);
-      if (substitutionID != null && !possibleSubstitutions.Where (s=>s.UniqueIdentifier == substitutionID).Any())
+      CurrentSubstitutionField.SetBusinessObjectList(possibleSubstitutions);
+      if (substitutionID != null && !possibleSubstitutions.Where(s=>s.UniqueIdentifier == substitutionID).Any())
       {
         CurrentSubstitutionField.Value = null;
         return;
       }
 
       var oldSecurityManagerPrincipal = SecurityManagerPrincipal.Current;
-      var newSecurityManagerPrincipal = ApplicationInstance.SecurityManagerPrincipalFactory.Create (
+      var newSecurityManagerPrincipal = ApplicationInstance.SecurityManagerPrincipalFactory.Create(
           oldSecurityManagerPrincipal.Tenant.Handle,
           oldSecurityManagerPrincipal.User.Handle,
-          substitutionID != null ? ObjectID.Parse (substitutionID).GetHandle<Substitution>() : null);
-      ApplicationInstance.SetCurrentPrincipal (newSecurityManagerPrincipal);
+          substitutionID != null ? ObjectID.Parse(substitutionID).GetHandle<Substitution>() : null);
+      ApplicationInstance.SetCurrentPrincipal(newSecurityManagerPrincipal);
 
       CurrentSubstitutionField.IsDirty = false;
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
+      var resourceManager = GetResourceManager(typeof (ResourceIdentifier));
 
-      CurrentUserLabel.Text = resourceManager.GetString (ResourceIdentifier.CurrentUserLabelText);
-      CurrentSubstitutionLabel.Text = resourceManager.GetString (ResourceIdentifier.CurrentSubstitutionLabelText);
-      CurrentTenantLabel.Text = resourceManager.GetString (ResourceIdentifier.CurrentTenantLabelText);
+      CurrentUserLabel.Text = resourceManager.GetString(ResourceIdentifier.CurrentUserLabelText);
+      CurrentSubstitutionLabel.Text = resourceManager.GetString(ResourceIdentifier.CurrentSubstitutionLabelText);
+      CurrentTenantLabel.Text = resourceManager.GetString(ResourceIdentifier.CurrentTenantLabelText);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       CurrentTenantField.ReadOnly = !IsTenantSelectionEnabled && !SecurityManagerPrincipal.Current.IsNull;
       CurrentSubstitutionField.ReadOnly = !IsSubstitutionSelectionEnabled;
       //For now: the substitution is permanently editable.
       CurrentSubstitutionField.ReadOnly = false;
 
-      CurrentUserField.LoadUnboundValue (SecurityManagerPrincipal.Current.User, false);
+      CurrentUserField.LoadUnboundValue(SecurityManagerPrincipal.Current.User, false);
 
       CurrentUserLabel.Visible = CurrentUserField.Visible;
       CurrentSubstitutionLabel.Visible = CurrentSubstitutionField.Visible;
@@ -166,14 +166,14 @@ namespace Remotion.SecurityManager.Clients.Web.UI
     {
       Type type = this.GetType();
 
-      return GlobalizationService.GetResourceManager (type);
+      return GlobalizationService.GetResourceManager(type);
     }
 
     protected IResourceManager GetResourceManager (Type resourceEnumType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("resourceEnumType", resourceEnumType, typeof (Enum));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("resourceEnumType", resourceEnumType, typeof (Enum));
 
-      return ResourceManagerSet.Create (GlobalizationService.GetResourceManager (TypeAdapter.Create (resourceEnumType)), GetResourceManager());
+      return ResourceManagerSet.Create(GlobalizationService.GetResourceManager(TypeAdapter.Create(resourceEnumType)), GetResourceManager());
     }
 
     protected IServiceLocator ServiceLocator

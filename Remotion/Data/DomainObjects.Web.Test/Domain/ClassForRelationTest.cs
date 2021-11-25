@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
     
     public static ClassForRelationTest NewObject ()
     {
-      return DomainObject.NewObject<ClassForRelationTest> ();
+      return DomainObject.NewObject<ClassForRelationTest>();
     }
 
 
@@ -87,15 +87,15 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
 
     IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()
     {
-      return new DomainObjectSecurityStrategyDecorator (
-          ObjectSecurityStrategy.Create (this, InvalidationToken.Create()),
+      return new DomainObjectSecurityStrategyDecorator(
+          ObjectSecurityStrategy.Create(this, InvalidationToken.Create()),
           this,
           RequiredSecurityForStates.NewAndDeleted);
     }
 
     Type ISecurableObject.GetSecurableType ()
     {
-      return GetPublicDomainObjectType ();
+      return GetPublicDomainObjectType();
     }
 
     ISecurityContext ISecurityContextFactory.CreateSecurityContext ()
@@ -103,11 +103,11 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
       if (_securityContext == null)
       {
         _securityContext =
-            SecurityContext.Create (
+            SecurityContext.Create(
                 GetPublicDomainObjectType(),
                 null,
                 null,
-                Name.Substring (0, Name.Length - 1),
+                Name.Substring(0, Name.Length - 1),
                 new Dictionary<string, EnumWrapper>(),
                 new EnumWrapper[0]);
       }

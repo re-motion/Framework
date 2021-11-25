@@ -38,15 +38,15 @@ namespace Remotion.Validation.Implementation
 
     public bool IsValidatableType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return !_filterTypes.Contains (type);
+      return !_filterTypes.Contains(type);
     }
 
-    [MemberNotNull (nameof (_filterTypes))]
+    [MemberNotNull (nameof(_filterTypes))]
     private void Initialize ()
     {
-      _filterTypes = new List<Type> (
+      _filterTypes = new List<Type>(
           new[]
           {
               typeof (object),

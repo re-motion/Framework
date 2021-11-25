@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
   {
     public static FileSystemItem NewObject ()
     {
-      return NewObject<FileSystemItem> ();
+      return NewObject<FileSystemItem>();
     }
 
     protected FileSystemItem ()

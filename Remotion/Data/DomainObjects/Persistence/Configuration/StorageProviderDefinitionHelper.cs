@@ -42,12 +42,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     protected override ConfigurationProperty CreateDefaultProviderNameProperty ()
     {
-      return CreateDefaultProviderNameProperty ("defaultProviderDefinition", null);
+      return CreateDefaultProviderNameProperty("defaultProviderDefinition", null);
     }
 
     protected override ConfigurationProperty CreateProviderSettingsProperty ()
     {
-      return CreateProviderSettingsProperty ("providerDefinitions");
+      return CreateProviderSettingsProperty("providerDefinitions");
     }
   }
 }

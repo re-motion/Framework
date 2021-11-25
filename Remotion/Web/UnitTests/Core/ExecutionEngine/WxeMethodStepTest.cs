@@ -44,9 +44,9 @@ public class WxeMethodStepTest: WxeTest
   public void CheckCtorArgumentNotInstanceMember ()
   {
     Type functionType = typeof (TestFunctionWithInvalidSteps);
-    MethodInfo step1 = functionType.GetMethod ("InvalidStep1", BindingFlags.Static | BindingFlags.NonPublic);
-    Assert.That (
-        () => new WxeMethodStep (_functionWithInvalidSteps, step1),
+    MethodInfo step1 = functionType.GetMethod("InvalidStep1", BindingFlags.Static | BindingFlags.NonPublic);
+    Assert.That(
+        () => new WxeMethodStep(_functionWithInvalidSteps, step1),
         Throws.InstanceOf<WxeException>());
   }
 
@@ -54,9 +54,9 @@ public class WxeMethodStepTest: WxeTest
   public void CheckCtorArgumentWrongParameterType ()
   {
     Type functionType = typeof (TestFunctionWithInvalidSteps);
-    MethodInfo step2 = functionType.GetMethod ("InvalidStep2", BindingFlags.Instance | BindingFlags.NonPublic);
-    Assert.That (
-        () => new WxeMethodStep (_functionWithInvalidSteps, step2),
+    MethodInfo step2 = functionType.GetMethod("InvalidStep2", BindingFlags.Instance | BindingFlags.NonPublic);
+    Assert.That(
+        () => new WxeMethodStep(_functionWithInvalidSteps, step2),
         Throws.InstanceOf<WxeException>());
   }
 
@@ -64,9 +64,9 @@ public class WxeMethodStepTest: WxeTest
   public void CheckCtorArgumentTooManyParameters ()
   {
     Type functionType = typeof (TestFunctionWithInvalidSteps);
-    MethodInfo step3 = functionType.GetMethod ("InvalidStep3", BindingFlags.Instance | BindingFlags.NonPublic);
-    Assert.That (
-        () => new WxeMethodStep (_functionWithInvalidSteps, step3),
+    MethodInfo step3 = functionType.GetMethod("InvalidStep3", BindingFlags.Instance | BindingFlags.NonPublic);
+    Assert.That(
+        () => new WxeMethodStep(_functionWithInvalidSteps, step3),
         Throws.InstanceOf<WxeException>());
   }
 
@@ -74,9 +74,9 @@ public class WxeMethodStepTest: WxeTest
   public void CheckCtorArgumentWrongStepListInstance ()
   {
     Type functionType = typeof (TestFunction);
-    MethodInfo step1 = functionType.GetMethod ("Step1", BindingFlags.Instance | BindingFlags.NonPublic);
-    Assert.That (
-        () => new WxeMethodStep (_functionWithInvalidSteps, step1),
+    MethodInfo step1 = functionType.GetMethod("Step1", BindingFlags.Instance | BindingFlags.NonPublic);
+    Assert.That(
+        () => new WxeMethodStep(_functionWithInvalidSteps, step1),
         Throws.InstanceOf<WxeException>());
   }
 
@@ -84,26 +84,26 @@ public class WxeMethodStepTest: WxeTest
   public void ExecuteMethodStep ()
   {
     Type functionType = typeof (TestFunction);
-    MethodInfo step1 = functionType.GetMethod ("Step1", BindingFlags.Instance | BindingFlags.NonPublic);
-    WxeMethodStep methodStep = new WxeMethodStep (_function, step1);
+    MethodInfo step1 = functionType.GetMethod("Step1", BindingFlags.Instance | BindingFlags.NonPublic);
+    WxeMethodStep methodStep = new WxeMethodStep(_function, step1);
     
-    methodStep.Execute (CurrentWxeContext);
+    methodStep.Execute(CurrentWxeContext);
 
-    Assert.That (_function.LastExecutedStepID, Is.EqualTo ("1"));
+    Assert.That(_function.LastExecutedStepID, Is.EqualTo("1"));
   }
 
   [Test]
   public void MethodStepWithDelegate ()
   {
-    WxeMethodStep methodStep = new WxeMethodStep (_function.PublicStepMethod);
-    Assert.That (PrivateInvoke.GetNonPublicField (methodStep, "_methodName"), Is.EqualTo ("PublicStepMethod"));
+    WxeMethodStep methodStep = new WxeMethodStep(_function.PublicStepMethod);
+    Assert.That(PrivateInvoke.GetNonPublicField(methodStep, "_methodName"), Is.EqualTo("PublicStepMethod"));
   }
 
   [Test]
   public void MethodStepWithDelegateWithContext ()
   {
-    WxeMethodStep methodStep = new WxeMethodStep (_function.PublicStepMethodWithContext);
-    Assert.That (PrivateInvoke.GetNonPublicField (methodStep, "_methodName"), Is.EqualTo ("PublicStepMethodWithContext"));
+    WxeMethodStep methodStep = new WxeMethodStep(_function.PublicStepMethodWithContext);
+    Assert.That(PrivateInvoke.GetNonPublicField(methodStep, "_methodName"), Is.EqualTo("PublicStepMethodWithContext"));
   }
 
   [Test]
@@ -111,21 +111,21 @@ public class WxeMethodStepTest: WxeTest
   {
     Action multiDelegate = _function.PublicStepMethod;
     multiDelegate += _function.PublicStepMethod;
-    Assert.That (
-        () => new WxeMethodStep (multiDelegate),
+    Assert.That(
+        () => new WxeMethodStep(multiDelegate),
         Throws.ArgumentException
-            .With.Message.Contains ("The delegate must contain a single method."));
+            .With.Message.Contains("The delegate must contain a single method."));
   }
 
   [Test]
   public void MethodStepWithDelegateThrowsOnInvalidTarget ()
   {
     Action action = InstanceMethodNotDeclaredOnWxeFunction;
-    Assert.That (action.Target, Is.Not.Null.And.Not.AssignableTo<WxeStepList>());
-    Assert.That (
-        () => new WxeMethodStep (action),
+    Assert.That(action.Target, Is.Not.Null.And.Not.AssignableTo<WxeStepList>());
+    Assert.That(
+        () => new WxeMethodStep(action),
         Throws.ArgumentException
-            .With.ArgumentExceptionMessageEqualTo (
+            .With.ArgumentExceptionMessageEqualTo(
                 "The delegate's target must be a non-null WxeStepList, but it was 'Remotion.Web.UnitTests.Core.ExecutionEngine.WxeMethodStepTest'. When used " 
                 + "within a WxeFunction, the delegate should be a method of the surrounding WxeFunction, and it must not be a closure.", "method"));
   }
@@ -134,11 +134,11 @@ public class WxeMethodStepTest: WxeTest
   public void MethodStepWithDelegateThrowsOnNullTarget ()
   {
     Action action = StaticMethodNotDeclaredOnWxeFunction;
-    Assert.That (action.Target, Is.Null);
-    Assert.That (
-        () => new WxeMethodStep (action),
+    Assert.That(action.Target, Is.Null);
+    Assert.That(
+        () => new WxeMethodStep(action),
         Throws.ArgumentException
-            .With.ArgumentExceptionMessageEqualTo (
+            .With.ArgumentExceptionMessageEqualTo(
                 "The delegate's target must be a non-null WxeStepList, but it was 'null'. When used "
                 + "within a WxeFunction, the delegate should be a method of the surrounding WxeFunction, and it must not be a closure.", "method"));
   }
@@ -146,37 +146,37 @@ public class WxeMethodStepTest: WxeTest
   [Test]
   public void ExecuteMethodStepWithDelegate ()
   {
-    WxeMethodStep methodStep = new WxeMethodStep (_function.PublicStepMethod);
+    WxeMethodStep methodStep = new WxeMethodStep(_function.PublicStepMethod);
 
-    Assert.That (_function.LastExecutedStepID, Is.Not.EqualTo ("1"));
+    Assert.That(_function.LastExecutedStepID, Is.Not.EqualTo("1"));
 
-    methodStep.Execute (CurrentWxeContext);
+    methodStep.Execute(CurrentWxeContext);
 
-    Assert.That (_function.LastExecutedStepID, Is.EqualTo ("1"));
+    Assert.That(_function.LastExecutedStepID, Is.EqualTo("1"));
   }
 
   [Test]
   public void ExecuteMethodStepWithContext ()
   {
     Type functionType = typeof (TestFunction);
-    MethodInfo step2 = functionType.GetMethod ("Step2", BindingFlags.Instance | BindingFlags.NonPublic);
-    WxeMethodStep methodStepWithContext = new WxeMethodStep (_function, step2);
+    MethodInfo step2 = functionType.GetMethod("Step2", BindingFlags.Instance | BindingFlags.NonPublic);
+    WxeMethodStep methodStepWithContext = new WxeMethodStep(_function, step2);
     
-    methodStepWithContext.Execute (CurrentWxeContext);
+    methodStepWithContext.Execute(CurrentWxeContext);
 
-    Assert.That (_function.LastExecutedStepID, Is.EqualTo ("2"));
-    Assert.That (_function.WxeContextStep2, Is.SameAs (CurrentWxeContext));
+    Assert.That(_function.LastExecutedStepID, Is.EqualTo("2"));
+    Assert.That(_function.WxeContextStep2, Is.SameAs(CurrentWxeContext));
   }
 
   [Test]
   public void ExecuteMethodStepWithDelegateWithContext ()
   {
-    WxeMethodStep methodStepWithContext = new WxeMethodStep (_function.PublicStepMethodWithContext);
+    WxeMethodStep methodStepWithContext = new WxeMethodStep(_function.PublicStepMethodWithContext);
     
-    methodStepWithContext.Execute (CurrentWxeContext);
+    methodStepWithContext.Execute(CurrentWxeContext);
 
-    Assert.That (_function.LastExecutedStepID, Is.EqualTo ("2"));
-    Assert.That (_function.WxeContextStep2, Is.SameAs (CurrentWxeContext));
+    Assert.That(_function.LastExecutedStepID, Is.EqualTo("2"));
+    Assert.That(_function.WxeContextStep2, Is.SameAs(CurrentWxeContext));
   }
 
   private void InstanceMethodNotDeclaredOnWxeFunction ()

@@ -30,28 +30,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     protected override bool EvaluateIsValid ()
     {
-      var control = NamingContainer.FindControl (ControlToValidate);
+      var control = NamingContainer.FindControl(ControlToValidate);
 
       var autoCompleteReferenceValue = control as BocAutoCompleteReferenceValue;
 
       if (autoCompleteReferenceValue == null)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "BocAutoCompleteReferenceValueInvalidDisplayNameValidator may only be applied to controls of type BocAutoCompleteReferenceValue");
       }
 
-      var validationValue = GetControlValidationValue (ControlToValidate);
-      if (string.IsNullOrEmpty (validationValue))
+      var validationValue = GetControlValidationValue(ControlToValidate);
+      if (string.IsNullOrEmpty(validationValue))
         return true;
 
-      var validationValueParts = validationValue.Split (new[] { '\n' }, StringSplitOptions.None);
+      var validationValueParts = validationValue.Split(new[] { '\n' }, StringSplitOptions.None);
       if (validationValueParts.Length != 2)
       {
-        throw new InvalidOperationException (
-          string.Format ("ValidationValue for control '{0}' has an invalid format.", ControlToValidate));
+        throw new InvalidOperationException(
+          string.Format("ValidationValue for control '{0}' has an invalid format.", ControlToValidate));
       }
 
-      if (string.IsNullOrEmpty (validationValueParts[0]) && !string.IsNullOrEmpty (validationValueParts[1]))
+      if (string.IsNullOrEmpty(validationValueParts[0]) && !string.IsNullOrEmpty(validationValueParts[1]))
         return false;
 
       return true;

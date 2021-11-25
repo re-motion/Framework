@@ -41,106 +41,106 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _associatedDomainObjectCollectionDataStrategyFactoryMock = MockRepository.GenerateStrictMock<IAssociatedDomainObjectCollectionDataStrategyFactory> ();
+      _associatedDomainObjectCollectionDataStrategyFactoryMock = MockRepository.GenerateStrictMock<IAssociatedDomainObjectCollectionDataStrategyFactory>();
 
-      _provider = new DomainObjectCollectionEndPointCollectionProvider (_associatedDomainObjectCollectionDataStrategyFactoryMock);
+      _provider = new DomainObjectCollectionEndPointCollectionProvider(_associatedDomainObjectCollectionDataStrategyFactoryMock);
 
-      _endPointID = RelationEndPointID.Create (DomainObjectIDs.Customer1, typeof (Customer), "Orders");
+      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof (Customer), "Orders");
 
-      _dataStrategyStub = MockRepository.GenerateStub<IDomainObjectCollectionData> ();
-      _dataStrategyStub.Stub (stub => stub.RequiredItemType).Return (typeof (Order));
+      _dataStrategyStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
+      _dataStrategyStub.Stub(stub => stub.RequiredItemType).Return(typeof (Order));
     }
 
     [Test]
     public void GetCollection ()
     {
       _associatedDomainObjectCollectionDataStrategyFactoryMock
-          .Expect (mock => mock.CreateDataStrategyForEndPoint (_endPointID))
-          .Return (_dataStrategyStub);
-      _associatedDomainObjectCollectionDataStrategyFactoryMock.Replay ();
+          .Expect(mock => mock.CreateDataStrategyForEndPoint(_endPointID))
+          .Return(_dataStrategyStub);
+      _associatedDomainObjectCollectionDataStrategyFactoryMock.Replay();
 
-      _dataStrategyStub.Stub (stub => stub.AssociatedEndPointID).Return (_endPointID);
+      _dataStrategyStub.Stub(stub => stub.AssociatedEndPointID).Return(_endPointID);
 
-      var result = _provider.GetCollection (_endPointID);
+      var result = _provider.GetCollection(_endPointID);
 
-      _associatedDomainObjectCollectionDataStrategyFactoryMock.VerifyAllExpectations ();
-      Assert.That (result, Is.TypeOf<OrderCollection> ());
-      Assert.That (DomainObjectCollectionDataTestHelper.GetDataStrategy (result), Is.SameAs (_dataStrategyStub));
+      _associatedDomainObjectCollectionDataStrategyFactoryMock.VerifyAllExpectations();
+      Assert.That(result, Is.TypeOf<OrderCollection>());
+      Assert.That(DomainObjectCollectionDataTestHelper.GetDataStrategy(result), Is.SameAs(_dataStrategyStub));
 
-      Assert.That (result, Is.SameAs (_provider.GetCollection (_endPointID)));
+      Assert.That(result, Is.SameAs(_provider.GetCollection(_endPointID)));
     }
 
     [Test]
     public void GetCollection_CollectionWithWrongCtor ()
     {
-      var classDefinition = GetTypeDefinition (typeof (DomainObjectWithCollectionMissingCtor));
-      var relationEndPointDefinition = GetEndPointDefinition (typeof (DomainObjectWithCollectionMissingCtor), "OppositeObjects");
-      var endPointID = RelationEndPointID.Create (new ObjectID(classDefinition, Guid.NewGuid ()), relationEndPointDefinition);
+      var classDefinition = GetTypeDefinition(typeof (DomainObjectWithCollectionMissingCtor));
+      var relationEndPointDefinition = GetEndPointDefinition(typeof (DomainObjectWithCollectionMissingCtor), "OppositeObjects");
+      var endPointID = RelationEndPointID.Create(new ObjectID(classDefinition, Guid.NewGuid()), relationEndPointDefinition);
 
       _associatedDomainObjectCollectionDataStrategyFactoryMock
-          .Stub (mock => mock.CreateDataStrategyForEndPoint (endPointID))
-          .Return (_dataStrategyStub);
+          .Stub(mock => mock.CreateDataStrategyForEndPoint(endPointID))
+          .Return(_dataStrategyStub);
 
-      Assert.That (() => _provider.GetCollection (endPointID), Throws.TypeOf<MissingMethodException> ()
-          .With.Message.Contains ("does not provide a constructor taking an IDomainObjectCollectionData object"));
+      Assert.That(() => _provider.GetCollection(endPointID), Throws.TypeOf<MissingMethodException>()
+          .With.Message.Contains("does not provide a constructor taking an IDomainObjectCollectionData object"));
     }
 
     [Test]
     public void RegisterCollection ()
     {
-      _dataStrategyStub.Stub (stub => stub.AssociatedEndPointID).Return (_endPointID);
-      var collection = new DomainObjectCollection (_dataStrategyStub);
+      _dataStrategyStub.Stub(stub => stub.AssociatedEndPointID).Return(_endPointID);
+      var collection = new DomainObjectCollection(_dataStrategyStub);
       
-      _provider.RegisterCollection (_endPointID, collection);
+      _provider.RegisterCollection(_endPointID, collection);
 
-      Assert.That (_provider.GetCollection (_endPointID), Is.SameAs (collection));
+      Assert.That(_provider.GetCollection(_endPointID), Is.SameAs(collection));
     }
 
     [Test]
     public void RegisterCollection_OverwritesFormerCollection ()
     {
-      _dataStrategyStub.Stub (stub => stub.AssociatedEndPointID).Return (_endPointID);
+      _dataStrategyStub.Stub(stub => stub.AssociatedEndPointID).Return(_endPointID);
       _associatedDomainObjectCollectionDataStrategyFactoryMock
-          .Expect (mock => mock.CreateDataStrategyForEndPoint (_endPointID))
-          .Return (_dataStrategyStub);
-      _associatedDomainObjectCollectionDataStrategyFactoryMock.Replay ();
+          .Expect(mock => mock.CreateDataStrategyForEndPoint(_endPointID))
+          .Return(_dataStrategyStub);
+      _associatedDomainObjectCollectionDataStrategyFactoryMock.Replay();
 
-      var collection1 = _provider.GetCollection (_endPointID);
-      var collection2 = new DomainObjectCollection (_dataStrategyStub);
+      var collection1 = _provider.GetCollection(_endPointID);
+      var collection2 = new DomainObjectCollection(_dataStrategyStub);
 
-      Assert.That (_provider.GetCollection (_endPointID), Is.SameAs (collection1));
+      Assert.That(_provider.GetCollection(_endPointID), Is.SameAs(collection1));
 
-      _provider.RegisterCollection (_endPointID, collection2);
+      _provider.RegisterCollection(_endPointID, collection2);
 
-      Assert.That (_provider.GetCollection (_endPointID), Is.SameAs (collection2));
+      Assert.That(_provider.GetCollection(_endPointID), Is.SameAs(collection2));
 
-      var collection3 = new DomainObjectCollection (_dataStrategyStub);
-      _provider.RegisterCollection (_endPointID, collection3);
+      var collection3 = new DomainObjectCollection(_dataStrategyStub);
+      _provider.RegisterCollection(_endPointID, collection3);
 
-      Assert.That (_provider.GetCollection (_endPointID), Is.SameAs (collection3));
+      Assert.That(_provider.GetCollection(_endPointID), Is.SameAs(collection3));
     }
 
     [Test]
     public void RegisterCollection_NonAssociatedCollection ()
     {
-      _dataStrategyStub.Stub (stub => stub.AssociatedEndPointID).Return (null);
-      var collection = new DomainObjectCollection (_dataStrategyStub);
-      Assert.That (
-          () => _provider.RegisterCollection (_endPointID, collection),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("The collection must be associated with the given endPointID.", "collection"));
+      _dataStrategyStub.Stub(stub => stub.AssociatedEndPointID).Return(null);
+      var collection = new DomainObjectCollection(_dataStrategyStub);
+      Assert.That(
+          () => _provider.RegisterCollection(_endPointID, collection),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("The collection must be associated with the given endPointID.", "collection"));
     }
 
     [Test]
     public void RegisterCollection_CollectionAssociatedToDifferentEndPoint ()
     {
-      _dataStrategyStub.Stub (stub => stub.AssociatedEndPointID).Return (RelationEndPointID.Create (DomainObjectIDs.Customer2, typeof (Customer), "Orders"));
-      var collection = new DomainObjectCollection (_dataStrategyStub);
+      _dataStrategyStub.Stub(stub => stub.AssociatedEndPointID).Return(RelationEndPointID.Create(DomainObjectIDs.Customer2, typeof (Customer), "Orders"));
+      var collection = new DomainObjectCollection(_dataStrategyStub);
 
-      Assert.That (
-          () => _provider.RegisterCollection (_endPointID, collection),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("The collection must be associated with the given endPointID.", "collection"));
+      Assert.That(
+          () => _provider.RegisterCollection(_endPointID, collection),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("The collection must be associated with the given endPointID.", "collection"));
     }
 
     [Test]
@@ -148,11 +148,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      var instance = new DomainObjectCollectionEndPointCollectionProvider (new SerializableAssociatedDomainObjectCollectionDataStrategyFactoryFake ());
+      var instance = new DomainObjectCollectionEndPointCollectionProvider(new SerializableAssociatedDomainObjectCollectionDataStrategyFactoryFake());
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (instance);
+      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
 
-      Assert.That (deserializedInstance.DataStrategyFactory, Is.Not.Null);
+      Assert.That(deserializedInstance.DataStrategyFactory, Is.Not.Null);
     }
   }
 }

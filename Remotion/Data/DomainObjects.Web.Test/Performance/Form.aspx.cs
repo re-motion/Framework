@@ -25,15 +25,15 @@ namespace Remotion.Data.DomainObjects.Web.Test.Performance
   {
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
       var items = ((PerformanceFunction) CurrentFunction).Items;
-      ItemList.LoadUnboundValue (items, IsPostBack);
+      ItemList.LoadUnboundValue(items, IsPostBack);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
-      HtmlHeadAppender.Current.RegisterPageStylesheetLink ();
+      base.OnPreRender(e);
+      HtmlHeadAppender.Current.RegisterPageStylesheetLink();
     }
   }
 }

@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 
     public new Type GetPublicDomainObjectType ()
     {
-      return base.GetPublicDomainObjectType ();
+      return base.GetPublicDomainObjectType();
     }
 
     [StorageClassNone]

@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding
 
     protected BindableObjectBase ()
     {
-      _implementation = BindableObjectBaseImplementation.Create (this);
+      _implementation = BindableObjectBaseImplementation.Create(this);
     }
 
     public object? GetProperty (IBusinessObjectProperty property)

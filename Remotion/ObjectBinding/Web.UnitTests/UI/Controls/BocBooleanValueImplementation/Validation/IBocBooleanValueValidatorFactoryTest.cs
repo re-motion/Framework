@@ -25,12 +25,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       var instance = _serviceLocator.GetInstance<IBocBooleanValueValidatorFactory>();
 
-      Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocBooleanValue>>());
+      Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<IBocBooleanValue>>());
 
       var factories = ((CompoundValidatorFactory<IBocBooleanValue>) instance).VlidatorFactories;
-      Assert.That (
-          factories.Select (f => f.GetType()),
-          Is.EqualTo (new[] { typeof (BocBooleanValueValidatorFactory), typeof (ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
+      Assert.That(
+          factories.Select(f => f.GetType()),
+          Is.EqualTo(new[] { typeof (BocBooleanValueValidatorFactory), typeof (ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
     }
 
     [Test]
@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       var instance1 = _serviceLocator.GetInstance<IBocBooleanValueValidatorFactory>();
       var instance2 = _serviceLocator.GetInstance<IBocBooleanValueValidatorFactory>();
 
-      Assert.That (instance1, Is.InstanceOf<CompoundValidatorFactory<IBocBooleanValue>>());
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.InstanceOf<CompoundValidatorFactory<IBocBooleanValue>>());
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

@@ -45,18 +45,18 @@ namespace Remotion.Data.DomainObjects.Validation
     protected PropertyValueTooLongException (SerializationInfo info, StreamingContext context)
         : base (info, context)
     {
-      _domainObject = (DomainObject) info.GetValue ("_domainObject", typeof (DomainObject));
-      _propertyName = info.GetString ("_propertyName");
-      _maxLength = info.GetInt32 ("_maxLength");
+      _domainObject = (DomainObject) info.GetValue("_domainObject", typeof (DomainObject));
+      _propertyName = info.GetString("_propertyName");
+      _maxLength = info.GetInt32("_maxLength");
     }
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      base.GetObjectData (info, context);
+      base.GetObjectData(info, context);
 
-      info.AddValue ("_domainObject", _domainObject);
-      info.AddValue ("_propertyName", _propertyName);
-      info.AddValue ("_maxLength", _maxLength);
+      info.AddValue("_domainObject", _domainObject);
+      info.AddValue("_propertyName", _propertyName);
+      info.AddValue("_maxLength", _maxLength);
     }
 
     public DomainObject DomainObject

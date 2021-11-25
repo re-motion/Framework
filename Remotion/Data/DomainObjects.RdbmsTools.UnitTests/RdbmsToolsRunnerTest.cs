@@ -26,85 +26,85 @@ namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests
     [Test]
     public void CreateAppDomainSetup ()
     {
-      var parameter = new RdbmsToolsParameters ();
+      var parameter = new RdbmsToolsParameters();
       parameter.BaseDirectory = @"c:\foobar";
-      AppDomainSetup setup = RdbmsToolsRunner.CreateAppDomainSetup (parameter);
-      Assert.That (setup.ApplicationName, Is.EqualTo ("RdbmsTools"));
-      Assert.That (setup.ApplicationBase, Is.EqualTo (@"c:\foobar"));
-      Assert.That (setup.ConfigurationFile, Is.Null);
+      AppDomainSetup setup = RdbmsToolsRunner.CreateAppDomainSetup(parameter);
+      Assert.That(setup.ApplicationName, Is.EqualTo("RdbmsTools"));
+      Assert.That(setup.ApplicationBase, Is.EqualTo(@"c:\foobar"));
+      Assert.That(setup.ConfigurationFile, Is.Null);
     }
 
     [Test]
     public void CreateAppDomainSetup_WithAbsoluteConfigFilePath ()
     {
-      var parameter = new RdbmsToolsParameters ();
+      var parameter = new RdbmsToolsParameters();
       parameter.BaseDirectory = @"c:\foobar";
-      string configPath = GetConfigPath ("Test.config");
+      string configPath = GetConfigPath("Test.config");
       parameter.ConfigFile = configPath;
 
-      Assert.That (Path.IsPathRooted (configPath), configPath);
-      Assert.That (File.Exists (configPath), configPath);
+      Assert.That(Path.IsPathRooted(configPath), configPath);
+      Assert.That(File.Exists(configPath), configPath);
       
-      AppDomainSetup setup = RdbmsToolsRunner.CreateAppDomainSetup (parameter);
-      Assert.That (setup.ConfigurationFile, Is.EqualTo (configPath));
+      AppDomainSetup setup = RdbmsToolsRunner.CreateAppDomainSetup(parameter);
+      Assert.That(setup.ConfigurationFile, Is.EqualTo(configPath));
     }
 
     [Test]
     public void CreateAppDomainSetup_WithAbsoluteConfigFilePath_FileNotFound ()
     {
-      var parameter = new RdbmsToolsParameters ();
+      var parameter = new RdbmsToolsParameters();
       parameter.BaseDirectory = @"c:\foobar";
-      string configPath = GetConfigPath ("Test12313.config");
+      string configPath = GetConfigPath("Test12313.config");
       parameter.ConfigFile = configPath;
 
-      Assert.That (Path.IsPathRooted (configPath), configPath);
-      Assert.That (File.Exists (configPath), Is.False, configPath);
-      Assert.That (
-          () => RdbmsToolsRunner.CreateAppDomainSetup (parameter),
+      Assert.That(Path.IsPathRooted(configPath), configPath);
+      Assert.That(File.Exists(configPath), Is.False, configPath);
+      Assert.That(
+          () => RdbmsToolsRunner.CreateAppDomainSetup(parameter),
           Throws.InstanceOf<FileNotFoundException>()
-              .With.Message.Contains ("The configuration file supplied by the 'config' parameter was not found."));
+              .With.Message.Contains("The configuration file supplied by the 'config' parameter was not found."));
     }
 
     [Test]
     public void CreateAppDomainSetup_WithPathRelativeToCurrentDirectory ()
     {
-      var parameter = new RdbmsToolsParameters ();
+      var parameter = new RdbmsToolsParameters();
       parameter.BaseDirectory = @"c:\foobar";
 
-      string configPath = GetConfigPath ("Test.config");
-      Environment.CurrentDirectory = Path.GetDirectoryName (configPath);
-      parameter.ConfigFile = Path.GetFileName (configPath);
+      string configPath = GetConfigPath("Test.config");
+      Environment.CurrentDirectory = Path.GetDirectoryName(configPath);
+      parameter.ConfigFile = Path.GetFileName(configPath);
 
-      Assert.That (Path.IsPathRooted (configPath), configPath);
-      Assert.That (Path.IsPathRooted (parameter.ConfigFile), Is.False, parameter.ConfigFile);
-      Assert.That (File.Exists (configPath), configPath);
-      Assert.That (File.Exists (Path.Combine (Environment.CurrentDirectory, parameter.ConfigFile)));
+      Assert.That(Path.IsPathRooted(configPath), configPath);
+      Assert.That(Path.IsPathRooted(parameter.ConfigFile), Is.False, parameter.ConfigFile);
+      Assert.That(File.Exists(configPath), configPath);
+      Assert.That(File.Exists(Path.Combine(Environment.CurrentDirectory, parameter.ConfigFile)));
 
-      AppDomainSetup setup = RdbmsToolsRunner.CreateAppDomainSetup (parameter);
-      Assert.That (setup.ConfigurationFile, Is.EqualTo (configPath));
+      AppDomainSetup setup = RdbmsToolsRunner.CreateAppDomainSetup(parameter);
+      Assert.That(setup.ConfigurationFile, Is.EqualTo(configPath));
     }
 
     [Test]
     public void CreateAppDomainSetup_WithPathRelativeToCurrentDirectory_FileNotFound ()
     {
-      var parameter = new RdbmsToolsParameters ();
+      var parameter = new RdbmsToolsParameters();
       parameter.BaseDirectory = @"c:\foobar";
-      string configPath = GetConfigPath ("Test123.config");
-      Environment.CurrentDirectory = Path.GetDirectoryName (configPath);
-      parameter.ConfigFile = Path.GetFileName (configPath);
+      string configPath = GetConfigPath("Test123.config");
+      Environment.CurrentDirectory = Path.GetDirectoryName(configPath);
+      parameter.ConfigFile = Path.GetFileName(configPath);
 
-      Assert.That (Path.IsPathRooted (configPath), configPath);
-      Assert.That (Path.IsPathRooted (parameter.ConfigFile), Is.False, parameter.ConfigFile);
-      Assert.That (File.Exists (Path.Combine (Environment.CurrentDirectory, parameter.ConfigFile)), Is.False);
-      Assert.That (
-          () => RdbmsToolsRunner.CreateAppDomainSetup (parameter),
+      Assert.That(Path.IsPathRooted(configPath), configPath);
+      Assert.That(Path.IsPathRooted(parameter.ConfigFile), Is.False, parameter.ConfigFile);
+      Assert.That(File.Exists(Path.Combine(Environment.CurrentDirectory, parameter.ConfigFile)), Is.False);
+      Assert.That(
+          () => RdbmsToolsRunner.CreateAppDomainSetup(parameter),
           Throws.InstanceOf<FileNotFoundException>()
-              .With.Message.Contains ("The configuration file supplied by the 'config' parameter was not found."));
+              .With.Message.Contains("The configuration file supplied by the 'config' parameter was not found."));
     }
 
     private string GetConfigPath (string configFileName)
     {
-      return Path.Combine (AppContext.BaseDirectory, configFileName);
+      return Path.Combine(AppContext.BaseDirectory, configFileName);
     }
   }
 }

@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
   {
     public static TargetClassForPersistentMixin NewObject ()
     {
-      return NewObject<TargetClassForPersistentMixin> ();
+      return NewObject<TargetClassForPersistentMixin>();
     }
 
     [StorageClassNone]

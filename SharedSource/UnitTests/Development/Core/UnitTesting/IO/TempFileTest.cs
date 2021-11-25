@@ -34,8 +34,8 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.IO
     {
       using (TempFile tempFile = new TempFile())
       {
-        Assert.That (tempFile.FileName, Is.Not.Empty);
-        Assert.That (File.Exists (tempFile.FileName), Is.True);
+        Assert.That(tempFile.FileName, Is.Not.Empty);
+        Assert.That(File.Exists(tempFile.FileName), Is.True);
       }
     }
 
@@ -45,7 +45,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.IO
       TempFile tempFile = new TempFile();
       string fileName = tempFile.FileName;
       tempFile.Dispose();
-      Assert.That (File.Exists (fileName), Is.False);
+      Assert.That(File.Exists(fileName), Is.False);
     }
 
     [Test]
@@ -53,10 +53,10 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.IO
     {
       TempFile tempFile = new TempFile();
       tempFile.Dispose();
-      Assert.That (
+      Assert.That(
           () => tempFile.FileName,
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("Object disposed."));
+              .With.Message.EqualTo("Object disposed."));
     }
 
     [Test]
@@ -65,16 +65,16 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.IO
       using (TempFile tempFile = new TempFile())
       {
         string expectedText = "Some\r\nText";
-        byte[] buffer = Encoding.ASCII.GetBytes (expectedText);
-        using (Stream stream = new MemoryStream (buffer.Length))
+        byte[] buffer = Encoding.ASCII.GetBytes(expectedText);
+        using (Stream stream = new MemoryStream(buffer.Length))
         {
-          stream.Write (buffer, 0, buffer.Length);
+          stream.Write(buffer, 0, buffer.Length);
           stream.Position = 0;
-          tempFile.WriteStream (stream);
+          tempFile.WriteStream(stream);
         }
 
-        string actual = File.ReadAllText (tempFile.FileName);
-        Assert.That (actual, Is.EqualTo (expectedText));
+        string actual = File.ReadAllText(tempFile.FileName);
+        Assert.That(actual, Is.EqualTo(expectedText));
       }
     }
 
@@ -87,16 +87,16 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.IO
                               + "0123456789\r\n0123456789\r\n0123456789\r\n0123456789\r\n0123456789\r\n"
                               + "0123456789\r\n0123456789\r\n0123456789\r\n0123456789\r\n0123456789\r\n";
 
-        byte[] buffer = Encoding.ASCII.GetBytes (expectedText);
-        using (Stream stream = new MemoryStream (buffer.Length))
+        byte[] buffer = Encoding.ASCII.GetBytes(expectedText);
+        using (Stream stream = new MemoryStream(buffer.Length))
         {
-          stream.Write (buffer, 0, buffer.Length);
+          stream.Write(buffer, 0, buffer.Length);
           stream.Position = 0;
-          tempFile.WriteStream (stream);
+          tempFile.WriteStream(stream);
         }
 
-        string actual = File.ReadAllText (tempFile.FileName);
-        Assert.That (actual, Is.EqualTo (expectedText));
+        string actual = File.ReadAllText(tempFile.FileName);
+        Assert.That(actual, Is.EqualTo(expectedText));
       }
     }
 
@@ -106,23 +106,23 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.IO
       using (TempFile tempFile = new TempFile())
       {
         string expectedText = "Some\r\nText";
-        tempFile.WriteAllBytes (Encoding.ASCII.GetBytes (expectedText));
+        tempFile.WriteAllBytes(Encoding.ASCII.GetBytes(expectedText));
 
-        string actual = File.ReadAllText (tempFile.FileName);
-        Assert.That (actual, Is.EqualTo (expectedText));
+        string actual = File.ReadAllText(tempFile.FileName);
+        Assert.That(actual, Is.EqualTo(expectedText));
       }
     }
 
     [Test]
     public void WriteAllText ()
     {
-      using (TempFile tempFile = new TempFile ())
+      using (TempFile tempFile = new TempFile())
       {
         string expectedText = "Some\r\nText";
-        tempFile.WriteAllText (expectedText);
+        tempFile.WriteAllText(expectedText);
 
-        string actual = File.ReadAllText (tempFile.FileName);
-        Assert.That (actual, Is.EqualTo (expectedText));
+        string actual = File.ReadAllText(tempFile.FileName);
+        Assert.That(actual, Is.EqualTo(expectedText));
       }
     }
   }

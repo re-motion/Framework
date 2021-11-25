@@ -37,13 +37,13 @@ namespace Remotion.Security.Metadata
 
     public IReadOnlyList<Enum> GetRequiredMethodPermissions (Type type, IMethodInformation methodInformation)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("methodInformation", methodInformation);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("methodInformation", methodInformation);
 
       if (methodInformation.IsNull)
         return s_emptyPermissions;
 
-      var permissionAttribute = methodInformation.GetCustomAttribute<DemandPermissionAttribute> (true);
+      var permissionAttribute = methodInformation.GetCustomAttribute<DemandPermissionAttribute>(true);
       if (permissionAttribute == null)
         return s_emptyPermissions;
 

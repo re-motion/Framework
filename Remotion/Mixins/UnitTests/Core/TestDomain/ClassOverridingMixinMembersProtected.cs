@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     [OverrideMixin]
     protected string RaiseEvent ()
     {
-      return _abstractEvent ();
+      return _abstractEvent();
     }
 
     private Func<string> _abstractEvent;

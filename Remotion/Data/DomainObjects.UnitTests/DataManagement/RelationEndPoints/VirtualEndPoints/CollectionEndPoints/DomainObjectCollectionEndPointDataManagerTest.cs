@@ -50,29 +50,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Customer1, "Orders");
-      _changeDetectionStrategyMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPointChangeDetectionStrategy> ();
+      _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Customer1, "Orders");
+      _changeDetectionStrategyMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPointChangeDetectionStrategy>();
 
-      _domainObject1 = DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order1);
-      _domainObject2 = DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order3);
-      _domainObject3 = DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order4);
-      _domainObject4 = DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order5);
+      _domainObject1 = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order1);
+      _domainObject2 = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order3);
+      _domainObject3 = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order4);
+      _domainObject4 = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order5);
 
-      _domainObjectEndPoint1 = MockRepository.GenerateStub<IRealObjectEndPoint> ();
-      _domainObjectEndPoint1.Stub (stub => stub.GetDomainObjectReference ()).Return (_domainObject1);
-      _domainObjectEndPoint1.Stub (stub => stub.ObjectID).Return (_domainObject1.ID);
+      _domainObjectEndPoint1 = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      _domainObjectEndPoint1.Stub(stub => stub.GetDomainObjectReference()).Return(_domainObject1);
+      _domainObjectEndPoint1.Stub(stub => stub.ObjectID).Return(_domainObject1.ID);
 
-      _domainObjectEndPoint2 = MockRepository.GenerateStub<IRealObjectEndPoint> ();
-      _domainObjectEndPoint2.Stub (stub => stub.GetDomainObjectReference ()).Return (_domainObject2);
-      _domainObjectEndPoint2.Stub (stub => stub.ObjectID).Return (_domainObject2.ID);
+      _domainObjectEndPoint2 = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      _domainObjectEndPoint2.Stub(stub => stub.GetDomainObjectReference()).Return(_domainObject2);
+      _domainObjectEndPoint2.Stub(stub => stub.ObjectID).Return(_domainObject2.ID);
 
-      _domainObjectEndPoint3 = MockRepository.GenerateStub<IRealObjectEndPoint> ();
-      _domainObjectEndPoint3.Stub (stub => stub.GetDomainObjectReference ()).Return (_domainObject3);
-      _domainObjectEndPoint3.Stub (stub => stub.ObjectID).Return (_domainObject3.ID);
+      _domainObjectEndPoint3 = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      _domainObjectEndPoint3.Stub(stub => stub.GetDomainObjectReference()).Return(_domainObject3);
+      _domainObjectEndPoint3.Stub(stub => stub.ObjectID).Return(_domainObject3.ID);
 
-      _dataManager = new DomainObjectCollectionEndPointDataManager (_endPointID, _changeDetectionStrategyMock);
+      _dataManager = new DomainObjectCollectionEndPointDataManager(_endPointID, _changeDetectionStrategyMock);
 
       _comparison123 = Compare123;
     }
@@ -80,29 +80,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Initialization ()
     {
-      var dataManager = new DomainObjectCollectionEndPointDataManager (_endPointID, _changeDetectionStrategyMock);
+      var dataManager = new DomainObjectCollectionEndPointDataManager(_endPointID, _changeDetectionStrategyMock);
 
-      Assert.That (dataManager.CollectionData, Is.TypeOf (typeof (ChangeCachingDomainObjectCollectionDataDecorator)));
-      Assert.That (dataManager.CollectionData.ToArray (), Is.Empty);
-      Assert.That (dataManager.OriginalOppositeEndPoints, Is.Empty);
+      Assert.That(dataManager.CollectionData, Is.TypeOf(typeof (ChangeCachingDomainObjectCollectionDataDecorator)));
+      Assert.That(dataManager.CollectionData.ToArray(), Is.Empty);
+      Assert.That(dataManager.OriginalOppositeEndPoints, Is.Empty);
    }
 
     [Test]
     public void CollectionData ()
     {
-      _dataManager.CollectionData.Insert (0, _domainObject1);
+      _dataManager.CollectionData.Insert(0, _domainObject1);
 
-      Assert.That (_dataManager.CollectionData.ToArray (), Is.EqualTo (new[] { _domainObject1 }));
+      Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject1 }));
     }
 
     [Test]
     public void ContainsOriginalObjectID ()
     {
-      Assert.That (_dataManager.ContainsOriginalObjectID (_domainObject1.ID), Is.False);
+      Assert.That(_dataManager.ContainsOriginalObjectID(_domainObject1.ID), Is.False);
 
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_domainObject1);
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_domainObject1);
 
-      Assert.That (_dataManager.ContainsOriginalObjectID (_domainObject1.ID), Is.True);
+      Assert.That(_dataManager.ContainsOriginalObjectID(_domainObject1.ID), Is.True);
     }
 
     [Test]
@@ -110,391 +110,391 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var oppositeEndPoint = DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint(_domainObject1);
 
-      Assert.That (_dataManager.ContainsOriginalOppositeEndPoint (oppositeEndPoint), Is.False);
+      Assert.That(_dataManager.ContainsOriginalOppositeEndPoint(oppositeEndPoint), Is.False);
 
-      _dataManager.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
+      _dataManager.RegisterOriginalOppositeEndPoint(oppositeEndPoint);
 
-      Assert.That (_dataManager.ContainsOriginalOppositeEndPoint (oppositeEndPoint), Is.True);
+      Assert.That(_dataManager.ContainsOriginalOppositeEndPoint(oppositeEndPoint), Is.True);
     }
 
     [Test]
     public void RegisterOriginalOppositeEndPoint ()
     {
-      Assert.That (_dataManager.OriginalOppositeEndPoints.ToArray(), Is.Empty);
+      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.Empty);
 
-      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint> ();
-      endPointStub.Stub (stub => stub.GetDomainObjectReference ()).Return (_domainObject2);
-      endPointStub.Stub (stub => stub.ObjectID).Return (_domainObject2.ID);
+      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      endPointStub.Stub(stub => stub.GetDomainObjectReference()).Return(_domainObject2);
+      endPointStub.Stub(stub => stub.ObjectID).Return(_domainObject2.ID);
       
-      Assert.That (_dataManager.CollectionData.ToArray (), Has.No.Member (_domainObject2));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Has.No.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalItemsWithoutEndPoints, Has.No.Member(_domainObject2));
+      Assert.That(_dataManager.CollectionData.ToArray(), Has.No.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.No.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Has.No.Member(_domainObject2));
 
-      _dataManager.RegisterOriginalOppositeEndPoint (endPointStub);
+      _dataManager.RegisterOriginalOppositeEndPoint(endPointStub);
 
-      Assert.That (_dataManager.HasDataChanged (), Is.False);
-      Assert.That (_dataManager.CollectionData.ToArray (), Has.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray(), Has.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalOppositeEndPoints.ToArray(), Is.EqualTo (new[] { endPointStub }));
-      Assert.That (_dataManager.CurrentOppositeEndPoints.ToArray (), Is.EqualTo (new[] { endPointStub }));
+      Assert.That(_dataManager.HasDataChanged(), Is.False);
+      Assert.That(_dataManager.CollectionData.ToArray(), Has.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.EqualTo(new[] { endPointStub }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EqualTo(new[] { endPointStub }));
     }
 
     [Test]
     public void RegisterOriginalOppositeEndPoint_AlreadyRegistered ()
     {
-      var oppositeEndPoint = DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint (_domainObject1);
-      _dataManager.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
-      Assert.That (
-          () => _dataManager.RegisterOriginalOppositeEndPoint (oppositeEndPoint),
+      var oppositeEndPoint = DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint(_domainObject1);
+      _dataManager.RegisterOriginalOppositeEndPoint(oppositeEndPoint);
+      Assert.That(
+          () => _dataManager.RegisterOriginalOppositeEndPoint(oppositeEndPoint),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The opposite end-point has already been registered."));
     }
 
     [Test]
     public void RegisterOriginalOppositeEndPoint_AlreadyRegisteredWithoutEndPoint ()
     {
-      Assert.That (_dataManager.OriginalOppositeEndPoints.ToArray (), Is.Empty);
+      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.Empty);
 
-      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint> ();
-      endPointStub.Stub (stub => stub.GetDomainObjectReference ()).Return (_domainObject2);
-      endPointStub.Stub (stub => stub.ObjectID).Return (_domainObject2.ID);
+      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      endPointStub.Stub(stub => stub.GetDomainObjectReference()).Return(_domainObject2);
+      endPointStub.Stub(stub => stub.ObjectID).Return(_domainObject2.ID);
 
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_domainObject2);
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_domainObject2);
 
-      Assert.That (_dataManager.CollectionData.ToArray (), Has.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Has.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalOppositeEndPoints, Is.Empty);
-      Assert.That (_dataManager.CurrentOppositeEndPoints, Is.Empty);
-      Assert.That (_dataManager.OriginalItemsWithoutEndPoints, Has.Member(_domainObject2));
+      Assert.That(_dataManager.CollectionData.ToArray(), Has.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalOppositeEndPoints, Is.Empty);
+      Assert.That(_dataManager.CurrentOppositeEndPoints, Is.Empty);
+      Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Has.Member(_domainObject2));
 
-      _dataManager.RegisterOriginalOppositeEndPoint (endPointStub);
+      _dataManager.RegisterOriginalOppositeEndPoint(endPointStub);
 
-      Assert.That (_dataManager.HasDataChanged (), Is.False);
-      Assert.That (_dataManager.CollectionData.ToArray (), Has.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Has.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalOppositeEndPoints.ToArray (), Is.EqualTo (new[] { endPointStub }));
-      Assert.That (_dataManager.OriginalItemsWithoutEndPoints, Has.No.Member(_domainObject2));
-      Assert.That (_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EqualTo(new[]{endPointStub}));
+      Assert.That(_dataManager.HasDataChanged(), Is.False);
+      Assert.That(_dataManager.CollectionData.ToArray(), Has.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.EqualTo(new[] { endPointStub }));
+      Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Has.No.Member(_domainObject2));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EqualTo(new[]{endPointStub}));
     }
 
     [Test]
     public void UnregisterOriginalOppositeEndPoint ()
     {
-      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint> ();
-      endPointStub.Stub (stub => stub.GetDomainObjectReference ()).Return (_domainObject2);
-      endPointStub.Stub (stub => stub.ObjectID).Return (_domainObject2.ID);
-      endPointStub.Stub (stub => stub.MarkSynchronized());
+      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      endPointStub.Stub(stub => stub.GetDomainObjectReference()).Return(_domainObject2);
+      endPointStub.Stub(stub => stub.ObjectID).Return(_domainObject2.ID);
+      endPointStub.Stub(stub => stub.MarkSynchronized());
 
-      _dataManager.RegisterOriginalOppositeEndPoint (endPointStub);
+      _dataManager.RegisterOriginalOppositeEndPoint(endPointStub);
 
-      Assert.That (_dataManager.OriginalOppositeEndPoints.Length, Is.EqualTo (1));
-      Assert.That (_dataManager.CollectionData.ToArray (), Has.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Has.Member(_domainObject2));
-      Assert.That (_dataManager.CurrentOppositeEndPoints.ToArray (), Is.EqualTo (new[] { endPointStub }));
+      Assert.That(_dataManager.OriginalOppositeEndPoints.Length, Is.EqualTo(1));
+      Assert.That(_dataManager.CollectionData.ToArray(), Has.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.Member(_domainObject2));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EqualTo(new[] { endPointStub }));
 
-      _dataManager.UnregisterOriginalOppositeEndPoint (endPointStub);
+      _dataManager.UnregisterOriginalOppositeEndPoint(endPointStub);
 
-      Assert.That (_dataManager.HasDataChanged (), Is.False);
-      Assert.That (_dataManager.CollectionData.ToArray (), Has.No.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Has.No.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalOppositeEndPoints.ToArray(), Is.Empty);
-      Assert.That (_dataManager.CurrentOppositeEndPoints, Is.Empty);
+      Assert.That(_dataManager.HasDataChanged(), Is.False);
+      Assert.That(_dataManager.CollectionData.ToArray(), Has.No.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.No.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.Empty);
+      Assert.That(_dataManager.CurrentOppositeEndPoints, Is.Empty);
     }
 
     [Test]
     public void UnregisterOriginalOppositeEndPoint_NotRegistered ()
     {
-      var oppositeEndPoint = DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint (_domainObject1);
-      Assert.That (
-          () => _dataManager.UnregisterOriginalOppositeEndPoint (oppositeEndPoint),
+      var oppositeEndPoint = DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint(_domainObject1);
+      Assert.That(
+          () => _dataManager.UnregisterOriginalOppositeEndPoint(oppositeEndPoint),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The opposite end-point has not been registered."));
     }
 
     [Test]
     public void ContainsCurrentOppositeEndPoint ()
     {
-      Assert.That (_dataManager.ContainsCurrentOppositeEndPoint (_domainObjectEndPoint1), Is.False);
+      Assert.That(_dataManager.ContainsCurrentOppositeEndPoint(_domainObjectEndPoint1), Is.False);
 
-      _dataManager.RegisterCurrentOppositeEndPoint (_domainObjectEndPoint1);
+      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1);
 
-      Assert.That (_dataManager.ContainsCurrentOppositeEndPoint (_domainObjectEndPoint1), Is.True);
+      Assert.That(_dataManager.ContainsCurrentOppositeEndPoint(_domainObjectEndPoint1), Is.True);
     }
 
     [Test]
     public void RegisterCurrentOppositeEndPoint ()
     {
-      Assert.That (_dataManager.CurrentOppositeEndPoints.ToArray (), Is.Empty);
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.Empty);
 
-      _dataManager.RegisterCurrentOppositeEndPoint (_domainObjectEndPoint1);
+      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1);
 
-      Assert.That (_dataManager.CurrentOppositeEndPoints.ToArray (), Is.EqualTo (new[] { _domainObjectEndPoint1 }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EqualTo(new[] { _domainObjectEndPoint1 }));
     }
 
     [Test]
     public void RegisterCurrentOppositeEndPoint_AlreadyRegistered ()
     {
-      _dataManager.RegisterCurrentOppositeEndPoint (_domainObjectEndPoint1);
-      Assert.That (
-          () => _dataManager.RegisterCurrentOppositeEndPoint (_domainObjectEndPoint1),
+      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1);
+      Assert.That(
+          () => _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The opposite end-point has already been registered."));
     }
 
     [Test]
     public void UnregisterCurrentOppositeEndPoint ()
     {
-      _dataManager.RegisterCurrentOppositeEndPoint (_domainObjectEndPoint1);
+      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1);
 
-      Assert.That (_dataManager.CurrentOppositeEndPoints.ToArray (), Has.Member(_domainObjectEndPoint1));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Has.Member(_domainObjectEndPoint1));
 
-      _dataManager.UnregisterCurrentOppositeEndPoint (_domainObjectEndPoint1);
+      _dataManager.UnregisterCurrentOppositeEndPoint(_domainObjectEndPoint1);
 
-      Assert.That (_dataManager.CurrentOppositeEndPoints.ToArray(), Has.No.Member(_domainObjectEndPoint1));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Has.No.Member(_domainObjectEndPoint1));
     }
 
     [Test]
     public void UnregisterCurrentOppositeEndPoint_NotRegistered ()
     {
-      Assert.That (
-          () => _dataManager.UnregisterCurrentOppositeEndPoint (_domainObjectEndPoint1),
+      Assert.That(
+          () => _dataManager.UnregisterCurrentOppositeEndPoint(_domainObjectEndPoint1),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The opposite end-point has not been registered."));
     }
     
     [Test]
     public void ContainsOriginalItemWithoutEndPoint_True ()
     {
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_domainObject2);
-      Assert.That (_dataManager.ContainsOriginalItemWithoutEndPoint (_domainObject2), Is.True);
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_domainObject2);
+      Assert.That(_dataManager.ContainsOriginalItemWithoutEndPoint(_domainObject2), Is.True);
     }
 
     [Test]
     public void ContainsOriginalItemWithoutEndPoint_False ()
     {
-      Assert.That (_dataManager.ContainsOriginalItemWithoutEndPoint (_domainObject2), Is.False);
+      Assert.That(_dataManager.ContainsOriginalItemWithoutEndPoint(_domainObject2), Is.False);
     }
 
     [Test]
     public void RegisterOriginalItemWithoutEndPoint ()
     {
-      Assert.That (_dataManager.CollectionData.ToArray (), Has.No.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Has.No.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalItemsWithoutEndPoints.ToArray (), Has.No.Member (_domainObject2));
+      Assert.That(_dataManager.CollectionData.ToArray(), Has.No.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.No.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalItemsWithoutEndPoints.ToArray(), Has.No.Member(_domainObject2));
 
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_domainObject2);
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_domainObject2);
 
-      Assert.That (_dataManager.OriginalItemsWithoutEndPoints, Is.EqualTo (new[] { _domainObject2 }));
-      Assert.That (_dataManager.HasDataChanged (), Is.False);
-      Assert.That (_dataManager.CollectionData.ToArray (), Has.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Has.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalOppositeEndPoints.ToArray (), Is.Empty);
+      Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Is.EqualTo(new[] { _domainObject2 }));
+      Assert.That(_dataManager.HasDataChanged(), Is.False);
+      Assert.That(_dataManager.CollectionData.ToArray(), Has.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.Empty);
     }
 
     [Test]
     public void RegisterOriginalItemWithoutEndPoint_AlreadyRegisteredWithoutEndPoint ()
     {
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_domainObject2);
-      Assert.That (
-          () => _dataManager.RegisterOriginalItemWithoutEndPoint (_domainObject2),
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_domainObject2);
+      Assert.That(
+          () => _dataManager.RegisterOriginalItemWithoutEndPoint(_domainObject2),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The original collection already contains a domain object with ID 'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid'."));
     }
 
     [Test]
     public void RegisterOriginalItemWithoutEndPoint_AlreadyRegisteredWithEndPoint ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint (_domainObjectEndPoint2);
+      _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint2);
 
-      Assert.That (
-          () => _dataManager.RegisterOriginalItemWithoutEndPoint (_domainObject2),
+      Assert.That(
+          () => _dataManager.RegisterOriginalItemWithoutEndPoint(_domainObject2),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The original collection already contains a domain object with ID 'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid'."));
 
-      Assert.That (_dataManager.OriginalItemsWithoutEndPoints, Has.No.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Has.No.Member(_domainObject2));
 
     }
 
     [Test]
     public void UnregisterOriginalItemWithoutEndPoint ()
     {
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_domainObject2);
-      Assert.That (_dataManager.OriginalItemsWithoutEndPoints, Is.EqualTo (new[] { _domainObject2 }));
-      Assert.That (_dataManager.CollectionData.ToArray (), Has.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Has.Member(_domainObject2));
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_domainObject2);
+      Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Is.EqualTo(new[] { _domainObject2 }));
+      Assert.That(_dataManager.CollectionData.ToArray(), Has.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.Member(_domainObject2));
 
-      _dataManager.UnregisterOriginalItemWithoutEndPoint (_domainObject2);
+      _dataManager.UnregisterOriginalItemWithoutEndPoint(_domainObject2);
 
-      Assert.That (_dataManager.CollectionData.ToArray (), Has.No.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Has.No.Member(_domainObject2));
-      Assert.That (_dataManager.OriginalItemsWithoutEndPoints.ToArray (), Has.No.Member(_domainObject2));
-      Assert.That (_dataManager.HasDataChanged (), Is.False);
+      Assert.That(_dataManager.CollectionData.ToArray(), Has.No.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.No.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalItemsWithoutEndPoints.ToArray(), Has.No.Member(_domainObject2));
+      Assert.That(_dataManager.HasDataChanged(), Is.False);
     }
 
     [Test]
     public void UnregisterOriginalItemWithoutEndPoint_ItemNotRegisteredWithoutEndPoint ()
     {
-      Assert.That (
-          () => _dataManager.UnregisterOriginalItemWithoutEndPoint (_domainObject2),
+      Assert.That(
+          () => _dataManager.UnregisterOriginalItemWithoutEndPoint(_domainObject2),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The domain object with ID 'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' has not been registered as an item without end-point."));
     }
 
     [Test]
     public void UnregisterOriginalItemWithoutEndPoint_RegisteredWithEndPoint ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint (_domainObjectEndPoint2);
+      _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint2);
 
-      Assert.That (
-          () => _dataManager.UnregisterOriginalItemWithoutEndPoint (_domainObject2),
+      Assert.That(
+          () => _dataManager.UnregisterOriginalItemWithoutEndPoint(_domainObject2),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The domain object with ID 'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' has not been registered as an item without end-point."));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Has.Member(_domainObject2));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.Member(_domainObject2));
     }
 
     [Test]
     public void HasDataChanged ()
     {
       _changeDetectionStrategyMock
-          .Expect (mock => mock.HasDataChanged (
-              Arg.Is (_dataManager.CollectionData), 
-              Arg<IDomainObjectCollectionData>.List.Equal (_dataManager.OriginalCollectionData)))
-          .Return (true);
-      _changeDetectionStrategyMock.Replay ();
+          .Expect(mock => mock.HasDataChanged(
+              Arg.Is(_dataManager.CollectionData), 
+              Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
+          .Return(true);
+      _changeDetectionStrategyMock.Replay();
 
       // require use of strategy
-      _dataManager.CollectionData.Add (_domainObject2);
-      _dataManager.CollectionData.Remove (_domainObject2);
+      _dataManager.CollectionData.Add(_domainObject2);
+      _dataManager.CollectionData.Remove(_domainObject2);
 
-      var result = _dataManager.HasDataChanged ();
+      var result = _dataManager.HasDataChanged();
 
-      _changeDetectionStrategyMock.VerifyAllExpectations ();
-      Assert.That (result, Is.EqualTo (true));
+      _changeDetectionStrategyMock.VerifyAllExpectations();
+      Assert.That(result, Is.EqualTo(true));
     }
 
     [Test]
     public void HasDataChanged_Cached ()
     {
       _changeDetectionStrategyMock
-          .Expect (mock => mock.HasDataChanged (
-              Arg.Is (_dataManager.CollectionData), 
-              Arg<IDomainObjectCollectionData>.List.Equal (_dataManager.OriginalCollectionData)))
-          .Return (true)
+          .Expect(mock => mock.HasDataChanged(
+              Arg.Is(_dataManager.CollectionData), 
+              Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
+          .Return(true)
           .Repeat.Once();
-      _changeDetectionStrategyMock.Replay ();
+      _changeDetectionStrategyMock.Replay();
 
       // require use of strategy
-      _dataManager.CollectionData.Add (_domainObject2);
-      _dataManager.CollectionData.Remove (_domainObject2);
+      _dataManager.CollectionData.Add(_domainObject2);
+      _dataManager.CollectionData.Remove(_domainObject2);
  
-      var result1 = _dataManager.HasDataChanged ();
-      var result2 = _dataManager.HasDataChanged ();
+      var result1 = _dataManager.HasDataChanged();
+      var result2 = _dataManager.HasDataChanged();
 
-      _changeDetectionStrategyMock.VerifyAllExpectations ();
+      _changeDetectionStrategyMock.VerifyAllExpectations();
 
-      Assert.That (result1, Is.EqualTo (true));
-      Assert.That (result2, Is.EqualTo (true));
+      Assert.That(result1, Is.EqualTo(true));
+      Assert.That(result2, Is.EqualTo(true));
     }
 
     [Test]
     public void HasDataChanged_Cache_InvalidatedOnModifyingOperations ()
     {
-      using (_changeDetectionStrategyMock.GetMockRepository ().Ordered ())
+      using (_changeDetectionStrategyMock.GetMockRepository().Ordered())
       {
         _changeDetectionStrategyMock
-            .Expect (mock => mock.HasDataChanged (
-                Arg.Is (_dataManager.CollectionData), 
-                Arg<IDomainObjectCollectionData>.List.Equal (_dataManager.OriginalCollectionData)))
-            .Return (true).Repeat.Once();
+            .Expect(mock => mock.HasDataChanged(
+                Arg.Is(_dataManager.CollectionData), 
+                Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
+            .Return(true).Repeat.Once();
         _changeDetectionStrategyMock
-            .Expect (mock => mock.HasDataChanged (
-                Arg.Is (_dataManager.CollectionData), 
-                Arg<IDomainObjectCollectionData>.List.Equal (_dataManager.OriginalCollectionData)))
-            .Return (false).Repeat.Once();
+            .Expect(mock => mock.HasDataChanged(
+                Arg.Is(_dataManager.CollectionData), 
+                Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
+            .Return(false).Repeat.Once();
       }
-      _changeDetectionStrategyMock.Replay ();
+      _changeDetectionStrategyMock.Replay();
 
       // require use of strategy
-      _dataManager.CollectionData.Add (_domainObject2);
-      _dataManager.CollectionData.Remove (_domainObject2);
+      _dataManager.CollectionData.Add(_domainObject2);
+      _dataManager.CollectionData.Remove(_domainObject2);
 
-      var result1 = _dataManager.HasDataChanged ();
+      var result1 = _dataManager.HasDataChanged();
 
-      _dataManager.CollectionData.Add (_domainObject2);
-      _dataManager.CollectionData.Remove (_domainObject2);
+      _dataManager.CollectionData.Add(_domainObject2);
+      _dataManager.CollectionData.Remove(_domainObject2);
 
-      var result2 = _dataManager.HasDataChanged ();
+      var result2 = _dataManager.HasDataChanged();
 
-      _changeDetectionStrategyMock.VerifyAllExpectations ();
-      Assert.That (result1, Is.EqualTo (true));
-      Assert.That (result2, Is.EqualTo (false));
+      _changeDetectionStrategyMock.VerifyAllExpectations();
+      Assert.That(result1, Is.EqualTo(true));
+      Assert.That(result2, Is.EqualTo(false));
     }
 
     [Test]
     public void HasDataChangedFast_CacheNotUpToDate ()
     {
-      _changeDetectionStrategyMock.Replay ();
+      _changeDetectionStrategyMock.Replay();
 
-      _dataManager.CollectionData.Add (_domainObject2); // invalidate cache
+      _dataManager.CollectionData.Add(_domainObject2); // invalidate cache
 
-      var result = _dataManager.HasDataChangedFast ();
+      var result = _dataManager.HasDataChangedFast();
 
-      _changeDetectionStrategyMock.AssertWasNotCalled (
-          mock => mock.HasDataChanged (Arg<IDomainObjectCollectionData>.Is.Anything, Arg<IDomainObjectCollectionData>.Is.Anything));
-      Assert.That (result, Is.Null);
+      _changeDetectionStrategyMock.AssertWasNotCalled(
+          mock => mock.HasDataChanged(Arg<IDomainObjectCollectionData>.Is.Anything, Arg<IDomainObjectCollectionData>.Is.Anything));
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void HasDataChangedFast_CacheUpToDate ()
     {
       _changeDetectionStrategyMock
-            .Stub (mock => mock.HasDataChanged (Arg<IDomainObjectCollectionData>.Is.Anything, Arg<IDomainObjectCollectionData>.Is.Anything))
-            .Return (true);
-      _changeDetectionStrategyMock.Replay ();
+            .Stub(mock => mock.HasDataChanged(Arg<IDomainObjectCollectionData>.Is.Anything, Arg<IDomainObjectCollectionData>.Is.Anything))
+            .Return(true);
+      _changeDetectionStrategyMock.Replay();
 
       Dev.Null = _dataManager.HasDataChanged();
       _changeDetectionStrategyMock.BackToRecord();
       _changeDetectionStrategyMock.Replay();
 
-      var result = _dataManager.HasDataChangedFast ();
+      var result = _dataManager.HasDataChangedFast();
 
-      _changeDetectionStrategyMock.AssertWasNotCalled (
-          mock => mock.HasDataChanged (Arg<IDomainObjectCollectionData>.Is.Anything, Arg<IDomainObjectCollectionData>.Is.Anything));
-      Assert.That (result, Is.False);
+      _changeDetectionStrategyMock.AssertWasNotCalled(
+          mock => mock.HasDataChanged(Arg<IDomainObjectCollectionData>.Is.Anything, Arg<IDomainObjectCollectionData>.Is.Anything));
+      Assert.That(result, Is.False);
     }
 
     [Test]
     public void SortCurrentData ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint (DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint (_domainObject3));
-      _dataManager.RegisterOriginalOppositeEndPoint (DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint (_domainObject1));
-      _dataManager.RegisterOriginalOppositeEndPoint (DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint (_domainObject2));
+      _dataManager.RegisterOriginalOppositeEndPoint(DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint(_domainObject3));
+      _dataManager.RegisterOriginalOppositeEndPoint(DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint(_domainObject1));
+      _dataManager.RegisterOriginalOppositeEndPoint(DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint(_domainObject2));
 
-      _dataManager.SortCurrentData (_comparison123);
+      _dataManager.SortCurrentData(_comparison123);
 
-      Assert.That (_dataManager.CollectionData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2, _domainObject3 }));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Is.EqualTo (new[] { _domainObject3, _domainObject1, _domainObject2 }));
+      Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2, _domainObject3 }));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Is.EqualTo(new[] { _domainObject3, _domainObject1, _domainObject2 }));
     }
 
     [Test]
     public void SortCurrentAndOriginalData ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint (DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint (_domainObject3));
-      _dataManager.RegisterOriginalOppositeEndPoint (DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint (_domainObject1));
-      _dataManager.RegisterOriginalOppositeEndPoint (DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint (_domainObject2));
+      _dataManager.RegisterOriginalOppositeEndPoint(DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint(_domainObject3));
+      _dataManager.RegisterOriginalOppositeEndPoint(DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint(_domainObject1));
+      _dataManager.RegisterOriginalOppositeEndPoint(DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint(_domainObject2));
       
       _dataManager.SortCurrentAndOriginalData(_comparison123);
 
-      Assert.That (_dataManager.CollectionData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2, _domainObject3 }));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2, _domainObject3 }));
+      Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2, _domainObject3 }));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2, _domainObject3 }));
     }
 
     [Test]
@@ -502,133 +502,133 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var originalData = _dataManager.OriginalCollectionData;
 
-      Assert.That (originalData.ToArray (), Is.Empty);
-      Assert.That (originalData.IsReadOnly, Is.True);
+      Assert.That(originalData.ToArray(), Is.Empty);
+      Assert.That(originalData.IsReadOnly, Is.True);
     }
 
     [Test]
     public void Commit_UpdatesOriginalContentsAndEndPoints ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint (_domainObjectEndPoint1);
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_domainObject2);
+      _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint1);
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_domainObject2);
 
-      _dataManager.CollectionData.Insert (0, _domainObject3);
-      _dataManager.RegisterCurrentOppositeEndPoint (_domainObjectEndPoint3);
+      _dataManager.CollectionData.Insert(0, _domainObject3);
+      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint3);
 
-      _dataManager.CollectionData.Insert (0, _domainObject4);
+      _dataManager.CollectionData.Insert(0, _domainObject4);
 
-      Assert.That (_dataManager.CollectionData.ToArray (), Is.EqualTo (new[] { _domainObject4, _domainObject3, _domainObject1, _domainObject2 }));
-      Assert.That (_dataManager.CurrentOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint1, _domainObjectEndPoint3 }));
+      Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject4, _domainObject3, _domainObject1, _domainObject2 }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint1, _domainObjectEndPoint3 }));
 
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2 }));
-      Assert.That (_dataManager.OriginalOppositeEndPoints, Is.EquivalentTo (new[] { _domainObjectEndPoint1 }));
-      Assert.That (_dataManager.OriginalItemsWithoutEndPoints, Is.EquivalentTo (new[] { _domainObject2 }));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
+      Assert.That(_dataManager.OriginalOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint1 }));
+      Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Is.EquivalentTo(new[] { _domainObject2 }));
 
       _dataManager.Commit();
 
-      Assert.That (_dataManager.CollectionData.ToArray (), Is.EqualTo (new[] { _domainObject4, _domainObject3, _domainObject1, _domainObject2 }));
-      Assert.That (_dataManager.CurrentOppositeEndPoints, Is.EquivalentTo (new[] { _domainObjectEndPoint1, _domainObjectEndPoint3 }));
+      Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject4, _domainObject3, _domainObject1, _domainObject2 }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint1, _domainObjectEndPoint3 }));
 
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Is.EqualTo (new[] { _domainObject4, _domainObject3, _domainObject1, _domainObject2 }));
-      Assert.That (_dataManager.OriginalOppositeEndPoints, Is.EquivalentTo (new[] { _domainObjectEndPoint1, _domainObjectEndPoint3 }));
-      Assert.That (_dataManager.OriginalItemsWithoutEndPoints, Is.EquivalentTo (new[] { _domainObject2, _domainObject4 }));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Is.EqualTo(new[] { _domainObject4, _domainObject3, _domainObject1, _domainObject2 }));
+      Assert.That(_dataManager.OriginalOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint1, _domainObjectEndPoint3 }));
+      Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Is.EquivalentTo(new[] { _domainObject2, _domainObject4 }));
     }
 
     [Test]
     public void Commit_InvalidatesHasChangedCache ()
     {
-      using (_changeDetectionStrategyMock.GetMockRepository ().Ordered ())
+      using (_changeDetectionStrategyMock.GetMockRepository().Ordered())
       {
         _changeDetectionStrategyMock
-            .Expect (mock => mock.HasDataChanged (
-                Arg<IDomainObjectCollectionData>.List.Equal (_dataManager.CollectionData),
-                Arg<IDomainObjectCollectionData>.List.Equal (_dataManager.OriginalCollectionData)))
-            .Return (true);
+            .Expect(mock => mock.HasDataChanged(
+                Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.CollectionData),
+                Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
+            .Return(true);
       }
-      _changeDetectionStrategyMock.Replay ();
+      _changeDetectionStrategyMock.Replay();
 
       // require use of strategy
-      _dataManager.CollectionData.Add (_domainObject2);
-      _dataManager.CollectionData.Remove (_domainObject2);
+      _dataManager.CollectionData.Add(_domainObject2);
+      _dataManager.CollectionData.Remove(_domainObject2);
 
-      Assert.That (_dataManager.HasDataChanged (), Is.True);
+      Assert.That(_dataManager.HasDataChanged(), Is.True);
 
-      _dataManager.Commit ();
+      _dataManager.Commit();
 
-      Assert.That (_dataManager.HasDataChanged (), Is.False);
+      Assert.That(_dataManager.HasDataChanged(), Is.False);
     }
 
     [Test]
     public void Rollback_UpdatesCurrentContentsAndEndPoints ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint (_domainObjectEndPoint1);
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_domainObject2);
+      _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint1);
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_domainObject2);
 
-      _dataManager.CollectionData.Insert (0, _domainObject3);
-      _dataManager.RegisterCurrentOppositeEndPoint (_domainObjectEndPoint3);
+      _dataManager.CollectionData.Insert(0, _domainObject3);
+      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint3);
 
-      Assert.That (_dataManager.CollectionData.ToArray (), Is.EqualTo (new[] { _domainObject3, _domainObject1, _domainObject2 }));
-      Assert.That (_dataManager.CurrentOppositeEndPoints.ToArray (), Is.EquivalentTo (new[] { _domainObjectEndPoint1, _domainObjectEndPoint3 }));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2 }));
-      Assert.That (_dataManager.OriginalOppositeEndPoints.ToArray (), Is.EquivalentTo (new[] { _domainObjectEndPoint1 }));
-      Assert.That (_dataManager.OriginalItemsWithoutEndPoints.ToArray (), Is.EquivalentTo (new[] { _domainObject2 }));
+      Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject3, _domainObject1, _domainObject2 }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObjectEndPoint1, _domainObjectEndPoint3 }));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
+      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObjectEndPoint1 }));
+      Assert.That(_dataManager.OriginalItemsWithoutEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObject2 }));
 
       _dataManager.Rollback();
 
-      Assert.That (_dataManager.CollectionData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2 }));
-      Assert.That (_dataManager.CurrentOppositeEndPoints.ToArray (), Is.EquivalentTo (new[] { _domainObjectEndPoint1 }));
-      Assert.That (_dataManager.OriginalCollectionData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2 }));
-      Assert.That (_dataManager.OriginalOppositeEndPoints.ToArray (), Is.EquivalentTo (new[] { _domainObjectEndPoint1 }));
-      Assert.That (_dataManager.OriginalItemsWithoutEndPoints.ToArray (), Is.EquivalentTo (new[] { _domainObject2 }));
+      Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObjectEndPoint1 }));
+      Assert.That(_dataManager.OriginalCollectionData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
+      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObjectEndPoint1 }));
+      Assert.That(_dataManager.OriginalItemsWithoutEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObject2 }));
     }
 
     [Test]
     public void Rollback_InvalidatesHasChangedCache ()
     {
-      using (_changeDetectionStrategyMock.GetMockRepository ().Ordered ())
+      using (_changeDetectionStrategyMock.GetMockRepository().Ordered())
       {
         _changeDetectionStrategyMock
-            .Expect (mock => mock.HasDataChanged (
-                Arg<IDomainObjectCollectionData>.List.Equal (_dataManager.CollectionData),
-                Arg<IDomainObjectCollectionData>.List.Equal (_dataManager.OriginalCollectionData)))
-            .Return (true);
+            .Expect(mock => mock.HasDataChanged(
+                Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.CollectionData),
+                Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
+            .Return(true);
       }
-      _changeDetectionStrategyMock.Replay ();
+      _changeDetectionStrategyMock.Replay();
 
       // require use of strategy
-      _dataManager.CollectionData.Add (_domainObject2);
-      _dataManager.CollectionData.Remove (_domainObject2);
+      _dataManager.CollectionData.Add(_domainObject2);
+      _dataManager.CollectionData.Remove(_domainObject2);
 
-      Assert.That (_dataManager.HasDataChanged (), Is.True);
+      Assert.That(_dataManager.HasDataChanged(), Is.True);
 
       _dataManager.Rollback();
 
-      Assert.That (_dataManager.HasDataChanged (), Is.False);
+      Assert.That(_dataManager.HasDataChanged(), Is.False);
     }
 
     [Test]
     public void SetDataFromSubTransaction ()
     {
-      var sourceOppositeEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint> ();
-      sourceOppositeEndPointStub.Stub (stub => stub.ID).Return (_domainObjectEndPoint2.ID);
-      sourceOppositeEndPointStub.Stub (stub => stub.ObjectID).Return (_domainObjectEndPoint2.ObjectID);
+      var sourceOppositeEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      sourceOppositeEndPointStub.Stub(stub => stub.ID).Return(_domainObjectEndPoint2.ID);
+      sourceOppositeEndPointStub.Stub(stub => stub.ObjectID).Return(_domainObjectEndPoint2.ObjectID);
 
-      _dataManager.CollectionData.Add (_domainObject1);
-      _dataManager.RegisterCurrentOppositeEndPoint (_domainObjectEndPoint1);
+      _dataManager.CollectionData.Add(_domainObject1);
+      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1);
 
-      var sourceDataManager = new DomainObjectCollectionEndPointDataManager (_endPointID, MockRepository.GenerateStub<IDomainObjectCollectionEndPointChangeDetectionStrategy>());
-      sourceDataManager.CollectionData.Add (_domainObject2);
-      sourceDataManager.RegisterCurrentOppositeEndPoint (sourceOppositeEndPointStub);
+      var sourceDataManager = new DomainObjectCollectionEndPointDataManager(_endPointID, MockRepository.GenerateStub<IDomainObjectCollectionEndPointChangeDetectionStrategy>());
+      sourceDataManager.CollectionData.Add(_domainObject2);
+      sourceDataManager.RegisterCurrentOppositeEndPoint(sourceOppositeEndPointStub);
 
-      var endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider> ();
+      var endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider>();
       endPointProviderStub
-          .Stub (stub => stub.GetRelationEndPointWithoutLoading (sourceOppositeEndPointStub.ID))
-          .Return (_domainObjectEndPoint2);
+          .Stub(stub => stub.GetRelationEndPointWithoutLoading(sourceOppositeEndPointStub.ID))
+          .Return(_domainObjectEndPoint2);
 
-      _dataManager.SetDataFromSubTransaction (sourceDataManager, endPointProviderStub);
+      _dataManager.SetDataFromSubTransaction(sourceDataManager, endPointProviderStub);
 
-      Assert.That (_dataManager.CollectionData.ToArray(), Is.EqualTo (new[] { _domainObject2 }));
-      Assert.That (_dataManager.CurrentOppositeEndPoints, Is.EquivalentTo (new[] { _domainObjectEndPoint2 }));
+      Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject2 }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint2 }));
     }
 
     [Test]
@@ -637,21 +637,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
       var changeDetectionStrategy = new SerializableDomainObjectCollectionEndPointChangeDetectionStrategyFake();
-      var data = new DomainObjectCollectionEndPointDataManager (_endPointID, changeDetectionStrategy);
+      var data = new DomainObjectCollectionEndPointDataManager(_endPointID, changeDetectionStrategy);
 
-      var endPointFake = new SerializableRealObjectEndPointFake (null, _domainObject1);
-      data.RegisterOriginalOppositeEndPoint (endPointFake);
-      data.RegisterOriginalItemWithoutEndPoint (_domainObject2);
+      var endPointFake = new SerializableRealObjectEndPointFake(null, _domainObject1);
+      data.RegisterOriginalOppositeEndPoint(endPointFake);
+      data.RegisterOriginalItemWithoutEndPoint(_domainObject2);
 
-      var deserializedInstance = FlattenedSerializer.SerializeAndDeserialize (data);
+      var deserializedInstance = FlattenedSerializer.SerializeAndDeserialize(data);
 
-      Assert.That (deserializedInstance.EndPointID, Is.Not.Null);
-      Assert.That (deserializedInstance.ChangeDetectionStrategy, Is.Not.Null);
-      Assert.That (deserializedInstance.CollectionData.Count, Is.EqualTo (2));
-      Assert.That (deserializedInstance.OriginalCollectionData.Count, Is.EqualTo (2));
-      Assert.That (deserializedInstance.OriginalOppositeEndPoints.Length, Is.EqualTo (1));
-      Assert.That (deserializedInstance.OriginalItemsWithoutEndPoints.Length, Is.EqualTo (1));
-      Assert.That (deserializedInstance.CurrentOppositeEndPoints.Length, Is.EqualTo (1));
+      Assert.That(deserializedInstance.EndPointID, Is.Not.Null);
+      Assert.That(deserializedInstance.ChangeDetectionStrategy, Is.Not.Null);
+      Assert.That(deserializedInstance.CollectionData.Count, Is.EqualTo(2));
+      Assert.That(deserializedInstance.OriginalCollectionData.Count, Is.EqualTo(2));
+      Assert.That(deserializedInstance.OriginalOppositeEndPoints.Length, Is.EqualTo(1));
+      Assert.That(deserializedInstance.OriginalItemsWithoutEndPoints.Length, Is.EqualTo(1));
+      Assert.That(deserializedInstance.CurrentOppositeEndPoints.Length, Is.EqualTo(1));
     }
 
     private int Compare123 (DomainObject x, DomainObject y)

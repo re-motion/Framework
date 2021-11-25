@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       {
         if (!_disposed)
         {
-          _innerMockStorageProvider.SetCurrent (_previous);
+          _innerMockStorageProvider.SetCurrent(_previous);
           _disposed = true;
         }
       }
@@ -56,18 +56,18 @@ namespace Remotion.Data.DomainObjects.UnitTests
     private static int s_nextID = 0;
 
     private static readonly SafeContextSingleton<StorageProvider> _innerMockStorageProvider =
-        new SafeContextSingleton<StorageProvider> (typeof (UnitTestStorageProviderStub) + "._innerMockStorageProvider", () => null);
+        new SafeContextSingleton<StorageProvider>(typeof (UnitTestStorageProviderStub) + "._innerMockStorageProvider", () => null);
 
     public static IDisposable EnterMockStorageProviderScope (StorageProvider mock)
     {
       var previous = _innerMockStorageProvider.Current;
-      _innerMockStorageProvider.SetCurrent (mock);
-      return new MockStorageProviderScope (previous);
+      _innerMockStorageProvider.SetCurrent(mock);
+      return new MockStorageProviderScope(previous);
     }
 
     public static T ExecuteWithMock<T> (StorageProvider mockedStorageProvider, Func<T> func)
     {
-      using (EnterMockStorageProviderScope (mockedStorageProvider))
+      using (EnterMockStorageProviderScope(mockedStorageProvider))
       {
         return func();
       }
@@ -76,9 +76,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public static StorageProvider CreateStorageProviderMockForOfficial ()
     {
       var storageProviderID =
-          MappingConfiguration.Current.GetTypeDefinition (typeof (Official)).StorageEntityDefinition.StorageProviderDefinition.Name;
-      var storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory (storageProviderID);
-      return MockRepository.GenerateMock<StorageProvider> (storageProviderDefinition, NullPersistenceExtension.Instance);
+          MappingConfiguration.Current.GetTypeDefinition(typeof (Official)).StorageEntityDefinition.StorageProviderDefinition.Name;
+      var storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
+      return MockRepository.GenerateMock<StorageProvider>(storageProviderDefinition, NullPersistenceExtension.Instance);
     }
 
     public UnitTestStorageProviderStub (
@@ -95,15 +95,15 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public override ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
     {
       if (InnerProvider != null)
-        return InnerProvider.LoadDataContainer (id);
+        return InnerProvider.LoadDataContainer(id);
       else
       {
-        DataContainer container = DataContainer.CreateForExisting (
+        DataContainer container = DataContainer.CreateForExisting(
             id,
             null,
             delegate (PropertyDefinition propertyDefinition)
             {
-              if (propertyDefinition.PropertyName.EndsWith (".Name"))
+              if (propertyDefinition.PropertyName.EndsWith(".Name"))
                 return "Max Sachbearbeiter";
               else
                 return propertyDefinition.DefaultValue;
@@ -119,15 +119,15 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
     {
       if (InnerProvider != null)
-        return InnerProvider.LoadDataContainers (ids);
+        return InnerProvider.LoadDataContainers(ids);
       else
-        return ids.Select (LoadDataContainer);
+        return ids.Select(LoadDataContainer);
     }
 
     public override IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query)
     {
       if (InnerProvider != null)
-        return InnerProvider.ExecuteCollectionQuery (query);
+        return InnerProvider.ExecuteCollectionQuery(query);
       else
         return null;
     }
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public override IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
     {
       if (InnerProvider != null)
-        return InnerProvider.ExecuteCustomQuery (query);
+        return InnerProvider.ExecuteCustomQuery(query);
       else
         return null;
     }
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public override object ExecuteScalarQuery (IQuery query)
     {
       if (InnerProvider != null)
-        return InnerProvider.ExecuteScalarQuery (query);
+        return InnerProvider.ExecuteScalarQuery(query);
       else
         return null;
     }
@@ -151,19 +151,19 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public override void Save (IEnumerable<DataContainer> dataContainers)
     {
       if (InnerProvider != null)
-        InnerProvider.Save (dataContainers);
+        InnerProvider.Save(dataContainers);
     }
 
     public override void UpdateTimestamps (IEnumerable<DataContainer> dataContainers)
     {
       if (InnerProvider != null)
-        InnerProvider.UpdateTimestamps (dataContainers);
+        InnerProvider.UpdateTimestamps(dataContainers);
     }
 
     public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition sortExpressionDefinition, ObjectID relatedID)
     {
       if (InnerProvider != null)
-        return InnerProvider.LoadDataContainersByRelatedID (relationEndPointDefinition, sortExpressionDefinition, relatedID);
+        return InnerProvider.LoadDataContainersByRelatedID(relationEndPointDefinition, sortExpressionDefinition, relatedID);
       else
         return null;
     }
@@ -189,7 +189,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       if (InnerProvider != null)
-        return InnerProvider.CreateNewObjectID (classDefinition);
+        return InnerProvider.CreateNewObjectID(classDefinition);
       else
         return new ObjectID(classDefinition, s_nextID++);
     }

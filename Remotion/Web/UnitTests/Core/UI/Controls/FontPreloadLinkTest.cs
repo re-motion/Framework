@@ -36,18 +36,18 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     public void Render ()
     {
       var resourceUrl = new Mock<IResourceUrl>();
-      resourceUrl.Setup (stub => stub.GetUrl()).Returns ("myfont.ttf");
+      resourceUrl.Setup(stub => stub.GetUrl()).Returns("myfont.ttf");
 
-      var javaScriptInclude = new FontPreloadLink (resourceUrl.Object, "font-type");
+      var javaScriptInclude = new FontPreloadLink(resourceUrl.Object, "font-type");
 
-      javaScriptInclude.Render (_htmlHelper.Writer);
+      javaScriptInclude.Render(_htmlHelper.Writer);
 
       var document = _htmlHelper.GetResultDocument();
-      var element = _htmlHelper.GetAssertedChildElement (document, "link", 0);
-      _htmlHelper.AssertAttribute (element, "rel", "preload");
-      _htmlHelper.AssertAttribute (element, "as", "font");
-      _htmlHelper.AssertAttribute (element, "type", "font-type");
-      _htmlHelper.AssertAttribute (element, "href", "myfont.ttf");
+      var element = _htmlHelper.GetAssertedChildElement(document, "link", 0);
+      _htmlHelper.AssertAttribute(element, "rel", "preload");
+      _htmlHelper.AssertAttribute(element, "as", "font");
+      _htmlHelper.AssertAttribute(element, "type", "font-type");
+      _htmlHelper.AssertAttribute(element, "href", "myfont.ttf");
     }
   }
 }

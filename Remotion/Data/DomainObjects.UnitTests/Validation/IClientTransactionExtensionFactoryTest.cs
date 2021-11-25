@@ -39,10 +39,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var factory = _serviceLocator.GetInstance<IClientTransactionExtensionFactory>();
 
-      Assert.That (factory, Is.TypeOf<CompoundClientTransactionExtensionFactory>());
-      Assert.That (
-          ((CompoundClientTransactionExtensionFactory) factory).ClientTransactionExtensionFactories.Select (f => f.GetType()),
-          Has.Member (typeof (CommitValidationClientTransactionExtensionFactory)));
+      Assert.That(factory, Is.TypeOf<CompoundClientTransactionExtensionFactory>());
+      Assert.That(
+          ((CompoundClientTransactionExtensionFactory) factory).ClientTransactionExtensionFactories.Select(f => f.GetType()),
+          Has.Member(typeof (CommitValidationClientTransactionExtensionFactory)));
     }
   }
 }

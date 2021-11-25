@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ObjectIDStoragePropertyDefinition (IRdbmsStoragePropertyDefinition valueProperty, IRdbmsStoragePropertyDefinition classIDProperty)
     {
-      ArgumentUtility.CheckNotNull ("valueProperty", valueProperty);
-      ArgumentUtility.CheckNotNull ("classIDProperty", classIDProperty);
+      ArgumentUtility.CheckNotNull("valueProperty", valueProperty);
+      ArgumentUtility.CheckNotNull("classIDProperty", classIDProperty);
 
       _valueProperty = valueProperty;
       _classIDProperty = classIDProperty;
@@ -71,46 +71,46 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnDefinition> GetColumns ()
     {
-      return _valueProperty.GetColumns().Concat (_classIDProperty.GetColumns());
+      return _valueProperty.GetColumns().Concat(_classIDProperty.GetColumns());
     }
 
     public IEnumerable<ColumnValue> SplitValue (object value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID> ("value", value);
+      var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
       if (objectID == null)
-        return _valueProperty.SplitValue (null).Concat (_classIDProperty.SplitValue (null));
+        return _valueProperty.SplitValue(null).Concat(_classIDProperty.SplitValue(null));
 
-      return _valueProperty.SplitValue (objectID.Value).Concat (_classIDProperty.SplitValue (objectID.ClassID));
+      return _valueProperty.SplitValue(objectID.Value).Concat(_classIDProperty.SplitValue(objectID.ClassID));
     }
 
     public IEnumerable<ColumnValue> SplitValueForComparison (object value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID> ("value", value);
+      var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
 
-      return _valueProperty.SplitValueForComparison (GetValueOrNull (objectID));
+      return _valueProperty.SplitValueForComparison(GetValueOrNull(objectID));
     }
 
     public ColumnValueTable SplitValuesForComparison (IEnumerable<object> values)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
+      ArgumentUtility.CheckNotNull("values", values);
 
-      return _valueProperty.SplitValuesForComparison (values.Select (v => GetValueOrNull ((ObjectID) v)));
+      return _valueProperty.SplitValuesForComparison(values.Select(v => GetValueOrNull((ObjectID) v)));
     }
 
     public object CombineValue (IColumnValueProvider columnValueProvider)
     {
-      ArgumentUtility.CheckNotNull ("columnValueProvider", columnValueProvider);
+      ArgumentUtility.CheckNotNull("columnValueProvider", columnValueProvider);
 
-      var value = _valueProperty.CombineValue (columnValueProvider);
-      var classID = (string) _classIDProperty.CombineValue (columnValueProvider);
+      var value = _valueProperty.CombineValue(columnValueProvider);
+      var classID = (string) _classIDProperty.CombineValue(columnValueProvider);
       if (value == null)
       {
         if (classID != null)
         {
-          throw new RdbmsProviderException (
-              string.Format (
+          throw new RdbmsProviderException(
+              string.Format(
                   "Incorrect database value encountered. The value read from '{0}' must contain null.",
-                  string.Join (", ", _classIDProperty.GetColumns ().Select (c => c.Name))));
+                  string.Join(", ", _classIDProperty.GetColumns().Select(c => c.Name))));
         }
 
         return null;
@@ -118,10 +118,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
       if (classID == null)
       {
-        throw new RdbmsProviderException (
-            string.Format (
+        throw new RdbmsProviderException(
+            string.Format(
                 "Incorrect database value encountered. The value read from '{0}' must not contain null.",
-                string.Join (", ", _classIDProperty.GetColumns ().Select (c => c.Name))));
+                string.Join(", ", _classIDProperty.GetColumns().Select(c => c.Name))));
       }
 
       return new ObjectID(classID, value);
@@ -129,13 +129,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)
     {
-      ArgumentUtility.CheckNotNull ("equivalentProperties", equivalentProperties);
-      var checkedProperties = equivalentProperties.Select (property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty (
-          this, property, "equivalentProperties")).ToArray ();
+      ArgumentUtility.CheckNotNull("equivalentProperties", equivalentProperties);
+      var checkedProperties = equivalentProperties.Select(property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
+          this, property, "equivalentProperties")).ToArray();
 
-      var unifiedValueProperty = _valueProperty.UnifyWithEquivalentProperties (checkedProperties.Select (p => p.ValueProperty));
-      var unifiedClassIDProperty = _classIDProperty.UnifyWithEquivalentProperties (checkedProperties.Select (p => p.ClassIDProperty));
-      return new ObjectIDStoragePropertyDefinition (unifiedValueProperty, unifiedClassIDProperty);
+      var unifiedValueProperty = _valueProperty.UnifyWithEquivalentProperties(checkedProperties.Select(p => p.ValueProperty));
+      var unifiedClassIDProperty = _classIDProperty.UnifyWithEquivalentProperties(checkedProperties.Select(p => p.ClassIDProperty));
+      return new ObjectIDStoragePropertyDefinition(unifiedValueProperty, unifiedClassIDProperty);
     }
 
     public ForeignKeyConstraintDefinition CreateForeignKeyConstraint (
@@ -143,13 +143,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         EntityNameDefinition referencedTableName,
         ObjectIDStoragePropertyDefinition referencedObjectIDProperty)
     {
-      ArgumentUtility.CheckNotNull ("nameProvider", nameProvider);
-      ArgumentUtility.CheckNotNull ("referencedTableName", referencedTableName);
-      ArgumentUtility.CheckNotNull ("referencedObjectIDProperty", referencedObjectIDProperty);
+      ArgumentUtility.CheckNotNull("nameProvider", nameProvider);
+      ArgumentUtility.CheckNotNull("referencedTableName", referencedTableName);
+      ArgumentUtility.CheckNotNull("referencedObjectIDProperty", referencedObjectIDProperty);
 
-      var referencingColumns = GetColumnsForComparison ();
-      var referencedColumns = referencedObjectIDProperty.GetColumnsForComparison ();
-      return new ForeignKeyConstraintDefinition (nameProvider (referencingColumns),  referencedTableName,  referencingColumns, referencedColumns);
+      var referencingColumns = GetColumnsForComparison();
+      var referencedColumns = referencedObjectIDProperty.GetColumnsForComparison();
+      return new ForeignKeyConstraintDefinition(nameProvider(referencingColumns),  referencedTableName,  referencingColumns, referencedColumns);
     }
 
     private object GetValueOrNull (ObjectID objectID)

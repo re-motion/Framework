@@ -33,34 +33,34 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       _testHelper = NullSecurityClientTestHelper.CreateForStatefulSecurity();
       _securityClient = _testHelper.CreateSecurityClient();
-      _methodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetProperty ("IsVisible").GetGetMethod ());
+      _methodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetProperty("IsVisible").GetGetMethod());
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, "IsVisible");
+      bool hasAccess = _securityClient.HasPropertyReadAccess(_testHelper.SecurableObject, "IsVisible");
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_AccessGranted_WithPropertyInfo ()
     {
-      bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+      bool hasAccess = _securityClient.HasPropertyReadAccess(_testHelper.SecurableObject, _methodInformation);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_AccessGranted_WithPropertyInformation ()
     {
-      bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+      bool hasAccess = _securityClient.HasPropertyReadAccess(_testHelper.SecurableObject, _methodInformation);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
@@ -69,11 +69,11 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, "IsVisible");
+        hasAccess = _securityClient.HasPropertyReadAccess(_testHelper.SecurableObject, "IsVisible");
       }
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
@@ -82,11 +82,11 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+        hasAccess = _securityClient.HasPropertyReadAccess(_testHelper.SecurableObject, _methodInformation);
       }
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
@@ -95,38 +95,38 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, _methodInformation);
+        hasAccess = _securityClient.HasPropertyReadAccess(_testHelper.SecurableObject, _methodInformation);
       }
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull ()
     {
-      bool hasAccess = _securityClient.HasPropertyReadAccess (new SecurableObject (null), "IsVisible");
+      bool hasAccess = _securityClient.HasPropertyReadAccess(new SecurableObject(null), "IsVisible");
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull_PropertyInfo ()
     {
-      bool hasAccess = _securityClient.HasPropertyReadAccess (new SecurableObject (null), _methodInformation);
+      bool hasAccess = _securityClient.HasPropertyReadAccess(new SecurableObject(null), _methodInformation);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull_PropertyInformation ()
     {
-      bool hasAccess = _securityClient.HasPropertyReadAccess (new SecurableObject (null), _methodInformation);
+      bool hasAccess = _securityClient.HasPropertyReadAccess(new SecurableObject(null), _methodInformation);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
   }
 }

@@ -27,9 +27,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void GetDataManager ()
     {
       var clientTransaction = new TestableClientTransaction();
-      var dataManager = DataManagementService.GetDataManager (clientTransaction);
+      var dataManager = DataManagementService.GetDataManager(clientTransaction);
 
-      Assert.That (dataManager, Is.SameAs (clientTransaction.DataManager));
+      Assert.That(dataManager, Is.SameAs(clientTransaction.DataManager));
     }
   }
 }

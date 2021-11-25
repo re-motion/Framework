@@ -38,7 +38,7 @@ namespace Remotion.Mixins.Context
   /// <threadsafety static="true" instance="false"/>
   public class DeclarativeConfigurationBuilder
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (DeclarativeConfigurationBuilder));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof (DeclarativeConfigurationBuilder));
 
     /// <summary>
     /// Builds a new <see cref="MixinConfiguration"/> from the declarative configuration information in the given assemblies without inheriting
@@ -49,9 +49,9 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentNullException">The <paramref name="assemblies"/> parameter is <see langword="null"/>.</exception>
     public static MixinConfiguration BuildConfigurationFromAssemblies (params Assembly[] assemblies)
     {
-      ArgumentUtility.CheckNotNull ("assemblies", assemblies);
+      ArgumentUtility.CheckNotNull("assemblies", assemblies);
 
-      return BuildConfigurationFromAssemblies (null, (IEnumerable<Assembly>) assemblies);
+      return BuildConfigurationFromAssemblies(null, (IEnumerable<Assembly>) assemblies);
     }
 
     /// <summary>
@@ -64,9 +64,9 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentNullException">The <paramref name="assemblies"/> parameter is <see langword="null"/>.</exception>
     public static MixinConfiguration BuildConfigurationFromAssemblies (MixinConfiguration parentConfiguration, params Assembly[] assemblies)
     {
-      ArgumentUtility.CheckNotNull ("assemblies", assemblies);
+      ArgumentUtility.CheckNotNull("assemblies", assemblies);
 
-      return BuildConfigurationFromAssemblies (parentConfiguration, (IEnumerable<Assembly>) assemblies);
+      return BuildConfigurationFromAssemblies(parentConfiguration, (IEnumerable<Assembly>) assemblies);
     }
 
     /// <summary>
@@ -79,13 +79,13 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentNullException">The <paramref name="assemblies"/> parameter is <see langword="null"/>.</exception>
     public static MixinConfiguration BuildConfigurationFromAssemblies (MixinConfiguration? parentConfiguration, IEnumerable<Assembly> assemblies)
     {
-      ArgumentUtility.CheckNotNull ("assemblies", assemblies);
+      ArgumentUtility.CheckNotNull("assemblies", assemblies);
 
-      var builder = new DeclarativeConfigurationBuilder (parentConfiguration);
+      var builder = new DeclarativeConfigurationBuilder(parentConfiguration);
       foreach (Assembly assembly in assemblies)
-        builder.AddAssembly (assembly);
+        builder.AddAssembly(assembly);
 
-      return builder.BuildConfiguration ();
+      return builder.BuildConfiguration();
     }
 
     /// <summary>
@@ -98,16 +98,16 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentNullException">The <paramref name="types"/> parameter is <see langword="null"/>.</exception>
     public static MixinConfiguration BuildConfigurationFromTypes (MixinConfiguration? parentConfiguration, IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull ("types", types);
+      ArgumentUtility.CheckNotNull("types", types);
 
-      var builder = new DeclarativeConfigurationBuilder (parentConfiguration);
+      var builder = new DeclarativeConfigurationBuilder(parentConfiguration);
       foreach (Type type in types)
       {
-        if (!type.IsDefined (typeof (IgnoreForMixinConfigurationAttribute), false))
-          builder.AddType (type);
+        if (!type.IsDefined(typeof (IgnoreForMixinConfigurationAttribute), false))
+          builder.AddType(type);
       }
 
-      return builder.BuildConfiguration ();
+      return builder.BuildConfiguration();
     }
 
     /// <summary>
@@ -127,8 +127,8 @@ namespace Remotion.Mixins.Context
     /// <seealso cref="ContextAwareTypeUtility"/>
     public static MixinConfiguration BuildDefaultConfiguration ()
     {
-      ICollection types = GetTypeDiscoveryService().GetTypes (null, false);
-      return BuildConfigurationFromTypes (null, types.Cast<Type>());
+      ICollection types = GetTypeDiscoveryService().GetTypes(null, false);
+      return BuildConfigurationFromTypes(null, types.Cast<Type>());
     }
 
     // Separate method because of tests
@@ -138,7 +138,7 @@ namespace Remotion.Mixins.Context
     }
 
     private readonly MixinConfiguration? _parentConfiguration;
-    private readonly HashSet<Type> _allTypes = new HashSet<Type> ();
+    private readonly HashSet<Type> _allTypes = new HashSet<Type>();
 
     /// <summary>
     /// Initializes a new <see cref="DeclarativeConfigurationBuilder"/>, which can be used to collect assemblies and types with declarative
@@ -164,13 +164,13 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentNullException">The <paramref name="assembly"/> parameter is <see langword="null"/>.</exception>
     public DeclarativeConfigurationBuilder AddAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
-      s_log.DebugFormat ("Adding assembly {0} to DeclarativeConfigurationBuilder.", assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
+      s_log.DebugFormat("Adding assembly {0} to DeclarativeConfigurationBuilder.", assembly);
 
-      foreach (var t in AssemblyTypeCache.GetTypes (assembly))
+      foreach (var t in AssemblyTypeCache.GetTypes(assembly))
       {
-        if (!t.IsDefined (typeof (IgnoreForMixinConfigurationAttribute), false) && !MixinTypeUtility.IsGeneratedByMixinEngine (t))
-          AddType (t);
+        if (!t.IsDefined(typeof (IgnoreForMixinConfigurationAttribute), false) && !MixinTypeUtility.IsGeneratedByMixinEngine(t))
+          AddType(t);
       }
       return this;
     }
@@ -186,20 +186,20 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentException">The given type is a closed generic type and not a generic type definition.</exception>
     public DeclarativeConfigurationBuilder AddType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       if (type.IsGenericType && !type.IsGenericTypeDefinition)
-        throw new ArgumentException ("Type must be non-generic or a generic type definition.", "type");
+        throw new ArgumentException("Type must be non-generic or a generic type definition.", "type");
 
-      _allTypes.Add (type);
+      _allTypes.Add(type);
 
       if (type.BaseType != null)
       {
         // When analyzing types for attributes, we want type definitions, not specializations
         if (type.BaseType.IsGenericType)
-          AddType (type.BaseType.GetGenericTypeDefinition());
+          AddType(type.BaseType.GetGenericTypeDefinition());
         else
-          AddType (type.BaseType);
+          AddType(type.BaseType);
       }
 
       return this;
@@ -212,17 +212,17 @@ namespace Remotion.Mixins.Context
     /// <see cref="ClassContext"/> and <see cref="MixinContext"/> objects based on the information added so far.</returns>
     public MixinConfiguration BuildConfiguration ()
     {
-      s_log.InfoFormat ("Building mixin configuration from {0} types.", _allTypes.Count);
+      s_log.InfoFormat("Building mixin configuration from {0} types.", _allTypes.Count);
 
-      using (StopwatchScope.CreateScope (s_log, LogLevel.Info, "Time needed to build mixin configuration: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to build mixin configuration: {elapsed}."))
       {
-        var typeAnalyzers = new IMixinDeclarationAnalyzer<Type>[] { CreateAttributeAnalyzer<Type>(), new HasComposedInterfaceMarkerAnalyzer () };
-        var assemblyAnalyzers = new IMixinDeclarationAnalyzer<Assembly>[] { CreateAttributeAnalyzer<Assembly> () };
+        var typeAnalyzers = new IMixinDeclarationAnalyzer<Type>[] { CreateAttributeAnalyzer<Type>(), new HasComposedInterfaceMarkerAnalyzer() };
+        var assemblyAnalyzers = new IMixinDeclarationAnalyzer<Assembly>[] { CreateAttributeAnalyzer<Assembly>() };
         
-        var configurationAnalyzer = new DeclarativeConfigurationAnalyzer (typeAnalyzers, assemblyAnalyzers);
+        var configurationAnalyzer = new DeclarativeConfigurationAnalyzer(typeAnalyzers, assemblyAnalyzers);
 
-        var configurationBuilder = new MixinConfigurationBuilder (_parentConfiguration);
-        configurationAnalyzer.Analyze (_allTypes, configurationBuilder);
+        var configurationBuilder = new MixinConfigurationBuilder(_parentConfiguration);
+        configurationAnalyzer.Analyze(_allTypes, configurationBuilder);
         return configurationBuilder.BuildConfiguration();
       }
     }
@@ -231,7 +231,7 @@ namespace Remotion.Mixins.Context
         where T : ICustomAttributeProvider
     {
       var handledAttributeContext = new HashSet<IMixinConfigurationAttribute<T>>();
-      return new MixinConfigurationAttributeAnalyzer<T> (a => GetCustomAttributesWithDuplicateHandling (a, handledAttributeContext));
+      return new MixinConfigurationAttributeAnalyzer<T>(a => GetCustomAttributesWithDuplicateHandling(a, handledAttributeContext));
     }
 
     private static IEnumerable<IMixinConfigurationAttribute<T>> GetCustomAttributesWithDuplicateHandling<T> (
@@ -239,15 +239,15 @@ namespace Remotion.Mixins.Context
         where T : ICustomAttributeProvider
     {
       var customAttributes =
-          (IMixinConfigurationAttribute<T>[]) attributeProvider.GetCustomAttributes (typeof (IMixinConfigurationAttribute<T>), false);
+          (IMixinConfigurationAttribute<T>[]) attributeProvider.GetCustomAttributes(typeof (IMixinConfigurationAttribute<T>), false);
 
       foreach (var attribute in customAttributes)
       {
-        if (!attribute.IgnoresDuplicates || !handledAttributeContext.Contains (attribute))
+        if (!attribute.IgnoresDuplicates || !handledAttributeContext.Contains(attribute))
           yield return attribute;
 
         if (attribute.IgnoresDuplicates)
-          handledAttributeContext.Add (attribute);
+          handledAttributeContext.Add(attribute);
       }
     }
   }

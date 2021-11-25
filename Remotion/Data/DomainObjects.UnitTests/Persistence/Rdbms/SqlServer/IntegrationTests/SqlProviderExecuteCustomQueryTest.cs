@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       base.SetUp();
 
-      _query = QueryFactory.CreateCustomQuery (
+      _query = QueryFactory.CreateCustomQuery(
           "CustomQuery",
           TestDomainStorageProviderDefinition,
           "SELECT String, Int16, Boolean, Enum, ExtensibleEnum FROM [TableWithAllDataTypes]",
@@ -41,12 +41,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void ExecuteCustomQuery_RawValues ()
     {
-      var result = Provider.ExecuteCustomQuery (_query);
+      var result = Provider.ExecuteCustomQuery(_query);
 
       var rawValues =
           result
-            .Select (qrr => new[] { qrr.GetRawValue (0), qrr.GetRawValue (1), qrr.GetRawValue (2), qrr.GetRawValue (3), qrr.GetRawValue (4) })
-            .ToArray ();
+            .Select(qrr => new[] { qrr.GetRawValue(0), qrr.GetRawValue(1), qrr.GetRawValue(2), qrr.GetRawValue(3), qrr.GetRawValue(4) })
+            .ToArray();
       var expected =
           new object[]
           {
@@ -54,23 +54,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
               new object[] { "abcdeföäü", 32767, false, 1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Red" }
           };
 
-      Assert.That (rawValues, Is.EquivalentTo (expected));
+      Assert.That(rawValues, Is.EquivalentTo(expected));
     }
 
     [Test]
     public void ExecuteCustomQuery_ConvertedValues ()
     {
-      var result = Provider.ExecuteCustomQuery (_query);
+      var result = Provider.ExecuteCustomQuery(_query);
 
-      var convertedValues = result.Select (
+      var convertedValues = result.Select(
           qrr =>
           new object[]
           {
-              qrr.GetConvertedValue<string> (0), 
-              qrr.GetConvertedValue<Int16> (1), 
-              qrr.GetConvertedValue<bool> (2),
-              qrr.GetConvertedValue<ClassWithAllDataTypes.EnumType> (3), 
-              qrr.GetConvertedValue<Color> (4)
+              qrr.GetConvertedValue<string>(0), 
+              qrr.GetConvertedValue<Int16>(1), 
+              qrr.GetConvertedValue<bool>(2),
+              qrr.GetConvertedValue<ClassWithAllDataTypes.EnumType>(3), 
+              qrr.GetConvertedValue<Color>(4)
           }).ToArray();
 
       var expected =
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
               },
           };
 
-      Assert.That (convertedValues, Is.EquivalentTo (expected));
+      Assert.That(convertedValues, Is.EquivalentTo(expected));
     }
   }
 }

@@ -33,9 +33,9 @@ namespace Remotion.Validation.Implementation
 
     public ClassTypeAwareValidatedTypeResolverDecorator (IValidatedTypeResolver resolver)
     {
-      ArgumentUtility.CheckNotNull ("resolver", resolver);
+      ArgumentUtility.CheckNotNull("resolver", resolver);
 
-      _genericResolver = new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver());
+      _genericResolver = new GenericTypeAwareValidatedTypeResolverDecorator(new NullValidatedTypeResolver());
       _resolver = resolver;
     }
 
@@ -46,25 +46,25 @@ namespace Remotion.Validation.Implementation
 
     public Type? GetValidatedType (Type collectorType)
     {
-      ArgumentUtility.CheckNotNull ("collectorType", collectorType);
+      ArgumentUtility.CheckNotNull("collectorType", collectorType);
 
-      var attribute = AttributeUtility.GetCustomAttribute<ApplyWithClassAttribute> (collectorType, false);
+      var attribute = AttributeUtility.GetCustomAttribute<ApplyWithClassAttribute>(collectorType, false);
       if (attribute == null)
-        return _resolver.GetValidatedType (collectorType);
+        return _resolver.GetValidatedType(collectorType);
 
       var validatedType = attribute.ClassType;
-      var validatedTypefromGeneric = _genericResolver.GetValidatedType (collectorType);
+      var validatedTypefromGeneric = _genericResolver.GetValidatedType(collectorType);
       if (validatedTypefromGeneric != null)
-        CheckValidatedTypeAssignableFromDefinedType (collectorType, validatedTypefromGeneric, validatedType);
+        CheckValidatedTypeAssignableFromDefinedType(collectorType, validatedTypefromGeneric, validatedType);
       return validatedType;
     }
 
     private void CheckValidatedTypeAssignableFromDefinedType (Type collectorType, Type validatedType, Type classOrMixinType)
     {
-      if (!validatedType.IsAssignableFrom (classOrMixinType))
+      if (!validatedType.IsAssignableFrom(classOrMixinType))
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "Invalid '{0}'-definition for collector '{1}': type '{2}' is not assignable from '{3}'.",
                 typeof (ApplyWithClassAttribute).Name,
                 collectorType.GetFullNameSafe(),

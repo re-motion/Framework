@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
   {
     public static MixinTarget_WithoutInterface NewObject ()
     {
-      return NewObject<MixinTarget_WithoutInterface> ();
+      return NewObject<MixinTarget_WithoutInterface>();
     }
   }
 }

@@ -59,8 +59,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public SequenceEventReceiver (DomainObject[] domainObjects, DomainObjectCollection[] collections, int cancelEventNumber)
     {
-      ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
-      ArgumentUtility.CheckNotNull ("collections", collections);
+      ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
+      ArgumentUtility.CheckNotNull("collections", collections);
 
       _domainObjects = domainObjects;
       _collections = collections;
@@ -110,16 +110,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       for (int i = 0; i < expectedStates.Length; i++)
       {
         if (i >= _states.Count)
-          Assert.Fail ("Missing event: " + expectedStates[i].Message);
+          Assert.Fail("Missing event: " + expectedStates[i].Message);
 
         try
         {
-          _states[i].Check (expectedStates[i]);
+          _states[i].Check(expectedStates[i]);
         }
         catch (Exception e)
         {
-          Assert.Fail (
-              string.Format (
+          Assert.Fail(
+              string.Format(
                   "{0}\r\nExpected state: {1} - {2} - {3} \r\nActual state: {4} - {5} - {6}",
                   e.Message,
                   expectedStates[i].GetType().Name,
@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
         }
       }
 
-      Assert.AreEqual (expectedStates.Length, _states.Count, "Length");
+      Assert.AreEqual(expectedStates.Length, _states.Count, "Length");
     }
 
     public void Unregister ()
@@ -157,12 +157,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void DomainObject_PropertyChanged (object sender, PropertyChangeEventArgs args)
     {
-      _states.Add (new PropertyChangeState (sender, args.PropertyDefinition, args.OldValue, args.NewValue));
+      _states.Add(new PropertyChangeState(sender, args.PropertyDefinition, args.OldValue, args.NewValue));
     }
 
     public void DomainObject_PropertyChanging (object sender, PropertyChangeEventArgs args)
     {
-      _states.Add (new PropertyChangeState (sender, args.PropertyDefinition, args.OldValue, args.NewValue));
+      _states.Add(new PropertyChangeState(sender, args.PropertyDefinition, args.OldValue, args.NewValue));
 
       if (_states.Count == _cancelEventNumber)
         CancelOperation();
@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void DomainObject_RelationChanging (object sender, RelationChangingEventArgs args)
     {
-      _states.Add (new RelationChangeState (sender, args.RelationEndPointDefinition.PropertyName, args.OldRelatedObject, args.NewRelatedObject));
+      _states.Add(new RelationChangeState(sender, args.RelationEndPointDefinition.PropertyName, args.OldRelatedObject, args.NewRelatedObject));
 
       if (_states.Count == _cancelEventNumber)
         CancelOperation();
@@ -178,12 +178,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void DomainObject_RelationChanged (object sender, RelationChangedEventArgs args)
     {
-      _states.Add (new RelationChangeState (sender, args.RelationEndPointDefinition.PropertyName, null, null));
+      _states.Add(new RelationChangeState(sender, args.RelationEndPointDefinition.PropertyName, null, null));
     }
 
     public void DomainObject_Deleting (object sender, EventArgs args)
     {
-      _states.Add (new ObjectDeletionState (sender));
+      _states.Add(new ObjectDeletionState(sender));
 
       if (_states.Count == _cancelEventNumber)
         CancelOperation();
@@ -191,12 +191,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void DomainObject_Deleted (object sender, EventArgs args)
     {
-      _states.Add (new ObjectDeletionState (sender));
+      _states.Add(new ObjectDeletionState(sender));
     }
 
     public void Collection_Changing (object sender, DomainObjectCollectionChangeEventArgs args)
     {
-      _states.Add (new CollectionChangeState (sender, args.DomainObject));
+      _states.Add(new CollectionChangeState(sender, args.DomainObject));
 
       if (_states.Count == _cancelEventNumber)
         CancelOperation();
@@ -204,12 +204,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Collection_Changed (object sender, DomainObjectCollectionChangeEventArgs args)
     {
-      _states.Add (new CollectionChangeState (sender, args.DomainObject));
+      _states.Add(new CollectionChangeState(sender, args.DomainObject));
     }
 
     public void Collection_Deleting (object sender, EventArgs args)
     {
-      _states.Add (new CollectionDeletionState (sender));
+      _states.Add(new CollectionDeletionState(sender));
 
       if (_states.Count == _cancelEventNumber)
         CancelOperation();
@@ -217,7 +217,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Collection_Deleted (object sender, EventArgs args)
     {
-      _states.Add (new CollectionDeletionState (sender));
+      _states.Add(new CollectionDeletionState(sender));
     }
   }
 }

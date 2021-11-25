@@ -29,10 +29,10 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
     private readonly IMethodEmitter _methodEmitter;
 
     public ExpressionReference (Type referenceType, Expression expression, IMethodEmitter methodEmitter)
-        : base (ArgumentUtility.CheckNotNull ("referenceType", referenceType))
+        : base (ArgumentUtility.CheckNotNull("referenceType", referenceType))
     {
-      ArgumentUtility.CheckNotNull ("expression", expression);
-      ArgumentUtility.CheckNotNull ("methodEmitter", methodEmitter);
+      ArgumentUtility.CheckNotNull("expression", expression);
+      ArgumentUtility.CheckNotNull("methodEmitter", methodEmitter);
 
       _referenceType = referenceType;
       _methodEmitter = methodEmitter;
@@ -41,33 +41,33 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void LoadAddressOfReference (ILGenerator gen)
     {
-      ArgumentUtility.CheckNotNull ("gen", gen);
+      ArgumentUtility.CheckNotNull("gen", gen);
 
-      LocalReference local = CreateLocal (gen);
-      local.LoadAddressOfReference (gen);
+      LocalReference local = CreateLocal(gen);
+      local.LoadAddressOfReference(gen);
     }
 
     public override void LoadReference (ILGenerator gen)
     {
-      ArgumentUtility.CheckNotNull ("gen", gen);
+      ArgumentUtility.CheckNotNull("gen", gen);
 
       LocalReference local = CreateLocal(gen);
-      local.LoadReference (gen);
+      local.LoadReference(gen);
     }
 
     private LocalReference CreateLocal (ILGenerator gen)
     {
-      ArgumentUtility.CheckNotNull ("gen", gen);
+      ArgumentUtility.CheckNotNull("gen", gen);
 
-      LocalReference local = _methodEmitter.DeclareLocal (_referenceType);
-      local.Generate (gen);
-      _methodEmitter.AcceptStatement (new AssignStatement (local, _expression), gen);
+      LocalReference local = _methodEmitter.DeclareLocal(_referenceType);
+      local.Generate(gen);
+      _methodEmitter.AcceptStatement(new AssignStatement(local, _expression), gen);
       return local;
     }
 
     public override void StoreReference (ILGenerator gen)
     {
-      throw new NotSupportedException ("Expressions cannot be assigned to.");
+      throw new NotSupportedException("Expressions cannot be assigned to.");
     }
   }
 }

@@ -45,13 +45,13 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
   {
     public static Sandbox CreateSandbox (IPermission[] permissions, Assembly[] fullTrustAssemblies)
     {
-      ArgumentUtility.CheckNotNull ("permissions", permissions);
+      ArgumentUtility.CheckNotNull("permissions", permissions);
 
       var appDomainSetup = AppDomain.CurrentDomain.SetupInformation;
 
-      var permissionSet = new PermissionSet (null);
+      var permissionSet = new PermissionSet(null);
       foreach (var permission in permissions)
-        permissionSet.AddPermission (permission);
+        permissionSet.AddPermission(permission);
 
       StrongName[] fullTrustStrongNames = null;
       if (fullTrustAssemblies != null && fullTrustAssemblies.Length > 0)
@@ -59,20 +59,20 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
         try
         {
           fullTrustStrongNames = (from asm in fullTrustAssemblies
-                                  let name = asm.GetName ()
-                                  let publicKey = GetNonNullPublicKey (name)
-                                  let strongNamePublicKeyBlob = new StrongNamePublicKeyBlob (publicKey)
-                                  select new StrongName (strongNamePublicKeyBlob, name.Name, name.Version)).ToArray ();
+                                  let name = asm.GetName()
+                                  let publicKey = GetNonNullPublicKey(name)
+                                  let strongNamePublicKeyBlob = new StrongNamePublicKeyBlob(publicKey)
+                                  select new StrongName(strongNamePublicKeyBlob, name.Name, name.Version)).ToArray();
         }
         catch (InvalidOperationException ex)
         {
           // This clock does not have a unit test because it's impossible/difficult to reference an unsigned assembly from a signed unit test project.
-          throw new ArgumentException (ex.Message, "fullTrustAssemblies", ex);
+          throw new ArgumentException(ex.Message, "fullTrustAssemblies", ex);
         }
       }
 
-      var appDomain = AppDomain.CreateDomain ("Sandbox (" + DateTime.Now + ")", null, appDomainSetup, permissionSet, fullTrustStrongNames);
-      return new Sandbox (appDomain);
+      var appDomain = AppDomain.CreateDomain("Sandbox (" + DateTime.Now + ")", null, appDomainSetup, permissionSet, fullTrustStrongNames);
+      return new Sandbox(appDomain);
     }
 
     private static byte[] GetNonNullPublicKey (AssemblyName assemblyName)
@@ -81,10 +81,10 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
       // This case does not have a unit test because it's impossible/difficult to reference an unsigned assembly from a signed unit test project.
       if (publicKey == null || publicKey.Length == 0)
       {
-        var message = string.Format (
+        var message = string.Format(
             "The assembly '{0}' does not have a public key. Only assemblies with a public key can be fully trusted.", 
             assemblyName.Name);
-        throw new InvalidOperationException (message);
+        throw new InvalidOperationException(message);
       }
 
       return publicKey;
@@ -108,14 +108,14 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
     {
       if (!_isDisposed)
       {
-        AppDomain.Unload (_appDomain);
+        AppDomain.Unload(_appDomain);
         _isDisposed = true;
       }
     }
 
     public T CreateSandboxedInstance<T> (params IPermission[] permissions) where T : MarshalByRefObject, new ()
     {
-      var instance = (T) AppDomain.CreateInstanceAndUnwrap (typeof (T).Assembly.FullName, typeof (T).FullName);
+      var instance = (T) AppDomain.CreateInstanceAndUnwrap(typeof (T).Assembly.FullName, typeof (T).FullName);
       return instance;
     }
   }

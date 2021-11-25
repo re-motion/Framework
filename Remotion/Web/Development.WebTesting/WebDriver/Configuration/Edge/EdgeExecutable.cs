@@ -48,9 +48,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     /// <param name="userDirectory">Path to the desired Microsoft Edge user data directory</param>
     public EdgeExecutable ([NotNull] string browserBinaryPath, [NotNull] string driverBinaryPath, [NotNull] string userDirectory)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("browserBinaryPath", browserBinaryPath);
-      ArgumentUtility.CheckNotNullOrEmpty ("driverBinaryPath", driverBinaryPath);
-      ArgumentUtility.CheckNotNullOrEmpty ("userDirectory", userDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty("browserBinaryPath", browserBinaryPath);
+      ArgumentUtility.CheckNotNullOrEmpty("driverBinaryPath", driverBinaryPath);
+      ArgumentUtility.CheckNotNullOrEmpty("userDirectory", userDirectory);
 
       BrowserBinaryPath = browserBinaryPath;
       DriverBinaryPath = driverBinaryPath;

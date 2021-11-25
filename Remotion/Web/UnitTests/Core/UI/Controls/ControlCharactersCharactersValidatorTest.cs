@@ -24,7 +24,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
   {
     private class TestableControlCharactersCharactersValidator : ControlCharactersCharactersValidator
     {
-      public new bool EvaluateIsTextValid (string text) => base.EvaluateIsTextValid (text);
+      public new bool EvaluateIsTextValid (string text) => base.EvaluateIsTextValid(text);
     }
 
     [Test]
@@ -32,7 +32,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       var validator = new TestableControlCharactersCharactersValidator();
 
-      Assert.That (validator.EvaluateIsTextValid (null), Is.True);
+      Assert.That(validator.EvaluateIsTextValid(null), Is.True);
     }
 
     [Test]
@@ -40,7 +40,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       var validator = new TestableControlCharactersCharactersValidator();
 
-      Assert.That (validator.EvaluateIsTextValid (""), Is.True);
+      Assert.That(validator.EvaluateIsTextValid(""), Is.True);
     }
 
     [Test]
@@ -48,7 +48,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       var validator = new TestableControlCharactersCharactersValidator();
 
-      Assert.That (validator.EvaluateIsTextValid (" "), Is.True);
+      Assert.That(validator.EvaluateIsTextValid(" "), Is.True);
     }
 
     [Test]
@@ -56,7 +56,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       var validator = new TestableControlCharactersCharactersValidator();
 
-      Assert.That (validator.EvaluateIsTextValid (new string ((char) 160, 1)), Is.True);
+      Assert.That(validator.EvaluateIsTextValid(new string((char) 160, 1)), Is.True);
     }
 
     [Test]
@@ -64,7 +64,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       var validator = new TestableControlCharactersCharactersValidator();
 
-      Assert.That (validator.EvaluateIsTextValid ("\t"), Is.True);
+      Assert.That(validator.EvaluateIsTextValid("\t"), Is.True);
     }
 
     [Test]
@@ -73,7 +73,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       var validator = new TestableControlCharactersCharactersValidator();
       validator.EnableMultilineText = true;
 
-      Assert.That (validator.EvaluateIsTextValid ("\n"), Is.True);
+      Assert.That(validator.EvaluateIsTextValid("\n"), Is.True);
     }
 
     [Test]
@@ -83,8 +83,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       validator.EnableMultilineText = true;
       validator.ErrorMessageFormat = "text: '{0}', line position: {1}; line number: {2}";
 
-      Assert.That (validator.EvaluateIsTextValid ("\r"), Is.False);
-      Assert.That (validator.ErrorMessage, Is.EqualTo ("text: '\r', line position: 1; line number: 1"));
+      Assert.That(validator.EvaluateIsTextValid("\r"), Is.False);
+      Assert.That(validator.ErrorMessage, Is.EqualTo("text: '\r', line position: 1; line number: 1"));
     }
 
     [Test]
@@ -94,8 +94,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       validator.EnableMultilineText = false;
       validator.ErrorMessageFormat = "text: '{0}', line position: {1}; line number: {2}";
 
-      Assert.That (validator.EvaluateIsTextValid ("\n"), Is.False);
-      Assert.That (validator.ErrorMessage, Is.EqualTo ("text: '\n', line position: 1; line number: 1"));
+      Assert.That(validator.EvaluateIsTextValid("\n"), Is.False);
+      Assert.That(validator.ErrorMessage, Is.EqualTo("text: '\n', line position: 1; line number: 1"));
     }
 
     [Test]
@@ -105,8 +105,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       validator.EnableMultilineText = false;
       validator.ErrorMessageFormat = "text: '{0}', line position: {1}; line number: {2}";
 
-      Assert.That (validator.EvaluateIsTextValid ("\r"), Is.False);
-      Assert.That (validator.ErrorMessage, Is.EqualTo ("text: '\r', line position: 1; line number: 1"));
+      Assert.That(validator.EvaluateIsTextValid("\r"), Is.False);
+      Assert.That(validator.ErrorMessage, Is.EqualTo("text: '\r', line position: 1; line number: 1"));
     }
 
     [Test]
@@ -116,8 +116,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       validator.EnableMultilineText = true;
       validator.ErrorMessageFormat = "text: '{0}', line position: {1}; line number: {2}";
 
-      Assert.That (validator.EvaluateIsTextValid ("A\rB"), Is.False);
-      Assert.That (validator.ErrorMessage, Is.EqualTo ("text: 'A\rB', line position: 2; line number: 1"));
+      Assert.That(validator.EvaluateIsTextValid("A\rB"), Is.False);
+      Assert.That(validator.ErrorMessage, Is.EqualTo("text: 'A\rB', line position: 2; line number: 1"));
     }
 
     [Test]
@@ -127,8 +127,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       validator.EnableMultilineText = true;
       validator.ErrorMessageFormat = "text: '{0}', line position: {1}; line number: {2}";
 
-      Assert.That (validator.EvaluateIsTextValid ("A\r"), Is.False);
-      Assert.That (validator.ErrorMessage, Is.EqualTo ("text: 'A\r', line position: 2; line number: 1"));
+      Assert.That(validator.EvaluateIsTextValid("A\r"), Is.False);
+      Assert.That(validator.ErrorMessage, Is.EqualTo("text: 'A\r', line position: 2; line number: 1"));
     }
 
     [Test]
@@ -137,7 +137,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       var validator = new TestableControlCharactersCharactersValidator();
       validator.EnableMultilineText = true;
 
-      Assert.That (validator.EvaluateIsTextValid ("A\r\nB\r\n\r\nC"), Is.True);
+      Assert.That(validator.EvaluateIsTextValid("A\r\nB\r\n\r\nC"), Is.True);
     }
 
     [Test]
@@ -146,7 +146,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       var validator = new TestableControlCharactersCharactersValidator();
       validator.EnableMultilineText = true;
 
-      Assert.That (validator.EvaluateIsTextValid ("A\nB\n\nC"), Is.True);
+      Assert.That(validator.EvaluateIsTextValid("A\nB\n\nC"), Is.True);
     }
 
     [Test]
@@ -154,7 +154,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       var validator = new TestableControlCharactersCharactersValidator();
 
-      Assert.That (validator.EvaluateIsTextValid ("a b"), Is.True);
+      Assert.That(validator.EvaluateIsTextValid("a b"), Is.True);
     }
 
     [Test]
@@ -162,7 +162,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       var validator = new TestableControlCharactersCharactersValidator();
 
-      Assert.That (validator.EvaluateIsTextValid ("a" + new string ((char) 160, 1) + "b"), Is.True);
+      Assert.That(validator.EvaluateIsTextValid("a" + new string((char) 160, 1) + "b"), Is.True);
     }
 
     [Test]
@@ -172,8 +172,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       validator.EnableMultilineText = true;
       validator.ErrorMessageFormat = "text: '{0}', line position: {1}; line number: {2}";
 
-      Assert.That (validator.EvaluateIsTextValid ("A\nB\nC\nDDDDX\0XDDDD\nE\nF"), Is.False);
-      Assert.That (validator.ErrorMessage, Is.EqualTo ("text: 'DDDDX\0XDDDD', line position: 6; line number: 4"));
+      Assert.That(validator.EvaluateIsTextValid("A\nB\nC\nDDDDX\0XDDDD\nE\nF"), Is.False);
+      Assert.That(validator.ErrorMessage, Is.EqualTo("text: 'DDDDX\0XDDDD', line position: 6; line number: 4"));
     }
 
     [Test]
@@ -184,8 +184,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       validator.ErrorMessageFormat = "text: '{0}', line position: {1}; line number: {2}";
       validator.SampleTextLength = 4;
 
-      Assert.That (validator.EvaluateIsTextValid ("A\nB\nC\nD543210\0012345D\nE\nF"), Is.False);
-      Assert.That (validator.ErrorMessage, Is.EqualTo ("text: '3210\00123', line position: 8; line number: 4"));
+      Assert.That(validator.EvaluateIsTextValid("A\nB\nC\nD543210\0012345D\nE\nF"), Is.False);
+      Assert.That(validator.ErrorMessage, Is.EqualTo("text: '3210\00123', line position: 8; line number: 4"));
     }
 
     [Test]
@@ -196,8 +196,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       validator.ErrorMessageFormat = "text: '{0}', line position: {1}; line number: {2}";
       validator.SampleTextLength = 0;
 
-      Assert.That (validator.EvaluateIsTextValid ("A\nB\nC\nD543210\0012345D\nE\nF"), Is.False);
-      Assert.That (validator.ErrorMessage, Is.EqualTo ("text: '\0', line position: 8; line number: 4"));
+      Assert.That(validator.EvaluateIsTextValid("A\nB\nC\nD543210\0012345D\nE\nF"), Is.False);
+      Assert.That(validator.ErrorMessage, Is.EqualTo("text: '\0', line position: 8; line number: 4"));
     }
 
     [Test]
@@ -208,8 +208,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       validator.ErrorMessageFormat = "text: '{0}', line position: {1}; line number: {2}";
       validator.SampleTextLength = 10;
 
-      Assert.That (validator.EvaluateIsTextValid ("A\nB\nC\nD543210\0012345D\nE\nF"), Is.False);
-      Assert.That (validator.ErrorMessage, Is.EqualTo ("text: 'D543210\0012345D', line position: 8; line number: 4"));
+      Assert.That(validator.EvaluateIsTextValid("A\nB\nC\nD543210\0012345D\nE\nF"), Is.False);
+      Assert.That(validator.ErrorMessage, Is.EqualTo("text: 'D543210\0012345D', line position: 8; line number: 4"));
     }
 
     [Test]
@@ -220,8 +220,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       validator.ErrorMessageFormat = "text: '{0}', line position: {1}; line number: {2}";
       validator.SampleTextLength = 10;
 
-      Assert.That (validator.EvaluateIsTextValid ("A\nB\nC\n\0012345D\nE\nF"), Is.False);
-      Assert.That (validator.ErrorMessage, Is.EqualTo ("text: '\0012345D', line position: 1; line number: 4"));
+      Assert.That(validator.EvaluateIsTextValid("A\nB\nC\n\0012345D\nE\nF"), Is.False);
+      Assert.That(validator.ErrorMessage, Is.EqualTo("text: '\0012345D', line position: 1; line number: 4"));
     }
 
     [Test]
@@ -232,8 +232,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       validator.ErrorMessageFormat = "text: '{0}', line position: {1}; line number: {2}";
       validator.SampleTextLength = 10;
 
-      Assert.That (validator.EvaluateIsTextValid ("A\nB\nC\nD543210\0\nE\nF"), Is.False);
-      Assert.That (validator.ErrorMessage, Is.EqualTo ("text: 'D543210\0', line position: 8; line number: 4"));
+      Assert.That(validator.EvaluateIsTextValid("A\nB\nC\nD543210\0\nE\nF"), Is.False);
+      Assert.That(validator.ErrorMessage, Is.EqualTo("text: 'D543210\0', line position: 8; line number: 4"));
     }
 
     [Test]
@@ -244,8 +244,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       validator.ErrorMessageFormat = "text: '{0}', line position: {1}; line number: {2}";
       validator.SampleTextLength = 10;
 
-      Assert.That (validator.EvaluateIsTextValid ("\n\n\0\n\n"), Is.False);
-      Assert.That (validator.ErrorMessage, Is.EqualTo ("text: '\0', line position: 1; line number: 3"));
+      Assert.That(validator.EvaluateIsTextValid("\n\n\0\n\n"), Is.False);
+      Assert.That(validator.ErrorMessage, Is.EqualTo("text: '\0', line position: 1; line number: 3"));
     }
 
     [Test]
@@ -289,7 +289,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       var validator = new TestableControlCharactersCharactersValidator();
       validator.EnableMultilineText = false;
 
-      Assert.That (validator.EvaluateIsTextValid (text), Is.False);
+      Assert.That(validator.EvaluateIsTextValid(text), Is.False);
     }
 
     [Test]
@@ -301,7 +301,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       var validator = new TestableControlCharactersCharactersValidator();
 
-      Assert.That (validator.EvaluateIsTextValid (text), Is.True);
+      Assert.That(validator.EvaluateIsTextValid(text), Is.True);
     }
   }
 }

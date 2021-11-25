@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Val
   {
     public CustomerValidationRuleCollector1 ()
     {
-      AddRule (c => c.Email).SetValidator (_ => new FakeEmailValidator());
+      AddRule(c => c.Email).SetValidator(_ => new FakeEmailValidator());
     }
   }
 }

@@ -53,99 +53,99 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _assemblyOutputDirectoy = Path.Combine (AppContext.BaseDirectory, "MixerTest");
-      _modulePath = Path.Combine (_assemblyOutputDirectoy, "Signed.dll");
+      _assemblyOutputDirectoy = Path.Combine(AppContext.BaseDirectory, "MixerTest");
+      _modulePath = Path.Combine(_assemblyOutputDirectoy, "Signed.dll");
       
-      if (Directory.Exists (_assemblyOutputDirectoy))
-        Directory.Delete (_assemblyOutputDirectoy, true);
+      if (Directory.Exists(_assemblyOutputDirectoy))
+        Directory.Delete(_assemblyOutputDirectoy, true);
 
-      _mixedTypeFinderStub = MockRepository.GenerateStub<IMixedTypeFinder> ();
-      _mixerPipelineFactoryStub = MockRepository.GenerateStub<IMixerPipelineFactory> ();
-      _pipelineStub = MockRepository.GenerateStub<IPipeline> ();
+      _mixedTypeFinderStub = MockRepository.GenerateStub<IMixedTypeFinder>();
+      _mixerPipelineFactoryStub = MockRepository.GenerateStub<IMixerPipelineFactory>();
+      _pipelineStub = MockRepository.GenerateStub<IPipeline>();
 
-      _mixer = new Mixer (_mixedTypeFinderStub, _mixerPipelineFactoryStub, _assemblyOutputDirectoy);
+      _mixer = new Mixer(_mixedTypeFinderStub, _mixerPipelineFactoryStub, _assemblyOutputDirectoy);
 
       _reflectionServiceDynamicMock = MockRepository.GenerateMock<IReflectionService>();
       _codeManagerDynamicMock = MockRepository.GenerateMock<ICodeManager>();
-      _pipelineStub.Stub (stub => stub.ReflectionService).Return (_reflectionServiceDynamicMock);
-      _pipelineStub.Stub (stub => stub.CodeManager).Return (_codeManagerDynamicMock);
+      _pipelineStub.Stub(stub => stub.ReflectionService).Return(_reflectionServiceDynamicMock);
+      _pipelineStub.Stub(stub => stub.CodeManager).Return(_codeManagerDynamicMock);
 
       _fakeMixedType = typeof (int);
-      _configuration = new MixinConfiguration ();
+      _configuration = new MixinConfiguration();
 
-      _mixedTypeFinderStub.Stub (stub => stub.FindMixedTypes (_configuration)).Return (new[] { _fakeMixedType });
+      _mixedTypeFinderStub.Stub(stub => stub.FindMixedTypes(_configuration)).Return(new[] { _fakeMixedType });
 
-      _mixerPipelineFactoryStub.Stub (stub => stub.GetModulePaths (_assemblyOutputDirectoy)).Return (new[] { _modulePath });
-      _mixerPipelineFactoryStub.Stub (stub => stub.CreatePipeline (_assemblyOutputDirectoy)).Return (_pipelineStub);
+      _mixerPipelineFactoryStub.Stub(stub => stub.GetModulePaths(_assemblyOutputDirectoy)).Return(new[] { _modulePath });
+      _mixerPipelineFactoryStub.Stub(stub => stub.CreatePipeline(_assemblyOutputDirectoy)).Return(_pipelineStub);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      if (Directory.Exists (_assemblyOutputDirectoy))
-        Directory.Delete (_assemblyOutputDirectoy, true);
+      if (Directory.Exists(_assemblyOutputDirectoy))
+        Directory.Delete(_assemblyOutputDirectoy, true);
     }
 
     [Test]
     public void PrepareOutputDirectory_DirectoryDoesNotExist ()
     {
-      Assert.That (Directory.Exists (_assemblyOutputDirectoy), Is.False);
+      Assert.That(Directory.Exists(_assemblyOutputDirectoy), Is.False);
 
-      _mixer.PrepareOutputDirectory ();
+      _mixer.PrepareOutputDirectory();
 
-      Assert.That (Directory.Exists (_assemblyOutputDirectoy), Is.True);
+      Assert.That(Directory.Exists(_assemblyOutputDirectoy), Is.True);
     }
 
     [Test]
     public void PrepareOutputDirectory_DirectoryDoesExist ()
     {
-      Directory.CreateDirectory (_assemblyOutputDirectoy);
-      Assert.That (Directory.Exists (_assemblyOutputDirectoy), Is.True);
+      Directory.CreateDirectory(_assemblyOutputDirectoy);
+      Assert.That(Directory.Exists(_assemblyOutputDirectoy), Is.True);
 
-      _mixer.PrepareOutputDirectory ();
+      _mixer.PrepareOutputDirectory();
 
-      Assert.That (Directory.Exists (_assemblyOutputDirectoy), Is.True);
+      Assert.That(Directory.Exists(_assemblyOutputDirectoy), Is.True);
     }
 
     [Test]
     public void PrepareOutputDirectory_ModuleIsDeleted ()
     {
-      Directory.CreateDirectory (_assemblyOutputDirectoy);
+      Directory.CreateDirectory(_assemblyOutputDirectoy);
       CreateEmptyFile(_modulePath);
 
-      Assert.That (File.Exists (_modulePath), Is.True);
+      Assert.That(File.Exists(_modulePath), Is.True);
 
-      _mixer.PrepareOutputDirectory ();
+      _mixer.PrepareOutputDirectory();
 
-      Assert.That (File.Exists (_modulePath), Is.False);
+      Assert.That(File.Exists(_modulePath), Is.False);
     }
 
     [Test]
     public void Execute_FindsClassContexts ()
     {
-      var mixedTypeFinderMock = new MockRepository().StrictMock<IMixedTypeFinder> ();
-      mixedTypeFinderMock.Expect (mock => mock.FindMixedTypes (_configuration)).Return (new Type[0]);
-      mixedTypeFinderMock.Replay ();
-      _codeManagerDynamicMock.Stub (stub => stub.FlushCodeToDisk()).Return (new string[0]);
+      var mixedTypeFinderMock = new MockRepository().StrictMock<IMixedTypeFinder>();
+      mixedTypeFinderMock.Expect(mock => mock.FindMixedTypes(_configuration)).Return(new Type[0]);
+      mixedTypeFinderMock.Replay();
+      _codeManagerDynamicMock.Stub(stub => stub.FlushCodeToDisk()).Return(new string[0]);
 
-      var mixer = new Mixer (mixedTypeFinderMock, _mixerPipelineFactoryStub, _assemblyOutputDirectoy);
-      mixer.Execute (_configuration);
+      var mixer = new Mixer(mixedTypeFinderMock, _mixerPipelineFactoryStub, _assemblyOutputDirectoy);
+      mixer.Execute(_configuration);
 
-      mixedTypeFinderMock.VerifyAllExpectations ();
+      mixedTypeFinderMock.VerifyAllExpectations();
     }
 
     [Test]
     public void Execute_RaisesClassContextBeingProcessed ()
     {
-      _codeManagerDynamicMock.Stub (stub => stub.FlushCodeToDisk()).Return (new string[0]);
+      _codeManagerDynamicMock.Stub(stub => stub.FlushCodeToDisk()).Return(new string[0]);
       object eventSender = null;
       TypeEventArgs eventArgs = null;
 
       _mixer.TypeBeingProcessed += (sender, args) => { eventSender = sender; eventArgs = args; };
-      _mixer.Execute (_configuration);
+      _mixer.Execute(_configuration);
 
-      Assert.That (eventSender, Is.SameAs (_mixer));
-      Assert.That (eventArgs.Type, Is.SameAs (_fakeMixedType));
+      Assert.That(eventSender, Is.SameAs(_mixer));
+      Assert.That(eventArgs.Type, Is.SameAs(_fakeMixedType));
     }
 
     [Test]
@@ -154,104 +154,104 @@ namespace Remotion.Mixins.MixerTools.UnitTests
       MixinConfiguration activeConfiguration = null;
 
       _reflectionServiceDynamicMock
-          .Expect (mock => _reflectionServiceDynamicMock.GetAssembledType (_fakeMixedType))
-          .Return (typeof (FakeConcreteMixedType))
-          .WhenCalled (mi => activeConfiguration = MixinConfiguration.ActiveConfiguration);
-      _codeManagerDynamicMock.Stub (stub => stub.FlushCodeToDisk()).Return (new string[0]);
+          .Expect(mock => _reflectionServiceDynamicMock.GetAssembledType(_fakeMixedType))
+          .Return(typeof (FakeConcreteMixedType))
+          .WhenCalled(mi => activeConfiguration = MixinConfiguration.ActiveConfiguration);
+      _codeManagerDynamicMock.Stub(stub => stub.FlushCodeToDisk()).Return(new string[0]);
       
-      _mixer.Execute (_configuration);
+      _mixer.Execute(_configuration);
 
-      _reflectionServiceDynamicMock.VerifyAllExpectations ();
-      Assert.That (activeConfiguration, Is.SameAs (_configuration));
-      Assert.That (_mixer.FinishedTypes.Count, Is.EqualTo (1));
-      Assert.That (_mixer.FinishedTypes[_fakeMixedType], Is.SameAs (typeof (FakeConcreteMixedType)));
+      _reflectionServiceDynamicMock.VerifyAllExpectations();
+      Assert.That(activeConfiguration, Is.SameAs(_configuration));
+      Assert.That(_mixer.FinishedTypes.Count, Is.EqualTo(1));
+      Assert.That(_mixer.FinishedTypes[_fakeMixedType], Is.SameAs(typeof (FakeConcreteMixedType)));
     }
 
     [Test]
     public void Execute_ValidationError ()
     {
-      var validationException = new ValidationException (new ValidationLogData());
+      var validationException = new ValidationException(new ValidationLogData());
 
       _reflectionServiceDynamicMock
-          .Expect (mock => _reflectionServiceDynamicMock.GetAssembledType (_fakeMixedType))
-          .Throw (validationException);
-      _codeManagerDynamicMock.Stub (stub => stub.FlushCodeToDisk()).Return (new string[0]);
+          .Expect(mock => _reflectionServiceDynamicMock.GetAssembledType(_fakeMixedType))
+          .Throw(validationException);
+      _codeManagerDynamicMock.Stub(stub => stub.FlushCodeToDisk()).Return(new string[0]);
 
       object eventSender = null;
       ValidationErrorEventArgs eventArgs = null;
 
       _mixer.ValidationErrorOccurred += (sender, args) => { eventSender = sender; eventArgs = args; };
-      _mixer.Execute (_configuration);
+      _mixer.Execute(_configuration);
 
-      _reflectionServiceDynamicMock.VerifyAllExpectations ();
+      _reflectionServiceDynamicMock.VerifyAllExpectations();
 
-      Assert.That (eventSender, Is.SameAs (_mixer));
-      Assert.That (eventArgs.ValidationException, Is.SameAs (validationException));
+      Assert.That(eventSender, Is.SameAs(_mixer));
+      Assert.That(eventArgs.ValidationException, Is.SameAs(validationException));
     }
 
     [Test]
     public void Execute_OtherError ()
     {
-      var exception = new Exception ("x");
+      var exception = new Exception("x");
 
       _reflectionServiceDynamicMock
-          .Expect (mock => _reflectionServiceDynamicMock.GetAssembledType (_fakeMixedType))
-          .Throw (exception);
-      _codeManagerDynamicMock.Stub (stub => stub.FlushCodeToDisk()).Return (new string[0]);
+          .Expect(mock => _reflectionServiceDynamicMock.GetAssembledType(_fakeMixedType))
+          .Throw(exception);
+      _codeManagerDynamicMock.Stub(stub => stub.FlushCodeToDisk()).Return(new string[0]);
 
       object eventSender = null;
       ErrorEventArgs eventArgs = null;
 
       _mixer.ErrorOccurred += (sender, args) => { eventSender = sender; eventArgs = args; };
-      _mixer.Execute (_configuration);
+      _mixer.Execute(_configuration);
 
-      _reflectionServiceDynamicMock.VerifyAllExpectations ();
+      _reflectionServiceDynamicMock.VerifyAllExpectations();
 
-      Assert.That (eventSender, Is.SameAs (_mixer));
-      Assert.That (eventArgs.Exception, Is.SameAs (exception));
+      Assert.That(eventSender, Is.SameAs(_mixer));
+      Assert.That(eventArgs.Exception, Is.SameAs(exception));
     }
 
     [Test]
     public void Execute_Saves ()
     {
-      _codeManagerDynamicMock.Expect (mock => mock.FlushCodeToDisk()).Return (new[] { "a" });
+      _codeManagerDynamicMock.Expect(mock => mock.FlushCodeToDisk()).Return(new[] { "a" });
 
-      _mixer.Execute (_configuration);
+      _mixer.Execute(_configuration);
 
       _codeManagerDynamicMock.VerifyAllExpectations();
-      Assert.That (_mixer.GeneratedFiles, Is.EqualTo (new[] { "a" }));
+      Assert.That(_mixer.GeneratedFiles, Is.EqualTo(new[] { "a" }));
     }
 
     [Test]
     public void Create ()
     {
-      var mixer = Mixer.Create ("A", "D", 1);
-      Assert.That (mixer.MixerPipelineFactory, Is.TypeOf (typeof (MixerPipelineFactory)));
-      Assert.That (((MixerPipelineFactory) mixer.MixerPipelineFactory).AssemblyName, Is.EqualTo ("A"));
+      var mixer = Mixer.Create("A", "D", 1);
+      Assert.That(mixer.MixerPipelineFactory, Is.TypeOf(typeof (MixerPipelineFactory)));
+      Assert.That(((MixerPipelineFactory) mixer.MixerPipelineFactory).AssemblyName, Is.EqualTo("A"));
 
-      Assert.That (mixer.AssemblyOutputDirectory, Is.EqualTo ("D"));
+      Assert.That(mixer.AssemblyOutputDirectory, Is.EqualTo("D"));
 
-      Assert.That (mixer.MixedTypeFinder, Is.TypeOf (typeof (MixedTypeFinder)));
-      Assert.That (((MixedTypeFinder) mixer.MixedTypeFinder).TypeDiscoveryService, Is.TypeOf (typeof (AssemblyFinderTypeDiscoveryService)));
+      Assert.That(mixer.MixedTypeFinder, Is.TypeOf(typeof (MixedTypeFinder)));
+      Assert.That(((MixedTypeFinder) mixer.MixedTypeFinder).TypeDiscoveryService, Is.TypeOf(typeof (AssemblyFinderTypeDiscoveryService)));
 
       var service = (AssemblyFinderTypeDiscoveryService) ((MixedTypeFinder) mixer.MixedTypeFinder).TypeDiscoveryService;
-      Assert.That (service.AssemblyFinder, Is.TypeOf (typeof (CachingAssemblyFinderDecorator)));
+      Assert.That(service.AssemblyFinder, Is.TypeOf(typeof (CachingAssemblyFinderDecorator)));
 
       var assemblyFinder = (AssemblyFinder) ((CachingAssemblyFinderDecorator) service.AssemblyFinder).InnerFinder;
-      Assert.That (assemblyFinder.RootAssemblyFinder, Is.TypeOf (typeof (SearchPathRootAssemblyFinder)));
+      Assert.That(assemblyFinder.RootAssemblyFinder, Is.TypeOf(typeof (SearchPathRootAssemblyFinder)));
       var rootAssemblyFinder = ((SearchPathRootAssemblyFinder) assemblyFinder.RootAssemblyFinder);
-      Assert.That (rootAssemblyFinder.BaseDirectory, Is.EqualTo (AppContext.BaseDirectory));
-      Assert.That (rootAssemblyFinder.ConsiderDynamicDirectory, Is.False);
-      Assert.That (rootAssemblyFinder.AssemblyLoader, Is.TypeOf (typeof (FilteringAssemblyLoader)));
-      Assert.That (((FilteringAssemblyLoader) rootAssemblyFinder.AssemblyLoader).Filter, Is.TypeOf (typeof (LoadAllAssemblyLoaderFilter)));
+      Assert.That(rootAssemblyFinder.BaseDirectory, Is.EqualTo(AppContext.BaseDirectory));
+      Assert.That(rootAssemblyFinder.ConsiderDynamicDirectory, Is.False);
+      Assert.That(rootAssemblyFinder.AssemblyLoader, Is.TypeOf(typeof (FilteringAssemblyLoader)));
+      Assert.That(((FilteringAssemblyLoader) rootAssemblyFinder.AssemblyLoader).Filter, Is.TypeOf(typeof (LoadAllAssemblyLoaderFilter)));
 
-      Assert.That (assemblyFinder.AssemblyLoader, Is.TypeOf (typeof (FilteringAssemblyLoader)));
-      Assert.That (((FilteringAssemblyLoader) assemblyFinder.AssemblyLoader).Filter, Is.TypeOf (typeof (LoadAllAssemblyLoaderFilter)));
+      Assert.That(assemblyFinder.AssemblyLoader, Is.TypeOf(typeof (FilteringAssemblyLoader)));
+      Assert.That(((FilteringAssemblyLoader) assemblyFinder.AssemblyLoader).Filter, Is.TypeOf(typeof (LoadAllAssemblyLoaderFilter)));
     }
 
     private void CreateEmptyFile (string path)
     {
-      using (File.Create (path))
+      using (File.Create(path))
       {
       }
     }

@@ -36,14 +36,14 @@ namespace Remotion.Validation.UnitTests.Implementation
       _propertyValidatorStub1 = new Mock<IPropertyValidator>();
       _removingPropertyValidatorRegistrations = new RemovingPropertyValidatorRegistration[0];
 
-      _logContextInfo = new PropertyValidatorLogContextInfo (_propertyValidatorStub1.Object, _removingPropertyValidatorRegistrations);
+      _logContextInfo = new PropertyValidatorLogContextInfo(_propertyValidatorStub1.Object, _removingPropertyValidatorRegistrations);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_logContextInfo.RemovedValidator, Is.SameAs (_propertyValidatorStub1.Object));
-      Assert.That (_logContextInfo.RemovingPropertyValidatorRegistrations, Is.SameAs (_removingPropertyValidatorRegistrations));
+      Assert.That(_logContextInfo.RemovedValidator, Is.SameAs(_propertyValidatorStub1.Object));
+      Assert.That(_logContextInfo.RemovingPropertyValidatorRegistrations, Is.SameAs(_removingPropertyValidatorRegistrations));
     }
   }
 }

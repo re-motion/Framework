@@ -26,41 +26,41 @@ namespace Remotion.Mixins.UnitTests.Core
     public static ClassContext Create (Type type = null)
     {
       type = type ?? typeof (object);
-      return new ClassContext (type, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
+      return new ClassContext(type, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
     }
 
     public static ClassContext Create (Type type, params MixinContext[] mixins)
     {
-      return new ClassContext (type, mixins, Enumerable.Empty<Type>());
+      return new ClassContext(type, mixins, Enumerable.Empty<Type>());
     }
 
     public static ClassContext Create (Type type, params Type[] mixinTypes)
     {
-      var mixinContexts = GetMixinContexts (mixinTypes);
+      var mixinContexts = GetMixinContexts(mixinTypes);
       var composedInterfaces = Enumerable.Empty<Type>();
-      return new ClassContext (type, mixinContexts, composedInterfaces);
+      return new ClassContext(type, mixinContexts, composedInterfaces);
     }
 
     public static ClassContext Create (Type type, Type[] mixinTypes, Type[] composedInterfaces)
     {
-      var mixinContexts = GetMixinContexts (mixinTypes);
-      return new ClassContext (type, mixinContexts, composedInterfaces);
+      var mixinContexts = GetMixinContexts(mixinTypes);
+      return new ClassContext(type, mixinContexts, composedInterfaces);
     }
 
     private static IEnumerable<MixinContext> GetMixinContexts (Type[] mixinTypes)
     {
-      var mixins = new Dictionary<Type, MixinContext> (mixinTypes.Length);
+      var mixins = new Dictionary<Type, MixinContext>(mixinTypes.Length);
       foreach (Type mixinType in mixinTypes)
       {
-        if (!mixins.ContainsKey (mixinType))
+        if (!mixins.ContainsKey(mixinType))
         {
-          var context = MixinContextObjectMother.Create (mixinType: mixinType, explicitDependencies: Enumerable.Empty<Type> ());
-          mixins.Add (context.MixinType, context);
+          var context = MixinContextObjectMother.Create(mixinType: mixinType, explicitDependencies: Enumerable.Empty<Type>());
+          mixins.Add(context.MixinType, context);
         }
         else
         {
-          string message = string.Format ("The mixin type {0} was tried to be added twice.", mixinType.FullName);
-          throw new ArgumentException (message, "mixinTypes");
+          string message = string.Format("The mixin type {0} was tried to be added twice.", mixinType.FullName);
+          throw new ArgumentException(message, "mixinTypes");
         }
       }
       return mixins.Values;

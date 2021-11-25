@@ -42,8 +42,8 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
   {
     public static RdbmsToolsRunner Create (RdbmsToolsParameters rdbmsToolsParameters)
     {
-      AppDomainSetup appDomainSetup = CreateAppDomainSetup (rdbmsToolsParameters);
-      return new RdbmsToolsRunner (appDomainSetup, rdbmsToolsParameters);
+      AppDomainSetup appDomainSetup = CreateAppDomainSetup(rdbmsToolsParameters);
+      return new RdbmsToolsRunner(appDomainSetup, rdbmsToolsParameters);
     }
 
     public static AppDomainSetup CreateAppDomainSetup (RdbmsToolsParameters rdbmsToolsParameters)
@@ -52,13 +52,13 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
       appDomainSetup.ApplicationName = "RdbmsTools";
       appDomainSetup.ApplicationBase = rdbmsToolsParameters.BaseDirectory;
 
-      if (!string.IsNullOrEmpty (rdbmsToolsParameters.ConfigFile))
+      if (!string.IsNullOrEmpty(rdbmsToolsParameters.ConfigFile))
       {
-        appDomainSetup.ConfigurationFile = Path.GetFullPath (rdbmsToolsParameters.ConfigFile);
-        if (!File.Exists (appDomainSetup.ConfigurationFile))
+        appDomainSetup.ConfigurationFile = Path.GetFullPath(rdbmsToolsParameters.ConfigFile);
+        if (!File.Exists(appDomainSetup.ConfigurationFile))
         {
-          throw new FileNotFoundException (
-              string.Format (
+          throw new FileNotFoundException(
+              string.Format(
                   "The configuration file supplied by the 'config' parameter was not found.\r\nFile: {0}",
                   appDomainSetup.ConfigurationFile),
               appDomainSetup.ConfigurationFile);
@@ -82,9 +82,9 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
 
       InitializeConfiguration();
 
-      if (!string.IsNullOrEmpty (_rdbmsToolsParameters.SchemaFileBuilderTypeName))
+      if (!string.IsNullOrEmpty(_rdbmsToolsParameters.SchemaFileBuilderTypeName))
       {
-        throw new NotSupportedException (
+        throw new NotSupportedException(
             "The schemaBuilder parameter is obsolete and should no longer be used. "
             + "(The schema file builder is now retrieved from the storage provider definition.)");
       }
@@ -98,14 +98,14 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
 
     protected virtual void InitializeConfiguration ()
     {
-      DomainObjectsConfiguration.SetCurrent (
-          new FakeDomainObjectsConfiguration (
+      DomainObjectsConfiguration.SetCurrent(
+          new FakeDomainObjectsConfiguration(
               DomainObjectsConfiguration.Current.MappingLoader, GetPersistenceConfiguration(), new QueryConfiguration()));
 
-      MappingConfiguration.SetCurrent (
-          new MappingConfiguration (
+      MappingConfiguration.SetCurrent(
+          new MappingConfiguration(
               DomainObjectsConfiguration.Current.MappingLoader.CreateMappingLoader(),
-              new PersistenceModelLoader (new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage))));
+              new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
     }
 
     protected StorageConfiguration GetPersistenceConfiguration ()
@@ -114,11 +114,11 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
       if (storageConfiguration.StorageProviderDefinitions.Count == 0)
       {
         ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition>();
-        RdbmsProviderDefinition providerDefinition = new RdbmsProviderDefinition (
+        RdbmsProviderDefinition providerDefinition = new RdbmsProviderDefinition(
             "Default", new SqlStorageObjectFactory(), "Initial Catalog=DatabaseName;");
-        storageProviderDefinitionCollection.Add (providerDefinition);
+        storageProviderDefinitionCollection.Add(providerDefinition);
 
-        storageConfiguration = new StorageConfiguration (storageProviderDefinitionCollection, providerDefinition);
+        storageConfiguration = new StorageConfiguration(storageProviderDefinitionCollection, providerDefinition);
       }
 
       return storageConfiguration;
@@ -126,23 +126,23 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
 
     protected virtual void BuildSchema ()
     {
-      var scriptGenerator = new ScriptGenerator (
-          pd => pd.Factory.CreateSchemaScriptBuilder (pd), new RdbmsStorageEntityDefinitionProvider(), new ScriptToStringConverter());
-      var scripts = scriptGenerator.GetScripts (MappingConfiguration.Current.GetTypeDefinitions());
-      var fileGenerator = new FileGenerator (_rdbmsToolsParameters.SchemaOutputDirectory);
+      var scriptGenerator = new ScriptGenerator(
+          pd => pd.Factory.CreateSchemaScriptBuilder(pd), new RdbmsStorageEntityDefinitionProvider(), new ScriptToStringConverter());
+      var scripts = scriptGenerator.GetScripts(MappingConfiguration.Current.GetTypeDefinitions());
+      var fileGenerator = new FileGenerator(_rdbmsToolsParameters.SchemaOutputDirectory);
       var includeStorageProviderName = scripts.Count() > 1;
       foreach (var script in scripts)
-        fileGenerator.WriteScriptsToDisk (script, includeStorageProviderName);
+        fileGenerator.WriteScriptsToDisk(script, includeStorageProviderName);
     }
 
     protected virtual void ExportMapping ()
     {
-      var mappingSerializer = new MappingSerializer (
+      var mappingSerializer = new MappingSerializer(
           pd => pd.Factory.CreateEnumSerializer(),
-          (pd, enumSerializer) => pd.Factory.CreateStorageProviderSerializer (enumSerializer));
+          (pd, enumSerializer) => pd.Factory.CreateStorageProviderSerializer(enumSerializer));
 
-      var xml = mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
-      xml.Save (_rdbmsToolsParameters.MappingExportOutputFileName);
+      var xml = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
+      xml.Save(_rdbmsToolsParameters.MappingExportOutputFileName);
     }
   }
 }

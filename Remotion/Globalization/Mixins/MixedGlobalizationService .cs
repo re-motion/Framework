@@ -48,7 +48,7 @@ namespace Remotion.Globalization.Mixins
 
     public MixinGlobalizationService (IResourceManagerResolver resourceManagerResolver)
     {
-      ArgumentUtility.CheckNotNull ("resourceManagerResolver", resourceManagerResolver);
+      ArgumentUtility.CheckNotNull("resourceManagerResolver", resourceManagerResolver);
 
       _resourceManagerResolver = resourceManagerResolver;
 
@@ -58,12 +58,12 @@ namespace Remotion.Globalization.Mixins
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
 
       var masterConfiguration = MixinConfiguration.GetMasterConfiguration();
 
       if (masterConfiguration != MixinConfiguration.ActiveConfiguration)
-        return _getResourceManagerFromTypeFunc (typeInformation);
+        return _getResourceManagerFromTypeFunc(typeInformation);
 
       // During normal operation, the lock-statement is cheap enough as to not matter when accessing the ResourceManager.
       lock (_mixinConfigurationLockObject)
@@ -75,7 +75,7 @@ namespace Remotion.Globalization.Mixins
         }
       }
 
-      return _resourceManagerCache.GetOrAdd (typeInformation, _getResourceManagerFromTypeFunc);
+      return _resourceManagerCache.GetOrAdd(typeInformation, _getResourceManagerFromTypeFunc);
     }
 
     [NotNull]
@@ -85,27 +85,27 @@ namespace Remotion.Globalization.Mixins
       if (type == null)
         return NullResourceManager.Instance;
 
-      var classContext = MixinConfiguration.ActiveConfiguration.GetContext (type);
+      var classContext = MixinConfiguration.ActiveConfiguration.GetContext(type);
       if (classContext == null)
         return NullResourceManager.Instance;
 
       var resourceMangers = new List<IResourceManager>();
-      CollectResourceManagersRecursively (classContext.Type, resourceMangers);
+      CollectResourceManagersRecursively(classContext.Type, resourceMangers);
 
       if (resourceMangers.Any())
-        return new ResourceManagerSet (resourceMangers);
+        return new ResourceManagerSet(resourceMangers);
 
       return NullResourceManager.Instance;
     }
 
     private void CollectResourceManagersRecursively (Type type, List<IResourceManager> collectedResourceMangers)
     {
-      var mixinTypes = MixinTypeUtility.GetMixinTypesExact (type);
+      var mixinTypes = MixinTypeUtility.GetMixinTypesExact(type);
 
       foreach (var mixinType in mixinTypes)
-        CollectResourceManagersRecursively (mixinType, collectedResourceMangers);
+        CollectResourceManagersRecursively(mixinType, collectedResourceMangers);
 
-      collectedResourceMangers.AddRange (mixinTypes.Select (mixinType => _resourceManagerResolver.Resolve (mixinType).ResourceManager));
+      collectedResourceMangers.AddRange(mixinTypes.Select(mixinType => _resourceManagerResolver.Resolve(mixinType).ResourceManager));
     }
   }
 }

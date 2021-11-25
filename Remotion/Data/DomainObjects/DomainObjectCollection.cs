@@ -144,10 +144,10 @@ namespace Remotion.Data.DomainObjects
         Type requiredItemType, 
         IDomainObjectCollectionEventRaiser eventRaiser)
     {
-      ArgumentUtility.CheckNotNull ("dataStore", dataStore);
-      ArgumentUtility.CheckNotNull ("eventRaiser", eventRaiser);
+      ArgumentUtility.CheckNotNull("dataStore", dataStore);
+      ArgumentUtility.CheckNotNull("eventRaiser", eventRaiser);
 
-      return new ModificationCheckingDomainObjectCollectionDataDecorator (requiredItemType, new EventRaisingDomainObjectCollectionDataDecorator (eventRaiser, dataStore));
+      return new ModificationCheckingDomainObjectCollectionDataDecorator(requiredItemType, new EventRaisingDomainObjectCollectionDataDecorator(eventRaiser, dataStore));
     }
 
     /// <summary>
@@ -204,7 +204,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="requiredItemType">The <see cref="Type"/> that are required for members.</param>
     public DomainObjectCollection (Type requiredItemType)
     {
-      _dataStrategy = CreateDataStrategyForStandAloneCollection (new DomainObjectCollectionData (), requiredItemType, this);
+      _dataStrategy = CreateDataStrategyForStandAloneCollection(new DomainObjectCollectionData(), requiredItemType, this);
     }
 
     /// <summary>
@@ -223,7 +223,7 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public DomainObjectCollection (IDomainObjectCollectionData dataStrategy)
     {
-      ArgumentUtility.CheckNotNull ("dataStrategy", dataStrategy);
+      ArgumentUtility.CheckNotNull("dataStrategy", dataStrategy);
 
       _dataStrategy = dataStrategy;
     }
@@ -236,10 +236,10 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="System.ArgumentNullException"><paramref name="domainObjects"/> is <see langword="null"/>.</exception>
     public DomainObjectCollection (IEnumerable<DomainObject> domainObjects, Type requiredItemType)
     {
-      var dataStore = new DomainObjectCollectionData ();
-      dataStore.AddRangeAndCheckItems (domainObjects, requiredItemType);
+      var dataStore = new DomainObjectCollectionData();
+      dataStore.AddRangeAndCheckItems(domainObjects, requiredItemType);
 
-      _dataStrategy = CreateDataStrategyForStandAloneCollection (dataStore, requiredItemType, this);
+      _dataStrategy = CreateDataStrategyForStandAloneCollection(dataStore, requiredItemType, this);
     }
 
     /// <summary>
@@ -292,7 +292,7 @@ namespace Remotion.Data.DomainObjects
     /// </summary>
     public void EnsureDataComplete ()
     {
-      _dataStrategy.EnsureDataComplete ();
+      _dataStrategy.EnsureDataComplete();
     }
 
     /// <summary>
@@ -301,12 +301,12 @@ namespace Remotion.Data.DomainObjects
     /// <returns>An enumerator for iterating over the items in this collection.</returns>
     public IEnumerator<DomainObject> GetEnumerator ()
     {
-      return _dataStrategy.GetEnumerator ();
+      return _dataStrategy.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
     {
-      return GetEnumerator ();
+      return GetEnumerator();
     }
 
     /// <summary>
@@ -323,10 +323,10 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public bool ContainsObject (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      var existingObject = _dataStrategy.GetObject (domainObject.ID);
-      return existingObject != null && ReferenceEquals (existingObject, domainObject);
+      var existingObject = _dataStrategy.GetObject(domainObject.ID);
+      return existingObject != null && ReferenceEquals(existingObject, domainObject);
     }
 
     /// <summary>
@@ -337,9 +337,9 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/></exception>
     public bool Contains (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
+      ArgumentUtility.CheckNotNull("id", id);
 
-      return _dataStrategy.ContainsObjectID (id);
+      return _dataStrategy.ContainsObjectID(id);
     }
 
     /// <summary>
@@ -357,7 +357,7 @@ namespace Remotion.Data.DomainObjects
       if (domainObject == null)
         return -1;
 
-      var index = IndexOf (domainObject.ID);
+      var index = IndexOf(domainObject.ID);
       if (index != -1 && this[index] != domainObject)
         return -1;
 
@@ -372,7 +372,7 @@ namespace Remotion.Data.DomainObjects
     public int IndexOf (ObjectID id)
     {
       if (id != null)
-        return _dataStrategy.IndexOf (id);
+        return _dataStrategy.IndexOf(id);
       else
         return -1;
     }
@@ -391,16 +391,16 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="System.InvalidOperationException"><paramref name="value"/> is already part of the collection.</exception>
     public DomainObject this [int index]
     {
-      get { return _dataStrategy.GetObject (index); }
+      get { return _dataStrategy.GetObject(index); }
       set
       {
-        this.CheckNotReadOnly ("Cannot modify a read-only collection.");
+        this.CheckNotReadOnly("Cannot modify a read-only collection.");
 
         // If new value is null: This is actually a remove operation
         if (value == null)
-          RemoveAt (index);
+          RemoveAt(index);
         else
-          _dataStrategy.Replace (index, value);
+          _dataStrategy.Replace(index, value);
       }
     }
 
@@ -410,7 +410,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>The indexer returns <see langword="null"/> if the given <paramref name="id"/> was not found.</remarks>
     public DomainObject this [ObjectID id]
     {
-      get { return _dataStrategy.GetObject (id); }
+      get { return _dataStrategy.GetObject(id); }
     }
 
     /// <summary>
@@ -428,10 +428,10 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public int Add (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      this.CheckNotReadOnly ("Cannot add an item to a read-only collection.");
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      this.CheckNotReadOnly("Cannot add an item to a read-only collection.");
 
-      _dataStrategy.Insert (Count, domainObject);
+      _dataStrategy.Insert(Count, domainObject);
       return Count - 1;
     }
 
@@ -455,10 +455,10 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public void AddRange (IEnumerable domainObjects)
     {
-      ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
-      this.CheckNotReadOnly ("Cannot add items to a read-only collection.");
+      ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
+      this.CheckNotReadOnly("Cannot add items to a read-only collection.");
 
-      _dataStrategy.AddRangeAndCheckItems (domainObjects.Cast<DomainObject>(), RequiredItemType);
+      _dataStrategy.AddRangeAndCheckItems(domainObjects.Cast<DomainObject>(), RequiredItemType);
     }
 
     /// <summary>
@@ -472,7 +472,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
     public void RemoveAt (int index)
     {
-      Remove (this[index]);
+      Remove(this[index]);
     }
 
     /// <summary>
@@ -483,10 +483,10 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
     public void Remove (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
-      this.CheckNotReadOnly ("Cannot remove an item from a read-only collection.");
+      ArgumentUtility.CheckNotNull("id", id);
+      this.CheckNotReadOnly("Cannot remove an item from a read-only collection.");
 
-      _dataStrategy.Remove (id);
+      _dataStrategy.Remove(id);
     }
 
     /// <summary>
@@ -509,10 +509,10 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public bool Remove (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      this.CheckNotReadOnly ("Cannot remove an item from a read-only collection.");
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      this.CheckNotReadOnly("Cannot remove an item from a read-only collection.");
 
-      return _dataStrategy.Remove (domainObject);
+      return _dataStrategy.Remove(domainObject);
     }
 
     /// <summary>
@@ -521,9 +521,9 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
     public void Clear ()
     {
-      this.CheckNotReadOnly ("Cannot clear a read-only collection.");
+      this.CheckNotReadOnly("Cannot clear a read-only collection.");
 
-      _dataStrategy.Clear ();
+      _dataStrategy.Clear();
     }
 
     /// <summary>
@@ -548,16 +548,16 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public void Insert (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      this.CheckNotReadOnly ("Cannot insert an item into a read-only collection.");
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      this.CheckNotReadOnly("Cannot insert an item into a read-only collection.");
 
-      _dataStrategy.Insert (index, domainObject);
+      _dataStrategy.Insert(index, domainObject);
     }
    
     /// <inheritdoc />
     public void CopyTo (Array array, int index)
     {
-      _dataStrategy.ToArray ().CopyTo (array, index);
+      _dataStrategy.ToArray().CopyTo(array, index);
     }
 
     // TODO 4526: Remove
@@ -571,9 +571,9 @@ namespace Remotion.Data.DomainObjects
         + "implements a base class for indexed DomainObjectCollections. Don't use this API for any other use case. (1.13.130)")]
     protected void Sort (Comparison<DomainObject> comparison)
     {
-      ArgumentUtility.CheckNotNull ("comparison", comparison);
+      ArgumentUtility.CheckNotNull("comparison", comparison);
 
-      _dataStrategy.Sort (comparison);
+      _dataStrategy.Sort(comparison);
     }
 
     /// <summary>
@@ -597,7 +597,7 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public DomainObjectCollection Clone ()
     {
-      return Clone (IsReadOnly);
+      return Clone(IsReadOnly);
     }
 
     /// <summary>
@@ -622,14 +622,14 @@ namespace Remotion.Data.DomainObjects
     {
       IEnumerable<DomainObject> contents = _dataStrategy;
       if (makeCloneReadOnly)
-        return DomainObjectCollectionFactory.Instance.CreateReadOnlyCollection (GetType (), contents);
+        return DomainObjectCollectionFactory.Instance.CreateReadOnlyCollection(GetType(), contents);
       else
-        return DomainObjectCollectionFactory.Instance.CreateCollection (GetType (), contents, RequiredItemType);
+        return DomainObjectCollectionFactory.Instance.CreateCollection(GetType(), contents, RequiredItemType);
     }
 
     object ICloneable.Clone ()
     {
-      return Clone ();
+      return Clone();
     }
 
     /// <summary>
@@ -639,7 +639,7 @@ namespace Remotion.Data.DomainObjects
     protected virtual void OnAdding (DomainObjectCollectionChangeEventArgs args)
     {
       if (Adding != null)
-        Adding (this, args);
+        Adding(this, args);
     }
 
     /// <summary>
@@ -650,7 +650,7 @@ namespace Remotion.Data.DomainObjects
     protected virtual void OnAdded (DomainObjectCollectionChangeEventArgs args)
     {
       if (Added != null)
-        Added (this, args);
+        Added(this, args);
     }
 
     /// <summary>
@@ -662,7 +662,7 @@ namespace Remotion.Data.DomainObjects
     protected virtual void OnRemoving (DomainObjectCollectionChangeEventArgs args)
     {
       if (Removing != null)
-        Removing (this, args);
+        Removing(this, args);
     }
 
     /// <summary>
@@ -677,7 +677,7 @@ namespace Remotion.Data.DomainObjects
     protected virtual void OnRemoved (DomainObjectCollectionChangeEventArgs args)
     {
       if (Removed != null)
-        Removed (this, args);
+        Removed(this, args);
     }
 
     /// <summary>
@@ -693,7 +693,7 @@ namespace Remotion.Data.DomainObjects
     protected virtual void OnDeleting ()
     {
       if (Deleting != null)
-        Deleting (this, EventArgs.Empty);
+        Deleting(this, EventArgs.Empty);
     }
 
     /// <summary>
@@ -708,7 +708,7 @@ namespace Remotion.Data.DomainObjects
     protected virtual void OnDeleted ()
     {
       if (Deleted != null)
-        Deleted (this, EventArgs.Empty);
+        Deleted(this, EventArgs.Empty);
     }
     
     /// <summary>
@@ -731,7 +731,7 @@ namespace Remotion.Data.DomainObjects
 
     internal void CopyEventHandlersFrom (DomainObjectCollection source)
     {
-      ArgumentUtility.CheckNotNull ("source", source);
+      ArgumentUtility.CheckNotNull("source", source);
 
       Adding += source.Adding;
       Added += source.Added;
@@ -744,10 +744,10 @@ namespace Remotion.Data.DomainObjects
     IDomainObjectCollectionData IAssociatableDomainObjectCollection.TransformToAssociated (
         RelationEndPointID endPointID, IAssociatedDomainObjectCollectionDataStrategyFactory associatedDomainObjectCollectionDataStrategyFactory)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
       var originalDataStrategy = _dataStrategy;
-      _dataStrategy = associatedDomainObjectCollectionDataStrategyFactory.CreateDataStrategyForEndPoint (endPointID);
+      _dataStrategy = associatedDomainObjectCollectionDataStrategyFactory.CreateDataStrategyForEndPoint(endPointID);
       return originalDataStrategy;
     }
 
@@ -755,8 +755,8 @@ namespace Remotion.Data.DomainObjects
     {
       var originalDataStrategy = _dataStrategy;
       // copy data so that new stand-alone collection contains the same data as before
-      var standAloneDataStore = new DomainObjectCollectionData (_dataStrategy);
-      _dataStrategy = CreateDataStrategyForStandAloneCollection (standAloneDataStore, RequiredItemType, this);
+      var standAloneDataStore = new DomainObjectCollectionData(_dataStrategy);
+      _dataStrategy = CreateDataStrategyForStandAloneCollection(standAloneDataStore, RequiredItemType, this);
       return originalDataStrategy;
     }
   }

@@ -39,8 +39,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public ScopeControlObject GetTopControls ()
     {
-      var scope = Scope.FindChild ("TopControl");
-      return new ScopeControlObject (Context.CloneForControl (scope));
+      var scope = Scope.FindChild("TopControl");
+      return new ScopeControlObject(Context.CloneForControl(scope));
     }
 
     /// <summary>
@@ -48,8 +48,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public ScopeControlObject GetActiveView ()
     {
-      var scope = Scope.FindChild ("ActiveView");
-      return new ScopeControlObject (Context.CloneForControl (scope));
+      var scope = Scope.FindChild("ActiveView");
+      return new ScopeControlObject(Context.CloneForControl(scope));
     }
 
     /// <summary>
@@ -57,29 +57,29 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public ScopeControlObject GetBottomControls ()
     {
-      var scope = Scope.FindChild ("BottomControl");
-      return new ScopeControlObject (Context.CloneForControl (scope));
+      var scope = Scope.FindChild("BottomControl");
+      return new ScopeControlObject(Context.CloneForControl(scope));
     }
 
     /// <inheritdoc/>
     public WebTabStripTabDefinition GetSelectedTab ()
     {
       var tabDefinition = GetTabStrip().GetSelectedTab();
-      return ConvertToTabbedMultiViewTab (tabDefinition);
+      return ConvertToTabbedMultiViewTab(tabDefinition);
     }
 
     /// <inheritdoc/>
     public IReadOnlyList<WebTabStripTabDefinition> GetTabDefinitions ()
     {
-      return GetTabStrip().GetTabDefinitions().Select (ConvertToTabbedMultiViewTab).ToList();
+      return GetTabStrip().GetTabDefinitions().Select(ConvertToTabbedMultiViewTab).ToList();
     }
 
     private WebTabStripTabDefinition ConvertToTabbedMultiViewTab ([NotNull] WebTabStripTabDefinition tabDefinition)
     {
-      ArgumentUtility.CheckNotNull ("tabDefinition", tabDefinition);
+      ArgumentUtility.CheckNotNull("tabDefinition", tabDefinition);
 
-      return new WebTabStripTabDefinition (
-          tabDefinition.ItemID.Substring (0, tabDefinition.ItemID.Length - "_Tab".Length),
+      return new WebTabStripTabDefinition(
+          tabDefinition.ItemID.Substring(0, tabDefinition.ItemID.Length - "_Tab".Length),
           tabDefinition.Index,
           tabDefinition.Title,
           tabDefinition.IsDisabled);
@@ -94,79 +94,79 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject SwitchTo (string itemID, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return SwitchTo().WithItemID (itemID, actionOptions);
+      return SwitchTo().WithItemID(itemID, actionOptions);
     }
 
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return GetTabStrip().SwitchTo (itemID + "_Tab", actionOptions);
+      return GetTabStrip().SwitchTo(itemID + "_Tab", actionOptions);
     }
 
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithIndex (int index, IWebTestActionOptions? actionOptions)
     {
-      return GetTabStrip().SwitchTo().WithIndex (index, actionOptions);
+      return GetTabStrip().SwitchTo().WithIndex(index, actionOptions);
     }
 
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithHtmlID (string htmlID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
+      ArgumentUtility.CheckNotNullOrEmpty("htmlID", htmlID);
 
-      return GetTabStrip().SwitchTo().WithHtmlID (htmlID, actionOptions);
+      return GetTabStrip().SwitchTo().WithHtmlID(htmlID, actionOptions);
     }
 
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
+      ArgumentUtility.CheckNotNullOrEmpty("displayText", displayText);
 
-      return GetTabStrip().SwitchTo().WithDisplayText (displayText, actionOptions);
+      return GetTabStrip().SwitchTo().WithDisplayText(displayText, actionOptions);
     }
 
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayTextContains (string containsDisplayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
+      ArgumentUtility.CheckNotNullOrEmpty("containsDisplayText", containsDisplayText);
 
-      return GetTabStrip().SwitchTo().WithDisplayTextContains (containsDisplayText, actionOptions);
+      return GetTabStrip().SwitchTo().WithDisplayTextContains(containsDisplayText, actionOptions);
     }
 
     private WebTabStripControlObject GetTabStrip ()
     {
-      var scope = Scope.FindChild ("TabStrip");
-      return new WebTabStripControlObject (Context.CloneForControl (scope));
+      var scope = Scope.FindChild("TabStrip");
+      return new WebTabStripControlObject(Context.CloneForControl(scope));
     }
 
     /// <inheritdoc/>
     public TControlObject GetControl<TControlObject> (IControlSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return Children.GetControl (controlSelectionCommand);
+      return Children.GetControl(controlSelectionCommand);
     }
 
     /// <inheritdoc/>
     public TControlObject? GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return Children.GetControlOrNull (controlSelectionCommand);
+      return Children.GetControlOrNull(controlSelectionCommand);
     }
 
     /// <inheritdoc/>
     public bool HasControl (IControlExistsCommand controlSelectionCommand)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return Children.HasControl (controlSelectionCommand);
+      return Children.HasControl(controlSelectionCommand);
     }
   }
 }

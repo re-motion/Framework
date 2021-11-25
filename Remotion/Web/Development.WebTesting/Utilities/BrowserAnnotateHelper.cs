@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public BrowserAnnotateHelper (IBrowserConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
+      ArgumentUtility.CheckNotNull("configuration", configuration);
 
       BrowserConfiguration = configuration;
     }
@@ -58,26 +58,26 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         bool? wrapLines = null,
         Size? maximumSize = null)
     {
-      ArgumentUtility.CheckNotNull ("builder", builder);
-      ArgumentUtility.CheckNotNull ("browserSession", browserSession);
-      ArgumentUtility.CheckNotNull ("content", content);
+      ArgumentUtility.CheckNotNull("builder", builder);
+      ArgumentUtility.CheckNotNull("browserSession", browserSession);
+      ArgumentUtility.CheckNotNull("content", content);
 
       var seleniumDriver = (IWebDriver) browserSession.Driver.Native;
 
-      var clonedStyle = (style ?? BrowserConfiguration.TooltipStyle).Clone (positioning: positioning, wrapLines: wrapLines, maximumSize: maximumSize);
-      var browserContentBounds = BrowserConfiguration.Locator.GetBrowserContentBounds (seleniumDriver).Location;
+      var clonedStyle = (style ?? BrowserConfiguration.TooltipStyle).Clone(positioning: positioning, wrapLines: wrapLines, maximumSize: maximumSize);
+      var browserContentBounds = BrowserConfiguration.Locator.GetBrowserContentBounds(seleniumDriver).Location;
 
       // Offset the position of the cursor to translate it to the browser coordinate system.
       var cursorPosition = Cursor.Position;
-      cursorPosition.Offset (-browserContentBounds.X, -browserContentBounds.Y);
+      cursorPosition.Offset(-browserContentBounds.X, -browserContentBounds.Y);
 
-      var tooltipAnnotation = new ScreenshotTooltipAnnotation (
+      var tooltipAnnotation = new ScreenshotTooltipAnnotation(
           content,
           clonedStyle,
-          padding ?? new WebPadding (0, 20, 0, 25));
-      builder.Annotate (new Rectangle (cursorPosition, new Size (1, 1)), new RectangleResolver (seleniumDriver), tooltipAnnotation);
+          padding ?? new WebPadding(0, 20, 0, 25));
+      builder.Annotate(new Rectangle(cursorPosition, new Size(1, 1)), new RectangleResolver(seleniumDriver), tooltipAnnotation);
 
-      return new FluentScreenshotElement<Rectangle> (tooltipAnnotation.TooltipBounds, new RectangleResolver (seleniumDriver));
+      return new FluentScreenshotElement<Rectangle>(tooltipAnnotation.TooltipBounds, new RectangleResolver(seleniumDriver));
     }
 
     /// <summary>
@@ -92,10 +92,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         bool? wrapLines = null,
         Size? maximumSize = null)
     {
-      ArgumentUtility.CheckNotNull ("builder", builder);
-      ArgumentUtility.CheckNotNull ("controlObject", controlObject);
+      ArgumentUtility.CheckNotNull("builder", builder);
+      ArgumentUtility.CheckNotNull("controlObject", controlObject);
 
-      return DrawTooltip (builder, (IWebElement) controlObject.Scope.Native, style, padding, positioning, wrapLines, maximumSize);
+      return DrawTooltip(builder, (IWebElement) controlObject.Scope.Native, style, padding, positioning, wrapLines, maximumSize);
     }
 
     /// <summary>
@@ -110,10 +110,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         bool? wrapLines = null,
         Size? maximumSize = null)
     {
-      ArgumentUtility.CheckNotNull ("builder", builder);
-      ArgumentUtility.CheckNotNull ("element", element);
+      ArgumentUtility.CheckNotNull("builder", builder);
+      ArgumentUtility.CheckNotNull("element", element);
 
-      return DrawTooltip (builder, (IWebElement) element.Native, style, padding, positioning, wrapLines, maximumSize);
+      return DrawTooltip(builder, (IWebElement) element.Native, style, padding, positioning, wrapLines, maximumSize);
     }
 
     /// <summary>
@@ -128,27 +128,27 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         bool? wrapLines = null,
         Size? maximumSize = null)
     {
-      ArgumentUtility.CheckNotNull ("builder", builder);
-      ArgumentUtility.CheckNotNull ("webElement", webElement);
+      ArgumentUtility.CheckNotNull("builder", builder);
+      ArgumentUtility.CheckNotNull("webElement", webElement);
 
-      var title = webElement.GetAttribute ("title");
+      var title = webElement.GetAttribute("title");
       if (title == null)
-        throw new InvalidOperationException ("Can not display the tooltip for the specified element as it has no title attribute.");
+        throw new InvalidOperationException("Can not display the tooltip for the specified element as it has no title attribute.");
 
-      var clonedStyle = (style ?? BrowserConfiguration.TooltipStyle).Clone (positioning: positioning, wrapLines: wrapLines, maximumSize: maximumSize);
+      var clonedStyle = (style ?? BrowserConfiguration.TooltipStyle).Clone(positioning: positioning, wrapLines: wrapLines, maximumSize: maximumSize);
 
-      var tooltipAnnotation = new ScreenshotTooltipAnnotation (
+      var tooltipAnnotation = new ScreenshotTooltipAnnotation(
           title,
           clonedStyle,
-          padding ?? new WebPadding (0, 20, 0, 20));
-      builder.Annotate (
-          new Rectangle (
-              WebElementResolver.Instance.ResolveBrowserCoordinates (webElement).ElementBounds.Location,
-              new Size (1, 1)),
-          new RectangleResolver (((IWrapsDriver) webElement).WrappedDriver),
+          padding ?? new WebPadding(0, 20, 0, 20));
+      builder.Annotate(
+          new Rectangle(
+              WebElementResolver.Instance.ResolveBrowserCoordinates(webElement).ElementBounds.Location,
+              new Size(1, 1)),
+          new RectangleResolver(((IWrapsDriver) webElement).WrappedDriver),
           tooltipAnnotation);
 
-      return new FluentScreenshotElement<Rectangle> (tooltipAnnotation.TooltipBounds, new RectangleResolver (((IWrapsDriver) webElement).WrappedDriver));
+      return new FluentScreenshotElement<Rectangle>(tooltipAnnotation.TooltipBounds, new RectangleResolver(((IWrapsDriver) webElement).WrappedDriver));
     }
   }
 }

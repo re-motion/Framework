@@ -35,77 +35,77 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     {
       base.SetUp();
 
-      _bindableObject = ObjectFactory.Create<SimpleBusinessObjectClass> (ParamList.Empty);
-      _bindableObjectMixin = Mixin.Get<BindableObjectMixin> (_bindableObject);
+      _bindableObject = ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty);
+      _bindableObjectMixin = Mixin.Get<BindableObjectMixin>(_bindableObject);
       _businessObject = _bindableObjectMixin;
     }
 
     [Test]
     public void FromClass ()
     {
-      Assert.That (_bindableObjectMixin.BusinessObjectClass, Is.Not.Null);
-      Assert.That (_bindableObjectMixin.BusinessObjectClass.TargetType, Is.SameAs (typeof (SimpleBusinessObjectClass)));
-      Assert.That (_bindableObjectMixin.BusinessObjectClass.BusinessObjectProvider, Is.SameAs (BindableObjectProvider.GetProviderForBindableObjectType(typeof (SimpleBusinessObjectClass))));
+      Assert.That(_bindableObjectMixin.BusinessObjectClass, Is.Not.Null);
+      Assert.That(_bindableObjectMixin.BusinessObjectClass.TargetType, Is.SameAs(typeof (SimpleBusinessObjectClass)));
+      Assert.That(_bindableObjectMixin.BusinessObjectClass.BusinessObjectProvider, Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof (SimpleBusinessObjectClass))));
     }
 
     [Test]
     public void FromInterface ()
     {
-      Assert.That (_businessObject.BusinessObjectClass, Is.Not.Null);
-      Assert.That (_businessObject.BusinessObjectClass, Is.SameAs (_bindableObjectMixin.BusinessObjectClass));
-      Assert.That (_businessObject.BusinessObjectClass.BusinessObjectProvider, Is.SameAs (BindableObjectProvider.GetProviderForBindableObjectType (typeof (SimpleBusinessObjectClass))));
+      Assert.That(_businessObject.BusinessObjectClass, Is.Not.Null);
+      Assert.That(_businessObject.BusinessObjectClass, Is.SameAs(_bindableObjectMixin.BusinessObjectClass));
+      Assert.That(_businessObject.BusinessObjectClass.BusinessObjectProvider, Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof (SimpleBusinessObjectClass))));
     }
 
     [Test]
     public void LazyInitialization_KeepsProviderOfConstructionTime ()
     {
-      var objectCreatedBefore = ObjectFactory.Create<SimpleBusinessObjectClass> (ParamList.Empty);
-      var providerBefore = BindableObjectProvider.GetProviderForBindableObjectType (typeof (SimpleBusinessObjectClass));
+      var objectCreatedBefore = ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty);
+      var providerBefore = BindableObjectProvider.GetProviderForBindableObjectType(typeof (SimpleBusinessObjectClass));
 
-      BindableObjectProvider.SetProvider (typeof (BindableObjectProviderAttribute), null);
+      BindableObjectProvider.SetProvider(typeof (BindableObjectProviderAttribute), null);
       
-      var providerAfter = BindableObjectProvider.GetProviderForBindableObjectType (typeof (SimpleBusinessObjectClass));
-      Assert.That (providerAfter, Is.Not.SameAs (providerBefore));
-      var objectCreatedAfter = ObjectFactory.Create<SimpleBusinessObjectClass> (ParamList.Empty);
+      var providerAfter = BindableObjectProvider.GetProviderForBindableObjectType(typeof (SimpleBusinessObjectClass));
+      Assert.That(providerAfter, Is.Not.SameAs(providerBefore));
+      var objectCreatedAfter = ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty);
 
-      Assert.That (((IBusinessObject) objectCreatedAfter).BusinessObjectClass.BusinessObjectProvider, Is.SameAs (providerAfter));
-      Assert.That (((IBusinessObject) objectCreatedBefore).BusinessObjectClass.BusinessObjectProvider, Is.SameAs (providerBefore));
+      Assert.That(((IBusinessObject) objectCreatedAfter).BusinessObjectClass.BusinessObjectProvider, Is.SameAs(providerAfter));
+      Assert.That(((IBusinessObject) objectCreatedBefore).BusinessObjectClass.BusinessObjectProvider, Is.SameAs(providerBefore));
     }
 
     [Test]
     public void LazyInitialization_KeepsMixinConfigurationOfConstructionTime ()
     {
       IBusinessObject businessObject;
-      using (MixinConfiguration.BuildNew ()
-          .ForClass<BaseBusinessObjectClass> ().AddMixin<MixinAddingProperty> ()
-          .ForClass<BaseBusinessObjectClass> ().AddMixin<BindableObjectMixin> ()
-          .EnterScope ())
+      using (MixinConfiguration.BuildNew()
+          .ForClass<BaseBusinessObjectClass>().AddMixin<MixinAddingProperty>()
+          .ForClass<BaseBusinessObjectClass>().AddMixin<BindableObjectMixin>()
+          .EnterScope())
       {
-        businessObject = (IBusinessObject) ObjectFactory.Create<DerivedBusinessObjectClass> (ParamList.Empty);
-        Assert.That (businessObject, Is.InstanceOf (typeof (IMixinAddingProperty)));
+        businessObject = (IBusinessObject) ObjectFactory.Create<DerivedBusinessObjectClass>(ParamList.Empty);
+        Assert.That(businessObject, Is.InstanceOf(typeof (IMixinAddingProperty)));
       }
 
       // lazy initialization here - should use mixin configuration from above
       var businessObjectClass = (BindableObjectClass) businessObject.BusinessObjectClass;
-      Assert.That (businessObjectClass.GetPropertyDefinition ("MixedProperty"), Is.Not.Null);
+      Assert.That(businessObjectClass.GetPropertyDefinition("MixedProperty"), Is.Not.Null);
     }
 
     [Test]
     public void LazyInitialization_KeepsMixinConfigurationOfDeserializationTime ()
     {
       IBusinessObject businessObject;
-      using (MixinConfiguration.BuildNew ()
-          .ForClass<BaseBusinessObjectClass> ().AddMixin<MixinAddingProperty> ()
-          .ForClass<BaseBusinessObjectClass> ().AddMixin<BindableObjectMixin> ()
-          .EnterScope ())
+      using (MixinConfiguration.BuildNew()
+          .ForClass<BaseBusinessObjectClass>().AddMixin<MixinAddingProperty>()
+          .ForClass<BaseBusinessObjectClass>().AddMixin<BindableObjectMixin>()
+          .EnterScope())
       {
-        businessObject = Serializer.SerializeAndDeserialize ((IBusinessObject) ObjectFactory.Create<DerivedBusinessObjectClass> (ParamList.Empty));
-        Assert.That (businessObject, Is.InstanceOf (typeof (IMixinAddingProperty)));
+        businessObject = Serializer.SerializeAndDeserialize((IBusinessObject) ObjectFactory.Create<DerivedBusinessObjectClass>(ParamList.Empty));
+        Assert.That(businessObject, Is.InstanceOf(typeof (IMixinAddingProperty)));
       }
 
       // lazy initialization here - should use mixin configuration from above
       var businessObjectClass = (BindableObjectClass) businessObject.BusinessObjectClass;
-      Assert.That (businessObjectClass.GetPropertyDefinition ("MixedProperty"), Is.Not.Null);
+      Assert.That(businessObjectClass.GetPropertyDefinition("MixedProperty"), Is.Not.Null);
     }
   }
 }

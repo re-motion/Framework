@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public DomainObjectCreator (IPipelineRegistry pipelineRegistry)
     {
-      ArgumentUtility.CheckNotNull ("pipelineRegistry", pipelineRegistry);
+      ArgumentUtility.CheckNotNull("pipelineRegistry", pipelineRegistry);
 
       _pipelineRegistry = pipelineRegistry;
     }
@@ -53,20 +53,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public DomainObject CreateObjectReference (IObjectInitializationContext objectInitializationContext, ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("objectInitializationContext", objectInitializationContext);
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectInitializationContext", objectInitializationContext);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
 
       var objectID = objectInitializationContext.ObjectID;
-      CheckDomainTypeAndClassDefinition (objectID.ClassDefinition.ClassType);
+      CheckDomainTypeAndClassDefinition(objectID.ClassDefinition.ClassType);
       objectID.ClassDefinition.ValidateCurrentMixinConfiguration();
 
-      var concreteType = Pipeline.ReflectionService.GetAssembledType (objectID.ClassDefinition.ClassType);
-      var instance = (DomainObject) FormatterServices.GetSafeUninitializedObject (concreteType);
-      Pipeline.ReflectionService.PrepareExternalUninitializedObject (instance, InitializationSemantics.Construction);
+      var concreteType = Pipeline.ReflectionService.GetAssembledType(objectID.ClassDefinition.ClassType);
+      var instance = (DomainObject) FormatterServices.GetSafeUninitializedObject(concreteType);
+      Pipeline.ReflectionService.PrepareExternalUninitializedObject(instance, InitializationSemantics.Construction);
 
       // These calls are normally performed by DomainObject's ctor
-      instance.Initialize (objectID, objectInitializationContext.RootTransaction);
-      objectInitializationContext.RegisterObject (instance);
+      instance.Initialize(objectID, objectInitializationContext.RootTransaction);
+      objectInitializationContext.RegisterObject(instance);
 
       using (clientTransaction.EnterNonDiscardingScope())
       {
@@ -78,21 +78,21 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public DomainObject CreateNewObject (IObjectInitializationContext objectInitializationContext, ParamList constructorParameters, ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("objectInitializationContext", objectInitializationContext);
-      ArgumentUtility.CheckNotNull ("constructorParameters", constructorParameters);
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectInitializationContext", objectInitializationContext);
+      ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
 
       var domainObjectType = objectInitializationContext.ObjectID.ClassDefinition.ClassType;
-      CheckDomainTypeAndClassDefinition (domainObjectType);
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (domainObjectType);
+      CheckDomainTypeAndClassDefinition(domainObjectType);
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(domainObjectType);
       classDefinition.ValidateCurrentMixinConfiguration();
 
-      using (clientTransaction.EnterNonDiscardingScope ())
+      using (clientTransaction.EnterNonDiscardingScope())
       {
-        using (new ObjectInititalizationContextScope (objectInitializationContext))
+        using (new ObjectInititalizationContextScope(objectInitializationContext))
         {
-          var instance = (DomainObject) Pipeline.Create (domainObjectType, constructorParameters, allowNonPublicConstructor: true);
-          DomainObjectMixinCodeGenerationBridge.OnDomainObjectCreated (instance);
+          var instance = (DomainObject) Pipeline.Create(domainObjectType, constructorParameters, allowNonPublicConstructor: true);
+          DomainObjectMixinCodeGenerationBridge.OnDomainObjectCreated(instance);
           return instance;
         }
       }
@@ -102,17 +102,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     {
       if (domainObjectType.IsSealed)
       {
-        var message = string.Format ("Cannot instantiate type '{0}' as it is sealed.", domainObjectType.GetFullNameSafe());
-        throw new NonInterceptableTypeException (message, domainObjectType);
+        var message = string.Format("Cannot instantiate type '{0}' as it is sealed.", domainObjectType.GetFullNameSafe());
+        throw new NonInterceptableTypeException(message, domainObjectType);
       }
 
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (domainObjectType);
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(domainObjectType);
       if (classDefinition.IsAbstract)
       {
-        var message1 = string.Format (
+        var message1 = string.Format(
             "Cannot instantiate type '{0}' as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.",
             classDefinition.ClassType.GetFullNameSafe());
-        throw new NonInterceptableTypeException (message1, classDefinition.ClassType);
+        throw new NonInterceptableTypeException(message1, classDefinition.ClassType);
       }
     }
   }

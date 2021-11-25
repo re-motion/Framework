@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.SingleIn
   {
     public static SingleInheritanceSecondDerivedClass NewObject ()
     {
-      return NewObject<SingleInheritanceSecondDerivedClass> ();
+      return NewObject<SingleInheritanceSecondDerivedClass>();
     }
 
     public virtual string SecondDerivedProperty { get; set; }

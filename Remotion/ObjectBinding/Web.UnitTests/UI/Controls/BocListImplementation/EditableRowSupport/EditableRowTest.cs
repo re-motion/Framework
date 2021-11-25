@@ -66,36 +66,36 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       _editModeHost.EditModeDataSourceFactory = new EditableRowDataSourceFactory();
       _editModeHost.EnableOptionalValidators = null;
 
-      _editableRow = new EditableRow (_editModeHost);
+      _editableRow = new EditableRow(_editModeHost);
       _editableRow.ID = "Row";
-      NamingContainer.Controls.Add (_editableRow);
+      NamingContainer.Controls.Add(_editableRow);
 
-      _value01 = (IBusinessObject) TypeWithAllDataTypes.Create ("A", 1);
+      _value01 = (IBusinessObject) TypeWithAllDataTypes.Create("A", 1);
 
       _typeWithAllDataTypesClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithAllDataTypes));
 
-      _typeWithAllDataTypesStringValuePath = BusinessObjectPropertyPath.CreateStatic (_typeWithAllDataTypesClass, "String");
-      _typeWithAllDataTypesInt32ValuePath = BusinessObjectPropertyPath.CreateStatic (_typeWithAllDataTypesClass, "Int32");
+      _typeWithAllDataTypesStringValuePath = BusinessObjectPropertyPath.CreateStatic(_typeWithAllDataTypesClass, "String");
+      _typeWithAllDataTypesInt32ValuePath = BusinessObjectPropertyPath.CreateStatic(_typeWithAllDataTypesClass, "Int32");
 
       _typeWithAllDataTypesStringValueSimpleColumn = new BocSimpleColumnDefinition();
-      _typeWithAllDataTypesStringValueSimpleColumn.SetPropertyPath (_typeWithAllDataTypesStringValuePath);
+      _typeWithAllDataTypesStringValueSimpleColumn.SetPropertyPath(_typeWithAllDataTypesStringValuePath);
 
-      _typeWithAllDataTypesStringValueSimpleColumnAsDynamic = new BocSimpleColumnDefinition ();
-      _typeWithAllDataTypesStringValueSimpleColumnAsDynamic.SetPropertyPath (BusinessObjectPropertyPath.CreateDynamic("StringValue"));
+      _typeWithAllDataTypesStringValueSimpleColumnAsDynamic = new BocSimpleColumnDefinition();
+      _typeWithAllDataTypesStringValueSimpleColumnAsDynamic.SetPropertyPath(BusinessObjectPropertyPath.CreateDynamic("StringValue"));
       _typeWithAllDataTypesStringValueSimpleColumnAsDynamic.IsDynamic = true;
 
       _typeWithAllDataTypesInt32ValueSimpleColumn = new BocSimpleColumnDefinition();
-      _typeWithAllDataTypesInt32ValueSimpleColumn.SetPropertyPath (_typeWithAllDataTypesInt32ValuePath);
+      _typeWithAllDataTypesInt32ValueSimpleColumn.SetPropertyPath(_typeWithAllDataTypesInt32ValuePath);
 
       _typeWithAllDataTypesStringValueFirstValueCompoundColumn = new BocCompoundColumnDefinition();
-      _typeWithAllDataTypesStringValueFirstValueCompoundColumn.PropertyPathBindings.Add (
-          new PropertyPathBinding (_typeWithAllDataTypesStringValuePath));
-      _typeWithAllDataTypesStringValueFirstValueCompoundColumn.PropertyPathBindings.Add (
-          new PropertyPathBinding (_typeWithAllDataTypesStringValuePath));
+      _typeWithAllDataTypesStringValueFirstValueCompoundColumn.PropertyPathBindings.Add(
+          new PropertyPathBinding(_typeWithAllDataTypesStringValuePath));
+      _typeWithAllDataTypesStringValueFirstValueCompoundColumn.PropertyPathBindings.Add(
+          new PropertyPathBinding(_typeWithAllDataTypesStringValuePath));
       _typeWithAllDataTypesStringValueFirstValueCompoundColumn.FormatString = "{0}, {1}";
 
       _typeWithAllDataTypesStringValueCustomColumn = new BocCustomColumnDefinition();
-      _typeWithAllDataTypesStringValueCustomColumn.SetPropertyPath (_typeWithAllDataTypesStringValuePath);
+      _typeWithAllDataTypesStringValueCustomColumn.SetPropertyPath(_typeWithAllDataTypesStringValuePath);
       _typeWithAllDataTypesStringValueCustomColumn.IsSortable = true;
 
       _commandColumn = new BocCommandColumnDefinition();
@@ -107,8 +107,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void Initialize ()
     {
-      Assert.That (_editableRow.DataSourceFactory, Is.Null);
-      Assert.That (_editableRow.ControlFactory, Is.Null);
+      Assert.That(_editableRow.DataSourceFactory, Is.Null);
+      Assert.That(_editableRow.ControlFactory, Is.Null);
     }
 
 
@@ -117,23 +117,23 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Invoker.InitRecursive();
 
-      Assert.That (_editableRow.HasEditControls(), Is.False);
-      Assert.That (_editableRow.HasValidators(), Is.False);
+      Assert.That(_editableRow.HasEditControls(), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.False);
 
       _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
       _editableRow.ControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
 
-      _editableRow.CreateControls (_value01, new BocColumnDefinition[0]);
+      _editableRow.CreateControls(_value01, new BocColumnDefinition[0]);
 
-      Assert.That (_editableRow.HasEditControls(), Is.True);
-      Assert.That (_editableRow.HasValidators(), Is.True);
+      Assert.That(_editableRow.HasEditControls(), Is.True);
+      Assert.That(_editableRow.HasValidators(), Is.True);
 
-      Assert.That (_editableRow.DataSourceFactory, Is.Not.Null);
-      Assert.That (_editableRow.ControlFactory, Is.Not.Null);
+      Assert.That(_editableRow.DataSourceFactory, Is.Not.Null);
+      Assert.That(_editableRow.ControlFactory, Is.Not.Null);
 
       IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
-      Assert.That (dataSource, Is.Not.Null);
-      Assert.That (dataSource.BusinessObject, Is.SameAs (_value01));
+      Assert.That(dataSource, Is.Not.Null);
+      Assert.That(dataSource.BusinessObject, Is.SameAs(_value01));
     }
 
     [Test]
@@ -141,9 +141,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Invoker.InitRecursive();
 
-      Assert.That (_editableRow.HasEditControls(), Is.False);
-      Assert.That (_editableRow.HasValidators(), Is.False);
-      Assert.That (_editableRow.HasEditControl (0), Is.False);
+      Assert.That(_editableRow.HasEditControls(), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.False);
+      Assert.That(_editableRow.HasEditControl(0), Is.False);
 
       _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
       _editableRow.ControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
@@ -158,38 +158,38 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[6] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[7] = _typeWithAllDataTypesStringValueSimpleColumnAsDynamic;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
 
-      Assert.That (_editableRow.HasEditControls(), Is.True);
-      Assert.That (_editableRow.HasValidators(), Is.True);
+      Assert.That(_editableRow.HasEditControls(), Is.True);
+      Assert.That(_editableRow.HasValidators(), Is.True);
 
-      Assert.That (_editableRow.DataSourceFactory, Is.Not.Null);
-      Assert.That (_editableRow.ControlFactory, Is.Not.Null);
+      Assert.That(_editableRow.DataSourceFactory, Is.Not.Null);
+      Assert.That(_editableRow.ControlFactory, Is.Not.Null);
 
       IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
-      Assert.That (dataSource, Is.Not.Null);
-      Assert.That (dataSource.BusinessObject, Is.SameAs (_value01));
+      Assert.That(dataSource, Is.Not.Null);
+      Assert.That(dataSource.BusinessObject, Is.SameAs(_value01));
 
-      Assert.That (_editableRow.HasEditControl (0), Is.True);
-      Assert.That (_editableRow.HasEditControl (1), Is.False);
-      Assert.That (_editableRow.HasEditControl (2), Is.False);
-      Assert.That (_editableRow.HasEditControl (3), Is.False);
-      Assert.That (_editableRow.HasEditControl (4), Is.False);
-      Assert.That (_editableRow.HasEditControl (5), Is.False);
-      Assert.That (_editableRow.HasEditControl (6), Is.True);
-      Assert.That (_editableRow.HasEditControl (7), Is.False);
+      Assert.That(_editableRow.HasEditControl(0), Is.True);
+      Assert.That(_editableRow.HasEditControl(1), Is.False);
+      Assert.That(_editableRow.HasEditControl(2), Is.False);
+      Assert.That(_editableRow.HasEditControl(3), Is.False);
+      Assert.That(_editableRow.HasEditControl(4), Is.False);
+      Assert.That(_editableRow.HasEditControl(5), Is.False);
+      Assert.That(_editableRow.HasEditControl(6), Is.True);
+      Assert.That(_editableRow.HasEditControl(7), Is.False);
 
-      IBusinessObjectBoundEditableWebControl textBoxFirstValue = _editableRow.GetEditControl (0);
-      Assert.That (textBoxFirstValue is BocTextValue, Is.True);
-      Assert.That (textBoxFirstValue.DataSource, Is.SameAs (dataSource));
-      Assert.That (textBoxFirstValue.Property, Is.SameAs (_typeWithAllDataTypesStringValuePath.Properties.Last()));
-      Assert.That (((BocTextValue) textBoxFirstValue).EnableOptionalValidators, Is.Null);
+      IBusinessObjectBoundEditableWebControl textBoxFirstValue = _editableRow.GetEditControl(0);
+      Assert.That(textBoxFirstValue is BocTextValue, Is.True);
+      Assert.That(textBoxFirstValue.DataSource, Is.SameAs(dataSource));
+      Assert.That(textBoxFirstValue.Property, Is.SameAs(_typeWithAllDataTypesStringValuePath.Properties.Last()));
+      Assert.That(((BocTextValue) textBoxFirstValue).EnableOptionalValidators, Is.Null);
 
-      IBusinessObjectBoundEditableWebControl textBoxSecondValue = _editableRow.GetEditControl (6);
-      Assert.That (textBoxSecondValue is BocTextValue, Is.True);
-      Assert.That (textBoxSecondValue.DataSource, Is.SameAs (dataSource));
-      Assert.That (textBoxSecondValue.Property, Is.SameAs (_typeWithAllDataTypesInt32ValuePath.Properties.Last()));
-      Assert.That (((BocTextValue) textBoxSecondValue).EnableOptionalValidators, Is.Null);
+      IBusinessObjectBoundEditableWebControl textBoxSecondValue = _editableRow.GetEditControl(6);
+      Assert.That(textBoxSecondValue is BocTextValue, Is.True);
+      Assert.That(textBoxSecondValue.DataSource, Is.SameAs(dataSource));
+      Assert.That(textBoxSecondValue.Property, Is.SameAs(_typeWithAllDataTypesInt32ValuePath.Properties.Last()));
+      Assert.That(((BocTextValue) textBoxSecondValue).EnableOptionalValidators, Is.Null);
     }
 
     [Test]
@@ -197,10 +197,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Invoker.InitRecursive();
       _editableRow.ControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
-      Assert.That (
-          () => _editableRow.CreateControls (_value01, new BocColumnDefinition[0]),
+      Assert.That(
+          () => _editableRow.CreateControls(_value01, new BocColumnDefinition[0]),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("BocList 'BocList': DataSourceFactory has not been set prior to invoking CreateControls()."));
+              .With.Message.EqualTo("BocList 'BocList': DataSourceFactory has not been set prior to invoking CreateControls()."));
     }
 
     [Test]
@@ -208,10 +208,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Invoker.InitRecursive();
       _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
-      Assert.That (
-          () => _editableRow.CreateControls (_value01, new BocColumnDefinition[0]),
+      Assert.That(
+          () => _editableRow.CreateControls(_value01, new BocColumnDefinition[0]),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("BocList 'BocList': ControlFactory has not been set prior to invoking CreateControls()."));
+              .With.Message.EqualTo("BocList 'BocList': ControlFactory has not been set prior to invoking CreateControls()."));
     }
 
     [Test]
@@ -226,13 +226,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       BocColumnDefinition[] columns = new BocColumnDefinition[1];
       columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
 
-      Assert.That (_editableRow.HasEditControl (0), Is.True);
+      Assert.That(_editableRow.HasEditControl(0), Is.True);
 
-      IBusinessObjectBoundEditableWebControl textBoxFirstValue = _editableRow.GetEditControl (0);
-      Assert.That (textBoxFirstValue is BocTextValue, Is.True);
-      Assert.That (((BocTextValue) textBoxFirstValue).EnableOptionalValidators, Is.True);
+      IBusinessObjectBoundEditableWebControl textBoxFirstValue = _editableRow.GetEditControl(0);
+      Assert.That(textBoxFirstValue is BocTextValue, Is.True);
+      Assert.That(((BocTextValue) textBoxFirstValue).EnableOptionalValidators, Is.True);
     }
 
     [Test]
@@ -247,13 +247,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       BocColumnDefinition[] columns = new BocColumnDefinition[1];
       columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
 
-      Assert.That (_editableRow.HasEditControl (0), Is.True);
+      Assert.That(_editableRow.HasEditControl(0), Is.True);
 
-      IBusinessObjectBoundEditableWebControl textBoxFirstValue = _editableRow.GetEditControl (0);
-      Assert.That (textBoxFirstValue is BocTextValue, Is.True);
-      Assert.That (((BocTextValue) textBoxFirstValue).EnableOptionalValidators, Is.False);
+      IBusinessObjectBoundEditableWebControl textBoxFirstValue = _editableRow.GetEditControl(0);
+      Assert.That(textBoxFirstValue is BocTextValue, Is.True);
+      Assert.That(((BocTextValue) textBoxFirstValue).EnableOptionalValidators, Is.False);
     }
 
     [Test]
@@ -261,7 +261,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Invoker.InitRecursive();
 
-      Assert.That (_editableRow.HasValidators(), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.False);
 
       _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
       _editableRow.ControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
@@ -275,32 +275,32 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[5] = _dropDownMenuColumn;
       columns[6] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
       _editableRow.EnsureValidatorsRestored();
 
-      Assert.That (_editableRow.HasValidators(), Is.True);
+      Assert.That(_editableRow.HasValidators(), Is.True);
 
-      Assert.That (_editableRow.HasValidators (0), Is.True);
-      Assert.That (_editableRow.HasValidators (1), Is.False);
-      Assert.That (_editableRow.HasValidators (2), Is.False);
-      Assert.That (_editableRow.HasValidators (3), Is.False);
-      Assert.That (_editableRow.HasValidators (4), Is.False);
-      Assert.That (_editableRow.HasValidators (5), Is.False);
-      Assert.That (_editableRow.HasValidators (6), Is.True);
+      Assert.That(_editableRow.HasValidators(0), Is.True);
+      Assert.That(_editableRow.HasValidators(1), Is.False);
+      Assert.That(_editableRow.HasValidators(2), Is.False);
+      Assert.That(_editableRow.HasValidators(3), Is.False);
+      Assert.That(_editableRow.HasValidators(4), Is.False);
+      Assert.That(_editableRow.HasValidators(5), Is.False);
+      Assert.That(_editableRow.HasValidators(6), Is.True);
 
-      ControlCollection validators0 = _editableRow.GetValidators (0);
-      Assert.That (validators0.Cast<BaseValidator>().Select (v => v.GetType()),
-          Is.EqualTo (
+      ControlCollection validators0 = _editableRow.GetValidators(0);
+      Assert.That(validators0.Cast<BaseValidator>().Select(v => v.GetType()),
+          Is.EqualTo(
               new[]
               {
                   typeof (ControlCharactersCharactersValidator),
                   typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
               }));
 
-      ControlCollection validators6 = _editableRow.GetValidators (6);
-      Assert.That (
-          validators6.Cast<BaseValidator>().Select (v => v.GetType()),
-          Is.EqualTo (
+      ControlCollection validators6 = _editableRow.GetValidators(6);
+      Assert.That(
+          validators6.Cast<BaseValidator>().Select(v => v.GetType()),
+          Is.EqualTo(
               new[]
               {
                   typeof (RequiredFieldValidator),
@@ -314,14 +314,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Invoker.InitRecursive();
 
-      Assert.That (_editableRow.HasValidators(), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.False);
 
       _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
       _editableRow.ControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
 
       _editableRow.EnsureValidatorsRestored();
 
-      Assert.That (_editableRow.HasValidators(), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.False);
 
       BocColumnDefinition[] columns = new BocColumnDefinition[7];
       columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
@@ -332,28 +332,28 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[5] = _dropDownMenuColumn;
       columns[6] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
       _editableRow.EnsureValidatorsRestored();
 
-      Assert.That (_editableRow.HasValidators(), Is.True);
+      Assert.That(_editableRow.HasValidators(), Is.True);
 
-      Assert.That (_editableRow.HasValidators (0), Is.True);
-      Assert.That (_editableRow.HasValidators (1), Is.False);
-      Assert.That (_editableRow.HasValidators (2), Is.False);
-      Assert.That (_editableRow.HasValidators (3), Is.False);
-      Assert.That (_editableRow.HasValidators (4), Is.False);
-      Assert.That (_editableRow.HasValidators (5), Is.False);
-      Assert.That (_editableRow.HasValidators (6), Is.True);
+      Assert.That(_editableRow.HasValidators(0), Is.True);
+      Assert.That(_editableRow.HasValidators(1), Is.False);
+      Assert.That(_editableRow.HasValidators(2), Is.False);
+      Assert.That(_editableRow.HasValidators(3), Is.False);
+      Assert.That(_editableRow.HasValidators(4), Is.False);
+      Assert.That(_editableRow.HasValidators(5), Is.False);
+      Assert.That(_editableRow.HasValidators(6), Is.True);
 
-      ControlCollection validators0 = _editableRow.GetValidators (0);
-      Assert.That (validators0, Is.Not.Null);
-      Assert.That (
-          validators0.Cast<BaseValidator>().Select (v => v.GetType()),
-          Is.EqualTo (new[] { typeof (ControlCharactersCharactersValidator), typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator) }));
+      ControlCollection validators0 = _editableRow.GetValidators(0);
+      Assert.That(validators0, Is.Not.Null);
+      Assert.That(
+          validators0.Cast<BaseValidator>().Select(v => v.GetType()),
+          Is.EqualTo(new[] { typeof (ControlCharactersCharactersValidator), typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator) }));
 
-      ControlCollection validators6 = _editableRow.GetValidators (6);
-      Assert.That (validators6.Cast<BaseValidator>().Select (v => v.GetType()),
-          Is.EqualTo (
+      ControlCollection validators6 = _editableRow.GetValidators(6);
+      Assert.That(validators6.Cast<BaseValidator>().Select(v => v.GetType()),
+          Is.EqualTo(
               new[]
               {
                   typeof (RequiredFieldValidator),
@@ -365,29 +365,29 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void ControlInit ()
     {
-      Assert.That (_editableRow.HasControls(), Is.False);
-      Assert.That (_editableRow.HasEditControls(), Is.False);
-      Assert.That (_editableRow.HasValidators(), Is.False);
+      Assert.That(_editableRow.HasControls(), Is.False);
+      Assert.That(_editableRow.HasEditControls(), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.False);
 
       Invoker.InitRecursive();
 
-      Assert.That (_editableRow.HasControls(), Is.False);
-      Assert.That (_editableRow.HasEditControls(), Is.False);
-      Assert.That (_editableRow.HasValidators(), Is.False);
+      Assert.That(_editableRow.HasControls(), Is.False);
+      Assert.That(_editableRow.HasEditControls(), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.False);
     }
 
     [Test]
     public void ControlLoad ()
     {
-      Assert.That (_editableRow.HasControls(), Is.False);
-      Assert.That (_editableRow.HasEditControls(), Is.False);
-      Assert.That (_editableRow.HasValidators(), Is.False);
+      Assert.That(_editableRow.HasControls(), Is.False);
+      Assert.That(_editableRow.HasEditControls(), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.False);
 
       Invoker.LoadRecursive();
 
-      Assert.That (_editableRow.HasControls(), Is.False);
-      Assert.That (_editableRow.HasEditControls(), Is.False);
-      Assert.That (_editableRow.HasValidators(), Is.False);
+      Assert.That(_editableRow.HasControls(), Is.False);
+      Assert.That(_editableRow.HasEditControls(), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.False);
     }
 
     [Test]
@@ -402,16 +402,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
       columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
 
       IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
-      dataSource.LoadValues (false);
+      dataSource.LoadValues(false);
 
-      BocTextValue textBoxStringValue = (BocTextValue) _editableRow.GetEditControl (0);
-      BocTextValue textBoxInt32Value = (BocTextValue) _editableRow.GetEditControl (1);
+      BocTextValue textBoxStringValue = (BocTextValue) _editableRow.GetEditControl(0);
+      BocTextValue textBoxInt32Value = (BocTextValue) _editableRow.GetEditControl(1);
 
-      Assert.That (textBoxStringValue.Value, Is.EqualTo ("A"));
-      Assert.That (textBoxInt32Value.Value, Is.EqualTo (1));
+      Assert.That(textBoxStringValue.Value, Is.EqualTo("A"));
+      Assert.That(textBoxInt32Value.Value, Is.EqualTo(1));
     }
 
     [Test]
@@ -426,24 +426,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
       columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
 
       IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
-      dataSource.LoadValues (false);
+      dataSource.LoadValues(false);
 
-      BocTextValue textBoxStringValue = (BocTextValue) _editableRow.GetEditControl (0);
-      BocTextValue textBoxInt32Value = (BocTextValue) _editableRow.GetEditControl (1);
+      BocTextValue textBoxStringValue = (BocTextValue) _editableRow.GetEditControl(0);
+      BocTextValue textBoxInt32Value = (BocTextValue) _editableRow.GetEditControl(1);
 
-      Assert.That (textBoxStringValue.Value, Is.EqualTo ("A"));
-      Assert.That (textBoxInt32Value.Value, Is.EqualTo (1));
+      Assert.That(textBoxStringValue.Value, Is.EqualTo("A"));
+      Assert.That(textBoxInt32Value.Value, Is.EqualTo(1));
 
       textBoxStringValue.Value = "New Value A";
       textBoxInt32Value.Value = "100";
 
-      dataSource.SaveValues (false);
+      dataSource.SaveValues(false);
 
-      Assert.That (((TypeWithAllDataTypes) _value01).String, Is.EqualTo ("New Value A"));
-      Assert.That (((TypeWithAllDataTypes) _value01).Int32, Is.EqualTo (100));
+      Assert.That(((TypeWithAllDataTypes) _value01).String, Is.EqualTo("New Value A"));
+      Assert.That(((TypeWithAllDataTypes) _value01).Int32, Is.EqualTo(100));
     }
 
 
@@ -452,9 +452,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Invoker.InitRecursive();
 
-      Assert.That (_editableRow.HasEditControls(), Is.False);
-      Assert.That (_editableRow.HasEditControl (0), Is.False);
-      Assert.That (_editableRow.HasEditControl (1), Is.False);
+      Assert.That(_editableRow.HasEditControls(), Is.False);
+      Assert.That(_editableRow.HasEditControl(0), Is.False);
+      Assert.That(_editableRow.HasEditControl(1), Is.False);
 
       _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
       _editableRow.ControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
@@ -463,11 +463,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[1] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
 
-      Assert.That (_editableRow.HasEditControls(), Is.True);
-      Assert.That (_editableRow.HasEditControl (0), Is.True);
-      Assert.That (_editableRow.HasEditControl (1), Is.False);
+      Assert.That(_editableRow.HasEditControls(), Is.True);
+      Assert.That(_editableRow.HasEditControl(0), Is.True);
+      Assert.That(_editableRow.HasEditControl(1), Is.False);
     }
 
     [Test]
@@ -482,9 +482,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[1] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
-      Assert.That (
-          () => _editableRow.HasEditControl (-1),
+      _editableRow.CreateControls(_value01, columns);
+      Assert.That(
+          () => _editableRow.HasEditControl(-1),
           Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
@@ -500,9 +500,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[1] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
-      Assert.That (
-          () => _editableRow.HasEditControl (3),
+      _editableRow.CreateControls(_value01, columns);
+      Assert.That(
+          () => _editableRow.HasEditControl(3),
           Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
@@ -512,9 +512,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Invoker.InitRecursive();
 
-      Assert.That (_editableRow.HasEditControls(), Is.False);
-      Assert.That (_editableRow.HasEditControl (0), Is.False);
-      Assert.That (_editableRow.HasEditControl (0), Is.False);
+      Assert.That(_editableRow.HasEditControls(), Is.False);
+      Assert.That(_editableRow.HasEditControl(0), Is.False);
+      Assert.That(_editableRow.HasEditControl(0), Is.False);
 
       _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
       _editableRow.ControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
@@ -523,17 +523,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[1] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
 
-      Assert.That (_editableRow.HasEditControls(), Is.True);
-      Assert.That (_editableRow.HasEditControl (0), Is.True);
-      Assert.That (_editableRow.HasEditControl (1), Is.False);
+      Assert.That(_editableRow.HasEditControls(), Is.True);
+      Assert.That(_editableRow.HasEditControl(0), Is.True);
+      Assert.That(_editableRow.HasEditControl(1), Is.False);
 
-      IBusinessObjectBoundEditableWebControl control = _editableRow.GetEditControl (0);
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control is BocTextValue, Is.True);
+      IBusinessObjectBoundEditableWebControl control = _editableRow.GetEditControl(0);
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control is BocTextValue, Is.True);
 
-      Assert.That (_editableRow.GetEditControl (1), Is.Null);
+      Assert.That(_editableRow.GetEditControl(1), Is.Null);
     }
 
     [Test]
@@ -548,9 +548,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[1] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
-      Assert.That (
-          () => _editableRow.HasEditControl (-1),
+      _editableRow.CreateControls(_value01, columns);
+      Assert.That(
+          () => _editableRow.HasEditControl(-1),
           Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
@@ -566,9 +566,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[1] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
-      Assert.That (
-          () => _editableRow.HasEditControl (3),
+      _editableRow.CreateControls(_value01, columns);
+      Assert.That(
+          () => _editableRow.HasEditControl(3),
           Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
@@ -578,9 +578,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Invoker.InitRecursive();
 
-      Assert.That (_editableRow.HasValidators(), Is.False);
-      Assert.That (_editableRow.HasValidators (0), Is.False);
-      Assert.That (_editableRow.HasValidators (1), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.False);
+      Assert.That(_editableRow.HasValidators(0), Is.False);
+      Assert.That(_editableRow.HasValidators(1), Is.False);
 
       _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
       _editableRow.ControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
@@ -589,17 +589,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[1] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
 
-      Assert.That (_editableRow.HasValidators(), Is.True);
-      Assert.That (_editableRow.HasValidators (0), Is.True);
-      Assert.That (_editableRow.HasValidators (1), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.True);
+      Assert.That(_editableRow.HasValidators(0), Is.True);
+      Assert.That(_editableRow.HasValidators(1), Is.False);
 
       _editableRow.EnsureValidatorsRestored();
 
-      Assert.That (_editableRow.HasValidators(), Is.True);
-      Assert.That (_editableRow.HasValidators (0), Is.True);
-      Assert.That (_editableRow.HasValidators (1), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.True);
+      Assert.That(_editableRow.HasValidators(0), Is.True);
+      Assert.That(_editableRow.HasValidators(1), Is.False);
     }
 
     [Test]
@@ -607,34 +607,34 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Invoker.InitRecursive();
 
-      Assert.That (_editableRow.HasValidators(), Is.False);
-      Assert.That (_editableRow.HasValidators (0), Is.False);
-      Assert.That (_editableRow.HasValidators (1), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.False);
+      Assert.That(_editableRow.HasValidators(0), Is.False);
+      Assert.That(_editableRow.HasValidators(1), Is.False);
 
       _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
       _editableRow.ControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
 
       _editableRow.EnsureValidatorsRestored();
 
-      Assert.That (_editableRow.HasValidators(), Is.False);
-      Assert.That (_editableRow.HasValidators (0), Is.False);
-      Assert.That (_editableRow.HasValidators (1), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.False);
+      Assert.That(_editableRow.HasValidators(0), Is.False);
+      Assert.That(_editableRow.HasValidators(1), Is.False);
 
       BocColumnDefinition[] columns = new BocColumnDefinition[2];
       columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[1] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
 
-      Assert.That (_editableRow.HasValidators(), Is.True);
-      Assert.That (_editableRow.HasValidators (0), Is.True);
-      Assert.That (_editableRow.HasValidators (1), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.True);
+      Assert.That(_editableRow.HasValidators(0), Is.True);
+      Assert.That(_editableRow.HasValidators(1), Is.False);
 
       _editableRow.EnsureValidatorsRestored();
 
-      Assert.That (_editableRow.HasValidators(), Is.True);
-      Assert.That (_editableRow.HasValidators (0), Is.True);
-      Assert.That (_editableRow.HasValidators (1), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.True);
+      Assert.That(_editableRow.HasValidators(0), Is.True);
+      Assert.That(_editableRow.HasValidators(1), Is.False);
     }
 
     [Test]
@@ -649,10 +649,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[1] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
       _editableRow.EnsureValidatorsRestored();
-      Assert.That (
-          () => _editableRow.HasValidators (-1),
+      Assert.That(
+          () => _editableRow.HasValidators(-1),
           Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
@@ -668,10 +668,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[1] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
       _editableRow.EnsureValidatorsRestored();
-      Assert.That (
-          () => _editableRow.HasValidators (3),
+      Assert.That(
+          () => _editableRow.HasValidators(3),
           Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
@@ -688,16 +688,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[1] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
       _editableRow.EnsureValidatorsRestored();
 
-      Assert.That (_editableRow.HasValidators(), Is.True);
-      Assert.That (_editableRow.HasValidators (0), Is.True);
-      Assert.That (_editableRow.HasValidators (1), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.True);
+      Assert.That(_editableRow.HasValidators(0), Is.True);
+      Assert.That(_editableRow.HasValidators(1), Is.False);
 
-      ControlCollection validators = _editableRow.GetValidators (0);
-      Assert.That (validators.Cast<BaseValidator>().Select (v => v.GetType()),
-          Is.EqualTo (
+      ControlCollection validators = _editableRow.GetValidators(0);
+      Assert.That(validators.Cast<BaseValidator>().Select(v => v.GetType()),
+          Is.EqualTo(
               new[]
               {
                   typeof (RequiredFieldValidator),
@@ -705,7 +705,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
                   typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
               }));
 
-      Assert.That (_editableRow.GetValidators (1), Is.Null);
+      Assert.That(_editableRow.GetValidators(1), Is.Null);
     }
 
     [Test]
@@ -722,16 +722,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[1] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
       _editableRow.EnsureValidatorsRestored();
 
-      Assert.That (_editableRow.HasValidators(), Is.True);
-      Assert.That (_editableRow.HasValidators (0), Is.True);
-      Assert.That (_editableRow.HasValidators (1), Is.False);
+      Assert.That(_editableRow.HasValidators(), Is.True);
+      Assert.That(_editableRow.HasValidators(0), Is.True);
+      Assert.That(_editableRow.HasValidators(1), Is.False);
 
-      ControlCollection validators = _editableRow.GetValidators (0);
-      Assert.That (validators.Cast<BaseValidator>().Select (v => v.GetType()),
-          Is.EqualTo (
+      ControlCollection validators = _editableRow.GetValidators(0);
+      Assert.That(validators.Cast<BaseValidator>().Select(v => v.GetType()),
+          Is.EqualTo(
               new[]
               {
                   typeof (RequiredFieldValidator),
@@ -739,7 +739,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
                   typeof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
               }));
 
-      Assert.That (_editableRow.GetValidators (1), Is.Null);
+      Assert.That(_editableRow.GetValidators(1), Is.Null);
     }
 
     [Test]
@@ -754,10 +754,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[1] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
       _editableRow.EnsureValidatorsRestored();
-      Assert.That (
-          () => _editableRow.GetValidators (-1),
+      Assert.That(
+          () => _editableRow.GetValidators(-1),
           Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
@@ -773,10 +773,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[1] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
       _editableRow.EnsureValidatorsRestored();
-      Assert.That (
-          () => _editableRow.GetValidators (3),
+      Assert.That(
+          () => _editableRow.GetValidators(3),
           Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
@@ -794,11 +794,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[2] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
 
-      Assert.That (_editableRow.IsRequired (0), Is.False);
-      Assert.That (_editableRow.IsRequired (1), Is.True);
-      Assert.That (_editableRow.IsRequired (2), Is.False);
+      Assert.That(_editableRow.IsRequired(0), Is.False);
+      Assert.That(_editableRow.IsRequired(1), Is.True);
+      Assert.That(_editableRow.IsRequired(2), Is.False);
     }
 
 
@@ -815,17 +815,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[2] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
 
       IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
-      dataSource.LoadValues (false);
+      dataSource.LoadValues(false);
 
-      Assert.That (_editableRow.IsDirty(), Is.False);
+      Assert.That(_editableRow.IsDirty(), Is.False);
 
-      BocTextValue textBoxStringValue = (BocTextValue) _editableRow.GetEditControl (0);
+      BocTextValue textBoxStringValue = (BocTextValue) _editableRow.GetEditControl(0);
       textBoxStringValue.Value = "a";
 
-      Assert.That (_editableRow.IsDirty(), Is.True);
+      Assert.That(_editableRow.IsDirty(), Is.True);
     }
 
     [Test]
@@ -841,17 +841,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[2] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
 
       IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
-      dataSource.LoadValues (false);
+      dataSource.LoadValues(false);
 
       string id = "NamingContainer_Row_{0}_Value";
       string[] trackedIDs = new string[2];
-      trackedIDs[0] = string.Format (id, 0);
-      trackedIDs[1] = string.Format (id, 1);
+      trackedIDs[0] = string.Format(id, 0);
+      trackedIDs[1] = string.Format(id, 1);
 
-      Assert.That (_editableRow.GetTrackedClientIDs(), Is.EqualTo (trackedIDs));
+      Assert.That(_editableRow.GetTrackedClientIDs(), Is.EqualTo(trackedIDs));
     }
 
 
@@ -868,15 +868,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[2] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
       _editableRow.EnsureValidatorsRestored();
 
       IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
-      dataSource.LoadValues (false);
+      dataSource.LoadValues(false);
 
-      SetValues (_editableRow, "A", "300");
+      SetValues(_editableRow, "A", "300");
 
-      Assert.That (_editableRow.Validate(), Is.True);
+      Assert.That(_editableRow.Validate(), Is.True);
     }
 
     [Test]
@@ -892,15 +892,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[2] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
       _editableRow.EnsureValidatorsRestored();
 
       IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
-      dataSource.LoadValues (false);
+      dataSource.LoadValues(false);
 
-      SetValues (_editableRow, "A", "");
+      SetValues(_editableRow, "A", "");
 
-      Assert.That (_editableRow.Validate(), Is.False);
+      Assert.That(_editableRow.Validate(), Is.False);
     }
 
 
@@ -917,28 +917,28 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
       columns[2] = _commandColumn;
 
-      _editableRow.CreateControls (_value01, columns);
+      _editableRow.CreateControls(_value01, columns);
       _editableRow.EnsureValidatorsRestored();
 
       IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
-      dataSource.LoadValues (false);
+      dataSource.LoadValues(false);
 
-      BocTextValue stringValueField = (BocTextValue) _editableRow.GetEditControl (0);
-      BocTextValue int32ValueField = (BocTextValue) _editableRow.GetEditControl (1);
+      BocTextValue stringValueField = (BocTextValue) _editableRow.GetEditControl(0);
+      BocTextValue int32ValueField = (BocTextValue) _editableRow.GetEditControl(1);
 
       _editableRow.PrepareValidation();
 
-      Assert.That (stringValueField.Text, Is.EqualTo (stringValueField.Text));
-      Assert.That (int32ValueField.Text, Is.EqualTo (int32ValueField.Text));
+      Assert.That(stringValueField.Text, Is.EqualTo(stringValueField.Text));
+      Assert.That(int32ValueField.Text, Is.EqualTo(int32ValueField.Text));
     }
 
 
     private void SetValues (EditableRow row, string stringValue, string int32Value)
     {
-      BocTextValue stringValueField = (BocTextValue) row.GetEditControl (0);
+      BocTextValue stringValueField = (BocTextValue) row.GetEditControl(0);
       stringValueField.Text = stringValue;
 
-      BocTextValue int32ValueField = (BocTextValue) row.GetEditControl (1);
+      BocTextValue int32ValueField = (BocTextValue) row.GetEditControl(1);
       int32ValueField.Text = int32Value;
     }
   }

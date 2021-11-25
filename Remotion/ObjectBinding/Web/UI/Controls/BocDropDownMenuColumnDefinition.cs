@@ -40,9 +40,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
+      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
       
-      return serviceLocator.GetInstance<IBocDropDownMenuColumnRenderer> ();
+      return serviceLocator.GetInstance<IBocDropDownMenuColumnRenderer>();
     }
 
     /// <summary> Gets the human readable name of this type. </summary>
@@ -94,17 +94,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
       
-      base.LoadResources (resourceManager, globalizationService);
+      base.LoadResources(resourceManager, globalizationService);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (MenuTitleText);
-      if (!string.IsNullOrEmpty (key))
-        MenuTitleText = resourceManager.GetString (key);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(MenuTitleText);
+      if (!string.IsNullOrEmpty(key))
+        MenuTitleText = resourceManager.GetString(key);
 
       if (MenuTitleIcon != null)
-        MenuTitleIcon.LoadResources (resourceManager);
+        MenuTitleIcon.LoadResources(resourceManager);
     }
   }
 }

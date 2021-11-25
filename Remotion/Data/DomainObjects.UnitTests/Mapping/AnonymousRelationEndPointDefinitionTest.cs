@@ -29,44 +29,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _clientDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Client));
-      _definition = new AnonymousRelationEndPointDefinition (_clientDefinition);
+      _clientDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Client));
+      _definition = new AnonymousRelationEndPointDefinition(_clientDefinition);
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.IsInstanceOf<IRelationEndPointDefinition> (_definition);
-      Assert.That (_definition.ClassDefinition, Is.SameAs (_clientDefinition));
-      Assert.That (_definition.Cardinality, Is.EqualTo (CardinalityType.Many));
-      Assert.That (_definition.IsMandatory, Is.EqualTo (false));
-      Assert.That (_definition.IsVirtual, Is.EqualTo (true));
-      Assert.That (_definition.PropertyName, Is.Null);
-      Assert.That (_definition.PropertyInfo, Is.Null);
-      Assert.That (_definition.IsAnonymous, Is.True);
+      Assert.IsInstanceOf<IRelationEndPointDefinition>(_definition);
+      Assert.That(_definition.ClassDefinition, Is.SameAs(_clientDefinition));
+      Assert.That(_definition.Cardinality, Is.EqualTo(CardinalityType.Many));
+      Assert.That(_definition.IsMandatory, Is.EqualTo(false));
+      Assert.That(_definition.IsVirtual, Is.EqualTo(true));
+      Assert.That(_definition.PropertyName, Is.Null);
+      Assert.That(_definition.PropertyInfo, Is.Null);
+      Assert.That(_definition.IsAnonymous, Is.True);
     }
 
     [Test]
     public void RelationDefinitionNull ()
     {
-      AnonymousRelationEndPointDefinition definition = new AnonymousRelationEndPointDefinition (MappingConfiguration.Current.GetTypeDefinition (typeof (Client)));
+      AnonymousRelationEndPointDefinition definition = new AnonymousRelationEndPointDefinition(MappingConfiguration.Current.GetTypeDefinition(typeof (Client)));
 
-      Assert.That (definition.RelationDefinition, Is.Null);
+      Assert.That(definition.RelationDefinition, Is.Null);
     }
 
     [Test]
     public void SetRelationDefinition ()
     {
-      var propertyDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Location))
+      var propertyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Location))
         ["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location.Client"];
-      var oppositeEndPoint = new RelationEndPointDefinition (propertyDefinition, true);
-      var relationDefinition = new RelationDefinition ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location.Client", _definition, oppositeEndPoint);
+      var oppositeEndPoint = new RelationEndPointDefinition(propertyDefinition, true);
+      var relationDefinition = new RelationDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location.Client", _definition, oppositeEndPoint);
 
-      _definition.SetRelationDefinition (relationDefinition);
+      _definition.SetRelationDefinition(relationDefinition);
 
-      Assert.That (_definition.RelationDefinition, Is.Not.Null);
+      Assert.That(_definition.RelationDefinition, Is.Not.Null);
     }
   }
 }

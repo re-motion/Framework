@@ -35,19 +35,19 @@ namespace Remotion.Mixins.UnitTests.CoreComponentIntegration.TestDomain
 
     public override bool Equals (object obj)
     {
-      if (obj.GetType () != this.GetType())
+      if (obj.GetType() != this.GetType())
         return false;
       return ((BaseNonInheritedAttribute) obj).Context == Context;
     }
 
     public override int GetHashCode ()
     {
-      return Context.GetHashCode ();
+      return Context.GetHashCode();
     }
 
     public override string ToString ()
     {
-      return GetType () + " (\"" + Context + "\")";
+      return GetType() + " (\"" + Context + "\")";
     }
   }
 }

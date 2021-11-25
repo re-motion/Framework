@@ -33,14 +33,14 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     protected InvalidRelationEndPointDefinitionBase (ClassDefinition classDefinition, string propertyName, Type propertyType)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("propertyName", propertyName);
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("propertyName", propertyName);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
 
       _classDefinition = classDefinition;
       _propertyName = propertyName;
       _propertyType = propertyType;
-      _propertyInformation = new InvalidPropertyInformation (TypeAdapter.Create (_classDefinition.ClassType), propertyName, propertyType);
+      _propertyInformation = new InvalidPropertyInformation(TypeAdapter.Create(_classDefinition.ClassType), propertyName, propertyType);
     }
 
     public ClassDefinition ClassDefinition
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void SetRelationDefinition (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       _relationDefinition = relationDefinition;
     }

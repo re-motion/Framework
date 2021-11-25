@@ -34,9 +34,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public IEnumerable<BaseValidator> CreateValidators (UserControlBinding control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
-      yield return CreateUserControlBindingValidator (control);
+      yield return CreateUserControlBindingValidator(control);
     }
 
     private BaseValidator CreateUserControlBindingValidator (UserControlBinding control)

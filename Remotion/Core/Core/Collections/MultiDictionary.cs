@@ -53,7 +53,7 @@ namespace Remotion.Collections
     /// </summary>
     public void Add (TKey key, TValue value)
     {
-      this[key].Add (value);
+      this[key].Add(value);
     }
   }
 }

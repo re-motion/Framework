@@ -32,32 +32,32 @@ namespace Remotion.SecurityManager.Domain.Metadata
     [LinqPropertyRedirection (typeof (StatePropertyDefinition), "DefinedStatesInternal")]
     public static ObjectList<StateDefinition> GetDefinedStatesForQuery (this StatePropertyDefinition statePropertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("statePropertyDefinition", statePropertyDefinition);
+      ArgumentUtility.CheckNotNull("statePropertyDefinition", statePropertyDefinition);
 
-      return new ObjectList<StateDefinition> (statePropertyDefinition.DefinedStates);
+      return new ObjectList<StateDefinition>(statePropertyDefinition.DefinedStates);
     }
 
     [LinqPropertyRedirection (typeof (StatePropertyDefinition), "StatePropertyReferences")]
     public static ObjectList<StatePropertyReference> GetStatePropertyReferencesForQuery (this StatePropertyDefinition statePropertyDefinition)
     {
-      throw new NotSupportedException ("GetStatePropertyReferences() is only supported for building LiNQ query expressions.");
+      throw new NotSupportedException("GetStatePropertyReferences() is only supported for building LiNQ query expressions.");
     }
 
     [LinqPropertyRedirection (typeof (SecurableClassDefinition), "StatePropertyReferences")]
     public static ObjectList<StatePropertyReference> GetStatePropertyReferencesForQuery (this SecurableClassDefinition securableClassDefinition)
     {
-      throw new NotSupportedException ("GetStatePropertyReferences() is only supported for building LiNQ query expressions.");
+      throw new NotSupportedException("GetStatePropertyReferences() is only supported for building LiNQ query expressions.");
     }
 
     [LinqPropertyRedirection (typeof (SecurableClassDefinition), "AccessTypeReferences")]
     public static ObjectList<AccessTypeReference> GetAccessTypeReferencesForQuery (this SecurableClassDefinition securableClassDefinition)
     {
-      throw new NotSupportedException ("GetAccessTypeReferences() is only supported for building LiNQ query expressions.");
+      throw new NotSupportedException("GetAccessTypeReferences() is only supported for building LiNQ query expressions.");
     }
 
     public static IQueryable<SecurableClassDefinition> FetchDetails (this IQueryable<SecurableClassDefinition> query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
       return query.FetchAccessTypes()
                   .FetchStateProperties()
@@ -67,39 +67,39 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     private static IQueryable<SecurableClassDefinition> FetchAccessTypes (this IQueryable<SecurableClassDefinition> query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
-      return query.FetchMany (@class => @class.GetAccessTypeReferencesForQuery()).ThenFetchOne (r => r.AccessType);
+      return query.FetchMany(@class => @class.GetAccessTypeReferencesForQuery()).ThenFetchOne(r => r.AccessType);
     }
 
     private static IQueryable<SecurableClassDefinition> FetchStateProperties (this IQueryable<SecurableClassDefinition> query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
-      return query.FetchMany (@class => @class.GetStatePropertyReferencesForQuery())
-                  .ThenFetchOne (r => r.StateProperty)
-                  .ThenFetchMany (p => p.GetDefinedStatesForQuery());
+      return query.FetchMany(@class => @class.GetStatePropertyReferencesForQuery())
+                  .ThenFetchOne(r => r.StateProperty)
+                  .ThenFetchMany(p => p.GetDefinedStatesForQuery());
     }
 
     private static IQueryable<SecurableClassDefinition> FetchStatelessAccessControlList (this IQueryable<SecurableClassDefinition> query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
-      return query.FetchOne (cd => cd.StatelessAccessControlList)
-                  .ThenFetchMany (acl => acl.AccessControlEntries)
-                  .ThenFetchMany (ace => ace.GetPermissionsForQuery());
+      return query.FetchOne(cd => cd.StatelessAccessControlList)
+                  .ThenFetchMany(acl => acl.AccessControlEntries)
+                  .ThenFetchMany(ace => ace.GetPermissionsForQuery());
     }
 
     private static IQueryable<SecurableClassDefinition> FetchStatefulAcessControlLists (this IQueryable<SecurableClassDefinition> query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
-      return query.FetchMany (cd => cd.StatefulAccessControlLists)
-                  .ThenFetchMany (acl => acl.AccessControlEntries)
-                  .ThenFetchMany (ace => ace.GetPermissionsForQuery())
-                  .FetchMany (cd => cd.StatefulAccessControlLists)
-                  .ThenFetchMany (acl => acl.GetStateCombinationsForQuery())
-                  .ThenFetchMany (sc => sc.GetStateUsagesForQuery());
+      return query.FetchMany(cd => cd.StatefulAccessControlLists)
+                  .ThenFetchMany(acl => acl.AccessControlEntries)
+                  .ThenFetchMany(ace => ace.GetPermissionsForQuery())
+                  .FetchMany(cd => cd.StatefulAccessControlLists)
+                  .ThenFetchMany(acl => acl.GetStateCombinationsForQuery())
+                  .ThenFetchMany(sc => sc.GetStateUsagesForQuery());
     }
   }
 }

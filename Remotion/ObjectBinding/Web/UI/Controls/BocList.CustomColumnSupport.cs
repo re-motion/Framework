@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void CreateChildControlsForCustomColumns ()
     {
-      Controls.Add (_customColumnsPlaceHolder);
+      Controls.Add(_customColumnsPlaceHolder);
     }
     
     private void ResetCustomColumns ()
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!HasValue)
         return;
 
-      CreateCustomColumnControls (columns);
+      CreateCustomColumnControls(columns);
       InitCustomColumns();
       LoadCustomColumns();
     }
@@ -65,13 +65,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       EnsureChildControls();
 
-      Assertion.IsTrue (_customColumnControls.Count == 0);
-      Assertion.IsTrue (_customColumnsPlaceHolder.Controls.Count == 0);
+      Assertion.IsTrue(_customColumnControls.Count == 0);
+      Assertion.IsTrue(_customColumnsPlaceHolder.Controls.Count == 0);
 
       var controlEnabledCustomColumns = columns
-          .Select ((column, index) => new { Column = column as BocCustomColumnDefinition, Index = index })
-          .Where (d => d.Column != null)
-          .Where (
+          .Select((column, index) => new { Column = column as BocCustomColumnDefinition, Index = index })
+          .Where(d => d.Column != null)
+          .Where(
               d => d.Column!.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
                    || d.Column.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow)
           .ToArray();
@@ -84,17 +84,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         var customColumnTuples = new List<BocListCustomColumnTuple>();
         foreach (var row in EnsureBocListRowsForCurrentPageGot())
         {
-          bool isEditedRow = _editModeController.IsRowEditModeActive && _editModeController.GetEditableRow (row.ValueRow.Index) != null;
+          bool isEditedRow = _editModeController.IsRowEditModeActive && _editModeController.GetEditableRow(row.ValueRow.Index) != null;
           if (customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow && !isEditedRow)
             continue;
 
-          var args = new BocCustomCellArguments (this, customColumn);
-          Control control = customColumn.CustomCell.CreateControlInternal (args);
-          control.ID = ID + "_CustomColumnControl_" + customColumnData.Index + "_" + RowIDProvider.GetControlRowID (row.ValueRow);
-          placeHolder.Controls.Add (control);
-          customColumnTuples.Add (new BocListCustomColumnTuple (row.ValueRow.BusinessObject, row.ValueRow.Index, control));
+          var args = new BocCustomCellArguments(this, customColumn);
+          Control control = customColumn.CustomCell.CreateControlInternal(args);
+          control.ID = ID + "_CustomColumnControl_" + customColumnData.Index + "_" + RowIDProvider.GetControlRowID(row.ValueRow);
+          placeHolder.Controls.Add(control);
+          customColumnTuples.Add(new BocListCustomColumnTuple(row.ValueRow.BusinessObject, row.ValueRow.Index, control));
         }
-        _customColumnsPlaceHolder.Controls.Add (placeHolder);
+        _customColumnsPlaceHolder.Controls.Add(placeHolder);
         _customColumnControls[customColumn] = customColumnTuples.ToArray();
       }
     }
@@ -102,11 +102,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Invokes the <see cref="BocCustomColumnDefinitionCell.Init"/> method for each custom column. </summary>
     private void InitCustomColumns ()
     {
-      foreach (var keyValuePair in _customColumnControls.Where (p => p.Value.Any()))
+      foreach (var keyValuePair in _customColumnControls.Where(p => p.Value.Any()))
       {
         var customColumn = keyValuePair.Key;
-        var args = new BocCustomCellArguments (this, customColumn);
-        customColumn.CustomCell.Init (args);
+        var args = new BocCustomCellArguments(this, customColumn);
+        customColumn.CustomCell.Init(args);
       }
     }
 
@@ -125,8 +125,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           IBusinessObject businessObject = customColumnTuple.Item1;
           Control control = customColumnTuple.Item3;
 
-          var args = new BocCustomCellLoadArguments (this, businessObject, customColumn, originalRowIndex, control);
-          customColumn.CustomCell.Load (args);
+          var args = new BocCustomCellLoadArguments(this, businessObject, customColumn, originalRowIndex, control);
+          customColumn.CustomCell.Load(args);
         }
       }
     }
@@ -135,7 +135,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       bool isValid = true;
 
-      foreach (var keyValuePair in _customColumnControls.Where (p => p.Key.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow))
+      foreach (var keyValuePair in _customColumnControls.Where(p => p.Key.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow))
       {
         var customColumn = keyValuePair.Key;
         var customColumnTuples = keyValuePair.Value;
@@ -143,8 +143,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         {
           IBusinessObject businessObject = customColumnTuple.Item1;
           Control control = customColumnTuple.Item3;
-          var args = new BocCustomCellValidationArguments (this, businessObject, customColumn, control);
-          customColumn.CustomCell.Validate (args);
+          var args = new BocCustomCellValidationArguments(this, businessObject, customColumn, control);
+          customColumn.CustomCell.Validate(args);
           isValid &= args.IsValid;
         }
       }
@@ -157,15 +157,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </summary>
     private void PreRenderCustomColumns ()
     {
-      var columns = EnsureColumnsGot ();
+      var columns = EnsureColumnsGot();
       for (int index = 0; index < columns.Length; index++)
       {
         var column = columns[index];
         var customColumn = column as BocCustomColumnDefinition;
         if (customColumn == null)
           continue;
-        var args = new BocCustomCellPreRenderArguments (this, customColumn, index);
-        customColumn.CustomCell.PreRender (args);
+        var args = new BocCustomCellPreRenderArguments(this, customColumn, index);
+        customColumn.CustomCell.PreRender(args);
       }
     }
   }

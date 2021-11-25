@@ -36,22 +36,22 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public void AppendProjection (StringBuilder stringBuilder, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
-      ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
+      ArgumentUtility.CheckNotNull("stringBuilder", stringBuilder);
+      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
 
-      stringBuilder.Append ("*");
+      stringBuilder.Append("*");
     }
 
     public ISelectedColumnsSpecification Union (IEnumerable<ColumnDefinition> additionalColumns)
     {
-      ArgumentUtility.CheckNotNull ("additionalColumns", additionalColumns);
+      ArgumentUtility.CheckNotNull("additionalColumns", additionalColumns);
 
       return this;
     }
 
     public ISelectedColumnsSpecification AdjustForTable (TableDefinition table)
     {
-      throw new NotSupportedException ("Cannot create an adjusted * projection.");
+      throw new NotSupportedException("Cannot create an adjusted * projection.");
     }
   }
 }

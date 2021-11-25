@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
 
     public LocalIDControlSelectionCommandBuilder ([NotNull] string localID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("localID", localID);
+      ArgumentUtility.CheckNotNullOrEmpty("localID", localID);
 
       _localID = localID;
     }
@@ -45,25 +45,25 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     public IControlSelectionCommand<TControlObject> Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
 
-      return new LocalIDControlSelectionCommand<TControlObject> (controlSelector, _localID);
+      return new LocalIDControlSelectionCommand<TControlObject>(controlSelector, _localID);
     }
 
     /// <inheritdoc/>
     IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
 
-      return new LocalIDControlSelectionCommand<TControlObject> (controlSelector, _localID);
+      return new LocalIDControlSelectionCommand<TControlObject>(controlSelector, _localID);
     }
 
     /// <inheritdoc/>
     IControlExistsCommand IControlExistsCommandBuilder<TControlSelector>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
 
-      return new LocalIDControlSelectionCommand<TControlObject> (controlSelector, _localID);
+      return new LocalIDControlSelectionCommand<TControlObject>(controlSelector, _localID);
     }
   }
 }

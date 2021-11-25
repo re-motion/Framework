@@ -26,13 +26,13 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.Rules
   {
     public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<LengthValidator> validationRules)
     {
-      var invalidValidators = validationRules.Where (lengthValidator => lengthValidator.Max > 50).ToArray();
+      var invalidValidators = validationRules.Where(lengthValidator => lengthValidator.Max > 50).ToArray();
       if (invalidValidators.Any())
       {
         foreach (var lengthValidator in invalidValidators)
         {
           yield return
-              MetaValidationRuleValidationResult.CreateInvalidResult (
+              MetaValidationRuleValidationResult.CreateInvalidResult(
                   "MaxLength-Constraints greater 50 not allowed for validator '{0}'!", lengthValidator.GetType().Name);
         }
       }

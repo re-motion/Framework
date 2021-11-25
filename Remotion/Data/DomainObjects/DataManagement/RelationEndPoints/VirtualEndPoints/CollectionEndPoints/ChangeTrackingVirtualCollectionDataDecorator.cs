@@ -39,9 +39,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         HashSet<ObjectID> addedDomainObjects,
         HashSet<ObjectID> removedDomainObjects)
     {
-      ArgumentUtility.CheckNotNull ("innerVirtualCollectionData", innerVirtualCollectionData);
-      ArgumentUtility.CheckNotNull ("addedDomainObjects", addedDomainObjects);
-      ArgumentUtility.CheckNotNull ("removedDomainObjects", removedDomainObjects);
+      ArgumentUtility.CheckNotNull("innerVirtualCollectionData", innerVirtualCollectionData);
+      ArgumentUtility.CheckNotNull("addedDomainObjects", addedDomainObjects);
+      ArgumentUtility.CheckNotNull("removedDomainObjects", removedDomainObjects);
 
       _innerVirtualCollectionData = innerVirtualCollectionData;
       _addedDomainObjects = addedDomainObjects;
@@ -70,13 +70,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void EnsureDataComplete () => _innerVirtualCollectionData.EnsureDataComplete();
 
-    public bool ContainsObjectID (ObjectID objectID) => _innerVirtualCollectionData.ContainsObjectID (objectID);
+    public bool ContainsObjectID (ObjectID objectID) => _innerVirtualCollectionData.ContainsObjectID(objectID);
 
-    public DomainObject GetObject (int index) => _innerVirtualCollectionData.GetObject (index);
+    public DomainObject GetObject (int index) => _innerVirtualCollectionData.GetObject(index);
 
-    public DomainObject GetObject (ObjectID objectID) => _innerVirtualCollectionData.GetObject (objectID);
+    public DomainObject GetObject (ObjectID objectID) => _innerVirtualCollectionData.GetObject(objectID);
 
-    public int IndexOf (ObjectID objectID) => _innerVirtualCollectionData.IndexOf (objectID);
+    public int IndexOf (ObjectID objectID) => _innerVirtualCollectionData.IndexOf(objectID);
 
     public void Clear ()
     {
@@ -91,30 +91,30 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _innerVirtualCollectionData.Clear();
 
       foreach (var currentDomainObject in currentDomainObjects)
-        _removedDomainObjects.Add (currentDomainObject.ID);
+        _removedDomainObjects.Add(currentDomainObject.ID);
       foreach (var addedDomainObject in _addedDomainObjects)
-        _removedDomainObjects.Remove (addedDomainObject);
+        _removedDomainObjects.Remove(addedDomainObject);
       _addedDomainObjects.Clear();
     }
 
     public void Add (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      _innerVirtualCollectionData.Add (domainObject);
+      _innerVirtualCollectionData.Add(domainObject);
 
-      if (!_removedDomainObjects.Remove (domainObject.ID))
-        _addedDomainObjects.Add (domainObject.ID);
+      if (!_removedDomainObjects.Remove(domainObject.ID))
+        _addedDomainObjects.Add(domainObject.ID);
     }
 
     public bool Remove (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      var result = _innerVirtualCollectionData.Remove (domainObject);
+      var result = _innerVirtualCollectionData.Remove(domainObject);
 
-      if (!_addedDomainObjects.Remove (domainObject.ID))
-        _removedDomainObjects.Add (domainObject.ID);
+      if (!_addedDomainObjects.Remove(domainObject.ID))
+        _removedDomainObjects.Add(domainObject.ID);
 
       return result;
     }

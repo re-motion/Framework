@@ -43,8 +43,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
     [DBColumn ("Two")]
     public RelationTargetRealSides Relation
     {
-      get { return Properties[typeof (MixinRealSides), "Relation"].GetValue<RelationTargetRealSides> (); }
-      set { Properties[typeof (MixinRealSides), "Relation"].SetValue (value); }
+      get { return Properties[typeof (MixinRealSides), "Relation"].GetValue<RelationTargetRealSides>(); }
+      set { Properties[typeof (MixinRealSides), "Relation"].SetValue(value); }
     }
   }
 }

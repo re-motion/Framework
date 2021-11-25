@@ -48,11 +48,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       base.SetUp();
 
-      Column.PropertyPathBindings.Add (new PropertyPathBinding ("DisplayName"));
+      Column.PropertyPathBindings.Add(new PropertyPathBinding("DisplayName"));
 
-      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
-      _renderingContext = new BocColumnRenderingContext<BocCompoundColumnDefinition> (
-          new BocColumnRenderingContext (HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      _renderingContext = new BocColumnRenderingContext<BocCompoundColumnDefinition>(
+          new BocColumnRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
     }
 
     [Test]
@@ -60,125 +60,125 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Column.FormatString = string.Empty;
 
-      IBocColumnRenderer renderer = new BocCompoundColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocCompoundColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
 
-      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
       var document = Html.GetResultDocument();
 
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
-      Html.AssertAttribute (td, "role", "cell");
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement (td, "span", 0);
-      Html.AssertAttribute (span, "class", _bocListCssClassDefinition.Content);
+      var span = Html.GetAssertedChildElement(td, "span", 0);
+      Html.AssertAttribute(span, "class", _bocListCssClassDefinition.Content);
 
-      var textWrapper = Html.GetAssertedChildElement (span, "span", 0);
-      Html.AssertTextNode (textWrapper, HtmlHelper.WhiteSpace, 0);
+      var textWrapper = Html.GetAssertedChildElement(span, "span", 0);
+      Html.AssertTextNode(textWrapper, HtmlHelper.WhiteSpace, 0);
     }
 
     [Test]
     public void RenderBasicCell ()
     {
-      IBocColumnRenderer renderer = new BocCompoundColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocCompoundColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
 
-      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
       var document = Html.GetResultDocument();
 
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
-      Html.AssertAttribute (td, "role", "cell");
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement (td, "span", 0);
-      Html.AssertAttribute (span, "class", _bocListCssClassDefinition.Content);
+      var span = Html.GetAssertedChildElement(td, "span", 0);
+      Html.AssertAttribute(span, "class", _bocListCssClassDefinition.Content);
 
-      var textWrapper = Html.GetAssertedChildElement (span, "span", 0);
-      Html.AssertTextNode (textWrapper, "referencedObject1", 0);
+      var textWrapper = Html.GetAssertedChildElement(span, "span", 0);
+      Html.AssertTextNode(textWrapper, "referencedObject1", 0);
     }
 
     [Test]
     public void RenderCell_WithEmptyDisplayName ()
     {
-      var businessObject = TypeWithReference.Create ("");
-      EventArgs = new BocListDataRowRenderEventArgs (10, (IBusinessObject) businessObject, false, true);
-      IBocColumnRenderer renderer = new BocCompoundColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+      var businessObject = TypeWithReference.Create("");
+      EventArgs = new BocListDataRowRenderEventArgs(10, (IBusinessObject) businessObject, false, true);
+      IBocColumnRenderer renderer = new BocCompoundColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
 
-      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
 
       var document = Html.GetResultDocument();
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      var span = Html.GetAssertedChildElement (td, "span", 0);
-      var textWrapper = Html.GetAssertedChildElement (span, "span", 0);
-      Html.AssertAttribute (textWrapper, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, string.Empty);
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      var span = Html.GetAssertedChildElement(td, "span", 0);
+      var textWrapper = Html.GetAssertedChildElement(span, "span", 0);
+      Html.AssertAttribute(textWrapper, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, string.Empty);
     }
 
     [Test]
     public void RenderCell_WithNullAsContent ()
     {
       var businessObject = TypeWithReference.Create();
-      EventArgs = new BocListDataRowRenderEventArgs (10, (IBusinessObject) businessObject, false, true);
+      EventArgs = new BocListDataRowRenderEventArgs(10, (IBusinessObject) businessObject, false, true);
       Column.PropertyPathBindings.Clear();
-      Column.PropertyPathBindings.Add (new PropertyPathBinding ("ReferenceValue"));
-      IBocColumnRenderer renderer = new BocCompoundColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+      Column.PropertyPathBindings.Add(new PropertyPathBinding("ReferenceValue"));
+      IBocColumnRenderer renderer = new BocCompoundColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
 
-      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
 
-      Assert.That (businessObject.ReferenceValue, Is.Null);
+      Assert.That(businessObject.ReferenceValue, Is.Null);
       var document = Html.GetResultDocument();
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      var span = Html.GetAssertedChildElement (td, "span", 0);
-      var textWrapper = Html.GetAssertedChildElement (span, "span", 0);
-      Html.AssertAttribute (textWrapper, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, string.Empty);
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      var span = Html.GetAssertedChildElement(td, "span", 0);
+      var textWrapper = Html.GetAssertedChildElement(span, "span", 0);
+      Html.AssertAttribute(textWrapper, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, string.Empty);
     }
 
     [Test]
     public void RenderBasicCell_WithNewLineAndEncoding ()
     {
-      IBocColumnRenderer renderer = new BocCompoundColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocCompoundColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
 
-      var renderArgs = new BocListDataRowRenderEventArgs (0, (IBusinessObject) TypeWithReference.Create ("value\r\nExtraText<html>"), false, true);
-      renderer.RenderDataCell (_renderingContext, 0, false, renderArgs);
+      var renderArgs = new BocListDataRowRenderEventArgs(0, (IBusinessObject) TypeWithReference.Create("value\r\nExtraText<html>"), false, true);
+      renderer.RenderDataCell(_renderingContext, 0, false, renderArgs);
       var document = Html.GetResultDocument();
 
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
-      Html.AssertAttribute (td, "role", "cell");
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement (td, "span", 0);
-      Html.AssertAttribute (span, "class", _bocListCssClassDefinition.Content);
+      var span = Html.GetAssertedChildElement(td, "span", 0);
+      Html.AssertAttribute(span, "class", _bocListCssClassDefinition.Content);
 
-      var textWrapper = Html.GetAssertedChildElement (span, "span", 0);
-      Html.AssertTextNode (textWrapper, "value", 0);
-      Html.GetAssertedChildElement (textWrapper, "br", 1);
-      Html.AssertTextNode (textWrapper, "ExtraText<html>", 2); //This is actually encoded inside the asserted XmlDocument
+      var textWrapper = Html.GetAssertedChildElement(span, "span", 0);
+      Html.AssertTextNode(textWrapper, "value", 0);
+      Html.GetAssertedChildElement(textWrapper, "br", 1);
+      Html.AssertTextNode(textWrapper, "ExtraText<html>", 2); //This is actually encoded inside the asserted XmlDocument
     }
 
     [Test]
     public void RenderEnforcedWidthCell ()
     {
       Column.EnforceWidth = true;
-      Column.Width = new Unit (40, UnitType.Pixel);
+      Column.Width = new Unit(40, UnitType.Pixel);
 
-      IBocColumnRenderer renderer = new BocCompoundColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocCompoundColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
 
-      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
       var document = Html.GetResultDocument();
 
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
-      Html.AssertAttribute (td, "role", "cell");
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute(td, "role", "cell");
 
-      var cropSpan = Html.GetAssertedChildElement (td, "span", 0);
-      Html.AssertAttribute (cropSpan, "title", "referencedObject1");
-      Html.AssertStyleAttribute (cropSpan, "width", "40px");
-      Html.AssertStyleAttribute (cropSpan, "display", "block");
-      Html.AssertStyleAttribute (cropSpan, "overflow", "hidden");
-      Html.AssertStyleAttribute (cropSpan, "white-space", "nowrap");
+      var cropSpan = Html.GetAssertedChildElement(td, "span", 0);
+      Html.AssertAttribute(cropSpan, "title", "referencedObject1");
+      Html.AssertStyleAttribute(cropSpan, "width", "40px");
+      Html.AssertStyleAttribute(cropSpan, "display", "block");
+      Html.AssertStyleAttribute(cropSpan, "overflow", "hidden");
+      Html.AssertStyleAttribute(cropSpan, "white-space", "nowrap");
 
-      var span = Html.GetAssertedChildElement (cropSpan, "span", 0);
-      Html.AssertAttribute (span, "class", _bocListCssClassDefinition.Content);
+      var span = Html.GetAssertedChildElement(cropSpan, "span", 0);
+      Html.AssertAttribute(span, "class", _bocListCssClassDefinition.Content);
 
-      var textWrapper = Html.GetAssertedChildElement (span, "span", 0);
-      Html.AssertTextNode (textWrapper, "referencedObject1", 0);
+      var textWrapper = Html.GetAssertedChildElement(span, "span", 0);
+      Html.AssertTextNode(textWrapper, "referencedObject1", 0);
     }
   }
 }

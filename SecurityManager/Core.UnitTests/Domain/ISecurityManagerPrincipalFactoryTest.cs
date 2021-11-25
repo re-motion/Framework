@@ -30,7 +30,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     {
       var serviceLocator = DefaultServiceLocator.Create();
 
-      Assert.That (serviceLocator.GetInstance<ISecurityManagerPrincipalFactory>(), Is.TypeOf<SecurityManagerPrincipalFactory>());
+      Assert.That(serviceLocator.GetInstance<ISecurityManagerPrincipalFactory>(), Is.TypeOf<SecurityManagerPrincipalFactory>());
     }
   }
 }

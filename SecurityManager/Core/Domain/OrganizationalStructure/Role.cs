@@ -61,25 +61,25 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     
     protected override void OnDeleting (EventArgs args)
     {
-      base.OnDeleting (args);
+      base.OnDeleting(args);
 
-      _deleteHandler = new DomainObjectDeleteHandler (SubstitutedBy);
+      _deleteHandler = new DomainObjectDeleteHandler(SubstitutedBy);
     }
 
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
-      _deleteHandler.Delete ();
+      _deleteHandler.Delete();
     }
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
       var userProperty = Properties[typeof (Role), "User"];
-      if (userProperty.GetValue<User> () != null)
-        userProperty.GetValue<User> ().RegisterForCommit();
+      if (userProperty.GetValue<User>() != null)
+        userProperty.GetValue<User>().RegisterForCommit();
       else if (userProperty.GetOriginalValue<User>() != null)
         userProperty.GetOriginalValue<User>().RegisterForCommit();
 
@@ -105,7 +105,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
         string positionName = Position != null ? Position.DisplayName : null;
         string groupName = Group != null ? Group.DisplayName : null;
 
-        return string.Format ("{0} / {1}", positionName ?? "?", groupName ?? "?" );
+        return string.Format("{0} / {1}", positionName ?? "?", groupName ?? "?" );
       }
     }
   }

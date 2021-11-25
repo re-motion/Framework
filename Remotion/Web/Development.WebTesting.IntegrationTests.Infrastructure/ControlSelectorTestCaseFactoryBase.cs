@@ -51,37 +51,37 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     // todo test until RM-6773 is fixed
     protected void SwitchToIFrame ()
     {
-      var frame = Helper.MainBrowserSession.Window.FindFrame ("testFrame");
-      frame.FindId ("target").Now();
+      var frame = Helper.MainBrowserSession.Window.FindFrame("testFrame");
+      frame.FindId("target").Now();
     }
 
     /// <inheritdoc />
     protected override IEnumerable<TestCaseData> GetTests ()
     {
-      return GetTests<GenericPageTestMethodAttribute> (CreateTestCaseData);
+      return GetTests<GenericPageTestMethodAttribute>(CreateTestCaseData);
     }
 
 
     private TestCaseData CreateTestCaseData ([NotNull] GenericPageTestMethodAttribute attribute, [NotNull] MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull ("attribute", attribute);
-      ArgumentUtility.CheckNotNull ("method", method);
+      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentUtility.CheckNotNull("method", method);
 
-      var testCaseData = new TestCaseData (
+      var testCaseData = new TestCaseData(
           (GenericSelectorTestAction<TControlSelector, TControl>) ((helper, factory, control) =>
           {
-            PrepareTest (attribute, helper, control);
+            PrepareTest(attribute, helper, control);
 
             var backupTimeout = Home.Scope.ElementFinder.Options.Timeout;
 
             if (attribute.SearchTimeout == SearchTimeout.UseShortTimeout)
               Home.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
 
-            _selector = factory (Home);
+            _selector = factory(Home);
 
             try
             {
-              RunTest (method);
+              RunTest(method);
             }
             finally
             {
@@ -90,7 +90,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
           }));
 
-      testCaseData.SetCategory ("ControlSelectorTest");
+      testCaseData.SetCategory("ControlSelectorTest");
 
       return testCaseData;
     }

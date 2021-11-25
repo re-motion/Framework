@@ -40,23 +40,23 @@ namespace Remotion.Reflection
     /// </remarks>
     public static MethodInfo ResolveMethod (Type declaringType, string name, string signature)
     {
-      ArgumentUtility.CheckNotNull ("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      ArgumentUtility.CheckNotNullOrEmpty ("signature", signature);
+      ArgumentUtility.CheckNotNull("declaringType", declaringType);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("signature", signature);
 
       const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
-      var candidates = (MethodInfo[]) declaringType.GetMember (name, MemberTypes.Method, flags);
+      var candidates = (MethodInfo[]) declaringType.GetMember(name, MemberTypes.Method, flags);
       if (candidates.Length == 1)
       {
         return candidates[0];
       }
       else
       {
-        var method = (from c in candidates where c.ToString () == signature select c).SingleOrDefault();
+        var method = (from c in candidates where c.ToString() == signature select c).SingleOrDefault();
         if (method == null)
         {
-          var message = string.Format ("The method '{0}' could not be found on type '{1}'.", signature, declaringType);
-          throw new MissingMethodException (message);
+          var message = string.Format("The method '{0}' could not be found on type '{1}'.", signature, declaringType);
+          throw new MissingMethodException(message);
         }
         else
         {

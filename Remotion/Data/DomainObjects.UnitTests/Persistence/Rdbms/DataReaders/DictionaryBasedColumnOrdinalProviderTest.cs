@@ -37,38 +37,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [SetUp]
     public void SetUp ()
     {
-      _columnDefinition = ColumnDefinitionObjectMother.CreateColumn ("Testcolumn 1");
-      var columnDefinition2 = ColumnDefinitionObjectMother.CreateColumn ("Testcolumn 2");
-      _dataReaderStub = MockRepository.GenerateStub<IDataReader> ();
+      _columnDefinition = ColumnDefinitionObjectMother.CreateColumn("Testcolumn 1");
+      var columnDefinition2 = ColumnDefinitionObjectMother.CreateColumn("Testcolumn 2");
+      _dataReaderStub = MockRepository.GenerateStub<IDataReader>();
       _ordinals = new Dictionary<string, int> { { _columnDefinition.Name, 5 }, { columnDefinition2.Name, 3} };
-      _dictionaryBasedColumnOrdinalProvider = new DictionaryBasedColumnOrdinalProvider (_ordinals);
+      _dictionaryBasedColumnOrdinalProvider = new DictionaryBasedColumnOrdinalProvider(_ordinals);
     }
 
     [Test]
     public void GetOrdinal ()
     {
-      var result = _dictionaryBasedColumnOrdinalProvider.GetOrdinal (_columnDefinition, _dataReaderStub);
+      var result = _dictionaryBasedColumnOrdinalProvider.GetOrdinal(_columnDefinition, _dataReaderStub);
 
-      Assert.That (result, Is.EqualTo (5));
+      Assert.That(result, Is.EqualTo(5));
     }
 
     [Test]
     public void GetOrdinal_DifferentColumnOfSameName ()
     {
-      var columnDefinition = ColumnDefinitionObjectMother.CreateColumn (_columnDefinition.Name);
-      var result = _dictionaryBasedColumnOrdinalProvider.GetOrdinal (columnDefinition, _dataReaderStub);
+      var columnDefinition = ColumnDefinitionObjectMother.CreateColumn(_columnDefinition.Name);
+      var result = _dictionaryBasedColumnOrdinalProvider.GetOrdinal(columnDefinition, _dataReaderStub);
 
-      Assert.That (result, Is.EqualTo (5));
+      Assert.That(result, Is.EqualTo(5));
     }
 
     [Test]
     public void GetOrdinal_IndexOutOfRange_ThrowsException ()
     {
-      var otherColumn = ColumnDefinitionObjectMother.CreateColumn ("other column");
-      Assert.That (
-          () => _dictionaryBasedColumnOrdinalProvider.GetOrdinal (otherColumn, _dataReaderStub),
+      var otherColumn = ColumnDefinitionObjectMother.CreateColumn("other column");
+      Assert.That(
+          () => _dictionaryBasedColumnOrdinalProvider.GetOrdinal(otherColumn, _dataReaderStub),
           Throws.InstanceOf<RdbmsProviderException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The column 'other column' is not included in the query result and is not expected for this operation. The included and expected columns are: "
                   + "Testcolumn 2, Testcolumn 1."));
     }

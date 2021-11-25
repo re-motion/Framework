@@ -46,63 +46,63 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       base.SetUp();
 
-      var remixParticipant = new MixinParticipant (
+      var remixParticipant = new MixinParticipant(
           SafeServiceLocator.Current.GetInstance<IConfigurationProvider>(),
           SafeServiceLocator.Current.GetInstance<IMixinTypeProvider>(),
           SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
           SafeServiceLocator.Current.GetInstance<IConcreteTypeMetadataImporter>());
-      var restoreParticipant = new DomainObjectParticipant (
+      var restoreParticipant = new DomainObjectParticipant(
           SafeServiceLocator.Current.GetInstance<ITypeDefinitionProvider>(),
           SafeServiceLocator.Current.GetInstance<IInterceptedPropertyFinder>());
-      _pipeline = SafeServiceLocator.Current.GetInstance<IPipelineFactory>().Create ("DomainObjectCreatorTest", remixParticipant, restoreParticipant);
-      var pipelineRegistry = new DefaultPipelineRegistry (_pipeline);
-      _domainObjectCreator = new DomainObjectCreator (pipelineRegistry);
+      _pipeline = SafeServiceLocator.Current.GetInstance<IPipelineFactory>().Create("DomainObjectCreatorTest", remixParticipant, restoreParticipant);
+      var pipelineRegistry = new DefaultPipelineRegistry(_pipeline);
+      _domainObjectCreator = new DomainObjectCreator(pipelineRegistry);
 
       _transaction = ClientTransaction.CreateRootTransaction();
-      _order1InitializationContext = CreateFakeInitializationContext (DomainObjectIDs.Order1, _transaction);
-      var objectID = new ObjectID (typeof (TargetClassForPersistentMixin), Guid.NewGuid());
-      _targetClassForPersistentMixinInitializationContext = CreateFakeInitializationContext (objectID, _transaction);
+      _order1InitializationContext = CreateFakeInitializationContext(DomainObjectIDs.Order1, _transaction);
+      var objectID = new ObjectID(typeof (TargetClassForPersistentMixin), Guid.NewGuid());
+      _targetClassForPersistentMixinInitializationContext = CreateFakeInitializationContext(objectID, _transaction);
     }
 
     [Test]
     public void CreateObjectReference ()
     {
-      var order = _domainObjectCreator.CreateObjectReference (_order1InitializationContext, _transaction);
+      var order = _domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
 
-      Assert.That (order, Is.InstanceOf (typeof (Order)));
-      Assert.That (order.ID, Is.EqualTo (DomainObjectIDs.Order1));
-      Assert.That (order.RootTransaction, Is.EqualTo (_transaction));
+      Assert.That(order, Is.InstanceOf(typeof (Order)));
+      Assert.That(order.ID, Is.EqualTo(DomainObjectIDs.Order1));
+      Assert.That(order.RootTransaction, Is.EqualTo(_transaction));
     }
 
     [Test]
     public void CreateObjectReference_UsesFactoryGeneratedType ()
     {
-      var order = _domainObjectCreator.CreateObjectReference (_order1InitializationContext, _transaction);
+      var order = _domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
 
-      Assert.That (_pipeline.ReflectionService.IsAssembledType (((object) order).GetType()), Is.True);
+      Assert.That(_pipeline.ReflectionService.IsAssembledType(((object) order).GetType()), Is.True);
     }
 
     [Test]
     public void CreateObjectReference_CallsNoCtor ()
     {
-      var order = (Order) _domainObjectCreator.CreateObjectReference (_order1InitializationContext, _transaction);
+      var order = (Order) _domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
 
-      Assert.That (order.CtorCalled, Is.False);
+      Assert.That(order.CtorCalled, Is.False);
     }
 
     [Test]
     public void CreateObjectReference_PreparesMixins ()
     {
-      var instance = _domainObjectCreator.CreateObjectReference (_targetClassForPersistentMixinInitializationContext, _transaction);
+      var instance = _domainObjectCreator.CreateObjectReference(_targetClassForPersistentMixinInitializationContext, _transaction);
 
-      Assert.That (Mixin.Get<MixinAddingPersistentProperties> (instance), Is.Not.Null);
+      Assert.That(Mixin.Get<MixinAddingPersistentProperties>(instance), Is.Not.Null);
     }
 
     [Test]
     public void CreateObjectReference_InitializesObjectID ()
     {
-      var instance = _domainObjectCreator.CreateObjectReference (_order1InitializationContext, _transaction);
-      Assert.That (instance.ID, Is.EqualTo (DomainObjectIDs.Order1));
+      var instance = _domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
+      Assert.That(instance.ID, Is.EqualTo(DomainObjectIDs.Order1));
     }
 
     [Test]
@@ -110,17 +110,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       DomainObject registeredObject = null;
 
-      var initializationContextMock = MockRepository.GenerateStrictMock<IObjectInitializationContext> ();
-      initializationContextMock.Stub (stub => stub.ObjectID).Return (DomainObjectIDs.Order1);
-      initializationContextMock.Stub (stub => stub.RootTransaction).Return (_transaction);
+      var initializationContextMock = MockRepository.GenerateStrictMock<IObjectInitializationContext>();
+      initializationContextMock.Stub(stub => stub.ObjectID).Return(DomainObjectIDs.Order1);
+      initializationContextMock.Stub(stub => stub.RootTransaction).Return(_transaction);
       initializationContextMock
-          .Expect (mock => mock.RegisterObject (Arg<DomainObject>.Matches (obj => obj.ID == DomainObjectIDs.Order1)))
-          .WhenCalled (mi => registeredObject = (DomainObject) mi.Arguments[0]);
+          .Expect(mock => mock.RegisterObject(Arg<DomainObject>.Matches(obj => obj.ID == DomainObjectIDs.Order1)))
+          .WhenCalled(mi => registeredObject = (DomainObject) mi.Arguments[0]);
 
-      var instance = _domainObjectCreator.CreateObjectReference (initializationContextMock, _transaction);
+      var instance = _domainObjectCreator.CreateObjectReference(initializationContextMock, _transaction);
 
-      initializationContextMock.VerifyAllExpectations ();
-      Assert.That (instance, Is.SameAs (registeredObject));
+      initializationContextMock.VerifyAllExpectations();
+      Assert.That(instance, Is.SameAs(registeredObject));
     }
     
     [Test]
@@ -128,52 +128,52 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        Assert.That (
-            () => _domainObjectCreator.CreateObjectReference (_targetClassForPersistentMixinInitializationContext, _transaction),
+        Assert.That(
+            () => _domainObjectCreator.CreateObjectReference(_targetClassForPersistentMixinInitializationContext, _transaction),
             Throws.InstanceOf<MappingException>()
-                .With.Message.Contains ("mixin"));
+                .With.Message.Contains("mixin"));
       }
     }
 
     [Test]
     public void CreateObjectReference_CallsReferenceInitializing ()
     {
-      var domainObject = (Order) _domainObjectCreator.CreateObjectReference (_order1InitializationContext, _transaction);
-      Assert.That (domainObject.OnReferenceInitializingCalled, Is.True);
+      var domainObject = (Order) _domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
+      Assert.That(domainObject.OnReferenceInitializingCalled, Is.True);
     }
 
     [Test]
     public void CreateObjectReference_CallsReferenceInitializing_InRightTransaction ()
     {
-      var domainObject = (Order) _domainObjectCreator.CreateObjectReference (_order1InitializationContext, _transaction);
-      Assert.That (domainObject.OnReferenceInitializingTx, Is.SameAs (_transaction));
+      var domainObject = (Order) _domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
+      Assert.That(domainObject.OnReferenceInitializingTx, Is.SameAs(_transaction));
     }
 
     [Test]
     public void CreateObjectReference_CallsReferenceInitializing_InRightTransaction_WithActivatedInactiveTransaction ()
     {
-      using (ClientTransactionTestHelper.MakeInactive (_transaction))
+      using (ClientTransactionTestHelper.MakeInactive(_transaction))
       {
-        var domainObject = (Order) _domainObjectCreator.CreateObjectReference (_order1InitializationContext, _transaction);
-        Assert.That (domainObject.OnReferenceInitializingTx, Is.SameAs (_transaction));
-        Assert.That (domainObject.OnReferenceInitializingActiveTx, Is.SameAs (_transaction));
+        var domainObject = (Order) _domainObjectCreator.CreateObjectReference(_order1InitializationContext, _transaction);
+        Assert.That(domainObject.OnReferenceInitializingTx, Is.SameAs(_transaction));
+        Assert.That(domainObject.OnReferenceInitializingActiveTx, Is.SameAs(_transaction));
       }
     }
 
     [Test]
     public void CreateNewObject ()
     {
-      var initializationContext = CreateNewObjectInitializationContext (DomainObjectIDs.OrderItem1, _transaction);
-      var result = _domainObjectCreator.CreateNewObject (initializationContext, ParamList.Create ("A product"), _transaction);
+      var initializationContext = CreateNewObjectInitializationContext(DomainObjectIDs.OrderItem1, _transaction);
+      var result = _domainObjectCreator.CreateNewObject(initializationContext, ParamList.Create("A product"), _transaction);
 
-      Assert.That (_pipeline.ReflectionService.IsAssembledType (((object) result).GetType ()), Is.True);
-      Assert.That (result, Is.AssignableTo<OrderItem> ());
-      Assert.That (result.ID, Is.EqualTo (DomainObjectIDs.OrderItem1));
-      Assert.That (result.RootTransaction, Is.SameAs (_transaction));
-      Assert.That (_transaction.IsDiscarded, Is.False);
-      Assert.That (_transaction.IsEnlisted (result), Is.True);
-      Assert.That (_transaction.ExecuteInScope (() => ((OrderItem) result).Product), Is.EqualTo ("A product"));
-      Assert.That (ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null);
+      Assert.That(_pipeline.ReflectionService.IsAssembledType(((object) result).GetType()), Is.True);
+      Assert.That(result, Is.AssignableTo<OrderItem>());
+      Assert.That(result.ID, Is.EqualTo(DomainObjectIDs.OrderItem1));
+      Assert.That(result.RootTransaction, Is.SameAs(_transaction));
+      Assert.That(_transaction.IsDiscarded, Is.False);
+      Assert.That(_transaction.IsEnlisted(result), Is.True);
+      Assert.That(_transaction.ExecuteInScope(() => ((OrderItem) result).Product), Is.EqualTo("A product"));
+      Assert.That(ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null);
     }
 
     [Test]
@@ -181,58 +181,58 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        Assert.That (
-            () => _domainObjectCreator.CreateNewObject (_targetClassForPersistentMixinInitializationContext, ParamList.Empty, _transaction),
+        Assert.That(
+            () => _domainObjectCreator.CreateNewObject(_targetClassForPersistentMixinInitializationContext, ParamList.Empty, _transaction),
             Throws.InstanceOf<MappingException>()
-                .With.Message.Contains ("mixin"));
+                .With.Message.Contains("mixin"));
       }
     }
 
     [Test]
     public void CreateNewObject_InitializesMixins ()
     {
-      var initializationContext = CreateNewObjectInitializationContext (DomainObjectIDs.ClassWithAllDataTypes1, _transaction);
+      var initializationContext = CreateNewObjectInitializationContext(DomainObjectIDs.ClassWithAllDataTypes1, _transaction);
 
-      var result = _domainObjectCreator.CreateNewObject (initializationContext, ParamList.Empty, _transaction);
+      var result = _domainObjectCreator.CreateNewObject(initializationContext, ParamList.Empty, _transaction);
 
-      var mixin = Mixin.Get<MixinWithAccessToDomainObjectProperties<ClassWithAllDataTypes>> (result);
-      Assert.That (mixin, Is.Not.Null);
-      Assert.That (mixin.OnDomainObjectCreatedCalled, Is.True);
-      Assert.That (mixin.OnDomainObjectCreatedTx, Is.SameAs (_transaction));
+      var mixin = Mixin.Get<MixinWithAccessToDomainObjectProperties<ClassWithAllDataTypes>>(result);
+      Assert.That(mixin, Is.Not.Null);
+      Assert.That(mixin.OnDomainObjectCreatedCalled, Is.True);
+      Assert.That(mixin.OnDomainObjectCreatedTx, Is.SameAs(_transaction));
     }
 
     [Test]
     public void CreateNewObject_AllowsPublicAndNonPublicCtors ()
     {
-      Assert.That (
+      Assert.That(
           () =>
-          _domainObjectCreator.CreateNewObject (
-              CreateNewObjectInitializationContext (DomainObjectIDs.OrderItem1, _transaction), ParamList.Empty, _transaction),
+          _domainObjectCreator.CreateNewObject(
+              CreateNewObjectInitializationContext(DomainObjectIDs.OrderItem1, _transaction), ParamList.Empty, _transaction),
           Is.Not.Null);
 
-      Assert.That (
+      Assert.That(
           () =>
-          _domainObjectCreator.CreateNewObject (
-              CreateNewObjectInitializationContext (DomainObjectIDs.OrderItem2, _transaction), ParamList.Empty, _transaction),
+          _domainObjectCreator.CreateNewObject(
+              CreateNewObjectInitializationContext(DomainObjectIDs.OrderItem2, _transaction), ParamList.Empty, _transaction),
           Is.Not.Null);
     }
 
     private IObjectInitializationContext CreateFakeInitializationContext (ObjectID objectID, ClientTransaction rootTransaction)
     {
-      var initializationContextStub = MockRepository.GenerateStub<IObjectInitializationContext> ();
+      var initializationContextStub = MockRepository.GenerateStub<IObjectInitializationContext>();
 
-      initializationContextStub.Stub (stub => stub.ObjectID).Return (objectID);
-      initializationContextStub.Stub (stub => stub.RootTransaction).Return (rootTransaction);
+      initializationContextStub.Stub(stub => stub.ObjectID).Return(objectID);
+      initializationContextStub.Stub(stub => stub.RootTransaction).Return(rootTransaction);
       return initializationContextStub;
     }
 
     private NewObjectInitializationContext CreateNewObjectInitializationContext (ObjectID objectID, ClientTransaction rootTransaction)
     {
-      return new NewObjectInitializationContext (
+      return new NewObjectInitializationContext(
           objectID,
           rootTransaction,
-          ClientTransactionTestHelper.GetEnlistedDomainObjectManager (rootTransaction),
-          ClientTransactionTestHelper.GetIDataManager (rootTransaction));
+          ClientTransactionTestHelper.GetEnlistedDomainObjectManager(rootTransaction),
+          ClientTransactionTestHelper.GetIDataManager(rootTransaction));
     }
 
     [DBTable]

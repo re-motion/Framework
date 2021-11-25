@@ -28,36 +28,36 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [Test]
     public void RegexConsidering_SimpleName ()
     {
-      var filter = new RegexAssemblyLoaderFilter ("^Remotion.*$", RegexAssemblyLoaderFilter.MatchTargetKind.SimpleName);
-      Assert.That (filter.MatchExpressionString, Is.EqualTo ("^Remotion.*$"));
-      Assert.That (filter.ShouldConsiderAssembly (typeof (AttributeAssemblyLoaderFilterTest).Assembly.GetName()), Is.True);
-      Assert.That (filter.ShouldConsiderAssembly (typeof (TestFixtureAttribute).Assembly.GetName()), Is.False);
-      Assert.That (filter.ShouldConsiderAssembly (typeof (object).Assembly.GetName()), Is.False);
-      Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("this is not a Remotion assembly")), Is.False);
+      var filter = new RegexAssemblyLoaderFilter("^Remotion.*$", RegexAssemblyLoaderFilter.MatchTargetKind.SimpleName);
+      Assert.That(filter.MatchExpressionString, Is.EqualTo("^Remotion.*$"));
+      Assert.That(filter.ShouldConsiderAssembly(typeof (AttributeAssemblyLoaderFilterTest).Assembly.GetName()), Is.True);
+      Assert.That(filter.ShouldConsiderAssembly(typeof (TestFixtureAttribute).Assembly.GetName()), Is.False);
+      Assert.That(filter.ShouldConsiderAssembly(typeof (object).Assembly.GetName()), Is.False);
+      Assert.That(filter.ShouldConsiderAssembly(new AssemblyName("this is not a Remotion assembly")), Is.False);
     }
 
     [Test]
     public void RegexConsidering_FullName ()
     {
-      var filter = new RegexAssemblyLoaderFilter (
+      var filter = new RegexAssemblyLoaderFilter(
           typeof (TestAttribute).Assembly.FullName,
           RegexAssemblyLoaderFilter.MatchTargetKind.FullName);
-      Assert.That (filter.MatchExpressionString, Does.StartWith ("nunit.framework"));
-      Assert.That (filter.ShouldConsiderAssembly (typeof (AttributeAssemblyLoaderFilterTest).Assembly.GetName()), Is.False);
-      Assert.That (filter.ShouldConsiderAssembly (typeof (TestFixtureAttribute).Assembly.GetName()), Is.True);
-      Assert.That (filter.ShouldConsiderAssembly (typeof (object).Assembly.GetName()), Is.False);
-      Assert.That (filter.ShouldConsiderAssembly (new AssemblyName ("this is not nunit")), Is.False);
+      Assert.That(filter.MatchExpressionString, Does.StartWith("nunit.framework"));
+      Assert.That(filter.ShouldConsiderAssembly(typeof (AttributeAssemblyLoaderFilterTest).Assembly.GetName()), Is.False);
+      Assert.That(filter.ShouldConsiderAssembly(typeof (TestFixtureAttribute).Assembly.GetName()), Is.True);
+      Assert.That(filter.ShouldConsiderAssembly(typeof (object).Assembly.GetName()), Is.False);
+      Assert.That(filter.ShouldConsiderAssembly(new AssemblyName("this is not nunit")), Is.False);
     }
 
     [Test]
     public void RegexInclusion_AlwaysTrue ()
     {
-      var filter = new RegexAssemblyLoaderFilter ("spispopd", RegexAssemblyLoaderFilter.MatchTargetKind.SimpleName);
-      Assert.That (filter.MatchExpressionString, Is.EqualTo ("spispopd"));
-      Assert.That (filter.ShouldIncludeAssembly (typeof (AttributeAssemblyLoaderFilterTest).Assembly), Is.True);
-      Assert.That (filter.ShouldIncludeAssembly (typeof (TestFixtureAttribute).Assembly), Is.True);
-      Assert.That (filter.ShouldIncludeAssembly (typeof (object).Assembly), Is.True);
-      Assert.That (filter.ShouldIncludeAssembly (typeof (Uri).Assembly), Is.True);
+      var filter = new RegexAssemblyLoaderFilter("spispopd", RegexAssemblyLoaderFilter.MatchTargetKind.SimpleName);
+      Assert.That(filter.MatchExpressionString, Is.EqualTo("spispopd"));
+      Assert.That(filter.ShouldIncludeAssembly(typeof (AttributeAssemblyLoaderFilterTest).Assembly), Is.True);
+      Assert.That(filter.ShouldIncludeAssembly(typeof (TestFixtureAttribute).Assembly), Is.True);
+      Assert.That(filter.ShouldIncludeAssembly(typeof (object).Assembly), Is.True);
+      Assert.That(filter.ShouldIncludeAssembly(typeof (Uri).Assembly), Is.True);
     }
   }
 }

@@ -28,15 +28,15 @@ namespace Remotion.Mixins.Utilities
   {
     public Type Instantiate (Type typeParameter)
     {
-      ArgumentUtility.CheckNotNull ("typeParameter", typeParameter);
+      ArgumentUtility.CheckNotNull("typeParameter", typeParameter);
 
       if (!typeParameter.IsGenericParameter)
-        throw new ArgumentException ("Type must be a generic parameter.", "typeParameter");
+        throw new ArgumentException("Type must be a generic parameter.", "typeParameter");
 
       Type? candidate = InferFromGenericParameterConstraints(typeParameter);
 
-      if (HasAttribute (typeParameter, GenericParameterAttributes.NotNullableValueTypeConstraint))
-        candidate = UnifyConstraints (typeof (ValueType), candidate);
+      if (HasAttribute(typeParameter, GenericParameterAttributes.NotNullableValueTypeConstraint))
+        candidate = UnifyConstraints(typeof (ValueType), candidate);
 
       if (candidate == null)
         candidate = typeof (object);
@@ -57,19 +57,19 @@ namespace Remotion.Mixins.Utilities
 
       // Starting with .NET 4.6, the order follows different conventions. 
       // For better diagnostics, the value-type/reference-type constraint should be listed before any interface constraints.
-      var constraints = typeParameter.GetGenericParameterConstraints().OrderBy (t => t.IsInterface).ThenBy (t => t.FullName);
+      var constraints = typeParameter.GetGenericParameterConstraints().OrderBy(t => t.IsInterface).ThenBy(t => t.FullName);
 
       foreach (Type constraint in constraints)
       {
         if (constraint.ContainsGenericParameters)
         {
-          string message = string.Format (
+          string message = string.Format(
               "The generic type parameter has a constraint '{0}' which itself contains generic parameters.",
               constraint.Name);
-          throw new NotSupportedException (message);
+          throw new NotSupportedException(message);
         }
 
-        candidate = UnifyConstraints (constraint, candidate);
+        candidate = UnifyConstraints(constraint, candidate);
       }
       return candidate;
     }
@@ -78,25 +78,25 @@ namespace Remotion.Mixins.Utilities
     {
       if (candidate == null)
         candidate = constraint;
-      else if (candidate.IsAssignableFrom (constraint))
+      else if (candidate.IsAssignableFrom(constraint))
         candidate = constraint;
-      else if (!constraint.IsAssignableFrom (candidate))
+      else if (!constraint.IsAssignableFrom(candidate))
       {
         if (constraint.IsInterface && candidate.IsInterface || candidate == typeof (ValueType))
         {
-          string message = string.Format (
+          string message = string.Format(
               "The generic type parameter has inconclusive constraints '{0}' and '{1}', which cannot be unified into a single type.",
               candidate,
               constraint);
-          throw new NotSupportedException (message);
+          throw new NotSupportedException(message);
         }
         else
         {
-          string message = string.Format (
+          string message = string.Format(
               "The generic type parameter has incompatible constraints '{0}' and '{1}'.",
               candidate,
               constraint);
-          throw new NotSupportedException (message);
+          throw new NotSupportedException(message);
         }
       }
       return candidate;

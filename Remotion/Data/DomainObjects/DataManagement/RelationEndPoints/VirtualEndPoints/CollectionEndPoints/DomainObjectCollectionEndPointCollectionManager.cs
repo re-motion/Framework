@@ -39,9 +39,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IDomainObjectCollectionEndPointCollectionProvider domainObjectCollectionProvider,
         IAssociatedDomainObjectCollectionDataStrategyFactory dataStrategyFactory)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-      ArgumentUtility.CheckNotNull ("domainObjectCollectionProvider", domainObjectCollectionProvider);
-      ArgumentUtility.CheckNotNull ("dataStrategyFactory", dataStrategyFactory);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("domainObjectCollectionProvider", domainObjectCollectionProvider);
+      ArgumentUtility.CheckNotNull("dataStrategyFactory", dataStrategyFactory);
 
       _endPointID = endPointID;
       _domainObjectCollectionProvider = domainObjectCollectionProvider;
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public DomainObjectCollection GetOriginalCollectionReference ()
     {
       if (_originalCollectionReference == null)
-        _originalCollectionReference = _domainObjectCollectionProvider.GetCollection (_endPointID);
+        _originalCollectionReference = _domainObjectCollectionProvider.GetCollection(_endPointID);
 
       return _originalCollectionReference;
     }
@@ -74,18 +74,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public DomainObjectCollection GetCurrentCollectionReference ()
     {
       if (_currentCollectionReference == null)
-        _currentCollectionReference = GetOriginalCollectionReference ();
+        _currentCollectionReference = GetOriginalCollectionReference();
 
       return _currentCollectionReference;
     }
 
     public IDomainObjectCollectionData AssociateCollectionWithEndPoint (DomainObjectCollection newCollection)
     {
-      var oldCollection = (IAssociatableDomainObjectCollection) GetCurrentCollectionReference ();
-      Assertion.IsTrue (oldCollection.AssociatedEndPointID == _endPointID);
-      oldCollection.TransformToStandAlone ();
+      var oldCollection = (IAssociatableDomainObjectCollection) GetCurrentCollectionReference();
+      Assertion.IsTrue(oldCollection.AssociatedEndPointID == _endPointID);
+      oldCollection.TransformToStandAlone();
 
-      var oldDataStrategyOfNewCollection = ((IAssociatableDomainObjectCollection) newCollection).TransformToAssociated (_endPointID, _dataStrategyFactory);
+      var oldDataStrategyOfNewCollection = ((IAssociatableDomainObjectCollection) newCollection).TransformToAssociated(_endPointID, _dataStrategyFactory);
 
       _currentCollectionReference = newCollection;
       return oldDataStrategyOfNewCollection;
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       if (_originalCollectionReference == null)
       {
-        Assertion.DebugAssert (_currentCollectionReference == null);
+        Assertion.DebugAssert(_currentCollectionReference == null);
         return false;
       }
 
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       if (_originalCollectionReference == null)
       {
-        Assertion.DebugAssert (_currentCollectionReference == null);
+        Assertion.DebugAssert(_currentCollectionReference == null);
         return;
       }
 
@@ -119,16 +119,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       if (_originalCollectionReference != _currentCollectionReference)
       {
         _originalCollectionReference = _currentCollectionReference;
-        _domainObjectCollectionProvider.RegisterCollection (_endPointID, _currentCollectionReference);
+        _domainObjectCollectionProvider.RegisterCollection(_endPointID, _currentCollectionReference);
       }
-      Assertion.DebugAssert (!HasCollectionReferenceChanged ());
+      Assertion.DebugAssert(!HasCollectionReferenceChanged());
     }
 
     public void RollbackCollectionReference ()
     {
       if (_originalCollectionReference == null)
       {
-        Assertion.DebugAssert (_currentCollectionReference == null);
+        Assertion.DebugAssert(_currentCollectionReference == null);
         return;
       }
 
@@ -140,14 +140,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       // If the end-point's current collection is still associated with this end point, transform it to stand-alone.
       // (During rollback, the current relation might have already been associated with another end-point, we must not overwrite this!)
-      var oldCollection = (IAssociatableDomainObjectCollection) GetCurrentCollectionReference ();
+      var oldCollection = (IAssociatableDomainObjectCollection) GetCurrentCollectionReference();
       if (oldCollection.AssociatedEndPointID == _endPointID)
-        oldCollection.TransformToStandAlone ();
+        oldCollection.TransformToStandAlone();
 
       // We must always associate the new collection with the end point, however - even during rollback phase,
-      ((IAssociatableDomainObjectCollection) _originalCollectionReference).TransformToAssociated (_endPointID, _dataStrategyFactory);
+      ((IAssociatableDomainObjectCollection) _originalCollectionReference).TransformToAssociated(_endPointID, _dataStrategyFactory);
       _currentCollectionReference = _originalCollectionReference;
-      Assertion.DebugAssert (!HasCollectionReferenceChanged ());
+      Assertion.DebugAssert(!HasCollectionReferenceChanged());
     }
   }
 }

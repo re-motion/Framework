@@ -38,8 +38,8 @@ namespace Remotion.Validation.RuleBuilders
         IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector,
         IObjectMetaValidationRuleCollector objectMetaValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull ("addingObjectValidationRuleCollector", addingObjectValidationRuleCollector);
-      ArgumentUtility.CheckNotNull ("objectMetaValidationRuleCollector", objectMetaValidationRuleCollector);
+      ArgumentUtility.CheckNotNull("addingObjectValidationRuleCollector", addingObjectValidationRuleCollector);
+      ArgumentUtility.CheckNotNull("objectMetaValidationRuleCollector", objectMetaValidationRuleCollector);
 
       _addingObjectValidationRuleCollector = addingObjectValidationRuleCollector;
       _objectMetaValidationRuleCollector = objectMetaValidationRuleCollector;
@@ -57,9 +57,9 @@ namespace Remotion.Validation.RuleBuilders
 
     public IAddingObjectValidationRuleBuilder<TValidatedType> SetCondition (Func<TValidatedType, bool> predicate)
     {
-      ArgumentUtility.CheckNotNull ("predicate", predicate);
+      ArgumentUtility.CheckNotNull("predicate", predicate);
 
-      _addingObjectValidationRuleCollector.SetCondition (predicate);
+      _addingObjectValidationRuleCollector.SetCondition(predicate);
       return this;
     }
 
@@ -71,19 +71,19 @@ namespace Remotion.Validation.RuleBuilders
 
     public IAddingObjectValidationRuleBuilder<TValidatedType> AddMetaValidationRule (IObjectMetaValidationRule metaValidationRule)
     {
-      ArgumentUtility.CheckNotNull ("metaValidationRule", metaValidationRule);
+      ArgumentUtility.CheckNotNull("metaValidationRule", metaValidationRule);
 
-      _objectMetaValidationRuleCollector.RegisterMetaValidationRule (metaValidationRule);
+      _objectMetaValidationRuleCollector.RegisterMetaValidationRule(metaValidationRule);
       return this;
     }
 
     public IAddingObjectValidationRuleBuilder<TValidatedType> AddMetaValidationRule (
         Func<IEnumerable<IObjectValidator>, MetaValidationRuleValidationResult> rule)
     {
-      ArgumentUtility.CheckNotNull ("rule", rule);
+      ArgumentUtility.CheckNotNull("rule", rule);
 
-      var metaValidationRule = new DelegateObjectMetaValidationRule<IObjectValidator> (rule);
-      _objectMetaValidationRuleCollector.RegisterMetaValidationRule (metaValidationRule);
+      var metaValidationRule = new DelegateObjectMetaValidationRule<IObjectValidator>(rule);
+      _objectMetaValidationRuleCollector.RegisterMetaValidationRule(metaValidationRule);
       return this;
     }
 
@@ -91,34 +91,34 @@ namespace Remotion.Validation.RuleBuilders
         Expression<Func<IEnumerable<TValidator>, bool>> metaValidationRuleExpression)
         where TValidator: IObjectValidator
     {
-      ArgumentUtility.CheckNotNull ("metaValidationRuleExpression", metaValidationRuleExpression);
+      ArgumentUtility.CheckNotNull("metaValidationRuleExpression", metaValidationRuleExpression);
 
-      var metaValidationRuleExecutor = metaValidationRuleExpression.Compile ();
+      var metaValidationRuleExecutor = metaValidationRuleExpression.Compile();
 
-      var metaValidationRule = new DelegateObjectMetaValidationRule<TValidator> (
+      var metaValidationRule = new DelegateObjectMetaValidationRule<TValidator>(
           validationRules =>
           {
-            var isValid = metaValidationRuleExecutor (validationRules);
+            var isValid = metaValidationRuleExecutor(validationRules);
             if (isValid)
-              return MetaValidationRuleValidationResult.CreateValidResult ();
+              return MetaValidationRuleValidationResult.CreateValidResult();
 
-            return MetaValidationRuleValidationResult.CreateInvalidResult (
+            return MetaValidationRuleValidationResult.CreateInvalidResult(
                 "Meta validation rule '{0}' failed for validator '{1}' on type '{2}'.",
                 metaValidationRuleExpression,
                 typeof (TValidator).GetFullNameSafe(),
                 _addingObjectValidationRuleCollector.ValidatedType.GetFullNameSafe());
           });
 
-      _objectMetaValidationRuleCollector.RegisterMetaValidationRule (metaValidationRule);
+      _objectMetaValidationRuleCollector.RegisterMetaValidationRule(metaValidationRule);
       return this;
     }
 
     public IAddingObjectValidationRuleBuilder<TValidatedType> SetValidator (
         Func<ObjectValidationRuleInitializationParameters, IObjectValidator> validatorFactory)
     {
-      ArgumentUtility.CheckNotNull ("validatorFactory", validatorFactory);
+      ArgumentUtility.CheckNotNull("validatorFactory", validatorFactory);
 
-      _addingObjectValidationRuleCollector.RegisterValidator (validatorFactory);
+      _addingObjectValidationRuleCollector.RegisterValidator(validatorFactory);
       return this;
     }
   }

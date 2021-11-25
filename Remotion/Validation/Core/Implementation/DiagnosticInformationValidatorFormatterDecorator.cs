@@ -34,7 +34,7 @@ namespace Remotion.Validation.Implementation
 
     public DiagnosticInformationValidatorFormatterDecorator (IValidatorFormatter fallBackValidatorFormatter)
     {
-      ArgumentUtility.CheckNotNull ("fallBackValidatorFormatter", fallBackValidatorFormatter);
+      ArgumentUtility.CheckNotNull("fallBackValidatorFormatter", fallBackValidatorFormatter);
 
       _fallBackValidatorFormatter = fallBackValidatorFormatter;
     }
@@ -46,11 +46,11 @@ namespace Remotion.Validation.Implementation
 
     public string Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
-      ArgumentUtility.CheckNotNull ("typeNameFormatter", typeNameFormatter);
+      ArgumentUtility.CheckNotNull("validator", validator);
+      ArgumentUtility.CheckNotNull("typeNameFormatter", typeNameFormatter);
 
       var validatorType = validator.GetType();
-      var typeName = typeNameFormatter (validatorType);
+      var typeName = typeNameFormatter(validatorType);
 
       switch (validator)
       {
@@ -61,48 +61,48 @@ namespace Remotion.Validation.Implementation
           return typeName;
 
         case ILengthValidator lengthValidator:
-          return FormatLengthValidator (lengthValidator, typeName);
+          return FormatLengthValidator(lengthValidator, typeName);
 
         case IRangeValidator rangeValidator:
-          return FormatRangeValidator (rangeValidator, typeName);
+          return FormatRangeValidator(rangeValidator, typeName);
 
         case IValueComparisonValidator valueComparisonValidator:
-          return FormatComparisonValidator (valueComparisonValidator, typeNameFormatter, typeName);
+          return FormatComparisonValidator(valueComparisonValidator, typeNameFormatter, typeName);
 
         case IRegularExpressionValidator regularExpressionValidator:
-          return FormatRegularExpressionValidator (regularExpressionValidator, typeName);
+          return FormatRegularExpressionValidator(regularExpressionValidator, typeName);
 
         case DecimalValidator decimalValidator:
-          return FormatDecimalValidator (decimalValidator, typeName);
+          return FormatDecimalValidator(decimalValidator, typeName);
 
         default:
-          return _fallBackValidatorFormatter.Format (validator, typeNameFormatter);
+          return _fallBackValidatorFormatter.Format(validator, typeNameFormatter);
       }
     }
 
     private string FormatLengthValidator (ILengthValidator validator, string typeName)
     {
-      return string.Format ("{0} {{ MinLength = '{1}', MaxLength = '{2}' }}", typeName, validator.Min, validator.Max);
+      return string.Format("{0} {{ MinLength = '{1}', MaxLength = '{2}' }}", typeName, validator.Min, validator.Max);
     }
 
     private string FormatRangeValidator (IRangeValidator validator, string typeName)
     {
-      return string.Format ("{0} {{ From = '{1}', To = '{2}' }}", typeName, validator.From, validator.To);
+      return string.Format("{0} {{ From = '{1}', To = '{2}' }}", typeName, validator.From, validator.To);
     }
 
     private string FormatComparisonValidator (IValueComparisonValidator validator, Func<Type, string> typeNameFormatter, string typeName)
     {
-      return string.Format ("{0} {{ ValueToCompare = '{1}' }}", typeName, validator.ValueToCompare);
+      return string.Format("{0} {{ ValueToCompare = '{1}' }}", typeName, validator.ValueToCompare);
     }
 
     private string FormatRegularExpressionValidator (IRegularExpressionValidator validator, string typeName)
     {
-      return string.Format ("{0} {{ Expression = '{1}' }}", typeName, validator.Regex);
+      return string.Format("{0} {{ Expression = '{1}' }}", typeName, validator.Regex);
     }
 
     private string FormatDecimalValidator (DecimalValidator validator, string typeName)
     {
-      return string.Format (
+      return string.Format(
           "{0} {{ MaxIntegerPlaces = '{1}', MaxDecimalPlaces = '{2}', IgnoreTrailingZeros = {3} }}",
           typeName,
           validator.MaxIntegerPlaces,
@@ -114,8 +114,8 @@ namespace Remotion.Validation.Implementation
     {
       var sb = new StringBuilder();
       if (memberInfo.DeclaringType != null)
-        sb.Append (typeNameFormatter (memberInfo.DeclaringType) + ".");
-      sb.AppendLine (memberInfo.Name);
+        sb.Append(typeNameFormatter(memberInfo.DeclaringType) + ".");
+      sb.AppendLine(memberInfo.Name);
       return sb.ToString();
     }
   }

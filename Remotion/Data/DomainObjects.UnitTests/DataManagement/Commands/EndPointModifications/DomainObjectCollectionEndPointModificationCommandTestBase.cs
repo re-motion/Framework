@@ -82,27 +82,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
     protected IDataManager DataManager
     {
-      get { return ClientTransactionTestHelper.GetIDataManager (Transaction); }
+      get { return ClientTransactionTestHelper.GetIDataManager(Transaction); }
     }
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _transaction = ClientTransaction.CreateRootTransaction();
 
-      _domainObject = DomainObjectIDs.Customer1.GetObject<Customer> (_transaction);
+      _domainObject = DomainObjectIDs.Customer1.GetObject<Customer>(_transaction);
 
-      _order1 = DomainObjectIDs.Order1.GetObject<Order> (_transaction);
-      _order2 = DomainObjectIDs.Order2.GetObject<Order> (_transaction);
+      _order1 = DomainObjectIDs.Order1.GetObject<Order>(_transaction);
+      _order2 = DomainObjectIDs.Order2.GetObject<Order>(_transaction);
 
       _relationEndPointID = RelationEndPointID.Create(DomainObject.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
-      _collectionEndPoint = RelationEndPointObjectMother.CreateDomainObjectCollectionEndPoint (
+      _collectionEndPoint = RelationEndPointObjectMother.CreateDomainObjectCollectionEndPoint(
           _relationEndPointID, new[] { _order1, _order2 }, _transaction);
-      _collectionMockEventReceiver = MockRepository.GenerateStrictMock<DomainObjectCollectionMockEventReceiver> (_collectionEndPoint.Collection);
+      _collectionMockEventReceiver = MockRepository.GenerateStrictMock<DomainObjectCollectionMockEventReceiver>(_collectionEndPoint.Collection);
 
-      _collectionDataMock = new MockRepository ().StrictMock<IDomainObjectCollectionData> ();
-      CollectionDataMock.Replay ();
+      _collectionDataMock = new MockRepository().StrictMock<IDomainObjectCollectionData>();
+      CollectionDataMock.Replay();
 
       _endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider>();
       _transactionEventSinkMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();

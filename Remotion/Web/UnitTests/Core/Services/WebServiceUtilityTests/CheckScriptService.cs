@@ -57,16 +57,16 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     [Test]
     public void Test_Valid ()
     {
-      Assert.That (() => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "ScriptMethod", new string[0]), Throws.Nothing);
+      Assert.That(() => WebServiceUtility.CheckJsonService(typeof (TestScriptService), "ScriptMethod", new string[0]), Throws.Nothing);
     }
 
     [Test]
     public void Test_BaseTypeNotWebService ()
     {
-      Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestNotAWebService), "Method", new string[0]),
+      Assert.That(
+          () => WebServiceUtility.CheckJsonService(typeof (TestNotAWebService), "Method", new string[0]),
           Throws.ArgumentException
-              .And.Message.EqualTo (
+              .And.Message.EqualTo(
                   "Web service type 'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckScriptService+TestNotAWebService'"
                   + " does not derive from 'System.Web.Services.WebService'."));
     }
@@ -74,10 +74,10 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     [Test]
     public void Test_MissingScriptServiceAttribute ()
     {
-      Assert.That (
-          () => WebServiceUtility.CheckScriptService (typeof (TestWebService), "Method"),
+      Assert.That(
+          () => WebServiceUtility.CheckScriptService(typeof (TestWebService), "Method"),
           Throws.ArgumentException
-              .And.Message.EqualTo (
+              .And.Message.EqualTo(
                   "Web service type 'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckScriptService+TestWebService'"
                   + " does not have the 'System.Web.Script.Services.ScriptServiceAttribute' applied."));
     }
@@ -85,10 +85,10 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     [Test]
     public void Test_MissingScriptMethodAttribute ()
     {
-      Assert.That (
-          () => WebServiceUtility.CheckScriptService (typeof (TestScriptService), "MethodWithoutScriptMethodAttribute"),
+      Assert.That(
+          () => WebServiceUtility.CheckScriptService(typeof (TestScriptService), "MethodWithoutScriptMethodAttribute"),
           Throws.ArgumentException
-              .And.Message.EqualTo (
+              .And.Message.EqualTo(
                   "Web method 'MethodWithoutScriptMethodAttribute' on web service type "
                   + "'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckScriptService+TestScriptService'"
                   + " does not have the 'System.Web.Script.Services.ScriptMethodAttribute' applied."));

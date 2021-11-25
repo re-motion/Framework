@@ -26,7 +26,7 @@ namespace OBWTest
 public class ViewPersonsWxeFunction: WxeFunction
 {
   static readonly WxeParameterDeclaration[] s_parameters =  { 
-      new WxeParameterDeclaration ("objects", true, WxeParameterDirection.In, typeof (IBusinessObject[]))};
+      new WxeParameterDeclaration("objects", true, WxeParameterDirection.In, typeof (IBusinessObject[]))};
 
   public ViewPersonsWxeFunction ()
     : base (new NoneTransactionMode(), s_parameters)
@@ -44,6 +44,6 @@ public class ViewPersonsWxeFunction: WxeFunction
 
   // steps
 
-  private WxeStep Step1 = new WxePageStep ("PersonsForm.aspx");
+  private WxeStep Step1 = new WxePageStep("PersonsForm.aspx");
 }
 }

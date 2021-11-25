@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
 
     public void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      info.AddValue ("I", I);
+      info.AddValue("I", I);
     }
   }
 }

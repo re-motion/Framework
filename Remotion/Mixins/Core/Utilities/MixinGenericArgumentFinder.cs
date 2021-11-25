@@ -21,8 +21,8 @@ namespace Remotion.Mixins.Utilities
 {
   public class MixinGenericArgumentFinder
   {
-    public static readonly MixinGenericArgumentFinder TargetArgumentFinder = new MixinGenericArgumentFinder (0);
-    public static readonly MixinGenericArgumentFinder NextArgumentFinder = new MixinGenericArgumentFinder (1);
+    public static readonly MixinGenericArgumentFinder TargetArgumentFinder = new MixinGenericArgumentFinder(0);
+    public static readonly MixinGenericArgumentFinder NextArgumentFinder = new MixinGenericArgumentFinder(1);
 
     private readonly int _genericArgumentIndex;
 
@@ -33,15 +33,15 @@ namespace Remotion.Mixins.Utilities
 
     public Type? FindGenericArgument (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
 
-      var mixinBase = MixinReflector.GetMixinBaseType (mixinType);
+      var mixinBase = MixinReflector.GetMixinBaseType(mixinType);
       if (mixinBase == null)
         return null;
 
-      Assertion.IsTrue (mixinBase.IsGenericType);
+      Assertion.IsTrue(mixinBase.IsGenericType);
       
-      var genericArguments = mixinBase.GetGenericArguments ();
+      var genericArguments = mixinBase.GetGenericArguments();
       return genericArguments.Length > _genericArgumentIndex ? genericArguments[_genericArgumentIndex] : null;
     }
   }

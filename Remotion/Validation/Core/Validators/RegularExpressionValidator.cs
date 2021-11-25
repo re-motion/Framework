@@ -35,8 +35,8 @@ namespace Remotion.Validation.Validators
 
     public RegularExpressionValidator ([NotNull] Regex regex, [NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull ("regex", regex);
-      ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNull("regex", regex);
+      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
       Regex = regex;
       ErrorMessage = $"The value must be in the correct format ({regex}).";
@@ -45,10 +45,10 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
-      if (IsValid (context))
+      if (IsValid(context))
         return Enumerable.Empty<PropertyValidationFailure>();
 
-      return EnumerableUtility.Singleton (CreateValidationError (context));
+      return EnumerableUtility.Singleton(CreateValidationError(context));
     }
 
     private bool IsValid (PropertyValidatorContext context)
@@ -59,17 +59,17 @@ namespace Remotion.Validation.Validators
       if (!(context.PropertyValue is string stringValue))
         return true;
 
-      return Regex.IsMatch (stringValue);
+      return Regex.IsMatch(stringValue);
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
-      return new PropertyValidationFailure (
+      return new PropertyValidationFailure(
           context.Instance,
           context.Property,
           context.PropertyValue,
           errorMessage: ErrorMessage,
-          localizedValidationMessage: ValidationMessage.Format (CultureInfo.CurrentUICulture, null, Array.Empty<object>()));
+          localizedValidationMessage: ValidationMessage.Format(CultureInfo.CurrentUICulture, null, Array.Empty<object>()));
     }
   }
 }

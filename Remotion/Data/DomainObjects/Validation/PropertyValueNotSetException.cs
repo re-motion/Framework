@@ -44,16 +44,16 @@ namespace Remotion.Data.DomainObjects.Validation
     protected PropertyValueNotSetException (SerializationInfo info, StreamingContext context)
         : base (info, context)
     {
-      _domainObject = (DomainObject) info.GetValue ("_domainObject", typeof (DomainObject));
-      _propertyName = info.GetString ("_propertyName");
+      _domainObject = (DomainObject) info.GetValue("_domainObject", typeof (DomainObject));
+      _propertyName = info.GetString("_propertyName");
     }
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      base.GetObjectData (info, context);
+      base.GetObjectData(info, context);
 
-      info.AddValue ("_domainObject", _domainObject);
-      info.AddValue ("_propertyName", _propertyName);
+      info.AddValue("_domainObject", _domainObject);
+      info.AddValue("_propertyName", _propertyName);
     }
 
     public DomainObject DomainObject

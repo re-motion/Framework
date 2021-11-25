@@ -42,10 +42,10 @@ namespace Remotion.Security
         [NotNull] ISecurityContextFactory securityContextFactory,
         [NotNull] InvalidationToken invalidationToken)
     {
-      ArgumentUtility.CheckNotNull ("securityContextFactory", securityContextFactory);
-      ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
+      ArgumentUtility.CheckNotNull("securityContextFactory", securityContextFactory);
+      ArgumentUtility.CheckNotNull("invalidationToken", invalidationToken);
 
-      return new ObjectSecurityStrategy (securityContextFactory, CacheFactory.Create<ISecurityPrincipal, AccessType[]> (invalidationToken));
+      return new ObjectSecurityStrategy(securityContextFactory, CacheFactory.Create<ISecurityPrincipal, AccessType[]>(invalidationToken));
     }
 
     /// <summary>
@@ -55,10 +55,10 @@ namespace Remotion.Security
         [NotNull] ISecurityContextFactory securityContextFactory,
         [NotNull] ICache<ISecurityPrincipal, AccessType[]> cache)
     {
-      ArgumentUtility.CheckNotNull ("securityContextFactory", securityContextFactory);
-      ArgumentUtility.CheckNotNull ("cache", cache);
+      ArgumentUtility.CheckNotNull("securityContextFactory", securityContextFactory);
+      ArgumentUtility.CheckNotNull("cache", cache);
 
-      return new ObjectSecurityStrategy (securityContextFactory, cache);
+      return new ObjectSecurityStrategy(securityContextFactory, cache);
     }
 
     private readonly ISecurityContextFactory _securityContextFactory;
@@ -66,8 +66,8 @@ namespace Remotion.Security
 
     private ObjectSecurityStrategy (ISecurityContextFactory securityContextFactory, ICache<ISecurityPrincipal, AccessType[]> cache)
     {
-      ArgumentUtility.DebugCheckNotNull ("securityContextFactory", securityContextFactory);
-      ArgumentUtility.DebugCheckNotNull ("cache", cache);
+      ArgumentUtility.DebugCheckNotNull("securityContextFactory", securityContextFactory);
+      ArgumentUtility.DebugCheckNotNull("cache", cache);
 
       _securityContextFactory = securityContextFactory;
       _cache = cache;
@@ -75,40 +75,40 @@ namespace Remotion.Security
 
     public bool HasAccess (ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)
     {
-      ArgumentUtility.DebugCheckNotNull ("securityProvider", securityProvider);
-      ArgumentUtility.DebugCheckNotNull ("principal", principal);
-      ArgumentUtility.CheckNotNull ("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.DebugCheckNotNull("securityProvider", securityProvider);
+      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.CheckNotNull("requiredAccessTypes", requiredAccessTypes);
       // Performance critical argument check. Can be refactored to ArgumentUtility.CheckNotNullOrEmpty once typed collection checks are supported.
       if (requiredAccessTypes.Count == 0)
-        throw ArgumentUtility.CreateArgumentEmptyException ("requiredAccessTypes");
+        throw ArgumentUtility.CreateArgumentEmptyException("requiredAccessTypes");
 
-      var actualAccessTypes = GetAccessTypesFromCache (securityProvider, principal);
-      return requiredAccessTypes.IsSubsetOf (actualAccessTypes);
+      var actualAccessTypes = GetAccessTypesFromCache(securityProvider, principal);
+      return requiredAccessTypes.IsSubsetOf(actualAccessTypes);
     }
 
     private AccessType[] GetAccessTypesFromCache (ISecurityProvider securityProvider, ISecurityPrincipal principal)
     {
-      if (_cache.TryGetValue (principal, out var value))
+      if (_cache.TryGetValue(principal, out var value))
         return value;
 
       // Split to prevent closure being created during the TryGetValue-operation
-      return GetOrCreateAccessTypesFromCache (securityProvider, principal);
+      return GetOrCreateAccessTypesFromCache(securityProvider, principal);
     }
 
     private AccessType[] GetOrCreateAccessTypesFromCache (ISecurityProvider securityProvider, ISecurityPrincipal principal)
     {
-      return _cache.GetOrCreateValue (principal, key => GetAccessTypes (securityProvider, key));
+      return _cache.GetOrCreateValue(principal, key => GetAccessTypes(securityProvider, key));
     }
 
     private AccessType[] GetAccessTypes (ISecurityProvider securityProvider, ISecurityPrincipal principal)
     {
       // Explicit null-check since the public method does not perform this check in release-code
-      ArgumentUtility.CheckNotNull ("securityProvider", securityProvider);
+      ArgumentUtility.CheckNotNull("securityProvider", securityProvider);
 
       var context = CreateSecurityContext();
 
-      var accessTypes = securityProvider.GetAccess (context, principal);
-      Assertion.IsNotNull (accessTypes, "GetAccess evaluated and returned null.");
+      var accessTypes = securityProvider.GetAccess(context, principal);
+      Assertion.IsNotNull(accessTypes, "GetAccess evaluated and returned null.");
 
       return accessTypes;
     }
@@ -118,7 +118,7 @@ namespace Remotion.Security
       using (SecurityFreeSection.Activate())
       {
         var context = _securityContextFactory.CreateSecurityContext();
-        Assertion.IsNotNull (context, "ISecurityContextFactory.CreateSecurityContext() evaluated and returned null.");
+        Assertion.IsNotNull(context, "ISecurityContextFactory.CreateSecurityContext() evaluated and returned null.");
 
         return context;
       }

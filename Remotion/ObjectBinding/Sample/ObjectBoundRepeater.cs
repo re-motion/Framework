@@ -46,19 +46,19 @@ namespace Remotion.ObjectBinding.Sample
 
       public ObjectBoundRepeaterInternal (ObjectBoundRepeater owner)
       {
-        ArgumentUtility.CheckNotNull ("owner", owner);
+        ArgumentUtility.CheckNotNull("owner", owner);
         _owner = owner;
       }
 
       public override void LoadValue (bool interim)
       {
         if (Property != null && DataSource != null && DataSource.BusinessObject != null)
-          ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
+          ValueImplementation = DataSource.BusinessObject.GetProperty(Property);
 
         if (! interim)
           IsDirty = false;
 
-        _owner.LoadValueInternal (interim);
+        _owner.LoadValueInternal(interim);
       }
 
       public override bool SaveValue (bool interim)
@@ -88,7 +88,7 @@ namespace Remotion.ObjectBinding.Sample
           hasSaved = true;
         }
 
-        hasSaved &=_owner.SaveValueInternal (interim);
+        hasSaved &=_owner.SaveValueInternal(interim);
         return hasSaved;
       }
 
@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Sample
       protected override void LoadViewState (object savedState)
       {
         if (savedState != null)
-          base.LoadViewState (savedState);
+          base.LoadViewState(savedState);
       }
     }
 
@@ -238,12 +238,12 @@ namespace Remotion.ObjectBinding.Sample
 
     public void LoadValue (bool interim)
     {
-      _repeaterInternal.LoadValue (interim);
+      _repeaterInternal.LoadValue(interim);
     }
 
     public bool SaveValue (bool interim)
     {
-      return _repeaterInternal.SaveValue (interim);
+      return _repeaterInternal.SaveValue(interim);
     }
 
     object IBusinessObjectBoundControl.Value
@@ -322,7 +322,7 @@ namespace Remotion.ObjectBinding.Sample
 
     void ISmartControl.AssignLabel (string labelID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("labelID", labelID);
+      ArgumentUtility.CheckNotNullOrEmpty("labelID", labelID);
     }
 
     /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>
@@ -381,7 +381,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public virtual void RegisterValidator (BaseValidator validator)
     {
-      _repeaterInternal.RegisterValidator (validator);
+      _repeaterInternal.RegisterValidator(validator);
     }
 
     Type[] IBusinessObjectBoundWebControl.SupportedPropertyInterfaces
@@ -391,12 +391,12 @@ namespace Remotion.ObjectBinding.Sample
 
     bool IBusinessObjectBoundWebControl.SupportsPropertyMultiplicity (bool isList)
     {
-      return ((IBusinessObjectBoundWebControl) _repeaterInternal).SupportsPropertyMultiplicity (isList);
+      return ((IBusinessObjectBoundWebControl) _repeaterInternal).SupportsPropertyMultiplicity(isList);
     }
 
     public bool SupportsProperty (IBusinessObjectProperty property)
     {
-      return _repeaterInternal.SupportsProperty (property);
+      return _repeaterInternal.SupportsProperty(property);
     }
 
     #endregion
@@ -413,7 +413,7 @@ namespace Remotion.ObjectBinding.Sample
 
     protected virtual ObjectBoundRepeaterInternal CreateRepeaterInternal ()
     {
-      return new ObjectBoundRepeaterInternal (this);
+      return new ObjectBoundRepeaterInternal(this);
     }
 
     protected ObjectBoundRepeaterInternal RepeaterInternal
@@ -427,7 +427,7 @@ namespace Remotion.ObjectBinding.Sample
       base.CreateChildControls();
 
       _repeaterInternal.ID = ID + "_RepeaterInternal";
-      Controls.Add (_repeaterInternal);
+      Controls.Add(_repeaterInternal);
     }
 
     public override ControlCollection Controls
@@ -451,7 +451,7 @@ namespace Remotion.ObjectBinding.Sample
 
     protected override void OnItemDataBound (RepeaterItemEventArgs e)
     {
-      base.OnItemDataBound (e);
+      base.OnItemDataBound(e);
 
       IBusinessObject obj = (IBusinessObject) e.Item.DataItem;
 
@@ -460,14 +460,14 @@ namespace Remotion.ObjectBinding.Sample
         if (control is BusinessObjectDataSourceControl)
         {
           BusinessObjectDataSourceControl dataSource = (BusinessObjectDataSourceControl) control;
-          _dataSources.Add (dataSource);
+          _dataSources.Add(dataSource);
 
           dataSource.BusinessObject = obj;
         }
         else if (control is IDataEditControl)
         {
           DataEditUserControl dataEditControl = (DataEditUserControl) control;
-          _dataEditControls.Add (dataEditControl);
+          _dataEditControls.Add(dataEditControl);
 
           dataEditControl.BusinessObject = obj;
           if (IsReadOnly)
@@ -479,27 +479,27 @@ namespace Remotion.ObjectBinding.Sample
     protected virtual void LoadValueInternal (bool interim)
     {
       Controls.Clear();
-      Controls.Add (_repeaterInternal);
+      Controls.Add(_repeaterInternal);
       if (! interim)
         base.ClearChildViewState();
-      this.CreateControlHierarchy (true);
+      this.CreateControlHierarchy(true);
       base.ChildControlsCreated = true;
 
       foreach (BusinessObjectDataSourceControl dataSource in _dataSources)
-        dataSource.LoadValues (interim);
+        dataSource.LoadValues(interim);
 
       foreach (IDataEditControl control in _dataEditControls)
-        control.LoadValues (interim);
+        control.LoadValues(interim);
     }
 
     protected virtual bool SaveValueInternal (bool interim)
     {
       var hasSaved = true;
       foreach (BusinessObjectDataSourceControl dataSource in _dataSources)
-        hasSaved &= dataSource.SaveValues (interim);
+        hasSaved &= dataSource.SaveValues(interim);
 
       foreach (IDataEditControl control in _dataEditControls)
-        hasSaved &= control.SaveValues (interim);
+        hasSaved &= control.SaveValues(interim);
 
       return hasSaved;
     }
@@ -557,7 +557,7 @@ namespace Remotion.ObjectBinding.Sample
     protected override void LoadViewState (object savedState)
     {
       object[] values = (object[]) savedState;
-      base.LoadViewState (values[0]);
+      base.LoadViewState(values[0]);
       _isDirty = (bool) values[1];
     }
 
@@ -575,7 +575,7 @@ namespace Remotion.ObjectBinding.Sample
 
     IPage IControl.Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
   }
 }

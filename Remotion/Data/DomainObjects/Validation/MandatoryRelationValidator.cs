@@ -37,19 +37,19 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public void Validate (ClientTransaction clientTransaction,PersistableData data)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("data", data);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("data", data);
 
       if (data.DomainObjectState.IsDeleted)
         return;
 
-      Assertion.IsFalse (data.DomainObjectState.IsNotLoadedYet, "No unloaded objects get this far.");
-      Assertion.IsFalse (data.DomainObjectState.IsInvalid, "No invalid objects get this far.");
+      Assertion.IsFalse(data.DomainObjectState.IsNotLoadedYet, "No unloaded objects get this far.");
+      Assertion.IsFalse(data.DomainObjectState.IsInvalid, "No invalid objects get this far.");
 
       foreach (var endPoint in data.GetAssociatedEndPoints())
       {
         if (endPoint.Definition.IsMandatory && endPoint.IsDataComplete)
-            endPoint.ValidateMandatory ();
+            endPoint.ValidateMandatory();
       }
     }
   }

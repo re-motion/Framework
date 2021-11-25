@@ -33,19 +33,19 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
     [Test]
     public void ValidValue ()
     {
-      Assert.That (Validator.NumberStyle, Is.EqualTo (NumberStyles.None));
+      Assert.That(Validator.NumberStyle, Is.EqualTo(NumberStyles.None));
       TextBox.Text = "1";
       Validator.Validate();
-      Assert.That (Validator.IsValid, Is.True);
+      Assert.That(Validator.IsValid, Is.True);
     }
 
     [Test]
     public void ValidValue_WithNegative ()
     {
-      Assert.That (Validator.AllowNegative, Is.True);
+      Assert.That(Validator.AllowNegative, Is.True);
       TextBox.Text = "-1";
-      Validator.Validate ();
-      Assert.That (Validator.IsValid, Is.True);
+      Validator.Validate();
+      Assert.That(Validator.IsValid, Is.True);
     }
 
     [Test]
@@ -54,7 +54,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
       Validator.NumberStyle = NumberStyles.Integer | NumberStyles.AllowLeadingWhite;
       TextBox.Text = " 1";
       Validator.Validate();
-      Assert.That (Validator.IsValid, Is.True);
+      Assert.That(Validator.IsValid, Is.True);
     }
 
     [Test]
@@ -62,7 +62,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
     {
       TextBox.Text = string.Empty;
       Validator.Validate();
-      Assert.That (Validator.IsValid, Is.True);
+      Assert.That(Validator.IsValid, Is.True);
     }
 
     [Test]
@@ -70,7 +70,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
     {
       TextBox.Text = "a";
       Validator.Validate();
-      Assert.That (Validator.IsValid, Is.False);
+      Assert.That(Validator.IsValid, Is.False);
     }
 
     [Test]
@@ -78,8 +78,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
     {
       Validator.AllowNegative = false;
       TextBox.Text = "-1";
-      Validator.Validate ();
-      Assert.That (Validator.IsValid, Is.False);
+      Validator.Validate();
+      Assert.That(Validator.IsValid, Is.False);
     }
 
     [Test]
@@ -87,16 +87,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
     {
       Validator.NumberStyle = NumberStyles.Integer;
       TextBox.Text = "a";
-      Validator.Validate ();
-      Assert.That (Validator.IsValid, Is.False);
+      Validator.Validate();
+      Assert.That(Validator.IsValid, Is.False);
     }
 
     [Test]
     public void InvalidValue_WithOverflow ()
     {
       TextBox.Text = "9223372036854775808";
-      Validator.Validate ();
-      Assert.That (Validator.IsValid, Is.False);
+      Validator.Validate();
+      Assert.That(Validator.IsValid, Is.False);
     }
   }
 }

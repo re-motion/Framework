@@ -39,16 +39,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
         : base (
-            ArgumentUtility.CheckNotNull ("modifiedEndPoint", modifiedEndPoint),
+            ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
             null,
-            ArgumentUtility.CheckNotNull ("addedObject", addedObject),
-            ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink))
+            ArgumentUtility.CheckNotNull("addedObject", addedObject),
+            ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
     {
-      ArgumentUtility.CheckNotNull ("collectionData", collectionData);
-      ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull("collectionData", collectionData);
+      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
 
       if (modifiedEndPoint.IsNull)
-        throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
+        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
       _index = collectionData.Count;
       _modifiedCollectionData = collectionData;
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public override void Perform ()
     {
-      ModifiedCollectionData.Add (NewRelatedObject);
+      ModifiedCollectionData.Add(NewRelatedObject);
       ModifiedEndPoint.Touch();
     }
 
@@ -85,19 +85,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
       // the end point that will be linked to the collection end point after the operation
-      var addedObjectEndPoint = (IRealObjectEndPoint) GetOppositeEndPoint (ModifiedEndPoint, NewRelatedObject, _endPointProvider);
+      var addedObjectEndPoint = (IRealObjectEndPoint) GetOppositeEndPoint(ModifiedEndPoint, NewRelatedObject, _endPointProvider);
       // the object that was linked to the new related object before the operation
       var oldRelatedObjectOfAddedObject = addedObjectEndPoint.GetOppositeObject();
       // the end point that was linked to the new related object before the operation
-      var oldRelatedEndPointOfAddedObject = GetOppositeEndPoint (addedObjectEndPoint, oldRelatedObjectOfAddedObject, _endPointProvider);
+      var oldRelatedEndPointOfAddedObject = GetOppositeEndPoint(addedObjectEndPoint, oldRelatedObjectOfAddedObject, _endPointProvider);
 
-      return new ExpandedCommand (
+      return new ExpandedCommand(
           // addedOrder.Customer = customer (previously oldCustomer)
-          addedObjectEndPoint.CreateSetCommand (ModifiedEndPoint.GetDomainObject()),
+          addedObjectEndPoint.CreateSetCommand(ModifiedEndPoint.GetDomainObject()),
           // customer.Orders.Add (addedOrder)
           this,
           // oldCustomer.Orders.Remove (addedOrder)
-          oldRelatedEndPointOfAddedObject.CreateRemoveCommand (NewRelatedObject));
+          oldRelatedEndPointOfAddedObject.CreateRemoveCommand(NewRelatedObject));
     }
   }
 }

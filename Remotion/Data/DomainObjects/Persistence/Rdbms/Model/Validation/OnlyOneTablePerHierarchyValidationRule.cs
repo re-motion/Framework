@@ -34,16 +34,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       if (classDefinition.BaseClass != null && classDefinition.StorageEntityDefinition is TableDefinition)
       {
-        var baseClasses = classDefinition.BaseClass.CreateSequence (cd => cd.BaseClass);
+        var baseClasses = classDefinition.BaseClass.CreateSequence(cd => cd.BaseClass);
         foreach (ClassDefinition baseClass in baseClasses)
         {
           if (baseClass.StorageEntityDefinition is TableDefinition)
           {
-            yield return MappingValidationResult.CreateInvalidResultForType (
+            yield return MappingValidationResult.CreateInvalidResultForType(
                 classDefinition.ClassType,
                 "Class '{0}' must not define a table when its base class '{1}' also defines one.",
                 classDefinition.ClassType.Name,

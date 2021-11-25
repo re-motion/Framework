@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects
 
     public ReadOnlyDomainObjectCollectionAdapter (DomainObjectCollection wrappedData)
     {
-      ArgumentUtility.CheckNotNull ("wrappedData", wrappedData);
+      ArgumentUtility.CheckNotNull("wrappedData", wrappedData);
       _wrappedData = wrappedData;
     }
 
@@ -70,14 +70,14 @@ namespace Remotion.Data.DomainObjects
 
     public bool Contains (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      return _wrappedData.Contains (objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+      return _wrappedData.Contains(objectID);
     }
 
     public bool ContainsObject (T domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      return _wrappedData.ContainsObject (domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      return _wrappedData.ContainsObject(domainObject);
     }
 
     public T this[int index]
@@ -89,52 +89,52 @@ namespace Remotion.Data.DomainObjects
     {
       get
       {
-        ArgumentUtility.CheckNotNull ("objectID", objectID);
-        return GetObject (objectID);
+        ArgumentUtility.CheckNotNull("objectID", objectID);
+        return GetObject(objectID);
       }
     }
 
     public T GetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
       return (T) _wrappedData[objectID];
     }
 
     public int IndexOf (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      return _wrappedData.IndexOf (objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+      return _wrappedData.IndexOf(objectID);
     }
 
     public void CopyTo (T[] array, int arrayIndex)
     {
-      _wrappedData.CopyTo (array, arrayIndex);
+      _wrappedData.CopyTo(array, arrayIndex);
     }
 
     public int IndexOf (T item)
     {
-      ArgumentUtility.CheckNotNull ("item", item);
-      return _wrappedData.IndexOf (item);
+      ArgumentUtility.CheckNotNull("item", item);
+      return _wrappedData.IndexOf(item);
     }
 
     void ICollection<T>.Add (T item)
     {
-      throw new NotSupportedException ("This collection does not support modifications.");
+      throw new NotSupportedException("This collection does not support modifications.");
     }
 
     void ICollection<T>.Clear ()
     {
-      throw new NotSupportedException ("This collection does not support modifications.");
+      throw new NotSupportedException("This collection does not support modifications.");
     }
 
     bool ICollection<T>.Contains (T item)
     {
-      return ContainsObject (item);
+      return ContainsObject(item);
     }
 
     bool ICollection<T>.Remove (T item)
     {
-      throw new NotSupportedException ("This collection does not support modifications.");
+      throw new NotSupportedException("This collection does not support modifications.");
     }
 
     bool ICollection<T>.IsReadOnly
@@ -144,12 +144,12 @@ namespace Remotion.Data.DomainObjects
 
     void IList<T>.Insert (int index, T item)
     {
-      throw new NotSupportedException ("This collection does not support modifications.");
+      throw new NotSupportedException("This collection does not support modifications.");
     }
 
     void IList<T>.RemoveAt (int index)
     {
-      throw new NotSupportedException ("This collection does not support modifications.");
+      throw new NotSupportedException("This collection does not support modifications.");
     }
 
     T IList<T>.this [int index]

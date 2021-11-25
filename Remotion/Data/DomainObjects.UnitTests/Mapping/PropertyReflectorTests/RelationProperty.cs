@@ -28,29 +28,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithNoAttribute ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithRealRelationEndPoints> ("NoAttributeForDomainObjectCollection", DomainModelConstraintProviderStub);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithRealRelationEndPoints>("NoAttributeForDomainObjectCollection", DomainModelConstraintProviderStub);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithRealRelationEndPoints.NoAttributeForDomainObjectCollection"));
-      Assert.That (actual.PropertyType, Is.SameAs (typeof (ObjectID)));
-      Assert.That (actual.IsNullable, Is.True);
-      Assert.That (actual.MaxLength, Is.Null);
-      Assert.That (actual.DefaultValue, Is.EqualTo (null));
+      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithRealRelationEndPoints.NoAttributeForDomainObjectCollection"));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof (ObjectID)));
+      Assert.That(actual.IsNullable, Is.True);
+      Assert.That(actual.MaxLength, Is.Null);
+      Assert.That(actual.DefaultValue, Is.EqualTo(null));
     }
 
     [Test]
     public void GetMetadata_WithNotNullableFromAttribute ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithRealRelationEndPoints> ("NotNullableForVirtualCollection", DomainModelConstraintProviderStub);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithRealRelationEndPoints>("NotNullableForVirtualCollection", DomainModelConstraintProviderStub);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithRealRelationEndPoints.NotNullableForVirtualCollection"));
-      Assert.That (actual.PropertyType, Is.SameAs (typeof (ObjectID)));
-      Assert.That (actual.IsNullable, Is.True);
-      Assert.That (actual.MaxLength, Is.Null);
-      Assert.That (actual.DefaultValue, Is.EqualTo (null));
+      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithRealRelationEndPoints.NotNullableForVirtualCollection"));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof (ObjectID)));
+      Assert.That(actual.IsNullable, Is.True);
+      Assert.That(actual.MaxLength, Is.Null);
+      Assert.That(actual.DefaultValue, Is.EqualTo(null));
     }
 
     [Mandatory]

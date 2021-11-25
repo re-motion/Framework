@@ -44,8 +44,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     public DomainObjectRelationCheckEventReceiver (DomainObject domainObject, bool cancel)
       : base (domainObject, cancel)
     {
-      _changingRelatedObjects = new Dictionary<string, DomainObject> ();
-      _changedRelatedObjects = new Dictionary<string, DomainObject> ();
+      _changingRelatedObjects = new Dictionary<string, DomainObject>();
+      _changedRelatedObjects = new Dictionary<string, DomainObject>();
     }
 
     // methods and properties
@@ -68,18 +68,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
       string changedProperty = args.RelationEndPointDefinition.PropertyName;
 
-      if (CardinalityType.One == domainObject.InternalDataContainer.ClassDefinition.GetRelationEndPointDefinition (changedProperty).Cardinality)
+      if (CardinalityType.One == domainObject.InternalDataContainer.ClassDefinition.GetRelationEndPointDefinition(changedProperty).Cardinality)
       {
-        DomainObject relatedDomainObject = domainObject.GetRelatedObject (changedProperty);
-        _changingRelatedObjects.Add (changedProperty, relatedDomainObject);
+        DomainObject relatedDomainObject = domainObject.GetRelatedObject(changedProperty);
+        _changingRelatedObjects.Add(changedProperty, relatedDomainObject);
       }
       else
       {
-        IEnumerable relatedDomainObjects = domainObject.GetRelatedObjects (changedProperty);
-        _changingRelatedObjects.Add (changedProperty, relatedDomainObjects.Cast<DomainObject>().ToArray());
+        IEnumerable relatedDomainObjects = domainObject.GetRelatedObjects(changedProperty);
+        _changingRelatedObjects.Add(changedProperty, relatedDomainObjects.Cast<DomainObject>().ToArray());
       }
 
-      base.DomainObject_RelationChanging (sender, args);
+      base.DomainObject_RelationChanging(sender, args);
     }
 
     protected override void DomainObject_RelationChanged (object sender, RelationChangedEventArgs args)
@@ -90,18 +90,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
       string changedProperty = args.RelationEndPointDefinition.PropertyName;
 
-      if (CardinalityType.One == domainObject.InternalDataContainer.ClassDefinition.GetRelationEndPointDefinition (changedProperty).Cardinality)
+      if (CardinalityType.One == domainObject.InternalDataContainer.ClassDefinition.GetRelationEndPointDefinition(changedProperty).Cardinality)
       {
-        DomainObject relatedDomainObject = domainObject.GetRelatedObject (changedProperty);
-        _changedRelatedObjects.Add (changedProperty, relatedDomainObject);
+        DomainObject relatedDomainObject = domainObject.GetRelatedObject(changedProperty);
+        _changedRelatedObjects.Add(changedProperty, relatedDomainObject);
       }
       else
       {
-        IEnumerable relatedDomainObjects = domainObject.GetRelatedObjects (changedProperty);
-        _changingRelatedObjects.Add (changedProperty, relatedDomainObjects.Cast<DomainObject>().ToArray());
+        IEnumerable relatedDomainObjects = domainObject.GetRelatedObjects(changedProperty);
+        _changingRelatedObjects.Add(changedProperty, relatedDomainObjects.Cast<DomainObject>().ToArray());
       }
 
-      base.DomainObject_RelationChanged (sender, args);
+      base.DomainObject_RelationChanged(sender, args);
     }
   }
 }

@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
     public new void LoadControlState (object state)
     {
-      base.LoadControlState (state);
+      base.LoadControlState(state);
     }
   }
 }

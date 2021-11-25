@@ -37,13 +37,13 @@ namespace Remotion.ObjectBinding
 
     protected BindableObjectWithIdentityBase ()
     {
-      _implementation = BindableObjectWithIdentityBaseImplementation.Create (this);
+      _implementation = BindableObjectWithIdentityBaseImplementation.Create(this);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     protected BindableObjectWithIdentityBase (IBindableObjectWithIdentityBaseImplementation implementation)
     {
-      ArgumentUtility.CheckNotNull ("implementation", implementation);
+      ArgumentUtility.CheckNotNull("implementation", implementation);
       _implementation = implementation;
     }
 

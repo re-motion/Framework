@@ -46,11 +46,11 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
     {
       if (CurrentObject == null)
       {
-        CurrentObject = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateGroup ();
-        CurrentObject.Tenant = TenantHandle.GetObject ();
+        CurrentObject = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateGroup();
+        CurrentObject.Tenant = TenantHandle.GetObject();
       }
     }
 
-    WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditGroupForm), "UI/OrganizationalStructure/EditGroupForm.aspx");
+    WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof (EditGroupForm), "UI/OrganizationalStructure/EditGroupForm.aspx");
   }
 }

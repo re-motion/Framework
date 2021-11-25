@@ -24,14 +24,14 @@ namespace Remotion.Mixins.Validation.Rules
 {
   public class DefaultPropertyIntroductionRules: RuleSetBase
   {
-    private readonly ContextStoreMemberLookupUtility<PropertyDefinition> _memberLookupUtility = new ContextStoreMemberLookupUtility<PropertyDefinition> ();
+    private readonly ContextStoreMemberLookupUtility<PropertyDefinition> _memberLookupUtility = new ContextStoreMemberLookupUtility<PropertyDefinition>();
     private readonly ContextStoreMemberIntroductionLookupUtility<PropertyIntroductionDefinition> _introductionLookupUtility =
-        new ContextStoreMemberIntroductionLookupUtility<PropertyIntroductionDefinition> ();
+        new ContextStoreMemberIntroductionLookupUtility<PropertyIntroductionDefinition>();
 
     public override void Install (ValidatingVisitor visitor)
     {
-      visitor.PropertyIntroductionRules.Add (new DelegateValidationRule<PropertyIntroductionDefinition> (PublicPropertyNameMustBeUniqueInTargetClass));
-      visitor.PropertyIntroductionRules.Add (new DelegateValidationRule<PropertyIntroductionDefinition> (PublicPropertyNameMustBeUniqueInOtherMixins));
+      visitor.PropertyIntroductionRules.Add(new DelegateValidationRule<PropertyIntroductionDefinition>(PublicPropertyNameMustBeUniqueInTargetClass));
+      visitor.PropertyIntroductionRules.Add(new DelegateValidationRule<PropertyIntroductionDefinition>(PublicPropertyNameMustBeUniqueInOtherMixins));
     }
 
     [DelegateRuleDescription (Message = "A property introduced by a mixin cannot be public if the target class already has a property of the same name.")]
@@ -40,14 +40,14 @@ namespace Remotion.Mixins.Validation.Rules
       if (args.Definition.Visibility == MemberVisibility.Public)
       {
         PropertyInfo introducedMember = args.Definition.InterfaceMember;
-        if (_memberLookupUtility.GetCachedMembersByName (
-                args.Log.ContextStore, args.Definition.DeclaringInterface.TargetClass, introducedMember.Name).FirstOrDefault () != null)
+        if (_memberLookupUtility.GetCachedMembersByName(
+                args.Log.ContextStore, args.Definition.DeclaringInterface.TargetClass, introducedMember.Name).FirstOrDefault() != null)
         {
-          args.Log.Fail (args.Self);
+          args.Log.Fail(args.Self);
           return;
         }
       }
-      args.Log.Succeed (args.Self);
+      args.Log.Succeed(args.Self);
     }
 
     [DelegateRuleDescription (Message = "A property introduced by a mixin cannot be public if another mixin also introduces a public property of the same name.")]
@@ -57,18 +57,18 @@ namespace Remotion.Mixins.Validation.Rules
       {
         PropertyInfo introducedProperty = args.Definition.InterfaceMember;
         IEnumerable<PropertyIntroductionDefinition> otherIntroductionsWithSameName =
-            _introductionLookupUtility.GetCachedPublicIntroductionsByName (
+            _introductionLookupUtility.GetCachedPublicIntroductionsByName(
             args.Log.ContextStore, args.Definition.DeclaringInterface.TargetClass, introducedProperty.Name);
 
         foreach (PropertyIntroductionDefinition property in otherIntroductionsWithSameName)
         {
           if (property != args.Definition)
           {
-            args.Log.Fail (args.Self);
+            args.Log.Fail(args.Self);
             return;
           }
         }
-        args.Log.Succeed (args.Self);
+        args.Log.Succeed(args.Self);
       }
     }
   }

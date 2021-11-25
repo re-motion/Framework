@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   {
     public static Company NewObject ()
     {
-      return NewObject<Company> ();
+      return NewObject<Company>();
     }
 
     protected Company ()
@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     [StorageClassNone]
     internal int NamePropertyOfInvalidType
     {
-      set { Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].SetValue (value); }
+      set { Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].SetValue(value); }
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]
@@ -49,8 +49,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     [DBBidirectionalRelation ("Companies")]
     public virtual IndustrialSector IndustrialSector
     {
-      get { return CurrentProperty.GetValue<IndustrialSector> (); }
-      set { CurrentProperty.SetValue<IndustrialSector> (value); }
+      get { return CurrentProperty.GetValue<IndustrialSector>(); }
+      set { CurrentProperty.SetValue<IndustrialSector>(value); }
     }
   }
 }

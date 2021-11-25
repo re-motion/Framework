@@ -35,47 +35,47 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     [SetUp]
     public void SetUp ()
     {
-      _attribute = new NotEqualValidationAttribute ("test");
+      _attribute = new NotEqualValidationAttribute("test");
       _validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_attribute.Value, Is.EqualTo ("test"));
+      Assert.That(_attribute.Value, Is.EqualTo("test"));
     }
 
     [Test]
     public void GetPropertyValidator ()
     {
-      var propertyInformation = PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("LastName"));
+      var propertyInformation = PropertyInfoAdapter.Create(typeof (Customer).GetProperty("LastName"));
       var validationMessageStub = new Mock<ValidationMessage>();
       _validationMessageFactoryStub
-          .Setup (_ => _.CreateValidationMessageForPropertyValidator (It.IsAny<NotEqualValidator>(), propertyInformation))
-          .Returns (validationMessageStub.Object);
+          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<NotEqualValidator>(), propertyInformation))
+          .Returns(validationMessageStub.Object);
 
-      var result = _attribute.GetPropertyValidators (propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+      var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
 
-      Assert.That (result.Length, Is.EqualTo (1));
-      Assert.That (result[0], Is.TypeOf (typeof (NotEqualValidator)));
-      Assert.That (((NotEqualValidator) result[0]).ComparisonValue, Is.EqualTo ("test"));
-      Assert.That (((NotEqualValidator) result[0]).ValidationMessage, Is.Not.Null);
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof (NotEqualValidator)));
+      Assert.That(((NotEqualValidator) result[0]).ComparisonValue, Is.EqualTo("test"));
+      Assert.That(((NotEqualValidator) result[0]).ValidationMessage, Is.Not.Null);
 
-      validationMessageStub.Setup (_ => _.ToString()).Returns ("Stub Message");
-      Assert.That (((NotEqualValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("Stub Message"));
+      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
+      Assert.That(((NotEqualValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
     [Test]
     public void GetPropertyValidator_CustomErrorMessage ()
     {
-      var propertyInformation = PropertyInfoAdapter.Create (typeof (Customer).GetProperty ("LastName"));
+      var propertyInformation = PropertyInfoAdapter.Create(typeof (Customer).GetProperty("LastName"));
       _attribute.ErrorMessage = "CustomMessage";
 
-      var result = _attribute.GetPropertyValidators (propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+      var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
 
-      Assert.That (result.Length, Is.EqualTo (1));
-      Assert.That (((NotEqualValidator) result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
-      Assert.That (((NotEqualValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo ("CustomMessage"));
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(((NotEqualValidator) result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
+      Assert.That(((NotEqualValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("CustomMessage"));
     }
 
     [Test]

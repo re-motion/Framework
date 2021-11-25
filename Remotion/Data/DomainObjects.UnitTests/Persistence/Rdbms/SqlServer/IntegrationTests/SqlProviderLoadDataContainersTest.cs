@@ -27,26 +27,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainers_ByNonExistingID ()
     {
-      var id = new ObjectID("ClassWithAllDataTypes", new Guid ("{E067A627-BA3F-4ee5-8B61-1F46DC28DFC3}"));
+      var id = new ObjectID("ClassWithAllDataTypes", new Guid("{E067A627-BA3F-4ee5-8B61-1F46DC28DFC3}"));
 
-      var result = Provider.LoadDataContainers (new[] { id }).ToList();
+      var result = Provider.LoadDataContainers(new[] { id }).ToList();
 
-      Assert.That (result.Count, Is.EqualTo(1));
-      Assert.That (result[0].LocatedObject, Is.Null);
-      Assert.That (result[0].ObjectID, Is.SameAs(id));
+      Assert.That(result.Count, Is.EqualTo(1));
+      Assert.That(result[0].LocatedObject, Is.Null);
+      Assert.That(result[0].ObjectID, Is.SameAs(id));
     }
 
     [Test]
     public void LoadDataContainers_ByID ()
     {
-      var id = new ObjectID("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+      var id = new ObjectID("ClassWithAllDataTypes", new Guid("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
 
-      var actualContainer = Provider.LoadDataContainers (new[] { id }).ToArray()[0].LocatedObject;
+      var actualContainer = Provider.LoadDataContainers(new[] { id }).ToArray()[0].LocatedObject;
 
-      var expectedContainer = TestDataContainerObjectMother.CreateClassWithAllDataTypes1DataContainer ();
+      var expectedContainer = TestDataContainerObjectMother.CreateClassWithAllDataTypes1DataContainer();
 
-      var checker = new DataContainerChecker ();
-      checker.Check (expectedContainer, actualContainer);
+      var checker = new DataContainerChecker();
+      checker.Check(expectedContainer, actualContainer);
     }
 
     [Test]
@@ -54,21 +54,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       var ids = new[] { DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1, DomainObjectIDs.Order1, DomainObjectIDs.OrderItem2 };
 
-      var containers = Provider.LoadDataContainers (ids).ToArray ();
+      var containers = Provider.LoadDataContainers(ids).ToArray();
 
-      Assert.That (containers, Is.Not.Null);
-      Assert.That (containers[0].LocatedObject.ID, Is.EqualTo (ids[0]));
-      Assert.That (containers[1].LocatedObject.ID, Is.EqualTo (ids[1]));
-      Assert.That (containers[2].LocatedObject.ID, Is.EqualTo (ids[2]));
-      Assert.That (containers[3].LocatedObject.ID, Is.EqualTo (ids[3]));
+      Assert.That(containers, Is.Not.Null);
+      Assert.That(containers[0].LocatedObject.ID, Is.EqualTo(ids[0]));
+      Assert.That(containers[1].LocatedObject.ID, Is.EqualTo(ids[1]));
+      Assert.That(containers[2].LocatedObject.ID, Is.EqualTo(ids[2]));
+      Assert.That(containers[3].LocatedObject.ID, Is.EqualTo(ids[3]));
     }
 
     [Test]
     public void LoadDataContainers_Empty ()
     {
-      var result = Provider.LoadDataContainers (new ObjectID[0]).ToList();
+      var result = Provider.LoadDataContainers(new ObjectID[0]).ToList();
 
-      Assert.That (result, Is.Empty);
+      Assert.That(result, Is.Empty);
     }
 
     [Test]
@@ -77,10 +77,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       ObjectID id1 = new ObjectID("Distributor", (Guid) DomainObjectIDs.Partner1.Value);
       ObjectID id2 = new ObjectID("Distributor", (Guid) DomainObjectIDs.Partner2.Value);
       ObjectID id3 = new ObjectID("Distributor", (Guid) DomainObjectIDs.Customer1.Value);
-      Assert.That (
-          () => Provider.LoadDataContainers (new[] { id1, id2, id3 }).ToList(),
+      Assert.That(
+          () => Provider.LoadDataContainers(new[] { id1, id2, id3 }).ToList(),
           Throws.InstanceOf<PersistenceException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The ObjectID of one or more loaded DataContainers does not match the expected ObjectIDs:\r\n"
                   + "Loaded DataContainer ID: Partner|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid, "
                   + "expected ObjectID(s): Distributor|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid\r\n"

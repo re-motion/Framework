@@ -26,17 +26,17 @@ namespace Remotion.Context
   {
     public object GetData (string key)
     {
-      throw new NotSupportedException ("CallContext is deprecated in .NET Core. Use AsyncLocalStorageProvider instead. (Version 3.0.0-alpha.14)");
+      throw new NotSupportedException("CallContext is deprecated in .NET Core. Use AsyncLocalStorageProvider instead. (Version 3.0.0-alpha.14)");
     }
 
     public void SetData (string key, object? value)
     {
-      throw new NotSupportedException ("CallContext is deprecated in .NET Core. Use AsyncLocalStorageProvider instead. (Version 3.0.0-alpha.14)");
+      throw new NotSupportedException("CallContext is deprecated in .NET Core. Use AsyncLocalStorageProvider instead. (Version 3.0.0-alpha.14)");
     }
 
     public void FreeData (string key)
     {
-      throw new NotSupportedException ("CallContext is deprecated in .NET Core. Use AsyncLocalStorageProvider instead. (Version 3.0.0-alpha.14)");
+      throw new NotSupportedException("CallContext is deprecated in .NET Core. Use AsyncLocalStorageProvider instead. (Version 3.0.0-alpha.14)");
     }
   }
 }

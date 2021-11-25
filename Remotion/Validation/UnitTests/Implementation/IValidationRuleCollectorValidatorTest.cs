@@ -30,26 +30,26 @@ namespace Remotion.Validation.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create ();
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IValidationRuleCollectorValidator> ();
+      var factory = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
 
-      Assert.That (factory, Is.TypeOf (typeof (CompoundValidationRuleCollectorValidator)));
-      var compoundFactories = ((CompoundValidationRuleCollectorValidator) factory).CollectorValidators.ToArray ();
-      Assert.That (compoundFactories, Is.Empty);
+      Assert.That(factory, Is.TypeOf(typeof (CompoundValidationRuleCollectorValidator)));
+      var compoundFactories = ((CompoundValidationRuleCollectorValidator) factory).CollectorValidators.ToArray();
+      Assert.That(compoundFactories, Is.Empty);
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator> ();
-      var factory2 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator> ();
+      var factory1 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
+      var factory2 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

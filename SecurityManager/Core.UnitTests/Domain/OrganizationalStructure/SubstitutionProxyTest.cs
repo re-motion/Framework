@@ -39,45 +39,45 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void Create ()
     {
       var substitution = CreateSubstitution();
-      var proxy = SubstitutionProxy.Create (substitution);
+      var proxy = SubstitutionProxy.Create(substitution);
 
-      Assert.That (proxy.ID, Is.EqualTo (substitution.ID));
-      Assert.That (proxy.UniqueIdentifier, Is.EqualTo (((IBusinessObjectWithIdentity) substitution).UniqueIdentifier));
-      Assert.That (proxy.DisplayName, Is.EqualTo (((IBusinessObjectWithIdentity) substitution).DisplayName));
+      Assert.That(proxy.ID, Is.EqualTo(substitution.ID));
+      Assert.That(proxy.UniqueIdentifier, Is.EqualTo(((IBusinessObjectWithIdentity) substitution).UniqueIdentifier));
+      Assert.That(proxy.DisplayName, Is.EqualTo(((IBusinessObjectWithIdentity) substitution).DisplayName));
     }
 
     [Test]
     public void Serialization ()
     {
       var substitution = CreateSubstitution();
-      var proxy = SubstitutionProxy.Create (substitution);
+      var proxy = SubstitutionProxy.Create(substitution);
 
-      var deserialized = Serializer.SerializeAndDeserialize (proxy);
+      var deserialized = Serializer.SerializeAndDeserialize(proxy);
 
-      Assert.That (deserialized.ID, Is.EqualTo (proxy.ID));
-      Assert.That (deserialized.UniqueIdentifier, Is.EqualTo (proxy.UniqueIdentifier));
-      Assert.That (deserialized.DisplayName, Is.EqualTo (proxy.DisplayName));
+      Assert.That(deserialized.ID, Is.EqualTo(proxy.ID));
+      Assert.That(deserialized.UniqueIdentifier, Is.EqualTo(proxy.UniqueIdentifier));
+      Assert.That(deserialized.DisplayName, Is.EqualTo(proxy.DisplayName));
     }
 
     [Test]
     public void Equals_EqualObject_True ()
     {
       var substitution = CreateSubstitution();
-      var proxy1 = SubstitutionProxy.Create (substitution);
-      var proxy2 = SubstitutionProxy.Create (substitution);
+      var proxy1 = SubstitutionProxy.Create(substitution);
+      var proxy2 = SubstitutionProxy.Create(substitution);
 
-      Assert.That (proxy1.Equals (proxy2), Is.True);
-      Assert.That (proxy2.Equals (proxy1), Is.True);
+      Assert.That(proxy1.Equals(proxy2), Is.True);
+      Assert.That(proxy2.Equals(proxy1), Is.True);
     }
 
     [Test]
     public void Equals_SameObject_True ()
     {
       var substitution = CreateSubstitution();
-      var proxy1 = SubstitutionProxy.Create (substitution);
+      var proxy1 = SubstitutionProxy.Create(substitution);
 
       // ReSharper disable EqualExpressionComparison
-      Assert.That (proxy1.Equals (proxy1), Is.True);
+      Assert.That(proxy1.Equals(proxy1), Is.True);
       // ReSharper restore EqualExpressionComparison
     }
 
@@ -85,46 +85,46 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void Equals_Null_False ()
     {
       var substitution = CreateSubstitution();
-      var proxy1 = SubstitutionProxy.Create (substitution);
+      var proxy1 = SubstitutionProxy.Create(substitution);
 
-      Assert.That (proxy1.Equals (null), Is.False);
+      Assert.That(proxy1.Equals(null), Is.False);
     }
 
     [Test]
     public void Equals_OtherObject_False ()
     {
-      var proxy1 = SubstitutionProxy.Create (CreateSubstitution());
-      var proxy2 = SubstitutionProxy.Create (CreateSubstitution());
+      var proxy1 = SubstitutionProxy.Create(CreateSubstitution());
+      var proxy2 = SubstitutionProxy.Create(CreateSubstitution());
 
-      Assert.That (proxy1.Equals (proxy2), Is.False);
+      Assert.That(proxy1.Equals(proxy2), Is.False);
     }
 
     [Test]
     public void Equals_OtherType_False ()
     {
-      var proxy1 = SubstitutionProxy.Create (CreateSubstitution());
+      var proxy1 = SubstitutionProxy.Create(CreateSubstitution());
 
-      Assert.That (proxy1.Equals ("other"), Is.False);
+      Assert.That(proxy1.Equals("other"), Is.False);
     }
 
     [Test]
     public void GetHashcode_EqualObject_SameHashcode ()
     {
       var substitution = CreateSubstitution();
-      var proxy1 = SubstitutionProxy.Create (substitution);
-      var proxy2 = SubstitutionProxy.Create (substitution);
+      var proxy1 = SubstitutionProxy.Create(substitution);
+      var proxy2 = SubstitutionProxy.Create(substitution);
 
-      Assert.That (proxy2.GetHashCode(), Is.EqualTo (proxy1.GetHashCode()));
+      Assert.That(proxy2.GetHashCode(), Is.EqualTo(proxy1.GetHashCode()));
     }
 
     private Substitution CreateSubstitution ()
     {
-      var tenant = _testHelper.CreateTenant ("TheTenant", "UID");
-      var group = _testHelper.CreateGroup ("TheGroup", null, tenant);
-      var user = _testHelper.CreateUser ("UserName", "FN", "LN", null, group, tenant);
+      var tenant = _testHelper.CreateTenant("TheTenant", "UID");
+      var group = _testHelper.CreateGroup("TheGroup", null, tenant);
+      var user = _testHelper.CreateUser("UserName", "FN", "LN", null, group, tenant);
       var substituton = Substitution.NewObject();
       substituton.SubstitutedUser = user;
-      substituton.SubstitutingUser = _testHelper.CreateUser ("SubstitutingUser", "SFN", "SLN", null, group, tenant);
+      substituton.SubstitutingUser = _testHelper.CreateUser("SubstitutingUser", "SFN", "SLN", null, group, tenant);
 
       return substituton;
     }

@@ -36,14 +36,14 @@ namespace Remotion.Validation.MetaValidation.Rules.System
 
     public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<LengthValidator> validationRules)
     {
-      ArgumentUtility.CheckNotNull ("validationRules", validationRules);
+      ArgumentUtility.CheckNotNull("validationRules", validationRules);
 
       var rules = validationRules.ToArray();
 
       yield return
-          GetValidationResult (
-              rules.Select (r => r.Min).Where (min => min > 0).Distinct().Count() <= 1
-              && rules.Select (r => r.Max).Where (max => max != null).Distinct().Count() <= 1);
+          GetValidationResult(
+              rules.Select(r => r.Min).Where(min => min > 0).Distinct().Count() <= 1
+              && rules.Select(r => r.Max).Where(max => max != null).Distinct().Count() <= 1);
     }
   }
 }

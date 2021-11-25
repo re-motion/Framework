@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
   public static class ObjectIDStoragePropertyDefinitionObjectMother
   {
-    public static readonly ObjectIDStoragePropertyDefinition ObjectIDProperty = new ObjectIDStoragePropertyDefinition (
+    public static readonly ObjectIDStoragePropertyDefinition ObjectIDProperty = new ObjectIDStoragePropertyDefinition(
         SimpleStoragePropertyDefinitionObjectMother.IDProperty, 
         SimpleStoragePropertyDefinitionObjectMother.ClassIDProperty);
 
@@ -31,9 +31,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
         IStorageTypeInformation valueStorageTypeInfo = null,
         IStorageTypeInformation classIDStorageTypeInfo = null)
     {
-      return new ObjectIDStoragePropertyDefinition (
-          SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty (valueColumnName, valueStorageTypeInfo),
-          SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty (classIDColumnName ?? (valueColumnName + "ClassID"), classIDStorageTypeInfo));
+      return new ObjectIDStoragePropertyDefinition(
+          SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty(valueColumnName, valueStorageTypeInfo),
+          SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty(classIDColumnName ?? (valueColumnName + "ClassID"), classIDStorageTypeInfo));
     }
   }
 }

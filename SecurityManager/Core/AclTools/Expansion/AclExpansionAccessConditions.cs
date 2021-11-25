@@ -26,7 +26,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
   public class AclExpansionAccessConditions  
   {
     private static readonly CompoundValueEqualityComparer<AclExpansionAccessConditions> _equalityComparer =
-      new CompoundValueEqualityComparer<AclExpansionAccessConditions> (a => new object[] {
+      new CompoundValueEqualityComparer<AclExpansionAccessConditions>(a => new object[] {
           a.AbstractRole, a.OwningGroup, a.OwningTenant, a.GroupHierarchyCondition, a.TenantHierarchyCondition, a.IsOwningUserRequired
       }
     );
@@ -69,12 +69,12 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     public override bool Equals (object obj)
     {
-      return EqualityComparer.Equals (this, obj);
+      return EqualityComparer.Equals(this, obj);
     }
 
     public override int GetHashCode ()
     {
-      return EqualityComparer.GetHashCode (this);
+      return EqualityComparer.GetHashCode(this);
     }
   }
 }

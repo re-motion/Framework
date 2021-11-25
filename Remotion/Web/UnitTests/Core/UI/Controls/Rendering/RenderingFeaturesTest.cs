@@ -11,13 +11,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
     [Test]
     public void TestDefaultRenderingFeatures ()
     {
-      Assert.That (RenderingFeatures.Default.EnableDiagnosticMetadata, Is.False);
+      Assert.That(RenderingFeatures.Default.EnableDiagnosticMetadata, Is.False);
     }
 
     [Test]
     public void TestWithDiagnosticMetadataRenderingFeatures ()
     {
-      Assert.That (RenderingFeatures.WithDiagnosticMetadata.EnableDiagnosticMetadata, Is.True);
+      Assert.That(RenderingFeatures.WithDiagnosticMetadata.EnableDiagnosticMetadata, Is.True);
     }
   }
 }

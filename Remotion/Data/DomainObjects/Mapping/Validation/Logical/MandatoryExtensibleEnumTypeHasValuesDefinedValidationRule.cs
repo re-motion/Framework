@@ -33,23 +33,23 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       return from PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions
-          select Validate (propertyDefinition);
+          select Validate(propertyDefinition);
     }
 
     private MappingValidationResult Validate (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       var nativePropertyType = propertyDefinition.PropertyType;
 
       if (!propertyDefinition.IsNullable
-          && ExtensibleEnumUtility.IsExtensibleEnumType (nativePropertyType)
-          && !ExtensibleEnumUtility.GetDefinition (nativePropertyType).GetValueInfos().Any())
+          && ExtensibleEnumUtility.IsExtensibleEnumType(nativePropertyType)
+          && !ExtensibleEnumUtility.GetDefinition(nativePropertyType).GetValueInfos().Any())
       {
-        return MappingValidationResult.CreateInvalidResultForProperty (
+        return MappingValidationResult.CreateInvalidResultForProperty(
             propertyDefinition.PropertyInfo,
             "Extensible enum type '{0}' cannot be used for property '{1}' on type '{2}' because the property is mandatory but there are not values defined for the enum type.",
             nativePropertyType.Name,

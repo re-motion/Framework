@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
   {
     public static ClassWithoutProperties NewObject ()
     {
-      return DomainObject.NewObject<ClassWithoutProperties> ();
+      return DomainObject.NewObject<ClassWithoutProperties>();
     }
 
     protected ClassWithoutProperties ()

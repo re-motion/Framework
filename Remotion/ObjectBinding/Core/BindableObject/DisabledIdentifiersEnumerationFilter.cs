@@ -29,8 +29,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public DisabledIdentifiersEnumerationFilter (string[] disabledIDs)
     {
-      ArgumentUtility.CheckNotNull ("disabledIDs", disabledIDs);
-      _disabledIDs = new HashSet<string> (disabledIDs);
+      ArgumentUtility.CheckNotNull("disabledIDs", disabledIDs);
+      _disabledIDs = new HashSet<string>(disabledIDs);
     }
 
     /// <summary>
@@ -44,10 +44,10 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </returns>
     public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject? businessObject, IBusinessObjectEnumerationProperty property)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull("property", property);
 
-      return !_disabledIDs.Contains (value.Identifier);
+      return !_disabledIDs.Contains(value.Identifier);
     }
 
     public ICollection<string> DisabledIDs

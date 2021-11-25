@@ -36,24 +36,24 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var allCookiesBeforeCreation = ((RemoteWebDriver) browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
 
-      browserSession.WebButtons().GetByLocalID ("CreateSessionCookie").Click();
-      browserSession.WebButtons().GetByLocalID ("CreatePersistentCookie").Click();
+      browserSession.WebButtons().GetByLocalID("CreateSessionCookie").Click();
+      browserSession.WebButtons().GetByLocalID("CreatePersistentCookie").Click();
 
       var allCookiesBeforeDelete = ((RemoteWebDriver) browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
 
-      Assert.That (allCookiesBeforeDelete.Count, Is.EqualTo (allCookiesBeforeCreation.Count + 2));
+      Assert.That(allCookiesBeforeDelete.Count, Is.EqualTo(allCookiesBeforeCreation.Count + 2));
 
       browserSession.Context.Browser.DeleteAllCookies();
 
       var allCookiesAfterDelete = ((RemoteWebDriver) browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
-      Assert.That (allCookiesAfterDelete.Count, Is.EqualTo (0));
+      Assert.That(allCookiesAfterDelete.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void ChromeDriver_SupportsBrowserLogs ()
     {
       if (!Helper.BrowserConfiguration.IsChrome())
-        Assert.Ignore ("Tests if ChromeDriver behaves as expected and hence, only concerns Chrome");
+        Assert.Ignore("Tests if ChromeDriver behaves as expected and hence, only concerns Chrome");
 
       TestDriverSupportsBrowserLogs();
     }
@@ -62,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void MSEdgeDriver_SupportsBrowserLogs ()
     {
       if (!Helper.BrowserConfiguration.IsEdge())
-        Assert.Ignore ("Tests if MSEdgeDriver behaves as expected and hence, only concerns Microsoft Edge");
+        Assert.Ignore("Tests if MSEdgeDriver behaves as expected and hence, only concerns Microsoft Edge");
 
       TestDriverSupportsBrowserLogs();
     }
@@ -71,16 +71,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void GeckoDriver_DoesNotSupportBrowserLogs ()
     {
       if (!Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("Tests if GeckoDriver behaves as expected and hence, only concerns Firefox");
+        Assert.Ignore("Tests if GeckoDriver behaves as expected and hence, only concerns Firefox");
 
       var home = Start();
 
       var selenium = (IWebDriver) home.Context.Browser.Driver.Native;
 
-      Assert.That (
-          () => selenium.Manage().Logs.GetLog (LogType.Browser),
+      Assert.That(
+          () => selenium.Manage().Logs.GetLog(LogType.Browser),
           Throws.InstanceOf<NullReferenceException>().With.Message
-              .EqualTo ("Object reference not set to an instance of an object."));
+              .EqualTo("Object reference not set to an instance of an object."));
     }
 
     private void TestDriverSupportsBrowserLogs ()
@@ -90,19 +90,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       const string errorMessage = "777d20c6-58ac-4d51-bf22-625d1ab9e856";
       const string warningMessage = "f312fad3-ad79-4f68-aee3-c741dd0e7083";
 
-      var js = JavaScriptExecutor.GetJavaScriptExecutor (home.Context.Browser);
-      js.ExecuteScript ($"console.error('{errorMessage}')");
-      js.ExecuteScript ($"console.warn('{warningMessage}')");
+      var js = JavaScriptExecutor.GetJavaScriptExecutor(home.Context.Browser);
+      js.ExecuteScript($"console.error('{errorMessage}')");
+      js.ExecuteScript($"console.warn('{warningMessage}')");
 
       var logs = home.Context.Browser.GetBrowserLogs();
 
-      Assert.That (logs.Count (l => l.Message.Contains (errorMessage)), Is.EqualTo (1));
-      Assert.That (logs.Count (l => l.Message.Contains (warningMessage)), Is.EqualTo (1));
+      Assert.That(logs.Count(l => l.Message.Contains(errorMessage)), Is.EqualTo(1));
+      Assert.That(logs.Count(l => l.Message.Contains(warningMessage)), Is.EqualTo(1));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("BrowserSessionTest.wxe");
+      return Start<WxePageObject>("BrowserSessionTest.wxe");
     }
   }
 }

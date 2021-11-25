@@ -30,21 +30,21 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
   {
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       return from PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions
-          select Validate (propertyDefinition);
+          select Validate(propertyDefinition);
     }
 
     private MappingValidationResult Validate (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       if (propertyDefinition.StorageClass == StorageClass.Persistent)
       {
         if (propertyDefinition.ClassDefinition.StorageEntityDefinition is NonPersistentStorageEntity)
         {
-          return MappingValidationResult.CreateInvalidResultForProperty (
+          return MappingValidationResult.CreateInvalidResultForProperty(
               propertyDefinition.PropertyInfo,
               "StorageClass.Persistent is not supported for properties of classes that belong to the '{0}'.",
               typeof (NonPersistentProviderDefinition).Name);

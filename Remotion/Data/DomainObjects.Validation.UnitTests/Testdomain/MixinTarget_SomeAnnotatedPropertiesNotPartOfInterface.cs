@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
   {
     public static MixinTarget_SomeAnnotatedPropertiesNotPartOfInterface NewObject ()
     {
-      return NewObject<MixinTarget_SomeAnnotatedPropertiesNotPartOfInterface> ();
+      return NewObject<MixinTarget_SomeAnnotatedPropertiesNotPartOfInterface>();
     }
   }
 }

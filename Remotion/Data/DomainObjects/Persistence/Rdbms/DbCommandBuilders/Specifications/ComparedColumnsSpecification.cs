@@ -31,49 +31,49 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public ComparedColumnsSpecification (IEnumerable<ColumnValue> comparedColumnValues)
     {
-      ArgumentUtility.CheckNotNull ("comparedColumnValues", comparedColumnValues);
+      ArgumentUtility.CheckNotNull("comparedColumnValues", comparedColumnValues);
       _comparedColumnValues = comparedColumnValues.ToArray();
 
       if (_comparedColumnValues.Length == 0)
-        throw new ArgumentException ("The sequence of compared column values must contain at least one element.", "comparedColumnValues");
+        throw new ArgumentException("The sequence of compared column values must contain at least one element.", "comparedColumnValues");
     }
 
     public ReadOnlyCollection<ColumnValue> ComparedColumnValues
     {
-      get { return Array.AsReadOnly (_comparedColumnValues); }
+      get { return Array.AsReadOnly(_comparedColumnValues); }
     }
 
     public void AddParameters (IDbCommand command, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("command", command);
-      ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
+      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
 
       foreach (var comparedColumnValue in _comparedColumnValues)
       {
-        var parameter = comparedColumnValue.Column.StorageTypeInfo.CreateDataParameter (command, comparedColumnValue.Value);
-        parameter.ParameterName = GetParameterName (comparedColumnValue, sqlDialect);
-        command.Parameters.Add (parameter);
+        var parameter = comparedColumnValue.Column.StorageTypeInfo.CreateDataParameter(command, comparedColumnValue.Value);
+        parameter.ParameterName = GetParameterName(comparedColumnValue, sqlDialect);
+        command.Parameters.Add(parameter);
       }
     }
 
     public void AppendComparisons (
         StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("command", command);
-      ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
 
       bool first = true;
 
       foreach (var comparedColumnValue in _comparedColumnValues)
       {
         if (!first)
-          statement.Append (" AND ");
+          statement.Append(" AND ");
 
-        statement.Append (sqlDialect.DelimitIdentifier (comparedColumnValue.Column.Name));
-        statement.Append (" = ");
+        statement.Append(sqlDialect.DelimitIdentifier(comparedColumnValue.Column.Name));
+        statement.Append(" = ");
 
-        statement.Append (GetParameterName (comparedColumnValue, sqlDialect));
+        statement.Append(GetParameterName(comparedColumnValue, sqlDialect));
 
         first = false;
       }
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     private string GetParameterName (ColumnValue comparedColumnValue, ISqlDialect sqlDialect)
     {
-      return sqlDialect.GetParameterName (comparedColumnValue.Column.Name);
+      return sqlDialect.GetParameterName(comparedColumnValue.Column.Name);
     }
   }
 }

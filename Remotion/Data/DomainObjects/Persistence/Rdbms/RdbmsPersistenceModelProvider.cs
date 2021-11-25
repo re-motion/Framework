@@ -28,12 +28,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
   {
     public IRdbmsStorageEntityDefinition GetEntityDefinition (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       if (classDefinition.StorageEntityDefinition == null)
       {
-        throw new RdbmsProviderException (
-            string.Format (
+        throw new RdbmsProviderException(
+            string.Format(
                 "The Rdbms provider classes require a storage definition object of type '{0}' for class-definition '{1}', "
                 + "but that class has no storage definition object.",
                 typeof (IRdbmsStorageEntityDefinition).Name,
@@ -43,8 +43,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       var storageEntityDefinitionAsIEntityDefinition = classDefinition.StorageEntityDefinition as IRdbmsStorageEntityDefinition;
       if (storageEntityDefinitionAsIEntityDefinition == null)
       {
-        throw new RdbmsProviderException (
-            string.Format (
+        throw new RdbmsProviderException(
+            string.Format(
                 "The Rdbms provider classes require a storage definition object of type '{0}' for class-definition '{1}', "
                 + "but that class has a storage definition object of type '{2}'.",
                 typeof (IRdbmsStorageEntityDefinition).Name,
@@ -57,12 +57,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     public IRdbmsStoragePropertyDefinition GetStoragePropertyDefinition (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       if (propertyDefinition.StoragePropertyDefinition == null)
       {
-        throw new MappingException (
-            string.Format (
+        throw new MappingException(
+            string.Format(
                 "The Rdbms provider classes require a storage definition object of type '{0}' for property '{1}' of class-definition '{2}', "
                 + "but that property has no storage definition object.",
                 typeof (IRdbmsStoragePropertyDefinition).Name,
@@ -73,8 +73,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       var storagePropertyDefinitionAsIColumnDefinition = propertyDefinition.StoragePropertyDefinition as IRdbmsStoragePropertyDefinition;
       if (storagePropertyDefinitionAsIColumnDefinition == null)
       {
-        throw new MappingException (
-            string.Format (
+        throw new MappingException(
+            string.Format(
                 "The Rdbms provider classes require a storage definition object of type '{0}' for property '{1}' of class-definition '{2}', "
                 + "but that property has a storage definition object of type '{3}'.",
                 typeof (IRdbmsStoragePropertyDefinition).Name,

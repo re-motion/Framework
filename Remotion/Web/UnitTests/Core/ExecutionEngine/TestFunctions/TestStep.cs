@@ -24,7 +24,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     public static new T GetStepByType<T> (WxeStep step)
         where T:WxeStep
     {
-      return WxeStep.GetStepByType<T> (step);
+      return WxeStep.GetStepByType<T>(step);
     }
 
     private bool _isExecuteCalled;
@@ -43,7 +43,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
 
     protected override void AbortRecursive ()
     {
-      base.AbortRecursive ();
+      base.AbortRecursive();
       _isAbortRecursiveCalled = true;
     }
 

@@ -26,11 +26,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   {
     public IBusinessObjectWithIdentity GetObject (BindableObjectClassWithIdentity classWithIdentity, string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("classWithIdentity", classWithIdentity);
-      ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNull("classWithIdentity", classWithIdentity);
+      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
 
-      var objectID = ObjectID.Parse (uniqueIdentifier);
-      var domainObjectOrNull = LifetimeService.TryGetObject (ClientTransaction.Current, objectID);
+      var objectID = ObjectID.Parse(uniqueIdentifier);
+      var domainObjectOrNull = LifetimeService.TryGetObject(ClientTransaction.Current, objectID);
       if (domainObjectOrNull == null)
         return null;
       if (domainObjectOrNull.State.IsInvalid)

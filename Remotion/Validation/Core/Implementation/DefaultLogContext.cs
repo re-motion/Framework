@@ -41,17 +41,17 @@ namespace Remotion.Validation.Implementation
         RemovingPropertyValidatorRegistration[] removingPropertyValidatorRegistrations,
         IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull ("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
-      ArgumentUtility.CheckNotNull ("removingPropertyValidatorRegistrations", removingPropertyValidatorRegistrations);
-      ArgumentUtility.CheckNotNull ("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
+      ArgumentUtility.CheckNotNull("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
+      ArgumentUtility.CheckNotNull("removingPropertyValidatorRegistrations", removingPropertyValidatorRegistrations);
+      ArgumentUtility.CheckNotNull("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
 
-      var logContextInfo = new PropertyValidatorLogContextInfo (removedValidator, removingPropertyValidatorRegistrations);
-      _removingLogEntriesForPropertyValidators[addingPropertyValidationRuleCollector].Add (logContextInfo);
+      var logContextInfo = new PropertyValidatorLogContextInfo(removedValidator, removingPropertyValidatorRegistrations);
+      _removingLogEntriesForPropertyValidators[addingPropertyValidationRuleCollector].Add(logContextInfo);
     }
 
     public IEnumerable<PropertyValidatorLogContextInfo> GetLogContextInfos (IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull ("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
+      ArgumentUtility.CheckNotNull("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
 
       return _removingLogEntriesForPropertyValidators[addingPropertyValidationRuleCollector];
     }
@@ -61,17 +61,17 @@ namespace Remotion.Validation.Implementation
         RemovingObjectValidatorRegistration[] removingObjectValidatorRegistrations,
         IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull ("addingObjectValidationRuleCollector", addingObjectValidationRuleCollector);
-      ArgumentUtility.CheckNotNull ("removingObjectValidatorRegistrations", removingObjectValidatorRegistrations);
-      ArgumentUtility.CheckNotNull ("addingObjectValidationRuleCollector", addingObjectValidationRuleCollector);
+      ArgumentUtility.CheckNotNull("addingObjectValidationRuleCollector", addingObjectValidationRuleCollector);
+      ArgumentUtility.CheckNotNull("removingObjectValidatorRegistrations", removingObjectValidatorRegistrations);
+      ArgumentUtility.CheckNotNull("addingObjectValidationRuleCollector", addingObjectValidationRuleCollector);
 
-      var logContextInfo = new ObjectValidatorLogContextInfo (removedValidator, removingObjectValidatorRegistrations);
-      _removingLogEntriesForObjectValidators[addingObjectValidationRuleCollector].Add (logContextInfo);
+      var logContextInfo = new ObjectValidatorLogContextInfo(removedValidator, removingObjectValidatorRegistrations);
+      _removingLogEntriesForObjectValidators[addingObjectValidationRuleCollector].Add(logContextInfo);
     }
 
     public IEnumerable<ObjectValidatorLogContextInfo> GetLogContextInfos (IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull ("addingObjectValidationRuleCollector", addingObjectValidationRuleCollector);
+      ArgumentUtility.CheckNotNull("addingObjectValidationRuleCollector", addingObjectValidationRuleCollector);
 
       return _removingLogEntriesForObjectValidators[addingObjectValidationRuleCollector];
     }

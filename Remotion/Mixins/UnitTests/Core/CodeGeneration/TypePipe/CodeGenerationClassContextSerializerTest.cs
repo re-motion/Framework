@@ -29,17 +29,17 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     [Test]
     public void IntegrationTest ()
     {
-      var referenceMixinContext1 = MixinContextObjectMother.Create (mixinType: typeof (BT1Mixin1));
-      var referenceMixinContext2 = MixinContextObjectMother.Create (mixinType: typeof (BT1Mixin2));
-      var referenceClassContext = new ClassContext (typeof (BaseType1), new[] { referenceMixinContext1, referenceMixinContext2 }, new[] { typeof (DateTime) });
+      var referenceMixinContext1 = MixinContextObjectMother.Create(mixinType: typeof (BT1Mixin1));
+      var referenceMixinContext2 = MixinContextObjectMother.Create(mixinType: typeof (BT1Mixin2));
+      var referenceClassContext = new ClassContext(typeof (BaseType1), new[] { referenceMixinContext1, referenceMixinContext2 }, new[] { typeof (DateTime) });
 
-      var serializer = new CodeGenerationClassContextSerializer ();
-      referenceClassContext.Serialize (serializer);
+      var serializer = new CodeGenerationClassContextSerializer();
+      referenceClassContext.Serialize(serializer);
       var expression = serializer.GetConstructorInvocationExpression();
 
-      var compiledExpression = Expression.Lambda<Func<ClassContext>> (expression).Compile ();
-      var result = compiledExpression ();
-      Assert.That (result, Is.EqualTo (referenceClassContext));
+      var compiledExpression = Expression.Lambda<Func<ClassContext>>(expression).Compile();
+      var result = compiledExpression();
+      Assert.That(result, Is.EqualTo(referenceClassContext));
     }
   }
 }

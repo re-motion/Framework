@@ -23,9 +23,9 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      ((Layout) Master).SetTestOutput (MyDropDownList.SelectedItem.Text + "|" + MyDropDownList.SelectedItem.Value);
+      ((Layout) Master).SetTestOutput(MyDropDownList.SelectedItem.Text + "|" + MyDropDownList.SelectedItem.Value);
     }
   }
 }

@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public CompoundPersistenceExtensionFactory (IEnumerable<IPersistenceExtensionFactory> persistenceExtensionFactories)
     {
-      ArgumentUtility.CheckNotNull ("persistenceExtensionFactories", persistenceExtensionFactories);
+      ArgumentUtility.CheckNotNull("persistenceExtensionFactories", persistenceExtensionFactories);
 
       _persistenceExtensionFactories = persistenceExtensionFactories.ToList().AsReadOnly();
     }
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public IEnumerable<IPersistenceExtension> CreatePersistenceExtensions (Guid clientTransactionID)
     {
-      return _persistenceExtensionFactories.SelectMany (f => f.CreatePersistenceExtensions (clientTransactionID));
+      return _persistenceExtensionFactories.SelectMany(f => f.CreatePersistenceExtensions(clientTransactionID));
     }
   }
 }

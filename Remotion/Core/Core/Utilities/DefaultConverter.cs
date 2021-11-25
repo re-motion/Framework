@@ -34,11 +34,11 @@ namespace Remotion.Utilities
 
     public DefaultConverter (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       _type = type;
-      _isNullableType = NullableTypeUtility.IsNullableType (type);
-      _underlyingType = Nullable.GetUnderlyingType (type) ?? type;
+      _isNullableType = NullableTypeUtility.IsNullableType(type);
+      _underlyingType = Nullable.GetUnderlyingType(type) ?? type;
     }
 
     public Type Type
@@ -53,16 +53,16 @@ namespace Remotion.Utilities
 
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
 
       return _type == sourceType || _underlyingType == sourceType;
     }
 
     public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
-      return destinationType == _type || Nullable.GetUnderlyingType (destinationType) == _type;
+      return destinationType == _type || Nullable.GetUnderlyingType(destinationType) == _type;
     }
 
     [return: NotNullIfNotNull ("value")]
@@ -73,15 +73,15 @@ namespace Remotion.Utilities
       if (value == null)
       {
         if (!IsNullableType)
-          throw new NotSupportedException (string.Format ("Null cannot be converted to type '{0}'.", _type));
+          throw new NotSupportedException(string.Format("Null cannot be converted to type '{0}'.", _type));
         return null;
       }
           // ReSharper restore ConditionIsAlwaysTrueOrFalse
           // ReSharper restore HeuristicUnreachableCode
       else
       {
-        if (!CanConvertFrom (context, value.GetType()))
-          throw new NotSupportedException (string.Format ("Value of type '{0}' cannot be connverted to type '{1}'.", value.GetType(), _type));
+        if (!CanConvertFrom(context, value.GetType()))
+          throw new NotSupportedException(string.Format("Value of type '{0}' cannot be connverted to type '{1}'.", value.GetType(), _type));
 
         return value;
       }
@@ -90,15 +90,15 @@ namespace Remotion.Utilities
     [return: NotNullIfNotNull ("value")]
     public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
-      if (!CanConvertTo (destinationType))
-        throw new NotSupportedException (string.Format ("This TypeConverter cannot convert to type '{0}'.", destinationType));
+      if (!CanConvertTo(destinationType))
+        throw new NotSupportedException(string.Format("This TypeConverter cannot convert to type '{0}'.", destinationType));
 
-      if (!IsValid (context, value))
+      if (!IsValid(context, value))
       {
-        throw new NotSupportedException (
-            string.Format ("The given value '{0}' cannot be converted by this TypeConverter for type '{1}'.", value, destinationType));
+        throw new NotSupportedException(
+            string.Format("The given value '{0}' cannot be converted by this TypeConverter for type '{1}'.", value, destinationType));
       }
 
       return value;
@@ -113,7 +113,7 @@ namespace Remotion.Utilities
       // ReSharper restore ConditionIsAlwaysTrueOrFalse
       // ReSharper restore HeuristicUnreachableCode
 
-      return CanConvertFrom (context, value.GetType());
+      return CanConvertFrom(context, value.GetType());
     }
   }
 }

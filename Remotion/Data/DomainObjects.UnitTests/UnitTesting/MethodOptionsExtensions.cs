@@ -33,7 +33,7 @@ namespace Remotion.Data.UnitTests.UnitTesting
     /// </summary>
     public static IMethodOptions<T> Ordered<T> (this IMethodOptions<T> options, OrderedExpectationCounter counter, string message = null)
     {
-      return WhenCalledOrdered (options, counter, mi => { }, message);
+      return WhenCalledOrdered(options, counter, mi => { }, message);
     }
 
     /// <summary>
@@ -48,29 +48,29 @@ namespace Remotion.Data.UnitTests.UnitTesting
         Action<MethodInvocation> whenCalledAction,
         string message = null)
     {
-      var expectedPosition = counter.GetNextExpectedPosition ();
-      return options.WhenCalled (
+      var expectedPosition = counter.GetNextExpectedPosition();
+      return options.WhenCalled(
           mi =>
           {
-            counter.CheckPosition (mi.Method.ToString(), expectedPosition, message);
-            whenCalledAction (mi);
+            counter.CheckPosition(mi.Method.ToString(), expectedPosition, message);
+            whenCalledAction(mi);
           });
     }
 
     public static IMethodOptions<T> WhenCalledWithCurrentTransaction<T> (
         this IMethodOptions<T> options, ClientTransaction expectedTransaction, Action<MethodInvocation> whenCalledAction)
     {
-      return options.WhenCalled (
+      return options.WhenCalled(
           mi =>
           {
-            Assert.That (ClientTransaction.Current, Is.SameAs (expectedTransaction));
-            whenCalledAction (mi);
+            Assert.That(ClientTransaction.Current, Is.SameAs(expectedTransaction));
+            whenCalledAction(mi);
           });
     }
 
     public static IMethodOptions<T> WithCurrentTransaction<T> (this IMethodOptions<T> options, ClientTransaction expectedTransaction)
     {
-      return options.WhenCalled (mi => Assert.That (ClientTransaction.Current, Is.SameAs (expectedTransaction)));
+      return options.WhenCalled(mi => Assert.That(ClientTransaction.Current, Is.SameAs(expectedTransaction)));
     }
   }
 }

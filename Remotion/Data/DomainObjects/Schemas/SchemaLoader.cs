@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Schemas
 
     // static members and constants
 
-    public static readonly SchemaLoader Queries = new SchemaLoader ("Queries.xsd", PrefixNamespace.QueryConfigurationNamespace.Uri);
+    public static readonly SchemaLoader Queries = new SchemaLoader("Queries.xsd", PrefixNamespace.QueryConfigurationNamespace.Uri);
 
     // member fields
 
@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.Schemas
 
     protected SchemaLoader (string schemaFile, string schemaUri)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("schemaFile", schemaFile);
-      ArgumentUtility.CheckNotNullOrEmpty ("schemaUri", schemaUri);
+      ArgumentUtility.CheckNotNullOrEmpty("schemaFile", schemaFile);
+      ArgumentUtility.CheckNotNullOrEmpty("schemaUri", schemaUri);
 
       _schemaFile = schemaFile;
       _schemaUri = schemaUri;
@@ -55,8 +55,8 @@ namespace Remotion.Data.DomainObjects.Schemas
 
     public override XmlSchemaSet LoadSchemaSet ()
     {
-      XmlSchemaSet schemaSet = base.LoadSchemaSet ();
-      schemaSet.Add (TypesSchemaLoader.Instance.LoadSchemaSet());
+      XmlSchemaSet schemaSet = base.LoadSchemaSet();
+      schemaSet.Add(TypesSchemaLoader.Instance.LoadSchemaSet());
 
       return schemaSet;
     }

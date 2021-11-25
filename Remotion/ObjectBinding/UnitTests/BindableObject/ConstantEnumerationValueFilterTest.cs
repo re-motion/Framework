@@ -29,25 +29,25 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
     }
     
     [Test]
     public void Initialize ()
     {
       Enum[] expected = new Enum[] {TestEnum.Value1, TestEnum.Value2};
-      ConstantEnumerationValueFilter filter = new ConstantEnumerationValueFilter (expected);
+      ConstantEnumerationValueFilter filter = new ConstantEnumerationValueFilter(expected);
 
-      Assert.That (filter.DisabledEnumValues, Is.EqualTo (expected));
+      Assert.That(filter.DisabledEnumValues, Is.EqualTo(expected));
     }
 
     [Test]
     public void Initialize_WithMismatchedEnumValues ()
     {
-      Assert.That (
-          () => new ConstantEnumerationValueFilter (new Enum[] { TestEnum.Value1, EnumWithUndefinedValue.Value2 }),
+      Assert.That(
+          () => new ConstantEnumerationValueFilter(new Enum[] { TestEnum.Value1, EnumWithUndefinedValue.Value2 }),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Item 1 of parameter 'disabledValues' has the type 'Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValue' "
                   + "instead of 'Remotion.ObjectBinding.UnitTests.TestDomain.TestEnum'.",
                   "disabledValues"));
@@ -56,31 +56,31 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IsEnabled_WithFalse ()
     {
-      var mockBusinessObject  =new Mock<IBusinessObject> (MockBehavior.Strict);
-      var mockProperty = new Mock<IBusinessObjectEnumerationProperty> (MockBehavior.Strict);
+      var mockBusinessObject  =new Mock<IBusinessObject>(MockBehavior.Strict);
+      var mockProperty = new Mock<IBusinessObjectEnumerationProperty>(MockBehavior.Strict);
 
-      IEnumerationValueFilter filter = new ConstantEnumerationValueFilter (new Enum[] { TestEnum.Value1, TestEnum.Value4 });
+      IEnumerationValueFilter filter = new ConstantEnumerationValueFilter(new Enum[] { TestEnum.Value1, TestEnum.Value4 });
 
-      bool actual = filter.IsEnabled (new EnumerationValueInfo (TestEnum.Value1, "Value1", string.Empty, true), mockBusinessObject.Object, mockProperty.Object);
+      bool actual = filter.IsEnabled(new EnumerationValueInfo(TestEnum.Value1, "Value1", string.Empty, true), mockBusinessObject.Object, mockProperty.Object);
 
       mockBusinessObject.Verify();
       mockProperty.Verify();
-      Assert.That (actual, Is.False);
+      Assert.That(actual, Is.False);
     }
 
     [Test]
     public void IsEnabled_WithTrue ()
     {
-      var mockBusinessObject = new Mock<IBusinessObject> (MockBehavior.Strict);
-      var mockProperty = new Mock<IBusinessObjectEnumerationProperty> (MockBehavior.Strict);
+      var mockBusinessObject = new Mock<IBusinessObject>(MockBehavior.Strict);
+      var mockProperty = new Mock<IBusinessObjectEnumerationProperty>(MockBehavior.Strict);
 
-      IEnumerationValueFilter filter = new ConstantEnumerationValueFilter (new Enum[] { TestEnum.Value1, TestEnum.Value4 });
+      IEnumerationValueFilter filter = new ConstantEnumerationValueFilter(new Enum[] { TestEnum.Value1, TestEnum.Value4 });
 
-      bool actual = filter.IsEnabled (new EnumerationValueInfo (TestEnum.Value2, "Value2", string.Empty, true), mockBusinessObject.Object, mockProperty.Object);
+      bool actual = filter.IsEnabled(new EnumerationValueInfo(TestEnum.Value2, "Value2", string.Empty, true), mockBusinessObject.Object, mockProperty.Object);
 
       mockBusinessObject.Verify();
       mockProperty.Verify();
-      Assert.That (actual, Is.True);
+      Assert.That(actual, Is.True);
     }
   }
 }

@@ -43,12 +43,12 @@ namespace Remotion.ObjectBinding
     /// </exception>
     public static object? GetProperty (this IBusinessObject businessObject, string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
 
-      var propertyDefinition = GetPropertyDefinition (businessObject, propertyIdentifier);
+      var propertyDefinition = GetPropertyDefinition(businessObject, propertyIdentifier);
 
-      return businessObject.GetProperty (propertyDefinition);
+      return businessObject.GetProperty(propertyDefinition);
     }
 
     /// <summary>
@@ -71,12 +71,12 @@ namespace Remotion.ObjectBinding
     /// </exception>
     public static void SetProperty (this IBusinessObject businessObject, string propertyIdentifier, object value)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
 
-      var propertyDefinition = GetPropertyDefinition (businessObject, propertyIdentifier);
+      var propertyDefinition = GetPropertyDefinition(businessObject, propertyIdentifier);
 
-      businessObject.SetProperty (propertyDefinition, value);
+      businessObject.SetProperty(propertyDefinition, value);
     }
 
     /// <summary> 
@@ -100,12 +100,12 @@ namespace Remotion.ObjectBinding
     /// </exception>
     public static string GetPropertyString (this IBusinessObject businessObject, string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
 
-      var propertyDefinition = GetPropertyDefinition (businessObject, propertyIdentifier);
+      var propertyDefinition = GetPropertyDefinition(businessObject, propertyIdentifier);
 
-      return businessObject.GetPropertyString (propertyDefinition, null);
+      return businessObject.GetPropertyString(propertyDefinition, null);
     }
 
     /// <summary>
@@ -118,12 +118,12 @@ namespace Remotion.ObjectBinding
     /// </remarks>
     public static string GetAccessibleDisplayName (this IBusinessObjectWithIdentity businessObject)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
       var businessObjectClass = businessObject.BusinessObjectClass;
-      Assertion.IsNotNull (businessObjectClass, "The business object's BusinessObjectClass-property evaluated and returned null.");
+      Assertion.IsNotNull(businessObjectClass, "The business object's BusinessObjectClass-property evaluated and returned null.");
 
-      var displayNameProperty = businessObjectClass.GetPropertyDefinition ("DisplayName");
+      var displayNameProperty = businessObjectClass.GetPropertyDefinition("DisplayName");
       if (displayNameProperty == null)
       {
         // No property-is-accessible checks can be performed.
@@ -131,11 +131,11 @@ namespace Remotion.ObjectBinding
         return businessObject.DisplayName;
       }
 
-      if (displayNameProperty.IsAccessible (businessObject))
+      if (displayNameProperty.IsAccessible(businessObject))
       {
         try
         {
-          return (string?) businessObject.GetProperty (displayNameProperty) ?? string.Empty;
+          return (string?) businessObject.GetProperty(displayNameProperty) ?? string.Empty;
         }
         catch (BusinessObjectPropertyAccessException)
         {
@@ -144,7 +144,7 @@ namespace Remotion.ObjectBinding
       }
 
       var businessObjectProvider = displayNameProperty.BusinessObjectProvider;
-      Assertion.IsNotNull (businessObjectProvider, "IBusinessObjectProperty.BusinessObjectProvider cannot be null.");
+      Assertion.IsNotNull(businessObjectProvider, "IBusinessObjectProperty.BusinessObjectProvider cannot be null.");
 
       return businessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder();
     }
@@ -153,13 +153,13 @@ namespace Remotion.ObjectBinding
     private static IBusinessObjectProperty GetPropertyDefinition (IBusinessObject businessObject, string propertyIdentifier)
     {
       var businessObjectClass = businessObject.BusinessObjectClass;
-      Assertion.IsNotNull (businessObjectClass, "The business object's BusinessObjectClass-property evaluated and returned null.");
+      Assertion.IsNotNull(businessObjectClass, "The business object's BusinessObjectClass-property evaluated and returned null.");
 
-      var propertyDefinition = businessObjectClass.GetPropertyDefinition (propertyIdentifier);
+      var propertyDefinition = businessObjectClass.GetPropertyDefinition(propertyIdentifier);
       if (propertyDefinition == null)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The business object's class ('{0}') does not contain a property named '{1}'.",
                 businessObjectClass.Identifier,
                 propertyIdentifier));

@@ -42,7 +42,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static SecurableClassDefinition FindByName (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
       var result = from c in QueryFactory.CreateLinqQuery<SecurableClassDefinition>()
                    where c.Name == name
@@ -90,7 +90,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     [StorageClassNone]
     public ReadOnlyCollection<StatePropertyDefinition> StateProperties
     {
-      get { return StatePropertyReferences.Select (propertyReference => propertyReference.StateProperty).ToList().AsReadOnly(); }
+      get { return StatePropertyReferences.Select(propertyReference => propertyReference.StateProperty).ToList().AsReadOnly(); }
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
@@ -100,21 +100,21 @@ namespace Remotion.SecurityManager.Domain.Metadata
     [StorageClassNone]
     public ReadOnlyCollection<AccessTypeDefinition> AccessTypes
     {
-      get { return AccessTypeReferences.Select (accessTypeReference => accessTypeReference.AccessType).ToList().AsReadOnly(); }
+      get { return AccessTypeReferences.Select(accessTypeReference => accessTypeReference.AccessType).ToList().AsReadOnly(); }
     }
 
     [StorageClassNone]
     [ObjectBinding (ReadOnly = true)]
     public ReadOnlyCollection<StateCombination> StateCombinations
     {
-      get { return StatefulAccessControlLists.SelectMany (acl => acl.StateCombinations).ToList().AsReadOnly(); }
+      get { return StatefulAccessControlLists.SelectMany(acl => acl.StateCombinations).ToList().AsReadOnly(); }
     }
 
     //TODO RM-5636: Add tests
     public bool AreStateCombinationsComplete ()
     {
       if (StateProperties.Count > 1)
-        throw new NotSupportedException ("Only classes with a zero or one StatePropertyDefinition are supported.");
+        throw new NotSupportedException("Only classes with a zero or one StatePropertyDefinition are supported.");
 
       int possibleStateCombinations = 1;
       if (StateProperties.Count > 0)
@@ -140,9 +140,9 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void AddAccessType (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull ("accessType", accessType);
+      ArgumentUtility.CheckNotNull("accessType", accessType);
 
-      InsertAccessType (AccessTypeReferences.Count, accessType);
+      InsertAccessType(AccessTypeReferences.Count, accessType);
     }
 
     /// <summary>
@@ -163,27 +163,27 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void InsertAccessType (int index, AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull ("accessType", accessType);
+      ArgumentUtility.CheckNotNull("accessType", accessType);
       if (index < 0 || index > AccessTypeReferences.Count)
       {
-        throw CreateArgumentOutOfRangeException (
+        throw CreateArgumentOutOfRangeException(
             "index", index, "The index must not be less than 0 or greater than the total number of access types for the securable class definition.");
       }
 
-      if (AccessTypeReferences.Where (r => r.AccessType == accessType).Any())
+      if (AccessTypeReferences.Where(r => r.AccessType == accessType).Any())
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             "accessType", "The access type '{0}' has already been added to the securable class definition.", accessType.Name);
       }
 
       var reference = AccessTypeReference.NewObject();
       reference.AccessType = accessType;
-      AccessTypeReferences.Insert (index, reference);
+      AccessTypeReferences.Insert(index, reference);
       for (int i = 0; i < AccessTypeReferences.Count; i++)
         AccessTypeReferences[i].Index = i;
 
-      foreach (var ace in GetAccessControlLists().SelectMany (acl => acl.AccessControlEntries))
-        ace.AddAccessType (accessType);
+      foreach (var ace in GetAccessControlLists().SelectMany(acl => acl.AccessControlEntries))
+        ace.AddAccessType(accessType);
 
       RegisterForCommit();
     }
@@ -200,12 +200,12 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void RemoveAccessType (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull ("accessType", accessType);
+      ArgumentUtility.CheckNotNull("accessType", accessType);
 
-      var accessTypeReference = AccessTypeReferences.SingleOrDefault (r => r.AccessType == accessType);
+      var accessTypeReference = AccessTypeReferences.SingleOrDefault(r => r.AccessType == accessType);
       if (accessTypeReference == null)
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             "accessType", "The access type '{0}' is not associated with the securable class definition.", accessType.Name);
       }
 
@@ -213,8 +213,8 @@ namespace Remotion.SecurityManager.Domain.Metadata
       for (int i = 0; i < AccessTypeReferences.Count; i++)
         AccessTypeReferences[i].Index = i;
 
-      foreach (var ace in GetAccessControlLists().SelectMany (acl => acl.AccessControlEntries))
-        ace.RemoveAccessType (accessType);
+      foreach (var ace in GetAccessControlLists().SelectMany(acl => acl.AccessControlEntries))
+        ace.RemoveAccessType(accessType);
 
       RegisterForCommit();
     }
@@ -237,22 +237,22 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void MoveAccessType (int index, AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull ("accessType", accessType);
+      ArgumentUtility.CheckNotNull("accessType", accessType);
       if (index < 0 || index >= AccessTypeReferences.Count)
       {
-        throw CreateArgumentOutOfRangeException (
+        throw CreateArgumentOutOfRangeException(
             "index", index, "The index must not be less than 0 or greater than the top index of the access types for the securable class definition.");
       }
 
-      var accessTypeReference = AccessTypeReferences.SingleOrDefault (r => r.AccessType == accessType);
+      var accessTypeReference = AccessTypeReferences.SingleOrDefault(r => r.AccessType == accessType);
       if (accessTypeReference == null)
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             "accessType", "The access type '{0}' is not associated with the securable class definition.", accessType.Name);
       }
 
-      AccessTypeReferences.Remove (accessTypeReference);
-      AccessTypeReferences.Insert (index, accessTypeReference);
+      AccessTypeReferences.Remove(accessTypeReference);
+      AccessTypeReferences.Insert(index, accessTypeReference);
       for (int i = 0; i < AccessTypeReferences.Count; i++)
         AccessTypeReferences[i].Index = i;
 
@@ -268,18 +268,18 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void AddStateProperty (StatePropertyDefinition stateProperty)
     {
-      ArgumentUtility.CheckNotNull ("stateProperty", stateProperty);
+      ArgumentUtility.CheckNotNull("stateProperty", stateProperty);
 
-      if (StatePropertyReferences.Where (r => r.StateProperty == stateProperty).Any())
+      if (StatePropertyReferences.Where(r => r.StateProperty == stateProperty).Any())
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             "stateProperty", "The property '{0}' has already been added to the securable class definition.", stateProperty.Name);
       }
 
       var reference = StatePropertyReference.NewObject();
       reference.StateProperty = stateProperty;
 
-      StatePropertyReferences.Add (reference);
+      StatePropertyReferences.Add(reference);
 
       RegisterForCommit();
     }
@@ -297,12 +297,12 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void RemoveStateProperty (StatePropertyDefinition stateProperty)
     {
-      ArgumentUtility.CheckNotNull ("stateProperty", stateProperty);
+      ArgumentUtility.CheckNotNull("stateProperty", stateProperty);
 
-      var statePropertyReference = StatePropertyReferences.SingleOrDefault (r => r.StateProperty == stateProperty);
+      var statePropertyReference = StatePropertyReferences.SingleOrDefault(r => r.StateProperty == stateProperty);
       if (statePropertyReference == null)
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             "stateProperty", "The property '{0}' does not exist on the securable class definition.", stateProperty.Name);
       }
 
@@ -311,7 +311,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       foreach (var acl in StatefulAccessControlLists.ToList())
       {
         var stateCombinationsContainingRemovedStateProperty
-            = acl.StateCombinations.Where (sc => sc.GetStates().Any (sd => sd.StateProperty == stateProperty)).ToList();
+            = acl.StateCombinations.Where(sc => sc.GetStates().Any(sd => sd.StateProperty == stateProperty)).ToList();
         foreach (var stateCombination in stateCombinationsContainingRemovedStateProperty)
         {
           stateCombination.Delete();
@@ -328,11 +328,11 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// <exception cref="ArgumentException">Thrown if the specified property does not exist on this <see cref="SecurableClassDefinition"/>.</exception>
     public StatePropertyDefinition GetStateProperty (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
 
-      return StateProperties.Single (
+      return StateProperties.Single(
           p => p.Name == propertyName,
-          () => CreateArgumentException (
+          () => CreateArgumentException(
               "propertyName",
               "A state property with the name '{0}' is not defined for the secureable class definition '{1}'.",
               propertyName,
@@ -341,25 +341,25 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public StateCombination FindStateCombination (IList<StateDefinition> states)
     {
-      return StateCombinations.Where (sc => sc.MatchesStates (states)).SingleOrDefault();
+      return StateCombinations.Where(sc => sc.MatchesStates(states)).SingleOrDefault();
     }
 
     public StatelessAccessControlList CreateStatelessAccessControlList ()
     {
       if (StatelessAccessControlList != null)
-        throw new InvalidOperationException ("A SecurableClassDefinition only supports a single StatelessAccessControlList at a time.");
+        throw new InvalidOperationException("A SecurableClassDefinition only supports a single StatelessAccessControlList at a time.");
 
       var accessControlList = StatelessAccessControlList.NewObject();
       StatelessAccessControlList = accessControlList;
-      accessControlList.CreateAccessControlEntry ();
+      accessControlList.CreateAccessControlEntry();
 
       return accessControlList;
     }
 
     public StatefulAccessControlList CreateStatefulAccessControlList ()
     {
-      var accessControlList = StatefulAccessControlList.NewObject ();
-      StatefulAccessControlLists.Add (accessControlList);
+      var accessControlList = StatefulAccessControlList.NewObject();
+      StatefulAccessControlLists.Add(accessControlList);
       accessControlList.CreateStateCombination();
       accessControlList.CreateAccessControlEntry();
 
@@ -370,34 +370,34 @@ namespace Remotion.SecurityManager.Domain.Metadata
     {
       var result = new SecurableClassValidationResult();
 
-      ValidateUniqueStateCombinations (result);
+      ValidateUniqueStateCombinations(result);
 
-      ValidateStateCombinationsAgainstStateProperties (result);
+      ValidateStateCombinationsAgainstStateProperties(result);
 
       return result;
     }
 
     public void ValidateUniqueStateCombinations (SecurableClassValidationResult result)
     {
-      Assertion.IsFalse (
+      Assertion.IsFalse(
           State.IsDeleted && StateCombinations.Count != 0, "StateCombinations of object '{0}' are not empty but the object is deleted.", ID);
 
       var duplicateStateCombinations = StateCombinations
-          .GroupBy (sc => sc, new StateCombinationComparer())
-          .Where (g => g.Count() > 1)
-          .SelectMany (g => g);
+          .GroupBy(sc => sc, new StateCombinationComparer())
+          .Where(g => g.Count() > 1)
+          .SelectMany(g => g);
 
       foreach (var stateCombination in duplicateStateCombinations)
-        result.AddDuplicateStateCombination (stateCombination);
+        result.AddDuplicateStateCombination(stateCombination);
     }
 
     public void ValidateStateCombinationsAgainstStateProperties (SecurableClassValidationResult result)
     {
-      Assertion.IsFalse (
+      Assertion.IsFalse(
           State.IsDeleted && StateCombinations.Count != 0, "StateCombinations of object '{0}' are not empty but the object is deleted.", ID);
 
-      foreach (var stateCombination in StateCombinations.Where (sc => sc.GetStates().Length != StateProperties.Count))
-        result.AddInvalidStateCombination (stateCombination);
+      foreach (var stateCombination in StateCombinations.Where(sc => sc.GetStates().Length != StateProperties.Count))
+        result.AddInvalidStateCombination(stateCombination);
     }
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
@@ -407,50 +407,50 @@ namespace Remotion.SecurityManager.Domain.Metadata
       {
         if (result.DuplicateStateCombinations.Count > 0)
         {
-          throw new ConstraintViolationException (
-              String.Format ("The securable class definition '{0}' contains at least one state combination that has been defined twice.", Name));
+          throw new ConstraintViolationException(
+              String.Format("The securable class definition '{0}' contains at least one state combination that has been defined twice.", Name));
         }
         else
         {
-          Assertion.IsTrue (result.InvalidStateCombinations.Count > 0);
-          throw new ConstraintViolationException (
-              String.Format ("The securable class definition '{0}' contains at least one state combination that does not match the class's properties.", Name));
+          Assertion.IsTrue(result.InvalidStateCombinations.Count > 0);
+          throw new ConstraintViolationException(
+              String.Format("The securable class definition '{0}' contains at least one state combination that does not match the class's properties.", Name));
         }
       }
 
       RegisterForCommit();
 
-      base.OnCommitting (args);
+      base.OnCommitting(args);
     }
 
     protected override void OnRelationChanged (RelationChangedEventArgs args)
     {
-      base.OnRelationChanged (args);
-      if (args.IsRelation (this, "StatefulAccessControlLists"))
-        HandleStatefulAccessControlListsChanged ((StatefulAccessControlList) args.NewRelatedObject);
+      base.OnRelationChanged(args);
+      if (args.IsRelation(this, "StatefulAccessControlLists"))
+        HandleStatefulAccessControlListsChanged((StatefulAccessControlList) args.NewRelatedObject);
     }
 
     private void HandleStatefulAccessControlListsChanged (StatefulAccessControlList acl)
     {
       if (acl != null)
-        acl.Index = StatefulAccessControlLists.IndexOf (acl);
+        acl.Index = StatefulAccessControlLists.IndexOf(acl);
     }
 
     protected override void OnDeleting (EventArgs args)
     {
-      base.OnDeleting (args);
+      base.OnDeleting(args);
 
       //TODO: Rewrite with test
-      _deleteHandler = new DomainObjectDeleteHandler (
+      _deleteHandler = new DomainObjectDeleteHandler(
           StatefulAccessControlLists,
-          EnumerableUtility.Singleton (StatelessAccessControlList).Where (o => o != null),
+          EnumerableUtility.Singleton(StatelessAccessControlList).Where(o => o != null),
           StatePropertyReferences,
           AccessTypeReferences);
     }
 
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
       //TODO: Rewrite with test
       _deleteHandler.Delete();
@@ -458,12 +458,12 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     private ArgumentException CreateArgumentException (string argumentName, string format, params object[] args)
     {
-      return new ArgumentException (String.Format (format, args), argumentName);
+      return new ArgumentException(String.Format(format, args), argumentName);
     }
     
     private ArgumentException CreateArgumentOutOfRangeException (string argumentName, object actualValue, string format, params object[] args)
     {
-      return new ArgumentOutOfRangeException(argumentName, actualValue, String.Format (format, args));
+      return new ArgumentOutOfRangeException(argumentName, actualValue, String.Format(format, args));
     }
 
     private IEnumerable<AccessControlList> GetAccessControlLists ()

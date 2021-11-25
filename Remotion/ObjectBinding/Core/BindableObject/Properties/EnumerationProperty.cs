@@ -34,20 +34,20 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     public EnumerationProperty (Parameters parameters)
         : base (parameters)
     {
-      if (AttributeUtility.IsDefined<FlagsAttribute> (parameters.UnderlyingType, false))
+      if (AttributeUtility.IsDefined<FlagsAttribute>(parameters.UnderlyingType, false))
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The property '{0}' defined on type '{1}' is a flags-enum, which is not supported.",
                 Identifier,
                 PropertyInfo.DeclaringType));
       }
       _undefinedValue = GetUndefinedValue();
       
-      var filterProvider = new EnumValueFilterProvider<DisableEnumValuesAttribute> (
+      var filterProvider = new EnumValueFilterProvider<DisableEnumValuesAttribute>(
           PropertyInfo, 
-          t => AttributeUtility.GetCustomAttributes<DisableEnumValuesAttribute> (t, true));
-      _enumerationValueFilter = filterProvider.GetEnumerationValueFilter ();
+          t => AttributeUtility.GetCustomAttributes<DisableEnumValuesAttribute>(t, true));
+      _enumerationValueFilter = filterProvider.GetEnumerationValueFilter();
     }
 
     /// <summary> Returns a list of all the enumeration's values. </summary>
@@ -57,11 +57,11 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     public IEnumerationValueInfo[] GetAllValues (IBusinessObject? businessObject)
     {
       var valueInfos = new List<IEnumerationValueInfo>();
-      foreach (Enum value in Enum.GetValues (UnderlyingType))
+      foreach (Enum value in Enum.GetValues(UnderlyingType))
       {
-        IEnumerationValueInfo? enumerationValueInfo = GetValueInfoByValue (value, businessObject);
+        IEnumerationValueInfo? enumerationValueInfo = GetValueInfoByValue(value, businessObject);
         if (enumerationValueInfo != null)
-          valueInfos.Add (enumerationValueInfo);
+          valueInfos.Add(enumerationValueInfo);
       }
       return valueInfos.ToArray();
     }
@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <remarks> CLS type enums do not inherently support the disabling of its values. </remarks>
     public IEnumerationValueInfo[] GetEnabledValues (IBusinessObject? businessObject)
     {
-      return Array.FindAll (GetAllValues (businessObject), current => current.IsEnabled);
+      return Array.FindAll(GetAllValues(businessObject), current => current.IsEnabled);
     }
 
     /// <overloads> Returns a specific enumeration value. </overloads>
@@ -89,10 +89,10 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
         return null;
 
       var enumValue = (Enum) value;
-      if (IsUndefinedValue (enumValue))
+      if (IsUndefinedValue(enumValue))
         return null;
 
-      return new EnumerationValueInfo (value, GetIdenfier (enumValue), GetDisplayName (enumValue), IsEnabled (enumValue, businessObject));
+      return new EnumerationValueInfo(value, GetIdenfier(enumValue), GetDisplayName(enumValue), IsEnabled(enumValue, businessObject));
     }
 
     /// <summary> Returns a specific enumeration value. </summary>
@@ -104,29 +104,29 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// </returns>
     public IEnumerationValueInfo? GetValueInfoByIdentifier (string? identifier, IBusinessObject? businessObject)
     {
-      if (string.IsNullOrEmpty (identifier))
+      if (string.IsNullOrEmpty(identifier))
         return null;
 
-      return GetValueInfoByValue (StringUtility.Parse (UnderlyingType, identifier, null), businessObject);
+      return GetValueInfoByValue(StringUtility.Parse(UnderlyingType, identifier, null), businessObject);
     }
 
     public override object? ConvertFromNativePropertyType (object? nativeValue)
     {
       if (nativeValue != null)
       {
-        if (IsUndefinedValue ((Enum) nativeValue))
+        if (IsUndefinedValue((Enum) nativeValue))
           return null;
       }
 
-      return base.ConvertFromNativePropertyType (nativeValue);
+      return base.ConvertFromNativePropertyType(nativeValue);
     }
 
     public override object? ConvertToNativePropertyType (object? publicValue)
     {
       if (publicValue == null && _undefinedValue != null)
-        return base.ConvertToNativePropertyType (_undefinedValue);
+        return base.ConvertToNativePropertyType(_undefinedValue);
 
-      return base.ConvertToNativePropertyType (publicValue);
+      return base.ConvertToNativePropertyType(publicValue);
     }
 
     private string GetIdenfier (Enum value)
@@ -136,33 +136,33 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     private string GetDisplayName (Enum value)
     {
-      return BindableObjectGlobalizationService.GetEnumerationValueDisplayName (value);
+      return BindableObjectGlobalizationService.GetEnumerationValueDisplayName(value);
     }
 
     private bool IsEnabled (Enum value, IBusinessObject? businessObject)
     {
-      if (!Enum.IsDefined (UnderlyingType, value))
+      if (!Enum.IsDefined(UnderlyingType, value))
         return false;
 
-      return _enumerationValueFilter.IsEnabled (new EnumerationValueInfo (value, GetIdenfier (value), string.Empty, true), businessObject, this);
+      return _enumerationValueFilter.IsEnabled(new EnumerationValueInfo(value, GetIdenfier(value), string.Empty, true), businessObject, this);
     }
 
     private bool IsUndefinedValue (Enum value)
     {
-      return value.Equals (_undefinedValue);
+      return value.Equals(_undefinedValue);
     }
 
     private Enum? GetUndefinedValue ()
     {
-      var undefinedEnumValueAttribute = AttributeUtility.GetCustomAttribute<UndefinedEnumValueAttribute> (UnderlyingType, false);
+      var undefinedEnumValueAttribute = AttributeUtility.GetCustomAttribute<UndefinedEnumValueAttribute>(UnderlyingType, false);
 
       if (undefinedEnumValueAttribute == null)
         return null;
 
-      if (!UnderlyingType.IsInstanceOfType (undefinedEnumValueAttribute.GetValue()))
+      if (!UnderlyingType.IsInstanceOfType(undefinedEnumValueAttribute.GetValue()))
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The enum type '{0}' defines a '{1}' with an enum value that belongs to a different enum type.",
                 UnderlyingType,
                 typeof (UndefinedEnumValueAttribute)));
@@ -170,8 +170,8 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
       if (IsNullableDotNetType)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The property '{0}' defined on type '{1}' must not be nullable since the property's type already defines a '{2}'.",
                 Identifier,
                 PropertyInfo.DeclaringType,

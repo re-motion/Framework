@@ -33,15 +33,15 @@ namespace Remotion.Mixins.Context
     public void AddIfNotNull (ClassContext? context)
     {
       if (context != null)
-        _classContexts.Add (context);
+        _classContexts.Add(context);
     }
 
     public void AddRangeAllowingNulls (IEnumerable<ClassContext?> contexts)
     {
-      ArgumentUtility.CheckNotNull ("contexts", contexts);
+      ArgumentUtility.CheckNotNull("contexts", contexts);
 
       foreach (var context in contexts)
-        AddIfNotNull (context);
+        AddIfNotNull(context);
     }
     
     public ClassContext? GetCombinedContexts (Type contextType)
@@ -51,9 +51,9 @@ namespace Remotion.Mixins.Context
         case 0:
           return null;
         case 1:
-          return _classContexts[0].CloneForSpecificType (contextType);
+          return _classContexts[0].CloneForSpecificType(contextType);
         default:
-          return new ClassContext (contextType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>()).InheritFrom (_classContexts);
+          return new ClassContext(contextType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>()).InheritFrom(_classContexts);
       }
     }
   }

@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       public EndPointLoader (ILazyLoader lazyLoader)
       {
-        ArgumentUtility.CheckNotNull ("lazyLoader", lazyLoader);
+        ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
         _lazyLoader = lazyLoader;
       }
 
@@ -47,24 +47,24 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       public IVirtualObjectEndPointLoadState LoadEndPointAndGetNewState (IVirtualObjectEndPoint endPoint)
       {
-        var virtualObjectEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualObjectEndPoint> ("endPoint", endPoint);
-        _lazyLoader.LoadLazyVirtualObjectEndPoint (virtualObjectEndPoint.ID);
+        var virtualObjectEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualObjectEndPoint>("endPoint", endPoint);
+        _lazyLoader.LoadLazyVirtualObjectEndPoint(virtualObjectEndPoint.ID);
         return virtualObjectEndPoint._loadState;
       }
 
       #region Serialization
       public EndPointLoader (FlattenedDeserializationInfo info)
       {
-        ArgumentUtility.CheckNotNull ("info", info);
+        ArgumentUtility.CheckNotNull("info", info);
 
-        _lazyLoader = info.GetValueForHandle<ILazyLoader> ();
+        _lazyLoader = info.GetValueForHandle<ILazyLoader>();
       }
 
       void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
       {
-        ArgumentUtility.CheckNotNull ("info", info);
+        ArgumentUtility.CheckNotNull("info", info);
 
-        info.AddHandle (_lazyLoader);
+        info.AddHandle(_lazyLoader);
       }
       #endregion
     }
@@ -86,16 +86,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IClientTransactionEventSink transactionEventSink,
         IVirtualObjectEndPointDataManagerFactory dataManagerFactory)
         : base (
-            ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction),
-            ArgumentUtility.CheckNotNull ("id", id))
+            ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction),
+            ArgumentUtility.CheckNotNull("id", id))
     {
-      ArgumentUtility.CheckNotNull ("lazyLoader", lazyLoader);
-      ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
-      ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink);
-      ArgumentUtility.CheckNotNull ("dataManagerFactory", dataManagerFactory);
+      ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
+      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+      ArgumentUtility.CheckNotNull("dataManagerFactory", dataManagerFactory);
 
       if (!ID.Definition.IsVirtual)
-        throw new ArgumentException ("End point ID must refer to a virtual end point.", "id");
+        throw new ArgumentException("End point ID must refer to a virtual end point.", "id");
 
       _lazyLoader = lazyLoader;
       _endPointProvider = endPointProvider;
@@ -129,12 +129,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override ObjectID OppositeObjectID
     {
-      get { return GetOppositeObject ().GetSafeID(); }
+      get { return GetOppositeObject().GetSafeID(); }
     }
 
     DomainObject IVirtualEndPoint<DomainObject>.GetData ()
     {
-      return GetOppositeObject ();
+      return GetOppositeObject();
     }
 
     public override ObjectID OriginalOppositeObjectID
@@ -164,89 +164,89 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override bool? IsSynchronized
     {
-      get { return _loadState.IsSynchronized (this); }
+      get { return _loadState.IsSynchronized(this); }
     }
 
     public override DomainObject GetOppositeObject ()
     {
-      return _loadState.GetData (this);
+      return _loadState.GetData(this);
     }
 
     public override DomainObject GetOriginalOppositeObject ()
     {
-      return _loadState.GetOriginalData (this);
+      return _loadState.GetOriginalData(this);
     }
 
     public override void EnsureDataComplete ()
     {
-      _loadState.EnsureDataComplete (this);
+      _loadState.EnsureDataComplete(this);
     }
 
     public override void Synchronize ()
     {
-      _loadState.Synchronize (this);
+      _loadState.Synchronize(this);
     }
 
     public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
 
-      _loadState.SynchronizeOppositeEndPoint (this, oppositeEndPoint);
+      _loadState.SynchronizeOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public void MarkDataComplete (DomainObject item)
     {
-      _loadState.MarkDataComplete (this, item, SetCompleteState);
+      _loadState.MarkDataComplete(this, item, SetCompleteState);
     }
 
     public bool CanBeCollected
     {
-      get { return _loadState.CanEndPointBeCollected (this); }
+      get { return _loadState.CanEndPointBeCollected(this); }
     }
 
     public bool CanBeMarkedIncomplete
     {
-      get { return _loadState.CanDataBeMarkedIncomplete (this); }
+      get { return _loadState.CanDataBeMarkedIncomplete(this); }
     }
 
     public void MarkDataIncomplete ()
     {
-      _loadState.MarkDataIncomplete (this, SetIncompleteState);
+      _loadState.MarkDataIncomplete(this, SetIncompleteState);
     }
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
-      _loadState.RegisterOriginalOppositeEndPoint (this, oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      _loadState.RegisterOriginalOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
-      _loadState.UnregisterOriginalOppositeEndPoint (this, oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      _loadState.UnregisterOriginalOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
-      _loadState.RegisterCurrentOppositeEndPoint (this, oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      _loadState.RegisterCurrentOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
-      _loadState.UnregisterCurrentOppositeEndPoint (this, oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      _loadState.UnregisterCurrentOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public override IDataManagementCommand CreateSetCommand (DomainObject newRelatedObject)
     {
-      var command = _loadState.CreateSetCommand (this, newRelatedObject);
+      var command = _loadState.CreateSetCommand(this, newRelatedObject);
       return command;
     }
 
     public override IDataManagementCommand CreateDeleteCommand ()
     {
-      var command = _loadState.CreateDeleteCommand (this);
+      var command = _loadState.CreateDeleteCommand(this);
       return command;
     }
 
@@ -259,7 +259,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       if (HasChanged)
       {
-        _loadState.Commit (this);
+        _loadState.Commit(this);
       }
 
       _hasBeenTouched = false;
@@ -269,7 +269,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       if (HasChanged)
       {
-        _loadState.Rollback (this);
+        _loadState.Rollback(this);
       }
 
       _hasBeenTouched = false;
@@ -277,19 +277,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     protected override void SetOppositeObjectDataFromSubTransaction (IObjectEndPoint sourceObjectEndPoint)
     {
-      var sourceVirtualObjectEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualObjectEndPoint> ("sourceObjectEndPoint", sourceObjectEndPoint);
-      _loadState.SetDataFromSubTransaction (this, sourceVirtualObjectEndPoint._loadState);
+      var sourceVirtualObjectEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualObjectEndPoint>("sourceObjectEndPoint", sourceObjectEndPoint);
+      _loadState.SetDataFromSubTransaction(this, sourceVirtualObjectEndPoint._loadState);
     }
 
     private void SetIncompleteState ()
     {
-      var loader = new EndPointLoader (_lazyLoader);
-      _loadState = new IncompleteVirtualObjectEndPointLoadState (loader, _dataManagerFactory);
+      var loader = new EndPointLoader(_lazyLoader);
+      _loadState = new IncompleteVirtualObjectEndPointLoadState(loader, _dataManagerFactory);
     }
 
     private void SetCompleteState (IVirtualObjectEndPointDataManager dataManager)
     {
-      _loadState = new CompleteVirtualObjectEndPointLoadState (dataManager, EndPointProvider, _transactionEventSink);
+      _loadState = new CompleteVirtualObjectEndPointLoadState(dataManager, EndPointProvider, _transactionEventSink);
     }
 
     #region Serialization
@@ -297,26 +297,26 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     protected VirtualObjectEndPoint (FlattenedDeserializationInfo info)
         : base (info)
     {
-      _lazyLoader = info.GetValueForHandle<ILazyLoader> ();
-      _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider> ();
-      _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink> ();
-      _dataManagerFactory = info.GetValueForHandle<IVirtualObjectEndPointDataManagerFactory> ();
+      _lazyLoader = info.GetValueForHandle<ILazyLoader>();
+      _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider>();
+      _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink>();
+      _dataManagerFactory = info.GetValueForHandle<IVirtualObjectEndPointDataManagerFactory>();
       
-      _loadState = info.GetValue<IVirtualObjectEndPointLoadState> ();
-      _hasBeenTouched = info.GetBoolValue ();
+      _loadState = info.GetValue<IVirtualObjectEndPointLoadState>();
+      _hasBeenTouched = info.GetBoolValue();
     }
 
     protected override void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      base.SerializeIntoFlatStructure (info);
+      base.SerializeIntoFlatStructure(info);
 
-      info.AddHandle (_lazyLoader);
-      info.AddHandle (_endPointProvider);
-      info.AddHandle (_transactionEventSink);
-      info.AddHandle (_dataManagerFactory);
+      info.AddHandle(_lazyLoader);
+      info.AddHandle(_endPointProvider);
+      info.AddHandle(_transactionEventSink);
+      info.AddHandle(_dataManagerFactory);
 
-      info.AddValue (_loadState);
-      info.AddBoolValue (_hasBeenTouched);
+      info.AddValue(_loadState);
+      info.AddBoolValue(_hasBeenTouched);
     }
 
     #endregion

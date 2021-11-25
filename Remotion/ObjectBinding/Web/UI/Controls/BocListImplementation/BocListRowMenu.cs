@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     public BocListRowMenu (IBocList owner, BocListRow row)
       :base (owner)
     {
-      ArgumentUtility.CheckNotNull ("row", row);
+      ArgumentUtility.CheckNotNull("row", row);
       _row = row;
     }
 

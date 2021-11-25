@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Validation
     protected CommitValidationClientTransactionExtension (IPersistableDataValidator validator, string key)
         : base (key)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
+      ArgumentUtility.CheckNotNull("validator", validator);
 
       _validator = validator;
     }
@@ -61,20 +61,20 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public override void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("committedData", committedData);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("committedData", committedData);
 
       foreach (var item in committedData)
-        _validator.Validate (clientTransaction, item);
+        _validator.Validate(clientTransaction, item);
     }
 
     [OnSerializing]
     private void OnSerializing (StreamingContext context)
     {
       var validatorFromServiceLocator = SafeServiceLocator.Current.GetInstance<IPersistableDataValidator>();
-      if (!object.ReferenceEquals (_validator, validatorFromServiceLocator))
+      if (!object.ReferenceEquals(_validator, validatorFromServiceLocator))
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "Cannot serialize CommitValidationClientTransactionExtension because the IPersistableDataValidator cannot be loaded from the ServiceLocator.");
       }
     }

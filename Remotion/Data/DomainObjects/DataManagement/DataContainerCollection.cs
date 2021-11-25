@@ -30,14 +30,14 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public static DataContainerCollection Join (DataContainerCollection firstCollection, DataContainerCollection secondCollection)
     {
-      ArgumentUtility.CheckNotNull ("firstCollection", firstCollection);
-      ArgumentUtility.CheckNotNull ("secondCollection", secondCollection);
+      ArgumentUtility.CheckNotNull("firstCollection", firstCollection);
+      ArgumentUtility.CheckNotNull("secondCollection", secondCollection);
 
-      DataContainerCollection joinedCollection = new DataContainerCollection (firstCollection, false);
+      DataContainerCollection joinedCollection = new DataContainerCollection(firstCollection, false);
       foreach (DataContainer dataContainer in secondCollection)
       {
-        if (!joinedCollection.Contains (dataContainer.ID))
-          joinedCollection.Add (dataContainer);
+        if (!joinedCollection.Contains(dataContainer.ID))
+          joinedCollection.Add(dataContainer);
       }
 
       return joinedCollection;
@@ -54,26 +54,26 @@ namespace Remotion.Data.DomainObjects.DataManagement
     // standard constructor for collections
     public DataContainerCollection (IEnumerable collection, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("collection", collection);
+      ArgumentUtility.CheckNotNull("collection", collection);
 
       foreach (DataContainer dataContainer in collection)
-        Add (dataContainer);
+        Add(dataContainer);
 
-      this.SetIsReadOnly (makeCollectionReadOnly);
+      this.SetIsReadOnly(makeCollectionReadOnly);
     }
 
     // methods and properties
 
     public DataContainerCollection GetDifference (DataContainerCollection dataContainers)
     {
-      ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
+      ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
 
       DataContainerCollection difference = new DataContainerCollection();
 
       foreach (DataContainer dataContainer in this)
       {
-        if (!dataContainers.Contains (dataContainer.ID))
-          difference.Add (dataContainer);
+        if (!dataContainers.Contains(dataContainer.ID))
+          difference.Add(dataContainer);
       }
 
       return difference;
@@ -81,16 +81,16 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public DataContainerCollection Merge (DataContainerCollection dataContainers)
     {
-      ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
+      ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
 
       DataContainerCollection mergedCollection = new DataContainerCollection();
 
       foreach (DataContainer dataContainer in this)
       {
-        if (dataContainers.Contains (dataContainer.ID))
-          mergedCollection.Add (dataContainers[dataContainer.ID]);
+        if (dataContainers.Contains(dataContainer.ID))
+          mergedCollection.Add(dataContainers[dataContainer.ID]);
         else
-          mergedCollection.Add (dataContainer);
+          mergedCollection.Add(dataContainer);
       }
 
       return mergedCollection;
@@ -109,78 +109,78 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public bool Contains (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
 
-      return BaseContains (dataContainer.ID, dataContainer);
+      return BaseContains(dataContainer.ID, dataContainer);
     }
 
     public void CopyTo (DataContainer[] array, int arrayIndex)
     {
-      base.CopyTo (array, arrayIndex);
+      base.CopyTo(array, arrayIndex);
     }
 
     public bool Contains (ObjectID id)
     {
-      return BaseContainsKey (id);
+      return BaseContainsKey(id);
     }
 
     public int IndexOf (DataContainer item)
     {
-      ArgumentUtility.CheckNotNull ("item", item);
-      return BaseIndexOfKey (item.ID);
+      ArgumentUtility.CheckNotNull("item", item);
+      return BaseIndexOfKey(item.ID);
     }
 
     public void Insert (int index, DataContainer item)
     {
-      ArgumentUtility.CheckNotNull ("item", item);
-      BaseInsert (index, item.ID, item);
+      ArgumentUtility.CheckNotNull("item", item);
+      BaseInsert(index, item.ID, item);
     }
 
     public DataContainer this [int index]
     {
-      get { return (DataContainer) BaseGetObject (index); }
+      get { return (DataContainer) BaseGetObject(index); }
     }
 
     DataContainer IList<DataContainer>.this[int index]
     {
       get { return this[index]; }
-      set { throw new NotSupportedException ("It is not supported to set a DataContainer based by index."); }
+      set { throw new NotSupportedException("It is not supported to set a DataContainer based by index."); }
     }
 
     public DataContainer this [ObjectID id]
     {
-      get { return (DataContainer) BaseGetObject (id); }
+      get { return (DataContainer) BaseGetObject(id); }
     }
 
     public int Add (DataContainer value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      return BaseAdd (value.ID, value);
+      return BaseAdd(value.ID, value);
     }
 
     public void RemoveAt (int index)
     {
-      Remove (this[index]);
+      Remove(this[index]);
     }
 
     public void Remove (ObjectID id)
     {
-      Remove (this[id]);
+      Remove(this[id]);
     }
 
     public bool Remove (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
 
       var countBefore = Count;
-      BaseRemove (dataContainer.ID);
+      BaseRemove(dataContainer.ID);
       return Count < countBefore;
     }
 
     void ICollection<DataContainer>.Add (DataContainer item)
     {
-      Add (item);
+      Add(item);
     }
 
     public void Clear ()

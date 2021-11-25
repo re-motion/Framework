@@ -32,10 +32,10 @@ namespace Remotion.ObjectBinding.Validation
   {
     public static BusinessObjectValidationResult Create ([NotNull] ValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull ("validationResult", validationResult);
+      ArgumentUtility.CheckNotNull("validationResult", validationResult);
 
-      var validationFailures = validationResult.Errors.Select (e => (CreateBusinessObjectValidationFailure (e), e));
-      return new BusinessObjectValidationResult (validationFailures);
+      var validationFailures = validationResult.Errors.Select(e => (CreateBusinessObjectValidationFailure(e), e));
+      return new BusinessObjectValidationResult(validationFailures);
     }
 
     private static BusinessObjectValidationFailure CreateBusinessObjectValidationFailure (ValidationFailure validationFailure)
@@ -48,9 +48,9 @@ namespace Remotion.ObjectBinding.Validation
       {
         case PropertyValidationFailure propertyValidationFailure
             when validationFailure.ValidatedObject is IBusinessObject validatedBusinessObject
-                 && GetBusinessObjectProperty (validatedBusinessObject, propertyValidationFailure.ValidatedProperty) is IBusinessObjectProperty validatedBusinessObjectProperty:
+                 && GetBusinessObjectProperty(validatedBusinessObject, propertyValidationFailure.ValidatedProperty) is IBusinessObjectProperty validatedBusinessObjectProperty:
         {
-          return BusinessObjectValidationFailure.CreateForBusinessObjectProperty (
+          return BusinessObjectValidationFailure.CreateForBusinessObjectProperty(
               propertyValidationFailure.LocalizedValidationMessage,
               validatedBusinessObject,
               validatedBusinessObjectProperty);
@@ -59,14 +59,14 @@ namespace Remotion.ObjectBinding.Validation
         case ObjectValidationFailure objectValidationFailure
             when validationFailure.ValidatedObject is IBusinessObject validatedBusinessObject:
         {
-          return BusinessObjectValidationFailure.CreateForBusinessObject (
+          return BusinessObjectValidationFailure.CreateForBusinessObject(
               validatedBusinessObject,
               objectValidationFailure.LocalizedValidationMessage);
         }
 
         default:
         {
-          return BusinessObjectValidationFailure.Create (validationFailure.LocalizedValidationMessage);
+          return BusinessObjectValidationFailure.Create(validationFailure.LocalizedValidationMessage);
         }
       }
     }
@@ -75,8 +75,8 @@ namespace Remotion.ObjectBinding.Validation
     private static IBusinessObjectProperty? GetBusinessObjectProperty (IBusinessObject businessObject, IPropertyInformation property)
     {
       var businessObjectClass = businessObject.BusinessObjectClass;
-      Assertion.IsNotNull (businessObjectClass, "The business object's BusinessObjectClass-property evaluated and returned null.");
-      return businessObjectClass.GetPropertyDefinition (property.Name);
+      Assertion.IsNotNull(businessObjectClass, "The business object's BusinessObjectClass-property evaluated and returned null.");
+      return businessObjectClass.GetPropertyDefinition(property.Name);
     }
 
     private readonly IReadOnlyCollection<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)> _validationFailures;
@@ -85,10 +85,10 @@ namespace Remotion.ObjectBinding.Validation
 
     private BusinessObjectValidationResult (IEnumerable<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)> businessObjectValidationFailures)
     {
-      ArgumentUtility.CheckNotNull ("businessObjectValidationFailures", businessObjectValidationFailures);
+      ArgumentUtility.CheckNotNull("businessObjectValidationFailures", businessObjectValidationFailures);
 
       _validationFailures = businessObjectValidationFailures.ToArray();
-      _unhandledValidationFailures = new HashSet<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)> (_validationFailures);
+      _unhandledValidationFailures = new HashSet<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)>(_validationFailures);
     }
 
     public IReadOnlyCollection<BusinessObjectValidationFailure> GetValidationFailures (
@@ -96,20 +96,20 @@ namespace Remotion.ObjectBinding.Validation
         IBusinessObjectProperty businessObjectProperty,
         bool markAsHandled)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-      ArgumentUtility.CheckNotNull ("businessObjectProperty", businessObjectProperty);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("businessObjectProperty", businessObjectProperty);
 
       var validationFailures = _validationFailures
-          .Where (f => Equals (f.BusinessObjectValidationFailure.ValidatedObject, businessObject))
-          .Where (f => f.BusinessObjectValidationFailure.ValidatedProperty?.Identifier == businessObjectProperty.Identifier);
+          .Where(f => Equals(f.BusinessObjectValidationFailure.ValidatedObject, businessObject))
+          .Where(f => f.BusinessObjectValidationFailure.ValidatedProperty?.Identifier == businessObjectProperty.Identifier);
 
       var result = new List<BusinessObjectValidationFailure>();
       foreach (var validationFailure in validationFailures)
       {
-        result.Add (validationFailure.BusinessObjectValidationFailure);
+        result.Add(validationFailure.BusinessObjectValidationFailure);
 
         if (markAsHandled)
-          _unhandledValidationFailures.Remove (validationFailure);
+          _unhandledValidationFailures.Remove(validationFailure);
       }
 
       return result;
@@ -117,18 +117,18 @@ namespace Remotion.ObjectBinding.Validation
 
     public IReadOnlyCollection<UnhandledBusinessObjectValidationFailure> GetUnhandledValidationFailures (IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
       return _unhandledValidationFailures
-          .Where (f => Equals (f.BusinessObjectValidationFailure.ValidatedObject, businessObject))
-          .Select (f => f.BusinessObjectValidationFailure)
-          .Select (f => new UnhandledBusinessObjectValidationFailure (f.ErrorMessage, f.ValidatedProperty))
+          .Where(f => Equals(f.BusinessObjectValidationFailure.ValidatedObject, businessObject))
+          .Select(f => f.BusinessObjectValidationFailure)
+          .Select(f => new UnhandledBusinessObjectValidationFailure(f.ErrorMessage, f.ValidatedProperty))
           .ToArray();
     }
 
     public IReadOnlyCollection<ValidationFailure> GetUnhandledValidationFailures ()
     {
-      return _unhandledValidationFailures.Select (f => f.ValidationFailure).ToArray();
+      return _unhandledValidationFailures.Select(f => f.ValidationFailure).ToArray();
     }
   }
 }

@@ -24,10 +24,10 @@ namespace Remotion.Web.Test.Shared.UpdatePanelTests
   public class SutFunction : WxeFunction
   {
     public SutFunction ()
-      : base (new NoneTransactionMode ())
+      : base (new NoneTransactionMode())
     {      
     }
 
-    private WxeStep Step1 = new WxeResourcePageStep (typeof (SutForm), "UpdatePanelTests/SutForm.aspx");
+    private WxeStep Step1 = new WxeResourcePageStep(typeof (SutForm), "UpdatePanelTests/SutForm.aspx");
   }
 }

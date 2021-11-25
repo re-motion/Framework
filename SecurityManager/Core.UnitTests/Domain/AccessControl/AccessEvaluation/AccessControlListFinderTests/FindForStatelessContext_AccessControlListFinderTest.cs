@@ -33,78 +33,78 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     public void Find_ClassWithoutStateProperties_ReturnsStatelessAcl ()
     {
       var acl = CreateStatelessAcl();
-      StubClassDefinition<Customer> (acl);
+      StubClassDefinition<Customer>(acl);
       var context = CreateContext<Customer>();
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.EqualTo (acl));
+      Assert.That(foundAcl, Is.EqualTo(acl));
     }
 
     [Test]
     public void Find_ClassWithStateProperties_ReturnsStatelessAcl ()
     {
       var acl = CreateStatelessAcl();
-      StubClassDefinition<Order> (acl);
+      StubClassDefinition<Order>(acl);
       var context = CreateContext<Order>();
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.EqualTo (acl));
+      Assert.That(foundAcl, Is.EqualTo(acl));
     }
 
     [Test]
     public void Find_WithInheritedAcl_ReturnsStatelessAclFromBaseClass ()
     {
       var acl = CreateStatelessAcl();
-      StubClassDefinition<Order> (acl);
-      StubClassDefinition<PremiumOrder, Order> (null, new StatefulAccessControlListData[0]);
+      StubClassDefinition<Order>(acl);
+      StubClassDefinition<PremiumOrder, Order>(null, new StatefulAccessControlListData[0]);
       var context = CreateContext<PremiumOrder>();
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.EqualTo (acl));
+      Assert.That(foundAcl, Is.EqualTo(acl));
     }
 
     [Test]
     public void Find_WithInheritedAclAndDerivedClassContainsOnlyStatefulAcl_ReturnsNull ()
     {
       var acl = CreateStatelessAcl();
-      StubClassDefinition<Order> (acl);
-      StubClassDefinition<PremiumOrder, Order> (null, CreateStatefulAcl());
+      StubClassDefinition<Order>(acl);
+      StubClassDefinition<PremiumOrder, Order>(null, CreateStatefulAcl());
       var context = CreateContext<PremiumOrder>();
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.Null);
+      Assert.That(foundAcl, Is.Null);
     }
 
     [Test]
     public void Find_ClassWithoutAcl_ReturnsNull ()
     {
-      StubClassDefinition<Customer> (null);
+      StubClassDefinition<Customer>(null);
       var context = CreateContext<Customer>();
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.Null);
+      Assert.That(foundAcl, Is.Null);
     }
 
     private void StubClassDefinition<TClass> ([CanBeNull] IDomainObjectHandle<StatelessAccessControlList> statelessAcl)
         where TClass : ISecurableObject
     {
-      StubClassDefinition<TClass> (statelessAcl, CreateStatefulAcl());
+      StubClassDefinition<TClass>(statelessAcl, CreateStatefulAcl());
     }
 
     private SecurityContext CreateContext<TClass> ()
         where TClass : ISecurableObject
     {
-      return SecurityContext.CreateStateless (typeof (TClass));
+      return SecurityContext.CreateStateless(typeof (TClass));
     }
   }
 }

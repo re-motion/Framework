@@ -48,18 +48,18 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
         bool resolveTypes,
         PrefixNamespace schemaNamespace)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("configurationFile", configurationFile);
-      ArgumentUtility.CheckNotNull ("schemaLoader", schemaLoader);
-      ArgumentUtility.CheckNotNull ("schemaNamespace", schemaNamespace);
+      ArgumentUtility.CheckNotNullOrEmpty("configurationFile", configurationFile);
+      ArgumentUtility.CheckNotNull("schemaLoader", schemaLoader);
+      ArgumentUtility.CheckNotNull("schemaNamespace", schemaNamespace);
 
-      if (!File.Exists (configurationFile))
-        throw new FileNotFoundException (string.Format ("Configuration file '{0}' could not be found.", configurationFile), configurationFile);
+      if (!File.Exists(configurationFile))
+        throw new FileNotFoundException(string.Format("Configuration file '{0}' could not be found.", configurationFile), configurationFile);
 
-      _configurationFile = Path.GetFullPath (configurationFile);
+      _configurationFile = Path.GetFullPath(configurationFile);
       _resolveTypes = resolveTypes;
 
-      _document = LoadConfigurationFile (_configurationFile, schemaLoader, schemaNamespace.Uri);
-      _namespaceManager = new ConfigurationNamespaceManager (_document, new PrefixNamespace[] { schemaNamespace });
+      _document = LoadConfigurationFile(_configurationFile, schemaLoader, schemaNamespace.Uri);
+      _namespaceManager = new ConfigurationNamespaceManager(_document, new PrefixNamespace[] { schemaNamespace });
     }
 
     // methods and properties
@@ -69,20 +69,20 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
         SchemaLoader schemaLoader,
         string schemaNamespace)
     {
-      using (XmlTextReader textReader = new XmlTextReader (configurationFile))
+      using (XmlTextReader textReader = new XmlTextReader(configurationFile))
       {
-        XmlReaderSettings validatingReaderSettings = new XmlReaderSettings ();
+        XmlReaderSettings validatingReaderSettings = new XmlReaderSettings();
         validatingReaderSettings.ValidationType = ValidationType.Schema;
-        validatingReaderSettings.Schemas.Add (schemaLoader.LoadSchemaSet ());
+        validatingReaderSettings.Schemas.Add(schemaLoader.LoadSchemaSet());
 
-        using (XmlReader validatingReader = XmlReader.Create (textReader, validatingReaderSettings))
+        using (XmlReader validatingReader = XmlReader.Create(textReader, validatingReaderSettings))
         {
-          XmlDocument document = new XmlDocument (new NameTable ());
-          document.Load (validatingReader);
+          XmlDocument document = new XmlDocument(new NameTable());
+          document.Load(validatingReader);
 
           if (document.DocumentElement.NamespaceURI != schemaNamespace)
           {
-            throw CreateConfigurationException (
+            throw CreateConfigurationException(
                 "The namespace '{0}' of the root element is invalid. Expected namespace: '{1}'.",
                 document.DocumentElement.NamespaceURI, schemaNamespace);
           }
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
 
     private ConfigurationException CreateConfigurationException (string format, params string[] args)
     {
-      return new ConfigurationException (string.Format (format, args));
+      return new ConfigurationException(string.Format(format, args));
     }
   }
 }

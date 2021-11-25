@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   {
     public new static Partner NewObject ()
     {
-      return DomainObject.NewObject<Partner> ();
+      return DomainObject.NewObject<Partner>();
     }
 
     protected Partner ()

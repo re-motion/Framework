@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   {
     public new static DerivedClass NewObject ()
     {
-      return DomainObject.NewObject<DerivedClass> ();
+      return DomainObject.NewObject<DerivedClass>();
     }
 
     protected DerivedClass ()

@@ -42,16 +42,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
 
     protected BrowserConfigurationBase ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
     {
-      ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
+      ArgumentUtility.CheckNotNull("webTestConfigurationSection", webTestConfigurationSection);
 
       _browserName = webTestConfigurationSection.BrowserName;
       _searchTimeout = webTestConfigurationSection.SearchTimeout;
       _retryInterval = webTestConfigurationSection.RetryInterval;
       _logsDirectory = webTestConfigurationSection.LogsDirectory;
-      _browserAnnotateHelper = new BrowserAnnotateHelper (this);
-      _browserHelper = new BrowserHelper (this);
-      _locatorHelper = new LocatorHelper (this);
-      _mouseHelper = new MouseHelper (this);
+      _browserAnnotateHelper = new BrowserAnnotateHelper(this);
+      _browserHelper = new BrowserHelper(this);
+      _locatorHelper = new LocatorHelper(this);
+      _mouseHelper = new MouseHelper(this);
     }
 
     public abstract string BrowserExecutableName { get; }

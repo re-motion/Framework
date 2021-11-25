@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
       _dataSource.Site = Site;
     }
   }

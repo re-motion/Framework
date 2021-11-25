@@ -54,25 +54,25 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
 
     public static XmlWriter CreateXmlWriter (TextWriter textWriter, bool indent)
     {
-      XmlWriterSettings settings = new XmlWriterSettings ();
+      XmlWriterSettings settings = new XmlWriterSettings();
 
       settings.OmitXmlDeclaration = true;
       settings.Indent = indent;
       settings.NewLineOnAttributes = false;
       settings.ConformanceLevel = ConformanceLevel.Document;
 
-      return XmlWriter.Create (textWriter, settings);
+      return XmlWriter.Create(textWriter, settings);
     }
 
 
     public HtmlTagWriter (TextWriter textWriter, bool indentXml)
-        : this (CreateXmlWriter (textWriter, indentXml))
+        : this (CreateXmlWriter(textWriter, indentXml))
     {}
 
     public HtmlTagWriter (XmlWriter xmlWriter)
     {
       _xmlWriter = xmlWriter;
-      _htmlTagWriterTags = new HtmlTagWriterTags (this);
+      _htmlTagWriterTags = new HtmlTagWriterTags(this);
     }
 
     public XmlWriter XmlWriter
@@ -87,8 +87,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
 
     public HtmlTagWriter Tag (string elementName)
     {
-      _xmlWriter.WriteStartElement (elementName);
-      _openElementStack.Push (elementName);
+      _xmlWriter.WriteStartElement(elementName);
+      _openElementStack.Push(elementName);
       return this;
     }
 
@@ -98,15 +98,15 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
       if (ElementNameExpected != elementName)
       {
         _xmlWriter.Flush();
-        throw new XmlException (String.Format ("Wrong closing tag in HTML: Expected {0} but was {1}.", ElementNameExpected, elementName));
+        throw new XmlException(String.Format("Wrong closing tag in HTML: Expected {0} but was {1}.", ElementNameExpected, elementName));
       }
-      _xmlWriter.WriteEndElement ();
+      _xmlWriter.WriteEndElement();
       return this;
     }
 
     public HtmlTagWriter Attribute (string attributeName, string attributeValue)
     {
-      _xmlWriter.WriteAttributeString (attributeName,attributeValue);
+      _xmlWriter.WriteAttributeString(attributeName,attributeValue);
       return this;
     }
 
@@ -114,13 +114,13 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
 
     public HtmlTagWriter Value (string s)
     {
-      _xmlWriter.WriteValue (s ?? string.Empty);
+      _xmlWriter.WriteValue(s ?? string.Empty);
       return this;
     }
 
     public HtmlTagWriter Value (object obj)
     {
-      _xmlWriter.WriteValue (obj);
+      _xmlWriter.WriteValue(obj);
       return this;
     }
 
@@ -129,36 +129,36 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     public HtmlTagWriter WritePageHeader (string pageTitle, string cssFileName)
     {
       // DOCTYPE
-      XmlWriter.WriteDocType ("HTML", "-//W3C//DTD HTML 4.0 Transitional//EN", null, null);
+      XmlWriter.WriteDocType("HTML", "-//W3C//DTD HTML 4.0 Transitional//EN", null, null);
       // HTML
-      Tag ("html");
+      Tag("html");
       // HEAD
-      Tag ("head");
+      Tag("head");
 
       // TITLE
       if (pageTitle != null)
       {
-        Tag ("title");
-        Value (pageTitle);
-        TagEnd ("title");
+        Tag("title");
+        Value(pageTitle);
+        TagEnd("title");
       }
 
       // STYLE
       if (cssFileName != null)
       {
-        Tag ("style");
-        Value ("@import \"" + cssFileName + "\";");
-        TagEnd ("style");
+        Tag("style");
+        Value("@import \"" + cssFileName + "\";");
+        TagEnd("style");
       }
 
       // META
       //   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
-      Tag ("meta");
-      Attribute ("http-equiv", "Content-Type");
-      Attribute ("content", "text/html; charset=UTF-8");
-      TagEnd ("meta");
+      Tag("meta");
+      Attribute("http-equiv", "Content-Type");
+      Attribute("content", "text/html; charset=UTF-8");
+      TagEnd("meta");
 
-      TagEnd ("head");
+      TagEnd("head");
 
       return this;
     }
@@ -171,12 +171,12 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
     
     public void Close ()
     {
-      _xmlWriter.Close ();
+      _xmlWriter.Close();
     }
 
     void IDisposable.Dispose ()
     {
-      Close ();
+      Close();
     }
 
   }

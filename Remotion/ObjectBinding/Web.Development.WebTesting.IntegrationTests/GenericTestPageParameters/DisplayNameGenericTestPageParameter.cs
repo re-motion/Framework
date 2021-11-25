@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
       VisibleDisplayName = data.Arguments[0];
       HiddenDisplayName = data.Arguments[1];

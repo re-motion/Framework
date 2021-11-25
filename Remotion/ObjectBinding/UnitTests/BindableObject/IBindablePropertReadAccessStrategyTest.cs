@@ -37,8 +37,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var strategy = _serviceLocator.GetInstance<IBindablePropertyReadAccessStrategy>();
 
-      Assert.That (strategy, Is.TypeOf (typeof (CompundBindablePropertyReadAccessStrategy)));
-      Assert.That (((CompundBindablePropertyReadAccessStrategy) strategy).BindablePropertyReadAccessStrategies, Is.Empty);
+      Assert.That(strategy, Is.TypeOf(typeof (CompundBindablePropertyReadAccessStrategy)));
+      Assert.That(((CompundBindablePropertyReadAccessStrategy) strategy).BindablePropertyReadAccessStrategies, Is.Empty);
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var strategy1 = _serviceLocator.GetInstance<IBindablePropertyReadAccessStrategy>();
       var strategy2 = _serviceLocator.GetInstance<IBindablePropertyReadAccessStrategy>();
 
-      Assert.That (strategy1, Is.SameAs (strategy2));
+      Assert.That(strategy1, Is.SameAs(strategy2));
     }
   }
 }

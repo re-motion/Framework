@@ -57,12 +57,12 @@ public class WxeLauncher: IHttpHandler
   /// </summary>
   public void ProcessRequest (HttpContext context)
   {
-    StringBuilder destinationUrlBuilder = new StringBuilder (100);
-    destinationUrlBuilder.Append (context.Request.ApplicationPath);
-    destinationUrlBuilder.Append ("/");
-    destinationUrlBuilder.Append (WxeHandler);
-    destinationUrlBuilder.Append ("?");
-    destinationUrlBuilder.Append (GetQueryString (context.Request.QueryString));
+    StringBuilder destinationUrlBuilder = new StringBuilder(100);
+    destinationUrlBuilder.Append(context.Request.ApplicationPath);
+    destinationUrlBuilder.Append("/");
+    destinationUrlBuilder.Append(WxeHandler);
+    destinationUrlBuilder.Append("?");
+    destinationUrlBuilder.Append(GetQueryString(context.Request.QueryString));
 
     string destinationUrl = destinationUrlBuilder.ToString();
 
@@ -71,17 +71,17 @@ public class WxeLauncher: IHttpHandler
 
     context.Response.Clear();
 
-		context.Response.Write ("<html>\r\n");
-    context.Response.Write ("<head>\r\n");
-    context.Response.Write ("<title>Object moved</title>\r\n");
-    context.Response.Write ("<meta http-equiv=\"refresh\" content=\"0; URL=" + destinationUrl + "\">");
-    context.Response.Write ("</head>\r\n");
-    context.Response.Write ("<body>\r\n");
-		context.Response.Write ("<h2>Object moved to <a href='" + destinationUrl + "'>here</a>.</h2>\r\n");
-    context.Response.Write ("</body>\r\n");
-		context.Response.Write ("</html>\r\n");
+		context.Response.Write("<html>\r\n");
+    context.Response.Write("<head>\r\n");
+    context.Response.Write("<title>Object moved</title>\r\n");
+    context.Response.Write("<meta http-equiv=\"refresh\" content=\"0; URL=" + destinationUrl + "\">");
+    context.Response.Write("</head>\r\n");
+    context.Response.Write("<body>\r\n");
+		context.Response.Write("<h2>Object moved to <a href='" + destinationUrl + "'>here</a>.</h2>\r\n");
+    context.Response.Write("</body>\r\n");
+		context.Response.Write("</html>\r\n");
 
-    context.Response.End ();
+    context.Response.End();
   }
 
   bool IHttpHandler.IsReusable

@@ -66,13 +66,13 @@ namespace Remotion.Web.UI.Controls
       if (_isLazyLoadingEnabled)
       {        
         if (!_hasControlStateLoaded && Page != null && Page.IsPostBack)
-          throw new InvalidOperationException (string.Format ("Cannot ensure LazyContainer '{0}' before its state has been loaded.", ID));
+          throw new InvalidOperationException(string.Format("Cannot ensure LazyContainer '{0}' before its state has been loaded.", ID));
 
-        RestoreChildControlState ();
+        RestoreChildControlState();
       }
 
-      EnsurePlaceHolderCreated ();
-      Controls.Add (_placeHolder);
+      EnsurePlaceHolderCreated();
+      Controls.Add(_placeHolder);
     }
 
     public bool IsLazyLoadingEnabled
@@ -83,14 +83,14 @@ namespace Remotion.Web.UI.Controls
 
     public new IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
     public override ControlCollection Controls
     {
       get
       {
-        EnsureChildControls ();
+        EnsureChildControls();
 
         if (_isEnsured)
         {
@@ -99,7 +99,7 @@ namespace Remotion.Web.UI.Controls
         else
         {
           if (_emptyControlCollection == null)
-            _emptyControlCollection = new EmptyControlCollection (this);
+            _emptyControlCollection = new EmptyControlCollection(this);
           return _emptyControlCollection;
         }
       }
@@ -110,32 +110,32 @@ namespace Remotion.Web.UI.Controls
     {
       get
       {
-        EnsureChildControls ();
+        EnsureChildControls();
 
-        EnsurePlaceHolderCreated ();
+        EnsurePlaceHolderCreated();
         return _placeHolder.Controls;
       }
     }
 
-    [MemberNotNull (nameof (_placeHolder))]
+    [MemberNotNull (nameof(_placeHolder))]
     private void EnsurePlaceHolderCreated ()
     {
       if (_placeHolder == null)
-        _placeHolder = new PlaceHolder ();
+        _placeHolder = new PlaceHolder();
     }
 
     protected override void CreateChildControls ()
     {
       if (! _isLazyLoadingEnabled)
-        Ensure ();
+        Ensure();
     }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
-      EnsureChildControls ();
+      base.OnInit(e);
+      EnsureChildControls();
 
-      Page!.RegisterRequiresControlState (this);
+      Page!.RegisterRequiresControlState(this);
     }
 
     protected override void LoadViewState (object? savedState)
@@ -146,13 +146,13 @@ namespace Remotion.Web.UI.Controls
       if (savedState != null)
       {
         Pair values = (Pair) savedState;
-        base.LoadViewState (values.First);
+        base.LoadViewState(values.First);
         _recursiveViewState = values.Second;
 
         if (_isLazyLoadingEnabled)
         {
           _isLoadingViewStateRecursive = true;
-          MemberCaller.LoadViewStateRecursive (this, _recursiveViewState!);
+          MemberCaller.LoadViewStateRecursive(this, _recursiveViewState!);
           _isLoadingViewStateRecursive = false;
         }
       }
@@ -166,12 +166,12 @@ namespace Remotion.Web.UI.Controls
       if (_isLazyLoadingEnabled && _isEnsured)
       {
         _isSavingViewStateRecursive = true;
-        _recursiveViewState = MemberCaller.SaveViewStateRecursive (this);
+        _recursiveViewState = MemberCaller.SaveViewStateRecursive(this);
         _isSavingViewStateRecursive = false;
       }
 
-      Pair values = new Pair ();
-      values.First = base.SaveViewState ();
+      Pair values = new Pair();
+      values.First = base.SaveViewState();
       values.Second = _recursiveViewState;
 
       return values;
@@ -179,19 +179,19 @@ namespace Remotion.Web.UI.Controls
 
     protected override void LoadControlState (object? savedState)
     {
-      Triplet values = ArgumentUtility.CheckNotNullAndType<Triplet> ("savedState", savedState!);
+      Triplet values = ArgumentUtility.CheckNotNullAndType<Triplet>("savedState", savedState!);
 
-      base.LoadControlState (savedState);
+      base.LoadControlState(savedState);
       bool hasChildControlStatesBackUp = (bool) values.Second!;
 
       if (hasChildControlStatesBackUp)
       {
-        Assertion.DebugIsNotNull (values.Third, "values.Third must not be null if hasChildControlStatesBackUp is true.");
+        Assertion.DebugIsNotNull(values.Third, "values.Third must not be null if hasChildControlStatesBackUp is true.");
         _childControlStatesBackUp = (IDictionary) values.Third;
       }
       else if (_isLazyLoadingEnabled)
       {
-        BackUpChildControlState ();
+        BackUpChildControlState();
       }
 
       _hasControlStateLoaded = true;
@@ -199,22 +199,22 @@ namespace Remotion.Web.UI.Controls
 
     private void RestoreChildControlState ()
     {
-      MemberCaller.SetChildControlState (this, _childControlStatesBackUp);
+      MemberCaller.SetChildControlState(this, _childControlStatesBackUp);
 
       _childControlStatesBackUp = null;
     }
 
     private void BackUpChildControlState ()
     {
-      _childControlStatesBackUp = MemberCaller.GetChildControlState (this);
+      _childControlStatesBackUp = MemberCaller.GetChildControlState(this);
     }
 
     protected override object SaveControlState ()
     {
       bool hasChildControlStatesBackUp = _isLazyLoadingEnabled && !_isEnsured;
 
-      Triplet values = new Triplet ();
-      values.First = base.SaveControlState ();
+      Triplet values = new Triplet();
+      values.First = base.SaveControlState();
       values.Second = hasChildControlStatesBackUp;
       if (hasChildControlStatesBackUp)
         values.Third = _childControlStatesBackUp;

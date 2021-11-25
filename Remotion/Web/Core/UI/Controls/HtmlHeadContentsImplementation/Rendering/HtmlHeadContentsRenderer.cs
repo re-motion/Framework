@@ -36,7 +36,7 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
 
     public void Render (HtmlHeadContentsRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       var titleTags = new List<TitleTag>();
       var javascriptIncludes = new List<JavaScriptInclude>();
@@ -46,55 +46,55 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
       foreach (var element in renderingContext.HtmlHeadElements)
       {
         if (element is TitleTag)
-          titleTags.Add ((TitleTag) element);
+          titleTags.Add((TitleTag) element);
         else if (element is JavaScriptInclude)
-          javascriptIncludes.Add ((JavaScriptInclude) element);
+          javascriptIncludes.Add((JavaScriptInclude) element);
         else if (element is StyleSheetElement)
-          stylesheetElements.Add ((StyleSheetElement) element);
+          stylesheetElements.Add((StyleSheetElement) element);
         else
-          remainingHtmlHeadElements.Add (element);
+          remainingHtmlHeadElements.Add(element);
       }
 
       if (titleTags.Any())
-        RenderTitleTag (renderingContext.Writer, titleTags.First());
-      RenderJavascriptIncludes (renderingContext.Writer, javascriptIncludes);
-      RenderStylesheetElements (renderingContext.Writer, stylesheetElements);
-      RenderUncategorizedHtmlHeadElements (renderingContext.Writer, remainingHtmlHeadElements);
+        RenderTitleTag(renderingContext.Writer, titleTags.First());
+      RenderJavascriptIncludes(renderingContext.Writer, javascriptIncludes);
+      RenderStylesheetElements(renderingContext.Writer, stylesheetElements);
+      RenderUncategorizedHtmlHeadElements(renderingContext.Writer, remainingHtmlHeadElements);
     }
 
     protected virtual void RenderTitleTag (HtmlTextWriter writer, TitleTag titleTag)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
-      ArgumentUtility.CheckNotNull ("titleTag", titleTag);
+      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull("titleTag", titleTag);
 
-      titleTag.Render (writer);
+      titleTag.Render(writer);
     }
 
     protected virtual void RenderJavascriptIncludes (HtmlTextWriter writer, IReadOnlyCollection<JavaScriptInclude> javascriptIncludes)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
-      ArgumentUtility.CheckNotNull ("javascriptIncludes", javascriptIncludes);
+      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull("javascriptIncludes", javascriptIncludes);
 
       foreach (var javascriptInclude in javascriptIncludes)
-        javascriptInclude.Render (writer);
+        javascriptInclude.Render(writer);
     }
 
     protected virtual void RenderStylesheetElements (HtmlTextWriter writer, IReadOnlyCollection<StyleSheetElement> stylesheetElements)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
-      ArgumentUtility.CheckNotNull ("stylesheetElements", stylesheetElements);
+      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull("stylesheetElements", stylesheetElements);
 
       foreach (var styleSheetElement in stylesheetElements)
-        styleSheetElement.Render (writer);
+        styleSheetElement.Render(writer);
     }
 
     protected virtual void RenderUncategorizedHtmlHeadElements (HtmlTextWriter writer, IReadOnlyCollection<HtmlHeadElement> htmlHeadElements)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
-      ArgumentUtility.CheckNotNull ("htmlHeadElements", htmlHeadElements);
+      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull("htmlHeadElements", htmlHeadElements);
 
       foreach (var htmlHeadElement in htmlHeadElements)
-        htmlHeadElement.Render (writer);
+        htmlHeadElement.Render(writer);
     }
   }
 }

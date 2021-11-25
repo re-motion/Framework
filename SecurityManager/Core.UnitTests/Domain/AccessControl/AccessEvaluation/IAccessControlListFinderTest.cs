@@ -21,8 +21,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     {
       var factory = _serviceLocator.GetInstance<IAccessControlListFinder>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (AccessControlListFinder)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof (AccessControlListFinder)));
     }
 
     [Test]
@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       var factory1 = _serviceLocator.GetInstance<IAccessControlListFinder>();
       var factory2 = _serviceLocator.GetInstance<IAccessControlListFinder>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

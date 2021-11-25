@@ -48,11 +48,11 @@ namespace Remotion.Mixins.CodeGeneration
         Dictionary<MethodInfo, MethodInfo> overrideInterfaceMethodsByMixinMethod,
         Dictionary<MethodInfo, MethodInfo> methodWrappers)
     {
-      ArgumentUtility.CheckNotNull ("identifier", identifier);
-      ArgumentUtility.CheckNotNull ("generatedType", generatedType);
-      ArgumentUtility.CheckNotNull ("generatedOverrideInterface", generatedOverrideInterface);
-      ArgumentUtility.CheckNotNull ("overrideInterfaceMethodsByMixinMethod", overrideInterfaceMethodsByMixinMethod);
-      ArgumentUtility.CheckNotNull ("methodWrappers", methodWrappers);
+      ArgumentUtility.CheckNotNull("identifier", identifier);
+      ArgumentUtility.CheckNotNull("generatedType", generatedType);
+      ArgumentUtility.CheckNotNull("generatedOverrideInterface", generatedOverrideInterface);
+      ArgumentUtility.CheckNotNull("overrideInterfaceMethodsByMixinMethod", overrideInterfaceMethodsByMixinMethod);
+      ArgumentUtility.CheckNotNull("methodWrappers", methodWrappers);
 
       _identifier = identifier;
       _generatedType = generatedType;
@@ -88,17 +88,17 @@ namespace Remotion.Mixins.CodeGeneration
 
     public MethodInfo GetPubliclyCallableMixinMethod (MethodInfo methodToBeCalled)
     {
-      ArgumentUtility.CheckNotNull ("methodToBeCalled", methodToBeCalled);
+      ArgumentUtility.CheckNotNull("methodToBeCalled", methodToBeCalled);
 
       if (methodToBeCalled.IsPublic)
         return methodToBeCalled;
 
       MethodInfo? wrapper;
-      if (!_methodWrappers.TryGetValue (methodToBeCalled, out wrapper))
+      if (!_methodWrappers.TryGetValue(methodToBeCalled, out wrapper))
       {
         string message =
-            string.Format ("No public wrapper was generated for method '{0}.{1}'.", methodToBeCalled.DeclaringType!.GetFullNameSafe(), methodToBeCalled.Name);
-        throw new KeyNotFoundException (message);
+            string.Format("No public wrapper was generated for method '{0}.{1}'.", methodToBeCalled.DeclaringType!.GetFullNameSafe(), methodToBeCalled.Name);
+        throw new KeyNotFoundException(message);
       }
       else
       {
@@ -108,14 +108,14 @@ namespace Remotion.Mixins.CodeGeneration
 
     public MethodInfo GetOverrideInterfaceMethod (MethodInfo mixinMethod)
     {
-      ArgumentUtility.CheckNotNull ("mixinMethod", mixinMethod);
+      ArgumentUtility.CheckNotNull("mixinMethod", mixinMethod);
 
       MethodInfo? interfaceMethod;
-      if (!_overrideInterfaceMethodsByMixinMethod.TryGetValue (mixinMethod, out interfaceMethod))
+      if (!_overrideInterfaceMethodsByMixinMethod.TryGetValue(mixinMethod, out interfaceMethod))
       {
         string message =
-            string.Format ("No override interface method was generated for method '{0}.{1}'.", mixinMethod.DeclaringType!.GetFullNameSafe(), mixinMethod.Name);
-        throw new KeyNotFoundException (message);
+            string.Format("No override interface method was generated for method '{0}.{1}'.", mixinMethod.DeclaringType!.GetFullNameSafe(), mixinMethod.Name);
+        throw new KeyNotFoundException(message);
       }
       else
       {
@@ -125,27 +125,27 @@ namespace Remotion.Mixins.CodeGeneration
 
     public ConcreteMixinType SubstituteMutableReflectionObjects (GeneratedTypesContext context)
     {
-      var identifier = SubstituteConcreteMixinIdentifier (context, _identifier);
-      var generatedType = Substitute (context, _generatedType);
-      var generatedOverrideInterface = Substitute (context, _generatedOverrideInterface);
-      var overrideInterfaceMethodsByMixinMethod = Substitute (context, _overrideInterfaceMethodsByMixinMethod);
-      var methodWrappers = Substitute (context, _methodWrappers);
+      var identifier = SubstituteConcreteMixinIdentifier(context, _identifier);
+      var generatedType = Substitute(context, _generatedType);
+      var generatedOverrideInterface = Substitute(context, _generatedOverrideInterface);
+      var overrideInterfaceMethodsByMixinMethod = Substitute(context, _overrideInterfaceMethodsByMixinMethod);
+      var methodWrappers = Substitute(context, _methodWrappers);
 
-      return new ConcreteMixinType (identifier, generatedType, generatedOverrideInterface, overrideInterfaceMethodsByMixinMethod, methodWrappers);
+      return new ConcreteMixinType(identifier, generatedType, generatedOverrideInterface, overrideInterfaceMethodsByMixinMethod, methodWrappers);
     }
 
     private static ConcreteMixinTypeIdentifier SubstituteConcreteMixinIdentifier (GeneratedTypesContext context, ConcreteMixinTypeIdentifier identifier)
     {
-      var mixinType = Substitute (context, identifier.MixinType);
-      var overriders = identifier.Overriders.Select (m => Substitute (context, m));
-      var overridden = identifier.Overridden.Select (m => Substitute (context, m));
+      var mixinType = Substitute(context, identifier.MixinType);
+      var overriders = identifier.Overriders.Select(m => Substitute(context, m));
+      var overridden = identifier.Overridden.Select(m => Substitute(context, m));
 
-      return new ConcreteMixinTypeIdentifier (mixinType, new HashSet<MethodInfo> (overriders), new HashSet<MethodInfo> (overridden));
+      return new ConcreteMixinTypeIdentifier(mixinType, new HashSet<MethodInfo>(overriders), new HashSet<MethodInfo>(overridden));
     }
 
     private static Dictionary<MethodInfo, MethodInfo> Substitute (GeneratedTypesContext context, Dictionary<MethodInfo, MethodInfo> dictionary)
     {
-      return dictionary.ToDictionary (p => Substitute (context, p.Key), p => Substitute (context, p.Value));
+      return dictionary.ToDictionary(p => Substitute(context, p.Key), p => Substitute(context, p.Value));
     }
 
     private static T Substitute<T> (GeneratedTypesContext context, T member)
@@ -153,7 +153,7 @@ namespace Remotion.Mixins.CodeGeneration
     {
       var mutableMember = member as IMutableMember;
       if (mutableMember != null)
-        return (T) context.GetGeneratedMember (mutableMember);
+        return (T) context.GetGeneratedMember(mutableMember);
       else
         return member;
     }

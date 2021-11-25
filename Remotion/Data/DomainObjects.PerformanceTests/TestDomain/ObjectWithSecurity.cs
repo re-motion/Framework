@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
 
     public static ObjectWithSecurity NewObject ()
     {
-      return NewObject<ObjectWithSecurity> ();
+      return NewObject<ObjectWithSecurity>();
     }
 
     protected ObjectWithSecurity ()
@@ -149,9 +149,9 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
       if (_domainObjectSecurityStrategy == null)
       {
         _domainObjectSecurityStrategy =
-            new InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator (
-                new DomainObjectSecurityStrategyDecorator (
-                    ObjectSecurityStrategy.Create (this, InvalidationToken.Create()),
+            new InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator(
+                new DomainObjectSecurityStrategyDecorator(
+                    ObjectSecurityStrategy.Create(this, InvalidationToken.Create()),
                     this,
                     RequiredSecurityForStates.NewAndDeleted));
       }
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
     {
       if (_securityContext == null)
       {
-        _securityContext = SecurityContext.Create (
+        _securityContext = SecurityContext.Create(
             ((ISecurableObject) this).GetSecurableType(),
             null,
             null,

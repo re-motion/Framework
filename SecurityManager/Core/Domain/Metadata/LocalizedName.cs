@@ -30,14 +30,14 @@ namespace Remotion.SecurityManager.Domain.Metadata
   {
     public static LocalizedName NewObject (string text, Culture culture, MetadataObject metadataObject)
     {
-      return NewObject<LocalizedName> (ParamList.Create (text, culture, metadataObject));
+      return NewObject<LocalizedName>(ParamList.Create(text, culture, metadataObject));
     }
 
     protected LocalizedName (string text, Culture culture, MetadataObject metadataObject)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("text", text);
-      ArgumentUtility.CheckNotNull ("culture", culture);
-      ArgumentUtility.CheckNotNull ("metadataObject", metadataObject);
+      ArgumentUtility.CheckNotNullOrEmpty("text", text);
+      ArgumentUtility.CheckNotNull("culture", culture);
+      ArgumentUtility.CheckNotNull("metadataObject", metadataObject);
 
       Text = text;
       Culture = culture;

@@ -54,22 +54,22 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     protected BindableDomainObject (SerializationInfo info, StreamingContext context)
       : base (info, context)
     {
-      _implementation = (IBindableDomainObjectImplementation) info.GetValue ("BDO._implementation", typeof (IBindableDomainObjectImplementation));
+      _implementation = (IBindableDomainObjectImplementation) info.GetValue("BDO._implementation", typeof (IBindableDomainObjectImplementation));
     }
 
     protected new void BaseGetObjectData (SerializationInfo info, StreamingContext context)
     {
-      info.AddValue ("BDO._implementation", _implementation);
+      info.AddValue("BDO._implementation", _implementation);
 
-      base.BaseGetObjectData (info, context);
+      base.BaseGetObjectData(info, context);
     }
 
     protected override void OnReferenceInitializing ()
     {
-      base.OnReferenceInitializing ();
+      base.OnReferenceInitializing();
 
       if (_implementation == null) // may have been set by ctor
-        _implementation = BindableDomainObjectImplementation.Create (this);
+        _implementation = BindableDomainObjectImplementation.Create(this);
     }
 
     /// <summary>
@@ -91,17 +91,17 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
     object IBusinessObject.GetProperty (IBusinessObjectProperty property)
     {
-      return _implementation.GetProperty (property);
+      return _implementation.GetProperty(property);
     }
 
     void IBusinessObject.SetProperty (IBusinessObjectProperty property, object value)
     {
-      _implementation.SetProperty (property, value);
+      _implementation.SetProperty(property, value);
     }
 
     string IBusinessObject.GetPropertyString (IBusinessObjectProperty property, string format)
     {
-      return _implementation.GetPropertyString (property, format);
+      return _implementation.GetPropertyString(property, format);
     }
 
     IBusinessObjectClass IBusinessObject.BusinessObjectClass

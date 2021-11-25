@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
   {
     public static TargetClassForMixinWithState NewObject ()
     {
-      return NewObject<TargetClassForMixinWithState> ();
+      return NewObject<TargetClassForMixinWithState>();
     }
   }
 }

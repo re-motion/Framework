@@ -34,91 +34,91 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void IsDefaultDefault_StateIsNotNew ()
     {
-      var instance = SampleBindableDomainObject.NewObject ();
-      LifetimeService.DeleteObject (instance.DefaultTransactionContext.ClientTransaction, instance);
+      var instance = SampleBindableDomainObject.NewObject();
+      LifetimeService.DeleteObject(instance.DefaultTransactionContext.ClientTransaction, instance);
 
-      var property = GetProperty (instance);
-      var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy ();
-      Assert.That (instance.State.IsNew, Is.False);
+      var property = GetProperty(instance);
+      var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy();
+      Assert.That(instance.State.IsNew, Is.False);
       
-      var result = strategy.IsDefaultValue (instance, property);
+      var result = strategy.IsDefaultValue(instance, property);
 
-      Assert.That (result, Is.False);
+      Assert.That(result, Is.False);
     }
 
     [Test]
     public void IsDefaultDefault_StateIsNewAndPropertyHasBeenTouched ()
     {
-      var instance = SampleBindableDomainObject.NewObject ();
+      var instance = SampleBindableDomainObject.NewObject();
 
-      var property = GetProperty (instance);
-      var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy ();
+      var property = GetProperty(instance);
+      var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy();
       instance.Name = instance.Name;
-      Assert.That (instance.State.IsNew, Is.True);
+      Assert.That(instance.State.IsNew, Is.True);
       
-      var result = strategy.IsDefaultValue (instance, property);
+      var result = strategy.IsDefaultValue(instance, property);
 
-      Assert.That (result, Is.False);
+      Assert.That(result, Is.False);
     }
 
     [Test]
     public void IsDefaultDefault_StateIsNewAndPropertyHasNotBeenTouched ()
     {
-      var instance = SampleBindableDomainObject.NewObject ();
+      var instance = SampleBindableDomainObject.NewObject();
 
-      var property = GetProperty (instance);
-      var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy ();
-      Assert.That (instance.State.IsNew, Is.True);
+      var property = GetProperty(instance);
+      var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy();
+      Assert.That(instance.State.IsNew, Is.True);
 
-      var result = strategy.IsDefaultValue (instance, property);
+      var result = strategy.IsDefaultValue(instance, property);
 
-      Assert.That (result, Is.True);
+      Assert.That(result, Is.True);
     }
 
     [Test]
     public void IsDefaultDefault_StateIsNewAndPropertyCannotBeResolved ()
     {
-      var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy ();
-      var instance = SampleBindableDomainObject.NewObject ();
+      var strategy = (IDefaultValueStrategy) new BindableDomainObjectDefaultValueStrategy();
+      var instance = SampleBindableDomainObject.NewObject();
 
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation> ();
-      propertyInformationStub.Stub (stub => stub.PropertyType).Return (typeof (bool));
-      propertyInformationStub.Stub (stub => stub.GetIndexParameters()).Return (new ParameterInfo[0]);
-      propertyInformationStub.Stub (stub => stub.DeclaringType).Return (TypeAdapter.Create (typeof (bool)));
-      propertyInformationStub.Stub (stub => stub.GetOriginalDeclaringType()).Return (TypeAdapter.Create (typeof (bool)));
-      var property = CreateProperty (propertyInformationStub);
+      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
+      propertyInformationStub.Stub(stub => stub.PropertyType).Return(typeof (bool));
+      propertyInformationStub.Stub(stub => stub.GetIndexParameters()).Return(new ParameterInfo[0]);
+      propertyInformationStub.Stub(stub => stub.DeclaringType).Return(TypeAdapter.Create(typeof (bool)));
+      propertyInformationStub.Stub(stub => stub.GetOriginalDeclaringType()).Return(TypeAdapter.Create(typeof (bool)));
+      var property = CreateProperty(propertyInformationStub);
 
-      var result = strategy.IsDefaultValue (instance, property);
+      var result = strategy.IsDefaultValue(instance, property);
 
-      Assert.That (result, Is.False);
+      Assert.That(result, Is.False);
     }
     
     private PropertyBase GetProperty (IBusinessObject instance)
     {
-      return (PropertyBase) instance.BusinessObjectClass.GetPropertyDefinition ("Name");
+      return (PropertyBase) instance.BusinessObjectClass.GetPropertyDefinition("Name");
     }
 
     private BooleanProperty CreateProperty (IPropertyInformation propertyInformation)
     {
-      var businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ();
-      return new BooleanProperty (GetPropertyParameters (propertyInformation, businessObjectProvider));
+      var businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
+      return new BooleanProperty(GetPropertyParameters(propertyInformation, businessObjectProvider));
     }
 
     private BindableObjectProvider CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ()
     {
-      return new BindableObjectProvider (BindableObjectMetadataFactory.Create (), MockRepository.GenerateStub<IBusinessObjectServiceFactory> ());
+      return new BindableObjectProvider(BindableObjectMetadataFactory.Create(), MockRepository.GenerateStub<IBusinessObjectServiceFactory>());
     }
 
     private PropertyBase.Parameters GetPropertyParameters (IPropertyInformation property, BindableObjectProvider provider)
     {
-      PropertyReflector reflector = PropertyReflector.Create (property, provider);
-      return (PropertyBase.Parameters) PrivateInvoke.InvokeNonPublicMethod (
-          reflector, typeof (PropertyReflector), "CreateParameters", GetUnderlyingType (reflector));
+      PropertyReflector reflector = PropertyReflector.Create(property, provider);
+      return (PropertyBase.Parameters) PrivateInvoke.InvokeNonPublicMethod(
+          reflector, typeof (PropertyReflector), "CreateParameters", GetUnderlyingType(reflector));
     }
 
     private Type GetUnderlyingType (PropertyReflector reflector)
     {
-      return (Type) PrivateInvoke.InvokeNonPublicMethod (reflector, typeof (PropertyReflector), "GetUnderlyingType");
+      return (Type) PrivateInvoke.InvokeNonPublicMethod(reflector, typeof (PropertyReflector), "GetUnderlyingType");
     }
   }
 }

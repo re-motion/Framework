@@ -57,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var formerRequestErrorDetectionStrategy = _requestErrorDetectionStrategy;
       _requestErrorDetectionStrategy = new AspNetRequestErrorDetectionStrategy();
-      return new RequestErrorDetectionStrategyScope (this, formerRequestErrorDetectionStrategy);
+      return new RequestErrorDetectionStrategyScope(this, formerRequestErrorDetectionStrategy);
     }
 
     public void CheckPageForError (ElementScope scope)
@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       //As this class is configured for all Integration Tests,
       //we want to call the asp net request error detection strategy so we can detect yellow pages
-      _requestErrorDetectionStrategy.CheckPageForError (scope);
+      _requestErrorDetectionStrategy.CheckPageForError(scope);
     }
 
     public int GetCallCounter ()

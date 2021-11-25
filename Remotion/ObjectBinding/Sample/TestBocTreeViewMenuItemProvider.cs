@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public override WebMenuItem[] InitalizeMenuItems (WebTreeNode node)
     {
-      ArgumentUtility.CheckNotNull ("node", node);
+      ArgumentUtility.CheckNotNull("node", node);
 
       WebMenuItem eventMenuItem = new WebMenuItem();
       eventMenuItem.Text = "Event";
@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Sample
       WebMenuItem wxeMenuItem = new WebMenuItem();
       wxeMenuItem.Text = "WXE";
       wxeMenuItem.Command.Type = CommandType.WxeFunction;
-      wxeMenuItem.Command.WxeFunctionCommand.TypeName = TypeUtility.GetPartialAssemblyQualifiedName (typeof (TestWxeFunction));
+      wxeMenuItem.Command.WxeFunctionCommand.TypeName = TypeUtility.GetPartialAssemblyQualifiedName(typeof (TestWxeFunction));
 
       WebMenuItem filteredByServiceMenuItem = new WebMenuItem();
       filteredByServiceMenuItem.ItemID = "FilterByService";
@@ -63,17 +63,17 @@ namespace Remotion.ObjectBinding.Sample
 
     public override void PreRenderMenuItems (WebTreeNode node, WebMenuItemCollection menuItems)
     {
-      base.PreRenderMenuItems (node, menuItems);
+      base.PreRenderMenuItems(node, menuItems);
     }
 
     public override void OnMenuItemEventCommandClick (WebMenuItem menuItem, WebTreeNode node)
     {
-      base.OnMenuItemEventCommandClick (menuItem, node);
+      base.OnMenuItemEventCommandClick(menuItem, node);
     }
 
     public override void OnMenuItemWxeFunctionCommandClick (WebMenuItem menuItem, WebTreeNode node)
     {
-      base.OnMenuItemWxeFunctionCommandClick (menuItem, node);
+      base.OnMenuItemWxeFunctionCommandClick(menuItem, node);
     }
   }
 }

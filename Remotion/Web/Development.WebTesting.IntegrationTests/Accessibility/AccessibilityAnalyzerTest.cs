@@ -31,96 +31,96 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
     [Test]
     public void Analyze_PageObject ()
     {
-      var home = Start<HtmlPageObject> ("Accessibility/FormElementWithoutLabel.html");
+      var home = Start<HtmlPageObject>("Accessibility/FormElementWithoutLabel.html");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = home.Analyze (analyzer);
+      var result = home.Analyze(analyzer);
       var violation = result.Violations.Single();
 
-      Assert.That (violation.Rule.ID, Is.EqualTo (AccessibilityRuleID.Label));
+      Assert.That(violation.Rule.ID, Is.EqualTo(AccessibilityRuleID.Label));
     }
 
     [Test]
     public void Analyze_IgnoreRule ()
     {
-      Start<HtmlPageObject> ("Accessibility/FormElementWithoutLabelAndDoubleIDAndWithoutDocumentTitle.html");
+      Start<HtmlPageObject>("Accessibility/FormElementWithoutLabelAndDoubleIDAndWithoutDocumentTitle.html");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      analyzer.IgnoreRule (AccessibilityRuleID.Label);
+      analyzer.IgnoreRule(AccessibilityRuleID.Label);
       var result = analyzer.Analyze();
 
-      Assert.That (result.Violations.Count, Is.EqualTo (2));
-      Assert.That (result.Violations.First().Rule.ID, Is.EqualTo (AccessibilityRuleID.DocumentTitle));
-      Assert.That (result.Violations.ElementAt (1).Rule.ID, Is.EqualTo (AccessibilityRuleID.DuplicateIdActive));
+      Assert.That(result.Violations.Count, Is.EqualTo(2));
+      Assert.That(result.Violations.First().Rule.ID, Is.EqualTo(AccessibilityRuleID.DocumentTitle));
+      Assert.That(result.Violations.ElementAt(1).Rule.ID, Is.EqualTo(AccessibilityRuleID.DuplicateIdActive));
     }
 
     [Test]
     public void Analyze_IgnoreMultipleRules ()
     {
-      Start<HtmlPageObject> ("Accessibility/FormElementWithoutLabelAndDoubleIDAndWithoutDocumentTitle.html");
+      Start<HtmlPageObject>("Accessibility/FormElementWithoutLabelAndDoubleIDAndWithoutDocumentTitle.html");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      analyzer.IgnoreRule (AccessibilityRuleID.Label);
-      analyzer.IgnoreRule (AccessibilityRuleID.DuplicateIdActive);
+      analyzer.IgnoreRule(AccessibilityRuleID.Label);
+      analyzer.IgnoreRule(AccessibilityRuleID.DuplicateIdActive);
       var result = analyzer.Analyze();
 
-      Assert.That (result.Violations.Count, Is.EqualTo (1));
-      Assert.That (result.Violations.First().Rule.ID, Is.EqualTo (AccessibilityRuleID.DocumentTitle));
+      Assert.That(result.Violations.Count, Is.EqualTo(1));
+      Assert.That(result.Violations.First().Rule.ID, Is.EqualTo(AccessibilityRuleID.DocumentTitle));
     }
 
     [Test]
     public void Analyze_IgnoreCssSelector ()
     {
-      Start<HtmlPageObject> ("Accessibility/MultipleFormElementsWithoutLabels.html");
+      Start<HtmlPageObject>("Accessibility/MultipleFormElementsWithoutLabels.html");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      analyzer.IgnoreCssSelector ("#first-input");
+      analyzer.IgnoreCssSelector("#first-input");
       var result = analyzer.Analyze();
 
-      Assert.That (result.Violations.Count, Is.EqualTo (2));
-      Assert.That (result.Violations.First().TargetPath.Count, Is.EqualTo (1));
-      Assert.That (result.Violations.First().TargetPath[0].XPath, Is.EqualTo ("/input[@id='second-input']"));
-      Assert.That (result.Violations.ElementAt (1).TargetPath.Count, Is.EqualTo (1));
-      Assert.That (result.Violations.ElementAt (1).TargetPath[0].XPath, Is.EqualTo ("/input[@id='third-input']"));
+      Assert.That(result.Violations.Count, Is.EqualTo(2));
+      Assert.That(result.Violations.First().TargetPath.Count, Is.EqualTo(1));
+      Assert.That(result.Violations.First().TargetPath[0].XPath, Is.EqualTo("/input[@id='second-input']"));
+      Assert.That(result.Violations.ElementAt(1).TargetPath.Count, Is.EqualTo(1));
+      Assert.That(result.Violations.ElementAt(1).TargetPath[0].XPath, Is.EqualTo("/input[@id='third-input']"));
     }
 
     [Test]
     public void Analyze_IgnoreMultipleCssSelectors ()
     {
-      Start<HtmlPageObject> ("Accessibility/MultipleFormElementsWithoutLabels.html");
+      Start<HtmlPageObject>("Accessibility/MultipleFormElementsWithoutLabels.html");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      analyzer.IgnoreCssSelector ("#first-input");
-      analyzer.IgnoreCssSelector ("#second-input");
+      analyzer.IgnoreCssSelector("#first-input");
+      analyzer.IgnoreCssSelector("#second-input");
       var result = analyzer.Analyze();
 
-      Assert.That (result.Violations.Count, Is.EqualTo (1));
-      Assert.That (result.Violations.First().TargetPath.Count, Is.EqualTo (1));
-      Assert.That (result.Violations.First().TargetPath[0].XPath, Is.EqualTo ("/input[@id='third-input']"));
+      Assert.That(result.Violations.Count, Is.EqualTo(1));
+      Assert.That(result.Violations.First().TargetPath.Count, Is.EqualTo(1));
+      Assert.That(result.Violations.First().TargetPath[0].XPath, Is.EqualTo("/input[@id='third-input']"));
     }
 
     [Test]
     public void Analyze_IgnoreControlObject ()
     {
-      var home = Start<HtmlPageObject> ("Accessibility/MultipleFormElementsWithoutLabels.html");
+      var home = Start<HtmlPageObject>("Accessibility/MultipleFormElementsWithoutLabels.html");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var textBoxWithViolation = GetTextBoxControlObject (home, "first-input");
-      analyzer.IgnoreControlObject (textBoxWithViolation);
+      var textBoxWithViolation = GetTextBoxControlObject(home, "first-input");
+      analyzer.IgnoreControlObject(textBoxWithViolation);
       var result = analyzer.Analyze();
 
-      Assert.That (result.Violations.Count, Is.EqualTo (2));
-      Assert.That (result.Violations.First().TargetPath.Count, Is.EqualTo (1));
-      Assert.That (result.Violations.First().TargetPath[0].XPath, Is.EqualTo ("/input[@id='second-input']"));
-      Assert.That (result.Violations.ElementAt (1).TargetPath.Count, Is.EqualTo (1));
-      Assert.That (result.Violations.ElementAt (1).TargetPath[0].XPath, Is.EqualTo ("/input[@id='third-input']"));
+      Assert.That(result.Violations.Count, Is.EqualTo(2));
+      Assert.That(result.Violations.First().TargetPath.Count, Is.EqualTo(1));
+      Assert.That(result.Violations.First().TargetPath[0].XPath, Is.EqualTo("/input[@id='second-input']"));
+      Assert.That(result.Violations.ElementAt(1).TargetPath.Count, Is.EqualTo(1));
+      Assert.That(result.Violations.ElementAt(1).TargetPath[0].XPath, Is.EqualTo("/input[@id='third-input']"));
     }
 
     private TextBoxControlObject GetTextBoxControlObject (PageObject page, string htmlID)
     {
       var textBoxSelector = new TextBoxSelector();
-      var textBoxSelectionCommand = new HtmlIDControlSelectionCommand<TextBoxControlObject> (textBoxSelector, htmlID);
-      return page.GetControl (textBoxSelectionCommand);
+      var textBoxSelectionCommand = new HtmlIDControlSelectionCommand<TextBoxControlObject>(textBoxSelector, htmlID);
+      return page.GetControl(textBoxSelectionCommand);
     }
   }
 }

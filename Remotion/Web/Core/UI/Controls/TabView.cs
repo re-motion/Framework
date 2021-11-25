@@ -41,18 +41,18 @@ namespace Remotion.Web.UI.Controls
 
     public TabView ()
     {
-      _icon = new IconInfo ();
-      _lazyContainer = new LazyContainer ();
+      _icon = new IconInfo();
+      _lazyContainer = new LazyContainer();
     }
 
     // methods and properties
 
     protected override void CreateChildControls ()
     {
-      base.CreateChildControls ();
+      base.CreateChildControls();
 
       _lazyContainer.ID = ID + "_LazyContainer";
-      base.Controls.Add (_lazyContainer);
+      base.Controls.Add(_lazyContainer);
     }
 
     #pragma warning disable 809 // C# 3.0: specifying obsolete for overridden methods causes a warning, but this is intended here.
@@ -63,7 +63,7 @@ namespace Remotion.Web.UI.Controls
     {
       get
       {
-        EnsureChildControls ();
+        EnsureChildControls();
         return base.Controls;
       }
     }
@@ -76,15 +76,15 @@ namespace Remotion.Web.UI.Controls
     {
       get
       {
-        EnsureChildControls ();
+        EnsureChildControls();
         return _lazyContainer.RealControls;
       }
     }
 
     public void EnsureLazyControls ()
     {
-      EnsureChildControls ();
-      _lazyContainer.Ensure ();
+      EnsureChildControls();
+      _lazyContainer.Ensure();
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
@@ -106,7 +106,7 @@ namespace Remotion.Web.UI.Controls
 
     protected void OnInsert (Control multiView)
     {
-      OnInsert ((TabbedMultiView.MultiView) multiView);
+      OnInsert((TabbedMultiView.MultiView) multiView);
     }
 
     /// <summary> Gets or sets the title displayed in the tab for this view. </summary>
@@ -134,12 +134,12 @@ namespace Remotion.Web.UI.Controls
 
     private bool ShouldSerializeIcon ()
     {
-      return IconInfo.ShouldSerialize (_icon);
+      return IconInfo.ShouldSerialize(_icon);
     }
 
     private void ResetIcon ()
     {
-      _icon.Reset ();
+      _icon.Reset();
     }
 
     private bool _overrideVisible = false;
@@ -147,7 +147,7 @@ namespace Remotion.Web.UI.Controls
 
     internal void OverrideVisible ()
     {
-      bool isActive = ParentMultiView!.GetActiveView () == this; // TODO RM-8118: not null assertion
+      bool isActive = ParentMultiView!.GetActiveView() == this; // TODO RM-8118: not null assertion
       if (Visible != isActive)
       {
         _overrideVisible = true;
@@ -165,7 +165,7 @@ namespace Remotion.Web.UI.Controls
       set
       {
         if (!_overrideVisible)
-          throw new InvalidOperationException ("Cannot explicitly set the visibility of a TabView.");
+          throw new InvalidOperationException("Cannot explicitly set the visibility of a TabView.");
         _isVisible = value;
       }
     }
@@ -183,7 +183,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override ControlCollection CreateControlCollection ()
     {
-      return new EmptyControlCollection (this);
+      return new EmptyControlCollection(this);
     }
 
     protected override void CreateChildControls ()

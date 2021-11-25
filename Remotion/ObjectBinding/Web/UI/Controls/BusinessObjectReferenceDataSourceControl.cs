@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       protected override string GetDataSourceIdentifier ()
       {
-        return string.Format ("{0} '{1}'", _owner.GetType(), _owner.ID);
+        return string.Format("{0} '{1}'", _owner.GetType(), _owner.ID);
       }
     }
 
@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // Default summary will be created.
     public BusinessObjectReferenceDataSourceControl ()
     {
-      _internalDataSource = new InternalBusinessObjectReferenceDataSource (this);
+      _internalDataSource = new InternalBusinessObjectReferenceDataSource(this);
     }
 
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (_internalDataSource.HasBusinessObjectChanged)
           return true;
 
-        return _internalDataSource.GetBoundControlsWithValidBinding().OfType<IBusinessObjectBoundEditableWebControl>().Any (
+        return _internalDataSource.GetBoundControlsWithValidBinding().OfType<IBusinessObjectBoundEditableWebControl>().Any(
             control => control.IsDirty);
       }
       set { base.IsDirty = value; }
@@ -155,14 +155,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     public override void LoadValue (bool interim) // inherited from control interface
     {
-      _internalDataSource.LoadValue (interim);
+      _internalDataSource.LoadValue(interim);
     }
 
     /// <summary> Loads the values of the <see cref="BusinessObject"/> into all bound controls. </summary>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     public virtual void LoadValues (bool interim) // inherited from data source interface
     {
-      _internalDataSource.LoadValues (interim);
+      _internalDataSource.LoadValues(interim);
     }
 
     /// <summary> 
@@ -181,7 +181,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       // Do not include check for IsDirty.
       // The wrapped reference data source has its own mechanism to prevent unnecessary write-backs.
       // The bound controls also have their own IsDirty-checks and do not concern the DataSourceControl's write-back semantics.
-      return _internalDataSource.SaveValue (interim);
+      return _internalDataSource.SaveValue(interim);
     }
 
     /// <summary> 
@@ -195,7 +195,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </returns>
     public virtual bool SaveValues (bool interim) // inherited data source interface
     {
-      return _internalDataSource.SaveValues (interim);
+      return _internalDataSource.SaveValues(interim);
     }
 
     /// <summary>
@@ -274,7 +274,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void Register (IBusinessObjectBoundControl control)
     {
-      _internalDataSource.Register (control);
+      _internalDataSource.Register(control);
     }
 
     /// <summary>
@@ -285,7 +285,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void Unregister (IBusinessObjectBoundControl control)
     {
-      _internalDataSource.Unregister (control);
+      _internalDataSource.Unregister(control);
     }
 
     /// <summary>
@@ -362,7 +362,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = ServiceLocator.GetInstance<IBusinessObjectReferenceDataSourceControlValidatorFactory>();
-      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+      _validators = validatorFactory.CreateValidators(this, isReadOnly).ToList().AsReadOnly();
       return _validators;
     }
 
@@ -386,14 +386,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void OnUnload (EventArgs e)
     {
       foreach (var control in _internalDataSource.GetAllBoundControls().ToArray())
-        _internalDataSource.Unregister (control);
+        _internalDataSource.Unregister(control);
 
-      base.OnUnload (e);
+      base.OnUnload(e);
     }
 
     public IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (BusinessObjectReferenceDataSourceControl));
+      return GetResourceManager(typeof (BusinessObjectReferenceDataSourceControl));
     }
   }
 }

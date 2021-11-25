@@ -66,47 +66,47 @@ public class DatePickerPage : Page
 
   protected override void OnPreInit (EventArgs e)
   {
-    base.OnPreInit (e);
+    base.OnPreInit(e);
 
     var cultureName = Request.QueryString[CultureParameterName];
-    if (!string.IsNullOrWhiteSpace (cultureName))
+    if (!string.IsNullOrWhiteSpace(cultureName))
       Culture = cultureName.Trim();
 
     var uiCultureName = Request.QueryString[UICultureParameterName];
-    if (!string.IsNullOrWhiteSpace (uiCultureName))
+    if (!string.IsNullOrWhiteSpace(uiCultureName))
       UICulture = uiCultureName.Trim();
   }
 
   override protected void OnInit (EventArgs e)
   {
-    Assertion.DebugIsNotNull (Page, "Page must not be null.");
+    Assertion.DebugIsNotNull(Page, "Page must not be null.");
 
     if (Form == null)
-      throw new HttpException (this.GetType().GetFullNameSafe() + " does not initialize field 'Form'.");
+      throw new HttpException(this.GetType().GetFullNameSafe() + " does not initialize field 'Form'.");
     if (HtmlHeadContents == null)
-      throw new HttpException (this.GetType().GetFullNameSafe() + " does not initialize field 'HtmlHeadContents'.");
+      throw new HttpException(this.GetType().GetFullNameSafe() + " does not initialize field 'HtmlHeadContents'.");
     if (Calendar == null)
-      throw new HttpException (this.GetType().GetFullNameSafe() + " does not initialize field 'Calendar'.");
+      throw new HttpException(this.GetType().GetFullNameSafe() + " does not initialize field 'Calendar'.");
 
     Calendar.SelectionChanged += new EventHandler(Calendar_SelectionChanged);
 
     TargetIDField = new HtmlInputHidden();
     TargetIDField.ID = "TargetIDField";
     TargetIDField.EnableViewState = false;
-    Form.Controls.Add (TargetIDField);
+    Form.Controls.Add(TargetIDField);
 
     DatePickerIDField = new HtmlInputHidden();
     DatePickerIDField.ID = "DatePickerIDField";
     DatePickerIDField.EnableViewState = false;
-    Form.Controls.Add (DatePickerIDField);
+    Form.Controls.Add(DatePickerIDField);
 
     DateValueField = new HtmlInputHidden();
     DateValueField.ID = "DateValueField";
     DateValueField.EnableViewState = false;
-    Form.Controls.Add (DateValueField);
+    Form.Controls.Add(DateValueField);
 
     //  Force the creation of the postback function
-    Page.ClientScript.GetPostBackEventReference (this, "");
+    Page.ClientScript.GetPostBackEventReference(this, "");
 
     base.OnInit(e);
 
@@ -116,7 +116,7 @@ public class DatePickerPage : Page
   private void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
   {
     var renderer = SafeServiceLocator.Current.GetInstance<IDatePickerPageRenderer>();
-    renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+    renderer.RegisterHtmlHeadContents(htmlHeadAppender);
   }
 
   protected override void OnLoad (EventArgs e)
@@ -136,9 +136,9 @@ public class DatePickerPage : Page
     //  Initalize the calendar
     try
     {
-      if (! string.IsNullOrEmpty (dateValue))
+      if (! string.IsNullOrEmpty(dateValue))
       {
-        Calendar.SelectedDate = DateTime.Parse (dateValue);
+        Calendar.SelectedDate = DateTime.Parse(dateValue);
         Calendar.VisibleDate = Calendar.SelectedDate;
       }
     }
@@ -148,17 +148,17 @@ public class DatePickerPage : Page
     }
     DateValueField.Value = string.Empty;
 
-    base.OnLoad (e);
+    base.OnLoad(e);
   }
 
   private void Calendar_SelectionChanged (object? sender, EventArgs e)
   {
-    Assertion.DebugIsNotNull (Page, "Page must not be null.");
+    Assertion.DebugIsNotNull(Page, "Page must not be null.");
 
     string key = "Calendar_SelectionChanged";
-    string script = "DatePickerFrame.Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString () + "');\r\n";
-    if (!Page.ClientScript.IsStartupScriptRegistered (key))
-      Page.ClientScript.RegisterStartupScript (typeof (DatePickerPage), key, script, true);
+    string script = "DatePickerFrame.Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString() + "');\r\n";
+    if (!Page.ClientScript.IsStartupScriptRegistered(key))
+      Page.ClientScript.RegisterStartupScript(typeof (DatePickerPage), key, script, true);
   }
 }
 

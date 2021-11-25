@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="interim"> Not evaluated. </param>
     public override void LoadValues (bool interim)
     {
-      throw new NotSupportedException ("Use BusinessObjectReferenceDataSourceControl for actual data.");
+      throw new NotSupportedException("Use BusinessObjectReferenceDataSourceControl for actual data.");
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override DataSourceMode Mode
     {
       get { return DataSourceMode.Search; }
-      set { if (value != DataSourceMode.Search) throw new NotSupportedException ("BusinessObjectReferenceSearchDataSourceControl supports only DataSourceMode.Search."); }
+      set { if (value != DataSourceMode.Search) throw new NotSupportedException("BusinessObjectReferenceSearchDataSourceControl supports only DataSourceMode.Search."); }
     }
   }
 }

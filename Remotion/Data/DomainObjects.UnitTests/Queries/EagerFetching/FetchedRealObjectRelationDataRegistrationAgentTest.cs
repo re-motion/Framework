@@ -40,30 +40,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _agent = new FetchedRealObjectRelationDataRegistrationAgent ();
+      _agent = new FetchedRealObjectRelationDataRegistrationAgent();
 
-      var originatingOrderTicket1 = DomainObjectMother.CreateFakeObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
-      var originatingOrderTicket2 = DomainObjectMother.CreateFakeObject<OrderTicket> (DomainObjectIDs.OrderTicket2);
+      var originatingOrderTicket1 = DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket1);
+      var originatingOrderTicket2 = DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket2);
 
-      _originatingOrderTicketData1 = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (originatingOrderTicket1);
-      _originatingOrderTicketData2 = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (originatingOrderTicket2);
+      _originatingOrderTicketData1 = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingOrderTicket1);
+      _originatingOrderTicketData2 = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingOrderTicket2);
 
-      var fetchedOrder1 = DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order1);
-      var fetchedOrder2 = DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order3);
-      var fetchedOrder3 = DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order4);
+      var fetchedOrder1 = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order1);
+      var fetchedOrder2 = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order3);
+      var fetchedOrder3 = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order4);
 
-      _fetchedOrderData1 = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData (fetchedOrder1);
-      _fetchedOrderData2 = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData (fetchedOrder2);
-      _fetchedOrderData3 = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData (fetchedOrder3);
+      _fetchedOrderData1 = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(fetchedOrder1);
+      _fetchedOrderData2 = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(fetchedOrder2);
+      _fetchedOrderData3 = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(fetchedOrder3);
 
     }
 
     [Test]
     public void GroupAndRegisterRelatedObjects ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (OrderTicket), "Order");
+      var endPointDefinition = GetEndPointDefinition(typeof (OrderTicket), "Order");
 
       _agent.GroupAndRegisterRelatedObjects(
           endPointDefinition,
@@ -74,17 +74,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WithNullOriginalObject ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (OrderTicket), "Order");
+      var endPointDefinition = GetEndPointDefinition(typeof (OrderTicket), "Order");
 
-      _agent.GroupAndRegisterRelatedObjects (endPointDefinition, new[] { new NullLoadedObjectData() }, new LoadedObjectDataWithDataSourceData[0]);
+      _agent.GroupAndRegisterRelatedObjects(endPointDefinition, new[] { new NullLoadedObjectData() }, new LoadedObjectDataWithDataSourceData[0]);
     }
 
     [Test]
     public void GroupAndRegisterRelatedObjects_WithNullRelatedObject ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (OrderTicket), "Order");
+      var endPointDefinition = GetEndPointDefinition(typeof (OrderTicket), "Order");
 
-      _agent.GroupAndRegisterRelatedObjects (
+      _agent.GroupAndRegisterRelatedObjects(
           endPointDefinition, 
           new[] { _originatingOrderTicketData1 }, 
           new[] { LoadedObjectDataObjectMother.CreateNullLoadedObjectDataWithDataSourceData() });
@@ -93,17 +93,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_PropertyOnBaseType ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (FileSystemItem), "ParentFolder");
+      var endPointDefinition = GetEndPointDefinition(typeof (FileSystemItem), "ParentFolder");
 
       var originatingFile = DomainObjectMother.CreateFakeObject<File>();
-      var originatingFileData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (originatingFile);
+      var originatingFileData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingFile);
 
       var fetchedParentFolder = DomainObjectMother.CreateFakeObject<Folder>();
-      var fetchedParentFolderData = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData (fetchedParentFolder);
+      var fetchedParentFolderData = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(fetchedParentFolder);
 
-      originatingFile.InternalDataContainer.SetValue (GetPropertyDefinition (typeof (FileSystemItem), "ParentFolder"), fetchedParentFolder.ID);
+      originatingFile.InternalDataContainer.SetValue(GetPropertyDefinition(typeof (FileSystemItem), "ParentFolder"), fetchedParentFolder.ID);
 
-      _agent.GroupAndRegisterRelatedObjects (
+      _agent.GroupAndRegisterRelatedObjects(
           endPointDefinition,
           new[] { originatingFileData },
           new[] { fetchedParentFolderData });
@@ -112,23 +112,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_PropertyOnDerivedType ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (Partner), "ContactPerson");
+      var endPointDefinition = GetEndPointDefinition(typeof (Partner), "ContactPerson");
 
       var originatingCompany = DomainObjectMother.CreateFakeObject<Company>();
-      var originatingCompanyData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (originatingCompany);
+      var originatingCompanyData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingCompany);
 
       var originatingPartner = DomainObjectMother.CreateFakeObject<Partner>();
-      var originatingPartnerData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (originatingPartner);
+      var originatingPartnerData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingPartner);
       
       var originatingCustomer = DomainObjectMother.CreateFakeObject<Customer>();
-      var originatingCustomerData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (originatingCustomer);
+      var originatingCustomerData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingCustomer);
 
       var fetchedPerson = DomainObjectMother.CreateFakeObject<Person>();
-      var fetchedPersonData = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData (fetchedPerson);
+      var fetchedPersonData = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(fetchedPerson);
 
-      originatingPartner.InternalDataContainer.SetValue (GetPropertyDefinition (typeof (Partner), "ContactPerson"), fetchedPerson.ID);
+      originatingPartner.InternalDataContainer.SetValue(GetPropertyDefinition(typeof (Partner), "ContactPerson"), fetchedPerson.ID);
 
-      _agent.GroupAndRegisterRelatedObjects (
+      _agent.GroupAndRegisterRelatedObjects(
           endPointDefinition,
           new[] { originatingCompanyData, originatingPartnerData, originatingCustomerData },
           new[] { fetchedPersonData });
@@ -137,14 +137,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_InvalidOriginalObject ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (OrderTicket), "Order");
-      Assert.That (
-          () => _agent.GroupAndRegisterRelatedObjects (
+      var endPointDefinition = GetEndPointDefinition(typeof (OrderTicket), "Order");
+      Assert.That(
+          () => _agent.GroupAndRegisterRelatedObjects(
           endPointDefinition,
-          new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (DomainObjectIDs.Order1) },
+          new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order1) },
           new LoadedObjectDataWithDataSourceData[0]),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Cannot register relation end-point 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' for domain object "
                   + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'. The end-point belongs to an object of class 'OrderTicket' but the domain object "
                   + "has class 'Order'."));
@@ -153,14 +153,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_InvalidRelatedObject ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (OrderTicket), "Order");
-      Assert.That (
-          () => _agent.GroupAndRegisterRelatedObjects (
+      var endPointDefinition = GetEndPointDefinition(typeof (OrderTicket), "Order");
+      Assert.That(
+          () => _agent.GroupAndRegisterRelatedObjects(
           endPointDefinition,
           new[] { _originatingOrderTicketData1 }, 
-          new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData (DomainObjectIDs.OrderTicket2) }),
+          new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(DomainObjectIDs.OrderTicket2) }),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Cannot associate object 'OrderTicket|0005bdf4-4ccc-4a41-b9b5-baab3eb95237|System.Guid' with the relation end-point " 
                   + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'. An object of type "
                   + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' was expected."));
@@ -169,18 +169,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WrongVirtuality ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (Order), "OrderTicket");
+      var endPointDefinition = GetEndPointDefinition(typeof (Order), "OrderTicket");
 
-      Assert.That (
-          () => _agent.GroupAndRegisterRelatedObjects (endPointDefinition, new[] { _originatingOrderTicketData1 }, new[] { _fetchedOrderData1 }), 
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+      Assert.That(
+          () => _agent.GroupAndRegisterRelatedObjects(endPointDefinition, new[] { _originatingOrderTicketData1 }, new[] { _fetchedOrderData1 }), 
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "Only non-virtual object-valued relation end-points can be handled by this registration agent.", "relationEndPointDefinition"));
     }
 
     [Test]
     public void Serialization ()
     {
-      Serializer.SerializeAndDeserialize (_agent);
+      Serializer.SerializeAndDeserialize(_agent);
     }
   }
 }

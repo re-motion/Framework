@@ -31,8 +31,8 @@ namespace Remotion.Validation.Implementation
 
     public ValidationRuleCollectorInfo (IValidationRuleCollector collector, Type providerType)
     {
-      ArgumentUtility.CheckNotNull ("collector", collector);
-      ArgumentUtility.CheckNotNull ("providerType", providerType);
+      ArgumentUtility.CheckNotNull("collector", collector);
+      ArgumentUtility.CheckNotNull("providerType", providerType);
 
       _providerType = providerType;
       _collector = collector;

@@ -31,13 +31,13 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.NextCallProx
     [OverrideTarget]
     public string VirtualMethod (string text)
     {
-      return "MixinOverridingMethodWithArgument.VirtualMethod(" + text + ") - " + Next.VirtualMethod (text);
+      return "MixinOverridingMethodWithArgument.VirtualMethod(" + text + ") - " + Next.VirtualMethod(text);
     }
 
     [OverrideTarget]
     public new bool Equals (object other)
     {
-      return Next.Equals (other);
+      return Next.Equals(other);
     }
   }
 

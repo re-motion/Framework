@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
     public int PersistentPropertyRedirectedToMixin
     {
       [LinqPropertyRedirection (typeof (IInterfaceImplementedByMixinAndTargetClass), "PersistentPropertyRedirectedToMixin")]
-      get { return Mixin.Get<MixinAddingInterfaceAlsoImplementedOnTargetClass> (this).PersistentPropertyRedirectedToMixin; }
-      set { Mixin.Get<MixinAddingInterfaceAlsoImplementedOnTargetClass> (this).PersistentPropertyRedirectedToMixin = value; }
+      get { return Mixin.Get<MixinAddingInterfaceAlsoImplementedOnTargetClass>(this).PersistentPropertyRedirectedToMixin; }
+      set { Mixin.Get<MixinAddingInterfaceAlsoImplementedOnTargetClass>(this).PersistentPropertyRedirectedToMixin = value; }
     }
   }
 }

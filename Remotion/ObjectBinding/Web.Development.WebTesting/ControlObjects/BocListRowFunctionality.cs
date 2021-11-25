@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public void Select ()
     {
       var scope = GetRowSelectorScope();
-      ExecuteAction (new CheckAction (this, scope), Opt.ContinueImmediately());
+      ExecuteAction(new CheckAction(this, scope), Opt.ContinueImmediately());
     }
 
     /// <summary>
@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public void Deselect ()
     {
       var scope = GetRowSelectorScope();
-      ExecuteAction (new UncheckAction (this, scope), Opt.ContinueImmediately());
+      ExecuteAction(new UncheckAction(this, scope), Opt.ContinueImmediately());
     }
 
     /// <summary>
@@ -76,41 +76,41 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private ElementScope GetRowSelectorScope ()
     {
-      return Context.Scope.FindCss (".bocListDataCellRowSelector input[type='checkbox'], .bocListDataCellRowSelector input[type='radio']");
+      return Context.Scope.FindCss(".bocListDataCellRowSelector input[type='checkbox'], .bocListDataCellRowSelector input[type='radio']");
     }
 
     /// <inheritdoc/>
     public TCellControlObject GetCellWithColumnItemID<TCellControlObject> ([NotNull] string columnItemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("columnItemID", columnItemID);
+      ArgumentUtility.CheckNotNullOrEmpty("columnItemID", columnItemID);
 
-      var oneBasedIndex = _accessor.GetColumnIndexForItemID (columnItemID);
-      return GetCellWithColumnIndex<TCellControlObject> (oneBasedIndex);
+      var oneBasedIndex = _accessor.GetColumnIndexForItemID(columnItemID);
+      return GetCellWithColumnIndex<TCellControlObject>(oneBasedIndex);
     }
 
     /// <inheritdoc/>
     public TCellControlObject GetCellWithColumnIndex<TCellControlObject> (int oneBasedIndex)
     {
-      var cellScope = Scope.FindTagWithAttribute ("td", DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedIndex.ToString());
-      return (TCellControlObject) Activator.CreateInstance (typeof (TCellControlObject), new object[] { Context.CloneForControl (cellScope) })!;
+      var cellScope = Scope.FindTagWithAttribute("td", DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedIndex.ToString());
+      return (TCellControlObject) Activator.CreateInstance(typeof (TCellControlObject), new object[] { Context.CloneForControl(cellScope) })!;
     }
 
     /// <inheritdoc/>
     public TCellControlObject GetCellWithColumnTitle<TCellControlObject> ([NotNull] string columnTitle)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("columnTitle", columnTitle);
+      ArgumentUtility.CheckNotNullOrEmpty("columnTitle", columnTitle);
 
-      var oneBasedIndex = _accessor.GetColumnIndexForTitle (columnTitle);
-      return GetCellWithColumnIndex<TCellControlObject> (oneBasedIndex);
+      var oneBasedIndex = _accessor.GetColumnIndexForTitle(columnTitle);
+      return GetCellWithColumnIndex<TCellControlObject>(oneBasedIndex);
     }
 
     /// <inheritdoc/>
     public TCellControlObject GetCellWithColumnTitleContains<TCellControlObject> ([NotNull] string columnTitleContains)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("columnTitleContains", columnTitleContains);
+      ArgumentUtility.CheckNotNullOrEmpty("columnTitleContains", columnTitleContains);
 
-      var oneBasedIndex = _accessor.GetColumnIndexForTitleContains (columnTitleContains);
-      return GetCellWithColumnIndex<TCellControlObject> (oneBasedIndex);
+      var oneBasedIndex = _accessor.GetColumnIndexForTitleContains(columnTitleContains);
+      return GetCellWithColumnIndex<TCellControlObject>(oneBasedIndex);
     }
 
     /// <summary>
@@ -118,18 +118,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public TCellControlObject GetCellWithColumnDomainPropertyPaths<TCellControlObject> ([NotNull] string[] domainPropertyPaths)
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("domainPropertyPaths", domainPropertyPaths);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("domainPropertyPaths", domainPropertyPaths);
 
-      var oneBasedIndex = _accessor.GetColumnIndexForDomainPropertyPaths (domainPropertyPaths);
-      return GetCellWithColumnIndex<TCellControlObject> (oneBasedIndex);
+      var oneBasedIndex = _accessor.GetColumnIndexForDomainPropertyPaths(domainPropertyPaths);
+      return GetCellWithColumnIndex<TCellControlObject>(oneBasedIndex);
     }
 
     /// <inheritdoc/>
     public DropDownMenuControlObject GetDropDownMenu ()
     {
-      var cellScope = Scope.FindTagWithAttribute ("td", DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownRowDropDownMenuCell, "true");
-      var rowDropDownMenuScope = cellScope.FindCss ("span.DropDownMenuContainer");
-      return new DropDownMenuControlObject (Context.CloneForControl (rowDropDownMenuScope));
+      var cellScope = Scope.FindTagWithAttribute("td", DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownRowDropDownMenuCell, "true");
+      var rowDropDownMenuScope = cellScope.FindCss("span.DropDownMenuContainer");
+      return new DropDownMenuControlObject(Context.CloneForControl(rowDropDownMenuScope));
     }
 
     /// <summary>
@@ -138,14 +138,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public BocListEditableRowControlObject Edit ()
     {
       if (_accessor.ParentScope[DiagnosticMetadataAttributes.IsReadOnly] == "true")
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
       var editCell = GetWellKnownEditCell();
 
-      var edit = editCell.GetControl (new SingleControlSelectionCommand<CommandControlObject> (new CommandSelector()));
+      var edit = editCell.GetControl(new SingleControlSelectionCommand<CommandControlObject>(new CommandSelector()));
       edit.Click();
 
-      return new BocListEditableRowControlObject (_accessor, Context);
+      return new BocListEditableRowControlObject(_accessor, Context);
     }
 
     /// <summary>
@@ -155,10 +155,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       var editCell = GetWellKnownEditCell();
 
-      var save = editCell.GetControl (new IndexControlSelectionCommand<CommandControlObject> (new CommandSelector(), 1));
+      var save = editCell.GetControl(new IndexControlSelectionCommand<CommandControlObject>(new CommandSelector(), 1));
       save.Click();
 
-      return new BocListRowControlObject (_accessor, Context);
+      return new BocListRowControlObject(_accessor, Context);
     }
 
     /// <summary>
@@ -168,16 +168,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       var editCell = GetWellKnownEditCell();
 
-      var cancel = editCell.GetControl (new IndexControlSelectionCommand<CommandControlObject> (new CommandSelector(), 2));
+      var cancel = editCell.GetControl(new IndexControlSelectionCommand<CommandControlObject>(new CommandSelector(), 2));
       cancel.Click();
 
-      return new BocListRowControlObject (_accessor, Context);
+      return new BocListRowControlObject(_accessor, Context);
     }
 
     private BocListEditableCellControlObject GetWellKnownEditCell ()
     {
-      var editCellScope = Scope.FindTagWithAttribute ("td", DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownEditCell, "true");
-      return new BocListEditableCellControlObject (Context.CloneForControl (editCellScope));
+      var editCellScope = Scope.FindTagWithAttribute("td", DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownEditCell, "true");
+      return new BocListEditableCellControlObject(Context.CloneForControl(editCellScope));
     }
   }
 }

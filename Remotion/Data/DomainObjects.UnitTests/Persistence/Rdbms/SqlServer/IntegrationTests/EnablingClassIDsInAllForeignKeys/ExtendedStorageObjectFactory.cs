@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   {
     protected override IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition, IStorageTypeInformationProvider storageTypeInformationProvider, IStorageNameProvider storageNameProvider, IStorageProviderDefinitionFinder providerDefinitionFinder)
     {
-      return new RelationStoragePropertyDefinitionFactory (
+      return new RelationStoragePropertyDefinitionFactory(
           storageProviderDefinition, true, storageNameProvider, storageTypeInformationProvider, providerDefinitionFinder);
     }
   }

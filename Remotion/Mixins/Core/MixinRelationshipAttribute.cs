@@ -43,7 +43,7 @@ namespace Remotion.Mixins
       get { return _additionalDependencies; }
       set
       {
-        _additionalDependencies = ArgumentUtility.CheckNotNull ("value", value);
+        _additionalDependencies = ArgumentUtility.CheckNotNull("value", value);
       }
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.Mixins
       get { return _suppressedMixins; }
       set
       {
-        _suppressedMixins = ArgumentUtility.CheckNotNull ("value", value);
+        _suppressedMixins = ArgumentUtility.CheckNotNull("value", value);
       }
     }
 
@@ -76,17 +76,17 @@ namespace Remotion.Mixins
     public override bool Equals (object? obj)
     {
       var other = obj as MixinRelationshipAttribute;
-      return !object.ReferenceEquals (other, null)
+      return !object.ReferenceEquals(other, null)
           && IntroducedMemberVisibility == other.IntroducedMemberVisibility
-          && SuppressedMixins.SequenceEqual (other.SuppressedMixins)
-          && AdditionalDependencies.SequenceEqual (other.AdditionalDependencies);
+          && SuppressedMixins.SequenceEqual(other.SuppressedMixins)
+          && AdditionalDependencies.SequenceEqual(other.AdditionalDependencies);
     }
 
     public override int GetHashCode ()
     {
-      int hc = IntroducedMemberVisibility.GetHashCode ()
-          ^ SuppressedMixins.Aggregate (0, (acc, t) => acc ^ t.GetHashCode())
-          ^ AdditionalDependencies.Aggregate (0, (acc, t) => acc ^ t.GetHashCode ());
+      int hc = IntroducedMemberVisibility.GetHashCode()
+          ^ SuppressedMixins.Aggregate(0, (acc, t) => acc ^ t.GetHashCode())
+          ^ AdditionalDependencies.Aggregate(0, (acc, t) => acc ^ t.GetHashCode());
       return hc;
     }
 
@@ -97,18 +97,18 @@ namespace Remotion.Mixins
         Type mixinType,
         MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull ("origin", origin);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("origin", origin);
 
       try
       {
-        configurationBuilder.AddMixinToClass (
+        configurationBuilder.AddMixinToClass(
             mixinKind, targetType, mixinType, IntroducedMemberVisibility, AdditionalDependencies, SuppressedMixins, origin);
       }
       catch (Exception ex)
       {
-        throw new ConfigurationException (ex.Message, ex);
+        throw new ConfigurationException(ex.Message, ex);
       }
     }
   }

@@ -46,17 +46,17 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     {
       try
       {
-        if (!EventLog.SourceExists (s_eventLogSource))
-          EventLog.CreateEventSource (s_eventLogSource, s_eventLogName);
+        if (!EventLog.SourceExists(s_eventLogSource))
+          EventLog.CreateEventSource(s_eventLogSource, s_eventLogName);
         _skipFixtureTearDown = false;
       }
       catch (SecurityException ex)
       {
         _skipFixtureTearDown = true;
-        Assert.Ignore ("Event log access denied: " + ex.Message);
+        Assert.Ignore("Event log access denied: " + ex.Message);
       }
 
-      _testEventLog = Array.Find (EventLog.GetEventLogs(), delegate (EventLog current) { return current.Log == s_eventLogName; });
+      _testEventLog = Array.Find(EventLog.GetEventLogs(), delegate (EventLog current) { return current.Log == s_eventLogName; });
     }
 
     [OneTimeTearDown]
@@ -65,11 +65,11 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
       if (_skipFixtureTearDown)
         return;
 
-      if (EventLog.SourceExists (s_eventLogSource))
-        EventLog.DeleteEventSource (s_eventLogSource);
+      if (EventLog.SourceExists(s_eventLogSource))
+        EventLog.DeleteEventSource(s_eventLogSource);
 
-      if (EventLog.Exists (s_eventLogName))
-        EventLog.Delete (s_eventLogName);
+      if (EventLog.Exists(s_eventLogName))
+        EventLog.Delete(s_eventLogName);
 
       _testEventLog.Dispose();
     }
@@ -81,19 +81,19 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
       eventLogAppender.LogName = s_eventLogName;
       eventLogAppender.ApplicationName = s_eventLogSource;
       eventLogAppender.SecurityContext = NullSecurityContext.Instance;
-      eventLogAppender.Layout = new PatternLayout ("%m\r\n\r\n");
-      BasicConfigurator.Configure (eventLogAppender);
+      eventLogAppender.Layout = new PatternLayout("%m\r\n\r\n");
+      BasicConfigurator.Configure(eventLogAppender);
 
-      _logger = LogManager.GetLogger ("The Name").Logger;
-      _log = new Log4NetLog (_logger);
-      _testEventLog.Clear ();
+      _logger = LogManager.GetLogger("The Name").Logger;
+      _log = new Log4NetLog(_logger);
+      _testEventLog.Clear();
     }
 
     [TearDown]
     public void TearDown ()
     {
-      LogManager.ResetConfiguration ();
-      _testEventLog.Clear ();
+      LogManager.ResetConfiguration();
+      _testEventLog.Clear();
     }
 
     [Test]
@@ -101,12 +101,12 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     {
       _logger.Repository.Threshold = Level.Info;
 
-      _log.Log (LogLevel.Info, 1, (object) "The message.", (Exception) null);
-      Assert.That (_testEventLog.Entries.Count, Is.EqualTo (1));
+      _log.Log(LogLevel.Info, 1, (object) "The message.", (Exception) null);
+      Assert.That(_testEventLog.Entries.Count, Is.EqualTo(1));
       EventLogEntry eventLogEntry = _testEventLog.Entries[0];
-      Assert.That (eventLogEntry.EntryType, Is.EqualTo (EventLogEntryType.Information));
-      Assert.That (eventLogEntry.Message, Is.EqualTo ("The message.\r\n\r\n"));
-      Assert.That (eventLogEntry.InstanceId, Is.EqualTo (1));
+      Assert.That(eventLogEntry.EntryType, Is.EqualTo(EventLogEntryType.Information));
+      Assert.That(eventLogEntry.Message, Is.EqualTo("The message.\r\n\r\n"));
+      Assert.That(eventLogEntry.InstanceId, Is.EqualTo(1));
     }
 
     [Test]
@@ -114,16 +114,16 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     {
       _logger.Repository.Threshold = Level.Info;
 
-      Assert.That (
-          () => _log.Log (LogLevel.Info, 0x10000, (object) "The message.", (Exception) null),
+      Assert.That(
+          () => _log.Log(LogLevel.Info, 0x10000, (object) "The message.", (Exception) null),
           Throws.InstanceOf<ArgumentOutOfRangeException>()
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "An event id of value 65536 is not supported. Valid event ids must be within a range of 0 and 65535.", "eventID"));
-      Assert.That (_testEventLog.Entries.Count, Is.EqualTo (1));
+      Assert.That(_testEventLog.Entries.Count, Is.EqualTo(1));
       EventLogEntry eventLogEntry = _testEventLog.Entries[0];
-      Assert.That (eventLogEntry.EntryType, Is.EqualTo (EventLogEntryType.Error));
-      Assert.That (eventLogEntry.Message, Is.EqualTo ("Failure during logging of message:\r\nThe message.\r\nEvent ID: 65536\r\n\r\n"));
-      Assert.That (eventLogEntry.InstanceId, Is.EqualTo (0xFFFF));
+      Assert.That(eventLogEntry.EntryType, Is.EqualTo(EventLogEntryType.Error));
+      Assert.That(eventLogEntry.Message, Is.EqualTo("Failure during logging of message:\r\nThe message.\r\nEvent ID: 65536\r\n\r\n"));
+      Assert.That(eventLogEntry.InstanceId, Is.EqualTo(0xFFFF));
     }
 
     [Test]
@@ -131,16 +131,16 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     {
       _logger.Repository.Threshold = Level.Info;
 
-      Assert.That (
-          () => _log.Log (LogLevel.Info, -1, (object) "The message.", (Exception) null),
+      Assert.That(
+          () => _log.Log(LogLevel.Info, -1, (object) "The message.", (Exception) null),
           Throws.InstanceOf<ArgumentOutOfRangeException>()
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "An event id of value -1 is not supported. Valid event ids must be within a range of 0 and 65535.", "eventID"));
-      Assert.That (_testEventLog.Entries.Count, Is.EqualTo (1));
+      Assert.That(_testEventLog.Entries.Count, Is.EqualTo(1));
       EventLogEntry eventLogEntry = _testEventLog.Entries[0];
-      Assert.That (eventLogEntry.EntryType, Is.EqualTo (EventLogEntryType.Error));
-      Assert.That (eventLogEntry.Message, Is.EqualTo ("Failure during logging of message:\r\nThe message.\r\nEvent ID: -1\r\n\r\n"));
-      Assert.That (eventLogEntry.InstanceId, Is.EqualTo (0x0));
+      Assert.That(eventLogEntry.EntryType, Is.EqualTo(EventLogEntryType.Error));
+      Assert.That(eventLogEntry.Message, Is.EqualTo("Failure during logging of message:\r\nThe message.\r\nEvent ID: -1\r\n\r\n"));
+      Assert.That(eventLogEntry.InstanceId, Is.EqualTo(0x0));
 
     }
   }

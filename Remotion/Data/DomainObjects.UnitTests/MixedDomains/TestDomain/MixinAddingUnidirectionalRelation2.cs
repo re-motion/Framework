@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
     public Computer Computer
     {
       get { return Properties[typeof (MixinAddingUnidirectionalRelation2), "Computer"].GetValue<Computer>(); }
-      set { Properties[typeof (MixinAddingUnidirectionalRelation2), "Computer"].SetValue (value); }
+      set { Properties[typeof (MixinAddingUnidirectionalRelation2), "Computer"].SetValue(value); }
     }
   }
 }

@@ -34,7 +34,7 @@ namespace Remotion.Development.UnitTesting.ObjectMothers
   {
     public static System.Collections.Generic.Queue<T> New<T> (params T[] values)
     {
-      var container = new System.Collections.Generic.Queue<T> (values);
+      var container = new System.Collections.Generic.Queue<T>(values);
       return container;
     }
   }

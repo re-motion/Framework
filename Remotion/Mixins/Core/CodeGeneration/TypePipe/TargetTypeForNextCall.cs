@@ -32,8 +32,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public TargetTypeForNextCall (MutableType concreteTarget, FieldInfo extensionsField)
     {
-      ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
-      ArgumentUtility.CheckNotNull ("extensionsField", extensionsField);
+      ArgumentUtility.CheckNotNull("concreteTarget", concreteTarget);
+      ArgumentUtility.CheckNotNull("extensionsField", extensionsField);
       
       _concreteTarget = concreteTarget;
       _extensionsField = extensionsField;
@@ -46,38 +46,38 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public MethodInfo GetBaseCallMethod (MethodInfo overriddenMethod)
     {
-      ArgumentUtility.CheckNotNull ("overriddenMethod", overriddenMethod);
-      Assertion.IsNotNull (overriddenMethod.DeclaringType);
+      ArgumentUtility.CheckNotNull("overriddenMethod", overriddenMethod);
+      Assertion.IsNotNull(overriddenMethod.DeclaringType);
 
-      if (!overriddenMethod.DeclaringType.IsAssignableFrom (_concreteTarget.BaseType))
+      if (!overriddenMethod.DeclaringType.IsAssignableFrom(_concreteTarget.BaseType))
       {
-        string message = string.Format (
+        string message = string.Format(
             "Cannot create base call method for a method defined on a different type than the base type: {0}.{1}.",
             overriddenMethod.DeclaringType.GetFullNameSafe(),
             overriddenMethod.Name);
-        throw new ArgumentException (message, "overriddenMethod");
+        throw new ArgumentException(message, "overriddenMethod");
       }
 
-      if (!_baseCallMethods.ContainsKey (overriddenMethod))
-        _baseCallMethods.Add (overriddenMethod, ImplementBaseCallMethod (overriddenMethod));
+      if (!_baseCallMethods.ContainsKey(overriddenMethod))
+        _baseCallMethods.Add(overriddenMethod, ImplementBaseCallMethod(overriddenMethod));
 
       return _baseCallMethods[overriddenMethod];
     }
 
     private MethodInfo ImplementBaseCallMethod (MethodInfo baseMethod)
     {
-      Assertion.IsTrue (ReflectionUtility.IsPublicOrProtected (baseMethod));
+      Assertion.IsTrue(ReflectionUtility.IsPublicOrProtected(baseMethod));
       if (baseMethod.IsAbstract)
       {
-        var message = string.Format ("The given method {0}.{1} is abstract.", baseMethod.DeclaringType!.GetFullNameSafe(), baseMethod.Name);
-        throw new ArgumentException (message, "baseMethod");
+        var message = string.Format("The given method {0}.{1} is abstract.", baseMethod.DeclaringType!.GetFullNameSafe(), baseMethod.Name);
+        throw new ArgumentException(message, "baseMethod");
       }
 
       var attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
       var name = "__base__" + baseMethod.Name;
-      var md = MethodDeclaration.CreateEquivalent (baseMethod);
+      var md = MethodDeclaration.CreateEquivalent(baseMethod);
 
-      return _concreteTarget.AddMethod (name, attributes, md, ctx => ctx.DelegateToBase (baseMethod));
+      return _concreteTarget.AddMethod(name, attributes, md, ctx => ctx.DelegateToBase(baseMethod));
     }
   }
 }

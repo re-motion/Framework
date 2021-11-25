@@ -44,15 +44,15 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     [Test]
     public void TestSerializationCallbacks_ViaOrdinaryInstance ()
     {
-      new SerializationCallbackTester<OrdinaryClass> (new RhinoMocksRepositoryAdapter(), new OrdinaryClass(), OrdinaryClass.SetReceiver)
-          .Test_SerializationCallbacks ();
+      new SerializationCallbackTester<OrdinaryClass>(new RhinoMocksRepositoryAdapter(), new OrdinaryClass(), OrdinaryClass.SetReceiver)
+          .Test_SerializationCallbacks();
     }
 
     [Test]
     public void TestDeserializationCallbacks_ViaOrdinaryInstance ()
     {
-      new SerializationCallbackTester<OrdinaryClass> (new RhinoMocksRepositoryAdapter (), new OrdinaryClass (), OrdinaryClass.SetReceiver)
-          .Test_DeserializationCallbacks ();
+      new SerializationCallbackTester<OrdinaryClass>(new RhinoMocksRepositoryAdapter(), new OrdinaryClass(), OrdinaryClass.SetReceiver)
+          .Test_DeserializationCallbacks();
     }
 
     [Serializable]
@@ -79,11 +79,11 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     [Test]
     public void TestDeserializationCallbacks_ViaBrokenInstance ()
     {
-      Assert.That (
-          () => new SerializationCallbackTester<BrokenClass> (new RhinoMocksRepositoryAdapter (), new BrokenClass (), BrokenClass.SetReceiver)
-          .Test_DeserializationCallbacks (),
+      Assert.That(
+          () => new SerializationCallbackTester<BrokenClass>(new RhinoMocksRepositoryAdapter(), new BrokenClass(), BrokenClass.SetReceiver)
+          .Test_DeserializationCallbacks(),
           Throws.InstanceOf<ExpectationViolationException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "ISerializationEventReceiver.OnDeserialization(any); Expected #1, Actual #0."));
     }
   }

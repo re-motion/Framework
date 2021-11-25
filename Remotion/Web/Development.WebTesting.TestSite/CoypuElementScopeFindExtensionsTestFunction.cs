@@ -30,6 +30,6 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("CoypuElementScopeFindExtensionsTest.aspx");
+    private WxeStep Step1 = new WxePageStep("CoypuElementScopeFindExtensionsTest.aspx");
   }
 }

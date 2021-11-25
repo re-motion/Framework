@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public FileSystemReflectionBusinessObjectStorageProvider (string rootPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("rootPath", rootPath);
+      ArgumentUtility.CheckNotNullOrEmpty("rootPath", rootPath);
 
       _rootPath = rootPath;
     }
@@ -36,19 +36,19 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public IReadOnlyCollection<Guid> GetObjectIDsForType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      var typeDirectory = GetDirectoryForType (type);
+      var typeDirectory = GetDirectoryForType(type);
 
       try
       {
         var objectIDs = new List<Guid>();
 
-        var directoryInfo = new DirectoryInfo (typeDirectory);
+        var directoryInfo = new DirectoryInfo(typeDirectory);
         foreach (var filePath in directoryInfo.EnumerateFiles())
         {
-          if (Guid.TryParse (filePath.Name, out var objectID))
-            objectIDs.Add (objectID);
+          if (Guid.TryParse(filePath.Name, out var objectID))
+            objectIDs.Add(objectID);
         }
 
         return objectIDs;
@@ -62,12 +62,12 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetReadObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       try
       {
-        var fileName = GetFileNameForTypeAndID (type, id);
-        return new FileStream (fileName, FileMode.Open, FileAccess.Read);
+        var fileName = GetFileNameForTypeAndID(type, id);
+        return new FileStream(fileName, FileMode.Open, FileAccess.Read);
       }
       catch (FileNotFoundException)
       {
@@ -78,22 +78,22 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetWriteObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      Directory.CreateDirectory (GetDirectoryForType (type));
+      Directory.CreateDirectory(GetDirectoryForType(type));
 
-      var fileName = GetFileNameForTypeAndID (type, id);
-      return new FileStream (fileName, FileMode.OpenOrCreate, FileAccess.Write);
+      var fileName = GetFileNameForTypeAndID(type, id);
+      return new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write);
     }
 
     private string GetFileNameForTypeAndID (Type type, Guid id)
     {
-      return Path.Combine (GetDirectoryForType (type), id.ToString());
+      return Path.Combine(GetDirectoryForType(type), id.ToString());
     }
 
     private string GetDirectoryForType (Type type)
     {
-      return Path.Combine (_rootPath, type.GetFullNameChecked());
+      return Path.Combine(_rootPath, type.GetFullNameChecked());
     }
   }
 }

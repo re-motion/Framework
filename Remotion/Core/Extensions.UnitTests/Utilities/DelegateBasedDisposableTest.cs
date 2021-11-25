@@ -29,11 +29,11 @@ namespace Remotion.Extensions.UnitTests.Utilities
       bool delegateExecuted = false;
       var scope = new DelegateBasedDisposable(() => delegateExecuted = true);
 
-      Assert.That (delegateExecuted, Is.False);
+      Assert.That(delegateExecuted, Is.False);
 
       scope.Dispose();
 
-      Assert.That (delegateExecuted, Is.True);
+      Assert.That(delegateExecuted, Is.True);
     }
 
     [Test]
@@ -41,14 +41,14 @@ namespace Remotion.Extensions.UnitTests.Utilities
     {
       int delegateExecutionCount = 0;
 
-      var scope = new DelegateBasedDisposable (() => ++delegateExecutionCount);
+      var scope = new DelegateBasedDisposable(() => ++delegateExecutionCount);
 
-      Assert.That (delegateExecutionCount, Is.EqualTo (0));
+      Assert.That(delegateExecutionCount, Is.EqualTo(0));
 
-      scope.Dispose ();
-      scope.Dispose ();
+      scope.Dispose();
+      scope.Dispose();
 
-      Assert.That (delegateExecutionCount, Is.EqualTo (1));
+      Assert.That(delegateExecutionCount, Is.EqualTo(1));
     }
   }
 }

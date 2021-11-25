@@ -34,7 +34,7 @@ namespace Remotion.Reflection
     public static string GetNameChecked (this AssemblyName assemblyName)
     {
       // ReSharper disable once ConstantNullCoalescingCondition
-      return assemblyName.Name ?? throw new InvalidOperationException ("Assembly name is undefined.");
+      return assemblyName.Name ?? throw new InvalidOperationException("Assembly name is undefined.");
     }
   }
 }

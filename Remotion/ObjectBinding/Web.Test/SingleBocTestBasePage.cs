@@ -35,7 +35,7 @@ public class SingleBocTestBasePage:
 {
   protected override void OnInit (EventArgs e)
   {
-    base.OnInit (e);
+    base.OnInit(e);
     try
     {
       Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
@@ -52,18 +52,18 @@ public class SingleBocTestBasePage:
 
   protected override void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    HtmlHeadAppender.Current.RegisterPageStylesheetLink ();
+    HtmlHeadAppender.Current.RegisterPageStylesheetLink();
 
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched
-    ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
+    ResourceDispatcher.Dispatch(this, ResourceManagerUtility.GetResourceManager(this));
   }
 
   public virtual IResourceManager GetResourceManager ()
   {
     Type type = GetType();
-    return GlobalizationService.GetResourceManager (type);
+    return GlobalizationService.GetResourceManager(type);
   }
 
   protected IGlobalizationService GlobalizationService

@@ -30,14 +30,14 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     {
       var clientTransaction = ClientTransaction.CreateRootTransaction();
       var validatorProviderStub = MockRepository.GenerateStub<IValidatorProvider>();
-      var factory = new ValidationClientTransactionExtensionFactory (validatorProviderStub);
+      var factory = new ValidationClientTransactionExtensionFactory(validatorProviderStub);
 
-      var result = factory.CreateClientTransactionExtensions (clientTransaction).ToArray();
+      var result = factory.CreateClientTransactionExtensions(clientTransaction).ToArray();
 
-      Assert.That (result.Count(), Is.EqualTo (1));
+      Assert.That(result.Count(), Is.EqualTo(1));
       var clientTransactionExtension = result.First();
-      Assert.That (clientTransactionExtension, Is.TypeOf<ValidationClientTransactionExtension>());
-      Assert.That (((ValidationClientTransactionExtension) clientTransactionExtension).ValidatorProvider, Is.EqualTo (validatorProviderStub));
+      Assert.That(clientTransactionExtension, Is.TypeOf<ValidationClientTransactionExtension>());
+      Assert.That(((ValidationClientTransactionExtension) clientTransactionExtension).ValidatorProvider, Is.EqualTo(validatorProviderStub));
     }
 
     [Test]
@@ -46,11 +46,11 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
       var clientTransaction = ClientTransaction.CreateRootTransaction();
       var subTransaction = clientTransaction.CreateSubTransaction();
       var validatorProviderStub = MockRepository.GenerateStub<IValidatorProvider>();
-      var factory = new ValidationClientTransactionExtensionFactory (validatorProviderStub);
+      var factory = new ValidationClientTransactionExtensionFactory(validatorProviderStub);
 
-      var result = factory.CreateClientTransactionExtensions (subTransaction).ToArray();
+      var result = factory.CreateClientTransactionExtensions(subTransaction).ToArray();
 
-      Assert.That (result, Is.Empty);
+      Assert.That(result, Is.Empty);
     }
   }
 }

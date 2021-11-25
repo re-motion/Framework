@@ -29,7 +29,7 @@ namespace Remotion.Mixins.Definitions
     public MixinDependencyDefinition (RequiredMixinTypeDefinition requiredType, MixinDefinition dependingMixin, MixinDependencyDefinition? aggregator)
       : base (requiredType, aggregator)
     {
-      ArgumentUtility.CheckNotNull ("dependingMixin", dependingMixin);
+      ArgumentUtility.CheckNotNull("dependingMixin", dependingMixin);
       _dependingMixin = dependingMixin;
     }
 
@@ -45,19 +45,19 @@ namespace Remotion.Mixins.Definitions
 
     public override void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
     }
 
     public override string GetDependencyDescription ()
     {
-      return string.Format ("mixin '{0}'", _dependingMixin.FullName);
+      return string.Format("mixin '{0}'", _dependingMixin.FullName);
     }
 
     public override ClassDefinitionBase? GetImplementer ()
     {
       if (RequiredType.Type.IsInterface)
-        return TargetClass.ReceivedInterfaces.ContainsKey (RequiredType.Type)
+        return TargetClass.ReceivedInterfaces.ContainsKey(RequiredType.Type)
             ? TargetClass.ReceivedInterfaces[RequiredType.Type].Implementer : null;
       else
         return TargetClass.Mixins[RequiredType.Type];

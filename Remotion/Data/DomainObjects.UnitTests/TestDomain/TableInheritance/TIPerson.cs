@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   {
     public static TIPerson NewObject ()
     {
-      return NewObject<TIPerson> ();
+      return NewObject<TIPerson>();
     }
 
     protected TIPerson ()

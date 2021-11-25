@@ -9,16 +9,16 @@ namespace Remotion.Web.Test
   {
     public static void Main (string[] args)
     {
-      Console.WriteLine (Environment.CurrentDirectory);
-      LegacyAspNetInitialization.Init ("/", Environment.CurrentDirectory, true);
+      Console.WriteLine(Environment.CurrentDirectory);
+      LegacyAspNetInitialization.Init("/", Environment.CurrentDirectory, true);
 
-      CreateHostBuilder (args).Build().Run();
+      CreateHostBuilder(args).Build().Run();
     }
 
     public static IHostBuilder CreateHostBuilder (string[] args)
     {
-      return Host.CreateDefaultBuilder (args)
-          .ConfigureWebHostDefaults (webBuilder => { webBuilder.UseStartup<Startup>(); });
+      return Host.CreateDefaultBuilder(args)
+          .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
   }
 }

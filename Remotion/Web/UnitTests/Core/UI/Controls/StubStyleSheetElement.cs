@@ -31,7 +31,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
     public override void Render (HtmlTextWriter writer)
     {
-      writer.WriteLine (_value);
+      writer.WriteLine(_value);
     }
   }
 }

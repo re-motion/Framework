@@ -33,16 +33,16 @@ namespace Remotion.Web.UI.Controls.Hotkey
 
     protected override void AppendHotkeyBeginTag (StringBuilder stringBuilder, string hotkey)
     {
-      ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
+      ArgumentUtility.CheckNotNull("stringBuilder", stringBuilder);
 
-      stringBuilder.Append ("<u>");
+      stringBuilder.Append("<u>");
     }
 
     protected override void AppendHotkeyEndTag (StringBuilder stringBuilder)
     {
-      ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
+      ArgumentUtility.CheckNotNull("stringBuilder", stringBuilder);
 
-      stringBuilder.Append ("</u>");
+      stringBuilder.Append("</u>");
     }
   }
 }

@@ -30,7 +30,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     [LinqPropertyRedirection(typeof (StatefulAccessControlList), "MyClass")]
     public static SecurableClassDefinition GetClassForQuery (this StatefulAccessControlList acl)
     {
-      ArgumentUtility.CheckNotNull ("acl", acl);
+      ArgumentUtility.CheckNotNull("acl", acl);
 
       return acl.Class;
     }
@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     [LinqPropertyRedirection(typeof (StatelessAccessControlList), "MyClass")]
     public static SecurableClassDefinition GetClassForQuery (this StatelessAccessControlList acl)
     {
-      ArgumentUtility.CheckNotNull ("acl", acl);
+      ArgumentUtility.CheckNotNull("acl", acl);
 
       return acl.Class;
     }
@@ -46,23 +46,23 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     [LinqPropertyRedirection(typeof (StatefulAccessControlList), "StateCombinationsInternal")]
     public static ObjectList<StateCombination> GetStateCombinationsForQuery (this StatefulAccessControlList acl)
     {
-      ArgumentUtility.CheckNotNull ("acl", acl);
+      ArgumentUtility.CheckNotNull("acl", acl);
 
-      return new ObjectList<StateCombination> (acl.StateCombinations);
+      return new ObjectList<StateCombination>(acl.StateCombinations);
     }
 
     [LinqPropertyRedirection(typeof (StateCombination), "StateUsages")]
     public static ObjectList<StateUsage> GetStateUsagesForQuery (this StateCombination stateCombination)
     {
-      throw new NotSupportedException ("GetStateUsages() is only supported for building LiNQ query expressions.");
+      throw new NotSupportedException("GetStateUsages() is only supported for building LiNQ query expressions.");
     }
 
     [LinqPropertyRedirection(typeof (AccessControlEntry), "PermissionsInternal")]
     public static ObjectList<Permission> GetPermissionsForQuery (this AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull ("ace", ace);
+      ArgumentUtility.CheckNotNull("ace", ace);
 
-      return new ObjectList<Permission> (ace.GetPermissions());
+      return new ObjectList<Permission>(ace.GetPermissions());
     }
   }
 }

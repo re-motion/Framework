@@ -28,48 +28,48 @@ namespace Remotion.Mixins.Samples.Tutorial.T02_ParamList.UnitTests
     [Test]
     public void Activator_BrokenCalls_ArrayPassed ()
     {
-      Assert.That (
+      Assert.That(
           // looks for a ctor with five string arguments
-          () => (TheClass) Activator.CreateInstance (typeof (TheClass), new[] { "my", "home", "is", "my", "castle" }),
+          () => (TheClass) Activator.CreateInstance(typeof (TheClass), new[] { "my", "home", "is", "my", "castle" }),
           Throws.InstanceOf<MissingMethodException>());
     }
 
     [Test]
     public void Activator_BrokenCalls_SingleNullPassed ()
     {
-      Assert.That (
+      Assert.That(
           // looks for a default ctor
-          () => (TheClass) Activator.CreateInstance (typeof (TheClass), null),
+          () => (TheClass) Activator.CreateInstance(typeof (TheClass), null),
           Throws.InstanceOf<MissingMethodException>());
     }
 
     [Test]
     public void Activator_BrokenCalls_AmbiguousNullPassed ()
     {
-      Assert.That (
-          () => (TheClass) Activator.CreateInstance (typeof (TheClass), new object[] { null }),
+      Assert.That(
+          () => (TheClass) Activator.CreateInstance(typeof (TheClass), new object[] { null }),
           Throws.InstanceOf<AmbiguousMatchException>());
     }
 
     [Test]
     public void ParamList_ArrayPassed ()
     {
-      var theObject1 = TheObjectFactory.Create<TheClass> (ParamList.Create (new[] { "my", "home", "is", "my", "castle" }));
-      Assert.That (theObject1.ConstructionInfo, Is.EqualTo ("Many strings: my, home, is, my, castle"));
+      var theObject1 = TheObjectFactory.Create<TheClass>(ParamList.Create(new[] { "my", "home", "is", "my", "castle" }));
+      Assert.That(theObject1.ConstructionInfo, Is.EqualTo("Many strings: my, home, is, my, castle"));
     }
 
     [Test]
     public void ParamList_SingleNullPassed ()
     {
-      var theObject1 = TheObjectFactory.Create<TheClass> (ParamList.Create ((string) null));
-      Assert.That (theObject1.ConstructionInfo, Is.EqualTo ("Not even one string."));
+      var theObject1 = TheObjectFactory.Create<TheClass>(ParamList.Create((string) null));
+      Assert.That(theObject1.ConstructionInfo, Is.EqualTo("Not even one string."));
     }
 
     [Test]
     public void ParamList_OtherNullPassed ()
     {
-      var theObject1 = TheObjectFactory.Create<TheClass> (ParamList.Create ((string[]) null));
-      Assert.That (theObject1.ConstructionInfo, Is.EqualTo ("Not many strings."));
+      var theObject1 = TheObjectFactory.Create<TheClass>(ParamList.Create((string[]) null));
+      Assert.That(theObject1.ConstructionInfo, Is.EqualTo("Not many strings."));
     }
 
   }

@@ -27,9 +27,9 @@ namespace Remotion.SecurityManager.AclTools.Expander
   {
     public static int Main (string[] args)
     {
-      ServiceLocator.SetLocatorProvider (() => null);
-      var consoleApplication = new ConsoleApplication<AclExpanderApplication, AclExpanderApplicationSettings> ();
-      return consoleApplication.Main (args);
+      ServiceLocator.SetLocatorProvider(() => null);
+      var consoleApplication = new ConsoleApplication<AclExpanderApplication, AclExpanderApplicationSettings>();
+      return consoleApplication.Main(args);
     }
   }
 }

@@ -30,16 +30,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
     {
       Substitution substitution = Substitution.NewObject();
 
-      Assert.That (substitution.IsEnabled, Is.True);
-      Assert.That (substitution.BeginDate, Is.Null);
-      Assert.That (substitution.EndDate, Is.Null);
+      Assert.That(substitution.IsEnabled, Is.True);
+      Assert.That(substitution.BeginDate, Is.Null);
+      Assert.That(substitution.EndDate, Is.Null);
     }
 
     [Test]
     public void DoesNotImplementISecurableObject ()
     {
       Substitution substitution = Substitution.NewObject();
-      Assert.That (substitution, Is.Not.InstanceOf<ISecurableObject>());
+      Assert.That(substitution, Is.Not.InstanceOf<ISecurableObject>());
     }
   }
 }

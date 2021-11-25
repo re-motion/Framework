@@ -29,7 +29,7 @@ namespace Remotion.Xml.UnitTests
   
     public static XmlReader GetSchemaReader ()
     {
-      return new XmlTextReader (Assembly.GetExecutingAssembly ().GetManifestResourceStream (typeof (SampleClass), "SampleClass.xsd"));
+      return new XmlTextReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(typeof (SampleClass), "SampleClass.xsd"));
     }
 
     private int _value;
@@ -45,7 +45,7 @@ namespace Remotion.Xml.UnitTests
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException ("Value", value, "Only positive integer values are allowed.");
+          throw new ArgumentOutOfRangeException("Value", value, "Only positive integer values are allowed.");
          _value = value;
       }
     }

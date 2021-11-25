@@ -27,38 +27,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _order1 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.Order1.GetObject<Order> ());
-      ExecuteInWriteableSubTransaction (() => _order1.OrderNumber = 13);
+      _order1 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.Order1.GetObject<Order>());
+      ExecuteInWriteableSubTransaction(() => _order1.OrderNumber = 13);
     }
 
     [Test]
     public void PropertyValueSetInReadOnlyRootTransaction_IsForbidden ()
     {
-      CheckProperty (ReadOnlyRootTransaction, _order1, o => o.OrderNumber, 1, 1);
-      CheckProperty (ReadOnlyMiddleTransaction, _order1, o => o.OrderNumber, 1, 1);
-      CheckProperty (WriteableSubTransaction, _order1, o => o.OrderNumber, 13, 1);
+      CheckProperty(ReadOnlyRootTransaction, _order1, o => o.OrderNumber, 1, 1);
+      CheckProperty(ReadOnlyMiddleTransaction, _order1, o => o.OrderNumber, 1, 1);
+      CheckProperty(WriteableSubTransaction, _order1, o => o.OrderNumber, 13, 1);
 
-      CheckForbidden (() => ExecuteInReadOnlyRootTransaction (() => _order1.OrderNumber = 27), "PropertyValueChanging");
+      CheckForbidden(() => ExecuteInReadOnlyRootTransaction(() => _order1.OrderNumber = 27), "PropertyValueChanging");
 
-      CheckProperty (ReadOnlyRootTransaction, _order1, o => o.OrderNumber, 1, 1);
-      CheckProperty (ReadOnlyMiddleTransaction, _order1, o => o.OrderNumber, 1, 1);
-      CheckProperty (WriteableSubTransaction, _order1, o => o.OrderNumber, 13, 1);
+      CheckProperty(ReadOnlyRootTransaction, _order1, o => o.OrderNumber, 1, 1);
+      CheckProperty(ReadOnlyMiddleTransaction, _order1, o => o.OrderNumber, 1, 1);
+      CheckProperty(WriteableSubTransaction, _order1, o => o.OrderNumber, 13, 1);
     }
 
     [Test]
     public void PropertyValueSetInReadOnlyMiddleTransaction_IsForbidden ()
     {
-      CheckProperty (ReadOnlyRootTransaction, _order1, o => o.OrderNumber, 1, 1);
-      CheckProperty (ReadOnlyMiddleTransaction, _order1, o => o.OrderNumber, 1, 1);
-      CheckProperty (WriteableSubTransaction, _order1, o => o.OrderNumber, 13, 1);
+      CheckProperty(ReadOnlyRootTransaction, _order1, o => o.OrderNumber, 1, 1);
+      CheckProperty(ReadOnlyMiddleTransaction, _order1, o => o.OrderNumber, 1, 1);
+      CheckProperty(WriteableSubTransaction, _order1, o => o.OrderNumber, 13, 1);
 
-      CheckForbidden (() => ExecuteInReadOnlyMiddleTransaction (() => _order1.OrderNumber = 27), "PropertyValueChanging");
+      CheckForbidden(() => ExecuteInReadOnlyMiddleTransaction(() => _order1.OrderNumber = 27), "PropertyValueChanging");
 
-      CheckProperty (ReadOnlyRootTransaction, _order1, o => o.OrderNumber, 1, 1);
-      CheckProperty (ReadOnlyMiddleTransaction, _order1, o => o.OrderNumber, 1, 1);
-      CheckProperty (WriteableSubTransaction, _order1, o => o.OrderNumber, 13, 1);
+      CheckProperty(ReadOnlyRootTransaction, _order1, o => o.OrderNumber, 1, 1);
+      CheckProperty(ReadOnlyMiddleTransaction, _order1, o => o.OrderNumber, 1, 1);
+      CheckProperty(WriteableSubTransaction, _order1, o => o.OrderNumber, 13, 1);
     }
   }
 }

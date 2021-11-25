@@ -24,16 +24,16 @@ namespace Remotion.Mixins.Validation.Rules
 {
   public class DefaultMethodIntroductionRules : RuleSetBase
   {
-    private readonly ContextStoreMemberLookupUtility<MethodDefinition> _memberLookupUtility = new ContextStoreMemberLookupUtility<MethodDefinition> ();
+    private readonly ContextStoreMemberLookupUtility<MethodDefinition> _memberLookupUtility = new ContextStoreMemberLookupUtility<MethodDefinition>();
     private readonly ContextStoreMemberIntroductionLookupUtility<MethodIntroductionDefinition> _introductionLookupUtility =
-        new ContextStoreMemberIntroductionLookupUtility<MethodIntroductionDefinition> ();
+        new ContextStoreMemberIntroductionLookupUtility<MethodIntroductionDefinition>();
 
-    private readonly MemberSignatureEqualityComparer _signatureComparer = new MemberSignatureEqualityComparer ();
+    private readonly MemberSignatureEqualityComparer _signatureComparer = new MemberSignatureEqualityComparer();
 
     public override void Install (ValidatingVisitor visitor)
     {
-      visitor.MethodIntroductionRules.Add (new DelegateValidationRule<MethodIntroductionDefinition> (PublicMethodNameMustBeUniqueInTargetClass));
-      visitor.MethodIntroductionRules.Add (new DelegateValidationRule<MethodIntroductionDefinition> (PublicMethodNameMustBeUniqueInOtherMixins));
+      visitor.MethodIntroductionRules.Add(new DelegateValidationRule<MethodIntroductionDefinition>(PublicMethodNameMustBeUniqueInTargetClass));
+      visitor.MethodIntroductionRules.Add(new DelegateValidationRule<MethodIntroductionDefinition>(PublicMethodNameMustBeUniqueInOtherMixins));
     }
 
     [DelegateRuleDescription (Message = "A method introduced by a mixin cannot be public if the target class already has a method of the same name.")]
@@ -43,20 +43,20 @@ namespace Remotion.Mixins.Validation.Rules
       {
         MethodInfo introducedMethod = args.Definition.InterfaceMember;
         
-        var targetMethodsWithSameNameAndSignature = from candidate in _memberLookupUtility.GetCachedMembersByName (
+        var targetMethodsWithSameNameAndSignature = from candidate in _memberLookupUtility.GetCachedMembersByName(
                                                         args.Log.ContextStore, 
                                                         args.Definition.DeclaringInterface.TargetClass, 
                                                         introducedMethod.Name)
-                                                    where _signatureComparer.Equals (candidate.MethodInfo, introducedMethod)
+                                                    where _signatureComparer.Equals(candidate.MethodInfo, introducedMethod)
                                                     select candidate;
         if (targetMethodsWithSameNameAndSignature.Any())
         {
-          args.Log.Fail (args.Self);
+          args.Log.Fail(args.Self);
           return;
         }
       }
 
-      args.Log.Succeed (args.Self);
+      args.Log.Succeed(args.Self);
     }
 
     [DelegateRuleDescription (Message = "A method introduced by a mixin cannot be public if another mixin also introduces a public method of the same name.")]
@@ -65,22 +65,22 @@ namespace Remotion.Mixins.Validation.Rules
       if (args.Definition.Visibility == MemberVisibility.Public)
       {
         MethodInfo introducedMethod = args.Definition.InterfaceMember;
-        var otherIntroductionsWithSameNameAndSignature = from candidate in _introductionLookupUtility.GetCachedPublicIntroductionsByName (
+        var otherIntroductionsWithSameNameAndSignature = from candidate in _introductionLookupUtility.GetCachedPublicIntroductionsByName(
                                                             args.Log.ContextStore,
                                                             args.Definition.DeclaringInterface.TargetClass,
                                                             introducedMethod.Name)
                                                          where candidate != args.Definition
-                                                            && _signatureComparer.Equals (candidate.InterfaceMember, introducedMethod)
+                                                            && _signatureComparer.Equals(candidate.InterfaceMember, introducedMethod)
                                                          select candidate;
 
-        if (otherIntroductionsWithSameNameAndSignature.Any ())
+        if (otherIntroductionsWithSameNameAndSignature.Any())
         {
-          args.Log.Fail (args.Self);
+          args.Log.Fail(args.Self);
           return;
         }
       }
 
-      args.Log.Succeed (args.Self);
+      args.Log.Succeed(args.Self);
     }
   }
 }

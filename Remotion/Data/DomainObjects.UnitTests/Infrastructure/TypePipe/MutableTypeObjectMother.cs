@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       baseType = baseType ?? typeof (UnspecifiedType);
 
-      return new MutableTypeFactory().CreateProxy (baseType, ProxyKind.AssembledType).Type;
+      return new MutableTypeFactory().CreateProxy(baseType, ProxyKind.AssembledType).Type;
     }
 
     public class UnspecifiedType { }

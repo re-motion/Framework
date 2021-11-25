@@ -36,10 +36,10 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted ()
     {
-      bool hasAccess = _securityClient.HasConstructorAccess (typeof (SecurableObject));
+      bool hasAccess = _securityClient.HasConstructorAccess(typeof (SecurableObject));
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
@@ -49,11 +49,11 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
 
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasConstructorAccess (typeof (SecurableObject));
+        hasAccess = _securityClient.HasConstructorAccess(typeof (SecurableObject));
       }
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
   }
 }

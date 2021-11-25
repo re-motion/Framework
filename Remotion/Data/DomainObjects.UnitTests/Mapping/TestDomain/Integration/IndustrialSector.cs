@@ -33,11 +33,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     {
       get
       {
-        return CurrentProperty.GetValue<string> ();
+        return CurrentProperty.GetValue<string>();
       }
       set
       {
-        CurrentProperty.SetValue (value);
+        CurrentProperty.SetValue(value);
       }
     }
 
@@ -47,11 +47,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     {
       get
       {
-        return CurrentProperty.GetValue<ObjectList<Company>> ();
+        return CurrentProperty.GetValue<ObjectList<Company>>();
       }
       set
       {
-        CurrentProperty.SetValue (value);
+        CurrentProperty.SetValue(value);
       }
     }
   }

@@ -33,7 +33,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
       _classEmitter = null;
       _unsavedClassEmitter = null;
 
@@ -48,7 +48,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       get
       {
         if (_classEmitter == null)
-          _classEmitter = new CustomClassEmitter (Scope, GetType ().Name + s_typeCount++, typeof (object), Type.EmptyTypes, TypeAttributes.Public, true);
+          _classEmitter = new CustomClassEmitter(Scope, GetType().Name + s_typeCount++, typeof (object), Type.EmptyTypes, TypeAttributes.Public, true);
         return _classEmitter;
       }
     }
@@ -57,7 +57,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     {
       get { 
         if (_unsavedClassEmitter == null)
-          _unsavedClassEmitter = new CustomClassEmitter (UnsavedScope, GetType ().Name + "Unsaved" + s_typeCount++, typeof (object), Type.EmptyTypes, TypeAttributes.Public, true);
+          _unsavedClassEmitter = new CustomClassEmitter(UnsavedScope, GetType().Name + "Unsaved" + s_typeCount++, typeof (object), Type.EmptyTypes, TypeAttributes.Public, true);
         return _unsavedClassEmitter; }
     }
 
@@ -68,7 +68,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
         MethodAttributes flags = MethodAttributes.Public;
         if (isStatic)
           flags |= MethodAttributes.Static;
-        _methodEmitter = ClassEmitter.CreateMethod ("TestMethod", flags, returnType, parameterTypes);
+        _methodEmitter = ClassEmitter.CreateMethod("TestMethod", flags, returnType, parameterTypes);
       }
       return _methodEmitter;
     }
@@ -78,41 +78,41 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       MethodAttributes flags = MethodAttributes.Public;
       if (isStatic)
         flags |= MethodAttributes.Static;
-      var methodEmitter = UnsavedClassEmitter.CreateMethod ("TestMethod", flags, returnType, parameterTypes);
+      var methodEmitter = UnsavedClassEmitter.CreateMethod("TestMethod", flags, returnType, parameterTypes);
       return methodEmitter;
     }
 
     public Type GetBuiltType ()
     {
       if (_builtType == null)
-        _builtType = ClassEmitter.BuildType ();
+        _builtType = ClassEmitter.BuildType();
       return _builtType;
     }
 
     public Type GetUnsavedBuiltType ()
     {
       if (_unsavedBuiltType == null)
-        _unsavedBuiltType = UnsavedClassEmitter.BuildType ();
+        _unsavedBuiltType = UnsavedClassEmitter.BuildType();
       return _unsavedBuiltType;
     }
 
     public object GetBuiltInstance ()
     {
       if (_builtInstance == null)
-        _builtInstance = Activator.CreateInstance (GetBuiltType ());
+        _builtInstance = Activator.CreateInstance(GetBuiltType());
       return _builtInstance;
     }
 
     public object InvokeMethod (params object[] args)
     {
       if (_methodEmitter == null)
-        throw new InvalidOperationException ("No method created.");
+        throw new InvalidOperationException("No method created.");
       else
       {
         if (_methodEmitter.MethodBuilder.IsStatic)
-          return PrivateInvoke.InvokePublicStaticMethod (GetBuiltType (), _methodEmitter.Name, args);
+          return PrivateInvoke.InvokePublicStaticMethod(GetBuiltType(), _methodEmitter.Name, args);
         else
-          return PrivateInvoke.InvokePublicMethod (GetBuiltInstance (), _methodEmitter.Name, args);
+          return PrivateInvoke.InvokePublicMethod(GetBuiltInstance(), _methodEmitter.Name, args);
       }
     }
   }

@@ -67,116 +67,116 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _dbCommandBuilderFactoryStrictMock = MockRepository.GenerateStrictMock<IDbCommandBuilderFactory>();
       _objectReaderFactoryStrictMock = MockRepository.GenerateStrictMock<IObjectReaderFactory>();
-      _dbCommandBuilderStub = MockRepository.GenerateStub<IDbCommandBuilder> ();
-      _dataContainerReaderStub = MockRepository.GenerateStub<IObjectReader<DataContainer>> ();
-      _objectIDReaderStub = MockRepository.GenerateStub<IObjectReader<ObjectID>> ();
+      _dbCommandBuilderStub = MockRepository.GenerateStub<IDbCommandBuilder>();
+      _dataContainerReaderStub = MockRepository.GenerateStub<IObjectReader<DataContainer>>();
+      _objectIDReaderStub = MockRepository.GenerateStub<IObjectReader<ObjectID>>();
       _fakeStorageProviderCommandFactory = MockRepository.GenerateStub<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>();
 
-      _factory = new RelationLookupCommandFactory (
+      _factory = new RelationLookupCommandFactory(
                 _fakeStorageProviderCommandFactory,
                 _dbCommandBuilderFactoryStrictMock,
                 _rdbmsPersistenceModelProvider,
                 _objectReaderFactoryStrictMock);
 
-      _tableDefinition = TableDefinitionObjectMother.Create (TestDomainStorageProviderDefinition, new EntityNameDefinition (null, "Table1"));
-      _unionViewDefinition = UnionViewDefinitionObjectMother.Create (
+      _tableDefinition = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table1"));
+      _unionViewDefinition = UnionViewDefinitionObjectMother.Create(
           TestDomainStorageProviderDefinition,
-          new EntityNameDefinition (null, "ViewName"),
+          new EntityNameDefinition(null, "ViewName"),
           _tableDefinition);
 
-      _foreignKeyValue = CreateObjectID (_tableDefinition);
+      _foreignKeyValue = CreateObjectID(_tableDefinition);
       _foreignKeyStoragePropertyDefinitionStrictMock = MockRepository.GenerateStrictMock<IRdbmsStoragePropertyDefinition>();
 
-      _fakeComparedColumns = new[] { new ColumnValue (ColumnDefinitionObjectMother.IDColumn, _foreignKeyValue.Value) };
+      _fakeComparedColumns = new[] { new ColumnValue(ColumnDefinitionObjectMother.IDColumn, _foreignKeyValue.Value) };
     }
 
     [Test]
     public void CreateForRelationLookup_TableDefinition_NoSortExpression ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithTable (classType: typeof (Order), storageProviderDefinition: TestDomainStorageProviderDefinition);
-      var relationEndPointDefinition = CreateForeignKeyEndPointDefinition (classDefinition);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(classType: typeof (Order), storageProviderDefinition: TestDomainStorageProviderDefinition);
+      var relationEndPointDefinition = CreateForeignKeyEndPointDefinition(classDefinition);
       var oppositeTable = (TableDefinition) relationEndPointDefinition.ClassDefinition.StorageEntityDefinition;
 
-      _foreignKeyStoragePropertyDefinitionStrictMock.Expect (mock => mock.SplitValueForComparison (_foreignKeyValue)).Return (_fakeComparedColumns);
-      _foreignKeyStoragePropertyDefinitionStrictMock.Replay ();
+      _foreignKeyStoragePropertyDefinitionStrictMock.Expect(mock => mock.SplitValueForComparison(_foreignKeyValue)).Return(_fakeComparedColumns);
+      _foreignKeyStoragePropertyDefinitionStrictMock.Replay();
 
-      var expectedSelectedColumns = _tableDefinition.GetAllColumns ();
+      var expectedSelectedColumns = _tableDefinition.GetAllColumns();
       _dbCommandBuilderFactoryStrictMock
-          .Expect (
-              stub => stub.CreateForSelect (
-                  Arg.Is ((TableDefinition) classDefinition.StorageEntityDefinition),
-                  Arg<IEnumerable<ColumnDefinition>>.List.Equal (expectedSelectedColumns),
-                  Arg.Is (_fakeComparedColumns),
-                  Arg<IEnumerable<OrderedColumn>>.List.Equal (new OrderedColumn[0])))
-          .Return (_dbCommandBuilderStub);
+          .Expect(
+              stub => stub.CreateForSelect(
+                  Arg.Is((TableDefinition) classDefinition.StorageEntityDefinition),
+                  Arg<IEnumerable<ColumnDefinition>>.List.Equal(expectedSelectedColumns),
+                  Arg.Is(_fakeComparedColumns),
+                  Arg<IEnumerable<OrderedColumn>>.List.Equal(new OrderedColumn[0])))
+          .Return(_dbCommandBuilderStub);
       _dbCommandBuilderFactoryStrictMock.Replay();
 
       _objectReaderFactoryStrictMock
-          .Expect (
-              mock => mock.CreateDataContainerReader (
-                  Arg.Is ((IRdbmsStorageEntityDefinition) oppositeTable),
-                  Arg<IEnumerable<ColumnDefinition>>.List.Equal (expectedSelectedColumns)))
-          .Return (_dataContainerReaderStub);
+          .Expect(
+              mock => mock.CreateDataContainerReader(
+                  Arg.Is((IRdbmsStorageEntityDefinition) oppositeTable),
+                  Arg<IEnumerable<ColumnDefinition>>.List.Equal(expectedSelectedColumns)))
+          .Return(_dataContainerReaderStub);
       _objectReaderFactoryStrictMock.Replay();
 
-      var result = _factory.CreateForRelationLookup (relationEndPointDefinition, _foreignKeyValue, null);
+      var result = _factory.CreateForRelationLookup(relationEndPointDefinition, _foreignKeyValue, null);
 
       _objectReaderFactoryStrictMock.VerifyAllExpectations();
-      _foreignKeyStoragePropertyDefinitionStrictMock.VerifyAllExpectations ();
-      _dbCommandBuilderFactoryStrictMock.VerifyAllExpectations ();
+      _foreignKeyStoragePropertyDefinitionStrictMock.VerifyAllExpectations();
+      _dbCommandBuilderFactoryStrictMock.VerifyAllExpectations();
 
-      Assert.That (result, Is.TypeOf (typeof (MultiObjectLoadCommand<DataContainer>)));
+      Assert.That(result, Is.TypeOf(typeof (MultiObjectLoadCommand<DataContainer>)));
       var dbCommandBuilderTuples = ((MultiObjectLoadCommand<DataContainer>) result).DbCommandBuildersAndReaders;
-      Assert.That (dbCommandBuilderTuples.Length, Is.EqualTo (1));
-      Assert.That (dbCommandBuilderTuples[0].Item1, Is.SameAs (_dbCommandBuilderStub));
-      Assert.That (dbCommandBuilderTuples[0].Item2, Is.SameAs (_dataContainerReaderStub));
+      Assert.That(dbCommandBuilderTuples.Length, Is.EqualTo(1));
+      Assert.That(dbCommandBuilderTuples[0].Item1, Is.SameAs(_dbCommandBuilderStub));
+      Assert.That(dbCommandBuilderTuples[0].Item2, Is.SameAs(_dataContainerReaderStub));
     }
 
     [Test]
     public void CreateForRelationLookup_TableDefinition_WithSortExpression ()
     {
-      var classDefinition = CreateClassDefinition (_tableDefinition);
-      var relationEndPointDefinition = CreateForeignKeyEndPointDefinition (classDefinition);
+      var classDefinition = CreateClassDefinition(_tableDefinition);
+      var relationEndPointDefinition = CreateForeignKeyEndPointDefinition(classDefinition);
 
-      var spec1 = CreateSortedPropertySpecification (
+      var spec1 = CreateSortedPropertySpecification(
           classDefinition,
           SortOrder.Descending,
           ColumnDefinitionObjectMother.IDColumn,
           ColumnDefinitionObjectMother.ClassIDColumn);
-      var spec2 = CreateSortedPropertySpecification (classDefinition, SortOrder.Ascending, ColumnDefinitionObjectMother.TimestampColumn);
+      var spec2 = CreateSortedPropertySpecification(classDefinition, SortOrder.Ascending, ColumnDefinitionObjectMother.TimestampColumn);
 
-      _foreignKeyStoragePropertyDefinitionStrictMock.Expect (mock => mock.SplitValueForComparison (_foreignKeyValue)).Return (_fakeComparedColumns);
-      _foreignKeyStoragePropertyDefinitionStrictMock.Replay ();
+      _foreignKeyStoragePropertyDefinitionStrictMock.Expect(mock => mock.SplitValueForComparison(_foreignKeyValue)).Return(_fakeComparedColumns);
+      _foreignKeyStoragePropertyDefinitionStrictMock.Replay();
 
       var expectedSelectedColumns = _tableDefinition.GetAllColumns();
       var expectedOrderedColumns = new[]
                                    {
-                                       new OrderedColumn (ColumnDefinitionObjectMother.IDColumn, SortOrder.Descending),
-                                       new OrderedColumn (ColumnDefinitionObjectMother.ClassIDColumn, SortOrder.Descending),
-                                       new OrderedColumn (ColumnDefinitionObjectMother.TimestampColumn, SortOrder.Ascending)
+                                       new OrderedColumn(ColumnDefinitionObjectMother.IDColumn, SortOrder.Descending),
+                                       new OrderedColumn(ColumnDefinitionObjectMother.ClassIDColumn, SortOrder.Descending),
+                                       new OrderedColumn(ColumnDefinitionObjectMother.TimestampColumn, SortOrder.Ascending)
                                    };
       _dbCommandBuilderFactoryStrictMock
-          .Expect (
-              stub => stub.CreateForSelect (
-                  Arg.Is ((TableDefinition) classDefinition.StorageEntityDefinition),
-                  Arg<IEnumerable<ColumnDefinition>>.List.Equal (expectedSelectedColumns),
-                  Arg.Is (_fakeComparedColumns),
-                  Arg<IEnumerable<OrderedColumn>>.List.Equal (expectedOrderedColumns)))
-          .Return (_dbCommandBuilderStub);
+          .Expect(
+              stub => stub.CreateForSelect(
+                  Arg.Is((TableDefinition) classDefinition.StorageEntityDefinition),
+                  Arg<IEnumerable<ColumnDefinition>>.List.Equal(expectedSelectedColumns),
+                  Arg.Is(_fakeComparedColumns),
+                  Arg<IEnumerable<OrderedColumn>>.List.Equal(expectedOrderedColumns)))
+          .Return(_dbCommandBuilderStub);
       _dbCommandBuilderFactoryStrictMock.Replay();
 
       _objectReaderFactoryStrictMock
-          .Expect (
-              mock => mock.CreateDataContainerReader (
-                  Arg.Is ((IRdbmsStorageEntityDefinition) _tableDefinition),
-                  Arg<IEnumerable<ColumnDefinition>>.List.Equal (expectedSelectedColumns)))
-          .Return (_dataContainerReaderStub);
+          .Expect(
+              mock => mock.CreateDataContainerReader(
+                  Arg.Is((IRdbmsStorageEntityDefinition) _tableDefinition),
+                  Arg<IEnumerable<ColumnDefinition>>.List.Equal(expectedSelectedColumns)))
+          .Return(_dataContainerReaderStub);
       _objectReaderFactoryStrictMock.Replay();
 
-      _factory.CreateForRelationLookup (
+      _factory.CreateForRelationLookup(
           relationEndPointDefinition,
           _foreignKeyValue,
-          new SortExpressionDefinition (new[] { spec1, spec2 }));
+          new SortExpressionDefinition(new[] { spec1, spec2 }));
 
       _objectReaderFactoryStrictMock.VerifyAllExpectations();
       _foreignKeyStoragePropertyDefinitionStrictMock.VerifyAllExpectations();
@@ -186,117 +186,117 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     [Test]
     public void CreateForRelationLookup_UnionViewDefinition_NoSortExpression ()
     {
-      var classDefinition = CreateClassDefinition (_unionViewDefinition);
-      var relationEndPointDefinition = CreateForeignKeyEndPointDefinition (classDefinition);
+      var classDefinition = CreateClassDefinition(_unionViewDefinition);
+      var relationEndPointDefinition = CreateForeignKeyEndPointDefinition(classDefinition);
 
-      _foreignKeyStoragePropertyDefinitionStrictMock.Expect (mock => mock.SplitValueForComparison (_foreignKeyValue)).Return (_fakeComparedColumns);
-      _foreignKeyStoragePropertyDefinitionStrictMock.Replay ();
+      _foreignKeyStoragePropertyDefinitionStrictMock.Expect(mock => mock.SplitValueForComparison(_foreignKeyValue)).Return(_fakeComparedColumns);
+      _foreignKeyStoragePropertyDefinitionStrictMock.Replay();
 
       var expectedSelectedColumns = _unionViewDefinition.ObjectIDProperty.GetColumns().ToArray();
       _dbCommandBuilderFactoryStrictMock
-          .Expect (
-              stub => stub.CreateForSelect (
-                  Arg.Is (_unionViewDefinition),
-                  Arg<IEnumerable<ColumnDefinition>>.List.Equal (expectedSelectedColumns),
-                  Arg.Is (_fakeComparedColumns),
-                  Arg<IEnumerable<OrderedColumn>>.List.Equal (new OrderedColumn[0])))
-          .Return (_dbCommandBuilderStub);
+          .Expect(
+              stub => stub.CreateForSelect(
+                  Arg.Is(_unionViewDefinition),
+                  Arg<IEnumerable<ColumnDefinition>>.List.Equal(expectedSelectedColumns),
+                  Arg.Is(_fakeComparedColumns),
+                  Arg<IEnumerable<OrderedColumn>>.List.Equal(new OrderedColumn[0])))
+          .Return(_dbCommandBuilderStub);
       _dbCommandBuilderFactoryStrictMock.Replay();
 
       _objectReaderFactoryStrictMock
-          .Expect (
-              mock => mock.CreateObjectIDReader (
-                  Arg.Is (_unionViewDefinition),
-                  Arg<IEnumerable<ColumnDefinition>>.List.Equal (expectedSelectedColumns)))
-          .Return (_objectIDReaderStub);
+          .Expect(
+              mock => mock.CreateObjectIDReader(
+                  Arg.Is(_unionViewDefinition),
+                  Arg<IEnumerable<ColumnDefinition>>.List.Equal(expectedSelectedColumns)))
+          .Return(_objectIDReaderStub);
       _objectReaderFactoryStrictMock.Replay();
 
-      var result = _factory.CreateForRelationLookup (relationEndPointDefinition, _foreignKeyValue, null);
+      var result = _factory.CreateForRelationLookup(relationEndPointDefinition, _foreignKeyValue, null);
 
-      _objectReaderFactoryStrictMock.VerifyAllExpectations ();
-      _foreignKeyStoragePropertyDefinitionStrictMock.VerifyAllExpectations ();
-      _dbCommandBuilderFactoryStrictMock.VerifyAllExpectations ();
+      _objectReaderFactoryStrictMock.VerifyAllExpectations();
+      _foreignKeyStoragePropertyDefinitionStrictMock.VerifyAllExpectations();
+      _dbCommandBuilderFactoryStrictMock.VerifyAllExpectations();
 
       var innerCommand =
-          CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IEnumerable<DataContainer>> (result);
-      Assert.That (innerCommand, Is.TypeOf (typeof (IndirectDataContainerLoadCommand)));
+          CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IEnumerable<DataContainer>>(result);
+      Assert.That(innerCommand, Is.TypeOf(typeof (IndirectDataContainerLoadCommand)));
       var indirectLoadCommand = (IndirectDataContainerLoadCommand) innerCommand;
-      Assert.That (indirectLoadCommand.StorageProviderCommandFactory, Is.SameAs (_fakeStorageProviderCommandFactory));
-      Assert.That (indirectLoadCommand.ObjectIDLoadCommand, Is.TypeOf (typeof (MultiObjectIDLoadCommand)));
-      Assert.That (((MultiObjectIDLoadCommand) (indirectLoadCommand.ObjectIDLoadCommand)).DbCommandBuilders, Is.EqualTo (new[] { _dbCommandBuilderStub }));
-      Assert.That (((MultiObjectIDLoadCommand) indirectLoadCommand.ObjectIDLoadCommand).ObjectIDReader, Is.SameAs (_objectIDReaderStub));
+      Assert.That(indirectLoadCommand.StorageProviderCommandFactory, Is.SameAs(_fakeStorageProviderCommandFactory));
+      Assert.That(indirectLoadCommand.ObjectIDLoadCommand, Is.TypeOf(typeof (MultiObjectIDLoadCommand)));
+      Assert.That(((MultiObjectIDLoadCommand) (indirectLoadCommand.ObjectIDLoadCommand)).DbCommandBuilders, Is.EqualTo(new[] { _dbCommandBuilderStub }));
+      Assert.That(((MultiObjectIDLoadCommand) indirectLoadCommand.ObjectIDLoadCommand).ObjectIDReader, Is.SameAs(_objectIDReaderStub));
     }
 
     [Test]
     public void CreateForRelationLookup_UnionViewDefinition_WithSortExpression ()
     {
-      var classDefinition = CreateClassDefinition (_unionViewDefinition);
-      var relationEndPointDefinition = CreateForeignKeyEndPointDefinition (classDefinition);
+      var classDefinition = CreateClassDefinition(_unionViewDefinition);
+      var relationEndPointDefinition = CreateForeignKeyEndPointDefinition(classDefinition);
 
-      var spec1 = CreateSortedPropertySpecification (
+      var spec1 = CreateSortedPropertySpecification(
           classDefinition,
           SortOrder.Descending,
           ColumnDefinitionObjectMother.IDColumn,
           ColumnDefinitionObjectMother.ClassIDColumn);
-      var spec2 = CreateSortedPropertySpecification (classDefinition, SortOrder.Ascending, ColumnDefinitionObjectMother.TimestampColumn);
+      var spec2 = CreateSortedPropertySpecification(classDefinition, SortOrder.Ascending, ColumnDefinitionObjectMother.TimestampColumn);
 
-      _foreignKeyStoragePropertyDefinitionStrictMock.Expect (mock => mock.SplitValueForComparison (_foreignKeyValue)).Return (_fakeComparedColumns);
-      _foreignKeyStoragePropertyDefinitionStrictMock.Replay ();
+      _foreignKeyStoragePropertyDefinitionStrictMock.Expect(mock => mock.SplitValueForComparison(_foreignKeyValue)).Return(_fakeComparedColumns);
+      _foreignKeyStoragePropertyDefinitionStrictMock.Replay();
 
-      var expectedSelectedColumns = _unionViewDefinition.ObjectIDProperty.GetColumns ().ToArray ();
+      var expectedSelectedColumns = _unionViewDefinition.ObjectIDProperty.GetColumns().ToArray();
       var expectedOrderedColumns = new[]
                                    {
-                                       new OrderedColumn (ColumnDefinitionObjectMother.IDColumn, SortOrder.Descending),
-                                       new OrderedColumn (ColumnDefinitionObjectMother.ClassIDColumn, SortOrder.Descending),
-                                       new OrderedColumn (ColumnDefinitionObjectMother.TimestampColumn, SortOrder.Ascending)
+                                       new OrderedColumn(ColumnDefinitionObjectMother.IDColumn, SortOrder.Descending),
+                                       new OrderedColumn(ColumnDefinitionObjectMother.ClassIDColumn, SortOrder.Descending),
+                                       new OrderedColumn(ColumnDefinitionObjectMother.TimestampColumn, SortOrder.Ascending)
                                    };
       _dbCommandBuilderFactoryStrictMock
-          .Expect (
-              stub => stub.CreateForSelect (
-                  Arg.Is (_unionViewDefinition),
-                  Arg<IEnumerable<ColumnDefinition>>.List.Equal (expectedSelectedColumns),
-                  Arg.Is (_fakeComparedColumns),
-                  Arg<IEnumerable<OrderedColumn>>.List.Equal (expectedOrderedColumns)))
-          .Return (_dbCommandBuilderStub);
+          .Expect(
+              stub => stub.CreateForSelect(
+                  Arg.Is(_unionViewDefinition),
+                  Arg<IEnumerable<ColumnDefinition>>.List.Equal(expectedSelectedColumns),
+                  Arg.Is(_fakeComparedColumns),
+                  Arg<IEnumerable<OrderedColumn>>.List.Equal(expectedOrderedColumns)))
+          .Return(_dbCommandBuilderStub);
       _dbCommandBuilderFactoryStrictMock.Replay();
 
       _objectReaderFactoryStrictMock
-          .Expect (
-              mock => mock.CreateObjectIDReader (
-                  Arg.Is (_unionViewDefinition),
-                  Arg<IEnumerable<ColumnDefinition>>.List.Equal (expectedSelectedColumns)))
-          .Return (_objectIDReaderStub);
+          .Expect(
+              mock => mock.CreateObjectIDReader(
+                  Arg.Is(_unionViewDefinition),
+                  Arg<IEnumerable<ColumnDefinition>>.List.Equal(expectedSelectedColumns)))
+          .Return(_objectIDReaderStub);
       _objectReaderFactoryStrictMock.Replay();
 
-      _factory.CreateForRelationLookup (
+      _factory.CreateForRelationLookup(
           relationEndPointDefinition,
           _foreignKeyValue,
-          new SortExpressionDefinition (new[] { spec1, spec2 }));
+          new SortExpressionDefinition(new[] { spec1, spec2 }));
 
       _objectReaderFactoryStrictMock.VerifyAllExpectations();
-      _foreignKeyStoragePropertyDefinitionStrictMock.VerifyAllExpectations ();
-      _dbCommandBuilderFactoryStrictMock.VerifyAllExpectations ();
+      _foreignKeyStoragePropertyDefinitionStrictMock.VerifyAllExpectations();
+      _dbCommandBuilderFactoryStrictMock.VerifyAllExpectations();
     }
 
     [Test]
     public void CreateForRelationLookup_EmptyViewDefinition ()
     {
-      var emptyViewDefintion = EmptyViewDefinitionObjectMother.Create (TestDomainStorageProviderDefinition);
-      var classDefinition = CreateClassDefinition (emptyViewDefintion);
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID (classDefinition);
-      var relationEndPointDefinition = new RelationEndPointDefinition (propertyDefinition, false);
+      var emptyViewDefintion = EmptyViewDefinitionObjectMother.Create(TestDomainStorageProviderDefinition);
+      var classDefinition = CreateClassDefinition(emptyViewDefintion);
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(classDefinition);
+      var relationEndPointDefinition = new RelationEndPointDefinition(propertyDefinition, false);
 
-      var result = _factory.CreateForRelationLookup (relationEndPointDefinition, _foreignKeyValue, null);
+      var result = _factory.CreateForRelationLookup(relationEndPointDefinition, _foreignKeyValue, null);
 
-      Assert.That (result, Is.TypeOf (typeof (FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>)));
+      Assert.That(result, Is.TypeOf(typeof (FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>)));
       var fixedValueCommand = (FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>) result;
-      Assert.That (fixedValueCommand.Value, Is.EqualTo (Enumerable.Empty<DataContainer>()));
+      Assert.That(fixedValueCommand.Value, Is.EqualTo(Enumerable.Empty<DataContainer>()));
     }
 
     private ObjectID CreateObjectID (IStorageEntityDefinition entityDefinition)
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order), baseClass: null);
-      classDefinition.SetStorageEntity (entityDefinition);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Order), baseClass: null);
+      classDefinition.SetStorageEntity(entityDefinition);
 
       return new ObjectID(classDefinition, Guid.NewGuid());
     }
@@ -304,9 +304,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private IStorageProviderCommand<TIn, IRdbmsProviderCommandExecutionContext> CheckDelegateBasedCommandAndReturnInnerCommand<TIn, TResult> (
         IStorageProviderCommand<TResult, IRdbmsProviderCommandExecutionContext> command)
     {
-      Assert.That (
+      Assert.That(
           command,
-          Is.TypeOf (typeof (DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>)));
+          Is.TypeOf(typeof (DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>)));
       return ((DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>) command).Command;
     }
 
@@ -315,9 +315,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
         SortOrder sortOrder,
         ColumnDefinition sortedColumn)
     {
-      return CreateSortedPropertySpecification (
+      return CreateSortedPropertySpecification(
           classDefinition,
-          new SimpleStoragePropertyDefinition (typeof (int), sortedColumn),
+          new SimpleStoragePropertyDefinition(typeof (int), sortedColumn),
           sortOrder);
     }
 
@@ -327,38 +327,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
         ColumnDefinition sortedColumn1,
         ColumnDefinition sortedColumn2)
     {
-      return CreateSortedPropertySpecification (
+      return CreateSortedPropertySpecification(
           classDefinition,
-          new ObjectIDStoragePropertyDefinition (
-              new SimpleStoragePropertyDefinition (typeof (int), sortedColumn1), new SimpleStoragePropertyDefinition (typeof (int), sortedColumn2)),
+          new ObjectIDStoragePropertyDefinition(
+              new SimpleStoragePropertyDefinition(typeof (int), sortedColumn1), new SimpleStoragePropertyDefinition(typeof (int), sortedColumn2)),
           sortOrder);
     }
 
     private RelationEndPointDefinition CreateForeignKeyEndPointDefinition (ClassDefinition classDefinition)
     {
-      var idPropertyDefinition = CreateForeignKeyPropertyDefinition (classDefinition);
-      return new RelationEndPointDefinition (idPropertyDefinition, false);
+      var idPropertyDefinition = CreateForeignKeyPropertyDefinition(classDefinition);
+      return new RelationEndPointDefinition(idPropertyDefinition, false);
     }
 
     private PropertyDefinition CreateForeignKeyPropertyDefinition (ClassDefinition classDefinition)
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID (classDefinition, "OrderTicket");
-      propertyDefinition.SetStorageProperty (_foreignKeyStoragePropertyDefinitionStrictMock);
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(classDefinition, "OrderTicket");
+      propertyDefinition.SetStorageProperty(_foreignKeyStoragePropertyDefinitionStrictMock);
       return propertyDefinition;
     }
 
     private SortedPropertySpecification CreateSortedPropertySpecification (
         ClassDefinition classDefinition, IStoragePropertyDefinition columnDefinition, SortOrder sortOrder)
     {
-      var sortedPropertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (classDefinition);
-      sortedPropertyDefinition.SetStorageProperty (columnDefinition);
-      return new SortedPropertySpecification (sortedPropertyDefinition, sortOrder);
+      var sortedPropertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition);
+      sortedPropertyDefinition.SetStorageProperty(columnDefinition);
+      return new SortedPropertySpecification(sortedPropertyDefinition, sortOrder);
     }
 
     private ClassDefinition CreateClassDefinition (IStorageEntityDefinition entityDefinition)
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order), baseClass: null);
-      classDefinition.SetStorageEntity (entityDefinition);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Order), baseClass: null);
+      classDefinition.SetStorageEntity(entityDefinition);
       return classDefinition;
     }
   }

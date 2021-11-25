@@ -27,36 +27,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     {
       var transporter = new DomainObjectTransporter();
       foreach (ObjectID id in ids)
-        transporter.Load (id);
-      return GetBinaryDataFor (transporter);
+        transporter.Load(id);
+      return GetBinaryDataFor(transporter);
     }
 
     public static byte[] GetBinaryDataFor (DomainObjectTransporter transporter)
     {
       using (var stream = new MemoryStream())
       {
-        transporter.Export (stream);
+        transporter.Export(stream);
         return stream.ToArray();
       }
     }
 
     public static List<DomainObject> ImportObjects (params ObjectID[] objectsToImport)
     {
-      byte[] binaryData = GetBinaryDataFor (objectsToImport);
-      return ImportObjects (binaryData);
+      byte[] binaryData = GetBinaryDataFor(objectsToImport);
+      return ImportObjects(binaryData);
     }
 
     public static List<DomainObject> ImportObjects (byte[] binaryData)
     {
-      TransportedDomainObjects transportedObjects = Import (binaryData);
-      return new List<DomainObject> (transportedObjects.TransportedObjects);
+      TransportedDomainObjects transportedObjects = Import(binaryData);
+      return new List<DomainObject>(transportedObjects.TransportedObjects);
     }
 
     public static TransportedDomainObjects Import (byte[] binaryData)
     {
-      using (var stream = new MemoryStream (binaryData))
+      using (var stream = new MemoryStream(binaryData))
       {
-        return DomainObjectImporter.CreateImporterFromStream (stream, BinaryImportStrategy.Instance).GetImportedObjects();
+        return DomainObjectImporter.CreateImporterFromStream(stream, BinaryImportStrategy.Instance).GetImportedObjects();
       }
     }
   }

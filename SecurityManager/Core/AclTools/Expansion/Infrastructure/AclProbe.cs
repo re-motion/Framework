@@ -48,15 +48,15 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     /// <returns></returns>
     public static AclProbe CreateAclProbe (User user, Role role, AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull ("user", user);
-      ArgumentUtility.CheckNotNull ("role", role);
-      ArgumentUtility.CheckNotNull ("ace", ace);
+      ArgumentUtility.CheckNotNull("user", user);
+      ArgumentUtility.CheckNotNull("role", role);
+      ArgumentUtility.CheckNotNull("ace", ace);
 
-      var aclProbe = new AclProbe ();
-      var owningUser = CreateOwningUserEntry (aclProbe, user, ace);
-      var owningGroup = CreateOwningGroupEntry (aclProbe, role, ace);
-      var owningTenant = CreateOwningTenantEntry (aclProbe, user, ace);
-      var abstractRoles = CreateAbstractRolesEntry (aclProbe, ace);
+      var aclProbe = new AclProbe();
+      var owningUser = CreateOwningUserEntry(aclProbe, user, ace);
+      var owningGroup = CreateOwningGroupEntry(aclProbe, role, ace);
+      var owningTenant = CreateOwningTenantEntry(aclProbe, user, ace);
+      var abstractRoles = CreateAbstractRolesEntry(aclProbe, ace);
 
 
       // Create a new Principal which has only the one role we are currently probing for.
@@ -68,10 +68,10 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       // always have the access rights returned; this is just not the information we want to present in the 
       // ACL-expansion, where we distinguish which role gives rise to which access rights).
 
-      var principal = new Principal (
+      var principal = new Principal(
           user.Tenant.GetHandle(),
           user.GetSafeHandle(),
-          EnumerableUtility.Singleton (new PrincipalRole (role.Position.GetHandle(), role.Group.GetHandle())));
+          EnumerableUtility.Singleton(new PrincipalRole(role.Position.GetHandle(), role.Group.GetHandle())));
 
       aclProbe._securityToken = SecurityToken.Create(principal, owningTenant, owningGroup, owningUser, abstractRoles);
 
@@ -80,11 +80,11 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
      
     private static IList<IDomainObjectHandle<AbstractRoleDefinition>> CreateAbstractRolesEntry (AclProbe aclProbe, AccessControlEntry ace)
     {
-      var abstractRoles = new List<IDomainObjectHandle<AbstractRoleDefinition>> ();
+      var abstractRoles = new List<IDomainObjectHandle<AbstractRoleDefinition>>();
       if (ace.SpecificAbstractRole != null)
       {
         var abstractRole = ace.SpecificAbstractRole;
-        abstractRoles.Add (abstractRole.GetHandle());
+        abstractRoles.Add(abstractRole.GetHandle());
         aclProbe.AccessConditions.AbstractRole = abstractRole;
       }
       return abstractRoles;
@@ -111,7 +111,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
           owningUser = null; // No constraint => no condition (will always match).
           break;
         default:
-          throw new ArgumentException (String.Format ("ace.UserSelection={0} is currently not supported by this method. Please extend method to handle the new UserSelection state.", ace.UserCondition));
+          throw new ArgumentException(String.Format("ace.UserSelection={0} is currently not supported by this method. Please extend method to handle the new UserSelection state.", ace.UserCondition));
       }
       return owningUser;
     }
@@ -128,10 +128,10 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
           // keeping in mind the TenantHierarchyCondition.
 
           // Owning tenant will be set to the user's tenant, which should never be empty. 
-          Assertion.IsNotNull (user.Tenant);
+          Assertion.IsNotNull(user.Tenant);
           // TenantHierarchyCondition should always contain the flag for "this tenant"; 
           // if this condition is violated, using owningTenant = user.Tenant will no longer work, since it will not match.
-          Assertion.IsTrue ((ace.TenantHierarchyCondition & TenantHierarchyCondition.This) != 0);
+          Assertion.IsTrue((ace.TenantHierarchyCondition & TenantHierarchyCondition.This) != 0);
           owningTenant = user.Tenant;
           aclProbe.AccessConditions.OwningTenant = owningTenant;
           aclProbe.AccessConditions.TenantHierarchyCondition = ace.TenantHierarchyCondition;
@@ -143,7 +143,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
           owningTenant = null; // No constraint => no condition (will always match).
           break;
         default:
-          throw new ArgumentException (String.Format ("ace.TenantSelection={0} is currently not supported by this method. Please extend method to handle the new TenantSelection state.", ace.TenantCondition));
+          throw new ArgumentException(String.Format("ace.TenantSelection={0} is currently not supported by this method. Please extend method to handle the new TenantSelection state.", ace.TenantCondition));
       }
       return owningTenant;
     }
@@ -155,17 +155,17 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       {
         case GroupCondition.OwningGroup:
           // Owning group will be set to the role group, which should never be empty.
-          Assertion.IsNotNull (role.Group);
+          Assertion.IsNotNull(role.Group);
           // GroupHierarchyCondition should always contain the flag for "this group";
           // if this condition is violated, using owningGroup = role.Group will no longer work, since it will not match.
-          Assertion.IsTrue ((ace.GroupHierarchyCondition & GroupHierarchyCondition.This) != 0); 
+          Assertion.IsTrue((ace.GroupHierarchyCondition & GroupHierarchyCondition.This) != 0); 
           owningGroup = role.Group;
           aclProbe.AccessConditions.OwningGroup = owningGroup;
           aclProbe.AccessConditions.GroupHierarchyCondition = ace.GroupHierarchyCondition;
           break;
         case GroupCondition.BranchOfOwningGroup:
-          Assertion.IsNotNull (role.Group);
-          owningGroup = FindFirstGroupInThisAndParentHierarchyWhichHasGroupType (role.Group, ace.SpecificGroupType);
+          Assertion.IsNotNull(role.Group);
+          owningGroup = FindFirstGroupInThisAndParentHierarchyWhichHasGroupType(role.Group, ace.SpecificGroupType);
           aclProbe.AccessConditions.OwningGroup = owningGroup;
           aclProbe.AccessConditions.GroupHierarchyCondition = GroupHierarchyCondition.ThisAndChildren;
           break;
@@ -179,15 +179,15 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
           owningGroup = null; // No constraint => no condition (will always match).
           break;
         default:
-          throw new ArgumentException (String.Format ("ace.GroupSelection={0} is currently not supported by this method. Please extend method to handle the new GroupSelection state.", ace.GroupCondition));
+          throw new ArgumentException(String.Format("ace.GroupSelection={0} is currently not supported by this method. Please extend method to handle the new GroupSelection state.", ace.GroupCondition));
       }
       return owningGroup;
     }
 
     private static Group FindFirstGroupInThisAndParentHierarchyWhichHasGroupType (Group group, GroupType groupType)
     {
-      var thisAndParents = new[] { group }.Concat (group.GetParents());
-      Group matchingGroup = thisAndParents.Where (g => g.GroupType == groupType).FirstOrDefault ();
+      var thisAndParents = new[] { group }.Concat(group.GetParents());
+      Group matchingGroup = thisAndParents.Where(g => g.GroupType == groupType).FirstOrDefault();
       return matchingGroup;
     }
 

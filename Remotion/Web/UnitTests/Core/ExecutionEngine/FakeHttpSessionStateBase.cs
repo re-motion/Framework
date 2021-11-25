@@ -44,12 +44,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 
     public override void Add (string name, object value)
     {
-      _items.Add (name, value);
+      _items.Add(name, value);
     }
 
     public override void Remove (string name)
     {
-      _items.Remove (name);
+      _items.Remove(name);
     }
 
     public override SessionStateMode Mode

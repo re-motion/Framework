@@ -33,71 +33,71 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _owningCustomer = DomainObjectIDs.Customer1.GetObject<Customer> ();
+      _owningCustomer = DomainObjectIDs.Customer1.GetObject<Customer>();
 
-      Assert.That (_owningCustomer.Orders.Count, Is.EqualTo (2));
+      Assert.That(_owningCustomer.Orders.Count, Is.EqualTo(2));
       _itemA = _owningCustomer.Orders[0];
       _itemB = _owningCustomer.Orders[1];
 
       var weights = new Dictionary<DomainObject, int> { { _itemA, 2 }, { _itemB, 1 } };
-      _reversingComparison = (one, two) => weights[one].CompareTo (weights[two]);
+      _reversingComparison = (one, two) => weights[one].CompareTo(weights[two]);
     }
 
     [Test]
     public void Sort ()
     {
-      Assert.That (_owningCustomer.Orders, Is.EqualTo (new[] { _itemA, _itemB }));
-      Assert.That (_itemA.Customer, Is.SameAs (_owningCustomer));
-      Assert.That (_itemB.Customer, Is.SameAs (_owningCustomer));
+      Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemA, _itemB }));
+      Assert.That(_itemA.Customer, Is.SameAs(_owningCustomer));
+      Assert.That(_itemB.Customer, Is.SameAs(_owningCustomer));
 
-      _owningCustomer.Orders.Sort (_reversingComparison);
+      _owningCustomer.Orders.Sort(_reversingComparison);
 
-      Assert.That (_owningCustomer.Orders, Is.EqualTo (new[] { _itemB, _itemA }));
-      Assert.That (_itemA.Customer, Is.SameAs (_owningCustomer));
-      Assert.That (_itemB.Customer, Is.SameAs (_owningCustomer));
+      Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemB, _itemA }));
+      Assert.That(_itemA.Customer, Is.SameAs(_owningCustomer));
+      Assert.That(_itemB.Customer, Is.SameAs(_owningCustomer));
     }
 
     [Test]
     public void Sort_AlreadySorted_StateAndHasChangedRemainUnchanged ()
     {
-      Assert.That (_owningCustomer.Orders, Is.EqualTo (new[] { _itemA, _itemB }));
-      Assert.That (_owningCustomer.State.IsUnchanged, Is.True);
-      Assert.That (_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
-      Assert.That (_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.False);
-      Assert.That (_itemA.State.IsUnchanged, Is.True);
-      Assert.That (_itemB.State.IsUnchanged, Is.True);
+      Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemA, _itemB }));
+      Assert.That(_owningCustomer.State.IsUnchanged, Is.True);
+      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
+      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.False);
+      Assert.That(_itemA.State.IsUnchanged, Is.True);
+      Assert.That(_itemB.State.IsUnchanged, Is.True);
 
-      Comparison<DomainObject> nonReversingComparison = (one, two) => _reversingComparison (two, one);
-      _owningCustomer.Orders.Sort (nonReversingComparison);
+      Comparison<DomainObject> nonReversingComparison = (one, two) => _reversingComparison(two, one);
+      _owningCustomer.Orders.Sort(nonReversingComparison);
 
-      Assert.That (_owningCustomer.Orders, Is.EqualTo (new[] { _itemA, _itemB }));
-      Assert.That (_owningCustomer.State.IsUnchanged, Is.True);
-      Assert.That (_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
-      Assert.That (_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.True);
-      Assert.That (_itemA.State.IsUnchanged, Is.True);
-      Assert.That (_itemB.State.IsUnchanged, Is.True);
+      Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemA, _itemB }));
+      Assert.That(_owningCustomer.State.IsUnchanged, Is.True);
+      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
+      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.True);
+      Assert.That(_itemA.State.IsUnchanged, Is.True);
+      Assert.That(_itemB.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void Sort_NotSortedYet_StateAndHasChangedRemainUnchanged_InRootTransaction ()
     {
-      Assert.That (_owningCustomer.Orders, Is.EqualTo (new[] { _itemA, _itemB }));
-      Assert.That (_owningCustomer.State.IsUnchanged, Is.True);
-      Assert.That (_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
-      Assert.That (_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.False);
-      Assert.That (_itemA.State.IsUnchanged, Is.True);
-      Assert.That (_itemB.State.IsUnchanged, Is.True);
+      Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemA, _itemB }));
+      Assert.That(_owningCustomer.State.IsUnchanged, Is.True);
+      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
+      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.False);
+      Assert.That(_itemA.State.IsUnchanged, Is.True);
+      Assert.That(_itemB.State.IsUnchanged, Is.True);
 
-      _owningCustomer.Orders.Sort (_reversingComparison);
+      _owningCustomer.Orders.Sort(_reversingComparison);
 
-      Assert.That (_owningCustomer.Orders, Is.EqualTo (new[] { _itemB, _itemA }));
-      Assert.That (_owningCustomer.State.IsUnchanged, Is.True);
-      Assert.That (_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
-      Assert.That (_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.True);
-      Assert.That (_itemA.State.IsUnchanged, Is.True);
-      Assert.That (_itemB.State.IsUnchanged, Is.True);
+      Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemB, _itemA }));
+      Assert.That(_owningCustomer.State.IsUnchanged, Is.True);
+      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
+      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.True);
+      Assert.That(_itemA.State.IsUnchanged, Is.True);
+      Assert.That(_itemB.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -105,21 +105,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (_owningCustomer.Orders, Is.EqualTo (new[] { _itemA, _itemB }));
-        Assert.That (_owningCustomer.State.IsUnchanged, Is.True);
-        Assert.That (_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
-        Assert.That (_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.False);
-        Assert.That (_itemA.State.IsUnchanged, Is.True);
-        Assert.That (_itemB.State.IsUnchanged, Is.True);
+        Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemA, _itemB }));
+        Assert.That(_owningCustomer.State.IsUnchanged, Is.True);
+        Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
+        Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.False);
+        Assert.That(_itemA.State.IsUnchanged, Is.True);
+        Assert.That(_itemB.State.IsUnchanged, Is.True);
 
-        _owningCustomer.Orders.Sort (_reversingComparison);
+        _owningCustomer.Orders.Sort(_reversingComparison);
 
-        Assert.That (_owningCustomer.Orders, Is.EqualTo (new[] { _itemB, _itemA }));
-        Assert.That (_owningCustomer.State.IsChanged, Is.True);
-        Assert.That (_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.True);
-        Assert.That (_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.True);
-        Assert.That (_itemA.State.IsUnchanged, Is.True);
-        Assert.That (_itemB.State.IsUnchanged, Is.True);
+        Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemB, _itemA }));
+        Assert.That(_owningCustomer.State.IsChanged, Is.True);
+        Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.True);
+        Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.True);
+        Assert.That(_itemA.State.IsUnchanged, Is.True);
+        Assert.That(_itemB.State.IsUnchanged, Is.True);
       }
     }
 
@@ -127,31 +127,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     public void Sort_TriggersOnReplaceDataEvent_ButNoRelationChangeEvents ()
     {
       var eventReceiverMock = MockRepository.GenerateStrictMock<OrderCollection.ICollectionEventReceiver>();
-      eventReceiverMock.Expect (mock => mock.OnReplaceData());
+      eventReceiverMock.Expect(mock => mock.OnReplaceData());
       eventReceiverMock.Replay();
       
       var orderCollection = _owningCustomer.Orders;
-      orderCollection.SetEventReceiver (eventReceiverMock);
+      orderCollection.SetEventReceiver(eventReceiverMock);
 
-      var eventListenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (TestableClientTransaction);
+      var eventListenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(TestableClientTransaction);
       try
       {
         eventListenerMock
-            .Expect (
-                mock => mock.VirtualRelationEndPointStateUpdated (
+            .Expect(
+                mock => mock.VirtualRelationEndPointStateUpdated(
                     TestableClientTransaction,
-                    RelationEndPointID.Resolve (_owningCustomer, c => c.Orders),
+                    RelationEndPointID.Resolve(_owningCustomer, c => c.Orders),
                     null));
-        eventListenerMock.Replay ();
+        eventListenerMock.Replay();
 
-        orderCollection.Sort (_reversingComparison);
+        orderCollection.Sort(_reversingComparison);
 
-        eventReceiverMock.VerifyAllExpectations ();
-        eventListenerMock.VerifyAllExpectations ();
+        eventReceiverMock.VerifyAllExpectations();
+        eventListenerMock.VerifyAllExpectations();
       }
       finally
       {
-        TestableClientTransaction.RemoveListener (eventListenerMock);
+        TestableClientTransaction.RemoveListener(eventListenerMock);
       }
     }
   }

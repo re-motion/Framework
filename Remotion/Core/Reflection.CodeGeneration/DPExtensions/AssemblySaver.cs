@@ -27,22 +27,22 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
     public static string[] SaveAssemblies (ModuleScope scope)
     {
 #if FEATURE_ASSEMBLYBUILDER_SAVE
-      var paths = new System.Collections.Generic.List<string> ();
+      var paths = new System.Collections.Generic.List<string>();
 
       if (scope.StrongNamedModule != null)
       {
-        scope.SaveAssembly (true);
-        paths.Add (scope.StrongNamedModule.FullyQualifiedName);
+        scope.SaveAssembly(true);
+        paths.Add(scope.StrongNamedModule.FullyQualifiedName);
       }
 
       if (scope.WeakNamedModule != null)
       {
-        scope.SaveAssembly (false);
-        paths.Add (scope.WeakNamedModule.FullyQualifiedName);
+        scope.SaveAssembly(false);
+        paths.Add(scope.WeakNamedModule.FullyQualifiedName);
       }
-      return paths.ToArray ();
+      return paths.ToArray();
 #else
-      throw new PlatformNotSupportedException ("The current platform does not support saving a generated assembly.");
+      throw new PlatformNotSupportedException("The current platform does not support saving a generated assembly.");
 #endif
     }
   }

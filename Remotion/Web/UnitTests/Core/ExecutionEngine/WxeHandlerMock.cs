@@ -26,57 +26,57 @@ public class WxeHandlerMock: WxeHandler
 {
   public new void CheckTimeoutConfiguration (HttpContext context)
   {
-    base.CheckTimeoutConfiguration (context);
+    base.CheckTimeoutConfiguration(context);
   }
 
   public new Type GetTypeByPath (string path)
   {
-    return base.GetTypeByPath (path);
+    return base.GetTypeByPath(path);
   }
 
   public new Type GetType (HttpContext context)
   {
-    return base.GetType (context);
+    return base.GetType(context);
   }
 
   public new Type GetTypeByTypeName (string typeName)
   {
-    return base.GetTypeByTypeName (typeName);
+    return base.GetTypeByTypeName(typeName);
   }
 
   public new WxeFunctionState CreateNewFunctionState (HttpContext context, Type type)
   {
-    return base.CreateNewFunctionState (context, type);
+    return base.CreateNewFunctionState(context, type);
   }
 
   public new WxeFunctionState ResumeExistingFunctionState (HttpContext context, string functionToken)
   {
-    return base.ResumeExistingFunctionState (context, functionToken);
+    return base.ResumeExistingFunctionState(context, functionToken);
   }
 
   public new void ProcessFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
   {
-    base.ProcessFunctionState (context, functionState, isNewFunction);
+    base.ProcessFunctionState(context, functionState, isNewFunction);
   }
 
   public new void ExecuteFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
   {
-    base.ExecuteFunctionState (context, functionState, isNewFunction);
+    base.ExecuteFunctionState(context, functionState, isNewFunction);
   }
 
   public new virtual void ExecuteFunction (WxeFunction function, WxeContext context, bool isNew)
   {
-    base.ExecuteFunction (function, context, isNew);
+    base.ExecuteFunction(function, context, isNew);
   }
 
   public new void CleanUpFunctionState (WxeFunctionState functionState)
   {
-    base.CleanUpFunctionState (functionState);
+    base.CleanUpFunctionState(functionState);
   }
 
   public new void ProcessReturnUrl (HttpContext context, string returnUrl)
   {
-    base.ProcessReturnUrl (context, returnUrl);
+    base.ProcessReturnUrl(context, returnUrl);
   }
 }
 

@@ -29,36 +29,36 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     protected override string GetSelectStatements (FilterViewDefinition filterViewDefinition)
     {
-      ArgumentUtility.CheckNotNull ("filterViewDefinition", filterViewDefinition);
+      ArgumentUtility.CheckNotNull("filterViewDefinition", filterViewDefinition);
 
-      var tableDefinition = filterViewDefinition.GetBaseTable ();
+      var tableDefinition = filterViewDefinition.GetBaseTable();
 
       var classIDColumns = filterViewDefinition.ObjectIDProperty.ClassIDProperty.GetColumnsForComparison().ToList();
-      Assertion.IsTrue (
+      Assertion.IsTrue(
           classIDColumns.Count == 1, 
           "The SQL provider's model is built with a single ClassID column by InfrastructureStoragePropertyDefinitionProvider.");
 
-      return string.Format (
+      return string.Format(
             "  SELECT {0}\r\n"
           + "    FROM [{1}].[{2}]\r\n"
           + "    WHERE [{3}] IN ({4})",
-            GetColumnList (filterViewDefinition.GetAllColumns()),
+            GetColumnList(filterViewDefinition.GetAllColumns()),
             tableDefinition.TableName.SchemaName ?? DefaultSchema,
             tableDefinition.TableName.EntityName,
             classIDColumns.Single().Name,
-            GetClassIDList (filterViewDefinition.ClassIDs));
+            GetClassIDList(filterViewDefinition.ClassIDs));
     }
 
     protected override bool UseCheckOption (FilterViewDefinition filterViewDefinition)
     {
-      ArgumentUtility.CheckNotNull ("filterViewDefinition", filterViewDefinition);
+      ArgumentUtility.CheckNotNull("filterViewDefinition", filterViewDefinition);
 
       return true;
     }
 
     private string GetClassIDList (IEnumerable<string> classIDs)
     {
-      return string.Join (", ", classIDs.Select (id => "'" + id + "'"));
+      return string.Join(", ", classIDs.Select(id => "'" + id + "'"));
     }
   }
 }

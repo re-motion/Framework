@@ -27,13 +27,13 @@ namespace Remotion.Validation
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> NotNull<TValidatedType, TProperty> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> ruleBuilder)
     {
-      return ruleBuilder.SetValidator (p => new NotNullValidator (p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new NotNullValidator(p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> NotEmpty<TValidatedType, TProperty> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> ruleBuilder)
     {
-      return ruleBuilder.SetValidator (p => new NotEmptyValidator (p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new NotEmptyValidator(p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> Length<TValidatedType> (
@@ -41,28 +41,28 @@ namespace Remotion.Validation
         int min,
         int max)
     {
-      return ruleBuilder.SetValidator (p => new LengthValidator (min, max, p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new LengthValidator(min, max, p.ValidationMessage));
     }
     
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> MinLength<TValidatedType> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, string> ruleBuilder,
         int min)
     {
-      return ruleBuilder.SetValidator (p => new MinimumLengthValidator (min, p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new MinimumLengthValidator(min, p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> MaxLength<TValidatedType> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, string> ruleBuilder,
         int max)
     {
-      return ruleBuilder.SetValidator (p => new MaximumLengthValidator (max, p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new MaximumLengthValidator(max, p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> ExactLength<TValidatedType> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, string> ruleBuilder,
         int length)
     {
-      return ruleBuilder.SetValidator (p => new ExactLengthValidator (length, p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new ExactLengthValidator(length, p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> Equal<TValidatedType, TProperty> (
@@ -71,7 +71,7 @@ namespace Remotion.Validation
         IEqualityComparer? comparer = null)
         where TProperty : notnull
     {
-      return ruleBuilder.SetValidator (p => new EqualValidator (toCompare, p.ValidationMessage, comparer));
+      return ruleBuilder.SetValidator(p => new EqualValidator(toCompare, p.ValidationMessage, comparer));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> NotEqual<TValidatedType, TProperty> (
@@ -80,7 +80,7 @@ namespace Remotion.Validation
         IEqualityComparer? comparer = null)
         where TProperty : notnull
     {
-      return ruleBuilder.SetValidator (p => new NotEqualValidator (toCompare, p.ValidationMessage, comparer));
+      return ruleBuilder.SetValidator(p => new NotEqualValidator(toCompare, p.ValidationMessage, comparer));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> LessThan<TValidatedType, TProperty> (
@@ -88,7 +88,7 @@ namespace Remotion.Validation
         TProperty valueToCompare)
         where TProperty : IComparable<TProperty>, IComparable
     {
-      return ruleBuilder.SetValidator (p => new LessThanValidator (valueToCompare, p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new LessThanValidator(valueToCompare, p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> LessThanOrEqual<TValidatedType, TProperty> (
@@ -96,7 +96,7 @@ namespace Remotion.Validation
         TProperty valueToCompare)
         where TProperty : IComparable<TProperty>, IComparable
     {
-      return ruleBuilder.SetValidator (p => new LessThanOrEqualValidator (valueToCompare, p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new LessThanOrEqualValidator(valueToCompare, p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> GreaterThan<TValidatedType, TProperty> (
@@ -104,7 +104,7 @@ namespace Remotion.Validation
         TProperty valueToCompare)
         where TProperty : IComparable<TProperty>, IComparable
     {
-      return ruleBuilder.SetValidator (p => new GreaterThanValidator (valueToCompare, p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new GreaterThanValidator(valueToCompare, p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> GreaterThanOrEqual<TValidatedType, TProperty> (
@@ -112,7 +112,7 @@ namespace Remotion.Validation
         TProperty valueToCompare)
         where TProperty : IComparable<TProperty>, IComparable
     {
-      return ruleBuilder.SetValidator (p => new GreaterThanOrEqualValidator (valueToCompare, p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new GreaterThanOrEqualValidator(valueToCompare, p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> ExclusiveBetween<TValidatedType, TProperty> (
@@ -121,7 +121,7 @@ namespace Remotion.Validation
         TProperty to)
         where TProperty : IComparable<TProperty>, IComparable
     {
-      return ruleBuilder.SetValidator (p => new ExclusiveRangeValidator (from, to, p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new ExclusiveRangeValidator(from, to, p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> InclusiveBetween<TValidatedType, TProperty> (
@@ -130,7 +130,7 @@ namespace Remotion.Validation
         TProperty to)
         where TProperty : IComparable<TProperty>, IComparable
     {
-      return ruleBuilder.SetValidator (p => new InclusiveRangeValidator (from, to, p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new InclusiveRangeValidator(from, to, p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> DecimalValidator<TValidatedType, TProperty> (
@@ -140,21 +140,21 @@ namespace Remotion.Validation
         bool ignoreTrailingZeros = false)
         where TProperty : IComparable<TProperty>, IComparable
     {
-      return ruleBuilder.SetValidator (p => new DecimalValidator (maxIntegerPlaces, maxDecimalPlaces, ignoreTrailingZeros, p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new DecimalValidator(maxIntegerPlaces, maxDecimalPlaces, ignoreTrailingZeros, p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> Matches<TValidatedType> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, string> ruleBuilder,
         [JetBrains.Annotations.RegexPattern] string expression)
     {
-      return ruleBuilder.SetValidator (p => new RegularExpressionValidator (new Regex (expression), p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new RegularExpressionValidator(new Regex(expression), p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> Must<TValidatedType, TProperty> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> ruleBuilder,
         PredicateValidator.Predicate predicate)
     {
-      return ruleBuilder.SetValidator (p => new PredicateValidator (predicate, p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new PredicateValidator(predicate, p.ValidationMessage));
     }
 
     // TODO RM-6590: Implement comparison- and equal-validators for delegate-based comparison values. See FluentValidation for example. Note: might require dropping the interfaces. Will require renaming the existing validators

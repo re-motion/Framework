@@ -101,8 +101,8 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public TracingDbCommand (IDbCommand command, IPersistenceExtension persistenceExtension, Guid connectionID)
     {
-      ArgumentUtility.CheckNotNull ("command", command);
-      ArgumentUtility.CheckNotNull ("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
 
       _command = command;
       _persistenceExtension = persistenceExtension;
@@ -132,30 +132,30 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public int ExecuteNonQuery ()
     {
-      int numberOfRowsAffected = ExecuteWithProfiler (() => _command.ExecuteNonQuery());
-      _persistenceExtension.QueryCompleted (_connectionID, _queryID, TimeSpan.Zero, numberOfRowsAffected);
+      int numberOfRowsAffected = ExecuteWithProfiler(() => _command.ExecuteNonQuery());
+      _persistenceExtension.QueryCompleted(_connectionID, _queryID, TimeSpan.Zero, numberOfRowsAffected);
 
       return numberOfRowsAffected;
     }
 
     public IDataReader ExecuteReader ()
     {
-      IDataReader dataReader = ExecuteWithProfiler (() => _command.ExecuteReader());
+      IDataReader dataReader = ExecuteWithProfiler(() => _command.ExecuteReader());
 
-      return new TracingDataReader (dataReader, _persistenceExtension, _connectionID, _queryID);
+      return new TracingDataReader(dataReader, _persistenceExtension, _connectionID, _queryID);
     }
 
     public IDataReader ExecuteReader (CommandBehavior behavior)
     {
-      IDataReader dataReader = ExecuteWithProfiler (() => _command.ExecuteReader (behavior));
+      IDataReader dataReader = ExecuteWithProfiler(() => _command.ExecuteReader(behavior));
 
-      return new TracingDataReader (dataReader, _persistenceExtension, _connectionID, _queryID);
+      return new TracingDataReader(dataReader, _persistenceExtension, _connectionID, _queryID);
     }
 
     public object ExecuteScalar ()
     {
-      object result = ExecuteWithProfiler (() => _command.ExecuteScalar());
-      _persistenceExtension.QueryCompleted (_connectionID, _queryID, TimeSpan.Zero, 1);
+      object result = ExecuteWithProfiler(() => _command.ExecuteScalar());
+      _persistenceExtension.QueryCompleted(_connectionID, _queryID, TimeSpan.Zero, 1);
       return result;
     }
 
@@ -173,22 +173,22 @@ namespace Remotion.Data.DomainObjects.Tracing
     {
       try
       {
-        _persistenceExtension.QueryExecuting (_connectionID, _queryID, _command.CommandText, ConvertToDictionary (_command.Parameters));
+        _persistenceExtension.QueryExecuting(_connectionID, _queryID, _command.CommandText, ConvertToDictionary(_command.Parameters));
         var stopWatch = Stopwatch.StartNew();
         T result = operation();
-        _persistenceExtension.QueryExecuted (_connectionID, _queryID, stopWatch.Elapsed);
+        _persistenceExtension.QueryExecuted(_connectionID, _queryID, stopWatch.Elapsed);
         return result;
       }
       catch (Exception ex)
       {
-        _persistenceExtension.QueryError (_connectionID, _queryID, ex);
+        _persistenceExtension.QueryError(_connectionID, _queryID, ex);
         throw;
       }
     }
 
     private IDictionary<string, object> ConvertToDictionary (IDataParameterCollection parameters)
     {
-      return parameters.Cast<IDbDataParameter>().ToDictionary (parameter => parameter.ParameterName, parameter => parameter.Value);
+      return parameters.Cast<IDbDataParameter>().ToDictionary(parameter => parameter.ParameterName, parameter => parameter.Value);
     }
   }
 } 

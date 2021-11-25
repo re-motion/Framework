@@ -27,34 +27,34 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
     [Test]
     public void DerivedType ()
     {
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (DerivedType), typeof (IDerivedInterface)), Is.EqualTo (new Type[0]));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof (DerivedType), typeof (IDerivedInterface)), Is.EqualTo(new Type[0]));
     }
 
     [Test]
     public void DerivedInterface ()
     {
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (IDerivedInterface), typeof (IDerivedInterface)), Is.EqualTo (new Type[0]));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof (IDerivedInterface), typeof (IDerivedInterface)), Is.EqualTo(new Type[0]));
     }
 
     [Test]
     public void DerivedInterfaceFromBaseInterface ()
     {
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (IDerivedInterface), typeof (IBaseInterface)), Is.EqualTo (new Type[0]));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof (IDerivedInterface), typeof (IBaseInterface)), Is.EqualTo(new Type[0]));
     }
 
     [Test]
     public void DerivedTypeFromBaseInterface ()
     {
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (DerivedType), typeof (IBaseInterface)), Is.EqualTo (new Type[0]));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof (DerivedType), typeof (IBaseInterface)), Is.EqualTo(new Type[0]));
     }
 
     [Test]
     public void BaseType ()
     {
-      Assert.That (
-          () => TypeExtensions.GetAscribedGenericArguments (typeof (BaseType), typeof (IDerivedInterface)),
+      Assert.That(
+          () => TypeExtensions.GetAscribedGenericArguments(typeof (BaseType), typeof (IDerivedInterface)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.BaseType' "
                   + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IDerivedInterface' was expected.",
                   "type"));
@@ -63,10 +63,10 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
     [Test]
     public void BaseInterface ()
     {
-      Assert.That (
-          () => TypeExtensions.GetAscribedGenericArguments (typeof (IBaseInterface), typeof (IDerivedInterface)),
+      Assert.That(
+          () => TypeExtensions.GetAscribedGenericArguments(typeof (IBaseInterface), typeof (IDerivedInterface)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IBaseInterface' "
                   + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IDerivedInterface' was expected.",
                   "type"));

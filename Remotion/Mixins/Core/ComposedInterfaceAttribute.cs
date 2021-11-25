@@ -79,7 +79,7 @@ namespace Remotion.Mixins
     /// <param name="targetType">Target type for which this interface constitutes a composed interface.</param>
     public ComposedInterfaceAttribute (Type targetType)
     {
-      _targetType = ArgumentUtility.CheckNotNull ("targetType", targetType);
+      _targetType = ArgumentUtility.CheckNotNull("targetType", targetType);
     }
 
     /// <summary>
@@ -98,10 +98,10 @@ namespace Remotion.Mixins
 
     public void Apply (MixinConfigurationBuilder mixinConfigurationBuilder, Type interfaceType)
     {
-      ArgumentUtility.CheckNotNull ("mixinConfigurationBuilder", mixinConfigurationBuilder);
-      ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
+      ArgumentUtility.CheckNotNull("mixinConfigurationBuilder", mixinConfigurationBuilder);
+      ArgumentUtility.CheckNotNull("interfaceType", interfaceType);
 
-      mixinConfigurationBuilder.ForClass (TargetType).AddComposedInterface (interfaceType);
+      mixinConfigurationBuilder.ForClass(TargetType).AddComposedInterface(interfaceType);
     }
   }
 }

@@ -29,15 +29,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model
     [SetUp]
     public void SetUp ()
     {
-      _storageProviderDefinition = new NonPersistentProviderDefinition ("SPID", new NonPersistentStorageObjectFactory());
+      _storageProviderDefinition = new NonPersistentProviderDefinition("SPID", new NonPersistentStorageObjectFactory());
 
-      _nonPersistentStorageEntity = new NonPersistentStorageEntity (_storageProviderDefinition);
+      _nonPersistentStorageEntity = new NonPersistentStorageEntity(_storageProviderDefinition);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_nonPersistentStorageEntity.StorageProviderDefinition, Is.SameAs (_storageProviderDefinition));
+      Assert.That(_nonPersistentStorageEntity.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
     }
   }
 }

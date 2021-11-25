@@ -30,9 +30,9 @@ namespace Remotion.ObjectBinding
     /// <summary> Initializes a new instance of the <b>EnumerationValueInfo</b> type. </summary>
     public EnumerationValueInfo (object value, string identifier, string displayName, bool isEnabled)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckNotNullOrEmpty ("identifier", identifier);
-      ArgumentUtility.CheckNotNull ("displayName", displayName);
+      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty("identifier", identifier);
+      ArgumentUtility.CheckNotNull("displayName", displayName);
 
       _value = value;
       _identifier = identifier;

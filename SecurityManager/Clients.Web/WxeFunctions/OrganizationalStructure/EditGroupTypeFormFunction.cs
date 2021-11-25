@@ -47,6 +47,6 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
         CurrentObject = GroupType.NewObject();
     }
 
-    private WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditGroupTypeForm), "UI/OrganizationalStructure/EditGroupTypeForm.aspx");
+    private WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof (EditGroupTypeForm), "UI/OrganizationalStructure/EditGroupTypeForm.aspx");
   }
 }

@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 
     public void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      BaseGetObjectData (info, context);
+      BaseGetObjectData(info, context);
     }
 
     [StorageClassNone]

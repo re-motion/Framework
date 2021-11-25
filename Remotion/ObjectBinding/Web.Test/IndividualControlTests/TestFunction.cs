@@ -31,7 +31,7 @@ public class TestFunction: WxeFunction
   private Person _person;
 
   public TestFunction ()
-    : base (new NoneTransactionMode ())
+    : base (new NoneTransactionMode())
   {
     
   }
@@ -45,7 +45,7 @@ public class TestFunction: WxeFunction
     }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("UserControl", value);
+      ArgumentUtility.CheckNotNullOrEmpty("UserControl", value);
       Variables["UserControl"] = value; 
     }
   }
@@ -75,18 +75,18 @@ public class TestFunction: WxeFunction
   {
     var delay = Delay;
     if (delay.HasValue)
-      Thread.Sleep (delay.Value);
+      Thread.Sleep(delay.Value);
 
-    base.Execute (context);
+    base.Execute(context);
   }
 
   // steps
   private void Step1 ()
   {
-    if (string.IsNullOrEmpty (UserControl))
+    if (string.IsNullOrEmpty(UserControl))
       UserControl = "BocBooleanValueUserControl.ascx";
 
-    ExceptionHandler.AppendCatchExceptionTypes (typeof (WxeUserCancelException));
+    ExceptionHandler.AppendCatchExceptionTypes(typeof (WxeUserCancelException));
   }
 
   private void Step2 ()
@@ -94,14 +94,14 @@ public class TestFunction: WxeFunction
     XmlReflectionBusinessObjectStorageProvider.Current.Reset();
 
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
-    Person person = Person.GetObject (personID);
+    Person person = Person.GetObject(personID);
     Person partner;
     if (person == null)
     {
-      person = Person.CreateObject (personID);
+      person = Person.CreateObject(personID);
       person.FirstName = "Hugo";
       person.LastName = "Meier";
-      person.DateOfBirth = new DateTime (1959, 4, 15);
+      person.DateOfBirth = new DateTime(1959, 4, 15);
       person.Height = 179;
       person.Income = 2000;
 
@@ -116,34 +116,34 @@ public class TestFunction: WxeFunction
 
     Job[] jobs = new Job[2];
     
-    jobs[0] = Job.CreateObject (Guid.NewGuid());
+    jobs[0] = Job.CreateObject(Guid.NewGuid());
     jobs[0].Title = "Programmer";
-    jobs[0].StartDate = new DateTime (2000, 1, 1);
-    jobs[0].EndDate = new DateTime (2004, 12, 31);
+    jobs[0].StartDate = new DateTime(2000, 1, 1);
+    jobs[0].EndDate = new DateTime(2004, 12, 31);
 
-    jobs[1] = Job.CreateObject (Guid.NewGuid());
+    jobs[1] = Job.CreateObject(Guid.NewGuid());
     jobs[1].Title = "CEO";
-    jobs[1].StartDate = new DateTime (2005, 1, 1);
+    jobs[1].StartDate = new DateTime(2005, 1, 1);
 
     if (person.Children.Count == 0)
     {
-        var child0 = Person.CreateObject (Guid.NewGuid());
+        var child0 = Person.CreateObject(Guid.NewGuid());
         child0.FirstName = "Jack";
         child0.LastName = "Doe";
-        child0.DateOfBirth = new DateTime (1990, 4, 15);
+        child0.DateOfBirth = new DateTime(1990, 4, 15);
         child0.Height = 160;
         child0.MarriageStatus = MarriageStatus.Single;
         child0.Jobs = jobs;
 
-        var child1 = Person.CreateObject (Guid.NewGuid());
+        var child1 = Person.CreateObject(Guid.NewGuid());
         child1.FirstName = "Max";
         child1.LastName = "Doe";
-        child1.DateOfBirth = new DateTime (1991, 4, 15);
+        child1.DateOfBirth = new DateTime(1991, 4, 15);
         child1.Height = 155;
         child1.MarriageStatus = MarriageStatus.Single;
 
-        person.Children.Add (child0);
-        person.Children.Add (child1);
+        person.Children.Add(child0);
+        person.Children.Add(child1);
     }
 
     if (person.Jobs.Length == 0)
@@ -154,7 +154,7 @@ public class TestFunction: WxeFunction
     _person = person;
   }
 
-  private WxeStep Step3 = new WxePageStep ("IndividualControlTests/Form.aspx");
+  private WxeStep Step3 = new WxePageStep("IndividualControlTests/Form.aspx");
 
   private void Step4 ()
   {

@@ -26,51 +26,51 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
   {
     public static Type GetType (string typeName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
+      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
 
-      return TypeUtility.GetType (typeName.Trim (), true);    
+      return TypeUtility.GetType(typeName.Trim(), true);    
     }
 
     public static Type GetType (XmlNode node)
     {
-      ArgumentUtility.CheckNotNull ("node", node);
+      ArgumentUtility.CheckNotNull("node", node);
 
-      return GetType (node.InnerText);    
+      return GetType(node.InnerText);    
     }
 
     public static Type GetType (XmlNode node, string xPath, XmlNamespaceManager namespaceManager)
     {
-      ArgumentUtility.CheckNotNull ("node", node);
-      ArgumentUtility.CheckNotNullOrEmpty ("xPath", xPath);
-      ArgumentUtility.CheckNotNull ("namespaceManager", namespaceManager);
+      ArgumentUtility.CheckNotNull("node", node);
+      ArgumentUtility.CheckNotNullOrEmpty("xPath", xPath);
+      ArgumentUtility.CheckNotNull("namespaceManager", namespaceManager);
 
-      return GetType (node.SelectSingleNode (xPath, namespaceManager));
+      return GetType(node.SelectSingleNode(xPath, namespaceManager));
     }
 
     public static Type GetOptionalType (XmlNode selectionNode, string xPath, XmlNamespaceManager namespaceManager)
     {
-      ArgumentUtility.CheckNotNull ("selectionNode", selectionNode);
-      ArgumentUtility.CheckNotNullOrEmpty ("xPath", xPath);
-      ArgumentUtility.CheckNotNull ("namespaceManager", namespaceManager);
+      ArgumentUtility.CheckNotNull("selectionNode", selectionNode);
+      ArgumentUtility.CheckNotNullOrEmpty("xPath", xPath);
+      ArgumentUtility.CheckNotNull("namespaceManager", namespaceManager);
     
-      XmlNode typeNode = selectionNode.SelectSingleNode (xPath, namespaceManager);
+      XmlNode typeNode = selectionNode.SelectSingleNode(xPath, namespaceManager);
 
       if (typeNode != null)
-        return GetType (typeNode);
+        return GetType(typeNode);
       else
         return null;
     }
 
     public static string GetConfigurationFileName (string appSettingKey, string defaultFileName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("appSettingKey", appSettingKey);
-      ArgumentUtility.CheckNotNullOrEmpty ("defaultFileName", defaultFileName);
+      ArgumentUtility.CheckNotNullOrEmpty("appSettingKey", appSettingKey);
+      ArgumentUtility.CheckNotNullOrEmpty("defaultFileName", defaultFileName);
 
-      string fileName = ConfigurationWrapper.Current.GetAppSetting (appSettingKey, false);
+      string fileName = ConfigurationWrapper.Current.GetAppSetting(appSettingKey, false);
       if (fileName != null)
         return fileName;
 
-      return Path.Combine (ReflectionUtility.GetConfigFileDirectory (), defaultFileName);
+      return Path.Combine(ReflectionUtility.GetConfigFileDirectory(), defaultFileName);
     }
   }
 }

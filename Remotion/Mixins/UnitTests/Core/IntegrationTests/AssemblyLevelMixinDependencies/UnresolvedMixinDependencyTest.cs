@@ -26,11 +26,11 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     [Test]
     public void UnresolvedDependency_ViaAssemblyLevelAttribute ()
     {
-      PrepareMixinConfigurationWithAttributeDeclarations (new AdditionalMixinDependencyAttribute (typeof (C), typeof (M1), typeof (M2)));
+      PrepareMixinConfigurationWithAttributeDeclarations(new AdditionalMixinDependencyAttribute(typeof (C), typeof (M1), typeof (M2)));
 
-      Assert.That (
-          () => ObjectFactory.Create<C> (), 
-          Throws.TypeOf<ValidationException> ().With.Message.Contains (
+      Assert.That(
+          () => ObjectFactory.Create<C>(), 
+          Throws.TypeOf<ValidationException>().With.Message.Contains(
               "A mixin is configured with a dependency to another mixin, but that dependency is not satisfied."));
     }
 

@@ -69,15 +69,15 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         UnaryAssertDelegate isNull,
         ConditionAssertDelegate isTrue)
     {
-      ArgumentUtility.CheckNotNull ("areEqual", areEqual);
-      ArgumentUtility.CheckNotNull ("greaterThan", greaterThan);
-      ArgumentUtility.CheckNotNull ("notNull", notNull);
-      ArgumentUtility.CheckNotNull ("isNull", isNull);
-      ArgumentUtility.CheckNotNull ("isTrue", isTrue);
+      ArgumentUtility.CheckNotNull("areEqual", areEqual);
+      ArgumentUtility.CheckNotNull("greaterThan", greaterThan);
+      ArgumentUtility.CheckNotNull("notNull", notNull);
+      ArgumentUtility.CheckNotNull("isNull", isNull);
+      ArgumentUtility.CheckNotNull("isTrue", isTrue);
 
-      _stream = new MemoryStream (4096);
-      _writer = new HtmlTextWriter (new StreamWriter (Stream, Encoding.Unicode));
-      _reader = new StreamReader (Stream, Encoding.Unicode);
+      _stream = new MemoryStream(4096);
+      _writer = new HtmlTextWriter(new StreamWriter(Stream, Encoding.Unicode));
+      _reader = new StreamReader(Stream, Encoding.Unicode);
 
       _assertAreEqual = areEqual;
       _assertGreaterThan = greaterThan;
@@ -93,7 +93,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     public string GetDocumentText ()
     {
       Writer.Flush();
-      Reader.BaseStream.Seek (0, SeekOrigin.Begin);
+      Reader.BaseStream.Seek(0, SeekOrigin.Begin);
       return Reader.ReadToEnd();
     }
 
@@ -104,9 +104,9 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     public XmlDocument GetResultDocument ()
     {
       XmlDocument document = new XmlDocument();
-      using (TextReader reader = new StringReader (GetDocumentText().Replace ("&nbsp;", "&amp;nbsp;")))
+      using (TextReader reader = new StringReader(GetDocumentText().Replace("&nbsp;", "&amp;nbsp;")))
       {
-        document.Load (reader);
+        document.Load(reader);
       }
       return document;
     }
@@ -116,7 +116,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// </summary>
     public void AssertChildElementCount (XmlNode parent, int count)
     {
-      ArgumentUtility.CheckNotNull ("parent", parent);
+      ArgumentUtility.CheckNotNull("parent", parent);
 
       int elementCount = 0;
       foreach (XmlNode node in parent.ChildNodes)
@@ -124,7 +124,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         if (node.NodeType == XmlNodeType.Element)
           ++elementCount;
       }
-      AssertAreEqual (count, elementCount, "Element '{0}' has {1} child elements instead of the expected {2}.", parent.Name, elementCount, count);
+      AssertAreEqual(count, elementCount, "Element '{0}' has {1} child elements instead of the expected {2}.", parent.Name, elementCount, count);
     }
 
     /// <summary>
@@ -134,10 +134,10 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// <returns>The specified child element.</returns>
     public XmlNode GetAssertedChildElement (XmlNode parent, string tag, int index)
     {
-      ArgumentUtility.CheckNotNull ("parent", parent);
-      ArgumentUtility.CheckNotNullOrEmpty ("tag", tag);
+      ArgumentUtility.CheckNotNull("parent", parent);
+      ArgumentUtility.CheckNotNullOrEmpty("tag", tag);
 
-      AssertGreaterThan (
+      AssertGreaterThan(
           parent.ChildNodes.Count,
           index,
           "Node {0} has only {1} children - index {2} out of range.",
@@ -147,9 +147,9 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
 
       XmlNode? node = parent.ChildNodes[index];
 
-      AssertNotNull (node, "The child node at index {0} is null.", index);
+      AssertNotNull(node, "The child node at index {0} is null.", index);
 
-      AssertAreEqual (
+      AssertAreEqual(
           XmlNodeType.Element,
           node.NodeType,
           "{0}.ChildNodes[{1}].NodeType is {2}, not {3}.",
@@ -158,7 +158,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
           node.NodeType,
           XmlNodeType.Element);
 
-      AssertAreEqual (tag, node.Name, "Unexpected element tag.");
+      AssertAreEqual(tag, node.Name, "Unexpected element tag.");
       return node;
     }
 
@@ -168,15 +168,15 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// </summary>
     public void AssertTextNode (XmlNode parent, string content, int index)
     {
-      ArgumentUtility.CheckNotNull ("parent", parent);
-      ArgumentUtility.CheckNotNull ("content", content);
+      ArgumentUtility.CheckNotNull("parent", parent);
+      ArgumentUtility.CheckNotNull("content", content);
 
-      AssertGreaterThan (
+      AssertGreaterThan(
           parent.ChildNodes.Count, index, "Node {0} has only {1} children - index {2} out of range.", parent.Name, parent.ChildNodes.Count, index);
 
-      var childNode = Assertion.IsNotNull (parent.ChildNodes[index]);
+      var childNode = Assertion.IsNotNull(parent.ChildNodes[index]);
 
-      AssertAreEqual (
+      AssertAreEqual(
           XmlNodeType.Text,
           childNode.NodeType,
           "{0}.ChildNodes[{1}].NodeType is {2}, not {3}.",
@@ -187,7 +187,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
 
       var node = (XmlText) childNode;
 
-      AssertAreEqual (content, node.InnerText.Trim(), "Unexpected text node content.");
+      AssertAreEqual(content, node.InnerText.Trim(), "Unexpected text node content.");
     }
 
     /// <summary>
@@ -195,10 +195,10 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// </summary>
     public void AssertAttribute (XmlNode node, string attributeName, string? attributeValue)
     {
-      ArgumentUtility.CheckNotNull ("node", node);
-      ArgumentUtility.CheckNotNullOrEmpty ("attributeName", attributeName);
+      ArgumentUtility.CheckNotNull("node", node);
+      ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
 
-      AssertAttribute (node, attributeName, attributeValue, AttributeValueCompareMode.Equal);
+      AssertAttribute(node, attributeName, attributeValue, AttributeValueCompareMode.Equal);
     }
 
     /// <summary>
@@ -208,23 +208,23 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// </summary>
     public void AssertAttribute (XmlNode node, string attributeName, string? attributeValue, AttributeValueCompareMode mode)
     {
-      ArgumentUtility.CheckNotNull ("node", node);
-      ArgumentUtility.CheckNotNullOrEmpty ("attributeName", attributeName);
+      ArgumentUtility.CheckNotNull("node", node);
+      ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
 
-      AssertNotNull (node.Attributes, "Node {0} has 'null' as Attributes value.", node.Name);
+      AssertNotNull(node.Attributes, "Node {0} has 'null' as Attributes value.", node.Name);
       XmlAttribute? attribute = node.Attributes[attributeName];
-      AssertNotNull (attribute, "Attribute {0}.{1} does not exist.", node.Name, attributeName);
+      AssertNotNull(attribute, "Attribute {0}.{1} does not exist.", node.Name, attributeName);
 
       if (attributeValue != null)
       {
         switch (mode)
         {
           case AttributeValueCompareMode.Equal:
-            AssertAreEqual (attributeValue, attribute.Value, string.Format ("Attribute {0}.{1}", node.Name, attribute.Name));
+            AssertAreEqual(attributeValue, attribute.Value, string.Format("Attribute {0}.{1}", node.Name, attribute.Name));
             break;
           case AttributeValueCompareMode.Contains:
-            AssertTrue (
-                attribute.Value.Contains (attributeValue),
+            AssertTrue(
+                attribute.Value.Contains(attributeValue),
                 "Unexpected attribute value in {0}.{1}: should contain {2}, but was {3}",
                 node.Name,
                 attribute.Name,
@@ -241,18 +241,18 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// </summary>
     public void AssertStyleAttribute (XmlNode node, string cssProperty, string cssValue)
     {
-      ArgumentUtility.CheckNotNull ("node", node);
-      ArgumentUtility.CheckNotNullOrEmpty ("cssProperty", cssProperty);
-      ArgumentUtility.CheckNotNullOrEmpty ("cssProperty", cssProperty);
+      ArgumentUtility.CheckNotNull("node", node);
+      ArgumentUtility.CheckNotNullOrEmpty("cssProperty", cssProperty);
+      ArgumentUtility.CheckNotNullOrEmpty("cssProperty", cssProperty);
 
-      AssertNotNull (node.Attributes, "Node {0} has 'null' as Attributes value.", node.Name);
+      AssertNotNull(node.Attributes, "Node {0} has 'null' as Attributes value.", node.Name);
 
       XmlAttribute? attribute = node.Attributes["style"];
-      AssertNotNull (attribute, "Attribute {0}.{1}", node.Name, "style");
+      AssertNotNull(attribute, "Attribute {0}.{1}", node.Name, "style");
 
-      string stylePart = string.Format ("{0}:{1};", cssProperty, cssValue);
-      AssertTrue (
-          attribute.Value.Contains (stylePart),
+      string stylePart = string.Format("{0}:{1};", cssProperty, cssValue);
+      AssertTrue(
+          attribute.Value.Contains(stylePart),
           "Attribute {0}.{1} does not contain '{2}' - value is '{3}'.",
           node.Name,
           attribute.Name,
@@ -267,12 +267,12 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// <param name="attributeName"></param>
     public void AssertNoAttribute (XmlNode node, string attributeName)
     {
-      ArgumentUtility.CheckNotNull ("node", node);
-      ArgumentUtility.CheckNotNullOrEmpty ("attributeName", attributeName);
+      ArgumentUtility.CheckNotNull("node", node);
+      ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
 
-      AssertNotNull (node.Attributes, "Node {0} has 'null' as Attributes value.", node.Name);
+      AssertNotNull(node.Attributes, "Node {0} has 'null' as Attributes value.", node.Name);
 
-      AssertIsNull (node.Attributes[attributeName], "Attribute '{0}' is present although it should not be.", attributeName);
+      AssertIsNull(node.Attributes[attributeName], "Attribute '{0}' is present although it should not be.", attributeName);
     }
 
     /// <summary>

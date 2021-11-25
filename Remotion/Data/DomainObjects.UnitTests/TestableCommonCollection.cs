@@ -22,12 +22,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
   {
     public new bool BaseContains (object key, object value)
     {
-      return base.BaseContains (key, value);
+      return base.BaseContains(key, value);
     }
 
     public new int BaseAdd (object key, object value)
     {
-      return base.BaseAdd (key, value);
+      return base.BaseAdd(key, value);
     }
   }
 }

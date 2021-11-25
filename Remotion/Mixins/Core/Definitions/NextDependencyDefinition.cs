@@ -29,7 +29,7 @@ namespace Remotion.Mixins.Definitions
     public NextCallDependencyDefinition (RequiredNextCallTypeDefinition requiredType, MixinDefinition dependingMixin, NextCallDependencyDefinition? aggregator)
       : base (requiredType, aggregator)
     {
-      ArgumentUtility.CheckNotNull ("dependingMixin", dependingMixin);
+      ArgumentUtility.CheckNotNull("dependingMixin", dependingMixin);
       _dependingMixin = dependingMixin;
     }
 
@@ -45,18 +45,18 @@ namespace Remotion.Mixins.Definitions
 
     public override void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
     }
 
     public override string GetDependencyDescription ()
     {
-      return string.Format ("mixin '{0}'", _dependingMixin.FullName);
+      return string.Format("mixin '{0}'", _dependingMixin.FullName);
     }
 
     public override ClassDefinitionBase? GetImplementer ()
     {
-      ClassDefinitionBase? implementer = base.GetImplementer ();
+      ClassDefinitionBase? implementer = base.GetImplementer();
       // check for duck interface
       if (implementer == null && !RequiredType.IsEmptyInterface)
       {

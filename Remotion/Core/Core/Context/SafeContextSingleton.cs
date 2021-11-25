@@ -38,8 +38,8 @@ namespace Remotion.Context
 
     public SafeContextSingleton (string currentKey, Func<T> creator)
     {
-      ArgumentUtility.CheckNotNull ("currentKey", currentKey);
-      ArgumentUtility.CheckNotNull ("creator", creator);
+      ArgumentUtility.CheckNotNull("currentKey", currentKey);
+      ArgumentUtility.CheckNotNull("creator", creator);
 
       _currentKey = currentKey;
       _creator = creator;
@@ -71,12 +71,12 @@ namespace Remotion.Context
 
     public void SetCurrent (T? value)
     {
-      SafeContext.Instance.SetData (_currentKey, value);
+      SafeContext.Instance.SetData(_currentKey, value);
     }
 
     private T? GetCurrentInternal ()
     {
-      return (T?) SafeContext.Instance.GetData (_currentKey);
+      return (T?) SafeContext.Instance.GetData(_currentKey);
     }
   }
 }

@@ -40,16 +40,16 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
   {
     public override void DataContainerMapRegistering (ClientTransaction clientTransaction, DataContainer container)
     {
-      ArgumentUtility.CheckNotNull ("container", container);
+      ArgumentUtility.CheckNotNull("container", container);
 
       if (container.State.IsNew)
       {
-        foreach (var ancestor in clientTransaction.ParentTransaction.CreateSequence (tx => tx.ParentTransaction))
+        foreach (var ancestor in clientTransaction.ParentTransaction.CreateSequence(tx => tx.ParentTransaction))
         {
-          Assertion.IsNull (ancestor.DataManager.DataContainers[container.ID]);
+          Assertion.IsNull(ancestor.DataManager.DataContainers[container.ID]);
           using (ancestor.HierarchyManager.Unlock())
           {
-            ancestor.DataManager.MarkInvalid (container.DomainObject);
+            ancestor.DataManager.MarkInvalid(container.DomainObject);
           }
         }
       }
@@ -57,12 +57,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public override void DataContainerMapUnregistering (ClientTransaction clientTransaction, DataContainer container)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("container", container);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("container", container);
 
       if (container.State.IsNew)
       {
-        foreach (var descendant in clientTransaction.SubTransaction.CreateSequence (tx => tx.SubTransaction))
+        foreach (var descendant in clientTransaction.SubTransaction.CreateSequence(tx => tx.SubTransaction))
         {
           var descendantDataContainer = descendant.DataManager.DataContainers[container.ID];
           if (descendantDataContainer != null)
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
           using (descendant.HierarchyManager.UnlockIfRequired())
           {
-            descendant.DataManager.MarkInvalid (container.DomainObject);
+            descendant.DataManager.MarkInvalid(container.DomainObject);
           }
         }
       }

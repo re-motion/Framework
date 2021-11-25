@@ -25,15 +25,15 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     [Test]
     public void NextDependency ()
     {
-      var instance = BuildMixedInstance<C> (typeof (MixinA), typeof (MixinB_WithInterfaceDependency));
-      Assert.That (instance.Method1 (), Is.EqualTo ("MixinB_WithInterfaceDependency.Method1 - MixinA.Method1 - C.Method1"));
+      var instance = BuildMixedInstance<C>(typeof (MixinA), typeof (MixinB_WithInterfaceDependency));
+      Assert.That(instance.Method1(), Is.EqualTo("MixinB_WithInterfaceDependency.Method1 - MixinA.Method1 - C.Method1"));
     }
 
     [Test]
     public void GenericNextDependency ()
     {
-      var instance = BuildMixedInstance<C> (typeof (MixinA), typeof (MixinB_WithGenericDependency<>));
-      Assert.That (instance.Method1 (), Is.EqualTo ("MixinB_WithGenericDependency.Method1 - MixinA.Method1 - C.Method1"));
+      var instance = BuildMixedInstance<C>(typeof (MixinA), typeof (MixinB_WithGenericDependency<>));
+      Assert.That(instance.Method1(), Is.EqualTo("MixinB_WithGenericDependency.Method1 - MixinA.Method1 - C.Method1"));
     }
 
     public class C
@@ -51,7 +51,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     public class MixinA : Mixin<object, IC>, IMixinA
     {
       [OverrideTarget]
-      public string Method1 () { return "MixinA.Method1 - " + Next.Method1 (); }
+      public string Method1 () { return "MixinA.Method1 - " + Next.Method1(); }
     }
 
     public class MixinB_WithInterfaceDependency : Mixin<object, MixinB_WithInterfaceDependency.IMixinBNextDependencies>
@@ -61,7 +61,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
       }
 
       [OverrideTarget]
-      public string Method1 () { return "MixinB_WithInterfaceDependency.Method1 - " + Next.Method1 (); }
+      public string Method1 () { return "MixinB_WithInterfaceDependency.Method1 - " + Next.Method1(); }
     }
 
     public interface IMixinB_WithGenericDependency_NextDependencies : IC, IMixinA
@@ -72,7 +72,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
       where TNext : class, IMixinB_WithGenericDependency_NextDependencies
     {
       [OverrideTarget]
-      public string Method1 () { return "MixinB_WithGenericDependency.Method1 - " + Next.Method1 (); }
+      public string Method1 () { return "MixinB_WithGenericDependency.Method1 - " + Next.Method1(); }
     }
   }
 }

@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects
         DomainObject oldRelatedObject,
         DomainObject newRelatedObject)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
       _relationEndPointDefinition = relationEndPointDefinition;
       _oldRelatedObject = oldRelatedObject;

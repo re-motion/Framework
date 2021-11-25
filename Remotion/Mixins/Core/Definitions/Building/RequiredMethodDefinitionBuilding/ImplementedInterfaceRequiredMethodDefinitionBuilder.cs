@@ -28,30 +28,30 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
 
     public ImplementedInterfaceRequiredMethodDefinitionCollector (TargetClassDefinition targetClassDefinition)
     {
-      ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
 
       _targetClassDefinition = targetClassDefinition;
-      _allTargetClassMethods = new Dictionary<MethodInfo, MethodDefinition> ();
+      _allTargetClassMethods = new Dictionary<MethodInfo, MethodDefinition>();
       
-      foreach (MethodDefinition methodDefinition in targetClassDefinition.GetAllMethods ())
-        _allTargetClassMethods.Add (methodDefinition.MethodInfo, methodDefinition);
+      foreach (MethodDefinition methodDefinition in targetClassDefinition.GetAllMethods())
+        _allTargetClassMethods.Add(methodDefinition.MethodInfo, methodDefinition);
     }
 
     public IEnumerable<RequiredMethodDefinition> CreateRequiredMethodDefinitions (RequirementDefinitionBase requirement)
     {
-      ArgumentUtility.CheckNotNull ("requirement", requirement);
+      ArgumentUtility.CheckNotNull("requirement", requirement);
 
-      Assertion.IsTrue (requirement.Type.IsInterface);
-      Assertion.IsTrue (requirement.TargetClass == _targetClassDefinition);
-      Assertion.IsTrue (requirement.TargetClass.ImplementedInterfaces.Contains (requirement.Type));
+      Assertion.IsTrue(requirement.Type.IsInterface);
+      Assertion.IsTrue(requirement.TargetClass == _targetClassDefinition);
+      Assertion.IsTrue(requirement.TargetClass.ImplementedInterfaces.Contains(requirement.Type));
 
-      InterfaceMapping interfaceMapping = _targetClassDefinition.GetAdjustedInterfaceMap (requirement.Type);
+      InterfaceMapping interfaceMapping = _targetClassDefinition.GetAdjustedInterfaceMap(requirement.Type);
       for (int i = 0; i < interfaceMapping.InterfaceMethods.Length; ++i)
       {
         var interfaceMethod = interfaceMapping.InterfaceMethods[i];
         var implementingMethod = _allTargetClassMethods[interfaceMapping.TargetMethods[i]];
 
-        yield return new RequiredMethodDefinition (requirement, interfaceMethod, implementingMethod);
+        yield return new RequiredMethodDefinition(requirement, interfaceMethod, implementingMethod);
       }
     }
   }

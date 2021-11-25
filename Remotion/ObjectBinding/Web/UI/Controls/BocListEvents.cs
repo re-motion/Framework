@@ -29,8 +29,8 @@ public class BocListSortingOrderChangeEventArgs: EventArgs
   public BocListSortingOrderChangeEventArgs (
       BocListSortingOrderEntry[] oldSortingOrder, BocListSortingOrderEntry[] newSortingOrder)
   {
-    ArgumentUtility.CheckNotNullOrItemsNull ("oldSortingOrder", oldSortingOrder);
-    ArgumentUtility.CheckNotNullOrItemsNull ("newSortingOrder", newSortingOrder);
+    ArgumentUtility.CheckNotNullOrItemsNull("oldSortingOrder", oldSortingOrder);
+    ArgumentUtility.CheckNotNullOrItemsNull("newSortingOrder", newSortingOrder);
 
     _oldSortingOrder = oldSortingOrder;
     _newSortingOrder = newSortingOrder;
@@ -150,7 +150,7 @@ public class BocListDataRowRenderEventArgs: BocListItemEventArgs
 
   public void SetAdditionalCssClassForDataRow (string cssClass)
   {
-    ArgumentUtility.CheckNotEmpty ("cssClass", cssClass);
+    ArgumentUtility.CheckNotEmpty("cssClass", cssClass);
     _additionalCssClassForDataRow = cssClass;
   }
 }

@@ -37,13 +37,13 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
     public virtual Address Address
     {
       get { return Properties[typeof (CustomerMixin), "Address"].GetValue<Address>(); }
-      set { Properties[typeof (CustomerMixin), "Address"].SetValue (value); }
+      set { Properties[typeof (CustomerMixin), "Address"].SetValue(value); }
     }
 
     public virtual string Title
     {
       get { return Properties[typeof (CustomerMixin), "Title"].GetValue<string>(); }
-      set { Properties[typeof (CustomerMixin), "Title"].SetValue (value); }
+      set { Properties[typeof (CustomerMixin), "Title"].SetValue(value); }
     }
   }
 }

@@ -34,20 +34,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     [Test]
     public void StatementDelimiter ()
     {
-      Assert.That (_dialect.StatementDelimiter, Is.EqualTo (";"));
+      Assert.That(_dialect.StatementDelimiter, Is.EqualTo(";"));
     }
 
     [Test]
     public void DelimitIdentifier ()
     {
-      Assert.That (_dialect.DelimitIdentifier ("x"), Is.EqualTo ("[x]"));
+      Assert.That(_dialect.DelimitIdentifier("x"), Is.EqualTo("[x]"));
     }
 
     [Test]
     public void GetParameterName ()
     {
-      Assert.That (_dialect.GetParameterName ("parameter"), Is.EqualTo ("@parameter"));
-      Assert.That (_dialect.GetParameterName ("@parameter"), Is.EqualTo ("@parameter"));
+      Assert.That(_dialect.GetParameterName("parameter"), Is.EqualTo("@parameter"));
+      Assert.That(_dialect.GetParameterName("@parameter"), Is.EqualTo("@parameter"));
     }
   }
 }

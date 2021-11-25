@@ -34,27 +34,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     {
       base.SetUp();
 
-      _command = new DomainObjectCollectionEndPointDeleteCommand (CollectionEndPoint, CollectionDataMock, TransactionEventSinkMock);
+      _command = new DomainObjectCollectionEndPointDeleteCommand(CollectionEndPoint, CollectionDataMock, TransactionEventSinkMock);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_command.ModifiedEndPoint, Is.SameAs (CollectionEndPoint));
-      Assert.That (_command.OldRelatedObject, Is.Null);
-      Assert.That (_command.NewRelatedObject, Is.Null);
-      Assert.That (_command.ModifiedCollectionEventRaiser, Is.SameAs (CollectionEndPoint.Collection));
-      Assert.That (_command.ModifiedCollectionData, Is.SameAs (CollectionDataMock));
+      Assert.That(_command.ModifiedEndPoint, Is.SameAs(CollectionEndPoint));
+      Assert.That(_command.OldRelatedObject, Is.Null);
+      Assert.That(_command.NewRelatedObject, Is.Null);
+      Assert.That(_command.ModifiedCollectionEventRaiser, Is.SameAs(CollectionEndPoint.Collection));
+      Assert.That(_command.ModifiedCollectionData, Is.SameAs(CollectionDataMock));
     }
 
     [Test]
     public void Initialization_FromNullEndPoint ()
     {
-      var endPoint = new NullDomainObjectCollectionEndPoint (Transaction, RelationEndPointID.Definition);
-      Assert.That (
-          () => new DomainObjectCollectionEndPointDeleteCommand (endPoint, CollectionDataMock, TransactionEventSinkMock),
+      var endPoint = new NullDomainObjectCollectionEndPoint(Transaction, RelationEndPointID.Definition);
+      Assert.That(
+          () => new DomainObjectCollectionEndPointDeleteCommand(endPoint, CollectionDataMock, TransactionEventSinkMock),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Modified end point is null, a NullEndPointModificationCommand is needed.",
                   "modifiedEndPoint"));
     }
@@ -62,11 +62,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Begin ()
     {
-      CollectionMockEventReceiver.Expect (mock => mock.Deleting ()).WithCurrentTransaction (Transaction);
+      CollectionMockEventReceiver.Expect(mock => mock.Deleting()).WithCurrentTransaction(Transaction);
 
       _command.Begin();
 
-      TransactionEventSinkMock.AssertWasNotCalled (mock => mock.RaiseRelationChangingEvent (
+      TransactionEventSinkMock.AssertWasNotCalled(mock => mock.RaiseRelationChangingEvent(
           Arg<DomainObject>.Is.Anything,
           Arg<IRelationEndPointDefinition>.Is.Anything,
           Arg<DomainObject>.Is.Anything,
@@ -78,46 +78,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void End ()
     {
-      CollectionMockEventReceiver.Expect (mock => mock.Deleted ()).WithCurrentTransaction (Transaction);
+      CollectionMockEventReceiver.Expect(mock => mock.Deleted()).WithCurrentTransaction(Transaction);
 
-      _command.End ();
+      _command.End();
 
-      TransactionEventSinkMock.AssertWasNotCalled (mock => mock.RaiseRelationChangedEvent (
+      TransactionEventSinkMock.AssertWasNotCalled(mock => mock.RaiseRelationChangedEvent(
           Arg<DomainObject>.Is.Anything,
           Arg<IRelationEndPointDefinition>.Is.Anything,
           Arg<DomainObject>.Is.Anything,
           Arg<DomainObject>.Is.Anything));
 
-      CollectionMockEventReceiver.VerifyAllExpectations ();
+      CollectionMockEventReceiver.VerifyAllExpectations();
     }
 
     [Test]
     public void Perform ()
     {
-      CollectionDataMock.BackToRecord ();
-      CollectionDataMock.Expect (mock => mock.Clear());
-      CollectionDataMock.Replay ();
+      CollectionDataMock.BackToRecord();
+      CollectionDataMock.Expect(mock => mock.Clear());
+      CollectionDataMock.Replay();
 
-      Assert.That (CollectionEndPoint.HasBeenTouched, Is.False);
+      Assert.That(CollectionEndPoint.HasBeenTouched, Is.False);
 
-      _command.Perform ();
+      _command.Perform();
 
-      CollectionDataMock.VerifyAllExpectations ();
+      CollectionDataMock.VerifyAllExpectations();
 
-      CollectionMockEventReceiver.AssertWasNotCalled (mock => mock.Deleting ());
-      CollectionMockEventReceiver.AssertWasNotCalled (mock => mock.Deleted ());
+      CollectionMockEventReceiver.AssertWasNotCalled(mock => mock.Deleting());
+      CollectionMockEventReceiver.AssertWasNotCalled(mock => mock.Deleted());
 
-      Assert.That (CollectionEndPoint.HasBeenTouched, Is.True);
+      Assert.That(CollectionEndPoint.HasBeenTouched, Is.True);
     }
 
     [Test] 
     public void ExpandToAllRelatedObjects ()
     {
-      var bidirectionalModification = _command.ExpandToAllRelatedObjects ();
+      var bidirectionalModification = _command.ExpandToAllRelatedObjects();
 
       var steps = bidirectionalModification.GetNestedCommands();
-      Assert.That (steps.Count, Is.EqualTo (1));
-      Assert.That (steps[0], Is.SameAs (_command));
+      Assert.That(steps.Count, Is.EqualTo(1));
+      Assert.That(steps[0], Is.SameAs(_command));
 
     }
   }

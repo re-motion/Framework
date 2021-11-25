@@ -62,17 +62,17 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
-      _parentField = GetControl<BocAutoCompleteReferenceValue> ("ParentField", "Parent");
+      _parentField = GetControl<BocAutoCompleteReferenceValue>("ParentField", "Parent");
 
-      if (string.IsNullOrEmpty (_parentField.ControlServicePath))
-        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl (_parentField);
+      if (string.IsNullOrEmpty(_parentField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(_parentField);
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (ChildrenList.IsReadOnly)
         ChildrenList.Selection = RowSelection.Disabled;
@@ -80,22 +80,22 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
+      var resourceManager = GetResourceManager(typeof (ResourceIdentifier));
       
-      ParentValidator.ErrorMessage = resourceManager.GetString (ResourceIdentifier.ParentValidatorErrorMessage);
-      TenantLabel.Text = resourceManager.GetString (ResourceIdentifier.TenantLabelText);
+      ParentValidator.ErrorMessage = resourceManager.GetString(ResourceIdentifier.ParentValidatorErrorMessage);
+      TenantLabel.Text = resourceManager.GetString(ResourceIdentifier.TenantLabelText);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     protected void ParentValidator_ServerValidate (object source, ServerValidateEventArgs args)
     {
-      args.IsValid = IsParentHierarchyValid ((Tenant) _parentField.Value);
+      args.IsValid = IsParentHierarchyValid((Tenant) _parentField.Value);
     }
 
     private bool IsParentHierarchyValid (Tenant group)
     {
-      var groups = group.CreateSequence (g => g.Parent, g => g != null && g != CurrentFunction.CurrentObject && g.Parent != group).ToArray();
+      var groups = group.CreateSequence(g => g.Parent, g => g != null && g != CurrentFunction.CurrentObject && g.Parent != group).ToArray();
       if (groups.Length == 0)
         return false;
       if (groups.Last().Parent != null)

@@ -35,19 +35,19 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
     {
       protected override void OnInit (EventArgs e)
       {
-        Assertion.IsFalse (DesignMode);
-        Assertion.IsTrue (Page?.IsPostBack ?? false);
+        Assertion.IsFalse(DesignMode);
+        Assertion.IsTrue(Page?.IsPostBack ?? false);
 
-        var pageRequestManagerType = typeof (ScriptManager).Assembly.GetType ("System.Web.UI.PageRequestManager", true, false)!;
-        var isAsyncPostBackRequest = (bool) PrivateInvoke.InvokeNonPublicStaticMethod (
+        var pageRequestManagerType = typeof (ScriptManager).Assembly.GetType("System.Web.UI.PageRequestManager", true, false)!;
+        var isAsyncPostBackRequest = (bool) PrivateInvoke.InvokeNonPublicStaticMethod(
             pageRequestManagerType,
             "IsAsyncPostBackRequest",
-            new HttpRequestWrapper (Context.Request))!;
-        Assertion.IsTrue (isAsyncPostBackRequest);
+            new HttpRequestWrapper(Context.Request))!;
+        Assertion.IsTrue(isAsyncPostBackRequest);
 
-        base.OnInit (e);
+        base.OnInit(e);
 
-        Assertion.IsTrue (IsInAsyncPostBack);
+        Assertion.IsTrue(IsInAsyncPostBack);
       }
     }
 
@@ -58,19 +58,19 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
 
     public void ProcessRequest ()
     {
-      ProcessRequest (HttpContextHelper.CreateHttpContext ("POST", "page.aspx", ""));
+      ProcessRequest(HttpContextHelper.CreateHttpContext("POST", "page.aspx", ""));
     }
 
     public override void ProcessRequest (HttpContext context)
     {
-      HttpContextHelper.SetForm (
+      HttpContextHelper.SetForm(
           context,
-          new NameValueCollection (context.Request.Form)
+          new NameValueCollection(context.Request.Form)
           {
               { "__ASYNCPOST", "true" }
           });
 
-      base.ProcessRequest (context);
+      base.ProcessRequest(context);
     }
 
     protected override NameValueCollection? DeterminePostBackMode ()
@@ -80,14 +80,14 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
 
     protected override void OnPreInit (EventArgs e)
     {
-      base.OnPreInit (e);
+      base.OnPreInit(e);
       EnsureChildControls();
     }
 
     protected override void CreateChildControls ()
     {
       base.CreateChildControls();
-      Controls.Add (_scriptManager);
+      Controls.Add(_scriptManager);
     }
 
     public ScriptManager ScriptManager

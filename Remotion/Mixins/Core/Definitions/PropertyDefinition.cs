@@ -23,7 +23,7 @@ namespace Remotion.Mixins.Definitions
   public class PropertyDefinition : MemberDefinitionBase
   {
     public new readonly UniqueDefinitionCollection<Type, PropertyDefinition> Overrides =
-        new UniqueDefinitionCollection<Type, PropertyDefinition> (m => m.DeclaringClass.Type);
+        new UniqueDefinitionCollection<Type, PropertyDefinition>(m => m.DeclaringClass.Type);
 
     private PropertyDefinition? _base;
     private readonly MethodDefinition? _getMethod;
@@ -70,7 +70,7 @@ namespace Remotion.Mixins.Definitions
             SetMethod.Base = _base == null ? null : _base.SetMethod;
         }
         else
-          throw new ArgumentException ("Base must be PropertyDefinition or null.", "value");
+          throw new ArgumentException("Base must be PropertyDefinition or null.", "value");
       }
     }
 
@@ -82,37 +82,37 @@ namespace Remotion.Mixins.Definitions
 
     internal override void AddOverride (MemberDefinitionBase member)
     {
-      ArgumentUtility.CheckNotNull ("member", member);
+      ArgumentUtility.CheckNotNull("member", member);
 
       var overrider = member as PropertyDefinition;
       if (overrider == null)
       {
-        string message = string.Format ("Member {0} cannot override property {1} - it is not a property.", member.FullName, FullName);
-        throw new ArgumentException (message);
+        string message = string.Format("Member {0} cannot override property {1} - it is not a property.", member.FullName, FullName);
+        throw new ArgumentException(message);
       }
 
-      Overrides.Add (overrider);
+      Overrides.Add(overrider);
 
       if (GetMethod != null && overrider.GetMethod != null)
-        GetMethod.AddOverride (overrider.GetMethod);
+        GetMethod.AddOverride(overrider.GetMethod);
       if (SetMethod != null && overrider.SetMethod != null)
-        SetMethod.AddOverride (overrider.SetMethod);
+        SetMethod.AddOverride(overrider.SetMethod);
     }
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
 
       if (GetMethod != null)
-        GetMethod.Accept (visitor);
+        GetMethod.Accept(visitor);
       if (SetMethod != null)
-        SetMethod.Accept (visitor);
+        SetMethod.Accept(visitor);
     }
 
     protected override IDefinitionCollection<Type, MemberDefinitionBase> GetInternalOverridesWrapper ()
     {
-      return new CovariantDefinitionCollectionWrapper<Type, PropertyDefinition, MemberDefinitionBase> (Overrides);
+      return new CovariantDefinitionCollectionWrapper<Type, PropertyDefinition, MemberDefinitionBase>(Overrides);
     }
   }
 }

@@ -32,12 +32,12 @@ namespace Remotion.Globalization
     /// </summary>
     public static IEnumerable<CultureInfo> GetCultureHierarchy (this CultureInfo cultureInfo)
     {
-      ArgumentUtility.CheckNotNull ("cultureInfo", cultureInfo);
+      ArgumentUtility.CheckNotNull("cultureInfo", cultureInfo);
 
       // CultureInfo.Parent is defined as specific -> neutral -> invariant, with invariant being its own parent
       return cultureInfo
-          .CreateSequence (ci => ci.Parent, ci => !ci.Equals (CultureInfo.InvariantCulture))
-          .Concat (CultureInfo.InvariantCulture);
+          .CreateSequence(ci => ci.Parent, ci => !ci.Equals(CultureInfo.InvariantCulture))
+          .Concat(CultureInfo.InvariantCulture);
     }
   }
 }

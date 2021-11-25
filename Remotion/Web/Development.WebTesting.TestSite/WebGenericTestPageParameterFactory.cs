@@ -10,7 +10,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     public GenericTestPageParameter CreateTextContentSelector ()
     {
-      return new GenericTestPageParameter (
+      return new GenericTestPageParameter(
           TestConstants.TextContentSelectorID,
           TestConstants.VisibleTextContentID,
           TestConstants.HiddenTextContentID,
@@ -19,7 +19,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     public GenericTestPageParameter CreateTitleSelector ()
     {
-      return new GenericTestPageParameter (
+      return new GenericTestPageParameter(
           TestConstants.TitleSelectorID,
           TestConstants.VisibleTitleID,
           TestConstants.HiddenTitleID,
@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     public GenericTestPageParameter CreateItemIDSelector ()
     {
-      return new GenericTestPageParameter (
+      return new GenericTestPageParameter(
           TestConstants.ItemIDSelectorID,
           TestConstants.VisibleControlID,
           TestConstants.HiddenControlID,

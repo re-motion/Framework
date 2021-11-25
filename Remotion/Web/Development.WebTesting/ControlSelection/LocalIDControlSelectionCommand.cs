@@ -36,8 +36,8 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
 
     public LocalIDControlSelectionCommand ([NotNull] ILocalIDControlSelector<TControlObject> controlSelector, [NotNull] string localID)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("localID", localID);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("localID", localID);
 
       _controlSelector = controlSelector;
       _localID = localID;
@@ -46,25 +46,25 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return _controlSelector.SelectPerLocalID (context, _localID);
+      return _controlSelector.SelectPerLocalID(context, _localID);
     }
 
     /// <inheritdoc/>
     public TControlObject? SelectOptional (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return _controlSelector.SelectOptionalPerLocalID (context, _localID);
+      return _controlSelector.SelectOptionalPerLocalID(context, _localID);
     }
 
     /// <inheritdoc/>
     public bool Exists (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return _controlSelector.ExistsPerLocalID (context, _localID);
+      return _controlSelector.ExistsPerLocalID(context, _localID);
     }
   }
 }

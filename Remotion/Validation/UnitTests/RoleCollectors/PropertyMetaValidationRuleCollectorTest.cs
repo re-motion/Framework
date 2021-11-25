@@ -39,28 +39,28 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [SetUp]
     public void SetUp ()
     {
-      _property = PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName"));
-      _userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.UserName);
-      _ruleCollector = PropertyMetaValidationRuleCollector.Create (_userNameExpression, typeof (RemovingPropertyValidationRuleCollectorTest));
+      _property = PropertyInfoAdapter.Create(typeof (Customer).GetProperty("UserName"));
+      _userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.UserName);
+      _ruleCollector = PropertyMetaValidationRuleCollector.Create(_userNameExpression, typeof (RemovingPropertyValidationRuleCollectorTest));
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_ruleCollector.Property.Equals(_property), Is.True);
-      Assert.That (_ruleCollector.Property, Is.EqualTo (_property));
-      Assert.That (_ruleCollector.CollectorType, Is.EqualTo (typeof (RemovingPropertyValidationRuleCollectorTest)));
-      Assert.That (_ruleCollector.MetaValidationRules.Any(), Is.False);
+      Assert.That(_ruleCollector.Property.Equals(_property), Is.True);
+      Assert.That(_ruleCollector.Property, Is.EqualTo(_property));
+      Assert.That(_ruleCollector.CollectorType, Is.EqualTo(typeof (RemovingPropertyValidationRuleCollectorTest)));
+      Assert.That(_ruleCollector.MetaValidationRules.Any(), Is.False);
     }
 
     [Test]
     public void Create_MemberInfoIsNoPropertyInfo_ExceptionIsThrown ()
     {
-      var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.Dummy ());
+      var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.Dummy());
 
-      Assert.That (
-          () => PropertyMetaValidationRuleCollector.Create (dummyExpression, typeof (CustomerValidationRuleCollector1)),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("Must be a MemberExpression.", "expression"));
+      Assert.That(
+          () => PropertyMetaValidationRuleCollector.Create(dummyExpression, typeof (CustomerValidationRuleCollector1)),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Must be a MemberExpression.", "expression"));
     }
 
     [Test]
@@ -68,15 +68,15 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     {
       var metaValidationRuleStub1 = new Mock<IPropertyMetaValidationRule>();
       var metaValidationRuleStub2 = new Mock<IPropertyMetaValidationRule>();
-      Assert.That (_ruleCollector.MetaValidationRules.Count(), Is.EqualTo (0));
+      Assert.That(_ruleCollector.MetaValidationRules.Count(), Is.EqualTo(0));
 
-      _ruleCollector.RegisterMetaValidationRule (metaValidationRuleStub1.Object);
-      _ruleCollector.RegisterMetaValidationRule (metaValidationRuleStub2.Object);
+      _ruleCollector.RegisterMetaValidationRule(metaValidationRuleStub1.Object);
+      _ruleCollector.RegisterMetaValidationRule(metaValidationRuleStub2.Object);
 
-      Assert.That (_ruleCollector.MetaValidationRules.Count(), Is.EqualTo (2));
-      Assert.That (
+      Assert.That(_ruleCollector.MetaValidationRules.Count(), Is.EqualTo(2));
+      Assert.That(
           _ruleCollector.MetaValidationRules,
-          Is.EquivalentTo (new[] { metaValidationRuleStub1.Object, metaValidationRuleStub2.Object }));
+          Is.EquivalentTo(new[] { metaValidationRuleStub1.Object, metaValidationRuleStub2.Object }));
     }
 
     [Test]
@@ -84,9 +84,9 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     {
       var result = _ruleCollector.ToString();
 
-      Assert.That (
+      Assert.That(
           result,
-          Is.EqualTo (
+          Is.EqualTo(
               "PropertyMetaValidationRuleCollector: Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
     }
   }

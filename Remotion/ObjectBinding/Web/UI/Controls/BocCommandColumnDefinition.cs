@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
+      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
       
       return serviceLocator.GetInstance<IBocCommandColumnRenderer>();
     }
@@ -48,14 +48,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override string ToString ()
     {
       string? displayName = ItemID;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         displayName = ColumnTitle;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         displayName = Text;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         return DisplayedTypeName;
       else
-        return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+        return string.Format("{0}: {1}", displayName, DisplayedTypeName);
     }
 
     /// <summary> Gets or sets the text representing the command in the rendered page. </summary>
@@ -86,14 +86,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _icon; }
       set
       {
-        ArgumentUtility.CheckNotNull ("Icon", value);
+        ArgumentUtility.CheckNotNull("Icon", value);
         _icon = value;
       }
     }
 
     private bool ShouldSerializeIcon ()
     {
-      return IconInfo.ShouldSerialize (_icon);
+      return IconInfo.ShouldSerialize(_icon);
     }
 
     private void ResetIcon ()
@@ -109,16 +109,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
       
-      base.LoadResources (resourceManager, globalizationService);
+      base.LoadResources(resourceManager, globalizationService);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-      if (!string.IsNullOrEmpty (key))
-        Text = resourceManager.GetString (key);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(Text);
+      if (!string.IsNullOrEmpty(key))
+        Text = resourceManager.GetString(key);
 
-      Icon.LoadResources (resourceManager);
+      Icon.LoadResources(resourceManager);
     }
   }
 }

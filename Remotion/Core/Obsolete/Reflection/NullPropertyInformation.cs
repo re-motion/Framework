@@ -79,7 +79,7 @@ namespace Remotion.Reflection
 
     public IMethodInformation GetSetMethod (bool nonPublic)
     {
-      return new NullMethodInformation ();
+      return new NullMethodInformation();
     }
 
     public IPropertyInformation FindInterfaceImplementation (Type implementationType)

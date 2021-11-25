@@ -36,31 +36,31 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     public void SetUp ()
     {
       var bindablePropertyReadAccessStrategy =
-          new CompundBindablePropertyReadAccessStrategy (
+          new CompundBindablePropertyReadAccessStrategy(
               new IBindablePropertyReadAccessStrategy[] { new BindableDomainObjectPropertyReadAccessStrategy() });
 
       var bindablePropertyWriteAccessStrategy =
-          new CompundBindablePropertyWriteAccessStrategy (
+          new CompundBindablePropertyWriteAccessStrategy(
               new IBindablePropertyWriteAccessStrategy[] { new BindableDomainObjectPropertyWriteAccessStrategy() });
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<IBindablePropertyReadAccessStrategy> (() => bindablePropertyReadAccessStrategy);
-      serviceLocator.RegisterSingle<IBindablePropertyWriteAccessStrategy> (() => bindablePropertyWriteAccessStrategy);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle<IBindablePropertyReadAccessStrategy>(() => bindablePropertyReadAccessStrategy);
+      serviceLocator.RegisterSingle<IBindablePropertyWriteAccessStrategy>(() => bindablePropertyWriteAccessStrategy);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
       _disableAccessChecksBackup = SecurityConfiguration.Current.DisableAccessChecks;
       SecurityConfiguration.Current.DisableAccessChecks = true;
-      ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ();
+      ClientTransaction.CreateRootTransaction().EnterDiscardingScope();
 
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
 
-      ClientTransactionScope.ResetActiveScope ();
+      ClientTransactionScope.ResetActiveScope();
       SecurityConfiguration.Current.DisableAccessChecks = _disableAccessChecksBackup;
       _serviceLocatorScope.Dispose();
     }
@@ -68,66 +68,66 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public override void BusinessObject_Property_IsAccessible ()
     {
-      Console.WriteLine (
+      Console.WriteLine(
           "Expected average duration of BindableObjectWithoutSecurityTest for BusinessObject_Property_IsAccessible on reference system: ~0.08탎 (release build), ~0.66 탎 (debug build)");
 
-      base.BusinessObject_Property_IsAccessible ();
+      base.BusinessObject_Property_IsAccessible();
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public override void BusinessObject_GetProperty ()
     {
-      Console.WriteLine (
+      Console.WriteLine(
           "Expected average duration of BindableObjectWithoutSecurityTest for BusinessObject_GetProperty on reference system: ~1.4 탎 (release build), ~3.8 탎 (debug build)");
 
-      base.BusinessObject_GetProperty ();
+      base.BusinessObject_GetProperty();
       
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public override void DynamicMethod_GetProperty ()
     {
-      Console.WriteLine (
+      Console.WriteLine(
           "Expected average duration of BindableObjectWithoutSecurityTest for DynamicMethod_GetProperty on reference system: ~0.8 탎 (release build), ~2.0 탎 (debug build)");
 
-      base.DynamicMethod_GetProperty ();
+      base.DynamicMethod_GetProperty();
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public override void DomainObject_GetProperty ()
     {
-      Console.WriteLine (
+      Console.WriteLine(
           "Expected average duration of BindableObjectWithoutSecurityTest for DomainObject_GetProperty on reference system: ~0.8 탎 (release build), ~2.0 탎 (debug build)");
 
-      base.DomainObject_GetProperty ();
+      base.DomainObject_GetProperty();
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
     [Test]
     public override void BusinessObject_SetProperty ()
     {
-      Console.WriteLine (
+      Console.WriteLine(
           "Expected average duration of BindableObjectWithoutSecurityTest for BusinessObject_SetProperty on reference system: ~1.4 탎 (release build), ~3.3 탎 (debug build)");
 
-      base.BusinessObject_SetProperty ();
+      base.BusinessObject_SetProperty();
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public override void DomainObject_SetProperty ()
     {
-      Console.WriteLine (
+      Console.WriteLine(
           "Expected average duration of BindableObjectWithoutSecurityTest for DomainObject_SetProperty on reference system: ~1.3 탎 (release build), ~3.0 탎 (debug build)");
 
-      base.DomainObject_SetProperty ();
+      base.DomainObject_SetProperty();
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
   }
 }

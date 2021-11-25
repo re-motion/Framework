@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
       set 
       {
         Properties[typeof (BindableDomainObjectWithProperties), 
-            typeof (IBindableDomainObjectWithProperties).FullName + ".RequiredStringPropertyExplicitInInterface"].SetValue (value);
+            typeof (IBindableDomainObjectWithProperties).FullName + ".RequiredStringPropertyExplicitInInterface"].SetValue(value);
       }
     }
 
@@ -124,8 +124,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     [DBColumn ("NewBasePropertyWithMaxLength3")]
     public new virtual string BasePropertyWithMaxLength3
     {
-      get { return CurrentProperty.GetValue<string> (); }
-      set { CurrentProperty.SetValue (value); }
+      get { return CurrentProperty.GetValue<string>(); }
+      set { CurrentProperty.SetValue(value); }
     }
   }
 }

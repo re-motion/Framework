@@ -31,35 +31,35 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public void CommitSubTransaction_Relations ()
     {
-      Console.WriteLine ("Expected average duration of CommitSubTransaction_Relations on reference system: ~150 ms");
+      Console.WriteLine("Expected average duration of CommitSubTransaction_Relations on reference system: ~150 ms");
 
-      using (ClientTransaction.CreateRootTransaction ().CreateSubTransaction().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().CreateSubTransaction().EnterDiscardingScope())
       {
-        ClassWithRelationProperties[] objects = TestDomainObjectMother.PrepareDatabaseObjectsWithRelationProperties (TestSetSize);
+        ClassWithRelationProperties[] objects = TestDomainObjectMother.PrepareDatabaseObjectsWithRelationProperties(TestSetSize);
 
-        Assert.That (ClientTransaction.Current.HasChanged (), Is.False);
+        Assert.That(ClientTransaction.Current.HasChanged(), Is.False);
 
         // warm up
-        ChangeObjectsWithRelations (objects);
-        ClientTransaction.Current.Commit ();
+        ChangeObjectsWithRelations(objects);
+        ClientTransaction.Current.Commit();
 
         var stopwatch = new Stopwatch();
 
         for (int i = 0; i < TestRepititions; i++)
         {
-          ChangeObjectsWithRelations (objects);
-          stopwatch.Start ();
-          ClientTransaction.Current.Commit ();
-          stopwatch.Stop ();
+          ChangeObjectsWithRelations(objects);
+          stopwatch.Start();
+          ClientTransaction.Current.Commit();
+          stopwatch.Stop();
         }
 
-        Assert.That (ClientTransaction.Current.HasChanged (), Is.False);
+        Assert.That(ClientTransaction.Current.HasChanged(), Is.False);
 
         double averageMilliSeconds = stopwatch.Elapsed.TotalMilliseconds / TestRepititions;
-        Console.WriteLine (
+        Console.WriteLine(
             "CommitSubTransaction_Relations (executed {0} x Commit ({2} objects - total {3} objects in CTx)): Average duration: {1} ms",
             TestRepititions,
-            averageMilliSeconds.ToString ("n"),
+            averageMilliSeconds.ToString("n"),
             objects.Length,
             ClientTransaction.Current.EnlistedDomainObjectCount);
       }
@@ -68,37 +68,37 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public void CommitSubTransaction_ValueProperties ()
     {
-      Console.WriteLine ("Expected average duration of CommitSubTransaction_ValueProperties on reference system: ~120 ms");
+      Console.WriteLine("Expected average duration of CommitSubTransaction_ValueProperties on reference system: ~120 ms");
 
-      using (ClientTransaction.CreateRootTransaction ().CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().CreateSubTransaction().EnterDiscardingScope())
       {
-        ClassWithValueProperties[] objects = TestDomainObjectMother.PrepareDatabaseObjectsWithValueProperties (TestSetSize);
+        ClassWithValueProperties[] objects = TestDomainObjectMother.PrepareDatabaseObjectsWithValueProperties(TestSetSize);
         
         // Create 3000 unchanged objects in ClientTransaction in order to make test set more similar to relation test
         for (int i = 0; i < 3000; ++i)
-          TestDomainObjectMother.CreateAndFillValuePropertyObject ();
+          TestDomainObjectMother.CreateAndFillValuePropertyObject();
 
         // warm up
-        ChangeObjectsWithValueProperties (objects);
-        ClientTransaction.Current.Commit ();
+        ChangeObjectsWithValueProperties(objects);
+        ClientTransaction.Current.Commit();
 
-        var stopwatch = new Stopwatch ();
+        var stopwatch = new Stopwatch();
 
         for (int i = 0; i < TestRepititions; i++)
         {
-          ChangeObjectsWithValueProperties (objects);
-          stopwatch.Start ();
-          ClientTransaction.Current.Commit ();
-          stopwatch.Stop ();
+          ChangeObjectsWithValueProperties(objects);
+          stopwatch.Start();
+          ClientTransaction.Current.Commit();
+          stopwatch.Stop();
         }
 
-        Assert.That (ClientTransaction.Current.HasChanged (), Is.False);
+        Assert.That(ClientTransaction.Current.HasChanged(), Is.False);
 
         double averageMilliSeconds = stopwatch.Elapsed.TotalMilliseconds / TestRepititions;
-        Console.WriteLine (
+        Console.WriteLine(
             "CommitSubTransaction_ValueProperties (executed {0} x Commit ({2} objects - total {3} objects in CTx)): Average duration: {1} ms",
             TestRepititions,
-            averageMilliSeconds.ToString ("n"),
+            averageMilliSeconds.ToString("n"),
             objects.Length,
             ClientTransaction.Current.EnlistedDomainObjectCount);
       }
@@ -107,11 +107,11 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public void CommitTransactionToDatabase_NewProperties ()
     {
-      Console.WriteLine ("Expected average duration of CommitTransactionToDatabase_NewProperties on reference system: ~3.5 ms");
+      Console.WriteLine("Expected average duration of CommitTransactionToDatabase_NewProperties on reference system: ~3.5 ms");
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        TestDomainObjectMother.PrepareDatabaseObjectsWithValueProperties (TestSetSize);
+        TestDomainObjectMother.PrepareDatabaseObjectsWithValueProperties(TestSetSize);
         ClientTransaction.Current.Commit();
       }
 
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       {
         using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
         {
-          TestDomainObjectMother.PrepareDatabaseObjectsWithValueProperties (TestSetSize);
+          TestDomainObjectMother.PrepareDatabaseObjectsWithValueProperties(TestSetSize);
           stopwatch.Start();
           ClientTransaction.Current.Commit();
           stopwatch.Stop();
@@ -129,10 +129,10 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       }
 
       double averageMilliSeconds = stopwatch.Elapsed.TotalMilliseconds / TestRepititions;
-      Console.WriteLine (
+      Console.WriteLine(
           "CommitTransactionToDatabase_NewProperties (executed {0} x Commit ({2} objects)): Average duration: {1} ms",
           TestRepititions,
-          averageMilliSeconds.ToString ("n"),
+          averageMilliSeconds.ToString("n"),
           TestSetSize);
     }
 
@@ -146,14 +146,14 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
         switch (i % 4)
         {
           case 0:
-            Swap (currentObject, nextObject, "Virtual1");
-            Swap (currentObject, nextObject, "Virtual3");
-            Swap (currentObject, nextObject, "Virtual5");
+            Swap(currentObject, nextObject, "Virtual1");
+            Swap(currentObject, nextObject, "Virtual3");
+            Swap(currentObject, nextObject, "Virtual5");
             break;
           case 2:
-            Swap (currentObject, nextObject, "Real1");
-            Swap (currentObject, nextObject, "Real3");
-            Swap (currentObject, nextObject, "Real5");
+            Swap(currentObject, nextObject, "Real1");
+            Swap(currentObject, nextObject, "Real3");
+            Swap(currentObject, nextObject, "Real5");
             break;
         }
       }
@@ -183,14 +183,14 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
     private void Swap (ClassWithRelationProperties one, ClassWithRelationProperties two, string shortPropertyName)
     {
-      var propertiesOne = new PropertyIndexer (one);
-      var propertiesTwo  = new PropertyIndexer (two);
+      var propertiesOne = new PropertyIndexer(one);
+      var propertiesTwo  = new PropertyIndexer(two);
       var accessorOne = propertiesOne[typeof (ClassWithRelationProperties), shortPropertyName];
       var accessorTwo = propertiesTwo[typeof (ClassWithRelationProperties), shortPropertyName];
 
       var oldValue = accessorOne.GetValueWithoutTypeCheck();
-      accessorOne.SetValueWithoutTypeCheck (accessorTwo.GetValueWithoutTypeCheck());
-      accessorTwo.SetValueWithoutTypeCheck (oldValue);
+      accessorOne.SetValueWithoutTypeCheck(accessorTwo.GetValueWithoutTypeCheck());
+      accessorTwo.SetValueWithoutTypeCheck(oldValue);
     }
   }
 }

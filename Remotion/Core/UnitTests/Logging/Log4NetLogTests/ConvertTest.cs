@@ -28,40 +28,40 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     [Test]
     public void Test_Info ()
     {
-      Assert.That (Log4NetLog.Convert (LogLevel.Info), Is.EqualTo (Level.Info));
+      Assert.That(Log4NetLog.Convert(LogLevel.Info), Is.EqualTo(Level.Info));
     }
 
     [Test]
     public void Test_Debug ()
     {
-      Assert.That (Log4NetLog.Convert (LogLevel.Debug), Is.EqualTo (Level.Debug));
+      Assert.That(Log4NetLog.Convert(LogLevel.Debug), Is.EqualTo(Level.Debug));
     }
 
     [Test]
     public void Test_Warn ()
     {
-      Assert.That (Log4NetLog.Convert (LogLevel.Warn), Is.EqualTo (Level.Warn));
+      Assert.That(Log4NetLog.Convert(LogLevel.Warn), Is.EqualTo(Level.Warn));
     }
 
     [Test]
     public void Test_Error ()
     {
-      Assert.That (Log4NetLog.Convert (LogLevel.Error), Is.EqualTo (Level.Error));
+      Assert.That(Log4NetLog.Convert(LogLevel.Error), Is.EqualTo(Level.Error));
     }
 
     [Test]
     public void Test_Fatal ()
     {
-      Assert.That (Log4NetLog.Convert (LogLevel.Fatal), Is.EqualTo (Level.Fatal));
+      Assert.That(Log4NetLog.Convert(LogLevel.Fatal), Is.EqualTo(Level.Fatal));
     }
 
     [Test]
     public void Test_InvalidLevel ()
     {
-      Assert.That (
-          () => Log4NetLog.Convert ((LogLevel) 10),
+      Assert.That(
+          () => Log4NetLog.Convert((LogLevel) 10),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "LogLevel does not support value 10.", "logLevel"));
     }
   }

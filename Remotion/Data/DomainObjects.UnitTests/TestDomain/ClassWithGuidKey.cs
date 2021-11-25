@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   {
     public static ClassWithGuidKey NewObject ()
     {
-      return NewObject<ClassWithGuidKey> ();
+      return NewObject<ClassWithGuidKey>();
     }
 
     protected ClassWithGuidKey ()

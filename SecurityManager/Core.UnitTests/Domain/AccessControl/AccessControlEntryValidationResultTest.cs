@@ -30,8 +30,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       AccessControlEntryValidationResult result = new AccessControlEntryValidationResult();
 
-      Assert.That (result.IsValid, Is.True);
-      Assert.That (result.GetErrors(), Is.Empty);
+      Assert.That(result.IsValid, Is.True);
+      Assert.That(result.GetErrors(), Is.Empty);
     }
 
     [Test]
@@ -39,9 +39,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       AccessControlEntryValidationResult result = new AccessControlEntryValidationResult();
 
-      result.SetError (AccessControlEntryValidationError.IsSpecificTenantMissing);
+      result.SetError(AccessControlEntryValidationError.IsSpecificTenantMissing);
 
-      Assert.That (result.IsValid, Is.False);
+      Assert.That(result.IsValid, Is.False);
     }
 
     [Test]
@@ -49,9 +49,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       AccessControlEntryValidationResult result = new AccessControlEntryValidationResult();
 
-      result.SetError (AccessControlEntryValidationError.IsSpecificTenantMissing);
+      result.SetError(AccessControlEntryValidationError.IsSpecificTenantMissing);
 
-      Assert.That (result.GetErrors(), Is.EquivalentTo (new[] { AccessControlEntryValidationError.IsSpecificTenantMissing }));
+      Assert.That(result.GetErrors(), Is.EquivalentTo(new[] { AccessControlEntryValidationError.IsSpecificTenantMissing }));
     }
 
     [Test]
@@ -59,10 +59,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       AccessControlEntryValidationResult result = new AccessControlEntryValidationResult();
 
-      result.SetError (AccessControlEntryValidationError.IsSpecificTenantMissing);
-      result.SetError (AccessControlEntryValidationError.IsSpecificTenantMissing);
+      result.SetError(AccessControlEntryValidationError.IsSpecificTenantMissing);
+      result.SetError(AccessControlEntryValidationError.IsSpecificTenantMissing);
 
-      Assert.That (result.GetErrors(), Is.EquivalentTo (new[] { AccessControlEntryValidationError.IsSpecificTenantMissing }));
+      Assert.That(result.GetErrors(), Is.EquivalentTo(new[] { AccessControlEntryValidationError.IsSpecificTenantMissing }));
     }
 
     [Test]
@@ -70,12 +70,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       AccessControlEntryValidationResult result = new AccessControlEntryValidationResult();
 
-      result.SetError (AccessControlEntryValidationError.IsSpecificTenantMissing);
-      result.SetError (AccessControlEntryValidationError.IsSpecificGroupMissing);
+      result.SetError(AccessControlEntryValidationError.IsSpecificTenantMissing);
+      result.SetError(AccessControlEntryValidationError.IsSpecificGroupMissing);
 
-      Assert.That (
+      Assert.That(
           result.GetErrors(),
-          Is.EquivalentTo (
+          Is.EquivalentTo(
               new[] { AccessControlEntryValidationError.IsSpecificTenantMissing, AccessControlEntryValidationError.IsSpecificGroupMissing }));
     }
 
@@ -84,12 +84,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       AccessControlEntryValidationResult result = new AccessControlEntryValidationResult();
 
-      result.SetError (AccessControlEntryValidationError.IsSpecificGroupMissing);
-      result.SetError (AccessControlEntryValidationError.IsSpecificTenantMissing);
+      result.SetError(AccessControlEntryValidationError.IsSpecificGroupMissing);
+      result.SetError(AccessControlEntryValidationError.IsSpecificTenantMissing);
 
-      Assert.That (
+      Assert.That(
           result.GetErrors(),
-          Is.EqualTo (new[] { AccessControlEntryValidationError.IsSpecificTenantMissing, AccessControlEntryValidationError.IsSpecificGroupMissing }));
+          Is.EqualTo(new[] { AccessControlEntryValidationError.IsSpecificTenantMissing, AccessControlEntryValidationError.IsSpecificGroupMissing }));
     }
 
     [Test]
@@ -97,14 +97,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       AccessControlEntryValidationResult result = new AccessControlEntryValidationResult();
 
-      result.SetError (AccessControlEntryValidationError.IsSpecificGroupMissing);
-      result.SetError (AccessControlEntryValidationError.IsSpecificTenantMissing);
+      result.SetError(AccessControlEntryValidationError.IsSpecificGroupMissing);
+      result.SetError(AccessControlEntryValidationError.IsSpecificTenantMissing);
 
-      using (new CultureScope (""))
+      using (new CultureScope(""))
       {
-        Assert.That (
+        Assert.That(
             result.GetErrorMessage(),
-            Is.EqualTo (
+            Is.EqualTo(
                 "The access control entry is in an invalid state:\r\n"
                 + "  The TenantCondition property is set to SpecificTenant, but no SpecificTenant is assigned.\r\n"
                 + "  The GroupCondition property is set to SpecificGroup, but no SpecificGroup is assigned."));

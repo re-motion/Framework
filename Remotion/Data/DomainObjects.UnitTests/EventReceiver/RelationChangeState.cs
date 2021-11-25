@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
         string message)
       : base (sender, message)
     {
-      ArgumentUtility.CheckNotNull ("propertyName", propertyName);
+      ArgumentUtility.CheckNotNull("propertyName", propertyName);
 
       _propertyName = propertyName;
       _oldDomainObject = oldDomainObject;
@@ -77,39 +77,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public override void Check (ChangeState expectedState)
     {
-      base.Check (expectedState);
+      base.Check(expectedState);
 
       RelationChangeState relationChangeState = (RelationChangeState) expectedState;
 
       if (_propertyName != relationChangeState.PropertyName)
       {
-        throw CreateApplicationException (
+        throw CreateApplicationException(
             "Actual PropertyName '{0}' and expected PropertyName '{1}' do not match.",
             _propertyName,
             relationChangeState.PropertyName);
       }
 
-      if (!ReferenceEquals (_oldDomainObject, relationChangeState.OldDomainObject))
+      if (!ReferenceEquals(_oldDomainObject, relationChangeState.OldDomainObject))
       {
-        throw CreateApplicationException (
+        throw CreateApplicationException(
             "Actual old related DomainObject '{0}' and expected old related DomainObject '{1}' do not match.",
-            GetObjectIDAsText (_oldDomainObject),
-            GetObjectIDAsText (relationChangeState.OldDomainObject));
+            GetObjectIDAsText(_oldDomainObject),
+            GetObjectIDAsText(relationChangeState.OldDomainObject));
       }
 
-      if (!ReferenceEquals (_newDomainObject, relationChangeState.NewDomainObject))
+      if (!ReferenceEquals(_newDomainObject, relationChangeState.NewDomainObject))
       {
-        throw CreateApplicationException (
+        throw CreateApplicationException(
             "Actual new related DomainObject '{0}' and expected new related DomainObject '{1}' do not match.",
-            GetObjectIDAsText (_newDomainObject),
-            GetObjectIDAsText (relationChangeState.NewDomainObject));
+            GetObjectIDAsText(_newDomainObject),
+            GetObjectIDAsText(relationChangeState.NewDomainObject));
       }
     }
 
     private string GetObjectIDAsText (DomainObject domainObject)
     {
       if (domainObject != null)
-        return domainObject.ID.ToString ();
+        return domainObject.ID.ToString();
       else
         return "null";
     }

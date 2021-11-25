@@ -27,6 +27,6 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
     {
     }
 
-    private WxePageStep Step1 = new WxePageStep ("ImmediatelyReturningPage.aspx");
+    private WxePageStep Step1 = new WxePageStep("ImmediatelyReturningPage.aspx");
   }
 }

@@ -39,7 +39,7 @@ namespace Remotion.Globalization.Implementation
 
     public GlobalizationService (IResourceManagerResolver resourceManagerResolver)
     {
-      ArgumentUtility.CheckNotNull ("resourceManagerResolver", resourceManagerResolver);
+      ArgumentUtility.CheckNotNull("resourceManagerResolver", resourceManagerResolver);
 
       _resourceManagerResolver = resourceManagerResolver;
 
@@ -49,9 +49,9 @@ namespace Remotion.Globalization.Implementation
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
 
-      return _resourceManagerCache.GetOrAdd (typeInformation, _getResourceManagerImplementationFunc);
+      return _resourceManagerCache.GetOrAdd(typeInformation, _getResourceManagerImplementationFunc);
     }
 
     [NotNull]
@@ -61,7 +61,7 @@ namespace Remotion.Globalization.Implementation
       if (runtimeType == null)
         return NullResourceManager.Instance;
 
-      var result = _resourceManagerResolver.Resolve (runtimeType);
+      var result = _resourceManagerResolver.Resolve(runtimeType);
       return result.ResourceManager;
     }
   }

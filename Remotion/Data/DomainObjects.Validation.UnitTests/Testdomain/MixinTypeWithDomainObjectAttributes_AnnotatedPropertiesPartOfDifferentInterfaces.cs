@@ -39,14 +39,14 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
     public virtual TestDomainObject PropertyWithMandatoryAttribute
     {
       get { return Properties[s_type, "PropertyWithMandatoryAttribute"].GetValue<TestDomainObject>(); }
-      set { Properties[s_type, "PropertyWithMandatoryAttribute"].SetValue (value); }
+      set { Properties[s_type, "PropertyWithMandatoryAttribute"].SetValue(value); }
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 20)]
     public virtual string PropertyWithMandatoryStringPropertyAttribute
     {
       get { return Properties[s_type, "PropertyWithMandatoryStringPropertyAttribute"].GetValue<string>(); }
-      set { Properties[s_type, "PropertyWithMandatoryStringPropertyAttribute"].SetValue (value); }
+      set { Properties[s_type, "PropertyWithMandatoryStringPropertyAttribute"].SetValue(value); }
     }
   }
 }

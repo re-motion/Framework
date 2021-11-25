@@ -37,13 +37,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public static ColumnDefinition GetSingleColumn (IRdbmsStoragePropertyDefinition rdbmsStoragePropertyDefinition)
     {
       var columns = rdbmsStoragePropertyDefinition.GetColumns().ToArray();
-      Assert.That (columns, Has.Length.EqualTo (1));
+      Assert.That(columns, Has.Length.EqualTo(1));
       return columns.Single();
     }
 
     public static IEnumerable<ColumnDefinition> GetColumns (IEnumerable<IRdbmsStoragePropertyDefinition> rdbmsStoragePropertyDefinitions)
     {
-      return rdbmsStoragePropertyDefinitions.SelectMany (p => p.GetColumns());
+      return rdbmsStoragePropertyDefinitions.SelectMany(p => p.GetColumns());
     }
   }
 }

@@ -32,10 +32,10 @@ namespace Remotion.Validation
     public static IValidator<TValidatedType> BuildValidator<TValidatedType> (this IValidatorBuilder builder)
         where TValidatedType : notnull
     {
-      ArgumentUtility.CheckNotNull ("builder", builder);
+      ArgumentUtility.CheckNotNull("builder", builder);
 
-      var validator = builder.BuildValidator (typeof (TValidatedType));
-      return new TypedValidatorDecorator<TValidatedType> (validator);
+      var validator = builder.BuildValidator(typeof (TValidatedType));
+      return new TypedValidatorDecorator<TValidatedType>(validator);
     }
   }
 }

@@ -51,8 +51,8 @@ namespace Remotion.Web.Development.WebTesting
           return "*=";
       }
 
-      throw new NotImplementedException (
-          string.Format ("CssComparisonOperatorExtensions.ToCssString does not yet support CssComparisonOperator.{0}.", op));
+      throw new NotImplementedException(
+          string.Format("CssComparisonOperatorExtensions.ToCssString does not yet support CssComparisonOperator.{0}.", op));
     }
   }
 }

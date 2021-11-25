@@ -36,16 +36,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     public void Render ()
     {
       var resourceUrl = new Mock<IResourceUrl>();
-      resourceUrl.Setup (stub => stub.GetUrl()).Returns ("myScriptUrl.js");
+      resourceUrl.Setup(stub => stub.GetUrl()).Returns("myScriptUrl.js");
 
-      var javaScriptInclude = new JavaScriptInclude (resourceUrl.Object);
+      var javaScriptInclude = new JavaScriptInclude(resourceUrl.Object);
 
-      javaScriptInclude.Render (_htmlHelper.Writer);
+      javaScriptInclude.Render(_htmlHelper.Writer);
 
       var document = _htmlHelper.GetResultDocument();
-      var element = _htmlHelper.GetAssertedChildElement (document, "script", 0);
-      _htmlHelper.AssertAttribute (element, "type", "text/javascript");
-      _htmlHelper.AssertAttribute (element, "src", "myScriptUrl.js");
+      var element = _htmlHelper.GetAssertedChildElement(document, "script", 0);
+      _htmlHelper.AssertAttribute(element, "type", "text/javascript");
+      _htmlHelper.AssertAttribute(element, "src", "myScriptUrl.js");
     }
   }
 }

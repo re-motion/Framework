@@ -28,108 +28,108 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void BaseWithOverrideAttributes ()
     {
-      MethodInfo method = typeof (TargetForOverridesAndShadowing).GetMethod ("Method");
-      PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
-      EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
+      MethodInfo method = typeof (TargetForOverridesAndShadowing).GetMethod("Method");
+      PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty("Property");
+      EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent("Event");
 
       TargetClassDefinition def1 =
-          DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),typeof (BaseWithOverrideAttributes));
+          DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (TargetForOverridesAndShadowing),typeof (BaseWithOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (BaseWithOverrideAttributes)];
-      Assert.That (mix1, Is.Not.Null);
+      Assert.That(mix1, Is.Not.Null);
 
-      Assert.That (def1.Methods[method].Overrides.Count, Is.EqualTo (1));
-      Assert.That (def1.Methods[method].Overrides[typeof (BaseWithOverrideAttributes)].DeclaringClass, Is.SameAs (mix1));
+      Assert.That(def1.Methods[method].Overrides.Count, Is.EqualTo(1));
+      Assert.That(def1.Methods[method].Overrides[typeof (BaseWithOverrideAttributes)].DeclaringClass, Is.SameAs(mix1));
 
-      Assert.That (def1.Properties[property].Overrides.Count, Is.EqualTo (1));
-      Assert.That (def1.Properties[property].Overrides[typeof (BaseWithOverrideAttributes)].DeclaringClass, Is.SameAs (mix1));
+      Assert.That(def1.Properties[property].Overrides.Count, Is.EqualTo(1));
+      Assert.That(def1.Properties[property].Overrides[typeof (BaseWithOverrideAttributes)].DeclaringClass, Is.SameAs(mix1));
 
-      Assert.That (def1.Events[eve].Overrides.Count, Is.EqualTo (1));
-      Assert.That (def1.Events[eve].Overrides[typeof (BaseWithOverrideAttributes)].DeclaringClass, Is.SameAs (mix1));
+      Assert.That(def1.Events[eve].Overrides.Count, Is.EqualTo(1));
+      Assert.That(def1.Events[eve].Overrides[typeof (BaseWithOverrideAttributes)].DeclaringClass, Is.SameAs(mix1));
     }
 
     [Test]
     public void DerivedWithOverridesWithoutAttributes ()
     {
-      MethodInfo method = typeof (TargetForOverridesAndShadowing).GetMethod ("Method");
-      PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
-      EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
+      MethodInfo method = typeof (TargetForOverridesAndShadowing).GetMethod("Method");
+      PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty("Property");
+      EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent("Event");
 
-      TargetClassDefinition def1 = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
+      TargetClassDefinition def1 = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (TargetForOverridesAndShadowing),
                                                                                       typeof (DerivedWithoutOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (DerivedWithoutOverrideAttributes)];
-      Assert.That (mix1, Is.Not.Null);
+      Assert.That(mix1, Is.Not.Null);
 
-      Assert.That (def1.Methods[method].Overrides.Count, Is.EqualTo (1));
-      Assert.That (def1.Methods[method].Overrides[typeof (DerivedWithoutOverrideAttributes)].DeclaringClass, Is.SameAs (mix1));
+      Assert.That(def1.Methods[method].Overrides.Count, Is.EqualTo(1));
+      Assert.That(def1.Methods[method].Overrides[typeof (DerivedWithoutOverrideAttributes)].DeclaringClass, Is.SameAs(mix1));
 
-      Assert.That (def1.Properties[property].Overrides.Count, Is.EqualTo (1));
-      Assert.That (def1.Properties[property].Overrides[typeof (DerivedWithoutOverrideAttributes)].DeclaringClass, Is.SameAs (mix1));
+      Assert.That(def1.Properties[property].Overrides.Count, Is.EqualTo(1));
+      Assert.That(def1.Properties[property].Overrides[typeof (DerivedWithoutOverrideAttributes)].DeclaringClass, Is.SameAs(mix1));
 
-      Assert.That (def1.Events[eve].Overrides.Count, Is.EqualTo (1));
-      Assert.That (def1.Events[eve].Overrides[typeof (DerivedWithoutOverrideAttributes)].DeclaringClass, Is.SameAs (mix1));
+      Assert.That(def1.Events[eve].Overrides.Count, Is.EqualTo(1));
+      Assert.That(def1.Events[eve].Overrides[typeof (DerivedWithoutOverrideAttributes)].DeclaringClass, Is.SameAs(mix1));
     }
 
     [Test]
     public void DerivedWithNewAdditionalOverrides ()
     {
-      Assert.That (
-          () => DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing), typeof (DerivedNewWithAdditionalOverrideAttributes)),
+      Assert.That(
+          () => DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (TargetForOverridesAndShadowing), typeof (DerivedNewWithAdditionalOverrideAttributes)),
           Throws.InstanceOf<ConfigurationException>()
-              .With.Message.Matches ("Mixin .* overrides method .* twice"));
+              .With.Message.Matches("Mixin .* overrides method .* twice"));
     }
 
     [Test]
     public void BaseWithoutAttributes ()
     {
-      MethodInfo method = typeof (TargetForOverridesAndShadowing).GetMethod ("Method");
-      PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
-      EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
+      MethodInfo method = typeof (TargetForOverridesAndShadowing).GetMethod("Method");
+      PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty("Property");
+      EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent("Event");
 
-      TargetClassDefinition def1 = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
+      TargetClassDefinition def1 = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (TargetForOverridesAndShadowing),
                                                                                       typeof (BaseWithoutOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (BaseWithoutOverrideAttributes)];
-      Assert.That (mix1, Is.Not.Null);
+      Assert.That(mix1, Is.Not.Null);
 
-      Assert.That (def1.Methods[method].Overrides.Count, Is.EqualTo (0));
-      Assert.That (def1.Properties[property].Overrides.Count, Is.EqualTo (0));
-      Assert.That (def1.Events[eve].Overrides.Count, Is.EqualTo (0));
+      Assert.That(def1.Methods[method].Overrides.Count, Is.EqualTo(0));
+      Assert.That(def1.Properties[property].Overrides.Count, Is.EqualTo(0));
+      Assert.That(def1.Events[eve].Overrides.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void DerivedWithNewAttributes ()
     {
-      MethodInfo method = typeof (TargetForOverridesAndShadowing).GetMethod ("Method");
-      PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
-      EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
+      MethodInfo method = typeof (TargetForOverridesAndShadowing).GetMethod("Method");
+      PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty("Property");
+      EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent("Event");
 
-      TargetClassDefinition def1 = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
+      TargetClassDefinition def1 = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (TargetForOverridesAndShadowing),
                                                                                       typeof (DerivedNewWithOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (DerivedNewWithOverrideAttributes)];
-      Assert.That (mix1, Is.Not.Null);
+      Assert.That(mix1, Is.Not.Null);
 
-      Assert.That (def1.Methods[method].Overrides.Count, Is.EqualTo (1));
-      Assert.That (def1.Methods[method].Overrides[typeof (DerivedNewWithOverrideAttributes)].DeclaringClass, Is.SameAs (mix1));
-      Assert.That (def1.Properties[property].Overrides.Count, Is.EqualTo (1));
-      Assert.That (def1.Properties[property].Overrides[typeof (DerivedNewWithOverrideAttributes)].DeclaringClass, Is.SameAs (mix1));
-      Assert.That (def1.Events[eve].Overrides.Count, Is.EqualTo (1));
-      Assert.That (def1.Events[eve].Overrides[typeof (DerivedNewWithOverrideAttributes)].DeclaringClass, Is.SameAs (mix1));
+      Assert.That(def1.Methods[method].Overrides.Count, Is.EqualTo(1));
+      Assert.That(def1.Methods[method].Overrides[typeof (DerivedNewWithOverrideAttributes)].DeclaringClass, Is.SameAs(mix1));
+      Assert.That(def1.Properties[property].Overrides.Count, Is.EqualTo(1));
+      Assert.That(def1.Properties[property].Overrides[typeof (DerivedNewWithOverrideAttributes)].DeclaringClass, Is.SameAs(mix1));
+      Assert.That(def1.Events[eve].Overrides.Count, Is.EqualTo(1));
+      Assert.That(def1.Events[eve].Overrides[typeof (DerivedNewWithOverrideAttributes)].DeclaringClass, Is.SameAs(mix1));
     }
 
     [Test]
     public void DerivedNewWithoutAttributes ()
     {
-      MethodInfo method = typeof (TargetForOverridesAndShadowing).GetMethod ("Method");
-      PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
-      EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
+      MethodInfo method = typeof (TargetForOverridesAndShadowing).GetMethod("Method");
+      PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty("Property");
+      EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent("Event");
 
-      TargetClassDefinition def1 = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
+      TargetClassDefinition def1 = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (TargetForOverridesAndShadowing),
                                                                                       typeof (DerivedNewWithoutOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (DerivedNewWithoutOverrideAttributes)];
-      Assert.That (mix1, Is.Not.Null);
+      Assert.That(mix1, Is.Not.Null);
 
-      Assert.That (def1.Methods[method].Overrides.Count, Is.EqualTo (0));
-      Assert.That (def1.Properties[property].Overrides.Count, Is.EqualTo (0));
-      Assert.That (def1.Events[eve].Overrides.Count, Is.EqualTo (0));
+      Assert.That(def1.Methods[method].Overrides.Count, Is.EqualTo(0));
+      Assert.That(def1.Properties[property].Overrides.Count, Is.EqualTo(0));
+      Assert.That(def1.Events[eve].Overrides.Count, Is.EqualTo(0));
     }
   }
 }

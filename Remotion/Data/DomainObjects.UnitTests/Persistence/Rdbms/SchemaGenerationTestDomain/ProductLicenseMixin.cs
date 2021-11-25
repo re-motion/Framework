@@ -22,8 +22,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   {
     public string LicenseCode
     {
-      get { return Properties[typeof (ProductLicenseMixin), "LicenseCode"].GetValue<string> (); }
-      set { Properties[typeof (ProductLicenseMixin), "LicenseCode"].SetValue (value); }
+      get { return Properties[typeof (ProductLicenseMixin), "LicenseCode"].GetValue<string>(); }
+      set { Properties[typeof (ProductLicenseMixin), "LicenseCode"].SetValue(value); }
     }
   }
 }

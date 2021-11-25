@@ -32,12 +32,12 @@ namespace Remotion.SecurityManager.Domain.Metadata
   {
     public static Culture NewObject (string cultureName)
     {
-      return NewObject<Culture> (ParamList.Create (cultureName));
+      return NewObject<Culture>(ParamList.Create(cultureName));
     }
 
     public static Culture Find (string cultureName)
     {
-      ArgumentUtility.CheckNotNull ("cultureName", cultureName);
+      ArgumentUtility.CheckNotNull("cultureName", cultureName);
       
       var result = from c in QueryFactory.CreateLinqQuery<Culture>()
                    where c.CultureName == cultureName
@@ -48,7 +48,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     protected Culture (string cultureName)
     {
-      ArgumentUtility.CheckNotNull ("cultureName", cultureName);
+      ArgumentUtility.CheckNotNull("cultureName", cultureName);
       
       CultureName = cultureName;
     }

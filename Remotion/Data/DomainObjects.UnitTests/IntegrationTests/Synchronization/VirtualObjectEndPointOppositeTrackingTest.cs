@@ -38,32 +38,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _employee1 = Employee.NewObject ();
+      _employee1 = Employee.NewObject();
       
-      _computer1 = Computer.NewObject ();
-      _computer2 = Computer.NewObject ();
+      _computer1 = Computer.NewObject();
+      _computer2 = Computer.NewObject();
 
       _employee1.Computer = _computer1;
       
       TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope();
 
       _employee1.Computer.EnsureDataAvailable();
-      _virtualObjectEndPoint = (VirtualObjectEndPoint) GetEndPoint<StateUpdateRaisingVirtualObjectEndPointDecorator> (RelationEndPointID.Resolve (_employee1, o => o.Computer)).InnerEndPoint;
+      _virtualObjectEndPoint = (VirtualObjectEndPoint) GetEndPoint<StateUpdateRaisingVirtualObjectEndPointDecorator>(RelationEndPointID.Resolve(_employee1, o => o.Computer)).InnerEndPoint;
 
-      _computer1EndPoint = GetEndPoint<RealObjectEndPoint> (RelationEndPointID.Resolve (_computer1, oi => oi.Employee));
-      _computer2EndPoint = GetEndPoint<RealObjectEndPoint> (RelationEndPointID.Resolve (_computer2, oi => oi.Employee));
+      _computer1EndPoint = GetEndPoint<RealObjectEndPoint>(RelationEndPointID.Resolve(_computer1, oi => oi.Employee));
+      _computer2EndPoint = GetEndPoint<RealObjectEndPoint>(RelationEndPointID.Resolve(_computer2, oi => oi.Employee));
     }
 
     [Test]
     public void StateAfterLoading ()
     {
-      CheckOriginalData (_computer1);
-      CheckOriginalOppositeEndPoint (_computer1EndPoint);
+      CheckOriginalData(_computer1);
+      CheckOriginalOppositeEndPoint(_computer1EndPoint);
 
-      CheckCurrentData (_computer1);
-      CheckCurrentOppositeEndPoint (_computer1EndPoint);
+      CheckCurrentData(_computer1);
+      CheckCurrentOppositeEndPoint(_computer1EndPoint);
     }
 
     [Test]
@@ -71,28 +71,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       _employee1.Computer = _computer2;
 
-      CheckOriginalData (_computer1);
-      CheckOriginalOppositeEndPoint (_computer1EndPoint);
+      CheckOriginalData(_computer1);
+      CheckOriginalOppositeEndPoint(_computer1EndPoint);
 
-      CheckCurrentData (_computer2);
-      CheckCurrentOppositeEndPoint (_computer2EndPoint);
+      CheckCurrentData(_computer2);
+      CheckCurrentOppositeEndPoint(_computer2EndPoint);
 
       ClientTransaction.Current.Rollback();
 
-      CheckOriginalData (_computer1);
-      CheckOriginalOppositeEndPoint (_computer1EndPoint);
+      CheckOriginalData(_computer1);
+      CheckOriginalOppositeEndPoint(_computer1EndPoint);
 
-      CheckCurrentData (_computer1);
-      CheckCurrentOppositeEndPoint (_computer1EndPoint);
+      CheckCurrentData(_computer1);
+      CheckCurrentOppositeEndPoint(_computer1EndPoint);
 
       _employee1.Computer = _computer2;
       ClientTransaction.Current.Commit();
 
-      CheckOriginalData (_computer2);
-      CheckOriginalOppositeEndPoint (_computer2EndPoint);
+      CheckOriginalData(_computer2);
+      CheckOriginalOppositeEndPoint(_computer2EndPoint);
 
-      CheckCurrentData (_computer2);
-      CheckCurrentOppositeEndPoint (_computer2EndPoint);
+      CheckCurrentData(_computer2);
+      CheckCurrentOppositeEndPoint(_computer2EndPoint);
     }
 
     [Test]
@@ -100,11 +100,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       _computer2.Employee = _employee1;
 
-      CheckOriginalData (_computer1);
-      CheckOriginalOppositeEndPoint (_computer1EndPoint);
+      CheckOriginalData(_computer1);
+      CheckOriginalOppositeEndPoint(_computer1EndPoint);
 
-      CheckCurrentData (_computer2);
-      CheckCurrentOppositeEndPoint (_computer2EndPoint);
+      CheckCurrentData(_computer2);
+      CheckCurrentOppositeEndPoint(_computer2EndPoint);
     }
 
     [Test]
@@ -112,29 +112,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       _employee1.Computer = null;
 
-      CheckOriginalData (_computer1);
-      CheckOriginalOppositeEndPoint (_computer1EndPoint);
+      CheckOriginalData(_computer1);
+      CheckOriginalOppositeEndPoint(_computer1EndPoint);
 
-      CheckCurrentData (null);
-      CheckCurrentOppositeEndPoint (null);
+      CheckCurrentData(null);
+      CheckCurrentOppositeEndPoint(null);
 
       ClientTransaction.Current.Rollback();
 
-      CheckOriginalData (_computer1);
-      CheckOriginalOppositeEndPoint (_computer1EndPoint);
+      CheckOriginalData(_computer1);
+      CheckOriginalOppositeEndPoint(_computer1EndPoint);
 
-      CheckCurrentData (_computer1);
-      CheckCurrentOppositeEndPoint (_computer1EndPoint);
+      CheckCurrentData(_computer1);
+      CheckCurrentOppositeEndPoint(_computer1EndPoint);
 
       _employee1.Computer = null;
 
       ClientTransaction.Current.Commit();
 
-      CheckOriginalData (null);
-      CheckOriginalOppositeEndPoint (null);
+      CheckOriginalData(null);
+      CheckOriginalOppositeEndPoint(null);
 
-      CheckCurrentData (null);
-      CheckCurrentOppositeEndPoint (null);
+      CheckCurrentData(null);
+      CheckCurrentOppositeEndPoint(null);
     }
 
     [Test]
@@ -142,11 +142,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       _computer1.Employee = null;
 
-      CheckOriginalData (_computer1);
-      CheckOriginalOppositeEndPoint (_computer1EndPoint);
+      CheckOriginalData(_computer1);
+      CheckOriginalOppositeEndPoint(_computer1EndPoint);
 
-      CheckCurrentData (null);
-      CheckCurrentOppositeEndPoint (null);
+      CheckCurrentData(null);
+      CheckCurrentOppositeEndPoint(null);
     }
 
     [Test]
@@ -154,109 +154,109 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       _computer1.Delete();
 
-      CheckOriginalData (_computer1);
-      CheckOriginalOppositeEndPoint (_computer1EndPoint);
+      CheckOriginalData(_computer1);
+      CheckOriginalOppositeEndPoint(_computer1EndPoint);
 
-      CheckCurrentData (null);
-      CheckCurrentOppositeEndPoint (null);
+      CheckCurrentData(null);
+      CheckCurrentOppositeEndPoint(null);
 
-      ClientTransaction.Current.Rollback ();
+      ClientTransaction.Current.Rollback();
 
-      CheckOriginalData (_computer1);
-      CheckOriginalOppositeEndPoint (_computer1EndPoint);
+      CheckOriginalData(_computer1);
+      CheckOriginalOppositeEndPoint(_computer1EndPoint);
 
-      CheckCurrentData (_computer1);
-      CheckCurrentOppositeEndPoint (_computer1EndPoint);
+      CheckCurrentData(_computer1);
+      CheckCurrentOppositeEndPoint(_computer1EndPoint);
 
       _computer1.Delete();
 
-      ClientTransaction.Current.Commit ();
+      ClientTransaction.Current.Commit();
 
-      CheckOriginalData (null);
-      CheckOriginalOppositeEndPoint (null);
+      CheckOriginalData(null);
+      CheckOriginalOppositeEndPoint(null);
 
-      CheckCurrentData (null);
-      CheckCurrentOppositeEndPoint (null);
+      CheckCurrentData(null);
+      CheckCurrentOppositeEndPoint(null);
     }
 
     [Test]
     public void Delete_VirtualObjectSide ()
     {
-      _employee1.Delete ();
+      _employee1.Delete();
 
-      CheckOriginalData (_computer1);
-      CheckOriginalOppositeEndPoint (_computer1EndPoint);
+      CheckOriginalData(_computer1);
+      CheckOriginalOppositeEndPoint(_computer1EndPoint);
 
-      CheckCurrentData (null);
-      CheckCurrentOppositeEndPoint (null);
+      CheckCurrentData(null);
+      CheckCurrentOppositeEndPoint(null);
 
-      ClientTransaction.Current.Rollback ();
+      ClientTransaction.Current.Rollback();
 
-      CheckOriginalData (_computer1);
-      CheckOriginalOppositeEndPoint (_computer1EndPoint);
+      CheckOriginalData(_computer1);
+      CheckOriginalOppositeEndPoint(_computer1EndPoint);
 
-      CheckCurrentData (_computer1);
-      CheckCurrentOppositeEndPoint (_computer1EndPoint);
+      CheckCurrentData(_computer1);
+      CheckCurrentOppositeEndPoint(_computer1EndPoint);
 
-      _employee1.Delete ();
+      _employee1.Delete();
 
-      ClientTransaction.Current.Commit ();
+      ClientTransaction.Current.Commit();
 
-      CheckOriginalOppositeEndPoint (null);
-      CheckCurrentOppositeEndPoint (null);
+      CheckOriginalOppositeEndPoint(null);
+      CheckCurrentOppositeEndPoint(null);
     }
 
     [Test]
     public void SubtransactionCommit ()
     {
-      CheckOriginalData (_computer1);
-      CheckOriginalOppositeEndPoint (_computer1EndPoint);
+      CheckOriginalData(_computer1);
+      CheckOriginalOppositeEndPoint(_computer1EndPoint);
 
-      CheckCurrentData (_computer1);
-      CheckCurrentOppositeEndPoint (_computer1EndPoint);
+      CheckCurrentData(_computer1);
+      CheckCurrentOppositeEndPoint(_computer1EndPoint);
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         _employee1.Computer = _computer2;
 
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
       }
 
-      CheckOriginalData (_computer1);
-      CheckOriginalOppositeEndPoint (_computer1EndPoint);
+      CheckOriginalData(_computer1);
+      CheckOriginalOppositeEndPoint(_computer1EndPoint);
 
-      CheckCurrentData (_computer2);
-      CheckCurrentOppositeEndPoint (_computer2EndPoint);
+      CheckCurrentData(_computer2);
+      CheckCurrentOppositeEndPoint(_computer2EndPoint);
     }
     
     private T GetEndPoint<T> (RelationEndPointID endPointID) where T : IRelationEndPoint
     {
       var relationEndPointID = endPointID;
-      return (T) ClientTransactionTestHelper.GetDataManager (ClientTransaction.Current).GetRelationEndPointWithLazyLoad (relationEndPointID);
+      return (T) ClientTransactionTestHelper.GetDataManager(ClientTransaction.Current).GetRelationEndPointWithLazyLoad(relationEndPointID);
     }
 
     private void CheckOriginalData (Computer expected)
     {
-      Assert.That (_employee1.Properties[typeof (Employee), "Computer"].GetOriginalValue<Computer> (), Is.SameAs (expected));
+      Assert.That(_employee1.Properties[typeof (Employee), "Computer"].GetOriginalValue<Computer>(), Is.SameAs(expected));
     }
 
     private void CheckCurrentData (Computer expected)
     {
-      Assert.That (_employee1.Computer, Is.SameAs (expected));
+      Assert.That(_employee1.Computer, Is.SameAs(expected));
     }
 
     private void CheckOriginalOppositeEndPoint (RealObjectEndPoint expected)
     {
-      var loadState = (CompleteVirtualObjectEndPointLoadState) VirtualObjectEndPointTestHelper.GetLoadState (_virtualObjectEndPoint);
+      var loadState = (CompleteVirtualObjectEndPointLoadState) VirtualObjectEndPointTestHelper.GetLoadState(_virtualObjectEndPoint);
       var dataManager = (VirtualObjectEndPointDataManager) loadState.DataManager;
-      Assert.That (dataManager.OriginalOppositeEndPoint, Is.SameAs (expected));
+      Assert.That(dataManager.OriginalOppositeEndPoint, Is.SameAs(expected));
     }
 
     private void CheckCurrentOppositeEndPoint (RealObjectEndPoint expected)
     {
-      var loadState = (CompleteVirtualObjectEndPointLoadState) VirtualObjectEndPointTestHelper.GetLoadState (_virtualObjectEndPoint);
+      var loadState = (CompleteVirtualObjectEndPointLoadState) VirtualObjectEndPointTestHelper.GetLoadState(_virtualObjectEndPoint);
       var dataManager = (VirtualObjectEndPointDataManager) loadState.DataManager;
-      Assert.That (dataManager.CurrentOppositeEndPoint, Is.SameAs (expected));
+      Assert.That(dataManager.CurrentOppositeEndPoint, Is.SameAs(expected));
     }
 
   }

@@ -47,19 +47,19 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override TransactionStrategyBase? CreateChildTransactionStrategy (bool autoCommit, IWxeFunctionExecutionContext executionContext, WxeContext wxeContext)
     {
-      ArgumentUtility.CheckNotNull ("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
       return null;
     }
 
     public override void UnregisterChildTransactionStrategy (TransactionStrategyBase childTransactionStrategy)
     {
-      ArgumentUtility.CheckNotNull ("childTransactionStrategy", childTransactionStrategy);
+      ArgumentUtility.CheckNotNull("childTransactionStrategy", childTransactionStrategy);
       //NOP
     }
 
     public override IWxeFunctionExecutionListener CreateExecutionListener (IWxeFunctionExecutionListener innerListener)
     {
-      ArgumentUtility.CheckNotNull ("innerListener", innerListener);
+      ArgumentUtility.CheckNotNull("innerListener", innerListener);
 
       return innerListener;
     }
@@ -86,34 +86,34 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override void OnExecutionPlay (WxeContext context, IWxeFunctionExecutionListener listener)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("listener", listener);
 
-      listener.OnExecutionPlay (context);
+      listener.OnExecutionPlay(context);
     }
 
     public override void OnExecutionStop (WxeContext context, IWxeFunctionExecutionListener listener)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("listener", listener);
 
-      listener.OnExecutionStop (context);
+      listener.OnExecutionStop(context);
     }
 
     public override void OnExecutionPause (WxeContext context, IWxeFunctionExecutionListener listener)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("listener", listener);
 
-      listener.OnExecutionPause (context);
+      listener.OnExecutionPause(context);
     }
 
     public override void OnExecutionFail (WxeContext context, IWxeFunctionExecutionListener listener, Exception exception)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("listener", listener);
 
-      listener.OnExecutionFail (context, exception);
+      listener.OnExecutionFail(context, exception);
     }
   }
 }

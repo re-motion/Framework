@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   {
     public IVirtualObjectEndPointDataManager CreateEndPointDataManager (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-      return new VirtualObjectEndPointDataManager (endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      return new VirtualObjectEndPointDataManager(endPointID);
     }
   }
 }

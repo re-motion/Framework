@@ -56,15 +56,15 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     public void Requery ()
     {
-      Result = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (SearchObject.CreateQuery()).ToCustomCollection();
+      Result = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection(SearchObject.CreateQuery()).ToCustomCollection();
     }
 
     private void Step1 ()
     {
-      SearchObject = ObjectFactory.Create<ClassWithAllDataTypesSearch> (ParamList.Empty);
+      SearchObject = ObjectFactory.Create<ClassWithAllDataTypesSearch>(ParamList.Empty);
       Requery();
     }
 
-    private WxePageStep Step2 = new WxePageStep ("SearchObject.aspx");
+    private WxePageStep Step2 = new WxePageStep("SearchObject.aspx");
   }
 }

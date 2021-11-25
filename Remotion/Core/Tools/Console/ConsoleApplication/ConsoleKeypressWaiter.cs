@@ -26,7 +26,7 @@ namespace Remotion.Tools.Console.ConsoleApplication
   {
     public void Wait ()
     {
-      System.Console.ReadKey ();
+      System.Console.ReadKey();
     }
   }
 }

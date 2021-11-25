@@ -44,22 +44,22 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void GetObject_ObjectExists ()
     {
-      Assert.That (_service.GetObject (_businessObjectClass, _id), Is.SameAs (_instance));
+      Assert.That(_service.GetObject(_businessObjectClass, _id), Is.SameAs(_instance));
     }
 
     [Test]
     public void GetObject_ObjectNotFound ()
     {
-      Assert.That (_service.GetObject (_businessObjectClass, new ObjectID(typeof (SampleBindableDomainObject), Guid.NewGuid()).ToString()), Is.Null);
+      Assert.That(_service.GetObject(_businessObjectClass, new ObjectID(typeof (SampleBindableDomainObject), Guid.NewGuid()).ToString()), Is.Null);
     }
 
     [Test]
     public void GetObject_ObjectInvalid ()
     {
       _instance.Delete();
-      Assert.That (_instance.State.IsInvalid, Is.True);
+      Assert.That(_instance.State.IsInvalid, Is.True);
 
-      Assert.That (_service.GetObject (_businessObjectClass, _id), Is.Null);
+      Assert.That(_service.GetObject(_businessObjectClass, _id), Is.Null);
     }
 
     [Test]
@@ -68,9 +68,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         _instance.Delete();
-        Assert.That (_instance.State.IsDeleted, Is.True);
+        Assert.That(_instance.State.IsDeleted, Is.True);
 
-        Assert.That (_service.GetObject (_businessObjectClass, _id), Is.Null);
+        Assert.That(_service.GetObject(_businessObjectClass, _id), Is.Null);
       }
     }
   }

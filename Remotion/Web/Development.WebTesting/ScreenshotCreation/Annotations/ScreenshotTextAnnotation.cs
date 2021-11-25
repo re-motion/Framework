@@ -49,10 +49,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         float? maxWidth,
         float? maxHeight)
     {
-      ArgumentUtility.CheckNotNull ("content", content);
-      ArgumentUtility.CheckNotNull ("font", font);
-      ArgumentUtility.CheckNotNull ("foregroundBrush", foregroundBrush);
-      ArgumentUtility.CheckNotNull ("stringFormat", stringFormat);
+      ArgumentUtility.CheckNotNull("content", content);
+      ArgumentUtility.CheckNotNull("font", font);
+      ArgumentUtility.CheckNotNull("foregroundBrush", foregroundBrush);
+      ArgumentUtility.CheckNotNull("stringFormat", stringFormat);
 
       _content = content;
       _font = font;
@@ -146,21 +146,21 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// <inheritdoc />
     public void Draw (Graphics graphics, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull ("graphics", graphics);
-      ArgumentUtility.CheckNotNull ("resolvedScreenshotElement", resolvedScreenshotElement);
+      ArgumentUtility.CheckNotNull("graphics", graphics);
+      ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
 
-      var size = graphics.MeasureString (_content, _font, new SizeF (_maxWidth, _maxHeight));
-      var position = PositionAndApplyPadding (resolvedScreenshotElement.ElementBounds, size.Width, size.Height);
-      var layout = new Rectangle (
-          (int) Math.Round (position.X),
-          (int) Math.Round (position.Y),
-          (int) Math.Round (size.Width) + 1,
-          (int) Math.Round (size.Height) + 1);
+      var size = graphics.MeasureString(_content, _font, new SizeF(_maxWidth, _maxHeight));
+      var position = PositionAndApplyPadding(resolvedScreenshotElement.ElementBounds, size.Width, size.Height);
+      var layout = new Rectangle(
+          (int) Math.Round(position.X),
+          (int) Math.Round(position.Y),
+          (int) Math.Round(size.Width) + 1,
+          (int) Math.Round(size.Height) + 1);
 
       if (_backgroundBrush != null)
-        graphics.FillRectangle (_backgroundBrush, layout);
+        graphics.FillRectangle(_backgroundBrush, layout);
 
-      graphics.DrawString (_content, _font, _foregroundBrush, layout, _stringFormat);
+      graphics.DrawString(_content, _font, _foregroundBrush, layout, _stringFormat);
     }
 
     /// <summary>
@@ -172,39 +172,39 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       switch (_contentAlignment)
       {
         case ContentAlignment.TopLeft:
-          return new PointF (
+          return new PointF(
               elementBounds.X - contentWidth - _padding.Right,
               elementBounds.Y - contentHeight - _padding.Bottom);
         case ContentAlignment.TopCenter:
-          return new PointF (
+          return new PointF(
               elementBounds.X + (elementBounds.Width - contentWidth) / 2,
               elementBounds.Y - contentHeight - _padding.Bottom);
         case ContentAlignment.TopRight:
-          return new PointF (
+          return new PointF(
               elementBounds.Right + _padding.Left,
               elementBounds.Y - contentHeight - _padding.Bottom);
         case ContentAlignment.MiddleLeft:
-          return new PointF (
+          return new PointF(
               elementBounds.X - contentWidth - _padding.Right,
               elementBounds.Y + (elementBounds.Height - contentHeight) / 2);
         case ContentAlignment.MiddleCenter:
-          return new PointF (
+          return new PointF(
               elementBounds.X + (elementBounds.Width - contentWidth) / 2,
               elementBounds.Y + (elementBounds.Height - contentHeight) / 2);
         case ContentAlignment.MiddleRight:
-          return new PointF (
+          return new PointF(
               elementBounds.Right + _padding.Left,
               elementBounds.Y + (elementBounds.Height - contentHeight) / 2);
         case ContentAlignment.BottomLeft:
-          return new PointF (
+          return new PointF(
               elementBounds.X - contentWidth - _padding.Right,
               elementBounds.Bottom + _padding.Top);
         case ContentAlignment.BottomCenter:
-          return new PointF (
+          return new PointF(
               elementBounds.X + (elementBounds.Width - contentWidth) / 2,
               elementBounds.Bottom + _padding.Top);
         case ContentAlignment.BottomRight:
-          return new PointF (
+          return new PointF(
               elementBounds.Right + _padding.Left,
               elementBounds.Bottom + _padding.Top);
         default:

@@ -31,24 +31,24 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     public GenericTest ()
     {
-      Register ("anchor", new AnchorGenericTestPage());
-      Register ("command", new CommandGenericTestPage());
-      Register ("dropDownList", new SimpleGenericTestPage<DropDownList>());
-      Register ("dropDownMenu", new DropDownMenuGenericTestPage());
-      Register ("formGrid", new FormGridGenericTestPage());
-      Register ("imageButton", new SimpleGenericTestPage<ImageButton>());
-      Register ("image", new SimpleGenericTestPage<Image>());
-      Register ("label", new LabelGenericTestPage());
-      Register ("listMenu", new ListMenuGenericTestPage());
-      Register ("scope", new SimpleGenericTestPage<Panel>());
-      Register ("singleView", new SimpleGenericTestPage<SingleView>());
-      Register ("tabbedMenu", new TabbedMenuGenericTestPage());
-      Register ("tabbedMultiView", new SimpleGenericTestPage<TabbedMultiView>());
-      Register ("textBox", new SimpleGenericTestPage<TextBox>());
-      Register ("treeView", new TreeViewGenericTestPage());
-      Register ("webButton", new WebButtonGenericTestPage());
-      Register ("webTabStrip", new SimpleGenericTestPage<WebTabStrip>());
-      Register ("webTreeView", new WebTreeViewGenericTestPage());
+      Register("anchor", new AnchorGenericTestPage());
+      Register("command", new CommandGenericTestPage());
+      Register("dropDownList", new SimpleGenericTestPage<DropDownList>());
+      Register("dropDownMenu", new DropDownMenuGenericTestPage());
+      Register("formGrid", new FormGridGenericTestPage());
+      Register("imageButton", new SimpleGenericTestPage<ImageButton>());
+      Register("image", new SimpleGenericTestPage<Image>());
+      Register("label", new LabelGenericTestPage());
+      Register("listMenu", new ListMenuGenericTestPage());
+      Register("scope", new SimpleGenericTestPage<Panel>());
+      Register("singleView", new SimpleGenericTestPage<SingleView>());
+      Register("tabbedMenu", new TabbedMenuGenericTestPage());
+      Register("tabbedMultiView", new SimpleGenericTestPage<TabbedMultiView>());
+      Register("textBox", new SimpleGenericTestPage<TextBox>());
+      Register("treeView", new TreeViewGenericTestPage());
+      Register("webButton", new WebButtonGenericTestPage());
+      Register("webTabStrip", new SimpleGenericTestPage<WebTabStrip>());
+      Register("webTreeView", new WebTreeViewGenericTestPage());
     }
 
     protected override GenericTestOptions AmbiguousControlOptions => OptionsFactory.CreateAmbiguous();
@@ -68,17 +68,17 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     protected override void OnInit (EventArgs e)
     {
       // Parameters which will be passed to the client
-      Parameters.Add (ParameterFactory.CreateHtmlIDSelector());
-      Parameters.Add (ParameterFactory.CreateIndexSelector());
-      Parameters.Add (ParameterFactory.CreateLocalIdSelector());
-      Parameters.Add (ParameterFactory.CreateFirstSelector());
-      Parameters.Add (ParameterFactory.CreateSingleSelector());
-      Parameters.Add (ParameterFactory.CreateDisabledTests());
-      Parameters.Add (ParameterFactory.CreateTextContentSelector());
-      Parameters.Add (ParameterFactory.CreateTitleSelector());
-      Parameters.Add (ParameterFactory.CreateItemIDSelector());
+      Parameters.Add(ParameterFactory.CreateHtmlIDSelector());
+      Parameters.Add(ParameterFactory.CreateIndexSelector());
+      Parameters.Add(ParameterFactory.CreateLocalIdSelector());
+      Parameters.Add(ParameterFactory.CreateFirstSelector());
+      Parameters.Add(ParameterFactory.CreateSingleSelector());
+      Parameters.Add(ParameterFactory.CreateDisabledTests());
+      Parameters.Add(ParameterFactory.CreateTextContentSelector());
+      Parameters.Add(ParameterFactory.CreateTitleSelector());
+      Parameters.Add(ParameterFactory.CreateItemIDSelector());
 
-      base.OnInit (e);
+      base.OnInit(e);
     }
 
     /// <inheritdoc />
@@ -86,8 +86,8 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     {
       var master = Master as Layout;
       if (master == null)
-        throw new InvalidOperationException ("The master page of the generic test page is not set.");
-      master.SetTestInformation (information);
+        throw new InvalidOperationException("The master page of the generic test page is not set.");
+      master.SetTestInformation(information);
     }
   }
 }

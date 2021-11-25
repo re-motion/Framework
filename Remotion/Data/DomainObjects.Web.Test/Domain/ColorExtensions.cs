@@ -26,17 +26,17 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
   {
     public static Color Red (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new Color (MethodBase.GetCurrentMethod ());
+      return new Color(MethodBase.GetCurrentMethod());
     }
 
     public static Color Green (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new Color (MethodBase.GetCurrentMethod ());
+      return new Color(MethodBase.GetCurrentMethod());
     }
 
     public static Color Blue (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new Color (MethodBase.GetCurrentMethod ());
+      return new Color(MethodBase.GetCurrentMethod());
     }
   }
 }

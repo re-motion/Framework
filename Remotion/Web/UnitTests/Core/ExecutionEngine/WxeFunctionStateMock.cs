@@ -44,13 +44,13 @@ public class WxeFunctionStateMock: WxeFunctionState
   public new WxeFunction Function
   {
     get { return base.Function; }
-    set {PrivateInvoke.SetNonPublicField (this, "_function", value); }
+    set {PrivateInvoke.SetNonPublicField(this, "_function", value); }
   }
 
   public new string FunctionToken
   {
     get { return base.FunctionToken; }
-    set {PrivateInvoke.SetNonPublicField (this, "_functionToken", value); }
+    set {PrivateInvoke.SetNonPublicField(this, "_functionToken", value); }
   }
 
   public new void Abort ()

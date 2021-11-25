@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 
     public ScreenshotBoxAnnotation ([NotNull] Pen pen, WebPadding padding, [CanBeNull] Brush? backgroundBrush)
     {
-      ArgumentUtility.CheckNotNull ("pen", pen);
+      ArgumentUtility.CheckNotNull("pen", pen);
 
       _pen = pen;
       _padding = padding;
@@ -69,34 +69,34 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// <inheritdoc />
     public void Draw (Graphics graphics, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull ("graphics", graphics);
-      ArgumentUtility.CheckNotNull ("resolvedScreenshotElement", resolvedScreenshotElement);
+      ArgumentUtility.CheckNotNull("graphics", graphics);
+      ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
 
       // Calculate the bound of the annotation with padding
-      var annotationBounds = _padding.Apply (resolvedScreenshotElement.ElementBounds);
+      var annotationBounds = _padding.Apply(resolvedScreenshotElement.ElementBounds);
 
       // Draw the background if there is one
       if (_backgroundBrush != null)
-        graphics.FillRectangle (_backgroundBrush, annotationBounds);
+        graphics.FillRectangle(_backgroundBrush, annotationBounds);
 
       // Apply the padding for the border
-      var border = (int) Math.Floor (_pen.Width);
+      var border = (int) Math.Floor(_pen.Width);
       var xyOffset = (border - 1) / 2;
       var whOffset = border / 2;
-      var borderBounds = new WebPadding (xyOffset + 1, xyOffset + 1, whOffset, whOffset).Apply (annotationBounds);
+      var borderBounds = new WebPadding(xyOffset + 1, xyOffset + 1, whOffset, whOffset).Apply(annotationBounds);
 
       // Draw the border by drawing 5 lines. GDI+ is somehow
       // unable to draw rectangles in certain situations
-      graphics.DrawLines (
+      graphics.DrawLines(
           _pen,
           new[]
           {
               borderBounds.Location,
-              borderBounds.Location + new Size (borderBounds.Width, 0),
+              borderBounds.Location + new Size(borderBounds.Width, 0),
               borderBounds.Location + borderBounds.Size,
-              borderBounds.Location + new Size (0, borderBounds.Height),
+              borderBounds.Location + new Size(0, borderBounds.Height),
               borderBounds.Location,
-              borderBounds.Location + new Size (borderBounds.Width, 0)
+              borderBounds.Location + new Size(borderBounds.Width, 0)
           });
     }
   }

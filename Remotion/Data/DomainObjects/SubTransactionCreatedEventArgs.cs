@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="subTransaction">The subtransaction created.</param>
     public SubTransactionCreatedEventArgs (ClientTransaction subTransaction)
     {
-      ArgumentUtility.CheckNotNull ("subTransaction", subTransaction);
+      ArgumentUtility.CheckNotNull("subTransaction", subTransaction);
       _subTransaction = subTransaction;
     }
 

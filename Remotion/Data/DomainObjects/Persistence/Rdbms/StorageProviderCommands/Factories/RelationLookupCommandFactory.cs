@@ -44,10 +44,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider,
         IObjectReaderFactory objectReaderFactory)
     {
-      ArgumentUtility.CheckNotNull ("storageProviderCommandFactory", storageProviderCommandFactory);
-      ArgumentUtility.CheckNotNull ("dbCommandBuilderFactory", dbCommandBuilderFactory);
-      ArgumentUtility.CheckNotNull ("rdbmsPersistenceModelProvider", rdbmsPersistenceModelProvider);
-      ArgumentUtility.CheckNotNull ("objectReaderFactory", objectReaderFactory);
+      ArgumentUtility.CheckNotNull("storageProviderCommandFactory", storageProviderCommandFactory);
+      ArgumentUtility.CheckNotNull("dbCommandBuilderFactory", dbCommandBuilderFactory);
+      ArgumentUtility.CheckNotNull("rdbmsPersistenceModelProvider", rdbmsPersistenceModelProvider);
+      ArgumentUtility.CheckNotNull("objectReaderFactory", objectReaderFactory);
 
       _storageProviderCommandFactory = storageProviderCommandFactory;
       _dbCommandBuilderFactory = dbCommandBuilderFactory;
@@ -78,14 +78,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     public virtual IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForRelationLookup (
         RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition sortExpressionDefinition)
     {
-      ArgumentUtility.CheckNotNull ("foreignKeyEndPoint", foreignKeyEndPoint);
-      ArgumentUtility.CheckNotNull ("foreignKeyValue", foreignKeyValue);
+      ArgumentUtility.CheckNotNull("foreignKeyEndPoint", foreignKeyEndPoint);
+      ArgumentUtility.CheckNotNull("foreignKeyValue", foreignKeyValue);
 
-      return InlineRdbmsStorageEntityDefinitionVisitor.Visit<IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>> (
-          _rdbmsPersistenceModelProvider.GetEntityDefinition (foreignKeyEndPoint.ClassDefinition),
-          (table, continuation) => CreateForDirectRelationLookup (table, foreignKeyEndPoint, foreignKeyValue, sortExpressionDefinition),
-          (filterView, continuation) => continuation (filterView.BaseEntity),
-          (unionView, continuation) => CreateForIndirectRelationLookup (unionView, foreignKeyEndPoint, foreignKeyValue, sortExpressionDefinition),
+      return InlineRdbmsStorageEntityDefinitionVisitor.Visit<IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>>(
+          _rdbmsPersistenceModelProvider.GetEntityDefinition(foreignKeyEndPoint.ClassDefinition),
+          (table, continuation) => CreateForDirectRelationLookup(table, foreignKeyEndPoint, foreignKeyValue, sortExpressionDefinition),
+          (filterView, continuation) => continuation(filterView.BaseEntity),
+          (unionView, continuation) => CreateForIndirectRelationLookup(unionView, foreignKeyEndPoint, foreignKeyValue, sortExpressionDefinition),
           (emptyView, continuation) => CreateForEmptyRelationLookup());
     }
 
@@ -96,14 +96,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         SortExpressionDefinition sortExpression)
     {
       var selectedColumns = tableDefinition.GetAllColumns();
-      var dataContainerReader = _objectReaderFactory.CreateDataContainerReader (tableDefinition, selectedColumns);
+      var dataContainerReader = _objectReaderFactory.CreateDataContainerReader(tableDefinition, selectedColumns);
 
-      var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect (
+      var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect(
           tableDefinition,
           selectedColumns,
-          GetComparedColumns (foreignKeyEndPoint, foreignKeyValue),
-          GetOrderedColumns (sortExpression));
-      return new MultiObjectLoadCommand<DataContainer> (new[] { Tuple.Create (dbCommandBuilder, dataContainerReader) });
+          GetComparedColumns(foreignKeyEndPoint, foreignKeyValue),
+          GetOrderedColumns(sortExpression));
+      return new MultiObjectLoadCommand<DataContainer>(new[] { Tuple.Create(dbCommandBuilder, dataContainerReader) });
     }
 
     protected virtual IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForIndirectRelationLookup (
@@ -113,22 +113,22 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         SortExpressionDefinition sortExpression)
     {
       var selectedColumns = unionViewDefinition.ObjectIDProperty.GetColumns();
-      var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect (
+      var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect(
           unionViewDefinition,
           selectedColumns,
-          GetComparedColumns (foreignKeyEndPoint, foreignKeyValue),
-          GetOrderedColumns (sortExpression));
+          GetComparedColumns(foreignKeyEndPoint, foreignKeyValue),
+          GetOrderedColumns(sortExpression));
 
-      var objectIDReader = _objectReaderFactory.CreateObjectIDReader (unionViewDefinition, selectedColumns);
+      var objectIDReader = _objectReaderFactory.CreateObjectIDReader(unionViewDefinition, selectedColumns);
 
-      var objectIDLoadCommand = new MultiObjectIDLoadCommand (new[] { dbCommandBuilder }, objectIDReader);
-      var indirectDataContainerLoadCommand = new IndirectDataContainerLoadCommand (objectIDLoadCommand, _storageProviderCommandFactory);
-      return DelegateBasedCommand.Create (
+      var objectIDLoadCommand = new MultiObjectIDLoadCommand(new[] { dbCommandBuilder }, objectIDReader);
+      var indirectDataContainerLoadCommand = new IndirectDataContainerLoadCommand(objectIDLoadCommand, _storageProviderCommandFactory);
+      return DelegateBasedCommand.Create(
           indirectDataContainerLoadCommand,
-          lookupResults => lookupResults.Select (
+          lookupResults => lookupResults.Select(
               result =>
               {
-                Assertion.IsNotNull (
+                Assertion.IsNotNull(
                     result.LocatedObject,
                     "Because ID lookup and DataContainer lookup are executed within the same database transaction, the DataContainer can never be null.");
                 return result.LocatedObject;
@@ -138,13 +138,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     protected virtual FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForEmptyRelationLookup ()
     {
       return
-          new FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> (Enumerable.Empty<DataContainer> ());
+          new FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>(Enumerable.Empty<DataContainer>());
     }
 
     protected virtual IEnumerable<ColumnValue> GetComparedColumns (RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue)
     {
-      var storagePropertyDefinition = _rdbmsPersistenceModelProvider.GetStoragePropertyDefinition (foreignKeyEndPoint.PropertyDefinition);
-      return storagePropertyDefinition.SplitValueForComparison (foreignKeyValue);
+      var storagePropertyDefinition = _rdbmsPersistenceModelProvider.GetStoragePropertyDefinition(foreignKeyEndPoint.PropertyDefinition);
+      return storagePropertyDefinition.SplitValueForComparison(foreignKeyValue);
     }
 
     protected virtual  IEnumerable<OrderedColumn> GetOrderedColumns (SortExpressionDefinition sortExpression)
@@ -152,12 +152,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       if (sortExpression == null)
         return new OrderedColumn[0];
 
-      Assertion.IsTrue (sortExpression.SortedProperties.Count > 0, "The sort-epression must have at least one sorted property.");
+      Assertion.IsTrue(sortExpression.SortedProperties.Count > 0, "The sort-epression must have at least one sorted property.");
 
       return from sortedProperty in sortExpression.SortedProperties
-             let storagePropertyDefinition = _rdbmsPersistenceModelProvider.GetStoragePropertyDefinition (sortedProperty.PropertyDefinition)
+             let storagePropertyDefinition = _rdbmsPersistenceModelProvider.GetStoragePropertyDefinition(sortedProperty.PropertyDefinition)
              from column in storagePropertyDefinition.GetColumns()
-             select new OrderedColumn (column, sortedProperty.Order);
+             select new OrderedColumn(column, sortedProperty.Order);
     }
 
   }

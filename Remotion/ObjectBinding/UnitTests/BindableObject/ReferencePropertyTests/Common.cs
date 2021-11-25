@@ -37,20 +37,20 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     [Test]
     public void Initialize_WithMissmatchedConcreteType_ThrowsInvalidOperationExceptionWhenConcreteTypeIsFirstUsed ()
     {
-      PropertyBase.Parameters parameters = CreateParameters (
+      PropertyBase.Parameters parameters = CreateParameters(
           _businessObjectProvider,
-          GetPropertyInfo (typeof (ClassWithReferenceType<SimpleBusinessObjectClass>), "Scalar"),
+          GetPropertyInfo(typeof (ClassWithReferenceType<SimpleBusinessObjectClass>), "Scalar"),
           typeof (SimpleBusinessObjectClass),
           typeof (ClassWithAllDataTypes),
           null,
           true,
           false,
           false);
-      var referenceProperty = new ReferenceProperty (parameters);
+      var referenceProperty = new ReferenceProperty(parameters);
 
-      Assert.That (
+      Assert.That(
           () => referenceProperty.SupportsSearchAvailableObjects,
-          Throws.InvalidOperationException.With.Message.EqualTo (
+          Throws.InvalidOperationException.With.Message.EqualTo(
               "The concrete type must be assignable to the underlying type 'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass'.\r\n"
               + "Concrete type: Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithAllDataTypes"));
     }
@@ -58,20 +58,20 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     [Test]
     public void Initialize_WithConcreteTypeNotImplementingIBusinessObject_ThrowsInvalidOperationExceptionWhenConcreteTypeIsFirstUsed ()
     {
-      PropertyBase.Parameters parameters = CreateParameters (
+      PropertyBase.Parameters parameters = CreateParameters(
           _businessObjectProvider,
-          GetPropertyInfo (typeof (ClassWithReferenceType<SimpleBusinessObjectClass>), "Scalar"),
+          GetPropertyInfo(typeof (ClassWithReferenceType<SimpleBusinessObjectClass>), "Scalar"),
           typeof (SimpleBusinessObjectClass),
           typeof (SimpleBusinessObjectClass),
           null,
           true,
           false,
           false);
-      var referenceProperty = new ReferenceProperty (parameters);
+      var referenceProperty = new ReferenceProperty(parameters);
 
-      Assert.That (
+      Assert.That(
           () => referenceProperty.SupportsSearchAvailableObjects,
-          Throws.InvalidOperationException.With.Message.EqualTo (
+          Throws.InvalidOperationException.With.Message.EqualTo(
               "The concrete type must implement the IBusinessObject interface.\r\n"
               + "Concrete type: Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass"));
     }

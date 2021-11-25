@@ -29,63 +29,63 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void GetEndPointWithOppositeDefinition_Object ()
     {
       var id = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".Customer");
-      var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (id, null);
+      var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(id, null);
 
-      var customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
-      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<IDomainObjectCollectionEndPoint> (customer);
+      var customer = DomainObjectIDs.Customer1.GetObject<Customer>();
+      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<IDomainObjectCollectionEndPoint>(customer);
 
       var oppositeID = RelationEndPointID.Create(customer.ID, endPoint.Definition.GetOppositeEndPointDefinition());
-      Assert.That (oppositeEndPoint, Is.SameAs (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (oppositeID)));
+      Assert.That(oppositeEndPoint, Is.SameAs(TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(oppositeID)));
     }
 
     [Test]
     public void GetEndPointWithOppositeDefinition_Object_Null ()
     {
       var id = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".Customer");
-      var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (id, null);
+      var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(id, null);
 
-      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<IDomainObjectCollectionEndPoint> ((DomainObject) null);
+      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<IDomainObjectCollectionEndPoint>((DomainObject) null);
 
-      Assert.That (oppositeEndPoint, Is.InstanceOf (typeof (NullDomainObjectCollectionEndPoint)));
-      var expectedID = RelationEndPointID.Create(null, endPoint.Definition.GetOppositeEndPointDefinition ());
-      Assert.That (oppositeEndPoint.ID, Is.EqualTo (expectedID));
+      Assert.That(oppositeEndPoint, Is.InstanceOf(typeof (NullDomainObjectCollectionEndPoint)));
+      var expectedID = RelationEndPointID.Create(null, endPoint.Definition.GetOppositeEndPointDefinition());
+      Assert.That(oppositeEndPoint.ID, Is.EqualTo(expectedID));
     }
 
     [Test]
     public void GetEndPointWithOppositeDefinition_ID ()
     {
       var id = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".Customer");
-      var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (id, null);
+      var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(id, null);
 
-      var customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
-      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<IDomainObjectCollectionEndPoint> (customer.ID);
+      var customer = DomainObjectIDs.Customer1.GetObject<Customer>();
+      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<IDomainObjectCollectionEndPoint>(customer.ID);
 
-      var oppositeID = RelationEndPointID.Create(customer.ID, endPoint.Definition.GetOppositeEndPointDefinition ());
-      Assert.That (oppositeEndPoint, Is.SameAs (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (oppositeID)));
+      var oppositeID = RelationEndPointID.Create(customer.ID, endPoint.Definition.GetOppositeEndPointDefinition());
+      Assert.That(oppositeEndPoint, Is.SameAs(TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(oppositeID)));
     }
 
     [Test]
     public void GetEndPointWithOppositeDefinition_ID_Null ()
     {
       var id = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".Customer");
-      var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (id, null);
+      var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(id, null);
 
-      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<IDomainObjectCollectionEndPoint> ((ObjectID) null);
+      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<IDomainObjectCollectionEndPoint>((ObjectID) null);
 
-      Assert.That (oppositeEndPoint, Is.InstanceOf (typeof (NullDomainObjectCollectionEndPoint)));
-      var expectedID = RelationEndPointID.Create(null, endPoint.Definition.GetOppositeEndPointDefinition ());
-      Assert.That (oppositeEndPoint.ID, Is.EqualTo (expectedID));
+      Assert.That(oppositeEndPoint, Is.InstanceOf(typeof (NullDomainObjectCollectionEndPoint)));
+      var expectedID = RelationEndPointID.Create(null, endPoint.Definition.GetOppositeEndPointDefinition());
+      Assert.That(oppositeEndPoint.ID, Is.EqualTo(expectedID));
     }
 
     [Test]
     public void GetEndPointWithOppositeDefinition_ID_InvalidType ()
     {
       var id = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".Customer");
-      var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (id, null);
-      Assert.That (
-          () => endPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint> ((ObjectID) null),
+      var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(id, null);
+      Assert.That(
+          () => endPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint>((ObjectID) null),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The opposite end point 'null/Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' is of type "
                   + "'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.NullDomainObjectCollectionEndPoint', not of type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.IObjectEndPoint'."));
     }

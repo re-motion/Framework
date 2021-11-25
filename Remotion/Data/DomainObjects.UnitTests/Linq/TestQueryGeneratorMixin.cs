@@ -53,14 +53,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
         IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders)
     {
       CreateSequenceQueryFromModelCalled = true;
-      return Next.CreateSequenceQuery<T> (id, classDefinition, queryModel, fetchQueryModelBuilders);
+      return Next.CreateSequenceQuery<T>(id, classDefinition, queryModel, fetchQueryModelBuilders);
     }
 
     [OverrideTarget]
     public IExecutableQuery<T> CreateScalarQuery<T> (string id, StorageProviderDefinition storageProviderDefinition, QueryModel queryModel)
     {
       CreateScalarQueryFromModelCalled = true;
-      return Next.CreateScalarQuery<T> (id, storageProviderDefinition, queryModel);
+      return Next.CreateScalarQuery<T>(id, storageProviderDefinition, queryModel);
     }
 
     [OverrideTarget]
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
         QueryType queryType)
     {
       CreateQueryFromStatementCalled = true;
-      return Next.CreateQuery (id, storageProviderDefinition, statement, commandParameters, queryType);
+      return Next.CreateQuery(id, storageProviderDefinition, statement, commandParameters, queryType);
     }
   }
 }

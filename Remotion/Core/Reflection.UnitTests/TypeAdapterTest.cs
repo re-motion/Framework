@@ -40,433 +40,433 @@ namespace Remotion.Reflection.UnitTests
     public void Create_ReturnsSameInstance ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type), Is.SameAs (TypeAdapter.Create (type)));
+      Assert.That(TypeAdapter.Create(type), Is.SameAs(TypeAdapter.Create(type)));
     }
 
     [Test]
     public void CreateOrNull_WithType_ReturnsSameInstanceAsCreate ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.CreateOrNull (type), Is.SameAs (TypeAdapter.Create (type)));
+      Assert.That(TypeAdapter.CreateOrNull(type), Is.SameAs(TypeAdapter.Create(type)));
     }
 
     [Test]
     public void CreateOrNull_WithTypeNull_ReturnsNull ()
     {
-      Assert.That (TypeAdapter.CreateOrNull (null), Is.Null);
+      Assert.That(TypeAdapter.CreateOrNull(null), Is.Null);
     }
 
     [Test]
     public void Type ()
     {
       var _type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (_type).Type, Is.SameAs (_type));
+      Assert.That(TypeAdapter.Create(_type).Type, Is.SameAs(_type));
     }
 
     [Test]
     public void Name ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).Name, Is.EqualTo (type.Name));
+      Assert.That(TypeAdapter.Create(type).Name, Is.EqualTo(type.Name));
     }
 
     [Test]
     public void FullName ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).FullName, Is.EqualTo (type.FullName));
+      Assert.That(TypeAdapter.Create(type).FullName, Is.EqualTo(type.FullName));
     }
 
     [Test]
     public void Namespace ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).Namespace, Is.EqualTo (type.Namespace));
+      Assert.That(TypeAdapter.Create(type).Namespace, Is.EqualTo(type.Namespace));
     }
 
     [Test]
     public void AssemblyQualifiedName ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).AssemblyQualifiedName, Is.EqualTo (type.AssemblyQualifiedName));
+      Assert.That(TypeAdapter.Create(type).AssemblyQualifiedName, Is.EqualTo(type.AssemblyQualifiedName));
     }
 
     [Test]
     public void Assembly ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).Assembly, Is.SameAs (type.Assembly));
+      Assert.That(TypeAdapter.Create(type).Assembly, Is.SameAs(type.Assembly));
     }
 
     [Test]
     public void DeclaringType_NestedType ()
     {
       var type = typeof (Environment.SpecialFolder);
-      Assert.That (TypeAdapter.Create (type).DeclaringType, Is.TypeOf<TypeAdapter> ().And.Property ("Type").SameAs (type.DeclaringType));
+      Assert.That(TypeAdapter.Create(type).DeclaringType, Is.TypeOf<TypeAdapter>().And.Property("Type").SameAs(type.DeclaringType));
     }
 
     [Test]
     public void DeclaringType_NotNestedType ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).DeclaringType, Is.Null);
+      Assert.That(TypeAdapter.Create(type).DeclaringType, Is.Null);
     }
 
     [Test]
     public void GetOriginalDeclaringType_NestedType ()
     {
       var type = typeof (Environment.SpecialFolder);
-      Assert.That (TypeAdapter.Create (type).GetOriginalDeclaringType(), Is.TypeOf<TypeAdapter> ().And.Property ("Type").SameAs (type.DeclaringType));
+      Assert.That(TypeAdapter.Create(type).GetOriginalDeclaringType(), Is.TypeOf<TypeAdapter>().And.Property("Type").SameAs(type.DeclaringType));
     }
 
     [Test]
     public void GetOriginalDeclaringType_NotNestedType ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).GetOriginalDeclaringType(), Is.Null);
+      Assert.That(TypeAdapter.Create(type).GetOriginalDeclaringType(), Is.Null);
     }
 
     [Test]
     public void IsClass_ReferenceType ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).IsClass, Is.EqualTo (type.IsClass).And.True);
+      Assert.That(TypeAdapter.Create(type).IsClass, Is.EqualTo(type.IsClass).And.True);
     }
 
     [Test]
     public void IsClass_ValueType ()
     {
       var type = typeof (Guid);
-      Assert.That (TypeAdapter.Create (type).IsClass, Is.EqualTo (type.IsClass).And.False);
+      Assert.That(TypeAdapter.Create(type).IsClass, Is.EqualTo(type.IsClass).And.False);
     }
 
     [Test]
     public void IsInterface_Interface ()
     {
       var type = typeof (IList<>);
-      Assert.That (TypeAdapter.Create (type).IsInterface, Is.EqualTo (type.IsInterface).And.True);
+      Assert.That(TypeAdapter.Create(type).IsInterface, Is.EqualTo(type.IsInterface).And.True);
     }
 
     [Test]
     public void IsInterface_ReferenceType ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).IsInterface, Is.EqualTo (type.IsInterface).And.False);
+      Assert.That(TypeAdapter.Create(type).IsInterface, Is.EqualTo(type.IsInterface).And.False);
     }
 
     [Test]
     public void IsValueType_ReferenceType ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).IsValueType, Is.EqualTo (type.IsValueType).And.False);
+      Assert.That(TypeAdapter.Create(type).IsValueType, Is.EqualTo(type.IsValueType).And.False);
     }
 
     [Test]
     public void IsValueType_ValueType ()
     {
       var type = typeof (int);
-      Assert.That (TypeAdapter.Create (type).IsValueType, Is.EqualTo (type.IsValueType).And.True);
+      Assert.That(TypeAdapter.Create(type).IsValueType, Is.EqualTo(type.IsValueType).And.True);
     }
 
     [Test]
     public void IsArray_Array ()
     {
       var type = typeof (object[]);
-      Assert.That (TypeAdapter.Create (type).IsArray, Is.EqualTo (type.IsArray).And.True);
+      Assert.That(TypeAdapter.Create(type).IsArray, Is.EqualTo(type.IsArray).And.True);
     }
 
     [Test]
     public void IsArray_NotArray ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).IsArray, Is.EqualTo (type.IsArray).And.False);
+      Assert.That(TypeAdapter.Create(type).IsArray, Is.EqualTo(type.IsArray).And.False);
     }
 
     [Test]
     public void GetArrayRank_Array ()
     {
       var type = typeof (object[,]);
-      Assert.That (TypeAdapter.Create (type).GetArrayRank (), Is.EqualTo (type.GetArrayRank ()).And.EqualTo (2));
+      Assert.That(TypeAdapter.Create(type).GetArrayRank(), Is.EqualTo(type.GetArrayRank()).And.EqualTo(2));
     }
 
     [Test]
     public void GetArrayRank_NotArray ()
     {
       var type = typeof (ArrayList);
-      Assert.That (()=>TypeAdapter.Create (type).GetArrayRank(), Throws.ArgumentException);
+      Assert.That(()=>TypeAdapter.Create(type).GetArrayRank(), Throws.ArgumentException);
     }
 
     [Test]
     public void MakeArrayType_WithRank ()
     {
       var type = typeof (object);
-      Assert.That (
-          TypeAdapter.Create (type).MakeArrayType (2),
-          Is.TypeOf<TypeAdapter>().And.Property ("Type").SameAs (type.MakeArrayType (2)));
+      Assert.That(
+          TypeAdapter.Create(type).MakeArrayType(2),
+          Is.TypeOf<TypeAdapter>().And.Property("Type").SameAs(type.MakeArrayType(2)));
     }
 
     [Test]
     public void MakeArrayType_WithInvalidRank ()
     {
-      Assert.That (() => TypeAdapter.Create (typeof (object)).MakeArrayType (0), Throws.TypeOf<IndexOutOfRangeException>());
+      Assert.That(() => TypeAdapter.Create(typeof (object)).MakeArrayType(0), Throws.TypeOf<IndexOutOfRangeException>());
     }
 
     [Test]
     public void MakeArrayType_WithoutRank ()
     {
       var type = typeof (object);
-      Assert.That (
-          TypeAdapter.Create (type).MakeArrayType (),
-          Is.TypeOf<TypeAdapter> ().And.Property ("Type").SameAs (type.MakeArrayType ()));
+      Assert.That(
+          TypeAdapter.Create(type).MakeArrayType(),
+          Is.TypeOf<TypeAdapter>().And.Property("Type").SameAs(type.MakeArrayType()));
     }
 
     [Test]
     public void IsEnum_Enum ()
     {
       var type = typeof (System.Reflection.MemberTypes);
-      Assert.That (TypeAdapter.Create (type).IsEnum, Is.EqualTo (type.IsEnum).And.True);
+      Assert.That(TypeAdapter.Create(type).IsEnum, Is.EqualTo(type.IsEnum).And.True);
     }
 
     [Test]
     public void IsEnum_NotEnum ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).IsEnum, Is.EqualTo (type.IsEnum).And.False);
+      Assert.That(TypeAdapter.Create(type).IsEnum, Is.EqualTo(type.IsEnum).And.False);
     }
 
     [Test]
     public void GetUnderlyingTypeOfEnum_EnumType ()
     {
       var type = typeof (System.Reflection.MemberTypes);
-      Assert.That (
-          TypeAdapter.Create (type).GetUnderlyingTypeOfEnum(),
-          Is.TypeOf<TypeAdapter>().And.Property ("Type").SameAs (Enum.GetUnderlyingType (type)));
+      Assert.That(
+          TypeAdapter.Create(type).GetUnderlyingTypeOfEnum(),
+          Is.TypeOf<TypeAdapter>().And.Property("Type").SameAs(Enum.GetUnderlyingType(type)));
     }
 
     [Test]
     public void GetUnderlyingTypeOfEnum_NotEnumType ()
     {
       var type = typeof (ArrayList);
-      Assert.That (
-          () => TypeAdapter.Create (type).GetUnderlyingTypeOfEnum(),
-          Throws.InvalidOperationException.And.Message.EqualTo ("The type 'System.Collections.ArrayList' is not an enum type."));
+      Assert.That(
+          () => TypeAdapter.Create(type).GetUnderlyingTypeOfEnum(),
+          Throws.InvalidOperationException.And.Message.EqualTo("The type 'System.Collections.ArrayList' is not an enum type."));
     }
 
     [Test]
     public void IsNullableValueType_NullableValueType ()
     {
       var type = typeof (int?);
-      Assert.That (TypeAdapter.Create (type).IsNullableValueType, Is.True);
+      Assert.That(TypeAdapter.Create(type).IsNullableValueType, Is.True);
     }
 
     [Test]
     public void IsNullableValueType_NotNullableValueType ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).IsNullableValueType, Is.False);
+      Assert.That(TypeAdapter.Create(type).IsNullableValueType, Is.False);
     }
 
     [Test]
     public void GetUnderlyingTypeOfNullableValueType_NullableValueType ()
     {
       var type = typeof (int?);
-      Assert.That (
-          TypeAdapter.Create (type).GetUnderlyingTypeOfNullableValueType(),
-          Is.TypeOf<TypeAdapter>().And.Property ("Type").SameAs (typeof (int)));
+      Assert.That(
+          TypeAdapter.Create(type).GetUnderlyingTypeOfNullableValueType(),
+          Is.TypeOf<TypeAdapter>().And.Property("Type").SameAs(typeof (int)));
     }
 
     [Test]
     public void GetUnderlyingTypeOfNullableValueType_NotNullableValueType ()
     {
       var type = typeof (ArrayList);
-      Assert.That (
-          () => TypeAdapter.Create (type).GetUnderlyingTypeOfNullableValueType(),
-          Throws.InvalidOperationException.And.Message.EqualTo ("The type 'System.Collections.ArrayList' is not a nullable value type."));
+      Assert.That(
+          () => TypeAdapter.Create(type).GetUnderlyingTypeOfNullableValueType(),
+          Throws.InvalidOperationException.And.Message.EqualTo("The type 'System.Collections.ArrayList' is not a nullable value type."));
     }
 
     [Test]
     public void IsPointer_Pointer ()
     {
       var type = typeof (int).MakePointerType();
-      Assert.That (TypeAdapter.Create (type).IsPointer, Is.EqualTo (type.IsPointer).And.True);
+      Assert.That(TypeAdapter.Create(type).IsPointer, Is.EqualTo(type.IsPointer).And.True);
     }
 
     [Test]
     public void IsPointer_NotPointer ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).IsPointer, Is.EqualTo (type.IsPointer).And.False);
+      Assert.That(TypeAdapter.Create(type).IsPointer, Is.EqualTo(type.IsPointer).And.False);
     }
 
     [Test]
     public void MakePointerType ()
     {
       var type = typeof (int);
-      Assert.That (
-          TypeAdapter.Create (type).MakePointerType(),
-          Is.TypeOf<TypeAdapter>().And.Property ("Type").SameAs (type.MakePointerType()));
+      Assert.That(
+          TypeAdapter.Create(type).MakePointerType(),
+          Is.TypeOf<TypeAdapter>().And.Property("Type").SameAs(type.MakePointerType()));
     }
 
     [Test]
     public void IsByRef_ByRef ()
     {
       var type = typeof (int).MakeByRefType();
-      Assert.That (TypeAdapter.Create (type).IsByRef, Is.EqualTo (type.IsByRef).And.True);
+      Assert.That(TypeAdapter.Create(type).IsByRef, Is.EqualTo(type.IsByRef).And.True);
     }
 
     [Test]
     public void IsByRef_NotByRef ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).IsByRef, Is.EqualTo (type.IsByRef).And.False);
+      Assert.That(TypeAdapter.Create(type).IsByRef, Is.EqualTo(type.IsByRef).And.False);
     }
 
     [Test]
     public void MakeByRefType ()
     {
       var type = typeof (int);
-      Assert.That (
-          TypeAdapter.Create (type).MakeByRefType (),
-          Is.TypeOf<TypeAdapter> ().And.Property ("Type").SameAs (type.MakeByRefType ()));
+      Assert.That(
+          TypeAdapter.Create(type).MakeByRefType(),
+          Is.TypeOf<TypeAdapter>().And.Property("Type").SameAs(type.MakeByRefType()));
     }
 
     [Test]
     public void IsSealed_SealedType ()
     {
       var type = typeof (Activator);
-      Assert.That (TypeAdapter.Create (type).IsSealed, Is.EqualTo (type.IsSealed).And.True);
+      Assert.That(TypeAdapter.Create(type).IsSealed, Is.EqualTo(type.IsSealed).And.True);
     }
 
     [Test]
     public void IsSealed_NotSealedType ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).IsSealed, Is.EqualTo (type.IsSealed).And.False);
+      Assert.That(TypeAdapter.Create(type).IsSealed, Is.EqualTo(type.IsSealed).And.False);
     }
 
     [Test]
     public void IsAbstract_AbstractType ()
     {
       var type = typeof (Array);
-      Assert.That (TypeAdapter.Create (type).IsAbstract, Is.EqualTo (type.IsAbstract).And.True);
+      Assert.That(TypeAdapter.Create(type).IsAbstract, Is.EqualTo(type.IsAbstract).And.True);
     }
 
     [Test]
     public void IsAbstract_NotAbstractType ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).IsAbstract, Is.EqualTo (type.IsAbstract).And.False);
+      Assert.That(TypeAdapter.Create(type).IsAbstract, Is.EqualTo(type.IsAbstract).And.False);
     }
 
     [Test]
     public void IsNested_NestedType ()
     {
       var type = typeof (Environment.SpecialFolder);
-      Assert.That (TypeAdapter.Create (type).IsNested, Is.EqualTo (type.IsNested).And.True);
+      Assert.That(TypeAdapter.Create(type).IsNested, Is.EqualTo(type.IsNested).And.True);
     }
 
     [Test]
     public void IsNested_NotNestedType ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).IsNested, Is.EqualTo (type.IsNested).And.False);
+      Assert.That(TypeAdapter.Create(type).IsNested, Is.EqualTo(type.IsNested).And.False);
     }
 
     [Test]
     public void IsSerializable_SerializableType ()
     {
       var type = typeof (Exception);
-      Assert.That (TypeAdapter.Create (type).IsSerializable, Is.EqualTo (type.IsSerializable).And.True);
+      Assert.That(TypeAdapter.Create(type).IsSerializable, Is.EqualTo(type.IsSerializable).And.True);
     }
 
     [Test]
     public void IsSerializable_NotSerializableType ()
     {
       var type = typeof (Activator);
-      Assert.That (TypeAdapter.Create (type).IsSerializable, Is.EqualTo (type.IsSerializable).And.False);
+      Assert.That(TypeAdapter.Create(type).IsSerializable, Is.EqualTo(type.IsSerializable).And.False);
     }
 
     [Test]
     public void HasElementType_TypeWithElementType ()
     {
       var type = typeof (int[]);
-      Assert.That (TypeAdapter.Create (type).HasElementType, Is.EqualTo (type.HasElementType).And.True);
+      Assert.That(TypeAdapter.Create(type).HasElementType, Is.EqualTo(type.HasElementType).And.True);
     }
 
     [Test]
     public void HasElementType_TypeWithoutElementType ()
     {
       var type = typeof (int);
-      Assert.That (TypeAdapter.Create (type).HasElementType, Is.EqualTo (type.HasElementType).And.False);
+      Assert.That(TypeAdapter.Create(type).HasElementType, Is.EqualTo(type.HasElementType).And.False);
     }
 
     [Test]
     public void GetElementType_TypeWithElementType ()
     {
       var type = typeof (int[]);
-      Assert.That (
-          TypeAdapter.Create (type).GetElementType(),
-          Is.TypeOf<TypeAdapter>().And.Property ("Type").SameAs (type.GetElementType()));
+      Assert.That(
+          TypeAdapter.Create(type).GetElementType(),
+          Is.TypeOf<TypeAdapter>().And.Property("Type").SameAs(type.GetElementType()));
     }
 
     [Test]
     public void GetElementType_TypeWithoutElementType ()
     {
       var type = typeof (int);
-      Assert.That (TypeAdapter.Create (type).GetElementType(), Is.EqualTo (type.GetElementType()).And.Null);
+      Assert.That(TypeAdapter.Create(type).GetElementType(), Is.EqualTo(type.GetElementType()).And.Null);
     }
 
     [Test]
     public void IsGenericType_ClosedGenericType ()
     {
       var type = typeof (List<int>);
-      Assert.That (TypeAdapter.Create (type).IsGenericType, Is.EqualTo (type.IsGenericType).And.True);
+      Assert.That(TypeAdapter.Create(type).IsGenericType, Is.EqualTo(type.IsGenericType).And.True);
     }
 
     [Test]
     public void IsGenericType_NotGenericType ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).IsGenericType, Is.EqualTo (type.IsGenericType).And.False);
+      Assert.That(TypeAdapter.Create(type).IsGenericType, Is.EqualTo(type.IsGenericType).And.False);
     }
 
     [Test]
     public void IsGenericTypeDefinition_GenericTypeDefinition ()
     {
       var type = typeof (List<>);
-      Assert.That (TypeAdapter.Create (type).IsGenericTypeDefinition, Is.EqualTo (type.IsGenericTypeDefinition).And.True);
+      Assert.That(TypeAdapter.Create(type).IsGenericTypeDefinition, Is.EqualTo(type.IsGenericTypeDefinition).And.True);
     }
 
     [Test]
     public void IsGenericTypeDefinition_NotGenericTypeDefinition ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).IsGenericTypeDefinition, Is.EqualTo (type.IsGenericTypeDefinition).And.False);
+      Assert.That(TypeAdapter.Create(type).IsGenericTypeDefinition, Is.EqualTo(type.IsGenericTypeDefinition).And.False);
     }
 
     [Test]
     public void GetGenericTypeDefintion_ClosedGenericType ()
     {
       var type = typeof (List<int>);
-      Assert.That (
-          TypeAdapter.Create (type).GetGenericTypeDefinition(),
-          Is.TypeOf<TypeAdapter>().And.Property ("Type").SameAs (type.GetGenericTypeDefinition()));
+      Assert.That(
+          TypeAdapter.Create(type).GetGenericTypeDefinition(),
+          Is.TypeOf<TypeAdapter>().And.Property("Type").SameAs(type.GetGenericTypeDefinition()));
     }
 
     [Test]
     public void GetGenericTypeDefintion_GenericTypeDefinition ()
     {
       var type = typeof (List<>);
-      Assert.That (
-          TypeAdapter.Create (type).GetGenericTypeDefinition (),
-          Is.TypeOf<TypeAdapter> ().And.Property ("Type").SameAs (type.GetGenericTypeDefinition ()));
+      Assert.That(
+          TypeAdapter.Create(type).GetGenericTypeDefinition(),
+          Is.TypeOf<TypeAdapter>().And.Property("Type").SameAs(type.GetGenericTypeDefinition()));
     }
 
     [Test]
     public void GetGenericTypeDefintion_NotGenericType ()
     {
-      Assert.That (()=>
-          TypeAdapter.Create (typeof (ArrayList)).GetGenericTypeDefinition (),
+      Assert.That(()=>
+          TypeAdapter.Create(typeof (ArrayList)).GetGenericTypeDefinition(),
           Throws.InvalidOperationException);
     }
 
@@ -474,44 +474,44 @@ namespace Remotion.Reflection.UnitTests
     public void ContainsGenericParameters_OpenGenericType ()
     {
       var type = typeof (List<>);
-      Assert.That (TypeAdapter.Create (type).ContainsGenericParameters, Is.EqualTo (type.ContainsGenericParameters).And.True);
+      Assert.That(TypeAdapter.Create(type).ContainsGenericParameters, Is.EqualTo(type.ContainsGenericParameters).And.True);
     }
 
     [Test]
     public void ContainsGenericParameters_ClosedGenericType ()
     {
       var type = typeof (List<int>);
-      Assert.That (TypeAdapter.Create (type).ContainsGenericParameters, Is.EqualTo (type.ContainsGenericParameters).And.False);
+      Assert.That(TypeAdapter.Create(type).ContainsGenericParameters, Is.EqualTo(type.ContainsGenericParameters).And.False);
     }
 
     [Test]
     public void ContainsGenericParameters_NotGenericType ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).ContainsGenericParameters, Is.EqualTo (type.ContainsGenericParameters).And.False);
+      Assert.That(TypeAdapter.Create(type).ContainsGenericParameters, Is.EqualTo(type.ContainsGenericParameters).And.False);
     }
 
     [Test]
     public void GetGenericArguments_ClosedGenericType ()
     {
       var type = typeof (List<int>);
-      Assert.That (TypeAdapter.Create (type).GetGenericArguments(), Has.All.TypeOf<TypeAdapter>());
-      Assert.That (TypeAdapter.Create (type).GetGenericArguments(), Is.EqualTo (new[] { TypeAdapter.Create (typeof (int)) }));
+      Assert.That(TypeAdapter.Create(type).GetGenericArguments(), Has.All.TypeOf<TypeAdapter>());
+      Assert.That(TypeAdapter.Create(type).GetGenericArguments(), Is.EqualTo(new[] { TypeAdapter.Create(typeof (int)) }));
     }
 
     [Test]
     public void GetGenericArguments_NotGenericType ()
     {
       var type = typeof (ArrayList);
-      Assert.That (TypeAdapter.Create (type).GetGenericArguments (), Is.Empty);
+      Assert.That(TypeAdapter.Create(type).GetGenericArguments(), Is.Empty);
     }
 
     [Test]
     public void IsGenericParameter_GenericParameter ()
     {
-      var type = typeof (Nullable<>).GetGenericArguments ().Single ();
+      var type = typeof (Nullable<>).GetGenericArguments().Single();
 
-      Assert.That (TypeAdapter.Create (type).IsGenericParameter, Is.EqualTo (type.IsGenericParameter).And.True);
+      Assert.That(TypeAdapter.Create(type).IsGenericParameter, Is.EqualTo(type.IsGenericParameter).And.True);
     }
 
     [Test]
@@ -519,7 +519,7 @@ namespace Remotion.Reflection.UnitTests
     {
       var type = typeof (ValueType);
 
-      Assert.That (TypeAdapter.Create (type).IsGenericParameter, Is.EqualTo (type.IsGenericParameter).And.False);
+      Assert.That(TypeAdapter.Create(type).IsGenericParameter, Is.EqualTo(type.IsGenericParameter).And.False);
     }
 
     [Test]
@@ -527,17 +527,17 @@ namespace Remotion.Reflection.UnitTests
     {
       var type = typeof (Nullable<>).GetGenericArguments().Single();
 
-      Assert.That (TypeAdapter.Create (type).GetGenericParameterConstraints(), Has.All.TypeOf<TypeAdapter>());
-      Assert.That (
-          TypeAdapter.Create (type).GetGenericParameterConstraints(),
-          Is.EqualTo (new[] { TypeAdapter.Create (typeof (ValueType)) }));
+      Assert.That(TypeAdapter.Create(type).GetGenericParameterConstraints(), Has.All.TypeOf<TypeAdapter>());
+      Assert.That(
+          TypeAdapter.Create(type).GetGenericParameterConstraints(),
+          Is.EqualTo(new[] { TypeAdapter.Create(typeof (ValueType)) }));
     }
 
     [Test]
     public void GetGenericParameterConstraints_NotGenericParameter ()
     {
-      Assert.That (() =>
-          TypeAdapter.Create (typeof (ValueType)).GetGenericTypeDefinition (),
+      Assert.That(() =>
+          TypeAdapter.Create(typeof (ValueType)).GetGenericTypeDefinition(),
           Throws.InvalidOperationException);
     }
 
@@ -546,14 +546,14 @@ namespace Remotion.Reflection.UnitTests
     {
       var type = typeof (Tuple<,>).GetGenericArguments()[1];
 
-      Assert.That (TypeAdapter.Create (type).GenericParameterPosition, Is.EqualTo (type.GenericParameterPosition).And.EqualTo (1));
+      Assert.That(TypeAdapter.Create(type).GenericParameterPosition, Is.EqualTo(type.GenericParameterPosition).And.EqualTo(1));
     }
 
     [Test]
     public void GenericParameterPosition_NotGenericParameter ()
     {
-      Assert.That (() =>
-          TypeAdapter.Create (typeof (ValueType)).GenericParameterPosition,
+      Assert.That(() =>
+          TypeAdapter.Create(typeof (ValueType)).GenericParameterPosition,
           Throws.InvalidOperationException);
     }
 
@@ -562,14 +562,14 @@ namespace Remotion.Reflection.UnitTests
     {
       var type = typeof (Nullable<>).GetGenericArguments().Single();
 
-      Assert.That (TypeAdapter.Create (type).GenericParameterAttributes, Is.EqualTo (type.GenericParameterAttributes));
+      Assert.That(TypeAdapter.Create(type).GenericParameterAttributes, Is.EqualTo(type.GenericParameterAttributes));
     }
 
     [Test]
     public void GenericParameterAttributes_NotGenericParameter ()
     {
-      Assert.That (() =>
-          TypeAdapter.Create (typeof (ValueType)).GenericParameterAttributes,
+      Assert.That(() =>
+          TypeAdapter.Create(typeof (ValueType)).GenericParameterAttributes,
           Throws.InvalidOperationException);
     }
 
@@ -577,53 +577,53 @@ namespace Remotion.Reflection.UnitTests
     public void GetCustomAttribute ()
     {
       var type = typeof (DateTime);
-      var adapter = TypeAdapter.Create (type);
-      Assert.That (
-          adapter.GetCustomAttribute<SerializableAttribute> (true),
-          Is.EqualTo (AttributeUtility.GetCustomAttribute<SerializableAttribute> (type, true)));
+      var adapter = TypeAdapter.Create(type);
+      Assert.That(
+          adapter.GetCustomAttribute<SerializableAttribute>(true),
+          Is.EqualTo(AttributeUtility.GetCustomAttribute<SerializableAttribute>(type, true)));
     }
 
     [Test]
     public void GetCustomAttributes ()
     {
       var type = typeof (DateTime);
-      var adapter = TypeAdapter.Create (type);
-      Assert.That (
-          adapter.GetCustomAttributes<SerializableAttribute> (true),
-          Is.EqualTo (AttributeUtility.GetCustomAttributes<SerializableAttribute> (type, true)));
+      var adapter = TypeAdapter.Create(type);
+      Assert.That(
+          adapter.GetCustomAttributes<SerializableAttribute>(true),
+          Is.EqualTo(AttributeUtility.GetCustomAttributes<SerializableAttribute>(type, true)));
     }
 
     [Test]
     public void IsDefined ()
     {
       var type = typeof (DateTime);
-      var adapter = TypeAdapter.Create (type);
-      Assert.That (
-          adapter.IsDefined<SerializableAttribute> (true),
-          Is.EqualTo (AttributeUtility.IsDefined<SerializableAttribute> (type, true)));
+      var adapter = TypeAdapter.Create(type);
+      Assert.That(
+          adapter.IsDefined<SerializableAttribute>(true),
+          Is.EqualTo(AttributeUtility.IsDefined<SerializableAttribute>(type, true)));
     }
 
     [Test]
     public void BaseType ()
     {
       var type = typeof (SystemException);
-      Assert.That (
-          TypeAdapter.Create (type).BaseType,
-          Is.TypeOf<TypeAdapter> ().And.Property ("Type").SameAs (type.BaseType));
+      Assert.That(
+          TypeAdapter.Create(type).BaseType,
+          Is.TypeOf<TypeAdapter>().And.Property("Type").SameAs(type.BaseType));
     }
 
     [Test]
     public void BaseType_ForObject ()
     {
       var type = typeof (Object);
-      Assert.That (TypeAdapter.Create (type).BaseType, Is.Null);
+      Assert.That(TypeAdapter.Create(type).BaseType, Is.Null);
     }
 
     [Test]
     public void BaseType_ForInterface ()
     {
       var type = typeof (IList);
-      Assert.That (TypeAdapter.Create (type).BaseType, Is.Null);
+      Assert.That(TypeAdapter.Create(type).BaseType, Is.Null);
     }
 
     [Test]
@@ -631,23 +631,23 @@ namespace Remotion.Reflection.UnitTests
     {
       var type = typeof (ArrayList);
       var value = new ArrayList();
-      Assert.That (TypeAdapter.Create (type).IsInstanceOfType (value), Is.EqualTo (type.IsInstanceOfType (value)).And.True);
+      Assert.That(TypeAdapter.Create(type).IsInstanceOfType(value), Is.EqualTo(type.IsInstanceOfType(value)).And.True);
     }
 
     [Test]
     public void IsInstanceOf_DerivedType ()
     {
       var type = typeof (Exception);
-      var value = new SystemException ();
-      Assert.That (TypeAdapter.Create (type).IsInstanceOfType (value), Is.EqualTo (type.IsInstanceOfType (value)).And.True);
+      var value = new SystemException();
+      Assert.That(TypeAdapter.Create(type).IsInstanceOfType(value), Is.EqualTo(type.IsInstanceOfType(value)).And.True);
     }
 
     [Test]
     public void IsInstanceOf_OtherType ()
     {
       var type = typeof (ArrayList);
-      var value = new object ();
-      Assert.That (TypeAdapter.Create (type).IsInstanceOfType (value), Is.EqualTo (type.IsInstanceOfType (value)).And.False);
+      var value = new object();
+      Assert.That(TypeAdapter.Create(type).IsInstanceOfType(value), Is.EqualTo(type.IsInstanceOfType(value)).And.False);
     }
 
     [Test]
@@ -655,18 +655,18 @@ namespace Remotion.Reflection.UnitTests
     {
       var currentType = typeof (SystemException);
       var otherType = typeof (Exception);
-      Assert.That (
-          TypeAdapter.Create (currentType).IsSubclassOf (TypeAdapter.Create (otherType)),
-          Is.EqualTo (currentType.IsSubclassOf (otherType)).And.True);
+      Assert.That(
+          TypeAdapter.Create(currentType).IsSubclassOf(TypeAdapter.Create(otherType)),
+          Is.EqualTo(currentType.IsSubclassOf(otherType)).And.True);
     }
 
     [Test]
     public void IsSubclassOf_SameType ()
     {
       var currentType = typeof (SystemException);
-      Assert.That (
-          TypeAdapter.Create (currentType).IsSubclassOf (TypeAdapter.Create (currentType)),
-          Is.EqualTo (currentType.IsSubclassOf (currentType)).And.False);
+      Assert.That(
+          TypeAdapter.Create(currentType).IsSubclassOf(TypeAdapter.Create(currentType)),
+          Is.EqualTo(currentType.IsSubclassOf(currentType)).And.False);
     }
 
     [Test]
@@ -674,9 +674,9 @@ namespace Remotion.Reflection.UnitTests
     {
       var currentType = typeof (SystemException);
       var otherType = typeof (string);
-      Assert.That (
-          TypeAdapter.Create (currentType).IsSubclassOf (TypeAdapter.Create (otherType)),
-          Is.EqualTo (currentType.IsSubclassOf (otherType)).And.False);
+      Assert.That(
+          TypeAdapter.Create(currentType).IsSubclassOf(TypeAdapter.Create(otherType)),
+          Is.EqualTo(currentType.IsSubclassOf(otherType)).And.False);
     }
 
     [Test]
@@ -684,13 +684,13 @@ namespace Remotion.Reflection.UnitTests
     {
       var currentType = typeof (SystemException);
       var otherType = new Mock<ITypeInformation>();
-      Assert.That (TypeAdapter.Create (currentType).IsSubclassOf (otherType.Object), Is.False);
+      Assert.That(TypeAdapter.Create(currentType).IsSubclassOf(otherType.Object), Is.False);
     }
 
     [Test]
     public void IsSubclassOf_Null ()
     {
-      Assert.That (() => TypeAdapter.Create (typeof (object)).IsSubclassOf (null), Throws.TypeOf<ArgumentNullException>());
+      Assert.That(() => TypeAdapter.Create(typeof (object)).IsSubclassOf(null), Throws.TypeOf<ArgumentNullException>());
     }
 
     [Test]
@@ -698,18 +698,18 @@ namespace Remotion.Reflection.UnitTests
     {
       var currentType = typeof (Exception);
       var otherType = typeof (SystemException);
-      Assert.That (
-          TypeAdapter.Create (currentType).IsAssignableFrom (TypeAdapter.Create (otherType)),
-          Is.EqualTo (currentType.IsAssignableFrom (otherType)).And.True);
+      Assert.That(
+          TypeAdapter.Create(currentType).IsAssignableFrom(TypeAdapter.Create(otherType)),
+          Is.EqualTo(currentType.IsAssignableFrom(otherType)).And.True);
     }
 
     [Test]
     public void IsAssignableFrom_SameType ()
     {
       var currentType = typeof (Exception);
-      Assert.That (
-          TypeAdapter.Create (currentType).IsAssignableFrom (TypeAdapter.Create (currentType)),
-          Is.EqualTo (currentType.IsAssignableFrom (currentType)).And.True);
+      Assert.That(
+          TypeAdapter.Create(currentType).IsAssignableFrom(TypeAdapter.Create(currentType)),
+          Is.EqualTo(currentType.IsAssignableFrom(currentType)).And.True);
     }
 
     [Test]
@@ -717,9 +717,9 @@ namespace Remotion.Reflection.UnitTests
     {
       var currentType = typeof (Exception);
       var otherType = typeof (string);
-      Assert.That (
-          TypeAdapter.Create (currentType).IsAssignableFrom (TypeAdapter.Create (otherType)),
-          Is.EqualTo (currentType.IsAssignableFrom (otherType)).And.False);
+      Assert.That(
+          TypeAdapter.Create(currentType).IsAssignableFrom(TypeAdapter.Create(otherType)),
+          Is.EqualTo(currentType.IsAssignableFrom(otherType)).And.False);
     }
 
     [Test]
@@ -727,25 +727,25 @@ namespace Remotion.Reflection.UnitTests
     {
       var currentType = typeof (Exception);
       var otherType = new Mock<ITypeInformation>();
-      Assert.That (TypeAdapter.Create (currentType).IsAssignableFrom (otherType.Object), Is.False);
+      Assert.That(TypeAdapter.Create(currentType).IsAssignableFrom(otherType.Object), Is.False);
     }
 
     [Test]
     public void IsAssignableFrom_Null ()
     {
       var currentType = typeof (Exception);
-      Assert.That (
-          TypeAdapter.Create (currentType).IsAssignableFrom (null),
-          Is.EqualTo (currentType.IsAssignableFrom (null)).And.False);
+      Assert.That(
+          TypeAdapter.Create(currentType).IsAssignableFrom(null),
+          Is.EqualTo(currentType.IsAssignableFrom(null)).And.False);
     }
 
     [Test]
     public void CanAscribeTo_SameType ()
     {
       var currentType = typeof (SystemException);
-      Assert.That (
-          TypeAdapter.Create (currentType).CanAscribeTo (TypeAdapter.Create (currentType)),
-          Is.EqualTo (TypeExtensions.CanAscribeTo (currentType, currentType)).And.True);
+      Assert.That(
+          TypeAdapter.Create(currentType).CanAscribeTo(TypeAdapter.Create(currentType)),
+          Is.EqualTo(TypeExtensions.CanAscribeTo(currentType, currentType)).And.True);
     }
 
     [Test]
@@ -753,9 +753,9 @@ namespace Remotion.Reflection.UnitTests
     {
       var currentType = typeof (SystemException);
       var otherType = typeof (Exception);
-      Assert.That (
-          TypeAdapter.Create (currentType).CanAscribeTo (TypeAdapter.Create (otherType)),
-          Is.EqualTo (TypeExtensions.CanAscribeTo (currentType, otherType)).And.True);
+      Assert.That(
+          TypeAdapter.Create(currentType).CanAscribeTo(TypeAdapter.Create(otherType)),
+          Is.EqualTo(TypeExtensions.CanAscribeTo(currentType, otherType)).And.True);
     }
 
     [Test]
@@ -763,9 +763,9 @@ namespace Remotion.Reflection.UnitTests
     {
       var currentType = typeof (Exception);
       var otherType = typeof (SystemException);
-      Assert.That (
-          TypeAdapter.Create (currentType).CanAscribeTo (TypeAdapter.Create (otherType)),
-          Is.EqualTo (TypeExtensions.CanAscribeTo (currentType, otherType)).And.False);
+      Assert.That(
+          TypeAdapter.Create(currentType).CanAscribeTo(TypeAdapter.Create(otherType)),
+          Is.EqualTo(TypeExtensions.CanAscribeTo(currentType, otherType)).And.False);
     }
 
     [Test]
@@ -773,9 +773,9 @@ namespace Remotion.Reflection.UnitTests
     {
       var currentType = typeof (List<int>);
       var otherType = typeof (List<>);
-      Assert.That (
-          TypeAdapter.Create (currentType).CanAscribeTo (TypeAdapter.Create (otherType)),
-          Is.EqualTo (TypeExtensions.CanAscribeTo (currentType, otherType)).And.True);
+      Assert.That(
+          TypeAdapter.Create(currentType).CanAscribeTo(TypeAdapter.Create(otherType)),
+          Is.EqualTo(TypeExtensions.CanAscribeTo(currentType, otherType)).And.True);
     }
 
     [Test]
@@ -783,9 +783,9 @@ namespace Remotion.Reflection.UnitTests
     {
       var currentType = typeof (ArrayList);
       var otherType = typeof (IList);
-      Assert.That (
-          TypeAdapter.Create (currentType).CanAscribeTo (TypeAdapter.Create (otherType)),
-          Is.EqualTo (TypeExtensions.CanAscribeTo (currentType, otherType)).And.True);
+      Assert.That(
+          TypeAdapter.Create(currentType).CanAscribeTo(TypeAdapter.Create(otherType)),
+          Is.EqualTo(TypeExtensions.CanAscribeTo(currentType, otherType)).And.True);
     }
 
     [Test]
@@ -793,9 +793,9 @@ namespace Remotion.Reflection.UnitTests
     {
       var currentType = typeof (List<int>);
       var otherType = typeof (IList<>);
-      Assert.That (
-          TypeAdapter.Create (currentType).CanAscribeTo (TypeAdapter.Create (otherType)),
-          Is.EqualTo (TypeExtensions.CanAscribeTo (currentType, otherType)).And.True);
+      Assert.That(
+          TypeAdapter.Create(currentType).CanAscribeTo(TypeAdapter.Create(otherType)),
+          Is.EqualTo(TypeExtensions.CanAscribeTo(currentType, otherType)).And.True);
     }
 
     [Test]
@@ -803,49 +803,49 @@ namespace Remotion.Reflection.UnitTests
     {
       var currentType = typeof (SystemException);
       var otherType = new Mock<ITypeInformation>();
-      Assert.That (TypeAdapter.Create (currentType).CanAscribeTo (otherType.Object), Is.False);
+      Assert.That(TypeAdapter.Create(currentType).CanAscribeTo(otherType.Object), Is.False);
     }
 
     [Test]
     public void CanAscribeTo_Null ()
     {
-      Assert.That (() => TypeAdapter.Create (typeof (object)).CanAscribeTo (null), Throws.TypeOf<ArgumentNullException> ());
+      Assert.That(() => TypeAdapter.Create(typeof (object)).CanAscribeTo(null), Throws.TypeOf<ArgumentNullException>());
     }
 
     [Test]
     public void GetAscribedGenericArgumentsFor_NotGenericType ()
     {
       var type = typeof (ArrayList);
-      var arguments = TypeAdapter.Create (type).GetAscribedGenericArgumentsFor (TypeAdapter.Create (typeof (IList)));
-      Assert.That (arguments, Has.All.TypeOf<TypeAdapter> ());
-      Assert.That (arguments, Is.Empty);
+      var arguments = TypeAdapter.Create(type).GetAscribedGenericArgumentsFor(TypeAdapter.Create(typeof (IList)));
+      Assert.That(arguments, Has.All.TypeOf<TypeAdapter>());
+      Assert.That(arguments, Is.Empty);
     }
 
     [Test]
     public void GetAscribedGenericArgumentsFor_ClosedGenericType ()
     {
       var type = typeof (List<int>);
-      var arguments = TypeAdapter.Create (type).GetAscribedGenericArgumentsFor (TypeAdapter.Create (typeof (IList<>)));
-      Assert.That (arguments, Has.All.TypeOf<TypeAdapter> ());
-      Assert.That (arguments, Is.EqualTo (new[] { TypeAdapter.Create (typeof (int)) }));
+      var arguments = TypeAdapter.Create(type).GetAscribedGenericArgumentsFor(TypeAdapter.Create(typeof (IList<>)));
+      Assert.That(arguments, Has.All.TypeOf<TypeAdapter>());
+      Assert.That(arguments, Is.EqualTo(new[] { TypeAdapter.Create(typeof (int)) }));
     }
 
     [Test]
     public void GetAscribedGenericArgumentsFor_ClosedGenericType_ForNotGenericBaseType ()
     {
       var type = typeof (List<int>);
-      var arguments = TypeAdapter.Create (type).GetAscribedGenericArgumentsFor (TypeAdapter.Create (typeof (IList)));
-      Assert.That (arguments, Has.All.TypeOf<TypeAdapter> ());
-      Assert.That (arguments, Is.Empty);
+      var arguments = TypeAdapter.Create(type).GetAscribedGenericArgumentsFor(TypeAdapter.Create(typeof (IList)));
+      Assert.That(arguments, Has.All.TypeOf<TypeAdapter>());
+      Assert.That(arguments, Is.Empty);
     }
 
     [Test]
     public void GetAscribedGenericArgumentsFor_ClosedGenericType_ForOtherType ()
     {
       var type = typeof (List<int>);
-      Assert.That (
-          () => TypeAdapter.Create (type).GetAscribedGenericArgumentsFor (TypeAdapter.Create (typeof (string))),
-          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo (
+      Assert.That(
+          () => TypeAdapter.Create(type).GetAscribedGenericArgumentsFor(TypeAdapter.Create(typeof (string))),
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo(
               "Parameter 'type' has type 'System.Collections.Generic.List`1[System.Int32]' "
               + "when type 'System.String' was expected.", "type"));
     }
@@ -854,9 +854,9 @@ namespace Remotion.Reflection.UnitTests
     public void GetAscribedGenericArgumentsFor_Interface_WithMultipleImplementations ()
     {
       var type = typeof (IDoubleInheritingGenericInterface);
-      Assert.That (
-          () => TypeAdapter.Create (type).GetAscribedGenericArgumentsFor (TypeAdapter.Create (typeof (IEnumerable<>))),
-          Throws.TypeOf<AmbiguousMatchException> ());
+      Assert.That(
+          () => TypeAdapter.Create(type).GetAscribedGenericArgumentsFor(TypeAdapter.Create(typeof (IEnumerable<>))),
+          Throws.TypeOf<AmbiguousMatchException>());
     }
 
     [Test]
@@ -864,9 +864,9 @@ namespace Remotion.Reflection.UnitTests
     {
       var currentType = typeof (SystemException);
       var otherType = new Mock<ITypeInformation>();
-      Assert.That (
-          () => TypeAdapter.Create (currentType).GetAscribedGenericArgumentsFor (otherType.Object),
-          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo (
+      Assert.That(
+          () => TypeAdapter.Create(currentType).GetAscribedGenericArgumentsFor(otherType.Object),
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo(
               "Parameter 'c' has type '" + otherType.Object.GetType().FullName + "' when type 'Remotion.Reflection.TypeAdapter' was expected.",
               "c"));
     }
@@ -874,40 +874,40 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void GetAscribedGenericArgumentsFor_Null ()
     {
-      Assert.That (() => TypeAdapter.Create (typeof (object)).GetAscribedGenericArgumentsFor (null), Throws.TypeOf<ArgumentNullException> ());
+      Assert.That(() => TypeAdapter.Create(typeof (object)).GetAscribedGenericArgumentsFor(null), Throws.TypeOf<ArgumentNullException>());
     }
 
     [Test]
     public void Equals ()
     {
-      var adapter = TypeAdapter.Create (typeof (ArrayList));
-      Assert.That (adapter.Equals (null), Is.False);
-      Assert.That (adapter.Equals ("test"), Is.False);
-      Assert.That (TypeAdapter.Create (typeof (List<int>)).Equals (TypeAdapter.Create (typeof (List<string>))), Is.False);
-      Assert.That (TypeAdapter.Create (typeof (List<>)).Equals (TypeAdapter.Create (typeof (List<int>))), Is.False);
+      var adapter = TypeAdapter.Create(typeof (ArrayList));
+      Assert.That(adapter.Equals(null), Is.False);
+      Assert.That(adapter.Equals("test"), Is.False);
+      Assert.That(TypeAdapter.Create(typeof (List<int>)).Equals(TypeAdapter.Create(typeof (List<string>))), Is.False);
+      Assert.That(TypeAdapter.Create(typeof (List<>)).Equals(TypeAdapter.Create(typeof (List<int>))), Is.False);
 
-      Assert.That (adapter.Equals (TypeAdapter.Create (typeof (ArrayList))), Is.True);
-      Assert.That (TypeAdapter.Create (typeof (List<int>)).GetGenericTypeDefinition ().Equals (TypeAdapter.Create (typeof (List<>))), Is.True);
+      Assert.That(adapter.Equals(TypeAdapter.Create(typeof (ArrayList))), Is.True);
+      Assert.That(TypeAdapter.Create(typeof (List<int>)).GetGenericTypeDefinition().Equals(TypeAdapter.Create(typeof (List<>))), Is.True);
     }
 
     [Test]
     public void GetHashcode ()
     {
-      Assert.That (
-          TypeAdapter.Create (typeof (ArrayList)).GetHashCode (),
-          Is.EqualTo (TypeAdapter.Create (typeof (ArrayList)).GetHashCode ()));
+      Assert.That(
+          TypeAdapter.Create(typeof (ArrayList)).GetHashCode(),
+          Is.EqualTo(TypeAdapter.Create(typeof (ArrayList)).GetHashCode()));
     }
 
     [Test]
     public void To_String ()
     {
-      Assert.That (TypeAdapter.Create(typeof (ArrayList)).ToString (), Is.EqualTo ("System.Collections.ArrayList"));
+      Assert.That(TypeAdapter.Create(typeof (ArrayList)).ToString(), Is.EqualTo("System.Collections.ArrayList"));
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (((ITypeInformation) TypeAdapter.Create (typeof (ArrayList))).IsNull, Is.False);
+      Assert.That(((ITypeInformation) TypeAdapter.Create(typeof (ArrayList))).IsNull, Is.False);
     }
 
     [Test]
@@ -915,7 +915,7 @@ namespace Remotion.Reflection.UnitTests
     {
       var typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
 
-      Assert.That (typeConversionProvider.CanConvert (typeof (TypeAdapter), typeof (Type)), Is.True);
+      Assert.That(typeConversionProvider.CanConvert(typeof (TypeAdapter), typeof (Type)), Is.True);
     }
   }
 }

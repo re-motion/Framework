@@ -40,22 +40,22 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
         TimeSpan dockerPullTimeout,
         [CanBeNull] string? hostname)
     {
-      ArgumentUtility.CheckNotNull ("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
-      ArgumentUtility.CheckNotNullOrEmpty ("dockerImageName", dockerImageName);
-      ArgumentUtility.CheckNotEmpty ("hostname", hostname);
+      ArgumentUtility.CheckNotNull("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
+      ArgumentUtility.CheckNotNullOrEmpty("dockerImageName", dockerImageName);
+      ArgumentUtility.CheckNotEmpty("hostname", hostname);
 
       var absoluteWebApplicationPath = testSiteLayoutConfiguration.RootPath;
       var is32BitProcess = !Environment.Is64BitProcess;
 
-      var docker = new DockerCommandLineClient (dockerPullTimeout);
+      var docker = new DockerCommandLineClient(dockerPullTimeout);
 
-      var resources = testSiteLayoutConfiguration.Resources.Select (resource => resource.Path);
+      var resources = testSiteLayoutConfiguration.Resources.Select(resource => resource.Path);
       var mounts = resources
-          .Select (path => GetAbsolutePath (path, absoluteWebApplicationPath))
-          .Distinct (StringComparer.OrdinalIgnoreCase)
+          .Select(path => GetAbsolutePath(path, absoluteWebApplicationPath))
+          .Distinct(StringComparer.OrdinalIgnoreCase)
           .ToArray();
 
-      var configurationParameters = new IisDockerContainerConfigurationParameters (
+      var configurationParameters = new IisDockerContainerConfigurationParameters(
           absoluteWebApplicationPath,
           port,
           dockerImageName,
@@ -63,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
           is32BitProcess,
           mounts);
 
-      _iisDockerContainerWrapper = new IisDockerContainerWrapper (docker, configurationParameters);
+      _iisDockerContainerWrapper = new IisDockerContainerWrapper(docker, configurationParameters);
     }
 
     /// <summary>
@@ -75,9 +75,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     public DockerHostingStrategy ([NotNull] TestSiteLayoutConfiguration testSiteLayoutConfiguration, [NotNull] NameValueCollection properties)
         : this (
             testSiteLayoutConfiguration,
-            int.Parse (ArgumentUtility.CheckNotNull ("properties", properties)["port"]!),
+            int.Parse(ArgumentUtility.CheckNotNull("properties", properties)["port"]!),
             properties["dockerImageName"]!,
-            TimeSpan.Parse (properties["dockerPullTimeout"]!),
+            TimeSpan.Parse(properties["dockerPullTimeout"]!),
             properties["hostname"])
     {
       // TODO RM-8113: Guard used properties against null values.
@@ -97,12 +97,12 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
 
     private string GetAbsolutePath (string path, string workingDirectory)
     {
-      if (Path.IsPathRooted (path))
-        return Path.GetFullPath (path);
+      if (Path.IsPathRooted(path))
+        return Path.GetFullPath(path);
 
-      var absolutePath = Path.Combine (workingDirectory, path);
+      var absolutePath = Path.Combine(workingDirectory, path);
 
-      return Path.GetFullPath (absolutePath);
+      return Path.GetFullPath(absolutePath);
     }
   }
 }

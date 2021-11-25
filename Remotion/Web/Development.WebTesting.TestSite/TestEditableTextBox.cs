@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       TextChanged += OnTextChanged;
     }
@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     public new IPage Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
     public bool IsDirty { get; private set; }

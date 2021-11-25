@@ -35,7 +35,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       var uniqueName = GetType().Name + "." + s_counter;
       s_counter++;
 
-      _typeBuilder = SetUpFixture.ModuleBuilder.DefineType (uniqueName, TypeAttributes.Class | TypeAttributes.Public, typeof (object), new Type[0]);
+      _typeBuilder = SetUpFixture.ModuleBuilder.DefineType(uniqueName, TypeAttributes.Class | TypeAttributes.Public, typeof (object), new Type[0]);
       _hasBeenBuilt = false;
     }
 
@@ -51,10 +51,10 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     {
       var methodName = executingTestMethod.DeclaringType.Name + "_" + executingTestMethod.Name;
 
-      var methodBuilder = _typeBuilder.DefineMethod (methodName, MethodAttributes.Public | MethodAttributes.Static, publicReturnType, publicParameterTypes);
+      var methodBuilder = _typeBuilder.DefineMethod(methodName, MethodAttributes.Public | MethodAttributes.Static, publicReturnType, publicParameterTypes);
 
       var ilGenerator = methodBuilder.GetILGenerator();
-      var emitter = new MethodWrapperEmitter (ilGenerator, innerMethod, publicParameterTypes, publicReturnType);
+      var emitter = new MethodWrapperEmitter(ilGenerator, innerMethod, publicParameterTypes, publicReturnType);
       emitter.EmitStaticMethodBody();
 
       return methodBuilder;
@@ -64,8 +64,8 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     {
       _hasBeenBuilt = true;
       Type builtType = _typeBuilder.CreateType();
-      var methodInfo = builtType.GetMethod (methodBuilder.Name);
-      return methodInfo.Invoke (null, arguments);
+      var methodInfo = builtType.GetMethod(methodBuilder.Name);
+      return methodInfo.Invoke(null, arguments);
     }
   }
 }

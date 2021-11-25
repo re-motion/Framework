@@ -98,11 +98,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         OptionalParameter<Rectangle?> parentBounds = default (OptionalParameter<Rectangle?>),
         ElementVisibility? elementVisibility = null)
     {
-      return new ResolvedScreenshotElement (
+      return new ResolvedScreenshotElement(
           coordinateSystem ?? _coordinateSystem,
           elementBounds ?? _elementBounds,
           elementVisibility ?? _elementVisibility,
-          parentBounds.GetValueOrDefault (_parentBounds),
+          parentBounds.GetValueOrDefault(_parentBounds),
           unresolvedBounds ?? _unresolvedBounds);
     }
   }

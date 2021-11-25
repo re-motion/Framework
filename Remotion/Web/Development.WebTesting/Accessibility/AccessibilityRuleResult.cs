@@ -57,12 +57,12 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IReadOnlyCollection<AccessibilityRequirement> any,
         [NotNull] IReadOnlyCollection<AccessibilityRequirement> none)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("all", all);
-      ArgumentUtility.CheckNotNullOrItemsNull ("any", any);
-      ArgumentUtility.CheckNotNullOrItemsNull ("none", none);
-      ArgumentUtility.CheckNotNull ("rule", rule);
-      ArgumentUtility.CheckNotNullOrEmpty ("html", html);
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("targetPath", targetPath);
+      ArgumentUtility.CheckNotNullOrItemsNull("all", all);
+      ArgumentUtility.CheckNotNullOrItemsNull("any", any);
+      ArgumentUtility.CheckNotNullOrItemsNull("none", none);
+      ArgumentUtility.CheckNotNull("rule", rule);
+      ArgumentUtility.CheckNotNullOrEmpty("html", html);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("targetPath", targetPath);
 
       Html = html;
       Rule = rule;
@@ -77,7 +77,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// </summary>
     public override string ToString ()
     {
-      var xPaths = string.Join (",", TargetPath.Select (p => p.XPath).Select (p => $"\"{p}\""));
+      var xPaths = string.Join(",", TargetPath.Select(p => p.XPath).Select(p => $"\"{p}\""));
 
       return $"Rule: {Rule.ID}, XPath: [{xPaths}]";
     }

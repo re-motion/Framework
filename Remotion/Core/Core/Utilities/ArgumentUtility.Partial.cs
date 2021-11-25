@@ -31,10 +31,10 @@ namespace Remotion.Utilities
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] Enum enumValue)
     {
       if (enumValue == null)
-        throw new ArgumentNullException (argumentName);
+        throw new ArgumentNullException(argumentName);
 
-      if (! EnumUtility.IsValidEnumValue (enumValue))
-        throw CreateEnumArgumentOutOfRangeException (argumentName, enumValue);
+      if (! EnumUtility.IsValidEnumValue(enumValue))
+        throw CreateEnumArgumentOutOfRangeException(argumentName, enumValue);
 
       return enumValue;
     }
@@ -54,10 +54,10 @@ namespace Remotion.Utilities
         return default (TEnum?);
 
       if (! (enumValue is TEnum))
-        throw CreateArgumentTypeException (argumentName, enumValue.GetType(), typeof (TEnum));
+        throw CreateArgumentTypeException(argumentName, enumValue.GetType(), typeof (TEnum));
 
-      if (! EnumUtility.IsValidEnumValue (enumValue))
-        throw CreateEnumArgumentOutOfRangeException (argumentName, enumValue);
+      if (! EnumUtility.IsValidEnumValue(enumValue))
+        throw CreateEnumArgumentOutOfRangeException(argumentName, enumValue);
 
       return (TEnum?) enumValue;
     }
@@ -77,13 +77,13 @@ namespace Remotion.Utilities
         where TEnum: struct
     {
       if (enumValue == null)
-        throw new ArgumentNullException (argumentName);
+        throw new ArgumentNullException(argumentName);
 
       if (! (enumValue is TEnum))
-        throw CreateArgumentTypeException (argumentName, enumValue.GetType(), typeof (TEnum));
+        throw CreateArgumentTypeException(argumentName, enumValue.GetType(), typeof (TEnum));
 
-      if (!EnumUtility.IsValidEnumValue (enumValue))
-        throw CreateEnumArgumentOutOfRangeException (argumentName, enumValue);
+      if (!EnumUtility.IsValidEnumValue(enumValue))
+        throw CreateEnumArgumentOutOfRangeException(argumentName, enumValue);
 
       return (TEnum) enumValue;
     }
@@ -91,12 +91,12 @@ namespace Remotion.Utilities
     [MustUseReturnValue]
     public static ArgumentOutOfRangeException CreateEnumArgumentOutOfRangeException ([InvokerParameterName] string argumentName, object actualValue)
     {
-      string message = string.Format (
+      string message = string.Format(
           "The value of parameter '{0}' is not a valid value of the type '{1}'. Actual value was '{2}'.",
           argumentName,
           actualValue.GetType(),
           actualValue);
-      return new ArgumentOutOfRangeException (argumentName, actualValue, message);
+      return new ArgumentOutOfRangeException(argumentName, actualValue, message);
     }
   }
 }

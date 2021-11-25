@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
 
     public ResolvedBusinessObjectPropertyPathPropertyEnumerator (IBusinessObjectProperty[] properties)
     {
-      ArgumentUtility.CheckNotNull ("properties", properties);
+      ArgumentUtility.CheckNotNull("properties", properties);
 
       _properties = properties;
     }
@@ -39,10 +39,10 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
       get
       {
         if (_index < 0)
-          throw new InvalidOperationException ("Enumeration has not started. Call MoveNext.");
+          throw new InvalidOperationException("Enumeration has not started. Call MoveNext.");
 
         if (_index == _properties.Length)
-          throw new InvalidOperationException ("Enumeration already finished.");
+          throw new InvalidOperationException("Enumeration already finished.");
 
         return _properties[_index];
       }
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
 
     public bool MoveNext (IBusinessObjectClass currentClass)
     {
-      ArgumentUtility.CheckNotNull ("currentClass", currentClass);
+      ArgumentUtility.CheckNotNull("currentClass", currentClass);
 
       if (_index == _properties.Length)
         return false;

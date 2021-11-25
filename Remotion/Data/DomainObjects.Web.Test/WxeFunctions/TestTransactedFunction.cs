@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     private void Step1 ()
     {
-      ClassWithAllDataTypes objectWithAllDataTypes = ObjectWithAllDataTypes.GetObject<ClassWithAllDataTypes> ();
+      ClassWithAllDataTypes objectWithAllDataTypes = ObjectWithAllDataTypes.GetObject<ClassWithAllDataTypes>();
 
       objectWithAllDataTypes.Int32Property = 10;
     }

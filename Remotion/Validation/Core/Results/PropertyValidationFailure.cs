@@ -37,7 +37,7 @@ namespace Remotion.Validation.Results
         [NotNull] string localizedValidationMessage)
         :base (validatedObject, errorMessage, localizedValidationMessage)
     {
-      ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
+      ArgumentUtility.CheckNotNull("validatedProperty", validatedProperty);
 
       ValidatedProperty = validatedProperty;
       ValidatedPropertyValue = validatedPropertyValue;

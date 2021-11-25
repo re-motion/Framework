@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
   <Properties>
     <Property Name=""CustomExtensibleEnum"" Type=""@assemblyQualifiedName"">Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Red</Property>
   </Properties>
-</XmlTransportItem>".Replace ("@assemblyQualifiedName", typeof (Color).AssemblyQualifiedName);
+</XmlTransportItem>".Replace("@assemblyQualifiedName", typeof (Color).AssemblyQualifiedName);
       }
     }
 

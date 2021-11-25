@@ -28,11 +28,11 @@ namespace Remotion.Security.UnitTests.XmlAsserter
 
     public XmlnsAttributeEventArgs (string namespaceUri, string prefix)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("namespaceUri", namespaceUri);
+      ArgumentUtility.CheckNotNullOrEmpty("namespaceUri", namespaceUri);
 
       _namespaceUri = namespaceUri;
       _prefix = prefix;
-      _isDefaultNamespace = string.IsNullOrEmpty (prefix);
+      _isDefaultNamespace = string.IsNullOrEmpty(prefix);
     }
 
     public string NamespaceUri
@@ -85,12 +85,12 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     {
       for (int i = attributes.Count - 1; i >= 0; i--)
       {
-        if (IsXmlnsAttribute (attributes[i]))
+        if (IsXmlnsAttribute(attributes[i]))
         {
-          ExtractNamespaceInformation (attributes[i]);
+          ExtractNamespaceInformation(attributes[i]);
 
           if (_filter)
-            attributes.Remove (attributes[i]);
+            attributes.Remove(attributes[i]);
         }
       }
     }
@@ -98,16 +98,16 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     private void ExtractNamespaceInformation (XmlAttribute attribute)
     {
       if (attribute.LocalName == "xmlns")
-        OnXmlnsAttributeFound (new XmlnsAttributeEventArgs (attribute.Value, null));
+        OnXmlnsAttributeFound(new XmlnsAttributeEventArgs(attribute.Value, null));
 
       if (attribute.Prefix == "xmlns")
-        OnXmlnsAttributeFound (new XmlnsAttributeEventArgs (attribute.Value, attribute.LocalName));
+        OnXmlnsAttributeFound(new XmlnsAttributeEventArgs(attribute.Value, attribute.LocalName));
     }
 
     protected virtual void OnXmlnsAttributeFound (XmlnsAttributeEventArgs args)
     {
       if (XmlnsAttributeFound != null)
-        XmlnsAttributeFound (this, args);
+        XmlnsAttributeFound(this, args);
     }
   }
 }

@@ -34,10 +34,10 @@ namespace Remotion.Utilities
 
     public TypeConverter? CreateTypeConverterOrDefault (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      if ((Nullable.GetUnderlyingType (type) ?? type).IsEnum)
-        return new AdvancedEnumConverter (type);
+      if ((Nullable.GetUnderlyingType(type) ?? type).IsEnum)
+        return new AdvancedEnumConverter(type);
       return null;
     }
   }

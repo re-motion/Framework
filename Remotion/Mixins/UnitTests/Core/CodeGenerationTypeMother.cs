@@ -31,8 +31,8 @@ namespace Remotion.Mixins.UnitTests.Core
   {
     public static Type GetGeneratedMixinTypeInActiveConfiguration (Type targetType, Type mixinType)
     {
-      var requestingClass = MixinConfiguration.ActiveConfiguration.GetContext (targetType);
-      return GetGeneratedMixinType (requestingClass, mixinType);
+      var requestingClass = MixinConfiguration.ActiveConfiguration.GetContext(targetType);
+      return GetGeneratedMixinType(requestingClass, mixinType);
     }
 
     public static Type GetGeneratedMixinType (Type targetType, Type mixinType)
@@ -50,21 +50,21 @@ namespace Remotion.Mixins.UnitTests.Core
     public static ConcreteMixinType GetGeneratedMixinTypeAndMetadata (Type targetType, Type mixinType)
     {
       var requestingClass = ClassContextObjectMother.Create(targetType, mixinType);
-      return GetGeneratedMixinTypeAndMetadata (requestingClass, mixinType);
+      return GetGeneratedMixinTypeAndMetadata(requestingClass, mixinType);
     }
 
     private static ConcreteMixinType GetGeneratedMixinTypeAndMetadata (ClassContext requestingClass, Type mixinType)
     {
       MixinDefinition mixinDefinition = TargetClassDefinitionFactory
-          .CreateAndValidate (requestingClass)
-          .GetMixinByConfiguredType (mixinType);
-      Assert.That (mixinDefinition, Is.Not.Null);
+          .CreateAndValidate(requestingClass)
+          .GetMixinByConfiguredType(mixinType);
+      Assert.That(mixinDefinition, Is.Not.Null);
 
       var mixinTypeIdentifier = mixinDefinition.GetConcreteMixinTypeIdentifier();
 
       var pipeline = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline;
-      var generatedMixinType = pipeline.ReflectionService.GetAdditionalType (mixinTypeIdentifier);
-      return new AttributeBasedMetadataImporter().GetMetadataForMixinType (generatedMixinType);
+      var generatedMixinType = pipeline.ReflectionService.GetAdditionalType(mixinTypeIdentifier);
+      return new AttributeBasedMetadataImporter().GetMetadataForMixinType(generatedMixinType);
     }
   }
 }

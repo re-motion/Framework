@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BocCompoundColumnDefinition ()
     {
-      _propertyPathBindings = new PropertyPathBindingCollection (null);
+      _propertyPathBindings = new PropertyPathBindingCollection(null);
     }
 
     /// <summary> Creates a string representation of the data displayed in this column. </summary>
@@ -52,13 +52,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns> A <see cref="string"/> representing the contents of <paramref name="obj"/>. </returns>
     public override string GetStringValue (IBusinessObject obj)
     {
-      ArgumentUtility.CheckNotNull ("obj", obj);
+      ArgumentUtility.CheckNotNull("obj", obj);
 
       var formatters = _propertyPathBindings.Cast<PropertyPathBinding>()
-                                            .Select (b => new BusinessObjectPropertyPath.Formatter (obj, b.GetPropertyPath()))
+                                            .Select(b => new BusinessObjectPropertyPath.Formatter(obj, b.GetPropertyPath()))
                                             .ToArray();
 
-      return string.Format (_formatString, formatters);
+      return string.Format(_formatString, formatters);
     }
 
     /// <summary> Passes the new OwnerControl to the <see cref="PropertyPathBindingCollection"/>. </summary>
@@ -104,9 +104,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
+      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
       
-      return serviceLocator.GetInstance<IBocCompoundColumnRenderer> ();
+      return serviceLocator.GetInstance<IBocCompoundColumnRenderer>();
     }
 
     /// <summary> Gets or sets the text displayed in the column title. Must not be empty or <see langword="null"/>. </summary>
@@ -119,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return base.ColumnTitle; }
       set
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("ColumnTitle", value);
+        ArgumentUtility.CheckNotNullOrEmpty("ColumnTitle", value);
         base.ColumnTitle = value;
       }
     }
@@ -132,10 +132,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IComparer<BocListRow> CreateCellValueComparer ()
     {
-      return new CompoundComparer<BocListRow> (
+      return new CompoundComparer<BocListRow>(
           _propertyPathBindings
               .Cast<PropertyPathBinding>()
-              .Select (b => b.GetPropertyPath().CreateComparer()));
+              .Select(b => b.GetPropertyPath().CreateComparer()));
     }
   }
 }

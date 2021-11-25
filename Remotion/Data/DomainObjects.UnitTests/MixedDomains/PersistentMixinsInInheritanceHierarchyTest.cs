@@ -47,8 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var firstDerivedClass = SingleInheritanceFirstDerivedClass.NewObject ();
-        var secondDerivedClass = SingleInheritanceSecondDerivedClass.NewObject ();
+        var firstDerivedClass = SingleInheritanceFirstDerivedClass.NewObject();
+        var secondDerivedClass = SingleInheritanceSecondDerivedClass.NewObject();
 
         firstDerivedClass.BaseProperty = "BasePropertyValue 1";
         firstDerivedClass.FirstDerivedProperty = "FirstDerivedPropertyValue 1";
@@ -63,21 +63,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var query = new Query (new QueryDefinition ("QueryOverUnionView", TestDomainStorageProviderDefinition,
-                                                    "SELECT * FROM [SingleInheritanceBaseClassView]", QueryType.Collection), new QueryParameterCollection ());
-        var actualObjects = ClientTransaction.Current.QueryManager.GetCollection<SingleInheritanceBaseClass> (query);
+        var query = new Query(new QueryDefinition("QueryOverUnionView", TestDomainStorageProviderDefinition,
+                                                    "SELECT * FROM [SingleInheritanceBaseClassView]", QueryType.Collection), new QueryParameterCollection());
+        var actualObjects = ClientTransaction.Current.QueryManager.GetCollection<SingleInheritanceBaseClass>(query);
 
-        Assert.That (actualObjects.Count, Is.EqualTo (2));
-        var actualFirstDerivedClass = actualObjects.AsEnumerable ().OfType<SingleInheritanceFirstDerivedClass> ().Single ();
-        var actualSecondDerivedClass = actualObjects.AsEnumerable ().OfType<SingleInheritanceSecondDerivedClass> ().Single ();
+        Assert.That(actualObjects.Count, Is.EqualTo(2));
+        var actualFirstDerivedClass = actualObjects.AsEnumerable().OfType<SingleInheritanceFirstDerivedClass>().Single();
+        var actualSecondDerivedClass = actualObjects.AsEnumerable().OfType<SingleInheritanceSecondDerivedClass>().Single();
 
-        Assert.That (actualFirstDerivedClass.BaseProperty, Is.EqualTo ("BasePropertyValue 1"));
-        Assert.That (actualFirstDerivedClass.FirstDerivedProperty, Is.EqualTo ("FirstDerivedPropertyValue 1"));
-        Assert.That (((ISingleInheritancePersistentMixin) actualFirstDerivedClass).PersistentProperty, Is.EqualTo ("PersistentPropertyValue 1"));
+        Assert.That(actualFirstDerivedClass.BaseProperty, Is.EqualTo("BasePropertyValue 1"));
+        Assert.That(actualFirstDerivedClass.FirstDerivedProperty, Is.EqualTo("FirstDerivedPropertyValue 1"));
+        Assert.That(((ISingleInheritancePersistentMixin) actualFirstDerivedClass).PersistentProperty, Is.EqualTo("PersistentPropertyValue 1"));
 
-        Assert.That (actualSecondDerivedClass.BaseProperty, Is.EqualTo ("BasePropertyValue 2"));
-        Assert.That (actualSecondDerivedClass.SecondDerivedProperty, Is.EqualTo ("SecondDerivedPropertyValue 2"));
-        Assert.That (((ISingleInheritancePersistentMixin) actualSecondDerivedClass).PersistentProperty, Is.EqualTo ("PersistentPropertyValue 2"));
+        Assert.That(actualSecondDerivedClass.BaseProperty, Is.EqualTo("BasePropertyValue 2"));
+        Assert.That(actualSecondDerivedClass.SecondDerivedProperty, Is.EqualTo("SecondDerivedPropertyValue 2"));
+        Assert.That(((ISingleInheritancePersistentMixin) actualSecondDerivedClass).PersistentProperty, Is.EqualTo("PersistentPropertyValue 2"));
       }
     }
 
@@ -93,50 +93,50 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
         var secondDerivedClass = SingleInheritanceSecondDerivedClass.NewObject();
         secondDerivedClassObjectID = secondDerivedClass.ID;
 
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
       }
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        Assert.IsInstanceOf (typeof (SingleInheritanceFirstDerivedClass), LifetimeService.GetObject (ClientTransaction.Current, firstDerivedClassObjectID, false));
-        Assert.IsInstanceOf (typeof (SingleInheritanceSecondDerivedClass), LifetimeService.GetObject (ClientTransaction.Current, secondDerivedClassObjectID, false));
+        Assert.IsInstanceOf(typeof (SingleInheritanceFirstDerivedClass), LifetimeService.GetObject(ClientTransaction.Current, firstDerivedClassObjectID, false));
+        Assert.IsInstanceOf(typeof (SingleInheritanceSecondDerivedClass), LifetimeService.GetObject(ClientTransaction.Current, secondDerivedClassObjectID, false));
       }
     }
 
     [Test]
     public void SingleInheritance_RelationsWorkCorrectly ()
     {
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var objectWithRelations = SingleInheritanceObjectWithRelations.NewObject();
-        objectWithRelations.ScalarProperty = SingleInheritanceFirstDerivedClass.NewObject ();
-        objectWithRelations.VectorProperty.Add (SingleInheritanceFirstDerivedClass.NewObject());
-        objectWithRelations.VectorProperty.Add (SingleInheritanceSecondDerivedClass.NewObject ());
+        objectWithRelations.ScalarProperty = SingleInheritanceFirstDerivedClass.NewObject();
+        objectWithRelations.VectorProperty.Add(SingleInheritanceFirstDerivedClass.NewObject());
+        objectWithRelations.VectorProperty.Add(SingleInheritanceSecondDerivedClass.NewObject());
 
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
       }
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var query = new Query (new QueryDefinition ("QueryOverUnionView", TestDomainStorageProviderDefinition,
-                                               "SELECT * FROM [SingleInheritanceObjectWithRelationsView]", QueryType.Collection), new QueryParameterCollection ());
-        var actualObjectWithRelations = ClientTransaction.Current.QueryManager.GetCollection<SingleInheritanceObjectWithRelations> (query)
+        var query = new Query(new QueryDefinition("QueryOverUnionView", TestDomainStorageProviderDefinition,
+                                               "SELECT * FROM [SingleInheritanceObjectWithRelationsView]", QueryType.Collection), new QueryParameterCollection());
+        var actualObjectWithRelations = ClientTransaction.Current.QueryManager.GetCollection<SingleInheritanceObjectWithRelations>(query)
           .AsEnumerable().Single();
 
-        Assert.IsInstanceOf (typeof (SingleInheritanceFirstDerivedClass), actualObjectWithRelations.ScalarProperty);
-        Assert.That (actualObjectWithRelations.VectorProperty.Count, Is.EqualTo (2));
-        Assert.That (actualObjectWithRelations.VectorProperty.OfType<SingleInheritanceFirstDerivedClass> ().Single (), Is.Not.Null);
-        Assert.That (actualObjectWithRelations.VectorProperty.OfType<SingleInheritanceSecondDerivedClass> ().Single (), Is.Not.Null);
+        Assert.IsInstanceOf(typeof (SingleInheritanceFirstDerivedClass), actualObjectWithRelations.ScalarProperty);
+        Assert.That(actualObjectWithRelations.VectorProperty.Count, Is.EqualTo(2));
+        Assert.That(actualObjectWithRelations.VectorProperty.OfType<SingleInheritanceFirstDerivedClass>().Single(), Is.Not.Null);
+        Assert.That(actualObjectWithRelations.VectorProperty.OfType<SingleInheritanceSecondDerivedClass>().Single(), Is.Not.Null);
       }
     }
 
     [Test]
     public void ConcreteInheritance_QueryOverUnionView ()
     {
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var firstDerivedClass = ConcreteInheritanceFirstDerivedClass.NewObject ();
-        var secondDerivedClass = ConcreteInheritanceSecondDerivedClass.NewObject ();
+        var firstDerivedClass = ConcreteInheritanceFirstDerivedClass.NewObject();
+        var secondDerivedClass = ConcreteInheritanceSecondDerivedClass.NewObject();
 
         firstDerivedClass.BaseProperty = "BasePropertyValue 1";
         firstDerivedClass.FirstDerivedProperty = "FirstDerivedPropertyValue 1";
@@ -146,26 +146,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
         secondDerivedClass.SecondDerivedProperty = "SecondDerivedPropertyValue 2";
         ((IConcreteInheritancePersistentMixin) secondDerivedClass).PersistentProperty = "PersistentPropertyValue 2";
 
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
       }
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var query = new Query (new QueryDefinition ("QueryOverUnionView", TestDomainStorageProviderDefinition,
-                                                    "SELECT * FROM [ConcreteInheritanceBaseClassView]", QueryType.Collection), new QueryParameterCollection ());
-        var actualObjects = ClientTransaction.Current.QueryManager.GetCollection<ConcreteInheritanceBaseClass> (query);
+        var query = new Query(new QueryDefinition("QueryOverUnionView", TestDomainStorageProviderDefinition,
+                                                    "SELECT * FROM [ConcreteInheritanceBaseClassView]", QueryType.Collection), new QueryParameterCollection());
+        var actualObjects = ClientTransaction.Current.QueryManager.GetCollection<ConcreteInheritanceBaseClass>(query);
 
-        Assert.That (actualObjects.Count, Is.EqualTo (2));
-        var actualFirstDerivedClass = actualObjects.AsEnumerable ().OfType<ConcreteInheritanceFirstDerivedClass> ().Single ();
-        var actualSecondDerivedClass = actualObjects.AsEnumerable ().OfType<ConcreteInheritanceSecondDerivedClass> ().Single ();
+        Assert.That(actualObjects.Count, Is.EqualTo(2));
+        var actualFirstDerivedClass = actualObjects.AsEnumerable().OfType<ConcreteInheritanceFirstDerivedClass>().Single();
+        var actualSecondDerivedClass = actualObjects.AsEnumerable().OfType<ConcreteInheritanceSecondDerivedClass>().Single();
 
-        Assert.That (actualFirstDerivedClass.BaseProperty, Is.EqualTo ("BasePropertyValue 1"));
-        Assert.That (actualFirstDerivedClass.FirstDerivedProperty, Is.EqualTo ("FirstDerivedPropertyValue 1"));
-        Assert.That (((IConcreteInheritancePersistentMixin) actualFirstDerivedClass).PersistentProperty, Is.EqualTo ("PersistentPropertyValue 1"));
+        Assert.That(actualFirstDerivedClass.BaseProperty, Is.EqualTo("BasePropertyValue 1"));
+        Assert.That(actualFirstDerivedClass.FirstDerivedProperty, Is.EqualTo("FirstDerivedPropertyValue 1"));
+        Assert.That(((IConcreteInheritancePersistentMixin) actualFirstDerivedClass).PersistentProperty, Is.EqualTo("PersistentPropertyValue 1"));
 
-        Assert.That (actualSecondDerivedClass.BaseProperty, Is.EqualTo ("BasePropertyValue 2"));
-        Assert.That (actualSecondDerivedClass.SecondDerivedProperty, Is.EqualTo ("SecondDerivedPropertyValue 2"));
-        Assert.That (((IConcreteInheritancePersistentMixin) actualSecondDerivedClass).PersistentProperty, Is.EqualTo ("PersistentPropertyValue 2"));
+        Assert.That(actualSecondDerivedClass.BaseProperty, Is.EqualTo("BasePropertyValue 2"));
+        Assert.That(actualSecondDerivedClass.SecondDerivedProperty, Is.EqualTo("SecondDerivedPropertyValue 2"));
+        Assert.That(((IConcreteInheritancePersistentMixin) actualSecondDerivedClass).PersistentProperty, Is.EqualTo("PersistentPropertyValue 2"));
       }
     }
 
@@ -174,47 +174,47 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     {
       ObjectID firstDerivedClassObjectID;
       ObjectID secondDerivedClassObjectID;
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var firstDerivedClass = ConcreteInheritanceFirstDerivedClass.NewObject ();
+        var firstDerivedClass = ConcreteInheritanceFirstDerivedClass.NewObject();
         firstDerivedClassObjectID = firstDerivedClass.ID;
-        var secondDerivedClass = ConcreteInheritanceSecondDerivedClass.NewObject ();
+        var secondDerivedClass = ConcreteInheritanceSecondDerivedClass.NewObject();
         secondDerivedClassObjectID = secondDerivedClass.ID;
 
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
       }
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        Assert.IsInstanceOf (typeof (ConcreteInheritanceFirstDerivedClass), LifetimeService.GetObject (ClientTransaction.Current, firstDerivedClassObjectID, false));
-        Assert.IsInstanceOf (typeof (ConcreteInheritanceSecondDerivedClass), LifetimeService.GetObject (ClientTransaction.Current, secondDerivedClassObjectID, false));
+        Assert.IsInstanceOf(typeof (ConcreteInheritanceFirstDerivedClass), LifetimeService.GetObject(ClientTransaction.Current, firstDerivedClassObjectID, false));
+        Assert.IsInstanceOf(typeof (ConcreteInheritanceSecondDerivedClass), LifetimeService.GetObject(ClientTransaction.Current, secondDerivedClassObjectID, false));
       }
     }
 
     [Test]
     public void ConcreteInheritance_RelationsWorkCorrectly ()
     {
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var objectWithRelations = ConcreteInheritanceObjectWithRelations.NewObject ();
-        objectWithRelations.ScalarProperty = ConcreteInheritanceFirstDerivedClass.NewObject ();
-        objectWithRelations.VectorProperty.Add (ConcreteInheritanceFirstDerivedClass.NewObject ());
-        objectWithRelations.VectorProperty.Add (ConcreteInheritanceSecondDerivedClass.NewObject ());
+        var objectWithRelations = ConcreteInheritanceObjectWithRelations.NewObject();
+        objectWithRelations.ScalarProperty = ConcreteInheritanceFirstDerivedClass.NewObject();
+        objectWithRelations.VectorProperty.Add(ConcreteInheritanceFirstDerivedClass.NewObject());
+        objectWithRelations.VectorProperty.Add(ConcreteInheritanceSecondDerivedClass.NewObject());
 
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
       }
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var query = new Query (new QueryDefinition ("QueryOverUnionView", TestDomainStorageProviderDefinition,
-                                               "SELECT * FROM [ConcreteInheritanceObjectWithRelationsView]", QueryType.Collection), new QueryParameterCollection ());
-        var actualObjectWithRelations = ClientTransaction.Current.QueryManager.GetCollection<ConcreteInheritanceObjectWithRelations> (query)
-          .AsEnumerable ().Single ();
+        var query = new Query(new QueryDefinition("QueryOverUnionView", TestDomainStorageProviderDefinition,
+                                               "SELECT * FROM [ConcreteInheritanceObjectWithRelationsView]", QueryType.Collection), new QueryParameterCollection());
+        var actualObjectWithRelations = ClientTransaction.Current.QueryManager.GetCollection<ConcreteInheritanceObjectWithRelations>(query)
+          .AsEnumerable().Single();
 
-        Assert.IsInstanceOf (typeof (ConcreteInheritanceFirstDerivedClass), actualObjectWithRelations.ScalarProperty);
-        Assert.That (actualObjectWithRelations.VectorProperty.Count, Is.EqualTo (2));
-        Assert.That (actualObjectWithRelations.VectorProperty.OfType<ConcreteInheritanceFirstDerivedClass> ().Single (), Is.Not.Null);
-        Assert.That (actualObjectWithRelations.VectorProperty.OfType<ConcreteInheritanceSecondDerivedClass> ().Single (), Is.Not.Null);
+        Assert.IsInstanceOf(typeof (ConcreteInheritanceFirstDerivedClass), actualObjectWithRelations.ScalarProperty);
+        Assert.That(actualObjectWithRelations.VectorProperty.Count, Is.EqualTo(2));
+        Assert.That(actualObjectWithRelations.VectorProperty.OfType<ConcreteInheritanceFirstDerivedClass>().Single(), Is.Not.Null);
+        Assert.That(actualObjectWithRelations.VectorProperty.OfType<ConcreteInheritanceSecondDerivedClass>().Single(), Is.Not.Null);
       }
     }
 

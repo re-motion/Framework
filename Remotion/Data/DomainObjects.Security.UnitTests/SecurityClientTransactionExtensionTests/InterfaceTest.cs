@@ -26,26 +26,26 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     [Test]
     public void Key ()
     {
-      IClientTransactionExtension extension = new SecurityClientTransactionExtension ();
-      Assert.That (extension.Key, Is.EqualTo (typeof (SecurityClientTransactionExtension).FullName));
-      Assert.That (SecurityClientTransactionExtension.DefaultKey, Is.EqualTo (typeof (SecurityClientTransactionExtension).FullName));
+      IClientTransactionExtension extension = new SecurityClientTransactionExtension();
+      Assert.That(extension.Key, Is.EqualTo(typeof (SecurityClientTransactionExtension).FullName));
+      Assert.That(SecurityClientTransactionExtension.DefaultKey, Is.EqualTo(typeof (SecurityClientTransactionExtension).FullName));
     }
 
     [Test]
     public void TestInterfaceMembers ()
     {
-      IClientTransactionExtension extension = new SecurityClientTransactionExtension ();
-      extension.ObjectsLoaded (null, null);
-      extension.ObjectDeleted (null, null);
-      extension.PropertyValueRead (null, null, null, null, ValueAccess.Current);
-      extension.PropertyValueChanged (null, null, null, null, null);
-      extension.RelationRead (null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
-      extension.RelationRead (null, null, null, (DomainObject) null, ValueAccess.Current);
-      extension.RelationChanged (null, null, null, null, null);
-      extension.Committing (null, null, null);
-      extension.Committed (null, null);
-      extension.RollingBack (null, null);
-      extension.RolledBack (null, null);
+      IClientTransactionExtension extension = new SecurityClientTransactionExtension();
+      extension.ObjectsLoaded(null, null);
+      extension.ObjectDeleted(null, null);
+      extension.PropertyValueRead(null, null, null, null, ValueAccess.Current);
+      extension.PropertyValueChanged(null, null, null, null, null);
+      extension.RelationRead(null, null, null, (IReadOnlyCollectionData<DomainObject>) null, ValueAccess.Current);
+      extension.RelationRead(null, null, null, (DomainObject) null, ValueAccess.Current);
+      extension.RelationChanged(null, null, null, null, null);
+      extension.Committing(null, null, null);
+      extension.Committed(null, null);
+      extension.RollingBack(null, null);
+      extension.RolledBack(null, null);
     }
   }
 }

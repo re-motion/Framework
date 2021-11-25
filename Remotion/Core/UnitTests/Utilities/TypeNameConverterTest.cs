@@ -42,19 +42,19 @@ namespace Remotion.UnitTests.Utilities
     [SetUp]
     public void SetUp ()
     {
-      _converter = new TypeNameConverter ();
+      _converter = new TypeNameConverter();
     }
 
     [Test]
     public void CanConvertToString ()
     {
-      Assert.That (_converter.CanConvertTo (typeof (string)), Is.True);
+      Assert.That(_converter.CanConvertTo(typeof (string)), Is.True);
     }
 
     [Test]
     public void CanConvertFromString ()
     {
-      Assert.That (_converter.CanConvertFrom (typeof (string)), Is.True);
+      Assert.That(_converter.CanConvertFrom(typeof (string)), Is.True);
     }
 
     [Test]
@@ -62,16 +62,16 @@ namespace Remotion.UnitTests.Utilities
     {
       Type destinationType = typeof (string);
 
-      Assert.That (_converter.ConvertTo (null, null, null, destinationType), Is.EqualTo (""));
-      Assert.That ((string) _converter.ConvertTo (null, null, typeof (TypeNameConverterTest), destinationType), Is.EqualTo ("Remotion.UnitTests.Utilities.TypeNameConverterTest, Remotion.UnitTests"));
+      Assert.That(_converter.ConvertTo(null, null, null, destinationType), Is.EqualTo(""));
+      Assert.That((string) _converter.ConvertTo(null, null, typeof (TypeNameConverterTest), destinationType), Is.EqualTo("Remotion.UnitTests.Utilities.TypeNameConverterTest, Remotion.UnitTests"));
     }
 
     [Test]
     public void ConvertFromString ()
     {
-      Assert.That (_converter.ConvertFrom (null, null, ""), Is.EqualTo (null));
-      Assert.That (_converter.ConvertFrom (null, null, "Remotion.UnitTests.Utilities.TypeNameConverterTest, Remotion.UnitTests"), Is.EqualTo (typeof (TypeNameConverterTest)));
-      Assert.That (_converter.ConvertFrom (null, null, "Remotion.UnitTests::Utilities.TypeNameConverterTest"), Is.EqualTo (typeof (TypeNameConverterTest)));
+      Assert.That(_converter.ConvertFrom(null, null, ""), Is.EqualTo(null));
+      Assert.That(_converter.ConvertFrom(null, null, "Remotion.UnitTests.Utilities.TypeNameConverterTest, Remotion.UnitTests"), Is.EqualTo(typeof (TypeNameConverterTest)));
+      Assert.That(_converter.ConvertFrom(null, null, "Remotion.UnitTests::Utilities.TypeNameConverterTest"), Is.EqualTo(typeof (TypeNameConverterTest)));
     }
   }
 }

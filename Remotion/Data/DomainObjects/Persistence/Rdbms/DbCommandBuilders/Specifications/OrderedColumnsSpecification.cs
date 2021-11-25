@@ -32,21 +32,21 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
   {
     public static OrderedColumnsSpecification CreateEmpty ()
     {
-      return new OrderedColumnsSpecification (new OrderedColumn[0]);
+      return new OrderedColumnsSpecification(new OrderedColumn[0]);
     }
 
     private readonly OrderedColumn[] _columns;
 
     public OrderedColumnsSpecification (IEnumerable<OrderedColumn> columns)
     {
-      ArgumentUtility.CheckNotNull ("columns", columns);
+      ArgumentUtility.CheckNotNull("columns", columns);
 
       _columns = columns.ToArray();
     }
 
     public ReadOnlyCollection<OrderedColumn> Columns
     {
-      get { return Array.AsReadOnly (_columns); }
+      get { return Array.AsReadOnly(_columns); }
     }
 
     public bool IsEmpty
@@ -56,22 +56,22 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public void AppendOrderings (StringBuilder stringBuilder, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
-      ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
+      ArgumentUtility.CheckNotNull("stringBuilder", stringBuilder);
+      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
 
-      stringBuilder.Append (
-          string.Join (", ", _columns.Select (orderedColumn =>
-              sqlDialect.DelimitIdentifier (orderedColumn.ColumnDefinition.Name) + (orderedColumn.SortOrder == SortOrder.Ascending ? " ASC" : " DESC"))));
+      stringBuilder.Append(
+          string.Join(", ", _columns.Select(orderedColumn =>
+              sqlDialect.DelimitIdentifier(orderedColumn.ColumnDefinition.Name) + (orderedColumn.SortOrder == SortOrder.Ascending ? " ASC" : " DESC"))));
     }
 
     public ISelectedColumnsSpecification UnionWithSelectedColumns (ISelectedColumnsSpecification selectedColumns)
     {
-      ArgumentUtility.CheckNotNull ("selectedColumns", selectedColumns);
+      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
 
-      if (!_columns.Any ())
+      if (!_columns.Any())
         return selectedColumns;
       
-      return selectedColumns.Union (_columns.Select (orderedColumn => orderedColumn.ColumnDefinition));
+      return selectedColumns.Union(_columns.Select(orderedColumn => orderedColumn.ColumnDefinition));
     }
   }
 }

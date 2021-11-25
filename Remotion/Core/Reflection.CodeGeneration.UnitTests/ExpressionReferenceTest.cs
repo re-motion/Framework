@@ -28,44 +28,44 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void ExpressionReference ()
     {
-      var methodEmitter = GetMethodEmitter (false, typeof (string), new Type[0]);
+      var methodEmitter = GetMethodEmitter(false, typeof (string), new Type[0]);
       
-      var expressionReference = new ExpressionReference (typeof (string), new ConstReference ("bla").ToExpression(), methodEmitter);
-      methodEmitter.ImplementByReturning (new ReferenceExpression (expressionReference));
+      var expressionReference = new ExpressionReference(typeof (string), new ConstReference("bla").ToExpression(), methodEmitter);
+      methodEmitter.ImplementByReturning(new ReferenceExpression(expressionReference));
 
-      Assert.That (InvokeMethod(), Is.EqualTo ("bla"));
+      Assert.That(InvokeMethod(), Is.EqualTo("bla"));
     }
 
     [Test]
     public void ExpressionReferenceCannotBeStored ()
     {
-      var methodEmitter = GetUnsavedMethodEmitter (false, typeof (void), new Type[0]);
-      var expressionReference = new ExpressionReference (typeof (string), new ConstReference ("bla").ToExpression (), methodEmitter);
-      Assert.That (
-          () => expressionReference.StoreReference (null),
+      var methodEmitter = GetUnsavedMethodEmitter(false, typeof (void), new Type[0]);
+      var expressionReference = new ExpressionReference(typeof (string), new ConstReference("bla").ToExpression(), methodEmitter);
+      Assert.That(
+          () => expressionReference.StoreReference(null),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo ("Expressions cannot be assigned to."));
+              .With.Message.EqualTo("Expressions cannot be assigned to."));
     }
 
     [Test]
     public void LoadAddressOfExpressionReference ()
     {
-      var methodEmitter = GetMethodEmitter (false, typeof (string), new Type[0]);
+      var methodEmitter = GetMethodEmitter(false, typeof (string), new Type[0]);
 
-      var expressionReference = new ExpressionReference (
+      var expressionReference = new ExpressionReference(
           typeof (StructWithMethod), 
-          new InitObjectExpression (methodEmitter, typeof (StructWithMethod)), 
+          new InitObjectExpression(methodEmitter, typeof (StructWithMethod)), 
           methodEmitter);
-      var addressReference = new ExpressionReference (
+      var addressReference = new ExpressionReference(
           typeof (StructWithMethod).MakeByRefType(), 
           expressionReference.ToAddressOfExpression(), 
           methodEmitter);
       var methodCall =
-          new MethodInvocationExpression (addressReference, typeof (StructWithMethod).GetMethod ("Method"));
+          new MethodInvocationExpression(addressReference, typeof (StructWithMethod).GetMethod("Method"));
 
-      methodEmitter.ImplementByReturning (methodCall);
+      methodEmitter.ImplementByReturning(methodCall);
 
-      Assert.That (InvokeMethod(), Is.EqualTo ("StructMethod"));
+      Assert.That(InvokeMethod(), Is.EqualTo("StructMethod"));
     }
   }
 }

@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTreeViewImplementation.Rende
     /// </summary>
     public new void AddDiagnosticMetadataAttributes (RenderingContext<IBocTreeView> renderingContext)
     {
-      base.AddDiagnosticMetadataAttributes (renderingContext);
+      base.AddDiagnosticMetadataAttributes(renderingContext);
     }
 
     /// <summary>

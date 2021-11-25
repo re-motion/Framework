@@ -32,14 +32,14 @@ namespace Remotion.Validation.MetaValidation
 
     public DelegatePropertyMetaValidationRule (Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> metaValidationRule)
     {
-      ArgumentUtility.CheckNotNull ("metaValidationRule", metaValidationRule);
+      ArgumentUtility.CheckNotNull("metaValidationRule", metaValidationRule);
       
       _metaValidationRule = metaValidationRule;
     }
 
     public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<TValidator> validationRules)
     {
-      yield return _metaValidationRule (validationRules);
+      yield return _metaValidationRule(validationRules);
     }
   }
 }

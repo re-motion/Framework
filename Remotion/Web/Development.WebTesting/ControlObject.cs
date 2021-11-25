@@ -56,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public IControlHost Children
     {
-      get { return new ControlHost (Context); }
+      get { return new ControlHost(Context); }
     }
 
     /// <summary>
@@ -69,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] ElementScope scope,
         [CanBeNull] IWebTestActionOptions? userDefinedWebTestActionOptions)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       if (userDefinedWebTestActionOptions == null) // prevent complicated null handling
         userDefinedWebTestActionOptions = new WebTestActionOptions();
@@ -77,7 +77,7 @@ namespace Remotion.Web.Development.WebTesting
       return new WebTestActionOptions
              {
                  CompletionDetectionStrategy =
-                     userDefinedWebTestActionOptions.CompletionDetectionStrategy ?? GetDefaultCompletionDetectionStrategy (scope),
+                     userDefinedWebTestActionOptions.CompletionDetectionStrategy ?? GetDefaultCompletionDetectionStrategy(scope),
                  ModalDialogHandler = userDefinedWebTestActionOptions.ModalDialogHandler
              };
     }
@@ -96,12 +96,12 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     protected void ExecuteAction ([NotNull] WebTestAction action, [NotNull] IWebTestActionOptions actionOptions)
     {
-      ArgumentUtility.CheckNotNull ("action", action);
-      ArgumentUtility.CheckNotNull ("actionOptions", actionOptions);
+      ArgumentUtility.CheckNotNull("action", action);
+      ArgumentUtility.CheckNotNull("actionOptions", actionOptions);
 
-      OnActionExecute (action, actionOptions);
+      OnActionExecute(action, actionOptions);
 
-      action.Execute (actionOptions);
+      action.Execute(actionOptions);
     }
 
     /// <summary>
@@ -109,10 +109,10 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     protected void OnActionExecute ([NotNull] WebTestAction action, [NotNull] IWebTestActionOptions actionOptions)
     {
-      ArgumentUtility.CheckNotNull ("action", action);
-      ArgumentUtility.CheckNotNull ("actionOptions", actionOptions);
+      ArgumentUtility.CheckNotNull("action", action);
+      ArgumentUtility.CheckNotNull("actionOptions", actionOptions);
 
-      _actionExecuteEvent?.Invoke (action, actionOptions);
+      _actionExecuteEvent?.Invoke(action, actionOptions);
     }
 
     /// <summary>
@@ -120,7 +120,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     protected UnspecifiedPageObject UnspecifiedPage ()
     {
-      return new UnspecifiedPageObject (Context);
+      return new UnspecifiedPageObject(Context);
     }
   }
 }

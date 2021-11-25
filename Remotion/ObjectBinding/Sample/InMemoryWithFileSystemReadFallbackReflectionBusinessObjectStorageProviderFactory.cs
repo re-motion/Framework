@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public InMemoryWithFileSystemReadFallbackReflectionBusinessObjectStorageProviderFactory (string objectPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("objectPath", objectPath);
+      ArgumentUtility.CheckNotNullOrEmpty("objectPath", objectPath);
 
       _objectPath = objectPath;
     }
@@ -32,9 +32,9 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public IReflectionBusinessObjectStorageProvider CreateBusinessObjectStorageProvider ()
     {
-      var fileSystemReflectionBusinessObjectStorageProvider = new FileSystemReflectionBusinessObjectStorageProvider (_objectPath);
+      var fileSystemReflectionBusinessObjectStorageProvider = new FileSystemReflectionBusinessObjectStorageProvider(_objectPath);
       var inMemoryReflectionBusinessObjectStorageProvider = new InMemoryReflectionBusinessObjectStorageProvider();
-      return new ReadFallbackReflectionBusinessObjectStorageProviderDecorator (
+      return new ReadFallbackReflectionBusinessObjectStorageProviderDecorator(
           inMemoryReflectionBusinessObjectStorageProvider,
           fileSystemReflectionBusinessObjectStorageProvider);
     }

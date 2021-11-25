@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       BusinessObjectProviderAttribute attribute = new BindableObjectProviderAttribute();
 
-      Assert.That (attribute.BusinessObjectProviderType, Is.EqualTo (typeof (BindableObjectProvider)));
+      Assert.That(attribute.BusinessObjectProviderType, Is.EqualTo(typeof (BindableObjectProvider)));
     }
   }
 }

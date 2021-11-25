@@ -24,7 +24,7 @@ namespace Remotion.Development.UnitTesting
   {
     public static void Run (Action<object[]> action, params object[] args)
     {
-      Run (AppContext.BaseDirectory, action, args);
+      Run(AppContext.BaseDirectory, action, args);
     }
 
     public static void Run (string applicationBase, Action<object[]> action, params object[] args)
@@ -33,10 +33,10 @@ namespace Remotion.Development.UnitTesting
       AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
       setup.ApplicationBase = applicationBase;
       setup.ApplicationName = "AppDomainRunner - AppDomain";
-      var runner = new AppDomainRunner (setup, action, args);
-      runner.Run ();
+      var runner = new AppDomainRunner(setup, action, args);
+      runner.Run();
 #else
-      throw new PlatformNotSupportedException ("This API is not supported on the current platform.");
+      throw new PlatformNotSupportedException("This API is not supported on the current platform.");
 #endif
     }
 
@@ -52,7 +52,7 @@ namespace Remotion.Development.UnitTesting
 
     protected override void CrossAppDomainCallbackHandler ()
     {
-      _action (_args);
+      _action(_args);
     }
   }
 }

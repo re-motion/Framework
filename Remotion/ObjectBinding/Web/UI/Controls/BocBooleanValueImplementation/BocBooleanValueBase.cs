@@ -53,8 +53,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     /// <param name="e">ignored</param>
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
-      Page!.RegisterRequiresPostBack (this);
+      base.OnInit(e);
+      Page!.RegisterRequiresPostBack(this);
     }
 
     /// <summary> Occurs when the <see cref="Value"/> property changes between postbacks. </summary>
@@ -62,8 +62,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     [Description ("Fires when the value of the control has changed.")]
     public event EventHandler CheckedChanged
     {
-      add { Events.AddHandler (s_checkedChangedEvent, value); }
-      remove { Events.RemoveHandler (s_checkedChangedEvent, value); }
+      add { Events.AddHandler(s_checkedChangedEvent, value); }
+      remove { Events.RemoveHandler(s_checkedChangedEvent, value); }
     }
 
     /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
@@ -82,16 +82,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
       bool? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (bool?) DataSource.BusinessObject.GetProperty (Property);
+        value = (bool?) DataSource.BusinessObject.GetProperty(Property);
 
-      LoadValueInternal (value, false);
+      LoadValueInternal(value, false);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <include file='..\..\..\doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (bool? value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
     
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
       if (interim)
         return;
 
-      SetValue (value);
+      SetValue(value);
       IsDirty = false;
     }
 
@@ -137,7 +137,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
       set
       {
         IsDirty = true;
-        SetValue (value);
+        SetValue(value);
       }
     }
     
@@ -146,7 +146,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     protected override sealed object? ValueImplementation
     {
       get { return Value; }
-      set { Value = ArgumentUtility.CheckType<bool?> ("value", value); }
+      set { Value = ArgumentUtility.CheckType<bool?>("value", value); }
     }
 
     /// <summary>
@@ -285,7 +285,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     {
       EventHandler? eventHandler = (EventHandler?) Events[s_checkedChangedEvent];
       if (eventHandler != null)
-        eventHandler (this, EventArgs.Empty);
+        eventHandler(this, EventArgs.Empty);
     }
 
     /// <summary> The <see cref="BocCheckBox"/> supports only scalar properties. </summary>
@@ -300,7 +300,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       if (RequiresLoadPostData)
-        return LoadPostData (postDataKey, postCollection);
+        return LoadPostData(postDataKey, postCollection);
 
       return false;
     }
@@ -323,7 +323,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
 
     IEnumerable<string> IBocBooleanValueBase.GetValidationErrors ()
     {
-      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct();
     }
 
     protected abstract string ControlType { get; }

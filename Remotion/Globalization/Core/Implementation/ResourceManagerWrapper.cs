@@ -46,7 +46,7 @@ namespace Remotion.Globalization.Implementation
   {
     //  static members
 
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceManagerWrapper));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof (ResourceManagerWrapper));
 
     // member fields
 
@@ -75,16 +75,16 @@ namespace Remotion.Globalization.Implementation
     /// </param>
     public ResourceManagerWrapper (ResourceManager resourceManager, IReadOnlyList<CultureInfo> availableCultures)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("availableCultures", availableCultures);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("availableCultures", availableCultures);
 
       _resourceManager = resourceManager;
-      _availableCultures = availableCultures.SelectMany (GetCultureHierarchy).Distinct().ToArray();
+      _availableCultures = availableCultures.SelectMany(GetCultureHierarchy).Distinct().ToArray();
 
       // Optimized for memory allocations
       _resourceSetsAddValueFactory = GetResourceSet;
       _resourceSetsUpdateValueFactory = (key, value) => value;
-      _cachedResourceSetValueFactory = key => GetAllStringsInternal (key.Item1, key.Item2);
+      _cachedResourceSetValueFactory = key => GetAllStringsInternal(key.Item1, key.Item2);
     }
 
     // methods and properties
@@ -126,20 +126,20 @@ namespace Remotion.Globalization.Implementation
     /// </remarks>
     public IReadOnlyDictionary<string, string> GetAllStrings (string? prefix)
     {
-      return _cachedResourceSet.GetOrAdd (
-          Tuple.Create (CultureInfo.CurrentUICulture, prefix ?? string.Empty),
+      return _cachedResourceSet.GetOrAdd(
+          Tuple.Create(CultureInfo.CurrentUICulture, prefix ?? string.Empty),
           _cachedResourceSetValueFactory);
     }
 
     private IReadOnlyDictionary<string, string> GetAllStringsInternal (CultureInfo cultureInfo, string prefix)
     {
       //  Loop through all entries in the resource managers
-      CultureInfo[] cultureHierarchy = GetCultureHierarchy (cultureInfo);
+      CultureInfo[] cultureHierarchy = GetCultureHierarchy(cultureInfo);
 
       // We need to load the cultures before any access to the resource manager happens because
       // if a culture has no resources the resource manager creates a fallback resource set for this culture.
       // This would be a problem for GetAvailableStrings() because we do not want to return fallback values.
-      CheckAndSetAvailableCultures (cultureHierarchy);
+      CheckAndSetAvailableCultures(cultureHierarchy);
 
       // Loop from most neutral to current UICulture
       // Copy the resources into a collection
@@ -147,13 +147,13 @@ namespace Remotion.Globalization.Implementation
       for (int i = 0; i < cultureHierarchy.Length; i++)
       {
         CultureInfo culture = cultureHierarchy[i];
-        ResourceSet? resourceSet = GetResourceSet (culture);
+        ResourceSet? resourceSet = GetResourceSet(culture);
         if (resourceSet != null)
         {
           foreach (DictionaryEntry entry in resourceSet)
           {
             string entryKey = (string) entry.Key;
-            if (entryKey.StartsWith (prefix))
+            if (entryKey.StartsWith(prefix))
               result[entryKey] = (string) entry.Value!;
           }
         }
@@ -167,21 +167,21 @@ namespace Remotion.Globalization.Implementation
     /// </summary>
     public bool TryGetString (string id, [MaybeNullWhen (false)] out string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
 
       // We need to load the cultures before any access to the resource manager happens because
       // if a culture has no resources the resource manager creates a fallback resource set for this culture.
       // This would be a problem for GetAvailableStrings() because we do not want to return fallback values.
-      CheckAndSetAvailableCultures (GetCultureHierarchy (CultureInfo.CurrentCulture));
+      CheckAndSetAvailableCultures(GetCultureHierarchy(CultureInfo.CurrentCulture));
 
-      string? result = _resourceManager.GetString (id);
+      string? result = _resourceManager.GetString(id);
       if (result != null)
       {
         value = result;
         return true;
       }
 
-      s_log.DebugFormat ("Could not find resource with ID '{0}' in resource container '{1}'.", id, _resourceManager.BaseName);
+      s_log.DebugFormat("Could not find resource with ID '{0}' in resource container '{1}'.", id, _resourceManager.BaseName);
       value = null;
       return false;
     }
@@ -195,7 +195,7 @@ namespace Remotion.Globalization.Implementation
       // We need to load the cultures before any access to the resource manager happens because
       // if a culture has no resources the resource manager creates a fallback resource set for this culture.
       // This would be a problem for GetAvailableStrings() because we do not want to return fallback values.
-      CheckAndSetAvailableCultures (_availableCultures);
+      CheckAndSetAvailableCultures(_availableCultures);
       
       // Loop through all entries in the resource managers
       // Copy the resources into a collection
@@ -206,9 +206,9 @@ namespace Remotion.Globalization.Implementation
         var resourceSet = kvp.Value;
         if (resourceSet != null)
         {
-          var value = resourceSet.GetString (id);
+          var value = resourceSet.GetString(id);
           if (value != null)
-            result.Add (cultureInfo, value);
+            result.Add(cultureInfo, value);
         }
       }
 
@@ -232,16 +232,16 @@ namespace Remotion.Globalization.Implementation
 
       do
       {
-        hierarchyTopDown.Add (currentLevel);
+        hierarchyTopDown.Add(currentLevel);
         currentLevel = currentLevel.Parent;
       } while (currentLevel != CultureInfo.InvariantCulture);
 
       if (mostSpecialized != CultureInfo.InvariantCulture)
-        hierarchyTopDown.Add (currentLevel);
+        hierarchyTopDown.Add(currentLevel);
 
       hierarchyTopDown.Reverse();
 
-      return (CultureInfo[]) hierarchyTopDown.ToArray (typeof (CultureInfo));
+      return (CultureInfo[]) hierarchyTopDown.ToArray(typeof (CultureInfo));
     }
 
     bool INullObject.IsNull
@@ -251,7 +251,7 @@ namespace Remotion.Globalization.Implementation
 
     private ResourceSet GetResourceSet (CultureInfo culture)
     {
-      return _resourceManager.GetResourceSet (culture, true, false)!;
+      return _resourceManager.GetResourceSet(culture, true, false)!;
     }
 
     private void CheckAndSetAvailableCultures (IReadOnlyList<CultureInfo> cultures)
@@ -261,7 +261,7 @@ namespace Remotion.Globalization.Implementation
       for (int index = 0; index < cultures.Count; index++)
       {
         var cultureInfo = cultures[index];
-        _resourceSets.AddOrUpdate (cultureInfo, _resourceSetsAddValueFactory, _resourceSetsUpdateValueFactory);
+        _resourceSets.AddOrUpdate(cultureInfo, _resourceSetsAddValueFactory, _resourceSetsUpdateValueFactory);
       }
     }
   }

@@ -32,9 +32,9 @@ namespace Remotion.Web.UI.Controls
     /// <returns>A list of <see cref="WebTreeNode"/>s grouped by their category.</returns>
     public static IReadOnlyList<WebTreeNode> GroupByCategory (WebTreeNodeCollection nodes)
     {
-      ArgumentUtility.CheckNotNull ("nodes", nodes);
+      ArgumentUtility.CheckNotNull("nodes", nodes);
 
-      return nodes.Cast<WebTreeNode>().GroupBy (node => node.Category).SelectMany (node => node).ToArray();
+      return nodes.Cast<WebTreeNode>().GroupBy(node => node.Category).SelectMany(node => node).ToArray();
     }
 
     private WebTreeView? _treeView;
@@ -61,28 +61,28 @@ namespace Remotion.Web.UI.Controls
 
     protected override void ValidateNewValue ([NotNull]object? value)
     {
-      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode> ("value", value!);
+      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode>("value", value!);
 
-      if (string.IsNullOrEmpty (node.ItemID))
-        throw new ArgumentException ("The node does not contain an 'ItemID' and can therfor not be inserted into the collection.", "value");
+      if (string.IsNullOrEmpty(node.ItemID))
+        throw new ArgumentException("The node does not contain an 'ItemID' and can therfor not be inserted into the collection.", "value");
 
-      base.ValidateNewValue (value);
+      base.ValidateNewValue(value);
     }
 
     protected override void OnInsertComplete (int index, object? value)
     {
-      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode> ("value", value!);
+      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode>("value", value!);
 
-      base.OnInsertComplete (index, value);
-      node.SetParent (_treeView, _parentNode);
+      base.OnInsertComplete(index, value);
+      node.SetParent(_treeView, _parentNode);
     }
 
     protected override void OnSetComplete (int index, object? oldValue, object? newValue)
     {
-      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode> ("newValue", newValue!);
+      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode>("newValue", newValue!);
 
-      base.OnSetComplete (index, oldValue, newValue);
-      node.SetParent (_treeView, _parentNode);
+      base.OnSetComplete(index, oldValue, newValue);
+      node.SetParent(_treeView, _parentNode);
     }
 
     protected internal void SetParent (WebTreeView? treeView, WebTreeNode? parentNode)
@@ -92,7 +92,7 @@ namespace Remotion.Web.UI.Controls
       for (int i = 0; i < InnerList.Count; i++)
       {
         WebTreeNode node = (WebTreeNode) InnerList[i]!;
-        node.SetParent (_treeView, parentNode);
+        node.SetParent(_treeView, parentNode);
       }
     }
 
@@ -103,7 +103,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns> A <see cref="WebTreeNode"/> or <see langword="null"/> if no mathcing node was found. </returns>
     public new WebTreeNode? Find (string id)
     {
-      return (WebTreeNode?) base.Find (id);
+      return (WebTreeNode?) base.Find(id);
     }
 
     //  /// <summary>

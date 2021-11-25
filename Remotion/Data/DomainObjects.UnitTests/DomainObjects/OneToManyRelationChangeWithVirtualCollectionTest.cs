@@ -54,43 +54,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
                                          _oldReviewer, _newReviewer, _productReview1
                                      };
 
-      var eventReceiver = new SequenceEventReceiver (domainObjectEventSources, new DomainObjectCollection[0]);
+      var eventReceiver = new SequenceEventReceiver(domainObjectEventSources, new DomainObjectCollection[0]);
 
       _productReview1.Reviewer = _newReviewer;
 
       var expectedChangeStates = new ChangeState[]
                                  {
-                                     new RelationChangeState (
+                                     new RelationChangeState(
                                          _productReview1,
                                          typeof (ProductReview).FullName + ".Reviewer",
                                          _oldReviewer,
                                          _newReviewer,
                                          "1. Changing event of reviews from old to new reviewer"),
-                                     new RelationChangeState (
+                                     new RelationChangeState(
                                          _newReviewer,
                                          typeof (Person).FullName + ".Reviews",
                                          null,
                                          _productReview1,
                                          "2. Changing event of new reviewer"),
-                                     new RelationChangeState (
+                                     new RelationChangeState(
                                          _oldReviewer,
                                          typeof (Person).FullName + ".Reviews",
                                          _productReview1,
                                          null,
                                          "3. Changing event of old reviewer"),
-                                     new RelationChangeState (
+                                     new RelationChangeState(
                                          _oldReviewer,
                                          typeof (Person).FullName + ".Reviews",
                                          null,
                                          null,
                                          "4. Changed event of old reviewer"),
-                                     new RelationChangeState (
+                                     new RelationChangeState(
                                          _newReviewer,
                                          typeof (Person).FullName + ".Reviews",
                                          null,
                                          null,
                                          "5. Changed event of new reviewer"),
-                                     new RelationChangeState (
+                                     new RelationChangeState(
                                          _productReview1,
                                          typeof (ProductReview).FullName + ".Reviewer",
                                          null,
@@ -98,32 +98,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
                                          "6. Changed event of reviews from old to new reviewer"),
                                  };
 
-      eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Check(expectedChangeStates);
 
-      Assert.That (_productReview1.State.IsChanged, Is.True);
-      Assert.That (_oldReviewer.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
-      Assert.That (_newReviewer.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
+      Assert.That(_productReview1.State.IsChanged, Is.True);
+      Assert.That(_oldReviewer.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
+      Assert.That(_newReviewer.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
 
-      Assert.That (_productReview1.Reviewer, Is.SameAs (_newReviewer));
-      Assert.That (_oldReviewer.Reviews.GetObject (_productReview1.ID), Is.Null);
-      Assert.That (_newReviewer.Reviews.GetObject (_productReview1.ID), Is.SameAs (_productReview1));
+      Assert.That(_productReview1.Reviewer, Is.SameAs(_newReviewer));
+      Assert.That(_oldReviewer.Reviews.GetObject(_productReview1.ID), Is.Null);
+      Assert.That(_newReviewer.Reviews.GetObject(_productReview1.ID), Is.SameAs(_productReview1));
 
-      Assert.That (_productReview1.InternalDataContainer.State.IsChanged, Is.True);
-      Assert.That (_oldReviewer.InternalDataContainer.State.IsUnchanged, Is.True);
-      Assert.That (_newReviewer.InternalDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(_productReview1.InternalDataContainer.State.IsChanged, Is.True);
+      Assert.That(_oldReviewer.InternalDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(_newReviewer.InternalDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void ChildCancelsChangeEvent ()
     {
       var domainObjectEventSources = new DomainObject[] { _oldReviewer, _newReviewer, _productReview1 };
-      var eventReceiver = new SequenceEventReceiver (domainObjectEventSources, new DomainObjectCollection[0], 1);
+      var eventReceiver = new SequenceEventReceiver(domainObjectEventSources, new DomainObjectCollection[0], 1);
 
-      Assert.That (() => _productReview1.Reviewer = _newReviewer, Throws.TypeOf<EventReceiverCancelException>());
+      Assert.That(() => _productReview1.Reviewer = _newReviewer, Throws.TypeOf<EventReceiverCancelException>());
 
       var expectedChangeStates = new ChangeState[]
                                  {
-                                     new RelationChangeState (
+                                     new RelationChangeState(
                                          _productReview1,
                                          typeof (ProductReview).FullName + ".Reviewer",
                                          _oldReviewer,
@@ -131,15 +131,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
                                          "1. Changing event of reviews from old to new reviewer")
                                  };
 
-      eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Check(expectedChangeStates);
 
-      Assert.That (_productReview1.State.IsUnchanged, Is.True);
-      Assert.That (_oldReviewer.State.IsUnchanged, Is.True); // TODO: RM-7294: IsRelationChanged
-      Assert.That (_newReviewer.State.IsUnchanged, Is.True); // TODO: RM-7294: IsRelationChanged
+      Assert.That(_productReview1.State.IsUnchanged, Is.True);
+      Assert.That(_oldReviewer.State.IsUnchanged, Is.True); // TODO: RM-7294: IsRelationChanged
+      Assert.That(_newReviewer.State.IsUnchanged, Is.True); // TODO: RM-7294: IsRelationChanged
 
-      Assert.That (_productReview1.Reviewer, Is.SameAs (_oldReviewer));
-      Assert.That (_oldReviewer.Reviews.GetObject (_productReview1.ID), Is.SameAs (_productReview1));
-      Assert.That (_newReviewer.Reviews.GetObject (_productReview1.ID), Is.Null);
+      Assert.That(_productReview1.Reviewer, Is.SameAs(_oldReviewer));
+      Assert.That(_oldReviewer.Reviews.GetObject(_productReview1.ID), Is.SameAs(_productReview1));
+      Assert.That(_newReviewer.Reviews.GetObject(_productReview1.ID), Is.Null);
     }
 
     [Test]
@@ -150,19 +150,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
                                          _oldReviewer, _newReviewer, _productReview1
                                      };
 
-      var eventReceiver = new SequenceEventReceiver (domainObjectEventSources, new DomainObjectCollection[0], 2);
+      var eventReceiver = new SequenceEventReceiver(domainObjectEventSources, new DomainObjectCollection[0], 2);
 
-      Assert.That (() => _productReview1.Reviewer = _newReviewer, Throws.TypeOf<EventReceiverCancelException>());
+      Assert.That(() => _productReview1.Reviewer = _newReviewer, Throws.TypeOf<EventReceiverCancelException>());
 
       var expectedChangeStates = new ChangeState[]
                                  {
-                                     new RelationChangeState (
+                                     new RelationChangeState(
                                          _productReview1,
                                          typeof (ProductReview).FullName + ".Reviewer",
                                          _oldReviewer,
                                          _newReviewer,
                                          "1. Changing event of reviews from old to new reviewer"),
-                                     new RelationChangeState (
+                                     new RelationChangeState(
                                          _newReviewer,
                                          typeof (Person).FullName + ".Reviews",
                                          null,
@@ -170,15 +170,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
                                          "2. Changing event of new reviewer")
                                  };
 
-      eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Check(expectedChangeStates);
 
-      Assert.That (_productReview1.State.IsUnchanged, Is.True);
-      Assert.That (_oldReviewer.State.IsUnchanged, Is.True);
-      Assert.That (_newReviewer.State.IsUnchanged, Is.True);
+      Assert.That(_productReview1.State.IsUnchanged, Is.True);
+      Assert.That(_oldReviewer.State.IsUnchanged, Is.True);
+      Assert.That(_newReviewer.State.IsUnchanged, Is.True);
 
-      Assert.That (_productReview1.Reviewer, Is.SameAs (_oldReviewer));
-      Assert.That (_oldReviewer.Reviews.GetObject (_productReview1.ID), Is.SameAs (_productReview1));
-      Assert.That (_newReviewer.Reviews.GetObject (_productReview1.ID), Is.Null);
+      Assert.That(_productReview1.Reviewer, Is.SameAs(_oldReviewer));
+      Assert.That(_oldReviewer.Reviews.GetObject(_productReview1.ID), Is.SameAs(_productReview1));
+      Assert.That(_newReviewer.Reviews.GetObject(_productReview1.ID), Is.Null);
     }
 
     [Test]
@@ -189,25 +189,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
                                          _oldReviewer, _newReviewer, _productReview1
                                      };
 
-      var eventReceiver = new SequenceEventReceiver (domainObjectEventSources, new DomainObjectCollection[0], 3);
+      var eventReceiver = new SequenceEventReceiver(domainObjectEventSources, new DomainObjectCollection[0], 3);
 
-      Assert.That (() => _productReview1.Reviewer = _newReviewer, Throws.TypeOf<EventReceiverCancelException>());
+      Assert.That(() => _productReview1.Reviewer = _newReviewer, Throws.TypeOf<EventReceiverCancelException>());
 
       var expectedChangeStates = new ChangeState[]
                                  {
-                                     new RelationChangeState (
+                                     new RelationChangeState(
                                          _productReview1,
                                          typeof (ProductReview).FullName + ".Reviewer",
                                          _oldReviewer,
                                          _newReviewer,
                                          "1. Changing event of reviews from old to new reviewer"),
-                                     new RelationChangeState (
+                                     new RelationChangeState(
                                          _newReviewer,
                                          typeof (Person).FullName + ".Reviews",
                                          null,
                                          _productReview1,
                                          "2. Changing event of new reviewer"),
-                                     new RelationChangeState (
+                                     new RelationChangeState(
                                          _oldReviewer,
                                          typeof (Person).FullName + ".Reviews",
                                          _productReview1,
@@ -215,15 +215,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
                                          "3. Changing event of old reviewer")
                                  };
 
-      eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Check(expectedChangeStates);
 
-      Assert.That (_productReview1.State.IsUnchanged, Is.True);
-      Assert.That (_oldReviewer.State.IsUnchanged, Is.True);
-      Assert.That (_newReviewer.State.IsUnchanged, Is.True);
+      Assert.That(_productReview1.State.IsUnchanged, Is.True);
+      Assert.That(_oldReviewer.State.IsUnchanged, Is.True);
+      Assert.That(_newReviewer.State.IsUnchanged, Is.True);
 
-      Assert.That (_productReview1.Reviewer, Is.SameAs (_oldReviewer));
-      Assert.That (_oldReviewer.Reviews.GetObject (_productReview1.ID), Is.SameAs (_productReview1));
-      Assert.That (_newReviewer.Reviews.GetObject (_productReview1.ID), Is.Null);
+      Assert.That(_productReview1.Reviewer, Is.SameAs(_oldReviewer));
+      Assert.That(_oldReviewer.Reviews.GetObject(_productReview1.ID), Is.SameAs(_productReview1));
+      Assert.That(_newReviewer.Reviews.GetObject(_productReview1.ID), Is.Null);
     }
 
     [Test]
@@ -231,9 +231,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _productReview1.Reviewer = _newReviewer;
 
-      Assert.That (_productReview1.State.IsChanged, Is.True);
-      Assert.That (_oldReviewer.State.IsChanged, Is.True);
-      Assert.That (_newReviewer.State.IsChanged, Is.True);
+      Assert.That(_productReview1.State.IsChanged, Is.True);
+      Assert.That(_oldReviewer.State.IsChanged, Is.True);
+      Assert.That(_newReviewer.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -241,65 +241,65 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _productReview1.Reviewer = _newReviewer;
 
-      Assert.That (_productReview1.State.IsChanged, Is.True);
-      Assert.That (_oldReviewer.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
-      Assert.That (_newReviewer.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
+      Assert.That(_productReview1.State.IsChanged, Is.True);
+      Assert.That(_oldReviewer.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
+      Assert.That(_newReviewer.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
 
-      Assert.That (_productReview1.Reviewer, Is.SameAs (_newReviewer));
-      Assert.That (_oldReviewer.Reviews.GetObject (_productReview1.ID), Is.Null);
-      Assert.That (_newReviewer.Reviews.GetObject (_productReview1.ID), Is.SameAs (_productReview1));
+      Assert.That(_productReview1.Reviewer, Is.SameAs(_newReviewer));
+      Assert.That(_oldReviewer.Reviews.GetObject(_productReview1.ID), Is.Null);
+      Assert.That(_newReviewer.Reviews.GetObject(_productReview1.ID), Is.SameAs(_productReview1));
 
-      Assert.That (_productReview1.InternalDataContainer.State.IsChanged, Is.True);
-      Assert.That (_newReviewer.InternalDataContainer.State.IsUnchanged, Is.True);
-      Assert.That (_oldReviewer.InternalDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(_productReview1.InternalDataContainer.State.IsChanged, Is.True);
+      Assert.That(_newReviewer.InternalDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(_oldReviewer.InternalDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void ChangeRelationBackToOriginalValue ()
     {
       _productReview1.Reviewer = _newReviewer;
-      Assert.That (_productReview1.State.IsChanged, Is.True);
-      Assert.That (_oldReviewer.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
-      Assert.That (_newReviewer.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
+      Assert.That(_productReview1.State.IsChanged, Is.True);
+      Assert.That(_oldReviewer.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
+      Assert.That(_newReviewer.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
 
       _productReview1.Reviewer = _oldReviewer;
-      Assert.That (_productReview1.State.IsUnchanged, Is.True);
-      Assert.That (_oldReviewer.State.IsUnchanged, Is.True); // TODO: RM-7294: IsRelationChanged
-      Assert.That (_newReviewer.State.IsUnchanged, Is.True); // TODO: RM-7294: IsRelationChanged
+      Assert.That(_productReview1.State.IsUnchanged, Is.True);
+      Assert.That(_oldReviewer.State.IsUnchanged, Is.True); // TODO: RM-7294: IsRelationChanged
+      Assert.That(_newReviewer.State.IsUnchanged, Is.True); // TODO: RM-7294: IsRelationChanged
     }
 
     [Test]
     public void SetOriginalValue ()
     {
       _productReview1.Reviewer = _productReview1.Reviewer;
-      Assert.That (_productReview1.State.IsUnchanged, Is.True);
-      Assert.That (_productReview1.Reviewer.State.IsUnchanged, Is.True);
+      Assert.That(_productReview1.State.IsUnchanged, Is.True);
+      Assert.That(_productReview1.Reviewer.State.IsUnchanged, Is.True);
 
-      Assert.That (_productReview1.InternalDataContainer.State.IsUnchanged, Is.True);
-      Assert.That (_productReview1.Reviewer.InternalDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(_productReview1.InternalDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(_productReview1.Reviewer.InternalDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void HasBeenTouched_FromOneProperty ()
     {
-      CheckTouching (
+      CheckTouching(
           delegate { _productReview1.Reviewer = _newReviewer; },
           _productReview1,
           "Reviewer",
-          RelationEndPointID.Create (_productReview1.ID, typeof (ProductReview).FullName + ".Reviewer"),
-          RelationEndPointID.Create (_newReviewer.ID, typeof (Person).FullName + ".Reviews"),
-          RelationEndPointID.Create (_oldReviewer.ID, typeof (Person).FullName + ".Reviews"));
+          RelationEndPointID.Create(_productReview1.ID, typeof (ProductReview).FullName + ".Reviewer"),
+          RelationEndPointID.Create(_newReviewer.ID, typeof (Person).FullName + ".Reviews"),
+          RelationEndPointID.Create(_oldReviewer.ID, typeof (Person).FullName + ".Reviews"));
     }
 
     [Test]
     public void HasBeenTouched_FromOneProperty_OriginalValue ()
     {
-      CheckTouching (
+      CheckTouching(
           delegate { _productReview1.Reviewer = _productReview1.Reviewer; },
           _productReview1,
           "Reviewer",
-          RelationEndPointID.Create (_productReview1.ID, typeof (ProductReview).FullName + ".Reviewer"),
-          RelationEndPointID.Create (_oldReviewer.ID, typeof (Person).FullName + ".Reviews"));
+          RelationEndPointID.Create(_productReview1.ID, typeof (ProductReview).FullName + ".Reviewer"),
+          RelationEndPointID.Create(_oldReviewer.ID, typeof (Person).FullName + ".Reviews"));
     }
 
     [Test]
@@ -307,38 +307,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _productReview1.Reviewer = _newReviewer;
 
-      Assert.That (_productReview1.Reviewer, Is.SameAs (_newReviewer));
-      Assert.That (_productReview1.GetOriginalRelatedObject (typeof (ProductReview).FullName + ".Reviewer"), Is.SameAs (_oldReviewer));
+      Assert.That(_productReview1.Reviewer, Is.SameAs(_newReviewer));
+      Assert.That(_productReview1.GetOriginalRelatedObject(typeof (ProductReview).FullName + ".Reviewer"), Is.SameAs(_oldReviewer));
     }
 
     [Test]
     public void GetOriginalRelatedObjects ()
     {
-      Assert.That (_newReviewer.Reviews.GetObject (_productReview1.ID), Is.Null);
+      Assert.That(_newReviewer.Reviews.GetObject(_productReview1.ID), Is.Null);
 
       _productReview1.Reviewer = _newReviewer;
 
-      var oldOrders = _newReviewer.GetOriginalRelatedObjectsAsVirtualCollection (typeof (Person).FullName + ".Reviews");
-      Assert.That (_newReviewer.Reviews.GetObject (_productReview1.ID), Is.SameAs (_productReview1));
-      Assert.That (oldOrders.Contains (_productReview1), Is.False);
+      var oldOrders = _newReviewer.GetOriginalRelatedObjectsAsVirtualCollection(typeof (Person).FullName + ".Reviews");
+      Assert.That(_newReviewer.Reviews.GetObject(_productReview1.ID), Is.SameAs(_productReview1));
+      Assert.That(oldOrders.Contains(_productReview1), Is.False);
     }
 
     [Test]
     public void GetOriginalRelatedObjectsWithLazyLoad ()
     {
       var reviewer = DomainObjectIDs.Person1.GetObject<Person>();
-      var productReviews = reviewer.GetOriginalRelatedObjectsAsVirtualCollection (typeof (Person).FullName + ".Reviews");
+      var productReviews = reviewer.GetOriginalRelatedObjectsAsVirtualCollection(typeof (Person).FullName + ".Reviews");
 
-      Assert.That (productReviews.Count, Is.EqualTo (2));
+      Assert.That(productReviews.Count, Is.EqualTo(2));
     }
 
     [Test]
     public void SetRelatedObjectWithInvalidObjectClass ()
     {
-      Assert.That (
-          () => _productReview1.SetRelatedObject (typeof (ProductReview).FullName + ".Reviewer", DomainObjectIDs.Company1.GetObject<Company>()),
+      Assert.That(
+          () => _productReview1.SetRelatedObject(typeof (ProductReview).FullName + ".Reviewer", DomainObjectIDs.Company1.GetObject<Company>()),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "DomainObject 'Company|c4954da8-8870-45c1-b7a3-c7e5e6ad641a|System.Guid' cannot be assigned "
                   + "to property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Reviewer' "
                   + "of DomainObject 'ProductReview|877540a7-fbcf-4bf3-9007-355ea43e796f|System.Guid', because it is not compatible with the type of the property.",

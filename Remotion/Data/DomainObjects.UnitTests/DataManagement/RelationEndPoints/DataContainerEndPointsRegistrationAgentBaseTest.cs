@@ -51,43 +51,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _endPointFactoryMock = MockRepository.GenerateStrictMock<IRelationEndPointFactory>();
       _registrationAgentMock = MockRepository.GenerateStrictMock<IRelationEndPointRegistrationAgent>();
 
-      _agentPartialMock = MockRepository.GeneratePartialMock<TestableDataContainerEndPointsRegistrationAgentBase> (
+      _agentPartialMock = MockRepository.GeneratePartialMock<TestableDataContainerEndPointsRegistrationAgentBase>(
           _endPointFactoryMock, _registrationAgentMock);
 
-      _map = new RelationEndPointMap (MockRepository.GenerateStub<IClientTransactionEventSink> ());
+      _map = new RelationEndPointMap(MockRepository.GenerateStub<IClientTransactionEventSink>());
 
-      _orderTicketEndPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
-      _customerEndPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer");
+      _orderTicketEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
+      _customerEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "Customer");
 
       _orderTicketEndPointMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPoint>();
-      _orderTicketEndPointMock.Stub (stub => stub.ID).Return (_orderTicketEndPointID);
+      _orderTicketEndPointMock.Stub(stub => stub.ID).Return(_orderTicketEndPointID);
 
       _customerEndPointStub = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
-      _customerEndPointStub.Stub (stub => stub.ID).Return (_customerEndPointID);
+      _customerEndPointStub.Stub(stub => stub.ID).Return(_customerEndPointID);
 
-      _orderDataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
+      _orderDataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
     }
 
     [Test]
     public void RegisterEndPoints ()
     {
       _agentPartialMock
-          .Stub (stub => stub.MockableGetOwnedEndPointIDs (_orderDataContainer))
-          .Return (new[] { _orderTicketEndPointID, _customerEndPointID });
+          .Stub(stub => stub.MockableGetOwnedEndPointIDs(_orderDataContainer))
+          .Return(new[] { _orderTicketEndPointID, _customerEndPointID });
       _agentPartialMock.Replay();
 
-      _endPointFactoryMock.Expect (mock => mock.CreateVirtualObjectEndPoint (_orderTicketEndPointID)).Return (_orderTicketEndPointMock);
-      _endPointFactoryMock.Expect (mock => mock.CreateRealObjectEndPoint (_customerEndPointID, _orderDataContainer)).Return (_customerEndPointStub);
+      _endPointFactoryMock.Expect(mock => mock.CreateVirtualObjectEndPoint(_orderTicketEndPointID)).Return(_orderTicketEndPointMock);
+      _endPointFactoryMock.Expect(mock => mock.CreateRealObjectEndPoint(_customerEndPointID, _orderDataContainer)).Return(_customerEndPointStub);
       _endPointFactoryMock.Replay();
 
-      _orderTicketEndPointMock.Expect (mock => mock.MarkDataComplete (null));
+      _orderTicketEndPointMock.Expect(mock => mock.MarkDataComplete(null));
       _orderTicketEndPointMock.Replay();
 
-      _registrationAgentMock.Expect (mock => mock.RegisterEndPoint (_orderTicketEndPointMock, _map));
-      _registrationAgentMock.Expect (mock => mock.RegisterEndPoint (_customerEndPointStub, _map));
+      _registrationAgentMock.Expect(mock => mock.RegisterEndPoint(_orderTicketEndPointMock, _map));
+      _registrationAgentMock.Expect(mock => mock.RegisterEndPoint(_customerEndPointStub, _map));
       _registrationAgentMock.Replay();
 
-      _agentPartialMock.RegisterEndPoints (_orderDataContainer, _map);
+      _agentPartialMock.RegisterEndPoints(_orderDataContainer, _map);
 
       _endPointFactoryMock.VerifyAllExpectations();
       _registrationAgentMock.VerifyAllExpectations();
@@ -97,76 +97,76 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateUnregisterEndPointsCommand_EndPointsNotLoaded ()
     {
-      _agentPartialMock.Stub (stub => stub.MockableGetOwnedEndPointIDs (_orderDataContainer)).Return (
+      _agentPartialMock.Stub(stub => stub.MockableGetOwnedEndPointIDs(_orderDataContainer)).Return(
           new[] { _orderTicketEndPointID, _customerEndPointID });
       _agentPartialMock.Replay();
 
-      var result = _agentPartialMock.CreateUnregisterEndPointsCommand (_orderDataContainer, _map);
+      var result = _agentPartialMock.CreateUnregisterEndPointsCommand(_orderDataContainer, _map);
 
-      Assert.That (result, Is.TypeOf<UnregisterEndPointsCommand>());
-      Assert.That (((UnregisterEndPointsCommand) result).EndPoints, Is.Empty);
+      Assert.That(result, Is.TypeOf<UnregisterEndPointsCommand>());
+      Assert.That(((UnregisterEndPointsCommand) result).EndPoints, Is.Empty);
     }
 
     [Test]
     public void CreateUnregisterEndPointsCommand_Loaded_NoProblems ()
     {
-      _map.AddEndPoint (_orderTicketEndPointMock);
-      _map.AddEndPoint (_customerEndPointStub);
+      _map.AddEndPoint(_orderTicketEndPointMock);
+      _map.AddEndPoint(_customerEndPointStub);
 
-      _agentPartialMock.Stub (stub => stub.MockableGetOwnedEndPointIDs (_orderDataContainer)).Return (
+      _agentPartialMock.Stub(stub => stub.MockableGetOwnedEndPointIDs(_orderDataContainer)).Return(
           new[] { _orderTicketEndPointID, _customerEndPointID });
-      _agentPartialMock.Expect (mock => mock.MockableGetUnregisterProblem (_orderTicketEndPointMock, _map)).Return (null);
-      _agentPartialMock.Expect (mock => mock.MockableGetUnregisterProblem (_customerEndPointStub, _map)).Return (null);
+      _agentPartialMock.Expect(mock => mock.MockableGetUnregisterProblem(_orderTicketEndPointMock, _map)).Return(null);
+      _agentPartialMock.Expect(mock => mock.MockableGetUnregisterProblem(_customerEndPointStub, _map)).Return(null);
       _agentPartialMock.Replay();
 
-      var result = _agentPartialMock.CreateUnregisterEndPointsCommand (_orderDataContainer, _map);
+      var result = _agentPartialMock.CreateUnregisterEndPointsCommand(_orderDataContainer, _map);
 
       _agentPartialMock.VerifyAllExpectations();
-      Assert.That (result, Is.TypeOf<UnregisterEndPointsCommand>());
-      Assert.That (
-          ((UnregisterEndPointsCommand) result).EndPoints, Is.EqualTo (new IRelationEndPoint[] { _orderTicketEndPointMock, _customerEndPointStub }));
+      Assert.That(result, Is.TypeOf<UnregisterEndPointsCommand>());
+      Assert.That(
+          ((UnregisterEndPointsCommand) result).EndPoints, Is.EqualTo(new IRelationEndPoint[] { _orderTicketEndPointMock, _customerEndPointStub }));
     }
 
     [Test]
     public void CreateUnregisterEndPointsCommand_Loaded_Problems ()
     {
-      _map.AddEndPoint (_orderTicketEndPointMock);
-      _map.AddEndPoint (_customerEndPointStub);
+      _map.AddEndPoint(_orderTicketEndPointMock);
+      _map.AddEndPoint(_customerEndPointStub);
 
-      _agentPartialMock.Stub (stub => stub.MockableGetOwnedEndPointIDs (_orderDataContainer)).Return (
+      _agentPartialMock.Stub(stub => stub.MockableGetOwnedEndPointIDs(_orderDataContainer)).Return(
           new[] { _orderTicketEndPointID, _customerEndPointID });
-      _agentPartialMock.Expect (mock => mock.MockableGetUnregisterProblem (_orderTicketEndPointMock, _map)).Return ("Oh no!");
-      _agentPartialMock.Expect (mock => mock.MockableGetUnregisterProblem (_customerEndPointStub, _map)).Return ("Oh no 2!");
+      _agentPartialMock.Expect(mock => mock.MockableGetUnregisterProblem(_orderTicketEndPointMock, _map)).Return("Oh no!");
+      _agentPartialMock.Expect(mock => mock.MockableGetUnregisterProblem(_customerEndPointStub, _map)).Return("Oh no 2!");
       _agentPartialMock.Replay();
 
-      var result = _agentPartialMock.CreateUnregisterEndPointsCommand (_orderDataContainer, _map);
+      var result = _agentPartialMock.CreateUnregisterEndPointsCommand(_orderDataContainer, _map);
 
       _agentPartialMock.VerifyAllExpectations();
-      Assert.That (result, Is.TypeOf<ExceptionCommand>());
-      Assert.That (
+      Assert.That(result, Is.TypeOf<ExceptionCommand>());
+      Assert.That(
           ((ExceptionCommand) result).Exception.Message,
-          Is.EqualTo (
+          Is.EqualTo(
               "The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.\r\nOh no!\r\nOh no 2!"));
     }
 
     [Test]
     public void CreateUnregisterEndPointsCommand_Loaded_SomeProblems ()
     {
-      _map.AddEndPoint (_orderTicketEndPointMock);
-      _map.AddEndPoint (_customerEndPointStub);
+      _map.AddEndPoint(_orderTicketEndPointMock);
+      _map.AddEndPoint(_customerEndPointStub);
 
-      _agentPartialMock.Stub (stub => stub.MockableGetOwnedEndPointIDs (_orderDataContainer)).Return (
+      _agentPartialMock.Stub(stub => stub.MockableGetOwnedEndPointIDs(_orderDataContainer)).Return(
           new[] { _orderTicketEndPointID, _customerEndPointID });
-      _agentPartialMock.Expect (mock => mock.MockableGetUnregisterProblem (_orderTicketEndPointMock, _map)).Return ("Oh no!");
-      _agentPartialMock.Expect (mock => mock.MockableGetUnregisterProblem (_customerEndPointStub, _map)).Return (null);
+      _agentPartialMock.Expect(mock => mock.MockableGetUnregisterProblem(_orderTicketEndPointMock, _map)).Return("Oh no!");
+      _agentPartialMock.Expect(mock => mock.MockableGetUnregisterProblem(_customerEndPointStub, _map)).Return(null);
       _agentPartialMock.Replay();
 
-      var result = _agentPartialMock.CreateUnregisterEndPointsCommand (_orderDataContainer, _map);
+      var result = _agentPartialMock.CreateUnregisterEndPointsCommand(_orderDataContainer, _map);
 
       _agentPartialMock.VerifyAllExpectations();
-      Assert.That (result, Is.TypeOf<ExceptionCommand>());
-      Assert.That (
-          ((ExceptionCommand) result).Exception.Message, Is.EqualTo (
+      Assert.That(result, Is.TypeOf<ExceptionCommand>());
+      Assert.That(
+          ((ExceptionCommand) result).Exception.Message, Is.EqualTo(
             "The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.\r\nOh no!"));
     }
   }

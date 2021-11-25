@@ -55,25 +55,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       base.SetUp();
 
-      _tableDefinition = TableDefinitionObjectMother.Create (TestDomainStorageProviderDefinition);
-      _filterViewDefinition = FilterViewDefinitionObjectMother.Create (
-          TestDomainStorageProviderDefinition, new EntityNameDefinition (null, "FilterView"), _tableDefinition);
-      _unionViewDefinition = UnionViewDefinitionObjectMother.Create (
-          TestDomainStorageProviderDefinition, new EntityNameDefinition (null, "UnionView"), new[] { _tableDefinition });
-      _emptyViewDefinition = EmptyViewDefinitionObjectMother.Create (TestDomainStorageProviderDefinition);
+      _tableDefinition = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition);
+      _filterViewDefinition = FilterViewDefinitionObjectMother.Create(
+          TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "FilterView"), _tableDefinition);
+      _unionViewDefinition = UnionViewDefinitionObjectMother.Create(
+          TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "UnionView"), new[] { _tableDefinition });
+      _emptyViewDefinition = EmptyViewDefinitionObjectMother.Create(TestDomainStorageProviderDefinition);
 
       _mockRepository = new MockRepository();
-      _voidReceiverMock = _mockRepository.StrictMock<IVisitorCallReceiver> ();
-      _nonVoidReceiverMock = _mockRepository.StrictMock<IVisitorCallReceiver<string>> ();
+      _voidReceiverMock = _mockRepository.StrictMock<IVisitorCallReceiver>();
+      _nonVoidReceiverMock = _mockRepository.StrictMock<IVisitorCallReceiver<string>>();
     }
 
     [Test]
     public void Visit_WithoutResult_TableDefinition ()
     {
-      _voidReceiverMock.Expect (mock => mock.HandleTableDefinition (Arg.Is (_tableDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything));
+      _voidReceiverMock.Expect(mock => mock.HandleTableDefinition(Arg.Is(_tableDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything));
       _voidReceiverMock.Replay();
 
-      InlineRdbmsStorageEntityDefinitionVisitor.Visit (
+      InlineRdbmsStorageEntityDefinitionVisitor.Visit(
           _tableDefinition,
           _voidReceiverMock.HandleTableDefinition,
           _voidReceiverMock.HandleFilterViewDefinition,
@@ -86,112 +86,112 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void Visit_WithoutResult_FilterViewDefinition ()
     {
-      _voidReceiverMock.Expect (mock => mock.HandleFilterViewDefinition (Arg.Is (_filterViewDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything));
-      _voidReceiverMock.Replay ();
+      _voidReceiverMock.Expect(mock => mock.HandleFilterViewDefinition(Arg.Is(_filterViewDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything));
+      _voidReceiverMock.Replay();
 
-      InlineRdbmsStorageEntityDefinitionVisitor.Visit (
+      InlineRdbmsStorageEntityDefinitionVisitor.Visit(
           _filterViewDefinition,
           _voidReceiverMock.HandleTableDefinition,
           _voidReceiverMock.HandleFilterViewDefinition,
           _voidReceiverMock.HandleUnionViewDefinition,
           _voidReceiverMock.HandleEmptyViewDefinition);
 
-      _voidReceiverMock.VerifyAllExpectations ();
+      _voidReceiverMock.VerifyAllExpectations();
     }
 
     [Test]
     public void Visit_WithoutResult_UnionViewDefinition ()
     {
-      _voidReceiverMock.Expect (mock => mock.HandleUnionViewDefinition (Arg.Is (_unionViewDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything));
-      _voidReceiverMock.Replay ();
+      _voidReceiverMock.Expect(mock => mock.HandleUnionViewDefinition(Arg.Is(_unionViewDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything));
+      _voidReceiverMock.Replay();
  
-      InlineRdbmsStorageEntityDefinitionVisitor.Visit (
+      InlineRdbmsStorageEntityDefinitionVisitor.Visit(
           _unionViewDefinition,
           _voidReceiverMock.HandleTableDefinition,
           _voidReceiverMock.HandleFilterViewDefinition,
           _voidReceiverMock.HandleUnionViewDefinition,
           _voidReceiverMock.HandleEmptyViewDefinition);
 
-      _voidReceiverMock.VerifyAllExpectations ();
+      _voidReceiverMock.VerifyAllExpectations();
     }
 
     [Test]
     public void Visit_WithoutResult_EmptyViewDefinition ()
     {
-      _voidReceiverMock.Expect (mock => mock.HandleEmptyViewDefinition (Arg.Is (_emptyViewDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything));
-      _voidReceiverMock.Replay ();
+      _voidReceiverMock.Expect(mock => mock.HandleEmptyViewDefinition(Arg.Is(_emptyViewDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything));
+      _voidReceiverMock.Replay();
 
-      InlineRdbmsStorageEntityDefinitionVisitor.Visit (
+      InlineRdbmsStorageEntityDefinitionVisitor.Visit(
           _emptyViewDefinition,
           _voidReceiverMock.HandleTableDefinition,
           _voidReceiverMock.HandleFilterViewDefinition,
           _voidReceiverMock.HandleUnionViewDefinition,
           _voidReceiverMock.HandleEmptyViewDefinition);
 
-      _voidReceiverMock.VerifyAllExpectations ();
+      _voidReceiverMock.VerifyAllExpectations();
     }
 
     [Test]
     public void Visit_WithoutResult_Continuation ()
     {
-      using (_mockRepository.Ordered ())
+      using (_mockRepository.Ordered())
       {
         _voidReceiverMock
-            .Expect (mock => mock.HandleTableDefinition (Arg.Is (_tableDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything))
-            .WhenCalled (
+            .Expect(mock => mock.HandleTableDefinition(Arg.Is(_tableDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything))
+            .WhenCalled(
                 mi =>
                 {
                   var continuation = (Action<IRdbmsStorageEntityDefinition>) mi.Arguments[1];
-                  continuation (_filterViewDefinition);
+                  continuation(_filterViewDefinition);
                 });
         _voidReceiverMock
-            .Expect (mock => mock.HandleFilterViewDefinition (Arg.Is (_filterViewDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything))
-            .WhenCalled (
+            .Expect(mock => mock.HandleFilterViewDefinition(Arg.Is(_filterViewDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything))
+            .WhenCalled(
                 mi =>
                 {
                   var continuation = (Action<IRdbmsStorageEntityDefinition>) mi.Arguments[1];
-                  continuation (_unionViewDefinition);
+                  continuation(_unionViewDefinition);
                 });
         _voidReceiverMock
-            .Expect (mock => mock.HandleUnionViewDefinition (Arg.Is (_unionViewDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything))
-            .WhenCalled (
+            .Expect(mock => mock.HandleUnionViewDefinition(Arg.Is(_unionViewDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything))
+            .WhenCalled(
                 mi =>
                 {
                   var continuation = (Action<IRdbmsStorageEntityDefinition>) mi.Arguments[1];
-                  continuation (_emptyViewDefinition);
+                  continuation(_emptyViewDefinition);
                 });
         _voidReceiverMock
-            .Expect (mock => mock.HandleEmptyViewDefinition (Arg.Is (_emptyViewDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything))
-            .WhenCalled (
+            .Expect(mock => mock.HandleEmptyViewDefinition(Arg.Is(_emptyViewDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything))
+            .WhenCalled(
                 mi =>
                 {
                   var continuation = (Action<IRdbmsStorageEntityDefinition>) mi.Arguments[1];
-                  continuation (_tableDefinition);
+                  continuation(_tableDefinition);
                 });
-        _voidReceiverMock.Expect (mock => mock.HandleTableDefinition (Arg.Is (_tableDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything));
+        _voidReceiverMock.Expect(mock => mock.HandleTableDefinition(Arg.Is(_tableDefinition), Arg<Action<IRdbmsStorageEntityDefinition>>.Is.Anything));
       }
 
-      _voidReceiverMock.Replay ();
+      _voidReceiverMock.Replay();
 
-      InlineRdbmsStorageEntityDefinitionVisitor.Visit (
+      InlineRdbmsStorageEntityDefinitionVisitor.Visit(
           _tableDefinition,
           _voidReceiverMock.HandleTableDefinition,
           _voidReceiverMock.HandleFilterViewDefinition,
           _voidReceiverMock.HandleUnionViewDefinition,
           _voidReceiverMock.HandleEmptyViewDefinition);
 
-      _voidReceiverMock.VerifyAllExpectations ();
+      _voidReceiverMock.VerifyAllExpectations();
     }
 
     [Test]
     public void Visit_WithResult_TableDefinition ()
     {
       _nonVoidReceiverMock
-        .Expect (mock => mock.HandleTableDefinition(Arg.Is (_tableDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
+        .Expect(mock => mock.HandleTableDefinition(Arg.Is(_tableDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
         .Return("test");
-      _nonVoidReceiverMock.Replay ();
+      _nonVoidReceiverMock.Replay();
 
-      var result = InlineRdbmsStorageEntityDefinitionVisitor.Visit<string> (
+      var result = InlineRdbmsStorageEntityDefinitionVisitor.Visit<string>(
           _tableDefinition,
           _nonVoidReceiverMock.HandleTableDefinition,
           _nonVoidReceiverMock.HandleFilterViewDefinition,
@@ -199,127 +199,127 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           _nonVoidReceiverMock.HandleEmptyViewDefinition);
 
       _nonVoidReceiverMock.VerifyAllExpectations();
-      Assert.That (result, Is.EqualTo ("test"));
+      Assert.That(result, Is.EqualTo("test"));
     }
 
     [Test]
     public void Visit_WithResult_FilterViewDefinition ()
     {
       _nonVoidReceiverMock
-        .Expect (mock => mock.HandleFilterViewDefinition (Arg.Is (_filterViewDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
-        .Return ("test");
+        .Expect(mock => mock.HandleFilterViewDefinition(Arg.Is(_filterViewDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
+        .Return("test");
       _nonVoidReceiverMock.Replay();
 
-      var result = InlineRdbmsStorageEntityDefinitionVisitor.Visit<string> (
+      var result = InlineRdbmsStorageEntityDefinitionVisitor.Visit<string>(
           _filterViewDefinition,
           _nonVoidReceiverMock.HandleTableDefinition,
           _nonVoidReceiverMock.HandleFilterViewDefinition,
           _nonVoidReceiverMock.HandleUnionViewDefinition,
           _nonVoidReceiverMock.HandleEmptyViewDefinition);
 
-      _nonVoidReceiverMock.VerifyAllExpectations ();
-      Assert.That (result, Is.EqualTo ("test"));
+      _nonVoidReceiverMock.VerifyAllExpectations();
+      Assert.That(result, Is.EqualTo("test"));
     }
 
     [Test]
     public void Visit_WithResult_UnionViewDefinition ()
     {
       _nonVoidReceiverMock
-        .Expect (mock => mock.HandleUnionViewDefinition (Arg.Is (_unionViewDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
-        .Return ("test");
-      _nonVoidReceiverMock.Replay ();
+        .Expect(mock => mock.HandleUnionViewDefinition(Arg.Is(_unionViewDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
+        .Return("test");
+      _nonVoidReceiverMock.Replay();
 
-      var result = InlineRdbmsStorageEntityDefinitionVisitor.Visit<string> (
+      var result = InlineRdbmsStorageEntityDefinitionVisitor.Visit<string>(
           _unionViewDefinition,
           _nonVoidReceiverMock.HandleTableDefinition,
           _nonVoidReceiverMock.HandleFilterViewDefinition,
           _nonVoidReceiverMock.HandleUnionViewDefinition,
           _nonVoidReceiverMock.HandleEmptyViewDefinition);
 
-      _nonVoidReceiverMock.VerifyAllExpectations ();
-      Assert.That (result, Is.EqualTo ("test"));
+      _nonVoidReceiverMock.VerifyAllExpectations();
+      Assert.That(result, Is.EqualTo("test"));
     }
 
     [Test]
     public void Visit_WithResult_EmptyViewDefinition ()
     {
       _nonVoidReceiverMock
-        .Expect (mock => mock.HandleEmptyViewDefinition (Arg.Is (_emptyViewDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
-        .Return ("test");
-      _nonVoidReceiverMock.Replay ();
+        .Expect(mock => mock.HandleEmptyViewDefinition(Arg.Is(_emptyViewDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
+        .Return("test");
+      _nonVoidReceiverMock.Replay();
 
-      var result = InlineRdbmsStorageEntityDefinitionVisitor.Visit<string> (
+      var result = InlineRdbmsStorageEntityDefinitionVisitor.Visit<string>(
           _emptyViewDefinition,
           _nonVoidReceiverMock.HandleTableDefinition,
           _nonVoidReceiverMock.HandleFilterViewDefinition,
           _nonVoidReceiverMock.HandleUnionViewDefinition,
           _nonVoidReceiverMock.HandleEmptyViewDefinition);
 
-      _nonVoidReceiverMock.VerifyAllExpectations ();
-      Assert.That (result, Is.EqualTo ("test"));
+      _nonVoidReceiverMock.VerifyAllExpectations();
+      Assert.That(result, Is.EqualTo("test"));
     }
 
     [Test]
     public void Visit_WithResult_Continuation ()
     {
-      using (_mockRepository.Ordered ())
+      using (_mockRepository.Ordered())
       {
         _nonVoidReceiverMock
-            .Expect (mock => mock.HandleTableDefinition (Arg.Is (_tableDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
-            .WhenCalled (
+            .Expect(mock => mock.HandleTableDefinition(Arg.Is(_tableDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
+            .WhenCalled(
                 mi =>
                 {
                   var continuation = (Func<IRdbmsStorageEntityDefinition, string>) mi.Arguments[1];
-                  var value = continuation (_filterViewDefinition);
-                  Assert.That (value, Is.EqualTo ("3"));
+                  var value = continuation(_filterViewDefinition);
+                  Assert.That(value, Is.EqualTo("3"));
                 })
-            .Return ("4");
+            .Return("4");
         _nonVoidReceiverMock
-            .Expect (mock => mock.HandleFilterViewDefinition (Arg.Is (_filterViewDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
-            .WhenCalled (
+            .Expect(mock => mock.HandleFilterViewDefinition(Arg.Is(_filterViewDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
+            .WhenCalled(
                 mi =>
                 {
                   var continuation = (Func<IRdbmsStorageEntityDefinition, string>) mi.Arguments[1];
-                  var value = continuation (_unionViewDefinition);
-                  Assert.That (value, Is.EqualTo ("2"));
+                  var value = continuation(_unionViewDefinition);
+                  Assert.That(value, Is.EqualTo("2"));
                 })
-            .Return ("3");
+            .Return("3");
         _nonVoidReceiverMock
-            .Expect (mock => mock.HandleUnionViewDefinition (Arg.Is (_unionViewDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
-            .WhenCalled (
+            .Expect(mock => mock.HandleUnionViewDefinition(Arg.Is(_unionViewDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
+            .WhenCalled(
                 mi =>
                 {
                   var continuation = (Func<IRdbmsStorageEntityDefinition, string>) mi.Arguments[1];
-                  var value = continuation (_emptyViewDefinition);
-                  Assert.That (value, Is.EqualTo ("1"));
+                  var value = continuation(_emptyViewDefinition);
+                  Assert.That(value, Is.EqualTo("1"));
                 })
-            .Return ("2");
+            .Return("2");
         _nonVoidReceiverMock
-            .Expect (mock => mock.HandleEmptyViewDefinition (Arg.Is (_emptyViewDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
-            .WhenCalled (
+            .Expect(mock => mock.HandleEmptyViewDefinition(Arg.Is(_emptyViewDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
+            .WhenCalled(
                 mi =>
                 {
                   var continuation = (Func<IRdbmsStorageEntityDefinition, string>) mi.Arguments[1];
-                  var value = continuation (_tableDefinition);
-                  Assert.That (value, Is.EqualTo ("0"));
+                  var value = continuation(_tableDefinition);
+                  Assert.That(value, Is.EqualTo("0"));
                 })
-            .Return ("1");
+            .Return("1");
         _nonVoidReceiverMock
-            .Expect (mock => mock.HandleTableDefinition (Arg.Is (_tableDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
-            .Return ("0");
+            .Expect(mock => mock.HandleTableDefinition(Arg.Is(_tableDefinition), Arg<Func<IRdbmsStorageEntityDefinition, string>>.Is.Anything))
+            .Return("0");
       }
 
-      _nonVoidReceiverMock.Replay ();
+      _nonVoidReceiverMock.Replay();
 
-      var result = InlineRdbmsStorageEntityDefinitionVisitor.Visit<string> (
+      var result = InlineRdbmsStorageEntityDefinitionVisitor.Visit<string>(
           _tableDefinition,
           _nonVoidReceiverMock.HandleTableDefinition,
           _nonVoidReceiverMock.HandleFilterViewDefinition,
           _nonVoidReceiverMock.HandleUnionViewDefinition,
           _nonVoidReceiverMock.HandleEmptyViewDefinition);
 
-      _nonVoidReceiverMock.VerifyAllExpectations ();
-      Assert.That (result, Is.EqualTo ("4"));
+      _nonVoidReceiverMock.VerifyAllExpectations();
+      Assert.That(result, Is.EqualTo("4"));
     }
   }
 }

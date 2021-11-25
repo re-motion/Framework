@@ -39,8 +39,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     {
       var obj = _serviceLocator.GetInstance<IPrincipalProvider>();
 
-      Assert.That (obj, Is.Not.Null);
-      Assert.That (obj, Is.TypeOf (typeof (SecurityManagerPrincipalProvider)));
+      Assert.That(obj, Is.Not.Null);
+      Assert.That(obj, Is.TypeOf(typeof (SecurityManagerPrincipalProvider)));
     }
 
     [Test]
@@ -49,7 +49,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       var obj1 = _serviceLocator.GetInstance<IPrincipalProvider>();
       var obj2 = _serviceLocator.GetInstance<IPrincipalProvider>();
 
-      Assert.That (obj1, Is.SameAs (obj2));
+      Assert.That(obj1, Is.SameAs(obj2));
     }
   }
 }

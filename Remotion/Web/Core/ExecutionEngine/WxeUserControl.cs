@@ -42,7 +42,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeUserControl ()
     {
-      _wxeInfo = new WxeTemplateControlInfo (this);
+      _wxeInfo = new WxeTemplateControlInfo(this);
       _lazyContainer = new LazyInitializationContainer();
     }
 
@@ -57,16 +57,16 @@ namespace Remotion.Web.ExecutionEngine
     {
       if (!_isWxeInfoInitialized)
       {
-        _wxeInfo.Initialize (Context);  
+        _wxeInfo.Initialize(Context);  
         _isWxeInfoInitialized = true;
       }
 
       if (_replacer == null)
       {
-        var replacer = new ControlReplacer (new InternalControlMemberCaller());
+        var replacer = new ControlReplacer(new InternalControlMemberCaller());
         replacer.ID = ID + "_Parent";
 
-        _permanentUniqueID = UniqueID.Insert (UniqueID.Length - ID!.Length, replacer.ID + IdSeparator);
+        _permanentUniqueID = UniqueID.Insert(UniqueID.Length - ID!.Length, replacer.ID + IdSeparator);
 
         IUserControlExecutor userControlExecutor = GetUserControlExecutor();
 
@@ -74,9 +74,9 @@ namespace Remotion.Web.ExecutionEngine
         IStateModificationStrategy stateModificationStrategy;
         if (!userControlExecutor.IsNull && !userControlExecutor.IsReturningPostBack)
         {
-          Assertion.IsTrue (userControlExecutor.UserControlID == _permanentUniqueID);
+          Assertion.IsTrue(userControlExecutor.UserControlID == _permanentUniqueID);
           var currentUserControlStep = (WxeUserControlStep) userControlExecutor.Function.ExecutingStep;
-          control = (WxeUserControl) Page!.LoadControl (currentUserControlStep.UserControl);
+          control = (WxeUserControl) Page!.LoadControl(currentUserControlStep.UserControl);
 
           if (!currentUserControlStep.IsPostBack)
             stateModificationStrategy = new StateClearingStrategy();
@@ -87,8 +87,8 @@ namespace Remotion.Web.ExecutionEngine
         {
           if (userControlExecutor.IsReturningPostBack)
           {
-            control = (WxeUserControl) Page!.LoadControl (userControlExecutor.BackedUpUserControl);
-            stateModificationStrategy = new StateReplacingStrategy (userControlExecutor.BackedUpUserControlState);
+            control = (WxeUserControl) Page!.LoadControl(userControlExecutor.BackedUpUserControl);
+            stateModificationStrategy = new StateReplacingStrategy(userControlExecutor.BackedUpUserControlState);
           }
           else
           {
@@ -99,7 +99,7 @@ namespace Remotion.Web.ExecutionEngine
 
         control.ID = ID;
         control._permanentUniqueID = _permanentUniqueID;
-        replacer.ReplaceAndWrap (this, control, stateModificationStrategy);
+        replacer.ReplaceAndWrap(this, control, stateModificationStrategy);
       }
       else
       {
@@ -109,16 +109,16 @@ namespace Remotion.Web.ExecutionEngine
 
     private void CompleteInitialization ()
     {
-      Assertion.IsNotNull (Parent, "The control has not been wrapped by the ControlReplacer during initialization or control replacement.");
+      Assertion.IsNotNull(Parent, "The control has not been wrapped by the ControlReplacer during initialization or control replacement.");
 
-      _lazyContainer.Ensure (base.Controls);
+      _lazyContainer.Ensure(base.Controls);
 
-      OnInitComplete (EventArgs.Empty);
+      OnInitComplete(EventArgs.Empty);
     }
 
     protected virtual void OnInitComplete (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
     }
 
     public override sealed ControlCollection Controls
@@ -127,7 +127,7 @@ namespace Remotion.Web.ExecutionEngine
       {
         EnsureChildControls();
 
-        return _lazyContainer.GetControls (base.Controls);
+        return _lazyContainer.GetControls(base.Controls);
       }
     }
 
@@ -139,9 +139,9 @@ namespace Remotion.Web.ExecutionEngine
     public void ExecuteFunction (WxeFunction function, Control sender, bool? usesEventTarget)
     {
       if (CurrentPageStep.UserControlExecutor.IsNull)
-        CurrentPageStep.ExecuteFunction (this, function, sender, usesEventTarget ?? UsesEventTarget);
+        CurrentPageStep.ExecuteFunction(this, function, sender, usesEventTarget ?? UsesEventTarget);
       else
-        CurrentUserControlStep!.ExecuteFunction (this, function, sender, usesEventTarget ?? UsesEventTarget); // TODO RM-8118: Debug not null assertion
+        CurrentUserControlStep!.ExecuteFunction(this, function, sender, usesEventTarget ?? UsesEventTarget); // TODO RM-8118: Debug not null assertion
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
@@ -218,7 +218,7 @@ namespace Remotion.Web.ExecutionEngine
 
     ControlReplacer IReplaceableControl.Replacer
     {
-      get { return Assertion.IsNotNull (_replacer, "_replacer must be initialized in OnInit."); }
+      get { return Assertion.IsNotNull(_replacer, "_replacer must be initialized in OnInit."); }
       set { _replacer = value; }
     }
 
@@ -227,20 +227,20 @@ namespace Remotion.Web.ExecutionEngine
     {
       get
       {
-        NameValueCollection? postBackCollection = WxePage!.GetPostBackCollection ();
+        NameValueCollection? postBackCollection = WxePage!.GetPostBackCollection();
         if (postBackCollection == null)
         {
           if (WxePage.IsPostBack)
-            throw new InvalidOperationException ("The IWxePage has no PostBackCollection even though this is a post back.");
+            throw new InvalidOperationException("The IWxePage has no PostBackCollection even though this is a post back.");
           return false;
         }
-        return !string.IsNullOrEmpty (postBackCollection[ControlHelper.PostEventSourceID]);
+        return !string.IsNullOrEmpty(postBackCollection[ControlHelper.PostEventSourceID]);
       }
     }
 
     IPage? IControl.Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
   }
 }

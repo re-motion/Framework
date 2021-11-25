@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
 
       var result = axeSourceProvider.GetSource();
 
-      Assert.That (result, Does.StartWith (expected));
+      Assert.That(result, Does.StartWith(expected));
     }
   }
 }

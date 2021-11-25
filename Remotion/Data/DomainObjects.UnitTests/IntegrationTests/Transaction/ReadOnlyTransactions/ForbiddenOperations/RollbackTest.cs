@@ -25,48 +25,48 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
   {
     protected override void InitializeReadOnlyRootTransaction ()
     {
-      base.InitializeReadOnlyRootTransaction ();
-      ClassWithAllDataTypes.NewObject ();
+      base.InitializeReadOnlyRootTransaction();
+      ClassWithAllDataTypes.NewObject();
     }
 
     protected override void InitializeReadOnlyMiddleTransaction ()
     {
-      base.InitializeReadOnlyMiddleTransaction ();
-      ClassWithAllDataTypes.NewObject ();
+      base.InitializeReadOnlyMiddleTransaction();
+      ClassWithAllDataTypes.NewObject();
     }
 
     protected override void InitializeWriteableSubTransaction ()
     {
-      base.InitializeWriteableSubTransaction ();
-      ClassWithAllDataTypes.NewObject ();
+      base.InitializeWriteableSubTransaction();
+      ClassWithAllDataTypes.NewObject();
     }
     
     [Test]
     public void RollbackInReadOnlyRootTransaction_IsForbidden ()
     {
-      Assert.That (ReadOnlyRootTransaction.HasChanged (), Is.True);
-      Assert.That (ReadOnlyMiddleTransaction.HasChanged (), Is.True);
-      Assert.That (WriteableSubTransaction.HasChanged (), Is.True);
+      Assert.That(ReadOnlyRootTransaction.HasChanged(), Is.True);
+      Assert.That(ReadOnlyMiddleTransaction.HasChanged(), Is.True);
+      Assert.That(WriteableSubTransaction.HasChanged(), Is.True);
 
-      CheckForbidden (() => ReadOnlyRootTransaction.Rollback (), "TransactionRollingBack");
+      CheckForbidden(() => ReadOnlyRootTransaction.Rollback(), "TransactionRollingBack");
 
-      Assert.That (ReadOnlyRootTransaction.HasChanged (), Is.True);
-      Assert.That (ReadOnlyMiddleTransaction.HasChanged (), Is.True);
-      Assert.That (WriteableSubTransaction.HasChanged (), Is.True);
+      Assert.That(ReadOnlyRootTransaction.HasChanged(), Is.True);
+      Assert.That(ReadOnlyMiddleTransaction.HasChanged(), Is.True);
+      Assert.That(WriteableSubTransaction.HasChanged(), Is.True);
     }
 
     [Test]
     public void RollbackInReadOnlyMiddleTransaction_IsForbidden ()
     {
-      Assert.That (ReadOnlyRootTransaction.HasChanged (), Is.True);
-      Assert.That (ReadOnlyMiddleTransaction.HasChanged (), Is.True);
-      Assert.That (WriteableSubTransaction.HasChanged (), Is.True);
+      Assert.That(ReadOnlyRootTransaction.HasChanged(), Is.True);
+      Assert.That(ReadOnlyMiddleTransaction.HasChanged(), Is.True);
+      Assert.That(WriteableSubTransaction.HasChanged(), Is.True);
 
-      CheckForbidden (() => ReadOnlyMiddleTransaction.Rollback (), "TransactionRollingBack");
+      CheckForbidden(() => ReadOnlyMiddleTransaction.Rollback(), "TransactionRollingBack");
 
-      Assert.That (ReadOnlyRootTransaction.HasChanged (), Is.True);
-      Assert.That (ReadOnlyMiddleTransaction.HasChanged (), Is.True);
-      Assert.That (WriteableSubTransaction.HasChanged (), Is.True);
+      Assert.That(ReadOnlyRootTransaction.HasChanged(), Is.True);
+      Assert.That(ReadOnlyMiddleTransaction.HasChanged(), Is.True);
+      Assert.That(WriteableSubTransaction.HasChanged(), Is.True);
     }
   }
 }

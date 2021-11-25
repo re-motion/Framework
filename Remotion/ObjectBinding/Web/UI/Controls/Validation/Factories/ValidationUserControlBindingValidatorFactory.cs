@@ -39,17 +39,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
 
     public IEnumerable<BaseValidator> CreateValidators (UserControlBinding control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       if (isReadOnly)
         yield break;
 
-      yield return CreateBocListValidator (control);
+      yield return CreateBocListValidator(control);
     }
 
     private BaseValidator CreateBocListValidator (UserControlBinding control)
     {
-      Assertion.IsNotNull (control.ID, "control.ID must not be null.");
+      Assertion.IsNotNull(control.ID, "control.ID must not be null.");
 
       var bocValidator = new UserControlBindingValidationResultDispatchingValidator();
       bocValidator.ControlToValidate = control.ID;

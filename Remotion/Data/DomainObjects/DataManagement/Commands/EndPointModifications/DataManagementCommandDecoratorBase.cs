@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     protected DataManagementCommandDecoratorBase (IDataManagementCommand decoratedCommand)
     {
-      ArgumentUtility.CheckNotNull ("decoratedCommand", decoratedCommand);
+      ArgumentUtility.CheckNotNull("decoratedCommand", decoratedCommand);
       _decoratedCommand = decoratedCommand;
     }
 
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public virtual void Perform ()
     {
-      _decoratedCommand.Perform ();
+      _decoratedCommand.Perform();
     }
 
     public void End ()
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     public ExpandedCommand ExpandToAllRelatedObjects ()
     {
       var expandedCommand = _decoratedCommand.ExpandToAllRelatedObjects();
-      return new ExpandedCommand (Decorate (expandedCommand));
+      return new ExpandedCommand(Decorate(expandedCommand));
     }
 
     protected abstract IDataManagementCommand Decorate (IDataManagementCommand decoratedCommand);

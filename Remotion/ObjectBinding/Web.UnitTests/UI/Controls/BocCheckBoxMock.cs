@@ -27,7 +27,7 @@ public class BocCheckBoxMock: BocCheckBox
 {
 	public new void EvaluateWaiConformity ()
   {
-    base.EvaluateWaiConformity ();
+    base.EvaluateWaiConformity();
   }
 }
 

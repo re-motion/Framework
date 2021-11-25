@@ -34,7 +34,7 @@ namespace Remotion.Web.UI.Controls
     [Obsolete ("This feature has removed. (Version 3.0.0)", true)]
     public void SetRenderHeadTitleMethodDelegate (Action<HtmlTextWriter> renderHeadTitleMethod)
     {
-      throw new NotSupportedException ("This feature has removed. (Version 3.0.0)");
+      throw new NotSupportedException("This feature has removed. (Version 3.0.0)");
     }
 
     #endregion
@@ -68,78 +68,78 @@ namespace Remotion.Web.UI.Controls
     protected override void OnInit (EventArgs e)
     {
       var clientScriptBahavior = SafeServiceLocator.Current.GetInstance<IClientScriptBehavior>();
-      _isBrowserCapableOfScripting = clientScriptBahavior.IsBrowserCapableOfScripting (Page!.Context, this);
-      RegisterHtmlHeadContents (HtmlHeadAppender.Current);
+      _isBrowserCapableOfScripting = clientScriptBahavior.IsBrowserCapableOfScripting(Page!.Context, this);
+      RegisterHtmlHeadContents(HtmlHeadAppender.Current);
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       for (int i = 0; i < MenuItems.Count; i++)
       {
         WebMenuItem menuItem = MenuItems[i];
         if (menuItem.Command != null)
         {
-          menuItem.Command.RegisterForSynchronousPostBackOnDemand (
-              this, i.ToString(), string.Format ("DropDownMenu '{0}', MenuItem '{1}'", ID, menuItem.ItemID));
+          menuItem.Command.RegisterForSynchronousPostBackOnDemand(
+              this, i.ToString(), string.Format("DropDownMenu '{0}', MenuItem '{1}'", ID, menuItem.ItemID));
         }
       }
     }
 
     public void RenderAsContextMenu (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled () && WcagHelper.Instance.IsWaiConformanceLevelARequired ())
-        WcagHelper.Instance.HandleError (1, this);
+      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
+        WcagHelper.Instance.HandleError(1, this);
 
-      var renderer = CreateRenderer ();
-      renderer.RenderAsContextMenu (CreateRenderingContext (writer));
+      var renderer = CreateRenderer();
+      renderer.RenderAsContextMenu(CreateRenderingContext(writer));
     }
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError (1, this);
+        WcagHelper.Instance.HandleError(1, this);
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     protected virtual IDropDownMenuRenderer CreateRenderer ()
     {
-      return SafeServiceLocator.Current.GetInstance<IDropDownMenuRenderer> ();
+      return SafeServiceLocator.Current.GetInstance<IDropDownMenuRenderer>();
     }
 
     protected virtual DropDownMenuRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      return new DropDownMenuRenderingContext (Page!.Context!, writer, this); // TODO RM-8118: Not null assertion
+      return new DropDownMenuRenderingContext(Page!.Context!, writer, this); // TODO RM-8118: Not null assertion
     }
 
     public string GetBindOpenEventScript (string elementReference, string menuIDReference, bool moveToMousePosition)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("elementReference", elementReference);
-      ArgumentUtility.CheckNotNullOrEmpty ("menuIDReference", menuIDReference);
+      ArgumentUtility.CheckNotNullOrEmpty("elementReference", elementReference);
+      ArgumentUtility.CheckNotNullOrEmpty("menuIDReference", menuIDReference);
 
-      return string.Format (
+      return string.Format(
           "DropDownMenu.BindOpenEvent({0}, {1}, '{2}', {3}, {4});",
           elementReference,
           menuIDReference,
           GetEventType(),
-          string.IsNullOrEmpty (GetSelectionCount) ? "null" : GetSelectionCount,
+          string.IsNullOrEmpty(GetSelectionCount) ? "null" : GetSelectionCount,
           moveToMousePosition ? "true" : "false"
           );
     }
@@ -225,7 +225,7 @@ namespace Remotion.Web.UI.Controls
     public string GetSelectionCount
     {
       get { return _getSelectionCount; }
-      set { _getSelectionCount = StringUtility.NullToEmpty (value); }
+      set { _getSelectionCount = StringUtility.NullToEmpty(value); }
     }
 
     public string LoadMenuItemStatus
@@ -235,7 +235,7 @@ namespace Remotion.Web.UI.Controls
 
     public void SetLoadMenuItemStatus (string value)
     {
-      ArgumentUtility.CheckNotEmpty ("value", value);
+      ArgumentUtility.CheckNotEmpty("value", value);
 
       _loadMenuItemStatus = value; 
     }

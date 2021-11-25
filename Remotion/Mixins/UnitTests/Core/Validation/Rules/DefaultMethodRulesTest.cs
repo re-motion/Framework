@@ -29,105 +29,105 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void FailsIfOverriddenMethodNotVirtual ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType4), typeof (BT4Mixin1));
-      var log = Validator.Validate (definition.Methods[typeof (BaseType4).GetMethod ("NonVirtualMethod")]);
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType4), typeof (BT4Mixin1));
+      var log = Validator.Validate(definition.Methods[typeof (BaseType4).GetMethod("NonVirtualMethod")]);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log), Is.True);
     }
 
     [Test]
     public void FailsIfOverriddenBaseMethodAbstract ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (AbstractBaseType), typeof (BT1Mixin1));
-      var log = Validator.Validate (definition);
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (AbstractBaseType), typeof (BT1Mixin1));
+      var log = Validator.Validate(definition);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultMethodRules.AbstractTargetClassMethodMustNotBeOverridden", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultMethodRules.AbstractTargetClassMethodMustNotBeOverridden", log), Is.True);
     }
 
     [Test]
     public void FailsIfOverriddenMethodFinal ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (ClassWithFinalMethod), typeof (MixinForFinalMethod));
-      var log = Validator.Validate (definition);
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (ClassWithFinalMethod), typeof (MixinForFinalMethod));
+      var log = Validator.Validate(definition);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustNotBeFinal", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustNotBeFinal", log), Is.True);
     }
 
     [Test]
     public void FailsIfOverriddenPropertyMethodNotVirtual ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType4), typeof (BT4Mixin1));
-      var log = Validator.Validate (definition.Properties[typeof (BaseType4).GetProperty ("NonVirtualProperty")]);
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType4), typeof (BT4Mixin1));
+      var log = Validator.Validate(definition.Properties[typeof (BaseType4).GetProperty("NonVirtualProperty")]);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log), Is.True);
     }
 
     [Test]
     public void FailsIfOverriddenEventMethodNotVirtual ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType4), typeof (BT4Mixin1));
-      var log = Validator.Validate (definition.Events[typeof (BaseType4).GetEvent ("NonVirtualEvent")]);
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType4), typeof (BT4Mixin1));
+      var log = Validator.Validate(definition.Events[typeof (BaseType4).GetEvent("NonVirtualEvent")]);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log), Is.True);
     }
 
     [Test]
     public void FailsIfOverriddenMixinMethodNotVirtual ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (ClassOverridingSingleMixinMethod),
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (ClassOverridingSingleMixinMethod),
           typeof (MixinWithNonVirtualMethodToBeOverridden));
-      var log = Validator.Validate (definition);
+      var log = Validator.Validate(definition);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log), Is.True);
     }
 
     [Test]
     public void FailsIfAbstractMixinMethodHasNoOverride ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithAbstractMembers));
-      var log = Validator.Validate (definition);
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType1), typeof (MixinWithAbstractMembers));
+      var log = Validator.Validate(definition);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultMethodRules.AbstractMixinMethodMustBeOverridden", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultMethodRules.AbstractMixinMethodMustBeOverridden", log), Is.True);
     }
 
     [Test]
     public void FailsIfCrossOverridesOnSameMethods ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (ClassOverridingSingleMixinMethod),
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (ClassOverridingSingleMixinMethod),
           typeof (MixinOverridingSameClassMethod));
-      var log = Validator.Validate (definition);
+      var log = Validator.Validate(definition);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultMethodRules.NoCircularOverrides", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultMethodRules.NoCircularOverrides", log), Is.True);
     }
 
     [Test]
     public void SucceedsIfCrossOverridesNotOnSameMethods ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (ClassOverridingSingleMixinMethod),
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (ClassOverridingSingleMixinMethod),
           typeof (MixinOverridingClassMethod));
-      var log = Validator.Validate (definition);
+      var log = Validator.Validate(definition);
 
-      AssertSuccess (log);
+      AssertSuccess(log);
     }
 
     [Test]
     public void FailsIfMixinMethodIsOverriddenWhichHasNoThisProperty ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (ClassOverridingSingleMixinMethod), typeof (AbstractMixinWithoutBase));
-      var log = Validator.Validate (definition);
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (ClassOverridingSingleMixinMethod), typeof (AbstractMixinWithoutBase));
+      var log = Validator.Validate(definition);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase", log), Is.True);
     }
 
     [Test]
     public void SucceedsIfOverridingMembersAreProtected ()
     {
       TargetClassDefinition definition =
-          DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithProtectedOverrider));
-      Assert.That (definition.Mixins[0].HasProtectedOverriders (), Is.True);
-      var log = Validator.Validate (definition);
+          DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType1), typeof (MixinWithProtectedOverrider));
+      Assert.That(definition.Mixins[0].HasProtectedOverriders(), Is.True);
+      var log = Validator.Validate(definition);
 
-      AssertSuccess (log);
+      AssertSuccess(log);
     }
   }
 }

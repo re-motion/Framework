@@ -31,7 +31,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     [SetUp]
     public void SetUp ()
     {
-      _provider = new DefaultSystemPropertyMetaValidationRuleProvider (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName")));
+      _provider = new DefaultSystemPropertyMetaValidationRuleProvider(PropertyInfoAdapter.Create(typeof (Customer).GetProperty("UserName")));
     }
 
     [Test]
@@ -39,7 +39,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     {
       var result = _provider.GetSystemPropertyMetaValidationRules();
 
-      Assert.That (result.Any(), Is.True);
+      Assert.That(result.Any(), Is.True);
     }
   }
 }

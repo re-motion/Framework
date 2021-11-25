@@ -48,26 +48,26 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       get { return _overridden; }
     }
 
-    [MemberNotNull (nameof (_mixinType))]
+    [MemberNotNull (nameof(_mixinType))]
     public void AddMixinType (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
 
       _mixinType = mixinType;
     }
 
-    [MemberNotNull (nameof (_overriders))]
+    [MemberNotNull (nameof(_overriders))]
     public void AddOverriders (HashSet<MethodInfo> overriders)
     {
-      ArgumentUtility.CheckNotNull ("overriders", overriders);
+      ArgumentUtility.CheckNotNull("overriders", overriders);
 
       _overriders = overriders.AsReadOnly();
     }
 
-    [MemberNotNull (nameof (_overridden))]
+    [MemberNotNull (nameof(_overridden))]
     public void AddOverridden (HashSet<MethodInfo> overridden)
     {
-      ArgumentUtility.CheckNotNull ("overridden", overridden);
+      ArgumentUtility.CheckNotNull("overridden", overridden);
 
       _overridden = overridden.AsReadOnly();
     }

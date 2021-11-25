@@ -31,7 +31,7 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects.Linq
     [SetUp]
     public void SetUp ()
     {
-      _queryableComparer = new QueryableComparer ((actual, exptected) => Assert.That (actual, Is.EqualTo (exptected)));
+      _queryableComparer = new QueryableComparer((actual, exptected) => Assert.That(actual, Is.EqualTo(exptected)));
     }
 
     [Test]
@@ -40,7 +40,7 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects.Linq
       IQueryable<TestDomainObject> expected = from d in QueryFactory.CreateLinqQuery<TestDomainObject>() where d.Value == 1 select d;
       IQueryable<TestDomainObject> actual = from d in QueryFactory.CreateLinqQuery<TestDomainObject>() where d.Value == 1 select d;
 
-      _queryableComparer.Compare (expected, actual);
+      _queryableComparer.Compare(expected, actual);
     }
 
     [Test]
@@ -48,8 +48,8 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects.Linq
     {
       IQueryable<TestDomainObject> expected = from d in QueryFactory.CreateLinqQuery<TestDomainObject>() where d.Value == 1 select d;
       IQueryable<TestDomainObject> actual = from d in QueryFactory.CreateLinqQuery<TestDomainObject>() where d.Value == 0 select d;
-      Assert.That (
-          () => _queryableComparer.Compare (expected, actual),
+      Assert.That(
+          () => _queryableComparer.Compare(expected, actual),
           Throws.InstanceOf<AssertionException>());
     }
   }

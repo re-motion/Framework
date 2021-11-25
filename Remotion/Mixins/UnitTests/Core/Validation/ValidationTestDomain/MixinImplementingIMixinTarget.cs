@@ -28,7 +28,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
 
     public object[] Mixins
     {
-      get { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
     }
 
     public object FirstNextCallProxy

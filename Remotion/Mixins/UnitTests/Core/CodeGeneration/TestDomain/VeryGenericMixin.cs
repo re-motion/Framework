@@ -40,7 +40,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 
     public string GetMessage<T> (T t)
     {
-      return GenericIfcMethod (Target, Next, t);
+      return GenericIfcMethod(Target, Next, t);
     }
   }
 
@@ -60,7 +60,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 
     public new string GetMessage<T> (T t)
     {
-      return AbstractGenericMethod<T>() + "-" + base.GenericIfcMethod (Target, Next, t);
+      return AbstractGenericMethod<T>() + "-" + base.GenericIfcMethod(Target, Next, t);
     }
   }
 

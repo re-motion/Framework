@@ -30,13 +30,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public IScriptElement GetCreateElement (TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
 
-      var columnDeclarationList = string.Join (",\r\n", tableDefinition.GetAllColumns().Select (GetColumnDeclaration));
-      var primaryKeyConstraintString = GetPrimaryKeyDeclaration (tableDefinition);
+      var columnDeclarationList = string.Join(",\r\n", tableDefinition.GetAllColumns().Select(GetColumnDeclaration));
+      var primaryKeyConstraintString = GetPrimaryKeyDeclaration(tableDefinition);
       return
-          new ScriptStatement (
-              string.Format (
+          new ScriptStatement(
+              string.Format(
                   "CREATE TABLE [{0}].[{1}]\r\n(\r\n{2}{3}\r\n)",
                   tableDefinition.TableName.SchemaName ?? DefaultSchema,
                   tableDefinition.TableName.EntityName,
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public IScriptElement GetDropElement (TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
 
       return new ScriptStatement(
         string.Format("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '{1}' AND TABLE_SCHEMA = '{0}')\r\n"
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     private string GetColumnDeclaration (ColumnDefinition column)
     {
-      return string.Format ("  [{0}] {1} {2}", column.Name, column.StorageTypeInfo.StorageTypeName, column.StorageTypeInfo.IsStorageTypeNullable ? "NULL" : "NOT NULL");
+      return string.Format("  [{0}] {1} {2}", column.Name, column.StorageTypeInfo.StorageTypeName, column.StorageTypeInfo.IsStorageTypeNullable ? "NULL" : "NOT NULL");
     }
 
     private string GetPrimaryKeyDeclaration (TableDefinition tableDefinition)
@@ -66,11 +66,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
       if (primaryKeyConstraint == null)
         return string.Empty;
 
-      return string.Format (
+      return string.Format(
           ",\r\n  CONSTRAINT [{0}] PRIMARY KEY {1} ({2})",
           primaryKeyConstraint.ConstraintName,
           primaryKeyConstraint.IsClustered ? "CLUSTERED" : "NONCLUSTERED",
-          GetColumnList (primaryKeyConstraint.Columns));
+          GetColumnList(primaryKeyConstraint.Columns));
     }
   }
 }

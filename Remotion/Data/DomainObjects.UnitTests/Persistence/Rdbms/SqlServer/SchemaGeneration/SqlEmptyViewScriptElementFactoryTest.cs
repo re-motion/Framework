@@ -33,22 +33,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _factory = new SqlEmptyViewScriptElementFactory();
 
-      var property1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Column1", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation());
-      var property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Column2", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation ());
+      var property1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column1", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation());
+      var property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column2", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation());
 
-      _emptyViewDefinitionWithCustomSchema = EmptyViewDefinitionObjectMother.Create (
+      _emptyViewDefinitionWithCustomSchema = EmptyViewDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition ("SchemaName", "EmptyView1"),
+          new EntityNameDefinition("SchemaName", "EmptyView1"),
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
           new[] { property1 });
-      _emptyViewDefinitionWithDefaultSchema = EmptyViewDefinitionObjectMother.Create (
+      _emptyViewDefinitionWithDefaultSchema = EmptyViewDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition (null, "EmptyView2"),
+          new EntityNameDefinition(null, "EmptyView2"),
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
           new[] { property1, property2 });
@@ -57,65 +57,65 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     [Test]
     public void GetCreateElement_CustomSchema ()
     {
-      var result = _factory.GetCreateElement (_emptyViewDefinitionWithCustomSchema);
+      var result = _factory.GetCreateElement(_emptyViewDefinitionWithCustomSchema);
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptElementCollection)));
+      Assert.That(result, Is.TypeOf(typeof (ScriptElementCollection)));
       var elements = ((ScriptElementCollection) result).Elements;
-      Assert.That (elements.Count, Is.EqualTo(3));
-      Assert.That (elements[0], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[2], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[1], Is.TypeOf (typeof(ScriptStatement)));
+      Assert.That(elements.Count, Is.EqualTo(3));
+      Assert.That(elements[0], Is.TypeOf(typeof (BatchDelimiterStatement)));
+      Assert.That(elements[2], Is.TypeOf(typeof (BatchDelimiterStatement)));
+      Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
           "CREATE VIEW [SchemaName].[EmptyView1] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
           +"  AS\r\n"
          + "  SELECT CONVERT(uniqueidentifier,NULL) AS [ID], CONVERT(varchar(100),NULL) AS [ClassID], CONVERT(datetime,NULL) AS [Timestamp], CONVERT(varchar(100),NULL) AS [Column1]\r\n"
          +"    WHERE 1 = 0";
-      Assert.That (((ScriptStatement) elements[1]).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement) elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
      [Test]
     public void GetCreateElement_DefaultSchema ()
     {
-      var result = _factory.GetCreateElement (_emptyViewDefinitionWithDefaultSchema);
+      var result = _factory.GetCreateElement(_emptyViewDefinitionWithDefaultSchema);
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptElementCollection)));
+      Assert.That(result, Is.TypeOf(typeof (ScriptElementCollection)));
       var elements = ((ScriptElementCollection) result).Elements;
-      Assert.That (elements.Count, Is.EqualTo(3));
-      Assert.That (elements[0], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[2], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[1], Is.TypeOf (typeof(ScriptStatement)));
+      Assert.That(elements.Count, Is.EqualTo(3));
+      Assert.That(elements[0], Is.TypeOf(typeof (BatchDelimiterStatement)));
+      Assert.That(elements[2], Is.TypeOf(typeof (BatchDelimiterStatement)));
+      Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
           "CREATE VIEW [dbo].[EmptyView2] ([ID], [ClassID], [Timestamp], [Column1], [Column2])\r\n"
           +"  AS\r\n"
          + "  SELECT CONVERT(uniqueidentifier,NULL) AS [ID], CONVERT(varchar(100),NULL) AS [ClassID], CONVERT(datetime,NULL) AS [Timestamp], CONVERT(varchar(100),NULL) AS [Column1], CONVERT(varchar(100),NULL) AS [Column2]\r\n"
          +"    WHERE 1 = 0";
-      Assert.That (((ScriptStatement) elements[1]).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement) elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_CustomSchema ()
     {
-      var result = _factory.GetDropElement (_emptyViewDefinitionWithCustomSchema);
+      var result = _factory.GetDropElement(_emptyViewDefinitionWithCustomSchema);
 
       var expectedResult =
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'EmptyView1' AND TABLE_SCHEMA = 'SchemaName')\r\n"
           + "  DROP VIEW [SchemaName].[EmptyView1]";
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_DefaultSchema ()
     {
-      var result = _factory.GetDropElement (_emptyViewDefinitionWithDefaultSchema);
+      var result = _factory.GetDropElement(_emptyViewDefinitionWithDefaultSchema);
 
       var expectedResult =
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'EmptyView2' AND TABLE_SCHEMA = 'dbo')\r\n"
           + "  DROP VIEW [dbo].[EmptyView2]";
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
   }
 }

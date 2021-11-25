@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.TestDomai
   {
     public static TypeOne Create ()
     {
-      return ObjectFactory.Create<TypeOne> (true, ParamList.Empty);
+      return ObjectFactory.Create<TypeOne>(true, ParamList.Empty);
     }
 
     protected TypeOne ()

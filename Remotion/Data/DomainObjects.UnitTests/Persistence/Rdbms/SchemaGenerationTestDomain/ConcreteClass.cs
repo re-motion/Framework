@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   {
     public static ConcreteClass NewObject ()
     {
-      return DomainObject.NewObject<ConcreteClass> ();
+      return DomainObject.NewObject<ConcreteClass>();
     }
 
     protected ConcreteClass ()

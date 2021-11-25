@@ -23,17 +23,17 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
     }
 
     protected void AsyncPostback_OnClick (object sender, EventArgs e)
     {
-      throw new Exception ("AsyncPostbackError");
+      throw new Exception("AsyncPostbackError");
     }
 
     protected void SyncPostbackError_OnClick (object sender, EventArgs e)
     {
-      throw new Exception ("SyncPostbackError");
+      throw new Exception("SyncPostbackError");
     }
 
     protected void SyncPostbackWithoutError_OnClick (object sender, EventArgs e)
@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     protected void SyncPostbackWithSpecialCharactersInErrorMessage_OnClick (object sender, EventArgs e)
     {
-      throw new Exception ("ä&<\r\n'\"");
+      throw new Exception("ä&<\r\n'\"");
     }
 
     private static void IfYouWannTestInnerExceptions ()
@@ -54,13 +54,13 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       }
       catch (Exception ex)
       {
-        throw new Exception ("Exception from ClickHandler.", ex);
+        throw new Exception("Exception from ClickHandler.", ex);
       }
     }
 
     private static void SecondMethod ()
     {
-      throw new Exception ("Exception from\r\nSecond Method.");
+      throw new Exception("Exception from\r\nSecond Method.");
     }
 
     private static void FirstMethod ()
@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       }
       catch (Exception ex)
       {
-        throw new Exception ("Exception from FirstMethod.", ex);
+        throw new Exception("Exception from FirstMethod.", ex);
       }
     }
   }

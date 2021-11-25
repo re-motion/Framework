@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
     public LinqPerformanceTestHelper (Func<IQueryable<T>> queryGenerator)
     {
-      ArgumentUtility.CheckNotNull ("queryGenerator", queryGenerator);
+      ArgumentUtility.CheckNotNull("queryGenerator", queryGenerator);
 
       _queryGenerator = queryGenerator;
     }
@@ -47,40 +47,40 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     public bool GenerateQueryModel ()
     {
       var queryable = _queryGenerator();
-      return _queryParser.GetParsedQuery (queryable.Expression) != null;
+      return _queryParser.GetParsedQuery(queryable.Expression) != null;
     }
 
     public bool GenerateQueryModelAndSQL ()
     {
       var storageProviderDefinition =
-          (RdbmsProviderDefinition) MappingConfiguration.Current.GetTypeDefinition (typeof (Client)).StorageEntityDefinition.StorageProviderDefinition;
+          (RdbmsProviderDefinition) MappingConfiguration.Current.GetTypeDefinition(typeof (Client)).StorageEntityDefinition.StorageProviderDefinition;
       var storageObjectFactory = (SqlStorageObjectFactory) storageProviderDefinition.Factory;
       var sqlQueryGenerator = 
-          storageObjectFactory.CreateSqlQueryGenerator (storageProviderDefinition, _methodCallTransformerProvider, _resultOperatorHandlerRegistry);
+          storageObjectFactory.CreateSqlQueryGenerator(storageProviderDefinition, _methodCallTransformerProvider, _resultOperatorHandlerRegistry);
 
       var queryable = _queryGenerator();
-      var queryModel = _queryParser.GetParsedQuery (queryable.Expression);
+      var queryModel = _queryParser.GetParsedQuery(queryable.Expression);
 
-      var result = sqlQueryGenerator.CreateSqlQuery (queryModel);
+      var result = sqlQueryGenerator.CreateSqlQuery(queryModel);
 
       var sqlStatement = result.SqlCommand.CommandText;
-      return !string.IsNullOrEmpty (sqlStatement);
+      return !string.IsNullOrEmpty(sqlStatement);
     }
 
     public bool GenerateQueryModelAndSQLAndIQuery ()
     {
       var query = _queryGenerator();
-      return QueryFactory.CreateQuery<T> ("perftest", query) != null;
+      return QueryFactory.CreateQuery<T>("perftest", query) != null;
     }
 
     public bool GenerateAndExecuteQueryDBOnly ()
     {
       var query = _queryGenerator();
-      var restoreQuery = QueryFactory.CreateQuery<T> ("perftest", query);
+      var restoreQuery = QueryFactory.CreateQuery<T>("perftest", query);
 
-      using (var manager = new StorageProviderManager (NullPersistenceExtension.Instance))
+      using (var manager = new StorageProviderManager(NullPersistenceExtension.Instance))
       {
-        return manager.GetMandatory ("PerformanceTestDomain").ExecuteCollectionQuery (restoreQuery).ToArray().Length > 100;
+        return manager.GetMandatory("PerformanceTestDomain").ExecuteCollectionQuery(restoreQuery).ToArray().Length > 100;
       }
     }
 

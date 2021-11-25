@@ -23,12 +23,12 @@ namespace Remotion.Data.DomainObjects.Web.Test
   {
     protected override void OnLoadComplete (EventArgs e)
     {
-      base.OnLoadComplete (e);
+      base.OnLoadComplete(e);
     }
 
     protected void ReturnButton_Click (object sender, EventArgs e)
     {
-      ExecuteNextStep ();
+      ExecuteNextStep();
     }
   }
 }

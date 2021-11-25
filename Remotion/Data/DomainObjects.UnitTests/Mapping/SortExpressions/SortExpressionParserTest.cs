@@ -35,12 +35,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       base.SetUp();
 
-      _orderItemClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (OrderItem));
-      _productPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition (typeof (OrderItem).FullName + ".Product");
-      _positionPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition (typeof (OrderItem).FullName + ".Position");
-      _orderPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition (typeof (OrderItem).FullName + ".Order");
+      _orderItemClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (OrderItem));
+      _productPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof (OrderItem).FullName + ".Product");
+      _positionPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof (OrderItem).FullName + ".Position");
+      _orderPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof (OrderItem).FullName + ".Order");
 
-      _parser = new SortExpressionParser (_orderItemClassDefinition);
+      _parser = new SortExpressionParser(_orderItemClassDefinition);
     }
 
     [Test]
@@ -48,9 +48,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       var sortExpression = "";
 
-      var result = _parser.Parse (sortExpression);
+      var result = _parser.Parse(sortExpression);
 
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
@@ -58,10 +58,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       var sortExpression = "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product";
 
-      var result = _parser.Parse (sortExpression);
+      var result = _parser.Parse(sortExpression);
 
-      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (_productPropertyDefinition) };
-      Assert.That (result.SortedProperties, Is.EqualTo (expected));
+      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition) };
+      Assert.That(result.SortedProperties, Is.EqualTo(expected));
     }
 
     [Test]
@@ -69,10 +69,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       var sortExpression = "Product";
 
-      var result = _parser.Parse (sortExpression);
+      var result = _parser.Parse(sortExpression);
 
-      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (_productPropertyDefinition) };
-      Assert.That (result.SortedProperties, Is.EqualTo (expected));
+      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition) };
+      Assert.That(result.SortedProperties, Is.EqualTo(expected));
     }
 
     [Test]
@@ -80,23 +80,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       var sortExpression = "Order";
 
-      var result = _parser.Parse (sortExpression);
+      var result = _parser.Parse(sortExpression);
 
-      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (_orderPropertyDefinition) };
-      Assert.That (result.SortedProperties, Is.EqualTo (expected));
+      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_orderPropertyDefinition) };
+      Assert.That(result.SortedProperties, Is.EqualTo(expected));
     }
 
     [Test]
     public void Parse_WithVirtualRelationEndPoint ()
     {
-      var orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Order));
-      var parser = new SortExpressionParser (orderClassDefinition);
+      var orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Order));
+      var parser = new SortExpressionParser(orderClassDefinition);
 
       var sortExpression = "OrderTicket";
-      Assert.That (
-          () => parser.Parse (sortExpression),
+      Assert.That(
+          () => parser.Parse(sortExpression),
           Throws.InstanceOf<MappingException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "SortExpression 'OrderTicket' cannot be parsed: The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' is a "
                   + "virtual relation end point. SortExpressions can only contain relation end points if the object to be sorted contains the foreign key."));
     }
@@ -105,10 +105,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     public void Parse_WithUnknownPropertyName ()
     {
       var sortExpression = "UnknownProduct";
-      Assert.That (
-          () => _parser.Parse (sortExpression),
+      Assert.That(
+          () => _parser.Parse(sortExpression),
           Throws.InstanceOf<MappingException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "SortExpression 'UnknownProduct' cannot be parsed: 'UnknownProduct' is not a valid mapped property name. Expected the .NET property name of "
                   + "a property declared by the 'OrderItem' class or its base classes. Alternatively, to resolve ambiguities or to use a property declared by a "
                   + "mixin or a derived class of 'OrderItem', the full unique re-store property identifier can be specified."));
@@ -117,17 +117,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     [Test]
     public void Parse_WithDerivedProperty ()
     {
-      var partnerClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Partner));
-      var parser = new SortExpressionParser (partnerClassDefinition);
+      var partnerClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Partner));
+      var parser = new SortExpressionParser(partnerClassDefinition);
 
       var sortExpression = "Remotion.Data.DomainObjects.UnitTests.TestDomain.Distributor.NumberOfShops";
 
-      var result = parser.Parse (sortExpression);
+      var result = parser.Parse(sortExpression);
 
-      var distributorClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Distributor));
-      var numberOfShopsPropertyDefinition = distributorClassDefinition.GetMandatoryPropertyDefinition (sortExpression);
-      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (numberOfShopsPropertyDefinition) };
-      Assert.That (result.SortedProperties, Is.EqualTo (expected));
+      var distributorClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Distributor));
+      var numberOfShopsPropertyDefinition = distributorClassDefinition.GetMandatoryPropertyDefinition(sortExpression);
+      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(numberOfShopsPropertyDefinition) };
+      Assert.That(result.SortedProperties, Is.EqualTo(expected));
     }
 
     [Test]
@@ -135,10 +135,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       var sortExpression = "Product asc";
 
-      var result = _parser.Parse (sortExpression);
+      var result = _parser.Parse(sortExpression);
 
-      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (_productPropertyDefinition) };
-      Assert.That (result.SortedProperties, Is.EqualTo (expected));
+      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition) };
+      Assert.That(result.SortedProperties, Is.EqualTo(expected));
     }
 
     [Test]
@@ -146,10 +146,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       var sortExpression = "Product desc";
 
-      var result = _parser.Parse (sortExpression);
+      var result = _parser.Parse(sortExpression);
 
-      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending (_productPropertyDefinition) };
-      Assert.That (result.SortedProperties, Is.EqualTo (expected));
+      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(_productPropertyDefinition) };
+      Assert.That(result.SortedProperties, Is.EqualTo(expected));
     }
 
     [Test]
@@ -157,10 +157,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       var sortExpression = "Product dEsC";
 
-      var result = _parser.Parse (sortExpression);
+      var result = _parser.Parse(sortExpression);
 
-      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending (_productPropertyDefinition) };
-      Assert.That (result.SortedProperties, Is.EqualTo (expected));
+      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(_productPropertyDefinition) };
+      Assert.That(result.SortedProperties, Is.EqualTo(expected));
     }
 
     [Test]
@@ -168,20 +168,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       var sortExpression = "Product  desc";
 
-      var result = _parser.Parse (sortExpression);
+      var result = _parser.Parse(sortExpression);
 
-      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending (_productPropertyDefinition) };
-      Assert.That (result.SortedProperties, Is.EqualTo (expected));
+      var expected = new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(_productPropertyDefinition) };
+      Assert.That(result.SortedProperties, Is.EqualTo(expected));
     }
 
     [Test]
     public void Parse_WithOrderSpecification_Unknown ()
     {
       var sortExpression = "Product unknown";
-      Assert.That (
-          () => _parser.Parse (sortExpression),
+      Assert.That(
+          () => _parser.Parse(sortExpression),
           Throws.InstanceOf<MappingException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "SortExpression 'Product unknown' cannot be parsed: 'unknown' is not a valid sort order. Expected 'asc' or 'desc'."));
     }
 
@@ -189,10 +189,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     public void Parse_WithTooManyWords ()
     {
       var sortExpression = "Product asc asc";
-      Assert.That (
-          () => _parser.Parse (sortExpression),
+      Assert.That(
+          () => _parser.Parse(sortExpression),
           Throws.InstanceOf<MappingException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "SortExpression 'Product asc asc' cannot be parsed: Expected 1 or 2 parts (a property name and an optional identifier), found 3 parts "
                   + "instead."));
     }
@@ -202,15 +202,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       var sortExpression = "Product asc,Position,Order desc";
 
-      var result = _parser.Parse (sortExpression);
+      var result = _parser.Parse(sortExpression);
 
       var expected = new[]
                      {
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (_productPropertyDefinition), 
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (_positionPropertyDefinition),
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending (_orderPropertyDefinition)
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition), 
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_positionPropertyDefinition),
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(_orderPropertyDefinition)
                      };
-      Assert.That (result.SortedProperties, Is.EqualTo (expected));
+      Assert.That(result.SortedProperties, Is.EqualTo(expected));
     }
 
     [Test]
@@ -218,15 +218,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       var sortExpression = "Product asc, Position, Order desc";
 
-      var result = _parser.Parse (sortExpression);
+      var result = _parser.Parse(sortExpression);
 
       var expected = new[]
                      {
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (_productPropertyDefinition), 
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (_positionPropertyDefinition),
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending (_orderPropertyDefinition)
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition), 
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_positionPropertyDefinition),
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(_orderPropertyDefinition)
                      };
-      Assert.That (result.SortedProperties, Is.EqualTo (expected));
+      Assert.That(result.SortedProperties, Is.EqualTo(expected));
     }
 
     [Test]
@@ -234,15 +234,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       var sortExpression = "Product asc,Position,Order desc,";
 
-      var result = _parser.Parse (sortExpression);
+      var result = _parser.Parse(sortExpression);
 
       var expected = new[]
                      {
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (_productPropertyDefinition), 
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (_positionPropertyDefinition),
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending (_orderPropertyDefinition)
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition), 
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_positionPropertyDefinition),
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(_orderPropertyDefinition)
                      };
-      Assert.That (result.SortedProperties, Is.EqualTo (expected));
+      Assert.That(result.SortedProperties, Is.EqualTo(expected));
     }
 
     [Test]
@@ -250,16 +250,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       var sortExpression = "Product asc, Position, Order desc";
 
-      var result1 = _parser.Parse (sortExpression);
-      var result2 = _parser.Parse (result1.ToString ());
+      var result1 = _parser.Parse(sortExpression);
+      var result2 = _parser.Parse(result1.ToString());
 
       var expected = new[]
                      {
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (_productPropertyDefinition), 
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (_positionPropertyDefinition),
-                         SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending (_orderPropertyDefinition)
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition), 
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_positionPropertyDefinition),
+                         SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(_orderPropertyDefinition)
                      };
-      Assert.That (result2.SortedProperties, Is.EqualTo (expected));
+      Assert.That(result2.SortedProperties, Is.EqualTo(expected));
     }
   }
 }

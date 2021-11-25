@@ -29,44 +29,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _data1 = LoadedObjectDataObjectMother.CreateFreshlyLoadedObjectData (DomainObjectIDs.Order1);
-      _data2 = LoadedObjectDataObjectMother.CreateFreshlyLoadedObjectData (DomainObjectIDs.Order3);
+      _data1 = LoadedObjectDataObjectMother.CreateFreshlyLoadedObjectData(DomainObjectIDs.Order1);
+      _data2 = LoadedObjectDataObjectMother.CreateFreshlyLoadedObjectData(DomainObjectIDs.Order3);
       _collector = new LoadedObjectDataPendingRegistrationCollector();
     }
 
     [Test]
     public void Add_AddsObjectsToList_AndReturnsAddedObject ()
     {
-      var result1 = _collector.Add (_data1);
-      Assert.That (_collector.DataPendingRegistration, Is.EquivalentTo (new[] { _data1 }));
-      Assert.That (result1, Is.SameAs (_data1));
+      var result1 = _collector.Add(_data1);
+      Assert.That(_collector.DataPendingRegistration, Is.EquivalentTo(new[] { _data1 }));
+      Assert.That(result1, Is.SameAs(_data1));
       
-      var result2 = _collector.Add (_data2);
-      Assert.That (_collector.DataPendingRegistration, Is.EquivalentTo (new[] { _data1, _data2 }));
-      Assert.That (result2, Is.SameAs (_data2));
+      var result2 = _collector.Add(_data2);
+      Assert.That(_collector.DataPendingRegistration, Is.EquivalentTo(new[] { _data1, _data2 }));
+      Assert.That(result2, Is.SameAs(_data2));
     }
 
     [Test]
     public void Add_SameObject_DoesNotAddAgain ()
     {
-      _collector.Add (_data1);
-      _collector.Add (_data1);
+      _collector.Add(_data1);
+      _collector.Add(_data1);
 
-      Assert.That (_collector.DataPendingRegistration, Is.EquivalentTo (new[] { _data1 }));
+      Assert.That(_collector.DataPendingRegistration, Is.EquivalentTo(new[] { _data1 }));
     }
 
     [Test]
     public void AddDataContainers_MultipleTimes_DifferentObjectWithSameObjectID_FirstObjectWins_AndIsReturnedBySecondCall ()
     {
-      var alternativeData = LoadedObjectDataObjectMother.CreateFreshlyLoadedObjectData (_data1.ObjectID);
+      var alternativeData = LoadedObjectDataObjectMother.CreateFreshlyLoadedObjectData(_data1.ObjectID);
 
-      _collector.Add (_data1);
-      var resultOfSecondCall = _collector.Add (alternativeData);
+      _collector.Add(_data1);
+      var resultOfSecondCall = _collector.Add(alternativeData);
 
-      Assert.That (_collector.DataPendingRegistration, Is.EquivalentTo (new[] { _data1 }));
-      Assert.That (resultOfSecondCall, Is.SameAs (_data1));
+      Assert.That(_collector.DataPendingRegistration, Is.EquivalentTo(new[] { _data1 }));
+      Assert.That(resultOfSecondCall, Is.SameAs(_data1));
     }
   }
 }

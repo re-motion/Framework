@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     
     public void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      BaseGetObjectData (info, context);
+      BaseGetObjectData(info, context);
     }
   }
 }

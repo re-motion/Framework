@@ -174,7 +174,7 @@ namespace OBWTest.IndividualControlTests
     [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
     public IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments)
     {
-      return _iconServiceImplementation.GetIcon (new HttpContextWrapper (Context), businessObjectClass, businessObject, arguments);
+      return _iconServiceImplementation.GetIcon(new HttpContextWrapper(Context), businessObjectClass, businessObject, arguments);
     }
 
     [WebMethod]
@@ -188,12 +188,12 @@ namespace OBWTest.IndividualControlTests
         string arguments,
         string[] itemIDs)
     {
-      Thread.Sleep (TimeSpan.FromMilliseconds (500));
+      Thread.Sleep(TimeSpan.FromMilliseconds(500));
       string[] filteredItems = { "FilterByService" };
       string[] disabledItems = { "DisabledByService" };
       return itemIDs
-          .Where (itemID => !filteredItems.Contains (itemID))
-          .Select (itemID => WebMenuItemProxy.Create (itemID, isDisabled: disabledItems.Contains (itemID)))
+          .Where(itemID => !filteredItems.Contains(itemID))
+          .Select(itemID => WebMenuItemProxy.Create(itemID, isDisabled: disabledItems.Contains(itemID)))
           .ToArray();
     }
 
@@ -207,30 +207,30 @@ namespace OBWTest.IndividualControlTests
         string businessObject,
         string args)
     {
-      if (searchString.Equals ("throw", StringComparison.OrdinalIgnoreCase))
-        throw new Exception ("Test Exception");
+      if (searchString.Equals("throw", StringComparison.OrdinalIgnoreCase))
+        throw new Exception("Test Exception");
 
-      if (!string.IsNullOrEmpty (args))
+      if (!string.IsNullOrEmpty(args))
       {
-        if (int.TryParse (args, out int delay))
-          Thread.Sleep (delay);
+        if (int.TryParse(args, out int delay))
+          Thread.Sleep(delay);
       }
 
       List<BusinessObjectWithIdentityProxy> persons = new List<BusinessObjectWithIdentityProxy>();
-      foreach (Person person in XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (typeof (Person)))
-        persons.Add (
-            new BusinessObjectWithIdentityProxy ((IBusinessObjectWithIdentity) person) { IconUrl = GetUrl (GetIcon ((IBusinessObject) person)) });
+      foreach (Person person in XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof (Person)))
+        persons.Add(
+            new BusinessObjectWithIdentityProxy((IBusinessObjectWithIdentity) person) { IconUrl = GetUrl(GetIcon((IBusinessObject) person)) });
 
       foreach (string value in s_values)
-        persons.Add (new BusinessObjectWithIdentityProxy { UniqueIdentifier = "invalid", DisplayName = value, IconUrl = GetUrl (IconInfo.CreateSpacer(_resourceUrlFactory)) });
+        persons.Add(new BusinessObjectWithIdentityProxy { UniqueIdentifier = "invalid", DisplayName = value, IconUrl = GetUrl(IconInfo.CreateSpacer(_resourceUrlFactory)) });
 
-      var filteredPersons = persons.FindAll (person => person.DisplayName.StartsWith (searchString, StringComparison.OrdinalIgnoreCase));
+      var filteredPersons = persons.FindAll(person => person.DisplayName.StartsWith(searchString, StringComparison.OrdinalIgnoreCase));
       if (filteredPersons.Count == 0)
-        filteredPersons = persons.FindAll (person => person.DisplayName.IndexOf (searchString, StringComparison.OrdinalIgnoreCase) != -1);
+        filteredPersons = persons.FindAll(person => person.DisplayName.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) != -1);
 
-      filteredPersons.Sort ((left, right) => string.Compare (left.DisplayName, right.DisplayName, StringComparison.OrdinalIgnoreCase));
+      filteredPersons.Sort((left, right) => string.Compare(left.DisplayName, right.DisplayName, StringComparison.OrdinalIgnoreCase));
       if (filteredPersons.Count > 10)
-        filteredPersons.Add (new BusinessObjectWithIdentityProxy { UniqueIdentifier = "==null==", DisplayName = "...", IconUrl = GetUrl (IconInfo.CreateSpacer(_resourceUrlFactory)) });
+        filteredPersons.Add(new BusinessObjectWithIdentityProxy { UniqueIdentifier = "==null==", DisplayName = "...", IconUrl = GetUrl(IconInfo.CreateSpacer(_resourceUrlFactory)) });
       return filteredPersons.ToArray();
     }
 
@@ -238,31 +238,31 @@ namespace OBWTest.IndividualControlTests
     [ScriptMethod (UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
     public BusinessObjectWithIdentityProxy SearchExact (string searchString, string businessObjectClass, string businessObjectProperty, string businessObject, string args)
     {
-      if (searchString.Equals ("exactthrow", StringComparison.OrdinalIgnoreCase))
-        throw new Exception ("Test Exception");
+      if (searchString.Equals("exactthrow", StringComparison.OrdinalIgnoreCase))
+        throw new Exception("Test Exception");
 
-      if (!string.IsNullOrEmpty (args))
+      if (!string.IsNullOrEmpty(args))
       {
-        if (int.TryParse (args, out int delay))
-          Thread.Sleep (delay);
+        if (int.TryParse(args, out int delay))
+          Thread.Sleep(delay);
       }
 
-      var result = Search (searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
+      var result = Search(searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
       if (result.Length == 0)
         return null;
-      if (string.Equals (result[0].DisplayName, searchString, StringComparison.CurrentCultureIgnoreCase))
+      if (string.Equals(result[0].DisplayName, searchString, StringComparison.CurrentCultureIgnoreCase))
         return result[0];
       return null;
     }
 
     private string GetUrl (IconInfo iconInfo)
     {
-      return UrlUtility.ResolveUrlCaseSensitive (new HttpContextWrapper (Context), iconInfo.Url);
+      return UrlUtility.ResolveUrlCaseSensitive(new HttpContextWrapper(Context), iconInfo.Url);
     }
 
     private IconInfo GetIcon (IBusinessObject businessObject)
     {
-      return BusinessObjectBoundWebControl.GetIcon (businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
+      return BusinessObjectBoundWebControl.GetIcon(businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
     }
   }
 }

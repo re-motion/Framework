@@ -34,11 +34,11 @@ namespace Remotion.Web.Development.WebTesting
     public static FluentScreenshotElement<ScreenshotBocList<BocListControlObject, BocListRowControlObject, BocListCellControlObject>> ForScreenshot (
         [NotNull] this BocListControlObject list)
     {
-      ArgumentUtility.CheckNotNull ("list", list);
+      ArgumentUtility.CheckNotNull("list", list);
 
-      return SelfResolvableFluentScreenshot.Create (
-          new ScreenshotBocList<BocListControlObject, BocListRowControlObject, BocListCellControlObject> (
-              FluentUtility.CreateFluentControlObject (list),
+      return SelfResolvableFluentScreenshot.Create(
+          new ScreenshotBocList<BocListControlObject, BocListRowControlObject, BocListCellControlObject>(
+              FluentUtility.CreateFluentControlObject(list),
               list.Scope.ForElementScopeScreenshot()));
     }
 
@@ -50,11 +50,11 @@ namespace Remotion.Web.Development.WebTesting
         where TBocListControlObject : BocListControlObject<TBocListRowControlObject>
         where TBocListRowControlObject : BocListRowControlObject
     {
-      ArgumentUtility.CheckNotNull ("list", list);
+      ArgumentUtility.CheckNotNull("list", list);
 
-      return SelfResolvableFluentScreenshot.Create (
-          new ScreenshotBocList<TBocListControlObject, TBocListRowControlObject, BocListCellControlObject> (
-              FluentUtility.CreateFluentControlObject (list),
+      return SelfResolvableFluentScreenshot.Create(
+          new ScreenshotBocList<TBocListControlObject, TBocListRowControlObject, BocListCellControlObject>(
+              FluentUtility.CreateFluentControlObject(list),
               list.Scope.ForElementScopeScreenshot()));
     }
 
@@ -64,11 +64,11 @@ namespace Remotion.Web.Development.WebTesting
     public static FluentScreenshotElement<ScreenshotBocList<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>> ForScreenshot (
         [NotNull] this BocListAsGridControlObject listAsGrid)
     {
-      ArgumentUtility.CheckNotNull ("listAsGrid", listAsGrid);
+      ArgumentUtility.CheckNotNull("listAsGrid", listAsGrid);
 
-      return SelfResolvableFluentScreenshot.Create (
-          new ScreenshotBocList<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject> (
-              FluentUtility.CreateFluentControlObject (listAsGrid),
+      return SelfResolvableFluentScreenshot.Create(
+          new ScreenshotBocList<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>(
+              FluentUtility.CreateFluentControlObject(listAsGrid),
               listAsGrid.Scope.ForElementScopeScreenshot()));
     }
 
@@ -80,9 +80,9 @@ namespace Remotion.Web.Development.WebTesting
         where TBocListControlObject : BocListAsGridControlObject<TBocListRowControlObject>
         where TBocListRowControlObject : BocListAsGridRowControlObject
     {
-      return SelfResolvableFluentScreenshot.Create (
-          new ScreenshotBocList<TBocListControlObject, TBocListRowControlObject, BocListAsGridCellControlObject> (
-              FluentUtility.CreateFluentControlObject (listAsGrid),
+      return SelfResolvableFluentScreenshot.Create(
+          new ScreenshotBocList<TBocListControlObject, TBocListRowControlObject, BocListAsGridCellControlObject>(
+              FluentUtility.CreateFluentControlObject(listAsGrid),
               listAsGrid.Scope.ForElementScopeScreenshot()));
     }
   }

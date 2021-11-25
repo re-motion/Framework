@@ -30,19 +30,19 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     [OverrideTarget]
     public string ProtectedInheritedMethod ()
     {
-      return "MixinOverridingInheritedMethod.ProtectedInheritedMethod-" + Next.ProtectedInheritedMethod ();
+      return "MixinOverridingInheritedMethod.ProtectedInheritedMethod-" + Next.ProtectedInheritedMethod();
     }
 
     [OverrideTarget]
     public string ProtectedInternalInheritedMethod ()
     {
-      return "MixinOverridingInheritedMethod.ProtectedInternalInheritedMethod-" + Next.ProtectedInternalInheritedMethod ();
+      return "MixinOverridingInheritedMethod.ProtectedInternalInheritedMethod-" + Next.ProtectedInternalInheritedMethod();
     }
 
     [OverrideTarget]
     public string PublicInheritedMethod ()
     {
-      return "MixinOverridingInheritedMethod.PublicInheritedMethod-" + Next.PublicInheritedMethod ();
+      return "MixinOverridingInheritedMethod.PublicInheritedMethod-" + Next.PublicInheritedMethod();
     }
   }
 
@@ -70,7 +70,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
     public string InvokeInheritedMethods ()
     {
-      return ProtectedInheritedMethod ()+ "-" + ProtectedInternalInheritedMethod() + "-" +  PublicInheritedMethod();
+      return ProtectedInheritedMethod()+ "-" + ProtectedInternalInheritedMethod() + "-" +  PublicInheritedMethod();
     }
   }
 }

@@ -22,7 +22,7 @@ namespace Remotion.Validation.UnitTests.TestDomain.Collectors
   {
     public IPersonValidationRuleCollector1 ()
     {
-      AddRule (p => p.Birthday).NotEqual (DateTime.Now.AddYears(-500));
+      AddRule(p => p.Birthday).NotEqual(DateTime.Now.AddYears(-500));
     }
   }
 }

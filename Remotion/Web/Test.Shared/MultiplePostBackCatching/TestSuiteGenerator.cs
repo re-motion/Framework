@@ -28,8 +28,8 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
   {
     public static void GenerateTestCases (Page testSuitePage, TableRowCollection rows, string testPage, string testPrefix)
     {
-      TestSuiteGenerator testSuiteGenerator = new TestSuiteGenerator (testSuitePage, testPage);
-      rows.AddRange (testSuiteGenerator.CreateTestCases (testPrefix));
+      TestSuiteGenerator testSuiteGenerator = new TestSuiteGenerator(testSuitePage, testPage);
+      rows.AddRange(testSuiteGenerator.CreateTestCases(testPrefix));
     }
     
     private readonly Page _testSuitePage;
@@ -37,8 +37,8 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public TestSuiteGenerator (Page testSuitePage, string testPage)
     {
-      ArgumentUtility.CheckNotNull ("page", testSuitePage);
-      ArgumentUtility.CheckNotNullOrEmpty ("testPage", testPage);
+      ArgumentUtility.CheckNotNull("page", testSuitePage);
+      ArgumentUtility.CheckNotNullOrEmpty("testPage", testPage);
 
       _testSuitePage = testSuitePage;
       _testPage = testPage;
@@ -46,17 +46,17 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public TableRow[] CreateTestCases (string prefix)
     {
-      TestControlGenerator testControlGenerator = new TestControlGenerator (_testSuitePage, new PostBackEventHandler());
+      TestControlGenerator testControlGenerator = new TestControlGenerator(_testSuitePage, new PostBackEventHandler());
       List<TableRow> rows = new List<TableRow>();
 
-      foreach (Control initialControl in testControlGenerator.GetTestControls (null))
+      foreach (Control initialControl in testControlGenerator.GetTestControls(null))
       {
-        if (testControlGenerator.IsEnabled (initialControl))
+        if (testControlGenerator.IsEnabled(initialControl))
         {
-          rows.Add (
-              CreateTest (
-                  CreateID (prefix, initialControl.ID),
-                  UrlUtility.AddParameter (_testSuitePage.ResolveUrl (_testPage), TestExpectationsGenerator.TestCaseParameter, initialControl.ID)));
+          rows.Add(
+              CreateTest(
+                  CreateID(prefix, initialControl.ID),
+                  UrlUtility.AddParameter(_testSuitePage.ResolveUrl(_testPage), TestExpectationsGenerator.TestCaseParameter, initialControl.ID)));
         }
       }
 
@@ -72,15 +72,15 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
       hyperLink.NavigateUrl = url;
       hyperLink.Text = title;
 
-      cell.Controls.Add (hyperLink);
-      row.Cells.Add (cell);
+      cell.Controls.Add(hyperLink);
+      row.Cells.Add(cell);
 
       return row;
     }
 
     private string CreateID (string prefix, string id)
     {
-      return (string.IsNullOrEmpty (prefix) ? string.Empty : prefix + "_") + id;
+      return (string.IsNullOrEmpty(prefix) ? string.Empty : prefix + "_") + id;
     }
   }
 }

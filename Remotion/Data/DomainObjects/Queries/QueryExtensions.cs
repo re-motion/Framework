@@ -25,25 +25,25 @@ namespace Remotion.Data.DomainObjects.Queries
   {
     public static Query CreateCopyFromTemplate (this IQuery template, Dictionary<object, object> parameterValues)
     {
-      ArgumentUtility.CheckNotNull ("template", template);
-      ArgumentUtility.CheckNotNull ("parameterValues", parameterValues);
+      ArgumentUtility.CheckNotNull("template", template);
+      ArgumentUtility.CheckNotNull("parameterValues", parameterValues);
 
-      var query = new Query (template.CopyQueryDefinition(), template.CopyQueryParameters (parameterValues));
+      var query = new Query(template.CopyQueryDefinition(), template.CopyQueryParameters(parameterValues));
       template.CopyFetchQueries(parameterValues, query);
       return query;
     }
 
     private static QueryDefinition CopyQueryDefinition (this IQuery template)
     {
-      return new QueryDefinition (template.ID, template.StorageProviderDefinition, template.Statement, template.QueryType, template.CollectionType);
+      return new QueryDefinition(template.ID, template.StorageProviderDefinition, template.Statement, template.QueryType, template.CollectionType);
     }
 
     private static QueryParameterCollection CopyQueryParameters (this IQuery template, Dictionary<object, object> parameterValues)
     {
       if (template.Parameters.Count != parameterValues.Count)
       {
-        throw new InvalidOperationException (
-            String.Format (
+        throw new InvalidOperationException(
+            String.Format(
                 "Number of supplied query parameters ({0}) does not match the number of parameters in the template query ({1}) .",
                 template.Parameters.Count,
                 parameterValues.Count));
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Queries
 
       var queryParameters = new QueryParameterCollection();
       foreach (QueryParameter templateParameter in template.Parameters)
-        queryParameters.Add (templateParameter.CopyQueryParameter (parameterValues));
+        queryParameters.Add(templateParameter.CopyQueryParameter(parameterValues));
 
       return queryParameters;
     }
@@ -59,19 +59,19 @@ namespace Remotion.Data.DomainObjects.Queries
     private static QueryParameter CopyQueryParameter (this QueryParameter template, Dictionary<object, object> parameterValues)
     {
       object parameterValue;
-      if (!parameterValues.TryGetValue (template.Value, out parameterValue))
+      if (!parameterValues.TryGetValue(template.Value, out parameterValue))
       {
-        throw new InvalidOperationException (
-            String.Format ("Query parameter '{0}' (lookup key: '{1}') is missing.", template.Name, template.Value));
+        throw new InvalidOperationException(
+            String.Format("Query parameter '{0}' (lookup key: '{1}') is missing.", template.Name, template.Value));
       }
 
-      return new QueryParameter (template.Name, parameterValue, template.ParameterType);
+      return new QueryParameter(template.Name, parameterValue, template.ParameterType);
     }
 
     private static void CopyFetchQueries (this IQuery template, Dictionary<object, object> parameterValues, Query target)
     {
       foreach (var fetchQuery in template.EagerFetchQueries)
-        target.EagerFetchQueries.Add (fetchQuery.Key, fetchQuery.Value.CreateCopyFromTemplate (parameterValues));
+        target.EagerFetchQueries.Add(fetchQuery.Key, fetchQuery.Value.CreateCopyFromTemplate(parameterValues));
     }
   }
 }

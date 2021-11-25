@@ -37,43 +37,43 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       public override void Emit (IMemberEmitter member, ILGenerator gen)
       {
-        Label trueLabel = gen.DefineLabel ();
-        Label falseLabel = gen.DefineLabel ();
-        _expression.Emit (member, gen);
-        gen.Emit (_expression.BranchIfTrue, trueLabel);
-        _expression.Emit (member, gen);
-        gen.Emit (_expression.BranchIfFalse, falseLabel);
-        gen.Emit (OpCodes.Ldstr, "No label selected");
-        gen.Emit (OpCodes.Ret);
-        gen.MarkLabel (trueLabel);
-        gen.Emit (OpCodes.Ldstr, "True");
-        gen.Emit (OpCodes.Ret);
-        gen.MarkLabel (falseLabel);
-        gen.Emit (OpCodes.Ldstr, "False");
-        gen.Emit (OpCodes.Ret);
+        Label trueLabel = gen.DefineLabel();
+        Label falseLabel = gen.DefineLabel();
+        _expression.Emit(member, gen);
+        gen.Emit(_expression.BranchIfTrue, trueLabel);
+        _expression.Emit(member, gen);
+        gen.Emit(_expression.BranchIfFalse, falseLabel);
+        gen.Emit(OpCodes.Ldstr, "No label selected");
+        gen.Emit(OpCodes.Ret);
+        gen.MarkLabel(trueLabel);
+        gen.Emit(OpCodes.Ldstr, "True");
+        gen.Emit(OpCodes.Ret);
+        gen.MarkLabel(falseLabel);
+        gen.Emit(OpCodes.Ldstr, "False");
+        gen.Emit(OpCodes.Ret);
       }
     }
 
     [Test]
     public void SameConditionTrue ()
     {
-      var methodEmitter = GetMethodEmitter (false, typeof (string), new Type[0]);
+      var methodEmitter = GetMethodEmitter(false, typeof (string), new Type[0]);
 
-      methodEmitter.AddStatement (new TestStatement (
-          new SameConditionExpression (new TypeTokenExpression (typeof (object)), new TypeTokenExpression (typeof (object)))));
+      methodEmitter.AddStatement(new TestStatement(
+          new SameConditionExpression(new TypeTokenExpression(typeof (object)), new TypeTokenExpression(typeof (object)))));
 
-      Assert.That (InvokeMethod(), Is.EqualTo ("True"));
+      Assert.That(InvokeMethod(), Is.EqualTo("True"));
     }
 
     [Test]
     public void SameConditionFalse ()
     {
-      var methodEmitter = GetMethodEmitter (false, typeof (string), new Type[0]);
+      var methodEmitter = GetMethodEmitter(false, typeof (string), new Type[0]);
 
-      methodEmitter.AddStatement (new TestStatement (
-          new SameConditionExpression (new TypeTokenExpression (typeof (string)), new TypeTokenExpression (typeof (object)))));
+      methodEmitter.AddStatement(new TestStatement(
+          new SameConditionExpression(new TypeTokenExpression(typeof (string)), new TypeTokenExpression(typeof (object)))));
 
-      Assert.That (InvokeMethod (), Is.EqualTo ("False"));
+      Assert.That(InvokeMethod(), Is.EqualTo("False"));
     }
   }
 }

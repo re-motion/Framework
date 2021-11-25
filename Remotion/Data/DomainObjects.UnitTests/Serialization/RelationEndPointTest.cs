@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     public override void SetUp ()
     {
       base.SetUp();
-      var id = RelationEndPointID.Create(DomainObjectIDs.Computer1, ReflectionMappingHelper.GetPropertyName (typeof (Computer), "Employee"));
-      _endPoint = new TestableRelationEndPoint (TestableClientTransaction, id);
+      var id = RelationEndPointID.Create(DomainObjectIDs.Computer1, ReflectionMappingHelper.GetPropertyName(typeof (Computer), "Employee"));
+      _endPoint = new TestableRelationEndPoint(TestableClientTransaction, id);
 
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }
@@ -44,10 +44,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void RelationEndPointIsNotSerializable ()
     {
-      Assert.That (
-          () => Serializer.SerializeAndDeserialize (_endPoint),
+      Assert.That(
+          () => Serializer.SerializeAndDeserialize(_endPoint),
           Throws.InstanceOf<SerializationException>()
-              .With.Message.Matches (
+              .With.Message.Matches(
                   "Type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RelationEndPoint' in Assembly "
                   + ".* is not marked as serializable."));
     }
@@ -55,18 +55,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void RelationEndPointIsFlattenedSerializable ()
     {
-      RelationEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
-      Assert.That (deserializedEndPoint, Is.Not.Null);
-      Assert.That (deserializedEndPoint, Is.Not.SameAs (_endPoint));
+      RelationEndPoint deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
+      Assert.That(deserializedEndPoint, Is.Not.Null);
+      Assert.That(deserializedEndPoint, Is.Not.SameAs(_endPoint));
     }
 
     [Test]
     public void RelationEndPoint_Content ()
     {
-      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
-      Assert.That (deserializedEndPoint.ClientTransaction, Is.Not.Null);
-      Assert.That (deserializedEndPoint.Definition, Is.SameAs (_endPoint.Definition));
-      Assert.That (deserializedEndPoint.ID, Is.EqualTo (_endPoint.ID));
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
+      Assert.That(deserializedEndPoint.ClientTransaction, Is.Not.Null);
+      Assert.That(deserializedEndPoint.Definition, Is.SameAs(_endPoint.Definition));
+      Assert.That(deserializedEndPoint.ID, Is.EqualTo(_endPoint.ID));
     }
   }
 }

@@ -61,11 +61,11 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     private void Step1 ()
     {
-      ExistingObjectWithUndefinedEnum = DomainObjectIDs.ObjectWithUndefinedEnum.GetObject<ClassWithUndefinedEnum> ();
+      ExistingObjectWithUndefinedEnum = DomainObjectIDs.ObjectWithUndefinedEnum.GetObject<ClassWithUndefinedEnum>();
       NewObjectWithUndefinedEnum = ClassWithUndefinedEnum.NewObject();
-      SearchObjectWithUndefinedEnum = ObjectFactory.Create<SearchObjectWithUndefinedEnum> (ParamList.Empty);
+      SearchObjectWithUndefinedEnum = ObjectFactory.Create<SearchObjectWithUndefinedEnum>(ParamList.Empty);
     }
 
-    private WxePageStep Step2 = new WxePageStep ("UndefinedEnumTest.aspx");
+    private WxePageStep Step2 = new WxePageStep("UndefinedEnumTest.aspx");
   }
 }

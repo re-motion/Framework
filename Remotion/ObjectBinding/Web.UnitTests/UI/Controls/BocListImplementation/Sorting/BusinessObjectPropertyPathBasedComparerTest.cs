@@ -40,32 +40,32 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var valueNull = TypeWithAllDataTypes.Create();
       valueNull.String = null;
 
-      var bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (TypeWithAllDataTypes));
+      var bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithAllDataTypes));
 
-      var propertyPath = BusinessObjectPropertyPath.CreateStatic (bindableObjectClass, "String");
-      var comparer = new BusinessObjectPropertyPathBasedComparer (propertyPath);
+      var propertyPath = BusinessObjectPropertyPath.CreateStatic(bindableObjectClass, "String");
+      var comparer = new BusinessObjectPropertyPathBasedComparer(propertyPath);
 
-      AssertCompare (comparer, valueA, valueB, valueNull);
+      AssertCompare(comparer, valueA, valueB, valueNull);
     }
 
     [Test]
     public void Compare_ReferenceValues ()
     {
       var valueA = TypeWithReference.Create();
-      valueA.ReferenceValue = TypeWithReference.Create ("A");
+      valueA.ReferenceValue = TypeWithReference.Create("A");
 
       var valueB = TypeWithReference.Create();
-      valueB.ReferenceValue = TypeWithReference.Create ("B");
+      valueB.ReferenceValue = TypeWithReference.Create("B");
 
       var valueNull = TypeWithReference.Create();
       valueNull.ReferenceValue = null;
 
-      var bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (TypeWithReference));
+      var bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithReference));
 
-      var propertyPath = BusinessObjectPropertyPath.CreateStatic (bindableObjectClass, "ReferenceValue");
-      var comparer = new BusinessObjectPropertyPathBasedComparer (propertyPath);
+      var propertyPath = BusinessObjectPropertyPath.CreateStatic(bindableObjectClass, "ReferenceValue");
+      var comparer = new BusinessObjectPropertyPathBasedComparer(propertyPath);
 
-      AssertCompare (comparer, valueA, valueB, valueNull);
+      AssertCompare(comparer, valueA, valueB, valueNull);
     }
 
     [Test]
@@ -86,25 +86,25 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var valueEmpty = TypeWithString.Create();
       valueEmpty.StringArray = new string[0];
 
-      var bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (TypeWithString));
+      var bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithString));
 
-      var propertyPath = BusinessObjectPropertyPath.CreateStatic (bindableObjectClass, "StringArray");
-      var comparer = new BusinessObjectPropertyPathBasedComparer (propertyPath);
+      var propertyPath = BusinessObjectPropertyPath.CreateStatic(bindableObjectClass, "StringArray");
+      var comparer = new BusinessObjectPropertyPathBasedComparer(propertyPath);
 
-      CompareEqualValues (comparer, (IBusinessObject) valueAA, (IBusinessObject) valueAA);
-      CompareEqualValues (comparer, (IBusinessObject) valueAA, (IBusinessObject) valueAB);
-      CompareEqualValues (comparer, (IBusinessObject) valueNull, (IBusinessObject) valueNull);
-      CompareEqualValues (comparer, (IBusinessObject) valueEmpty, (IBusinessObject) valueEmpty);
+      CompareEqualValues(comparer, (IBusinessObject) valueAA, (IBusinessObject) valueAA);
+      CompareEqualValues(comparer, (IBusinessObject) valueAA, (IBusinessObject) valueAB);
+      CompareEqualValues(comparer, (IBusinessObject) valueNull, (IBusinessObject) valueNull);
+      CompareEqualValues(comparer, (IBusinessObject) valueEmpty, (IBusinessObject) valueEmpty);
 
-      CompareAscendingValues (comparer, (IBusinessObject) valueAA, (IBusinessObject) valueBA);
-      CompareAscendingValues (comparer, (IBusinessObject) valueNull, (IBusinessObject) valueAA);
-      CompareAscendingValues (comparer, (IBusinessObject) valueEmpty, (IBusinessObject) valueAA);
-      CompareAscendingValues (comparer, (IBusinessObject) valueNull, (IBusinessObject) valueEmpty);
+      CompareAscendingValues(comparer, (IBusinessObject) valueAA, (IBusinessObject) valueBA);
+      CompareAscendingValues(comparer, (IBusinessObject) valueNull, (IBusinessObject) valueAA);
+      CompareAscendingValues(comparer, (IBusinessObject) valueEmpty, (IBusinessObject) valueAA);
+      CompareAscendingValues(comparer, (IBusinessObject) valueNull, (IBusinessObject) valueEmpty);
 
-      CompareDescendingValues (comparer, (IBusinessObject) valueBA, (IBusinessObject) valueAA);
-      CompareDescendingValues (comparer, (IBusinessObject) valueAA, (IBusinessObject) valueNull);
-      CompareDescendingValues (comparer, (IBusinessObject) valueAA, (IBusinessObject) valueEmpty);
-      CompareDescendingValues (comparer, (IBusinessObject) valueEmpty, (IBusinessObject) valueNull);
+      CompareDescendingValues(comparer, (IBusinessObject) valueBA, (IBusinessObject) valueAA);
+      CompareDescendingValues(comparer, (IBusinessObject) valueAA, (IBusinessObject) valueNull);
+      CompareDescendingValues(comparer, (IBusinessObject) valueAA, (IBusinessObject) valueEmpty);
+      CompareDescendingValues(comparer, (IBusinessObject) valueEmpty, (IBusinessObject) valueNull);
     }
 
     [Test]
@@ -114,33 +114,33 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var valueThrows = TypeWithAllDataTypes.Create();
 
       var resultA = new Mock<IBusinessObjectPropertyPathResult>();
-      resultA.Setup (_ => _.GetValue()).Returns (new object());
+      resultA.Setup(_ => _.GetValue()).Returns(new object());
 
       var propertyPathStub = new Mock<IBusinessObjectPropertyPath>();
 
       propertyPathStub
-          .Setup (
+          .Setup(
               _ =>
-              _.GetResult (
+              _.GetResult(
                   (IBusinessObject) valueA,
                   BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
                   BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry))
-          .Returns (resultA.Object);
+          .Returns(resultA.Object);
 
       propertyPathStub
-          .Setup (
+          .Setup(
               _ =>
-              _.GetResult (
+              _.GetResult(
                   (IBusinessObject) valueThrows,
                   BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
                   BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry))
-          .Throws (new Exception());
+          .Throws(new Exception());
 
-      var comparer = new BusinessObjectPropertyPathBasedComparer (propertyPathStub.Object);
+      var comparer = new BusinessObjectPropertyPathBasedComparer(propertyPathStub.Object);
 
-      CompareEqualValues (comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueThrows);
-      CompareAscendingValues (comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueA);
-      CompareDescendingValues (comparer, (IBusinessObject) valueA, (IBusinessObject) valueThrows);
+      CompareEqualValues(comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueThrows);
+      CompareAscendingValues(comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueA);
+      CompareDescendingValues(comparer, (IBusinessObject) valueA, (IBusinessObject) valueThrows);
     }
 
     [Test]
@@ -150,36 +150,36 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var valueThrows = TypeWithAllDataTypes.Create();
 
       var resultA = new Mock<IBusinessObjectPropertyPathResult>();
-      resultA.Setup (_ => _.GetValue()).Returns (new object());
+      resultA.Setup(_ => _.GetValue()).Returns(new object());
 
       var resultThrows = new Mock<IBusinessObjectPropertyPathResult>();
-      resultThrows.Setup (_ => _.GetValue()).Throws (new Exception());
+      resultThrows.Setup(_ => _.GetValue()).Throws(new Exception());
 
       var propertyPathStub = new Mock<IBusinessObjectPropertyPath>();
 
       propertyPathStub
-          .Setup (
+          .Setup(
               _ =>
-              _.GetResult (
+              _.GetResult(
                   (IBusinessObject) valueA,
                   BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
                   BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry))
-          .Returns (resultA.Object);
+          .Returns(resultA.Object);
 
       propertyPathStub
-          .Setup (
+          .Setup(
               _ =>
-              _.GetResult (
+              _.GetResult(
                   (IBusinessObject) valueThrows,
                   BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
                   BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry))
-          .Returns (resultThrows.Object);
+          .Returns(resultThrows.Object);
 
-      var comparer = new BusinessObjectPropertyPathBasedComparer (propertyPathStub.Object);
+      var comparer = new BusinessObjectPropertyPathBasedComparer(propertyPathStub.Object);
 
-      CompareEqualValues (comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueThrows);
-      CompareAscendingValues (comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueA);
-      CompareDescendingValues (comparer, (IBusinessObject) valueA, (IBusinessObject) valueThrows);
+      CompareEqualValues(comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueThrows);
+      CompareAscendingValues(comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueA);
+      CompareDescendingValues(comparer, (IBusinessObject) valueA, (IBusinessObject) valueThrows);
     }
 
     [Test]
@@ -189,86 +189,86 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var valueThrows = TypeWithAllDataTypes.Create();
 
       var resultA = new Mock<IBusinessObjectPropertyPathResult>();
-      resultA.Setup (_ => _.GetValue()).Returns (new object());
-      resultA.Setup (_ => _.GetString (null)).Returns ("A");
+      resultA.Setup(_ => _.GetValue()).Returns(new object());
+      resultA.Setup(_ => _.GetString(null)).Returns("A");
 
       var resultThrows = new Mock<IBusinessObjectPropertyPathResult>();
-      resultThrows.Setup (_ => _.GetValue()).Returns (new object());
-      resultThrows.Setup (_ => _.GetString (null)).Throws (new Exception());
+      resultThrows.Setup(_ => _.GetValue()).Returns(new object());
+      resultThrows.Setup(_ => _.GetString(null)).Throws(new Exception());
 
       var propertyPathStub = new Mock<IBusinessObjectPropertyPath>();
 
       propertyPathStub
-          .Setup (
+          .Setup(
               _ =>
-              _.GetResult (
+              _.GetResult(
                   (IBusinessObject) valueA,
                   BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
                   BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry))
-          .Returns (resultA.Object);
+          .Returns(resultA.Object);
 
       propertyPathStub
-          .Setup (
+          .Setup(
               _ =>
-              _.GetResult (
+              _.GetResult(
                   (IBusinessObject) valueThrows,
                   BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
                   BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry))
-          .Returns (resultThrows.Object);
+          .Returns(resultThrows.Object);
 
-      var comparer = new BusinessObjectPropertyPathBasedComparer (propertyPathStub.Object);
+      var comparer = new BusinessObjectPropertyPathBasedComparer(propertyPathStub.Object);
 
-      CompareEqualValues (comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueThrows);
-      CompareAscendingValues (comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueA);
-      CompareDescendingValues (comparer, (IBusinessObject) valueA, (IBusinessObject) valueThrows);
+      CompareEqualValues(comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueThrows);
+      CompareAscendingValues(comparer, (IBusinessObject) valueThrows, (IBusinessObject) valueA);
+      CompareDescendingValues(comparer, (IBusinessObject) valueA, (IBusinessObject) valueThrows);
     }
 
     private void AssertCompare (BusinessObjectPropertyPathBasedComparer comparer, object valueA, object valueB, object valueNull)
     {
-      CompareEqualValues (comparer, (IBusinessObject) valueA, (IBusinessObject) valueA);
-      CompareEqualValues (comparer, (IBusinessObject) valueNull, (IBusinessObject) valueNull);
+      CompareEqualValues(comparer, (IBusinessObject) valueA, (IBusinessObject) valueA);
+      CompareEqualValues(comparer, (IBusinessObject) valueNull, (IBusinessObject) valueNull);
 
-      CompareAscendingValues (comparer, (IBusinessObject) valueA, (IBusinessObject) valueB);
-      CompareAscendingValues (comparer, (IBusinessObject) valueNull, (IBusinessObject) valueA);
+      CompareAscendingValues(comparer, (IBusinessObject) valueA, (IBusinessObject) valueB);
+      CompareAscendingValues(comparer, (IBusinessObject) valueNull, (IBusinessObject) valueA);
 
-      CompareDescendingValues (comparer, (IBusinessObject) valueB, (IBusinessObject) valueA);
-      CompareDescendingValues (comparer, (IBusinessObject) valueA, (IBusinessObject) valueNull);
+      CompareDescendingValues(comparer, (IBusinessObject) valueB, (IBusinessObject) valueA);
+      CompareDescendingValues(comparer, (IBusinessObject) valueA, (IBusinessObject) valueNull);
     }
 
     private void CompareEqualValues (IComparer<BocListRow> comparer, IBusinessObject left, IBusinessObject right)
     {
-      var rowLeft = new BocListRow (0, left);
-      var rowRight = new BocListRow (0, right);
+      var rowLeft = new BocListRow(0, left);
+      var rowRight = new BocListRow(0, right);
 
-      int compareResultLeftRight = comparer.Compare (rowLeft, rowRight);
-      int compareResultRightLeft = comparer.Compare (rowRight, rowLeft);
+      int compareResultLeftRight = comparer.Compare(rowLeft, rowRight);
+      int compareResultRightLeft = comparer.Compare(rowRight, rowLeft);
 
-      Assert.IsTrue (compareResultLeftRight == 0, "Left - Right != zero");
-      Assert.IsTrue (compareResultRightLeft == 0, "Right - Left != zero");
+      Assert.IsTrue(compareResultLeftRight == 0, "Left - Right != zero");
+      Assert.IsTrue(compareResultRightLeft == 0, "Right - Left != zero");
     }
 
     private void CompareAscendingValues (IComparer<BocListRow> comparer, IBusinessObject left, IBusinessObject right)
     {
-      var rowLeft = new BocListRow (0, left);
-      var rowRight = new BocListRow (0, right);
+      var rowLeft = new BocListRow(0, left);
+      var rowRight = new BocListRow(0, right);
 
-      int compareResultLeftRight = comparer.Compare (rowLeft, rowRight);
-      int compareResultRightLeft = comparer.Compare (rowRight, rowLeft);
+      int compareResultLeftRight = comparer.Compare(rowLeft, rowRight);
+      int compareResultRightLeft = comparer.Compare(rowRight, rowLeft);
 
-      Assert.IsTrue (compareResultLeftRight < 0, "Left - Right <= zero.");
-      Assert.IsTrue (compareResultRightLeft > 0, "Right - Left >= zero.");
+      Assert.IsTrue(compareResultLeftRight < 0, "Left - Right <= zero.");
+      Assert.IsTrue(compareResultRightLeft > 0, "Right - Left >= zero.");
     }
 
     private void CompareDescendingValues (IComparer<BocListRow> comparer, IBusinessObject left, IBusinessObject right)
     {
-      var rowLeft = new BocListRow (0, left);
-      var rowRight = new BocListRow (0, right);
+      var rowLeft = new BocListRow(0, left);
+      var rowRight = new BocListRow(0, right);
 
-      int compareResultLeftRight = comparer.Compare (rowLeft, rowRight);
-      int compareResultRightLeft = comparer.Compare (rowRight, rowLeft);
+      int compareResultLeftRight = comparer.Compare(rowLeft, rowRight);
+      int compareResultRightLeft = comparer.Compare(rowRight, rowLeft);
 
-      Assert.IsTrue (compareResultLeftRight > 0, "Right - Left >= zero.");
-      Assert.IsTrue (compareResultRightLeft < 0, "Left - Right <= zero.");
+      Assert.IsTrue(compareResultLeftRight > 0, "Right - Left >= zero.");
+      Assert.IsTrue(compareResultRightLeft < 0, "Left - Right <= zero.");
     }
   }
 }

@@ -34,24 +34,24 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       base.SetUp();
 
       _bindableObject = SampleBindableMixinDomainObject.NewObject();
-      _bindableObjectMixin = Mixin.Get<BindableDomainObjectMixin> (_bindableObject);
+      _bindableObjectMixin = Mixin.Get<BindableDomainObjectMixin>(_bindableObject);
       _businessObject = _bindableObjectMixin;
     }
 
     [Test]
     public void FromClass ()
     {
-      Assert.That (_bindableObjectMixin.BusinessObjectClass, Is.Not.Null);
-      Assert.That (_bindableObjectMixin.BusinessObjectClass.TargetType, Is.SameAs (typeof (SampleBindableMixinDomainObject)));
-      Assert.That (_bindableObjectMixin.BusinessObjectClass.BusinessObjectProvider, Is.SameAs (BusinessObjectProvider.GetProvider (typeof (BindableDomainObjectProviderAttribute))));
+      Assert.That(_bindableObjectMixin.BusinessObjectClass, Is.Not.Null);
+      Assert.That(_bindableObjectMixin.BusinessObjectClass.TargetType, Is.SameAs(typeof (SampleBindableMixinDomainObject)));
+      Assert.That(_bindableObjectMixin.BusinessObjectClass.BusinessObjectProvider, Is.SameAs(BusinessObjectProvider.GetProvider(typeof (BindableDomainObjectProviderAttribute))));
     }
 
     [Test]
     public void FromInterface ()
     {
-      Assert.That (_businessObject.BusinessObjectClass, Is.Not.Null);
-      Assert.That (_businessObject.BusinessObjectClass, Is.SameAs (_bindableObjectMixin.BusinessObjectClass));
-      Assert.That (_businessObject.BusinessObjectClass.BusinessObjectProvider, Is.SameAs (BusinessObjectProvider.GetProvider (typeof (BindableDomainObjectProviderAttribute))));
+      Assert.That(_businessObject.BusinessObjectClass, Is.Not.Null);
+      Assert.That(_businessObject.BusinessObjectClass, Is.SameAs(_bindableObjectMixin.BusinessObjectClass));
+      Assert.That(_businessObject.BusinessObjectClass.BusinessObjectProvider, Is.SameAs(BusinessObjectProvider.GetProvider(typeof (BindableDomainObjectProviderAttribute))));
     }
   }
 }

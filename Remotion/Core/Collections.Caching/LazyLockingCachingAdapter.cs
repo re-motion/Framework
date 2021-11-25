@@ -57,9 +57,9 @@ namespace Remotion.Collections.Caching
 
     public LazyLockingCachingAdapter (ICache<TKey, Lazy<Wrapper>> innerCache)
     {
-      ArgumentUtility.CheckNotNull ("innerCache", innerCache);
+      ArgumentUtility.CheckNotNull("innerCache", innerCache);
 
-      _innerCache = new LockingCacheDecorator<TKey, Lazy<Wrapper>> (innerCache);
+      _innerCache = new LockingCacheDecorator<TKey, Lazy<Wrapper>>(innerCache);
     }
 
     public bool IsNull
@@ -69,32 +69,32 @@ namespace Remotion.Collections.Caching
 
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
 
       Wrapper wrapper;
-      if (_innerCache.TryGetValue (key, out var value))
+      if (_innerCache.TryGetValue(key, out var value))
         wrapper = value.Value;
       else
-        wrapper = GetOrCreateValueWithClosure (key, valueFactory); // Split to prevent closure being created during the TryGetValue-operation
+        wrapper = GetOrCreateValueWithClosure(key, valueFactory); // Split to prevent closure being created during the TryGetValue-operation
 
       return wrapper.Value;
     }
 
     private Wrapper GetOrCreateValueWithClosure (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
-      var result = _innerCache.GetOrCreateValue (
+      ArgumentUtility.CheckNotNull("valueFactory", valueFactory);
+      var result = _innerCache.GetOrCreateValue(
           key,
-          k => new Lazy<Wrapper> (() => new Wrapper (valueFactory (k)), LazyThreadSafetyMode.ExecutionAndPublication));
+          k => new Lazy<Wrapper>(() => new Wrapper(valueFactory(k)), LazyThreadSafetyMode.ExecutionAndPublication));
       return result.Value;
     }
 
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
-      if (_innerCache.TryGetValue (key, out var result))
+      if (_innerCache.TryGetValue(key, out var result))
       {
         value = result.Value.Value;
         return true;
@@ -115,12 +115,12 @@ namespace Remotion.Collections.Caching
 
     private IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator ()
     {
-      return _innerCache.Select (item => new KeyValuePair<TKey, TValue> (item.Key, item.Value.Value.Value)).GetEnumerator();
+      return _innerCache.Select(item => new KeyValuePair<TKey, TValue>(item.Key, item.Value.Value.Value)).GetEnumerator();
     }
 
     public void Clear ()
     {
-      _innerCache.Clear ();
+      _innerCache.Clear();
     }
   }
 }

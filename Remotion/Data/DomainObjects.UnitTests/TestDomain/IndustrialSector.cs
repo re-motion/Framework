@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   {
     public static IndustrialSector NewObject ()
     {
-      return NewObject<IndustrialSector> ();
+      return NewObject<IndustrialSector>();
     }
 
     protected IndustrialSector ()
@@ -38,11 +38,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     {
       get
       {
-        return CurrentProperty.GetValue<string> ();
+        return CurrentProperty.GetValue<string>();
       }
       set
       {
-        CurrentProperty.SetValue (value);
+        CurrentProperty.SetValue(value);
       }
     }
 
@@ -52,11 +52,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     {
       get
       {
-        return CurrentProperty.GetValue<ObjectList<Company>> ();
+        return CurrentProperty.GetValue<ObjectList<Company>>();
       }
       set
       {
-        CurrentProperty.SetValue (value);
+        CurrentProperty.SetValue(value);
       }
     }
   }

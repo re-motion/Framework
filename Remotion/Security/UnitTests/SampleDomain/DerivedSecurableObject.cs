@@ -43,7 +43,7 @@ namespace Remotion.Security.UnitTests.SampleDomain
     [DemandPermission (GeneralAccessTypes.Create)]
     public override void Print ()
     {
-      base.Print ();
+      base.Print();
     }
 
     public override void Make ()
@@ -53,7 +53,7 @@ namespace Remotion.Security.UnitTests.SampleDomain
 
     public override void Record ()
     {
-      base.Record ();
+      base.Record();
     }
   }
 }

@@ -31,7 +31,7 @@ namespace Remotion.Validation.MetaValidation
 
     public DefaultSystemPropertyMetaValidationRuleProvider (IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
 
       _propertyInformation = propertyInformation;
     }
@@ -43,7 +43,7 @@ namespace Remotion.Validation.MetaValidation
 
     public IEnumerable<IPropertyMetaValidationRule> GetSystemPropertyMetaValidationRules ()
     {
-      yield return new LengthSystemPropertyMetaValidationRule (_propertyInformation);
+      yield return new LengthSystemPropertyMetaValidationRule(_propertyInformation);
     }
   }
 }

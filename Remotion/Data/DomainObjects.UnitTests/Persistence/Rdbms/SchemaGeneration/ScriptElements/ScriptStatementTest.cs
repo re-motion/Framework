@@ -29,13 +29,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     [SetUp]
     public void SetUp ()
     {
-      _statement = new ScriptStatement ("Test");
+      _statement = new ScriptStatement("Test");
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_statement.Statement, Is.EqualTo ("Test"));
+      Assert.That(_statement.Statement, Is.EqualTo("Test"));
     }
 
     [Test]
@@ -43,22 +43,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
       var scriptStatement = new ScriptStatement("Test");
       var script = new List<ScriptStatement> { scriptStatement };
-      Assert.That (script.Count, Is.EqualTo (1));
+      Assert.That(script.Count, Is.EqualTo(1));
 
-      _statement.AppendToScript (script);
+      _statement.AppendToScript(script);
 
-      Assert.That (script, Is.EqualTo (new[] { scriptStatement, _statement }));
+      Assert.That(script, Is.EqualTo(new[] { scriptStatement, _statement }));
     }
 
     [Test]
     public void AppendToScript_ScriptEmpty ()
     {
-      var script = new List<ScriptStatement> ();
-      Assert.That (script.Count, Is.EqualTo (0));
+      var script = new List<ScriptStatement>();
+      Assert.That(script.Count, Is.EqualTo(0));
 
-      _statement.AppendToScript (script);
+      _statement.AppendToScript(script);
 
-      Assert.That (script, Is.EqualTo (new[] { _statement }));
+      Assert.That(script, Is.EqualTo(new[] { _statement }));
     }
   }
 }

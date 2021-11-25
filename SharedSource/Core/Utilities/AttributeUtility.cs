@@ -35,24 +35,24 @@ namespace Remotion.Utilities
 
     public static bool IsAttributeInherited (Type attributeType)
     {
-      AttributeUsageAttribute usage = GetAttributeUsage (attributeType);
+      AttributeUsageAttribute usage = GetAttributeUsage(attributeType);
       return usage.Inherited;
     }
 
     public static bool IsAttributeAllowMultiple (Type attributeType)
     {
-      AttributeUsageAttribute usage = GetAttributeUsage (attributeType);
+      AttributeUsageAttribute usage = GetAttributeUsage(attributeType);
       return usage.AllowMultiple;
     }
 
     public static AttributeUsageAttribute GetAttributeUsage (Type attributeType)
     {
       if (attributeType == null)
-        throw new ArgumentNullException ("attributeType");
+        throw new ArgumentNullException("attributeType");
 
-      var cachedInstance = s_attributeUsageCache.GetOrAdd (attributeType, s_getLazyAttributeUsageFunc).Value;
+      var cachedInstance = s_attributeUsageCache.GetOrAdd(attributeType, s_getLazyAttributeUsageFunc).Value;
 
-      var newInstance = new AttributeUsageAttribute (cachedInstance.ValidOn);
+      var newInstance = new AttributeUsageAttribute(cachedInstance.ValidOn);
       newInstance.AllowMultiple = cachedInstance.AllowMultiple;
       newInstance.Inherited = cachedInstance.Inherited;
       return newInstance;
@@ -60,15 +60,15 @@ namespace Remotion.Utilities
 
     private static Lazy<AttributeUsageAttribute> GetLazyAttributeUsage (Type attributeType)
     {
-      return new Lazy<AttributeUsageAttribute> (
+      return new Lazy<AttributeUsageAttribute>(
           () =>
           {
-            var usage = (AttributeUsageAttribute[]) attributeType.GetCustomAttributes (typeof (AttributeUsageAttribute), true);
+            var usage = (AttributeUsageAttribute[]) attributeType.GetCustomAttributes(typeof (AttributeUsageAttribute), true);
             if (usage.Length == 0)
-              return new AttributeUsageAttribute (AttributeTargets.All);
+              return new AttributeUsageAttribute(AttributeTargets.All);
 
             if (usage.Length > 1)
-              throw new InvalidOperationException ("AttributeUsageAttribute can only be applied once.");
+              throw new InvalidOperationException("AttributeUsageAttribute can only be applied once.");
 
             return usage[0];
           },

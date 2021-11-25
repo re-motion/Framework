@@ -40,27 +40,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
     [Test]
     public void Initialization_QueryTypeNotCustom ()
     {
-      _queryStub.Stub (stub => stub.QueryType).Return (QueryType.Collection);
-      Assert.That (
-          () => new CustomSequenceQueryAdapter<string> (_queryStub, _resultConversion),
+      _queryStub.Stub(stub => stub.QueryType).Return(QueryType.Collection);
+      Assert.That(
+          () => new CustomSequenceQueryAdapter<string>(_queryStub, _resultConversion),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo ("Only custom queries can be used to load custom results.", "query"));
+              .With.ArgumentExceptionMessageEqualTo("Only custom queries can be used to load custom results.", "query"));
     }
 
     [Test]
     public void Execute ()
     {
-      _queryStub.Stub (stub => stub.QueryType).Return (QueryType.Custom);
-      var queryAdapter = new CustomSequenceQueryAdapter<string> (_queryStub, _resultConversion);
+      _queryStub.Stub(stub => stub.QueryType).Return(QueryType.Custom);
+      var queryAdapter = new CustomSequenceQueryAdapter<string>(_queryStub, _resultConversion);
 
       var fakeResult = new[] { "t1", "t2" };
       var queryManagerMock = MockRepository.GenerateStrictMock<IQueryManager>();
-      queryManagerMock.Expect (mock => mock.GetCustom (queryAdapter, _resultConversion)).Return (fakeResult);
+      queryManagerMock.Expect(mock => mock.GetCustom(queryAdapter, _resultConversion)).Return(fakeResult);
 
-      var result = queryAdapter.Execute (queryManagerMock);
+      var result = queryAdapter.Execute(queryManagerMock);
 
       queryManagerMock.VerifyAllExpectations();
-      Assert.That (result, Is.EqualTo (fakeResult));
+      Assert.That(result, Is.EqualTo(fakeResult));
     }
   }
 }

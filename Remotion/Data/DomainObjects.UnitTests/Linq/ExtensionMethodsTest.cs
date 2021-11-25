@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
                                     where o.OrderNumber == 1 || o.ID == DomainObjectIDs.Order3 
                                     select o;
       ObjectList<Order> list = queryable.ToObjectList();
-      Assert.That (list, Is.EquivalentTo (new[] { DomainObjectIDs.Order1.GetObject<Order> (), DomainObjectIDs.Order3.GetObject<Order> () }));
+      Assert.That(list, Is.EquivalentTo(new[] { DomainObjectIDs.Order1.GetObject<Order>(), DomainObjectIDs.Order3.GetObject<Order>() }));
     }
   }
 }

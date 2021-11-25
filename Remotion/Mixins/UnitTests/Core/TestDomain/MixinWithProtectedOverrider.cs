@@ -30,7 +30,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     [OverrideTarget]
     protected string VirtualMethod ()
     {
-      return "MixinWithProtectedOverrider.VirtualMethod-" + Next.VirtualMethod ();
+      return "MixinWithProtectedOverrider.VirtualMethod-" + Next.VirtualMethod();
     }
 
     [OverrideTarget]

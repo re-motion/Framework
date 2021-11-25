@@ -33,52 +33,52 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      _factory = new OrganizationalStructureFactory ();
+      base.SetUp();
+      _factory = new OrganizationalStructureFactory();
 
-      ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ();
+      ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope();
     }
 
     [Test]
     public void Initialize_Values ()
     {
-      Tenant principalTenant = CreateTenant ("principalTenant");
-      Principal principal = PrincipalTestHelper.Create (principalTenant, null, new Role[0]);
-      Tenant owningTenant = CreateTenant ("owningTenant");
-      Group owningGroup = CreateGroup ("owningGroup", null, owningTenant);
-      User owningUser = CreateUser ("owningUser", CreateGroup ("owningUserGroup", null, owningTenant), owningTenant);
-      AbstractRoleDefinition abstractRole1 = AbstractRoleDefinition.NewObject (Guid.NewGuid (), "role1", 0);
-      AbstractRoleDefinition abstractRole2 = AbstractRoleDefinition.NewObject (Guid.NewGuid (), "role2", 1);
-      SecurityToken token = SecurityToken.Create (
+      Tenant principalTenant = CreateTenant("principalTenant");
+      Principal principal = PrincipalTestHelper.Create(principalTenant, null, new Role[0]);
+      Tenant owningTenant = CreateTenant("owningTenant");
+      Group owningGroup = CreateGroup("owningGroup", null, owningTenant);
+      User owningUser = CreateUser("owningUser", CreateGroup("owningUserGroup", null, owningTenant), owningTenant);
+      AbstractRoleDefinition abstractRole1 = AbstractRoleDefinition.NewObject(Guid.NewGuid(), "role1", 0);
+      AbstractRoleDefinition abstractRole2 = AbstractRoleDefinition.NewObject(Guid.NewGuid(), "role2", 1);
+      SecurityToken token = SecurityToken.Create(
           principal,
           owningTenant,
           owningGroup,
           owningUser,
           new[] { abstractRole1.GetHandle(), abstractRole2.GetHandle() });
 
-      Assert.That (token.Principal, Is.SameAs (principal));
-      Assert.That (token.OwningTenant, Is.EqualTo (owningTenant).Using (DomainObjectHandleComparer.Instance));
-      Assert.That (token.OwningGroup, Is.EqualTo (owningGroup).Using (DomainObjectHandleComparer.Instance));
-      Assert.That (token.OwningUser, Is.EqualTo (owningUser).Using (DomainObjectHandleComparer.Instance));
-      Assert.That (token.AbstractRoles, Is.EquivalentTo (new[] { abstractRole1, abstractRole2 }).Using (DomainObjectHandleComparer.Instance));
+      Assert.That(token.Principal, Is.SameAs(principal));
+      Assert.That(token.OwningTenant, Is.EqualTo(owningTenant).Using(DomainObjectHandleComparer.Instance));
+      Assert.That(token.OwningGroup, Is.EqualTo(owningGroup).Using(DomainObjectHandleComparer.Instance));
+      Assert.That(token.OwningUser, Is.EqualTo(owningUser).Using(DomainObjectHandleComparer.Instance));
+      Assert.That(token.AbstractRoles, Is.EquivalentTo(new[] { abstractRole1, abstractRole2 }).Using(DomainObjectHandleComparer.Instance));
     }
 
     [Test]
     public void Initialize_Empty ()
     {
-      Tenant principalTenant = CreateTenant ("principalTenant");
-      Principal principal = PrincipalTestHelper.Create (principalTenant, null, new Role[0]);
-      SecurityToken token = SecurityToken.Create (principal, null, null, null, Enumerable.Empty<IDomainObjectHandle<AbstractRoleDefinition>>());
+      Tenant principalTenant = CreateTenant("principalTenant");
+      Principal principal = PrincipalTestHelper.Create(principalTenant, null, new Role[0]);
+      SecurityToken token = SecurityToken.Create(principal, null, null, null, Enumerable.Empty<IDomainObjectHandle<AbstractRoleDefinition>>());
 
-      Assert.That (token.OwningTenant, Is.Null);
-      Assert.That (token.OwningGroup, Is.Null);
-      Assert.That (token.OwningUser, Is.Null);
-      Assert.That (token.AbstractRoles, Is.Empty);
+      Assert.That(token.OwningTenant, Is.Null);
+      Assert.That(token.OwningGroup, Is.Null);
+      Assert.That(token.OwningUser, Is.Null);
+      Assert.That(token.AbstractRoles, Is.Empty);
     }
 
     private Tenant CreateTenant (string name)
     {
-      Tenant tenant = _factory.CreateTenant ();
+      Tenant tenant = _factory.CreateTenant();
       tenant.Name = name;
 
       return tenant;
@@ -86,7 +86,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     private Group CreateGroup (string name, Group parent, Tenant tenant)
     {
-      Group group = _factory.CreateGroup ();
+      Group group = _factory.CreateGroup();
       group.Name = name;
       group.Parent = parent;
       group.Tenant = tenant;
@@ -96,7 +96,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     private User CreateUser (string userName, Group owningGroup, Tenant tenant)
     {
-      User user = _factory.CreateUser ();
+      User user = _factory.CreateUser();
       user.UserName = userName;
       user.FirstName = "First Name";
       user.LastName = "Last Name";

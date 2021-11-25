@@ -39,86 +39,86 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void Create ()
     {
       var tenant = CreateTenant();
-      var proxy = TenantProxy.Create (tenant);
+      var proxy = TenantProxy.Create(tenant);
 
-      Assert.That (proxy.ID, Is.EqualTo (tenant.ID));
-      Assert.That (proxy.UniqueIdentifier, Is.EqualTo (((IBusinessObjectWithIdentity) tenant).UniqueIdentifier));
-      Assert.That (proxy.DisplayName, Is.EqualTo (((IBusinessObjectWithIdentity) tenant).DisplayName));
+      Assert.That(proxy.ID, Is.EqualTo(tenant.ID));
+      Assert.That(proxy.UniqueIdentifier, Is.EqualTo(((IBusinessObjectWithIdentity) tenant).UniqueIdentifier));
+      Assert.That(proxy.DisplayName, Is.EqualTo(((IBusinessObjectWithIdentity) tenant).DisplayName));
     }
 
     [Test]
     public void Serialization ()
     {
-      var proxy = TenantProxy.Create (CreateTenant());
+      var proxy = TenantProxy.Create(CreateTenant());
 
-      var deserialized = Serializer.SerializeAndDeserialize (proxy);
+      var deserialized = Serializer.SerializeAndDeserialize(proxy);
 
-      Assert.That (deserialized.ID, Is.EqualTo (proxy.ID));
-      Assert.That (deserialized.UniqueIdentifier, Is.EqualTo (proxy.UniqueIdentifier));
-      Assert.That (deserialized.DisplayName, Is.EqualTo (proxy.DisplayName));
+      Assert.That(deserialized.ID, Is.EqualTo(proxy.ID));
+      Assert.That(deserialized.UniqueIdentifier, Is.EqualTo(proxy.UniqueIdentifier));
+      Assert.That(deserialized.DisplayName, Is.EqualTo(proxy.DisplayName));
     }
 
     [Test]
     public void Equals_EqualObject_True ()
     {
-      var tenant = CreateTenant ();
-      var proxy1 = TenantProxy.Create (tenant);
-      var proxy2 = TenantProxy.Create (tenant);
+      var tenant = CreateTenant();
+      var proxy1 = TenantProxy.Create(tenant);
+      var proxy2 = TenantProxy.Create(tenant);
 
-      Assert.That (proxy1.Equals (proxy2), Is.True);
-      Assert.That (proxy2.Equals (proxy1), Is.True);
+      Assert.That(proxy1.Equals(proxy2), Is.True);
+      Assert.That(proxy2.Equals(proxy1), Is.True);
     }
 
     [Test]
     public void Equals_SameObject_True ()
     {
-      var tenant = CreateTenant ();
-      var proxy1 = TenantProxy.Create (tenant);
+      var tenant = CreateTenant();
+      var proxy1 = TenantProxy.Create(tenant);
 
       // ReSharper disable EqualExpressionComparison
-      Assert.That (proxy1.Equals (proxy1), Is.True);
+      Assert.That(proxy1.Equals(proxy1), Is.True);
       // ReSharper restore EqualExpressionComparison
     }
 
     [Test]
     public void Equals_Null_False ()
     {
-      var user = CreateTenant ();
-      var proxy1 = TenantProxy.Create (user);
+      var user = CreateTenant();
+      var proxy1 = TenantProxy.Create(user);
 
-      Assert.That (proxy1.Equals (null), Is.False);
+      Assert.That(proxy1.Equals(null), Is.False);
     }
 
     [Test]
     public void Equals_OtherObject_False ()
     {
-      var proxy1 = TenantProxy.Create (CreateTenant ());
-      var proxy2 = TenantProxy.Create (CreateTenant ());
+      var proxy1 = TenantProxy.Create(CreateTenant());
+      var proxy2 = TenantProxy.Create(CreateTenant());
 
-      Assert.That (proxy1.Equals (proxy2), Is.False);
+      Assert.That(proxy1.Equals(proxy2), Is.False);
     }
 
     [Test]
     public void Equals_OtherType_False ()
     {
-      var proxy1 = TenantProxy.Create (CreateTenant ());
+      var proxy1 = TenantProxy.Create(CreateTenant());
 
-      Assert.That (proxy1.Equals ("other"), Is.False);
+      Assert.That(proxy1.Equals("other"), Is.False);
     }
 
     [Test]
     public void GetHashcode_EqualObject_SameHashcode ()
     {
-      var tenant = CreateTenant ();
-      var proxy1 = TenantProxy.Create (tenant);
-      var proxy2 = TenantProxy.Create (tenant);
+      var tenant = CreateTenant();
+      var proxy1 = TenantProxy.Create(tenant);
+      var proxy2 = TenantProxy.Create(tenant);
 
-      Assert.That (proxy2.GetHashCode (), Is.EqualTo (proxy1.GetHashCode ()));
+      Assert.That(proxy2.GetHashCode(), Is.EqualTo(proxy1.GetHashCode()));
     }
 
     private Tenant CreateTenant ()
     {
-      return _testHelper.CreateTenant ("TheTenant", "UID");
+      return _testHelper.CreateTenant("TheTenant", "UID");
     }
   }
 }

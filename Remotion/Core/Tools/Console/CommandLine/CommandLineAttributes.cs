@@ -105,8 +105,8 @@ namespace Remotion.Tools.Console.CommandLine
 
     public virtual void AddArgument (CommandLineArgumentCollection argumentCollection, IDictionary dictionary, MemberInfo member)
     {
-      argumentCollection.Add (this.Argument);
-      dictionary.Add (this.Argument, member);
+      argumentCollection.Add(this.Argument);
+      dictionary.Add(this.Argument, member);
     }
   }
 
@@ -149,12 +149,12 @@ namespace Remotion.Tools.Console.CommandLine
   public class CommandLineStringArgumentAttribute : CommandLineArgumentAttribute
   {
     public CommandLineStringArgumentAttribute (bool isOptional)
-        : base (new CommandLineStringArgument (isOptional))
+        : base (new CommandLineStringArgument(isOptional))
     {
     }
 
     public CommandLineStringArgumentAttribute (string name, bool isOptional)
-        : base (new CommandLineStringArgument (name, isOptional))
+        : base (new CommandLineStringArgument(name, isOptional))
     {
     }
   }
@@ -163,12 +163,12 @@ namespace Remotion.Tools.Console.CommandLine
   public class CommandLineFlagArgumentAttribute : CommandLineArgumentAttribute
   {
     public CommandLineFlagArgumentAttribute (string name)
-        : base (new CommandLineFlagArgument (name))
+        : base (new CommandLineFlagArgument(name))
     {
     }
 
     public CommandLineFlagArgumentAttribute (string name, bool defaultValue)
-        : base (new CommandLineFlagArgument (name, defaultValue))
+        : base (new CommandLineFlagArgument(name, defaultValue))
     {
     }
   }
@@ -178,12 +178,12 @@ namespace Remotion.Tools.Console.CommandLine
   public class CommandLineInt32ArgumentAttribute : CommandLineArgumentAttribute
   {
     public CommandLineInt32ArgumentAttribute (string name, bool isOptional)
-        : base (new CommandLineInt32Argument (name, isOptional))
+        : base (new CommandLineInt32Argument(name, isOptional))
     {
     }
 
     public CommandLineInt32ArgumentAttribute (bool isOptional)
-        : base (new CommandLineInt32Argument (isOptional))
+        : base (new CommandLineInt32Argument(isOptional))
     {
     }
   }
@@ -192,22 +192,22 @@ namespace Remotion.Tools.Console.CommandLine
   public class CommandLineEnumArgumentAttribute : CommandLineArgumentAttribute
   {
     public CommandLineEnumArgumentAttribute (bool isOptional)
-        : base (new CommandLineEnumArgument (isOptional, null))
+        : base (new CommandLineEnumArgument(isOptional, null))
     {
     }
 
     public CommandLineEnumArgumentAttribute (string name, bool isOptional)
-        : base (new CommandLineEnumArgument (name, isOptional, null))
+        : base (new CommandLineEnumArgument(name, isOptional, null))
     {
     }
 
     public override void SetMember (MemberInfo fieldOrProperty)
     {
-      Type enumType = CommandLineReflectionUtility.GetFieldOrPropertyType (fieldOrProperty);
+      Type enumType = CommandLineReflectionUtility.GetFieldOrPropertyType(fieldOrProperty);
       if (! enumType.IsEnum)
       {
-        throw new ApplicationException (
-            string.Format (
+        throw new ApplicationException(
+            string.Format(
                 "Attribute {0} can only be applied to enumeration fields or properties.", typeof (CommandLineEnumArgumentAttribute).GetFullNameSafe()));
       }
       ((CommandLineEnumArgument) Argument).EnumType = enumType;
@@ -220,7 +220,7 @@ namespace Remotion.Tools.Console.CommandLine
     private Type? _enumType;
 
     public CommandLineModeArgumentAttribute (bool isOptional)
-        : base (new CommandLineModeArgument (isOptional, null))
+        : base (new CommandLineModeArgument(isOptional, null))
     {
     }
 
@@ -231,11 +231,11 @@ namespace Remotion.Tools.Console.CommandLine
 
     public override void SetMember (MemberInfo fieldOrProperty)
     {
-      _enumType = CommandLineReflectionUtility.GetFieldOrPropertyType (fieldOrProperty);
+      _enumType = CommandLineReflectionUtility.GetFieldOrPropertyType(fieldOrProperty);
       if (! _enumType.IsEnum)
       {
-        throw new ApplicationException (
-            string.Format (
+        throw new ApplicationException(
+            string.Format(
                 "Attribute {0} can only be applied to enumeration fields or properties.", typeof (CommandLineEnumArgumentAttribute).GetFullNameSafe()));
       }
 
@@ -246,14 +246,14 @@ namespace Remotion.Tools.Console.CommandLine
     public override void AddArgument (CommandLineArgumentCollection argumentCollection, IDictionary dictionary, MemberInfo member)
     {
       if (_enumType == null)
-        throw new InvalidOperationException ("SetMember must be called before AddArgument");
+        throw new InvalidOperationException("SetMember must be called before AddArgument");
 
       foreach (CommandLineModeFlagArgument flag in Argument.Parts)
       {
-        argumentCollection.Add (flag);
-        dictionary.Add (flag, member);
+        argumentCollection.Add(flag);
+        dictionary.Add(flag, member);
       }
-      argumentCollection.Add (Argument);
+      argumentCollection.Add(Argument);
     }
   }
 
@@ -262,7 +262,7 @@ namespace Remotion.Tools.Console.CommandLine
   {
     public static CommandLineModeAttribute? GetAttribute (FieldInfo field)
     {
-      return (CommandLineModeAttribute?) AttributeUtility.GetCustomAttribute (field, typeof (CommandLineModeAttribute), false);
+      return (CommandLineModeAttribute?) AttributeUtility.GetCustomAttribute(field, typeof (CommandLineModeAttribute), false);
     }
 
     private string _name;

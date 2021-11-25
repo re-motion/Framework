@@ -44,8 +44,8 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Chrome
     /// <inheritdoc />
     public override IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
     {
-      return ((IWebDriver) Driver.Native).Manage().Logs.GetLog (LogType.Browser)
-          .Select (logEntry => new BrowserLogEntry (logEntry))
+      return ((IWebDriver) Driver.Native).Manage().Logs.GetLog(LogType.Browser)
+          .Select(logEntry => new BrowserLogEntry(logEntry))
           .ToArray();
     }
 

@@ -32,18 +32,18 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var businessObjectStub = new Mock<IBusinessObject>();
       var propertyInformationStub = new Mock<IPropertyInformation>();
-      propertyInformationStub.Setup (stub => stub.PropertyType).Returns (typeof (bool));
-      propertyInformationStub.Setup (stub => stub.GetIndexParameters()).Returns (new ParameterInfo[0]);
-      var property = CreateProperty (propertyInformationStub.Object);
-      var strategy = (IDefaultValueStrategy) new BindableObjectDefaultValueStrategy ();
+      propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof (bool));
+      propertyInformationStub.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
+      var property = CreateProperty(propertyInformationStub.Object);
+      var strategy = (IDefaultValueStrategy) new BindableObjectDefaultValueStrategy();
 
-      Assert.That (strategy.IsDefaultValue (businessObjectStub.Object, property), Is.False);
+      Assert.That(strategy.IsDefaultValue(businessObjectStub.Object, property), Is.False);
     }
 
     private BooleanProperty CreateProperty (IPropertyInformation propertyInformation)
     {
-      var businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ();
-      return new BooleanProperty (GetPropertyParameters (propertyInformation, businessObjectProvider));
+      var businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
+      return new BooleanProperty(GetPropertyParameters(propertyInformation, businessObjectProvider));
     }
   }
 }

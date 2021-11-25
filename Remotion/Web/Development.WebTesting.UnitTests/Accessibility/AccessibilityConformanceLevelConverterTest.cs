@@ -27,18 +27,18 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     [Test]
     public void ConvertToEnum_WithUnknownKey_ReturnsUnknown ()
     {
-      Assert.That (
-          () => AccessibilityConformanceLevelConverter.ConvertToEnum ("SomeUnknownKey"),
+      Assert.That(
+          () => AccessibilityConformanceLevelConverter.ConvertToEnum("SomeUnknownKey"),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("The conformance level 'SomeUnknownKey' is not supported."));
+              .With.Message.EqualTo("The conformance level 'SomeUnknownKey' is not supported."));
     }
 
     [Test]
     public void ConvertToEnum_WithKnownKey_ReturnsKeyAsEnum ()
     {
-      var conformanceLevel = AccessibilityConformanceLevelConverter.ConvertToEnum ("wcag21a");
+      var conformanceLevel = AccessibilityConformanceLevelConverter.ConvertToEnum("wcag21a");
 
-      Assert.That (conformanceLevel, Is.EqualTo (AccessibilityConformanceLevel.Wcag21_ConformanceLevelA));
+      Assert.That(conformanceLevel, Is.EqualTo(AccessibilityConformanceLevel.Wcag21_ConformanceLevelA));
     }
   }
 }

@@ -31,38 +31,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void GetSetCommitRollbackPersistentProperties ()
     {
-      using (TestableClientTransaction.CreateSubTransaction ().EnterNonDiscardingScope ())
+      using (TestableClientTransaction.CreateSubTransaction().EnterNonDiscardingScope())
       {
-        IMixinAddingPersistentProperties properties = TargetClassForPersistentMixin.NewObject () as IMixinAddingPersistentProperties;
-        Assert.That (properties, Is.Not.Null);
+        IMixinAddingPersistentProperties properties = TargetClassForPersistentMixin.NewObject() as IMixinAddingPersistentProperties;
+        Assert.That(properties, Is.Not.Null);
 
         properties.ExtraPersistentProperty = 10;
         properties.PersistentProperty = 11;
         properties.NonPersistentProperty = 12;
 
-        Assert.That (properties.ExtraPersistentProperty, Is.EqualTo (10));
-        Assert.That (properties.PersistentProperty, Is.EqualTo (11));
-        Assert.That (properties.NonPersistentProperty, Is.EqualTo (12));
+        Assert.That(properties.ExtraPersistentProperty, Is.EqualTo(10));
+        Assert.That(properties.PersistentProperty, Is.EqualTo(11));
+        Assert.That(properties.NonPersistentProperty, Is.EqualTo(12));
 
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
 
-        Assert.That (properties.ExtraPersistentProperty, Is.EqualTo (10));
-        Assert.That (properties.PersistentProperty, Is.EqualTo (11));
-        Assert.That (properties.NonPersistentProperty, Is.EqualTo (12));
+        Assert.That(properties.ExtraPersistentProperty, Is.EqualTo(10));
+        Assert.That(properties.PersistentProperty, Is.EqualTo(11));
+        Assert.That(properties.NonPersistentProperty, Is.EqualTo(12));
 
         properties.ExtraPersistentProperty = 13;
         properties.PersistentProperty = 14;
         properties.NonPersistentProperty = 15;
 
-        Assert.That (properties.ExtraPersistentProperty, Is.EqualTo (13));
-        Assert.That (properties.PersistentProperty, Is.EqualTo (14));
-        Assert.That (properties.NonPersistentProperty, Is.EqualTo (15));
+        Assert.That(properties.ExtraPersistentProperty, Is.EqualTo(13));
+        Assert.That(properties.PersistentProperty, Is.EqualTo(14));
+        Assert.That(properties.NonPersistentProperty, Is.EqualTo(15));
 
-        ClientTransaction.Current.Rollback ();
+        ClientTransaction.Current.Rollback();
 
-        Assert.That (properties.ExtraPersistentProperty, Is.EqualTo (10));
-        Assert.That (properties.PersistentProperty, Is.EqualTo (11));
-        Assert.That (properties.NonPersistentProperty, Is.EqualTo (15));
+        Assert.That(properties.ExtraPersistentProperty, Is.EqualTo(10));
+        Assert.That(properties.PersistentProperty, Is.EqualTo(11));
+        Assert.That(properties.NonPersistentProperty, Is.EqualTo(15));
       }
     }
 
@@ -71,22 +71,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       SetDatabaseModifyable();
 
-      ClientTransaction clientTransaction = ClientTransaction.CreateRootTransaction ();
+      ClientTransaction clientTransaction = ClientTransaction.CreateRootTransaction();
 
-      var mixedInstance = clientTransaction.ExecuteInScope (() => TargetClassForPersistentMixin.NewObject ());
-      var mixin = Mixin.Get<MixinAddingPersistentProperties> (mixedInstance);
-      var relationTarget1 = clientTransaction.ExecuteInScope (() => RelationTargetForPersistentMixin.NewObject());
-      var relationTarget2 = clientTransaction.ExecuteInScope (() => RelationTargetForPersistentMixin.NewObject());
-      var relationTarget3 = clientTransaction.ExecuteInScope (() => RelationTargetForPersistentMixin.NewObject());
-      var relationTarget4 = clientTransaction.ExecuteInScope (() => RelationTargetForPersistentMixin.NewObject ());
-      var relationTarget5 = clientTransaction.ExecuteInScope (() => RelationTargetForPersistentMixin.NewObject ());
+      var mixedInstance = clientTransaction.ExecuteInScope(() => TargetClassForPersistentMixin.NewObject());
+      var mixin = Mixin.Get<MixinAddingPersistentProperties>(mixedInstance);
+      var relationTarget1 = clientTransaction.ExecuteInScope(() => RelationTargetForPersistentMixin.NewObject());
+      var relationTarget2 = clientTransaction.ExecuteInScope(() => RelationTargetForPersistentMixin.NewObject());
+      var relationTarget3 = clientTransaction.ExecuteInScope(() => RelationTargetForPersistentMixin.NewObject());
+      var relationTarget4 = clientTransaction.ExecuteInScope(() => RelationTargetForPersistentMixin.NewObject());
+      var relationTarget5 = clientTransaction.ExecuteInScope(() => RelationTargetForPersistentMixin.NewObject());
 
       mixin.PersistentProperty = 10;
       mixin.NonPersistentProperty = 100;
       mixin.ExtraPersistentProperty = 1000;
       mixin.RelationProperty = relationTarget1;
       mixin.VirtualRelationProperty = relationTarget2;
-      mixin.CollectionProperty1Side.Add (relationTarget3);
+      mixin.CollectionProperty1Side.Add(relationTarget3);
       mixin.CollectionPropertyNSide = relationTarget4;
       mixin.UnidirectionalRelationProperty = relationTarget5;
 
@@ -94,79 +94,79 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
       var otherClientTransaction = ClientTransaction.CreateRootTransaction();
 
-      var loadedInstance = mixedInstance.ID.GetObject<TargetClassForPersistentMixin> (otherClientTransaction);
-      var loadedMixin = Mixin.Get<MixinAddingPersistentProperties> (loadedInstance);
+      var loadedInstance = mixedInstance.ID.GetObject<TargetClassForPersistentMixin>(otherClientTransaction);
+      var loadedMixin = Mixin.Get<MixinAddingPersistentProperties>(loadedInstance);
 
-      Assert.That (loadedInstance, Is.Not.SameAs (mixedInstance));
-      Assert.That (loadedMixin, Is.Not.SameAs (mixin));
+      Assert.That(loadedInstance, Is.Not.SameAs(mixedInstance));
+      Assert.That(loadedMixin, Is.Not.SameAs(mixin));
 
-      Assert.That (loadedMixin.PersistentProperty, Is.EqualTo (10));
-      Assert.That (loadedMixin.NonPersistentProperty, Is.EqualTo (0));
-      Assert.That (loadedMixin.ExtraPersistentProperty, Is.EqualTo (1000));
-      Assert.That (loadedMixin.RelationProperty.ID, Is.EqualTo (mixin.RelationProperty.ID));
-      Assert.That (loadedMixin.VirtualRelationProperty.ID, Is.EqualTo (mixin.VirtualRelationProperty.ID));
-      Assert.That (loadedMixin.CollectionProperty1Side.Count, Is.EqualTo (mixin.CollectionProperty1Side.Count));
-      Assert.That (loadedMixin.CollectionProperty1Side[0].ID, Is.EqualTo (mixin.CollectionProperty1Side[0].ID));
-      Assert.That (loadedMixin.CollectionPropertyNSide.ID, Is.EqualTo (mixin.CollectionPropertyNSide.ID));
-      Assert.That (loadedMixin.UnidirectionalRelationProperty.ID, Is.EqualTo (mixin.UnidirectionalRelationProperty.ID));
+      Assert.That(loadedMixin.PersistentProperty, Is.EqualTo(10));
+      Assert.That(loadedMixin.NonPersistentProperty, Is.EqualTo(0));
+      Assert.That(loadedMixin.ExtraPersistentProperty, Is.EqualTo(1000));
+      Assert.That(loadedMixin.RelationProperty.ID, Is.EqualTo(mixin.RelationProperty.ID));
+      Assert.That(loadedMixin.VirtualRelationProperty.ID, Is.EqualTo(mixin.VirtualRelationProperty.ID));
+      Assert.That(loadedMixin.CollectionProperty1Side.Count, Is.EqualTo(mixin.CollectionProperty1Side.Count));
+      Assert.That(loadedMixin.CollectionProperty1Side[0].ID, Is.EqualTo(mixin.CollectionProperty1Side[0].ID));
+      Assert.That(loadedMixin.CollectionPropertyNSide.ID, Is.EqualTo(mixin.CollectionPropertyNSide.ID));
+      Assert.That(loadedMixin.UnidirectionalRelationProperty.ID, Is.EqualTo(mixin.UnidirectionalRelationProperty.ID));
     }
 
     [Test]
     public void OneDomainClassTwoMixins ()
     {
-      SetDatabaseModifyable ();
+      SetDatabaseModifyable();
 
-      var clientTransaction = ClientTransaction.CreateRootTransaction ();
+      var clientTransaction = ClientTransaction.CreateRootTransaction();
 
-      var mixedInstance = clientTransaction.ExecuteInScope (() => TargetClassWithTwoUnidirectionalMixins.NewObject());
-      var mixin1 = Mixin.Get<MixinAddingUnidirectionalRelation1> (mixedInstance);
-      var mixin2 = Mixin.Get<MixinAddingUnidirectionalRelation2> (mixedInstance);
+      var mixedInstance = clientTransaction.ExecuteInScope(() => TargetClassWithTwoUnidirectionalMixins.NewObject());
+      var mixin1 = Mixin.Get<MixinAddingUnidirectionalRelation1>(mixedInstance);
+      var mixin2 = Mixin.Get<MixinAddingUnidirectionalRelation2>(mixedInstance);
 
-      var relationTarget1 = clientTransaction.ExecuteInScope (() => Computer.NewObject());
-      var relationTarget2 = clientTransaction.ExecuteInScope (() => Computer.NewObject());
+      var relationTarget1 = clientTransaction.ExecuteInScope(() => Computer.NewObject());
+      var relationTarget2 = clientTransaction.ExecuteInScope(() => Computer.NewObject());
 
       mixin1.Computer = relationTarget1;
       mixin2.Computer = relationTarget2;
-      mixedInstance.RootTransaction.Commit ();
+      mixedInstance.RootTransaction.Commit();
 
-      var otherClientTransaction = ClientTransaction.CreateRootTransaction ();
+      var otherClientTransaction = ClientTransaction.CreateRootTransaction();
 
-      TargetClassWithTwoUnidirectionalMixins loadedInstance = mixedInstance.GetHandle().GetObject (otherClientTransaction);
-      var loadedMixin1 = Mixin.Get<MixinAddingUnidirectionalRelation1> (loadedInstance);
-      var loadedMixin2 = Mixin.Get<MixinAddingUnidirectionalRelation2> (loadedInstance);
+      TargetClassWithTwoUnidirectionalMixins loadedInstance = mixedInstance.GetHandle().GetObject(otherClientTransaction);
+      var loadedMixin1 = Mixin.Get<MixinAddingUnidirectionalRelation1>(loadedInstance);
+      var loadedMixin2 = Mixin.Get<MixinAddingUnidirectionalRelation2>(loadedInstance);
 
-      Assert.That (loadedMixin1.Computer.ID, Is.EqualTo (mixin1.Computer.ID));
-      Assert.That (loadedMixin2.Computer.ID, Is.EqualTo (mixin2.Computer.ID));
+      Assert.That(loadedMixin1.Computer.ID, Is.EqualTo(mixin1.Computer.ID));
+      Assert.That(loadedMixin2.Computer.ID, Is.EqualTo(mixin2.Computer.ID));
     }
 
     [Test]
     public void OneMixinTwoDomainClasses ()
     {
-      SetDatabaseModifyable ();
+      SetDatabaseModifyable();
 
-      var clientTransaction = ClientTransaction.CreateRootTransaction ();
+      var clientTransaction = ClientTransaction.CreateRootTransaction();
 
-      TargetClassWithUnidirectionalMixin1 mixedInstance1 = clientTransaction.ExecuteInScope (() => TargetClassWithUnidirectionalMixin1.NewObject ());
-      MixinAddingUnidirectionalRelation1 mixin1 = Mixin.Get<MixinAddingUnidirectionalRelation1> (mixedInstance1);
-      TargetClassWithUnidirectionalMixin2 mixedInstance2 = clientTransaction.ExecuteInScope (() => TargetClassWithUnidirectionalMixin2.NewObject ());
-      MixinAddingUnidirectionalRelation1 mixin2 = Mixin.Get<MixinAddingUnidirectionalRelation1> (mixedInstance2);
+      TargetClassWithUnidirectionalMixin1 mixedInstance1 = clientTransaction.ExecuteInScope(() => TargetClassWithUnidirectionalMixin1.NewObject());
+      MixinAddingUnidirectionalRelation1 mixin1 = Mixin.Get<MixinAddingUnidirectionalRelation1>(mixedInstance1);
+      TargetClassWithUnidirectionalMixin2 mixedInstance2 = clientTransaction.ExecuteInScope(() => TargetClassWithUnidirectionalMixin2.NewObject());
+      MixinAddingUnidirectionalRelation1 mixin2 = Mixin.Get<MixinAddingUnidirectionalRelation1>(mixedInstance2);
 
-      Computer relationTarget1 = clientTransaction.ExecuteInScope (() => Computer.NewObject ());
-      Computer relationTarget2 = clientTransaction.ExecuteInScope (() => Computer.NewObject ());
+      Computer relationTarget1 = clientTransaction.ExecuteInScope(() => Computer.NewObject());
+      Computer relationTarget2 = clientTransaction.ExecuteInScope(() => Computer.NewObject());
 
       mixin1.Computer = relationTarget1;
       mixin2.Computer = relationTarget2;
       mixedInstance1.RootTransaction.Commit();
 
-      var otherClientTransaction = ClientTransaction.CreateRootTransaction ();
+      var otherClientTransaction = ClientTransaction.CreateRootTransaction();
 
-      TargetClassWithUnidirectionalMixin1 loadedInstance1 = mixedInstance1.GetHandle().GetObject (otherClientTransaction);
-      MixinAddingUnidirectionalRelation1 loadedMixin1 = Mixin.Get<MixinAddingUnidirectionalRelation1> (loadedInstance1);
-      TargetClassWithUnidirectionalMixin2 loadedInstance2 = mixedInstance2.GetHandle().GetObject (otherClientTransaction);
-      MixinAddingUnidirectionalRelation1 loadedMixin2 = Mixin.Get<MixinAddingUnidirectionalRelation1> (loadedInstance2);
+      TargetClassWithUnidirectionalMixin1 loadedInstance1 = mixedInstance1.GetHandle().GetObject(otherClientTransaction);
+      MixinAddingUnidirectionalRelation1 loadedMixin1 = Mixin.Get<MixinAddingUnidirectionalRelation1>(loadedInstance1);
+      TargetClassWithUnidirectionalMixin2 loadedInstance2 = mixedInstance2.GetHandle().GetObject(otherClientTransaction);
+      MixinAddingUnidirectionalRelation1 loadedMixin2 = Mixin.Get<MixinAddingUnidirectionalRelation1>(loadedInstance2);
 
-      Assert.That (loadedMixin1.Computer.ID, Is.EqualTo (mixin1.Computer.ID));
-      Assert.That (loadedMixin2.Computer.ID, Is.EqualTo (mixin2.Computer.ID));
+      Assert.That(loadedMixin1.Computer.ID, Is.EqualTo(mixin1.Computer.ID));
+      Assert.That(loadedMixin2.Computer.ID, Is.EqualTo(mixin2.Computer.ID));
     }
   }
 }

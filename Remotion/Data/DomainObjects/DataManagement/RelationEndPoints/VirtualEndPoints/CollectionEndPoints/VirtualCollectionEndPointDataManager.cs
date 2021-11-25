@@ -38,13 +38,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         RelationEndPointID endPointID,
         IDataContainerMapReadOnlyView dataContainerMap)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-      ArgumentUtility.CheckNotNull ("dataContainerMap", dataContainerMap);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("dataContainerMap", dataContainerMap);
 
       EndPointID = endPointID;
       DataContainerMap = dataContainerMap;
 
-      _virtualCollectionData = new VirtualCollectionData (endPointID, dataContainerMap, ValueAccess.Current);
+      _virtualCollectionData = new VirtualCollectionData(endPointID, dataContainerMap, ValueAccess.Current);
     }
 
     public IVirtualCollectionData CollectionData
@@ -59,22 +59,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
 
       _virtualCollectionData.ResetCachedDomainObjects();
     }
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
 
       _virtualCollectionData.ResetCachedDomainObjects();
     }
 
     public void SetDataFromSubTransaction (IVirtualCollectionEndPointDataManager sourceDataManager, IRelationEndPointProvider endPointProvider)
     {
-      ArgumentUtility.CheckNotNull ("sourceDataManager", sourceDataManager);
-      ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull("sourceDataManager", sourceDataManager);
+      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
 
       _virtualCollectionData.ResetCachedDomainObjects();
     }
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     // ReSharper disable UnusedMember.Local
     private VirtualCollectionEndPointDataManager (FlattenedDeserializationInfo info)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
 
       EndPointID = info.GetValueForHandle<RelationEndPointID>();
 
@@ -105,10 +105,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
 
-      info.AddHandle (EndPointID);
-      info.AddHandle (_virtualCollectionData);
+      info.AddHandle(EndPointID);
+      info.AddHandle(_virtualCollectionData);
     }
 
     #endregion

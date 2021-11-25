@@ -36,7 +36,7 @@ namespace Remotion.Validation.Implementation
 
     public CompoundValidationTypeFilter (IEnumerable<IValidationTypeFilter> validationTypeFilters)
     {
-      ArgumentUtility.CheckNotNull ("validationTypeFilters", validationTypeFilters);
+      ArgumentUtility.CheckNotNull("validationTypeFilters", validationTypeFilters);
 
       _validationTypeFilters = validationTypeFilters.ToList().AsReadOnly();
     }
@@ -48,9 +48,9 @@ namespace Remotion.Validation.Implementation
 
     public bool IsValidatableType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return _validationTypeFilters.All (f => f.IsValidatableType (type));
+      return _validationTypeFilters.All(f => f.IsValidatableType(type));
     }
   }
 }

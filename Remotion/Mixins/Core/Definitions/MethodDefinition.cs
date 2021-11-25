@@ -23,7 +23,7 @@ namespace Remotion.Mixins.Definitions
   public class MethodDefinition : MemberDefinitionBase
   {
     private readonly UniqueDefinitionCollection<Type, MethodDefinition> _overrides =
-        new UniqueDefinitionCollection<Type, MethodDefinition> (m => m.DeclaringClass.Type);
+        new UniqueDefinitionCollection<Type, MethodDefinition>(m => m.DeclaringClass.Type);
 
     private MethodDefinition? _base;
 
@@ -45,7 +45,7 @@ namespace Remotion.Mixins.Definitions
         if (value == null || value is MethodDefinition)
           _base = (MethodDefinition?) value;
         else
-          throw new ArgumentException ("Base must be MethodDefinition or null.", "value");
+          throw new ArgumentException("Base must be MethodDefinition or null.", "value");
       }
     }
 
@@ -72,22 +72,22 @@ namespace Remotion.Mixins.Definitions
 
     internal override void AddOverride (MemberDefinitionBase member)
     {
-      ArgumentUtility.CheckNotNull ("member", member);
+      ArgumentUtility.CheckNotNull("member", member);
 
       var method = member as MethodDefinition;
       if (method == null)
       {
-        string message = string.Format ("Member {0} cannot override method {1} - it is not a method.", member.FullName, FullName);
-        throw new ArgumentException (message);
+        string message = string.Format("Member {0} cannot override method {1} - it is not a method.", member.FullName, FullName);
+        throw new ArgumentException(message);
       }
 
-      _overrides.Add (method);
+      _overrides.Add(method);
     }
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
     }
   }
 }

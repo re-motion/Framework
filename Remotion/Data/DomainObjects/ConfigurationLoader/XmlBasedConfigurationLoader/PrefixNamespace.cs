@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
 
     // static members and constants
 
-    public static readonly PrefixNamespace QueryConfigurationNamespace = new PrefixNamespace (
+    public static readonly PrefixNamespace QueryConfigurationNamespace = new PrefixNamespace(
         "q", "http://www.re-motion.org/Data/DomainObjects/Queries/1.0");
 
     // member fields
@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
 
     public PrefixNamespace (string prefix, string uri)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("prefix", prefix);
-      ArgumentUtility.CheckNotNullOrEmpty ("uri", uri);
+      ArgumentUtility.CheckNotNullOrEmpty("prefix", prefix);
+      ArgumentUtility.CheckNotNullOrEmpty("uri", uri);
 
       _prefix = prefix;
       _uri = uri;

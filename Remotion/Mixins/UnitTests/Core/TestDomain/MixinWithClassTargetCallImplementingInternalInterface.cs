@@ -40,7 +40,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
     public string GetStringViaThis ()
     {
-      return Target.MethodInInternalInterface ();
+      return Target.MethodInInternalInterface();
     }
   }
 }

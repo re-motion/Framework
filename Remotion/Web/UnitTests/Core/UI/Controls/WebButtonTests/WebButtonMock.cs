@@ -27,7 +27,7 @@ public class TestWebButton: WebButton
 {
 	public new void EvaluateWaiConformity ()
   {
-    base.EvaluateWaiConformity ();
+    base.EvaluateWaiConformity();
   }
 
   public new bool IsLegacyButtonEnabled

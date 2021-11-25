@@ -7,7 +7,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
   {
     public static OrderItem NewObject ()
     {
-      return NewObject<OrderItem> ();
+      return NewObject<OrderItem>();
     }
 
     [DBBidirectionalRelation ("OrderItems")]

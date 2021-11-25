@@ -37,8 +37,8 @@ namespace Remotion.ObjectBinding
     /// <param name="value">The enum value that should be the undefined value. Must not be <see langword="null"/>.</param>
     public UndefinedEnumValueAttribute (object value)
     {
-      ArgumentUtility.CheckNotNullAndType<Enum> ("value", value);
-      ArgumentUtility.CheckValidEnumValue ("value", (Enum) value);
+      ArgumentUtility.CheckNotNullAndType<Enum>("value", value);
+      ArgumentUtility.CheckValidEnumValue("value", (Enum) value);
 
       _value = value;
     }

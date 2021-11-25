@@ -37,9 +37,9 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
 
       try
       {
-        using (clientTransaction.EnterNonDiscardingScope ())
+        using (clientTransaction.EnterNonDiscardingScope())
         {
-          return NewObject<SecurableObject> (ParamList.Create (securityStrategy));
+          return NewObject<SecurableObject>(ParamList.Create(securityStrategy));
         }
       }
       finally
@@ -54,13 +54,13 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
     {
       _securityStrategy = securityStrategy;
       if (_ctorHandler != null)
-        _ctorHandler (this);
+        _ctorHandler(this);
     }
 
     protected override void OnLoaded (LoadMode loadMode)
     {
-      base.OnLoaded (loadMode);
-      _securityStrategy = ObjectSecurityStrategy.Create (this, InvalidationToken.Create());
+      base.OnLoaded(loadMode);
+      _securityStrategy = ObjectSecurityStrategy.Create(this, InvalidationToken.Create());
     }
 
     public IObjectSecurityStrategy GetSecurityStrategy ()

@@ -41,12 +41,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
       var window = home.Context.Window;
 
-      var size = new Size (600, 600);
-      BrowserHelper.ResizeBrowserWindowTo (window, size);
+      var size = new Size(600, 600);
+      BrowserHelper.ResizeBrowserWindowTo(window, size);
 
       // RM-7465 On some setups Edge does not resize to the exact size given.
-      var edgeSize = size + new Size (2, 0);
-      Assert.That (BrowserHelper.GetWindowBounds (window).Size, Is.AnyOf (size, edgeSize), "Window size does not match the expected size.");
+      var edgeSize = size + new Size(2, 0);
+      Assert.That(BrowserHelper.GetWindowBounds(window).Size, Is.AnyOf(size, edgeSize), "Window size does not match the expected size.");
     }
 
     [Test]
@@ -55,10 +55,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
       var window = home.Context.Window;
 
-      var position = new Point (50, 50);
-      BrowserHelper.MoveBrowserWindowTo (window, position);
+      var position = new Point(50, 50);
+      BrowserHelper.MoveBrowserWindowTo(window, position);
 
-      Assert.That (BrowserHelper.GetWindowBounds (window).Location, Is.EqualTo (position), "Window position does not match the expected position.");
+      Assert.That(BrowserHelper.GetWindowBounds(window).Location, Is.EqualTo(position), "Window position does not match the expected position.");
     }
 
     [Test]
@@ -67,14 +67,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
       var window = home.Context.Window;
 
-      var offset = BrowserHelper.GetBrowserContentOffset (window);
+      var offset = BrowserHelper.GetBrowserContentOffset(window);
 
-      var position = new Point (50, 50);
-      BrowserHelper.MoveBrowserWindowTo (window, position);
+      var position = new Point(50, 50);
+      BrowserHelper.MoveBrowserWindowTo(window, position);
 
-      Assert.That (
-          BrowserHelper.GetBrowserContentBounds (window).Location,
-          Is.EqualTo (position + offset),
+      Assert.That(
+          BrowserHelper.GetBrowserContentBounds(window).Location,
+          Is.EqualTo(position + offset),
           "Content position does not match the expected position.");
     }
 
@@ -84,18 +84,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
       var window = home.Context.Window;
 
-      var size = new Size (600, 600);
-      BrowserHelper.ResizeBrowserContentTo (window, size);
+      var size = new Size(600, 600);
+      BrowserHelper.ResizeBrowserContentTo(window, size);
 
-      Assert.That (
-          BrowserHelper.GetBrowserContentBounds (window).Size,
-          Is.EqualTo (size),
+      Assert.That(
+          BrowserHelper.GetBrowserContentBounds(window).Size,
+          Is.EqualTo(size),
           "Browser content size does not match the expected size.");
     }
 
     private HtmlPageObject Start ()
     {
-      return Start<HtmlPageObject> ("Empty.aspx");
+      return Start<HtmlPageObject>("Empty.aspx");
     }
   }
 }

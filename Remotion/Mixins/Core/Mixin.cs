@@ -41,8 +41,8 @@ namespace Remotion.Mixins
     /// </remarks>
     public static TMixin? Get<TMixin> (object mixinTarget) where TMixin : class
     {
-      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
-      return (TMixin?) Get (typeof (TMixin), mixinTarget);
+      ArgumentUtility.CheckNotNull("mixinTarget", mixinTarget);
+      return (TMixin?) Get(typeof (TMixin), mixinTarget);
     }
 
     /// <summary>
@@ -60,13 +60,13 @@ namespace Remotion.Mixins
     /// </remarks>
     public static object? Get (Type mixinType, object mixinTarget)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("mixinTarget", mixinTarget);
 
       var castMixinTarget = mixinTarget as IMixinTarget;
       if (castMixinTarget != null)
       {
-        return FindMixin (castMixinTarget, mixinType);
+        return FindMixin(castMixinTarget, mixinType);
       }
       return null;
     }
@@ -76,16 +76,16 @@ namespace Remotion.Mixins
       object? mixin = null;
       foreach (var potentialMixin in mixinTarget.Mixins)
       {
-        if (IsTypeMatch (potentialMixin.GetType (), mixinType))
+        if (IsTypeMatch(potentialMixin.GetType(), mixinType))
         {
           if (mixin != null)
           {
-            string message = string.Format (
+            string message = string.Format(
                 "Both mixins '{0}' and '{1}' match the given type '{2}'.",
-                mixin.GetType ().GetFullNameSafe(),
-                potentialMixin.GetType ().GetFullNameSafe(),
+                mixin.GetType().GetFullNameSafe(),
+                potentialMixin.GetType().GetFullNameSafe(),
                 mixinType.Name);
-            throw new AmbiguousMatchException (message);
+            throw new AmbiguousMatchException(message);
           }
 
           mixin = potentialMixin;
@@ -97,10 +97,10 @@ namespace Remotion.Mixins
 
     private static bool IsTypeMatch (Type potentialMixinType, Type searchedMixinType)
     {
-      return searchedMixinType.IsAssignableFrom (potentialMixinType)
+      return searchedMixinType.IsAssignableFrom(potentialMixinType)
           || (searchedMixinType.IsGenericTypeDefinition
               && potentialMixinType.IsGenericType
-              && potentialMixinType.GetGenericTypeDefinition () == searchedMixinType);
+              && potentialMixinType.GetGenericTypeDefinition() == searchedMixinType);
     }
   }
 
@@ -193,7 +193,7 @@ namespace Remotion.Mixins
       get
       {
         if (_next == null)
-          throw new InvalidOperationException ("Mixin has not been initialized yet.");
+          throw new InvalidOperationException("Mixin has not been initialized yet.");
         return _next;
       }
     }
@@ -203,9 +203,9 @@ namespace Remotion.Mixins
       _target = (TTarget) target;
       _next = (TNext?) next;
       if (deserialization)
-        OnDeserialized ();
+        OnDeserialized();
       else
-        OnInitialized ();
+        OnInitialized();
     }
   }
 
@@ -280,7 +280,7 @@ namespace Remotion.Mixins
       get
       {
         if (_target == null)
-          throw new InvalidOperationException ("Mixin has not been initialized yet.");
+          throw new InvalidOperationException("Mixin has not been initialized yet.");
         return _target;
       }
     }

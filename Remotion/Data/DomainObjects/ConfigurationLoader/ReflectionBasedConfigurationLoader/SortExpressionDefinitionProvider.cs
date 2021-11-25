@@ -40,21 +40,21 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         ClassDefinition referencedClassDefinition,
         string sortExpressionText)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull ("referencedClassDefinition", referencedClassDefinition);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("referencedClassDefinition", referencedClassDefinition);
 
       if (sortExpressionText == null)
         return null;
 
       try
       {
-        var parser = new SortExpressionParser (referencedClassDefinition);
-        return parser.Parse (sortExpressionText);
+        var parser = new SortExpressionParser(referencedClassDefinition);
+        return parser.Parse(sortExpressionText);
       }
       catch (MappingException ex)
       {
-        var result = MappingValidationResult.CreateInvalidResultForProperty (propertyInfo, ex.Message);
-        throw new MappingException (result.Message, ex);
+        var result = MappingValidationResult.CreateInvalidResultForProperty(propertyInfo, ex.Message);
+        throw new MappingException(result.Message, ex);
       }
     }
   }

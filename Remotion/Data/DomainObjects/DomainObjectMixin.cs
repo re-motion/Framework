@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects
     /// <value>The public domain object type of this mixin's target object.</value>
     protected Type GetPublicDomainObjectType ()
     {
-      return Target.GetPublicDomainObjectType ();
+      return Target.GetPublicDomainObjectType();
     }
 
     /// <summary>
@@ -115,9 +115,9 @@ namespace Remotion.Data.DomainObjects
       get
       {
         if (!_domainObjectReferenceInitialized)
-          throw new InvalidOperationException ("This member cannot be used until the OnDomainObjectReferenceInitializing event has been executed.");
+          throw new InvalidOperationException("This member cannot be used until the OnDomainObjectReferenceInitializing event has been executed.");
 
-        return new PropertyIndexer (Target);
+        return new PropertyIndexer(Target);
       }
     }
 
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects
 
     void IDomainObjectMixin.OnDomainObjectCreated ()
     {
-      OnDomainObjectCreated ();
+      OnDomainObjectCreated();
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects
 
     void IDomainObjectMixin.OnDomainObjectLoaded (LoadMode loadMode)
     {
-      OnDomainObjectLoaded (loadMode);
+      OnDomainObjectLoaded(loadMode);
     }
 
     /// <summary>

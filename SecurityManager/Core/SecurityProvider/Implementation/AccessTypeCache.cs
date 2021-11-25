@@ -49,19 +49,19 @@ namespace Remotion.SecurityManager.SecurityProvider.Implementation
     public AccessTypeCache (IRevisionProvider<UserRevisionKey, GuidRevisionValue> revisionProvider, string userName)
         : base (revisionProvider)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("userName", userName);
+      ArgumentUtility.CheckNotNullOrEmpty("userName", userName);
         
-      _revisionKey = new UserRevisionKey (userName);
+      _revisionKey = new UserRevisionKey(userName);
     }
 
     public ICache<ISecurityContext, AccessType[]> Items
     {
-      get { return GetCachedData (_revisionKey).Items; }
+      get { return GetCachedData(_revisionKey).Items; }
     }
 
     protected override Data LoadData (GuidRevisionValue revision)
     {
-      return new Data (revision);
+      return new Data(revision);
     }
   }
 }

@@ -40,28 +40,28 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public void Validate (ClientTransaction clientTransaction, PersistableData data)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("data", data);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("data", data);
 
       if (data.DomainObjectState.IsDeleted)
         return;
 
-      Assertion.IsFalse (data.DomainObjectState.IsNotLoadedYet, "No unloaded objects get this far.");
-      Assertion.IsFalse (data.DomainObjectState.IsInvalid, "No invalid objects get this far.");
+      Assertion.IsFalse(data.DomainObjectState.IsNotLoadedYet, "No unloaded objects get this far.");
+      Assertion.IsFalse(data.DomainObjectState.IsInvalid, "No invalid objects get this far.");
 
       foreach (var propertyDefinition in data.DataContainer.ID.ClassDefinition.GetPropertyDefinitions())
-        ValidatePropertyDefinition (data.DomainObject, data.DataContainer, propertyDefinition);
+        ValidatePropertyDefinition(data.DomainObject, data.DataContainer, propertyDefinition);
     }
 
     public void Validate (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
 
       foreach (var propertyDefinition in dataContainer.ID.ClassDefinition.GetPropertyDefinitions())
       {
         // Skip validation when loading StorageClass.Transaction properties to allow initialization with default value
         if (propertyDefinition.StorageClass == StorageClass.Persistent)
-          ValidatePropertyDefinition (null, dataContainer, propertyDefinition);
+          ValidatePropertyDefinition(null, dataContainer, propertyDefinition);
       }
     }
 
@@ -75,19 +75,19 @@ namespace Remotion.Data.DomainObjects.Validation
       if (propertyType != typeof (byte[]))
         return;
 
-      object propertyValue = dataContainer.GetValueWithoutEvents (propertyDefinition, ValueAccess.Current);
+      object propertyValue = dataContainer.GetValueWithoutEvents(propertyDefinition, ValueAccess.Current);
       if (propertyValue == null)
         return;
 
       if (propertyType == typeof (byte[]) && ((byte[]) propertyValue).Length > maxLength.Value)
       {
-        string message = string.Format (
+        string message = string.Format(
             "Value for property '{0}' of domain object '{1}' is too large. Maximum size: {2}.",
             propertyDefinition.PropertyName,
             dataContainer.ID,
             maxLength.Value);
 
-        throw new PropertyValueTooLongException (domainObject, propertyDefinition.PropertyName, maxLength.Value, message);
+        throw new PropertyValueTooLongException(domainObject, propertyDefinition.PropertyName, maxLength.Value, message);
       }
     }
   }

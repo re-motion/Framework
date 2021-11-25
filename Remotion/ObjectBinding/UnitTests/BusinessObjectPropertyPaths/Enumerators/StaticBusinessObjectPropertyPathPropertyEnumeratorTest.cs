@@ -32,23 +32,23 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
       var secondClassStub = CreateClassStub();
       var thirdClassStub = CreateClassStub();
 
-      var firstPropertyStub = CreateReferencePropertyStub (firstClassStub, "FirstProperty", secondClassStub);
-      var secondPropertyStub = CreateReferencePropertyStub (secondClassStub, "SecondProperty", thirdClassStub);
-      var thirdPropertyStub = CreatePropertyStub (thirdClassStub, "ThirdProperty");
+      var firstPropertyStub = CreateReferencePropertyStub(firstClassStub, "FirstProperty", secondClassStub);
+      var secondPropertyStub = CreateReferencePropertyStub(secondClassStub, "SecondProperty", thirdClassStub);
+      var thirdPropertyStub = CreatePropertyStub(thirdClassStub, "ThirdProperty");
 
-      var enumerator = new StaticBusinessObjectPropertyPathPropertyEnumerator ("FirstProperty:SecondProperty:ThirdProperty");
+      var enumerator = new StaticBusinessObjectPropertyPathPropertyEnumerator("FirstProperty:SecondProperty:ThirdProperty");
 
-      Assert.That (enumerator.MoveNext (firstClassStub.Object), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub.Object));
+      Assert.That(enumerator.MoveNext(firstClassStub.Object), Is.True);
+      Assert.That(enumerator.Current, Is.SameAs(firstPropertyStub.Object));
 
-      Assert.That (enumerator.MoveNext (secondClassStub.Object), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (secondPropertyStub.Object));
+      Assert.That(enumerator.MoveNext(secondClassStub.Object), Is.True);
+      Assert.That(enumerator.Current, Is.SameAs(secondPropertyStub.Object));
       
-      Assert.That (enumerator.MoveNext (thirdClassStub.Object), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (thirdPropertyStub.Object));
+      Assert.That(enumerator.MoveNext(thirdClassStub.Object), Is.True);
+      Assert.That(enumerator.Current, Is.SameAs(thirdPropertyStub.Object));
 
-      Assert.That (enumerator.MoveNext (new Mock<IBusinessObjectClass>().Object), Is.False);
-      Assert.That (()=>enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration already finished."));
+      Assert.That(enumerator.MoveNext(new Mock<IBusinessObjectClass>().Object), Is.False);
+      Assert.That(()=>enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo("Enumeration already finished."));
     }
 
     [Test]
@@ -56,18 +56,18 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
     {
       var firstClassStub = CreateClassStub();
       var secondClassStub = CreateClassStub();
-      secondClassStub.Setup (_ => _.Identifier).Returns ("SecondClass");
+      secondClassStub.Setup(_ => _.Identifier).Returns("SecondClass");
 
-      var firstPropertyStub = CreateReferencePropertyStub (firstClassStub, "FirstProperty", secondClassStub);
+      var firstPropertyStub = CreateReferencePropertyStub(firstClassStub, "FirstProperty", secondClassStub);
 
-      var enumerator = new StaticBusinessObjectPropertyPathPropertyEnumerator ("FirstProperty:Missing:ThirdProperty");
+      var enumerator = new StaticBusinessObjectPropertyPathPropertyEnumerator("FirstProperty:Missing:ThirdProperty");
 
-      Assert.That (enumerator.MoveNext (firstClassStub.Object), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub.Object));
+      Assert.That(enumerator.MoveNext(firstClassStub.Object), Is.True);
+      Assert.That(enumerator.Current, Is.SameAs(firstPropertyStub.Object));
 
-      Assert.That (
-          () => enumerator.MoveNext (secondClassStub.Object),
-          Throws.TypeOf<ParseException>().With.Message.EqualTo ("BusinessObjectClass 'SecondClass' does not contain a property named 'Missing'."));
+      Assert.That(
+          () => enumerator.MoveNext(secondClassStub.Object),
+          Throws.TypeOf<ParseException>().With.Message.EqualTo("BusinessObjectClass 'SecondClass' does not contain a property named 'Missing'."));
     }
 
     [Test]
@@ -75,21 +75,21 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
     {
       var firstClassStub = CreateClassStub();
       var secondClassStub = CreateClassStub();
-      secondClassStub.Setup (_ => _.Identifier).Returns ("SecondClass");
+      secondClassStub.Setup(_ => _.Identifier).Returns("SecondClass");
 
-      var firstPropertyStub = CreateReferencePropertyStub (firstClassStub, "FirstProperty", secondClassStub);
-      var secondPropertyStub = CreatePropertyStub (secondClassStub, "SecondProperty");
+      var firstPropertyStub = CreateReferencePropertyStub(firstClassStub, "FirstProperty", secondClassStub);
+      var secondPropertyStub = CreatePropertyStub(secondClassStub, "SecondProperty");
 
-      var enumerator = new StaticBusinessObjectPropertyPathPropertyEnumerator ("FirstProperty:SecondProperty:ThirdProperty");
+      var enumerator = new StaticBusinessObjectPropertyPathPropertyEnumerator("FirstProperty:SecondProperty:ThirdProperty");
 
-      Assert.That (enumerator.MoveNext (firstClassStub.Object), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (firstPropertyStub.Object));
+      Assert.That(enumerator.MoveNext(firstClassStub.Object), Is.True);
+      Assert.That(enumerator.Current, Is.SameAs(firstPropertyStub.Object));
 
-      Assert.That (
-          () => enumerator.MoveNext (secondClassStub.Object),
+      Assert.That(
+          () => enumerator.MoveNext(secondClassStub.Object),
           Throws.TypeOf<ParseException>()
-                .With.Message.EqualTo (
-                    string.Format (
+                .With.Message.EqualTo(
+                    string.Format(
                         "Each property in a property path except the last one must be a reference property. "
                         + "Property 'SecondProperty' is of type '{0}'.",
                         secondPropertyStub.Object.GetType().Name)));

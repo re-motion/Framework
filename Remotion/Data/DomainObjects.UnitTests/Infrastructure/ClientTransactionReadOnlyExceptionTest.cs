@@ -27,10 +27,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void Serializable ()
     {
-      var instance = new ClientTransactionReadOnlyException ("Test");
-      var deserializedInstance = Serializer.SerializeAndDeserialize (instance);
+      var instance = new ClientTransactionReadOnlyException("Test");
+      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
 
-      Assert.That (deserializedInstance.Message, Is.EqualTo ("Test"));
+      Assert.That(deserializedInstance.Message, Is.EqualTo("Test"));
     }
   }
 }

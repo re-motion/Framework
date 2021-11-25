@@ -29,11 +29,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
     [Test]
     public void FetchingMandatoryCollectionEndPoint_WithNoRelatedObjects_Throws ()
     {
-      var query = QueryFactory.CreateLinqQuery<Order>().Where (o => o.ID == DomainObjectIDs.OrderWithoutOrderItems).FetchMany (o => o.OrderItems);
+      var query = QueryFactory.CreateLinqQuery<Order>().Where(o => o.ID == DomainObjectIDs.OrderWithoutOrderItems).FetchMany(o => o.OrderItems);
 
-      Assert.That (
+      Assert.That(
           () => query.ToArray(),
-          Throws.TypeOf<UnexpectedQueryResultException> ().With.Message.EqualTo (
+          Throws.TypeOf<UnexpectedQueryResultException>().With.Message.EqualTo(
               "Eager fetching encountered an unexpected query result: The fetched mandatory collection property "
               + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' "
               + "on object 'Order|f7607cbc-ab34-465c-b282-0531d51f3b04|System.Guid' contains no items."));
@@ -42,11 +42,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
     [Test]
     public void FetchingMandatoryVirtualObjectEndPoint_WithNoRelatedObject_Throws ()
     {
-      var query = QueryFactory.CreateLinqQuery<Partner> ().Where (o => o.ID == DomainObjectIDs.PartnerWithoutCeo).FetchOne (p => p.Ceo);
+      var query = QueryFactory.CreateLinqQuery<Partner>().Where(o => o.ID == DomainObjectIDs.PartnerWithoutCeo).FetchOne(p => p.Ceo);
 
-      Assert.That (
+      Assert.That(
           () => query.ToArray(),
-          Throws.TypeOf<UnexpectedQueryResultException> ().With.Message.EqualTo (
+          Throws.TypeOf<UnexpectedQueryResultException>().With.Message.EqualTo(
               "Eager fetching encountered an unexpected query result: The fetched mandatory relation property "
               + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo' on object "
               + "'Partner|a65b123a-6e17-498e-a28e-946217c0ae30|System.Guid' contains no related object."));
@@ -55,13 +55,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
     [Test]
     public void FetchingMandatoryRealObjectEndPoint_WithNullValue_DoesNotThrow ()
     {
-      var query = QueryFactory.CreateLinqQuery<OrderItem> ().Where (o => o.ID == DomainObjectIDs.OrderItemWithoutOrder).FetchOne (oi => oi.Order);
+      var query = QueryFactory.CreateLinqQuery<OrderItem>().Where(o => o.ID == DomainObjectIDs.OrderItemWithoutOrder).FetchOne(oi => oi.Order);
 
       // Note: This test documents current behavior, not necessarily desired behavior.
       OrderItem orderItemWithoutOrder = null;
-      Assert.That (() => orderItemWithoutOrder = query.ToArray().Single(), Throws.Nothing);
+      Assert.That(() => orderItemWithoutOrder = query.ToArray().Single(), Throws.Nothing);
 
-      Assert.That (orderItemWithoutOrder.Order, Is.Null);
+      Assert.That(orderItemWithoutOrder.Order, Is.Null);
     }
   }
 }

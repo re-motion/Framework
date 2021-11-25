@@ -34,12 +34,12 @@ namespace Remotion.Reflection
     private class Fields
     {
       public readonly Lazy<ITypeDiscoveryService> DefaultTypeDiscoveryService =
-          new Lazy<ITypeDiscoveryService> (
+          new Lazy<ITypeDiscoveryService>(
               () => TypeDiscoveryConfiguration.Current.CreateTypeDiscoveryService(),
               LazyThreadSafetyMode.ExecutionAndPublication);
 
       public readonly Lazy<ITypeResolutionService> DefaultTypeResolutionService =
-          new Lazy<ITypeResolutionService> (
+          new Lazy<ITypeResolutionService>(
               () => TypeResolutionConfiguration.Current.CreateTypeResolutionService(),
               LazyThreadSafetyMode.ExecutionAndPublication);
     }

@@ -62,7 +62,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDoma
   {
     public TestTypeWithConstructorThrowingException ()
     {
-      throw new ApplicationException ("This exception comes from the ctor.");
+      throw new ApplicationException("This exception comes from the ctor.");
     }
   }
 }

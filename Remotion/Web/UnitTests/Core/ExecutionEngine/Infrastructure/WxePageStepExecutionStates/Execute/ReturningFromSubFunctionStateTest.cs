@@ -34,34 +34,34 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     public override void SetUp ()
     {
       base.SetUp();
-      _executionState = new ReturningFromSubFunctionState (
+      _executionState = new ReturningFromSubFunctionState(
           ExecutionStateContextMock.Object, new RedirectingToSubFunctionStateParameters(SubFunction.Object, PostBackCollection, "dummy", "/resumeUrl.wxe"));
     }
 
     protected override Mock<OtherTestFunction> CreateSubFunction ()
     {
-      return new Mock<OtherTestFunction> (MockBehavior.Strict);
+      return new Mock<OtherTestFunction>(MockBehavior.Strict);
     }
 
     [Test]
     public void IsExecuting ()
     {
-      Assert.That (_executionState.IsExecuting, Is.True);
+      Assert.That(_executionState.IsExecuting, Is.True);
     }
 
     [Test]
     public void ExecuteSubFunction ()
     {
       var sequence = new MockSequence();
-      ResponseMock.InSequence (sequence).Setup (mock => mock.Redirect ("/resumeUrl.wxe")).Callback ((string url) => WxeThreadAbortHelper.Abort ()).Verifiable();
-      ExecutionStateContextMock.InSequence (sequence)
-          .Setup (mock => mock.SetExecutionState (It.IsNotNull<PostProcessingSubFunctionState>()))
-          .Callback ((IExecutionState executionState) => CheckExecutionState ((PostProcessingSubFunctionState) executionState))
+      ResponseMock.InSequence(sequence).Setup(mock => mock.Redirect("/resumeUrl.wxe")).Callback((string url) => WxeThreadAbortHelper.Abort()).Verifiable();
+      ExecutionStateContextMock.InSequence(sequence)
+          .Setup(mock => mock.SetExecutionState(It.IsNotNull<PostProcessingSubFunctionState>()))
+          .Callback((IExecutionState executionState) => CheckExecutionState((PostProcessingSubFunctionState) executionState))
           .Verifiable();
 
       try
       {
-        _executionState.ExecuteSubFunction (WxeContext);
+        _executionState.ExecuteSubFunction(WxeContext);
         Assert.Fail();
       }
       catch (ThreadAbortException)
@@ -76,12 +76,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     public void ExecuteSubFunction_WithFailedRedirect ()
     {
       var sequence = new MockSequence();
-      ResponseMock.InSequence (sequence).Setup (mock => mock.Redirect ("/resumeUrl.wxe")).Verifiable();
+      ResponseMock.InSequence(sequence).Setup(mock => mock.Redirect("/resumeUrl.wxe")).Verifiable();
 
-      Assert.That (
-          () => _executionState.ExecuteSubFunction (WxeContext),
+      Assert.That(
+          () => _executionState.ExecuteSubFunction(WxeContext),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("Redirect to '/resumeUrl.wxe' failed."));
+              .With.Message.EqualTo("Redirect to '/resumeUrl.wxe' failed."));
     }
   }
 }

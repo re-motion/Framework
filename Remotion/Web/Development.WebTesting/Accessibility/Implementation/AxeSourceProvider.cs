@@ -34,10 +34,10 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     {
       var assembly = Assembly.GetExecutingAssembly();
 
-      using (var stream = assembly.GetManifestResourceStream (typeof (IAxeSourceProvider), c_resourceName)!)
-      using (var reader = new StreamReader (stream))
+      using (var stream = assembly.GetManifestResourceStream(typeof (IAxeSourceProvider), c_resourceName)!)
+      using (var reader = new StreamReader(stream))
       {
-        Assertion.IsNotNull (reader, c_resourceName);
+        Assertion.IsNotNull(reader, c_resourceName);
 
         return reader.ReadToEnd();
       }

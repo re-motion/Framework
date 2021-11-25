@@ -37,21 +37,21 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageButtonControlObject SelectFirst (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindTagWithAttribute (c_inputTag, "type", "image");
-      return CreateControlObject (context, scope);
+      var scope = context.Scope.FindTagWithAttribute(c_inputTag, "type", "image");
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public ImageButtonControlObject? SelectFirstOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindTagWithAttribute (c_inputTag, "type", "image");
+      var scope = context.Scope.FindTagWithAttribute(c_inputTag, "type", "image");
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -59,48 +59,48 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageButtonControlObject SelectSingle (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindTagWithAttribute (c_inputTag, "type", "image");
+      var scope = context.Scope.FindTagWithAttribute(c_inputTag, "type", "image");
       scope.EnsureSingle();
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public ImageButtonControlObject? SelectSingleOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindTagWithAttribute (c_inputTag, "type", "image");
+      var scope = context.Scope.FindTagWithAttribute(c_inputTag, "type", "image");
 
       if (!scope.ExistsWithEnsureSingleWorkaround())
         return null;
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public ImageButtonControlObject SelectPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath ("type", "image");
-      var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_inputTag, hasAttributeCheck, oneBasedIndex);
-      var scope = context.Scope.FindXPath (xPathSelector);
-      return CreateControlObject (context, scope);
+      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath("type", "image");
+      var xPathSelector = string.Format("(.//{0}{1})[{2}]", c_inputTag, hasAttributeCheck, oneBasedIndex);
+      var scope = context.Scope.FindXPath(xPathSelector);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public ImageButtonControlObject? SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath ("type", "image");
-      var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_inputTag, hasAttributeCheck, oneBasedIndex);
-      var scope = context.Scope.FindXPath (xPathSelector);
+      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath("type", "image");
+      var xPathSelector = string.Format("(.//{0}{1})[{2}]", c_inputTag, hasAttributeCheck, oneBasedIndex);
+      var scope = context.Scope.FindXPath(xPathSelector);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -108,11 +108,11 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath ("type", "image");
-      var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_inputTag, hasAttributeCheck, oneBasedIndex);
-      var scope = context.Scope.FindXPath (xPathSelector);
+      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath("type", "image");
+      var xPathSelector = string.Format("(.//{0}{1})[{2}]", c_inputTag, hasAttributeCheck, oneBasedIndex);
+      var scope = context.Scope.FindXPath(xPathSelector);
 
       return scope.ExistsWorkaround();
     }
@@ -122,10 +122,10 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new ImageButtonControlObject (newControlObjectContext);
+      return new ImageButtonControlObject(newControlObjectContext);
     }
   }
 }

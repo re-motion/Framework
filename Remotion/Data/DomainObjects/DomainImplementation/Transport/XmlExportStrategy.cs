@@ -30,20 +30,20 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     public void Export (Stream outputStream, TransportItem[] transportedObjects)
     {
-      ArgumentUtility.CheckNotNull ("outputStream", outputStream);
-      ArgumentUtility.CheckNotNull ("transportedObjects", transportedObjects);
+      ArgumentUtility.CheckNotNull("outputStream", outputStream);
+      ArgumentUtility.CheckNotNull("transportedObjects", transportedObjects);
 
-      var formatter = new XmlSerializer (typeof (XmlTransportItem[]));
-      PerformSerialization(XmlTransportItem.Wrap (transportedObjects), outputStream, formatter);
+      var formatter = new XmlSerializer(typeof (XmlTransportItem[]));
+      PerformSerialization(XmlTransportItem.Wrap(transportedObjects), outputStream, formatter);
     }
 
     protected virtual void PerformSerialization (XmlTransportItem[] transportedObjects, Stream dataStream, XmlSerializer formatter)
     {
-      ArgumentUtility.CheckNotNull ("transportedObjects", transportedObjects);
-      ArgumentUtility.CheckNotNull ("dataStream", dataStream);
-      ArgumentUtility.CheckNotNull ("formatter", formatter);
+      ArgumentUtility.CheckNotNull("transportedObjects", transportedObjects);
+      ArgumentUtility.CheckNotNull("dataStream", dataStream);
+      ArgumentUtility.CheckNotNull("formatter", formatter);
 
-      formatter.Serialize (dataStream, transportedObjects);
+      formatter.Serialize(dataStream, transportedObjects);
     }
   }
 }

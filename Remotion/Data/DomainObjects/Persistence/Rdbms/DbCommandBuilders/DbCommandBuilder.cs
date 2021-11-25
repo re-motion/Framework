@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     protected DbCommandBuilder (ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
+      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
 
       _sqlDialect = sqlDialect;
     }
@@ -46,12 +46,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IDbCommand command,
         ISelectedColumnsSpecification selectedColumns)
     {
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("command", command);
-      ArgumentUtility.CheckNotNull ("selectedColumns", selectedColumns);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
 
-      statement.Append ("SELECT ");
-      selectedColumns.AppendProjection (statement, SqlDialect);
+      statement.Append("SELECT ");
+      selectedColumns.AppendProjection(statement, SqlDialect);
     }
 
     protected virtual void AppendFromClause (
@@ -59,12 +59,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IDbCommand command,
         TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("command", command);
-      ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
 
-      statement.Append (" FROM ");
-      AppendTableName (statement, command, tableDefinition);
+      statement.Append(" FROM ");
+      AppendTableName(statement, command, tableDefinition);
     }
 
     protected void AppendTableName (
@@ -72,16 +72,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IDbCommand command,
         TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("command", command);
-      ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
 
       if (tableDefinition.TableName.SchemaName != null)
       {
-        statement.Append (SqlDialect.DelimitIdentifier (tableDefinition.TableName.SchemaName));
-        statement.Append (".");
+        statement.Append(SqlDialect.DelimitIdentifier(tableDefinition.TableName.SchemaName));
+        statement.Append(".");
       }
-      statement.Append (SqlDialect.DelimitIdentifier (tableDefinition.TableName.EntityName));
+      statement.Append(SqlDialect.DelimitIdentifier(tableDefinition.TableName.EntityName));
     }
 
     protected virtual void AppendWhereClause (
@@ -89,13 +89,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IDbCommand command,
         IComparedColumnsSpecification comparedColumns)
     {
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("command", command);
-      ArgumentUtility.CheckNotNull ("comparedColumns", comparedColumns);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull("comparedColumns", comparedColumns);
 
-      statement.Append (" WHERE ");
-      comparedColumns.AddParameters (command, SqlDialect);
-      comparedColumns.AppendComparisons (statement, command, SqlDialect);
+      statement.Append(" WHERE ");
+      comparedColumns.AddParameters(command, SqlDialect);
+      comparedColumns.AppendComparisons(statement, command, SqlDialect);
     }
 
     protected virtual void AppendOrderByClause (
@@ -103,14 +103,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IDbCommand command,
         IOrderedColumnsSpecification orderedColumnsSpecification)
     {
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("command", command);
-      ArgumentUtility.CheckNotNull ("orderedColumnsSpecification", orderedColumnsSpecification);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull("orderedColumnsSpecification", orderedColumnsSpecification);
 
       if (!orderedColumnsSpecification.IsEmpty)
       {
-        statement.Append (" ORDER BY ");
-        orderedColumnsSpecification.AppendOrderings (statement, SqlDialect);
+        statement.Append(" ORDER BY ");
+        orderedColumnsSpecification.AppendOrderings(statement, SqlDialect);
       }
     }
   }

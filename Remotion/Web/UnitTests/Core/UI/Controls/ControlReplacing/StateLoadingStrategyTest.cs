@@ -26,13 +26,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     [Test]
     public void LoadControlState ()
     {
-      var testPageHolder = new TestPageHolder (false, RequestMode.PostBack);
-      IStateModificationStrategy stateModificationStrategy = new StateLoadingStrategy ();
-      var replacer = new ControlReplacer (MemberCallerMock.Object);
+      var testPageHolder = new TestPageHolder(false, RequestMode.PostBack);
+      IStateModificationStrategy stateModificationStrategy = new StateLoadingStrategy();
+      var replacer = new ControlReplacer(MemberCallerMock.Object);
       replacer.StateModificationStrategy = stateModificationStrategy;
-      replacer.Controls.Add (testPageHolder.NamingContainer);
+      replacer.Controls.Add(testPageHolder.NamingContainer);
 
-      stateModificationStrategy.LoadControlState (replacer, MemberCallerMock.Object);
+      stateModificationStrategy.LoadControlState(replacer, MemberCallerMock.Object);
 
       MemberCallerMock.Verify();
     }
@@ -40,13 +40,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     [Test]
     public void LoadViewState ()
     {
-      var testPageHolder = new TestPageHolder (false, RequestMode.PostBack);
-      IStateModificationStrategy stateModificationStrategy = new StateLoadingStrategy ();
-      var replacer = new ControlReplacer (MemberCallerMock.Object);
+      var testPageHolder = new TestPageHolder(false, RequestMode.PostBack);
+      IStateModificationStrategy stateModificationStrategy = new StateLoadingStrategy();
+      var replacer = new ControlReplacer(MemberCallerMock.Object);
       replacer.StateModificationStrategy = stateModificationStrategy;
-      replacer.Controls.Add (testPageHolder.NamingContainer);
+      replacer.Controls.Add(testPageHolder.NamingContainer);
 
-      stateModificationStrategy.LoadViewState (replacer, MemberCallerMock.Object);
+      stateModificationStrategy.LoadViewState(replacer, MemberCallerMock.Object);
 
       MemberCallerMock.Verify();
     }

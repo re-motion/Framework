@@ -50,8 +50,8 @@ namespace Remotion.Security.Metadata.Extractor
 
     public void CheckArguments ()
     {
-      if (string.IsNullOrEmpty (Languages) && SuppressMetadata && !InvariantCulture)
-        throw new CommandLineArgumentApplicationException ("You must export at least a localization file or a metadata file.");
+      if (string.IsNullOrEmpty(Languages) && SuppressMetadata && !InvariantCulture)
+        throw new CommandLineArgumentApplicationException("You must export at least a localization file or a metadata file.");
     }
   }
 }

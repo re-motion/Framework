@@ -78,7 +78,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
       get
       {
-        EnsureDataAvailable ();
+        EnsureDataAvailable();
         if (!State.IsUnchanged)
           return false;
 
@@ -112,7 +112,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
       var substitutedUserProperty = Properties[typeof (Substitution), "SubstitutedUser"];
       if (substitutedUserProperty.GetValue<User>() != null)

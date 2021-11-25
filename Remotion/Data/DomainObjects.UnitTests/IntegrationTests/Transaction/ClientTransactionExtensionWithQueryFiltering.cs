@@ -31,9 +31,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       if (queryResult.Count > 0)
       {
-        var queryResultList = queryResult.ToObjectList ();
-        queryResultList.RemoveAt (0);
-        return new QueryResult<T> (queryResult.Query, queryResultList.ToArray());
+        var queryResultList = queryResult.ToObjectList();
+        queryResultList.RemoveAt(0);
+        return new QueryResult<T>(queryResult.Query, queryResultList.ToArray());
       }
       return queryResult;
     }

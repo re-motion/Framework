@@ -36,7 +36,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeStepList ()
     {
-      InitializeSteps ();
+      InitializeSteps();
     }
 
     /// <summary>
@@ -50,19 +50,19 @@ namespace Remotion.Web.ExecutionEngine
     protected void Encapsulate (WxeStepList innerList)
     {
       if (this.IsExecutionStarted)
-        throw new InvalidOperationException ("Cannot encapsulate executing list.");
+        throw new InvalidOperationException("Cannot encapsulate executing list.");
       if (innerList.Count > 0)
-        throw new ArgumentException ("List must be empty.", "innerList");
+        throw new ArgumentException("List must be empty.", "innerList");
       if (innerList.IsExecutionStarted)
-        throw new ArgumentException ("Cannot encapsulate into executing list.", "innerList");
+        throw new ArgumentException("Cannot encapsulate into executing list.", "innerList");
 
       innerList._steps = this._steps;
       foreach (WxeStep step in innerList._steps)
-        step.SetParentStep (innerList);
+        step.SetParentStep(innerList);
 
-      this._steps = new List<WxeStep> (1);
-      this._steps.Add (innerList);
-      innerList.SetParentStep (this);
+      this._steps = new List<WxeStep>(1);
+      this._steps.Add(innerList);
+      innerList.SetParentStep(this);
     }
 
     public override void Execute (WxeContext context)
@@ -74,8 +74,8 @@ namespace Remotion.Web.ExecutionEngine
       {
         var currentStep = _steps[_executingStep];
         if (currentStep.IsAborted)
-          throw new InvalidOperationException ("Step " + _executingStep + " of " + this.GetType ().GetFullNameSafe() + " is aborted.");
-        currentStep.Execute (context);
+          throw new InvalidOperationException("Step " + _executingStep + " of " + this.GetType().GetFullNameSafe() + " is aborted.");
+        currentStep.Execute(context);
         _executingStep++;
       }
     }
@@ -92,36 +92,36 @@ namespace Remotion.Web.ExecutionEngine
 
     public void Add (WxeStep step)
     {
-      ArgumentUtility.CheckNotNull ("step", step);
+      ArgumentUtility.CheckNotNull("step", step);
 
-      _steps.Add (step);
-      step.SetParentStep (this);
+      _steps.Add(step);
+      step.SetParentStep(this);
     }
 
     public void Add (WxeStepList target, MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull ("target", target);
-      ArgumentUtility.CheckNotNull ("method", method);
+      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull("method", method);
 
-      Add (new WxeMethodStep (target, method));
+      Add(new WxeMethodStep(target, method));
     }
 
     public void AddStepList (WxeStepList steps)
     {
-      ArgumentUtility.CheckNotNull ("steps", steps);
+      ArgumentUtility.CheckNotNull("steps", steps);
 
       for (int i = 0; i < steps.Count; i++)
-        Add (steps[i]);
+        Add(steps[i]);
     }
 
     public void Insert (int index, WxeStep step)
     {
       if (_executingStep >= index)
-        throw new ArgumentException ("Cannot insert step only after the last executed step.", "index");
-      ArgumentUtility.CheckNotNull ("step", step);
+        throw new ArgumentException("Cannot insert step only after the last executed step.", "index");
+      ArgumentUtility.CheckNotNull("step", step);
       
-      _steps.Insert (index, step);
-      step.SetParentStep (this);
+      _steps.Insert(index, step);
+      step.SetParentStep(this);
     }
 
     public override WxeStep ExecutingStep
@@ -153,8 +153,8 @@ namespace Remotion.Web.ExecutionEngine
 
     private void InitializeSteps ()
     {
-      Type type = this.GetType ();
-      MemberInfo[] members = NumberedMemberFinder.FindMembers (
+      Type type = this.GetType();
+      MemberInfo[] members = NumberedMemberFinder.FindMembers(
           type,
           "Step",
           MemberTypes.Field | MemberTypes.Method | MemberTypes.NestedType,
@@ -165,27 +165,27 @@ namespace Remotion.Web.ExecutionEngine
         if (member is FieldInfo)
         {
           FieldInfo fieldInfo = (FieldInfo) member;
-          Add ((WxeStep) fieldInfo.GetValue (this)!);
+          Add((WxeStep) fieldInfo.GetValue(this)!);
         }
         else if (member is MethodInfo)
         {
           MethodInfo methodInfo = (MethodInfo) member;
-          Add (this, methodInfo);
+          Add(this, methodInfo);
         }
         else if (member is Type)
         {
           Type subtype = (Type) member;
-          if (typeof (WxeStep).IsAssignableFrom (subtype))
-            Add ((WxeStep) Activator.CreateInstance (subtype)!);
+          if (typeof (WxeStep).IsAssignableFrom(subtype))
+            Add((WxeStep) Activator.CreateInstance(subtype)!);
         }
       }
     }
 
     protected override void AbortRecursive ()
     {
-      base.AbortRecursive ();
+      base.AbortRecursive();
       foreach (WxeStep step in _steps)
-        step.Abort ();
+        step.Abort();
     }
   }
 

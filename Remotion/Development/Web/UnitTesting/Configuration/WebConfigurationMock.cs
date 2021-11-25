@@ -32,7 +32,7 @@ namespace Remotion.Development.Web.UnitTesting.Configuration
     public static new WebConfiguration Current
     {
       get { return WebConfiguration.Current; }
-      set { WebConfiguration.SetCurrent (value); }
+      set { WebConfiguration.SetCurrent(value); }
     }
   }
 }

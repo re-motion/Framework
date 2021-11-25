@@ -29,7 +29,7 @@ namespace Remotion.Mixins.Definitions
         : base (declaringInterface, interfaceMember, implementingMember, visibility)
     {
       _introducesGetMethod = interfaceMember.GetGetMethod() != null;
-      _introducesSetMethod = interfaceMember.GetSetMethod () != null;
+      _introducesSetMethod = interfaceMember.GetSetMethod() != null;
     }
 
     public bool IntroducesGetMethod
@@ -44,8 +44,8 @@ namespace Remotion.Mixins.Definitions
 
     public override void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
     }
   }
 }

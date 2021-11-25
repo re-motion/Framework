@@ -34,9 +34,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     /// <param name="port">Port to be used.</param>
     public IisExpressHostingStrategy ([NotNull] TestSiteLayoutConfiguration testSiteLayoutConfiguration, int port)
     {
-      ArgumentUtility.CheckNotNull ("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
+      ArgumentUtility.CheckNotNull("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
 
-      _iisExpressInstance = new IisExpressProcessWrapper (testSiteLayoutConfiguration.RootPath, port);
+      _iisExpressInstance = new IisExpressProcessWrapper(testSiteLayoutConfiguration.RootPath, port);
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     /// <param name="properties">The configuration properties.</param>
     [UsedImplicitly]
     public IisExpressHostingStrategy ([NotNull] TestSiteLayoutConfiguration testSiteLayoutConfiguration, [NotNull] NameValueCollection properties)
-        : this (testSiteLayoutConfiguration, int.Parse (ArgumentUtility.CheckNotNull ("properties", properties)["port"]!))
+        : this (testSiteLayoutConfiguration, int.Parse(ArgumentUtility.CheckNotNull("properties", properties)["port"]!))
     {
       // TODO RM-8113: Guard used properties against null values.
     }

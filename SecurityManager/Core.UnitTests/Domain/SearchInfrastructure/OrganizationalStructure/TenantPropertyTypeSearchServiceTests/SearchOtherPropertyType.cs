@@ -35,24 +35,24 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       base.SetUp();
 
       _searchService = new TenantPropertyTypeSearchService();
-      IBusinessObjectClass userClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (User));
-      _groupProperty = (IBusinessObjectReferenceProperty) userClass.GetPropertyDefinition ("OwningGroup");
-      Assert.That (_groupProperty, Is.Not.Null);
+      IBusinessObjectClass userClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (User));
+      _groupProperty = (IBusinessObjectReferenceProperty) userClass.GetPropertyDefinition("OwningGroup");
+      Assert.That(_groupProperty, Is.Not.Null);
     }
 
     [Test]
     public void SupportsProperty_WithInvalidProperty ()
     {
-      Assert.That (_searchService.SupportsProperty (_groupProperty), Is.False);
+      Assert.That(_searchService.SupportsProperty(_groupProperty), Is.False);
     }
 
     [Test]
     public void Search_WithInvalidProperty ()
     {
-      Assert.That (
-          () => _searchService.Search (null, _groupProperty, null),
+      Assert.That(
+          () => _searchService.Search(null, _groupProperty, null),
           Throws.ArgumentException
-              .With.Message.Contains (
+              .With.Message.Contains(
                   "The type of the property 'OwningGroup', declared on 'Remotion.SecurityManager.Domain.OrganizationalStructure.User, Remotion.SecurityManager', "
                   + "is not supported by the 'Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure.TenantPropertyTypeSearchService' type."));
     }

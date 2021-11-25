@@ -26,21 +26,21 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain.Mixins
         where TTarget : class, IDomainObject
         where TMixin : Mixin<TTarget>, IDomainObjectMixin
     {
-      return CreateDomainObjectMixinWithTargetStub<TMixin, TTarget, TTarget> (out targetStub);
+      return CreateDomainObjectMixinWithTargetStub<TMixin, TTarget, TTarget>(out targetStub);
     }
 
     public static TMixin CreateDomainObjectMixinWithTargetStub<TMixin, TTargetInterface, TTargetImplementation> (out TTargetImplementation targetStub)
       where TTargetImplementation : class, IDomainObject, TTargetInterface
       where TMixin : Mixin<TTargetInterface>, IDomainObjectMixin where TTargetInterface: class
     {
-      targetStub = MockRepository.GenerateStub<TTargetImplementation> ();
-      targetStub.Stub (stub => stub.ID).Return (Guid.Empty);
+      targetStub = MockRepository.GenerateStub<TTargetImplementation>();
+      targetStub.Stub(stub => stub.ID).Return(Guid.Empty);
 
-      var fakeEvents = new DomainObjectEventSource (targetStub);
-      targetStub.Stub (stub => stub.Events).Return (fakeEvents);
+      var fakeEvents = new DomainObjectEventSource(targetStub);
+      targetStub.Stub(stub => stub.Events).Return(fakeEvents);
 
-      var mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<TMixin, TTargetInterface> (targetStub);
-      mixin.OnTargetReferenceInitializing ();
+      var mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<TMixin, TTargetInterface>(targetStub);
+      mixin.OnTargetReferenceInitializing();
       return mixin;
     }
   }

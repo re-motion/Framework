@@ -32,7 +32,7 @@ namespace Remotion.Web.Test.Shared.ErrorHandling
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
       ScriptManager.AsyncPostBackError += ScriptManager_AsyncPostBackError;
     }
 
@@ -43,20 +43,20 @@ namespace Remotion.Web.Test.Shared.ErrorHandling
     protected void SynchronousPostbackErrorButton_Click (object sender, EventArgs e)
     {
       var f = new ErrorPageHandlerFactory();
-      var errorFormVirtualPath = _resourceUrlFactory.CreateResourceUrl (typeof (ErrorForm), TestResourceType.Root, "ErrorHandling/ErrorForm.aspx").GetUrl();
-      var p = f.GetHandler (Context, "GET", errorFormVirtualPath, Server.MapPath (errorFormVirtualPath));
+      var errorFormVirtualPath = _resourceUrlFactory.CreateResourceUrl(typeof (ErrorForm), TestResourceType.Root, "ErrorHandling/ErrorForm.aspx").GetUrl();
+      var p = f.GetHandler(Context, "GET", errorFormVirtualPath, Server.MapPath(errorFormVirtualPath));
       var stringBuilder = new StringBuilder();
       TextWriter output = new StringWriter(stringBuilder);
-      var context = new HttpContext (new SimpleWorkerRequest (errorFormVirtualPath, "", output));
-      context.AddError (new ApplicationException ("temp error"));
-      p.ProcessRequest (context);
+      var context = new HttpContext(new SimpleWorkerRequest(errorFormVirtualPath, "", output));
+      context.AddError(new ApplicationException("temp error"));
+      p.ProcessRequest(context);
       context.Response.Flush();
-      throw new ErrorHandlingException ("Synchronous Error" + stringBuilder, new ApplicationException ("Inner Exception"));
+      throw new ErrorHandlingException("Synchronous Error" + stringBuilder, new ApplicationException("Inner Exception"));
     }
 
     protected void AsynchronousPostbackErrorButton_Click (object sender, EventArgs e)
     {
-      throw new ErrorHandlingException ("Asynchronous Error", new ApplicationException ("Inner Exception"));
+      throw new ErrorHandlingException("Asynchronous Error", new ApplicationException("Inner Exception"));
     }
   }
 

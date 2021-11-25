@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public ScalarValueLoadCommand (IDbCommandBuilder dbCommandBuilder)
     {
-      ArgumentUtility.CheckNotNull ("dbCommandBuilder", dbCommandBuilder);
+      ArgumentUtility.CheckNotNull("dbCommandBuilder", dbCommandBuilder);
 
       _dbCommandBuilder = dbCommandBuilder;
     }
@@ -43,11 +43,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public object Execute (IRdbmsProviderCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull ("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
 
-      using (var command = _dbCommandBuilder.Create (executionContext))
+      using (var command = _dbCommandBuilder.Create(executionContext))
       {
-        return executionContext.ExecuteScalar (command);
+        return executionContext.ExecuteScalar(command);
       }
     }
   }

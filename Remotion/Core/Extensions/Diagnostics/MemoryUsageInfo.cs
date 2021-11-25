@@ -24,13 +24,13 @@ namespace Remotion.Diagnostics
   {
     public static MemoryUsageInfo GetCurrent (string description)
     {
-      using (var process = Process.GetCurrentProcess ())
+      using (var process = Process.GetCurrentProcess())
       {
-        return new MemoryUsageInfo (
+        return new MemoryUsageInfo(
             description,
-            new ByteValue (process.WorkingSet64),
-            new ByteValue (GC.GetTotalMemory (false)),
-            new ByteValue (GC.GetTotalMemory (true)));
+            new ByteValue(process.WorkingSet64),
+            new ByteValue(GC.GetTotalMemory(false)),
+            new ByteValue(GC.GetTotalMemory(true)));
       }
     }
 
@@ -41,7 +41,7 @@ namespace Remotion.Diagnostics
 
     public MemoryUsageInfo (string description, ByteValue workingSet, ByteValue managedMemoryBeforeCollect, ByteValue managedMemoryAfterCollect)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("description", description);
+      ArgumentUtility.CheckNotNullOrEmpty("description", description);
 
       _description = description;
       _managedMemoryAfterCollect = managedMemoryAfterCollect;
@@ -71,12 +71,12 @@ namespace Remotion.Diagnostics
 
     public void DumpToConsole ()
     {
-      Console.WriteLine (ToString());
+      Console.WriteLine(ToString());
     }
 
     public override string ToString ()
     {
-      return string.Format ("{0}:{1}\tWorking set: {2}{1}\tManaged memory before collect: {3}{1}\tAfter collect: {4}",
+      return string.Format("{0}:{1}\tWorking set: {2}{1}\tManaged memory before collect: {3}{1}\tAfter collect: {4}",
                             Description,
                             Environment.NewLine,
                             WorkingSet,
@@ -86,23 +86,23 @@ namespace Remotion.Diagnostics
 
     public void DumpComparisonToConsole (MemoryUsageInfo comparison)
     {
-      Console.WriteLine (ToDifferenceString (comparison));
+      Console.WriteLine(ToDifferenceString(comparison));
     }
 
     public string ToDifferenceString (MemoryUsageInfo comparison)
     {
-      return string.Format (
+      return string.Format(
           "Compared to {0}:{1}\tWorking set: {2}{1}\tManaged memory before collect: {3}{1}\tAfter collect: {4}",
           comparison.Description,
           Environment.NewLine,
-          (WorkingSet - comparison.WorkingSet).ToDifferenceString (),
-          (ManagedMemoryBeforeCollect - comparison.ManagedMemoryBeforeCollect).ToDifferenceString (),
-          (ManagedMemoryAfterCollect - comparison.ManagedMemoryAfterCollect).ToDifferenceString ());
+          (WorkingSet - comparison.WorkingSet).ToDifferenceString(),
+          (ManagedMemoryBeforeCollect - comparison.ManagedMemoryBeforeCollect).ToDifferenceString(),
+          (ManagedMemoryAfterCollect - comparison.ManagedMemoryAfterCollect).ToDifferenceString());
     }
 
     public string ToCSVString ()
     {
-      return string.Format ("{0};{1};{2}", WorkingSet.Bytes, ManagedMemoryBeforeCollect.Bytes, ManagedMemoryAfterCollect.Bytes);
+      return string.Format("{0};{1};{2}", WorkingSet.Bytes, ManagedMemoryBeforeCollect.Bytes, ManagedMemoryAfterCollect.Bytes);
     }
   }
 }

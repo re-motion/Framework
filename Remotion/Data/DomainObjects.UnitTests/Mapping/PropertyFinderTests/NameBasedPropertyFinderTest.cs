@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
     [Test]
     public void FindMappingProperties_PropertyNameDoesNotExist ()
     {
-      var classDefinition = CreateClassDefinition (typeof (DerivedClassWithMappingAttribute));
-      var propertyFinder = new NameBasedPropertyFinder (
+      var classDefinition = CreateClassDefinition(typeof (DerivedClassWithMappingAttribute));
+      var propertyFinder = new NameBasedPropertyFinder(
           "UnknownPropertyName",
           typeof (DerivedClassWithMappingAttribute),
           true,
@@ -41,14 +41,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
 
       var properties = propertyFinder.FindPropertyInfos();
 
-      Assert.That (properties.Length, Is.EqualTo (0));
+      Assert.That(properties.Length, Is.EqualTo(0));
     }
 
     [Test]
     public void FindMappingProperties_PropertyNameDoesExist ()
     {
-      var classDefinition = CreateClassDefinition (typeof (DerivedClassWithMappingAttribute));
-      var propertyFinder = new NameBasedPropertyFinder (
+      var classDefinition = CreateClassDefinition(typeof (DerivedClassWithMappingAttribute));
+      var propertyFinder = new NameBasedPropertyFinder(
           "Property2",
           typeof (DerivedClassWithMappingAttribute),
           true,
@@ -59,17 +59,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
 
       var properties = propertyFinder.FindPropertyInfos();
 
-      Assert.That (properties.Length, Is.EqualTo (1));
-      Assert.That (properties, Is.EqualTo (new[] { GetProperty (typeof (BaseMappingAttributesClass), "Property2") }));
+      Assert.That(properties.Length, Is.EqualTo(1));
+      Assert.That(properties, Is.EqualTo(new[] { GetProperty(typeof (BaseMappingAttributesClass), "Property2") }));
     }
 
     [Test]
     public void CreateNewFinder ()
     {
-      var classDefinition = CreateClassDefinition (typeof (DerivedClassWithMappingAttribute));
+      var classDefinition = CreateClassDefinition(typeof (DerivedClassWithMappingAttribute));
       var nameResolver = new ReflectionBasedMemberInformationNameResolver();
       IPropertyMetadataProvider propertyMetadataReflector = new PropertyMetadataReflector();
-      var propertyFinder = new NameBasedPropertyFinder (
+      var propertyFinder = new NameBasedPropertyFinder(
           "Property2",
           typeof (DerivedClassWithMappingAttribute),
           true,
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
           classDefinition.PersistentMixinFinder,
           propertyMetadataReflector);
 
-      var result = (NameBasedPropertyFinder) PrivateInvoke.InvokeNonPublicMethod (
+      var result = (NameBasedPropertyFinder) PrivateInvoke.InvokeNonPublicMethod(
           propertyFinder,
           "CreateNewFinder",
           typeof (string),
@@ -88,11 +88,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
           classDefinition.PersistentMixinFinder,
           propertyMetadataReflector);
 
-      Assert.That (result.Type, Is.SameAs (typeof (string)));
-      Assert.That (result.IncludeBaseProperties, Is.True);
-      Assert.That (result.IncludeMixinProperties, Is.True);
-      Assert.That (result.NameResolver, Is.SameAs(nameResolver));
-      Assert.That (PrivateInvoke.GetNonPublicField (result, "_propertyName"), Is.EqualTo ("Property2"));
+      Assert.That(result.Type, Is.SameAs(typeof (string)));
+      Assert.That(result.IncludeBaseProperties, Is.True);
+      Assert.That(result.IncludeMixinProperties, Is.True);
+      Assert.That(result.NameResolver, Is.SameAs(nameResolver));
+      Assert.That(PrivateInvoke.GetNonPublicField(result, "_propertyName"), Is.EqualTo("Property2"));
     }
   }
 }

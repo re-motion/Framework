@@ -28,7 +28,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
     public TestRegistrationTypeSingleTypeThrowingExceptionInCtor ()
     {
-      throw new InvalidOperationException ("This exception comes from the ctor.");
+      throw new InvalidOperationException("This exception comes from the ctor.");
     }
   }
 }

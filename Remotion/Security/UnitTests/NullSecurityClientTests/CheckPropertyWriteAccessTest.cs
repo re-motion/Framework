@@ -37,16 +37,16 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       _testHelper = NullSecurityClientTestHelper.CreateForStatefulSecurity();
       _securityClient = _testHelper.CreateSecurityClient();
-      _propertyInfo = typeof (SecurableObject).GetProperty ("IsVisible");
+      _propertyInfo = typeof (SecurableObject).GetProperty("IsVisible");
       _propertyInformation = new Mock<IPropertyInformation>();
       _methodInformation = new Mock<IMethodInformation>();
-      _propertyInformation.Setup (mock => mock.GetSetMethod (true)).Returns (_methodInformation.Object).Verifiable();
+      _propertyInformation.Setup(mock => mock.GetSetMethod(true)).Returns(_methodInformation.Object).Verifiable();
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      _securityClient.CheckPropertyWriteAccess (_testHelper.SecurableObject, "IsVisible");
+      _securityClient.CheckPropertyWriteAccess(_testHelper.SecurableObject, "IsVisible");
 
       _testHelper.VerifyAll();
     }
@@ -54,17 +54,17 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_AccessGranted_WithPropertyInfo ()
     {
-      _securityClient.CheckPropertyWriteAccess (_testHelper.SecurableObject, _methodInformation.Object);
+      _securityClient.CheckPropertyWriteAccess(_testHelper.SecurableObject, _methodInformation.Object);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_AccessGranted_WithPropertyInformation ()
     {
-      _securityClient.CheckPropertyWriteAccess (_testHelper.SecurableObject, _methodInformation.Object);
+      _securityClient.CheckPropertyWriteAccess(_testHelper.SecurableObject, _methodInformation.Object);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
@@ -72,10 +72,10 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckPropertyWriteAccess (_testHelper.SecurableObject, "IsVisible");
+        _securityClient.CheckPropertyWriteAccess(_testHelper.SecurableObject, "IsVisible");
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
@@ -83,10 +83,10 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckPropertyWriteAccess (_testHelper.SecurableObject, _methodInformation.Object);
+        _securityClient.CheckPropertyWriteAccess(_testHelper.SecurableObject, _methodInformation.Object);
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
@@ -94,34 +94,34 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckPropertyWriteAccess (_testHelper.SecurableObject, _methodInformation.Object);
+        _securityClient.CheckPropertyWriteAccess(_testHelper.SecurableObject, _methodInformation.Object);
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull ()
     {
-      _securityClient.CheckPropertyWriteAccess (new SecurableObject (null), "IsVisible");
+      _securityClient.CheckPropertyWriteAccess(new SecurableObject(null), "IsVisible");
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull_WithPropertyInfo ()
     {
-      _securityClient.CheckPropertyWriteAccess (new SecurableObject (null), _methodInformation.Object);
+      _securityClient.CheckPropertyWriteAccess(new SecurableObject(null), _methodInformation.Object);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull_WithPropertyInformation ()
     {
-      _securityClient.CheckPropertyWriteAccess (new SecurableObject (null), _methodInformation.Object);
+      _securityClient.CheckPropertyWriteAccess(new SecurableObject(null), _methodInformation.Object);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
   }
 }

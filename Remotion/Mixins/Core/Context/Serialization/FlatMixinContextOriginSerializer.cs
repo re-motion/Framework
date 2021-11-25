@@ -31,7 +31,7 @@ namespace Remotion.Mixins.Context.Serialization
       if (typeof (T) == typeof (Assembly))
         return ((Assembly) (object) value).GetFullNameChecked();
 
-      return base.ConvertToStorageFormat (value);
+      return base.ConvertToStorageFormat(value);
     }
   }
 }

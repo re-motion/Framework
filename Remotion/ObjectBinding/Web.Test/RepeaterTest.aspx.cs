@@ -37,10 +37,10 @@ public class RepeaterTest : SmartPage
 	private void Page_Load (object sender, EventArgs e)
 	{
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
-    Person person = Person.GetObject (personID);
+    Person person = Person.GetObject(personID);
 
     CurrentObject.BusinessObject = (IBusinessObject) person;
-    CurrentObject.LoadValues (IsPostBack);
+    CurrentObject.LoadValues(IsPostBack);
 	}
 
 	#region Web Form Designer generated code
@@ -70,7 +70,7 @@ public class RepeaterTest : SmartPage
     PrepareValidation();
     bool isValid = CurrentObject.Validate();
     if (isValid)
-      CurrentObject.SaveValues (false);
+      CurrentObject.SaveValues(false);
   }
 }
 }

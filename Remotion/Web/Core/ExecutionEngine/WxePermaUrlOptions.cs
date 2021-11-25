@@ -27,7 +27,7 @@ namespace Remotion.Web.ExecutionEngine
   [Serializable]
   public sealed class WxePermaUrlOptions : INullObject
   {
-    public static readonly WxePermaUrlOptions Null = new WxePermaUrlOptions (false, false, null);
+    public static readonly WxePermaUrlOptions Null = new WxePermaUrlOptions(false, false, null);
 
     private readonly bool _usePermaUrl;
     private readonly bool _useParentPermaUrl;

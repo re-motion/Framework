@@ -31,7 +31,7 @@ namespace Remotion.Globalization
   /// <threadsafety static="true" instance="true" />
   public class ResourceManagerSet : IResourceManager
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceManagerSet));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof (ResourceManagerSet));
 
     private readonly IResourceManager[] _resourceManagers;
     private readonly string _name;
@@ -56,9 +56,9 @@ namespace Remotion.Globalization
     /// <param name="resourceManagers"> The resource managers, starting with the most specific. </param>
     public static ResourceManagerSet Create (params IResourceManager[] resourceManagers)
     {
-      ArgumentUtility.CheckNotNull ("resourceManagers", resourceManagers);
+      ArgumentUtility.CheckNotNull("resourceManagers", resourceManagers);
 
-      return new ResourceManagerSet (resourceManagers.AsEnumerable());
+      return new ResourceManagerSet(resourceManagers.AsEnumerable());
     }
 
     /// <summary>
@@ -70,15 +70,15 @@ namespace Remotion.Globalization
     /// <param name="resourceManagers"> The resource managers, starting with the most specific. </param>
     public ResourceManagerSet (IEnumerable<IResourceManager> resourceManagers)
     {
-      ArgumentUtility.CheckNotNull ("resourceManagers", resourceManagers);
+      ArgumentUtility.CheckNotNull("resourceManagers", resourceManagers);
 
-      _resourceManagers = CreateFlatList (resourceManagers).ToArray();
-      _name = _resourceManagers.Any() ? string.Join (", ", _resourceManagers.Select (rm=> rm.Name)) : "Empty ResourceManagerSet";
+      _resourceManagers = CreateFlatList(resourceManagers).ToArray();
+      _name = _resourceManagers.Any() ? string.Join(", ", _resourceManagers.Select(rm=> rm.Name)) : "Empty ResourceManagerSet";
     }
 
     public ReadOnlyCollection<IResourceManager> ResourceManagers
     {
-      get { return new ReadOnlyCollection<IResourceManager> (_resourceManagers); }
+      get { return new ReadOnlyCollection<IResourceManager>(_resourceManagers); }
     }
 
     /// <summary>
@@ -89,11 +89,11 @@ namespace Remotion.Globalization
       var result = new Dictionary<string, string>();
       foreach (var resourceManager in _resourceManagers)
       {
-        var strings = resourceManager.GetAllStrings (prefix);
+        var strings = resourceManager.GetAllStrings(prefix);
         foreach (var resourceEntry in strings)
         {
           var key = resourceEntry.Key;
-          if (!result.ContainsKey (key))
+          if (!result.ContainsKey(key))
             result.Add(key, resourceEntry.Value);
         }
       }
@@ -109,12 +109,12 @@ namespace Remotion.Globalization
       // ReSharper disable ForCanBeConvertedToForeach
       for (var i = 0; i < _resourceManagers.Length; i++)
       {
-        if (_resourceManagers[i].TryGetString (id, out value))
+        if (_resourceManagers[i].TryGetString(id, out value))
           return true;
       }
       // ReSharper restore ForCanBeConvertedToForeach
 
-      s_log.DebugFormat ("Could not find resource with ID '{0}' in any of the following resource containers '{1}'.", id, _name);
+      s_log.DebugFormat("Could not find resource with ID '{0}' in any of the following resource containers '{1}'.", id, _name);
 
       value = null;
       return false;
@@ -146,10 +146,10 @@ namespace Remotion.Globalization
 
       foreach (var resourceManager in _resourceManagers)
       {
-        foreach(var localization in resourceManager.GetAvailableStrings (id))
+        foreach(var localization in resourceManager.GetAvailableStrings(id))
         {
-          if (!result.ContainsKey (localization.Key))
-            result.Add (localization.Key, localization.Value);
+          if (!result.ContainsKey(localization.Key))
+            result.Add(localization.Key, localization.Value);
         }
       }
      

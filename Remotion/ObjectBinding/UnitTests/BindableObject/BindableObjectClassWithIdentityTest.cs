@@ -42,72 +42,72 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void Initialize ()
     {
-      var bindableObjectClass = new BindableObjectClassWithIdentity (
-          MixinTypeUtility.GetConcreteMixedType (typeof (ClassWithIdentity)),
+      var bindableObjectClass = new BindableObjectClassWithIdentity(
+          MixinTypeUtility.GetConcreteMixedType(typeof (ClassWithIdentity)),
           _bindableObjectProvider,
           _bindableObjectGlobalizationService,
           new PropertyBase[0]);
 
-      Assert.That (bindableObjectClass.TargetType, Is.SameAs (typeof (ClassWithIdentity)));
-      Assert.That (
+      Assert.That(bindableObjectClass.TargetType, Is.SameAs(typeof (ClassWithIdentity)));
+      Assert.That(
           bindableObjectClass.Identifier,
-          Is.EqualTo ("Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithIdentity, Remotion.ObjectBinding.UnitTests"));
-      Assert.That (bindableObjectClass.RequiresWriteBack, Is.False);
-      Assert.That (bindableObjectClass.BusinessObjectProvider, Is.SameAs (_bindableObjectProvider));
+          Is.EqualTo("Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithIdentity, Remotion.ObjectBinding.UnitTests"));
+      Assert.That(bindableObjectClass.RequiresWriteBack, Is.False);
+      Assert.That(bindableObjectClass.BusinessObjectProvider, Is.SameAs(_bindableObjectProvider));
     }
 
     [Test]
     public void GetObject_WithDefaultService ()
     {
-      var bindableObjectClass = new BindableObjectClassWithIdentity (
-          MixinTypeUtility.GetConcreteMixedType (typeof (ClassWithIdentity)),
+      var bindableObjectClass = new BindableObjectClassWithIdentity(
+          MixinTypeUtility.GetConcreteMixedType(typeof (ClassWithIdentity)),
           _bindableObjectProvider,
           _bindableObjectGlobalizationService,
           new PropertyBase[0]);
-      var mockService = new Mock<IGetObjectService> (MockBehavior.Strict);
+      var mockService = new Mock<IGetObjectService>(MockBehavior.Strict);
       var expected = new Mock<IBusinessObjectWithIdentity>();
 
-      mockService.Setup (_ => _.GetObject (bindableObjectClass, "TheUniqueIdentifier")).Returns (expected.Object).Verifiable();
+      mockService.Setup(_ => _.GetObject(bindableObjectClass, "TheUniqueIdentifier")).Returns(expected.Object).Verifiable();
 
-      _bindableObjectProvider.AddService (typeof (IGetObjectService), mockService.Object);
-      IBusinessObjectWithIdentity actual = bindableObjectClass.GetObject ("TheUniqueIdentifier");
+      _bindableObjectProvider.AddService(typeof (IGetObjectService), mockService.Object);
+      IBusinessObjectWithIdentity actual = bindableObjectClass.GetObject("TheUniqueIdentifier");
 
       mockService.Verify();
-      Assert.That (actual, Is.SameAs (expected.Object));
+      Assert.That(actual, Is.SameAs(expected.Object));
     }
 
     [Test]
     public void GetObject_WithCustomService ()
     {
-      var bindableObjectClass = new BindableObjectClassWithIdentity (
-          MixinTypeUtility.GetConcreteMixedType (typeof (ClassWithIdentityAndGetObjectServiceAttribute)),
+      var bindableObjectClass = new BindableObjectClassWithIdentity(
+          MixinTypeUtility.GetConcreteMixedType(typeof (ClassWithIdentityAndGetObjectServiceAttribute)),
           _bindableObjectProvider,
           _bindableObjectGlobalizationService,
           new PropertyBase[0]);
-      var mockService = new Mock<ICustomGetObjectService> (MockBehavior.Strict);
+      var mockService = new Mock<ICustomGetObjectService>(MockBehavior.Strict);
       var expected = new Mock<IBusinessObjectWithIdentity>();
 
-      mockService.Setup (_ => _.GetObject (bindableObjectClass, "TheUniqueIdentifier")).Returns (expected.Object).Verifiable();
+      mockService.Setup(_ => _.GetObject(bindableObjectClass, "TheUniqueIdentifier")).Returns(expected.Object).Verifiable();
 
-      _bindableObjectProvider.AddService (typeof (ICustomGetObjectService), mockService.Object);
-      IBusinessObjectWithIdentity actual = bindableObjectClass.GetObject ("TheUniqueIdentifier");
+      _bindableObjectProvider.AddService(typeof (ICustomGetObjectService), mockService.Object);
+      IBusinessObjectWithIdentity actual = bindableObjectClass.GetObject("TheUniqueIdentifier");
 
       mockService.Verify();
-      Assert.That (actual, Is.SameAs (expected.Object));
+      Assert.That(actual, Is.SameAs(expected.Object));
     }
 
     [Test]
     public void GetObject_WithoutService ()
     {
-      var bindableObjectClass = new BindableObjectClassWithIdentity (
-          MixinTypeUtility.GetConcreteMixedType (typeof (ClassWithIdentity)),
+      var bindableObjectClass = new BindableObjectClassWithIdentity(
+          MixinTypeUtility.GetConcreteMixedType(typeof (ClassWithIdentity)),
           _bindableObjectProvider,
           _bindableObjectGlobalizationService,
           new PropertyBase[0]);
-      Assert.That (
-          () => bindableObjectClass.GetObject ("TheUniqueIdentifier"),
+      Assert.That(
+          () => bindableObjectClass.GetObject("TheUniqueIdentifier"),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The 'Remotion.ObjectBinding.BindableObject.IGetObjectService' required for loading objectes of type "
                   + "'Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithIdentity' is not registered with the "
                   + "'Remotion.ObjectBinding.BusinessObjectProvider' associated with this type."));

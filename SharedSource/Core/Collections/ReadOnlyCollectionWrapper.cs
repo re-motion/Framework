@@ -35,7 +35,7 @@ namespace Remotion.Collections
 
     public ReadOnlyCollectionWrapper (IReadOnlyCollection<T> collection)
     {
-      ArgumentUtility.CheckNotNull ("collection", collection);
+      ArgumentUtility.CheckNotNull("collection", collection);
 
       _collection = collection;
     }
@@ -47,12 +47,12 @@ namespace Remotion.Collections
 
     public IEnumerator<T> GetEnumerator ()
     {
-      return _collection.GetEnumerator ();
+      return _collection.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
     {
-      return GetEnumerator ();
+      return GetEnumerator();
     }
 
     bool ICollection<T>.IsReadOnly
@@ -62,29 +62,29 @@ namespace Remotion.Collections
 
     bool ICollection<T>.Contains (T item)
     {
-      return _collection.Contains (item);
+      return _collection.Contains(item);
     }
 
     void ICollection<T>.CopyTo (T[] array, int arrayIndex)
     {
-      ArgumentUtility.CheckNotNull ("arrayIndex", arrayIndex);
+      ArgumentUtility.CheckNotNull("arrayIndex", arrayIndex);
 
-      _collection.ToArray().CopyTo (array, arrayIndex);
+      _collection.ToArray().CopyTo(array, arrayIndex);
     }
     
     void ICollection<T>.Add (T item)
     {
-      throw new NotSupportedException ("'Add' ist not supported for read-only collections.");
+      throw new NotSupportedException("'Add' ist not supported for read-only collections.");
     }
 
     bool ICollection<T>.Remove (T item)
     {
-      throw new NotSupportedException ("'Remove' ist not supported for read-only collections.");
+      throw new NotSupportedException("'Remove' ist not supported for read-only collections.");
     }
 
     void ICollection<T>.Clear ()
     {
-      throw new NotSupportedException ("'Clear' ist not supported for read-only collections.");
+      throw new NotSupportedException("'Clear' ist not supported for read-only collections.");
     }
   }
 }

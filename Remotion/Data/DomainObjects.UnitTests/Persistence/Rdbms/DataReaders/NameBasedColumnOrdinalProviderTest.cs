@@ -43,24 +43,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [Test]
     public void GetOrdinal ()
     {
-      _dataReaderStub.Stub (stub => stub.GetOrdinal (_columnDefinition.Name)).Return (5);
+      _dataReaderStub.Stub(stub => stub.GetOrdinal(_columnDefinition.Name)).Return(5);
 
-      var result = _nameBasedColumnOrdinalProvider.GetOrdinal (_columnDefinition, _dataReaderStub);
+      var result = _nameBasedColumnOrdinalProvider.GetOrdinal(_columnDefinition, _dataReaderStub);
 
-      Assert.That (result, Is.EqualTo (5));
+      Assert.That(result, Is.EqualTo(5));
     }
 
     [Test]
     public void GetOrdinal_IndexOutOfRange_ThrowsException ()
     {
-      _dataReaderStub.Stub (stub => stub.GetOrdinal (_columnDefinition.Name)).Return(0).WhenCalled (mi => { throw new IndexOutOfRangeException(); });
-      _dataReaderStub.Stub (stub => stub.FieldCount).Return (2);
-      _dataReaderStub.Stub (stub => stub.GetName (0)).Return ("Column 1");
-      _dataReaderStub.Stub (stub => stub.GetName (1)).Return ("Column 2");
-      Assert.That (
-          () => _nameBasedColumnOrdinalProvider.GetOrdinal (_columnDefinition, _dataReaderStub),
+      _dataReaderStub.Stub(stub => stub.GetOrdinal(_columnDefinition.Name)).Return(0).WhenCalled(mi => { throw new IndexOutOfRangeException(); });
+      _dataReaderStub.Stub(stub => stub.FieldCount).Return(2);
+      _dataReaderStub.Stub(stub => stub.GetName(0)).Return("Column 1");
+      _dataReaderStub.Stub(stub => stub.GetName(1)).Return("Column 2");
+      Assert.That(
+          () => _nameBasedColumnOrdinalProvider.GetOrdinal(_columnDefinition, _dataReaderStub),
           Throws.InstanceOf<RdbmsProviderException>()
-              .With.Message.EqualTo ("The column 'Testcolumn' was not found in the query result. The included columns are: Column 1, Column 2."));
+              .With.Message.EqualTo("The column 'Testcolumn' was not found in the query result. The included columns are: Column 1, Column 2."));
     }
   }
 }

@@ -36,10 +36,10 @@ namespace Remotion.Validation.Merging
     public IPropertyValidatorExtractor Create (
         IEnumerable<RemovingPropertyValidatorRegistration> removingPropertyValidatorRegistrations, ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull ("removingPropertyValidatorRegistrations", removingPropertyValidatorRegistrations);
-      ArgumentUtility.CheckNotNull ("logContext", logContext);
+      ArgumentUtility.CheckNotNull("removingPropertyValidatorRegistrations", removingPropertyValidatorRegistrations);
+      ArgumentUtility.CheckNotNull("logContext", logContext);
       
-      return new PropertyValidatorExtractor (removingPropertyValidatorRegistrations, logContext);
+      return new PropertyValidatorExtractor(removingPropertyValidatorRegistrations, logContext);
     }
   }
 }

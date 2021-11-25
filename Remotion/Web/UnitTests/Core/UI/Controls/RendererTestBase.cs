@@ -26,8 +26,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       get
       {
-        return new CompoundGlobalizationService (
-            new[] { new GlobalizationService (new ResourceManagerResolver (new ResourceAttributeBasedResourceManagerFactory())) });
+        return new CompoundGlobalizationService(
+            new[] { new GlobalizationService(new ResourceManagerResolver(new ResourceAttributeBasedResourceManagerFactory())) });
       }
     }
   }

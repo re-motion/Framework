@@ -28,18 +28,18 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 
     public DatePickerPageRenderer (IResourceUrlFactory resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull ("resourceUrlFactory", resourceUrlFactory);
+      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
 
       _resourceUrlFactory = resourceUrlFactory;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       string key = typeof (DatePickerPageRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (DatePickerPageRenderer), ResourceType.Html, "DatePicker.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (key, scriptUrl);
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof (DatePickerPageRenderer), ResourceType.Html, "DatePicker.js");
+      htmlHeadAppender.RegisterJavaScriptInclude(key, scriptUrl);
 
       htmlHeadAppender.RegisterPageStylesheetLink();
     }

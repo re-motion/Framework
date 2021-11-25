@@ -27,7 +27,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
     private HtmlTextWriterTag _tag;
 
     public HtmlTextWriterSingleTagMock ()
-        : base (new StringWriter ())
+        : base (new StringWriter())
     {
     }
 
@@ -43,25 +43,25 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     public override void AddAttribute (HtmlTextWriterAttribute key, string? value, bool fEncode)
     {
-      base.AddAttribute (key, value, fEncode);
+      base.AddAttribute(key, value, fEncode);
       _attributes[key] = value;
     }
 
     public override void AddAttribute (HtmlTextWriterAttribute key, string? value)
     {
-      base.AddAttribute (key, value);
+      base.AddAttribute(key, value);
       _attributes[key] = value;
     }
 
     protected override void AddAttribute (string name, string? value, HtmlTextWriterAttribute key)
     {
-      base.AddAttribute (name, value, key);
+      base.AddAttribute(name, value, key);
       _attributes[key] = value;
     }
 
     public override void RenderBeginTag (HtmlTextWriterTag tagKey)
     {
-      base.RenderBeginTag (tagKey);
+      base.RenderBeginTag(tagKey);
       _tag = tagKey;
     }
   }

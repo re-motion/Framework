@@ -35,57 +35,57 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     [Test]
     public void AddMixinType ()
     {
-      _serializer.AddMixinType (typeof (DateTime));
-      Assert.That (_serializer.Values[0], Is.EqualTo (typeof (DateTime).AssemblyQualifiedName));
+      _serializer.AddMixinType(typeof (DateTime));
+      Assert.That(_serializer.Values[0], Is.EqualTo(typeof (DateTime).AssemblyQualifiedName));
 
-      var deserializer = new FlatMixinContextDeserializer (_serializer.Values);
-      Assert.That (deserializer.GetMixinType(), Is.SameAs (typeof (DateTime)));
+      var deserializer = new FlatMixinContextDeserializer(_serializer.Values);
+      Assert.That(deserializer.GetMixinType(), Is.SameAs(typeof (DateTime)));
     }
 
     [Test]
     public void AddMixinKind ()
     {
-      _serializer.AddMixinKind (MixinKind.Used);
-      Assert.That (_serializer.Values[1], Is.EqualTo (MixinKind.Used));
+      _serializer.AddMixinKind(MixinKind.Used);
+      Assert.That(_serializer.Values[1], Is.EqualTo(MixinKind.Used));
 
-      var deserializer = new FlatMixinContextDeserializer (_serializer.Values);
-      Assert.That (deserializer.GetMixinKind (), Is.EqualTo (MixinKind.Used));
+      var deserializer = new FlatMixinContextDeserializer(_serializer.Values);
+      Assert.That(deserializer.GetMixinKind(), Is.EqualTo(MixinKind.Used));
     }
 
     [Test]
     public void AddIntroducedMemberVisibility ()
     {
-      _serializer.AddIntroducedMemberVisibility (MemberVisibility.Public);
-      Assert.That (_serializer.Values[2], Is.EqualTo (MemberVisibility.Public));
+      _serializer.AddIntroducedMemberVisibility(MemberVisibility.Public);
+      Assert.That(_serializer.Values[2], Is.EqualTo(MemberVisibility.Public));
 
-      var deserializer = new FlatMixinContextDeserializer (_serializer.Values);
-      Assert.That (deserializer.GetIntroducedMemberVisibility (), Is.EqualTo (MemberVisibility.Public));
+      var deserializer = new FlatMixinContextDeserializer(_serializer.Values);
+      Assert.That(deserializer.GetIntroducedMemberVisibility(), Is.EqualTo(MemberVisibility.Public));
     }
 
     [Test]
     public void AddExplicitDependencies ()
     {
-      _serializer.AddExplicitDependencies (new[] {typeof (int), typeof (string)});
-      Assert.That (_serializer.Values[3], 
-          Is.EqualTo (new[] {typeof (int).AssemblyQualifiedName, typeof (string).AssemblyQualifiedName}));
+      _serializer.AddExplicitDependencies(new[] {typeof (int), typeof (string)});
+      Assert.That(_serializer.Values[3], 
+          Is.EqualTo(new[] {typeof (int).AssemblyQualifiedName, typeof (string).AssemblyQualifiedName}));
 
-      var deserializer = new FlatMixinContextDeserializer (_serializer.Values);
-      Assert.That (deserializer.GetExplicitDependencies ().ToArray (), Is.EqualTo (new[] { typeof (int), typeof (string) }));
+      var deserializer = new FlatMixinContextDeserializer(_serializer.Values);
+      Assert.That(deserializer.GetExplicitDependencies().ToArray(), Is.EqualTo(new[] { typeof (int), typeof (string) }));
     }
 
     [Test]
     public void AddOrigin ()
     {
-      var mixinContextOrigin = MixinContextOriginObjectMother.Create (assembly: GetType ().Assembly);
-      _serializer.AddOrigin (mixinContextOrigin);
+      var mixinContextOrigin = MixinContextOriginObjectMother.Create(assembly: GetType().Assembly);
+      _serializer.AddOrigin(mixinContextOrigin);
 
       // Check that the chain of serializers correctly sets up the FlatMixinContextOriginSerializer
       var serializedMixinOrigin = (object[]) _serializer.Values[4];
       var serializedMixinOriginAssembly = serializedMixinOrigin[1];
-      Assert.That (serializedMixinOriginAssembly, Is.EqualTo (GetType ().Assembly.FullName));
+      Assert.That(serializedMixinOriginAssembly, Is.EqualTo(GetType().Assembly.FullName));
 
-      var deserializer = new FlatMixinContextDeserializer (_serializer.Values);
-      Assert.That (deserializer.GetOrigin (), Is.EqualTo (mixinContextOrigin));
+      var deserializer = new FlatMixinContextDeserializer(_serializer.Values);
+      Assert.That(deserializer.GetOrigin(), Is.EqualTo(mixinContextOrigin));
     }
   }
 }

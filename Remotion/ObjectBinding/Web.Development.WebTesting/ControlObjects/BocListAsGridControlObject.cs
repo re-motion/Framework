@@ -51,20 +51,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         ElementScope rowScope,
         IBocListRowControlObjectHostAccessor accessor)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-      ArgumentUtility.CheckNotNull ("rowScope", rowScope);
-      ArgumentUtility.CheckNotNull ("accessor", accessor);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNull("rowScope", rowScope);
+      ArgumentUtility.CheckNotNull("accessor", accessor);
 
-      return (TRowControlObject) Activator.CreateInstance (typeof (TRowControlObject), accessor, Context.CloneForControl (rowScope))!;
+      return (TRowControlObject) Activator.CreateInstance(typeof (TRowControlObject), accessor, Context.CloneForControl(rowScope))!;
     }
 
     /// <inheritdoc/>
     protected override BocListAsGridCellControlObject CreateCellControlObject (string id, ElementScope cellScope)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-      ArgumentUtility.CheckNotNull ("cellScope", cellScope);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNull("cellScope", cellScope);
 
-      return new BocListAsGridCellControlObject (Context.CloneForControl (cellScope));
+      return new BocListAsGridCellControlObject(Context.CloneForControl(cellScope));
     }
   }
 }

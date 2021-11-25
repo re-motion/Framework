@@ -29,16 +29,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
       _testHelper = new MetadataTestHelper();
-      _testHelper.Transaction.EnterNonDiscardingScope ();
+      _testHelper.Transaction.EnterNonDiscardingScope();
     }
 
     [Test]
     public void OnCommitting_WithChangedStatePropertyReference_RegistersClassForCommit ()
     {
       var classDefinition = SecurableClassDefinition.NewObject();
-      var stateProperty = _testHelper.CreateFileStateProperty (0);
+      var stateProperty = _testHelper.CreateFileStateProperty(0);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -46,13 +46,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
         };
-        classDefinition.AddStateProperty (stateProperty);
+        classDefinition.AddStateProperty(stateProperty);
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (commitOnClassWasCalled, Is.True);
+        Assert.That(commitOnClassWasCalled, Is.True);
       }
     }
 
@@ -60,8 +60,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     public void OnCommitting_WithDeletedStatePropertyReference_RegistersClassForCommit ()
     {
       var classDefinition = SecurableClassDefinition.NewObject();
-      var stateProperty = _testHelper.CreateFileStateProperty (0);
-      classDefinition.AddStateProperty (stateProperty);
+      var stateProperty = _testHelper.CreateFileStateProperty(0);
+      classDefinition.AddStateProperty(stateProperty);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -69,13 +69,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
         };
-        classDefinition.RemoveStateProperty (stateProperty);
+        classDefinition.RemoveStateProperty(stateProperty);
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (commitOnClassWasCalled, Is.True);
+        Assert.That(commitOnClassWasCalled, Is.True);
       }
     }
   }

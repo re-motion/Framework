@@ -42,57 +42,57 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Column = new BocDropDownMenuColumnDefinition();
       Column.ColumnTitle = "FirstColumn";
       Column.MenuTitleText = "Menu Title";
-      Column.MenuTitleIcon = new IconInfo ("~/Images/MenuTitleIcon.gif", 16, 16);
+      Column.MenuTitleIcon = new IconInfo("~/Images/MenuTitleIcon.gif", 16, 16);
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
 
       base.SetUp();
 
-      List.Setup (mock => mock.HasMenuBlock).Returns (true);
-      List.Setup (mock => mock.RowMenuDisplay).Returns (RowMenuDisplay.Manual);
+      List.Setup(mock => mock.HasMenuBlock).Returns(true);
+      List.Setup(mock => mock.RowMenuDisplay).Returns(RowMenuDisplay.Manual);
 
 
-      Menu = new Mock<DropDownMenu> (List.Object);
-      Menu.Setup (menuMock => menuMock.RenderControl (Html.Writer)).Callback (
-          (HtmlTextWriter writer) => writer.Write ("mocked dropdown menu"));
+      Menu = new Mock<DropDownMenu>(List.Object);
+      Menu.Setup(menuMock => menuMock.RenderControl(Html.Writer)).Callback(
+          (HtmlTextWriter writer) => writer.Write("mocked dropdown menu"));
 
-      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (List.Object.DataSource, List.Object.Property, "Args");
-      _renderingContext = new BocColumnRenderingContext<BocDropDownMenuColumnDefinition> (
-          new BocColumnRenderingContext (HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(List.Object.DataSource, List.Object.Property, "Args");
+      _renderingContext = new BocColumnRenderingContext<BocDropDownMenuColumnDefinition>(
+          new BocColumnRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
     }
 
     [Test]
     public void RenderCellWithPopulatedMenu ()
     {
       InitializeRowMenus();
-      Menu.Object.MenuItems.Add (
-          new WebMenuItem (
+      Menu.Object.MenuItems.Add(
+          new WebMenuItem(
               "itemId",
               "category",
               "text",
-              new IconInfo ("~/Images/NullImage.gif"),
-              new IconInfo ("~/Images/NullImage.gif"),
+              new IconInfo("~/Images/NullImage.gif"),
+              new IconInfo("~/Images/NullImage.gif"),
               WebMenuItemStyle.Text,
               RequiredSelection.Any,
               false,
               new Command()));
 
-      IBocColumnRenderer renderer = new BocDropDownMenuColumnRenderer (
+      IBocColumnRenderer renderer = new BocDropDownMenuColumnRenderer(
           new FakeResourceUrlFactory(),
           RenderingFeatures.Default,
           _bocListCssClassDefinition);
-      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
 
       var document = Html.GetResultDocument();
 
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
-      Html.AssertAttribute (td, "role", "cell");
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute(td, "role", "cell");
 
-      var div = Html.GetAssertedChildElement (td, "div", 0);
-      Html.AssertAttribute (div, "onclick", "BocList.OnCommandClick();");
+      var div = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(div, "onclick", "BocList.OnCommandClick();");
 
-      Html.AssertTextNode (div, "mocked dropdown menu", 0);
+      Html.AssertTextNode(div, "mocked dropdown menu", 0);
     }
 
     [Test]
@@ -100,22 +100,22 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       InitializeRowMenus();
 
-      IBocColumnRenderer renderer = new BocDropDownMenuColumnRenderer (
+      IBocColumnRenderer renderer = new BocDropDownMenuColumnRenderer(
           new FakeResourceUrlFactory(),
           RenderingFeatures.Default,
           _bocListCssClassDefinition);
-      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
 
       var document = Html.GetResultDocument();
 
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
-      Html.AssertAttribute (td, "role", "cell");
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute(td, "role", "cell");
 
-      var div = Html.GetAssertedChildElement (td, "div", 0);
-      Html.AssertAttribute (div, "onclick", "BocList.OnCommandClick();");
+      var div = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(div, "onclick", "BocList.OnCommandClick();");
 
-      Html.AssertTextNode (div, "mocked dropdown menu", 0);
+      Html.AssertTextNode(div, "mocked dropdown menu", 0);
     }
 
     [Test]
@@ -123,21 +123,21 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       InitializeRowMenus();
 
-      IBocColumnRenderer renderer = new BocDropDownMenuColumnRenderer (
+      IBocColumnRenderer renderer = new BocDropDownMenuColumnRenderer(
           new FakeResourceUrlFactory(),
           RenderingFeatures.WithDiagnosticMetadata,
           _bocListCssClassDefinition);
-      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
 
       var document = Html.GetResultDocument();
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownRowDropDownMenuCell, "true");
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownRowDropDownMenuCell, "true");
     }
 
     private void InitializeRowMenus ()
     {
-      var rowMenus = new ReadOnlyCollection<DropDownMenu> (new[] { Menu.Object, Menu.Object });
-      List.Setup (mock => mock.RowMenus).Returns (rowMenus);
+      var rowMenus = new ReadOnlyCollection<DropDownMenu>(new[] { Menu.Object, Menu.Object });
+      List.Setup(mock => mock.RowMenus).Returns(rowMenus);
     }
   }
 }

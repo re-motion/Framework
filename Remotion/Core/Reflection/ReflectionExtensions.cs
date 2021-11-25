@@ -37,7 +37,7 @@ namespace Remotion.Reflection
     /// </returns>
     public static bool IsOriginalDeclaration (this IMemberInformation memberInfo)
     {
-      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
 
       var declaringType = memberInfo.DeclaringType;
       var originalDeclaringType = memberInfo.GetOriginalDeclaringType();
@@ -47,47 +47,47 @@ namespace Remotion.Reflection
         return false;
       if (originalDeclaringType == null)
         return false;
-      return declaringType.Equals (originalDeclaringType);
+      return declaringType.Equals(originalDeclaringType);
     }
 
     [NotNull]
     public static Type ConvertToRuntimeType (this ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
 
-      if (!s_typeConversionProvider.CanConvert (typeInformation.GetType(), typeof (Type)))
+      if (!s_typeConversionProvider.CanConvert(typeInformation.GetType(), typeof (Type)))
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The type '{0}' cannot be converted to a runtime type because no conversion is registered for '{1}'.",
                 typeInformation.Name,
                 typeInformation.GetType()));
       }
 
-      return (Type) s_typeConversionProvider.Convert (typeInformation.GetType(), typeof (Type), typeInformation)!;
+      return (Type) s_typeConversionProvider.Convert(typeInformation.GetType(), typeof (Type), typeInformation)!;
     }
 
     [CanBeNull]
     public static Type? AsRuntimeType (this ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
 
-      if (!s_typeConversionProvider.CanConvert (typeInformation.GetType(), typeof (Type)))
+      if (!s_typeConversionProvider.CanConvert(typeInformation.GetType(), typeof (Type)))
         return null;
 
-      return s_typeConversionProvider.Convert (typeInformation.GetType(), typeof (Type), typeInformation) as Type;
+      return s_typeConversionProvider.Convert(typeInformation.GetType(), typeof (Type), typeInformation) as Type;
     }
 
     [NotNull]
     public static PropertyInfo ConvertToRuntimePropertyInfo (this IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
 
-      var propertyInfo = AsRuntimePropertyInfo (propertyInformation);
+      var propertyInfo = AsRuntimePropertyInfo(propertyInformation);
       if (propertyInfo == null)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The property '{0}' cannot be converted to a runtime property because no conversion is registered for '{1}'.",
                 propertyInformation.Name,
                 propertyInformation.GetType().Name));
@@ -99,7 +99,7 @@ namespace Remotion.Reflection
     [CanBeNull]
     public static PropertyInfo? AsRuntimePropertyInfo (this IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
 
       var propertyInfoAdapter = propertyInformation as PropertyInfoAdapter;
       if (propertyInfoAdapter != null)

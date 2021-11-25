@@ -43,64 +43,64 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
     [SetUp]
     public void SetUp ()
     {
-      _columnDefinition = ColumnDefinitionObjectMother.CreateColumn ("Column", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation());
+      _columnDefinition = ColumnDefinitionObjectMother.CreateColumn("Column", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation());
       _objectValue1 = "<Test1";
       _objectValue2 = 689;
       _objectValue3 = true;
       
-      _specification = new SqlXmlSetComparedColumnSpecification (_columnDefinition, new[] { _objectValue1, _objectValue2, _objectValue3 });
+      _specification = new SqlXmlSetComparedColumnSpecification(_columnDefinition, new[] { _objectValue1, _objectValue2, _objectValue3 });
 
-      _statement = new StringBuilder ();
+      _statement = new StringBuilder();
 
-      _parametersCollectionMock = MockRepository.GenerateStrictMock<IDataParameterCollection> ();
+      _parametersCollectionMock = MockRepository.GenerateStrictMock<IDataParameterCollection>();
 
-      _commandStub = MockRepository.GenerateStub<IDbCommand> ();
-      _commandStub.Stub (stub => stub.Parameters).Return (_parametersCollectionMock);
+      _commandStub = MockRepository.GenerateStub<IDbCommand>();
+      _commandStub.Stub(stub => stub.Parameters).Return(_parametersCollectionMock);
       
       _parameterStub = MockRepository.GenerateStub<IDbDataParameter>();
-      _commandStub.Stub (stub => stub.CreateParameter ()).Return (_parameterStub);
+      _commandStub.Stub(stub => stub.CreateParameter()).Return(_parameterStub);
 
-      _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect> ();
-      _sqlDialectStub.Stub (stub => stub.StatementDelimiter).Return ("delimiter");
+      _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect>();
+      _sqlDialectStub.Stub(stub => stub.StatementDelimiter).Return("delimiter");
     }
 
     [Test]
     public void AddParameters ()
     {
-      _sqlDialectStub.Stub (stub => stub.GetParameterName ("Column")).Return ("pColumn");
+      _sqlDialectStub.Stub(stub => stub.GetParameterName("Column")).Return("pColumn");
 
-      _parametersCollectionMock.Expect (mock => mock.Add (_parameterStub)).Return (0);
-      _parametersCollectionMock.Replay ();
+      _parametersCollectionMock.Expect(mock => mock.Add(_parameterStub)).Return(0);
+      _parametersCollectionMock.Replay();
 
-      _specification.AddParameters (_commandStub, _sqlDialectStub);
+      _specification.AddParameters(_commandStub, _sqlDialectStub);
 
       _parametersCollectionMock.VerifyAllExpectations();
 
-      Assert.That (_parameterStub.Value, Is.EqualTo ("<L><I>&lt;Test1</I><I>689</I><I>True</I></L>"));
-      Assert.That (_parameterStub.DbType, Is.EqualTo (DbType.Xml));
-      Assert.That (_parameterStub.ParameterName, Is.EqualTo ("pColumn"));
+      Assert.That(_parameterStub.Value, Is.EqualTo("<L><I>&lt;Test1</I><I>689</I><I>True</I></L>"));
+      Assert.That(_parameterStub.DbType, Is.EqualTo(DbType.Xml));
+      Assert.That(_parameterStub.ParameterName, Is.EqualTo("pColumn"));
     }
 
     [Test]
     public void AddParameters_NullValue ()
     {
-      _specification = new SqlXmlSetComparedColumnSpecification (_columnDefinition, new[] { _objectValue1, null, _objectValue3 });
-      Assert.That (
-          () => _specification.AddParameters (_commandStub, _sqlDialectStub),
+      _specification = new SqlXmlSetComparedColumnSpecification(_columnDefinition, new[] { _objectValue1, null, _objectValue3 });
+      Assert.That(
+          () => _specification.AddParameters(_commandStub, _sqlDialectStub),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "SQL Server cannot represent NULL values in an XML data type."));
     }
 
     [Test]
     public void AppendComparisons ()
     {
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("Column")).Return ("[delimited Column]");
-      _sqlDialectStub.Stub (stub => stub.GetParameterName ("Column")).Return ("pColumn");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Column")).Return("[delimited Column]");
+      _sqlDialectStub.Stub(stub => stub.GetParameterName("Column")).Return("pColumn");
       
-      _specification.AppendComparisons (_statement, _commandStub, _sqlDialectStub);
+      _specification.AppendComparisons(_statement, _commandStub, _sqlDialectStub);
 
-      Assert.That (_statement.ToString (), Is.EqualTo ("[delimited Column] IN (SELECT T.c.value('.', 'varchar(100)') FROM pColumn.nodes('/L/I') T(c))"));
+      Assert.That(_statement.ToString(), Is.EqualTo("[delimited Column] IN (SELECT T.c.value('.', 'varchar(100)') FROM pColumn.nodes('/L/I') T(c))"));
     }
   }
 }

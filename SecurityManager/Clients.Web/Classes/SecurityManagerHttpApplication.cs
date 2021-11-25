@@ -41,15 +41,15 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
     public ISecurityManagerPrincipalFactory SecurityManagerPrincipalFactory
     {
       get { return _securityManagerPrincipalFactory; }
-      set { _securityManagerPrincipalFactory = ArgumentUtility.CheckNotNull ("value", value); }
+      set { _securityManagerPrincipalFactory = ArgumentUtility.CheckNotNull("value", value); }
     }
 
     public void SetCurrentPrincipal (ISecurityManagerPrincipal securityManagerPrincipal)
     {
-      ArgumentUtility.CheckNotNull ("securityManagerPrincipal", securityManagerPrincipal);
+      ArgumentUtility.CheckNotNull("securityManagerPrincipal", securityManagerPrincipal);
 
       SecurityManagerPrincipal.Current = securityManagerPrincipal;
-      SavePrincipalToSession (securityManagerPrincipal);
+      SavePrincipalToSession(securityManagerPrincipal);
     }
 
     protected ISecurityManagerPrincipal LoadPrincipalFromSession ()
@@ -59,7 +59,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected void SavePrincipalToSession (ISecurityManagerPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull ("principal", principal);
+      ArgumentUtility.CheckNotNull("principal", principal);
 
       Session[s_principalKey] = principal;
     }
@@ -85,11 +85,11 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
       {
         ISecurityManagerPrincipal principal;
         if (Session.IsNewSession)
-          principal = GetSecurityManagerPrincipalByUserName (Context.User);
+          principal = GetSecurityManagerPrincipalByUserName(Context.User);
         else
           principal = LoadPrincipalFromSession();
 
-        SetCurrentPrincipal (principal);
+        SetCurrentPrincipal(principal);
       }
     }
 
@@ -102,11 +102,11 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
       {
         using (SecurityFreeSection.Activate())
         {
-          var user = SecurityManagerUser.FindByUserName (principal.Identity.Name);
+          var user = SecurityManagerUser.FindByUserName(principal.Identity.Name);
           if (user == null)
             return SecurityManagerPrincipal.Null;
           else
-            return SecurityManagerPrincipalFactory.Create (user.Tenant.GetHandle(), user.GetHandle(), null);
+            return SecurityManagerPrincipalFactory.Create(user.Tenant.GetHandle(), user.GetHandle(), null);
         }
       }
     }

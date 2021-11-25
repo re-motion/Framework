@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator locator)
     {
-      throw new NotSupportedException (GetType().Name + " cannot be rendered directly, but must be replaced by other column definitions.");
+      throw new NotSupportedException(GetType().Name + " cannot be rendered directly, but must be replaced by other column definitions.");
     }
 
     [Browsable (false)]

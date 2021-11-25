@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
 
     public ScreenshotDropDownMenuSelector ([NotNull] DropDownMenuControlObject dropDownMenu)
     {
-      ArgumentUtility.CheckNotNull ("dropDownMenu", dropDownMenu);
+      ArgumentUtility.CheckNotNull("dropDownMenu", dropDownMenu);
 
       _dropDownMenu = dropDownMenu;
     }
@@ -46,10 +46,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithHtmlID (string htmlID)
     {
-      ArgumentUtility.CheckNotNull ("htmlID", htmlID);
+      ArgumentUtility.CheckNotNull("htmlID", htmlID);
 
       var scope = GetDropDownScope();
-      var item = scope.FindId (htmlID);
+      var item = scope.FindId(htmlID);
 
       return item.ForElementScopeScreenshot();
     }
@@ -57,10 +57,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("itemID", itemID);
 
       var scope = GetDropDownScope();
-      var item = scope.FindTagWithAttribute ("li.DropDownMenuItem", DiagnosticMetadataAttributes.ItemID, itemID);
+      var item = scope.FindTagWithAttribute("li.DropDownMenuItem", DiagnosticMetadataAttributes.ItemID, itemID);
 
       return item.ForElementScopeScreenshot();
     }
@@ -69,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     public FluentScreenshotElement<ElementScope> WithIndex (int oneBasedIndex)
     {
       var scope = GetDropDownScope();
-      var item = scope.FindXPath (string.Format ("li[{0}]", oneBasedIndex));
+      var item = scope.FindXPath(string.Format("li[{0}]", oneBasedIndex));
 
       return item.ForElementScopeScreenshot();
     }
@@ -77,10 +77,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayText (string displayText)
     {
-      ArgumentUtility.CheckNotNull ("displayText", displayText);
+      ArgumentUtility.CheckNotNull("displayText", displayText);
 
       var scope = GetDropDownScope();
-      var item = scope.FindTagWithAttribute ("li.DropDownMenuItem", DiagnosticMetadataAttributes.Content, displayText);
+      var item = scope.FindTagWithAttribute("li.DropDownMenuItem", DiagnosticMetadataAttributes.Content, displayText);
 
       return item.ForElementScopeScreenshot();
     }
@@ -88,21 +88,21 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayTextContains (string displayText)
     {
-      ArgumentUtility.CheckNotNull ("displayText", displayText);
+      ArgumentUtility.CheckNotNull("displayText", displayText);
 
       var scope = GetDropDownScope();
-      var item = scope.FindTagWithAttributeUsingOperator (
+      var item = scope.FindTagWithAttributeUsingOperator(
           "li.DropDownMenuItem",
           CssComparisonOperator.SubstringMatch,
           DiagnosticMetadataAttributes.Content,
           displayText);
 
-      return FluentUtility.CreateFluentElementScope (item);
+      return FluentUtility.CreateFluentElementScope(item);
     }
 
     private ElementScope GetDropDownScope ()
     {
-      var context = _dropDownMenu.Context.RootScope.FindCss ("ul.DropDownMenuOptions", Options.NoWait);
+      var context = _dropDownMenu.Context.RootScope.FindCss("ul.DropDownMenuOptions", Options.NoWait);
       context.EnsureExistence();
 
       return context;

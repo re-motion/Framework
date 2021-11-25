@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   {
     public static GroupTypePosition NewObject ()
     {
-      return NewObject<GroupTypePosition> ();
+      return NewObject<GroupTypePosition>();
     }
 
     protected GroupTypePosition ()
@@ -57,7 +57,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
         string groupTypeName = (GroupType != null) ? GroupType.Name : string.Empty;
         string positionName = (Position != null) ? Position.Name : string.Empty;
 
-        return string.Format ("{0} / {1}", groupTypeName, positionName); 
+        return string.Format("{0} / {1}", groupTypeName, positionName); 
       }
     }
   }

@@ -121,7 +121,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
                 { "video-description", AccessibilityRuleID.VideoDescription }
             };
 
-      s_enumToString = s_stringToEnum.ToDictionary (kvp => kvp.Value, kvp => kvp.Key);
+      s_enumToString = s_stringToEnum.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
     }
 
     /// <summary>
@@ -129,9 +129,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     /// </summary>
     public static AccessibilityRuleID ConvertToEnum ([NotNull] string ruleIDAsString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("ruleIDAsString", ruleIDAsString);
+      ArgumentUtility.CheckNotNullOrEmpty("ruleIDAsString", ruleIDAsString);
 
-      if (!s_stringToEnum.TryGetValue (ruleIDAsString, out var ruleID))
+      if (!s_stringToEnum.TryGetValue(ruleIDAsString, out var ruleID))
         return AccessibilityRuleID.Unknown;
 
       return ruleID;
@@ -143,7 +143,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     public static string ConvertToString (AccessibilityRuleID ruleID)
     {
       if (ruleID == AccessibilityRuleID.Unknown)
-        throw new ArgumentException ($"{ruleID} has no string representation.");
+        throw new ArgumentException($"{ruleID} has no string representation.");
 
       return s_enumToString[ruleID];
     }

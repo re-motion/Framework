@@ -27,7 +27,7 @@ public class BocBooleanValueMock: BocBooleanValue
 {
 	public new void EvaluateWaiConformity ()
   {
-    base.EvaluateWaiConformity ();
+    base.EvaluateWaiConformity();
   }
 }
 

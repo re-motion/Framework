@@ -32,14 +32,14 @@ namespace Remotion.UnitTests.Configuration
     {
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 
-      ConfigurationPropertyCollection properties = (ConfigurationPropertyCollection) PrivateInvoke.GetNonPublicProperty (typeElement, "Properties");
-      Assert.That (properties, Is.Not.Null);
+      ConfigurationPropertyCollection properties = (ConfigurationPropertyCollection) PrivateInvoke.GetNonPublicProperty(typeElement, "Properties");
+      Assert.That(properties, Is.Not.Null);
       ConfigurationProperty property = properties["type"];
-      Assert.That (property, Is.Not.Null);
-      Assert.That (property.DefaultValue, Is.Null);
-      Assert.IsInstanceOf (typeof (TypeNameConverter), property.Converter);
-      Assert.IsInstanceOf (typeof (SubclassTypeValidator), property.Validator);
-      Assert.That (property.IsRequired, Is.True);
+      Assert.That(property, Is.Not.Null);
+      Assert.That(property.DefaultValue, Is.Null);
+      Assert.IsInstanceOf(typeof (TypeNameConverter), property.Converter);
+      Assert.IsInstanceOf(typeof (SubclassTypeValidator), property.Validator);
+      Assert.That(property.IsRequired, Is.True);
     }
 
     [Test]
@@ -48,7 +48,7 @@ namespace Remotion.UnitTests.Configuration
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 
       typeElement.Type = typeof (DerivedSampleType);
-      Assert.That (typeElement.Type, Is.EqualTo (typeof (DerivedSampleType)));
+      Assert.That(typeElement.Type, Is.EqualTo(typeof (DerivedSampleType)));
     }
 
     [Test]
@@ -56,7 +56,7 @@ namespace Remotion.UnitTests.Configuration
     {
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 
-      Assert.That (typeElement.Type, Is.Null);
+      Assert.That(typeElement.Type, Is.Null);
     }
 
     [Test]
@@ -65,7 +65,7 @@ namespace Remotion.UnitTests.Configuration
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
       typeElement.Type = typeof (DerivedSampleType);
 
-      Assert.IsInstanceOf (typeof (DerivedSampleType), typeElement.CreateInstance());
+      Assert.IsInstanceOf(typeof (DerivedSampleType), typeElement.CreateInstance());
     }
 
     [Test]
@@ -73,7 +73,7 @@ namespace Remotion.UnitTests.Configuration
     {
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 
-      Assert.That (typeElement.CreateInstance(), Is.Null);
+      Assert.That(typeElement.CreateInstance(), Is.Null);
     }
 
     [Test]
@@ -82,9 +82,9 @@ namespace Remotion.UnitTests.Configuration
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 
       string xmlFragment = @"<theElement type=""Remotion.UnitTests::Configuration.SampleType"" />";
-      ConfigurationHelper.DeserializeElement (typeElement, xmlFragment);
+      ConfigurationHelper.DeserializeElement(typeElement, xmlFragment);
 
-      Assert.That (typeElement.Type, Is.EqualTo (typeof (SampleType)));
+      Assert.That(typeElement.Type, Is.EqualTo(typeof (SampleType)));
     }
 
     [Test]
@@ -93,8 +93,8 @@ namespace Remotion.UnitTests.Configuration
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 
       string xmlFragment = @"<theElement type=""System.Object, mscorlib"" />";
-      ConfigurationHelper.DeserializeElement (typeElement, xmlFragment);
-      Assert.That (
+      ConfigurationHelper.DeserializeElement(typeElement, xmlFragment);
+      Assert.That(
           () => typeElement.Type,
           Throws.InstanceOf<ConfigurationErrorsException>());
     }

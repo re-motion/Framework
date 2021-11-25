@@ -43,22 +43,22 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>The text of the currently selected option.</returns>
     public static OptionDefinition GetSelectedOption ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      var selectedOptions = scope.FindAllCss ("option[selected]").ToList();
+      var selectedOptions = scope.FindAllCss("option[selected]").ToList();
 
       if (selectedOptions.Count() == 1)
-        return new OptionDefinition (selectedOptions.First().Value, -1, scope.SelectedOption, true);
+        return new OptionDefinition(selectedOptions.First().Value, -1, scope.SelectedOption, true);
 
       // If we cant uniquely find an item per selected attribute, we have to use selenium directly
-      return RetryUntilTimeout.Run (
+      return RetryUntilTimeout.Run(
           () =>
           {
             var webElement = (IWebElement) scope.Native;
 
-            var select = new SelectElement (webElement);
+            var select = new SelectElement(webElement);
             var selectedOption = select.SelectedOption;
-            return new OptionDefinition (selectedOption.GetAttribute ("value"), -1, selectedOption.Text, selectedOption.Selected);
+            return new OptionDefinition(selectedOption.GetAttribute("value"), -1, selectedOption.Text, selectedOption.Selected);
           });
     }
 
@@ -69,9 +69,9 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="oneBasedIndex">The one-based index of the option to select.</param>
     public static void SelectOptionByIndex ([NotNull] this ElementScope scope, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      var targetOption = scope.FindXPath (string.Format("({0})[{1}]", s_html.Child ("option"), oneBasedIndex));
+      var targetOption = scope.FindXPath(string.Format("({0})[{1}]", s_html.Child("option"), oneBasedIndex));
       targetOption.Click();
     }
 
@@ -82,10 +82,10 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="displayText">The display text to select.</param>
     public static void SelectOptionByDisplayText ([NotNull] this ElementScope scope, [NotNull] string displayText)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNull ("displayText", displayText);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("displayText", displayText);
 
-      var targetOption = scope.FindXPath (s_html.Child ("option") + XPath.Where (s_xpath.IsText (displayText, Options.Exact)));
+      var targetOption = scope.FindXPath(s_html.Child("option") + XPath.Where(s_xpath.IsText(displayText, Options.Exact)));
       targetOption.Click();
     }
 
@@ -96,10 +96,10 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="value">The value to select.</param>
     public static void SelectOptionByValue ([NotNull] this ElementScope scope, [NotNull] string value)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      var targetOption = scope.FindXPath (s_html.Child ("option") + XPath.Where (s_xpath.Is ("@value", value, Options.Exact)));
+      var targetOption = scope.FindXPath(s_html.Child("option") + XPath.Where(s_xpath.Is("@value", value, Options.Exact)));
       targetOption.Click();
     }
 
@@ -115,13 +115,13 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string diagnosticMetadataAttributeName,
         [NotNull] string diagnosticMetadataAttributeValue)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNullOrEmpty ("diagnosticMetadataAttributeName", diagnosticMetadataAttributeName);
-      ArgumentUtility.CheckNotNullOrEmpty ("diagnosticMetadataAttributeValue", diagnosticMetadataAttributeValue);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNullOrEmpty("diagnosticMetadataAttributeName", diagnosticMetadataAttributeName);
+      ArgumentUtility.CheckNotNullOrEmpty("diagnosticMetadataAttributeValue", diagnosticMetadataAttributeValue);
 
       var targetOption =
-          scope.FindXPath (
-              s_html.Child ("option") + XPath.Where (s_xpath.Attr (diagnosticMetadataAttributeName, diagnosticMetadataAttributeValue, Options.Exact)));
+          scope.FindXPath(
+              s_html.Child("option") + XPath.Where(s_xpath.Attr(diagnosticMetadataAttributeName, diagnosticMetadataAttributeValue, Options.Exact)));
       targetOption.Click();
     }
   }

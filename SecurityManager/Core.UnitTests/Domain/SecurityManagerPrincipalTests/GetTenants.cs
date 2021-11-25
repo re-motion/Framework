@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       SecurityManagerPrincipal.Current = SecurityManagerPrincipal.Null;
       ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope();
 
-      User user = User.FindByUserName ("substituting.user");
+      User user = User.FindByUserName("substituting.user");
       _userHandle = user.GetHandle();
       _rootTenantHandle = user.Tenant.GetHandle();
       _childTenantHandle = user.Tenant.Children.Single().GetHandle();
@@ -59,30 +59,30 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     [Test]
     public void GetTenantHierarchyFromUser ()
     {
-      SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_childTenantHandle, _userHandle, null, null, null, null);
+      SecurityManagerPrincipal principal = new SecurityManagerPrincipal(_childTenantHandle, _userHandle, null, null, null, null);
 
-      Assert.That (
-          principal.GetTenants (true).Select (t => t.ID),
-          Is.EqualTo (new[] { _rootTenantHandle.ObjectID, _childTenantHandle.ObjectID, _grandChildTenantHandle.ObjectID }));
+      Assert.That(
+          principal.GetTenants(true).Select(t => t.ID),
+          Is.EqualTo(new[] { _rootTenantHandle.ObjectID, _childTenantHandle.ObjectID, _grandChildTenantHandle.ObjectID }));
     }
 
     [Test]
     public void IncludeAbstractTenants ()
     {
-      SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_rootTenantHandle, _userHandle, null, null, null, null);
+      SecurityManagerPrincipal principal = new SecurityManagerPrincipal(_rootTenantHandle, _userHandle, null, null, null, null);
 
-      Assert.That (
-          principal.GetTenants (true).Select (t => t.ID),
-          Is.EqualTo (new[] { _rootTenantHandle.ObjectID, _childTenantHandle.ObjectID, _grandChildTenantHandle.ObjectID }));
+      Assert.That(
+          principal.GetTenants(true).Select(t => t.ID),
+          Is.EqualTo(new[] { _rootTenantHandle.ObjectID, _childTenantHandle.ObjectID, _grandChildTenantHandle.ObjectID }));
     }
 
     [Test]
     public void ExcludeAbstractTenants ()
     {
-      SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_rootTenantHandle, _userHandle, null, null, null, null);
+      SecurityManagerPrincipal principal = new SecurityManagerPrincipal(_rootTenantHandle, _userHandle, null, null, null, null);
 
-      Assert.That (
-          principal.GetTenants (false).Select (t => t.ID), Is.EqualTo (new[] { _rootTenantHandle.ObjectID, _grandChildTenantHandle.ObjectID }));
+      Assert.That(
+          principal.GetTenants(false).Select(t => t.ID), Is.EqualTo(new[] { _rootTenantHandle.ObjectID, _grandChildTenantHandle.ObjectID }));
     }
 
     [Test]
@@ -98,22 +98,22 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       }
 
       var securityProviderStub = new Mock<ISecurityProvider>();
-      securityProviderStub.Setup (stub => stub.IsNull).Returns (false);
+      securityProviderStub.Setup(stub => stub.IsNull).Returns(false);
       securityProviderStub
-          .Setup (_ => _.GetAccess (userSecurityContext, It.IsAny<ISecurityPrincipal>()))
-          .Throws (new AssertionException ("GetAccess should not have been called."));
+          .Setup(_ => _.GetAccess(userSecurityContext, It.IsAny<ISecurityPrincipal>()))
+          .Throws(new AssertionException("GetAccess should not have been called."));
       securityProviderStub
-          .Setup (_ => _.GetAccess (tenantSecurityContext, It.IsAny<ISecurityPrincipal>()))
-          .Returns (new AccessType[0]);
+          .Setup(_ => _.GetAccess(tenantSecurityContext, It.IsAny<ISecurityPrincipal>()))
+          .Returns(new AccessType[0]);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => securityProviderStub.Object);
-      serviceLocator.RegisterSingle<IPrincipalProvider> (() => new NullPrincipalProvider());
-      using (new ServiceLocatorScope (serviceLocator))
+      serviceLocator.RegisterSingle(() => securityProviderStub.Object);
+      serviceLocator.RegisterSingle<IPrincipalProvider>(() => new NullPrincipalProvider());
+      using (new ServiceLocatorScope(serviceLocator))
       {
-        SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_rootTenantHandle, _userHandle, null, null, null, null);
+        SecurityManagerPrincipal principal = new SecurityManagerPrincipal(_rootTenantHandle, _userHandle, null, null, null, null);
 
-        Assert.That (principal.GetTenants (true), Is.Empty);
+        Assert.That(principal.GetTenants(true), Is.Empty);
       }
     }
   }

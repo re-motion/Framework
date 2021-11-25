@@ -69,7 +69,7 @@ namespace Remotion.Collections.Caching
           }
 
           // Skip values where the initialization has failed. They can only be observed until the cleanup has completed.
-          if (ReferenceEquals (synchronizedValue.Boxed, Boxed.ExceptionSentinel))
+          if (ReferenceEquals(synchronizedValue.Boxed, Boxed.ExceptionSentinel))
             continue;
 
           return true;
@@ -86,7 +86,7 @@ namespace Remotion.Collections.Caching
         get
         {
           var current = _inner.Current;
-          return new KeyValuePair<TKey, TValue> (current.Key, current.Value.Boxed!.Value!);
+          return new KeyValuePair<TKey, TValue>(current.Key, current.Value.Boxed!.Value!);
         }
       }
 
@@ -115,7 +115,7 @@ namespace Remotion.Collections.Caching
 
     private class Boxed
     {
-      public static readonly Boxed ExceptionSentinel = new Boxed (default!);
+      public static readonly Boxed ExceptionSentinel = new Boxed(default!);
 
       [MaybeNull]
       public readonly TValue Value;
@@ -135,9 +135,9 @@ namespace Remotion.Collections.Caching
 
     public ConcurrentCache ([JetBrains.Annotations.NotNull] IEqualityComparer<TKey> comparer)
     {
-      ArgumentUtility.CheckNotNull ("comparer", comparer);
+      ArgumentUtility.CheckNotNull("comparer", comparer);
 
-      _innerDictionary = new ConcurrentDictionary<TKey, SynchronizedValue> (comparer);
+      _innerDictionary = new ConcurrentDictionary<TKey, SynchronizedValue>(comparer);
     }
 
     /// <summary>
@@ -151,9 +151,9 @@ namespace Remotion.Collections.Caching
     /// </returns>
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
-      return TryGetValueInternal (key, out value);
+      return TryGetValueInternal(key, out value);
     }
 
     /// <summary>
@@ -166,8 +166,8 @@ namespace Remotion.Collections.Caching
     /// </returns>
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
 
       // Implementation of ConcurrentDictionary.GetOrAdd(valueFactory) is already set up with TryGetValue() + GetOrAdd(value) if key-not-found.
       // By splitting the implementation to perform the calls to TryGetValue() and GetOrAdd(value) separately, 
@@ -175,7 +175,7 @@ namespace Remotion.Collections.Caching
 
       while (true)
       {
-        if (TryGetValueInternal (key, out var resultValue))
+        if (TryGetValueInternal(key, out var resultValue))
           return resultValue;
 
         var synchronizedValue = new SynchronizedValue();
@@ -184,13 +184,13 @@ namespace Remotion.Collections.Caching
         // synchronize their value access.
         lock (synchronizedValue)
         {
-          SynchronizedValue cachedSynchronizedValue = _innerDictionary.GetOrAdd (key, synchronizedValue);
-          if (ReferenceEquals (synchronizedValue, cachedSynchronizedValue))
+          SynchronizedValue cachedSynchronizedValue = _innerDictionary.GetOrAdd(key, synchronizedValue);
+          if (ReferenceEquals(synchronizedValue, cachedSynchronizedValue))
           {
             try
             {
-              var value = valueFactory (key);
-              synchronizedValue.Boxed = new Boxed (value);
+              var value = valueFactory(key);
+              synchronizedValue.Boxed = new Boxed(value);
               return value;
             }
             catch
@@ -201,7 +201,7 @@ namespace Remotion.Collections.Caching
               // The specific implementation for ConcurrentDictionary does not have a branch where an exception would be expected, 
               // therefor no separate exception handling for ICollection.Remove() has been added.
               ((ICollection<KeyValuePair<TKey, SynchronizedValue>>) _innerDictionary)
-                  .Remove (new KeyValuePair<TKey, SynchronizedValue> (key, synchronizedValue));
+                  .Remove(new KeyValuePair<TKey, SynchronizedValue>(key, synchronizedValue));
 
               throw;
             }
@@ -222,7 +222,7 @@ namespace Remotion.Collections.Caching
 
     private IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator ()
     {
-      return new Enumerator (_innerDictionary.GetEnumerator());
+      return new Enumerator(_innerDictionary.GetEnumerator());
     }
 
     public void Clear ()
@@ -238,7 +238,7 @@ namespace Remotion.Collections.Caching
     [MethodImpl (MethodImplOptions.AggressiveInlining)]
     private bool TryGetValueInternal (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
-      if (_innerDictionary.TryGetValue (key, out var synchronizedValue))
+      if (_innerDictionary.TryGetValue(key, out var synchronizedValue))
       {
         if (synchronizedValue.Boxed == null)
         {
@@ -247,8 +247,8 @@ namespace Remotion.Collections.Caching
           {
             if (synchronizedValue.Boxed == null)
             {
-              throw new InvalidOperationException (
-                  string.Format (
+              throw new InvalidOperationException(
+                  string.Format(
                       "An attempt was detected to access the value for key ('{0}') during the factory operation of GetOrCreateValue(key, factory).",
                       key));
             }
@@ -257,7 +257,7 @@ namespace Remotion.Collections.Caching
 
         var boxed = synchronizedValue.Boxed;
         value = boxed.Value!;
-        return !ReferenceEquals (boxed, Boxed.ExceptionSentinel);
+        return !ReferenceEquals(boxed, Boxed.ExceptionSentinel);
       }
       else
       {

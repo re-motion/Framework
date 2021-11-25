@@ -34,18 +34,18 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       Func<IObjectValidator, bool> validatorPredicate = _ => false;
       var removingObjectValidationRuleCollectorStub = new Mock<IRemovingObjectValidationRuleCollector>();
 
-      var removingObjectValidatorRegistration = new RemovingObjectValidatorRegistration (
+      var removingObjectValidatorRegistration = new RemovingObjectValidatorRegistration(
           validatorType,
           collectorTypeToRemoveFrom,
           validatorPredicate,
           removingObjectValidationRuleCollectorStub.Object);
 
-      Assert.That (removingObjectValidatorRegistration.ValidatorType, Is.SameAs (validatorType));
-      Assert.That (removingObjectValidatorRegistration.CollectorTypeToRemoveFrom, Is.SameAs (collectorTypeToRemoveFrom));
-      Assert.That (removingObjectValidatorRegistration.ValidatorPredicate, Is.SameAs (validatorPredicate));
-      Assert.That (
+      Assert.That(removingObjectValidatorRegistration.ValidatorType, Is.SameAs(validatorType));
+      Assert.That(removingObjectValidatorRegistration.CollectorTypeToRemoveFrom, Is.SameAs(collectorTypeToRemoveFrom));
+      Assert.That(removingObjectValidatorRegistration.ValidatorPredicate, Is.SameAs(validatorPredicate));
+      Assert.That(
           removingObjectValidatorRegistration.RemovingObjectValidationRuleCollector,
-          Is.SameAs (removingObjectValidationRuleCollectorStub.Object));
+          Is.SameAs(removingObjectValidationRuleCollectorStub.Object));
     }
 
     [Test]
@@ -55,18 +55,18 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       Func<IObjectValidator, bool> validatorPredicate = _ => false;
       var removingObjectValidationRuleCollectorStub = new Mock<IRemovingObjectValidationRuleCollector>();
 
-      var removingObjectValidatorRegistration = new RemovingObjectValidatorRegistration (
+      var removingObjectValidatorRegistration = new RemovingObjectValidatorRegistration(
           validatorType,
           collectorTypeToRemoveFrom: null,
           validatorPredicate,
           removingObjectValidationRuleCollectorStub.Object);
 
-      Assert.That (removingObjectValidatorRegistration.ValidatorType, Is.SameAs (validatorType));
-      Assert.That (removingObjectValidatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
-      Assert.That (removingObjectValidatorRegistration.ValidatorPredicate, Is.SameAs (validatorPredicate));
-      Assert.That (
+      Assert.That(removingObjectValidatorRegistration.ValidatorType, Is.SameAs(validatorType));
+      Assert.That(removingObjectValidatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
+      Assert.That(removingObjectValidatorRegistration.ValidatorPredicate, Is.SameAs(validatorPredicate));
+      Assert.That(
           removingObjectValidatorRegistration.RemovingObjectValidationRuleCollector,
-          Is.SameAs (removingObjectValidationRuleCollectorStub.Object));
+          Is.SameAs(removingObjectValidationRuleCollectorStub.Object));
     }
 
     [Test]
@@ -76,18 +76,18 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       var collectorTypeToRemoveFrom = typeof (CustomerValidationRuleCollector1);
       var removingObjectValidationRuleCollectorStub = new Mock<IRemovingObjectValidationRuleCollector>();
 
-      var Object = new RemovingObjectValidatorRegistration (
+      var Object = new RemovingObjectValidatorRegistration(
           validatorType,
           collectorTypeToRemoveFrom,
           validatorPredicate: null,
           removingObjectValidationRuleCollectorStub.Object);
 
-      Assert.That (Object.ValidatorType, Is.SameAs (validatorType));
-      Assert.That (Object.CollectorTypeToRemoveFrom, Is.SameAs (collectorTypeToRemoveFrom));
-      Assert.That (Object.ValidatorPredicate, Is.Null);
-      Assert.That (
+      Assert.That(Object.ValidatorType, Is.SameAs(validatorType));
+      Assert.That(Object.CollectorTypeToRemoveFrom, Is.SameAs(collectorTypeToRemoveFrom));
+      Assert.That(Object.ValidatorPredicate, Is.Null);
+      Assert.That(
           Object.RemovingObjectValidationRuleCollector,
-          Is.SameAs (removingObjectValidationRuleCollectorStub.Object));
+          Is.SameAs(removingObjectValidationRuleCollectorStub.Object));
     }
   }
 }

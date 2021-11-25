@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     [MemberVisibility (MemberVisibility.Public)]
     public void PublicMethodWithSpecialName ()
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
   }
 }

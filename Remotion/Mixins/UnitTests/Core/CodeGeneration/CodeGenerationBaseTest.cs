@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
     protected ObjectFactoryAdapter ObjectFactory
     {
-      get { return new ObjectFactoryAdapter (SafeServiceLocator.Current.GetInstance<IObjectFactoryImplementation>()); }
+      get { return new ObjectFactoryAdapter(SafeServiceLocator.Current.GetInstance<IObjectFactoryImplementation>()); }
     }
 
     protected ITypeFactoryImplementation TypeFactory
@@ -53,34 +53,34 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     protected void AddSavedAssembly (string assemblyPath)
     {
       ArgumentUtility.CheckNotNullOrEmpty("assemblyPath", assemblyPath);
-      SetUpFixture.AddSavedAssembly (assemblyPath);
+      SetUpFixture.AddSavedAssembly(assemblyPath);
     }
 
     protected Type CreateMixedType (Type targetType, params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("mixinTypes", mixinTypes);
+      ArgumentUtility.CheckNotNullOrEmpty("mixinTypes", mixinTypes);
       
-      using (MixinConfiguration.BuildNew().ForClass (targetType).AddMixins (mixinTypes).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass(targetType).AddMixins(mixinTypes).EnterScope())
       {
-        return TypeFactory.GetConcreteType (targetType);
+        return TypeFactory.GetConcreteType(targetType);
       }
     }
 
     protected T CreateMixedObject<T> (params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("mixinTypes", mixinTypes);
+      ArgumentUtility.CheckNotNullOrEmpty("mixinTypes", mixinTypes);
 
-      using (MixinConfiguration.BuildNew().ForClass<T> ().AddMixins (mixinTypes).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<T>().AddMixins(mixinTypes).EnterScope())
       {
-        return ObjectFactory.Create<T> (ParamList.Empty);
+        return ObjectFactory.Create<T>(ParamList.Empty);
       }
     }
 
     protected Type CreateGeneratedTypeWithoutMixins (Type targetType)
     {
-      using (MixinConfiguration.BuildNew ().ForClass (targetType).Clear ().EnterScope ())
+      using (MixinConfiguration.BuildNew().ForClass(targetType).Clear().EnterScope())
       {
-        return TypeGenerationHelper.ForceTypeGeneration (targetType);
+        return TypeGenerationHelper.ForceTypeGeneration(targetType);
       }
     }
 

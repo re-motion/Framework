@@ -26,19 +26,19 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   {
     public bool Equals (StateCombination x, StateCombination y)
     {
-      HashSet<StateDefinition> statesX = new HashSet<StateDefinition> (x.GetStates());
-      StateDefinition[] statesY = y.GetStates ();
+      HashSet<StateDefinition> statesX = new HashSet<StateDefinition>(x.GetStates());
+      StateDefinition[] statesY = y.GetStates();
 
-      return statesX.SetEquals (statesY);
+      return statesX.SetEquals(statesY);
     }
 
     public int GetHashCode (StateCombination obj)
     {
-      Assertion.IsNotNull (obj.Class);
-      int hashCode = obj.Class.GetHashCode ();
+      Assertion.IsNotNull(obj.Class);
+      int hashCode = obj.Class.GetHashCode();
 
-      foreach (StateDefinition state in obj.GetStates ())
-        hashCode ^= state.GetHashCode ();
+      foreach (StateDefinition state in obj.GetStates())
+        hashCode ^= state.GetHashCode();
 
       return hashCode;
     }

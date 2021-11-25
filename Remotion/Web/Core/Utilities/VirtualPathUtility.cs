@@ -38,22 +38,22 @@ namespace Remotion.Web.Utilities
     /// </returns>
     public static string GetVirtualPath (IControl control, string path)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNullOrEmpty ("path", path);
+      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNullOrEmpty("path", path);
 
       string appRelativeTemplateSourceDirectory = control.AppRelativeTemplateSourceDirectory;
-      if (string.IsNullOrEmpty (appRelativeTemplateSourceDirectory))
+      if (string.IsNullOrEmpty(appRelativeTemplateSourceDirectory))
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The 'AppRelativeTemplateSourceDirectory' property of the {0} '{1}' is not set. "
                 + "This can happen if the control's TemplateControl was not instantiated using System.Web.UI.Control.LoadControl (string).",
                 control.GetType().Name,
                 control.ID));
       }
 
-      var templateSourceDirectory = System.Web.VirtualPathUtility.AppendTrailingSlash (appRelativeTemplateSourceDirectory);
-      return System.Web.VirtualPathUtility.Combine (templateSourceDirectory, path);
+      var templateSourceDirectory = System.Web.VirtualPathUtility.AppendTrailingSlash(appRelativeTemplateSourceDirectory);
+      return System.Web.VirtualPathUtility.Combine(templateSourceDirectory, path);
     }
   }
 }

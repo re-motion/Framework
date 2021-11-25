@@ -48,7 +48,7 @@ namespace Remotion.Configuration
     /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
     public void Add (T provider)
     {
-      base.Add (ArgumentUtility.CheckType<ProviderBase> ("provider", provider));
+      base.Add(ArgumentUtility.CheckType<ProviderBase>("provider", provider));
     }
 
     /// <summary>Adds a provider to the collection.</summary>
@@ -62,8 +62,8 @@ namespace Remotion.Configuration
     /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
     public override void Add (ProviderBase provider)
     {
-      ArgumentUtility.CheckType<T> ("provider", provider);
-      base.Add (provider);
+      ArgumentUtility.CheckType<T>("provider", provider);
+      base.Add(provider);
     }
 
     ///// <summary>Copies the contents of the collection to the given array starting at the specified index.</summary>
@@ -78,7 +78,7 @@ namespace Remotion.Configuration
     {
       T value = this[name];
       if (value == null)
-        throw new ArgumentException (string.Format ("Provider '{0}' does not exist.", name));
+        throw new ArgumentException(string.Format("Provider '{0}' does not exist.", name));
 
       return value;
     }

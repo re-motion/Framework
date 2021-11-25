@@ -31,23 +31,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     [SetUp]
     public void SetUp ()
     {
-      _innerColumn = ColumnDefinitionObjectMother.CreateColumn ("InnerColumn");
-      _indexedColumn = new SqlIndexedColumnDefinition (_innerColumn, IndexOrder.Desc);
+      _innerColumn = ColumnDefinitionObjectMother.CreateColumn("InnerColumn");
+      _indexedColumn = new SqlIndexedColumnDefinition(_innerColumn, IndexOrder.Desc);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_indexedColumn.Columnn, Is.SameAs (_innerColumn));
-      Assert.That (_indexedColumn.IndexOrder, Is.EqualTo (IndexOrder.Desc));
+      Assert.That(_indexedColumn.Columnn, Is.SameAs(_innerColumn));
+      Assert.That(_indexedColumn.IndexOrder, Is.EqualTo(IndexOrder.Desc));
     }
 
     [Test]
     public void Initialization_WithNullIndexOrder ()
     {
-      var indexedColumn = new SqlIndexedColumnDefinition (_innerColumn);
+      var indexedColumn = new SqlIndexedColumnDefinition(_innerColumn);
 
-      Assert.That (indexedColumn.IndexOrder, Is.Null);
+      Assert.That(indexedColumn.IndexOrder, Is.Null);
     }
     
   }

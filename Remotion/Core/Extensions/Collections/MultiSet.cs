@@ -35,18 +35,18 @@ namespace Remotion.Mixins.Utilities
 
     public MultiSet (IEqualityComparer<T> comparer)
     {
-      _items = new MultiDictionary<T, T> (comparer);
+      _items = new MultiDictionary<T, T>(comparer);
     }
 
     public void Add (T item)
     {
-      _items.Add (item, item);
+      _items.Add(item, item);
     }
 
     public void AddRange (IEnumerable<T> items)
     {
       foreach (T t in items)
-        Add (t);
+        Add(t);
     }
 
     public IEnumerable<T> this [T item]

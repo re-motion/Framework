@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public NullObjectEndPoint (ClientTransaction clientTransaction, IRelationEndPointDefinition definition)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("definition", definition);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("definition", definition);
 
       _clientTransaction = clientTransaction;
       _definition = definition;
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public ObjectID OriginalOppositeObjectID
     {
-      get { throw new InvalidOperationException ("It is not possible to get the OriginalOppositeObjectID from a NullObjectEndPoint."); }
+      get { throw new InvalidOperationException("It is not possible to get the OriginalOppositeObjectID from a NullObjectEndPoint."); }
     }
 
     public bool? IsSynchronized
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public DomainObject GetOriginalOppositeObject ()
     {
-      throw new InvalidOperationException ("It is not possible to call GetOriginalOppositeObject on a NullObjectEndPoint.");
+      throw new InvalidOperationException("It is not possible to call GetOriginalOppositeObject on a NullObjectEndPoint.");
     }
 
     public bool HasChanged
@@ -141,52 +141,52 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void Commit ()
     {
-      throw new InvalidOperationException ("Commit cannot be called on a NullObjectEndPoint.");
+      throw new InvalidOperationException("Commit cannot be called on a NullObjectEndPoint.");
     }
 
     public void Rollback ()
     {
-      throw new InvalidOperationException ("Rollback cannot be called on a NullObjectEndPoint.");
+      throw new InvalidOperationException("Rollback cannot be called on a NullObjectEndPoint.");
     }
 
     public IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
     {
-      return new NullEndPointModificationCommand (this);
+      return new NullEndPointModificationCommand(this);
     }
 
     public IDataManagementCommand CreateDeleteCommand ()
     {
-      return new NullEndPointModificationCommand (this);
+      return new NullEndPointModificationCommand(this);
     }
 
     public IDataManagementCommand CreateSetCommand (DomainObject newRelatedObject)
     {
-      return new NullEndPointModificationCommand (this);
+      return new NullEndPointModificationCommand(this);
     }
 
     public void ValidateMandatory ()
     {
-      throw new InvalidOperationException ("ValidateMandatory cannot be called on a NullObjectEndPoint.");
+      throw new InvalidOperationException("ValidateMandatory cannot be called on a NullObjectEndPoint.");
     }
 
     public RelationEndPointID GetOppositeRelationEndPointID ()
     {
-      throw new InvalidOperationException ("GetOppositeRelationEndPointID cannot be called on a NullObjectEndPoint.");
+      throw new InvalidOperationException("GetOppositeRelationEndPointID cannot be called on a NullObjectEndPoint.");
     }
 
     public IEnumerable<RelationEndPointID> GetOppositeRelationEndPointIDs ()
     {
-      throw new InvalidOperationException ("GetOppositeRelationEndPointIDs cannot be called on a NullObjectEndPoint.");
+      throw new InvalidOperationException("GetOppositeRelationEndPointIDs cannot be called on a NullObjectEndPoint.");
     }
 
     public void SetDataFromSubTransaction (IRelationEndPoint source)
     {
-      throw new InvalidOperationException ("SetDataFromSubTransaction cannot be called on a NullObjectEndPoint.");
+      throw new InvalidOperationException("SetDataFromSubTransaction cannot be called on a NullObjectEndPoint.");
     }
 
     public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      throw new InvalidOperationException ("SerializeIntoFlatStructure cannot be called on a NullObjectEndPoint.");
+      throw new InvalidOperationException("SerializeIntoFlatStructure cannot be called on a NullObjectEndPoint.");
     }
   }
 }

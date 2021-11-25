@@ -26,17 +26,17 @@ namespace Remotion.Validation.Implementation
 
     public InvariantValidationMessage (string validationMessage)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNullOrEmpty("validationMessage", validationMessage);
 
       _validationMessage = validationMessage;
     }
 
     public override string Format (CultureInfo culture, IFormatProvider? formatProvider, params object?[] parameters)
     {
-      ArgumentUtility.CheckNotNull ("culture", culture);
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
+      ArgumentUtility.CheckNotNull("culture", culture);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
-      return string.Format (formatProvider, _validationMessage, parameters);
+      return string.Format(formatProvider, _validationMessage, parameters);
     }
 
     public override string ToString ()

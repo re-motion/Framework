@@ -33,23 +33,23 @@ namespace Remotion.Mixins.Context.Serialization
     {
       if (typeof (T) == typeof (Type[]))
       {
-        var convertedTypes = ConvertFromStorageFormat<string[]> (value, index);
-        return (T) (object) Enumerable.ToArray (convertedTypes.Select (ConvertFromStorageFormat<Type>));
+        var convertedTypes = ConvertFromStorageFormat<string[]>(value, index);
+        return (T) (object) Enumerable.ToArray(convertedTypes.Select(ConvertFromStorageFormat<Type>));
       }
 
       if (typeof (T) == typeof (Type))
       {
-        var typeName = ConvertFromStorageFormat<string> (value, index);
+        var typeName = ConvertFromStorageFormat<string>(value, index);
         // TODO RM-7810: A meaningful exception should be thrown if no type can be found.
-        return (T) (object) Type.GetType (typeName)!;
+        return (T) (object) Type.GetType(typeName)!;
       }
 
-      return base.ConvertFromStorageFormat<T> (value, index);
+      return base.ConvertFromStorageFormat<T>(value, index);
     }
 
     protected override ArrayMixinContextDeserializer CreateMixinContextDeserializer (object[] values)
     {
-      return new FlatMixinContextDeserializer (values);
+      return new FlatMixinContextDeserializer(values);
     }
   }
 }

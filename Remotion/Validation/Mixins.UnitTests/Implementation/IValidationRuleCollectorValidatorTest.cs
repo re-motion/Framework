@@ -31,26 +31,26 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create ();
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IValidationRuleCollectorValidator> ();
+      var factory = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
 
-      Assert.That (factory, Is.TypeOf (typeof (CompoundValidationRuleCollectorValidator)));
-      var compoundFactories = ((CompoundValidationRuleCollectorValidator) factory).CollectorValidators.ToArray ();
-      Assert.That (compoundFactories[0], Is.TypeOf<CheckNoMixinValidationRuleCollectorValidator> ());
+      Assert.That(factory, Is.TypeOf(typeof (CompoundValidationRuleCollectorValidator)));
+      var compoundFactories = ((CompoundValidationRuleCollectorValidator) factory).CollectorValidators.ToArray();
+      Assert.That(compoundFactories[0], Is.TypeOf<CheckNoMixinValidationRuleCollectorValidator>());
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator> ();
-      var factory2 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator> ();
+      var factory1 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
+      var factory2 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

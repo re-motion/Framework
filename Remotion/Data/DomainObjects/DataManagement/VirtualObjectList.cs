@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public VirtualObjectList (IVirtualCollectionData dataStrategy)
     {
-      ArgumentUtility.CheckNotNull ("dataStrategy", dataStrategy);
+      ArgumentUtility.CheckNotNull("dataStrategy", dataStrategy);
 
       _dataStrategy = dataStrategy;
     }
@@ -55,11 +55,11 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public int Count => _dataStrategy.Count;
 
-    public T this [int index] => (T) _dataStrategy.GetObject (index);
+    public T this [int index] => (T) _dataStrategy.GetObject(index);
 
-    public bool Contains (ObjectID objectID) => _dataStrategy.ContainsObjectID (objectID);
+    public bool Contains (ObjectID objectID) => _dataStrategy.ContainsObjectID(objectID);
 
-    public T GetObject (ObjectID objectID) => (T) _dataStrategy.GetObject (objectID);
+    public T GetObject (ObjectID objectID) => (T) _dataStrategy.GetObject(objectID);
 
     bool IList.IsReadOnly => true;
 
@@ -71,24 +71,24 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     void ICollection.CopyTo (Array array, int index)
     {
-      ArgumentUtility.CheckNotNull ("array", array);
+      ArgumentUtility.CheckNotNull("array", array);
 
-      _dataStrategy.ToArray().CopyTo (array, index);
+      _dataStrategy.ToArray().CopyTo(array, index);
     }
 
     bool IList.Contains (object value)
     {
       if (value is DomainObject domainObject)
-        return ReferenceEquals (domainObject, GetObject (domainObject.ID));
+        return ReferenceEquals(domainObject, GetObject(domainObject.ID));
       return false;
     }
 
     int IList.IndexOf (object value)
     {
       return _dataStrategy
-          .Select ((obj, index) => new KeyValuePair<DomainObject, int> (obj, index))
-          .Where (kvp => ReferenceEquals (kvp.Key, value))
-          .Select (kvp => (int?) kvp.Value).FirstOrDefault() ?? -1;
+          .Select((obj, index) => new KeyValuePair<DomainObject, int>(obj, index))
+          .Where(kvp => ReferenceEquals(kvp.Key, value))
+          .Select(kvp => (int?) kvp.Value).FirstOrDefault() ?? -1;
     }
 
     object IList.this [int index]
@@ -96,68 +96,68 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get { return this[index]; }
       set
       {
-        throw new NotSupportedException (
+        throw new NotSupportedException(
             "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
       }
     }
 
     int IObjectList<T>.Add (object value)
     {
-      throw new NotSupportedException (
+      throw new NotSupportedException(
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
 
     int IList.Add (object value)
     {
-      throw new NotSupportedException (
+      throw new NotSupportedException(
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
 
     void IObjectList<T>.Clear ()
     {
-      throw new NotSupportedException (
+      throw new NotSupportedException(
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
 
     void IList.Clear ()
     {
-      throw new NotSupportedException (
+      throw new NotSupportedException(
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
 
     void IObjectList<T>.Insert (int index, object value)
     {
-      throw new NotSupportedException (
+      throw new NotSupportedException(
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
 
     void IList.Insert (int index, object value)
     {
-      throw new NotSupportedException (
+      throw new NotSupportedException(
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
 
     void IObjectList<T>.Remove (object value)
     {
-      throw new NotSupportedException (
+      throw new NotSupportedException(
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
 
     void IList.Remove (object value)
     {
-      throw new NotSupportedException (
+      throw new NotSupportedException(
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
 
     void IObjectList<T>.RemoveAt (int index)
     {
-      throw new NotSupportedException (
+      throw new NotSupportedException(
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
 
     void IList.RemoveAt (int index)
     {
-      throw new NotSupportedException (
+      throw new NotSupportedException(
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
   }

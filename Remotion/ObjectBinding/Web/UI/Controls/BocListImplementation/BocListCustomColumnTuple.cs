@@ -23,9 +23,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
   public class BocListCustomColumnTuple : Tuple<IBusinessObject, int, Control>
   {
     public BocListCustomColumnTuple (IBusinessObject businessObject, int originalRowIndex, Control control)
-        : base (ArgumentUtility.CheckNotNull ("businessObject", businessObject),
+        : base (ArgumentUtility.CheckNotNull("businessObject", businessObject),
                 originalRowIndex,
-                ArgumentUtility.CheckNotNull ("control", control))
+                ArgumentUtility.CheckNotNull("control", control))
     {
     }
   }

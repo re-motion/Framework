@@ -39,18 +39,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [SetUp]
     public void SetUp ()
     {
-      _storageProviderDefinition = new UnitTestStorageProviderStubDefinition ("SPID");
+      _storageProviderDefinition = new UnitTestStorageProviderStubDefinition("SPID");
       
       _timestampProperty = SimpleStoragePropertyDefinitionObjectMother.TimestampProperty;
       _objectIDProperty = ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty;
-      _property1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Column1");
-      _property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Column2");
-      _property3 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Column3");
+      _property1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column1");
+      _property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column2");
+      _property3 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column3");
 
-      _synonyms = new[] { new EntityNameDefinition ("Schema", "Test") };
-      _emptyViewDefinition = new EmptyViewDefinition (
+      _synonyms = new[] { new EntityNameDefinition("Schema", "Test") };
+      _emptyViewDefinition = new EmptyViewDefinition(
           _storageProviderDefinition,
-          new EntityNameDefinition ("Schema", "Test"),
+          new EntityNameDefinition("Schema", "Test"),
           _objectIDProperty,
           _timestampProperty,
           new[] { _property1, _property2, _property3 },
@@ -60,41 +60,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void Initialization ()
     {
-      Assert.That (_emptyViewDefinition.StorageProviderDefinition, Is.SameAs (_storageProviderDefinition));
-      Assert.That (_emptyViewDefinition.ViewName, Is.EqualTo (new EntityNameDefinition ("Schema", "Test")));
+      Assert.That(_emptyViewDefinition.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
+      Assert.That(_emptyViewDefinition.ViewName, Is.EqualTo(new EntityNameDefinition("Schema", "Test")));
 
-      Assert.That (_emptyViewDefinition.ObjectIDProperty, Is.SameAs (_objectIDProperty));
-      Assert.That (_emptyViewDefinition.TimestampProperty, Is.SameAs (_timestampProperty));
-      Assert.That (_emptyViewDefinition.DataProperties, Is.EqualTo (new[] { _property1, _property2, _property3 }));
+      Assert.That(_emptyViewDefinition.ObjectIDProperty, Is.SameAs(_objectIDProperty));
+      Assert.That(_emptyViewDefinition.TimestampProperty, Is.SameAs(_timestampProperty));
+      Assert.That(_emptyViewDefinition.DataProperties, Is.EqualTo(new[] { _property1, _property2, _property3 }));
 
-      Assert.That (_emptyViewDefinition.Indexes, Is.Empty);
-      Assert.That (_emptyViewDefinition.Synonyms, Is.EqualTo (_synonyms));
+      Assert.That(_emptyViewDefinition.Indexes, Is.Empty);
+      Assert.That(_emptyViewDefinition.Synonyms, Is.EqualTo(_synonyms));
     }
 
     [Test]
     public void Initialization_ViewNameNull ()
     {
-      var emptyViewDefinition = new EmptyViewDefinition (
+      var emptyViewDefinition = new EmptyViewDefinition(
           _storageProviderDefinition,
           null,
           _objectIDProperty,
           _timestampProperty,
           new SimpleStoragePropertyDefinition[0],
           new EntityNameDefinition[0]);
-      Assert.That (emptyViewDefinition.ViewName, Is.Null);
+      Assert.That(emptyViewDefinition.ViewName, Is.Null);
     }
 
     [Test]
     public void Accept ()
     {
-      var visitorMock = MockRepository.GenerateStrictMock<IRdbmsStorageEntityDefinitionVisitor> ();
+      var visitorMock = MockRepository.GenerateStrictMock<IRdbmsStorageEntityDefinitionVisitor>();
 
-      visitorMock.Expect (mock => mock.VisitEmptyViewDefinition(_emptyViewDefinition));
-      visitorMock.Replay ();
+      visitorMock.Expect(mock => mock.VisitEmptyViewDefinition(_emptyViewDefinition));
+      visitorMock.Replay();
 
-      _emptyViewDefinition.Accept (visitorMock);
+      _emptyViewDefinition.Accept(visitorMock);
 
-      visitorMock.VerifyAllExpectations ();
+      visitorMock.VerifyAllExpectations();
     }
   }
 }

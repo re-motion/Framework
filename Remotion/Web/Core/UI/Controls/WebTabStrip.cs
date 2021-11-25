@@ -52,7 +52,7 @@ namespace Remotion.Web.UI.Controls
     private const string c_resourceKeyTabs = "Tabs";
 
     // statics
-    private static readonly ILog s_log = LogManager.GetLogger (MethodBase.GetCurrentMethod()!.DeclaringType!);
+    private static readonly ILog s_log = LogManager.GetLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
     private static readonly object s_selectedIndexChangedEvent = new object();
     private static readonly object s_clickEvent = new object();
 
@@ -73,16 +73,16 @@ namespace Remotion.Web.UI.Controls
 
     public WebTabStrip (WebTabCollection tabCollection)
     {
-      ArgumentUtility.CheckNotNull ("tabCollection", tabCollection);
+      ArgumentUtility.CheckNotNull("tabCollection", tabCollection);
       _tabs = tabCollection;
-      _tabs.SetTabStrip (this);
+      _tabs.SetTabStrip(this);
       _tabStyle = new WebTabStyle();
       _selectedTabStyle = new WebTabStyle();
       _disabledTabStyle = new WebTabStyle();
     }
 
     public WebTabStrip (IControl? ownerControl, Type[] supportedTabTypes)
-        : this (new WebTabCollection (ownerControl, supportedTabTypes))
+        : this (new WebTabCollection(ownerControl, supportedTabTypes))
     {
     }
 
@@ -98,18 +98,18 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
-      RegisterHtmlHeadContents (Page!.Context!, HtmlHeadAppender.Current); // TODO RM-8118: not null assertions
+      RegisterHtmlHeadContents(Page!.Context!, HtmlHeadAppender.Current); // TODO RM-8118: not null assertions
 
-      Page.RegisterRequiresControlState (this);
-      Page.RegisterRequiresPostBack (this);
+      Page.RegisterRequiresControlState(this);
+      Page.RegisterRequiresPostBack(this);
     }
 
     public void RegisterHtmlHeadContents (HttpContextBase context, HtmlHeadAppender htmlHeadAppender)
     {
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender, this);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender, this);
     }
 
     bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
@@ -118,7 +118,7 @@ namespace Remotion.Web.UI.Controls
       if (postCollection[ControlHelper.PostEventSourceID] == UniqueID)
       {
         _tabToBeSelected = postCollection[ControlHelper.PostEventArgumentID];
-        ArgumentUtility.CheckNotNullOrEmpty ("postCollection[\"__EVENTARGUMENT\"]", _tabToBeSelected!);
+        ArgumentUtility.CheckNotNullOrEmpty("postCollection[\"__EVENTARGUMENT\"]", _tabToBeSelected!);
         if (_tabToBeSelected != _selectedItemID)
           return true;
       }
@@ -128,14 +128,14 @@ namespace Remotion.Web.UI.Controls
     void IPostBackDataHandler.RaisePostDataChangedEvent ()
     {
       EnsureTabsRestored();
-      HandleSelectionChangeEvent (_tabToBeSelected!); // TODO RM-8118: debug not null
+      HandleSelectionChangeEvent(_tabToBeSelected!); // TODO RM-8118: debug not null
     }
 
     /// <summary> Handles the click event for a tab. </summary>
     /// <param name="itemID"> The id of the tab. </param>
     private void HandleSelectionChangeEvent (string itemID)
     {
-      SetSelectedTab (itemID);
+      SetSelectedTab(itemID);
       OnSelectedIndexChanged();
     }
 
@@ -143,32 +143,32 @@ namespace Remotion.Web.UI.Controls
     {
       EventHandler? handler = (EventHandler?) Events[s_selectedIndexChangedEvent];
       if (handler != null)
-        handler (this, EventArgs.Empty);
+        handler(this, EventArgs.Empty);
     }
 
     void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
     {
       EnsureTabsRestored();
-      HandleClickEvent (eventArgument);
+      HandleClickEvent(eventArgument);
     }
 
     private void HandleClickEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
-      WebTab? tab = Tabs.Find (eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
+      WebTab? tab = Tabs.Find(eventArgument);
       if (tab != null)
-        OnClick (tab);
+        OnClick(tab);
     }
 
     protected virtual void OnClick (WebTab tab)
     {
-      ArgumentUtility.CheckNotNull ("tab", tab);
+      ArgumentUtility.CheckNotNull("tab", tab);
       tab.OnClick();
       WebTabClickEventHandler? handler = (WebTabClickEventHandler?) Events[s_clickEvent];
       if (handler != null)
       {
-        WebTabClickEventArgs e = new WebTabClickEventArgs (tab);
-        handler (this, e);
+        WebTabClickEventArgs e = new WebTabClickEventArgs(tab);
+        handler(this, e);
       }
     }
 
@@ -180,7 +180,7 @@ namespace Remotion.Web.UI.Controls
       _isRestoringTabs = true;
       if (_tabsControlState != null)
       {
-        LoadTabsControlState (_tabsControlState, _tabs);
+        LoadTabsControlState(_tabsControlState, _tabs);
         _hasTabsRestored = true;
       }
       _isRestoringTabs = false;
@@ -191,7 +191,7 @@ namespace Remotion.Web.UI.Controls
       if (savedState != null)
       {
         object?[] values = (object?[]) savedState;
-        base.LoadControlState (values[0]);
+        base.LoadControlState(values[0]);
         _tabsControlState = values[1];
         _selectedItemID = (string?) values[2];
       }
@@ -201,7 +201,7 @@ namespace Remotion.Web.UI.Controls
     {
       object?[] values = new object?[3];
       values[0] = base.SaveControlState();
-      values[1] = SaveTabsControlState (_tabs);
+      values[1] = SaveTabsControlState(_tabs);
       values[2] = _selectedItemID;
       return values;
     }
@@ -209,7 +209,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Loads the settings of the <paramref name="tabs"/> from <paramref name="tabsControlState"/>. </summary>
     private void LoadTabsControlState (object tabsControlState, WebTabCollection tabs)
     {
-      ((IControlStateManager) tabs).LoadControlState (tabsControlState);
+      ((IControlStateManager) tabs).LoadControlState(tabsControlState);
     }
 
     /// <summary> Saves the settings of the  <paramref name="tabs"/> and returns this view state </summary>
@@ -223,40 +223,40 @@ namespace Remotion.Web.UI.Controls
     {
       EnsureTabsRestored();
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      var resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
+      var resourceManager = ResourceManagerUtility.GetResourceManager(this, true);
       var globalizationService = SafeServiceLocator.Current.GetInstance<IGlobalizationService>();
 
-      LoadResources (resourceManager, globalizationService);
+      LoadResources(resourceManager, globalizationService);
     }
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError (1, this);
+        WcagHelper.Instance.HandleError(1, this);
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     protected virtual IWebTabStripRenderer CreateRenderer ()
     {
-      return SafeServiceLocator.Current.GetInstance<IWebTabStripRenderer> ();
+      return SafeServiceLocator.Current.GetInstance<IWebTabStripRenderer>();
     }
 
     protected virtual WebTabStripRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      var builder = new WebTabRendererAdapterArrayBuilder (GetVisibleTabs ().ToArray (), TabStyle, SelectedTabStyle);
+      var builder = new WebTabRendererAdapterArrayBuilder(GetVisibleTabs().ToArray(), TabStyle, SelectedTabStyle);
       builder.EnableSelectedTab = EnableSelectedTab;
       
       var renderers = builder.GetWebTabRenderers();
 
-      return new WebTabStripRenderingContext (Page!.Context!, writer, this, renderers); // TODO RM-8118: not null assertion
+      return new WebTabStripRenderingContext(Page!.Context!, writer, this, renderers); // TODO RM-8118: not null assertion
     }
 
     private List<WebTab> GetVisibleTabs ()
@@ -267,7 +267,7 @@ namespace Remotion.Web.UI.Controls
       foreach (WebTab tab in tabs)
       {
         if (tab.EvaluateVisible())
-          visibleTabs.Add (tab);
+          visibleTabs.Add(tab);
       }
 
       return visibleTabs;
@@ -275,15 +275,15 @@ namespace Remotion.Web.UI.Controls
 
     IList<IWebTab> IWebTabStrip.GetVisibleTabs ()
     {
-      return GetVisibleTabs().ConvertAll<IWebTab> (tab => tab);
+      return GetVisibleTabs().ConvertAll<IWebTab>(tab => tab);
     }
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
     void IResourceDispatchTarget.Dispatch (IDictionary values)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
-      Dispatch (values);
+      ArgumentUtility.CheckNotNull("values", values);
+      Dispatch(values);
     }
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
@@ -298,13 +298,13 @@ namespace Remotion.Web.UI.Controls
       foreach (DictionaryEntry entry in values)
       {
         string key = (string) entry.Key;
-        string[] keyParts = key.Split (new[] { ':' }, 3);
+        string[] keyParts = key.Split(new[] { ':' }, 3);
 
         //  Is a property/value entry?
         if (keyParts.Length == 1)
         {
           string property = keyParts[0];
-          propertyValues.Add (property, entry.Value);
+          propertyValues.Add(property, entry.Value);
         }
             //  Is collection entry?
         else if (keyParts.Length == 3)
@@ -327,7 +327,7 @@ namespace Remotion.Web.UI.Controls
             default:
             {
               //  Invalid collection property
-              s_log.Warn (
+              s_log.Warn(
                   "WebTabStrip '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
                   + "' does not contain a collection property named '" + collectionID + "'.");
               break;
@@ -348,13 +348,13 @@ namespace Remotion.Web.UI.Controls
             }
 
             //  Insert the argument and resource's value into the dictonary for the specified element.
-            elementValues.Add (property, entry.Value);
+            elementValues.Add(property, entry.Value);
           }
         }
         else
         {
           //  Not supported format or invalid property
-          s_log.Warn (
+          s_log.Warn(
               "WebTabStrip '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
               + "' received a resource with an invalid or unknown key '" + key
               + "'. Required format: 'property' or 'collectionID:elementID:property'.");
@@ -362,19 +362,19 @@ namespace Remotion.Web.UI.Controls
       }
 
       //  Dispatch simple properties
-      ResourceDispatcher.DispatchGeneric (this, propertyValues);
+      ResourceDispatcher.DispatchGeneric(this, propertyValues);
 
       //  Dispatch to collections
-      Tabs.Dispatch (tabValues, this, "Tabs");
+      Tabs.Dispatch(tabValues, this, "Tabs");
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>
     protected virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      Tabs.LoadResources (resourceManager, globalizationService);
+      Tabs.LoadResources(resourceManager, globalizationService);
     }
 
     /// <summary> Sets the selected tab. </summary>
@@ -384,14 +384,14 @@ namespace Remotion.Web.UI.Controls
         EnsureTabsRestored();
 
       if (tab != null && tab.TabStrip != this)
-        throw new InvalidOperationException ("Only tabs that are part of this tab strip can be selected.");
+        throw new InvalidOperationException("Only tabs that are part of this tab strip can be selected.");
       if (_selectedTab != tab)
       {
         if ((_selectedTab != null) && _selectedTab.IsSelected)
-          _selectedTab.SetSelected (false);
+          _selectedTab.SetSelected(false);
         _selectedTab = tab;
         if ((_selectedTab != null) && ! _selectedTab.IsSelected)
-          _selectedTab.SetSelected (true);
+          _selectedTab.SetSelected(true);
 
         if (_selectedTab == null)
           _selectedItemID = null;
@@ -405,12 +405,12 @@ namespace Remotion.Web.UI.Controls
 
     private void SetSelectedTab (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
       if (_selectedTab == null || _selectedTab.ItemID != itemID)
       {
-        WebTab? tab = Tabs.Find (itemID);
+        WebTab? tab = Tabs.Find(itemID);
         if (tab != _selectedTab)
-          SetSelectedTabInternal (tab);
+          SetSelectedTabInternal(tab);
       }
     }
 
@@ -424,8 +424,8 @@ namespace Remotion.Web.UI.Controls
         if (Tabs.Count > 0)
         {
           EnsureTabsRestored();
-          if (! string.IsNullOrEmpty (_tabToBeSelected))
-            SetSelectedTab (_tabToBeSelected);
+          if (! string.IsNullOrEmpty(_tabToBeSelected))
+            SetSelectedTab(_tabToBeSelected);
         }
         return _selectedTab;
       }
@@ -456,8 +456,8 @@ namespace Remotion.Web.UI.Controls
     [Description ("Occurs when the selected tab has been changed.")]
     public event EventHandler SelectedIndexChanged
     {
-      add { Events.AddHandler (s_selectedIndexChangedEvent, value); }
-      remove { Events.RemoveHandler (s_selectedIndexChangedEvent, value); }
+      add { Events.AddHandler(s_selectedIndexChangedEvent, value); }
+      remove { Events.RemoveHandler(s_selectedIndexChangedEvent, value); }
     }
 
     /// <summary> Is raised when a tab is clicked. </summary>
@@ -465,8 +465,8 @@ namespace Remotion.Web.UI.Controls
     [Description ("Is raised when a tab is clicked.")]
     public event WebTabClickEventHandler Click
     {
-      add { Events.AddHandler (s_clickEvent, value); }
-      remove { Events.RemoveHandler (s_clickEvent, value); }
+      add { Events.AddHandler(s_clickEvent, value); }
+      remove { Events.RemoveHandler(s_clickEvent, value); }
     }
 
     [Category ("Style")]
@@ -501,7 +501,7 @@ namespace Remotion.Web.UI.Controls
 
     public new IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
     string IControlWithDiagnosticMetadata.ControlType

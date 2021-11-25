@@ -32,50 +32,50 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [SetUp]
     public void SetUp ()
     {
-      _thisAnalyzer = new RequirementsAnalyzer (MixinGenericArgumentFinder.TargetArgumentFinder);
-      _baseAnalyzer = new RequirementsAnalyzer (MixinGenericArgumentFinder.NextArgumentFinder);
+      _thisAnalyzer = new RequirementsAnalyzer(MixinGenericArgumentFinder.TargetArgumentFinder);
+      _baseAnalyzer = new RequirementsAnalyzer(MixinGenericArgumentFinder.NextArgumentFinder);
     }
 
     [Test]
     public void GetRequirements_NoGenericArgumentFound ()
     {
-      var result = _baseAnalyzer.GetRequirements (typeof (BT3Mixin2));
-      Assert.That (result, Is.Empty);
+      var result = _baseAnalyzer.GetRequirements(typeof (BT3Mixin2));
+      Assert.That(result, Is.Empty);
     }
 
     [Test]
     public void GetRequirements_FollowsConstraintsOfGenericParameter ()
     {
-      var result = _thisAnalyzer.GetRequirements (typeof (BT3Mixin3<,>));
-      Assert.That (result, Is.EquivalentTo (new[] { typeof (IBaseType33) }));
+      var result = _thisAnalyzer.GetRequirements(typeof (BT3Mixin3<,>));
+      Assert.That(result, Is.EquivalentTo(new[] { typeof (IBaseType33) }));
     }
 
     [Test]
     public void GetRequirements_NonGenericParameter_NonInterface ()
     {
-      var result = _thisAnalyzer.GetRequirements (typeof (BT3Mixin3<BaseType3, BaseType3>));
-      Assert.That (result, Is.EquivalentTo (new[] { typeof (BaseType3) }));
+      var result = _thisAnalyzer.GetRequirements(typeof (BT3Mixin3<BaseType3, BaseType3>));
+      Assert.That(result, Is.EquivalentTo(new[] { typeof (BaseType3) }));
     }
 
     [Test]
     public void GetRequirements_NonGenericParameter_Interface ()
     {
-      var result = _thisAnalyzer.GetRequirements (typeof (BT3Mixin3<IBaseType33, BaseType3>));
-      Assert.That (result, Is.EquivalentTo (new[] { typeof (IBaseType33) }));
+      var result = _thisAnalyzer.GetRequirements(typeof (BT3Mixin3<IBaseType33, BaseType3>));
+      Assert.That(result, Is.EquivalentTo(new[] { typeof (IBaseType33) }));
     }
 
     [Test]
     public void GetRequirements_InterfaceIsRecursed ()
     {
-      var result = _thisAnalyzer.GetRequirements (typeof (BT3Mixin3<IBaseType34, BaseType3>));
-      Assert.That (result, Is.EquivalentTo (new[] { typeof (IBaseType33), typeof (IBaseType34) }));
+      var result = _thisAnalyzer.GetRequirements(typeof (BT3Mixin3<IBaseType34, BaseType3>));
+      Assert.That(result, Is.EquivalentTo(new[] { typeof (IBaseType33), typeof (IBaseType34) }));
     }
 
     [Test]
     public void GetRequirements_InterfaceIsRecursed_Twice ()
     {
-      var result = _thisAnalyzer.GetRequirements (typeof (BT3Mixin3<ICBaseType3BT3Mixin4, BaseType3>));
-      Assert.That (result, Is.EquivalentTo (new[] { 
+      var result = _thisAnalyzer.GetRequirements(typeof (BT3Mixin3<ICBaseType3BT3Mixin4, BaseType3>));
+      Assert.That(result, Is.EquivalentTo(new[] { 
           typeof (ICBaseType3BT3Mixin4), 
           typeof (IBT3Mixin4), 
           typeof (ICBaseType3), 
@@ -89,9 +89,9 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void GetRequirements_RemovesDuplicates ()
     {
-      var result = _thisAnalyzer.GetRequirements (typeof (GenericMixinWithSameRequirementTwice<>));
-      Assert.That (result, Is.EquivalentTo (new[] { typeof (IBaseType33), typeof (IBaseType34) }));
-      Assert.That (result.Length, Is.EqualTo (2));
+      var result = _thisAnalyzer.GetRequirements(typeof (GenericMixinWithSameRequirementTwice<>));
+      Assert.That(result, Is.EquivalentTo(new[] { typeof (IBaseType33), typeof (IBaseType34) }));
+      Assert.That(result.Length, Is.EqualTo(2));
     }
   }
 }

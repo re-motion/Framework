@@ -28,13 +28,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     [Obsolete ("Use constructor (string, string, string) instead. (Version 1.21.3)", true)]
     public static ChromeExecutable CreateForCustomInstance ([NotNull] string browserBinaryPath, [NotNull] string userDirectory)
     {
-      throw new NotSupportedException ("Use constructor (string, string, string) instead. (Version 1.21.3)");
+      throw new NotSupportedException("Use constructor (string, string, string) instead. (Version 1.21.3)");
     }
 
     [Obsolete ("Use constructor (string, string, string) instead. (Version 1.21.3)", true)]
     public static ChromeExecutable CreateForDefaultInstance ([NotNull] string userDirectory)
     {
-      throw new NotSupportedException ("Use constructor (string, string, string) instead. (Version 1.21.3)");
+      throw new NotSupportedException("Use constructor (string, string, string) instead. (Version 1.21.3)");
     }
 
     /// <summary>
@@ -60,9 +60,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// <param name="userDirectory">Path to the desired Chrome user data directory</param>
     public ChromeExecutable ([NotNull] string browserBinaryPath, [NotNull] string driverBinaryPath, [NotNull] string userDirectory)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("browserBinaryPath", browserBinaryPath);
-      ArgumentUtility.CheckNotNullOrEmpty ("driverBinaryPath", driverBinaryPath);
-      ArgumentUtility.CheckNotNullOrEmpty ("userDirectory", userDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty("browserBinaryPath", browserBinaryPath);
+      ArgumentUtility.CheckNotNullOrEmpty("driverBinaryPath", driverBinaryPath);
+      ArgumentUtility.CheckNotNullOrEmpty("userDirectory", userDirectory);
 
       BrowserBinaryPath = browserBinaryPath;
       DriverBinaryPath = driverBinaryPath;

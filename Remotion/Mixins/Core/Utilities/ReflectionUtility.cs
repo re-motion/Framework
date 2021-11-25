@@ -31,43 +31,43 @@ namespace Remotion.Mixins.Utilities
 
     public static bool IsMixinType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      if (!typeof (IInitializableMixin).IsAssignableFrom (type))
+      ArgumentUtility.CheckNotNull("type", type);
+      if (!typeof (IInitializableMixin).IsAssignableFrom(type))
         return false;
 
-      return s_mixinTypeCache.GetOrAdd (type, static t => t.CanAscribeTo (typeof (Mixin<>)));
+      return s_mixinTypeCache.GetOrAdd(type, static t => t.CanAscribeTo(typeof (Mixin<>)));
     }
 
     public static bool IsEqualOrInstantiationOf (Type typeToCheck, Type expectedType)
     {
-      ArgumentUtility.CheckNotNull ("typeToCheck", typeToCheck);
-      ArgumentUtility.CheckNotNull ("expectedType", expectedType);
+      ArgumentUtility.CheckNotNull("typeToCheck", typeToCheck);
+      ArgumentUtility.CheckNotNull("expectedType", expectedType);
 
-      return typeToCheck.Equals (expectedType) || (typeToCheck.IsGenericType && typeToCheck.GetGenericTypeDefinition().Equals (expectedType));
+      return typeToCheck.Equals(expectedType) || (typeToCheck.IsGenericType && typeToCheck.GetGenericTypeDefinition().Equals(expectedType));
     }
 
     public static bool IsPublicOrProtected (MethodBase methodToCheck)
     {
-      ArgumentUtility.CheckNotNull ("methodToCheck", methodToCheck);
+      ArgumentUtility.CheckNotNull("methodToCheck", methodToCheck);
       return methodToCheck.IsPublic || methodToCheck.IsFamily || methodToCheck.IsFamilyOrAssembly;
     }
 
     public static bool IsPublicOrProtectedOrExplicit (MethodBase methodToCheck)
     {
-      ArgumentUtility.CheckNotNull ("methodToCheck", methodToCheck);
-      return IsPublicOrProtected (methodToCheck) || (methodToCheck.IsPrivate && methodToCheck.IsVirtual);
+      ArgumentUtility.CheckNotNull("methodToCheck", methodToCheck);
+      return IsPublicOrProtected(methodToCheck) || (methodToCheck.IsPrivate && methodToCheck.IsVirtual);
     }
 
     public static bool IsNewSlotMember (MemberInfo member)
     {
-      ArgumentUtility.CheckNotNull ("member", member);
-      return CheckMethodAttributeOnMember (member, MethodAttributes.NewSlot);
+      ArgumentUtility.CheckNotNull("member", member);
+      return CheckMethodAttributeOnMember(member, MethodAttributes.NewSlot);
     }
 
     public static bool IsVirtualMember (MemberInfo member)
     {
-      ArgumentUtility.CheckNotNull ("member", member);
-      return CheckMethodAttributeOnMember (member, MethodAttributes.Virtual);
+      ArgumentUtility.CheckNotNull("member", member);
+      return CheckMethodAttributeOnMember(member, MethodAttributes.Virtual);
     }
 
     private static bool CheckMethodAttributeOnMember (MemberInfo member, MethodAttributes attribute)
@@ -79,10 +79,10 @@ namespace Remotion.Mixins.Utilities
       var property = member as PropertyInfo;
       if (property != null)
       {
-        MethodInfo? getMethod = property.GetGetMethod (true);
-        MethodInfo? setMethod = property.GetSetMethod (true);
-        return (getMethod != null && CheckMethodAttributeOnMember (getMethod, attribute))
-            || (setMethod != null && CheckMethodAttributeOnMember (setMethod, attribute));
+        MethodInfo? getMethod = property.GetGetMethod(true);
+        MethodInfo? setMethod = property.GetSetMethod(true);
+        return (getMethod != null && CheckMethodAttributeOnMember(getMethod, attribute))
+            || (setMethod != null && CheckMethodAttributeOnMember(setMethod, attribute));
       }
 
       var eventInfo = member as EventInfo;
@@ -90,15 +90,15 @@ namespace Remotion.Mixins.Utilities
       {
         var addMethod = eventInfo.GetAddMethod();
         var removeMethod = eventInfo.GetRemoveMethod();
-        return (addMethod != null && CheckMethodAttributeOnMember (addMethod, attribute))
-               || (removeMethod != null && CheckMethodAttributeOnMember (removeMethod, attribute));
+        return (addMethod != null && CheckMethodAttributeOnMember(addMethod, attribute))
+               || (removeMethod != null && CheckMethodAttributeOnMember(removeMethod, attribute));
       }
 
-      string message = String.Format (
+      string message = String.Format(
           "The given member {0}.{1} is neither property, method, nor event.",
           member.DeclaringType!.GetFullNameSafe(),
           member.Name);
-      throw new ArgumentException (message, "member");
+      throw new ArgumentException(message, "member");
     }
 
     public static IEnumerable<MethodInfo> RecursiveGetAllMethods (Type type, BindingFlags bindingFlags)
@@ -108,71 +108,71 @@ namespace Remotion.Mixins.Utilities
 
       if (type.BaseType != null)
       {
-        foreach (MethodInfo method in RecursiveGetAllMethods (type.BaseType, bindingFlags))
+        foreach (MethodInfo method in RecursiveGetAllMethods(type.BaseType, bindingFlags))
           yield return method;
       }
     }
 
     public static IEnumerable<PropertyInfo> RecursiveGetAllProperties (Type type, BindingFlags bindingFlags)
     {
-      foreach (PropertyInfo property in type.GetProperties (bindingFlags | BindingFlags.DeclaredOnly))
+      foreach (PropertyInfo property in type.GetProperties(bindingFlags | BindingFlags.DeclaredOnly))
         yield return property;
 
       if (type.BaseType != null)
       {
-        foreach (PropertyInfo property in RecursiveGetAllProperties (type.BaseType, bindingFlags))
+        foreach (PropertyInfo property in RecursiveGetAllProperties(type.BaseType, bindingFlags))
           yield return property;
       }
     }
 
     public static IEnumerable<EventInfo> RecursiveGetAllEvents (Type type, BindingFlags bindingFlags)
     {
-      foreach (EventInfo eventInfo in type.GetEvents (bindingFlags | BindingFlags.DeclaredOnly))
+      foreach (EventInfo eventInfo in type.GetEvents(bindingFlags | BindingFlags.DeclaredOnly))
         yield return eventInfo;
 
       if (type.BaseType != null)
       {
-        foreach (EventInfo eventInfo in RecursiveGetAllEvents (type.BaseType, bindingFlags))
+        foreach (EventInfo eventInfo in RecursiveGetAllEvents(type.BaseType, bindingFlags))
           yield return eventInfo;
       }
     }
 
     public static bool IsAssemblySigned (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
       // C# compiler 7.2 already provides caching for anonymous method.
-      return s_isAssemblySignedCache.GetOrAdd (assembly, asm => IsAssemblySigned (asm.GetName()));
+      return s_isAssemblySignedCache.GetOrAdd(assembly, asm => IsAssemblySigned(asm.GetName()));
     }
 
     public static bool IsAssemblySigned (AssemblyName assemblyName)
     {
-      ArgumentUtility.CheckNotNull ("assemblyName", assemblyName);
-      byte[]? publicKeyOrToken = assemblyName.GetPublicKey () ?? assemblyName.GetPublicKeyToken ();
+      ArgumentUtility.CheckNotNull("assemblyName", assemblyName);
+      byte[]? publicKeyOrToken = assemblyName.GetPublicKey() ?? assemblyName.GetPublicKeyToken();
       return publicKeyOrToken != null && publicKeyOrToken.Length > 0;
     }
 
     public static bool IsReachableFromSignedAssembly (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      if (!IsAssemblySigned (type.Assembly))
+      if (!IsAssemblySigned(type.Assembly))
         return false;
 
       if (type.IsGenericType)
-        return type.GetGenericArguments ().All (IsReachableFromSignedAssembly);
+        return type.GetGenericArguments().All(IsReachableFromSignedAssembly);
       else
         return true;
     }
 
     public static bool IsRangeReachableFromSignedAssembly (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull ("types", types);
-      return types.All (IsReachableFromSignedAssembly);
+      ArgumentUtility.CheckNotNull("types", types);
+      return types.All(IsReachableFromSignedAssembly);
     }
 
     public static MethodInfo?[] GetAssociatedMethods (MemberInfo memberInfo)
     {
-      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
 
       switch (memberInfo.MemberType)
       {
@@ -181,14 +181,14 @@ namespace Remotion.Mixins.Utilities
 
         case MemberTypes.Property:
           var propertyInfo = (PropertyInfo) memberInfo;
-          return propertyInfo.GetAccessors (true);
+          return propertyInfo.GetAccessors(true);
 
         case MemberTypes.Event:
           var eventInfo = (EventInfo) memberInfo;
-          return new[] { eventInfo.GetAddMethod (true), eventInfo.GetRemoveMethod (true) };
+          return new[] { eventInfo.GetAddMethod(true), eventInfo.GetRemoveMethod(true) };
 
         default:
-          throw new InvalidOperationException ("Associated methods can only be retrieved for methods, properties, and events.");
+          throw new InvalidOperationException("Associated methods can only be retrieved for methods, properties, and events.");
       }
     }
   }

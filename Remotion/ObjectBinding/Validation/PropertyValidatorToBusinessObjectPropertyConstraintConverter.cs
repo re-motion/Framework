@@ -35,10 +35,10 @@ namespace Remotion.ObjectBinding.Validation
 
     public IEnumerable<IBusinessObjectPropertyConstraint> Convert (IPropertyValidator propertyValidator)
     {
-      ArgumentUtility.CheckNotNull ("propertyValidator", propertyValidator);
+      ArgumentUtility.CheckNotNull("propertyValidator", propertyValidator);
 
       if (propertyValidator is ILengthValidator lengthValidator && lengthValidator.Max.HasValue)
-        yield return new BusinessObjectPropertyValueLengthConstraint (lengthValidator.Max.Value);
+        yield return new BusinessObjectPropertyValueLengthConstraint(lengthValidator.Max.Value);
 
       if (propertyValidator is INotNullValidator)
         yield return new BusinessObjectPropertyValueRequiredConstraint();

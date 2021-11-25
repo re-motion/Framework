@@ -13,13 +13,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
   {
     public static Principal Create (Tenant tenant, User user, IEnumerable<Role> roles)
     {
-      ArgumentUtility.CheckNotNull ("tenant", tenant);
-      ArgumentUtility.CheckNotNull ("roles", roles);
+      ArgumentUtility.CheckNotNull("tenant", tenant);
+      ArgumentUtility.CheckNotNull("roles", roles);
 
-      return new Principal (
+      return new Principal(
           tenant.GetHandle(),
           user.GetSafeHandle(),
-          roles.Select (r => new PrincipalRole (r.Position.GetHandle(), r.Group.GetHandle())));
+          roles.Select(r => new PrincipalRole(r.Position.GetHandle(), r.Group.GetHandle())));
     }
   }
 }

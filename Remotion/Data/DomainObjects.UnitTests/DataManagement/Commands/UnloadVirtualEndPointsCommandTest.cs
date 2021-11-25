@@ -39,13 +39,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     public void SetUp ()
     {
       _mockRepository = new MockRepository();
-      _endPointMock1 = _mockRepository.StrictMock<IVirtualEndPoint> ();
-      _endPointMock2 = _mockRepository.StrictMock<IVirtualEndPoint> ();
+      _endPointMock1 = _mockRepository.StrictMock<IVirtualEndPoint>();
+      _endPointMock2 = _mockRepository.StrictMock<IVirtualEndPoint>();
 
       _registrationAgentMock = _mockRepository.StrictMock<IRelationEndPointRegistrationAgent>();
-      _relationEndPointMap = new RelationEndPointMap (MockRepository.GenerateStub<IClientTransactionEventSink>());
+      _relationEndPointMap = new RelationEndPointMap(MockRepository.GenerateStub<IClientTransactionEventSink>());
 
-      _command = new UnloadVirtualEndPointsCommand (new[] { _endPointMock1, _endPointMock2 }, _registrationAgentMock, _relationEndPointMap);
+      _command = new UnloadVirtualEndPointsCommand(new[] { _endPointMock1, _endPointMock2 }, _registrationAgentMock, _relationEndPointMap);
     }
 
     [Test]
@@ -59,12 +59,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void Perform__NonCollectible ()
     {
-      _endPointMock1.Expect (mock => mock.MarkDataIncomplete ());
-      _endPointMock1.Stub (stub => stub.CanBeCollected).Return (false);
+      _endPointMock1.Expect(mock => mock.MarkDataIncomplete());
+      _endPointMock1.Stub(stub => stub.CanBeCollected).Return(false);
       
-      _endPointMock2.Expect (mock => mock.MarkDataIncomplete ());
-      _endPointMock2.Stub (stub => stub.CanBeCollected).Return (false);
-      _mockRepository.ReplayAll ();
+      _endPointMock2.Expect(mock => mock.MarkDataIncomplete());
+      _endPointMock2.Stub(stub => stub.CanBeCollected).Return(false);
+      _mockRepository.ReplayAll();
 
       _command.Perform();
 
@@ -74,26 +74,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void Perform_Collectible ()
     {
-      _endPointMock1.Expect (mock => mock.MarkDataIncomplete ());
-      _endPointMock1.Stub (stub => stub.CanBeCollected).Return (true);
+      _endPointMock1.Expect(mock => mock.MarkDataIncomplete());
+      _endPointMock1.Stub(stub => stub.CanBeCollected).Return(true);
 
-      _registrationAgentMock.Expect (mock => mock.UnregisterEndPoint (_endPointMock1, _relationEndPointMap));
+      _registrationAgentMock.Expect(mock => mock.UnregisterEndPoint(_endPointMock1, _relationEndPointMap));
 
-      _endPointMock2.Expect (mock => mock.MarkDataIncomplete ());
-      _endPointMock2.Stub (stub => stub.CanBeCollected).Return (false);
-      _mockRepository.ReplayAll ();
+      _endPointMock2.Expect(mock => mock.MarkDataIncomplete());
+      _endPointMock2.Stub(stub => stub.CanBeCollected).Return(false);
+      _mockRepository.ReplayAll();
 
-      _command.Perform ();
+      _command.Perform();
 
-      _mockRepository.VerifyAll ();
+      _mockRepository.VerifyAll();
     }
 
     [Test]
     public void End ()
     {
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
-      _command.End ();
+      _command.End();
     }
   }
 }

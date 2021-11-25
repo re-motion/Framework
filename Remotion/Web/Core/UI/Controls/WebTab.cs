@@ -47,17 +47,17 @@ public class WebTab: IWebTab, IControlStateManager
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, string text, IconInfo? icon)
   {
-    ArgumentUtility.CheckNotNull ("itemID", itemID);
-    ArgumentUtility.CheckNotNull ("text", text);
+    ArgumentUtility.CheckNotNull("itemID", itemID);
+    ArgumentUtility.CheckNotNull("text", text);
 
     _itemID = itemID;
     _text = text;
-    _icon = icon ?? new IconInfo (string.Empty);
+    _icon = icon ?? new IconInfo(string.Empty);
   }
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, string text, string iconUrl)
-    : this (itemID, text, new IconInfo (iconUrl))
+    : this (itemID, text, new IconInfo(iconUrl))
   {
   }
 
@@ -113,9 +113,9 @@ public class WebTab: IWebTab, IControlStateManager
   protected internal void SetSelected (bool value)
   {
     if (value && ! _isVisible)
-      throw new InvalidOperationException (string.Format ("Cannot select tab '{0}' because it is invisible.", _itemID));
+      throw new InvalidOperationException(string.Format("Cannot select tab '{0}' because it is invisible.", _itemID));
     if (value && _isDisabled)
-      throw new InvalidOperationException (string.Format ("Cannot select tab '{0}' because it is disabled.", _itemID));
+      throw new InvalidOperationException(string.Format("Cannot select tab '{0}' because it is disabled.", _itemID));
     _isSelected = value;
     if (_tabStrip == null)
       _selectDesired = value ? 1 : -1;
@@ -123,7 +123,7 @@ public class WebTab: IWebTab, IControlStateManager
 
   internal void OnSelectionChangedInternal ()
   {
-    OnSelectionChanged ();
+    OnSelectionChanged();
   }
 
   protected virtual void OnSelectionChanged ()
@@ -133,12 +133,12 @@ public class WebTab: IWebTab, IControlStateManager
   public override string ToString ()
   {
     string displayName = ItemID;
-    if (string.IsNullOrEmpty (displayName))
+    if (string.IsNullOrEmpty(displayName))
       displayName = Text;
-    if (string.IsNullOrEmpty (displayName))
+    if (string.IsNullOrEmpty(displayName))
       return DisplayedTypeName;
     else
-      return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+      return string.Format("{0}: {1}", displayName, DisplayedTypeName);
   }
 
   /// <summary> Gets or sets the ID of this tab. </summary>
@@ -153,16 +153,16 @@ public class WebTab: IWebTab, IControlStateManager
     get { return _itemID; }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-      if (! string.IsNullOrEmpty (value))
+      ArgumentUtility.CheckNotNullOrEmpty("value", value);
+      if (! string.IsNullOrEmpty(value))
       {
         WebTabCollection? tabs = null;
         if (_tabStrip != null)
           tabs = _tabStrip.Tabs;
         if (tabs != null)
         {
-          if (tabs.Find (value) != null)
-            throw new ArgumentException (string.Format ("The collection already contains a tab with ItemID '{0}'.", value), "value");
+          if (tabs.Find(value) != null)
+            throw new ArgumentException(string.Format("The collection already contains a tab with ItemID '{0}'.", value), "value");
         }
       }
       _itemID = value; 
@@ -172,7 +172,7 @@ public class WebTab: IWebTab, IControlStateManager
   // TODO: Test if still required in VS 2005. Workaround for Designer bug: Get Accessor does not evalute.
   internal bool HasItemID ()
   {
-    return ! string.IsNullOrEmpty (_itemID);
+    return ! string.IsNullOrEmpty(_itemID);
   }
 
   /// <summary> Gets or sets the text displayed in this tab. </summary>
@@ -187,7 +187,7 @@ public class WebTab: IWebTab, IControlStateManager
     get { return _text; }
     set 
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty("value", value);
       _text = value; 
     }
   }
@@ -219,7 +219,7 @@ public class WebTab: IWebTab, IControlStateManager
     {
       _isVisible = value; 
       if (! _isVisible && _tabStrip != null)
-        _tabStrip.Tabs.DeselectTabInternal (this);
+        _tabStrip.Tabs.DeselectTabInternal(this);
     }
   }
 
@@ -238,13 +238,13 @@ public class WebTab: IWebTab, IControlStateManager
     {
       _isDisabled = value; 
       if (_isDisabled && _tabStrip != null)
-        _tabStrip.Tabs.DeselectTabInternal (this);
+        _tabStrip.Tabs.DeselectTabInternal(this);
     }
   }
 
   private bool ShouldSerializeIcon ()
   {
-    return IconInfo.ShouldSerialize (_icon);
+    return IconInfo.ShouldSerialize(_icon);
   }
 
   private void ResetIcon ()
@@ -271,13 +271,13 @@ public class WebTab: IWebTab, IControlStateManager
     get { return _isSelected; }
     set 
     {
-      SetSelected (value);
+      SetSelected(value);
       if (_tabStrip != null)
       {
         if (value)
-          _tabStrip.SetSelectedTabInternal (this);
+          _tabStrip.SetSelectedTabInternal(this);
         else if (this == _tabStrip.SelectedTab)
-          _tabStrip.SetSelectedTabInternal (null);
+          _tabStrip.SetSelectedTabInternal(null);
       }
     }
   }
@@ -326,7 +326,7 @@ public class WebTab: IWebTab, IControlStateManager
 
   public virtual IWebTabRenderer GetRenderer ()
   {
-    return SafeServiceLocator.Current.GetInstance<IWebTabRenderer> ();
+    return SafeServiceLocator.Current.GetInstance<IWebTabRenderer>();
   }
 
   protected string GetPostBackClientEvent ()
@@ -334,15 +334,15 @@ public class WebTab: IWebTab, IControlStateManager
     try
     {
       if (_tabStrip == null) 
-        throw new InvalidOperationException ("The WebTab is not part of a WebTabStrip.");
+        throw new InvalidOperationException("The WebTab is not part of a WebTabStrip.");
       if (_tabStrip.Page == null) 
-        throw new InvalidOperationException (string.Format ("WebTabStrip '{0}' is not part of a page.", _tabStrip.ID));
+        throw new InvalidOperationException(string.Format("WebTabStrip '{0}' is not part of a page.", _tabStrip.ID));
     }
     catch (NullReferenceException)
     {
       return string.Empty;
     }
-    return _tabStrip.Page.ClientScript.GetPostBackClientHyperlink (_tabStrip, ItemID);
+    return _tabStrip.Page.ClientScript.GetPostBackClientHyperlink(_tabStrip, ItemID);
   }
 
   string IWebTab.GetPostBackClientEvent ()
@@ -356,15 +356,15 @@ public class WebTab: IWebTab, IControlStateManager
 
   public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-    ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+    ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
     
-    var key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-    if (! string.IsNullOrEmpty (key))
-      Text = resourceManager.GetString (key);
+    var key = ResourceManagerUtility.GetGlobalResourceKey(Text);
+    if (! string.IsNullOrEmpty(key))
+      Text = resourceManager.GetString(key);
     
     if (Icon != null)
-      Icon.LoadResources (resourceManager);
+      Icon.LoadResources(resourceManager);
   }
 
   void IControlStateManager.LoadControlState (object? state)
@@ -372,7 +372,7 @@ public class WebTab: IWebTab, IControlStateManager
     if (_isControlStateRestored)
       return;
     _isControlStateRestored = true;
-    LoadControlState (state);
+    LoadControlState(state);
   }
 
   protected virtual void LoadControlState (object? state)
@@ -412,7 +412,7 @@ public class WebTabClickEventArgs: EventArgs
   /// <summary> Initializes an instance. </summary>
   public WebTabClickEventArgs (WebTab tab)
   {
-    ArgumentUtility.CheckNotNull ("tab", tab);
+    ArgumentUtility.CheckNotNull("tab", tab);
     _tab = tab;
   }
 

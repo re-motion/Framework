@@ -28,12 +28,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
   {
     public static SampleBindableDomainObject NewObject ()
     {
-      return NewObject<SampleBindableDomainObject> ();
+      return NewObject<SampleBindableDomainObject>();
     }
 
     public static SampleBindableDomainObject NewObject (IBindableDomainObjectImplementation implementation)
     {
-      return NewObject<SampleBindableDomainObject> (ParamList.Create (implementation));
+      return NewObject<SampleBindableDomainObject>(ParamList.Create(implementation));
     }
 
     protected SampleBindableDomainObject ()
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 
     protected SampleBindableDomainObject (IBindableDomainObjectImplementation implementation)
     {
-      PrivateInvoke.SetNonPublicField (this, "_implementation", implementation);
+      PrivateInvoke.SetNonPublicField(this, "_implementation", implementation);
     }
   
     public abstract string Name { get; set; }

@@ -26,17 +26,17 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   {
     public static ExtensibleEnumWithResources Value1 (this ExtensibleEnumDefinition<ExtensibleEnumWithResources> definition)
     {
-      return new ExtensibleEnumWithResources (MethodBase.GetCurrentMethod ());
+      return new ExtensibleEnumWithResources(MethodBase.GetCurrentMethod());
     }
 
     public static ExtensibleEnumWithResources Value2 (this ExtensibleEnumDefinition<ExtensibleEnumWithResources> definition)
     {
-      return new ExtensibleEnumWithResources (MethodBase.GetCurrentMethod ());
+      return new ExtensibleEnumWithResources(MethodBase.GetCurrentMethod());
     }
 
     public static ExtensibleEnumWithResources ValueWithoutResource (this ExtensibleEnumDefinition<ExtensibleEnumWithResources> definition)
     {
-      return new ExtensibleEnumWithResources (MethodBase.GetCurrentMethod ());
+      return new ExtensibleEnumWithResources(MethodBase.GetCurrentMethod());
     }
   }
 }

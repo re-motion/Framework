@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 
     public void PreparePropertyAccess (string propertyName)
     {
-      CurrentPropertyManager.PreparePropertyAccess (propertyName);
+      CurrentPropertyManager.PreparePropertyAccess(propertyName);
     }
 
     public void PropertyAccessFinished ()
@@ -99,21 +99,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     [StorageClassNone]
     public virtual int NotInMapping
     {
-      get { return CurrentProperty.GetValue<int> (); }
-      set { CurrentProperty.SetValue (value); }
+      get { return CurrentProperty.GetValue<int>(); }
+      set { CurrentProperty.SetValue(value); }
     }
 
     [StorageClassNone]
     public virtual OrderTicket NotInMappingRelated
     {
-      get { return CurrentProperty.GetValue<OrderTicket> (); }
-      set { CurrentProperty.SetValue (value); }
+      get { return CurrentProperty.GetValue<OrderTicket>(); }
+      set { CurrentProperty.SetValue(value); }
     }
 
     [StorageClassNone]
     public virtual ObjectList<OrderItem> NotInMappingRelatedObjects
     {
-      get { return CurrentProperty.GetValue<ObjectList<OrderItem>> (); }
+      get { return CurrentProperty.GetValue<ObjectList<OrderItem>>(); }
     }
   }
 }

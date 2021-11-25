@@ -36,15 +36,15 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       try
       {
         var providers = new ProviderCollection<StorageProviderDefinition>();
-        providers.Add (new RdbmsProviderDefinition (StubStorageProvider.StorageProviderID, new StubStorageFactory(), "NonExistingRdbms"));
-        var storageConfiguration = new StorageConfiguration (providers, providers[StubStorageProvider.StorageProviderID]);
-        DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (storage: storageConfiguration));
+        providers.Add(new RdbmsProviderDefinition(StubStorageProvider.StorageProviderID, new StubStorageFactory(), "NonExistingRdbms"));
+        var storageConfiguration = new StorageConfiguration(providers, providers[StubStorageProvider.StorageProviderID]);
+        DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(storage: storageConfiguration));
 
         Dev.Null = MappingConfiguration.Current;
       }
       catch (Exception ex)
       {
-        Console.WriteLine ("SetUpFixture failed: " + ex);
+        Console.WriteLine("SetUpFixture failed: " + ex);
         Console.WriteLine();
         throw;
       }

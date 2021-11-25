@@ -35,17 +35,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _classType = typeof (ClassNotInMapping);
       _relationProperty = MockRepository.GenerateStub<IPropertyInformation>();
-      _classDefinition = new ClassDefinitionForUnresolvedRelationPropertyType ("Test", _classType, _relationProperty);
+      _classDefinition = new ClassDefinitionForUnresolvedRelationPropertyType("Test", _classType, _relationProperty);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_classDefinition.ClassType, Is.SameAs (_classType));
-      Assert.That (_classDefinition.BaseClass, Is.Null);
-      Assert.That (_classDefinition.IsClassTypeResolved, Is.False);
-      Assert.That (_classDefinition.IsAbstract, Is.False);
-      Assert.That (_classDefinition.RelationProperty, Is.SameAs (_relationProperty));
+      Assert.That(_classDefinition.ClassType, Is.SameAs(_classType));
+      Assert.That(_classDefinition.BaseClass, Is.Null);
+      Assert.That(_classDefinition.IsClassTypeResolved, Is.False);
+      Assert.That(_classDefinition.IsAbstract, Is.False);
+      Assert.That(_classDefinition.RelationProperty, Is.SameAs(_relationProperty));
     }
   }
 }

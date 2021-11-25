@@ -32,21 +32,21 @@ namespace Remotion.Configuration
 
     public override object GetSection (string sectionName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("sectionName", sectionName);
+      ArgumentUtility.CheckNotNullOrEmpty("sectionName", sectionName);
 
-      return ConfigurationManager.GetSection (sectionName);
+      return ConfigurationManager.GetSection(sectionName);
     }
 
     public override ConnectionStringSettings GetConnectionString (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
       return ConfigurationManager.ConnectionStrings[name];
     }
 
     public override string? GetAppSetting (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
       return ConfigurationManager.AppSettings[name];
     }

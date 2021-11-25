@@ -27,7 +27,7 @@ namespace Remotion.Configuration.ServiceLocation
   public sealed class ServiceLocationConfiguration : ConfigurationSection, IServiceLocationConfiguration
   {
     private static readonly DoubleCheckedLockingContainer<IServiceLocationConfiguration> s_current =
-        new DoubleCheckedLockingContainer<IServiceLocationConfiguration> (GetServiceLocationConfiguration);
+        new DoubleCheckedLockingContainer<IServiceLocationConfiguration>(GetServiceLocationConfiguration);
 
     /// <summary>
     /// Gets the current <see cref="IServiceLocationConfiguration"/> instance. This is used by 
@@ -52,7 +52,7 @@ namespace Remotion.Configuration.ServiceLocation
     private static ServiceLocationConfiguration GetServiceLocationConfiguration ()
     {
       return (ServiceLocationConfiguration) 
-             (ConfigurationWrapper.Current.GetSection ("remotion.serviceLocation", false) ?? new ServiceLocationConfiguration());
+             (ConfigurationWrapper.Current.GetSection("remotion.serviceLocation", false) ?? new ServiceLocationConfiguration());
     }
 
     /// <summary>
@@ -61,8 +61,8 @@ namespace Remotion.Configuration.ServiceLocation
     /// </summary>
     public ServiceLocationConfiguration ()
     {
-      var xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
-      Properties.Add (xmlnsProperty);
+      var xmlnsProperty = new ConfigurationProperty("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
+      Properties.Add(xmlnsProperty);
     }
 
     /// <summary>

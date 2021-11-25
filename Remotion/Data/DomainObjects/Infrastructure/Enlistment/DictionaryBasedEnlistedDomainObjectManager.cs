@@ -46,51 +46,51 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
 
     public DomainObject GetEnlistedDomainObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
       int index;
-      if (_enlistedObjects.TryGetValue (objectID, out index))
+      if (_enlistedObjects.TryGetValue(objectID, out index))
         return _enlistedObjectsList[index];
       return null;
     }
     
     public bool IsEnlisted (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      return GetEnlistedDomainObject (domainObject.ID) == domainObject;
+      return GetEnlistedDomainObject(domainObject.ID) == domainObject;
     }
 
     public void EnlistDomainObject (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      DomainObject alreadyEnlistedObject = GetEnlistedDomainObject (domainObject.ID);
+      DomainObject alreadyEnlistedObject = GetEnlistedDomainObject(domainObject.ID);
       if (alreadyEnlistedObject != null && alreadyEnlistedObject != domainObject)
       {
-        string message = string.Format ("A domain object instance for object '{0}' already exists in this transaction.", domainObject.ID);
-        throw new InvalidOperationException (message);
+        string message = string.Format("A domain object instance for object '{0}' already exists in this transaction.", domainObject.ID);
+        throw new InvalidOperationException(message);
       }
 
       if (alreadyEnlistedObject == null)
       {
-        _enlistedObjects.Add (domainObject.ID, _enlistedObjectsList.Count);
-        _enlistedObjectsList.Add (domainObject);
+        _enlistedObjects.Add(domainObject.ID, _enlistedObjectsList.Count);
+        _enlistedObjectsList.Add(domainObject);
       }
     }
 
     public void DisenlistDomainObject (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       int index;
-      if (!_enlistedObjects.TryGetValue (domainObject.ID, out index))
-        throw new InvalidOperationException (string.Format ("Object '{0}' is not enlisted.", domainObject.ID));
+      if (!_enlistedObjects.TryGetValue(domainObject.ID, out index))
+        throw new InvalidOperationException(string.Format("Object '{0}' is not enlisted.", domainObject.ID));
 
       if (_enlistedObjectsList[index] != domainObject)
-        throw new InvalidOperationException (string.Format ("Object '{0}' is not enlisted.", domainObject.ID));
+        throw new InvalidOperationException(string.Format("Object '{0}' is not enlisted.", domainObject.ID));
 
-      _enlistedObjects.Remove (domainObject.ID);
+      _enlistedObjects.Remove(domainObject.ID);
       _enlistedObjectsList[index] = null;
 
       // Note: The ever growing list of enlisted objects cannot be easily compacted because the iteration in GetEnlistedDomainObjects will not take the

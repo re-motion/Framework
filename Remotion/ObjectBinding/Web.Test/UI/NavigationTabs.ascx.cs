@@ -58,16 +58,16 @@ namespace OBWTest.UI
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       Type itemType = GetType();
-      PropertyInfo propertyInfo = itemType.GetProperty ("ConformanceLevel");
-      EnumerationProperty property = new EnumerationProperty (
-          new PropertyBase.Parameters (
+      PropertyInfo propertyInfo = itemType.GetProperty("ConformanceLevel");
+      EnumerationProperty property = new EnumerationProperty(
+          new PropertyBase.Parameters(
               (BindableObjectProvider) BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>(),
-              PropertyInfoAdapter.Create (propertyInfo),
+              PropertyInfoAdapter.Create(propertyInfo),
               propertyInfo.PropertyType,
-              new Lazy<Type> (() => propertyInfo.PropertyType),
+              new Lazy<Type>(() => propertyInfo.PropertyType),
               null,
               true,
               false,
@@ -79,15 +79,15 @@ namespace OBWTest.UI
               SafeServiceLocator.Current.GetInstance<IBusinessObjectPropertyConstraintProvider>()));
 
       WaiConformanceLevelField.Property = property;
-      WaiConformanceLevelField.LoadUnboundValue (ConformanceLevel, IsPostBack);
+      WaiConformanceLevelField.LoadUnboundValue(ConformanceLevel, IsPostBack);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       string mode = Global.PreferQuirksModeRendering ? "Quirks" : "Standard";
-      string theme = Global.PreferQuirksModeRendering ? "" : SafeServiceLocator.Current.GetInstance<ResourceTheme> ().Name;
+      string theme = Global.PreferQuirksModeRendering ? "" : SafeServiceLocator.Current.GetInstance<ResourceTheme>().Name;
       TabbedMenu.StatusText = mode + " " + theme;
 
       var mainContentScrollable = (bool?) Session[c_mainContentScrollableKey] ?? false;
@@ -116,7 +116,7 @@ namespace OBWTest.UI
       // CODEGEN: This call is required by the ASP.NET Web Form Designer.
       //
       InitializeComponent();
-      base.OnInit (e);
+      base.OnInit(e);
     }
 
     /// <summary>
@@ -125,7 +125,7 @@ namespace OBWTest.UI
     /// </summary>
     private void InitializeComponent ()
     {
-      this.WaiConformanceLevelField.SelectionChanged += new System.EventHandler (this.WaiConformanceLevelField_SelectionChanged);
+      this.WaiConformanceLevelField.SelectionChanged += new System.EventHandler(this.WaiConformanceLevelField_SelectionChanged);
     }
 
     #endregion

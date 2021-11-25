@@ -38,12 +38,12 @@ namespace Remotion.Validation.Mixins.Implementation
 
     public void CheckValid (IValidationRuleCollector collector)
     {
-      ArgumentUtility.CheckNotNull ("collector", collector);
+      ArgumentUtility.CheckNotNull("collector", collector);
 
-      if (Remotion.Mixins.Utilities.ReflectionUtility.IsMixinType (collector.ValidatedType))
+      if (Remotion.Mixins.Utilities.ReflectionUtility.IsMixinType(collector.ValidatedType))
       {
-        throw new NotSupportedException (
-              string.Format (
+        throw new NotSupportedException(
+              string.Format(
                   "Validation rules for type '{0}' are not supported. If validation rules should be defined for mixins, "
                   +"please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' instead.",
                   collector.ValidatedType.GetFullNameSafe()));

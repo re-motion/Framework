@@ -23,15 +23,15 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
   {
     public string MixedPropertyWithDefaultPermission
     {
-      get { return Properties[typeof (SecurableObjectMixin), "MixedPropertyWithDefaultPermission"].GetValue<string> (); }
-      set { Properties[typeof (SecurableObjectMixin), "MixedPropertyWithDefaultPermission"].SetValue (value); }
+      get { return Properties[typeof (SecurableObjectMixin), "MixedPropertyWithDefaultPermission"].GetValue<string>(); }
+      set { Properties[typeof (SecurableObjectMixin), "MixedPropertyWithDefaultPermission"].SetValue(value); }
     }
 
     public string MixedPropertyWithCustomPermission
     {
       [DemandPermission(TestAccessTypes.First)]
-      get { return Properties[typeof (SecurableObjectMixin), "MixedPropertyWithCustomPermission"].GetValue<string> (); }
-      set { Properties[typeof (SecurableObjectMixin), "MixedPropertyWithCustomPermission"].SetValue (value); }
+      get { return Properties[typeof (SecurableObjectMixin), "MixedPropertyWithCustomPermission"].GetValue<string>(); }
+      set { Properties[typeof (SecurableObjectMixin), "MixedPropertyWithCustomPermission"].SetValue(value); }
     }
   }
 }

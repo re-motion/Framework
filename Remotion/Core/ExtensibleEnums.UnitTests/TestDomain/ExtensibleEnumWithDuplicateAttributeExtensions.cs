@@ -24,17 +24,17 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
   {
     public static ExtensibleEnumWithDuplicateAttribute Value1 (this ExtensibleEnumDefinition<ExtensibleEnumWithDuplicateAttribute> definition)
     {
-      return new ExtensibleEnumWithDuplicateAttribute ("Value1");
+      return new ExtensibleEnumWithDuplicateAttribute("Value1");
     }
 
     public static ExtensibleEnumWithDuplicateAttribute Value2 (this ExtensibleEnumDefinition<ExtensibleEnumWithDuplicateAttribute> definition)
     {
-      return new ExtensibleEnumWithDuplicateAttribute ("Value2");
+      return new ExtensibleEnumWithDuplicateAttribute("Value2");
     }
 
     public static ExtensibleEnumWithDuplicateAttribute Value3 (this ExtensibleEnumDefinition<ExtensibleEnumWithDuplicateAttribute> definition)
     {
-      return new ExtensibleEnumWithDuplicateAttribute ("Value3");
+      return new ExtensibleEnumWithDuplicateAttribute("Value3");
     }
   }
 }

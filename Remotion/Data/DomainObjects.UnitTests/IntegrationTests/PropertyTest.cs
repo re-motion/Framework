@@ -28,14 +28,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       var instance = ClassWithAllDataTypes.NewObject();
       instance.EnumProperty = ClassWithAllDataTypes.EnumType.Value0;
-      Assert.That (instance.EnumProperty, Is.EqualTo (ClassWithAllDataTypes.EnumType.Value0));
+      Assert.That(instance.EnumProperty, Is.EqualTo(ClassWithAllDataTypes.EnumType.Value0));
     }
 
     [Test]
     public void SetInvalidEnumValue ()
     {
       var instance = ClassWithAllDataTypes.NewObject();
-      Assert.That (
+      Assert.That(
           () => instance.EnumProperty = (ClassWithAllDataTypes.EnumType) (-1),
           Throws.InstanceOf<InvalidEnumValueException>());
     }
@@ -44,21 +44,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void EnumNotDefiningZero ()
     {
       var instance = ClassWithEnumNotDefiningZero.NewObject();
-      Assert.That (instance.EnumValue, Is.EqualTo (TestDomain.EnumNotDefiningZero.First));
+      Assert.That(instance.EnumValue, Is.EqualTo(TestDomain.EnumNotDefiningZero.First));
     }
 
     [Test]
     public void UpdateStructuralEquatableValueWithIdenticalValue_RecognizeObjectAsUnchanged ()
     {
       var instance = ClassWithPropertyTypeImplementingIStructuralEquatable.NewObject();
-      instance.StructuralEquatableValue = Tuple.Create ("Value", 50);
+      instance.StructuralEquatableValue = Tuple.Create("Value", 50);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         instance.EnsureDataAvailable();
-        Assert.That (instance.State.IsUnchanged, Is.True);
-        instance.StructuralEquatableValue = Tuple.Create ("Value", 50);
-        Assert.That (instance.State.IsUnchanged, Is.True);
+        Assert.That(instance.State.IsUnchanged, Is.True);
+        instance.StructuralEquatableValue = Tuple.Create("Value", 50);
+        Assert.That(instance.State.IsUnchanged, Is.True);
       }
     }
 
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void UpdateStructuralEquatableValueWithChangedValue_RecognizeObjectAsChanged ()
     {
       var instance = ClassWithPropertyTypeImplementingIStructuralEquatable.NewObject();
-      instance.StructuralEquatableValue = Tuple.Create ("Value", 50);
+      instance.StructuralEquatableValue = Tuple.Create("Value", 50);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -75,16 +75,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
           instance.EnsureDataAvailable();
-          Assert.That (instance.State.IsUnchanged, Is.True);
-          instance.StructuralEquatableValue = Tuple.Create ("Other", 100);
-          Assert.That (instance.State.IsChanged, Is.True);
+          Assert.That(instance.State.IsUnchanged, Is.True);
+          instance.StructuralEquatableValue = Tuple.Create("Other", 100);
+          Assert.That(instance.State.IsChanged, Is.True);
 
           ClientTransaction.Current.Commit();
-          Assert.That (instance.State.IsUnchanged, Is.True);
+          Assert.That(instance.State.IsUnchanged, Is.True);
         }
 
-        Assert.That(instance.StructuralEquatableValue, Is.EqualTo(Tuple.Create ("Other", 100)));
-        Assert.That (instance.State.IsChanged, Is.True);
+        Assert.That(instance.StructuralEquatableValue, Is.EqualTo(Tuple.Create("Other", 100)));
+        Assert.That(instance.State.IsChanged, Is.True);
       }
     }
 
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void RollbackStructuralEquatableValue_ResetsChangedValue ()
     {
       var instance = ClassWithPropertyTypeImplementingIStructuralEquatable.NewObject();
-      instance.StructuralEquatableValue = Tuple.Create ("Value", 50);
+      instance.StructuralEquatableValue = Tuple.Create("Value", 50);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -101,17 +101,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
           instance.EnsureDataAvailable();
-          Assert.That (instance.State.IsUnchanged, Is.True);
-          instance.StructuralEquatableValue = Tuple.Create ("Other", 100);
-          Assert.That (instance.State.IsChanged, Is.True);
+          Assert.That(instance.State.IsUnchanged, Is.True);
+          instance.StructuralEquatableValue = Tuple.Create("Other", 100);
+          Assert.That(instance.State.IsChanged, Is.True);
 
           ClientTransaction.Current.Rollback();
-          Assert.That(instance.StructuralEquatableValue, Is.EqualTo(Tuple.Create ("Value", 50)));
-          Assert.That (instance.State.IsUnchanged, Is.True);
+          Assert.That(instance.StructuralEquatableValue, Is.EqualTo(Tuple.Create("Value", 50)));
+          Assert.That(instance.State.IsUnchanged, Is.True);
         }
 
-        Assert.That(instance.StructuralEquatableValue, Is.EqualTo(Tuple.Create ("Value", 50)));
-        Assert.That (instance.State.IsUnchanged, Is.True);
+        Assert.That(instance.StructuralEquatableValue, Is.EqualTo(Tuple.Create("Value", 50)));
+        Assert.That(instance.State.IsUnchanged, Is.True);
       }
     }
   }

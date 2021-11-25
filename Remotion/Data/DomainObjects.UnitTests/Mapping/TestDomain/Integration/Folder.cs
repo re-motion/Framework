@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
   {
     public new static Folder NewObject ()
     {
-      return NewObject<Folder> ();
+      return NewObject<Folder>();
     }
 
     protected Folder ()

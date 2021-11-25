@@ -32,51 +32,51 @@ public class ArrayUtilityTest
     string[] s3 = {};
     string[] s4 = { "e", "f" };
 
-    string[] res = (string[]) ArrayUtility.Combine (s1, s2, s3, s4);
-    Assert.That (string.Concat (res), Is.EqualTo ("abcdef"));
+    string[] res = (string[]) ArrayUtility.Combine(s1, s2, s3, s4);
+    Assert.That(string.Concat(res), Is.EqualTo("abcdef"));
   }
 
   [Test]
   public void TestConvert ()
   {
     object[] o1 = { "a", "b", "c", "d" };
-    string[] res = ArrayUtility.Convert<object, string> (o1);
-    Assert.That (string.Concat (res), Is.EqualTo ("abcd"));
+    string[] res = ArrayUtility.Convert<object, string>(o1);
+    Assert.That(string.Concat(res), Is.EqualTo("abcd"));
   }
 
   [Test]
   public void TestConvertWithNull ()
   {
-    Assert.That (ArrayUtility.Convert<object, string> (null), Is.Null);
+    Assert.That(ArrayUtility.Convert<object, string>(null), Is.Null);
   }
 
   [Test]
   public void TestInsertFirst ()
   {
     string[] s1 = { "a", "b", "c", "d" };
-    string[] res = ArrayUtility.Insert (s1, 0, "X");
-    Assert.That (string.Concat (res), Is.EqualTo ("Xabcd"));
+    string[] res = ArrayUtility.Insert(s1, 0, "X");
+    Assert.That(string.Concat(res), Is.EqualTo("Xabcd"));
   }
   [Test]
   public void TestInsertMiddle ()
   {
     string[] s1 = { "a", "b", "c", "d" };
-    string[] res = ArrayUtility.Insert (s1, 2, "X");
-    Assert.That (string.Concat (res), Is.EqualTo ("abXcd"));
+    string[] res = ArrayUtility.Insert(s1, 2, "X");
+    Assert.That(string.Concat(res), Is.EqualTo("abXcd"));
   }
   [Test]
   public void TestInsertEnd ()
   {
     string[] s1 = { "a", "b", "c", "d" };
-    string[] res = ArrayUtility.Insert (s1, 4, "X");
-    Assert.That (string.Concat (res), Is.EqualTo ("abcdX"));
+    string[] res = ArrayUtility.Insert(s1, 4, "X");
+    Assert.That(string.Concat(res), Is.EqualTo("abcdX"));
   }
   [Test]
   public void TestInsertPastEnd ()
   {
     string[] s1 = { "a", "b", "c", "d" };
-    Assert.That (
-        () => ArrayUtility.Insert (s1, 5, "X"),
+    Assert.That(
+        () => ArrayUtility.Insert(s1, 5, "X"),
         Throws.InstanceOf<IndexOutOfRangeException>());
   }
 
@@ -84,15 +84,15 @@ public class ArrayUtilityTest
   public void TestSkip ()
   {
     string[] s1 = { "a", "b", "c", "d" };
-    string[] res = ArrayUtility.Skip (s1, 2);
-    Assert.That (string.Concat (res), Is.EqualTo ("cd"));
+    string[] res = ArrayUtility.Skip(s1, 2);
+    Assert.That(string.Concat(res), Is.EqualTo("cd"));
   }
 
   [Test]
   public void TestSkipFail ()
   {
-    Assert.That (
-        () => ArrayUtility.Skip (new int[3], 4),
+    Assert.That(
+        () => ArrayUtility.Skip(new int[3], 4),
         Throws.InstanceOf<ArgumentOutOfRangeException>());
   }
 }

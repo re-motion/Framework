@@ -58,35 +58,35 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
 
     public ITransactionScope EnterScope ()
     {
-      return new TestTransactionScope (this);
+      return new TestTransactionScope(this);
     }
 
     public TTransaction To<TTransaction> ()
     {
-      ArgumentUtility.CheckTypeIsAssignableFrom ("TTransaction", typeof (TTransaction), typeof (TestTransaction));
+      ArgumentUtility.CheckTypeIsAssignableFrom("TTransaction", typeof (TTransaction), typeof (TestTransaction));
       return (TTransaction) (object) this;
     }
 
     public void Rollback ()
     {
       if (Current != this)
-        throw new InvalidOperationException ("Current transaction is not this transaction.");
+        throw new InvalidOperationException("Current transaction is not this transaction.");
       if (ThrowOnRollback)
-        throw new RollbackException ();
+        throw new RollbackException();
       _isRolledBack = true;
       if (RolledBack != null)
-        RolledBack (this, EventArgs.Empty);
+        RolledBack(this, EventArgs.Empty);
     }
 
     public void Commit ()
     {
       if (Current != this)
-        throw new InvalidOperationException ("Current transaction is not this transaction.");
+        throw new InvalidOperationException("Current transaction is not this transaction.");
       if (ThrowOnCommit)
-        throw new CommitException ();
+        throw new CommitException();
       _isCommitted = true;
       if (Committed != null)
-        Committed (this, EventArgs.Empty);
+        Committed(this, EventArgs.Empty);
     }
 
     public ITransaction CreateChild ()
@@ -123,7 +123,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     public void Release ()
     {
       if (ThrowOnRelease)
-        throw new ReleaseException ();
+        throw new ReleaseException();
 
       if (_child != null)
       { 
@@ -142,7 +142,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     public void EnsureCompatibility (IEnumerable objects)
     {
       foreach (var obj in objects)
-        _registeredObjects.Add (obj);
+        _registeredObjects.Add(obj);
     }
 
     public ITransaction Parent

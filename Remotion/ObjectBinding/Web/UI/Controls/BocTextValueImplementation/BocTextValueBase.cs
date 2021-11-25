@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
 
     protected BocTextValueBase (BocTextBoxMode mode)
     {
-      _textBoxStyle = new TextBoxStyle (mode);
+      _textBoxStyle = new TextBoxStyle(mode);
     }
 
     /// <summary>
@@ -158,15 +158,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <param name="e">ignored</param>
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
-      Page!.RegisterRequiresPostBack (this);
+      base.OnInit(e);
+      Page!.RegisterRequiresPostBack(this);
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      base.RegisterHtmlHeadContents (htmlHeadAppender);
+      base.RegisterHtmlHeadContents(htmlHeadAppender);
 
       EnsureChildControls();
     }
@@ -175,7 +175,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       if (RequiresLoadPostData)
-        return LoadPostData (postDataKey, postCollection);
+        return LoadPostData(postDataKey, postCollection);
       else
         return false;
     }
@@ -193,12 +193,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <include file='..\..\..\doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      string? newValue = PageUtility.GetPostBackCollectionItem (Page!, GetValueName());
+      string? newValue = PageUtility.GetPostBackCollectionItem(Page!, GetValueName());
       if (newValue == null)
         return false;
 
-      var normalizeText = NormalizeText (newValue);
-      bool isDataChanged = normalizeText != NormalizeText (Text ?? string.Empty);
+      var normalizeText = NormalizeText(newValue);
+      bool isDataChanged = normalizeText != NormalizeText(Text ?? string.Empty);
       if (isDataChanged)
       {
         Text = normalizeText;
@@ -209,7 +209,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
 
     private string NormalizeText ([NotNull]string text)
     {
-      return string.Join ("\r\n", StringUtility.ParseNewLineSeparatedString (text));
+      return string.Join("\r\n", StringUtility.ParseNewLineSeparatedString(text));
     }
 
     /// <summary> Called when the state of the control has changed between postbacks. </summary>
@@ -224,7 +224,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     {
       EventHandler? eventHandler = (EventHandler?) Events[s_textChangedEvent];
       if (eventHandler != null)
-        eventHandler (this, EventArgs.Empty);
+        eventHandler(this, EventArgs.Empty);
     }
 
     /// <summary> Checks whether the control conforms to the required WAI level. </summary>
@@ -234,7 +234,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
       {
         if (TextBoxStyle.AutoPostBack == true)
-          WcagHelper.Instance.HandleWarning (1, this, "TextBoxStyle.AutoPostBack");
+          WcagHelper.Instance.HandleWarning(1, this, "TextBoxStyle.AutoPostBack");
       }
     }
 
@@ -257,8 +257,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     [Description ("Fires when the value of the control has changed.")]
     public event EventHandler TextChanged
     {
-      add { Events.AddHandler (s_textChangedEvent, value); }
-      remove { Events.RemoveHandler (s_textChangedEvent, value); }
+      add { Events.AddHandler(s_textChangedEvent, value); }
+      remove { Events.RemoveHandler(s_textChangedEvent, value); }
     }
 
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()
@@ -273,9 +273,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     protected override void OnPreRender (EventArgs e)
     {
       EnsureChildControls();
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      LoadResources (GetResourceManager(), GlobalizationService);
+      LoadResources(GetResourceManager(), GlobalizationService);
 
       EvaluateWaiConformity();
     }
@@ -299,13 +299,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
 
     IEnumerable<string> IBocTextValueBase.GetValidationErrors ()
     {
-      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct().Distinct();
+      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct().Distinct();
     }
 
     [Obsolete ("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("For DependDB only.");
+      throw new NotImplementedException("For DependDB only.");
     }
 
     protected abstract string ControlType { get; }

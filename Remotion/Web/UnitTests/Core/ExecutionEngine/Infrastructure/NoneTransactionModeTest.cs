@@ -30,48 +30,48 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void CreateTransactionStrategy_WithoutParentFunction ()
     {
-      WxeContextFactory wxeContextFactory = new WxeContextFactory ();
-      WxeContext context = wxeContextFactory.CreateContext (new TestFunction ());
+      WxeContextFactory wxeContextFactory = new WxeContextFactory();
+      WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
       
-      ITransactionMode transactionMode = new NoneTransactionMode ();
-      TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy (new TestFunction2 (transactionMode), context);
+      ITransactionMode transactionMode = new NoneTransactionMode();
+      TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(new TestFunction2(transactionMode), context);
 
-      Assert.That (strategy, Is.InstanceOf (typeof (NoneTransactionStrategy)));
-      Assert.That (strategy.OuterTransactionStrategy, Is.SameAs (NullTransactionStrategy.Null));
+      Assert.That(strategy, Is.InstanceOf(typeof (NoneTransactionStrategy)));
+      Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(NullTransactionStrategy.Null));
     }
 
     [Test]
     public void CreateTransactionStrategy_WithParentFunction ()
     {
-      ITransactionMode transactionMode = new NoneTransactionMode ();
+      ITransactionMode transactionMode = new NoneTransactionMode();
 
-      WxeFunction parentFunction = new TestFunction2 (new NoneTransactionMode());
-      WxeFunction childFunction = new TestFunction2 (transactionMode);
-      parentFunction.Add (childFunction);
+      WxeFunction parentFunction = new TestFunction2(new NoneTransactionMode());
+      WxeFunction childFunction = new TestFunction2(transactionMode);
+      parentFunction.Add(childFunction);
 
       var stepMock = new Mock<WxeStep>();
-      childFunction.Add (stepMock.Object);
+      childFunction.Add(stepMock.Object);
 
-      WxeContextFactory wxeContextFactory = new WxeContextFactory ();
-      WxeContext context = wxeContextFactory.CreateContext (new TestFunction ());
+      WxeContextFactory wxeContextFactory = new WxeContextFactory();
+      WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
 
-      stepMock.Setup (mock => mock.Execute (context)).Callback (
+      stepMock.Setup(mock => mock.Execute(context)).Callback(
           (WxeContext context) =>
           {
-            TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy (childFunction, context);
-            Assert.That (strategy, Is.InstanceOf (typeof (NoneTransactionStrategy)));
-            Assert.That (strategy.OuterTransactionStrategy, Is.SameAs (((TestFunction2) parentFunction).TransactionStrategy));
+            TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(childFunction, context);
+            Assert.That(strategy, Is.InstanceOf(typeof (NoneTransactionStrategy)));
+            Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2) parentFunction).TransactionStrategy));
           }).Verifiable();
 
-      parentFunction.Execute (context);
+      parentFunction.Execute(context);
     }
 
     [Test]
     public void IsSerializeable ()
     {
-      var deserialized = Serializer.SerializeAndDeserialize (new NoneTransactionMode ());
+      var deserialized = Serializer.SerializeAndDeserialize(new NoneTransactionMode());
 
-      Assert.That (deserialized.AutoCommit, Is.False);
+      Assert.That(deserialized.AutoCommit, Is.False);
     }
   }
 }

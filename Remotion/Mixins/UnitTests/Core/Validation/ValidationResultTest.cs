@@ -32,32 +32,32 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
     [SetUp]
     public void SetUp ()
     {
-      _parentDefinition = DefinitionObjectMother.CreateTargetClassDefinition (typeof (object));
-      _nestedDefinition = DefinitionObjectMother.CreateMixinDefinition (_parentDefinition, typeof (string));
-      _nestedNestedDefinition = DefinitionObjectMother.CreateMethodDefinition (_nestedDefinition, ReflectionObjectMother.GetSomeMethod());
+      _parentDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (object));
+      _nestedDefinition = DefinitionObjectMother.CreateMixinDefinition(_parentDefinition, typeof (string));
+      _nestedNestedDefinition = DefinitionObjectMother.CreateMethodDefinition(_nestedDefinition, ReflectionObjectMother.GetSomeMethod());
     }
 
     [Test]
     public void GetDefinitionContextPath_NonNested ()
     {
-      var validationResult = new ValidationResult (_parentDefinition);
-      Assert.That (validationResult.GetDefinitionContextPath(), Is.EqualTo (""));
+      var validationResult = new ValidationResult(_parentDefinition);
+      Assert.That(validationResult.GetDefinitionContextPath(), Is.EqualTo(""));
     }
 
     [Test]
     public void GetDefinitionContextPath_NestedOnce ()
     {
-      var validationResult = new ValidationResult (_nestedDefinition);
+      var validationResult = new ValidationResult(_nestedDefinition);
 
-      Assert.That (validationResult.GetDefinitionContextPath(), Is.EqualTo ("System.Object"));
+      Assert.That(validationResult.GetDefinitionContextPath(), Is.EqualTo("System.Object"));
     }
 
     [Test]
     public void GetDefinitionContextPath_NestedTwice ()
     {
-      var validationResult = new ValidationResult (_nestedNestedDefinition);
+      var validationResult = new ValidationResult(_nestedNestedDefinition);
 
-      Assert.That (validationResult.GetDefinitionContextPath (), Is.EqualTo ("System.String -> System.Object"));
+      Assert.That(validationResult.GetDefinitionContextPath(), Is.EqualTo("System.String -> System.Object"));
     }
   }
 }

@@ -58,9 +58,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IRenderingFeatures renderingFeatures,
         BocListCssClassDefinition cssClasses)
     {
-      ArgumentUtility.CheckNotNull ("resourceUrlFactory", resourceUrlFactory);
-      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
-      ArgumentUtility.CheckNotNull ("cssClasses", cssClasses);
+      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
+      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
 
       _resourceUrlFactory = resourceUrlFactory;
       _renderingFeatures = renderingFeatures;
@@ -100,8 +100,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     void IBocColumnRenderer.RenderTitleCell (BocColumnRenderingContext renderingContext, SortingDirection sortingDirection, int orderIndex)
     {
-      RenderTitleCell (
-          new BocColumnRenderingContext<TBocColumnDefinition> (renderingContext),
+      RenderTitleCell(
+          new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext),
           sortingDirection,
           orderIndex);
     }
@@ -111,75 +111,75 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         SortingDirection sortingDirection,
         int orderIndex)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       string cssClassTitleCell = CssClasses.TitleCell;
-      if (!string.IsNullOrEmpty (renderingContext.ColumnDefinition.CssClass))
+      if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
         cssClassTitleCell += " " + renderingContext.ColumnDefinition.CssClass;
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTitleCell);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.ColumnHeader);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClassTitleCell);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.ColumnHeader);
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
         var columnItemID = renderingContext.ColumnDefinition.ItemID;
-        if (!string.IsNullOrEmpty (columnItemID))
-          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.ItemID, columnItemID);
+        if (!string.IsNullOrEmpty(columnItemID))
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.ItemID, columnItemID);
 
-        var columnTitle = StringUtility.NullToEmpty (renderingContext.ColumnDefinition.ColumnTitleDisplayValue);
-        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (columnTitle));
+        var columnTitle = StringUtility.NullToEmpty(renderingContext.ColumnDefinition.ColumnTitleDisplayValue);
+        renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(columnTitle));
 
         var oneBasedCellIndex = renderingContext.VisibleColumnIndex + 1;
-        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedCellIndex.ToString());
+        renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedCellIndex.ToString());
 
-        renderingContext.Writer.AddAttribute (
+        renderingContext.Writer.AddAttribute(
             DiagnosticMetadataAttributesForObjectBinding.BocListColumnHasContentAttribute,
             HasContentAttribute.ToString().ToLower());
       }
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Th);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Th);
 
-      RenderTitleCellMarkers (renderingContext);
-      RenderBeginTagTitleCellSortCommand (renderingContext);
-      RenderTitleCellText (renderingContext);
+      RenderTitleCellMarkers(renderingContext);
+      RenderBeginTagTitleCellSortCommand(renderingContext);
+      RenderTitleCellText(renderingContext);
       if (renderingContext.Control.IsClientSideSortingEnabled || renderingContext.Control.HasSortingKeys)
-        RenderTitleCellSortingButton (renderingContext, sortingDirection, orderIndex);
-      RenderEndTagTitleCellSortCommand (renderingContext);
+        RenderTitleCellSortingButton(renderingContext, sortingDirection, orderIndex);
+      RenderEndTagTitleCellSortCommand(renderingContext);
 
       renderingContext.Writer.RenderEndTag();
     }
 
     void IBocColumnRenderer.RenderDataColumnDeclaration (BocColumnRenderingContext renderingContext, bool isTextXml)
     {
-      RenderDataColumnDeclaration (new BocColumnRenderingContext<TBocColumnDefinition> (renderingContext), isTextXml);
+      RenderDataColumnDeclaration(new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext), isTextXml);
     }
 
     protected virtual void RenderDataColumnDeclaration (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, bool isTextXml)
     {
-      renderingContext.Writer.WriteBeginTag ("col");
+      renderingContext.Writer.WriteBeginTag("col");
       if (!renderingContext.ColumnDefinition.Width.IsEmpty)
       {
-        renderingContext.Writer.Write (" style=\"");
+        renderingContext.Writer.Write(" style=\"");
         string width;
         var columnAsValueColumn = renderingContext.ColumnDefinition as BocValueColumnDefinition;
         if (columnAsValueColumn != null && columnAsValueColumn.EnforceWidth && renderingContext.ColumnDefinition.Width.Type != UnitType.Percentage)
           width = "2em";
         else
           width = renderingContext.ColumnDefinition.Width.ToString();
-        renderingContext.Writer.WriteStyleAttribute ("width", width);
-        renderingContext.Writer.Write ("\"");
+        renderingContext.Writer.WriteStyleAttribute("width", width);
+        renderingContext.Writer.Write("\"");
       }
       if (isTextXml)
-        renderingContext.Writer.Write (" />");
+        renderingContext.Writer.Write(" />");
       else
-        renderingContext.Writer.Write (">");
+        renderingContext.Writer.Write(">");
     }
 
     protected string GetColumnTitleID (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
-      return string.Format ("{0}_{1}_Title", renderingContext.Control.ClientID, renderingContext.ColumnIndex);
+      return string.Format("{0}_{1}_Title", renderingContext.Control.ClientID, renderingContext.ColumnIndex);
     }
 
     private void RenderTitleCellMarkers (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
-      renderingContext.Control.EditModeController.RenderTitleCellMarkers (
+      renderingContext.Control.EditModeController.RenderTitleCellMarkers(
           renderingContext.Writer,
           renderingContext.ColumnDefinition,
           renderingContext.ColumnIndex);
@@ -198,34 +198,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
             && renderingContext.Control.HasClientScript)
         {
           var sortCommandID = renderingContext.Control.ClientID + "_" + renderingContext.ColumnIndex + "_SortCommand";
-          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, sortCommandID);
+          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, sortCommandID);
 
           string argument = BocList.SortCommandPrefix + renderingContext.ColumnIndex;
-          string postBackEvent = renderingContext.Control.Page!.ClientScript.GetPostBackEventReference (renderingContext.Control, argument);
+          string postBackEvent = renderingContext.Control.Page!.ClientScript.GetPostBackEventReference(renderingContext.Control, argument);
           postBackEvent += "; return false;";
-          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
+          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, postBackEvent);
 
-          renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
 
-          renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.A);
+          renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.A);
         }
         else
-          renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+          renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       }
       else
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
     }
 
     private void RenderTitleCellText (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
-      var columnTitle = StringUtility.NullToEmpty (renderingContext.ColumnDefinition.ColumnTitleDisplayValue);
+      var columnTitle = StringUtility.NullToEmpty(renderingContext.ColumnDefinition.ColumnTitleDisplayValue);
 
-      var columnTitleID = GetColumnTitleID (renderingContext);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, columnTitleID);
+      var columnTitleID = GetColumnTitleID(renderingContext);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, columnTitleID);
       if (!renderingContext.ColumnDefinition.ShowColumnTitle)
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, _cssClasses.CssClassScreenReaderText);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      renderingContext.Writer.Write (columnTitle);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, _cssClasses.CssClassScreenReaderText);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      renderingContext.Writer.Write(columnTitle);
       renderingContext.Writer.RenderEndTag();
       if (!renderingContext.ColumnDefinition.ShowColumnTitle)
       {
@@ -233,7 +233,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         // For sortable columns, this will push the sorting icon one space to the right, but given that a sortable should 
         // always have a visible column title, this is can be regarded as a non-issue. The alternative of using CSS to
         // generate a non-zero-width element does not help with screenreaders, at least JAWS 2019.
-        renderingContext.Writer.Write (c_whiteSpace);
+        renderingContext.Writer.Write(c_whiteSpace);
       }
     }
 
@@ -246,9 +246,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         return;
 
       //  WhiteSpace before icon
-      renderingContext.Writer.Write (c_whiteSpace);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.SortingOrder);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.Write(c_whiteSpace);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.SortingOrder);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       BocList.ResourceIdentifier alternateTextID;
       if (sortingDirection == SortingDirection.Ascending)
@@ -256,15 +256,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       else
         alternateTextID = BocList.ResourceIdentifier.SortDescendingAlternateText;
 
-      var imageUrl = GetImageUrl (sortingDirection);
-      Assertion.IsNotNull (imageUrl);
+      var imageUrl = GetImageUrl(sortingDirection);
+      Assertion.IsNotNull(imageUrl);
 
-      var icon = new IconInfo (imageUrl.GetUrl());
-      icon.AlternateText = renderingContext.Control.GetResourceManager().GetString (alternateTextID);
-      icon.Render (renderingContext.Writer, renderingContext.Control);
+      var icon = new IconInfo(imageUrl.GetUrl());
+      icon.AlternateText = renderingContext.Control.GetResourceManager().GetString(alternateTextID);
+      icon.Render(renderingContext.Writer, renderingContext.Control);
 
       if (renderingContext.Control.IsShowSortingOrderEnabled && orderIndex >= 0)
-        renderingContext.Writer.Write (c_whiteSpace + (orderIndex + 1));
+        renderingContext.Writer.Write(c_whiteSpace + (orderIndex + 1));
       renderingContext.Writer.RenderEndTag();
     }
 
@@ -274,13 +274,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       switch (sortingDirection)
       {
         case SortingDirection.Ascending:
-          return ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocColumnRendererBase<>), ResourceType.Image, c_sortAscendingIcon);
+          return ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocColumnRendererBase<>), ResourceType.Image, c_sortAscendingIcon);
         case SortingDirection.Descending:
-          return ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocColumnRendererBase<>), ResourceType.Image, c_sortDescendingIcon);
+          return ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocColumnRendererBase<>), ResourceType.Image, c_sortDescendingIcon);
         case SortingDirection.None:
           return null;
         default:
-          throw new ArgumentOutOfRangeException ("sortingDirection");
+          throw new ArgumentOutOfRangeException("sortingDirection");
       }
     }
 
@@ -295,8 +295,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         bool showIcon,
         BocListDataRowRenderEventArgs dataRowRenderEventArgs)
     {
-      RenderDataCell (
-          new BocColumnRenderingContext<TBocColumnDefinition> (renderingContext),
+      RenderDataCell(
+          new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext),
           rowIndex,
           showIcon,
           dataRowRenderEventArgs);
@@ -320,23 +320,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         bool showIcon,
         BocListDataRowRenderEventArgs dataRowRenderEventArgs)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("dataRowRenderEventArgs", dataRowRenderEventArgs);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
       string cssClassTableCell = CssClasses.DataCell;
 
-      if (!string.IsNullOrEmpty (renderingContext.ColumnDefinition.CssClass))
+      if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
         cssClassTableCell += " " + renderingContext.ColumnDefinition.CssClass;
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClassTableCell);
 #pragma warning disable CS0618 // Type or member is obsolete
       var ariaRoleForTableDataElement = GetAriaRoleForTableDataElement();
 #pragma warning restore CS0618 // Type or member is obsolete
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, ariaRoleForTableDataElement);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, ariaRoleForTableDataElement);
       if (_renderingFeatures.EnableDiagnosticMetadata)
-        AddDiagnosticMetadataAttributes (renderingContext);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
+        AddDiagnosticMetadataAttributes(renderingContext);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
-      RenderCellContents (renderingContext, dataRowRenderEventArgs, rowIndex, showIcon);
+      RenderCellContents(renderingContext, dataRowRenderEventArgs, rowIndex, showIcon);
 
       renderingContext.Writer.RenderEndTag();
     }
@@ -356,7 +356,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     protected virtual void AddDiagnosticMetadataAttributes (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
       var oneBasedCellIndex = renderingContext.VisibleColumnIndex + 1;
-      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedCellIndex.ToString());
+      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedCellIndex.ToString());
     }
 
     /// <summary>

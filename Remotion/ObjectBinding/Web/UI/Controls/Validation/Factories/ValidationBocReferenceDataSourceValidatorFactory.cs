@@ -39,12 +39,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
 
     public IEnumerable<BaseValidator> CreateValidators (BusinessObjectReferenceDataSourceControl control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       if (isReadOnly)
         yield break;
 
-      yield return CreateBocReferenceDataSourceValidator (control);
+      yield return CreateBocReferenceDataSourceValidator(control);
     }
 
     private BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator CreateBocReferenceDataSourceValidator (BusinessObjectReferenceDataSourceControl control)

@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get
       {
         if (InnerDataContainerMap == null)
-          throw new InvalidOperationException ("InnerDataContainerMap property must be set before it can be used.");
+          throw new InvalidOperationException("InnerDataContainerMap property must be set before it can be used.");
         return InnerDataContainerMap;
       }
     }
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddHandle (InnerDataContainerMap);
+      info.AddHandle(InnerDataContainerMap);
     }
 
     #endregion

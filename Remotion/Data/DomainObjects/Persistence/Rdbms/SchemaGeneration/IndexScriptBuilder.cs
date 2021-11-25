@@ -33,14 +33,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public IndexScriptBuilder (IIndexScriptElementFactory indexScriptElementFactory, ICommentScriptElementFactory commentFactory)
     {
-      ArgumentUtility.CheckNotNull ("indexScriptElementFactory", indexScriptElementFactory);
-      ArgumentUtility.CheckNotNull ("commentFactory", commentFactory);
+      ArgumentUtility.CheckNotNull("indexScriptElementFactory", indexScriptElementFactory);
+      ArgumentUtility.CheckNotNull("commentFactory", commentFactory);
 
       _indexScriptElementFactory = indexScriptElementFactory;
       _createScriptElements = new ScriptElementCollection();
-      _createScriptElements.AddElement (commentFactory.GetCommentElement("Create indexes for tables that were created above"));
+      _createScriptElements.AddElement(commentFactory.GetCommentElement("Create indexes for tables that were created above"));
       _dropScriptElements = new ScriptElementCollection();
-      _dropScriptElements.AddElement (commentFactory.GetCommentElement("Drop all indexes"));
+      _dropScriptElements.AddElement(commentFactory.GetCommentElement("Drop all indexes"));
     }
 
     public IIndexScriptElementFactory IndexScriptElementFactory
@@ -50,13 +50,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public void AddEntityDefinition (IRdbmsStorageEntityDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull ("entityDefinition", entityDefinition);
+      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
 
-      InlineRdbmsStorageEntityDefinitionVisitor.Visit (
+      InlineRdbmsStorageEntityDefinitionVisitor.Visit(
           entityDefinition,
-          (table, continuation) => AddIndexes (table.Indexes, table.TableName),
-          (filterView, continuation) => AddIndexes (filterView.Indexes, filterView.ViewName),
-          (unionView, contination) => AddIndexes (unionView.Indexes, unionView.ViewName),
+          (table, continuation) => AddIndexes(table.Indexes, table.TableName),
+          (filterView, continuation) => AddIndexes(filterView.Indexes, filterView.ViewName),
+          (unionView, contination) => AddIndexes(unionView.Indexes, unionView.ViewName),
           (emptyView, continuation) => { });
     }
 
@@ -74,8 +74,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
     {
       foreach (var index in indexes)
       {
-        _createScriptElements.AddElement (_indexScriptElementFactory.GetCreateElement (index, ownerName));
-        _dropScriptElements.AddElement (_indexScriptElementFactory.GetDropElement (index, ownerName));
+        _createScriptElements.AddElement(_indexScriptElementFactory.GetCreateElement(index, ownerName));
+        _dropScriptElements.AddElement(_indexScriptElementFactory.GetDropElement(index, ownerName));
       }
     }
   }

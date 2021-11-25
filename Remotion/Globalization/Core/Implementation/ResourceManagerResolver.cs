@@ -37,7 +37,7 @@ namespace Remotion.Globalization.Implementation
 
     public ResourceManagerResolver (IResourceManagerFactory resourceManagerFactory)
     {
-      ArgumentUtility.CheckNotNull ("resourceManagerFactory", resourceManagerFactory);
+      ArgumentUtility.CheckNotNull("resourceManagerFactory", resourceManagerFactory);
 
       _resourceManagerFactory = resourceManagerFactory;
 
@@ -47,9 +47,9 @@ namespace Remotion.Globalization.Implementation
 
     public ResolvedResourceManagerResult Resolve (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return GetResolvedResourceManagerFromCache (type);
+      return GetResolvedResourceManagerFromCache(type);
     }
 
     private ResolvedResourceManagerResult GetResolvedResourceManagerFromCache (Type? type)
@@ -57,14 +57,14 @@ namespace Remotion.Globalization.Implementation
       if (type == null)
         return ResolvedResourceManagerResult.Null;
 
-      return _resourceManagerWrappersCache.GetOrAdd (type, _createResolvedResourceManagerResultFunc);
+      return _resourceManagerWrappersCache.GetOrAdd(type, _createResolvedResourceManagerResultFunc);
     }
 
     private ResolvedResourceManagerResult CreateResolvedResourceManagerResult (Type type)
     {
-      var definedResourceManager = _resourceManagerFactory.CreateResourceManager (type);
-      var inheritedResourceManager = GetResolvedResourceManagerFromCache (type.BaseType).ResourceManager;
-      return ResolvedResourceManagerResult.Create (definedResourceManager, inheritedResourceManager);
+      var definedResourceManager = _resourceManagerFactory.CreateResourceManager(type);
+      var inheritedResourceManager = GetResolvedResourceManagerFromCache(type.BaseType).ResourceManager;
+      return ResolvedResourceManagerResult.Create(definedResourceManager, inheritedResourceManager);
     }
   }
 }

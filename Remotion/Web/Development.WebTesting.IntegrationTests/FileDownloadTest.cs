@@ -37,24 +37,24 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void SetUp ()
     {
       if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore ("RM-7457: Support for Internet Explorer in web tests has been removed.");
+        Assert.Ignore("RM-7457: Support for Internet Explorer in web tests has been removed.");
 
       if (Helper.BrowserConfiguration.IsEdge())
-        Assert.Ignore ("RM-7525: File download tests are temporarily disabled in Edge.");
+        Assert.Ignore("RM-7525: File download tests are temporarily disabled in Edge.");
     }
 
     [Test]
     public void TestDownloadReplacesCurrentPage_WithExpectedFileName ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
+        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
       var home = Start();
-      var button = home.Scope.FindId ("body_DownloadTxtReplaceSiteButton");
+      var button = home.Scope.FindId("body_DownloadTxtReplaceSiteButton");
       button.Click();
 
-      Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleTxtFileName),
+      Assert.That(
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName(c_sampleTxtFileName),
           Throws.Nothing);
     }
 
@@ -62,106 +62,106 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void TestDownloadReplacesCurrentPage_WithUnknownFileName ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
+        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
       var home = Start();
-      var button = home.Scope.FindId ("body_DownloadTxtReplaceSiteButton");
+      var button = home.Scope.FindId("body_DownloadTxtReplaceSiteButton");
       button.Click();
-      Assert.That (() => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName(), Throws.Nothing);
+      Assert.That(() => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName(), Throws.Nothing);
     }
 
     [Test]
     public void TestDownloadReplacesCurrentPage_AnchorWithSelf ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
+        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
       var home = Start();
-      var anchor = home.Scope.FindId ("body_TargetSelfAnchor");
+      var anchor = home.Scope.FindId("body_TargetSelfAnchor");
       anchor.Click();
 
-      Assert.That (() => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName(), Throws.Nothing);
+      Assert.That(() => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName(), Throws.Nothing);
     }
 
     [Test]
     public void TestDownloadOpensInNewWindow_WithPostback_WithUnknownFileName ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
+        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
       var home = Start();
-      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      var button = home.Scope.FindId("body_DownloadPostbackButton");
       button.Click();
 
       var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
-      Assert.That (downloadedFile.FileName, Is.EqualTo (c_sampleTxtFileName));
-      Assert.That (Path.GetFileName (downloadedFile.FullFilePath), Is.EqualTo (c_sampleTxtFileName));
-      Assert.That (
-          new FileInfo (downloadedFile.FullFilePath).Directory.Parent.FullName,
-          Is.EqualTo (Path.GetTempPath().TrimEnd (Path.DirectorySeparatorChar)));
+      Assert.That(downloadedFile.FileName, Is.EqualTo(c_sampleTxtFileName));
+      Assert.That(Path.GetFileName(downloadedFile.FullFilePath), Is.EqualTo(c_sampleTxtFileName));
+      Assert.That(
+          new FileInfo(downloadedFile.FullFilePath).Directory.Parent.FullName,
+          Is.EqualTo(Path.GetTempPath().TrimEnd(Path.DirectorySeparatorChar)));
     }
 
     [Test]
     public void TestDownloadOpensInNewWindow_WithPostback_WithExpectedFileName ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
+        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
       var home = Start();
-      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      var button = home.Scope.FindId("body_DownloadPostbackButton");
       button.Click();
 
-      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleTxtFileName);
-      Assert.That (Path.GetFileName (downloadedFile.FullFilePath), Is.EqualTo (c_sampleTxtFileName));
-      Assert.That (
-          new FileInfo (downloadedFile.FullFilePath).Directory.Parent.FullName,
-          Is.EqualTo (Path.GetTempPath().TrimEnd (Path.DirectorySeparatorChar)));
+      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName(c_sampleTxtFileName);
+      Assert.That(Path.GetFileName(downloadedFile.FullFilePath), Is.EqualTo(c_sampleTxtFileName));
+      Assert.That(
+          new FileInfo(downloadedFile.FullFilePath).Directory.Parent.FullName,
+          Is.EqualTo(Path.GetTempPath().TrimEnd(Path.DirectorySeparatorChar)));
     }
 
     [Test]
     public void TestDownloadOpensInNewWindow_WithAnchorTargetBlank ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
+        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
       // Note: test for Chrome "safebrowsing" (requires safebrowsing.enabled to be set to true in browser preferences - see Chrome configuration).
       // This test fails if safebrowsing is set to false because downloading an XML file produces an additional user prompt.
       var home = Start();
-      var anchor = home.Scope.FindId ("body_TargetBlankAnchor");
+      var anchor = home.Scope.FindId("body_TargetBlankAnchor");
       anchor.Click();
       IDownloadedFile downloadedFile = null;
 
-      Assert.That (() => downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName(), Throws.Nothing);
-      Assert.That (downloadedFile.FileName, Is.EqualTo (c_sampleXmlFileName));
+      Assert.That(() => downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName(), Throws.Nothing);
+      Assert.That(downloadedFile.FileName, Is.EqualTo(c_sampleXmlFileName));
     }
 
     [Test]
     [Category ("LongRunning")]
     public void TestDownloadOpensInNewWindow_DownloadTimeoutExceeded_WithUnknownFileName ()
     {
-      var downloadStartedTimout = TimeSpan.FromSeconds (10);
-      var downloadUpdatedTimeout = TimeSpan.FromSeconds (3);
+      var downloadStartedTimout = TimeSpan.FromSeconds(10);
+      var downloadUpdatedTimeout = TimeSpan.FromSeconds(3);
 
-      var startDownloadLambda = new Action (
+      var startDownloadLambda = new Action(
           () =>
           {
             var home = Start();
-            var button = home.Scope.FindId ("body_DownloadWith5SecondTimeout");
+            var button = home.Scope.FindId("body_DownloadWith5SecondTimeout");
             button.Click();
           });
 
 
       startDownloadLambda();
 
-      var restartBrowserTask = RestartBrowserToCancelDownloadsAfterDelayAsync (downloadUpdatedTimeout + TimeSpan.FromSeconds (3));
+      var restartBrowserTask = RestartBrowserToCancelDownloadsAfterDelayAsync(downloadUpdatedTimeout + TimeSpan.FromSeconds(3));
 
       try
       {
-        Assert.That (
-            () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName (downloadStartedTimout, downloadUpdatedTimeout),
+        Assert.That(
+            () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName(downloadStartedTimout, downloadUpdatedTimeout),
             Throws.InstanceOf<DownloadResultNotFoundException>()
-                .With.Message.StartsWith (
-                    string.Format (
+                .With.Message.StartsWith(
+                    string.Format(
                         "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
                         downloadUpdatedTimeout)));
       }
@@ -175,32 +175,32 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Category ("LongRunning")]
     public void TestDownloadOpensInNewWindow_DownloadTimeoutExceeded ()
     {
-      var downloadStartedTimeout = TimeSpan.FromSeconds (10);
-      var downloadUpdatedTimeout = TimeSpan.FromSeconds (3);
+      var downloadStartedTimeout = TimeSpan.FromSeconds(10);
+      var downloadUpdatedTimeout = TimeSpan.FromSeconds(3);
 
-      var startDownloadLambda = new Action (
+      var startDownloadLambda = new Action(
           () =>
           {
             var home = Start();
-            var button = home.Scope.FindId ("body_DownloadWith5SecondTimeout");
+            var button = home.Scope.FindId("body_DownloadWith5SecondTimeout");
             button.Click();
           });
 
       startDownloadLambda();
 
-      var restartBrowserTask = RestartBrowserToCancelDownloadsAfterDelayAsync (downloadUpdatedTimeout + TimeSpan.FromSeconds (3));
+      var restartBrowserTask = RestartBrowserToCancelDownloadsAfterDelayAsync(downloadUpdatedTimeout + TimeSpan.FromSeconds(3));
 
       try
       {
-        Assert.That (
+        Assert.That(
             () =>
-                Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
+                Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName(
                     c_sampleTxtFileName,
                     downloadStartedTimeout,
                     downloadUpdatedTimeout),
             Throws.InstanceOf<DownloadResultNotFoundException>()
-                .With.Message.StartsWith (
-                    string.Format (
+                .With.Message.StartsWith(
+                    string.Format(
                         "The download result file did not get updated for longer than the downloadUpdatedTimeout of '{0}'. The download appears to have failed.",
                         downloadUpdatedTimeout)));
       }
@@ -214,19 +214,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void TestDownloadOpensInNewWindow_WithExpectedFileName_FileWithWrongName ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
+        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
       var home = Start();
-      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      var button = home.Scope.FindId("body_DownloadPostbackButton");
       button.Click();
 
       const string expectedFileName = "WrongFileName";
 
-      Assert.That (
-        () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (expectedFileName),
+      Assert.That(
+        () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName(expectedFileName),
         Throws.InstanceOf<DownloadResultNotFoundException>()
-            .With.Message.EqualTo (
-              string.Format (
+            .With.Message.EqualTo(
+              string.Format(
                 @"Did not find file with the name '{0}' in the download directory.
 
 Unmatched files in the download directory (will be cleaned up by the infrastructure):
@@ -240,13 +240,13 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     {
       Start();
 
-      Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (
+      Assert.That(
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName(
               c_sampleTxtFileName,
-              TimeSpan.FromSeconds (1),
-              TimeSpan.FromSeconds (1)),
+              TimeSpan.FromSeconds(1),
+              TimeSpan.FromSeconds(1)),
           Throws.InstanceOf<DownloadResultNotFoundException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Did not find any new files in the download directory."));
     }
 
@@ -254,147 +254,147 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     public void TestDownloadOpensInNewWindow_WithPostback_WithXmlFile ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
+        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
       // Note: test for Chrome "safebrowsing" (requires safebrowsing.enabled to be set to true in browser preferences - see Chrome configuration).
       // This test fails if safebrowsing is set to false because downloading an XML file produces an additional user prompt.
 
       var home = Start();
-      var button = home.Scope.FindId ("body_DownloadXmlFile");
+      var button = home.Scope.FindId("body_DownloadXmlFile");
       button.Click();
 
-      Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleXmlFileName), Throws.Nothing);
+      Assert.That(
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName(c_sampleXmlFileName), Throws.Nothing);
     }
 
     [Test]
     public void TestDownloadTwice_WithUnknownFileName_PreventsFileNameConflicts ()
     {
       var home = Start();
-      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      var button = home.Scope.FindId("body_DownloadPostbackButton");
       button.Click();
 
       var downloadedFile1 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
-      Assert.That (downloadedFile1.FileName, Is.EqualTo (c_sampleTxtFileName));
-      Assert.That (Path.GetFileName (downloadedFile1.FullFilePath), Is.EqualTo (c_sampleTxtFileName));
+      Assert.That(downloadedFile1.FileName, Is.EqualTo(c_sampleTxtFileName));
+      Assert.That(Path.GetFileName(downloadedFile1.FullFilePath), Is.EqualTo(c_sampleTxtFileName));
 
       button.Click();
 
       var downloadedFile2 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
-      Assert.That (downloadedFile2.FileName, Is.EqualTo (c_sampleTxtFileName));
-      Assert.That (Path.GetFileName (downloadedFile2.FullFilePath), Is.EqualTo (c_sampleTxtFileName));
+      Assert.That(downloadedFile2.FileName, Is.EqualTo(c_sampleTxtFileName));
+      Assert.That(Path.GetFileName(downloadedFile2.FullFilePath), Is.EqualTo(c_sampleTxtFileName));
 
-      Assert.That (downloadedFile2.FullFilePath, Is.Not.EqualTo (downloadedFile1.FullFilePath));
+      Assert.That(downloadedFile2.FullFilePath, Is.Not.EqualTo(downloadedFile1.FullFilePath));
     }
 
     [Test]
     public void TestDownloadTwice_WithExpectedFileName_PreventsFileNameConflicts ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
+        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
       var home = Start();
-      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      var button = home.Scope.FindId("body_DownloadPostbackButton");
       button.Click();
 
-      var downloadedFile1 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleTxtFileName);
-      Assert.That (downloadedFile1.FileName, Is.EqualTo (c_sampleTxtFileName));
-      Assert.That (Path.GetFileName (downloadedFile1.FullFilePath), Is.EqualTo (c_sampleTxtFileName));
+      var downloadedFile1 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName(c_sampleTxtFileName);
+      Assert.That(downloadedFile1.FileName, Is.EqualTo(c_sampleTxtFileName));
+      Assert.That(Path.GetFileName(downloadedFile1.FullFilePath), Is.EqualTo(c_sampleTxtFileName));
 
       button.Click();
 
-      var downloadedFile2 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleTxtFileName);
-      Assert.That (downloadedFile2.FileName, Is.EqualTo (c_sampleTxtFileName));
-      Assert.That (Path.GetFileName (downloadedFile2.FullFilePath), Is.EqualTo (c_sampleTxtFileName));
+      var downloadedFile2 = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName(c_sampleTxtFileName);
+      Assert.That(downloadedFile2.FileName, Is.EqualTo(c_sampleTxtFileName));
+      Assert.That(Path.GetFileName(downloadedFile2.FullFilePath), Is.EqualTo(c_sampleTxtFileName));
 
-      Assert.That (downloadedFile2.FullFilePath, Is.Not.EqualTo (downloadedFile1.FullFilePath));
+      Assert.That(downloadedFile2.FullFilePath, Is.Not.EqualTo(downloadedFile1.FullFilePath));
     }
 
     [Test]
     public void TestDownload_WithUnknownFileName_DeleteFilesRemovesDownloadedFiles ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
+        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
       var home = Start();
-      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      var button = home.Scope.FindId("body_DownloadPostbackButton");
       button.Click();
 
       var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithDetectedFileName();
 
-      Assert.That (File.Exists (downloadedFile.FullFilePath), Is.True);
+      Assert.That(File.Exists(downloadedFile.FullFilePath), Is.True);
 
       Helper.BrowserConfiguration.DownloadHelper.DeleteFiles();
 
-      Assert.That (File.Exists (downloadedFile.FullFilePath), Is.False);
+      Assert.That(File.Exists(downloadedFile.FullFilePath), Is.False);
     }
 
     [Test]
     public void TestDownload_WithExpectedFileName_DeleteFilesRemovesDownloadedFiles ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
+        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
       var home = Start();
-      var button = home.Scope.FindId ("body_DownloadPostbackButton");
+      var button = home.Scope.FindId("body_DownloadPostbackButton");
       button.Click();
 
-      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleTxtFileName);
+      var downloadedFile = Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName(c_sampleTxtFileName);
 
-      Assert.That (File.Exists (downloadedFile.FullFilePath), Is.True);
+      Assert.That(File.Exists(downloadedFile.FullFilePath), Is.True);
 
       Helper.BrowserConfiguration.DownloadHelper.DeleteFiles();
 
-      Assert.That (File.Exists (downloadedFile.FullFilePath), Is.False);
+      Assert.That(File.Exists(downloadedFile.FullFilePath), Is.False);
     }
 
     [Test]
     public void TestDownload_HandleDownloadWithoutFileExtension ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
+        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
       var home = Start();
-      var button = home.Scope.FindId ("body_DownloadFileWithoutFileExtension");
+      var button = home.Scope.FindId("body_DownloadFileWithoutFileExtension");
       button.Click();
 
       //When downloading a file without a file extension, the Internet Explorer download information bar does not contain an Open-button.
       //This can lead to problems when trying to automate the button click.
       //This unit test is testing if our framework can handle the download information bar when the open-button is missing.
       //The test is not restricted to Internet Explorer, to ensure that no browser has problem with this behavior.
-      Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleTxtFileNameWithoutExtension), Throws.Nothing);
+      Assert.That(
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName(c_sampleTxtFileNameWithoutExtension), Throws.Nothing);
     }
 
     [Test]
     public void TestDownload_HandleZipFileDownload ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore ("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
+        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
       var home = Start();
 
-      var button = home.Scope.FindId ("body_DownloadZipFile");
+      var button = home.Scope.FindId("body_DownloadZipFile");
       button.Click();
 
       //When downloading a file ending with ".zip", Internet Explorer opens the download in a special window.
       //This unit test is testing if our framework can handle this special window.
       //The test is not restricted to Internet Explorer, to ensure that no browser has problem with this behavior.
-      Assert.That (
-          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName (c_sampleZipFileName),
+      Assert.That(
+          () => Helper.BrowserConfiguration.DownloadHelper.HandleDownloadWithExpectedFileName(c_sampleZipFileName),
           Throws.Nothing);
     }
 
     private WebFormsTestPageObject Start ()
     {
-      return Start<WebFormsTestPageObject> ("FileDownloadTest.aspx");
+      return Start<WebFormsTestPageObject>("FileDownloadTest.aspx");
     }
 
     private Task RestartBrowserToCancelDownloadsAfterDelayAsync (TimeSpan delay)
     {
-      return Task.Delay (delay)
-          .ContinueWith (_ => Helper.OnFixtureTearDown())
-          .ContinueWith (_ => Helper.OnFixtureSetUp());
+      return Task.Delay(delay)
+          .ContinueWith(_ => Helper.OnFixtureTearDown())
+          .ContinueWith(_ => Helper.OnFixtureSetUp());
     }
   }
 }

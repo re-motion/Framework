@@ -33,9 +33,9 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     /// <inheritdoc />
     public override TabbedMenu CreateControl (GenericTestOptions options)
     {
-      var control = base.CreateControl (options);
-      control.Tabs.Add (new MainMenuTab { ItemID = "ItemA", Text = "A" });
-      control.Tabs.Add (new MainMenuTab { ItemID = "ItemB", Text = "B" });
+      var control = base.CreateControl(options);
+      control.Tabs.Add(new MainMenuTab { ItemID = "ItemA", Text = "A" });
+      control.Tabs.Add(new MainMenuTab { ItemID = "ItemB", Text = "B" });
       return control;
     }
   }

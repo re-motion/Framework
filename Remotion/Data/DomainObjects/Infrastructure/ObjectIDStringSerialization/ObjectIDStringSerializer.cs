@@ -46,13 +46,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     /// </summary>
     public string Serialize (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
 #if DEBUG
-      if (objectID.ClassID.IndexOf (Delimiter) != -1)
+      if (objectID.ClassID.IndexOf(Delimiter) != -1)
       {
-        throw new ArgumentException (
-            string.Format (
+        throw new ArgumentException(
+            string.Format(
                 "The class id '{0}' contains the delimiter character ('{1}'). This is not allowed when serializing the ObjectID.",
                 objectID.ClassID,
                 Delimiter),
@@ -60,11 +60,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       }
 #endif
 
-      return string.Concat (
+      return string.Concat(
           objectID.ClassID,
           s_delimiterAsString,
           objectID.Value.ToString(),
-          GetDelimitedValueTypeName (objectID.Value));
+          GetDelimitedValueTypeName(objectID.Value));
     }
 
     /// <summary>
@@ -72,8 +72,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     /// </summary>
     public ObjectID Parse (string objectIDString)
     {
-      ArgumentUtility.CheckNotNull ("objectIDString", objectIDString);
-      return ParseWithCustomErrorHandler (objectIDString, msg => throw new FormatException (msg));
+      ArgumentUtility.CheckNotNull("objectIDString", objectIDString);
+      return ParseWithCustomErrorHandler(objectIDString, msg => throw new FormatException(msg));
     }
 
     /// <summary>
@@ -81,72 +81,72 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     /// </summary>
     public bool TryParse (string objectIDString, out ObjectID result)
     {
-      ArgumentUtility.CheckNotNull ("objectIDString", objectIDString);
+      ArgumentUtility.CheckNotNull("objectIDString", objectIDString);
 
-      result = ParseWithCustomErrorHandler (objectIDString, msg => null);
+      result = ParseWithCustomErrorHandler(objectIDString, msg => null);
       return result != null;
     }
 
     private ObjectID ParseWithCustomErrorHandler (string objectIDString, Func<string, ObjectID> errorHandler)
     {
-      ArgumentUtility.CheckNotNull ("objectIDString", objectIDString);
+      ArgumentUtility.CheckNotNull("objectIDString", objectIDString);
 
-      var indexOfClassIDDelimiter = objectIDString.IndexOf (Delimiter);
+      var indexOfClassIDDelimiter = objectIDString.IndexOf(Delimiter);
       var indexOfValuePart = indexOfClassIDDelimiter + 1;
-      var indexOfTypeDelimiter = objectIDString.LastIndexOf (Delimiter);
+      var indexOfTypeDelimiter = objectIDString.LastIndexOf(Delimiter);
       var indexOfTypePart = indexOfTypeDelimiter + 1;
 
       if (objectIDString == string.Empty)
-        return errorHandler (string.Format ("Serialized ObjectID '{0}' is not correctly formatted: it must not be empty.", objectIDString));
+        return errorHandler(string.Format("Serialized ObjectID '{0}' is not correctly formatted: it must not be empty.", objectIDString));
 
       if (indexOfClassIDDelimiter < 0)
-        return errorHandler (string.Format ("Serialized ObjectID '{0}' is not correctly formatted: it must have three parts.", objectIDString));
+        return errorHandler(string.Format("Serialized ObjectID '{0}' is not correctly formatted: it must have three parts.", objectIDString));
 
       if (indexOfValuePart == objectIDString.Length)
-        return errorHandler (string.Format ("Serialized ObjectID '{0}' is not correctly formatted: it must have three parts.", objectIDString));
+        return errorHandler(string.Format("Serialized ObjectID '{0}' is not correctly formatted: it must have three parts.", objectIDString));
 
       if (indexOfTypeDelimiter < indexOfValuePart)
-        return errorHandler (string.Format ("Serialized ObjectID '{0}' is not correctly formatted: it must have three parts.", objectIDString));
+        return errorHandler(string.Format("Serialized ObjectID '{0}' is not correctly formatted: it must have three parts.", objectIDString));
 
       if (indexOfClassIDDelimiter < 2)
-        return errorHandler (string.Format ("Serialized ObjectID '{0}' is not correctly formatted: the class id must not be empty.", objectIDString));
+        return errorHandler(string.Format("Serialized ObjectID '{0}' is not correctly formatted: the class id must not be empty.", objectIDString));
 
       if (indexOfTypeDelimiter < indexOfValuePart + 1)
-        return errorHandler (string.Format ("Serialized ObjectID '{0}' is not correctly formatted: the value must not be empty.", objectIDString));
+        return errorHandler(string.Format("Serialized ObjectID '{0}' is not correctly formatted: the value must not be empty.", objectIDString));
 
       if (indexOfTypeDelimiter > objectIDString.Length - 2)
-        return errorHandler (string.Format ("Serialized ObjectID '{0}' is not correctly formatted: the type must not be empty.", objectIDString));
+        return errorHandler(string.Format("Serialized ObjectID '{0}' is not correctly formatted: the type must not be empty.", objectIDString));
 
-      var classIDPart = objectIDString.Substring (0, indexOfClassIDDelimiter);
-      var valuePart = objectIDString.Substring (indexOfValuePart, indexOfTypeDelimiter - indexOfValuePart);
-      var typePart = objectIDString.Substring (indexOfTypePart);
+      var classIDPart = objectIDString.Substring(0, indexOfClassIDDelimiter);
+      var valuePart = objectIDString.Substring(indexOfValuePart, indexOfTypeDelimiter - indexOfValuePart);
+      var typePart = objectIDString.Substring(indexOfTypePart);
 
-      Type type = TypeUtility.GetType (typePart, false);
+      Type type = TypeUtility.GetType(typePart, false);
       if (type == null)
       {
-        return errorHandler (
-            string.Format ("Serialized ObjectID '{0}' is invalid: '{1}' is not the name of a loadable type.", objectIDString, typePart));
+        return errorHandler(
+            string.Format("Serialized ObjectID '{0}' is invalid: '{1}' is not the name of a loadable type.", objectIDString, typePart));
       }
 
-      var valueParser = GetValueParser (type);
+      var valueParser = GetValueParser(type);
       if (valueParser == null)
-        return errorHandler (string.Format ("Serialized ObjectID '{0}' is invalid: type '{1}' is not supported.", objectIDString, typePart));
+        return errorHandler(string.Format("Serialized ObjectID '{0}' is invalid: type '{1}' is not supported.", objectIDString, typePart));
 
       object value;
-      if (!valueParser.TryParse (valuePart, out value))
+      if (!valueParser.TryParse(valuePart, out value))
       {
-        return errorHandler (string.Format (
+        return errorHandler(string.Format(
             "Serialized ObjectID '{0}' is not correctly formatted: value '{1}' is not in the correct format for type '{2}'.",
             objectIDString,
             valuePart, 
             typePart));
       }
 
-      if (!MappingConfiguration.Current.ContainsClassDefinition (classIDPart))
-        return errorHandler (string.Format ("Serialized ObjectID '{0}' is invalid: '{1}' is not a valid class ID.", objectIDString, classIDPart));
+      if (!MappingConfiguration.Current.ContainsClassDefinition(classIDPart))
+        return errorHandler(string.Format("Serialized ObjectID '{0}' is invalid: '{1}' is not a valid class ID.", objectIDString, classIDPart));
 
-      var classDefinition = MappingConfiguration.Current.GetClassDefinition (classIDPart);
-      return new ObjectID (classDefinition, value);
+      var classDefinition = MappingConfiguration.Current.GetClassDefinition(classIDPart);
+      return new ObjectID(classDefinition, value);
     }
 
     private IObjectIDValueParser GetValueParser (Type type)
@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       else if (value is String)
         return s_delimitedStringTypeName;
       else
-        throw new FormatException (string.Format ("ObjectIDs with a value of type '{0}' are not supported.", value.GetType().GetFullNameSafe()));
+        throw new FormatException(string.Format("ObjectIDs with a value of type '{0}' are not supported.", value.GetType().GetFullNameSafe()));
     }
   }
 }

@@ -200,16 +200,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           control = new RadioButtonList();
           break;
         default:
-          throw new NotSupportedException ("Control type " + _controlType);
+          throw new NotSupportedException("Control type " + _controlType);
       }
       if (applyStyle)
-        ApplyStyle (control);
+        ApplyStyle(control);
       return control;
     }
 
     public void ApplyCommonStyle (ListControl listControl)
     {
-      listControl.ApplyStyle (this);
+      listControl.ApplyStyle(this);
       if (_autoPostBack != null)
         listControl.AutoPostBack = _autoPostBack.Value;
     }
@@ -217,18 +217,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public void ApplyStyle (ListControl listControl)
     {
       if (listControl is ListBox)
-        ApplyStyle ((ListBox) listControl);
+        ApplyStyle((ListBox) listControl);
       else if (listControl is DropDownList)
-        ApplyStyle ((DropDownList) listControl);
+        ApplyStyle((DropDownList) listControl);
       else if (listControl is RadioButtonList)
-        ApplyStyle ((RadioButtonList) listControl);
+        ApplyStyle((RadioButtonList) listControl);
       else
-        ApplyCommonStyle (listControl);
+        ApplyCommonStyle(listControl);
     }
 
     public void ApplyStyle (ListBox listBox)
     {
-      ApplyCommonStyle (listBox);
+      ApplyCommonStyle(listBox);
 
       if (_listBoxRows != null)
         listBox.Rows = _listBoxRows.Value;
@@ -236,12 +236,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public void ApplyStyle (DropDownList dropDownList)
     {
-      ApplyCommonStyle (dropDownList);
+      ApplyCommonStyle(dropDownList);
     }
 
     public void ApplyStyle (RadioButtonList radioButtonList)
     {
-      ApplyCommonStyle (radioButtonList);
+      ApplyCommonStyle(radioButtonList);
 
       if (_radioButtonListCellPadding != null)
         radioButtonList.CellPadding = _radioButtonListCellPadding.Value;
@@ -291,7 +291,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public void ApplyStyle (DropDownList dropDownList)
     {
-      dropDownList.ApplyStyle (this);
+      dropDownList.ApplyStyle(this);
       if (_autoPostBack != null)
         dropDownList.AutoPostBack = _autoPostBack.Value;
     }
@@ -310,7 +310,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public virtual void ApplyStyle (TextBox textBox)
     {
-      textBox.ApplyStyle (this);
+      textBox.ApplyStyle(this);
 
       if (_maxLength != null && _checkClientSideMaxLength != false)
         textBox.MaxLength = _maxLength.Value;
@@ -327,7 +327,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void CopyFrom (Style s)
     {
-      base.CopyFrom (s);
+      base.CopyFrom(s);
       SingleRowTextBoxStyle? ts = s as SingleRowTextBoxStyle;
       if (ts != null)
       {
@@ -417,7 +417,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void ApplyStyle (TextBox textBox)
     {
-      base.ApplyStyle (textBox);
+      base.ApplyStyle(textBox);
 
       if (_rows != null)
         textBox.Rows = _rows.Value;
@@ -428,7 +428,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_textMode == BocTextBoxMode.MultiLine
           && MaxLength != null
           && CheckClientSideMaxLength != false)
-        textBox.Attributes.Add ("onkeydown", "return TextBoxStyle.OnKeyDown (this, " + MaxLength.Value + ");");
+        textBox.Attributes.Add("onkeydown", "return TextBoxStyle.OnKeyDown (this, " + MaxLength.Value + ");");
 
       textBox.TextMode = GetSystemWebTextMode();
     }
@@ -451,16 +451,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public void RegisterJavaScriptInclude (IResourceUrlFactory resourceUrlFactory, HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("resourceUrlFactory", resourceUrlFactory);
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      var scriptUrl = resourceUrlFactory.CreateResourceUrl (typeof (TextBoxStyle), ResourceType.Html, c_scriptFileUrl);
-      htmlHeadAppender.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+      var scriptUrl = resourceUrlFactory.CreateResourceUrl(typeof (TextBoxStyle), ResourceType.Html, c_scriptFileUrl);
+      htmlHeadAppender.RegisterJavaScriptInclude(s_scriptFileKey, scriptUrl);
     }
 
     public override void CopyFrom (Style s)
     {
-      base.CopyFrom (s);
+      base.CopyFrom(s);
       TextBoxStyle? ts = s as TextBoxStyle;
       if (ts != null)
       {

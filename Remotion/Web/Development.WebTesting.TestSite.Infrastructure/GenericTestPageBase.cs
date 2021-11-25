@@ -70,11 +70,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
     /// </summary>
     protected void Register ([NotNull] string key, [NotNull] IGenericTestPage<TOptions> testPage)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
-      ArgumentUtility.CheckNotNull ("testPage", testPage);
+      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentUtility.CheckNotNull("testPage", testPage);
 
-      if (_pages.ContainsKey (key))
-        throw new InvalidOperationException ("A generic test page with that name is already registered.");
+      if (_pages.ContainsKey(key))
+        throw new InvalidOperationException("A generic test page with that name is already registered.");
 
       _pages[key] = testPage;
     }
@@ -82,53 +82,53 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
     /// <inheritdoc />
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       var control = Request.Params["control"];
       var type = Request.Params["type"];
 
       IGenericTestPage<TOptions> testPage;
-      if (control == null || !_pages.TryGetValue (control, out testPage))
+      if (control == null || !_pages.TryGetValue(control, out testPage))
       {
-        SetTestInformation (new GenericTestPageParameterDto (GenericTestPageStatus.Failed, null));
+        SetTestInformation(new GenericTestPageParameterDto(GenericTestPageStatus.Failed, null));
         return;
       }
 
       int typeInt;
       GenericTestPageType pageType;
-      if (type != null && int.TryParse (type, out typeInt))
+      if (type != null && int.TryParse(type, out typeInt))
         pageType = (GenericTestPageType) typeInt;
       else
         pageType = GenericTestPageType.Default;
 
-      AddControlsOnInit (pageType, testPage);
+      AddControlsOnInit(pageType, testPage);
 
-      var parameters = new Dictionary<string, GenericTestPageParameter> (Parameters);
-      testPage.AddParameters (parameters, VisibleControlOptions);
+      var parameters = new Dictionary<string, GenericTestPageParameter>(Parameters);
+      testPage.AddParameters(parameters, VisibleControlOptions);
 
-      SetTestInformation (new GenericTestPageParameterDto (GenericTestPageStatus.Ok, parameters));
+      SetTestInformation(new GenericTestPageParameterDto(GenericTestPageStatus.Ok, parameters));
     }
 
     protected virtual void AddControlsOnInit (GenericTestPageType pageType, IGenericTestPage<TOptions> testPage)
     {
-      if (pageType.HasFlag (GenericTestPageType.VisibleElements))
-        VisibleControlPanel.Controls.Add (testPage.CreateControl (VisibleControlOptions));
+      if (pageType.HasFlag(GenericTestPageType.VisibleElements))
+        VisibleControlPanel.Controls.Add(testPage.CreateControl(VisibleControlOptions));
 
-      if (pageType.HasFlag (GenericTestPageType.HiddenElements))
-        HiddenControlPanel.Controls.Add (testPage.CreateControl (HiddenControlOptions));
+      if (pageType.HasFlag(GenericTestPageType.HiddenElements))
+        HiddenControlPanel.Controls.Add(testPage.CreateControl(HiddenControlOptions));
 
-      if (pageType.HasFlag (GenericTestPageType.AmbiguousElements))
-        AmbiguousControlPanel.Controls.Add (testPage.CreateControl (AmbiguousControlOptions));
+      if (pageType.HasFlag(GenericTestPageType.AmbiguousElements))
+        AmbiguousControlPanel.Controls.Add(testPage.CreateControl(AmbiguousControlOptions));
 
-      if (pageType.HasFlag (GenericTestPageType.DisabledElements))
-        DisabledControlPanel.Controls.Add (testPage.CreateControl (DisabledControlOptions));
+      if (pageType.HasFlag(GenericTestPageType.DisabledElements))
+        DisabledControlPanel.Controls.Add(testPage.CreateControl(DisabledControlOptions));
     }
 
     private void SetTestInformation (GenericTestPageParameterDto information)
     {
       var serializerOptions = new JsonSerializerOptions { Converters = { GenericTestParameterConverter.Instance } };
-      var serialized = JsonSerializer.Serialize (information, serializerOptions);
-      SetTestInformation (serialized);
+      var serialized = JsonSerializer.Serialize(information, serializerOptions);
+      SetTestInformation(serialized);
     }
   }
 }

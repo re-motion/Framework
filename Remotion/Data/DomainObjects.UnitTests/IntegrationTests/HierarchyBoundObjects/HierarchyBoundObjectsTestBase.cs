@@ -24,12 +24,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
   {
     protected DomainObjectState GetStateFromTransaction (DomainObject domainObject, ClientTransaction clientTransaction)
     {
-      return ClientTransactionTestHelper.GetIDataManager (clientTransaction).GetState (domainObject.ID);
+      return ClientTransactionTestHelper.GetIDataManager(clientTransaction).GetState(domainObject.ID);
     }
 
     protected DataContainer GetDataContainerFromTransaction (DomainObject domainObject, ClientTransaction clientTransaction)
     {
-      return ClientTransactionTestHelper.GetIDataManager (clientTransaction).GetDataContainerWithoutLoading (domainObject.ID);
+      return ClientTransactionTestHelper.GetIDataManager(clientTransaction).GetDataContainerWithoutLoading(domainObject.ID);
     }
   }
 }

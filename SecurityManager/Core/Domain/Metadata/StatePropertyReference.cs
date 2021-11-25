@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
   {
     public static StatePropertyReference NewObject ()
     {
-      return NewObject<StatePropertyReference> ();
+      return NewObject<StatePropertyReference>();
     }
 
     protected StatePropertyReference ()
@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
       if (Class != null)
         Class.RegisterForCommit();

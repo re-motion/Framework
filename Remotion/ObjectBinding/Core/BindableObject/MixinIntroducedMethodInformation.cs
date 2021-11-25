@@ -41,11 +41,11 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public MixinIntroducedMethodInformation (InterfaceImplementationMethodInformation mixinMethodInfo)
     {
-      ArgumentUtility.CheckNotNull ("mixinMethodInfo", mixinMethodInfo);
+      ArgumentUtility.CheckNotNull("mixinMethodInfo", mixinMethodInfo);
 
       _mixinMethodInfo = mixinMethodInfo;
       _methodInterfaceDeclarationCache = 
-          new DoubleCheckedLockingContainer<ICollection<IMethodInformation>> (() => _mixinMethodInfo.FindInterfaceDeclarations().ConvertToCollection());
+          new DoubleCheckedLockingContainer<ICollection<IMethodInformation>>(() => _mixinMethodInfo.FindInterfaceDeclarations().ConvertToCollection());
     }
 
     public string Name
@@ -65,24 +65,24 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public T? GetCustomAttribute<T> (bool inherited) where T: class
     {
-      return _mixinMethodInfo.GetCustomAttribute<T> (inherited);
+      return _mixinMethodInfo.GetCustomAttribute<T>(inherited);
     }
 
     public T[] GetCustomAttributes<T> (bool inherited) where T: class
     {
-      return _mixinMethodInfo.GetCustomAttributes<T> (inherited);
+      return _mixinMethodInfo.GetCustomAttributes<T>(inherited);
     }
 
     public bool IsDefined<T> (bool inherited) where T: class
     {
-      return _mixinMethodInfo.IsDefined<T> (inherited);
+      return _mixinMethodInfo.IsDefined<T>(inherited);
     }
 
     public IMethodInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull ("implementationType", implementationType);
+      ArgumentUtility.CheckNotNull("implementationType", implementationType);
 
-      return _mixinMethodInfo.FindInterfaceImplementation (implementationType);
+      return _mixinMethodInfo.FindInterfaceImplementation(implementationType);
     }
 
     public IEnumerable<IMethodInformation> FindInterfaceDeclarations ()
@@ -92,14 +92,14 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public T GetFastInvoker<T> () where T: class
     {
-      return (T) (object) GetFastInvoker (typeof (T)); 
+      return (T) (object) GetFastInvoker(typeof (T)); 
     }
 
     public Delegate GetFastInvoker (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof (Delegate));
 
-      return _mixinMethodInfo.GetFastInvoker (delegateType);
+      return _mixinMethodInfo.GetFastInvoker(delegateType);
     }
 
     public ParameterInfo[] GetParameters ()
@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public IPropertyInformation? FindDeclaringProperty ()
     {
-      return _mixinMethodInfo.FindDeclaringProperty ();
+      return _mixinMethodInfo.FindDeclaringProperty();
     }
 
     public Type ReturnType
@@ -124,9 +124,9 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public object? Invoke (object? instance, object?[]? parameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance!);
+      ArgumentUtility.CheckNotNull("instance", instance!);
 
-      return _mixinMethodInfo.Invoke (instance, parameters);
+      return _mixinMethodInfo.Invoke(instance, parameters);
     }
 
     public override bool Equals (object? obj)
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding.BindableObject
       if (obj.GetType() != GetType()) return false;
       var other = (MixinIntroducedMethodInformation) obj;
 
-      return _mixinMethodInfo.Equals (other._mixinMethodInfo);
+      return _mixinMethodInfo.Equals(other._mixinMethodInfo);
     }
 
     public override int GetHashCode ()

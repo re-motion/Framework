@@ -30,109 +30,109 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void CreateTransactionStrategy_WithoutParentFunction_And_WithoutParentTransaction ()
     {
-      WxeContextFactory wxeContextFactory = new WxeContextFactory ();
-      WxeContext context = wxeContextFactory.CreateContext (new TestFunction ());
+      WxeContextFactory wxeContextFactory = new WxeContextFactory();
+      WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
       
-      ITransactionMode transactionMode = new CreateChildIfParentTransactionMode (true, new TestTransactionFactory());
-      TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy (new TestFunction2 (transactionMode), context);
+      ITransactionMode transactionMode = new CreateChildIfParentTransactionMode(true, new TestTransactionFactory());
+      TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(new TestFunction2(transactionMode), context);
 
-      Assert.That (strategy, Is.InstanceOf (typeof (RootTransactionStrategy)));
-      Assert.That (strategy.GetNativeTransaction<TestTransaction>(), Is.InstanceOf (typeof (TestTransaction)));
-      Assert.That (((RootTransactionStrategy) strategy).AutoCommit, Is.True);
-      Assert.That (((RootTransactionStrategy) strategy).Transaction, Is.InstanceOf (typeof (TestTransaction)));
-      Assert.That (strategy.OuterTransactionStrategy, Is.InstanceOf (typeof (NullTransactionStrategy)));
+      Assert.That(strategy, Is.InstanceOf(typeof (RootTransactionStrategy)));
+      Assert.That(strategy.GetNativeTransaction<TestTransaction>(), Is.InstanceOf(typeof (TestTransaction)));
+      Assert.That(((RootTransactionStrategy) strategy).AutoCommit, Is.True);
+      Assert.That(((RootTransactionStrategy) strategy).Transaction, Is.InstanceOf(typeof (TestTransaction)));
+      Assert.That(strategy.OuterTransactionStrategy, Is.InstanceOf(typeof (NullTransactionStrategy)));
     }
 
     [Test]
     public void CreateTransactionStrategy_WithParentFunction_And_WithoutParentTransaction ()
     {
-      ITransactionMode transactionMode = new CreateRootTransactionMode (true, new TestTransactionFactory ());
+      ITransactionMode transactionMode = new CreateRootTransactionMode(true, new TestTransactionFactory());
 
-      WxeFunction parentFunction = new TestFunction2 (new NoneTransactionMode ());
-      WxeFunction childFunction = new TestFunction2 (transactionMode);
-      parentFunction.Add (childFunction);
+      WxeFunction parentFunction = new TestFunction2(new NoneTransactionMode());
+      WxeFunction childFunction = new TestFunction2(transactionMode);
+      parentFunction.Add(childFunction);
 
       var stepMock = new Mock<WxeStep>();
-      childFunction.Add (stepMock.Object);
+      childFunction.Add(stepMock.Object);
 
-      WxeContextFactory wxeContextFactory = new WxeContextFactory ();
-      WxeContext context = wxeContextFactory.CreateContext (new TestFunction ());
+      WxeContextFactory wxeContextFactory = new WxeContextFactory();
+      WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
 
-      stepMock.Setup (mock => mock.Execute (context)).Callback (
+      stepMock.Setup(mock => mock.Execute(context)).Callback(
           (WxeContext context) =>
           {
-            TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy (childFunction, context);
-            Assert.That (strategy, Is.InstanceOf (typeof (RootTransactionStrategy)));
-            Assert.That (strategy.OuterTransactionStrategy, Is.SameAs (((TestFunction2) parentFunction).TransactionStrategy));
+            TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(childFunction, context);
+            Assert.That(strategy, Is.InstanceOf(typeof (RootTransactionStrategy)));
+            Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2) parentFunction).TransactionStrategy));
           }).Verifiable();
 
-      parentFunction.Execute (context);
+      parentFunction.Execute(context);
     }
 
     [Test]
     public void CreateTransactionStrategy_WithParentTransaction ()
     {
-      ITransactionMode transactionMode = new CreateChildIfParentTransactionMode (true, new TestTransactionFactory ());
+      ITransactionMode transactionMode = new CreateChildIfParentTransactionMode(true, new TestTransactionFactory());
 
-      WxeFunction parentFunction = new TestFunction2 (new CreateRootTransactionMode (true, new TestTransactionFactory ()));
-      WxeFunction childFunction = new TestFunction2 (transactionMode);
-      parentFunction.Add (childFunction);
+      WxeFunction parentFunction = new TestFunction2(new CreateRootTransactionMode(true, new TestTransactionFactory()));
+      WxeFunction childFunction = new TestFunction2(transactionMode);
+      parentFunction.Add(childFunction);
 
       var stepMock = new Mock<WxeStep>();
-      childFunction.Add (stepMock.Object);
+      childFunction.Add(stepMock.Object);
 
       WxeContextFactory wxeContextFactory = new WxeContextFactory();
-      WxeContext context = wxeContextFactory.CreateContext (new TestFunction());
+      WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
 
-      stepMock.Setup (mock => mock.Execute (context)).Callback (
+      stepMock.Setup(mock => mock.Execute(context)).Callback(
           (WxeContext context) =>
           {
             TransactionStrategyBase strategy = ((TestFunction2) childFunction).TransactionStrategy;
-            Assert.That (strategy, Is.InstanceOf (typeof (ChildTransactionStrategy)));
-            Assert.That (((ChildTransactionStrategy) strategy).AutoCommit, Is.True);
-            Assert.That (strategy.OuterTransactionStrategy, Is.SameAs (((TestFunction2) parentFunction).TransactionStrategy));
+            Assert.That(strategy, Is.InstanceOf(typeof (ChildTransactionStrategy)));
+            Assert.That(((ChildTransactionStrategy) strategy).AutoCommit, Is.True);
+            Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2) parentFunction).TransactionStrategy));
           }).Verifiable();
 
-      parentFunction.Execute (context);
+      parentFunction.Execute(context);
     }
 
     [Test]
     public void CreateTransactionStrategy_WithParentTransactionInGrandParentFunction ()
     {
-      ITransactionMode transactionMode = new CreateChildIfParentTransactionMode (true, new TestTransactionFactory ());
+      ITransactionMode transactionMode = new CreateChildIfParentTransactionMode(true, new TestTransactionFactory());
 
-      WxeFunction grandParentFunction = new TestFunction2 (new CreateRootTransactionMode (true, new TestTransactionFactory ()));
+      WxeFunction grandParentFunction = new TestFunction2(new CreateRootTransactionMode(true, new TestTransactionFactory()));
 
-      WxeFunction parentFunction = new TestFunction2 (new NoneTransactionMode ());
-      grandParentFunction.Add (parentFunction);
+      WxeFunction parentFunction = new TestFunction2(new NoneTransactionMode());
+      grandParentFunction.Add(parentFunction);
 
-      WxeFunction childFunction = new TestFunction2 (transactionMode);
-      parentFunction.Add (childFunction);
+      WxeFunction childFunction = new TestFunction2(transactionMode);
+      parentFunction.Add(childFunction);
 
       var stepMock = new Mock<WxeStep>();
-      childFunction.Add (stepMock.Object);
+      childFunction.Add(stepMock.Object);
 
-      WxeContextFactory wxeContextFactory = new WxeContextFactory ();
-      WxeContext context = wxeContextFactory.CreateContext (new TestFunction ());
+      WxeContextFactory wxeContextFactory = new WxeContextFactory();
+      WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
 
-      stepMock.Setup (mock => mock.Execute (context)).Callback (
+      stepMock.Setup(mock => mock.Execute(context)).Callback(
           (WxeContext context) =>
           {
             TransactionStrategyBase strategy = ((TestFunction2) childFunction).TransactionStrategy;
-            Assert.That (strategy, Is.InstanceOf (typeof (ChildTransactionStrategy)));
-            Assert.That (((ChildTransactionStrategy) strategy).AutoCommit, Is.True);
-            Assert.That (strategy.OuterTransactionStrategy, Is.SameAs (((TestFunction2) grandParentFunction).TransactionStrategy));
+            Assert.That(strategy, Is.InstanceOf(typeof (ChildTransactionStrategy)));
+            Assert.That(((ChildTransactionStrategy) strategy).AutoCommit, Is.True);
+            Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2) grandParentFunction).TransactionStrategy));
           }).Verifiable();
 
-      grandParentFunction.Execute (context);
+      grandParentFunction.Execute(context);
     }
 
     [Test]
     public void IsSerializeable ()
     {
-      var deserialized = Serializer.SerializeAndDeserialize (new CreateChildIfParentTransactionMode (true, new TestTransactionFactory ()));
+      var deserialized = Serializer.SerializeAndDeserialize(new CreateChildIfParentTransactionMode(true, new TestTransactionFactory()));
 
-      Assert.That (deserialized.AutoCommit, Is.True);
+      Assert.That(deserialized.AutoCommit, Is.True);
     }
   }
 }

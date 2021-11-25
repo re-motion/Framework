@@ -27,7 +27,7 @@ public class BocDateTimeValueMock: BocDateTimeValue
 {
 	public new void EvaluateWaiConformity ()
   {
-    base.EvaluateWaiConformity ();
+    base.EvaluateWaiConformity();
   }
 }
 

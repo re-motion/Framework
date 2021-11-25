@@ -26,11 +26,11 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   {
     public MappingValidationResult Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      if (!ReflectionUtility.IsDomainObject (classDefinition.ClassType))
+      if (!ReflectionUtility.IsDomainObject(classDefinition.ClassType))
       {
-        return MappingValidationResult.CreateInvalidResultForType (
+        return MappingValidationResult.CreateInvalidResultForType(
             classDefinition.ClassType,
             "Type '{0}' of class '{1}' is not assignable to '{2}'.",
             classDefinition.ClassType.Name,

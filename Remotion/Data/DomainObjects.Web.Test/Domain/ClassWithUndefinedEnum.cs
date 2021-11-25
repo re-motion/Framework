@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
   {
     public static ClassWithUndefinedEnum NewObject ()
     {
-      return DomainObject.NewObject<ClassWithUndefinedEnum> ();
+      return DomainObject.NewObject<ClassWithUndefinedEnum>();
     }
 
     protected ClassWithUndefinedEnum ()

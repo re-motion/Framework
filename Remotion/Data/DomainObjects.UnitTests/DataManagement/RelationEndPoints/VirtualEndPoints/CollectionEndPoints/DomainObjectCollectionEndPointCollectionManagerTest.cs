@@ -40,123 +40,123 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _domainObjectCollectionProviderMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPointCollectionProvider>();
       _associatedDomainObjectCollectionDataStrategyFactoryMock = MockRepository.GenerateStrictMock<IAssociatedDomainObjectCollectionDataStrategyFactory>();
-      _endPointID = RelationEndPointID.Create (DomainObjectIDs.Customer1, typeof (Customer), "Orders");
+      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof (Customer), "Orders");
 
-      _manager = new DomainObjectCollectionEndPointCollectionManager (_endPointID, _domainObjectCollectionProviderMock, _associatedDomainObjectCollectionDataStrategyFactoryMock);
+      _manager = new DomainObjectCollectionEndPointCollectionManager(_endPointID, _domainObjectCollectionProviderMock, _associatedDomainObjectCollectionDataStrategyFactoryMock);
       
-      _associatedDataStrategyStub = MockRepository.GenerateStub<IDomainObjectCollectionData> ();
-      _associatedDataStrategyStub.Stub (stub => stub.RequiredItemType).Return (typeof (Order));
-      _associatedDataStrategyStub.Stub (stub => stub.AssociatedEndPointID).Return (_endPointID);
+      _associatedDataStrategyStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
+      _associatedDataStrategyStub.Stub(stub => stub.RequiredItemType).Return(typeof (Order));
+      _associatedDataStrategyStub.Stub(stub => stub.AssociatedEndPointID).Return(_endPointID);
     }
 
     [Test]
     public void GetOriginalCollectionReference ()
     {
-      var collection = new DomainObjectCollection (_associatedDataStrategyStub);
+      var collection = new DomainObjectCollection(_associatedDataStrategyStub);
       _domainObjectCollectionProviderMock
-          .Expect (mock => mock.GetCollection (_endPointID))
-          .Return (collection);
-      _domainObjectCollectionProviderMock.Replay ();
+          .Expect(mock => mock.GetCollection(_endPointID))
+          .Return(collection);
+      _domainObjectCollectionProviderMock.Replay();
 
-      var result = _manager.GetOriginalCollectionReference ();
+      var result = _manager.GetOriginalCollectionReference();
 
-      _domainObjectCollectionProviderMock.VerifyAllExpectations ();
-      Assert.That (result, Is.SameAs (collection));
+      _domainObjectCollectionProviderMock.VerifyAllExpectations();
+      Assert.That(result, Is.SameAs(collection));
     }
 
     [Test]
     public void GetOriginalCollectionReference_Twice_ForSameID ()
     {
-      var collection = new DomainObjectCollection (_associatedDataStrategyStub);
+      var collection = new DomainObjectCollection(_associatedDataStrategyStub);
       _domainObjectCollectionProviderMock
-          .Expect (mock => mock.GetCollection (_endPointID))
-          .Return (collection)
+          .Expect(mock => mock.GetCollection(_endPointID))
+          .Return(collection)
           .Repeat.Once();
-      _domainObjectCollectionProviderMock.Replay ();
+      _domainObjectCollectionProviderMock.Replay();
 
-      var result1 = _manager.GetOriginalCollectionReference ();
-      var result2 = _manager.GetOriginalCollectionReference ();
+      var result1 = _manager.GetOriginalCollectionReference();
+      var result2 = _manager.GetOriginalCollectionReference();
 
-      _associatedDomainObjectCollectionDataStrategyFactoryMock.VerifyAllExpectations ();
+      _associatedDomainObjectCollectionDataStrategyFactoryMock.VerifyAllExpectations();
 
-      Assert.That (result2, Is.SameAs (result1));
+      Assert.That(result2, Is.SameAs(result1));
     }
 
     [Test]
     public void GetCurrentCollectionReference_UsesOriginalReference ()
     {
-      var collection = new DomainObjectCollection (_associatedDataStrategyStub);
+      var collection = new DomainObjectCollection(_associatedDataStrategyStub);
       _domainObjectCollectionProviderMock
-          .Expect (mock => mock.GetCollection (_endPointID))
-          .Return (collection)
+          .Expect(mock => mock.GetCollection(_endPointID))
+          .Return(collection)
           .Repeat.Once();
-      _domainObjectCollectionProviderMock.Replay ();
+      _domainObjectCollectionProviderMock.Replay();
 
-      var originalResult = _manager.GetOriginalCollectionReference ();
-      var currentResult = _manager.GetCurrentCollectionReference ();
+      var originalResult = _manager.GetOriginalCollectionReference();
+      var currentResult = _manager.GetCurrentCollectionReference();
 
-      _associatedDomainObjectCollectionDataStrategyFactoryMock.VerifyAllExpectations ();
-      Assert.That (currentResult, Is.SameAs (originalResult));
+      _associatedDomainObjectCollectionDataStrategyFactoryMock.VerifyAllExpectations();
+      Assert.That(currentResult, Is.SameAs(originalResult));
     }
 
     [Test]
     public void GetCurrentCollectionReference_CreatesOriginalReference_IfNoneAvailable ()
     {
-      var collection = new DomainObjectCollection (_associatedDataStrategyStub);
+      var collection = new DomainObjectCollection(_associatedDataStrategyStub);
       _domainObjectCollectionProviderMock
-          .Expect (mock => mock.GetCollection (_endPointID))
-          .Return (collection)
-          .Repeat.Once ();
-      _domainObjectCollectionProviderMock.Replay ();
+          .Expect(mock => mock.GetCollection(_endPointID))
+          .Return(collection)
+          .Repeat.Once();
+      _domainObjectCollectionProviderMock.Replay();
 
-      var result = _manager.GetCurrentCollectionReference ();
+      var result = _manager.GetCurrentCollectionReference();
 
       _associatedDomainObjectCollectionDataStrategyFactoryMock.VerifyAllExpectations();
-      Assert.That (result, Is.SameAs (collection));
-      Assert.That (result, Is.SameAs (_manager.GetOriginalCollectionReference ()));
+      Assert.That(result, Is.SameAs(collection));
+      Assert.That(result, Is.SameAs(_manager.GetOriginalCollectionReference()));
     }
 
     [Test]
     public void AssociateCollectionWithEndPoint ()
     {
-      var oldDataStrategyOfOldCollection = new DomainObjectCollectionData ();
-      var oldCollectionMock = MockRepository.GenerateStrictMock<DomainObjectCollection, IAssociatableDomainObjectCollection> ();
-      oldCollectionMock.Stub (mock => ((IAssociatableDomainObjectCollection) mock).AssociatedEndPointID).Return (_endPointID);
-      oldCollectionMock.Expect (mock => ((IAssociatableDomainObjectCollection) mock).TransformToStandAlone ()).Return (oldDataStrategyOfOldCollection);
+      var oldDataStrategyOfOldCollection = new DomainObjectCollectionData();
+      var oldCollectionMock = MockRepository.GenerateStrictMock<DomainObjectCollection, IAssociatableDomainObjectCollection>();
+      oldCollectionMock.Stub(mock => ((IAssociatableDomainObjectCollection) mock).AssociatedEndPointID).Return(_endPointID);
+      oldCollectionMock.Expect(mock => ((IAssociatableDomainObjectCollection) mock).TransformToStandAlone()).Return(oldDataStrategyOfOldCollection);
       oldCollectionMock.Replay();
 
-      var oldDataStrategyOfNewCollection = new DomainObjectCollectionData ();
-      var newCollectionMock = MockRepository.GenerateStrictMock<DomainObjectCollection, IAssociatableDomainObjectCollection> ();
+      var oldDataStrategyOfNewCollection = new DomainObjectCollectionData();
+      var newCollectionMock = MockRepository.GenerateStrictMock<DomainObjectCollection, IAssociatableDomainObjectCollection>();
       newCollectionMock
-          .Expect (mock => ((IAssociatableDomainObjectCollection) mock).TransformToAssociated (_endPointID, _associatedDomainObjectCollectionDataStrategyFactoryMock))
-          .Return (oldDataStrategyOfNewCollection);
+          .Expect(mock => ((IAssociatableDomainObjectCollection) mock).TransformToAssociated(_endPointID, _associatedDomainObjectCollectionDataStrategyFactoryMock))
+          .Return(oldDataStrategyOfNewCollection);
       newCollectionMock.Replay();
 
-      RegisterOriginalCollection (oldCollectionMock);
+      RegisterOriginalCollection(oldCollectionMock);
 
-      var result = _manager.AssociateCollectionWithEndPoint (newCollectionMock);
+      var result = _manager.AssociateCollectionWithEndPoint(newCollectionMock);
 
-      oldCollectionMock.VerifyAllExpectations ();
-      newCollectionMock.VerifyAllExpectations ();
-      Assert.That (result, Is.SameAs (oldDataStrategyOfNewCollection));
+      oldCollectionMock.VerifyAllExpectations();
+      newCollectionMock.VerifyAllExpectations();
+      Assert.That(result, Is.SameAs(oldDataStrategyOfNewCollection));
     }
 
     [Test]
     public void AssociateCollectionWithEndPoint_RemembersTheNewCollectionAsCurrent ()
     {
       var oldCollection = RegisterAssociatedOriginalCollection();
-      var newCollection = new DomainObjectCollection ();
+      var newCollection = new DomainObjectCollection();
 
-      _associatedDomainObjectCollectionDataStrategyFactoryMock.Stub (stub => stub.CreateDataStrategyForEndPoint (_endPointID)).Return (_associatedDataStrategyStub);
+      _associatedDomainObjectCollectionDataStrategyFactoryMock.Stub(stub => stub.CreateDataStrategyForEndPoint(_endPointID)).Return(_associatedDataStrategyStub);
       
-      _manager.AssociateCollectionWithEndPoint (newCollection);
+      _manager.AssociateCollectionWithEndPoint(newCollection);
 
-      Assert.That (_manager.GetCurrentCollectionReference (), Is.SameAs (newCollection));
-      Assert.That (_manager.GetOriginalCollectionReference (), Is.SameAs (oldCollection));
+      Assert.That(_manager.GetCurrentCollectionReference(), Is.SameAs(newCollection));
+      Assert.That(_manager.GetOriginalCollectionReference(), Is.SameAs(oldCollection));
     }
 
     [Test]
@@ -164,9 +164,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       _domainObjectCollectionProviderMock.Replay();
 
-      var result = _manager.HasCollectionReferenceChanged ();
+      var result = _manager.HasCollectionReferenceChanged();
 
-      Assert.That (result, Is.False);
+      Assert.That(result, Is.False);
     }
 
     [Test]
@@ -174,208 +174,208 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       RegisterAssociatedOriginalCollection();
       
-      var result = _manager.HasCollectionReferenceChanged ();
+      var result = _manager.HasCollectionReferenceChanged();
 
-      Assert.That (result, Is.False);
+      Assert.That(result, Is.False);
     }
 
     [Test]
     public void HasCollectionReferenceChanged_False_CurrentCollectionSameAsOriginal ()
     {
-      RegisterAssociatedOriginalCollection ();
+      RegisterAssociatedOriginalCollection();
 
-      _manager.GetOriginalCollectionReference ();
-      _manager.GetCurrentCollectionReference ();
+      _manager.GetOriginalCollectionReference();
+      _manager.GetCurrentCollectionReference();
 
-      var result = _manager.HasCollectionReferenceChanged ();
+      var result = _manager.HasCollectionReferenceChanged();
 
-      Assert.That (result, Is.False);
+      Assert.That(result, Is.False);
     }
 
     [Test]
     public void HasCollectionReferenceChanged_True_CurrentCollectionChanged ()
     {
-      RegisterAssociatedOriginalCollection ();
+      RegisterAssociatedOriginalCollection();
 
-      _associatedDomainObjectCollectionDataStrategyFactoryMock.Stub (stub => stub.CreateDataStrategyForEndPoint (_endPointID)).Return (_associatedDataStrategyStub);
-      _manager.AssociateCollectionWithEndPoint (new OrderCollection ());
+      _associatedDomainObjectCollectionDataStrategyFactoryMock.Stub(stub => stub.CreateDataStrategyForEndPoint(_endPointID)).Return(_associatedDataStrategyStub);
+      _manager.AssociateCollectionWithEndPoint(new OrderCollection());
 
-      Assert.That (_manager.GetOriginalCollectionReference (), Is.Not.SameAs (_manager.GetCurrentCollectionReference ()));
+      Assert.That(_manager.GetOriginalCollectionReference(), Is.Not.SameAs(_manager.GetCurrentCollectionReference()));
 
-      var result = _manager.HasCollectionReferenceChanged ();
+      var result = _manager.HasCollectionReferenceChanged();
 
-      Assert.That (result, Is.True);
+      Assert.That(result, Is.True);
     }
 
     [Test]
     public void CommitCollectionReference_NoOriginalCollection ()
     {
-      _manager.CommitCollectionReference ();
+      _manager.CommitCollectionReference();
 
-      _domainObjectCollectionProviderMock.Stub (stub => stub.GetCollection (_endPointID)).Return (new DomainObjectCollection (_associatedDataStrategyStub));
-      Assert.That (_manager.GetCurrentCollectionReference (), Is.SameAs (_manager.GetOriginalCollectionReference ()));
+      _domainObjectCollectionProviderMock.Stub(stub => stub.GetCollection(_endPointID)).Return(new DomainObjectCollection(_associatedDataStrategyStub));
+      Assert.That(_manager.GetCurrentCollectionReference(), Is.SameAs(_manager.GetOriginalCollectionReference()));
     }
 
     [Test]
     public void CommitCollectionReference_NoCurrentCollection ()
     {
-      RegisterAssociatedOriginalCollection ();
+      RegisterAssociatedOriginalCollection();
 
-      var originalBefore = _manager.GetOriginalCollectionReference ();
+      var originalBefore = _manager.GetOriginalCollectionReference();
 
-      _manager.CommitCollectionReference ();
+      _manager.CommitCollectionReference();
 
-      Assert.That (_manager.GetCurrentCollectionReference (), Is.SameAs (originalBefore));
-      Assert.That (_manager.GetOriginalCollectionReference (), Is.SameAs (originalBefore));
+      Assert.That(_manager.GetCurrentCollectionReference(), Is.SameAs(originalBefore));
+      Assert.That(_manager.GetOriginalCollectionReference(), Is.SameAs(originalBefore));
     }
 
     [Test]
     public void CommitCollectionReference_NoChanges ()
     {
-      RegisterAssociatedOriginalCollection ();
+      RegisterAssociatedOriginalCollection();
 
-      var originalBefore = _manager.GetOriginalCollectionReference ();
-      Assert.That (_manager.GetCurrentCollectionReference (), Is.SameAs (originalBefore));
+      var originalBefore = _manager.GetOriginalCollectionReference();
+      Assert.That(_manager.GetCurrentCollectionReference(), Is.SameAs(originalBefore));
 
-      _manager.CommitCollectionReference ();
+      _manager.CommitCollectionReference();
 
-      Assert.That (_manager.GetCurrentCollectionReference (), Is.SameAs (originalBefore));
-      Assert.That (_manager.GetOriginalCollectionReference (), Is.SameAs (originalBefore));
+      Assert.That(_manager.GetCurrentCollectionReference(), Is.SameAs(originalBefore));
+      Assert.That(_manager.GetOriginalCollectionReference(), Is.SameAs(originalBefore));
     }
 
     [Test]
     public void CommitCollectionReference_Changes ()
     {
-      RegisterAssociatedOriginalCollection ();
+      RegisterAssociatedOriginalCollection();
 
       var newCollection = new OrderCollection();
-      _associatedDomainObjectCollectionDataStrategyFactoryMock.Stub (stub => stub.CreateDataStrategyForEndPoint (_endPointID)).Return (_associatedDataStrategyStub);
-      _manager.AssociateCollectionWithEndPoint (newCollection);
+      _associatedDomainObjectCollectionDataStrategyFactoryMock.Stub(stub => stub.CreateDataStrategyForEndPoint(_endPointID)).Return(_associatedDataStrategyStub);
+      _manager.AssociateCollectionWithEndPoint(newCollection);
 
-      _domainObjectCollectionProviderMock.Expect (mock => mock.RegisterCollection (_endPointID, newCollection));
+      _domainObjectCollectionProviderMock.Expect(mock => mock.RegisterCollection(_endPointID, newCollection));
       _domainObjectCollectionProviderMock.Replay();
 
-      _manager.CommitCollectionReference ();
+      _manager.CommitCollectionReference();
 
       _domainObjectCollectionProviderMock.VerifyAllExpectations();
-      Assert.That (_manager.GetCurrentCollectionReference (), Is.SameAs (newCollection));
-      Assert.That (_manager.GetOriginalCollectionReference (), Is.SameAs (newCollection));
+      Assert.That(_manager.GetCurrentCollectionReference(), Is.SameAs(newCollection));
+      Assert.That(_manager.GetOriginalCollectionReference(), Is.SameAs(newCollection));
     }
 
     [Test]
     public void RollbackCollectionReference_NoOriginalCollection ()
     {
-      _manager.RollbackCollectionReference ();
+      _manager.RollbackCollectionReference();
 
-      _domainObjectCollectionProviderMock.Stub (stub => stub.GetCollection (_endPointID)).Return (new DomainObjectCollection (_associatedDataStrategyStub));
-      Assert.That (_manager.GetCurrentCollectionReference (), Is.SameAs (_manager.GetOriginalCollectionReference ()));
+      _domainObjectCollectionProviderMock.Stub(stub => stub.GetCollection(_endPointID)).Return(new DomainObjectCollection(_associatedDataStrategyStub));
+      Assert.That(_manager.GetCurrentCollectionReference(), Is.SameAs(_manager.GetOriginalCollectionReference()));
     }
 
     [Test]
     public void RollbackCollectionReference_NoCurrentCollection ()
     {
-      RegisterAssociatedOriginalCollection ();
+      RegisterAssociatedOriginalCollection();
 
-      var originalBefore = _manager.GetOriginalCollectionReference ();
+      var originalBefore = _manager.GetOriginalCollectionReference();
 
-      _manager.RollbackCollectionReference ();
+      _manager.RollbackCollectionReference();
 
-      Assert.That (_manager.GetCurrentCollectionReference (), Is.SameAs (originalBefore));
-      Assert.That (_manager.GetOriginalCollectionReference (), Is.SameAs (originalBefore));
+      Assert.That(_manager.GetCurrentCollectionReference(), Is.SameAs(originalBefore));
+      Assert.That(_manager.GetOriginalCollectionReference(), Is.SameAs(originalBefore));
     }
 
     [Test]
     public void RollbackCollectionReference_NoChanges ()
     {
-      RegisterAssociatedOriginalCollection ();
+      RegisterAssociatedOriginalCollection();
 
-      var originalBefore = _manager.GetOriginalCollectionReference ();
-      Assert.That (_manager.GetCurrentCollectionReference (), Is.SameAs (originalBefore));
+      var originalBefore = _manager.GetOriginalCollectionReference();
+      Assert.That(_manager.GetCurrentCollectionReference(), Is.SameAs(originalBefore));
 
-      _manager.RollbackCollectionReference ();
+      _manager.RollbackCollectionReference();
 
-      Assert.That (_manager.GetCurrentCollectionReference (), Is.SameAs (originalBefore));
-      Assert.That (_manager.GetOriginalCollectionReference (), Is.SameAs (originalBefore));
+      Assert.That(_manager.GetCurrentCollectionReference(), Is.SameAs(originalBefore));
+      Assert.That(_manager.GetOriginalCollectionReference(), Is.SameAs(originalBefore));
     }
 
     [Test]
     public void RollbackCollectionReference_UndoesAssociation ()
     {
-      var originalCollection = RegisterAssociatedOriginalCollection ();
+      var originalCollection = RegisterAssociatedOriginalCollection();
 
-      var newCollection = new OrderCollection ();
-      _associatedDomainObjectCollectionDataStrategyFactoryMock.Stub (stub => stub.CreateDataStrategyForEndPoint (_endPointID)).Return (_associatedDataStrategyStub);
-      _manager.AssociateCollectionWithEndPoint (newCollection);
+      var newCollection = new OrderCollection();
+      _associatedDomainObjectCollectionDataStrategyFactoryMock.Stub(stub => stub.CreateDataStrategyForEndPoint(_endPointID)).Return(_associatedDataStrategyStub);
+      _manager.AssociateCollectionWithEndPoint(newCollection);
 
-      Assert.That (DomainObjectCollectionDataTestHelper.GetDataStrategy (newCollection), Is.SameAs (_associatedDataStrategyStub));
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy (originalCollection, typeof (Order));
+      Assert.That(DomainObjectCollectionDataTestHelper.GetDataStrategy(newCollection), Is.SameAs(_associatedDataStrategyStub));
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(originalCollection, typeof (Order));
 
       // The Rollback operation must now transform the new collection to a standalone collection and reassociate the original collection with the end-
       // point being rolled back. (In addition to making the original collection the current collection again.)
       
-      _manager.RollbackCollectionReference ();
+      _manager.RollbackCollectionReference();
 
-      Assert.That (_manager.GetCurrentCollectionReference (), Is.SameAs (originalCollection));
-      Assert.That (_manager.GetOriginalCollectionReference (), Is.SameAs (originalCollection));
+      Assert.That(_manager.GetCurrentCollectionReference(), Is.SameAs(originalCollection));
+      Assert.That(_manager.GetOriginalCollectionReference(), Is.SameAs(originalCollection));
 
-      Assert.That (DomainObjectCollectionDataTestHelper.GetDataStrategy (originalCollection), Is.SameAs (_associatedDataStrategyStub));
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy (newCollection, typeof (Order));
+      Assert.That(DomainObjectCollectionDataTestHelper.GetDataStrategy(originalCollection), Is.SameAs(_associatedDataStrategyStub));
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(newCollection, typeof (Order));
     }
 
     [Test]
     public void RollbackCollectionReference_LeavesNewCollectionAloneIfAlreadyReassociatedWithOther ()
     {
-      var originalCollection = RegisterAssociatedOriginalCollection ();
+      var originalCollection = RegisterAssociatedOriginalCollection();
 
-      var newCollection = new OrderCollection ();
-      _associatedDomainObjectCollectionDataStrategyFactoryMock.Stub (stub => stub.CreateDataStrategyForEndPoint (_endPointID)).Return (_associatedDataStrategyStub);
-      _manager.AssociateCollectionWithEndPoint (newCollection);
+      var newCollection = new OrderCollection();
+      _associatedDomainObjectCollectionDataStrategyFactoryMock.Stub(stub => stub.CreateDataStrategyForEndPoint(_endPointID)).Return(_associatedDataStrategyStub);
+      _manager.AssociateCollectionWithEndPoint(newCollection);
 
-      Assert.That (DomainObjectCollectionDataTestHelper.GetDataStrategy (newCollection), Is.SameAs (_associatedDataStrategyStub));
-      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy (originalCollection, typeof (Order));
+      Assert.That(DomainObjectCollectionDataTestHelper.GetDataStrategy(newCollection), Is.SameAs(_associatedDataStrategyStub));
+      DomainObjectCollectionDataTestHelper.CheckStandAloneCollectionStrategy(originalCollection, typeof (Order));
       
       // Simulate that newCollection has already been re-associated by another rollback operation.
       // The Rollback operation must leave this other strategy alone.
       var otherStrategy = new DomainObjectCollectionData();
-      DomainObjectCollectionDataTestHelper.SetDataStrategy (newCollection, otherStrategy);
+      DomainObjectCollectionDataTestHelper.SetDataStrategy(newCollection, otherStrategy);
 
-      _manager.RollbackCollectionReference ();
+      _manager.RollbackCollectionReference();
 
-      Assert.That (DomainObjectCollectionDataTestHelper.GetDataStrategy (originalCollection), Is.SameAs (_associatedDataStrategyStub));
-      Assert.That (DomainObjectCollectionDataTestHelper.GetDataStrategy (newCollection), Is.SameAs (otherStrategy));
+      Assert.That(DomainObjectCollectionDataTestHelper.GetDataStrategy(originalCollection), Is.SameAs(_associatedDataStrategyStub));
+      Assert.That(DomainObjectCollectionDataTestHelper.GetDataStrategy(newCollection), Is.SameAs(otherStrategy));
     }
 
     [Test]
     public void Serialization ()
     {
-      var instance = new DomainObjectCollectionEndPointCollectionManager (
+      var instance = new DomainObjectCollectionEndPointCollectionManager(
           _endPointID,
           new SerializableDomainObjectCollectionEndPointCollectionProviderFake(),
           new SerializableAssociatedDomainObjectCollectionDataStrategyFactoryFake());
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (instance);
+      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
 
-      Assert.That (deserializedInstance.EndPointID, Is.Not.Null);
-      Assert.That (deserializedInstance.DomainObjectCollectionProvider, Is.Not.Null);
-      Assert.That (deserializedInstance.DataStrategyFactory, Is.Not.Null);
+      Assert.That(deserializedInstance.EndPointID, Is.Not.Null);
+      Assert.That(deserializedInstance.DomainObjectCollectionProvider, Is.Not.Null);
+      Assert.That(deserializedInstance.DataStrategyFactory, Is.Not.Null);
     }
 
     private DomainObjectCollection RegisterAssociatedOriginalCollection ()
     {
-      var oldCollection = new DomainObjectCollection (_associatedDataStrategyStub);
-      StubEmptyDataStrategy (_associatedDataStrategyStub);
-      RegisterOriginalCollection (oldCollection);
+      var oldCollection = new DomainObjectCollection(_associatedDataStrategyStub);
+      StubEmptyDataStrategy(_associatedDataStrategyStub);
+      RegisterOriginalCollection(oldCollection);
       return oldCollection;
     }
 
     private void RegisterOriginalCollection (DomainObjectCollection domainObjectCollection)
     {
-      PrivateInvoke.SetNonPublicField (_manager, "_originalCollectionReference", domainObjectCollection);
+      PrivateInvoke.SetNonPublicField(_manager, "_originalCollectionReference", domainObjectCollection);
     }
 
     private void StubEmptyDataStrategy (IDomainObjectCollectionData dataStrategyStub)
     {
-      dataStrategyStub.Stub (stub => stub.GetEnumerator ()).Return (Enumerable.Empty<DomainObject> ().GetEnumerator ());
+      dataStrategyStub.Stub(stub => stub.GetEnumerator()).Return(Enumerable.Empty<DomainObject>().GetEnumerator());
     }
   }
 }

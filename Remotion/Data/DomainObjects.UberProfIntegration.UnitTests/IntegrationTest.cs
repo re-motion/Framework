@@ -37,18 +37,18 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
       base.SetUp();
 
       var clientTransaction = ClientTransaction.CreateRootTransaction();
-      var sampleObject = LifetimeService.NewObject (clientTransaction, typeof (SampleObject), ParamList.Empty);
+      var sampleObject = LifetimeService.NewObject(clientTransaction, typeof (SampleObject), ParamList.Empty);
       _objectID = sampleObject.ID;
       clientTransaction.Commit();
 
       var locator = DefaultServiceLocator.Create();
       var factory = new LinqToSqlExtensionFactory();
-      locator.RegisterSingle<IClientTransactionExtensionFactory> (() => factory);
-      locator.RegisterSingle<IPersistenceExtensionFactory> (() => factory);
-      _serviceLocatorScope = new ServiceLocatorScope (locator);
+      locator.RegisterSingle<IClientTransactionExtensionFactory>(() => factory);
+      locator.RegisterSingle<IPersistenceExtensionFactory>(() => factory);
+      _serviceLocatorScope = new ServiceLocatorScope(locator);
 
       _tracingLinqToSqlAppender = new TracingLinqToSqlAppender();
-      SetAppender (_tracingLinqToSqlAppender);
+      SetAppender(_tracingLinqToSqlAppender);
     }
 
     public override void TearDown ()
@@ -60,20 +60,20 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
     [Test]
     public void LoadSingleObject ()
     {
-      var clientTransaction = ClientTransaction.CreateRootTransaction ();
-      LifetimeService.GetObject (clientTransaction, _objectID, false);
+      var clientTransaction = ClientTransaction.CreateRootTransaction();
+      LifetimeService.GetObject(clientTransaction, _objectID, false);
       clientTransaction.Discard();
 
-      Assert.That (
+      Assert.That(
           _tracingLinqToSqlAppender.TraceLog,
-          Does.Match (
+          Does.Match(
               @"^ConnectionStarted \((?<connectionid>[^,]+)\)" + Environment.NewLine
               + @"StatementExecuted \(\k<connectionid>, (?<statementid>[^,]+), "
               + @"SELECT \[ID\], \[ClassID\], \[Timestamp\], \[SampleProperty\] "
               + @"FROM \[SampleObject\] WHERE \[ID\] = \@ID;" + Environment.NewLine
               + @"-- Ignore unbounded result sets: TOP \*" + Environment.NewLine
               + @"-- Parameters:" + Environment.NewLine
-              + string.Format (@"-- \@ID = \[-\[{0}\]-\] \[-\[Type \(0\)\]-\]", _objectID.Value) + Environment.NewLine
+              + string.Format(@"-- \@ID = \[-\[{0}\]-\] \[-\[Type \(0\)\]-\]", _objectID.Value) + Environment.NewLine
               + @"\)" + Environment.NewLine
               + @"CommandDurationAndRowCount \(\k<connectionid>, \d+, \<null\>\)" + Environment.NewLine
               + @"StatementRowCount \(\k<connectionid>, \k<statementid>, 1\)" + Environment.NewLine

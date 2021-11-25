@@ -46,23 +46,23 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects
         return false;
 
       if (x is DomainObject && y is IDomainObjectHandle<DomainObject>)
-        return Equals (((DomainObject) x).GetHandle(), (IDomainObjectHandle<DomainObject>) y);
+        return Equals(((DomainObject) x).GetHandle(), (IDomainObjectHandle<DomainObject>) y);
 
       if (x is IDomainObjectHandle<DomainObject> && y is DomainObject)
-        return Equals ((IDomainObjectHandle<DomainObject>) x, ((DomainObject) y).GetHandle());
+        return Equals((IDomainObjectHandle<DomainObject>) x, ((DomainObject) y).GetHandle());
 
       if (x is IDomainObjectHandle<DomainObject> && y is IDomainObjectHandle<DomainObject>)
-        return Equals ((IDomainObjectHandle<DomainObject>) x, (IDomainObjectHandle<DomainObject>) y);
+        return Equals((IDomainObjectHandle<DomainObject>) x, (IDomainObjectHandle<DomainObject>) y);
       
       if (x is DomainObject && y is DomainObject)
-        return Equals (((DomainObject) x).GetHandle(), ((DomainObject) y).GetHandle());
+        return Equals(((DomainObject) x).GetHandle(), ((DomainObject) y).GetHandle());
 
       return false;
     }
 
     private bool Equals (IDomainObjectHandle<DomainObject> x, IDomainObjectHandle<DomainObject> y)
     {
-      return x.ObjectID.Equals (y.ObjectID);
+      return x.ObjectID.Equals(y.ObjectID);
     }
 
     public int GetHashCode (object obj)

@@ -27,82 +27,82 @@ namespace Remotion.UnitTests.Context
     [SetUp]
     public void SetUp ()
     {
-      SafeContext.Instance.FreeData ("test");
-      SafeContext.Instance.FreeData ("test1");
-      SafeContext.Instance.FreeData ("test2");
+      SafeContext.Instance.FreeData("test");
+      SafeContext.Instance.FreeData("test1");
+      SafeContext.Instance.FreeData("test2");
     }
 
     [TearDown]
     public void TearDown ()
     {
-      SafeContext.Instance.FreeData ("test");
-      SafeContext.Instance.FreeData ("test1");
-      SafeContext.Instance.FreeData ("test2");
+      SafeContext.Instance.FreeData("test");
+      SafeContext.Instance.FreeData("test1");
+      SafeContext.Instance.FreeData("test2");
     }
 
     [Test]
     public void UsesSafeContext_WithGivenKey ()
     {
       object instance = new object();
-      SafeContextSingleton<object> singleton = new SafeContextSingleton<object> ("test", delegate { return null; });
-      singleton.SetCurrent (instance);
+      SafeContextSingleton<object> singleton = new SafeContextSingleton<object>("test", delegate { return null; });
+      singleton.SetCurrent(instance);
 
-      Assert.That (SafeContext.Instance.GetData ("test"), Is.SameAs (instance));
+      Assert.That(SafeContext.Instance.GetData("test"), Is.SameAs(instance));
     }
 
     [Test]
     public void SingleInstance_CreatedOnDemand ()
     {
       object instance = null;
-      SafeContextSingleton<object> singleton = new SafeContextSingleton<object> ("test", delegate { return (instance = new object ()); });
+      SafeContextSingleton<object> singleton = new SafeContextSingleton<object>("test", delegate { return (instance = new object()); });
 
-      Assert.That (instance, Is.Null);
+      Assert.That(instance, Is.Null);
       object current = singleton.Current;
-      Assert.That (current, Is.Not.Null);
-      Assert.That (instance, Is.Not.Null);
-      Assert.That (current, Is.SameAs (instance));
+      Assert.That(current, Is.Not.Null);
+      Assert.That(instance, Is.Not.Null);
+      Assert.That(current, Is.SameAs(instance));
 
-      Assert.That (singleton.Current, Is.SameAs (current));
-      Assert.That (singleton.Current, Is.SameAs (current));
-      Assert.That (singleton.Current, Is.SameAs (current));
+      Assert.That(singleton.Current, Is.SameAs(current));
+      Assert.That(singleton.Current, Is.SameAs(current));
+      Assert.That(singleton.Current, Is.SameAs(current));
     }
 
     [Test]
     public void DifferentSingletons ()
     {
-      object instance1 = new object ();
-      object instance2 = new object ();
+      object instance1 = new object();
+      object instance2 = new object();
 
-      SafeContextSingleton<object> singleton1 = new SafeContextSingleton<object> ("test1", delegate { return instance1; });
-      SafeContextSingleton<object> singleton2 = new SafeContextSingleton<object> ("test2", delegate { return instance2; });
+      SafeContextSingleton<object> singleton1 = new SafeContextSingleton<object>("test1", delegate { return instance1; });
+      SafeContextSingleton<object> singleton2 = new SafeContextSingleton<object>("test2", delegate { return instance2; });
 
-      Assert.That (singleton1.Current, Is.SameAs (instance1));
-      Assert.That (singleton2.Current, Is.SameAs (instance2));
-      Assert.That (singleton1.Current, Is.SameAs (instance1));
-      Assert.That (singleton2.Current, Is.SameAs (instance2));
+      Assert.That(singleton1.Current, Is.SameAs(instance1));
+      Assert.That(singleton2.Current, Is.SameAs(instance2));
+      Assert.That(singleton1.Current, Is.SameAs(instance1));
+      Assert.That(singleton2.Current, Is.SameAs(instance2));
     }
 
     [Test]
     public void HasCurrent ()
     {
-      SafeContextSingleton<object> singleton = new SafeContextSingleton<object> ("test", delegate { return ( new object ()); });
-      Assert.That (singleton.HasCurrent, Is.False);
+      SafeContextSingleton<object> singleton = new SafeContextSingleton<object>("test", delegate { return ( new object()); });
+      Assert.That(singleton.HasCurrent, Is.False);
       Dev.Null = singleton.Current;
-      Assert.That (singleton.HasCurrent, Is.True);
-      singleton.SetCurrent (null);
-      Assert.That (singleton.HasCurrent, Is.False);
+      Assert.That(singleton.HasCurrent, Is.True);
+      singleton.SetCurrent(null);
+      Assert.That(singleton.HasCurrent, Is.False);
     }
 
     [Test]
     public void SetCurrent ()
     {
       object instance = new object();
-      SafeContextSingleton<object> singleton = new SafeContextSingleton<object> ("test", delegate { return new object (); });
-      Assert.That (singleton.Current, Is.Not.SameAs (instance));
-      singleton.SetCurrent (instance);
-      Assert.That (singleton.Current, Is.SameAs (instance));
-      singleton.SetCurrent (new object());
-      Assert.That (singleton.Current, Is.Not.SameAs (instance));
+      SafeContextSingleton<object> singleton = new SafeContextSingleton<object>("test", delegate { return new object(); });
+      Assert.That(singleton.Current, Is.Not.SameAs(instance));
+      singleton.SetCurrent(instance);
+      Assert.That(singleton.Current, Is.SameAs(instance));
+      singleton.SetCurrent(new object());
+      Assert.That(singleton.Current, Is.Not.SameAs(instance));
     }
   }
 }

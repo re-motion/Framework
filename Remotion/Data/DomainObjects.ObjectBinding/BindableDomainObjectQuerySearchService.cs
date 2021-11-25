@@ -33,24 +33,24 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     public IBusinessObject[] Search (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property, ISearchAvailableObjectsArguments searchArguments)
     {
       var defaultSearchArguments = searchArguments as DefaultSearchArguments;
-      if (defaultSearchArguments == null || string.IsNullOrEmpty (defaultSearchArguments.SearchStatement))
+      if (defaultSearchArguments == null || string.IsNullOrEmpty(defaultSearchArguments.SearchStatement))
         return new IBusinessObject[0];
 
-      QueryDefinition definition = DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory (defaultSearchArguments.SearchStatement);
+      QueryDefinition definition = DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory(defaultSearchArguments.SearchStatement);
       if (definition.QueryType != QueryType.Collection)
-        throw new ArgumentException (string.Format ("The query '{0}' is not a collection query.", defaultSearchArguments.SearchStatement));
+        throw new ArgumentException(string.Format("The query '{0}' is not a collection query.", defaultSearchArguments.SearchStatement));
 
       var referencingDomainObject = referencingObject as DomainObject;
 
       var clientTransaction = referencingDomainObject != null ? referencingDomainObject.DefaultTransactionContext.ClientTransaction : ClientTransaction.Current;
       if (clientTransaction == null)
-        throw new InvalidOperationException ("No ClientTransaction has been associated with the current thread or the referencing object.");
+        throw new InvalidOperationException("No ClientTransaction has been associated with the current thread or the referencing object.");
 
-      var result = clientTransaction.QueryManager.GetCollection (QueryFactory.CreateQuery (definition));
+      var result = clientTransaction.QueryManager.GetCollection(QueryFactory.CreateQuery(definition));
       var availableObjects = new IBusinessObjectWithIdentity[result.Count];
 
       if (availableObjects.Length > 0)
-        result.ToArray().CopyTo (availableObjects, 0);
+        result.ToArray().CopyTo(availableObjects, 0);
 
       return availableObjects;
     }

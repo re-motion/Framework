@@ -29,12 +29,12 @@ namespace Remotion.Configuration
   public abstract class ConfigurationWrapper
   {
     private static readonly DoubleCheckedLockingContainer<ConfigurationWrapper> s_current =
-        new DoubleCheckedLockingContainer<ConfigurationWrapper> (CreateFromConfigurationManager);
+        new DoubleCheckedLockingContainer<ConfigurationWrapper>(CreateFromConfigurationManager);
 
     public static ConfigurationWrapper CreateFromConfigurationObject (System.Configuration.Configuration configuration)
     {
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
-      return new ConfigurationWrapperFromConfigurationObject (configuration);
+      ArgumentUtility.CheckNotNull("configuration", configuration);
+      return new ConfigurationWrapperFromConfigurationObject(configuration);
     }
 
     public static ConfigurationWrapper CreateFromConfigurationManager ()
@@ -64,33 +64,33 @@ namespace Remotion.Configuration
 
     public object? GetSection (string sectionName, bool throwIfNotFound)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("sectionName", sectionName);
+      ArgumentUtility.CheckNotNullOrEmpty("sectionName", sectionName);
 
-      object? section = GetSection (sectionName);
+      object? section = GetSection(sectionName);
       if (throwIfNotFound && section == null)
-        throw new ConfigurationErrorsException (string.Format ("Required section '{0}' does not exist in the configuration.", sectionName));
+        throw new ConfigurationErrorsException(string.Format("Required section '{0}' does not exist in the configuration.", sectionName));
 
       return section;
     }
 
     public ConnectionStringSettings GetConnectionString (string name, bool throwIfNotFound)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
-      ConnectionStringSettings connectionStringSettings = GetConnectionString (name);
+      ConnectionStringSettings connectionStringSettings = GetConnectionString(name);
       if (throwIfNotFound && connectionStringSettings == null)
-        throw new ConfigurationErrorsException (string.Format ("Required connection string '{0}' does not exist in the configuration.", name));
+        throw new ConfigurationErrorsException(string.Format("Required connection string '{0}' does not exist in the configuration.", name));
 
       return connectionStringSettings;
     }
 
     public string? GetAppSetting (string name, bool throwIfNotFound)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
-      string? appSetting = GetAppSetting (name);
+      string? appSetting = GetAppSetting(name);
       if (throwIfNotFound && appSetting == null)
-        throw new ConfigurationErrorsException (string.Format ("Required application setting '{0}' does not exist in the configuration.", name));
+        throw new ConfigurationErrorsException(string.Format("Required application setting '{0}' does not exist in the configuration.", name));
 
       return appSetting;
     }

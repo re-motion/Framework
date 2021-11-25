@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
       ValidateButtonId = data.Arguments[0];
       CustomValidatedControlHtmlId = data.Arguments[1];

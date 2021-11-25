@@ -46,8 +46,8 @@ namespace Remotion.Web.Resources
 
     protected ResourcePathBuilder (IHttpContextProvider httpContextProvider, string configuredResourceRoot)
     {
-      ArgumentUtility.CheckNotNull ("httpContextProvider", httpContextProvider);
-      ArgumentUtility.CheckNotNull ("configuredResourceRoot", configuredResourceRoot);
+      ArgumentUtility.CheckNotNull("httpContextProvider", httpContextProvider);
+      ArgumentUtility.CheckNotNull("configuredResourceRoot", configuredResourceRoot);
 
       _httpContextProvider = httpContextProvider;
       _configuredResourceRoot = configuredResourceRoot;
@@ -55,28 +55,28 @@ namespace Remotion.Web.Resources
 
     protected override string BuildPath (string[] completePath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("completePath", completePath);
+      ArgumentUtility.CheckNotNullOrEmpty("completePath", completePath);
 
-      return completePath.Aggregate (CombineVirtualPaths);
+      return completePath.Aggregate(CombineVirtualPaths);
     }
 
     protected override string GetResourceRoot ()
     {
       var applicationPath = GetApplicationPath();
-      Assertion.IsTrue (VirtualPathUtility.IsAbsolute (applicationPath));
+      Assertion.IsTrue(VirtualPathUtility.IsAbsolute(applicationPath));
 
-      return CombineVirtualPaths (applicationPath, _configuredResourceRoot);
+      return CombineVirtualPaths(applicationPath, _configuredResourceRoot);
     }
 
     private string CombineVirtualPaths (string left, string right)
     {
-      return VirtualPathUtility.Combine (VirtualPathUtility.AppendTrailingSlash (left), right);
+      return VirtualPathUtility.Combine(VirtualPathUtility.AppendTrailingSlash(left), right);
     }
 
     private string GetApplicationPath ()
     {
       var context = _httpContextProvider.GetCurrentHttpContext();
-      return UrlUtility.ResolveUrlCaseSensitive (context, "~/");
+      return UrlUtility.ResolveUrlCaseSensitive(context, "~/");
     }
   }
 }

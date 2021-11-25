@@ -26,7 +26,7 @@ namespace Remotion.Development.Web.UnitTesting.Resources
   public class FakeResourceUrlFactory : IResourceUrlFactory
   {
     private readonly IResourcePathBuilder _builder = new FakeResourcePathBuilder();
-    private readonly ResourceTheme _resourceTheme=  new ResourceTheme ("Fake");
+    private readonly ResourceTheme _resourceTheme=  new ResourceTheme("Fake");
 
     public FakeResourceUrlFactory ()
     {
@@ -34,12 +34,12 @@ namespace Remotion.Development.Web.UnitTesting.Resources
 
     public IResourceUrl CreateResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
     {
-      return new ResourceUrl (_builder, definingType, resourceType, relativeUrl);
+      return new ResourceUrl(_builder, definingType, resourceType, relativeUrl);
     }
 
     public IResourceUrl CreateThemedResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
     {
-      return new ThemedResourceUrl (_builder, definingType, resourceType, _resourceTheme, relativeUrl);
+      return new ThemedResourceUrl(_builder, definingType, resourceType, _resourceTheme, relativeUrl);
     }
   }
 }

@@ -29,30 +29,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       // Ensure all end points are loaded into the RelationEndPointManager before trying to check them
       foreach (RelationEndPointID id in endPointsInvolved)
       {
-        TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad (id);
+        TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(id);
       }
 
       if (foreignKeyObject != null)
       {
-        Assert.IsFalse (
+        Assert.IsFalse(
             foreignKeyObject.Properties[foreignKeyObject.GetPublicDomainObjectType(), simpleForeignKeyPropertyName].HasBeenTouched,
             "ObjectID before modification");
       }
 
       foreach (RelationEndPointID id in endPointsInvolved)
-        Assert.IsFalse (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (id).HasBeenTouched, id + " before modification");
+        Assert.IsFalse(TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id).HasBeenTouched, id + " before modification");
 
-      modification ();
+      modification();
 
       if (foreignKeyObject != null)
       {
-        Assert.IsTrue (
+        Assert.IsTrue(
             foreignKeyObject.Properties[foreignKeyObject.GetPublicDomainObjectType(), simpleForeignKeyPropertyName].HasBeenTouched,
             "ObjectID after modification");
       }
 
       foreach (RelationEndPointID id in endPointsInvolved)
-        Assert.IsTrue (TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (id).HasBeenTouched, id + " after modification");
+        Assert.IsTrue(TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id).HasBeenTouched, id + " after modification");
     }
   }
 }

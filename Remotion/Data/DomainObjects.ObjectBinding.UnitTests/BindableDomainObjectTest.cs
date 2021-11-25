@@ -41,47 +41,47 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [SetUp]
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _implementationMock = MockRepository.GenerateMock<IBindableDomainObjectImplementation> ();
+      _implementationMock = MockRepository.GenerateMock<IBindableDomainObjectImplementation>();
 
-      _propertyFake = MockRepository.GenerateMock<IBusinessObjectProperty> ();
-      _businessObjectClassFake = MockRepository.GenerateMock<IBusinessObjectClass> ();
+      _propertyFake = MockRepository.GenerateMock<IBusinessObjectProperty>();
+      _businessObjectClassFake = MockRepository.GenerateMock<IBusinessObjectClass>();
     }
 
     [Test]
     public void BindableObjectProviderAttribute ()
     {
-      Assert.That (typeof (BindableDomainObject).IsDefined (typeof (BindableDomainObjectProviderAttribute), false), Is.True);
+      Assert.That(typeof (BindableDomainObject).IsDefined(typeof (BindableDomainObjectProviderAttribute), false), Is.True);
     }
 
     [Test]
     public void BindableObjectBaseClassAttribute ()
     {
-      Assert.That (typeof (BindableDomainObject).IsDefined (typeof (BindableObjectBaseClassAttribute), false), Is.True);
+      Assert.That(typeof (BindableDomainObject).IsDefined(typeof (BindableObjectBaseClassAttribute), false), Is.True);
     }
 
     [Test]
     public void CreateImplementation ()
     {
-      var instance = SampleBindableDomainObject.NewObject ();
-      Assert.That (PrivateInvoke.GetNonPublicField (instance, "_implementation"), Is.InstanceOf (typeof (BindableDomainObjectImplementation)));
+      var instance = SampleBindableDomainObject.NewObject();
+      Assert.That(PrivateInvoke.GetNonPublicField(instance, "_implementation"), Is.InstanceOf(typeof (BindableDomainObjectImplementation)));
     }
 
     [Test]
     public void Implementation_IsInitialized ()
     {
-      var instance = SampleBindableDomainObject.NewObject ();
-      var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField (instance, "_implementation");
-      Assert.That (implementation.BusinessObjectClass, Is.Not.Null);
+      var instance = SampleBindableDomainObject.NewObject();
+      var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
     }
 
     [Test]
     public void Implementation_IsInitialized_BeforeDerivedCtorRuns ()
     {
-      var instance = SampleBindableDomainObject_AccessingImplementationFromCtor.NewObject ();
-      Assert.That (instance.DisplayNameFromCtor, Is.Not.Null);
-      Assert.That (instance.DisplayNameFromCtor, Is.EqualTo (instance.DisplayName));
+      var instance = SampleBindableDomainObject_AccessingImplementationFromCtor.NewObject();
+      Assert.That(instance.DisplayNameFromCtor, Is.Not.Null);
+      Assert.That(instance.DisplayNameFromCtor, Is.EqualTo(instance.DisplayName));
     }
 
     [Test]
@@ -89,12 +89,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      var instance = SampleBindableDomainObject.NewObject ();
-      instance = Serializer.SerializeAndDeserialize (instance);
-      var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField (instance, "_implementation");
-      Assert.That (implementation, Is.Not.Null);
-      Assert.That (implementation.BusinessObjectClass, Is.Not.Null);
-      Assert.That (implementation.BusinessObjectClass.TargetType, Is.SameAs (typeof (SampleBindableDomainObject)));
+      var instance = SampleBindableDomainObject.NewObject();
+      instance = Serializer.SerializeAndDeserialize(instance);
+      var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      Assert.That(implementation, Is.Not.Null);
+      Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
+      Assert.That(implementation.BusinessObjectClass.TargetType, Is.SameAs(typeof (SampleBindableDomainObject)));
     }
 
     [Test]
@@ -102,27 +102,27 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      var instance = SampleBindableDomainObject_ImplementingISerializable.NewObject ();
-      instance = Serializer.SerializeAndDeserialize (instance);
+      var instance = SampleBindableDomainObject_ImplementingISerializable.NewObject();
+      instance = Serializer.SerializeAndDeserialize(instance);
       
-      var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField (instance, "_implementation");
-      Assert.That (implementation, Is.Not.Null);
-      Assert.That (implementation.BusinessObjectClass, Is.Not.Null);
-      Assert.That (implementation.BusinessObjectClass.TargetType, Is.SameAs (typeof (SampleBindableDomainObject_ImplementingISerializable)));
+      var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      Assert.That(implementation, Is.Not.Null);
+      Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
+      Assert.That(implementation.BusinessObjectClass.TargetType, Is.SameAs(typeof (SampleBindableDomainObject_ImplementingISerializable)));
     }
 
     [Test]
     public void Loading ()
     {
-      var newInstanceID = new ObjectID (typeof (SampleBindableDomainObject), Guid.NewGuid());
+      var newInstanceID = new ObjectID(typeof (SampleBindableDomainObject), Guid.NewGuid());
       try
       {
-        StubStorageProvider.LoadDataContainerResult = DataContainer.CreateNew (newInstanceID);
+        StubStorageProvider.LoadDataContainerResult = DataContainer.CreateNew(newInstanceID);
         {
           var instance = newInstanceID.GetObject<SampleBindableDomainObject>();
-          var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField (instance, "_implementation");
-          Assert.That (implementation, Is.Not.Null);
-          Assert.That (implementation.BusinessObjectClass, Is.Not.Null);
+          var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
+          Assert.That(implementation, Is.Not.Null);
+          Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
         }
       }
       finally
@@ -134,109 +134,109 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void Reloading ()
     {
-      var instance1 = SampleBindableDomainObject.NewObject ();
-      var implementation1 = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField (instance1, "_implementation");
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      var instance1 = SampleBindableDomainObject.NewObject();
+      var implementation1 = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance1, "_implementation");
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        var instance2 = instance1.ID.GetObject<SampleBindableDomainObject> ();
-        var implementation2 = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField (instance2, "_implementation");
-        Assert.That (implementation2, Is.SameAs (implementation1));
+        var instance2 = instance1.ID.GetObject<SampleBindableDomainObject>();
+        var implementation2 = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance2, "_implementation");
+        Assert.That(implementation2, Is.SameAs(implementation1));
       }
     }
 
     [Test]
     public void ObjectReference ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (SampleBindableDomainObject));
-      var instance = LifetimeService.GetObjectReference (TestableClientTransaction, new ObjectID (classDefinition, Guid.NewGuid()));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (SampleBindableDomainObject));
+      var instance = LifetimeService.GetObjectReference(TestableClientTransaction, new ObjectID(classDefinition, Guid.NewGuid()));
       
-      var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField (instance, "_implementation");
-      Assert.That (implementation, Is.Not.Null);
-      Assert.That (implementation.BusinessObjectClass, Is.Not.Null);
+      var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      Assert.That(implementation, Is.Not.Null);
+      Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
     }
     
     [Test]
     public void GetProperty ()
     {
-      var instance = SampleBindableDomainObject.NewObject (_implementationMock);
+      var instance = SampleBindableDomainObject.NewObject(_implementationMock);
 
-      _implementationMock.Expect (mock => mock.GetProperty (_propertyFake)).Return (12);
-      _implementationMock.Replay ();
+      _implementationMock.Expect(mock => mock.GetProperty(_propertyFake)).Return(12);
+      _implementationMock.Replay();
 
-      Assert.That (((IBusinessObject)instance).GetProperty (_propertyFake), Is.EqualTo (12));
-      _implementationMock.VerifyAllExpectations ();
+      Assert.That(((IBusinessObject)instance).GetProperty(_propertyFake), Is.EqualTo(12));
+      _implementationMock.VerifyAllExpectations();
     }
 
     [Test]
     public void SetProperty ()
     {
-      var instance = SampleBindableDomainObject.NewObject (_implementationMock);
+      var instance = SampleBindableDomainObject.NewObject(_implementationMock);
 
-      _implementationMock.Expect (mock => mock.SetProperty (_propertyFake, 174));
-      _implementationMock.Replay ();
+      _implementationMock.Expect(mock => mock.SetProperty(_propertyFake, 174));
+      _implementationMock.Replay();
 
-      ((IBusinessObject) instance).SetProperty (_propertyFake, 174);
-      _implementationMock.VerifyAllExpectations ();
+      ((IBusinessObject) instance).SetProperty(_propertyFake, 174);
+      _implementationMock.VerifyAllExpectations();
     }
 
     [Test]
     public void GetPropertyString ()
     {
-      var instance = SampleBindableDomainObject.NewObject (_implementationMock);
+      var instance = SampleBindableDomainObject.NewObject(_implementationMock);
 
-      _implementationMock.Expect (mock => mock.GetPropertyString (_propertyFake, "gj")).Return ("yay");
-      _implementationMock.Replay ();
+      _implementationMock.Expect(mock => mock.GetPropertyString(_propertyFake, "gj")).Return("yay");
+      _implementationMock.Replay();
 
-      Assert.That (((IBusinessObject) instance).GetPropertyString (_propertyFake, "gj"), Is.EqualTo ("yay"));
-      _implementationMock.VerifyAllExpectations (); 
+      Assert.That(((IBusinessObject) instance).GetPropertyString(_propertyFake, "gj"), Is.EqualTo("yay"));
+      _implementationMock.VerifyAllExpectations(); 
     }
 
     [Test]
     public void DisplayName ()
     {
-      var instance = SampleBindableDomainObject.NewObject (_implementationMock);
+      var instance = SampleBindableDomainObject.NewObject(_implementationMock);
 
-      _implementationMock.Expect (mock => mock.BaseDisplayName).Return ("Philips");
-      _implementationMock.Replay ();
+      _implementationMock.Expect(mock => mock.BaseDisplayName).Return("Philips");
+      _implementationMock.Replay();
 
-      Assert.That (instance.DisplayName, Is.EqualTo ("Philips"));
-      _implementationMock.VerifyAllExpectations (); 
+      Assert.That(instance.DisplayName, Is.EqualTo("Philips"));
+      _implementationMock.VerifyAllExpectations(); 
     }
 
     [Test]
     public void BusinessObjectClass ()
     {
-      var instance = SampleBindableDomainObject.NewObject (_implementationMock);
+      var instance = SampleBindableDomainObject.NewObject(_implementationMock);
 
-      _implementationMock.Expect (mock => mock.BusinessObjectClass).Return (_businessObjectClassFake);
-      _implementationMock.Replay ();
+      _implementationMock.Expect(mock => mock.BusinessObjectClass).Return(_businessObjectClassFake);
+      _implementationMock.Replay();
 
-      Assert.That (((IBusinessObject) instance).BusinessObjectClass, Is.SameAs (_businessObjectClassFake));
-      _implementationMock.VerifyAllExpectations ();
+      Assert.That(((IBusinessObject) instance).BusinessObjectClass, Is.SameAs(_businessObjectClassFake));
+      _implementationMock.VerifyAllExpectations();
     }
 
     [Test]
     public void UniqueIdentifier ()
     {
-      var instance = SampleBindableDomainObject.NewObject (_implementationMock);
+      var instance = SampleBindableDomainObject.NewObject(_implementationMock);
 
-      _implementationMock.Expect (mock => mock.BaseUniqueIdentifier).Return ("123");
-      _implementationMock.Replay ();
+      _implementationMock.Expect(mock => mock.BaseUniqueIdentifier).Return("123");
+      _implementationMock.Replay();
 
-      Assert.That (((IBusinessObjectWithIdentity) instance).UniqueIdentifier, Is.EqualTo ("123"));
-      _implementationMock.VerifyAllExpectations ();
+      Assert.That(((IBusinessObjectWithIdentity) instance).UniqueIdentifier, Is.EqualTo("123"));
+      _implementationMock.VerifyAllExpectations();
     }
 
     [Test]
     public void BindableDomainObject_IsNotPartOfMapping ()
     {
-      Assert.That (MappingConfiguration.Current.GetTypeDefinitions().Where (o => o.ClassType == typeof (BindableDomainObject)), Is.Empty);
+      Assert.That(MappingConfiguration.Current.GetTypeDefinitions().Where(o => o.ClassType == typeof (BindableDomainObject)), Is.Empty);
     }
 
     [Test]
     public void RefectionUtilityIsTypeIgnoredForMappingConfiguration_BindableDomainObject_ReturnsTrue ()
     {
-      Assert.That (ReflectionUtility.IsTypeIgnoredForMappingConfiguration (typeof (BindableDomainObject)), Is.True);
+      Assert.That(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(typeof (BindableDomainObject)), Is.True);
     }
   }
 }

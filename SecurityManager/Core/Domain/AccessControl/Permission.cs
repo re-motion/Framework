@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   {
     public static Permission NewObject ()
     {
-      return NewObject<Permission> ();
+      return NewObject<Permission>();
     }
 
     protected Permission ()
@@ -59,7 +59,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
       if (Class != null)
         Class.RegisterForCommit();

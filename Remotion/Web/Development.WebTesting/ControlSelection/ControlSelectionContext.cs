@@ -43,10 +43,10 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <param name="scope">The scope of the other <see cref="ControlObject"/>.</param>
     public ControlObjectContext CloneForControl ([NotNull] PageObject pageObject, [NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("pageObject", pageObject);
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("pageObject", pageObject);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      return pageObject.Context.CloneForControl (pageObject, scope);
+      return pageObject.Context.CloneForControl(pageObject, scope);
     }
   }
 }

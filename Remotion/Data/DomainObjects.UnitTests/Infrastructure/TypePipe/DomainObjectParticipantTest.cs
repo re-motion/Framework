@@ -47,9 +47,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       _typeDefinitionProviderMock = MockRepository.GenerateStrictMock<ITypeDefinitionProvider>();
       _interceptedPropertyFinderMock = MockRepository.GenerateStrictMock<IInterceptedPropertyFinder>();
 
-      _participant = new DomainObjectParticipant (_typeDefinitionProviderMock, _interceptedPropertyFinderMock);
+      _participant = new DomainObjectParticipant(_typeDefinitionProviderMock, _interceptedPropertyFinderMock);
 
-      _proxyTypeAssemblyContext = ProxyTypeAssemblyContextObjectMother.Create (requestedType: typeof (Order));
+      _proxyTypeAssemblyContext = ProxyTypeAssemblyContextObjectMother.Create(requestedType: typeof (Order));
       _proxyType = _proxyTypeAssemblyContext.ProxyType;
     }
 
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       var typeIdentifierProvider = _participant.PartialTypeIdentifierProvider;
 
-      Assert.That (typeIdentifierProvider, Is.Null);
+      Assert.That(typeIdentifierProvider, Is.Null);
     }
 
     [Test]
@@ -66,10 +66,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       var fakeInterceptors = new IAccessorInterceptor[0];
-      _typeDefinitionProviderMock.Expect (mock => mock.GetTypeDefinition (_proxyType.BaseType)).Return (fakeClassDefinition);
-      _interceptedPropertyFinderMock.Expect (mock => mock.GetPropertyInterceptors (fakeClassDefinition, _proxyType.BaseType)).Return (fakeInterceptors);
+      _typeDefinitionProviderMock.Expect(mock => mock.GetTypeDefinition(_proxyType.BaseType)).Return(fakeClassDefinition);
+      _interceptedPropertyFinderMock.Expect(mock => mock.GetPropertyInterceptors(fakeClassDefinition, _proxyType.BaseType)).Return(fakeInterceptors);
 
-      _participant.Participate (null, _proxyTypeAssemblyContext);
+      _participant.Participate(null, _proxyTypeAssemblyContext);
 
       _typeDefinitionProviderMock.VerifyAllExpectations();
       _interceptedPropertyFinderMock.VerifyAllExpectations();
@@ -80,28 +80,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       StubGetPropertyInterceptors();
 
-      _participant.Participate (null, _proxyTypeAssemblyContext);
+      _participant.Participate(null, _proxyTypeAssemblyContext);
 
-      Assert.That (_proxyType.AddedInterfaces, Is.EqualTo (new[] { typeof (IInterceptedDomainObject) }));
-      Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (2));
+      Assert.That(_proxyType.AddedInterfaces, Is.EqualTo(new[] { typeof (IInterceptedDomainObject) }));
+      Assert.That(_proxyType.AddedMethods, Has.Count.EqualTo(2));
       
-      var performConstructorCheck = _proxyType.AddedMethods.Single (m => m.Name == "PerformConstructorCheck");
-      Assert.That (performConstructorCheck.Body, Is.TypeOf<DefaultExpression>().And.Property ("Type").SameAs (typeof (void)));
+      var performConstructorCheck = _proxyType.AddedMethods.Single(m => m.Name == "PerformConstructorCheck");
+      Assert.That(performConstructorCheck.Body, Is.TypeOf<DefaultExpression>().And.Property("Type").SameAs(typeof (void)));
 
-      var getPublicDomainObjectTypeImplementation = _proxyType.AddedMethods.Single (m => m.Name == "GetPublicDomainObjectTypeImplementation");
-      Assert.That (
+      var getPublicDomainObjectTypeImplementation = _proxyType.AddedMethods.Single(m => m.Name == "GetPublicDomainObjectTypeImplementation");
+      Assert.That(
           getPublicDomainObjectTypeImplementation.Body,
-          Is.TypeOf<ConstantExpression>().And.Property ("Value").SameAs (_proxyTypeAssemblyContext.RequestedType));
+          Is.TypeOf<ConstantExpression>().And.Property("Value").SameAs(_proxyTypeAssemblyContext.RequestedType));
     }
 
     [Test]
     public void Participate_ExecutesAccessorInterceptors ()
     {
       var accessorInterceptor = MockRepository.GenerateStrictMock<IAccessorInterceptor>();
-      accessorInterceptor.Expect (mock => mock.Intercept (_proxyType));
-      StubGetPropertyInterceptors (accessorInterceptors: new[] { accessorInterceptor });
+      accessorInterceptor.Expect(mock => mock.Intercept(_proxyType));
+      StubGetPropertyInterceptors(accessorInterceptors: new[] { accessorInterceptor });
 
-      _participant.Participate (null, _proxyTypeAssemblyContext);
+      _participant.Participate(null, _proxyTypeAssemblyContext);
 
       accessorInterceptor.VerifyAllExpectations();
     }
@@ -109,65 +109,65 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     [Test]
     public void Participate_NonDomainObject_Nop ()
     {
-      var context = ProxyTypeAssemblyContextObjectMother.Create (requestedType: typeof (object));
+      var context = ProxyTypeAssemblyContextObjectMother.Create(requestedType: typeof (object));
 
-      _participant.Participate (null, context);
+      _participant.Participate(null, context);
 
-      Assert.That (_proxyType.AddedInterfaces, Has.No.Member (typeof (IInterceptedDomainObject)));
-      _typeDefinitionProviderMock.AssertWasNotCalled (mock => mock.GetTypeDefinition (Arg<Type>.Is.Anything));
+      Assert.That(_proxyType.AddedInterfaces, Has.No.Member(typeof (IInterceptedDomainObject)));
+      _typeDefinitionProviderMock.AssertWasNotCalled(mock => mock.GetTypeDefinition(Arg<Type>.Is.Anything));
     }
 
     [Test]
     public void Participate_UnmappedDomainObject_Nop ()
     {
-      _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (_proxyTypeAssemblyContext.RequestedType)).Return (null);
+      _typeDefinitionProviderMock.Stub(stub => stub.GetTypeDefinition(_proxyTypeAssemblyContext.RequestedType)).Return(null);
 
-      _participant.Participate (null, _proxyTypeAssemblyContext);
+      _participant.Participate(null, _proxyTypeAssemblyContext);
 
-      Assert.That (_proxyType.AddedInterfaces, Has.No.Member (typeof (IInterceptedDomainObject)));
+      Assert.That(_proxyType.AddedInterfaces, Has.No.Member(typeof (IInterceptedDomainObject)));
     }
 
     [Test]
     public void Participate_AbstractDomainObject ()
     {
-      var abstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (isAbstract: true);
-      _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (_proxyTypeAssemblyContext.RequestedType)).Return (abstractClassDefinition);
+      var abstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(isAbstract: true);
+      _typeDefinitionProviderMock.Stub(stub => stub.GetTypeDefinition(_proxyTypeAssemblyContext.RequestedType)).Return(abstractClassDefinition);
 
-      _participant.Participate (null, _proxyTypeAssemblyContext);
+      _participant.Participate(null, _proxyTypeAssemblyContext);
 
-      Assert.That (_proxyType.AddedInterfaces, Has.No.Member (typeof (IInterceptedDomainObject)));
+      Assert.That(_proxyType.AddedInterfaces, Has.No.Member(typeof (IInterceptedDomainObject)));
     }
 
     [Test]
     public void HandleNonSubclassableType ()
     {
-      _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (typeof (object))).Return (null);
-      Assert.That (() => _participant.HandleNonSubclassableType (typeof (object)), Throws.Nothing);
+      _typeDefinitionProviderMock.Stub(stub => stub.GetTypeDefinition(typeof (object))).Return(null);
+      Assert.That(() => _participant.HandleNonSubclassableType(typeof (object)), Throws.Nothing);
     }
 
     [Test]
     public void HandleNonSubclassableType_AbstractDomainObject ()
     {
-      var abstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (isAbstract: true);
-      _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (_proxyTypeAssemblyContext.RequestedType)).Return (abstractClassDefinition);
-      Assert.That (() => _participant.HandleNonSubclassableType (_proxyTypeAssemblyContext.RequestedType), Throws.Nothing);
+      var abstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(isAbstract: true);
+      _typeDefinitionProviderMock.Stub(stub => stub.GetTypeDefinition(_proxyTypeAssemblyContext.RequestedType)).Return(abstractClassDefinition);
+      Assert.That(() => _participant.HandleNonSubclassableType(_proxyTypeAssemblyContext.RequestedType), Throws.Nothing);
     }
 
     [Test]
     public void HandleNonSubclassableType_UnsubclassableDomainObject ()
     {
-      var nonAbstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (isAbstract: false);
-      _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (typeof (NonSubclassableDomainObject))).Return (nonAbstractClassDefinition);
-      Assert.That (
-          () => _participant.HandleNonSubclassableType (typeof (NonSubclassableDomainObject)),
+      var nonAbstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(isAbstract: false);
+      _typeDefinitionProviderMock.Stub(stub => stub.GetTypeDefinition(typeof (NonSubclassableDomainObject))).Return(nonAbstractClassDefinition);
+      Assert.That(
+          () => _participant.HandleNonSubclassableType(typeof (NonSubclassableDomainObject)),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo ("The requested type 'NonSubclassableDomainObject' is derived from DomainObject but cannot be subclassed."));
+              .With.Message.EqualTo("The requested type 'NonSubclassableDomainObject' is derived from DomainObject but cannot be subclassed."));
     }
 
     [Test]
     public void HandleNonSubclassableType_NonDomainObject_Nop ()
     {
-      _participant.HandleNonSubclassableType (typeof (object));
+      _participant.HandleNonSubclassableType(typeof (object));
 
       Assert.That(_proxyType.AddedInterfaces, Has.No.Member(typeof(IInterceptedDomainObject)));
       _typeDefinitionProviderMock.AssertWasNotCalled(mock => mock.GetTypeDefinition(Arg<Type>.Is.Anything));
@@ -176,22 +176,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     [Test]
     public void GetAdditionalTypeID ()
     {
-      Assert.That (_participant.GetAdditionalTypeID (typeof (object)), Is.Null);
+      Assert.That(_participant.GetAdditionalTypeID(typeof (object)), Is.Null);
     }
 
     [Test]
     public void GetOrCreateAdditionalType ()
     {
-      Assert.That (
-          _participant.GetOrCreateAdditionalType (new object(), MockRepository.GenerateStrictMock<IAdditionalTypeAssemblyContext>()),
+      Assert.That(
+          _participant.GetOrCreateAdditionalType(new object(), MockRepository.GenerateStrictMock<IAdditionalTypeAssemblyContext>()),
           Is.Null);
     }
 
     private void StubGetPropertyInterceptors (params IAccessorInterceptor[] accessorInterceptors)
     {
       var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
-      _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (Arg<Type>.Is.Anything)).Return (fakeClassDefinition);
-      _interceptedPropertyFinderMock.Stub (stub => stub.GetPropertyInterceptors (null, null)).IgnoreArguments().Return (accessorInterceptors);
+      _typeDefinitionProviderMock.Stub(stub => stub.GetTypeDefinition(Arg<Type>.Is.Anything)).Return(fakeClassDefinition);
+      _interceptedPropertyFinderMock.Stub(stub => stub.GetPropertyInterceptors(null, null)).IgnoreArguments().Return(accessorInterceptors);
     }
 
     [DBTable]

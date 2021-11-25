@@ -24,7 +24,7 @@ namespace Remotion.Mixins
   public partial class MixinConfiguration
   {
     private static readonly DoubleCheckedLockingContainer<MixinConfiguration> s_masterConfiguration = 
-        new DoubleCheckedLockingContainer<MixinConfiguration> (BuildMasterConfiguration);
+        new DoubleCheckedLockingContainer<MixinConfiguration>(BuildMasterConfiguration);
 
     /// <summary>
     /// Gets the master <see cref="MixinConfiguration"/>. The master configuration is the default <see cref="MixinConfiguration"/> used whenever a 
@@ -70,10 +70,10 @@ namespace Remotion.Mixins
 
     private static MixinConfiguration BuildMasterConfiguration ()
     {
-      s_log.Info ("Building mixin master configuration...");
-      using (StopwatchScope.CreateScope (s_log, LogLevel.Info, "Time needed to build mixin master configuration: {elapsed}."))
+      s_log.Info("Building mixin master configuration...");
+      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to build mixin master configuration: {elapsed}."))
       {
-        return DeclarativeConfigurationBuilder.BuildDefaultConfiguration ();
+        return DeclarativeConfigurationBuilder.BuildDefaultConfiguration();
       }
     }
   }

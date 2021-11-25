@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      return new ExpandedCommand (this);
+      return new ExpandedCommand(this);
     }
   }
 }

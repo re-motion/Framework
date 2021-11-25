@@ -95,8 +95,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     protected virtual IObjectSecurityStrategy CreateSecurityStrategy ()
     {
-      return new DomainObjectSecurityStrategyDecorator (
-          ObjectSecurityStrategy.Create (this, InvalidationToken.Create()),
+      return new DomainObjectSecurityStrategyDecorator(
+          ObjectSecurityStrategy.Create(this, InvalidationToken.Create()),
           this,
           RequiredSecurityForStates.None);
     }

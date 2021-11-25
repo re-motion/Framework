@@ -40,22 +40,22 @@ namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
       
       string scriptFileKey = typeof (WebTreeViewRenderer).GetFullNameChecked() + "_Script";
-      var scriptFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (WebTreeViewRenderer), ResourceType.Html, "TreeView.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (scriptFileKey, scriptFileUrl);
+      var scriptFileUrl = ResourceUrlFactory.CreateResourceUrl(typeof (WebTreeViewRenderer), ResourceType.Html, "TreeView.js");
+      htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptFileUrl);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string styleKey = typeof (WebTreeViewRenderer).GetFullNameChecked() + "_Style";
-      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (WebTreeViewRenderer), ResourceType.Html, "TreeView.css");
-      htmlHeadAppender.RegisterStylesheetLink (styleKey, styleSheetUrl, HtmlHeadAppender.Priority.Library);
+      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof (WebTreeViewRenderer), ResourceType.Html, "TreeView.css");
+      htmlHeadAppender.RegisterStylesheetLink(styleKey, styleSheetUrl, HtmlHeadAppender.Priority.Library);
     }
 
     public void Render (WebTreeViewRenderingContext renderingContext)
     {
-      throw new NotSupportedException ("The WebTreeView does not support customized rendering.");
+      throw new NotSupportedException("The WebTreeView does not support customized rendering.");
     }
   }
 }

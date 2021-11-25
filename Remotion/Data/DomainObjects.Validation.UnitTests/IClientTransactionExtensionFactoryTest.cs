@@ -39,14 +39,14 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     {
       var factory = _serviceLocator.GetInstance<IClientTransactionExtensionFactory>();
 
-      Assert.That (factory, Is.TypeOf<CompoundClientTransactionExtensionFactory>());
+      Assert.That(factory, Is.TypeOf<CompoundClientTransactionExtensionFactory>());
       var clientTransactionExtensionFactories = ((CompoundClientTransactionExtensionFactory) factory).ClientTransactionExtensionFactories;
-      var factoryTypes = clientTransactionExtensionFactories.Select (f => f.GetType()).ToList();
-      Assert.That (factoryTypes, Has.Member (typeof (ValidationClientTransactionExtensionFactory)));
-      Assert.That (factoryTypes, Has.Member (typeof (CommitValidationClientTransactionExtensionFactory)));
-      Assert.That (
-          factoryTypes.IndexOf (typeof (ValidationClientTransactionExtensionFactory)),
-          Is.LessThan (factoryTypes.IndexOf (typeof (CommitValidationClientTransactionExtensionFactory))));
+      var factoryTypes = clientTransactionExtensionFactories.Select(f => f.GetType()).ToList();
+      Assert.That(factoryTypes, Has.Member(typeof (ValidationClientTransactionExtensionFactory)));
+      Assert.That(factoryTypes, Has.Member(typeof (CommitValidationClientTransactionExtensionFactory)));
+      Assert.That(
+          factoryTypes.IndexOf(typeof (ValidationClientTransactionExtensionFactory)),
+          Is.LessThan(factoryTypes.IndexOf(typeof (CommitValidationClientTransactionExtensionFactory))));
     }
   }
 }

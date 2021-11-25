@@ -27,10 +27,10 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M", IgnoreReason = "RM-2745")]
     public void InstantiateTargetType_ShouldOverrideTargetMethodFromTargetType (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<C>();
-        Assert.That (instance.M(), Is.EqualTo (expectedMethodOutput));
+        Assert.That(instance.M(), Is.EqualTo(expectedMethodOutput));
       }
     }
 
@@ -39,10 +39,10 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M", IgnoreReason = "RM-2745")]
     public void InstantiateDerivedTypeWithoutOverride_ShouldOverrideTargetMethodFromTargetType (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<D1>();
-        Assert.That (instance.M(), Is.EqualTo (expectedMethodOutput));
+        Assert.That(instance.M(), Is.EqualTo(expectedMethodOutput));
       }
     }
 
@@ -51,10 +51,10 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> D2.M", IgnoreReason = "RM-2745")]
     public void InstantiateDerivedType_ShouldOverrideTargetMethodFromDerivedType (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<D2>();
-        Assert.That (instance.M(), Is.EqualTo (expectedMethodOutput));
+        Assert.That(instance.M(), Is.EqualTo(expectedMethodOutput));
       }
     }
 
@@ -63,10 +63,10 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> D2.M", IgnoreReason = "RM-2745")]
     public void InstantiateDerivedDerivedTypeWithoutOverride_ShouldOverrideTargetMethodFromDerivedType (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<E>();
-        Assert.That (instance.M(), Is.EqualTo (expectedMethodOutput));
+        Assert.That(instance.M(), Is.EqualTo(expectedMethodOutput));
       }
     }
 
@@ -77,11 +77,11 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
     public void InstantiateShadowOfTargetType_ShouldOverrideTargetMethodFromTargetType (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<C_Shadow>();
-        Assert.That (instance.M(), Is.EqualTo ("C_Shadow.M"));
-        Assert.That (((C) instance).M(), Is.EqualTo (expectedMethodOutput));
+        Assert.That(instance.M(), Is.EqualTo("C_Shadow.M"));
+        Assert.That(((C) instance).M(), Is.EqualTo(expectedMethodOutput));
       }
     }
 
@@ -91,11 +91,11 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
     public void InstantiateShadowOfDerivedTypeWithoutOverride_ShouldOverrideTargetMethodFromTargetType (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<D1_Shadow>();
-        Assert.That (instance.M(), Is.EqualTo ("D1_Shadow.M"));
-        Assert.That (((C) instance).M(), Is.EqualTo (expectedMethodOutput));
+        Assert.That(instance.M(), Is.EqualTo("D1_Shadow.M"));
+        Assert.That(((C) instance).M(), Is.EqualTo(expectedMethodOutput));
       }
     }
 
@@ -105,11 +105,11 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> D2.M")]
     public void InstantiateShadowOfDerivedTypeWithOverride_ShouldOverrideTargetMethodFromDerivedType (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<D2_Shadow>();
-        Assert.That (instance.M(), Is.EqualTo ("D2_Shadow.M"));
-        Assert.That (((C) instance).M(), Is.EqualTo (expectedMethodOutput));
+        Assert.That(instance.M(), Is.EqualTo("D2_Shadow.M"));
+        Assert.That(((C) instance).M(), Is.EqualTo(expectedMethodOutput));
       }
     }
 
@@ -119,11 +119,11 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> D2.M", IgnoreReason = "RM-2745")]
     public void InstantiateShadowOfDerivedTypeWithoutOverrideOfDerivedTypeWithOverride_ShouldOverrideTargetMethodFromDerivedType (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
       {
         var instance = ObjectFactory.Create<E_Shadow>();
-        Assert.That (instance.M(), Is.EqualTo ("E_Shadow.M"));
-        Assert.That (((C) instance).M(), Is.EqualTo (expectedMethodOutput));
+        Assert.That(instance.M(), Is.EqualTo("E_Shadow.M"));
+        Assert.That(((C) instance).M(), Is.EqualTo(expectedMethodOutput));
       }
     }
 

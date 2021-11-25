@@ -48,17 +48,17 @@ namespace Remotion.UnitTests.Configuration
     {
       base.PostDeserialze();
 
-      CheckForDuplicateWellKownProviderName (_wellKnownProviderID);
+      CheckForDuplicateWellKownProviderName(_wellKnownProviderID);
     }
 
     public new Type GetTypeWithMatchingVersionNumber (ConfigurationProperty property, string assemblyName, string typeName)
     {
-      return base.GetTypeWithMatchingVersionNumber (property, assemblyName, typeName);
+      return base.GetTypeWithMatchingVersionNumber(property, assemblyName, typeName);
     }
 
     public new Type GetType (ConfigurationProperty property, AssemblyName assemblyName, string typeName)
     {
-      return base.GetType (property, assemblyName, typeName);
+      return base.GetType(property, assemblyName, typeName);
     }
 
     public new void InstantiateProviders (
@@ -67,29 +67,29 @@ namespace Remotion.UnitTests.Configuration
         Type providerType,
         params Type[] providerInterfaces)
     {
-      base.InstantiateProviders (providerSettingsCollection, providerCollection, providerType, providerInterfaces);
+      base.InstantiateProviders(providerSettingsCollection, providerCollection, providerType, providerInterfaces);
     }
 
     public new ExtendedProviderBase InstantiateProvider (ProviderSettings providerSettings, Type providerType, params Type[] providerInterfaces)
     {
-      return base.InstantiateProvider (providerSettings, providerType, providerInterfaces);
+      return base.InstantiateProvider(providerSettings, providerType, providerInterfaces);
     }
 
     protected override void EnsureWellKownProviders (ProviderCollection collection)
     {
-      base.EnsureWellKownProviders (collection);
+      base.EnsureWellKownProviders(collection);
 
-      collection.Add (new FakeWellKnownProvider (_wellKnownProviderID, new NameValueCollection()));
+      collection.Add(new FakeWellKnownProvider(_wellKnownProviderID, new NameValueCollection()));
     }
 
     protected override ConfigurationProperty CreateDefaultProviderNameProperty ()
     {
-      return CreateDefaultProviderNameProperty (_defaultProviderName, _defaultProviderID);
+      return CreateDefaultProviderNameProperty(_defaultProviderName, _defaultProviderID);
     }
 
     protected override ConfigurationProperty CreateProviderSettingsProperty ()
     {
-      return CreateProviderSettingsProperty (_providerCollectionName);
+      return CreateProviderSettingsProperty(_providerCollectionName);
     }
   }
 }

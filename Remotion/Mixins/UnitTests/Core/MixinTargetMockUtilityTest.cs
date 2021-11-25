@@ -35,42 +35,42 @@ namespace Remotion.Mixins.UnitTests.Core
 
       var mixin = new BT3Mixin1();
 
-      MixinTargetMockUtility.MockMixinTarget (mixin, thisMock, baseMock);
+      MixinTargetMockUtility.MockMixinTarget(mixin, thisMock, baseMock);
 
-      Assert.That (mixin.Target, Is.SameAs (thisMock));
-      Assert.That (mixin.Next, Is.SameAs (baseMock));
+      Assert.That(mixin.Target, Is.SameAs(thisMock));
+      Assert.That(mixin.Next, Is.SameAs(baseMock));
     }
 
     [Test]
     public void Mock_ThisConfig ()
     {
-      var repository = new MockRepository ();
+      var repository = new MockRepository();
 
-      var thisMock = repository.StrictMock<IBaseType32> ();
-      var mixin = new BT3Mixin2 ();
+      var thisMock = repository.StrictMock<IBaseType32>();
+      var mixin = new BT3Mixin2();
 
-      MixinTargetMockUtility.MockMixinTarget (mixin, thisMock);
-      Assert.That (mixin.Target, Is.SameAs (thisMock));
+      MixinTargetMockUtility.MockMixinTarget(mixin, thisMock);
+      Assert.That(mixin.Target, Is.SameAs(thisMock));
     }
 
     [Test]
     public void UninitializedMixin_This ()
     {
-      var mixin = new BT3Mixin1 ();
-      Assert.That (
+      var mixin = new BT3Mixin1();
+      Assert.That(
           () => mixin.Target,
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("Mixin has not been initialized yet."));
+              .With.Message.EqualTo("Mixin has not been initialized yet."));
     }
 
     [Test]
     public void UninitializedMixin_Base ()
     {
-      var mixin = new BT3Mixin1 ();
-      Assert.That (
+      var mixin = new BT3Mixin1();
+      Assert.That(
           () => mixin.Next,
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("Mixin has not been initialized yet."));
+              .With.Message.EqualTo("Mixin has not been initialized yet."));
     }
 
     [Test]
@@ -78,77 +78,77 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       var thisMock = new ClassOverridingMixinMembers();
       var baseMock = new object();
-      Assert.That (
-          () => MixinTargetMockUtility.CreateMixinWithMockedTarget<MixinWithAbstractMembers, object, object> (thisMock, baseMock),
+      Assert.That(
+          () => MixinTargetMockUtility.CreateMixinWithMockedTarget<MixinWithAbstractMembers, object, object>(thisMock, baseMock),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The type 'Remotion.Mixins.UnitTests.Core.TestDomain.MixinWithAbstractMembers' cannot be constructed because the assembled type is abstract."));
     }
 
     [Test]
     public void CreateMixinWithMockedTarget_ThisBase ()
     {
-      var repository = new MockRepository ();
+      var repository = new MockRepository();
 
-      var thisMock = repository.StrictMock<IBaseType31> ();
-      var baseMock = repository.StrictMock<IBaseType31> ();
+      var thisMock = repository.StrictMock<IBaseType31>();
+      var baseMock = repository.StrictMock<IBaseType31>();
 
-      BT3Mixin1 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin1, IBaseType31, IBaseType31> (thisMock, baseMock);
-      Assert.That (mixin.Target, Is.SameAs (thisMock));
-      Assert.That (mixin.Next, Is.SameAs (baseMock));
+      BT3Mixin1 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin1, IBaseType31, IBaseType31>(thisMock, baseMock);
+      Assert.That(mixin.Target, Is.SameAs(thisMock));
+      Assert.That(mixin.Next, Is.SameAs(baseMock));
     }
 
     [Test]
     public void CreateMixinWithMockedTarget_This ()
     {
-      var repository = new MockRepository ();
+      var repository = new MockRepository();
 
-      var thisMock = repository.StrictMock<IBaseType32> ();
+      var thisMock = repository.StrictMock<IBaseType32>();
 
       BT3Mixin2 mixin =
-          MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin2, IBaseType32> (thisMock);
-      Assert.That (mixin.Target, Is.SameAs (thisMock));
+          MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin2, IBaseType32>(thisMock);
+      Assert.That(mixin.Target, Is.SameAs(thisMock));
     }
 
     [Test]
     public void CreateMixinWithMockedTarget_NonPublicCtor ()
     {
-      var repository = new MockRepository ();
+      var repository = new MockRepository();
 
-      var thisMock = repository.StrictMock<IBaseType32> ();
+      var thisMock = repository.StrictMock<IBaseType32>();
 
-      BT3Mixin2 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin2, IBaseType32> (thisMock, 7);
-      Assert.That (mixin.Target, Is.SameAs (thisMock));
-      Assert.That (mixin.I, Is.EqualTo (7));
+      BT3Mixin2 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin2, IBaseType32>(thisMock, 7);
+      Assert.That(mixin.Target, Is.SameAs(thisMock));
+      Assert.That(mixin.I, Is.EqualTo(7));
     }
 
     [Test]
     public void SignalOnDeserialized_This ()
     {
-      var thisMock = new SerializableBaseType32Mock ();
+      var thisMock = new SerializableBaseType32Mock();
 
-      BT3Mixin2 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin2, IBaseType32> (thisMock);
-      var deserializedData = Serializer.SerializeAndDeserialize (Tuple.Create (thisMock, mixin));
+      BT3Mixin2 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin2, IBaseType32>(thisMock);
+      var deserializedData = Serializer.SerializeAndDeserialize(Tuple.Create(thisMock, mixin));
 
-      MixinTargetMockUtility.MockMixinTargetAfterDeserialization (deserializedData.Item2, deserializedData.Item1);
-      Assert.That (deserializedData.Item2.Target, Is.Not.Null);
-      Assert.That (deserializedData.Item2.Target, Is.SameAs (deserializedData.Item1));
+      MixinTargetMockUtility.MockMixinTargetAfterDeserialization(deserializedData.Item2, deserializedData.Item1);
+      Assert.That(deserializedData.Item2.Target, Is.Not.Null);
+      Assert.That(deserializedData.Item2.Target, Is.SameAs(deserializedData.Item1));
     }
 
     [Test]
     public void SignalOnDeserialized_ThisBase ()
     {
-      var thisMock = new SerializableBaseType31Mock ();
-      var baseMock = new SerializableBaseType31Mock ();
+      var thisMock = new SerializableBaseType31Mock();
+      var baseMock = new SerializableBaseType31Mock();
 
-      BT3Mixin1 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin1, IBaseType31, IBaseType31> (thisMock, baseMock);
-      var deserializedData = Serializer.SerializeAndDeserialize (Tuple.Create (thisMock, baseMock, mixin));
+      BT3Mixin1 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin1, IBaseType31, IBaseType31>(thisMock, baseMock);
+      var deserializedData = Serializer.SerializeAndDeserialize(Tuple.Create(thisMock, baseMock, mixin));
 
-      MixinTargetMockUtility.MockMixinTargetAfterDeserialization (deserializedData.Item3, deserializedData.Item1, deserializedData.Item2);
-      Assert.That (deserializedData.Item3.Target, Is.Not.Null);
-      Assert.That (deserializedData.Item3.Target, Is.SameAs (deserializedData.Item1));
-      Assert.That (deserializedData.Item3.Next, Is.Not.Null);
-      Assert.That (deserializedData.Item3.Next, Is.SameAs (deserializedData.Item2));
+      MixinTargetMockUtility.MockMixinTargetAfterDeserialization(deserializedData.Item3, deserializedData.Item1, deserializedData.Item2);
+      Assert.That(deserializedData.Item3.Target, Is.Not.Null);
+      Assert.That(deserializedData.Item3.Target, Is.SameAs(deserializedData.Item1));
+      Assert.That(deserializedData.Item3.Next, Is.Not.Null);
+      Assert.That(deserializedData.Item3.Next, Is.SameAs(deserializedData.Item2));
     }
   }
 }

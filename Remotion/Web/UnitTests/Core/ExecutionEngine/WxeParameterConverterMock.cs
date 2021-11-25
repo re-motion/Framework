@@ -31,12 +31,12 @@ public class WxeParameterConverterMock: WxeParameterConverter
 
   public new string ConvertVarRefToString (WxeVariableReference varRef, NameObjectCollection callerVariables)
   {
-    return base.ConvertVarRefToString (varRef, callerVariables);
+    return base.ConvertVarRefToString(varRef, callerVariables);
   }
 
   public new string ConvertObjectToString (object value)
   {
-    return base.ConvertObjectToString (value);
+    return base.ConvertObjectToString(value);
   }
 
   public new void CheckForRequiredOutParameter ()
@@ -46,7 +46,7 @@ public class WxeParameterConverterMock: WxeParameterConverter
 
   public new object TryConvertObjectToString (object value)
   {
-    return base.TryConvertObjectToString (value);
+    return base.TryConvertObjectToString(value);
   }
 }
 

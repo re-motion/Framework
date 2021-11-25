@@ -32,45 +32,45 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       IBusinessObject instanceAsBusinessObject = instance;
       var boClass = instanceAsBusinessObject.BusinessObjectClass;
 
-      Assert.That (boClass.GetPropertyDefinitions ().Select (p => p.Identifier ).ToArray(),
+      Assert.That(boClass.GetPropertyDefinitions().Select(p => p.Identifier ).ToArray(),
           Has.Member("MixedProperty"));
     }
 
     [Test]
     public void MixedProperty_DefaultValue ()
     {
-      var instance = BindableDomainObjectWithMixedPersistentProperties.NewObject ();
+      var instance = BindableDomainObjectWithMixedPersistentProperties.NewObject();
       IBusinessObject instanceAsBusinessObject = instance;
       var boClass = instanceAsBusinessObject.BusinessObjectClass;
 
-      IBusinessObjectProperty mixedProperty = boClass.GetPropertyDefinition ("MixedProperty");
-      Assert.That (instanceAsBusinessObject.GetProperty (mixedProperty), Is.Null);
+      IBusinessObjectProperty mixedProperty = boClass.GetPropertyDefinition("MixedProperty");
+      Assert.That(instanceAsBusinessObject.GetProperty(mixedProperty), Is.Null);
     }
 
     [Test]
     public void MixedProperty_NonDefaultValue ()
     {
-      var instance = BindableDomainObjectWithMixedPersistentProperties.NewObject ();
+      var instance = BindableDomainObjectWithMixedPersistentProperties.NewObject();
       IBusinessObject instanceAsBusinessObject = instance;
       var boClass = instanceAsBusinessObject.BusinessObjectClass;
 
-      IBusinessObjectProperty mixedProperty = boClass.GetPropertyDefinition ("MixedProperty");
+      IBusinessObjectProperty mixedProperty = boClass.GetPropertyDefinition("MixedProperty");
       var dateTime = new DateTime(2008, 08, 01);
       ((IMixinAddingPersistentProperties) instance).MixedProperty = dateTime;
-      Assert.That (instanceAsBusinessObject.GetProperty (mixedProperty), Is.EqualTo (dateTime));
+      Assert.That(instanceAsBusinessObject.GetProperty(mixedProperty), Is.EqualTo(dateTime));
     }
 
     [Test]
     public void MixedProperty_NonDefaultValue_WithUnchangedValue ()
     {
-      var instance = BindableDomainObjectWithMixedPersistentProperties.NewObject ();
+      var instance = BindableDomainObjectWithMixedPersistentProperties.NewObject();
       IBusinessObject instanceAsBusinessObject = instance;
       var boClass = instanceAsBusinessObject.BusinessObjectClass;
 
-      IBusinessObjectProperty mixedProperty = boClass.GetPropertyDefinition ("MixedProperty");
+      IBusinessObjectProperty mixedProperty = boClass.GetPropertyDefinition("MixedProperty");
       var dateTime = ((IMixinAddingPersistentProperties) instance).MixedProperty;
       ((IMixinAddingPersistentProperties) instance).MixedProperty = dateTime;
-      Assert.That (instanceAsBusinessObject.GetProperty (mixedProperty), Is.EqualTo (dateTime));
+      Assert.That(instanceAsBusinessObject.GetProperty(mixedProperty), Is.EqualTo(dateTime));
     }
   }
 }

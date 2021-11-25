@@ -28,6 +28,6 @@ namespace OBWTest.ViewLayoutTests
     {
     }
 
-    private WxeStep Step1 = new WxePageStep ("ViewLayoutTests/Form.aspx");
+    private WxeStep Step1 = new WxePageStep("ViewLayoutTests/Form.aspx");
   }
 }

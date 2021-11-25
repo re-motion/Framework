@@ -31,55 +31,55 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _order1 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.Order1.GetObject<Order> ());
-      _orderItem1 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>());
-      _orderItem2 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.OrderItem2.GetObject<OrderItem>());
+      _order1 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.Order1.GetObject<Order>());
+      _orderItem1 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>());
+      _orderItem2 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.OrderItem2.GetObject<OrderItem>());
 
-      _orderItem3 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.OrderItem3.GetObject<OrderItem>());
-      _orderItem4 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.OrderItem4.GetObject<OrderItem>());
+      _orderItem3 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.OrderItem3.GetObject<OrderItem>());
+      _orderItem4 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.OrderItem4.GetObject<OrderItem>());
 
-      ExecuteInWriteableSubTransaction (() => _order1.OrderItems.Add (_orderItem3));
-      ExecuteInWriteableSubTransaction (() => _orderItem4.Order.EnsureDataAvailable ());
+      ExecuteInWriteableSubTransaction(() => _order1.OrderItems.Add(_orderItem3));
+      ExecuteInWriteableSubTransaction(() => _orderItem4.Order.EnsureDataAvailable());
     }
 
     [Test]
     public void RelationSetInReadOnlyRootTransaction_IsForbidden ()
     {
-      CheckPropertyEquivalent (ReadOnlyRootTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
-      CheckPropertyEquivalent (ReadOnlyMiddleTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
-      CheckPropertyEquivalent (WriteableSubTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2, _orderItem3 }, new[] { _orderItem1, _orderItem2 });
+      CheckPropertyEquivalent(ReadOnlyRootTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
+      CheckPropertyEquivalent(ReadOnlyMiddleTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
+      CheckPropertyEquivalent(WriteableSubTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2, _orderItem3 }, new[] { _orderItem1, _orderItem2 });
 
-      CheckForbidden (() => ExecuteInReadOnlyRootTransaction (() => _order1.OrderItems.Add (_orderItem4)), "RelationChanging");
-      CheckForbidden (() => ExecuteInReadOnlyRootTransaction (() => _order1.OrderItems.Insert (0, _orderItem4)), "RelationChanging");
-      CheckForbidden (() => ExecuteInReadOnlyRootTransaction (() => _order1.OrderItems.Remove (_orderItem1)), "RelationChanging");
-      CheckForbidden (() => ExecuteInReadOnlyRootTransaction (() => _order1.OrderItems[0] = _orderItem4), "RelationChanging");
-      CheckForbidden (() => ExecuteInReadOnlyRootTransaction (() => _order1.OrderItems.Clear ()), "RelationChanging");
-      CheckForbidden (() => ExecuteInReadOnlyRootTransaction (() => _order1.OrderItems = new ObjectList<OrderItem>()), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyRootTransaction(() => _order1.OrderItems.Add(_orderItem4)), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyRootTransaction(() => _order1.OrderItems.Insert(0, _orderItem4)), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyRootTransaction(() => _order1.OrderItems.Remove(_orderItem1)), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyRootTransaction(() => _order1.OrderItems[0] = _orderItem4), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyRootTransaction(() => _order1.OrderItems.Clear()), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyRootTransaction(() => _order1.OrderItems = new ObjectList<OrderItem>()), "RelationChanging");
 
-      CheckPropertyEquivalent (ReadOnlyRootTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
-      CheckPropertyEquivalent (ReadOnlyMiddleTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
-      CheckPropertyEquivalent (WriteableSubTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2, _orderItem3 }, new[] { _orderItem1, _orderItem2 });
+      CheckPropertyEquivalent(ReadOnlyRootTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
+      CheckPropertyEquivalent(ReadOnlyMiddleTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
+      CheckPropertyEquivalent(WriteableSubTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2, _orderItem3 }, new[] { _orderItem1, _orderItem2 });
     }
 
     [Test]
     public void RelationSetInReadOnlyMiddleTransaction_IsForbidden ()
     {
-      CheckPropertyEquivalent (ReadOnlyRootTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
-      CheckPropertyEquivalent (ReadOnlyMiddleTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
-      CheckPropertyEquivalent (WriteableSubTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2, _orderItem3 }, new[] { _orderItem1, _orderItem2 });
+      CheckPropertyEquivalent(ReadOnlyRootTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
+      CheckPropertyEquivalent(ReadOnlyMiddleTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
+      CheckPropertyEquivalent(WriteableSubTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2, _orderItem3 }, new[] { _orderItem1, _orderItem2 });
 
-      CheckForbidden (() => ExecuteInReadOnlyMiddleTransaction (() => _order1.OrderItems.Add (_orderItem4)), "RelationChanging");
-      CheckForbidden (() => ExecuteInReadOnlyMiddleTransaction (() => _order1.OrderItems.Insert (0, _orderItem4)), "RelationChanging");
-      CheckForbidden (() => ExecuteInReadOnlyMiddleTransaction (() => _order1.OrderItems.Remove (_orderItem1)), "RelationChanging");
-      CheckForbidden (() => ExecuteInReadOnlyMiddleTransaction (() => _order1.OrderItems[0] = _orderItem4), "RelationChanging");
-      CheckForbidden (() => ExecuteInReadOnlyMiddleTransaction (() => _order1.OrderItems.Clear ()), "RelationChanging");
-      CheckForbidden (() => ExecuteInReadOnlyMiddleTransaction (() => _order1.OrderItems = new ObjectList<OrderItem> ()), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyMiddleTransaction(() => _order1.OrderItems.Add(_orderItem4)), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyMiddleTransaction(() => _order1.OrderItems.Insert(0, _orderItem4)), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyMiddleTransaction(() => _order1.OrderItems.Remove(_orderItem1)), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyMiddleTransaction(() => _order1.OrderItems[0] = _orderItem4), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyMiddleTransaction(() => _order1.OrderItems.Clear()), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyMiddleTransaction(() => _order1.OrderItems = new ObjectList<OrderItem>()), "RelationChanging");
 
-      CheckPropertyEquivalent (ReadOnlyRootTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
-      CheckPropertyEquivalent (ReadOnlyMiddleTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
-      CheckPropertyEquivalent (WriteableSubTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2, _orderItem3 }, new[] { _orderItem1, _orderItem2 });
+      CheckPropertyEquivalent(ReadOnlyRootTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
+      CheckPropertyEquivalent(ReadOnlyMiddleTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2 }, new[] { _orderItem1, _orderItem2 });
+      CheckPropertyEquivalent(WriteableSubTransaction, _order1, o => o.OrderItems, new[] { _orderItem1, _orderItem2, _orderItem3 }, new[] { _orderItem1, _orderItem2 });
     }
   }
 }

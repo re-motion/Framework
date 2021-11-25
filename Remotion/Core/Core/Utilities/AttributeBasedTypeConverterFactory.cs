@@ -35,13 +35,13 @@ namespace Remotion.Utilities
 
     public TypeConverter? CreateTypeConverterOrDefault (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      TypeConverterAttribute? typeConverter = AttributeUtility.GetCustomAttribute<TypeConverterAttribute> (type, true);
+      ArgumentUtility.CheckNotNull("type", type);
+      TypeConverterAttribute? typeConverter = AttributeUtility.GetCustomAttribute<TypeConverterAttribute>(type, true);
       if (typeConverter == null)
         return null;
 
-      var typeConverterType = TypeUtility.GetType (typeConverter.ConverterTypeName, true)!;
-      return (TypeConverter) Activator.CreateInstance (typeConverterType)!;
+      var typeConverterType = TypeUtility.GetType(typeConverter.ConverterTypeName, true)!;
+      return (TypeConverter) Activator.CreateInstance(typeConverterType)!;
     }
   }
 }

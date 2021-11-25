@@ -28,13 +28,13 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     [Test]
     public void ValidateWithNoErrors ()
     {
-      using (MixinConfiguration.BuildNew().EnterScope ())
+      using (MixinConfiguration.BuildNew().EnterScope())
       {
-        using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
+        using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof (NullMixin)).EnterScope())
         {
-          var data = MixinConfiguration.ActiveConfiguration.Validate ();
-          Assert.That (data.GetNumberOfSuccesses () > 0, Is.True);
-          Assert.That (data.GetNumberOfFailures (), Is.EqualTo (0));
+          var data = MixinConfiguration.ActiveConfiguration.Validate();
+          Assert.That(data.GetNumberOfSuccesses() > 0, Is.True);
+          Assert.That(data.GetNumberOfFailures(), Is.EqualTo(0));
         }
       }
     }
@@ -42,12 +42,12 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     [Test]
     public void ValidateWithErrors ()
     {
-      using (MixinConfiguration.BuildNew().EnterScope ())
+      using (MixinConfiguration.BuildNew().EnterScope())
       {
-        using (MixinConfiguration.BuildFromActive().ForClass<int> ().Clear().AddMixins (typeof (NullMixin)).EnterScope())
+        using (MixinConfiguration.BuildFromActive().ForClass<int>().Clear().AddMixins(typeof (NullMixin)).EnterScope())
         {
-          var data = MixinConfiguration.ActiveConfiguration.Validate ();
-          Assert.That (data.GetNumberOfFailures () > 0, Is.True);
+          var data = MixinConfiguration.ActiveConfiguration.Validate();
+          Assert.That(data.GetNumberOfFailures() > 0, Is.True);
         }
       }
     }
@@ -60,13 +60,13 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     [Test]
     public void ValidateWithGenerics_IgnoresGenerics ()
     {
-      using (MixinConfiguration.BuildNew ()
-          .ForClass (typeof (KeyValuePair<,>)).Clear ().AddMixins (typeof (NullMixin))
-          .ForClass (typeof (UninstantiableGeneric<>)).Clear().AddMixins (typeof (NullMixin))
-          .EnterScope ())
+      using (MixinConfiguration.BuildNew()
+          .ForClass(typeof (KeyValuePair<,>)).Clear().AddMixins(typeof (NullMixin))
+          .ForClass(typeof (UninstantiableGeneric<>)).Clear().AddMixins(typeof (NullMixin))
+          .EnterScope())
       {
-        var data = MixinConfiguration.ActiveConfiguration.Validate ();
-        Assert.That (data.GetNumberOfFailures (), Is.EqualTo (0));
+        var data = MixinConfiguration.ActiveConfiguration.Validate();
+        Assert.That(data.GetNumberOfFailures(), Is.EqualTo(0));
       }
     }
   }

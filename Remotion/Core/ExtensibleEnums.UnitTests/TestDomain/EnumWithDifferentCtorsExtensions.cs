@@ -23,32 +23,32 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
   {
     public static EnumWithDifferentCtors IDOnly (this ExtensibleEnumDefinition<EnumWithDifferentCtors> enumWithDifferentCtors)
     {
-      return new EnumWithDifferentCtors ("ValueName");
+      return new EnumWithDifferentCtors("ValueName");
     }
 
     public static EnumWithDifferentCtors DeclarationSpaceAndName (this ExtensibleEnumDefinition<EnumWithDifferentCtors> enumWithDifferentCtors)
     {
-      return new EnumWithDifferentCtors ("DeclarationSpace", "ValueName");
+      return new EnumWithDifferentCtors("DeclarationSpace", "ValueName");
     }
 
     public static EnumWithDifferentCtors NameAndNullDeclarationSpace (this ExtensibleEnumDefinition<EnumWithDifferentCtors> enumWithDifferentCtors)
     {
-      return new EnumWithDifferentCtors ((string) null, "ValueName");
+      return new EnumWithDifferentCtors((string) null, "ValueName");
     }
 
     public static EnumWithDifferentCtors NameAndEmptyDeclarationSpace (this ExtensibleEnumDefinition<EnumWithDifferentCtors> enumWithDifferentCtors)
     {
-      return new EnumWithDifferentCtors ("", "ValueName");
+      return new EnumWithDifferentCtors("", "ValueName");
     }
 
     public static EnumWithDifferentCtors DeclaringTypeAndName (this ExtensibleEnumDefinition<EnumWithDifferentCtors> enumWithDifferentCtors)
     {
-      return new EnumWithDifferentCtors (typeof (EnumWithDifferentCtorsExtensions), "ValueName");
+      return new EnumWithDifferentCtors(typeof (EnumWithDifferentCtorsExtensions), "ValueName");
     }
 
     public static EnumWithDifferentCtors CurrentMethod (this ExtensibleEnumDefinition<EnumWithDifferentCtors> enumWithDifferentCtors)
     {
-      return new EnumWithDifferentCtors (MethodBase.GetCurrentMethod());
+      return new EnumWithDifferentCtors(MethodBase.GetCurrentMethod());
     }
   }
 }

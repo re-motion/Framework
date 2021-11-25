@@ -28,24 +28,24 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     [Test]
     public void DefaultCtor ()
     {
-      var accessConditions = new AclExpansionAccessConditions ();
-      Assert.That (accessConditions.AbstractRole, Is.Null);
-      Assert.That (accessConditions.IsAbstractRoleRequired, Is.EqualTo(false));
-      Assert.That (accessConditions.HasOwningGroupCondition, Is.EqualTo (false));
-      Assert.That (accessConditions.HasOwningTenantCondition, Is.EqualTo (false));
-      Assert.That (accessConditions.IsOwningUserRequired, Is.EqualTo (false));
+      var accessConditions = new AclExpansionAccessConditions();
+      Assert.That(accessConditions.AbstractRole, Is.Null);
+      Assert.That(accessConditions.IsAbstractRoleRequired, Is.EqualTo(false));
+      Assert.That(accessConditions.HasOwningGroupCondition, Is.EqualTo(false));
+      Assert.That(accessConditions.HasOwningTenantCondition, Is.EqualTo(false));
+      Assert.That(accessConditions.IsOwningUserRequired, Is.EqualTo(false));
 
-      Assert.That (accessConditions.OwningGroup, Is.EqualTo (null));
-      Assert.That (accessConditions.GroupHierarchyCondition, Is.EqualTo (GroupHierarchyCondition.Undefined));
+      Assert.That(accessConditions.OwningGroup, Is.EqualTo(null));
+      Assert.That(accessConditions.GroupHierarchyCondition, Is.EqualTo(GroupHierarchyCondition.Undefined));
     }
 
 
     [Test]
     public void EqualsByCheckingCompoundValueEqualityComparerParticipatingObjects ()
     {
-      var a = new AclExpansionAccessConditions ();
-      var equalityObjects = AclExpansionAccessConditions.EqualityComparer.GetEqualityParticipatingObjects (a);
-      Assert.That (equalityObjects, Is.EqualTo (new object[] { a.AbstractRole, a.OwningGroup, a.OwningTenant, 
+      var a = new AclExpansionAccessConditions();
+      var equalityObjects = AclExpansionAccessConditions.EqualityComparer.GetEqualityParticipatingObjects(a);
+      Assert.That(equalityObjects, Is.EqualTo(new object[] { a.AbstractRole, a.OwningGroup, a.OwningTenant, 
         a.GroupHierarchyCondition, a.TenantHierarchyCondition, a.IsOwningUserRequired }));
     }
 
@@ -53,9 +53,9 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     [Test]
     public void GetHashCodeTest ()
     {
-      var aclExpansionAccessConditions = new AclExpansionAccessConditions ();
-      Assert.That (aclExpansionAccessConditions.GetHashCode(), 
-        Is.EqualTo (AclExpansionAccessConditions.EqualityComparer.GetHashCode (aclExpansionAccessConditions)));
+      var aclExpansionAccessConditions = new AclExpansionAccessConditions();
+      Assert.That(aclExpansionAccessConditions.GetHashCode(), 
+        Is.EqualTo(AclExpansionAccessConditions.EqualityComparer.GetHashCode(aclExpansionAccessConditions)));
     }
   }
 }

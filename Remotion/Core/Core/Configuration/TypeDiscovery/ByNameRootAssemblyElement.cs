@@ -42,8 +42,8 @@ namespace Remotion.Configuration.TypeDiscovery
 
     public AssemblyNameSpecification CreateSpecification ()
     {
-      var assemblyName = new AssemblyName (Name);
-      return new AssemblyNameSpecification (assemblyName, IncludeReferencedAssemblies);
+      var assemblyName = new AssemblyName(Name);
+      return new AssemblyNameSpecification(assemblyName, IncludeReferencedAssemblies);
     }
   }
 }

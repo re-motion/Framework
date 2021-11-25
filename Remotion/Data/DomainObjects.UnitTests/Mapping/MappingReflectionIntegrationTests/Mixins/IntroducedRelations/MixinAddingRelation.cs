@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     public virtual RelationTarget RelationTarget
     {
       get { return Properties[typeof (MixinAddingRelation), "RelationTarget"].GetValue<RelationTarget>(); }
-      set { Properties[typeof (MixinAddingRelation), "RelationTarget"].SetValue (value); }
+      set { Properties[typeof (MixinAddingRelation), "RelationTarget"].SetValue(value); }
     }
   }
 }

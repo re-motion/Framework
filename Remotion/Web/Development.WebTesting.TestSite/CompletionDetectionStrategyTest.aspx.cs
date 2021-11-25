@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       MyDelayedPostBack.Command += DelayedPostBackCommand;
       MyDelayedReset.Command += DelayedResetCommand;
@@ -33,13 +33,13 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void DelayedPostBackCommand (object sender, CommandEventArgs e)
     {
-      Thread.Sleep (TimeSpan.FromSeconds (1));
+      Thread.Sleep(TimeSpan.FromSeconds(1));
     }
 
     private void DelayedResetCommand (object sender, CommandEventArgs e)
     {
-      Response.Redirect ("CompletionDetectionStrategyTest.wxe", false);
-      Thread.Sleep (TimeSpan.FromSeconds (1));
+      Response.Redirect("CompletionDetectionStrategyTest.wxe", false);
+      Thread.Sleep(TimeSpan.FromSeconds(1));
     }
   }
 }

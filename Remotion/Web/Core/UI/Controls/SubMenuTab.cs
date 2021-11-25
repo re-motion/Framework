@@ -50,7 +50,7 @@ namespace Remotion.Web.UI.Controls
 
     protected internal void SetParent (MainMenuTab parent)
     {
-      ArgumentUtility.CheckNotNull ("parent", parent);
+      ArgumentUtility.CheckNotNull("parent", parent);
       _parent = parent;
     }
   }

@@ -28,7 +28,7 @@ namespace Remotion.Utilities
   /// </summary>
   sealed partial class MemberInfoEqualityComparer<T> : IEqualityComparer<T> where T:MemberInfo
   {
-    public static readonly MemberInfoEqualityComparer<T> Instance = new MemberInfoEqualityComparer<T> ();
+    public static readonly MemberInfoEqualityComparer<T> Instance = new MemberInfoEqualityComparer<T>();
 
     private MemberInfoEqualityComparer () { }
 
@@ -51,10 +51,10 @@ namespace Remotion.Utilities
     public bool Equals (T? one, T? two)
     {
       // Same reference => true of course
-      if (ReferenceEquals (one, two))
+      if (ReferenceEquals(one, two))
         return true;
 
-      if (ReferenceEquals (one, null) || ReferenceEquals (null, two))
+      if (ReferenceEquals(one, null) || ReferenceEquals(null, two))
         return false;
 
       // Types are always reference equals or not equal at all.
@@ -87,8 +87,8 @@ namespace Remotion.Utilities
       var twoAsMethodInfo = two as MethodInfo;
       if (oneAsMethodInfo != null && twoAsMethodInfo != null && oneAsMethodInfo.IsGenericMethod)
       {
-        var genericArgumentsOne = oneAsMethodInfo.GetGenericArguments ();
-        var genericArgumentsTwo = twoAsMethodInfo.GetGenericArguments ();
+        var genericArgumentsOne = oneAsMethodInfo.GetGenericArguments();
+        var genericArgumentsTwo = twoAsMethodInfo.GetGenericArguments();
 
         // No LINQ expression for performance reasons
         // ReSharper disable LoopCanBeConvertedToQuery
@@ -113,20 +113,20 @@ namespace Remotion.Utilities
     public int GetHashCode (T memberInfo)
     {
       if (memberInfo == null)
-        throw new ArgumentNullException ("memberInfo");
+        throw new ArgumentNullException("memberInfo");
  
       // DeclaringType can return null, even if ReSharper thinks otherwise.
       // ReSharper disable ConditionIsAlwaysTrueOrFalse
       if (memberInfo.DeclaringType != null && memberInfo.DeclaringType.IsArray)
       // ReSharper restore ConditionIsAlwaysTrueOrFalse
-        return GetHashCodeOrZero (memberInfo.DeclaringType) ^ GetHashCodeOrZero (memberInfo.Name) ^ GetHashCodeOrZero (memberInfo.Module);
+        return GetHashCodeOrZero(memberInfo.DeclaringType) ^ GetHashCodeOrZero(memberInfo.Name) ^ GetHashCodeOrZero(memberInfo.Module);
       else
-        return GetHashCodeOrZero (memberInfo.DeclaringType) ^ GetHashCodeOrZero (memberInfo.MetadataToken) ^ GetHashCodeOrZero (memberInfo.Module);
+        return GetHashCodeOrZero(memberInfo.DeclaringType) ^ GetHashCodeOrZero(memberInfo.MetadataToken) ^ GetHashCodeOrZero(memberInfo.Module);
     }
 
     private int GetHashCodeOrZero (object? valueOrNull)
     {
-      return valueOrNull != null ? valueOrNull.GetHashCode () : 0;
+      return valueOrNull != null ? valueOrNull.GetHashCode() : 0;
     }
   }
 }

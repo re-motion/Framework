@@ -41,6 +41,6 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
       set { Variables["ReturnedObjectWithAllDataTypes"] = value; }
     }
 
-    private WxeStep Step1 = new WxeUserControlStep ("~/SecondControl.ascx");
+    private WxeStep Step1 = new WxeUserControlStep("~/SecondControl.ascx");
   }
 }

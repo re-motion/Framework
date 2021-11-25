@@ -31,13 +31,13 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   [Serializable]
   public class EagerFetcher : IEagerFetcher
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (EagerFetcher));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof (EagerFetcher));
 
     private readonly IFetchedRelationDataRegistrationAgent _registrationAgent;
 
     public EagerFetcher (IFetchedRelationDataRegistrationAgent registrationAgent)
     {
-      ArgumentUtility.CheckNotNull ("registrationAgent", registrationAgent);
+      ArgumentUtility.CheckNotNull("registrationAgent", registrationAgent);
       _registrationAgent = registrationAgent;
     }
 
@@ -52,10 +52,10 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         IFetchEnabledObjectLoader fetchResultLoader,
         LoadedObjectDataPendingRegistrationCollector pendingRegistrationCollector)
     {
-      ArgumentUtility.CheckNotNull ("originatingObjects", originatingObjects);
-      ArgumentUtility.CheckNotNull ("fetchQueries", fetchQueries);
-      ArgumentUtility.CheckNotNull ("fetchResultLoader", fetchResultLoader);
-      ArgumentUtility.CheckNotNull ("pendingRegistrationCollector", pendingRegistrationCollector);
+      ArgumentUtility.CheckNotNull("originatingObjects", originatingObjects);
+      ArgumentUtility.CheckNotNull("fetchQueries", fetchQueries);
+      ArgumentUtility.CheckNotNull("fetchResultLoader", fetchResultLoader);
+      ArgumentUtility.CheckNotNull("pendingRegistrationCollector", pendingRegistrationCollector);
       
       if (originatingObjects.Count <= 0)
         return;
@@ -65,14 +65,14 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         var relationEndPointDefinition = item.Key;
         var fetchQuery = item.Value;
 
-        s_log.DebugFormat (
+        s_log.DebugFormat(
             "Eager fetching objects for {0} via query {1} ('{2}').",
             relationEndPointDefinition.PropertyName,
             fetchQuery.ID,
             fetchQuery.Statement);
 
-        var fetchedObjects = fetchResultLoader.GetOrLoadFetchQueryResult (fetchQuery, pendingRegistrationCollector);
-        s_log.DebugFormat (
+        var fetchedObjects = fetchResultLoader.GetOrLoadFetchQueryResult(fetchQuery, pendingRegistrationCollector);
+        s_log.DebugFormat(
             "The eager fetch query for {0} yielded {1} related objects for {2} original objects.",
             relationEndPointDefinition.PropertyName,
             fetchedObjects.Count,
@@ -80,11 +80,11 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
         try
         {
-          _registrationAgent.GroupAndRegisterRelatedObjects (relationEndPointDefinition, originatingObjects, fetchedObjects);
+          _registrationAgent.GroupAndRegisterRelatedObjects(relationEndPointDefinition, originatingObjects, fetchedObjects);
         }
         catch (InvalidOperationException ex)
         {
-          throw new UnexpectedQueryResultException ("Eager fetching encountered an unexpected query result: " + ex.Message, ex);
+          throw new UnexpectedQueryResultException("Eager fetching encountered an unexpected query result: " + ex.Message, ex);
         }
       }
     }

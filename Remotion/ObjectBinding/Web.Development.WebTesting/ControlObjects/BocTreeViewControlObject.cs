@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public BocTreeViewControlObject ([NotNull] ControlObjectContext context)
         : base (context)
     {
-      _metaRootNode = new BocTreeViewNodeControlObject (context);
+      _metaRootNode = new BocTreeViewNodeControlObject(context);
     }
 
     /// <summary>
@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     [Obsolete ("This method is equivalent to .GetNode().WithIndex (1), which should be used instead. (Version 3.0.0-alpha.14)", false)]
     public BocTreeViewNodeControlObject GetRootNode ()
     {
-      return _metaRootNode.GetNode().WithIndex (1);
+      return _metaRootNode.GetNode().WithIndex(1);
     }
 
     /// <inheritdoc/>
@@ -60,15 +60,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public BocTreeViewNodeControlObject GetNode (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return GetNode().WithItemID (itemID);
+      return GetNode().WithItemID(itemID);
     }
 
     /// <inheritdoc/>
     public BocTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
-      return GetNode().WithIndex (oneBasedIndex);
+      return GetNode().WithIndex(oneBasedIndex);
     }
 
     /// <inheritdoc/>
@@ -80,25 +80,25 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public BocTreeViewNodeControlObject GetNodeInHierarchy (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return GetNodeInHierarchy().WithItemID (itemID);
+      return GetNodeInHierarchy().WithItemID(itemID);
     }
     
     /// <inheritdoc/>
     public BocTreeViewNodeControlObject GetNodeInHierarchy (int oneBasedIndex)
     {
-      return GetNodeInHierarchy().WithIndex (oneBasedIndex);
+      return GetNodeInHierarchy().WithIndex(oneBasedIndex);
     }
 
     public IReadOnlyList<string> GetValidationErrors ()
     {
-      return GetValidationErrors (GetScopeWithReferenceInformation());
+      return GetValidationErrors(GetScopeWithReferenceInformation());
     }
 
     public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
     {
-      return GetValidationErrorsForReadOnly (GetScopeWithReferenceInformation());
+      return GetValidationErrorsForReadOnly(GetScopeWithReferenceInformation());
     }
 
     protected override ElementScope GetLabeledElementScope ()
@@ -108,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private ElementScope GetScopeWithReferenceInformation ()
     {
-      return GetNode().WithIndex (1).Scope.FindXPath ("..");
+      return GetNode().WithIndex(1).Scope.FindXPath("..");
     }
   }
 }

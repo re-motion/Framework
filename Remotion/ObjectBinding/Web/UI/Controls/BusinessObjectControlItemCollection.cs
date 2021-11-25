@@ -81,7 +81,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public virtual string? ItemID
     {
       get { return null; }
-      set { throw new NotSupportedException ("Implement ItemID in a specialized class, if the class supports IDs."); }
+      set { throw new NotSupportedException("Implement ItemID in a specialized class, if the class supports IDs."); }
     }
 
     public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)

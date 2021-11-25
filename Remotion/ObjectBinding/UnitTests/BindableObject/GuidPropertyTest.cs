@@ -33,16 +33,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       base.SetUp();
 
-      _businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ();
+      _businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
     }
 
     [Test]
     public void Initialize ()
     {
-      IBusinessObjectStringProperty property = new GuidProperty (
-          CreateParameters (
+      IBusinessObjectStringProperty property = new GuidProperty(
+          CreateParameters(
               _businessObjectProvider,
-              GetPropertyInfo (typeof (ClassWithAllDataTypes), "Guid"),
+              GetPropertyInfo(typeof (ClassWithAllDataTypes), "Guid"),
               typeof (Guid),
               typeof (Guid),
               null,
@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               true,
               false));
 
-      Assert.That (property.MaxLength, Is.EqualTo (38));
+      Assert.That(property.MaxLength, Is.EqualTo(38));
     }
 
     [Test]
@@ -58,31 +58,31 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       PropertyBase property = GetScalarProperty();
 
-      Assert.That (property.ConvertFromNativePropertyType (new Guid (c_expectedGuidString)), Is.EqualTo (c_expectedGuidString));
-      Assert.That (property.ConvertFromNativePropertyType (Guid.Empty), Is.EqualTo (c_guidEmptyString));
-      Assert.That (property.ConvertFromNativePropertyType (null), Is.EqualTo (null));
+      Assert.That(property.ConvertFromNativePropertyType(new Guid(c_expectedGuidString)), Is.EqualTo(c_expectedGuidString));
+      Assert.That(property.ConvertFromNativePropertyType(Guid.Empty), Is.EqualTo(c_guidEmptyString));
+      Assert.That(property.ConvertFromNativePropertyType(null), Is.EqualTo(null));
     }
 
     [Test]
     public void ConvertFromNativePropertyType_Array ()
     {
       PropertyBase property = GetArrayProperty();
-      Guid[] guids = new [] { new Guid (c_expectedGuidString), Guid.Empty, new Guid (c_expectedGuidString)};
+      Guid[] guids = new [] { new Guid(c_expectedGuidString), Guid.Empty, new Guid(c_expectedGuidString)};
       string[] expectedStrings = new [] { c_expectedGuidString, c_guidEmptyString, c_expectedGuidString };
 
-      Assert.That (property.ConvertFromNativePropertyType (guids), Is.EqualTo (expectedStrings));
-      Assert.That (property.ConvertFromNativePropertyType (new Guid[0]), Is.EqualTo (new string[0]));
-      Assert.That (property.ConvertFromNativePropertyType (null), Is.EqualTo (null));
+      Assert.That(property.ConvertFromNativePropertyType(guids), Is.EqualTo(expectedStrings));
+      Assert.That(property.ConvertFromNativePropertyType(new Guid[0]), Is.EqualTo(new string[0]));
+      Assert.That(property.ConvertFromNativePropertyType(null), Is.EqualTo(null));
     }
 
     [Test]
     public void ConvertFromNativePropertyType_NullableArray ()
     {
-      PropertyBase property = GetNullableArrayProperty ();
-      Guid?[] guids = new Guid?[] { new Guid (c_expectedGuidString), Guid.Empty, null, new Guid (c_expectedGuidString) };
+      PropertyBase property = GetNullableArrayProperty();
+      Guid?[] guids = new Guid?[] { new Guid(c_expectedGuidString), Guid.Empty, null, new Guid(c_expectedGuidString) };
       string[] expectedStrings = new [] { c_expectedGuidString, c_guidEmptyString, null, c_expectedGuidString };
 
-      Assert.That (property.ConvertFromNativePropertyType (guids), Is.EqualTo (expectedStrings));
+      Assert.That(property.ConvertFromNativePropertyType(guids), Is.EqualTo(expectedStrings));
     }
 
     [Test]
@@ -90,40 +90,40 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       PropertyBase property = GetScalarProperty();
 
-      Assert.That (property.ConvertToNativePropertyType (c_expectedGuidString), Is.EqualTo (new Guid (c_expectedGuidString)));
-      Assert.That (property.ConvertToNativePropertyType (string.Empty), Is.EqualTo (Guid.Empty));
-      Assert.That (property.ConvertToNativePropertyType (c_guidEmptyString), Is.EqualTo (Guid.Empty));
-      Assert.That (property.ConvertToNativePropertyType (null), Is.EqualTo (null));
+      Assert.That(property.ConvertToNativePropertyType(c_expectedGuidString), Is.EqualTo(new Guid(c_expectedGuidString)));
+      Assert.That(property.ConvertToNativePropertyType(string.Empty), Is.EqualTo(Guid.Empty));
+      Assert.That(property.ConvertToNativePropertyType(c_guidEmptyString), Is.EqualTo(Guid.Empty));
+      Assert.That(property.ConvertToNativePropertyType(null), Is.EqualTo(null));
     }
 
     [Test]
     public void ConvertToNativePropertyType_Array ()
     {
-      PropertyBase property = GetArrayProperty ();
-      Guid[] expectedGuids = new [] { new Guid (c_expectedGuidString), Guid.Empty, Guid.Empty, new Guid (c_expectedGuidString), Guid.Empty };
+      PropertyBase property = GetArrayProperty();
+      Guid[] expectedGuids = new [] { new Guid(c_expectedGuidString), Guid.Empty, Guid.Empty, new Guid(c_expectedGuidString), Guid.Empty };
       string[] strings = new [] { c_expectedGuidString, string.Empty, null, c_expectedGuidString, c_guidEmptyString };
 
-      Assert.That (property.ConvertToNativePropertyType (strings), Is.EqualTo (expectedGuids));
-      Assert.That (property.ConvertToNativePropertyType (new string[0]), Is.EqualTo (new Guid[0]));
-      Assert.That (property.ConvertToNativePropertyType (null), Is.EqualTo (null));
+      Assert.That(property.ConvertToNativePropertyType(strings), Is.EqualTo(expectedGuids));
+      Assert.That(property.ConvertToNativePropertyType(new string[0]), Is.EqualTo(new Guid[0]));
+      Assert.That(property.ConvertToNativePropertyType(null), Is.EqualTo(null));
     }
 
     [Test]
     public void ConvertToNativePropertyType_NullableArray ()
     {
       PropertyBase property = GetNullableArrayProperty();
-      Guid?[] expectedGuids = new Guid?[] { new Guid (c_expectedGuidString), Guid.Empty, null, new Guid (c_expectedGuidString), Guid.Empty };
+      Guid?[] expectedGuids = new Guid?[] { new Guid(c_expectedGuidString), Guid.Empty, null, new Guid(c_expectedGuidString), Guid.Empty };
       string[] strings = new [] { c_expectedGuidString, string.Empty, null, c_expectedGuidString, c_guidEmptyString };
 
-      Assert.That (property.ConvertToNativePropertyType (strings), Is.EqualTo (expectedGuids));
+      Assert.That(property.ConvertToNativePropertyType(strings), Is.EqualTo(expectedGuids));
     }
 
     private PropertyBase GetScalarProperty ()
     {
-      return new GuidProperty (
-          CreateParameters (
+      return new GuidProperty(
+          CreateParameters(
               _businessObjectProvider,
-              GetPropertyInfo (typeof (ClassWithValueType<Guid>), "Scalar"),
+              GetPropertyInfo(typeof (ClassWithValueType<Guid>), "Scalar"),
               typeof (Guid),
               typeof (Guid),
               null,
@@ -134,13 +134,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     private PropertyBase GetArrayProperty ()
     {
-      return new GuidProperty (
-          CreateParameters (
+      return new GuidProperty(
+          CreateParameters(
               _businessObjectProvider,
-              GetPropertyInfo (typeof (ClassWithValueType<Guid>), "Array"),
+              GetPropertyInfo(typeof (ClassWithValueType<Guid>), "Array"),
               typeof (Guid),
               typeof (Guid),
-              new ListInfo (typeof (Guid[]), typeof (Guid)),
+              new ListInfo(typeof (Guid[]), typeof (Guid)),
               false,
               false,
               false));
@@ -148,13 +148,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     private PropertyBase GetNullableArrayProperty ()
     {
-      return new GuidProperty (
-          CreateParameters (
+      return new GuidProperty(
+          CreateParameters(
               _businessObjectProvider,
-              GetPropertyInfo (typeof (ClassWithValueType<Guid>), "NullableArray"),
+              GetPropertyInfo(typeof (ClassWithValueType<Guid>), "NullableArray"),
               typeof (Guid),
               typeof (Guid),
-              new ListInfo (typeof (Guid?[]), typeof (Guid?)),
+              new ListInfo(typeof (Guid?[]), typeof (Guid?)),
               true,
               false,
               false));

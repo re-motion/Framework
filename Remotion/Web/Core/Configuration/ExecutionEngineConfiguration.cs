@@ -46,7 +46,7 @@ public class ExecutionEngineConfiguration
     set
     {
       if (value < 1)
-        throw new ArgumentException ("The FunctionTimeout must be greater than zero.");
+        throw new ArgumentException("The FunctionTimeout must be greater than zero.");
       _functionTimeout = value; 
     }
   }
@@ -72,7 +72,7 @@ public class ExecutionEngineConfiguration
     set
     {
       if (value < 0)
-        throw new ArgumentException ("The RefreshInterval must not be a negative number.");
+        throw new ArgumentException("The RefreshInterval must not be a negative number.");
       _refreshInterval = value; 
     }
   }
@@ -107,17 +107,17 @@ public class ExecutionEngineConfiguration
     get { return _defaultWxeHandler; }
     set 
     {
-      if (string.IsNullOrEmpty (value))
+      if (string.IsNullOrEmpty(value))
       {
         _defaultWxeHandler = string.Empty;
       }
       else
       {
         value = value.Trim();
-        ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-        if (value.StartsWith ("/") || value.IndexOf (":") != -1)
-          throw new ArgumentException (string.Format ("No absolute paths are allowed. Resource: '{0}'", value), "value");
-        if (! value.StartsWith ("~/"))
+        ArgumentUtility.CheckNotNullOrEmpty("value", value);
+        if (value.StartsWith("/") || value.IndexOf(":") != -1)
+          throw new ArgumentException(string.Format("No absolute paths are allowed. Resource: '{0}'", value), "value");
+        if (! value.StartsWith("~/"))
           value = "~/" + value;
         _defaultWxeHandler = value; 
       }

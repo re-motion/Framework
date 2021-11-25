@@ -34,90 +34,90 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectReferen
       base.SetUp();
 
       _referencedDataSourceStub = new Mock<IBusinessObjectDataSource>();
-      _referencedDataSourceStub.SetupProperty (_ => _.BusinessObject);
-      _referencedDataSourceStub.SetupProperty (_ => _.Mode);
+      _referencedDataSourceStub.SetupProperty(_ => _.BusinessObject);
+      _referencedDataSourceStub.SetupProperty(_ => _.Mode);
       _referencedDataSourceStub.Object.BusinessObject = new Mock<IBusinessObject>().Object;
       _referencedDataSourceStub.Object.Mode = DataSourceMode.Edit;
       _referencePropertyStub = new Mock<IBusinessObjectReferenceProperty>();
-      _referencePropertyStub.Setup (stub => stub.ReferenceClass).Returns (new Mock<IBusinessObjectClass>().Object);
-      _referencePropertyStub.Setup (stub => stub.ReflectedClass).Returns (new Mock<IBusinessObjectClass>().Object);
+      _referencePropertyStub.Setup(stub => stub.ReferenceClass).Returns(new Mock<IBusinessObjectClass>().Object);
+      _referencePropertyStub.Setup(stub => stub.ReflectedClass).Returns(new Mock<IBusinessObjectClass>().Object);
 
-      _dataSourceControl = new BusinessObjectReferenceDataSourceControl ();
+      _dataSourceControl = new BusinessObjectReferenceDataSourceControl();
       _dataSourceControl.DataSource = _referencedDataSourceStub.Object;
       _dataSourceControl.Property = _referencePropertyStub.Object;
       _dataSourceControl.BusinessObject = new Mock<IBusinessObject>().Object;
 
-      Assert.That (_dataSourceControl.IsReadOnly, Is.False);
+      Assert.That(_dataSourceControl.IsReadOnly, Is.False);
     }
     
     [Test]
     public void NoBoundControls_ReturnsTrue ()
     {
-      Assert.That (_dataSourceControl.Validate (), Is.True);
+      Assert.That(_dataSourceControl.Validate(), Is.True);
     }
 
     [Test]
     public void AllBoundControlsValid_ReturnsTrue ()
     {
       var firstControlStub = new Mock<IBusinessObjectBoundControl>();
-      firstControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
-      firstControlStub.Setup (stub => stub.HasValue).Returns (true);
-      firstControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (true);
-      _dataSourceControl.Register (firstControlStub.Object);
+      firstControlStub.Setup(stub => stub.HasValidBinding).Returns(true);
+      firstControlStub.Setup(stub => stub.HasValue).Returns(true);
+      firstControlStub.As<IValidatableControl>().Setup(stub => stub.Validate()).Returns(true);
+      _dataSourceControl.Register(firstControlStub.Object);
 
       var secondControlStub = new Mock<IBusinessObjectBoundControl>();
-      secondControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
-      secondControlStub.Setup (stub => stub.HasValue).Returns (true);
-      secondControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (true);
-      _dataSourceControl.Register (secondControlStub.Object);
+      secondControlStub.Setup(stub => stub.HasValidBinding).Returns(true);
+      secondControlStub.Setup(stub => stub.HasValue).Returns(true);
+      secondControlStub.As<IValidatableControl>().Setup(stub => stub.Validate()).Returns(true);
+      _dataSourceControl.Register(secondControlStub.Object);
 
-      Assert.That (_dataSourceControl.Validate (), Is.True);
+      Assert.That(_dataSourceControl.Validate(), Is.True);
     }
 
     [Test]
     public void NotAllBoundControlsValid_ReturnsFalse ()
     {
       var firstControlStub = new Mock<IBusinessObjectBoundControl>();
-      firstControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
-      firstControlStub.Setup (stub => stub.HasValue).Returns (true);
-      firstControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (true);
-      _dataSourceControl.Register (firstControlStub.Object);
+      firstControlStub.Setup(stub => stub.HasValidBinding).Returns(true);
+      firstControlStub.Setup(stub => stub.HasValue).Returns(true);
+      firstControlStub.As<IValidatableControl>().Setup(stub => stub.Validate()).Returns(true);
+      _dataSourceControl.Register(firstControlStub.Object);
 
       var secondControlStub = new Mock<IBusinessObjectBoundControl>();
-      secondControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
-      secondControlStub.Setup (stub => stub.HasValue).Returns (true);
-      secondControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (false);
-      _dataSourceControl.Register (secondControlStub.Object);
+      secondControlStub.Setup(stub => stub.HasValidBinding).Returns(true);
+      secondControlStub.Setup(stub => stub.HasValue).Returns(true);
+      secondControlStub.As<IValidatableControl>().Setup(stub => stub.Validate()).Returns(false);
+      _dataSourceControl.Register(secondControlStub.Object);
 
       var thirdControlStub = new Mock<IBusinessObjectBoundControl>();
-      thirdControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
-      thirdControlStub.Setup (stub => stub.HasValue).Returns (true);
-      thirdControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (true);
-      _dataSourceControl.Register (thirdControlStub.Object);
+      thirdControlStub.Setup(stub => stub.HasValidBinding).Returns(true);
+      thirdControlStub.Setup(stub => stub.HasValue).Returns(true);
+      thirdControlStub.As<IValidatableControl>().Setup(stub => stub.Validate()).Returns(true);
+      _dataSourceControl.Register(thirdControlStub.Object);
 
-      Assert.That (_dataSourceControl.Validate (), Is.False);
+      Assert.That(_dataSourceControl.Validate(), Is.False);
     }
 
 #pragma warning disable 612,618
     [Test]
     public void SupportsDefaultValue_True_AllBoundControlsEmpty_NotAllBoundControlsValid_ReturnsTrue ()
     {
-      _referencePropertyStub.Setup (stub => stub.SupportsDefaultValue).Returns (true);
-      _referencePropertyStub.Setup (stub => stub.IsDefaultValue (It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty[]>())).Returns (true);
+      _referencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
+      _referencePropertyStub.Setup(stub => stub.IsDefaultValue(It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty[]>())).Returns(true);
 
       var firstControlStub = new Mock<IBusinessObjectBoundControl>();
-      firstControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
-      firstControlStub.Setup (stub => stub.HasValue).Returns (false);
-      firstControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (true);
-      _dataSourceControl.Register (firstControlStub.Object);
+      firstControlStub.Setup(stub => stub.HasValidBinding).Returns(true);
+      firstControlStub.Setup(stub => stub.HasValue).Returns(false);
+      firstControlStub.As<IValidatableControl>().Setup(stub => stub.Validate()).Returns(true);
+      _dataSourceControl.Register(firstControlStub.Object);
 
       var secondControlStub = new Mock<IBusinessObjectBoundControl>();
-      secondControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
-      secondControlStub.Setup (stub => stub.HasValue).Returns (false);
-      secondControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (false);
-      _dataSourceControl.Register (secondControlStub.Object);
+      secondControlStub.Setup(stub => stub.HasValidBinding).Returns(true);
+      secondControlStub.Setup(stub => stub.HasValue).Returns(false);
+      secondControlStub.As<IValidatableControl>().Setup(stub => stub.Validate()).Returns(false);
+      _dataSourceControl.Register(secondControlStub.Object);
 
-      Assert.That (_dataSourceControl.Validate (), Is.True);
+      Assert.That(_dataSourceControl.Validate(), Is.True);
     }
 #pragma warning restore 612,618
 
@@ -128,21 +128,21 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectReferen
       _dataSourceControl.Required = true;
 
       var firstControlStub = new Mock<IBusinessObjectBoundControl>();
-      firstControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
-      firstControlStub.Setup (stub => stub.HasValue).Returns (false);
-      firstControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (true);
-      _dataSourceControl.Register (firstControlStub.Object);
+      firstControlStub.Setup(stub => stub.HasValidBinding).Returns(true);
+      firstControlStub.Setup(stub => stub.HasValue).Returns(false);
+      firstControlStub.As<IValidatableControl>().Setup(stub => stub.Validate()).Returns(true);
+      _dataSourceControl.Register(firstControlStub.Object);
 
       var secondControlStub = new Mock<IBusinessObjectBoundControl>();
-      secondControlStub.Setup (stub => stub.HasValidBinding).Returns (true);
-      secondControlStub.Setup (stub => stub.HasValue).Returns (false);
-      secondControlStub.As<IValidatableControl>().Setup (stub => stub.Validate ()).Returns (false);
-      _dataSourceControl.Register (secondControlStub.Object);
+      secondControlStub.Setup(stub => stub.HasValidBinding).Returns(true);
+      secondControlStub.Setup(stub => stub.HasValue).Returns(false);
+      secondControlStub.As<IValidatableControl>().Setup(stub => stub.Validate()).Returns(false);
+      _dataSourceControl.Register(secondControlStub.Object);
 
-      Assert.That (_dataSourceControl.Validate (), Is.False);
+      Assert.That(_dataSourceControl.Validate(), Is.False);
 
-      _referencePropertyStub.Verify (stub => stub.SupportsDefaultValue, Times.Never());
-      _referencePropertyStub.Verify (stub => stub.IsDefaultValue (It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty[]>()), Times.Never());
+      _referencePropertyStub.Verify(stub => stub.SupportsDefaultValue, Times.Never());
+      _referencePropertyStub.Verify(stub => stub.IsDefaultValue(It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty[]>()), Times.Never());
     }
 #pragma warning restore 612,618
   }

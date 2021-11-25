@@ -124,17 +124,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       public BocListRow[] AddRows (IBusinessObject[] businessObjects)
       {
-        return _bocList.AddRowsImplementation (businessObjects);
+        return _bocList.AddRowsImplementation(businessObjects);
       }
 
       public BocListRow[] RemoveRows (IBusinessObject[] businessObjects)
       {
-        return _bocList.RemoveRowsImplementation (businessObjects);
+        return _bocList.RemoveRowsImplementation(businessObjects);
       }
 
       public void EndRowEditModeCleanUp (int modifiedRowIndex)
       {
-        _bocList.EndRowEditModeCleanUp (modifiedRowIndex);
+        _bocList.EndRowEditModeCleanUp(modifiedRowIndex);
       }
 
       public void EndListEditModeCleanUp ()
@@ -153,12 +153,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           IBusinessObjectDataSource dataSource,
           IBusinessObjectBoundEditableWebControl[] controls)
       {
-        _bocList.OnEditableRowChangesSaving (index, businessObject, dataSource, controls);
+        _bocList.OnEditableRowChangesSaving(index, businessObject, dataSource, controls);
       }
 
       public void OnEditableRowChangesSaved (int index, IBusinessObject businessObject)
       {
-        _bocList.OnEditableRowChangesSaved (index, businessObject);
+        _bocList.OnEditableRowChangesSaved(index, businessObject);
       }
 
       public void OnEditableRowChangesCanceling (
@@ -167,17 +167,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           IBusinessObjectDataSource dataSource,
           IBusinessObjectBoundEditableWebControl[] controls)
       {
-        _bocList.OnEditableRowChangesCanceling (index, businessObject, dataSource, controls);
+        _bocList.OnEditableRowChangesCanceling(index, businessObject, dataSource, controls);
       }
 
       public void OnEditableRowChangesCanceled (int index, IBusinessObject businessObject)
       {
-        _bocList.OnEditableRowChangesCanceled (index, businessObject);
+        _bocList.OnEditableRowChangesCanceled(index, businessObject);
       }
 
       public void SetFocus (IFocusableControl control)
       {
-        _bocList.SetFocusImplementation (control);
+        _bocList.SetFocusImplementation(control);
       }
     }
   }

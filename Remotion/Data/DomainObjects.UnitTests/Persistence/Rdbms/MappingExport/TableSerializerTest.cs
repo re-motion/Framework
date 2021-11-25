@@ -34,96 +34,96 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize_CreatesTableElement ()
     {
-      var tableSerializer = new TableSerializer (MockRepository.GenerateStub<IPropertySerializer>());
+      var tableSerializer = new TableSerializer(MockRepository.GenerateStub<IPropertySerializer>());
 
       var actual =
-          tableSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))).Single();
+          tableSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinition(typeof (ClassWithAllDataTypes))).Single();
 
-      Assert.That (actual.Name.LocalName, Is.EqualTo ("table"));
-      Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
-      Assert.That (actual.Attribute ("name").Value, Is.EqualTo ("TableWithAllDataTypes"));
+      Assert.That(actual.Name.LocalName, Is.EqualTo("table"));
+      Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("name"));
+      Assert.That(actual.Attribute("name").Value, Is.EqualTo("TableWithAllDataTypes"));
     }
 
     [Test]
     public void Serialize_CreatesPersistenceModelProvider ()
     {
       var propertySerializerMock = MockRepository.GenerateMock<IPropertySerializer>();
-      var tableSerializer = new TableSerializer (propertySerializerMock);
+      var tableSerializer = new TableSerializer(propertySerializerMock);
 
-      propertySerializerMock.Expect (
-          _ => _.Serialize (
+      propertySerializerMock.Expect(
+          _ => _.Serialize(
               Arg<PropertyDefinition>.Is.NotNull,
               Arg<IRdbmsPersistenceModelProvider>.Is.NotNull))
-          .Return (null)
+          .Return(null)
           .Repeat.AtLeastOnce();
 
       propertySerializerMock.Replay();
-      tableSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))).ToArray();
+      tableSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinition(typeof (ClassWithAllDataTypes))).ToArray();
       propertySerializerMock.VerifyAllExpectations();
     }
 
     [Test]
     public void Serialize_AddsPropertyElements ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Ceo));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Ceo));
       var propertySerializerStub = MockRepository.GenerateStub<IPropertySerializer>();
-      var expected1 = new XElement ("property1");
-      var expected2 = new XElement ("property2");
+      var expected1 = new XElement("property1");
+      var expected2 = new XElement("property2");
 
       propertySerializerStub
-          .Stub (
-              _ => _.Serialize (
-                  Arg.Is (classDefinition.GetPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Ceo.Name")),
+          .Stub(
+              _ => _.Serialize(
+                  Arg.Is(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Ceo.Name")),
                   Arg<IRdbmsPersistenceModelProvider>.Is.Anything))
-          .Return (expected1);
+          .Return(expected1);
       propertySerializerStub
-          .Stub (
-              _ => _.Serialize (
-                  Arg.Is (classDefinition.GetPropertyDefinition ("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Ceo.Company")),
+          .Stub(
+              _ => _.Serialize(
+                  Arg.Is(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Ceo.Company")),
                   Arg<IRdbmsPersistenceModelProvider>.Is.Anything))
-          .Return (expected2);
-      var tableSerializer = new TableSerializer (propertySerializerStub);
+          .Return(expected2);
+      var tableSerializer = new TableSerializer(propertySerializerStub);
 
-      var actual = tableSerializer.Serialize (classDefinition).Single();
+      var actual = tableSerializer.Serialize(classDefinition).Single();
 
-      Assert.That (actual.Elements(), Is.EqualTo (new[] { expected1, expected2 }));
+      Assert.That(actual.Elements(), Is.EqualTo(new[] { expected1, expected2 }));
     }
 
     [Test]
     public void Serialize_OnlyAddsPersistentProperties ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Ceo));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Ceo));
       var propertySerializerMock = MockRepository.GenerateStrictMock<IPropertySerializer>();
 
       Expression<Predicate<PropertyDefinition>> propertyDefinitionConstraint =
           p => p.StorageClass == StorageClass.Persistent;
 
-      propertySerializerMock.Expect (
-          _ => _.Serialize (
-              Arg<PropertyDefinition>.Matches (propertyDefinitionConstraint),
+      propertySerializerMock.Expect(
+          _ => _.Serialize(
+              Arg<PropertyDefinition>.Matches(propertyDefinitionConstraint),
               Arg<IRdbmsPersistenceModelProvider>.Is.Anything))
-          .Return (new XElement ("property"))
+          .Return(new XElement("property"))
           .Repeat.AtLeastOnce();
 
-      var tableSerializer = new TableSerializer (propertySerializerMock);
+      var tableSerializer = new TableSerializer(propertySerializerMock);
 
       propertySerializerMock.Replay();
-      tableSerializer.Serialize (classDefinition).ToArray();
+      tableSerializer.Serialize(classDefinition).ToArray();
       propertySerializerMock.VerifyAllExpectations();
     }
 
     [Test]
     public void Serialize_AbstractDerivedClass_CreatesTableElementFromBaseClass ()
     {
-      var tableSerializer = new TableSerializer (MockRepository.GenerateStub<IPropertySerializer>());
+      var tableSerializer = new TableSerializer(MockRepository.GenerateStub<IPropertySerializer>());
 
       var actual =
-          tableSerializer.Serialize (
-              MappingConfiguration.Current.GetTypeDefinition (typeof (DerivedAbstractClass))).Single();
+          tableSerializer.Serialize(
+              MappingConfiguration.Current.GetTypeDefinition(typeof (DerivedAbstractClass))).Single();
 
-      Assert.That (actual.Name.LocalName, Is.EqualTo ("table"));
-      Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
-      Assert.That (actual.Attribute ("name").Value, Is.EqualTo ("AbstractClass"));
+      Assert.That(actual.Name.LocalName, Is.EqualTo("table"));
+      Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("name"));
+      Assert.That(actual.Attribute("name").Value, Is.EqualTo("AbstractClass"));
     }
   }
 }

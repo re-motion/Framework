@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting
   /// </remarks>
   public class WebTestSetUpFixtureHelper
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (WebTestSetUpFixtureHelper));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof (WebTestSetUpFixtureHelper));
 
     /// <summary>
     /// Creates a new <see cref="WebTestSetUpFixtureHelper"/> with configuration based on <see cref="WebTestConfigurationFactory"/>.
@@ -59,7 +59,7 @@ namespace Remotion.Web.Development.WebTesting
     [PublicAPI]
     public static WebTestSetUpFixtureHelper CreateFromConfiguration<TFactory> () where TFactory : WebTestConfigurationFactory, new()
     {
-      return new WebTestSetUpFixtureHelper (new TFactory());
+      return new WebTestSetUpFixtureHelper(new TFactory());
     }
 
     private readonly IHostingStrategy _hostingStrategy;
@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting
     [PublicAPI]
     protected WebTestSetUpFixtureHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
     {
-      ArgumentUtility.CheckNotNull ("webTestConfigurationFactory", webTestConfigurationFactory);
+      ArgumentUtility.CheckNotNull("webTestConfigurationFactory", webTestConfigurationFactory);
 
       var hostingConfiguration = webTestConfigurationFactory.CreateHostingConfiguration();
       _hostingStrategy = hostingConfiguration.GetHostingStrategy();
@@ -80,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting
       var testInfrastructureConfiguration = webTestConfigurationFactory.CreateTestInfrastructureConfiguration();
       _screenshotDirectory = testInfrastructureConfiguration.ScreenshotDirectory;
       _logDirectory = testInfrastructureConfiguration.ScreenshotDirectory;
-      _webApplicationRoot = new Uri (testInfrastructureConfiguration.WebApplicationRoot);
+      _webApplicationRoot = new Uri(testInfrastructureConfiguration.WebApplicationRoot);
     }
 
     public string ScreenshotDirectory
@@ -103,7 +103,7 @@ namespace Remotion.Web.Development.WebTesting
 
       try
       {
-        VerifyWebApplicationStarted (_webApplicationRoot, _verifyWebApplicationStartedTimeout);
+        VerifyWebApplicationStarted(_webApplicationRoot, _verifyWebApplicationStartedTimeout);
       }
       catch
       {
@@ -139,26 +139,26 @@ namespace Remotion.Web.Development.WebTesting
 
     private void VerifyWebApplicationStarted (Uri webApplicationRoot, TimeSpan applicationPingTimeout)
     {
-      var resolvedUri = ResolveHostname (webApplicationRoot);
-      s_log.Info ($"Verifying that '{resolvedUri}' is accessible within {applicationPingTimeout}.");
+      var resolvedUri = ResolveHostname(webApplicationRoot);
+      s_log.Info($"Verifying that '{resolvedUri}' is accessible within {applicationPingTimeout}.");
 
       var stopwatch = Stopwatch.StartNew();
 
-      var webRequest = (HttpWebRequest) HttpWebRequest.Create (resolvedUri);
+      var webRequest = (HttpWebRequest) HttpWebRequest.Create(resolvedUri);
       webRequest.Method = WebRequestMethods.Http.Head;
       webRequest.AllowAutoRedirect = true;
       webRequest.Host = webApplicationRoot.Host;
       webRequest.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
 
       HttpStatusCode statusCode = default;
-      Assertion.DebugAssert (statusCode != HttpStatusCode.OK);
+      Assertion.DebugAssert(statusCode != HttpStatusCode.OK);
 
       while (statusCode != HttpStatusCode.OK)
       {
         try
         {
           var remainingTimeout = (int) (applicationPingTimeout.TotalMilliseconds - stopwatch.Elapsed.TotalMilliseconds);
-          webRequest.Timeout = Math.Max (remainingTimeout, 0);
+          webRequest.Timeout = Math.Max(remainingTimeout, 0);
 
           using (var response = (HttpWebResponse) webRequest.GetResponse())
           {
@@ -167,24 +167,24 @@ namespace Remotion.Web.Development.WebTesting
         }
         catch (WebException ex)
         {
-          CheckTimeout (webApplicationRoot, applicationPingTimeout, stopwatch, $"Failed with WebException '{ex.Message}'");
+          CheckTimeout(webApplicationRoot, applicationPingTimeout, stopwatch, $"Failed with WebException '{ex.Message}'");
         }
 
-        CheckTimeout (webApplicationRoot, applicationPingTimeout, stopwatch, $"Failed with HttpStatusCode '{statusCode}'");
+        CheckTimeout(webApplicationRoot, applicationPingTimeout, stopwatch, $"Failed with HttpStatusCode '{statusCode}'");
 
-        Thread.Sleep (TimeSpan.FromMilliseconds (500));
+        Thread.Sleep(TimeSpan.FromMilliseconds(500));
       }
 
       stopwatch.Stop();
 
-      s_log.Info ($"Verified that '{resolvedUri}' is accessible after {stopwatch.Elapsed.TotalMilliseconds:N0} ms.");
+      s_log.Info($"Verified that '{resolvedUri}' is accessible after {stopwatch.Elapsed.TotalMilliseconds:N0} ms.");
     }
 
     private Uri ResolveHostname (Uri uri)
     {
-      var host = new RetryUntilTimeout<IPHostEntry> (() => Dns.GetHostEntry (uri.Host), TimeSpan.FromSeconds (30), TimeSpan.FromSeconds (1)).Run();
-      var address = host.AddressList.First (a => a.AddressFamily == AddressFamily.InterNetwork).MapToIPv4();
-      var uriBuilder = new UriBuilder (uri);
+      var host = new RetryUntilTimeout<IPHostEntry>(() => Dns.GetHostEntry(uri.Host), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(1)).Run();
+      var address = host.AddressList.First(a => a.AddressFamily == AddressFamily.InterNetwork).MapToIPv4();
+      var uriBuilder = new UriBuilder(uri);
       uriBuilder.Host = address.ToString();
       return uriBuilder.Uri;
     }
@@ -199,13 +199,13 @@ namespace Remotion.Web.Development.WebTesting
     {
       if (stopwatch.ElapsedMilliseconds > applicationPingTimeout.TotalMilliseconds)
       {
-        throw new WebException (
-            $"Checking the web application root '{webApplicationRoot}' did not return '{HttpStatusCode.OK}' in the defined {nameof (applicationPingTimeout)} ({applicationPingTimeout}). "
+        throw new WebException(
+            $"Checking the web application root '{webApplicationRoot}' did not return '{HttpStatusCode.OK}' in the defined {nameof(applicationPingTimeout)} ({applicationPingTimeout}). "
             + $"{failureReason}.",
             WebExceptionStatus.Timeout);
       }
 
-      s_log.Warn ($"Checking the web application root '{webApplicationRoot}' failed with following reason: {failureReason}. Retrying until {nameof (applicationPingTimeout)} ({applicationPingTimeout}) is reached.");
+      s_log.Warn($"Checking the web application root '{webApplicationRoot}' failed with following reason: {failureReason}. Retrying until {nameof(applicationPingTimeout)} ({applicationPingTimeout}) is reached.");
     }
   }
 }

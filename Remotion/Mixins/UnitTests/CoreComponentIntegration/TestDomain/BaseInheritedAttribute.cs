@@ -35,7 +35,7 @@ namespace Remotion.Mixins.UnitTests.CoreComponentIntegration.TestDomain
 
     public override bool Equals (object obj)
     {
-      if (obj.GetType () != this.GetType())
+      if (obj.GetType() != this.GetType())
         return false;
       return ((BaseInheritedAttribute) obj).Context == Context;
     }
@@ -47,7 +47,7 @@ namespace Remotion.Mixins.UnitTests.CoreComponentIntegration.TestDomain
 
     public override string ToString ()
     {
-      return GetType () + " (\"" + Context + "\")";
+      return GetType() + " (\"" + Context + "\")";
     }
   }
 }

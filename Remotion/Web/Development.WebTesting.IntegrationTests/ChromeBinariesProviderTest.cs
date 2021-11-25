@@ -35,14 +35,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var result = provider.GetInstalledExecutable();
 
-      Assert.That (result.BrowserBinaryPath, Is.EqualTo (@"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"));
-      Assert.That (
+      Assert.That(result.BrowserBinaryPath, Is.EqualTo(@"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"));
+      Assert.That(
           result.DriverBinaryPath,
-          Does.Match (
-              Regex.Escape (Path.GetTempPath()) + @"Remotion.Web.Development.WebTesting.WebDriver\\chromedriver\\chromedriver_v\d+\.\d+\.\d+\.\d+\\chromedriver.exe"));
-      Assert.That (
+          Does.Match(
+              Regex.Escape(Path.GetTempPath()) + @"Remotion.Web.Development.WebTesting.WebDriver\\chromedriver\\chromedriver_v\d+\.\d+\.\d+\.\d+\\chromedriver.exe"));
+      Assert.That(
           result.UserDirectory,
-          Does.Match (Regex.Escape (Path.GetTempPath()) + c_guidRegex));
+          Does.Match(Regex.Escape(Path.GetTempPath()) + c_guidRegex));
     }
   }
 }

@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
         double? unequalPixelThreshold = null,
         [CallerMemberName] string memberName = null)
     {
-      ScreenshotTesting.RunTest<ControlObject, TTarget> (helper, test, type, memberName, value, maxAllowedPixelVariance, unequalPixelThreshold);
+      ScreenshotTesting.RunTest<ControlObject, TTarget>(helper, test, type, memberName, value, maxAllowedPixelVariance, unequalPixelThreshold);
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
         double? unequalPixelThreshold = null,
         [CallerMemberName] string memberName = null)
     {
-      ScreenshotTesting.RunTest<TControl, TTarget> (helper, test, type, memberName, value, maxAllowedPixelVariance, unequalPixelThreshold);
+      ScreenshotTesting.RunTest<TControl, TTarget>(helper, test, type, memberName, value, maxAllowedPixelVariance, unequalPixelThreshold);
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
         ScreenshotTestingDelegate<ControlObject> test,
         [CallerMemberName] string memberName = null)
     {
-      ScreenshotTesting.RunTest<ControlObject, TTarget> (helper, test, type, memberName, value, 0, 0d);
+      ScreenshotTesting.RunTest<ControlObject, TTarget>(helper, test, type, memberName, value, 0, 0d);
     }
 
     /// <summary>
@@ -77,7 +77,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
         ScreenshotTestingDelegate<TControl> test,
         [CallerMemberName] string memberName = null)
     {
-      ScreenshotTesting.RunTest<TControl, TTarget> (helper, test, type, memberName, value, 0, 0d);
+      ScreenshotTesting.RunTest<TControl, TTarget>(helper, test, type, memberName, value, 0, 0d);
     }
   }
 }

@@ -41,12 +41,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
 
     public IEnumerable<BaseValidator> CreateValidators (IBocList control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       if (isReadOnly)
         yield break;
 
-      yield return CreateBocListValidator (control);
+      yield return CreateBocListValidator(control);
     }
 
     private BaseValidator CreateBocListValidator (IBocList control)

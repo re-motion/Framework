@@ -29,10 +29,10 @@ namespace Remotion.Validation.Implementation
   {
     public string Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
+      ArgumentUtility.CheckNotNull("validator", validator);
 
       string? formattedValidator = validator.ToString();
-      Assertion.IsNotNull (formattedValidator, "ToString() of validator type '{0}' returned null.", validator.GetType());
+      Assertion.IsNotNull(formattedValidator, "ToString() of validator type '{0}' returned null.", validator.GetType());
       return formattedValidator;
     }
   }

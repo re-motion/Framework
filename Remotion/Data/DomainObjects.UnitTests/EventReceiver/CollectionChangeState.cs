@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     public CollectionChangeState (object sender, DomainObject domainObject, string message)
       : base (sender, message)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       _domainObject = domainObject;
     }
@@ -54,13 +54,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public override void Check (ChangeState expectedState)
     {
-      base.Check (expectedState);
+      base.Check(expectedState);
 
       CollectionChangeState collectionChangeState = (CollectionChangeState) expectedState;
 
-      if (!ReferenceEquals (_domainObject, collectionChangeState.DomainObject))
+      if (!ReferenceEquals(_domainObject, collectionChangeState.DomainObject))
       {
-        throw CreateApplicationException (
+        throw CreateApplicationException(
             "Affected actual DomainObject '{0}' and expected DomainObject '{1}' do not match.",
             _domainObject.ID,
             collectionChangeState.DomainObject.ID);

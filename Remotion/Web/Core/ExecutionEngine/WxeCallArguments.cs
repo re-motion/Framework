@@ -40,7 +40,7 @@ namespace Remotion.Web.ExecutionEngine
     /// This manifests itself by the execution engine not re-raising a postback event upon the returning postback when the sub-function has completed.
     /// </note>
     /// </remarks>
-    public static readonly IWxeCallArguments Default = new WxeCallArgumentsWithoutSender (WxePermaUrlOptions.Null);
+    public static readonly IWxeCallArguments Default = new WxeCallArgumentsWithoutSender(WxePermaUrlOptions.Null);
 
     [NotNull]
     private readonly Control _sender;
@@ -49,8 +49,8 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeCallArguments ([NotNull] Control sender, [NotNull] IWxeCallOptions options)
     {
-      ArgumentUtility.CheckNotNull ("sender", sender);
-      ArgumentUtility.CheckNotNull ("options", options);
+      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentUtility.CheckNotNull("options", options);
 
       _sender = sender;
       _options = options;
@@ -70,10 +70,10 @@ namespace Remotion.Web.ExecutionEngine
 
     void IWxeCallArguments.Dispatch (IWxeExecutor executor, WxeFunction function)
     {
-      ArgumentUtility.CheckNotNull ("executor", executor);
-      ArgumentUtility.CheckNotNull ("function", function);
+      ArgumentUtility.CheckNotNull("executor", executor);
+      ArgumentUtility.CheckNotNull("function", function);
 
-      _options.Dispatch (executor, function, _sender);
+      _options.Dispatch(executor, function, _sender);
     }
   }
 }

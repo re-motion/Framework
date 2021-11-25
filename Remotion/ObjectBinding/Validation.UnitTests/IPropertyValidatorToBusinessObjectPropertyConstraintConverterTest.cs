@@ -37,12 +37,12 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
     {
       var instance = _serviceLocator.GetInstance<IPropertyValidatorToBusinessObjectPropertyConstraintConverter>();
 
-      Assert.That (instance, Is.InstanceOf<CompoundPropertyValidatorToBusinessObjectPropertyConstraintConverter>());
+      Assert.That(instance, Is.InstanceOf<CompoundPropertyValidatorToBusinessObjectPropertyConstraintConverter>());
 
       var compound = (CompoundPropertyValidatorToBusinessObjectPropertyConstraintConverter) instance;
-      Assert.That (
-          compound.Converters.Select (c => c.GetType()),
-          Is.EquivalentTo (new[] { typeof (PropertyValidatorToBusinessObjectPropertyConstraintConverter) }));
+      Assert.That(
+          compound.Converters.Select(c => c.GetType()),
+          Is.EquivalentTo(new[] { typeof (PropertyValidatorToBusinessObjectPropertyConstraintConverter) }));
 
     }
 
@@ -52,8 +52,8 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       var instance1 = _serviceLocator.GetInstance<IPropertyValidatorToBusinessObjectPropertyConstraintConverter>();
       var instance2 = _serviceLocator.GetInstance<IPropertyValidatorToBusinessObjectPropertyConstraintConverter>();
 
-      Assert.That (instance1, Is.InstanceOf<CompoundPropertyValidatorToBusinessObjectPropertyConstraintConverter>());
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.InstanceOf<CompoundPropertyValidatorToBusinessObjectPropertyConstraintConverter>());
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

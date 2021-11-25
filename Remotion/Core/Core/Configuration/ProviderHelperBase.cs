@@ -56,11 +56,11 @@ namespace Remotion.Configuration
     /// </param>
     protected ProviderHelperBase (ExtendedConfigurationSection configurationSection)
     {
-      ArgumentUtility.CheckNotNull ("configurationSection", configurationSection);
+      ArgumentUtility.CheckNotNull("configurationSection", configurationSection);
 
       _configurationSection = configurationSection;
-      _provider = new DoubleCheckedLockingContainer<TProvider?> (GetProviderFromConfiguration);
-      _providers = new DoubleCheckedLockingContainer<ProviderCollection<TProvider>> (GetProvidersFromConfiguration);
+      _provider = new DoubleCheckedLockingContainer<TProvider?>(GetProviderFromConfiguration);
+      _providers = new DoubleCheckedLockingContainer<ProviderCollection<TProvider>>(GetProvidersFromConfiguration);
     }
 
     protected abstract ConfigurationProperty CreateDefaultProviderNameProperty ();
@@ -71,13 +71,13 @@ namespace Remotion.Configuration
     public override void InitializeProperties (ConfigurationPropertyCollection properties)
     {
       //TODO RM-7434: Mark with MemberNotNull once supported by msbuild
-      ArgumentUtility.CheckNotNull ("properties", properties);
+      ArgumentUtility.CheckNotNull("properties", properties);
 
       _providerSettingsProperty = CreateProviderSettingsProperty();
       _defaultProviderNameProperty = CreateDefaultProviderNameProperty();
 
-      properties.Add (_providerSettingsProperty);
-      properties.Add (_defaultProviderNameProperty);
+      properties.Add(_providerSettingsProperty);
+      properties.Add(_defaultProviderNameProperty);
     }
 
     public override void PostDeserialze ()
@@ -119,14 +119,14 @@ namespace Remotion.Configuration
 
     protected ConfigurationProperty CreateDefaultProviderNameProperty (string name, string? defaultValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      return new ConfigurationProperty (name, typeof (string), defaultValue, null, new StringValidator (1), ConfigurationPropertyOptions.None);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      return new ConfigurationProperty(name, typeof (string), defaultValue, null, new StringValidator(1), ConfigurationPropertyOptions.None);
     }
 
     protected ConfigurationProperty CreateProviderSettingsProperty (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      return new ConfigurationProperty (name, typeof (ProviderSettingsCollection), null, ConfigurationPropertyOptions.None);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      return new ConfigurationProperty(name, typeof (ProviderSettingsCollection), null, ConfigurationPropertyOptions.None);
     }
 
     protected virtual void EnsureWellKownProviders (ProviderCollection collection)
@@ -135,11 +135,11 @@ namespace Remotion.Configuration
 
     protected void CheckForDuplicateWellKownProviderName (string wellKnownName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("wellKnownName", wellKnownName);
+      ArgumentUtility.CheckNotNullOrEmpty("wellKnownName", wellKnownName);
 
       if (ProviderSettings[wellKnownName] != null)
       {
-        throw CreateConfigurationErrorsException (
+        throw CreateConfigurationErrorsException(
             null,
             ProviderSettings[wellKnownName].ElementInformation.Properties["name"],
             "The name of the entry '{0}' identifies a well known provider and cannot be reused for custom providers.",
@@ -149,30 +149,30 @@ namespace Remotion.Configuration
 
     protected Type GetTypeWithMatchingVersionNumber (ConfigurationProperty property, string assemblyName, string typeName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("assemblyName", assemblyName);
-      ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNullOrEmpty("assemblyName", assemblyName);
+      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
+      ArgumentUtility.CheckNotNull("property", property);
 
       AssemblyName frameworkAssemblyName = GetType().Assembly.GetName();
-      AssemblyName realAssemblyName = new AssemblyName (frameworkAssemblyName.FullName);
+      AssemblyName realAssemblyName = new AssemblyName(frameworkAssemblyName.FullName);
       realAssemblyName.Name = assemblyName;
 
-      return GetType (property, realAssemblyName, typeName);
+      return GetType(property, realAssemblyName, typeName);
     }
 
     protected Type GetType (ConfigurationProperty property, AssemblyName assemblyName, string typeName)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      ArgumentUtility.CheckNotNull ("assemblyName", assemblyName);
-      ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
+      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull("assemblyName", assemblyName);
+      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
 
       try
       {
-        Assembly.Load (assemblyName);
+        Assembly.Load(assemblyName);
       }
       catch (FileNotFoundException e)
       {
-        throw CreateConfigurationErrorsException (
+        throw CreateConfigurationErrorsException(
             e,
             _configurationSection.ElementInformation.Properties[property.Name],
             "The current value of property '{0}' requires that the assembly '{1}' is placed within the CLR's probing path for this application.",
@@ -180,7 +180,7 @@ namespace Remotion.Configuration
             assemblyName.FullName);
       }
 
-      return TypeUtility.GetType (Assembly.CreateQualifiedName (assemblyName.FullName, typeName), throwOnError: true)!;
+      return TypeUtility.GetType(Assembly.CreateQualifiedName(assemblyName.FullName, typeName), throwOnError: true)!;
     }
 
     /// <summary>Initializes a collection of providers of the given type using the supplied settings.</summary>
@@ -199,12 +199,12 @@ namespace Remotion.Configuration
         Type providerType,
         params Type[] providerInterfaces)
     {
-      ArgumentUtility.CheckNotNull ("providerSettingsCollection", providerSettingsCollection);
-      ArgumentUtility.CheckNotNull ("providerCollection", providerCollection);
-      ArgumentUtility.CheckNotNull ("providerType", providerType);
+      ArgumentUtility.CheckNotNull("providerSettingsCollection", providerSettingsCollection);
+      ArgumentUtility.CheckNotNull("providerCollection", providerCollection);
+      ArgumentUtility.CheckNotNull("providerType", providerType);
 
       foreach (ProviderSettings providerSettings in providerSettingsCollection)
-        providerCollection.Add (InstantiateProvider (providerSettings, providerType, providerInterfaces));
+        providerCollection.Add(InstantiateProvider(providerSettings, providerType, providerInterfaces));
     }
 
     /// <summary>Initializes and returns a single provider of the given type using the supplied settings.</summary>
@@ -222,18 +222,18 @@ namespace Remotion.Configuration
     /// </exception>    
     protected ExtendedProviderBase InstantiateProvider (ProviderSettings providerSettings, Type providerType, params Type[] providerInterfaces)
     {
-      ArgumentUtility.CheckNotNull ("providerSettings", providerSettings);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("providerType", providerType, typeof (ExtendedProviderBase));
-      ArgumentUtility.CheckNotNullOrItemsNull ("providerInterfaces", providerInterfaces);
+      ArgumentUtility.CheckNotNull("providerSettings", providerSettings);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("providerType", providerType, typeof (ExtendedProviderBase));
+      ArgumentUtility.CheckNotNullOrItemsNull("providerInterfaces", providerInterfaces);
 
       try
       {
-        return CreateProvider (
+        return CreateProvider(
             providerSettings,
             providerType,
             providerInterfaces,
             providerSettings.Name,
-            NameValueCollectionUtility.Clone (providerSettings.Parameters));
+            NameValueCollectionUtility.Clone(providerSettings.Parameters));
       }
       catch (ConfigurationException)
       {
@@ -247,7 +247,7 @@ namespace Remotion.Configuration
         else
           message = e.Message;
 
-        throw new ConfigurationErrorsException (
+        throw new ConfigurationErrorsException(
             message,
             e,
             providerSettings.ElementInformation.Properties["type"]!.Source,
@@ -262,21 +262,21 @@ namespace Remotion.Configuration
         string name,
         NameValueCollection collection)
     {
-      if (string.IsNullOrEmpty (providerSettings.Type))
-        throw new ArgumentException ("Type name must be specified for this provider.");
+      if (string.IsNullOrEmpty(providerSettings.Type))
+        throw new ArgumentException("Type name must be specified for this provider.");
 
-      Type actualType = TypeUtility.GetType (providerSettings.Type, throwOnError: true)!;
+      Type actualType = TypeUtility.GetType(providerSettings.Type, throwOnError: true)!;
 
-      if (!providerType.IsAssignableFrom (actualType))
-        throw new ArgumentException (string.Format ("Provider must implement the class '{0}'.", providerType.GetFullNameSafe()));
+      if (!providerType.IsAssignableFrom(actualType))
+        throw new ArgumentException(string.Format("Provider must implement the class '{0}'.", providerType.GetFullNameSafe()));
 
       foreach (Type interfaceType in providerInterfaces)
       {
-        if (!interfaceType.IsAssignableFrom (actualType))
-          throw new ArgumentException (string.Format ("Provider must implement the interface '{0}'.", interfaceType.GetFullNameSafe()));
+        if (!interfaceType.IsAssignableFrom(actualType))
+          throw new ArgumentException(string.Format("Provider must implement the interface '{0}'.", interfaceType.GetFullNameSafe()));
       }
 
-      return (ExtendedProviderBase) Activator.CreateInstance (actualType, new object[] {name, collection})!;
+      return (ExtendedProviderBase) Activator.CreateInstance(actualType, new object[] {name, collection})!;
     }
 
     private TProvider? GetProviderFromConfiguration ()
@@ -286,7 +286,7 @@ namespace Remotion.Configuration
 
       if (Providers[DefaultProviderName] == null)
       {
-        throw CreateConfigurationErrorsException (
+        throw CreateConfigurationErrorsException(
             null,
             _configurationSection.ElementInformation.Properties[DefaultProviderNameProperty.Name],
             "The provider '{0}' specified for the {1} does not exist in the providers collection.",
@@ -300,8 +300,8 @@ namespace Remotion.Configuration
     private ProviderCollection<TProvider> GetProvidersFromConfiguration ()
     {
       ProviderCollection<TProvider> collection = new ProviderCollection<TProvider>();
-      EnsureWellKownProviders (collection);
-      InstantiateProviders (ProviderSettings, collection, typeof (ExtendedProviderBase), typeof (TProvider));
+      EnsureWellKownProviders(collection);
+      InstantiateProviders(ProviderSettings, collection, typeof (ExtendedProviderBase), typeof (TProvider));
       collection.SetReadOnly();
       
       return collection;
@@ -310,7 +310,7 @@ namespace Remotion.Configuration
     private ConfigurationErrorsException CreateConfigurationErrorsException (
         FileNotFoundException? e, PropertyInformation propertyInformation, string message, params object[] args)
     {
-      return new ConfigurationErrorsException (string.Format (message, args), e, propertyInformation.Source, propertyInformation.LineNumber);
+      return new ConfigurationErrorsException(string.Format(message, args), e, propertyInformation.Source, propertyInformation.LineNumber);
     }
   }
 }

@@ -32,34 +32,34 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.IntegrationTests
 
       var service = GetGlobalizationService();
 
-      Assert.That (service.TryGetExtensibleEnumValueDisplayName (Color.Values.Red (), out resourceValue), Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("Rot"));
-      Assert.That (service.GetExtensibleEnumValueDisplayName (Color.Values.Red ()), Is.EqualTo ("Rot"));
-      Assert.That (service.GetExtensibleEnumValueDisplayNameOrDefault (Color.Values.Red ()), Is.EqualTo ("Rot"));
-      Assert.That (service.ContainsExtensibleEnumValueDisplayName (Color.Values.Red ()), Is.True);
+      Assert.That(service.TryGetExtensibleEnumValueDisplayName(Color.Values.Red(), out resourceValue), Is.True);
+      Assert.That(resourceValue, Is.EqualTo("Rot"));
+      Assert.That(service.GetExtensibleEnumValueDisplayName(Color.Values.Red()), Is.EqualTo("Rot"));
+      Assert.That(service.GetExtensibleEnumValueDisplayNameOrDefault(Color.Values.Red()), Is.EqualTo("Rot"));
+      Assert.That(service.ContainsExtensibleEnumValueDisplayName(Color.Values.Red()), Is.True);
 
-      Assert.That (service.TryGetExtensibleEnumValueDisplayName (Color.Values.Green (), out resourceValue), Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("Grün"));
-      Assert.That (service.GetExtensibleEnumValueDisplayName (Color.Values.Green ()), Is.EqualTo ("Grün"));
-      Assert.That (service.GetExtensibleEnumValueDisplayNameOrDefault (Color.Values.Green ()), Is.EqualTo ("Grün"));
-      Assert.That (service.ContainsExtensibleEnumValueDisplayName (Color.Values.Green ()), Is.True);
+      Assert.That(service.TryGetExtensibleEnumValueDisplayName(Color.Values.Green(), out resourceValue), Is.True);
+      Assert.That(resourceValue, Is.EqualTo("Grün"));
+      Assert.That(service.GetExtensibleEnumValueDisplayName(Color.Values.Green()), Is.EqualTo("Grün"));
+      Assert.That(service.GetExtensibleEnumValueDisplayNameOrDefault(Color.Values.Green()), Is.EqualTo("Grün"));
+      Assert.That(service.ContainsExtensibleEnumValueDisplayName(Color.Values.Green()), Is.True);
 
-      Assert.That (service.TryGetExtensibleEnumValueDisplayName (Color.Values.RedMetallic (), out resourceValue), Is.False);
-      Assert.That (service.GetExtensibleEnumValueDisplayName (Color.Values.RedMetallic ()), Is.EqualTo ("RedMetallic"));
-      Assert.That (service.GetExtensibleEnumValueDisplayNameOrDefault (Color.Values.RedMetallic ()), Is.Null);
-      Assert.That (service.ContainsExtensibleEnumValueDisplayName (Color.Values.RedMetallic ()), Is.False);
+      Assert.That(service.TryGetExtensibleEnumValueDisplayName(Color.Values.RedMetallic(), out resourceValue), Is.False);
+      Assert.That(service.GetExtensibleEnumValueDisplayName(Color.Values.RedMetallic()), Is.EqualTo("RedMetallic"));
+      Assert.That(service.GetExtensibleEnumValueDisplayNameOrDefault(Color.Values.RedMetallic()), Is.Null);
+      Assert.That(service.ContainsExtensibleEnumValueDisplayName(Color.Values.RedMetallic()), Is.False);
 
-      Assert.That (service.TryGetExtensibleEnumValueDisplayName (Color.Values.LightRed (), out resourceValue), Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("Hellrot"));
-      Assert.That (service.GetExtensibleEnumValueDisplayName (Color.Values.LightRed ()), Is.EqualTo ("Hellrot"));
-      Assert.That (service.GetExtensibleEnumValueDisplayNameOrDefault (Color.Values.LightRed ()), Is.EqualTo ("Hellrot"));
-      Assert.That (service.ContainsExtensibleEnumValueDisplayName (Color.Values.LightRed ()), Is.True);
+      Assert.That(service.TryGetExtensibleEnumValueDisplayName(Color.Values.LightRed(), out resourceValue), Is.True);
+      Assert.That(resourceValue, Is.EqualTo("Hellrot"));
+      Assert.That(service.GetExtensibleEnumValueDisplayName(Color.Values.LightRed()), Is.EqualTo("Hellrot"));
+      Assert.That(service.GetExtensibleEnumValueDisplayNameOrDefault(Color.Values.LightRed()), Is.EqualTo("Hellrot"));
+      Assert.That(service.ContainsExtensibleEnumValueDisplayName(Color.Values.LightRed()), Is.True);
 
-      Assert.That (service.TryGetExtensibleEnumValueDisplayName (Color.Values.LightBlue (), out resourceValue), Is.False);
-      Assert.That (resourceValue, Is.Null);
-      Assert.That (service.GetExtensibleEnumValueDisplayName (Color.Values.LightBlue ()), Is.EqualTo ("LightBlue"));
-      Assert.That (service.GetExtensibleEnumValueDisplayNameOrDefault (Color.Values.LightBlue ()), Is.Null);
-      Assert.That (service.ContainsExtensibleEnumValueDisplayName (Color.Values.LightBlue ()), Is.False);
+      Assert.That(service.TryGetExtensibleEnumValueDisplayName(Color.Values.LightBlue(), out resourceValue), Is.False);
+      Assert.That(resourceValue, Is.Null);
+      Assert.That(service.GetExtensibleEnumValueDisplayName(Color.Values.LightBlue()), Is.EqualTo("LightBlue"));
+      Assert.That(service.GetExtensibleEnumValueDisplayNameOrDefault(Color.Values.LightBlue()), Is.Null);
+      Assert.That(service.ContainsExtensibleEnumValueDisplayName(Color.Values.LightBlue()), Is.False);
     }
 
     [Test]
@@ -67,14 +67,14 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.IntegrationTests
     {
       var service = GetGlobalizationService();
 
-      var result = service.GetAvailableEnumDisplayNames (Color.Values.Red ());
+      var result = service.GetAvailableEnumDisplayNames(Color.Values.Red());
 
-      Assert.That (result.Values, Is.EquivalentTo (new [] { "Rot" }));
+      Assert.That(result.Values, Is.EquivalentTo(new [] { "Rot" }));
     }
 
     private ResourceManagerBasedExtensibleEnumGlobalizationService GetGlobalizationService ()
     {
-      return new ResourceManagerBasedExtensibleEnumGlobalizationService (SafeServiceLocator.Current.GetInstance<IGlobalizationService>());
+      return new ResourceManagerBasedExtensibleEnumGlobalizationService(SafeServiceLocator.Current.GetInstance<IGlobalizationService>());
     }
   }
 }

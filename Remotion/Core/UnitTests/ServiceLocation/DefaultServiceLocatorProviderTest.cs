@@ -34,20 +34,20 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetServiceLocator ()
     {
-      var sloc = _provider.GetServiceLocator (Array.AsReadOnly (new ServiceConfigurationEntry[0]));
+      var sloc = _provider.GetServiceLocator(Array.AsReadOnly(new ServiceConfigurationEntry[0]));
 
-      Assert.That (sloc, Is.TypeOf<DefaultServiceLocator>());
+      Assert.That(sloc, Is.TypeOf<DefaultServiceLocator>());
     }
 
     [Test]
     public void GetServiceLocator_IncludesBootstrapConfiguration ()
     {
-      var entry = new ServiceConfigurationEntry (typeof (IService), new ServiceImplementationInfo (typeof (Service), LifetimeKind.InstancePerDependency));
+      var entry = new ServiceConfigurationEntry(typeof (IService), new ServiceImplementationInfo(typeof (Service), LifetimeKind.InstancePerDependency));
 
-      var sloc = _provider.GetServiceLocator (Array.AsReadOnly (new[] { entry }));
+      var sloc = _provider.GetServiceLocator(Array.AsReadOnly(new[] { entry }));
 
-      Assert.That (sloc, Is.TypeOf<DefaultServiceLocator> ());
-      Assert.That (sloc.GetInstance<IService>(), Is.Not.Null.And.TypeOf<Service>());
+      Assert.That(sloc, Is.TypeOf<DefaultServiceLocator>());
+      Assert.That(sloc.GetInstance<IService>(), Is.Not.Null.And.TypeOf<Service>());
     }
 
     public interface IService { }

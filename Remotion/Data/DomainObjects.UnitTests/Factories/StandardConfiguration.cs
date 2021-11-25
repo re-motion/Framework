@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       {
         if (s_instance == null)
         {
-          Debugger.Break ();
-          throw new InvalidOperationException ("StandardConfiguration has not been Initialized by invoking Initialize()");
+          Debugger.Break();
+          throw new InvalidOperationException("StandardConfiguration has not been Initialized by invoking Initialize()");
         }
         return s_instance;
       }
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     private StandardConfiguration ()
     {
-      _domainObjectIDs = new DomainObjectIDs (GetMappingConfiguration ());      
+      _domainObjectIDs = new DomainObjectIDs(GetMappingConfiguration());      
     }
 
     public DomainObjectIDs GetDomainObjectIDs ()

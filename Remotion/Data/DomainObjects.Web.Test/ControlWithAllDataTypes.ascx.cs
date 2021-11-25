@@ -102,30 +102,30 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
   public void LoadValues (bool interim)
   {
     CurrentObject.BusinessObject = (IBusinessObject) ObjectWithAllDataTypes;
-    CurrentObject.LoadValues (interim);
+    CurrentObject.LoadValues(interim);
   }
 
   public bool Validate ()
   {
-    return FormGridManager.Validate ();
+    return FormGridManager.Validate();
   }
 
   public void Save ()
   {
-    CurrentObject.SaveValues (false);
+    CurrentObject.SaveValues(false);
   }
 
   private void SaveButton_Click (object sender, EventArgs e)
   {
-    if (Validate ())
+    if (Validate())
     {
-      Save ();
+      Save();
       
-      ClientTransactionScope.CurrentTransaction.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit();
       if (Saved != null)
-        Saved (this, EventArgs.Empty);
+        Saved(this, EventArgs.Empty);
       if (PerformNextStepOnSave)
-        ((WxePage) this.Page).ExecuteNextStep ();
+        ((WxePage) this.Page).ExecuteNextStep();
     }
   }
 

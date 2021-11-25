@@ -39,9 +39,9 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     public ReferenceProperty (Parameters parameters)
         : base (parameters)
     {
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
-      _concreteType = GetConcreteTypeWithCheck (parameters.ConcreteType);
+      _concreteType = GetConcreteTypeWithCheck(parameters.ConcreteType);
       _referenceClass = GetReferenceClass();
       _searchServiceDefinition = GetServiceDeclaration<ISearchAvailableObjectsService>();
 #pragma warning disable 612,618
@@ -80,11 +80,11 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     {
       get
       {
-        var service = GetServiceOrNull<ISearchAvailableObjectsService> (_searchServiceDefinition.Value);
+        var service = GetServiceOrNull<ISearchAvailableObjectsService>(_searchServiceDefinition.Value);
         if (service == null)
           return false;
 
-        return service.SupportsProperty (this);
+        return service.SupportsProperty(this);
       }
     }
 
@@ -150,16 +150,16 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     {
       if (!SupportsSearchAvailableObjects)
       {
-        throw new NotSupportedException (
-            string.Format (
+        throw new NotSupportedException(
+            string.Format(
                 "Searching is not supported for reference property '{0}' of business object class '{1}'.",
                 Identifier,
                 ReflectedClass.Identifier));
       }
 
-      var service = GetService<ISearchAvailableObjectsService> (_searchServiceDefinition.Value);
+      var service = GetService<ISearchAvailableObjectsService>(_searchServiceDefinition.Value);
 
-      return service.Search (referencingObject, this, searchArguments);
+      return service.Search(referencingObject, this, searchArguments);
     }
 
     /// <summary>
@@ -183,11 +183,11 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     {
       get
       {
-        var service = GetServiceOrNull<IDefaultValueService> (_defaultValueServiceDefinition.Value);
+        var service = GetServiceOrNull<IDefaultValueService>(_defaultValueServiceDefinition.Value);
         if (service == null)
           return false;
 
-        return service.SupportsProperty (this);
+        return service.SupportsProperty(this);
       }
     }
 
@@ -249,16 +249,16 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     {
       if (!SupportsDefaultValue)
       {
-        throw new NotSupportedException (
-            string.Format (
+        throw new NotSupportedException(
+            string.Format(
                 "Creating a default value is not supported for reference property '{0}' of business object class '{1}'.",
                 Identifier,
                 ReflectedClass.Identifier));
       }
 
-      var service = GetService<IDefaultValueService> (_defaultValueServiceDefinition.Value);
+      var service = GetService<IDefaultValueService>(_defaultValueServiceDefinition.Value);
 
-      return service.Create (referencingObject, this);
+      return service.Create(referencingObject, this);
     }
 
     /// <summary>
@@ -293,21 +293,21 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     [Obsolete ("The default value feature is not supported. (Version 1.13.142)")]
     public bool IsDefaultValue (IBusinessObject? referencingObject, IBusinessObject value, IBusinessObjectProperty[] emptyProperties)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckNotNull ("emptyProperties", emptyProperties);
+      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull("emptyProperties", emptyProperties);
 
       if (!SupportsDefaultValue)
       {
-        throw new NotSupportedException (
-            string.Format (
+        throw new NotSupportedException(
+            string.Format(
                 "Checking for a value's default is not supported for reference property '{0}' of business object class '{1}'.",
                 Identifier,
                 ReflectedClass.Identifier));
       }
 
-      var service = GetService<IDefaultValueService> (_defaultValueServiceDefinition.Value);
+      var service = GetService<IDefaultValueService>(_defaultValueServiceDefinition.Value);
 
-      return service.IsDefaultValue (referencingObject, this, value, emptyProperties);
+      return service.IsDefaultValue(referencingObject, this, value, emptyProperties);
     }
 
     /// <summary>
@@ -329,11 +329,11 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     {
       get
       {
-        var service = GetServiceOrNull<IDeleteObjectService> (_deleteObjectServiceDefinition.Value);
+        var service = GetServiceOrNull<IDeleteObjectService>(_deleteObjectServiceDefinition.Value);
         if (service == null)
           return false;
 
-        return service.SupportsProperty (this);
+        return service.SupportsProperty(this);
       }
     }
 
@@ -395,32 +395,32 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     [Obsolete ("The delete-object feature is not supported. (Version 1.13.142)")]
     public void Delete (IBusinessObject? referencingObject, IBusinessObject value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
       if (!SupportsDelete)
       {
-        throw new NotSupportedException (
-            string.Format (
+        throw new NotSupportedException(
+            string.Format(
                 "Deleting an object is not supported for reference property '{0}' of business object class '{1}'.",
                 Identifier,
                 ReflectedClass.Identifier));
       }
 
-      var service = GetService<IDeleteObjectService> (_deleteObjectServiceDefinition.Value);
+      var service = GetService<IDeleteObjectService>(_deleteObjectServiceDefinition.Value);
 
-      service.Delete (referencingObject, this, value);
+      service.Delete(referencingObject, this, value);
     }
 
     private static Lazy<Type> GetConcreteTypeWithCheck (Lazy<Type> concreteType)
     {
-      return new Lazy<Type> (
+      return new Lazy<Type>(
           () =>
           {
             var actualConcreteType = concreteType.Value;
-            if (!typeof (IBusinessObject).IsAssignableFrom (actualConcreteType))
+            if (!typeof (IBusinessObject).IsAssignableFrom(actualConcreteType))
             {
-              throw new InvalidOperationException (
-                  string.Format ("The concrete type must implement the IBusinessObject interface.\r\nConcrete type: {0}", actualConcreteType.GetFullNameSafe()));
+              throw new InvalidOperationException(
+                  string.Format("The concrete type must implement the IBusinessObject interface.\r\nConcrete type: {0}", actualConcreteType.GetFullNameSafe()));
             }
             return actualConcreteType;
           },
@@ -429,13 +429,13 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     private Lazy<IBusinessObjectClass> GetReferenceClass ()
     {
-      return new Lazy<IBusinessObjectClass> (
+      return new Lazy<IBusinessObjectClass>(
           () =>
           {
-            if (BindableObjectProvider.IsBindableObjectImplementation (UnderlyingType))
+            if (BindableObjectProvider.IsBindableObjectImplementation(UnderlyingType))
             {
-              var provider = BindableObjectProvider.GetProviderForBindableObjectType (UnderlyingType);
-              return provider.GetBindableObjectClass (UnderlyingType);
+              var provider = BindableObjectProvider.GetProviderForBindableObjectType(UnderlyingType);
+              return provider.GetBindableObjectClass(UnderlyingType);
             }
 
             return GetReferenceClassFromService();
@@ -447,11 +447,11 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     private IBusinessObjectClass GetReferenceClassFromService ()
     {
       IBusinessObjectClassService service = GetBusinessObjectClassService();
-      IBusinessObjectClass businessObjectClass = service.GetBusinessObjectClass (UnderlyingType);
+      IBusinessObjectClass businessObjectClass = service.GetBusinessObjectClass(UnderlyingType);
       if (businessObjectClass == null)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The GetBusinessObjectClass method of '{0}', registered with the '{1}', failed to return an '{2}' for type '{3}'.",
                 service.GetType().GetFullNameSafe(),
                 BusinessObjectProvider.GetType().GetFullNameSafe(),
@@ -468,8 +468,8 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       IBusinessObjectClassService? service = BusinessObjectProvider.GetService<IBusinessObjectClassService>();
       if (service == null)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The '{0}' type does not use the '{1}' implementation of '{2}' and there is no '{3}' registered with the '{4}' associated with this type.",
                 UnderlyingType.GetFullNameSafe(),
                 typeof (BindableObjectMixin).GetNamespaceSafe(),
@@ -484,8 +484,8 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     private TService GetService<TService> (Tuple<ServiceProvider, Type> serviceDefinition)
         where TService: IBusinessObjectService
     {
-      var service = GetServiceOrNull<TService> (serviceDefinition);
-      Assertion.IsNotNull (service, "The BusinessObjectProvider did not return a service for '{0}'.", serviceDefinition.Item2.GetFullNameSafe());
+      var service = GetServiceOrNull<TService>(serviceDefinition);
+      Assertion.IsNotNull(service, "The BusinessObjectProvider did not return a service for '{0}'.", serviceDefinition.Item2.GetFullNameSafe());
       return service;
     }
 
@@ -506,26 +506,26 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
           throw new InvalidOperationException();
       }
 
-      return (TService?) provider.GetService (serviceDefinition.Item2);
+      return (TService?) provider.GetService(serviceDefinition.Item2);
     }
 
     [NotNull]
     private Lazy<Tuple<ServiceProvider, Type>> GetServiceDeclaration<TService> ()
         where TService: IBusinessObjectService
     {
-      return new Lazy<Tuple<ServiceProvider, Type>> (
+      return new Lazy<Tuple<ServiceProvider, Type>>(
           () =>
           {
-            var attributeFromDeclaringType = PropertyInfo.GetCustomAttribute<IBusinessObjectServiceTypeAttribute<TService>> (true);
+            var attributeFromDeclaringType = PropertyInfo.GetCustomAttribute<IBusinessObjectServiceTypeAttribute<TService>>(true);
             if (attributeFromDeclaringType != null)
-              return new Tuple<ServiceProvider, Type> (ServiceProvider.DeclaringType, attributeFromDeclaringType.Type);
+              return new Tuple<ServiceProvider, Type>(ServiceProvider.DeclaringType, attributeFromDeclaringType.Type);
 
             var attributeFromPropertyType =
-                AttributeUtility.GetCustomAttribute<IBusinessObjectServiceTypeAttribute<TService>> (_concreteType.Value, true);
+                AttributeUtility.GetCustomAttribute<IBusinessObjectServiceTypeAttribute<TService>>(_concreteType.Value, true);
             if (attributeFromPropertyType != null)
-              return new Tuple<ServiceProvider, Type> (ServiceProvider.PropertyType, attributeFromPropertyType.Type);
+              return new Tuple<ServiceProvider, Type>(ServiceProvider.PropertyType, attributeFromPropertyType.Type);
 
-            return new Tuple<ServiceProvider, Type> (ServiceProvider.DeclaringType, typeof (TService));
+            return new Tuple<ServiceProvider, Type>(ServiceProvider.DeclaringType, typeof (TService));
           });
     }
   }

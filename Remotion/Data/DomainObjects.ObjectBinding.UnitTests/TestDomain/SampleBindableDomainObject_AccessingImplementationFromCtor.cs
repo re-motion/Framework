@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
   {
     public static SampleBindableDomainObject_AccessingImplementationFromCtor NewObject ()
     {
-      return NewObject<SampleBindableDomainObject_AccessingImplementationFromCtor> ();
+      return NewObject<SampleBindableDomainObject_AccessingImplementationFromCtor>();
     }
 
     public readonly string DisplayNameFromCtor;

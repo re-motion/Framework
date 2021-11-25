@@ -31,7 +31,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     protected override void EmitCall (IMemberEmitter member, ILGenerator gen)
     {
-      gen.Emit (OpCodes.Callvirt, Method);
+      gen.Emit(OpCodes.Callvirt, Method);
     }
   }
 }

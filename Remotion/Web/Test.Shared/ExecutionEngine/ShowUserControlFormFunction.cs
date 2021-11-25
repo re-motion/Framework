@@ -27,9 +27,9 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     public ShowUserControlFormFunction ()
         : base (new NoneTransactionMode())
     {
-      ReturnUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl (typeof (Start), TestResourceType.Root, "Start.aspx").GetUrl();
+      ReturnUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl(typeof (Start), TestResourceType.Root, "Start.aspx").GetUrl();
     }
 
-    private WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (UserControlForm), "ExecutionEngine/UserControlForm.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof (UserControlForm), "ExecutionEngine/UserControlForm.aspx");
   }
 }

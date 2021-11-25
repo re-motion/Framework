@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding
     [Obsolete ("Use CreateStatic to create a statically parsed property path. (1.13.177.0)", true)]
     public static IBusinessObjectPropertyPath Parse (IBusinessObjectClass objectClass, string propertyPathIdentifier)
     {
-      throw new NotSupportedException ("Use CreateStatic to create a statically parsed property path. (1.13.177.0)");
+      throw new NotSupportedException("Use CreateStatic to create a statically parsed property path. (1.13.177.0)");
     }
 
     /// <summary> Gets the value of this property path for the specified object. </summary>
@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding
     public static object GetValue (
         this IBusinessObjectPropertyPath propertyPath, IBusinessObject obj, bool throwExceptionIfNotReachable, bool getFirstListEntry)
     {
-      throw new NotSupportedException ("Use GetResult(...).GetValue(...) to retrieve the property path's value. (1.13.178.0)");
+      throw new NotSupportedException("Use GetResult(...).GetValue(...) to retrieve the property path's value. (1.13.178.0)");
     }
 
     #endregion
@@ -103,8 +103,8 @@ namespace Remotion.ObjectBinding
 
       public Formatter (IBusinessObject obj, IBusinessObjectPropertyPath path)
       {
-        ArgumentUtility.CheckNotNull ("obj", obj);
-        ArgumentUtility.CheckNotNull ("path", path);
+        ArgumentUtility.CheckNotNull("obj", obj);
+        ArgumentUtility.CheckNotNull("path", path);
 
         _object = obj;
         _path = path;
@@ -112,13 +112,13 @@ namespace Remotion.ObjectBinding
 
       public string ToString (string? format, IFormatProvider? formatProvider)
       {
-        var result = _path.GetResult (_object, UnreachableValueBehavior.ReturnNullForUnreachableValue, ListValueBehavior.GetResultForFirstListEntry);
-        return result.GetString (format);
+        var result = _path.GetResult(_object, UnreachableValueBehavior.ReturnNullForUnreachableValue, ListValueBehavior.GetResultForFirstListEntry);
+        return result.GetString(format);
       }
 
       public override string ToString ()
       {
-        return ToString (null, null);
+        return ToString(null, null);
       }
     }
 
@@ -132,7 +132,7 @@ namespace Remotion.ObjectBinding
     [NotNull]
     public static IBusinessObjectPropertyPath CreateStatic (IBusinessObjectClass objectClass, string propertyPathIdentifier)
     {
-      return StaticBusinessObjectPropertyPath.Parse (propertyPathIdentifier, objectClass);
+      return StaticBusinessObjectPropertyPath.Parse(propertyPathIdentifier, objectClass);
     }
 
     /// <summary> Creates a static property path from the list of <paramref name="properties"/>. </summary>
@@ -144,7 +144,7 @@ namespace Remotion.ObjectBinding
     [NotNull]
     public static IBusinessObjectPropertyPath CreateStatic (IBusinessObjectProperty[] properties)
     {
-      return StaticBusinessObjectPropertyPath.Create (properties);
+      return StaticBusinessObjectPropertyPath.Create(properties);
     }
 
     /// <summary> Creates a dynamic property path based on the <paramref name="propertyPathIdentifier"/>.  </summary>
@@ -156,7 +156,7 @@ namespace Remotion.ObjectBinding
     [NotNull]
     public static IBusinessObjectPropertyPath CreateDynamic (string propertyPathIdentifier)
     {
-      return DynamicBusinessObjectPropertyPath.Create (propertyPathIdentifier);
+      return DynamicBusinessObjectPropertyPath.Create(propertyPathIdentifier);
     }
   }
 }

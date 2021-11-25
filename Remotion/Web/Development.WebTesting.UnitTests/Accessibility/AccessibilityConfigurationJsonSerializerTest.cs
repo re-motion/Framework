@@ -13,16 +13,16 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
       const string expected =
           "{iframes: false, xpath: true, frameWaitTime: 13000, absolutePaths: true, restoreScroll: true, runOnly: {type:\"tag\",values:[\"wcag2a\"]}}";
 
-      var configuration = new AccessibilityConfiguration (
+      var configuration = new AccessibilityConfiguration(
           AccessibilityConformanceLevel.Wcag20_ConformanceLevelA,
           false,
-          TimeSpan.FromSeconds (13),
+          TimeSpan.FromSeconds(13),
           true,
           true);
 
-      var result = AccessibilityConfigurationJsonSerializer.Serialize (configuration);
+      var result = AccessibilityConfigurationJsonSerializer.Serialize(configuration);
 
-      Assert.That (result, Is.EqualTo (expected));
+      Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
@@ -31,16 +31,16 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
       const string expected =
           "{iframes: false, xpath: true, frameWaitTime: 13000, absolutePaths: true, restoreScroll: true, runOnly: {type:\"tag\",values:[\"wcag2aa\",\"wcag2a\"]}}";
 
-      var configuration = new AccessibilityConfiguration (
+      var configuration = new AccessibilityConfiguration(
           AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA,
           false,
-          TimeSpan.FromSeconds (13),
+          TimeSpan.FromSeconds(13),
           true,
           true);
 
-      var result = AccessibilityConfigurationJsonSerializer.Serialize (configuration);
+      var result = AccessibilityConfigurationJsonSerializer.Serialize(configuration);
 
-      Assert.That (result, Is.EqualTo (expected));
+      Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
@@ -49,16 +49,16 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
       const string expected =
           "{iframes: false, xpath: true, frameWaitTime: 13000, absolutePaths: true, restoreScroll: true, runOnly: {type:\"tag\",values:[\"wcag21a\",\"wcag2a\",\"experimental\"]}}";
 
-      var configuration = new AccessibilityConfiguration (
+      var configuration = new AccessibilityConfiguration(
           AccessibilityConformanceLevel.Wcag21_ConformanceLevelA,
           false,
-          TimeSpan.FromSeconds (13),
+          TimeSpan.FromSeconds(13),
           true,
           true);
 
-      var result = AccessibilityConfigurationJsonSerializer.Serialize (configuration);
+      var result = AccessibilityConfigurationJsonSerializer.Serialize(configuration);
 
-      Assert.That (result, Is.EqualTo (expected));
+      Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
@@ -67,16 +67,16 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
       const string expected =
           "{iframes: false, xpath: true, frameWaitTime: 13000, absolutePaths: true, restoreScroll: true, runOnly: {type:\"tag\",values:[\"wcag21aa\",\"wcag2a\",\"wcag21a\",\"wcag2aa\",\"experimental\"]}}";
 
-      var configuration = new AccessibilityConfiguration (
+      var configuration = new AccessibilityConfiguration(
           AccessibilityConformanceLevel.Wcag21_ConformanceLevelDoubleA,
           false,
-          TimeSpan.FromSeconds (13),
+          TimeSpan.FromSeconds(13),
           true,
           true);
 
-      var result = AccessibilityConfigurationJsonSerializer.Serialize (configuration);
+      var result = AccessibilityConfigurationJsonSerializer.Serialize(configuration);
 
-      Assert.That (result, Is.EqualTo (expected));
+      Assert.That(result, Is.EqualTo(expected));
     }
   }
 }

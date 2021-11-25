@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       base.SetUp();
 
-      _testHelper = new SqlProviderGeneratedSqlTestHelper (TestDomainStorageProviderDefinition);
+      _testHelper = new SqlProviderGeneratedSqlTestHelper(TestDomainStorageProviderDefinition);
     }
 
     public override void TearDown ()
@@ -48,13 +48,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainer ()
     {
-      _testHelper.ExpectExecuteReader (
+      _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleRow,
           "SELECT [ID], [ClassID], [Timestamp], [SerialNumber], [EmployeeID] FROM [Computer] WHERE [ID] = @ID;",
-          Tuple.Create ("@ID", DbType.Guid, DomainObjectIDs.Computer1.Value));
+          Tuple.Create("@ID", DbType.Guid, DomainObjectIDs.Computer1.Value));
       _testHelper.Replay();
 
-      _testHelper.Provider.LoadDataContainer (DomainObjectIDs.Computer1);
+      _testHelper.Provider.LoadDataContainer(DomainObjectIDs.Computer1);
 
       _testHelper.VerifyAllExpectations();
     }
@@ -62,13 +62,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainers_SingleID ()
     {
-      _testHelper.ExpectExecuteReader (
+      _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [SerialNumber], [EmployeeID] FROM [Computer] WHERE [ID] = @ID;",
-          Tuple.Create ("@ID", DbType.Guid, DomainObjectIDs.Computer1.Value));
+          Tuple.Create("@ID", DbType.Guid, DomainObjectIDs.Computer1.Value));
       _testHelper.Replay();
 
-      _testHelper.Provider.LoadDataContainers (new[] { DomainObjectIDs.Computer1 }).ToArray();
+      _testHelper.Provider.LoadDataContainers(new[] { DomainObjectIDs.Computer1 }).ToArray();
 
       _testHelper.VerifyAllExpectations();
     }
@@ -76,14 +76,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainers_MultiIDs_SameTable ()
     {
-      _testHelper.ExpectExecuteReader (
+      _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [SerialNumber], [EmployeeID] FROM [Computer] "
           + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create ("@ID", DbType.Xml, (object) "<L><I>c7c26bf5-871d-48c7-822a-e9b05aac4e5a</I><I>176a0ff6-296d-4934-bd1a-23cf52c22411</I></L>"));
+          Tuple.Create("@ID", DbType.Xml, (object) "<L><I>c7c26bf5-871d-48c7-822a-e9b05aac4e5a</I><I>176a0ff6-296d-4934-bd1a-23cf52c22411</I></L>"));
       _testHelper.Replay();
 
-      _testHelper.Provider.LoadDataContainers (new[] { DomainObjectIDs.Computer1, DomainObjectIDs.Computer2 }).ToArray();
+      _testHelper.Provider.LoadDataContainers(new[] { DomainObjectIDs.Computer1, DomainObjectIDs.Computer2 }).ToArray();
 
       _testHelper.VerifyAllExpectations();
     }
@@ -91,19 +91,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainers_MultiIDs_DifferentTables ()
     {
-      _testHelper.ExpectExecuteReader (
+      _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [SerialNumber], [EmployeeID] FROM [Computer] "
           + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create ("@ID", DbType.Xml, (object) "<L><I>c7c26bf5-871d-48c7-822a-e9b05aac4e5a</I><I>176a0ff6-296d-4934-bd1a-23cf52c22411</I></L>"));
-      _testHelper.ExpectExecuteReader (
+          Tuple.Create("@ID", DbType.Xml, (object) "<L><I>c7c26bf5-871d-48c7-822a-e9b05aac4e5a</I><I>176a0ff6-296d-4934-bd1a-23cf52c22411</I></L>"));
+      _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [Name], [SupervisorID] FROM [Employee] "
           + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create ("@ID", DbType.Xml, (object) "<L><I>51ece39b-f040-45b0-8b72-ad8b45353990</I><I>c3b2bbc3-e083-4974-bac7-9cee1fb85a5e</I></L>"));
+          Tuple.Create("@ID", DbType.Xml, (object) "<L><I>51ece39b-f040-45b0-8b72-ad8b45353990</I><I>c3b2bbc3-e083-4974-bac7-9cee1fb85a5e</I></L>"));
       _testHelper.Replay();
 
-      _testHelper.Provider.LoadDataContainers (
+      _testHelper.Provider.LoadDataContainers(
           new[] { DomainObjectIDs.Computer1, DomainObjectIDs.Computer2, DomainObjectIDs.Employee1, DomainObjectIDs.Employee2 }).ToArray();
 
       _testHelper.VerifyAllExpectations();
@@ -112,15 +112,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainersByRelatedID_NoSortExpression ()
     {
-      _testHelper.ExpectExecuteReader (
+      _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [ContactPersonID], [NumberOfShops], [SupplierQuality], [CustomerSince], [CustomerType] "
           + "FROM [Company] WHERE [IndustrialSectorID] = @IndustrialSectorID;",
-          Tuple.Create ("@IndustrialSectorID", DbType.Guid, DomainObjectIDs.IndustrialSector1.Value));
+          Tuple.Create("@IndustrialSectorID", DbType.Guid, DomainObjectIDs.IndustrialSector1.Value));
       _testHelper.Replay();
 
-      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition (typeof (Company), "IndustrialSector");
-      _testHelper.Provider.LoadDataContainersByRelatedID (relationEndPointDefinition, null, DomainObjectIDs.IndustrialSector1).ToArray();
+      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof (Company), "IndustrialSector");
+      _testHelper.Provider.LoadDataContainersByRelatedID(relationEndPointDefinition, null, DomainObjectIDs.IndustrialSector1).ToArray();
 
       _testHelper.VerifyAllExpectations();
     }
@@ -128,21 +128,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainersByRelatedID_WithSortExpression ()
     {
-      _testHelper.ExpectExecuteReader (
+      _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [ContactPersonID], [NumberOfShops], [SupplierQuality], [CustomerSince], [CustomerType] "
           + "FROM [Company] WHERE [IndustrialSectorID] = @IndustrialSectorID ORDER BY [CustomerSince] DESC, [Name] ASC;",
-          Tuple.Create ("@IndustrialSectorID", DbType.Guid, DomainObjectIDs.IndustrialSector1.Value));
+          Tuple.Create("@IndustrialSectorID", DbType.Guid, DomainObjectIDs.IndustrialSector1.Value));
       _testHelper.Replay();
 
-      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition (typeof (Company), "IndustrialSector");
-      var sortExpression = new SortExpressionDefinition (
+      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition(typeof (Company), "IndustrialSector");
+      var sortExpression = new SortExpressionDefinition(
           new[]
           {
-              new SortedPropertySpecification (GetPropertyDefinition (typeof (Customer), "CustomerSince"), SortOrder.Descending),
-              new SortedPropertySpecification (GetPropertyDefinition (typeof (Company), "Name"), SortOrder.Ascending)
+              new SortedPropertySpecification(GetPropertyDefinition(typeof (Customer), "CustomerSince"), SortOrder.Descending),
+              new SortedPropertySpecification(GetPropertyDefinition(typeof (Company), "Name"), SortOrder.Ascending)
           });
-      _testHelper.Provider.LoadDataContainersByRelatedID (relationEndPointDefinition, sortExpression, DomainObjectIDs.IndustrialSector1).ToArray();
+      _testHelper.Provider.LoadDataContainersByRelatedID(relationEndPointDefinition, sortExpression, DomainObjectIDs.IndustrialSector1).ToArray();
 
       _testHelper.VerifyAllExpectations();
     }
@@ -150,19 +150,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void ExecuteCollectionQuery ()
     {
-      _testHelper.ExpectExecuteReader (
+      _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleResult,
           "SELECT * FROM [Order] WHERE OrderNo=@p1 OR ID=@p2 OR OfficialID=@p3 OR OfficialID=@p4",
-          Tuple.Create ("@p1", DbType.Int32, (object) 1),
-          Tuple.Create ("@p2", DbType.Guid, DomainObjectIDs.Order3.Value),
-          Tuple.Create ("@p3", DbType.AnsiString, (object) DomainObjectIDs.Official1.ToString()),
-          Tuple.Create ("@p4", DbType.String, (object) DBNull.Value)
+          Tuple.Create("@p1", DbType.Int32, (object) 1),
+          Tuple.Create("@p2", DbType.Guid, DomainObjectIDs.Order3.Value),
+          Tuple.Create("@p3", DbType.AnsiString, (object) DomainObjectIDs.Official1.ToString()),
+          Tuple.Create("@p4", DbType.String, (object) DBNull.Value)
           );
       _testHelper.Replay();
 
       var query =
-          new Query (
-              new QueryDefinition (
+          new Query(
+              new QueryDefinition(
                   "id",
                   TestDomainStorageProviderDefinition,
                   "SELECT * FROM [Order] WHERE OrderNo=@p1 OR ID=@p2 OR OfficialID=@p3 OR OfficialID=@p4",
@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
                   { "@p3", DomainObjectIDs.Official1 },
                   { "@p4", null }
               });
-      _testHelper.Provider.ExecuteCollectionQuery (query).ToArray();
+      _testHelper.Provider.ExecuteCollectionQuery(query).ToArray();
 
       _testHelper.VerifyAllExpectations();
     }
@@ -182,18 +182,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void ExecuteScalarQuery ()
     {
-      _testHelper.ExpectExecuteScalar (
+      _testHelper.ExpectExecuteScalar(
           "SELECT COUNT(*) FROM [Order] WHERE OrderNo=@p1 OR ID=@p2 OR OfficialID=@p3 OR OfficialID=@p4",
-          Tuple.Create ("@p1", DbType.Int32, (object) 1),
-          Tuple.Create ("@p2", DbType.Guid, DomainObjectIDs.Order3.Value),
-          Tuple.Create ("@p3", DbType.AnsiString, (object) DomainObjectIDs.Official1.ToString()),
-          Tuple.Create ("@p4", DbType.String, (object) DBNull.Value)
+          Tuple.Create("@p1", DbType.Int32, (object) 1),
+          Tuple.Create("@p2", DbType.Guid, DomainObjectIDs.Order3.Value),
+          Tuple.Create("@p3", DbType.AnsiString, (object) DomainObjectIDs.Official1.ToString()),
+          Tuple.Create("@p4", DbType.String, (object) DBNull.Value)
           );
       _testHelper.Replay();
 
       var query =
-          new Query (
-              new QueryDefinition (
+          new Query(
+              new QueryDefinition(
                   "id",
                   TestDomainStorageProviderDefinition,
                   "SELECT COUNT(*) FROM [Order] WHERE OrderNo=@p1 OR ID=@p2 OR OfficialID=@p3 OR OfficialID=@p4",
@@ -205,7 +205,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
                   { "@p3", DomainObjectIDs.Official1 },
                   { "@p4", null }
               });
-      _testHelper.Provider.ExecuteScalarQuery (query);
+      _testHelper.Provider.ExecuteScalarQuery(query);
 
       _testHelper.VerifyAllExpectations();
     }
@@ -215,48 +215,48 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       SetDatabaseModifyable();
 
-      var newGuid = new Guid ("322D1DCB-19E4-49BA-90AB-7F5C9C8126E8");
-      var newDataContainer = DataContainer.CreateNew (new ObjectID(Configuration.GetTypeDefinition (typeof (Employee)), newGuid));
-      var changedDataContainer = _testHelper.LoadDataContainerInSeparateProvider (DomainObjectIDs.Employee1);
-      SetPropertyValue (changedDataContainer, typeof (Employee), "Name", "George");
-      var markedAsChangedDataContainer = _testHelper.LoadDataContainerInSeparateProvider (DomainObjectIDs.Employee2);
+      var newGuid = new Guid("322D1DCB-19E4-49BA-90AB-7F5C9C8126E8");
+      var newDataContainer = DataContainer.CreateNew(new ObjectID(Configuration.GetTypeDefinition(typeof (Employee)), newGuid));
+      var changedDataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee1);
+      SetPropertyValue(changedDataContainer, typeof (Employee), "Name", "George");
+      var markedAsChangedDataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee2);
       markedAsChangedDataContainer.MarkAsChanged();
-      var unchangedDataContainer = _testHelper.LoadDataContainerInSeparateProvider (DomainObjectIDs.Employee3);
-      var deletedDataContainer = _testHelper.LoadDataContainerInSeparateProvider (DomainObjectIDs.Employee7);
-      SetPropertyValue (deletedDataContainer, typeof (Employee), "Supervisor", null);
+      var unchangedDataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee3);
+      var deletedDataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee7);
+      SetPropertyValue(deletedDataContainer, typeof (Employee), "Supervisor", null);
       deletedDataContainer.Delete();
 
-      _testHelper.ExpectExecuteNonQuery (
+      _testHelper.ExpectExecuteNonQuery(
           "INSERT INTO [Employee] ([ID], [ClassID], [Name]) VALUES (@ID, @ClassID, @Name);",
-          Tuple.Create ("@ID", DbType.Guid, newDataContainer.ID.Value),
-          Tuple.Create ("@ClassID", DbType.AnsiString, (object) "Employee"),
-          Tuple.Create ("@Name", DbType.String, (object) ""));
-      _testHelper.ExpectExecuteNonQuery (
+          Tuple.Create("@ID", DbType.Guid, newDataContainer.ID.Value),
+          Tuple.Create("@ClassID", DbType.AnsiString, (object) "Employee"),
+          Tuple.Create("@Name", DbType.String, (object) ""));
+      _testHelper.ExpectExecuteNonQuery(
           "UPDATE [Employee] SET [Name] = @Name WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
-          Tuple.Create ("@Name", DbType.String, (object) "George"),
-          Tuple.Create ("@ID", DbType.Guid, changedDataContainer.ID.Value),
-          Tuple.Create ("@Timestamp", DbType.Binary, changedDataContainer.Timestamp)
+          Tuple.Create("@Name", DbType.String, (object) "George"),
+          Tuple.Create("@ID", DbType.Guid, changedDataContainer.ID.Value),
+          Tuple.Create("@Timestamp", DbType.Binary, changedDataContainer.Timestamp)
           );
-      _testHelper.ExpectExecuteNonQuery (
+      _testHelper.ExpectExecuteNonQuery(
           "UPDATE [Employee] SET [SupervisorID] = @SupervisorID WHERE [ID] = @ID;",
-          Tuple.Create ("@SupervisorID", DbType.Guid, (object) DBNull.Value),
-          Tuple.Create ("@ID", DbType.Guid, newDataContainer.ID.Value));
-      _testHelper.ExpectExecuteNonQuery (
+          Tuple.Create("@SupervisorID", DbType.Guid, (object) DBNull.Value),
+          Tuple.Create("@ID", DbType.Guid, newDataContainer.ID.Value));
+      _testHelper.ExpectExecuteNonQuery(
           "UPDATE [Employee] SET [SupervisorID] = @SupervisorID WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
-          Tuple.Create ("@SupervisorID", DbType.Guid, (object) DBNull.Value),
-          Tuple.Create ("@ID", DbType.Guid, deletedDataContainer.ID.Value),
-          Tuple.Create ("@Timestamp", DbType.Binary, deletedDataContainer.Timestamp));
-      _testHelper.ExpectExecuteNonQuery (
+          Tuple.Create("@SupervisorID", DbType.Guid, (object) DBNull.Value),
+          Tuple.Create("@ID", DbType.Guid, deletedDataContainer.ID.Value),
+          Tuple.Create("@Timestamp", DbType.Binary, deletedDataContainer.Timestamp));
+      _testHelper.ExpectExecuteNonQuery(
           "UPDATE [Employee] SET [ClassID] = @ClassID WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
-          Tuple.Create ("@ClassID", DbType.AnsiString, (object) "Employee"),
-          Tuple.Create ("@ID", DbType.Guid, markedAsChangedDataContainer.ID.Value),
-          Tuple.Create ("@Timestamp", DbType.Binary, markedAsChangedDataContainer.Timestamp));
-      _testHelper.ExpectExecuteNonQuery (
+          Tuple.Create("@ClassID", DbType.AnsiString, (object) "Employee"),
+          Tuple.Create("@ID", DbType.Guid, markedAsChangedDataContainer.ID.Value),
+          Tuple.Create("@Timestamp", DbType.Binary, markedAsChangedDataContainer.Timestamp));
+      _testHelper.ExpectExecuteNonQuery(
           "DELETE FROM [Employee] WHERE [ID] = @ID;",
-          Tuple.Create ("@ID", DbType.Guid, deletedDataContainer.ID.Value));
+          Tuple.Create("@ID", DbType.Guid, deletedDataContainer.ID.Value));
       _testHelper.Replay();
       
-      _testHelper.Provider.Save (new[] { changedDataContainer, newDataContainer, deletedDataContainer, markedAsChangedDataContainer, unchangedDataContainer});
+      _testHelper.Provider.Save(new[] { changedDataContainer, newDataContainer, deletedDataContainer, markedAsChangedDataContainer, unchangedDataContainer});
 
       _testHelper.VerifyAllExpectations();
     }
@@ -264,16 +264,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void UpdateTimestamps_SingleID ()
     {
-      var dataContainer = _testHelper.LoadDataContainerInSeparateProvider (DomainObjectIDs.Employee1);
+      var dataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee1);
 
-      _testHelper.ExpectExecuteReader (
+      _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp] FROM [Employee] WHERE [ID] = @ID;",
-          Tuple.Create ("@ID", DbType.Guid, dataContainer.ID.Value));
+          Tuple.Create("@ID", DbType.Guid, dataContainer.ID.Value));
 
       _testHelper.Replay();
       
-      _testHelper.Provider.UpdateTimestamps (new[] { dataContainer });
+      _testHelper.Provider.UpdateTimestamps(new[] { dataContainer });
 
       _testHelper.VerifyAllExpectations();
     }
@@ -281,17 +281,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void UpdateTimestamps_MultipleIDs_SameTable ()
     {
-      var dataContainer1 = _testHelper.LoadDataContainerInSeparateProvider (DomainObjectIDs.Employee1);
-      var dataContainer2 = _testHelper.LoadDataContainerInSeparateProvider (DomainObjectIDs.Employee2);
+      var dataContainer1 = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee1);
+      var dataContainer2 = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee2);
 
-      _testHelper.ExpectExecuteReader (
+      _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp] FROM [Employee] WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create ("@ID", DbType.Xml, (object) "<L><I>51ece39b-f040-45b0-8b72-ad8b45353990</I><I>c3b2bbc3-e083-4974-bac7-9cee1fb85a5e</I></L>"));
+          Tuple.Create("@ID", DbType.Xml, (object) "<L><I>51ece39b-f040-45b0-8b72-ad8b45353990</I><I>c3b2bbc3-e083-4974-bac7-9cee1fb85a5e</I></L>"));
 
       _testHelper.Replay();
       
-      _testHelper.Provider.UpdateTimestamps (new[] { dataContainer1, dataContainer2 });
+      _testHelper.Provider.UpdateTimestamps(new[] { dataContainer1, dataContainer2 });
 
       _testHelper.VerifyAllExpectations();
     }
@@ -299,23 +299,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void UpdateTimestamps_MultipleIDs_MultipleTables ()
     {
-      var dataContainer1 = _testHelper.LoadDataContainerInSeparateProvider (DomainObjectIDs.Employee1);
-      var dataContainer2 = _testHelper.LoadDataContainerInSeparateProvider (DomainObjectIDs.Employee2);
-      var dataContainer3 = _testHelper.LoadDataContainerInSeparateProvider (DomainObjectIDs.Customer1);
-      var dataContainer4 = _testHelper.LoadDataContainerInSeparateProvider (DomainObjectIDs.Partner1);
+      var dataContainer1 = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee1);
+      var dataContainer2 = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee2);
+      var dataContainer3 = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Customer1);
+      var dataContainer4 = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Partner1);
 
-      _testHelper.ExpectExecuteReader (
+      _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp] FROM [Employee] WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create ("@ID", DbType.Xml, (object) "<L><I>51ece39b-f040-45b0-8b72-ad8b45353990</I><I>c3b2bbc3-e083-4974-bac7-9cee1fb85a5e</I></L>"));
-      _testHelper.ExpectExecuteReader (
+          Tuple.Create("@ID", DbType.Xml, (object) "<L><I>51ece39b-f040-45b0-8b72-ad8b45353990</I><I>c3b2bbc3-e083-4974-bac7-9cee1fb85a5e</I></L>"));
+      _testHelper.ExpectExecuteReader(
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp] FROM [Company] WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create ("@ID", DbType.Xml, (object) "<L><I>55b52e75-514b-4e82-a91b-8f0bb59b80ad</I><I>5587a9c0-be53-477d-8c0a-4803c7fae1a9</I></L>"));
+          Tuple.Create("@ID", DbType.Xml, (object) "<L><I>55b52e75-514b-4e82-a91b-8f0bb59b80ad</I><I>5587a9c0-be53-477d-8c0a-4803c7fae1a9</I></L>"));
 
       _testHelper.Replay();
       
-      _testHelper.Provider.UpdateTimestamps (new[] { dataContainer1, dataContainer2, dataContainer3, dataContainer4 });
+      _testHelper.Provider.UpdateTimestamps(new[] { dataContainer1, dataContainer2, dataContainer3, dataContainer4 });
 
       _testHelper.VerifyAllExpectations();
     }

@@ -23,7 +23,7 @@ namespace Remotion.Web
     /// <returns>The newly created <see cref="WebString"/> containing the <paramref name="html"/>.</returns>
     public static WebString CreateFromHtml ([CanBeNull] string? html)
     {
-      return new WebString (html, WebStringType.Encoded);
+      return new WebString(html, WebStringType.Encoded);
     }
 
     /// <summary>
@@ -34,7 +34,7 @@ namespace Remotion.Web
     /// <returns>The newly created <see cref="WebString"/> containing the <paramref name="text"/>.</returns>
     public static WebString CreateFromText ([CanBeNull] string? text)
     {
-      return new WebString (text, WebStringType.PlainText);
+      return new WebString(text, WebStringType.PlainText);
     }
 
     /// <summary>
@@ -48,7 +48,7 @@ namespace Remotion.Web
     /// </returns>
     public static bool operator == (WebString left, WebString right)
     {
-      return left.Equals (right);
+      return left.Equals(right);
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ namespace Remotion.Web
     /// </returns>
     public static bool operator != (WebString left, WebString right)
     {
-      return !left.Equals (right);
+      return !left.Equals(right);
     }
 
     [CanBeNull]
@@ -84,7 +84,7 @@ namespace Remotion.Web
     /// <summary>
     /// Tests whether the <see cref="WebString"/>s value is <see langword="null" /> or an empty string.
     /// </summary>
-    public bool IsEmpty => string.IsNullOrEmpty (_value);
+    public bool IsEmpty => string.IsNullOrEmpty(_value);
 
     /// <summary>
     /// Gets the raw string value of the <see cref="WebString"/> or an empty string if there is no value.
@@ -99,27 +99,27 @@ namespace Remotion.Web
     /// <param name="writer">The <see cref="HtmlTextWriter"/> where the value will be appended to. Must not be <see langword="null" />.</param>
     public void Write ([NotNull] HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull (nameof (writer), writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       switch (_type)
       {
         case WebStringType.PlainText:
           var value = GetValue();
-          var parts = value.Split (s_newlineSplitSeparators, StringSplitOptions.None);
+          var parts = value.Split(s_newlineSplitSeparators, StringSplitOptions.None);
 
           for (var i = 0; i < parts.Length; i++)
           {
-            HttpUtility.HtmlEncode (parts[i], writer);
+            HttpUtility.HtmlEncode(parts[i], writer);
             if (i < parts.Length - 1)
               writer.WriteBreak();
           }
 
           break;
         case WebStringType.Encoded:
-          writer.Write (GetValue());
+          writer.Write(GetValue());
           break;
         default:
-          throw new NotSupportedException ($"The WebStringType '{_type}' is not supported.");
+          throw new NotSupportedException($"The WebStringType '{_type}' is not supported.");
       }
     }
 
@@ -134,18 +134,18 @@ namespace Remotion.Web
     /// <param name="attribute">The attribute that is to be added.</param>
     public void AddAttribute ([NotNull] HtmlTextWriter writer, HtmlTextWriterAttribute attribute)
     {
-      ArgumentUtility.CheckNotNull (nameof (writer), writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       switch (_type)
       {
         case WebStringType.PlainText:
-          writer.AddAttribute (attribute, GetValue(), fEncode: true);
+          writer.AddAttribute(attribute, GetValue(), fEncode: true);
           break;
         case WebStringType.Encoded:
-          writer.AddAttribute (attribute, GetValue(), fEncode: false);
+          writer.AddAttribute(attribute, GetValue(), fEncode: false);
           break;
         default:
-          throw new NotSupportedException ($"The WebStringType '{_type}' is not supported.");
+          throw new NotSupportedException($"The WebStringType '{_type}' is not supported.");
       }
     }
 
@@ -160,19 +160,19 @@ namespace Remotion.Web
     /// <param name="attribute">The name of the attribute that is to be added. Must not be <see langword="null" /> or empty.</param>
     public void AddAttribute ([NotNull] HtmlTextWriter writer, [NotNull] string attribute)
     {
-      ArgumentUtility.CheckNotNull (nameof (writer), writer);
-      ArgumentUtility.CheckNotNullOrEmpty (nameof (attribute), attribute);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(attribute), attribute);
 
       switch (_type)
       {
         case WebStringType.PlainText:
-          writer.AddAttribute (attribute, GetValue(), fEndode: true);
+          writer.AddAttribute(attribute, GetValue(), fEndode: true);
           break;
         case WebStringType.Encoded:
-          writer.AddAttribute (attribute, GetValue(), fEndode: false);
+          writer.AddAttribute(attribute, GetValue(), fEndode: false);
           break;
         default:
-          throw new NotSupportedException ($"The WebStringType '{_type}' is not supported.");
+          throw new NotSupportedException($"The WebStringType '{_type}' is not supported.");
       }
     }
 
@@ -186,8 +186,8 @@ namespace Remotion.Web
     public PlainTextString ToPlainTextString ()
     {
       return Type == WebStringType.PlainText
-          ? PlainTextString.CreateFromText (_value)
-          : throw new InvalidOperationException ("Cannot convert to PlainTextString as the WebString is not of type 'PlainText'.");
+          ? PlainTextString.CreateFromText(_value)
+          : throw new InvalidOperationException("Cannot convert to PlainTextString as the WebString is not of type 'PlainText'.");
     }
 
     /// <inheritdoc />
@@ -199,7 +199,7 @@ namespace Remotion.Web
     /// <inheritdoc />
     public override bool Equals (object? obj)
     {
-      return obj is WebString other && Equals (other);
+      return obj is WebString other && Equals(other);
     }
 
     /// <inheritdoc />
@@ -217,7 +217,7 @@ namespace Remotion.Web
     /// <returns>A HTML encoded string that represents the current <see cref="WebString"/>.</returns>
     public override string ToString ()
     {
-      return ToString (WebStringEncoding.Html);
+      return ToString(WebStringEncoding.Html);
     }
 
     /// <summary>
@@ -233,20 +233,20 @@ namespace Remotion.Web
       switch (encoding)
       {
         case WebStringEncoding.Html:
-          return HttpUtility.HtmlEncode (value);
+          return HttpUtility.HtmlEncode(value);
         case WebStringEncoding.HtmlWithTransformedLineBreaks:
           using (var stringWriter = new StringWriter())
           {
-            using (var htmlTextWriter = new HtmlTextWriter (stringWriter))
+            using (var htmlTextWriter = new HtmlTextWriter(stringWriter))
             {
-              Write (htmlTextWriter);
+              Write(htmlTextWriter);
               return stringWriter.ToString();
             }
           }
         case WebStringEncoding.Attribute:
-          return HttpUtility.HtmlAttributeEncode (value);
+          return HttpUtility.HtmlAttributeEncode(value);
         default:
-          throw new ArgumentOutOfRangeException (nameof (encoding), encoding, null);
+          throw new ArgumentOutOfRangeException(nameof(encoding), encoding, null);
       }
     }
   }

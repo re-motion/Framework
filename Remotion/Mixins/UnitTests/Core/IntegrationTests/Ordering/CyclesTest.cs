@@ -25,31 +25,31 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     [Test]
     public void TwoCyclicMixins_WithThirdNonCyclic ()
     {
-      CheckCycleException (
-          () => BuildMixedInstance<C> (
+      CheckCycleException(
+          () => BuildMixedInstance<C>(
             b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinA, MixinB>(), 
             typeof (MixinB), typeof (MixinA), typeof (MixinC)),
           typeof (C),
           typeof (MixinA), typeof (MixinB));
-      CheckCycleException (
-          () => BuildMixedInstance<C> (
-              b => b.AddMixinDependency<MixinB, MixinA> ().AddMixinDependency<MixinA, MixinB> ().AddMixinDependency<MixinA, MixinC>(),
+      CheckCycleException(
+          () => BuildMixedInstance<C>(
+              b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinA, MixinB>().AddMixinDependency<MixinA, MixinC>(),
               typeof (MixinB), typeof (MixinA), typeof (MixinC)),
           typeof (C),
         // The cycle is only between MixinB and MixinA, but the algorithm doesn't isolate the culprits.
           typeof (MixinA), typeof (MixinB), typeof (MixinC));
-      CheckCycleException (
-          () => BuildMixedInstance<C> (
+      CheckCycleException(
+          () => BuildMixedInstance<C>(
               b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinA, MixinB>()
                     .AddMixinDependency<MixinA, MixinC>().AddMixinDependency<MixinB, MixinC>(),
               typeof (MixinB), typeof (MixinA), typeof (MixinC)),
           typeof (C),
         // The cycle is only between MixinB and MixinA, but the algorithm doesn't isolate the culprits.
           typeof (MixinA), typeof (MixinB), typeof (MixinC));
-      CheckCycleException (
-          () => BuildMixedInstance<C> (
-              b => b.AddMixinDependency<MixinB, MixinA> ().AddMixinDependency<MixinA, MixinB> ()
-                    .AddMixinDependency<MixinC, MixinA> ().AddMixinDependency<MixinC, MixinB> (),
+      CheckCycleException(
+          () => BuildMixedInstance<C>(
+              b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinA, MixinB>()
+                    .AddMixinDependency<MixinC, MixinA>().AddMixinDependency<MixinC, MixinB>(),
               typeof (MixinB), typeof (MixinA), typeof (MixinC)),
           typeof (C),
           typeof (MixinA), typeof (MixinB));
@@ -58,9 +58,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     [Test]
     public void ThreeCyclicMixins ()
     {
-      CheckCycleException (
-          () => BuildMixedInstance<C> (
-              b => b.AddMixinDependency<MixinB, MixinA> ().AddMixinDependency<MixinA, MixinC> ().AddMixinDependency<MixinC, MixinB>(),
+      CheckCycleException(
+          () => BuildMixedInstance<C>(
+              b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinA, MixinC>().AddMixinDependency<MixinC, MixinB>(),
               typeof (MixinB), typeof (MixinA), typeof (MixinC)),
           typeof (C),
           typeof (MixinA), typeof (MixinB), typeof (MixinC));
@@ -69,10 +69,10 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     [Test]
     public void TwoCycles ()
     {
-      CheckCycleException (
-          () => BuildMixedInstance<C> (
-              b => b.AddMixinDependency<MixinB, MixinA> ().AddMixinDependency<MixinA, MixinB> ()
-                    .AddMixinDependency<MixinC, MixinB> ().AddMixinDependency<MixinB, MixinC> (),
+      CheckCycleException(
+          () => BuildMixedInstance<C>(
+              b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinA, MixinB>()
+                    .AddMixinDependency<MixinC, MixinB>().AddMixinDependency<MixinB, MixinC>(),
               typeof (MixinB), typeof (MixinA), typeof (MixinC)),
           typeof (C),
           typeof (MixinA), typeof (MixinB), typeof (MixinC));
@@ -81,9 +81,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     [Test]
     public void SelfDependency ()
     {
-      CheckCycleException (
-          () => BuildMixedInstance<C> (
-              b => b.AddMixinDependency<MixinB, MixinB> (),
+      CheckCycleException(
+          () => BuildMixedInstance<C>(
+              b => b.AddMixinDependency<MixinB, MixinB>(),
               typeof (MixinB), typeof (MixinA), typeof (MixinC)),
           typeof (C),
           typeof (MixinB));

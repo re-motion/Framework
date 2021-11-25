@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       RdbmsProvider rdbmsProvider = Provider;
 
-      Assert.That (rdbmsProvider.IsConnected, Is.False);
+      Assert.That(rdbmsProvider.IsConnected, Is.False);
     }
 
     [Test]
@@ -37,10 +37,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       RdbmsProvider rdbmsProvider = Provider;
 
-      rdbmsProvider.Connect ();
-      Assert.That (rdbmsProvider.IsConnected, Is.True);
-      rdbmsProvider.Disconnect ();
-      Assert.That (rdbmsProvider.IsConnected, Is.False);
+      rdbmsProvider.Connect();
+      Assert.That(rdbmsProvider.IsConnected, Is.True);
+      rdbmsProvider.Disconnect();
+      Assert.That(rdbmsProvider.IsConnected, Is.False);
     }
 
     [Test]
@@ -48,11 +48,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       using (StorageProvider provider = Provider)
       {
-        provider.LoadDataContainer (DomainObjectIDs.Order1);
+        provider.LoadDataContainer(DomainObjectIDs.Order1);
       }
 
       RdbmsProvider rdbmsProvider = Provider;
-      Assert.That (rdbmsProvider.IsConnected, Is.False);
+      Assert.That(rdbmsProvider.IsConnected, Is.False);
     }
   }
 }

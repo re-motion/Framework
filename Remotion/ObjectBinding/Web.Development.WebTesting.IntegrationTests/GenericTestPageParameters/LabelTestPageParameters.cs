@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
       FormGridControlHtmlId = data.Arguments[0];
       ReadonlyFormGridControlHtmlId = data.Arguments[1];

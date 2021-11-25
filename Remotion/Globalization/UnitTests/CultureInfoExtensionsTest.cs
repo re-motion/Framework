@@ -29,57 +29,57 @@ namespace Remotion.Globalization.UnitTests
     {
       var cultureInfo = CultureInfo.InvariantCulture;
 
-      Assert.That (
+      Assert.That(
           cultureInfo.GetCultureHierarchy(),
-          Is.EqualTo (
+          Is.EqualTo(
               new[]
               {
-                  new CultureInfo ("")
+                  new CultureInfo("")
               }));
     }
 
     [Test]
     public void GetCultureHierarchy_WithNewInvariant_ReturnsInvariant ()
     {
-      var cultureInfo = new CultureInfo ("");
+      var cultureInfo = new CultureInfo("");
 
-      Assert.That (
+      Assert.That(
           cultureInfo.GetCultureHierarchy(),
-          Is.EqualTo (
+          Is.EqualTo(
               new[]
               {
-                  new CultureInfo ("")
+                  new CultureInfo("")
               }));
     }
     
     [Test]
     public void GetCultureHierarchy_WithNeutralCulture_ReturnsNeutralThenInvariant ()
     {
-      var cultureInfo = new CultureInfo ("en");
+      var cultureInfo = new CultureInfo("en");
 
-      Assert.That (
+      Assert.That(
           cultureInfo.GetCultureHierarchy(),
-          Is.EqualTo (
+          Is.EqualTo(
               new[]
               {
-                  new CultureInfo ("en"),
-                  new CultureInfo ("")
+                  new CultureInfo("en"),
+                  new CultureInfo("")
               }));
     }
     
     [Test]
     public void GetCultureHierarchy_WithSpecificCulture_ReturnsSpecificThenNeutralThenInvariant ()
     {
-      var cultureInfo = new CultureInfo ("en-US");
+      var cultureInfo = new CultureInfo("en-US");
 
-      Assert.That (
+      Assert.That(
           cultureInfo.GetCultureHierarchy(),
-          Is.EqualTo (
+          Is.EqualTo(
               new[]
               {
-                  new CultureInfo ("en-US"),
-                  new CultureInfo ("en"),
-                  new CultureInfo ("")
+                  new CultureInfo("en-US"),
+                  new CultureInfo("en"),
+                  new CultureInfo("")
               }));
     }
   }

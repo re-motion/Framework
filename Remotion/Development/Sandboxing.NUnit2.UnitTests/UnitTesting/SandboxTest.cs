@@ -32,70 +32,70 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [SetUp]
     public void SetUp ()
     {
-      _mediumTrustPermissions = PermissionSets.GetMediumTrust (AppContext.BaseDirectory, Environment.MachineName);
+      _mediumTrustPermissions = PermissionSets.GetMediumTrust(AppContext.BaseDirectory, Environment.MachineName);
     }
 
     [Test]
     public void CreateSandbox ()
     {
       var currentAppDomain = AppDomain.CurrentDomain;
-      using (var sandbox = Sandbox.CreateSandbox (_mediumTrustPermissions, new Assembly[0]))
+      using (var sandbox = Sandbox.CreateSandbox(_mediumTrustPermissions, new Assembly[0]))
       {
-        Assert.That (sandbox.AppDomain, Is.Not.Null);
-        Assert.That (sandbox.AppDomain, Is.Not.SameAs (currentAppDomain));
-        Assert.That (sandbox.AppDomain.FriendlyName.StartsWith ("Sandbox ("), Is.True);
+        Assert.That(sandbox.AppDomain, Is.Not.Null);
+        Assert.That(sandbox.AppDomain, Is.Not.SameAs(currentAppDomain));
+        Assert.That(sandbox.AppDomain.FriendlyName.StartsWith("Sandbox ("), Is.True);
       }
     }
 
     [Test]
     public void ExecuteCodeWhichIsNotAllowedInMediumTrust_WithFullTrustAssembly ()
     {
-      using (var sandbox = Sandbox.CreateSandbox (_mediumTrustPermissions, new[] { typeof (SandboxTest).Assembly }))
+      using (var sandbox = Sandbox.CreateSandbox(_mediumTrustPermissions, new[] { typeof (SandboxTest).Assembly }))
       {
-        sandbox.AppDomain.DoCallBack (DangerousMethodAssertingPermission);
+        sandbox.AppDomain.DoCallBack(DangerousMethodAssertingPermission);
       }
     }
 
     [Test]
     public void ExecuteCodeWhichIsNotAllowedInMediumTrust ()
     {
-      using (var sandbox = Sandbox.CreateSandbox (_mediumTrustPermissions, new Assembly[0]))
+      using (var sandbox = Sandbox.CreateSandbox(_mediumTrustPermissions, new Assembly[0]))
       {
-        Assert.That (
-            () => sandbox.AppDomain.DoCallBack (DangerousMethodRequiringPermission),
+        Assert.That(
+            () => sandbox.AppDomain.DoCallBack(DangerousMethodRequiringPermission),
             Throws.InstanceOf<SecurityException>()
-                .With.Message.Matches (@"^Request for the permission of type 'System\.Security\.Permissions\.EnvironmentPermission.*' failed\.$"));
+                .With.Message.Matches(@"^Request for the permission of type 'System\.Security\.Permissions\.EnvironmentPermission.*' failed\.$"));
       }
     }
 
     [Test]
     public void Dispose ()
     {
-      var sandbox = Sandbox.CreateSandbox (_mediumTrustPermissions, new Assembly[0]);
+      var sandbox = Sandbox.CreateSandbox(_mediumTrustPermissions, new Assembly[0]);
       sandbox.Dispose();
-      Assert.That (
-          () => sandbox.CreateSandboxedInstance<SampleTestRunner> (_mediumTrustPermissions),
+      Assert.That(
+          () => sandbox.CreateSandboxedInstance<SampleTestRunner>(_mediumTrustPermissions),
           Throws.InstanceOf<AppDomainUnloadedException>());
     }
 
     [Test]
     public void Dispose_Twice ()
     {
-      var sandbox = Sandbox.CreateSandbox (_mediumTrustPermissions, new Assembly[0]);
-      sandbox.Dispose ();
-      sandbox.Dispose ();
+      var sandbox = Sandbox.CreateSandbox(_mediumTrustPermissions, new Assembly[0]);
+      sandbox.Dispose();
+      sandbox.Dispose();
     }
 
     [Test]
     public void CreateSandboxedInstance ()
     {
-      using (var sandbox = Sandbox.CreateSandbox (_mediumTrustPermissions, new Assembly[0]))
+      using (var sandbox = Sandbox.CreateSandbox(_mediumTrustPermissions, new Assembly[0]))
       {
         var result = sandbox.CreateSandboxedInstance<SampleTestRunner>();
         
-        Assert.That (result, Is.TypeOf (typeof (SampleTestRunner)));
-        Assert.That (RemotingServices.IsTransparentProxy (result), Is.True);
-        Assert.That (result.GetCurrentDomain (), Is.SameAs (sandbox.AppDomain));
+        Assert.That(result, Is.TypeOf(typeof (SampleTestRunner)));
+        Assert.That(RemotingServices.IsTransparentProxy(result), Is.True);
+        Assert.That(result.GetCurrentDomain(), Is.SameAs(sandbox.AppDomain));
       }
     }
 
@@ -109,13 +109,13 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
 
     public static void DangerousMethodAssertingPermission ()
     {
-      new EnvironmentPermission (PermissionState.Unrestricted).Assert();
-      Environment.GetEnvironmentVariable ("USERDOMAIN");
+      new EnvironmentPermission(PermissionState.Unrestricted).Assert();
+      Environment.GetEnvironmentVariable("USERDOMAIN");
     }
 
     public static void DangerousMethodRequiringPermission ()
     {
-      Environment.GetEnvironmentVariable ("USERDOMAIN");
+      Environment.GetEnvironmentVariable("USERDOMAIN");
     }
   }
 }

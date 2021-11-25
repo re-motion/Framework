@@ -27,18 +27,18 @@ namespace Remotion.SecurityManager.UnitTests.Configuration
   {
     public void DeserializeSection (string xmlFragment)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("xmlFragment", xmlFragment);
+      ArgumentUtility.CheckNotNullOrEmpty("xmlFragment", xmlFragment);
 
-      XmlDocument document = new XmlDocument ();
-      document.LoadXml (xmlFragment);
+      XmlDocument document = new XmlDocument();
+      document.LoadXml(xmlFragment);
 
-      using (MemoryStream stream = new MemoryStream ())
+      using (MemoryStream stream = new MemoryStream())
       {
-        document.Save (stream);
+        document.Save(stream);
         stream.Position = 0;
-        using (XmlReader reader = XmlReader.Create (stream))
+        using (XmlReader reader = XmlReader.Create(stream))
         {
-          DeserializeSection (reader);
+          DeserializeSection(reader);
         }
       }
     }

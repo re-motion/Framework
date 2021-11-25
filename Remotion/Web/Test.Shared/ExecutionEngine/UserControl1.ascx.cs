@@ -73,12 +73,12 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     private void Sub_Click (object sender, System.EventArgs e)
     {
       ViewState["Counter"] += " Sub_Click";
-      WxePage.ExecuteFunctionNoRepost (new WebForm1.SubFunction ("usercontrol var1", "usercontrol var2"), (Control) sender);  
+      WxePage.ExecuteFunctionNoRepost(new WebForm1.SubFunction("usercontrol var1", "usercontrol var2"), (Control) sender);  
     }
 
     private void Next_Click (object sender, System.EventArgs e)
     {
-      WxePage.ExecuteNextStep ();
+      WxePage.ExecuteNextStep();
     }
 
   }

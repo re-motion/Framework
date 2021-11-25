@@ -26,25 +26,25 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
   {
     public bool HasFailure (string ruleName, ValidationLogData log)
     {
-      return log.GetResults().SelectMany (result => result.Failures).Any (item => item.RuleName == ruleName);
+      return log.GetResults().SelectMany(result => result.Failures).Any(item => item.RuleName == ruleName);
     }
 
     public bool HasWarning (string ruleName, ValidationLogData log)
     {
-      return log.GetResults().SelectMany (result => result.Warnings).Any (item => item.RuleName == ruleName);
+      return log.GetResults().SelectMany(result => result.Warnings).Any(item => item.RuleName == ruleName);
     }
 
     public void AssertSuccess (ValidationLogData log)
     {
       try
       {
-        Assert.That (log.GetNumberOfFailures (), Is.EqualTo (0));
-        Assert.That (log.GetNumberOfWarnings (), Is.EqualTo (0));
-        Assert.That (log.GetNumberOfUnexpectedExceptions (), Is.EqualTo (0));
+        Assert.That(log.GetNumberOfFailures(), Is.EqualTo(0));
+        Assert.That(log.GetNumberOfWarnings(), Is.EqualTo(0));
+        Assert.That(log.GetNumberOfUnexpectedExceptions(), Is.EqualTo(0));
       }
       catch (AssertionException)
       {
-        ConsoleDumper.DumpValidationResults (log.GetResults ());
+        ConsoleDumper.DumpValidationResults(log.GetResults());
         throw;
       }
     }

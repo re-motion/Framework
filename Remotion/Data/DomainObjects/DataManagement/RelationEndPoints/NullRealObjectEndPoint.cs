@@ -31,12 +31,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public DataContainer ForeignKeyDataContainer
     {
-      get { throw new NotSupportedException (); }
+      get { throw new NotSupportedException(); }
     }
 
     public PropertyDefinition PropertyDefinition
     {
-      get { throw new NotSupportedException (); }
+      get { throw new NotSupportedException(); }
     }
 
     public void MarkSynchronized ()

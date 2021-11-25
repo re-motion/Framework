@@ -38,19 +38,19 @@ namespace Remotion.Validation.UnitTests.Merging
     {
       var factory = _serviceLocator.GetInstance<IValidationRuleCollectorMerger>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf<DiagnosticOutputValidationRuleMergeDecorator> ());
-      Assert.That (((DiagnosticOutputValidationRuleMergeDecorator) factory).ValidationRuleCollectorMerger, Is.TypeOf<OrderPrecedenceValidationRuleCollectorMerger> ());
-      Assert.That (((DiagnosticOutputValidationRuleMergeDecorator) factory).ValidatorFormatter, Is.TypeOf<DiagnosticInformationValidatorFormatterDecorator> ());
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf<DiagnosticOutputValidationRuleMergeDecorator>());
+      Assert.That(((DiagnosticOutputValidationRuleMergeDecorator) factory).ValidationRuleCollectorMerger, Is.TypeOf<OrderPrecedenceValidationRuleCollectorMerger>());
+      Assert.That(((DiagnosticOutputValidationRuleMergeDecorator) factory).ValidatorFormatter, Is.TypeOf<DiagnosticInformationValidatorFormatterDecorator>());
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IValidationRuleCollectorMerger> ();
-      var factory2 = _serviceLocator.GetInstance<IValidationRuleCollectorMerger> ();
+      var factory1 = _serviceLocator.GetInstance<IValidationRuleCollectorMerger>();
+      var factory2 = _serviceLocator.GetInstance<IValidationRuleCollectorMerger>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

@@ -43,10 +43,10 @@ namespace Remotion.Validation.Attributes.Validation
 
     public IEnumerable<IPropertyValidator> GetPropertyValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
+      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
-      return GetValidators (property, validationMessageFactory);
+      return GetValidators(property, validationMessageFactory);
     }
   }
 }

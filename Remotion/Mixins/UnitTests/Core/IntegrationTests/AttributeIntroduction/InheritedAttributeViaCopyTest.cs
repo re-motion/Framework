@@ -25,15 +25,15 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AttributeIntroduction
     [Test]
     public void AttributeNotFoundFromDerivedMixin ()
     {
-      var obj = ObjectFactory.Create<TargetTypeWithDerivedMixin> ();
-      Assert.That (obj.GetType ().IsDefined (typeof (InheritableAttribute), true), Is.True);
+      var obj = ObjectFactory.Create<TargetTypeWithDerivedMixin>();
+      Assert.That(obj.GetType().IsDefined(typeof (InheritableAttribute), true), Is.True);
     }
 
     [Test]
     public void AttributeFoundFromBaseMixin ()
     {
-      var obj = ObjectFactory.Create<TargetTypeWithBaseMixin> ();
-      Assert.That (obj.GetType ().IsDefined (typeof (InheritableAttribute), true), Is.True);
+      var obj = ObjectFactory.Create<TargetTypeWithBaseMixin>();
+      Assert.That(obj.GetType().IsDefined(typeof (InheritableAttribute), true), Is.True);
     }
 
     [AttributeUsage (AttributeTargets.All, Inherited = true)]

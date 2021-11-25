@@ -38,8 +38,8 @@ namespace Remotion.Security.Metadata
 
       public CacheKey (Type type, IMethodInformation methodInformation)
       {
-        ArgumentUtility.DebugCheckNotNull ("type", type);
-        ArgumentUtility.DebugCheckNotNull ("methodInformation", methodInformation);
+        ArgumentUtility.DebugCheckNotNull("type", type);
+        ArgumentUtility.DebugCheckNotNull("methodInformation", methodInformation);
 
         Type = type;
         MethodInformation = methodInformation;
@@ -53,7 +53,7 @@ namespace Remotion.Security.Metadata
       public bool Equals (CacheKey other)
       {
         return Type == other.Type
-               && MethodInformation.Equals (other.MethodInformation);
+               && MethodInformation.Equals(other.MethodInformation);
       }
     }
 
@@ -64,7 +64,7 @@ namespace Remotion.Security.Metadata
 
     public CachingPermissionProviderDecorator (IPermissionProvider innerPermissionProvider)
     {
-      ArgumentUtility.CheckNotNull ("innerPermissionProvider", innerPermissionProvider);
+      ArgumentUtility.CheckNotNull("innerPermissionProvider", innerPermissionProvider);
 
       _innerPermissionProvider = innerPermissionProvider;
 
@@ -79,25 +79,25 @@ namespace Remotion.Security.Metadata
 
     public IReadOnlyList<Enum> GetRequiredMethodPermissions (Type type, IMethodInformation methodInformation)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("methodInformation", methodInformation);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("methodInformation", methodInformation);
 
       // Optimization to prevent cache polution
       if (methodInformation.IsNull)
         return s_emptyPermissions;
 
-      var cacheKey = new CacheKey (type, methodInformation);
-      return _cache.GetOrAdd (cacheKey, _cacheValueFactory);
+      var cacheKey = new CacheKey(type, methodInformation);
+      return _cache.GetOrAdd(cacheKey, _cacheValueFactory);
     }
 
     private IReadOnlyList<Enum> GetRequiredMethodPermissions (CacheKey key)
     {
-      var accessTypes = _innerPermissionProvider.GetRequiredMethodPermissions (key.Type, key.MethodInformation);
+      var accessTypes = _innerPermissionProvider.GetRequiredMethodPermissions(key.Type, key.MethodInformation);
       if (accessTypes.Count == 0)
         return s_emptyPermissions;
 
       // Make a read-only copy to keep in the cache.
-      return new ReadOnlyCollection<Enum> (accessTypes.ToArray());
+      return new ReadOnlyCollection<Enum>(accessTypes.ToArray());
     }
   }
 }

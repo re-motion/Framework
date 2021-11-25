@@ -33,42 +33,42 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _mockStringFormatterService = new Mock<IBusinessObjectStringFormatterService> (MockBehavior.Strict);
+      _mockStringFormatterService = new Mock<IBusinessObjectStringFormatterService>(MockBehavior.Strict);
       BindableObjectProvider provider = new BindableObjectProvider();
-      provider.AddService (typeof (IBusinessObjectStringFormatterService), _mockStringFormatterService.Object);
+      provider.AddService(typeof (IBusinessObjectStringFormatterService), _mockStringFormatterService.Object);
       BusinessObjectProvider.SetProvider(typeof (BindableObjectProviderAttribute), provider);
 
-      _businessObject = (IBusinessObject) ObjectFactory.Create<SimpleBusinessObjectClass> (ParamList.Empty);
+      _businessObject = (IBusinessObject) ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty);
 
-      _property = _businessObject.BusinessObjectClass.GetPropertyDefinition ("String");
-      Assert.That (
+      _property = _businessObject.BusinessObjectClass.GetPropertyDefinition("String");
+      Assert.That(
           _property, Is.Not.Null, "Property 'String' was not found on BusinessObjectClass '{0}'", _businessObject.BusinessObjectClass.Identifier);
 
-      BusinessObjectProvider.SetProvider (typeof (BindableObjectProviderAttribute), new BindableObjectProvider ());
+      BusinessObjectProvider.SetProvider(typeof (BindableObjectProviderAttribute), new BindableObjectProvider());
     }
 
     [Test]
     public void FromProperty ()
     {
-      _mockStringFormatterService.Setup (_ => _.GetPropertyString (_businessObject, _property, "TheFormatString")).Returns ("TheStringValue").Verifiable();
+      _mockStringFormatterService.Setup(_ => _.GetPropertyString(_businessObject, _property, "TheFormatString")).Returns("TheStringValue").Verifiable();
 
-      string actual = _businessObject.GetPropertyString (_property, "TheFormatString");
+      string actual = _businessObject.GetPropertyString(_property, "TheFormatString");
       
       _mockStringFormatterService.Verify();
-      Assert.That (actual, Is.EqualTo ("TheStringValue"));
+      Assert.That(actual, Is.EqualTo("TheStringValue"));
     }
 
     [Test]
     public void FromIdentifier ()
     {
-      _mockStringFormatterService.Setup (_ => _.GetPropertyString (_businessObject, _property, null)).Returns ("TheStringValue").Verifiable();
+      _mockStringFormatterService.Setup(_ => _.GetPropertyString(_businessObject, _property, null)).Returns("TheStringValue").Verifiable();
 
-      string actual = _businessObject.GetPropertyString ("String");
+      string actual = _businessObject.GetPropertyString("String");
 
       _mockStringFormatterService.Verify();
-      Assert.That (actual, Is.EqualTo ("TheStringValue"));
+      Assert.That(actual, Is.EqualTo("TheStringValue"));
     }
   }
 }

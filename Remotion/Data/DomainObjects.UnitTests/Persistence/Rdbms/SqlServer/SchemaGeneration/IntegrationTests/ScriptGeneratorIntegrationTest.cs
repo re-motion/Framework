@@ -40,14 +40,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     {
       base.SetUp();
 
-      _standardScriptGenerator = new ScriptGenerator (
-          pd => pd.Factory.CreateSchemaScriptBuilder (pd),
+      _standardScriptGenerator = new ScriptGenerator(
+          pd => pd.Factory.CreateSchemaScriptBuilder(pd),
           new RdbmsStorageEntityDefinitionProvider(),
           new ScriptToStringConverter());
 
-      _extendedScriptGenerator = new ScriptGenerator (
-          pd => new SqlDatabaseSelectionScriptElementBuilder (
-              new CompositeScriptBuilder (
+      _extendedScriptGenerator = new ScriptGenerator(
+          pd => new SqlDatabaseSelectionScriptElementBuilder(
+              new CompositeScriptBuilder(
                   SchemaGenerationThirdStorageProviderDefinition,
                   new IScriptBuilder[]
                   {
@@ -61,44 +61,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           new RdbmsStorageExtendedEntityDefinitionProvider(),
           new ScriptToStringConverter());
 
-      _firstStorageProviderSetupDBScript = ResourceUtility.GetResourceString (GetType(), "TestData.SetupDB_FirstStorageProvider.sql");
-      _firstStorageProviderTearDownDBScript = ResourceUtility.GetResourceString (GetType(), "TestData.TearDownDB_FirstStorageProvider.sql");
+      _firstStorageProviderSetupDBScript = ResourceUtility.GetResourceString(GetType(), "TestData.SetupDB_FirstStorageProvider.sql");
+      _firstStorageProviderTearDownDBScript = ResourceUtility.GetResourceString(GetType(), "TestData.TearDownDB_FirstStorageProvider.sql");
 
-      _secondStorageProviderSetupDBScript = ResourceUtility.GetResourceString (GetType(), "TestData.SetupDB_SecondStorageProvider.sql");
-      _secondStorageProviderTearDownDBScript = ResourceUtility.GetResourceString (GetType(), "TestData.TearDownDB_SecondStorageProvider.sql");
+      _secondStorageProviderSetupDBScript = ResourceUtility.GetResourceString(GetType(), "TestData.SetupDB_SecondStorageProvider.sql");
+      _secondStorageProviderTearDownDBScript = ResourceUtility.GetResourceString(GetType(), "TestData.TearDownDB_SecondStorageProvider.sql");
 
-      _thirdStorageProviderSetupDBScript = ResourceUtility.GetResourceString (GetType(), "TestData.SetupDB_ThirdStorageProvider.sql");
-      _thirdStorageProviderTearDownDBScript = ResourceUtility.GetResourceString (GetType(), "TestData.TearDownDB_ThirdStorageProvider.sql");
+      _thirdStorageProviderSetupDBScript = ResourceUtility.GetResourceString(GetType(), "TestData.SetupDB_ThirdStorageProvider.sql");
+      _thirdStorageProviderTearDownDBScript = ResourceUtility.GetResourceString(GetType(), "TestData.TearDownDB_ThirdStorageProvider.sql");
     }
 
     [Test]
     public void GetScriptForFirstStorageProvider ()
     {
-      var scripts = _standardScriptGenerator.GetScripts (MappingConfiguration.GetTypeDefinitions ())
-          .Single (s => s.StorageProviderDefinition == SchemaGenerationFirstStorageProviderDefinition);
+      var scripts = _standardScriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions())
+          .Single(s => s.StorageProviderDefinition == SchemaGenerationFirstStorageProviderDefinition);
 
-      Assert.That (scripts.SetUpScript, Is.EqualTo (_firstStorageProviderSetupDBScript.ApplyDatabaseConfiguration()));
-      Assert.That (scripts.TearDownScript, Is.EqualTo (_firstStorageProviderTearDownDBScript.ApplyDatabaseConfiguration()));
+      Assert.That(scripts.SetUpScript, Is.EqualTo(_firstStorageProviderSetupDBScript.ApplyDatabaseConfiguration()));
+      Assert.That(scripts.TearDownScript, Is.EqualTo(_firstStorageProviderTearDownDBScript.ApplyDatabaseConfiguration()));
     }
 
     [Test]
     public void GetScriptForSecondStorageProvider ()
     {
-      var scripts = _standardScriptGenerator.GetScripts (MappingConfiguration.GetTypeDefinitions ())
-          .Single (s => s.StorageProviderDefinition == SchemaGenerationSecondStorageProviderDefinition);
+      var scripts = _standardScriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions())
+          .Single(s => s.StorageProviderDefinition == SchemaGenerationSecondStorageProviderDefinition);
 
-      Assert.That (scripts.SetUpScript, Is.EqualTo (_secondStorageProviderSetupDBScript.ApplyDatabaseConfiguration()));
-      Assert.That (scripts.TearDownScript, Is.EqualTo (_secondStorageProviderTearDownDBScript.ApplyDatabaseConfiguration()));
+      Assert.That(scripts.SetUpScript, Is.EqualTo(_secondStorageProviderSetupDBScript.ApplyDatabaseConfiguration()));
+      Assert.That(scripts.TearDownScript, Is.EqualTo(_secondStorageProviderTearDownDBScript.ApplyDatabaseConfiguration()));
     }
 
     [Test]
     public void GetScriptForThirdStorageProvider ()
     {
-      var scripts = _extendedScriptGenerator.GetScripts (MappingConfiguration.GetTypeDefinitions ())
-          .Single (s => s.StorageProviderDefinition == SchemaGenerationThirdStorageProviderDefinition);
+      var scripts = _extendedScriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions())
+          .Single(s => s.StorageProviderDefinition == SchemaGenerationThirdStorageProviderDefinition);
 
-      Assert.That (scripts.SetUpScript, Is.EqualTo (_thirdStorageProviderSetupDBScript.ApplyDatabaseConfiguration()));
-      Assert.That (scripts.TearDownScript, Is.EqualTo (_thirdStorageProviderTearDownDBScript.ApplyDatabaseConfiguration()));
+      Assert.That(scripts.SetUpScript, Is.EqualTo(_thirdStorageProviderSetupDBScript.ApplyDatabaseConfiguration()));
+      Assert.That(scripts.TearDownScript, Is.EqualTo(_thirdStorageProviderTearDownDBScript.ApplyDatabaseConfiguration()));
     }
   }
 }

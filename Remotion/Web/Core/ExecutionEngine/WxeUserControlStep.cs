@@ -36,24 +36,24 @@ namespace Remotion.Web.ExecutionEngine
     private WxeHandler? _wxeHandler;
 
     public WxeUserControlStep (string userControl)
-      : this (new ResourceObject (ArgumentUtility.CheckNotNullOrEmpty ("userControl", userControl)))
+      : this (new ResourceObject(ArgumentUtility.CheckNotNullOrEmpty("userControl", userControl)))
     {
     }
 
     public WxeUserControlStep (WxeVariableReference pageref)
-        : this (new ResourceObjectWithVarRef (pageref))
+        : this (new ResourceObjectWithVarRef(pageref))
     {
     }
 
     public WxeUserControlStep (ResourceObjectBase userControl)
     {
-      ArgumentUtility.CheckNotNull ("userControl", userControl);
+      ArgumentUtility.CheckNotNull("userControl", userControl);
       _userControl = userControl;
     }
 
     public override void Execute (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       if (_wxeHandler != null)
       {
@@ -71,11 +71,11 @@ namespace Remotion.Web.ExecutionEngine
         _isPostBack = true;
       }
 
-      _userControlExecutor.Execute (context);
+      _userControlExecutor.Execute(context);
 
       try
       {
-        PageStep.PageExecutor.ExecutePage (context, PageStep.Page, PageStep.IsPostBack);
+        PageStep.PageExecutor.ExecutePage(context, PageStep.Page, PageStep.IsPostBack);
       }
       finally
       {
@@ -88,14 +88,14 @@ namespace Remotion.Web.ExecutionEngine
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void ExecuteFunction (WxeUserControl userControl, WxeFunction subFunction, Control sender, bool usesEventTarget)
     {
-      ArgumentUtility.CheckNotNull ("userControl", userControl);
-      ArgumentUtility.CheckNotNull ("subFunction", subFunction);
-      ArgumentUtility.CheckNotNull ("sender", sender);
+      ArgumentUtility.CheckNotNull("userControl", userControl);
+      ArgumentUtility.CheckNotNull("subFunction", subFunction);
+      ArgumentUtility.CheckNotNull("sender", sender);
 
       IWxePage? wxePage = userControl.WxePage;
       _wxeHandler = wxePage!.WxeHandler;
 
-      _userControlExecutor = new UserControlExecutor (this, userControl, subFunction, sender, usesEventTarget);
+      _userControlExecutor = new UserControlExecutor(this, userControl, subFunction, sender, usesEventTarget);
 
       IReplaceableControl replaceableControl = userControl;
       replaceableControl.Replacer.Controls.Clear();
@@ -116,7 +116,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public string UserControl
     {
-      get { return _userControl.GetResourcePath (Variables!); } // TODO RM-8118: not null assertion
+      get { return _userControl.GetResourcePath(Variables!); } // TODO RM-8118: not null assertion
     }
 
     public IUserControlExecutor UserControlExecutor
@@ -127,7 +127,7 @@ namespace Remotion.Web.ExecutionEngine
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void SetUserControlExecutor (IUserControlExecutor userControlExecutor)
     {
-      ArgumentUtility.CheckNotNull ("userControlExecutor", userControlExecutor);
+      ArgumentUtility.CheckNotNull("userControlExecutor", userControlExecutor);
       _userControlExecutor = userControlExecutor;
     }
 
@@ -141,8 +141,8 @@ namespace Remotion.Web.ExecutionEngine
       get
       {
         if (_pageStep == null)
-          _pageStep = WxeStep.GetStepByType<WxePageStep> (this);
-        Assertion.IsNotNull (_pageStep);
+          _pageStep = WxeStep.GetStepByType<WxePageStep>(this);
+        Assertion.IsNotNull(_pageStep);
         return _pageStep;
       }
     }

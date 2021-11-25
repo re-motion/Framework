@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   {
     public static TIRegion NewObject ()
     {
-      return NewObject<TIRegion> ();
+      return NewObject<TIRegion>();
     }
 
     protected TIRegion ()

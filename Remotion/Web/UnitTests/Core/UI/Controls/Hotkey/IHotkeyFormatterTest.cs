@@ -37,8 +37,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Hotkey
     {
       var instance = _serviceLocator.GetInstance<IHotkeyFormatter>();
 
-      Assert.That (instance, Is.Not.Null);
-      Assert.That (instance, Is.TypeOf (typeof (UnderscoreHotkeyFormatter)));
+      Assert.That(instance, Is.Not.Null);
+      Assert.That(instance, Is.TypeOf(typeof (UnderscoreHotkeyFormatter)));
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Hotkey
       var instance1 = _serviceLocator.GetInstance<IHotkeyFormatter>();
       var instance2 = _serviceLocator.GetInstance<IHotkeyFormatter>();
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

@@ -48,8 +48,8 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     protected System.Web.UI.WebControls.Calendar Calendar1;
 
     public readonly WxeParameterDeclaration[] PageParameters = {
-        new WxeParameterDeclaration ("text", true, WxeParameterDirection.InOut, typeof (string)),
-        new WxeParameterDeclaration ("invocations", false, WxeParameterDirection.Out, typeof (int))
+        new WxeParameterDeclaration("text", true, WxeParameterDirection.InOut, typeof (string)),
+        new WxeParameterDeclaration("invocations", false, WxeParameterDirection.Out, typeof (int))
     };
 
     private ISampleFunctionVariables Function
@@ -62,7 +62,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
       System.Text.StringBuilder sb = new System.Text.StringBuilder();
       for (WxeStep step = CurrentPageStep; step != null; step = step.ParentStep)
-        sb.AppendFormat ("{0}<br>", step.ToString());      
+        sb.AppendFormat("{0}<br>", step.ToString());      
       StackLabel.Text = sb.ToString();
 
       Var1Label.Text = Function.Var1;
@@ -112,7 +112,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private void Next_Click (object sender, System.EventArgs e)
     {
-      ExecuteNextStep ();
+      ExecuteNextStep();
       //      WxeFunction currentFunction = ((WxeFunction) Session["CurrentFunction"]);
       //      currentFunction.ExecutingStep.ExecuteNextStep (Context);
     }
@@ -122,8 +122,8 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       // CurrentPageStep.ExecuteFunction ((Control)sender, this, new SubFunction("call var1", "call var2"));
       if (! IsReturningPostBack)
       {
-        var subFunction = new SampleWxeSubFunction ("sub var 1", "vall var2");
-        this.ExecuteFunction (subFunction);
+        var subFunction = new SampleWxeSubFunction("sub var 1", "vall var2");
+        this.ExecuteFunction(subFunction);
       }
       else
       {
@@ -134,20 +134,20 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private void Throw_Click (object sender, System.EventArgs e)
     {
-      throw new ApplicationException (string.Empty);
+      throw new ApplicationException(string.Empty);
     }
 
     private void ThrowText_Click (object sender, System.EventArgs e)
     {
-      throw new ApplicationException ("test");
+      throw new ApplicationException("test");
     }
 
     private void SubExtButton_Click (object sender, System.EventArgs e)
     {
       if (! IsReturningPostBack)
       {
-        SubFunction subFunction = new SubFunction ("subext var 1", "vall var2");
-        this.ExecuteFunctionExternal (
+        SubFunction subFunction = new SubFunction("subext var 1", "vall var2");
+        this.ExecuteFunctionExternal(
             subFunction,
             "_blank",
             "width=700,height=500,top=100,left=100,resizable=yes,location=no,menubar=no,status=no,toolbar=no,scrollbars=no",
@@ -163,23 +163,23 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private void SubNoReturnButton_Click (object sender, System.EventArgs e)
     {
-      this.ExecuteFunctionNoRepost (new SubFunction ("v1", "button"), (Control) sender);    
+      this.ExecuteFunctionNoRepost(new SubFunction("v1", "button"), (Control) sender);    
     }
 
     private void SubNoReturnField_TextChanged (object sender, System.EventArgs e)
     {
-      this.ExecuteFunctionNoRepost (new SubFunction ("v1", "textbox"), (Control) sender);    
+      this.ExecuteFunctionNoRepost(new SubFunction("v1", "textbox"), (Control) sender);    
     }
 
     private void Calendar1_SelectionChanged (object sender, System.EventArgs e)
     {
       if (! IsReturningPostBack)
       {
-        this.ExecuteFunctionExternal (new SubFunction ("v1", "calendar"), "_blank", (Control) sender, true);
+        this.ExecuteFunctionExternal(new SubFunction("v1", "calendar"), "_blank", (Control) sender, true);
       }
       else
       {
-        Calendar1.SelectedDate = Calendar1.SelectedDate.AddDays (1);
+        Calendar1.SelectedDate = Calendar1.SelectedDate.AddDays(1);
       }
     }
 
@@ -215,7 +215,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
         Var2 = "SubFunction Step1";
       }
 
-      private WxeStep Step2 = new WxeResourcePageStep (typeof (WebForm1), @"ExecutionEngine\WebForm1.aspx");
+      private WxeStep Step2 = new WxeResourcePageStep(typeof (WebForm1), @"ExecutionEngine\WebForm1.aspx");
 
       private static int counter = 0;
       private void Step3 (WxeContext context)

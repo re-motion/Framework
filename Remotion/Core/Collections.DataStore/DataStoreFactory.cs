@@ -54,9 +54,9 @@ namespace Remotion.Collections.DataStore
     public static IDataStore<TKey, TValue> Create<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull ("comparer", comparer);
+      ArgumentUtility.CheckNotNull("comparer", comparer);
 
-      return new SimpleDataStore<TKey, TValue> (comparer);
+      return new SimpleDataStore<TKey, TValue>(comparer);
     }
 
     /// <summary>
@@ -87,9 +87,9 @@ namespace Remotion.Collections.DataStore
     public static IDataStore<TKey, TValue> CreateWithSynchronization<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull ("comparer", comparer);
+      ArgumentUtility.CheckNotNull("comparer", comparer);
 
-      return new ConcurrentDataStore<TKey, TValue> (comparer);
+      return new ConcurrentDataStore<TKey, TValue>(comparer);
     }
 
     /// <summary>
@@ -110,7 +110,7 @@ namespace Remotion.Collections.DataStore
     public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> ()
         where TKey : notnull
     {
-      return new LockingDataStoreDecorator<TKey, TValue> (new SimpleDataStore<TKey, TValue>());
+      return new LockingDataStoreDecorator<TKey, TValue>(new SimpleDataStore<TKey, TValue>());
     }
 
     /// <summary>
@@ -132,7 +132,7 @@ namespace Remotion.Collections.DataStore
     public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey>? comparer)
         where TKey : notnull
     {
-      return new LockingDataStoreDecorator<TKey, TValue> (new SimpleDataStore<TKey, TValue> (comparer ?? EqualityComparer<TKey>.Default));
+      return new LockingDataStoreDecorator<TKey, TValue>(new SimpleDataStore<TKey, TValue>(comparer ?? EqualityComparer<TKey>.Default));
     }
 
     /// <summary>
@@ -154,7 +154,7 @@ namespace Remotion.Collections.DataStore
         where TKey : notnull
         where TValue: class?
     {
-      return new LazyLockingDataStoreAdapter<TKey, TValue> (
+      return new LazyLockingDataStoreAdapter<TKey, TValue>(
           new SimpleDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>>());
     }
 
@@ -178,8 +178,8 @@ namespace Remotion.Collections.DataStore
         where TKey : notnull
         where TValue: class?
     {
-      return new LazyLockingDataStoreAdapter<TKey, TValue> (
-          new SimpleDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>> (comparer ?? EqualityComparer<TKey>.Default));
+      return new LazyLockingDataStoreAdapter<TKey, TValue>(
+          new SimpleDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>>(comparer ?? EqualityComparer<TKey>.Default));
     }
   }
 }

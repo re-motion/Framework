@@ -38,10 +38,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void Initialize_NullableWithUndefinedValue ()
     {
-      Assert.That (
-          () => CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "NullableScalar"),
+      Assert.That(
+          () => CreateProperty(typeof (ClassWithValueType<EnumWithUndefinedValue>), "NullableScalar"),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The property 'NullableScalar' defined on type 'Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithValueType`1[Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValue]'"
                   + " must not be nullable since the property's type already defines a 'Remotion.ObjectBinding.UndefinedEnumValueAttribute'."));
     }
@@ -49,10 +49,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void Initialize_FlagsEnum ()
     {
-      Assert.That (
-          () => CreateProperty (typeof (ClassWithValueType<TestFlags>), "Scalar"),
+      Assert.That(
+          () => CreateProperty(typeof (ClassWithValueType<TestFlags>), "Scalar"),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The property 'Scalar' defined on type 'Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithValueType`1[Remotion.ObjectBinding.UnitTests.TestDomain.TestFlags]'"
                   + " is a flags-enum, which is not supported."));
     }
@@ -60,18 +60,18 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void Initialize_WithUndefinedEnumValueFromOtherType ()
     {
-      Assert.That (
-          () => CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValueFromOtherType>), "Scalar"),
+      Assert.That(
+          () => CreateProperty(typeof (ClassWithValueType<EnumWithUndefinedValueFromOtherType>), "Scalar"),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The enum type 'Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValueFromOtherType' "
                   + "defines a 'Remotion.ObjectBinding.UndefinedEnumValueAttribute' with an enum value that belongs to a different enum type."));
     }
 
     private EnumerationProperty CreateProperty (Type type, string propertyName)
     {
-      return new EnumerationProperty (
-          GetPropertyParameters (GetPropertyInfo (type, propertyName), _businessObjectProvider));
+      return new EnumerationProperty(
+          GetPropertyParameters(GetPropertyInfo(type, propertyName), _businessObjectProvider));
     }
   }
 }

@@ -44,7 +44,7 @@ namespace Remotion.Mixins.Samples.Tutorial.T01_Configuration.Core.Extends
     [Extends (typeof (File))]
     public class NumberedFileMixin : INumberedFile
     {
-      private readonly string _id = Guid.NewGuid ().ToString();
+      private readonly string _id = Guid.NewGuid().ToString();
       
       public string GetFileNumber ()
       {

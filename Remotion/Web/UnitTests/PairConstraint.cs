@@ -34,12 +34,12 @@ namespace Remotion.Web.UnitTests
     public override ConstraintResult ApplyTo<TActual> (TActual actual)
     {
       var actualPair = actual as Pair;
-      var baseResult = base.ApplyTo (actual);
+      var baseResult = base.ApplyTo(actual);
       if (baseResult.IsSuccess)
         return baseResult;
 
-      var isSuccess = Matches (actualPair);
-      return new PairConstraintResult (this, actualPair, _expected, isSuccess);
+      var isSuccess = Matches(actualPair);
+      return new PairConstraintResult(this, actualPair, _expected, isSuccess);
     }
 
     private bool Matches (Pair actual)
@@ -47,8 +47,8 @@ namespace Remotion.Web.UnitTests
       if (actual == null)
         return _expected == null;
 
-      return object.Equals (_expected.First, actual.First)
-             && object.Equals (_expected.Second, actual.Second);
+      return object.Equals(_expected.First, actual.First)
+             && object.Equals(_expected.Second, actual.Second);
     }
   }
 }

@@ -29,35 +29,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [SetUp]
     public void SetUp ()
     {
-      _exception = new Exception ("Test");
-      _command = new ExceptionCommand (_exception);
+      _exception = new Exception("Test");
+      _command = new ExceptionCommand(_exception);
     }
 
     [Test]
     public void GetAllExceptions ()
     {
-      Assert.That (_command.GetAllExceptions(), Is.EqualTo (new[] { _exception }));
+      Assert.That(_command.GetAllExceptions(), Is.EqualTo(new[] { _exception }));
     }
 
     [Test]
     public void Begin ()
     {
-      var exception = Assert.Throws<Exception> (_command.Begin);
-      Assert.That (exception, Is.SameAs (_exception));
+      var exception = Assert.Throws<Exception>(_command.Begin);
+      Assert.That(exception, Is.SameAs(_exception));
     }
 
     [Test]
     public void Perform ()
     {
-      var exception = Assert.Throws<Exception> (_command.Perform);
-      Assert.That (exception, Is.SameAs (_exception));
+      var exception = Assert.Throws<Exception>(_command.Perform);
+      Assert.That(exception, Is.SameAs(_exception));
     }
 
     [Test]
     public void End ()
     {
-      var exception = Assert.Throws<Exception> (_command.End);
-      Assert.That (exception, Is.SameAs (_exception));
+      var exception = Assert.Throws<Exception>(_command.End);
+      Assert.That(exception, Is.SameAs(_exception));
     }
 
     [Test]
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       var result = _command.ExpandToAllRelatedObjects();
 
-      Assert.That (result.GetNestedCommands(), Is.EqualTo (new[] { _command }));
+      Assert.That(result.GetNestedCommands(), Is.EqualTo(new[] { _command }));
     }
   }
 }

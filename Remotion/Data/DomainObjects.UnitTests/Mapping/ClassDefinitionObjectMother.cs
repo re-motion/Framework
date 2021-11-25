@@ -39,10 +39,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       id = id ?? "Test";
       classType = classType ?? typeof (Order);
       var defaultStorageClassNotNullable = defaultStorageClass ?? DefaultStorageClass.Persistent;
-      persistentMixinFinder = persistentMixinFinder ?? new PersistentMixinFinderStub (classType, Type.EmptyTypes);
+      persistentMixinFinder = persistentMixinFinder ?? new PersistentMixinFinderStub(classType, Type.EmptyTypes);
       instanceCreator = instanceCreator ?? MockRepository.GenerateStrictMock<IDomainObjectCreator>();
 
-      return new ClassDefinition (
+      return new ClassDefinition(
               id,
               classType,
               isAbstract,
@@ -55,11 +55,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public static ClassDefinition CreateClassDefinition_WithEmptyMembers_AndDerivedClasses (string id = null, Type classType = null, ClassDefinition baseClass = null)
     {
-      var classDefinition = CreateClassDefinition (id: id, classType: classType, baseClass: baseClass);
+      var classDefinition = CreateClassDefinition(id: id, classType: classType, baseClass: baseClass);
 
-      classDefinition.SetDerivedClasses (new ClassDefinition[0]);
-      classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection());
-      classDefinition.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection());
+      classDefinition.SetDerivedClasses(new ClassDefinition[0]);
+      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
+      classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
 
       return classDefinition;
     }
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         IPersistentMixinFinder persistentMixinFinder = null,
         IDomainObjectCreator instanceCreator = null)
     {
-        var classDefinition = CreateClassDefinition (
+        var classDefinition = CreateClassDefinition(
                 id,
                 classType,
                 isAbstract,
@@ -84,13 +84,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
                 defaultStorageClass,
                 persistentMixinFinder,
                 instanceCreator);
-      classDefinition.SetStorageEntity (TableDefinitionObjectMother.Create (storageProviderDefinition));
+      classDefinition.SetStorageEntity(TableDefinitionObjectMother.Create(storageProviderDefinition));
       return classDefinition;
     }
 
     public static ClassDefinition CreateClassDefinitionWithMixins (Type type, params Type[] mixins)
     {
-      return CreateClassDefinition (classType: type, persistentMixinFinder: new PersistentMixinFinderStub (type, mixins));
+      return CreateClassDefinition(classType: type, persistentMixinFinder: new PersistentMixinFinderStub(type, mixins));
     }
   }
 }

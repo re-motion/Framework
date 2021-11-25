@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   {
     public static TIClassWithUnidirectionalRelation NewObject ()
     {
-      return NewObject<TIClassWithUnidirectionalRelation> ();
+      return NewObject<TIClassWithUnidirectionalRelation>();
     }
 
     protected TIClassWithUnidirectionalRelation ()

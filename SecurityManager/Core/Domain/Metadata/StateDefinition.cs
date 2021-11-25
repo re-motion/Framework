@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static StateDefinition NewObject (string name, int value)
     {
-      return NewObject<StateDefinition> (ParamList.Create (name, value));
+      return NewObject<StateDefinition>(ParamList.Create(name, value));
     }
 
     // member fields
@@ -61,18 +61,18 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public override sealed Guid MetadataItemID
     {
-      get { throw new NotSupportedException ("States do not support MetadataItemID"); }
-      set { throw new NotSupportedException ("States do not support MetadataItemID"); }
+      get { throw new NotSupportedException("States do not support MetadataItemID"); }
+      set { throw new NotSupportedException("States do not support MetadataItemID"); }
     }
 
     protected override void OnDeleting (EventArgs args)
     {
       if (StateProperty != null)
       {
-        throw new InvalidOperationException (
-            string.Format ("State '{0}' cannot be deleted because it is associated with state property '{1}'.", Name, StateProperty.Name));
+        throw new InvalidOperationException(
+            string.Format("State '{0}' cannot be deleted because it is associated with state property '{1}'.", Name, StateProperty.Name));
       }
-      base.OnDeleting (args);
+      base.OnDeleting(args);
     }
   }
 }

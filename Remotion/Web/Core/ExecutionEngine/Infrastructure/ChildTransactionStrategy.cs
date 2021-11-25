@@ -32,15 +32,15 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override IWxeFunctionExecutionListener CreateExecutionListener (IWxeFunctionExecutionListener innerListener)
     {
-      ArgumentUtility.CheckNotNull ("innerListener", innerListener);
+      ArgumentUtility.CheckNotNull("innerListener", innerListener);
 
-      return new ChildTransactionExecutionListener (this, innerListener);
+      return new ChildTransactionExecutionListener(this, innerListener);
     }
 
     protected override void ReleaseTransaction ()
     {
-      base.ReleaseTransaction ();
-      OuterTransactionStrategy.UnregisterChildTransactionStrategy (this);
+      base.ReleaseTransaction();
+      OuterTransactionStrategy.UnregisterChildTransactionStrategy(this);
     }
   }
 }

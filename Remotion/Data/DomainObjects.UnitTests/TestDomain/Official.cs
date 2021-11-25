@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   {
     public static Official NewObject ()
     {
-      return NewObject<Official> ();
+      return NewObject<Official>();
     }
 
     protected Official ()

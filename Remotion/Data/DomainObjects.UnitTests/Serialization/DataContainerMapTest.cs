@@ -36,10 +36,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DataContainerMapIsNotSerializable ()
     {
-      Assert.That (
-          () => Serializer.SerializeAndDeserialize (TestableClientTransaction.DataManager.DataContainers),
+      Assert.That(
+          () => Serializer.SerializeAndDeserialize(TestableClientTransaction.DataManager.DataContainers),
           Throws.InstanceOf<SerializationException>()
-              .With.Message.Matches (
+              .With.Message.Matches(
                   "Type 'Remotion.Data.DomainObjects.DataManagement.DataContainerMap' in Assembly "
                   + ".* is not marked as serializable."));
     }
@@ -47,22 +47,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DataContainerMapIsFlattenedSerializable ()
     {
-      DataContainerMap map = DataManagerTestHelper.GetDataContainerMap (TestableClientTransaction.DataManager);
+      DataContainerMap map = DataManagerTestHelper.GetDataContainerMap(TestableClientTransaction.DataManager);
 
-      DataContainerMap deserializedMap = FlattenedSerializer.SerializeAndDeserialize (map);
-      Assert.That (deserializedMap, Is.Not.Null);
+      DataContainerMap deserializedMap = FlattenedSerializer.SerializeAndDeserialize(map);
+      Assert.That(deserializedMap, Is.Not.Null);
     }
 
     [Test]
     public void DataContainerMap_Content ()
     {
-      DataContainerMap map = DataManagerTestHelper.GetDataContainerMap (TestableClientTransaction.DataManager);
-      DomainObjectIDs.Order1.GetObject<Order> ();
-      Assert.That (map.Count, Is.EqualTo (1));
+      DataContainerMap map = DataManagerTestHelper.GetDataContainerMap(TestableClientTransaction.DataManager);
+      DomainObjectIDs.Order1.GetObject<Order>();
+      Assert.That(map.Count, Is.EqualTo(1));
 
-      DataContainerMap deserializedMap = FlattenedSerializer.SerializeAndDeserialize (map);
-      Assert.That (deserializedMap.TransactionEventSink, Is.Not.Null);
-      Assert.That (deserializedMap.Count, Is.EqualTo (1));
+      DataContainerMap deserializedMap = FlattenedSerializer.SerializeAndDeserialize(map);
+      Assert.That(deserializedMap.TransactionEventSink, Is.Not.Null);
+      Assert.That(deserializedMap.Count, Is.EqualTo(1));
     }
   }
 }

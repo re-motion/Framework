@@ -32,7 +32,7 @@ namespace Remotion.Extensions.UnitTests.Utilities.Singleton
     [SetUp]
     public void SetUp ()
     {
-      _creator = new ServiceLocatorInstanceCreator<IInterfaceWithConcreteImplementation> ();
+      _creator = new ServiceLocatorInstanceCreator<IInterfaceWithConcreteImplementation>();
     }
 
     [Test]
@@ -40,20 +40,20 @@ namespace Remotion.Extensions.UnitTests.Utilities.Singleton
     {
       var serviceLocatorStub = new Mock<IServiceLocator>();
       var fakeInstance = new SecondaryImplementationOfInterface();
-      serviceLocatorStub.Setup (stub => stub.GetInstance<IInterfaceWithConcreteImplementation> ()).Returns (fakeInstance);
+      serviceLocatorStub.Setup(stub => stub.GetInstance<IInterfaceWithConcreteImplementation>()).Returns(fakeInstance);
 
-      using (new ServiceLocatorScope (serviceLocatorStub.Object))
+      using (new ServiceLocatorScope(serviceLocatorStub.Object))
       {
         var instance = _creator.CreateInstance();
-        Assert.That (instance, Is.SameAs (fakeInstance));
+        Assert.That(instance, Is.SameAs(fakeInstance));
       }
     }
 
     [Test]
     public void CreateInstance_WithoutRegisteredServiceLocator_WithAttribute ()
     {
-      var result = _creator.CreateInstance ();
-      Assert.That (result, Is.TypeOf<ConcreteImplementationOfInterface>());
+      var result = _creator.CreateInstance();
+      Assert.That(result, Is.TypeOf<ConcreteImplementationOfInterface>());
     }
   }
 }

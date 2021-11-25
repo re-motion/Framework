@@ -40,7 +40,7 @@ public class LengthValidator : BaseValidator
 
   protected override bool EvaluateIsValid ()
   {
-    string text = base.GetControlValidationValue (base.ControlToValidate);
+    string text = base.GetControlValidationValue(base.ControlToValidate);
 
     if (_minimumLength.HasValue && text.Length < _minimumLength.Value)
       return false;
@@ -64,7 +64,7 @@ public class LengthValidator : BaseValidator
     set
     {
       if (value.HasValue && value.Value < 0)
-        throw new ArgumentOutOfRangeException ("value", value, "The MinimumLength must not be less than zero.");
+        throw new ArgumentOutOfRangeException("value", value, "The MinimumLength must not be less than zero.");
       _minimumLength = value; 
     }
   }
@@ -82,7 +82,7 @@ public class LengthValidator : BaseValidator
     set
     {
       if (value.HasValue && value.Value < 0)
-        throw new ArgumentOutOfRangeException ("value", value, "The MaximumLength must not be less than zero.");
+        throw new ArgumentOutOfRangeException("value", value, "The MaximumLength must not be less than zero.");
       _maximumLength = value; 
     }
   }

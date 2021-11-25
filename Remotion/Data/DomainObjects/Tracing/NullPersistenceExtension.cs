@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.Tracing
   /// </summary>
   public sealed class NullPersistenceExtension : IPersistenceExtension
   {
-    public static readonly IPersistenceExtension Instance = new NullPersistenceExtension ();
+    public static readonly IPersistenceExtension Instance = new NullPersistenceExtension();
 
     private NullPersistenceExtension ()
     {      

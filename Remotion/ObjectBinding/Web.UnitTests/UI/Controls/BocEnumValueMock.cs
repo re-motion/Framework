@@ -27,7 +27,7 @@ public class BocEnumValueMock: BocEnumValue
 {
 	public new void EvaluateWaiConformity ()
   {
-    base.EvaluateWaiConformity ();
+    base.EvaluateWaiConformity();
   }
 }
 

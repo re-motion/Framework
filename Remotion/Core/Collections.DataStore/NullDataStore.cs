@@ -27,7 +27,7 @@ namespace Remotion.Collections.DataStore
   public class NullDataStore<TKey, TValue> : IDataStore<TKey, TValue>
       where TKey : notnull
   {
-    public static readonly NullDataStore<TKey, TValue> Instance = new NullDataStore<TKey, TValue> ();
+    public static readonly NullDataStore<TKey, TValue> Instance = new NullDataStore<TKey, TValue>();
 
     private NullDataStore ()
     {
@@ -53,7 +53,7 @@ namespace Remotion.Collections.DataStore
 
     public TValue this [TKey key]
     {
-      get { throw new InvalidOperationException ("No values can be retrieved from this cache."); }
+      get { throw new InvalidOperationException("No values can be retrieved from this cache."); }
       set { }
     }
 

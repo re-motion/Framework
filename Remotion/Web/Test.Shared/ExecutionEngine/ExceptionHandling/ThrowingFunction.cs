@@ -28,6 +28,6 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
     {
     }
 
-    private WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (ThrowingForm), "ExecutionEngine/ExceptionHandling/ThrowingForm.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof (ThrowingForm), "ExecutionEngine/ExceptionHandling/ThrowingForm.aspx");
   }
 }

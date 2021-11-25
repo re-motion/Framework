@@ -34,7 +34,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     // construction and disposing
 
     public TestFunctionWithPermissionsFromStaticMethod ()
-      : base (new NoneTransactionMode ())
+      : base (new NoneTransactionMode())
     {
     }
 

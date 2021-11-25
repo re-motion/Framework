@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain
     public virtual int Property
     {
       get { return Properties[typeof (MixinAddingPropertyBase), "Property"].GetValue<int>(); }
-      set { Properties[typeof (MixinAddingPropertyBase), "Property"].SetValue (value); }
+      set { Properties[typeof (MixinAddingPropertyBase), "Property"].SetValue(value); }
     }
   }
 }

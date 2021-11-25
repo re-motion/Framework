@@ -29,17 +29,17 @@ namespace Remotion.Web.IntegrationTests.SingleView
     public void SingleView ()
     {
       var home = Start();
-      var singleView = home.SingleViews().GetByLocalID ("MySingleView");
+      var singleView = home.SingleViews().GetByLocalID("MySingleView");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (singleView);
+      var result = analyzer.Analyze(singleView);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("SingleViewTest.aspx");
+      return Start<WxePageObject>("SingleViewTest.aspx");
     }
   }
 }

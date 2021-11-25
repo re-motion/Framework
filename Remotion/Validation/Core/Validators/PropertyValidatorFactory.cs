@@ -33,24 +33,24 @@ namespace Remotion.Validation.Validators
         [NotNull] IValidationMessageFactory validationMessageFactory)
         where T : IPropertyValidator
     {
-      ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
-      ArgumentUtility.CheckNotNull ("validatorFactory", validatorFactory);
-      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
+      ArgumentUtility.CheckNotNull("validatedProperty", validatedProperty);
+      ArgumentUtility.CheckNotNull("validatorFactory", validatorFactory);
+      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
       var deferredInitializationValidationMessage = new DeferredInitializationValidationMessage();
-      var initializationParameters = new PropertyValidationRuleInitializationParameters (deferredInitializationValidationMessage);
-      var validator = validatorFactory (initializationParameters);
-      Assertion.IsNotNull (validator, "validatorFactory evaluated and returned null.");
+      var initializationParameters = new PropertyValidationRuleInitializationParameters(deferredInitializationValidationMessage);
+      var validator = validatorFactory(initializationParameters);
+      Assertion.IsNotNull(validator, "validatorFactory evaluated and returned null.");
 
-      var validationMessage = validationMessageFactory.CreateValidationMessageForPropertyValidator (validator, validatedProperty);
-      Assertion.IsNotNull (
+      var validationMessage = validationMessageFactory.CreateValidationMessageForPropertyValidator(validator, validatedProperty);
+      Assertion.IsNotNull(
           validationMessage,
           "The {0} did not return a result for {1} applied to property '{2}' on type '{3}'.",
-          nameof (IValidationMessageFactory),
+          nameof(IValidationMessageFactory),
           validator.GetType().Name,
           validatedProperty.Name,
           validatedProperty.GetOriginalDeclaringType()!.GetFullNameSafe());
-      deferredInitializationValidationMessage.Initialize (validationMessage);
+      deferredInitializationValidationMessage.Initialize(validationMessage);
 
       return validator;
     }

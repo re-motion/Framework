@@ -115,41 +115,41 @@ public class BocTextValueUserControl : BaseUserControl
 
   override protected void OnLoad (EventArgs e)
   {
-    base.OnLoad (e);
+    base.OnLoad(e);
 
     Person person = (Person) CurrentObject.BusinessObject;
 
     //UnboundFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    UnboundReadOnlyFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    DisabledUnboundFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    DisabledUnboundReadOnlyFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    PasswordNoRender.LoadUnboundValue ("Password", IsPostBack);
-    PasswordRenderMasked.LoadUnboundValue ("Password", IsPostBack);
-    PasswordNoRenderReadOnly.LoadUnboundValue ("Password", IsPostBack);
-    PasswordRenderMaskedReadOnly.LoadUnboundValue ("Password", IsPostBack);
-    MultilineReadOnly.LoadUnboundValue (@"line 1
+    UnboundReadOnlyFirstNameField.LoadUnboundValue(person.FirstName, IsPostBack);
+    DisabledUnboundFirstNameField.LoadUnboundValue(person.FirstName, IsPostBack);
+    DisabledUnboundReadOnlyFirstNameField.LoadUnboundValue(person.FirstName, IsPostBack);
+    PasswordNoRender.LoadUnboundValue("Password", IsPostBack);
+    PasswordRenderMasked.LoadUnboundValue("Password", IsPostBack);
+    PasswordNoRenderReadOnly.LoadUnboundValue("Password", IsPostBack);
+    PasswordRenderMaskedReadOnly.LoadUnboundValue("Password", IsPostBack);
+    MultilineReadOnly.LoadUnboundValue(@"line 1
 line 2
 line 3", IsPostBack);
 
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus (FirstNameField);
+        ((ISmartNavigablePage) Page).SetFocus(FirstNameField);
     }
   }
 
   override protected void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    SetDebugLabel (FirstNameField, FirstNameFieldValueLabel);
-    SetDebugLabel (ReadOnlyFirstNameField, ReadOnlyFirstNameFieldValueLabel);
-    SetDebugLabel (UnboundFirstNameField, UnboundFirstNameFieldValueLabel);
-    SetDebugLabel (UnboundReadOnlyFirstNameField, UnboundReadOnlyFirstNameFieldValueLabel);
-    SetDebugLabel (DisabledFirstNameField, DisabledFirstNameFieldValueLabel);
-    SetDebugLabel (DisabledReadOnlyFirstNameField, DisabledReadOnlyFirstNameFieldValueLabel);
-    SetDebugLabel (DisabledUnboundFirstNameField, DisabledUnboundFirstNameFieldValueLabel);
-    SetDebugLabel (DisabledUnboundReadOnlyFirstNameField, DisabledUnboundReadOnlyFirstNameFieldValueLabel);
+    SetDebugLabel(FirstNameField, FirstNameFieldValueLabel);
+    SetDebugLabel(ReadOnlyFirstNameField, ReadOnlyFirstNameFieldValueLabel);
+    SetDebugLabel(UnboundFirstNameField, UnboundFirstNameFieldValueLabel);
+    SetDebugLabel(UnboundReadOnlyFirstNameField, UnboundReadOnlyFirstNameFieldValueLabel);
+    SetDebugLabel(DisabledFirstNameField, DisabledFirstNameFieldValueLabel);
+    SetDebugLabel(DisabledReadOnlyFirstNameField, DisabledReadOnlyFirstNameFieldValueLabel);
+    SetDebugLabel(DisabledUnboundFirstNameField, DisabledUnboundFirstNameFieldValueLabel);
+    SetDebugLabel(DisabledUnboundReadOnlyFirstNameField, DisabledUnboundReadOnlyFirstNameFieldValueLabel);
   }
 
   private void SetDebugLabel (IBusinessObjectBoundWebControl control, Label label)

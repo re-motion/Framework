@@ -32,8 +32,8 @@ namespace Remotion.UnitTests.Reflection
     {
       var typeArgument = typeof (string);
 
-      Assert.That (typeArgument.AssemblyQualifiedName, Is.Not.Null);
-      Assert.That (typeArgument.GetAssemblyQualifiedNameSafe(), Does.StartWith ("System.String,"));
+      Assert.That(typeArgument.AssemblyQualifiedName, Is.Not.Null);
+      Assert.That(typeArgument.GetAssemblyQualifiedNameSafe(), Does.StartWith("System.String,"));
     }
 
     [Test]
@@ -41,9 +41,9 @@ namespace Remotion.UnitTests.Reflection
     {
       var genericTypeParameters = typeof (CustomType<>).GetTypeInfo().GenericTypeParameters;
 
-      Assert.That (genericTypeParameters[0].AssemblyQualifiedName, Is.Null);
-      Assert.That (genericTypeParameters[0].FullName, Is.Null);
-      Assert.That (genericTypeParameters[0].GetAssemblyQualifiedNameSafe(), Is.EqualTo ("T"));
+      Assert.That(genericTypeParameters[0].AssemblyQualifiedName, Is.Null);
+      Assert.That(genericTypeParameters[0].FullName, Is.Null);
+      Assert.That(genericTypeParameters[0].GetAssemblyQualifiedNameSafe(), Is.EqualTo("T"));
     }
 
     [Test]
@@ -51,8 +51,8 @@ namespace Remotion.UnitTests.Reflection
     {
       var typeArgument = typeof (CustomType<string>).GetGenericArguments();
 
-      Assert.That (typeArgument[0].AssemblyQualifiedName, Is.Not.Null);
-      Assert.That (typeArgument[0].GetAssemblyQualifiedNameChecked(), Does.StartWith ("System.String,"));
+      Assert.That(typeArgument[0].AssemblyQualifiedName, Is.Not.Null);
+      Assert.That(typeArgument[0].GetAssemblyQualifiedNameChecked(), Does.StartWith("System.String,"));
     }
 
     [Test]
@@ -60,10 +60,10 @@ namespace Remotion.UnitTests.Reflection
     {
       var genericTypeArgumentsParameters = typeof (CustomType<>).GetTypeInfo().GenericTypeParameters;
 
-      Assert.That (genericTypeArgumentsParameters[0].AssemblyQualifiedName, Is.Null);
-      Assert.That (
+      Assert.That(genericTypeArgumentsParameters[0].AssemblyQualifiedName, Is.Null);
+      Assert.That(
           () => genericTypeArgumentsParameters[0].GetAssemblyQualifiedNameChecked(),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Type 'T' does not have an assembly qualified name."));
+          Throws.InvalidOperationException.With.Message.EqualTo("Type 'T' does not have an assembly qualified name."));
     }
 
     [Test]
@@ -71,8 +71,8 @@ namespace Remotion.UnitTests.Reflection
     {
       var typeArgument = typeof (string);
 
-      Assert.That (typeArgument.FullName, Is.Not.Null);
-      Assert.That (typeArgument.GetFullNameSafe(), Is.EqualTo ("System.String"));
+      Assert.That(typeArgument.FullName, Is.Not.Null);
+      Assert.That(typeArgument.GetFullNameSafe(), Is.EqualTo("System.String"));
     }
 
     [Test]
@@ -80,8 +80,8 @@ namespace Remotion.UnitTests.Reflection
     {
       var genericTypeParameters = typeof (CustomType<>).GetTypeInfo().GenericTypeParameters;
 
-      Assert.That (genericTypeParameters[0].FullName, Is.Null);
-      Assert.That (genericTypeParameters[0].GetFullNameSafe(), Is.EqualTo ("T"));
+      Assert.That(genericTypeParameters[0].FullName, Is.Null);
+      Assert.That(genericTypeParameters[0].GetFullNameSafe(), Is.EqualTo("T"));
     }
 
     [Test]
@@ -89,8 +89,8 @@ namespace Remotion.UnitTests.Reflection
     {
       var typeArgument = typeof (string);
 
-      Assert.That (typeArgument.FullName, Is.Not.Null);
-      Assert.That (typeArgument.GetFullNameChecked(), Is.EqualTo ("System.String"));
+      Assert.That(typeArgument.FullName, Is.Not.Null);
+      Assert.That(typeArgument.GetFullNameChecked(), Is.EqualTo("System.String"));
     }
 
     [Test]
@@ -98,10 +98,10 @@ namespace Remotion.UnitTests.Reflection
     {
       var genericTypeParameters = typeof (CustomType<>).GetTypeInfo().GenericTypeParameters;
 
-      Assert.That (genericTypeParameters[0].FullName, Is.Null);
-      Assert.That (
+      Assert.That(genericTypeParameters[0].FullName, Is.Null);
+      Assert.That(
           () => genericTypeParameters[0].GetFullNameChecked(),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Type 'T' does not have a full name."));
+          Throws.InvalidOperationException.With.Message.EqualTo("Type 'T' does not have a full name."));
     }
 
     [Test]
@@ -109,8 +109,8 @@ namespace Remotion.UnitTests.Reflection
     {
       var typeWithNamespace = typeof (string);
 
-      Assert.That (typeWithNamespace.Namespace, Is.Not.Null);
-      Assert.That (typeWithNamespace.GetNamespaceSafe(), Is.EqualTo ("System"));
+      Assert.That(typeWithNamespace.Namespace, Is.Not.Null);
+      Assert.That(typeWithNamespace.GetNamespaceSafe(), Is.EqualTo("System"));
     }
 
     [Test]
@@ -118,8 +118,8 @@ namespace Remotion.UnitTests.Reflection
     {
       var typeWithoutNamespace = typeof (CustomType<>);
 
-      Assert.That (typeWithoutNamespace.Namespace, Is.Null);
-      Assert.That (typeWithoutNamespace.GetNamespaceSafe(), Is.EqualTo ("<undefined>"));
+      Assert.That(typeWithoutNamespace.Namespace, Is.Null);
+      Assert.That(typeWithoutNamespace.GetNamespaceSafe(), Is.EqualTo("<undefined>"));
     }
 
     [Test]
@@ -127,8 +127,8 @@ namespace Remotion.UnitTests.Reflection
     {
       var typeWithNamespace = typeof (string);
 
-      Assert.That (typeWithNamespace.Namespace, Is.Not.Null);
-      Assert.That (typeWithNamespace.GetNamespaceChecked(), Is.EqualTo ("System"));
+      Assert.That(typeWithNamespace.Namespace, Is.Not.Null);
+      Assert.That(typeWithNamespace.GetNamespaceChecked(), Is.EqualTo("System"));
     }
 
     [Test]
@@ -136,10 +136,10 @@ namespace Remotion.UnitTests.Reflection
     {
       var typeWithoutNamespace = typeof (CustomType<>);
 
-      Assert.That (typeWithoutNamespace.Namespace, Is.Null);
-      Assert.That (
+      Assert.That(typeWithoutNamespace.Namespace, Is.Null);
+      Assert.That(
           () => typeWithoutNamespace.GetNamespaceChecked(),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Type 'CustomType`1' does not have a namespace."));
+          Throws.InvalidOperationException.With.Message.EqualTo("Type 'CustomType`1' does not have a namespace."));
     }
   }
 }

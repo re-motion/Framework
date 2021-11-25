@@ -26,33 +26,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void GetObjectReferenceInReadOnlyRootTransaction_IsAllowed ()
     {
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      var order1 = LifetimeService.GetObjectReference (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      var order1 = LifetimeService.GetObjectReference(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
 
-      Assert.That (order1.ID, Is.EqualTo (DomainObjectIDs.Order1));
+      Assert.That(order1.ID, Is.EqualTo(DomainObjectIDs.Order1));
 
-      CheckDataNotLoaded (ReadOnlyRootTransaction, order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, order1);
-      CheckDataNotLoaded (WriteableSubTransaction, order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, order1);
+      CheckDataNotLoaded(WriteableSubTransaction, order1);
     }
 
     [Test]
     public void GetObjectReferenceInReadOnlyMiddleTransaction_IsAllowed ()
     {
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      var order1 = LifetimeService.GetObjectReference (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      var order1 = LifetimeService.GetObjectReference(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
 
-      Assert.That (order1.ID, Is.EqualTo (DomainObjectIDs.Order1));
+      Assert.That(order1.ID, Is.EqualTo(DomainObjectIDs.Order1));
 
-      CheckDataNotLoaded (ReadOnlyRootTransaction, order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, order1);
-      CheckDataNotLoaded (WriteableSubTransaction, order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, order1);
+      CheckDataNotLoaded(WriteableSubTransaction, order1);
     }
   }
 }

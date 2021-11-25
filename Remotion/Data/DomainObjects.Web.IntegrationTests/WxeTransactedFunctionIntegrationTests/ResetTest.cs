@@ -27,99 +27,99 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [Test]
     public void Reset_ReplacesCurrentTransaction ()
     {
-      ExecuteDelegateInWxeFunction (WxeTransactionMode<ClientTransactionFactory>.CreateRoot, (ctx, f) =>
+      ExecuteDelegateInWxeFunction(WxeTransactionMode<ClientTransactionFactory>.CreateRoot, (ctx, f) =>
       {
         var transactionBefore = ClientTransaction.Current;
-        Assert.That (transactionBefore, Is.SameAs (f.Transaction.GetNativeTransaction<ClientTransaction> ()));
+        Assert.That(transactionBefore, Is.SameAs(f.Transaction.GetNativeTransaction<ClientTransaction>()));
 
-        f.Reset ();
+        f.Reset();
 
-        Assert.That (transactionBefore, Is.Not.SameAs (ClientTransaction.Current));
-        Assert.That (ClientTransaction.Current, Is.SameAs (f.Transaction.GetNativeTransaction<ClientTransaction> ()));
+        Assert.That(transactionBefore, Is.Not.SameAs(ClientTransaction.Current));
+        Assert.That(ClientTransaction.Current, Is.SameAs(f.Transaction.GetNativeTransaction<ClientTransaction>()));
       });
     }
 
     [Test]
     public void Reset_VariablesOfDomainObjectTypes_CauseException ()
     {
-      ExecuteDelegateInWxeFunction (WxeTransactionMode<ClientTransactionFactory>.CreateRoot, (ctx, f) =>
+      ExecuteDelegateInWxeFunction(WxeTransactionMode<ClientTransactionFactory>.CreateRoot, (ctx, f) =>
       {
-        var order = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<SampleObject> ();
-        f.Variables.Add ("Object", order);
+        var order = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<SampleObject>();
+        f.Variables.Add("Object", order);
         var transactionBefore = ClientTransaction.Current;
-        Assert.That (transactionBefore, Is.SameAs (f.Transaction.GetNativeTransaction<ClientTransaction>()));
+        Assert.That(transactionBefore, Is.SameAs(f.Transaction.GetNativeTransaction<ClientTransaction>()));
 
-        Assert.That (
+        Assert.That(
             () => f.Reset(),
-            Throws.TypeOf<WxeException>().With.Message.EqualTo (
-                string.Format (
+            Throws.TypeOf<WxeException>().With.Message.EqualTo(
+                string.Format(
                     "One or more of the variables of the WxeFunction are incompatible with the new transaction after the Reset. The following objects "
                     + "are incompatible with the target transaction: {0}. Objects of type 'Remotion.Data.DomainObjects.IDomainObjectHandle`1[T]' "
                     + "could be used instead. (To avoid this exception, clear the Variables collection from incompatible objects before calling "
                     + "Reset and repopulate it afterwards.)",
                     DomainObjectIDs.ClassWithAllDataTypes1)));
 
-        Assert.That (ClientTransaction.Current, Is.Not.Null.And.Not.SameAs (transactionBefore));
-        Assert.That (ClientTransaction.Current, Is.SameAs (f.Transaction.GetNativeTransaction<ClientTransaction>()));
+        Assert.That(ClientTransaction.Current, Is.Not.Null.And.Not.SameAs(transactionBefore));
+        Assert.That(ClientTransaction.Current, Is.SameAs(f.Transaction.GetNativeTransaction<ClientTransaction>()));
       });
     }
 
     [Test]
     public void Reset_VariablesOfDomainObjectHandleType_CauseNoException ()
     {
-      ExecuteDelegateInWxeFunction (WxeTransactionMode<ClientTransactionFactory>.CreateRoot, (ctx, f) =>
+      ExecuteDelegateInWxeFunction(WxeTransactionMode<ClientTransactionFactory>.CreateRoot, (ctx, f) =>
       {
-        var objectHandle = DomainObjectIDs.ClassWithAllDataTypes1.GetHandle<SampleObject> ();
-        f.Variables.Add ("ObjectHandle", objectHandle);
+        var objectHandle = DomainObjectIDs.ClassWithAllDataTypes1.GetHandle<SampleObject>();
+        f.Variables.Add("ObjectHandle", objectHandle);
         var transactionBefore = ClientTransaction.Current;
-        Assert.That (transactionBefore, Is.SameAs (f.Transaction.GetNativeTransaction<ClientTransaction> ()));
+        Assert.That(transactionBefore, Is.SameAs(f.Transaction.GetNativeTransaction<ClientTransaction>()));
 
-        Assert.That (() => f.Reset (), Throws.Nothing);
+        Assert.That(() => f.Reset(), Throws.Nothing);
 
-        Assert.That (ClientTransaction.Current, Is.Not.Null.And.Not.SameAs (transactionBefore));
-        Assert.That (ClientTransaction.Current, Is.SameAs (f.Transaction.GetNativeTransaction<ClientTransaction> ()));
+        Assert.That(ClientTransaction.Current, Is.Not.Null.And.Not.SameAs(transactionBefore));
+        Assert.That(ClientTransaction.Current, Is.SameAs(f.Transaction.GetNativeTransaction<ClientTransaction>()));
       });
     }
 
     [Test]
     public void Reset_NonVariables_CauseNoException ()
     {
-      ExecuteDelegateInWxeFunction (WxeTransactionMode<ClientTransactionFactory>.CreateRoot, (ctx, f) =>
+      ExecuteDelegateInWxeFunction(WxeTransactionMode<ClientTransactionFactory>.CreateRoot, (ctx, f) =>
       {
-        var obj = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<SampleObject> ();
+        var obj = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<SampleObject>();
 
-        Assert.That (() => f.Reset (), Throws.Nothing);
+        Assert.That(() => f.Reset(), Throws.Nothing);
 
-        var transactionAfter = f.Transaction.GetNativeTransaction<ClientTransaction> ();
-        Assert.That (transactionAfter.IsEnlisted (obj), Is.False);
+        var transactionAfter = f.Transaction.GetNativeTransaction<ClientTransaction>();
+        Assert.That(transactionAfter.IsEnlisted(obj), Is.False);
       });
     }
 
     [Test]
     public void Reset_WithChildTransaction ()
     {
-      ExecuteDelegateInSubWxeFunction (
+      ExecuteDelegateInSubWxeFunction(
           WxeTransactionMode<ClientTransactionFactory>.CreateRoot,
           WxeTransactionMode<ClientTransactionFactory>.CreateChildIfParent,
           (ctx, f) =>
           {
             var transactionBefore = f.Transaction.GetNativeTransaction<ClientTransaction>();
-            Assert.That (transactionBefore, Is.Not.Null.And.SameAs (ClientTransaction.Current));
-            Assert.That (transactionBefore.ParentTransaction, Is.Not.Null);
+            Assert.That(transactionBefore, Is.Not.Null.And.SameAs(ClientTransaction.Current));
+            Assert.That(transactionBefore.ParentTransaction, Is.Not.Null);
             var parentBefore = transactionBefore.ParentTransaction;
 
             var obj = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<SampleObject>();
-            f.Variables.Add ("Object", obj);
+            f.Variables.Add("Object", obj);
 
             f.Reset();
 
             var transactionAfter = f.Transaction.GetNativeTransaction<ClientTransaction>();
-            Assert.That (transactionAfter, Is.Not.SameAs (transactionBefore));
-            Assert.That (transactionAfter, Is.Not.Null.And.SameAs (ClientTransaction.Current));
-            Assert.That (transactionAfter.ParentTransaction, Is.Not.Null.And.SameAs (parentBefore));
+            Assert.That(transactionAfter, Is.Not.SameAs(transactionBefore));
+            Assert.That(transactionAfter, Is.Not.Null.And.SameAs(ClientTransaction.Current));
+            Assert.That(transactionAfter.ParentTransaction, Is.Not.Null.And.SameAs(parentBefore));
 
             // This is because it was automatically enlisted in the outer transaction before the reset
-            Assert.That (transactionAfter.IsEnlisted (obj), Is.True);
+            Assert.That(transactionAfter.IsEnlisted(obj), Is.True);
           });
     }
   }

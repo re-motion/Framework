@@ -26,8 +26,8 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     public void DependencyAddedToOpenGenericMixin_ViaAssemblyLevelAttribute_AppliesWhenMixinIsConfiguredOpenGeneric ()
     {
       // Configuration and attribute match, so the dependency is valid
-      PrepareMixinConfigurationWithAttributeDeclarations (
-          new AdditionalMixinDependencyAttribute (
+      PrepareMixinConfigurationWithAttributeDeclarations(
+          new AdditionalMixinDependencyAttribute(
               typeof (ClassWithOpenMixin_WithDependencyForOpenMixin),
               typeof (M1<>),
               typeof (M2)));
@@ -36,20 +36,20 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
 
       var result = instance.M();
 
-      Assert.That (result, Is.EqualTo ("M1<ClassWithOpenMixin_WithDependencyForOpenMixin> M2 ClassWithOpenMixin_WithDependencyForOpenMixin"));
+      Assert.That(result, Is.EqualTo("M1<ClassWithOpenMixin_WithDependencyForOpenMixin> M2 ClassWithOpenMixin_WithDependencyForOpenMixin"));
     }
 
     [Test]
     public void DependencyAddedToClosedGenericMixin_ViaAssemblyLevelAttribute_ErrorWhenMixinIsConfiguredOpenGeneric ()
     {
       // Configuration and attribute don't match, so the dependency is invalid - the mixin can't be found
-      Assert.That (
-          () => PrepareMixinConfigurationWithAttributeDeclarations (
-              new AdditionalMixinDependencyAttribute (
+      Assert.That(
+          () => PrepareMixinConfigurationWithAttributeDeclarations(
+              new AdditionalMixinDependencyAttribute(
                   typeof (ClassWithOpenMixin_WithDependencyForClosedMixin),
                   typeof (M1<ClassWithOpenMixin_WithDependencyForClosedMixin>),
                   typeof (M2))),
-          Throws.TypeOf<ConfigurationException>().With.Message.EqualTo (
+          Throws.TypeOf<ConfigurationException>().With.Message.EqualTo(
               "The mixin dependencies configured for type 'Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDependencies."
               + "ClassWithGenericMixinTest+ClassWithOpenMixin_WithDependencyForClosedMixin' could not be processed: The mixin "
               + "'Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDependencies.ClassWithGenericMixinTest+M1`1"
@@ -63,8 +63,8 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     public void DependencyAddedToOpenGenericMixin_ViaAssemblyLevelAttribute_AppliesWhenMixinIsConfiguredClosedGeneric ()
     {
       // Configuration and attribute don't match, but it's obvious which mixin is meant, so the dependency is valid
-      PrepareMixinConfigurationWithAttributeDeclarations (
-          new AdditionalMixinDependencyAttribute (
+      PrepareMixinConfigurationWithAttributeDeclarations(
+          new AdditionalMixinDependencyAttribute(
               typeof (ClassWithClosedMixin_WithDependencyForOpenMixin),
               typeof (M1<>),
               typeof (M2)));
@@ -73,15 +73,15 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
 
       var result = instance.M();
 
-      Assert.That (result, Is.EqualTo ("M1<Int32> M2 ClassWithClosedMixin_WithDependencyForOpenMixin"));
+      Assert.That(result, Is.EqualTo("M1<Int32> M2 ClassWithClosedMixin_WithDependencyForOpenMixin"));
     }
 
     [Test]
     public void DependencyAddedToClosedGenericMixin_ViaAssemblyLevelAttribute_AppliesWhenMixinIsConfiguredClosedGeneric ()
     {
       // Configuration and attribute match, so the dependency is valid
-      PrepareMixinConfigurationWithAttributeDeclarations (
-          new AdditionalMixinDependencyAttribute (
+      PrepareMixinConfigurationWithAttributeDeclarations(
+          new AdditionalMixinDependencyAttribute(
               typeof (ClassWithClosedMixin_WithDependencyForClosedMixin),
               typeof (M1<int>),
               typeof (M2)));
@@ -90,7 +90,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
 
       var result = instance.M();
 
-      Assert.That (result, Is.EqualTo ("M1<Int32> M2 ClassWithClosedMixin_WithDependencyForClosedMixin"));
+      Assert.That(result, Is.EqualTo("M1<Int32> M2 ClassWithClosedMixin_WithDependencyForClosedMixin"));
     }
 
     public class ClassWithOpenMixin_WithDependencyForOpenMixin : IC

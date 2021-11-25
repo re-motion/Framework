@@ -44,28 +44,28 @@ public class CommandLineParserTest
   {
     CommandLineParser parser = new CommandLineParser();
 
-    argSourceDir = new CommandLineStringArgument (true);
+    argSourceDir = new CommandLineStringArgument(true);
     argSourceDir.Placeholder = "source-directory";
     argSourceDir.Description = "Directory to copy from";
-    parser.Arguments.Add (argSourceDir);
+    parser.Arguments.Add(argSourceDir);
 
-    argDestinationDir = new CommandLineStringArgument (true);
+    argDestinationDir = new CommandLineStringArgument(true);
     argDestinationDir.Placeholder = "destination-directory";
     argDestinationDir.Description = "This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to.";
-    parser.Arguments.Add (argDestinationDir);
+    parser.Arguments.Add(argDestinationDir);
 
-    argCopyBinary = new CommandLineFlagArgument ("b", true);
+    argCopyBinary = new CommandLineFlagArgument("b", true);
     argCopyBinary.Description = "binary copy on (+, default) or off (-)";
-    parser.Arguments.Add (argCopyBinary);
+    parser.Arguments.Add(argCopyBinary);
 
-    argEnumOption = new CommandLineEnumArgument ("rep", true, typeof (TestOption));
+    argEnumOption = new CommandLineEnumArgument("rep", true, typeof (TestOption));
     argEnumOption.Description = "replace target";
-    parser.Arguments.Add (argEnumOption);
+    parser.Arguments.Add(argEnumOption);
 
-    CommandLineModeArgument modeGroup = new CommandLineModeArgument (true, typeof (TestMode));
+    CommandLineModeArgument modeGroup = new CommandLineModeArgument(true, typeof (TestMode));
     foreach (CommandLineModeFlagArgument flag in modeGroup.Parts)
-      parser.Arguments.Add (flag);
-    parser.Arguments.Add (modeGroup);
+      parser.Arguments.Add(flag);
+    parser.Arguments.Add(modeGroup);
 
     return parser;
   }
@@ -76,7 +76,7 @@ public class CommandLineParserTest
     CommandLineStringArgument argDestinationDir;
     CommandLineFlagArgument argCopyBinary;
     CommandLineEnumArgument argEnumOption;
-    return CreateParser (out argSourceDir, out argDestinationDir, out argCopyBinary, out argEnumOption);
+    return CreateParser(out argSourceDir, out argDestinationDir, out argCopyBinary, out argEnumOption);
   }
 
   [Test]
@@ -86,19 +86,19 @@ public class CommandLineParserTest
     CommandLineStringArgument argDestinationDir;
     CommandLineFlagArgument argCopyBinary;
     CommandLineEnumArgument argEnumOption;
-    CommandLineParser parser = CreateParser (out argSourceDir, out argDestinationDir, out argCopyBinary, out argEnumOption);
+    CommandLineParser parser = CreateParser(out argSourceDir, out argDestinationDir, out argCopyBinary, out argEnumOption);
 
-    parser.Parse (new string[] {
+    parser.Parse(new string[] {
         "source", 
         "dest", 
         "/B-",
         "/Re:y" });
 
-    Assert.That (argSourceDir.Value, Is.EqualTo ("source"));
-    Assert.That (argDestinationDir.Value, Is.EqualTo ("dest"));
-    Assert.That (argCopyBinary.Value, Is.EqualTo (false));
-    Assert.That (argEnumOption.HasValue, Is.EqualTo (true));
-    Assert.That (argEnumOption.Value, Is.EqualTo (TestOption.yes));
+    Assert.That(argSourceDir.Value, Is.EqualTo("source"));
+    Assert.That(argDestinationDir.Value, Is.EqualTo("dest"));
+    Assert.That(argCopyBinary.Value, Is.EqualTo(false));
+    Assert.That(argEnumOption.HasValue, Is.EqualTo(true));
+    Assert.That(argEnumOption.Value, Is.EqualTo(TestOption.yes));
   }
 
   [Test]
@@ -108,15 +108,15 @@ public class CommandLineParserTest
     CommandLineStringArgument argDestinationDir;
     CommandLineFlagArgument argCopyBinary;
     CommandLineEnumArgument argEnumOption;
-    CommandLineParser parser = CreateParser (out argSourceDir, out argDestinationDir, out argCopyBinary, out argEnumOption);
+    CommandLineParser parser = CreateParser(out argSourceDir, out argDestinationDir, out argCopyBinary, out argEnumOption);
 
-    parser.Parse (new string[] {
+    parser.Parse(new string[] {
         "source"} );
 
-    Assert.That (argSourceDir.Value, Is.EqualTo ("source"));
-    Assert.That (argDestinationDir.Value, Is.EqualTo (null));
-    Assert.That (argCopyBinary.Value, Is.EqualTo (true));
-    Assert.That (argEnumOption.HasValue, Is.EqualTo (false));
+    Assert.That(argSourceDir.Value, Is.EqualTo("source"));
+    Assert.That(argDestinationDir.Value, Is.EqualTo(null));
+    Assert.That(argCopyBinary.Value, Is.EqualTo(true));
+    Assert.That(argEnumOption.HasValue, Is.EqualTo(false));
   }
 
   [Test]
@@ -126,10 +126,10 @@ public class CommandLineParserTest
     CommandLineStringArgument argDestinationDir;
     CommandLineFlagArgument argCopyBinary;
     CommandLineEnumArgument argEnumOption;
-    CommandLineParser parser = CreateParser (out argSourceDir, out argDestinationDir, out argCopyBinary, out argEnumOption);
+    CommandLineParser parser = CreateParser(out argSourceDir, out argDestinationDir, out argCopyBinary, out argEnumOption);
     argEnumOption.IsOptional = false;
-    Assert.That (
-        () => parser.Parse (new string[] {
+    Assert.That(
+        () => parser.Parse(new string[] {
         "source"} ),
         Throws.InstanceOf<MissingRequiredCommandLineParameterException>());
   }
@@ -137,10 +137,10 @@ public class CommandLineParserTest
   [Test]
   public void TestParsingCaseSensitiveFail ()
   {
-    CommandLineParser parser = CreateParser ();
+    CommandLineParser parser = CreateParser();
     parser.IsCaseSensitive = true;
-    Assert.That (
-        () => parser.Parse (new string[] {
+    Assert.That(
+        () => parser.Parse(new string[] {
         "source", 
         "dest", 
         "/B-",
@@ -151,10 +151,10 @@ public class CommandLineParserTest
   [Test]
   public void TestParsingNotIncrementalFail ()
   {
-    CommandLineParser parser = CreateParser ();
+    CommandLineParser parser = CreateParser();
     parser.IncrementalNameValidation = false;
-    Assert.That (
-        () => parser.Parse (new string[] {
+    Assert.That(
+        () => parser.Parse(new string[] {
         "source", 
         "dest", 
         "/b-",
@@ -169,27 +169,27 @@ public class CommandLineParserTest
     CommandLineStringArgument argDestinationDir;
     CommandLineFlagArgument argCopyBinary;
     CommandLineEnumArgument argEnumOption;
-    CommandLineParser parser = CreateParser (out argSourceDir, out argDestinationDir, out argCopyBinary, out argEnumOption);
+    CommandLineParser parser = CreateParser(out argSourceDir, out argDestinationDir, out argCopyBinary, out argEnumOption);
 
-    parser.Parse (new string[] {
+    parser.Parse(new string[] {
         "source", 
         "dest", 
         "/B-",
         "/Rep:y" });
 
-    Assert.That (argSourceDir.Value, Is.EqualTo ("source"));
-    Assert.That (argDestinationDir.Value, Is.EqualTo ("dest"));
-    Assert.That (argCopyBinary.Value, Is.EqualTo (false));
-    Assert.That (argEnumOption.Value, Is.EqualTo (TestOption.yes));
+    Assert.That(argSourceDir.Value, Is.EqualTo("source"));
+    Assert.That(argDestinationDir.Value, Is.EqualTo("dest"));
+    Assert.That(argCopyBinary.Value, Is.EqualTo(false));
+    Assert.That(argEnumOption.Value, Is.EqualTo(TestOption.yes));
   }
 
   [Test]
   public void TestParsingTooManyPositionalFail ()
   {
-    CommandLineParser parser = CreateParser ();
+    CommandLineParser parser = CreateParser();
     parser.IncrementalNameValidation = false;
-    Assert.That (
-        () => parser.Parse (new string[] {
+    Assert.That(
+        () => parser.Parse(new string[] {
         "source", 
         "dest", 
         "another"} ),
@@ -200,7 +200,7 @@ public class CommandLineParserTest
   public void TestSynopsis ()
   {
     CommandLineParser parser = CreateParser();
-    string synopsis = parser.GetAsciiSynopsis ("app.exe", 80);
+    string synopsis = parser.GetAsciiSynopsis("app.exe", 80);
     
     string expectedResult = 
         "app.exe [source-directory [destination-directory]] [/b-] [/rep:{yes|no|almost}]" 
@@ -216,7 +216,7 @@ public class CommandLineParserTest
         + "\n  /rep                   replace target"
         + "\n  /m1                    Primary mode"
         + "\n  /m2                    Secondary mode";
-    Assert.That (synopsis, Is.EqualTo (expectedResult));
+    Assert.That(synopsis, Is.EqualTo(expectedResult));
   }
 
   [Test]
@@ -224,13 +224,13 @@ public class CommandLineParserTest
   {
     CommandLineEnumArgument enumArg;
     
-    enumArg = new CommandLineEnumArgument (false, typeof (TestOption));
-    PrivateInvoke.InvokeNonPublicMethod (enumArg, "SetStringValue", "yes");
-    Assert.That ((TestOption) enumArg.Value, Is.EqualTo (TestOption.yes));
+    enumArg = new CommandLineEnumArgument(false, typeof (TestOption));
+    PrivateInvoke.InvokeNonPublicMethod(enumArg, "SetStringValue", "yes");
+    Assert.That((TestOption) enumArg.Value, Is.EqualTo(TestOption.yes));
 
-    enumArg = new CommandLineEnumArgument (false, typeof (IncrementalTestOptions));
-    PrivateInvoke.InvokeNonPublicMethod (enumArg, "SetStringValue", "no");
-    Assert.That ((IncrementalTestOptions) enumArg.Value, Is.EqualTo (IncrementalTestOptions.no));
+    enumArg = new CommandLineEnumArgument(false, typeof (IncrementalTestOptions));
+    PrivateInvoke.InvokeNonPublicMethod(enumArg, "SetStringValue", "no");
+    Assert.That((IncrementalTestOptions) enumArg.Value, Is.EqualTo(IncrementalTestOptions.no));
   }
 
   [Test]
@@ -238,22 +238,22 @@ public class CommandLineParserTest
   {
     CommandLineInt32Argument intArg;
 
-    intArg = new CommandLineInt32Argument (true);
-    PrivateInvoke.InvokeNonPublicMethod (intArg, "SetStringValue", "32");
-    Assert.That (intArg.Value, Is.EqualTo (32));
+    intArg = new CommandLineInt32Argument(true);
+    PrivateInvoke.InvokeNonPublicMethod(intArg, "SetStringValue", "32");
+    Assert.That(intArg.Value, Is.EqualTo(32));
 
-    intArg = new CommandLineInt32Argument (true);
-    PrivateInvoke.InvokeNonPublicMethod (intArg, "SetStringValue", " ");
-    Assert.That (intArg.Value, Is.EqualTo (null));
+    intArg = new CommandLineInt32Argument(true);
+    PrivateInvoke.InvokeNonPublicMethod(intArg, "SetStringValue", " ");
+    Assert.That(intArg.Value, Is.EqualTo(null));
   }
 
   [Test]
   public void TestEnumAmbiguous ()
   {
-    CommandLineEnumArgument enumArg = new CommandLineEnumArgument (false, typeof (IncrementalTestOptions));
+    CommandLineEnumArgument enumArg = new CommandLineEnumArgument(false, typeof (IncrementalTestOptions));
 
-    Assert.That (
-        () => PrivateInvoke.InvokeNonPublicMethod (enumArg, "SetStringValue", "n"),
+    Assert.That(
+        () => PrivateInvoke.InvokeNonPublicMethod(enumArg, "SetStringValue", "n"),
         Throws.InstanceOf<InvalidCommandLineArgumentValueException>()
             .With.Message.Contains("Ambiguous"));
     }
@@ -261,10 +261,10 @@ public class CommandLineParserTest
   [Test]
   public void TestEnumInvalid ()
   {
-      CommandLineEnumArgument enumArg = new CommandLineEnumArgument (false, typeof (IncrementalTestOptions));
+      CommandLineEnumArgument enumArg = new CommandLineEnumArgument(false, typeof (IncrementalTestOptions));
 
-      Assert.That (
-       () => PrivateInvoke.InvokeNonPublicMethod (enumArg, "SetStringValue", "invalidvalue"),
+      Assert.That(
+       () => PrivateInvoke.InvokeNonPublicMethod(enumArg, "SetStringValue", "invalidvalue"),
        Throws.InstanceOf<InvalidCommandLineArgumentValueException>()
            .With.Message.Contains("Use one of"));
   }

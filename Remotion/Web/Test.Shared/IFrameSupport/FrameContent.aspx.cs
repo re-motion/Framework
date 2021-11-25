@@ -24,7 +24,7 @@ namespace Remotion.Web.Test.Shared.IFrameSupport
   {
     protected void Button_Click (object sender, EventArgs e)
     {
-      ScriptManager.RegisterStartupScript (this, typeof (Page), "StartUp", "UpdateMain();", true);
+      ScriptManager.RegisterStartupScript(this, typeof (Page), "StartUp", "UpdateMain();", true);
     }
   }
 }

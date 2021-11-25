@@ -37,165 +37,165 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public override void SetUp ()
     {
       base.SetUp();
-      _definition = MappingConfiguration.Current.GetTypeDefinition (typeof (Product))
-          .GetRelationEndPointDefinition (typeof (Product).FullName + ".Reviews");
-      _nullEndPoint = new NullVirtualCollectionEndPoint (TestableClientTransaction, _definition);
+      _definition = MappingConfiguration.Current.GetTypeDefinition(typeof (Product))
+          .GetRelationEndPointDefinition(typeof (Product).FullName + ".Reviews");
+      _nullEndPoint = new NullVirtualCollectionEndPoint(TestableClientTransaction, _definition);
       _relatedObject = ProductReview.NewObject();
-      _relatedEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint> ();
+      _relatedEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
     }
 
     [Test]
     public void Definition ()
     {
-      Assert.That (_nullEndPoint.Definition, Is.SameAs (_definition));
+      Assert.That(_nullEndPoint.Definition, Is.SameAs(_definition));
     }
 
     [Test]
     public void ObjectID ()
     {
-      Assert.That (_nullEndPoint.ObjectID, Is.Null);
+      Assert.That(_nullEndPoint.ObjectID, Is.Null);
     }
 
     [Test]
     public void ID ()
     {
       var id = _nullEndPoint.ID;
-      Assert.That (id.Definition, Is.SameAs (_definition));
-      Assert.That (id.ObjectID, Is.Null);
+      Assert.That(id.Definition, Is.SameAs(_definition));
+      Assert.That(id.ObjectID, Is.Null);
     }
 
     [Test]
     public void Collection_Get ()
     {
-      Assert.That (_nullEndPoint.Collection, Is.Empty);
+      Assert.That(_nullEndPoint.Collection, Is.Empty);
     }
 
     [Test]
     public void GetData ()
     {
-      Assert.That (
-          () => _nullEndPoint.GetData (),
+      Assert.That(
+          () => _nullEndPoint.GetData(),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void GetOriginalData ()
     {
-      Assert.That (
-          () => _nullEndPoint.GetOriginalData (),
+      Assert.That(
+          () => _nullEndPoint.GetOriginalData(),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void GetCollectionWithOriginalData ()
     {
-      Assert.That (
-          () => _nullEndPoint.GetCollectionWithOriginalData (),
+      Assert.That(
+          () => _nullEndPoint.GetCollectionWithOriginalData(),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void IsDataComplete ()
     {
-      Assert.That (_nullEndPoint.IsDataComplete, Is.True);
+      Assert.That(_nullEndPoint.IsDataComplete, Is.True);
     }
 
     [Test]
     public void CanBeCollected ()
     {
-      Assert.That (_nullEndPoint.CanBeCollected, Is.False);
+      Assert.That(_nullEndPoint.CanBeCollected, Is.False);
     }
 
     [Test]
     public void CanBeMarkedIncomplete ()
     {
-      Assert.That (_nullEndPoint.CanBeMarkedIncomplete, Is.False);
+      Assert.That(_nullEndPoint.CanBeMarkedIncomplete, Is.False);
     }
 
     [Test]
     public void HasChanged ()
     {
-      Assert.That (_nullEndPoint.HasChanged, Is.False);
+      Assert.That(_nullEndPoint.HasChanged, Is.False);
     }
 
     [Test]
     public void HasChangedFast ()
     {
-      Assert.That (_nullEndPoint.HasChangedFast, Is.False);
+      Assert.That(_nullEndPoint.HasChangedFast, Is.False);
     }
 
     [Test]
     public void HasBeenTouched ()
     {
-      Assert.That (_nullEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_nullEndPoint.HasBeenTouched, Is.False);
     }
 
     [Test]
     public void GetDomainObject_Null ()
     {
-      Assert.That (_nullEndPoint.GetDomainObject (), Is.Null);
+      Assert.That(_nullEndPoint.GetDomainObject(), Is.Null);
     }
 
     [Test]
     public void GetDomainObjectReference_Null ()
     {
-      Assert.That (_nullEndPoint.GetDomainObjectReference (), Is.Null);
+      Assert.That(_nullEndPoint.GetDomainObjectReference(), Is.Null);
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (_nullEndPoint.IsNull, Is.True);
+      Assert.That(_nullEndPoint.IsNull, Is.True);
     }
 
     [Test]
     public void MarkDataComplete ()
     {
-      _nullEndPoint.MarkDataComplete (new DomainObject[0]);
+      _nullEndPoint.MarkDataComplete(new DomainObject[0]);
     }
 
     [Test]
     public void MarkDataIncomplete ()
     {
-      Assert.That (
-          () => _nullEndPoint.MarkDataIncomplete (),
+      Assert.That(
+          () => _nullEndPoint.MarkDataIncomplete(),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void Touch ()
     {
-      Assert.That (_nullEndPoint.HasBeenTouched, Is.False);
-      _nullEndPoint.Touch ();
-      Assert.That (_nullEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_nullEndPoint.HasBeenTouched, Is.False);
+      _nullEndPoint.Touch();
+      Assert.That(_nullEndPoint.HasBeenTouched, Is.False);
     }
 
     [Test]
     public void CreateAddCommand ()
     {
-      Assert.That (_nullEndPoint.CreateAddCommand (_relatedObject), Is.InstanceOf (typeof (NullEndPointModificationCommand)));
+      Assert.That(_nullEndPoint.CreateAddCommand(_relatedObject), Is.InstanceOf(typeof (NullEndPointModificationCommand)));
     }
 
     [Test]
     public void CreateRemoveCommand ()
     {
-      Assert.That (_nullEndPoint.CreateRemoveCommand (_relatedObject), Is.InstanceOf (typeof (NullEndPointModificationCommand)));
+      Assert.That(_nullEndPoint.CreateRemoveCommand(_relatedObject), Is.InstanceOf(typeof (NullEndPointModificationCommand)));
     }
 
     [Test]
     public void CreateDeleteCommand ()
     {
-      Assert.That (_nullEndPoint.CreateDeleteCommand(), Is.InstanceOf (typeof (NullEndPointModificationCommand)));
+      Assert.That(_nullEndPoint.CreateDeleteCommand(), Is.InstanceOf(typeof (NullEndPointModificationCommand)));
     }
 
     [Test]
     public void RegisterOriginalOppositeEndPoint ()
     {
       var relatedEndPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
-      relatedEndPointMock.Expect (mock => mock.MarkSynchronized());
+      relatedEndPointMock.Expect(mock => mock.MarkSynchronized());
       relatedEndPointMock.Replay();
 
-      _nullEndPoint.RegisterOriginalOppositeEndPoint (relatedEndPointMock);
+      _nullEndPoint.RegisterOriginalOppositeEndPoint(relatedEndPointMock);
 
       relatedEndPointMock.VerifyAllExpectations();
     }
@@ -203,37 +203,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void UnregisterOriginalOppositeEndPoint ()
     {
-      var relatedEndPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint> ();
-      relatedEndPointMock.Expect (mock => mock.ResetSyncState());
-      relatedEndPointMock.Replay ();
+      var relatedEndPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
+      relatedEndPointMock.Expect(mock => mock.ResetSyncState());
+      relatedEndPointMock.Replay();
 
-      _nullEndPoint.UnregisterOriginalOppositeEndPoint (relatedEndPointMock);
+      _nullEndPoint.UnregisterOriginalOppositeEndPoint(relatedEndPointMock);
 
-      relatedEndPointMock.VerifyAllExpectations ();
+      relatedEndPointMock.VerifyAllExpectations();
     }
 
     [Test]
     public void RegisterCurrentOppositeEndPoint ()
     {
-      _nullEndPoint.RegisterCurrentOppositeEndPoint (_relatedEndPointStub);
+      _nullEndPoint.RegisterCurrentOppositeEndPoint(_relatedEndPointStub);
     }
 
     [Test]
     public void UnregisterCurrentOppositeEndPoint ()
     {
-      _nullEndPoint.UnregisterCurrentOppositeEndPoint (_relatedEndPointStub);
+      _nullEndPoint.UnregisterCurrentOppositeEndPoint(_relatedEndPointStub);
     }
 
     [Test]
     public void IsSynchronized ()
     {
-      Assert.That (_nullEndPoint.IsSynchronized, Is.True);
+      Assert.That(_nullEndPoint.IsSynchronized, Is.True);
     }
 
     [Test]
     public void Synchronize ()
     {
-      Assert.That (
+      Assert.That(
           () => _nullEndPoint.Synchronize(),
           Throws.InvalidOperationException);
     }
@@ -241,64 +241,64 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void SynchronizeOppositeEndPoint ()
     {
-      Assert.That (
-          () => _nullEndPoint.SynchronizeOppositeEndPoint (_relatedEndPointStub),
+      Assert.That(
+          () => _nullEndPoint.SynchronizeOppositeEndPoint(_relatedEndPointStub),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void ValidateMandatory ()
     {
-      Assert.That (
-          () => _nullEndPoint.ValidateMandatory (),
+      Assert.That(
+          () => _nullEndPoint.ValidateMandatory(),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void GetOppositeRelationEndPointIDs ()
     {
-      Assert.That (
-          () => _nullEndPoint.GetOppositeRelationEndPointIDs (),
+      Assert.That(
+          () => _nullEndPoint.GetOppositeRelationEndPointIDs(),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void EnsureDataComplete_DoesNothing ()
     {
-      ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents (TestableClientTransaction);
+      ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents(TestableClientTransaction);
 
-      _nullEndPoint.EnsureDataComplete ();
+      _nullEndPoint.EnsureDataComplete();
     }
 
     [Test]
     public void SetDataFromSubTransaction ()
     {
-      Assert.That (
-          () => _nullEndPoint.SetDataFromSubTransaction (MockRepository.GenerateStub<IRelationEndPoint> ()),
+      Assert.That(
+          () => _nullEndPoint.SetDataFromSubTransaction(MockRepository.GenerateStub<IRelationEndPoint>()),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void Commit ()
     {
-      Assert.That (
-          () => _nullEndPoint.Commit (),
+      Assert.That(
+          () => _nullEndPoint.Commit(),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void Rollback ()
     {
-      Assert.That (
-          () => _nullEndPoint.Commit (),
+      Assert.That(
+          () => _nullEndPoint.Commit(),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void SerializeIntoFlatStructure ()
     {
-      Assert.That (
-          () => _nullEndPoint.SerializeIntoFlatStructure (new FlattenedSerializationInfo ()),
+      Assert.That(
+          () => _nullEndPoint.SerializeIntoFlatStructure(new FlattenedSerializationInfo()),
           Throws.InvalidOperationException);
     }
   }

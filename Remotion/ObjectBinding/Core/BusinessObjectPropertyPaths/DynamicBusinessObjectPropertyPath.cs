@@ -30,9 +30,9 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
   {
     public static DynamicBusinessObjectPropertyPath Create (string propertyPathIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyPathIdentifier", propertyPathIdentifier);
 
-      return new DynamicBusinessObjectPropertyPath (propertyPathIdentifier);
+      return new DynamicBusinessObjectPropertyPath(propertyPathIdentifier);
     }
 
     private readonly string _propertyPathIdentifier;
@@ -54,12 +54,12 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
 
     public override ReadOnlyCollection<IBusinessObjectProperty> Properties
     {
-      get { throw new NotSupportedException ("Properties collection cannot be retrieved for dynamic property paths."); }
+      get { throw new NotSupportedException("Properties collection cannot be retrieved for dynamic property paths."); }
     }
 
     protected override IBusinessObjectPropertyPathPropertyEnumerator GetResultPropertyEnumerator ()
     {
-      return new DynamicBusinessObjectPropertyPathPropertyEnumerator (_propertyPathIdentifier);
+      return new DynamicBusinessObjectPropertyPathPropertyEnumerator(_propertyPathIdentifier);
     }
   }
 }

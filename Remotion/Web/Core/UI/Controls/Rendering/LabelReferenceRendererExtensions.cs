@@ -32,11 +32,11 @@ namespace Remotion.Web.UI.Controls.Rendering
         [NotNull] IReadOnlyCollection<string> labelIDs
         )
     {
-      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull ("attributeAccessor", attributeAccessor);
-      ArgumentUtility.CheckNotNull ("labelIDs", labelIDs);
+      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull("attributeAccessor", attributeAccessor);
+      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
 
-      labelReferenceRenderer.SetLabelsReferenceOnControl (attributeAccessor, labelIDs, s_emptyAccessibilityAnnotationIDs);
+      labelReferenceRenderer.SetLabelsReferenceOnControl(attributeAccessor, labelIDs, s_emptyAccessibilityAnnotationIDs);
     }
 
     public static void AddLabelsReference (
@@ -45,11 +45,11 @@ namespace Remotion.Web.UI.Controls.Rendering
         [NotNull] IReadOnlyCollection<string> labelIDs
         )
     {
-      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull ("htmlTextWriter", htmlTextWriter);
-      ArgumentUtility.CheckNotNull ("labelIDs", labelIDs);
+      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull("htmlTextWriter", htmlTextWriter);
+      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
 
-      labelReferenceRenderer.AddLabelsReference (htmlTextWriter, labelIDs, s_emptyAccessibilityAnnotationIDs);
+      labelReferenceRenderer.AddLabelsReference(htmlTextWriter, labelIDs, s_emptyAccessibilityAnnotationIDs);
     }
   }
 }

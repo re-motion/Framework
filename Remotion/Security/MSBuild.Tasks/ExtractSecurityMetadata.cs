@@ -44,22 +44,22 @@ namespace Remotion.Security.MSBuild.Tasks
     {
       try
       {
-        MetadataExtractor extractor = new MetadataExtractor (new MetadataToXmlConverter ());
+        MetadataExtractor extractor = new MetadataExtractor(new MetadataToXmlConverter());
 
         foreach (ITaskItem assembly in _assemblies)
         {
-          Log.LogMessage (MessageImportance.Low, "Analyzing assembly {0}", assembly.ItemSpec);
-          extractor.AddAssembly (assembly.ItemSpec);
+          Log.LogMessage(MessageImportance.Low, "Analyzing assembly {0}", assembly.ItemSpec);
+          extractor.AddAssembly(assembly.ItemSpec);
         }
 
-        extractor.Save (_outputFilename);
-        Log.LogMessage (MessageImportance.Normal, "Extracted security metadata to {0}", _outputFilename);
+        extractor.Save(_outputFilename);
+        Log.LogMessage(MessageImportance.Normal, "Extracted security metadata to {0}", _outputFilename);
 
         return true;
       }
       catch (Exception e)
       {
-        Log.LogErrorFromException (e);
+        Log.LogErrorFromException(e);
         return false;
       }
     }

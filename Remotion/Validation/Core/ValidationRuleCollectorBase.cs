@@ -77,15 +77,15 @@ namespace Remotion.Validation
     public IConditionalAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> AddRule<TProperty> (
         Expression<Func<TValidatedType, TProperty>> propertySelector)
     {
-      ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
+      ArgumentUtility.CheckNotNull("propertySelector", propertySelector);
       
-      var propertyRule = AddingPropertyValidationRuleCollector.Create (propertySelector, GetType());
-      _addedPropertyRules.Add (propertyRule);
+      var propertyRule = AddingPropertyValidationRuleCollector.Create(propertySelector, GetType());
+      _addedPropertyRules.Add(propertyRule);
 
-      var metaValidationPropertyRule = PropertyMetaValidationRuleCollector.Create (propertySelector, GetType());
-      _propertyMetaValidationRules.Add (metaValidationPropertyRule);
+      var metaValidationPropertyRule = PropertyMetaValidationRuleCollector.Create(propertySelector, GetType());
+      _propertyMetaValidationRules.Add(metaValidationPropertyRule);
 
-      return new AddingPropertyValidationRuleBuilder<TValidatedType, TProperty> (propertyRule, metaValidationPropertyRule);
+      return new AddingPropertyValidationRuleBuilder<TValidatedType, TProperty>(propertyRule, metaValidationPropertyRule);
     }
 
     /// <summary>
@@ -99,12 +99,12 @@ namespace Remotion.Validation
     public IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> RemoveRule<TProperty> (
         Expression<Func<TValidatedType, TProperty>> propertySelector)
     {
-      ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
+      ArgumentUtility.CheckNotNull("propertySelector", propertySelector);
       
-      var propertyRule = RemovingPropertyValidationRuleCollector.Create (propertySelector, GetType());
-      _removedPropertyRules.Add (propertyRule);
+      var propertyRule = RemovingPropertyValidationRuleCollector.Create(propertySelector, GetType());
+      _removedPropertyRules.Add(propertyRule);
 
-      return new RemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> (propertyRule);
+      return new RemovingPropertyValidationRuleBuilder<TValidatedType, TProperty>(propertyRule);
     }
 
     /// <summary>
@@ -114,13 +114,13 @@ namespace Remotion.Validation
     /// <remarks>TODO RM-5906: usage sample</remarks>
     public IConditionalAddingObjectValidationRuleBuilder<TValidatedType> AddRule ()
     {
-      var objectRule = AddingObjectValidationRuleCollector.Create<TValidatedType> (GetType());
-      _addedObjectRules.Add (objectRule);
+      var objectRule = AddingObjectValidationRuleCollector.Create<TValidatedType>(GetType());
+      _addedObjectRules.Add(objectRule);
 
-      var metaValidationRule = ObjectMetaValidationRuleCollector.Create<TValidatedType> (GetType());
-      _objectMetaValidationRules.Add (metaValidationRule);
+      var metaValidationRule = ObjectMetaValidationRuleCollector.Create<TValidatedType>(GetType());
+      _objectMetaValidationRules.Add(metaValidationRule);
 
-      return new AddingObjectValidationRuleBuilder<TValidatedType> (objectRule, metaValidationRule);
+      return new AddingObjectValidationRuleBuilder<TValidatedType>(objectRule, metaValidationRule);
     }
 
     /// <summary>
@@ -131,10 +131,10 @@ namespace Remotion.Validation
     /// <remarks>TODO RM-5906: usage sample</remarks>
     public IRemovingObjectValidationRuleBuilder<TValidatedType> RemoveRule ()
     {
-      var objectRule = RemovingObjectValidationRuleCollector.Create<TValidatedType> (GetType());
-      _removedObjectRules.Add (objectRule);
+      var objectRule = RemovingObjectValidationRuleCollector.Create<TValidatedType>(GetType());
+      _removedObjectRules.Add(objectRule);
 
-      return new RemovingObjectValidationRuleBuilder<TValidatedType> (objectRule);
+      return new RemovingObjectValidationRuleBuilder<TValidatedType>(objectRule);
     }
   }
 }

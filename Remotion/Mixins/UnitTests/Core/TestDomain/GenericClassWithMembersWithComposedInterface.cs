@@ -23,7 +23,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
     public string M1 (T parameter)
     {
-      return string.Format ("GenericClassWithMembersWithComposedInterface<{0}>.M1", typeof (T).Name);
+      return string.Format("GenericClassWithMembersWithComposedInterface<{0}>.M1", typeof (T).Name);
     }
   }
 }

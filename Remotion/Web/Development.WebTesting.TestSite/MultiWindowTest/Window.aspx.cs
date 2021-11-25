@@ -23,7 +23,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       Close.Click += CloseOnClick;
       CloseAndRefreshMainAsWell.Click += CloseAndRefreshMainAsWellOnClick;
@@ -31,13 +31,13 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
-      SetTestOutput (WindowLabel);
+      base.OnPreRender(e);
+      SetTestOutput(WindowLabel);
     }
 
     protected override void AddPostBackEventHandlerToPage (PostBackEventHandler postBackEventHandler)
     {
-      Controls.Add (postBackEventHandler);
+      Controls.Add(postBackEventHandler);
     }
 
     private void CloseOnClick (object sender, EventArgs eventArgs)

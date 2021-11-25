@@ -66,98 +66,98 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     public void SetUp ()
     {
       _mixinPropertyWithoutAttribute =
-          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("PropertyWithoutAttribute");
+          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty("PropertyWithoutAttribute");
       _interfacePropertyWithoutAttribute =
-          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("PropertyWithoutAttribute");
+          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty("PropertyWithoutAttribute");
 
       _mixinPropertyWithMandatoryAttribute =
-          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("PropertyWithMandatoryAttribute");
+          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty("PropertyWithMandatoryAttribute");
       _interfacePropertyWithMandatoryAttribute =
-          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("PropertyWithMandatoryAttribute");
+          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty("PropertyWithMandatoryAttribute");
 
       _mixinBidirectionalRelationProperty =
-          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("BidirectionalPropertyWithMandatoryAttribute");
+          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty("BidirectionalPropertyWithMandatoryAttribute");
       _interfaceBidirectionalRelationProperty =
-          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty(
               "BidirectionalPropertyWithMandatoryAttribute");
 
       _mixinBidirectionalDomainObjectCollectionRelationProperty =
-          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty(
               "BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute");
       _interfaceBidirectionalDomainObjectCollectionRelationProperty =
-          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty(
               "BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute");
 
       _mixinBidirectionalVirtualCollectionRelationProperty =
-          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty(
               "BidirectionalVirtualCollectionPropertyWithMandatoryAttribute");
       _interfaceBidirectionalVirtualCollectionRelationProperty =
-          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty(
               "BidirectionalVirtualCollectionPropertyWithMandatoryAttribute");
 
       _mixinPropertyWithNullableStringPropertyAttribute =
-          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("PropertyWithNullableStringPropertyAttribute");
+          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty("PropertyWithNullableStringPropertyAttribute");
       _interfacePropertyWithNullableStringPropertyAttribute =
-          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty(
               "PropertyWithNullableStringPropertyAttribute");
 
       _mixinPropertyWithMandatoryStringPropertyAttribute =
-          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty(
               "PropertyWithMandatoryStringPropertyAttribute");
       _interfacePropertyWithMandatoryStringPropertyAttribute =
-          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty (
+          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty(
               "PropertyWithMandatoryStringPropertyAttribute");
 
       _mixinIntProperty =
-          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("IntProperty");
+          typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty("IntProperty");
       _interfaceIntProperty =
-          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("IntProperty");
+          typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty("IntProperty");
 
       _domainModelConstraintProvider = new DomainModelConstraintProvider();
       _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
 
-      _propertyWithoutAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+      _propertyWithoutAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector(
           _interfacePropertyWithoutAttribute,
           _mixinPropertyWithoutAttribute,
           _domainModelConstraintProvider,
           _validationMessageFactoryStub);
-      _propertyWithMandatoryAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+      _propertyWithMandatoryAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector(
           _interfacePropertyWithMandatoryAttribute,
           _mixinPropertyWithMandatoryAttribute,
           _domainModelConstraintProvider,
           _validationMessageFactoryStub);
       _propertyWithNullableStringPropertyAttributeReflector =
-          new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+          new DomainObjectAttributesBasedValidationPropertyRuleReflector(
               _interfacePropertyWithNullableStringPropertyAttribute,
               _mixinPropertyWithNullableStringPropertyAttribute,
               _domainModelConstraintProvider,
               _validationMessageFactoryStub);
       _propertyWithMandatoryStringPropertyAttributeReflector =
-          new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+          new DomainObjectAttributesBasedValidationPropertyRuleReflector(
               _interfacePropertyWithMandatoryStringPropertyAttribute,
               _mixinPropertyWithMandatoryStringPropertyAttribute,
               _domainModelConstraintProvider,
               _validationMessageFactoryStub);
 
-      _intPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+      _intPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector(
           _interfaceIntProperty,
           _mixinIntProperty,
           _domainModelConstraintProvider,
           _validationMessageFactoryStub);
 
-      _bidirectionalRelationReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+      _bidirectionalRelationReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector(
           _interfaceBidirectionalRelationProperty,
           _mixinBidirectionalRelationProperty,
           _domainModelConstraintProvider,
           _validationMessageFactoryStub);
 
-      _bidirectionalDomainObjectCollectionRelationReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+      _bidirectionalDomainObjectCollectionRelationReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector(
           _interfaceBidirectionalDomainObjectCollectionRelationProperty,
           _mixinBidirectionalDomainObjectCollectionRelationProperty,
           _domainModelConstraintProvider,
           _validationMessageFactoryStub);
 
-      _bidirectionalVirtualCollectionRelationReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+      _bidirectionalVirtualCollectionRelationReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector(
           _interfaceBidirectionalVirtualCollectionRelationProperty,
           _mixinBidirectionalVirtualCollectionRelationProperty,
           _domainModelConstraintProvider,
@@ -167,33 +167,33 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     [Test]
     public void Initialize ()
     {
-      Assert.That (
+      Assert.That(
           ((PropertyInfoAdapter) _propertyWithoutAttributeReflector.ValidatedProperty).PropertyInfo,
-          Is.EqualTo (_interfacePropertyWithoutAttribute));
-      Assert.That (
+          Is.EqualTo(_interfacePropertyWithoutAttribute));
+      Assert.That(
           ((PropertyInfoAdapter) _propertyWithMandatoryAttributeReflector.ValidatedProperty).PropertyInfo,
-          Is.EqualTo (_interfacePropertyWithMandatoryAttribute));
-      Assert.That (
+          Is.EqualTo(_interfacePropertyWithMandatoryAttribute));
+      Assert.That(
           ((PropertyInfoAdapter) _propertyWithNullableStringPropertyAttributeReflector.ValidatedProperty).PropertyInfo,
-          Is.EqualTo (_interfacePropertyWithNullableStringPropertyAttribute));
-      Assert.That (
+          Is.EqualTo(_interfacePropertyWithNullableStringPropertyAttribute));
+      Assert.That(
           ((PropertyInfoAdapter) _propertyWithMandatoryStringPropertyAttributeReflector.ValidatedProperty).PropertyInfo,
-          Is.EqualTo (_interfacePropertyWithMandatoryStringPropertyAttribute));
+          Is.EqualTo(_interfacePropertyWithMandatoryStringPropertyAttribute));
     }
 
     [Test]
     public void GetPropertyAccessExpression_NonRelationStringProperty ()
     {
       var propertyAccessor = _propertyWithMandatoryStringPropertyAttributeReflector
-          .GetValidatedPropertyFunc (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
+          .GetValidatedPropertyFunc(typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject ();
+        var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
         var propertyValue = "test";
         ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) obj).PropertyWithMandatoryStringPropertyAttribute = propertyValue;
-        var result = propertyAccessor (obj);
-        Assert.That (result, Is.SameAs (propertyValue));
+        var result = propertyAccessor(obj);
+        Assert.That(result, Is.SameAs(propertyValue));
       }
     }
 
@@ -201,15 +201,15 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     public void GetPropertyAccessExpression_NonRelationIntProperty ()
     {
       var propertyAccessor = _intPropertyReflector
-          .GetValidatedPropertyFunc (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
+          .GetValidatedPropertyFunc(typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject ();
+        var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
         var propertyValue = 10;
         ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) obj).IntProperty = propertyValue;
-        var result = propertyAccessor (obj);
-        Assert.That (result, Is.EqualTo (propertyValue));
+        var result = propertyAccessor(obj);
+        Assert.That(result, Is.EqualTo(propertyValue));
       }
     }
 
@@ -217,15 +217,15 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     public void GetPropertyAccessExpression_UnidirectionalRelation ()
     {
       var propertyAccessor = _propertyWithMandatoryAttributeReflector
-          .GetValidatedPropertyFunc (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
+          .GetValidatedPropertyFunc(typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
         var propertyValue = TestDomainObject.NewObject();
         ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) obj).PropertyWithMandatoryAttribute = propertyValue;
-        var result = propertyAccessor (obj);
-        Assert.That (result, Is.SameAs (propertyValue));
+        var result = propertyAccessor(obj);
+        Assert.That(result, Is.SameAs(propertyValue));
       }
     }
 
@@ -233,15 +233,15 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     public void GetPropertyAccessExpression_BidirectionalRelation ()
     {
       var propertyAccessor = _bidirectionalRelationReflector
-          .GetValidatedPropertyFunc (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
+          .GetValidatedPropertyFunc(typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject ();
-        var propertyValue = TestDomainObject.NewObject ();
+        var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
+        var propertyValue = TestDomainObject.NewObject();
         ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) obj).BidirectionalPropertyWithMandatoryAttribute = propertyValue;
-        var result = propertyAccessor (obj);
-        Assert.That (result, Is.SameAs (propertyValue));
+        var result = propertyAccessor(obj);
+        Assert.That(result, Is.SameAs(propertyValue));
       }
     }
 
@@ -249,15 +249,15 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     public void GetPropertyAccessExpression_BidirectionalDomainObjectCollectionRelation ()
     {
       var propertyAccessor = _bidirectionalDomainObjectCollectionRelationReflector
-          .GetValidatedPropertyFunc (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
+          .GetValidatedPropertyFunc(typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject ();
-        var propertyValue = TestDomainObject.NewObject ();
+        var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
+        var propertyValue = TestDomainObject.NewObject();
         ((IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) obj).BidirectionalDomainObjectCollectionPropertyWithMandatoryAttribute.Add(propertyValue);
-        var result = propertyAccessor (obj);
-        Assert.That (result, Is.EqualTo (new[] { propertyValue }));
+        var result = propertyAccessor(obj);
+        Assert.That(result, Is.EqualTo(new[] { propertyValue }));
       }
     }
 
@@ -265,15 +265,15 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     public void GetPropertyAccessExpression_BidirectionalVirtualCollectionRelation ()
     {
       var propertyAccessor = _bidirectionalVirtualCollectionRelationReflector
-          .GetValidatedPropertyFunc (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
+          .GetValidatedPropertyFunc(typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject ();
-        var propertyValue = TestDomainObject.NewObject ();
+        var obj = MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
+        var propertyValue = TestDomainObject.NewObject();
         propertyValue.OppositeObjectForVirtualCollectionProperty = obj;
-        var result = propertyAccessor (obj);
-        Assert.That (result, Is.EqualTo (new[] { propertyValue }));
+        var result = propertyAccessor(obj);
+        Assert.That(result, Is.EqualTo(new[] { propertyValue }));
       }
     }
 
@@ -281,17 +281,17 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     public void GetPropertyAccessExpression_BidirectionalRelation_NotLoaded ()
     {
       var propertyAccessor = _bidirectionalRelationReflector
-         .GetValidatedPropertyFunc (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
+         .GetValidatedPropertyFunc(typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var obj = (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject ();
-        using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+        var obj = (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
+        using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
-          var result = propertyAccessor (obj);
+          var result = propertyAccessor(obj);
 
-          Assert.That (result, Is.Not.Null);
-          Assert.That (result.GetType ().Name, Is.EqualTo ("FakeDomainObject"));
+          Assert.That(result, Is.Not.Null);
+          Assert.That(result.GetType().Name, Is.EqualTo("FakeDomainObject"));
         }
       }
     }
@@ -300,17 +300,17 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     public void GetPropertyAccessExpression_BidirectionalDomainObjectCollectionRelation_NotLoaded ()
     {
       var propertyAccessor = _bidirectionalDomainObjectCollectionRelationReflector
-         .GetValidatedPropertyFunc (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
+         .GetValidatedPropertyFunc(typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var obj = (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject ();
-        using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+        var obj = (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
+        using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
-          var result = propertyAccessor (obj) as IEnumerable<object>;
+          var result = propertyAccessor(obj) as IEnumerable<object>;
 
-          Assert.That (result, Is.Not.Null);
-          Assert.That (result.Select (r => r.GetType().Name), Is.EqualTo (new[] { "FakeDomainObject" }));
+          Assert.That(result, Is.Not.Null);
+          Assert.That(result.Select(r => r.GetType().Name), Is.EqualTo(new[] { "FakeDomainObject" }));
         }
       }
     }
@@ -319,17 +319,17 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     public void GetPropertyAccessExpression_BidirectionalVirtualCollectionRelation_NotLoaded ()
     {
       var propertyAccessor = _bidirectionalVirtualCollectionRelationReflector
-          .GetValidatedPropertyFunc (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
+          .GetValidatedPropertyFunc(typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var obj = (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject ();
-        using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+        var obj = (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) MixinTarget_AnnotatedPropertiesPartOfInterface.NewObject();
+        using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
-          var result = propertyAccessor (obj) as IEnumerable<object>;
+          var result = propertyAccessor(obj) as IEnumerable<object>;
 
-          Assert.That (result, Is.Not.Null);
-          Assert.That (result.Select (r => r.GetType().Name), Is.EqualTo (new[] { "FakeDomainObject" }));
+          Assert.That(result, Is.Not.Null);
+          Assert.That(result.Select(r => r.GetType().Name), Is.EqualTo(new[] { "FakeDomainObject" }));
         }
       }
     }
@@ -337,10 +337,10 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     [Test]
     public void NoAttributes ()
     {
-      Assert.That (_propertyWithoutAttributeReflector.GetRemovablePropertyValidators().Any(), Is.False);
-      Assert.That (_propertyWithoutAttributeReflector.GetNonRemovablePropertyValidators().Any(), Is.False);
-      Assert.That (_propertyWithoutAttributeReflector.GetRemovingValidatorRegistrations().Any(), Is.False);
-      Assert.That (_propertyWithoutAttributeReflector.GetMetaValidationRules().Any(), Is.False);
+      Assert.That(_propertyWithoutAttributeReflector.GetRemovablePropertyValidators().Any(), Is.False);
+      Assert.That(_propertyWithoutAttributeReflector.GetNonRemovablePropertyValidators().Any(), Is.False);
+      Assert.That(_propertyWithoutAttributeReflector.GetRemovingValidatorRegistrations().Any(), Is.False);
+      Assert.That(_propertyWithoutAttributeReflector.GetMetaValidationRules().Any(), Is.False);
     }
 
     [Test]
@@ -348,18 +348,18 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       var validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
-          .Stub (
-              _ => _.CreateValidationMessageForPropertyValidator (
+          .Stub(
+              _ => _.CreateValidationMessageForPropertyValidator(
                   Arg<NotNullValidator>.Is.TypeOf,
-                  Arg.Is (PropertyInfoAdapter.Create (_mixinPropertyWithMandatoryAttribute))))
-          .Return (validationMessageStub);
+                  Arg.Is(PropertyInfoAdapter.Create(_mixinPropertyWithMandatoryAttribute))))
+          .Return(validationMessageStub);
 
       var result = _propertyWithMandatoryAttributeReflector.GetNonRemovablePropertyValidators().ToArray();
 
-      validationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message");
-      Assert.That (result.Count(), Is.EqualTo (1));
-      Assert.That (result[0], Is.TypeOf (typeof (NotNullValidator)));
-      Assert.That (((NotNullValidator) result[0]).ValidationMessage.ToString, Is.EqualTo ("Stub Message"));
+      validationMessageStub.Stub(_ => _.ToString()).Return("Stub Message");
+      Assert.That(result.Count(), Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof (NotNullValidator)));
+      Assert.That(((NotNullValidator) result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message"));
     }
 
     [Test]
@@ -373,19 +373,19 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       var validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
-          .Stub (
-              _ => _.CreateValidationMessageForPropertyValidator (
+          .Stub(
+              _ => _.CreateValidationMessageForPropertyValidator(
                   Arg<MaximumLengthValidator>.Is.TypeOf,
-                  Arg.Is (PropertyInfoAdapter.Create (_mixinPropertyWithNullableStringPropertyAttribute))))
-          .Return (validationMessageStub);
+                  Arg.Is(PropertyInfoAdapter.Create(_mixinPropertyWithNullableStringPropertyAttribute))))
+          .Return(validationMessageStub);
 
       var result = _propertyWithNullableStringPropertyAttributeReflector.GetRemovablePropertyValidators().ToArray();
 
-      validationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message");
-      Assert.That (result.Count(), Is.EqualTo (1));
-      Assert.That (result[0], Is.TypeOf (typeof (MaximumLengthValidator)));
-      Assert.That (((MaximumLengthValidator) result[0]).Max, Is.EqualTo (10));
-      Assert.That (((MaximumLengthValidator) result[0]).ValidationMessage.ToString, Is.EqualTo ("Stub Message"));
+      validationMessageStub.Stub(_ => _.ToString()).Return("Stub Message");
+      Assert.That(result.Count(), Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof (MaximumLengthValidator)));
+      Assert.That(((MaximumLengthValidator) result[0]).Max, Is.EqualTo(10));
+      Assert.That(((MaximumLengthValidator) result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message"));
     }
 
     [Test]
@@ -399,31 +399,31 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       var lengthValidationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
-          .Stub (
-              _ => _.CreateValidationMessageForPropertyValidator (
+          .Stub(
+              _ => _.CreateValidationMessageForPropertyValidator(
                   Arg<MaximumLengthValidator>.Is.TypeOf,
-                  Arg.Is (PropertyInfoAdapter.Create (_mixinPropertyWithMandatoryStringPropertyAttribute))))
-          .Return (lengthValidationMessageStub);
+                  Arg.Is(PropertyInfoAdapter.Create(_mixinPropertyWithMandatoryStringPropertyAttribute))))
+          .Return(lengthValidationMessageStub);
 
       var notEmptyValidationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
-          .Stub (
-              _ => _.CreateValidationMessageForPropertyValidator (
+          .Stub(
+              _ => _.CreateValidationMessageForPropertyValidator(
                   Arg<NotEmptyValidator>.Is.TypeOf,
-                  Arg.Is (PropertyInfoAdapter.Create (_mixinPropertyWithMandatoryStringPropertyAttribute))))
-          .Return (notEmptyValidationMessageStub);
+                  Arg.Is(PropertyInfoAdapter.Create(_mixinPropertyWithMandatoryStringPropertyAttribute))))
+          .Return(notEmptyValidationMessageStub);
 
       var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetRemovablePropertyValidators().ToArray();
 
-      lengthValidationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message for Length");
-      Assert.That (result.Count(), Is.EqualTo (2));
-      Assert.That (result[0], Is.TypeOf (typeof (MaximumLengthValidator)));
-      Assert.That (((MaximumLengthValidator) result[0]).Max, Is.EqualTo (20));
-      Assert.That (((MaximumLengthValidator) result[0]).ValidationMessage.ToString, Is.EqualTo ("Stub Message for Length"));
+      lengthValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for Length");
+      Assert.That(result.Count(), Is.EqualTo(2));
+      Assert.That(result[0], Is.TypeOf(typeof (MaximumLengthValidator)));
+      Assert.That(((MaximumLengthValidator) result[0]).Max, Is.EqualTo(20));
+      Assert.That(((MaximumLengthValidator) result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message for Length"));
 
-      notEmptyValidationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message for NotEmpty");
-      Assert.That (result[1], Is.TypeOf (typeof (NotEmptyValidator)));
-      Assert.That (((NotEmptyValidator) result[1]).ValidationMessage.ToString, Is.EqualTo ("Stub Message for NotEmpty"));
+      notEmptyValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for NotEmpty");
+      Assert.That(result[1], Is.TypeOf(typeof (NotEmptyValidator)));
+      Assert.That(((NotEmptyValidator) result[1]).ValidationMessage.ToString, Is.EqualTo("Stub Message for NotEmpty"));
     }
 
     [Test]
@@ -437,7 +437,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       var result = _propertyWithNullableStringPropertyAttributeReflector.GetNonRemovablePropertyValidators().ToArray();
 
-      Assert.That (result.Any(), Is.False);
+      Assert.That(result.Any(), Is.False);
     }
 
     [Test]
@@ -445,18 +445,18 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       var validationMessageStub = MockRepository.GenerateStub<ValidationMessage>();
       _validationMessageFactoryStub
-          .Stub (
-              _ => _.CreateValidationMessageForPropertyValidator (
+          .Stub(
+              _ => _.CreateValidationMessageForPropertyValidator(
                   Arg<NotNullValidator>.Is.TypeOf,
-                  Arg.Is (PropertyInfoAdapter.Create (_mixinPropertyWithMandatoryStringPropertyAttribute))))
-          .Return (validationMessageStub);
+                  Arg.Is(PropertyInfoAdapter.Create(_mixinPropertyWithMandatoryStringPropertyAttribute))))
+          .Return(validationMessageStub);
 
       var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetNonRemovablePropertyValidators().ToArray();
 
-      validationMessageStub.Stub (_ => _.ToString()).Return ("Stub Message");
-      Assert.That (result.Count(), Is.EqualTo (1));
-      Assert.That (result[0], Is.TypeOf (typeof (NotNullValidator)));
-      Assert.That (((NotNullValidator) result[0]).ValidationMessage.ToString, Is.EqualTo ("Stub Message"));
+      validationMessageStub.Stub(_ => _.ToString()).Return("Stub Message");
+      Assert.That(result.Count(), Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof (NotNullValidator)));
+      Assert.That(((NotNullValidator) result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message"));
     }
 
     [Test]
@@ -464,7 +464,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetRemovingValidatorRegistrations().ToArray();
 
-      Assert.That (result.Any(), Is.False);
+      Assert.That(result.Any(), Is.False);
     }
 
     [Test]
@@ -472,7 +472,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       var result = _propertyWithMandatoryAttributeReflector.GetMetaValidationRules().ToArray();
 
-      Assert.That (result.Any(), Is.False);
+      Assert.That(result.Any(), Is.False);
     }
 
     [Test]
@@ -480,21 +480,21 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       var result = _propertyWithNullableStringPropertyAttributeReflector.GetMetaValidationRules().ToArray();
 
-      Assert.That (result.Count(), Is.EqualTo (1));
-      Assert.That (result[0], Is.TypeOf (typeof (RemotionMaxLengthPropertyMetaValidationRule)));
-      Assert.That (((RemotionMaxLengthPropertyMetaValidationRule) result[0]).MaxLength, Is.EqualTo (10));
+      Assert.That(result.Count(), Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof (RemotionMaxLengthPropertyMetaValidationRule)));
+      Assert.That(((RemotionMaxLengthPropertyMetaValidationRule) result[0]).MaxLength, Is.EqualTo(10));
     }
 
     [Test]
     public void Initialize_WithMixinPropertyAsInterfaceProperty_ThrowsArgumentException ()
     {
-      Assert.That (
-          () => new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+      Assert.That(
+          () => new DomainObjectAttributesBasedValidationPropertyRuleReflector(
               _mixinPropertyWithMandatoryAttribute,
               _mixinPropertyWithMandatoryAttribute,
               _domainModelConstraintProvider,
               _validationMessageFactoryStub),
-          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo (
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo(
               "The property 'PropertyWithMandatoryAttribute' was declared on type "
               + "'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface' "
               + "but only interface declarations are supported when using mixin properties.", "interfaceProperty"));
@@ -503,15 +503,15 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     [Test]
     public void Initialize_WithDerivedImplementationProperty_ThrowsArgumentException ()
     {
-      var overriddenProperty = typeof (DerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty ("PropertyWithNullableStringPropertyAttribute");
+      var overriddenProperty = typeof (DerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface).GetProperty("PropertyWithNullableStringPropertyAttribute");
 
-      Assert.That (
-          () => new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+      Assert.That(
+          () => new DomainObjectAttributesBasedValidationPropertyRuleReflector(
               interfaceProperty: _interfacePropertyWithNullableStringPropertyAttribute,
               implementationProperty: overriddenProperty,
               domainModelConstraintProvider: _domainModelConstraintProvider,
               validationMessageFactory: _validationMessageFactoryStub),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The property 'PropertyWithNullableStringPropertyAttribute' was used from the overridden declaration on type "
               + "'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.DerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface' "
               + "but only original declarations are supported.", "implementationProperty"));

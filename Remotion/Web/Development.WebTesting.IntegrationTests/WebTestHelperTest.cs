@@ -39,36 +39,36 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var configuration = webTestHelper.BrowserConfiguration;
 
       // Filter used when taking process snapshots
-      var filter = CreateFilterForConfiguration (configuration);
+      var filter = CreateFilterForConfiguration(configuration);
 
       // Start and stop the web helper while taking process snapshots
-      var beforeStart = ProcessSnapshot.CreateWithFilter (filter);
-      SetupWebTestHelper (webTestHelper);
-      var afterStart = ProcessSnapshot.CreateWithFilter (filter);
-      ShutdownWebTestHelper (webTestHelper, testSuccess);
-      var afterExit = ProcessSnapshot.CreateWithFilter (filter);
+      var beforeStart = ProcessSnapshot.CreateWithFilter(filter);
+      SetupWebTestHelper(webTestHelper);
+      var afterStart = ProcessSnapshot.CreateWithFilter(filter);
+      ShutdownWebTestHelper(webTestHelper, testSuccess);
+      var afterExit = ProcessSnapshot.CreateWithFilter(filter);
 
-      var startedDiff = beforeStart.Difference (afterStart);
-      var stoppedDiff = afterExit.Difference (afterStart);
+      var startedDiff = beforeStart.Difference(afterStart);
+      var stoppedDiff = afterExit.Difference(afterStart);
 
       // Check if driver and browser are started
-      Assert.That (
-          startedDiff.GetProcessCount (configuration.WebDriverExecutableName),
-          Is.EqualTo (1),
+      Assert.That(
+          startedDiff.GetProcessCount(configuration.WebDriverExecutableName),
+          Is.EqualTo(1),
           "The web driver has not been started.");
-      Assert.That (
-          startedDiff.GetProcessCount (configuration.BrowserExecutableName),
-          Is.GreaterThan (0),
+      Assert.That(
+          startedDiff.GetProcessCount(configuration.BrowserExecutableName),
+          Is.GreaterThan(0),
           "The browser has not been started.");
 
       // Check if driver and browser are closed
-      Assert.That (
-          stoppedDiff.GetProcessCount (configuration.WebDriverExecutableName),
-          Is.EqualTo (1),
+      Assert.That(
+          stoppedDiff.GetProcessCount(configuration.WebDriverExecutableName),
+          Is.EqualTo(1),
           "The web driver has not been closed.");
-      Assert.That (
-          stoppedDiff.GetProcessCount (configuration.BrowserExecutableName),
-          Is.EqualTo (startedDiff.GetProcessCount (configuration.BrowserExecutableName)),
+      Assert.That(
+          stoppedDiff.GetProcessCount(configuration.BrowserExecutableName),
+          Is.EqualTo(startedDiff.GetProcessCount(configuration.BrowserExecutableName)),
           "The browser has not been closed.");
     }
 
@@ -81,44 +81,44 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var configuration = webTestHelper.BrowserConfiguration;
 
       // Filter used when taking process snapshots
-      var filter = CreateFilterForConfiguration (configuration);
+      var filter = CreateFilterForConfiguration(configuration);
 
       // The amount of browser sessions to open
       const int browserSessions = 3;
 
       // Start and stop the web helper while taking process snapshots
-      var beforeStart = ProcessSnapshot.CreateWithFilter (filter);
-      SetupWebTestHelper (webTestHelper);
+      var beforeStart = ProcessSnapshot.CreateWithFilter(filter);
+      SetupWebTestHelper(webTestHelper);
 
       for (var i = 0; i < browserSessions; i++)
-        webTestHelper.CreateNewBrowserSession (false);
+        webTestHelper.CreateNewBrowserSession(false);
 
-      var afterStart = ProcessSnapshot.CreateWithFilter (filter);
-      ShutdownWebTestHelper (webTestHelper, testSuccess);
-      var afterExit = ProcessSnapshot.CreateWithFilter (filter);
+      var afterStart = ProcessSnapshot.CreateWithFilter(filter);
+      ShutdownWebTestHelper(webTestHelper, testSuccess);
+      var afterExit = ProcessSnapshot.CreateWithFilter(filter);
 
       // All processes that started during Setup
-      var startedDiff = beforeStart.Difference (afterStart);
-      var stoppedDiff = afterExit.Difference (afterStart);
+      var startedDiff = beforeStart.Difference(afterStart);
+      var stoppedDiff = afterExit.Difference(afterStart);
 
       // Check if driver and browser are started
-      Assert.That (
-          startedDiff.GetProcessCount (configuration.WebDriverExecutableName),
-          Is.EqualTo (browserSessions + 1),
+      Assert.That(
+          startedDiff.GetProcessCount(configuration.WebDriverExecutableName),
+          Is.EqualTo(browserSessions + 1),
           "The web drivers have not been started.");
-      Assert.That (
-          startedDiff.GetProcessCount (configuration.BrowserExecutableName),
-          Is.GreaterThan (0),
+      Assert.That(
+          startedDiff.GetProcessCount(configuration.BrowserExecutableName),
+          Is.GreaterThan(0),
           "The browsers have not been started.");
 
       // Check if driver and browser are closed
-      Assert.That (
-          stoppedDiff.GetProcessCount (configuration.WebDriverExecutableName),
-          Is.EqualTo (browserSessions + 1),
+      Assert.That(
+          stoppedDiff.GetProcessCount(configuration.WebDriverExecutableName),
+          Is.EqualTo(browserSessions + 1),
           "The web drivers have not been closed.");
-      Assert.That (
-          stoppedDiff.GetProcessCount (configuration.BrowserExecutableName),
-          Is.EqualTo (startedDiff.GetProcessCount (configuration.BrowserExecutableName)),
+      Assert.That(
+          stoppedDiff.GetProcessCount(configuration.BrowserExecutableName),
+          Is.EqualTo(startedDiff.GetProcessCount(configuration.BrowserExecutableName)),
           "The browsers have not been closed.");
     }
 
@@ -128,25 +128,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 
       if (!webTestHelper.BrowserConfiguration.IsChromium())
-        Assert.Ignore ("This test is specific for Chromium browsers.");
+        Assert.Ignore("This test is specific for Chromium browsers.");
 
       var userDirectoryRoot = (webTestHelper.BrowserConfiguration as IChromeConfiguration)?.UserDirectoryRoot
                               ?? (webTestHelper.BrowserConfiguration as IEdgeConfiguration)?.UserDirectoryRoot;
 
       // Simulate test
-      SetupWebTestHelper (webTestHelper);
-      ShutdownWebTestHelper (webTestHelper, testSuccess);
+      SetupWebTestHelper(webTestHelper);
+      ShutdownWebTestHelper(webTestHelper, testSuccess);
 
       // The user directory root should no longer exist
-      Assert.That (
-          Directory.Exists (userDirectoryRoot),
+      Assert.That(
+          Directory.Exists(userDirectoryRoot),
           Is.False,
-          string.Format ("User directory root '{0}' is not cleaned up.", userDirectoryRoot));
+          string.Format("User directory root '{0}' is not cleaned up.", userDirectoryRoot));
     }
 
     private Func<Process, bool> CreateFilterForConfiguration (IBrowserConfiguration configuration) =>
-        p => (string.Equals (p.ProcessName, configuration.BrowserExecutableName, StringComparison.OrdinalIgnoreCase)
-              || string.Equals (p.ProcessName, configuration.WebDriverExecutableName, StringComparison.OrdinalIgnoreCase))
+        p => (string.Equals(p.ProcessName, configuration.BrowserExecutableName, StringComparison.OrdinalIgnoreCase)
+              || string.Equals(p.ProcessName, configuration.WebDriverExecutableName, StringComparison.OrdinalIgnoreCase))
              && !p.HasExited;
 
     /// <summary>
@@ -155,7 +155,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private void SetupWebTestHelper (WebTestHelper webTestHelper)
     {
       webTestHelper.OnFixtureSetUp();
-      webTestHelper.OnSetUp (GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
+      webTestHelper.OnSetUp(GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
     }
 
     /// <summary>
@@ -165,15 +165,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private void ShutdownWebTestHelper (WebTestHelper webTestHelper, bool success)
     {
       var screenshotDirectory = webTestHelper.TestInfrastructureConfiguration.ScreenshotDirectory;
-      var screenshotDirectoryBeforeShutdown = Directory.GetFiles (screenshotDirectory);
+      var screenshotDirectoryBeforeShutdown = Directory.GetFiles(screenshotDirectory);
 
-      webTestHelper.OnTearDown (success);
+      webTestHelper.OnTearDown(success);
 
-      var screenshotsCreatedByWebTestHelperShutDown = Directory.GetFiles (screenshotDirectory).Except (screenshotDirectoryBeforeShutdown);
+      var screenshotsCreatedByWebTestHelperShutDown = Directory.GetFiles(screenshotDirectory).Except(screenshotDirectoryBeforeShutdown);
 
       foreach (var screenshotFileName in screenshotsCreatedByWebTestHelperShutDown)
       {
-        File.Delete (Path.Combine (screenshotDirectory, screenshotFileName));
+        File.Delete(Path.Combine(screenshotDirectory, screenshotFileName));
       }
 
       webTestHelper.OnFixtureTearDown();
@@ -190,7 +190,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       /// </summary>
       public static ProcessSnapshot CreateWithFilter (Func<Process, bool> filter)
       {
-        return new ProcessSnapshot (Process.GetProcesses().Where (filter).ToArray());
+        return new ProcessSnapshot(Process.GetProcesses().Where(filter).ToArray());
       }
 
       private readonly Process[] _processes;
@@ -199,7 +199,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       private ProcessSnapshot (Process[] processes)
       {
         _processes = processes;
-        _processCount = _processes.GroupBy (p => p.ProcessName).ToDictionary (g => g.Key, g => g.Count());
+        _processCount = _processes.GroupBy(p => p.ProcessName).ToDictionary(g => g.Key, g => g.Count());
       }
 
       /// <summary>
@@ -209,13 +209,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       /// <returns>The difference of <c>this</c> to the specified snapshot.</returns>
       public ProcessSnapshot Difference (ProcessSnapshot snapshot)
       {
-        return new ProcessSnapshot (snapshot._processes.Where (process => this._processes.All (p => p.Id != process.Id)).ToArray());
+        return new ProcessSnapshot(snapshot._processes.Where(process => this._processes.All(p => p.Id != process.Id)).ToArray());
       }
 
       public int GetProcessCount (string processName)
       {
         int count;
-        if (_processCount.TryGetValue (processName, out count))
+        if (_processCount.TryGetValue(processName, out count))
         {
           return count;
         }

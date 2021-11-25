@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   {
     public new static TISpecificFolder NewObject ()
     {
-      return NewObject<TISpecificFolder> ();
+      return NewObject<TISpecificFolder>();
     }
 
     protected TISpecificFolder ()

@@ -37,28 +37,28 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         bool serializeBaseMembers,
         string pipelineIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
-      ArgumentUtility.CheckNotNull ("mixin", mixin);
-      ArgumentUtility.CheckNotNull ("identifier", identifier);
+      ArgumentUtility.CheckNotNull("info", info);
+      ArgumentUtility.CheckNotNull("mixin", mixin);
+      ArgumentUtility.CheckNotNull("identifier", identifier);
 
-      info.SetType (typeof (MixinSerializationHelper));
+      info.SetType(typeof (MixinSerializationHelper));
 
-      var identifierSerializer = new SerializationInfoConcreteMixinTypeIdentifierSerializer (info, "__identifier");
-      identifier.Serialize (identifierSerializer);
+      var identifierSerializer = new SerializationInfoConcreteMixinTypeIdentifierSerializer(info, "__identifier");
+      identifier.Serialize(identifierSerializer);
       
       object?[]? baseMemberValues;
       if (serializeBaseMembers)
       {
-        var baseType = mixin.GetType ().BaseType;
-        Assertion.IsNotNull (baseType, "Generated mixin types always have a base type.");
-        MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers (baseType);
-        baseMemberValues = FormatterServices.GetObjectData (mixin, baseMembers);
+        var baseType = mixin.GetType().BaseType;
+        Assertion.IsNotNull(baseType, "Generated mixin types always have a base type.");
+        MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers(baseType);
+        baseMemberValues = FormatterServices.GetObjectData(mixin, baseMembers);
       }
       else
         baseMemberValues = null;
 
-      info.AddValue ("__baseMemberValues", baseMemberValues);
-      info.AddValue ("__participantConfigurationID", pipelineIdentifier);
+      info.AddValue("__baseMemberValues", baseMemberValues);
+      info.AddValue("__participantConfigurationID", pipelineIdentifier);
     }
 
     private readonly object[]? _baseMemberValues;
@@ -67,36 +67,36 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public MixinSerializationHelper (SerializationInfo info, StreamingContext context)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
 
       _context = context;
 
-      var identifierDeserializer = new SerializationInfoConcreteMixinTypeIdentifierDeserializer (info, "__identifier");
-      var identifier = ConcreteMixinTypeIdentifier.Deserialize (identifierDeserializer);
+      var identifierDeserializer = new SerializationInfoConcreteMixinTypeIdentifierDeserializer(info, "__identifier");
+      var identifier = ConcreteMixinTypeIdentifier.Deserialize(identifierDeserializer);
 
-      var pipelineIdentifier = info.GetString ("__participantConfigurationID");
-      var pipeline = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().Get (pipelineIdentifier);
+      var pipelineIdentifier = info.GetString("__participantConfigurationID");
+      var pipeline = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().Get(pipelineIdentifier);
 
-      var mixinType = pipeline.ReflectionService.GetAdditionalType (identifier);
+      var mixinType = pipeline.ReflectionService.GetAdditionalType(identifier);
 
-      _baseMemberValues = (object[]?) info.GetValue ("__baseMemberValues", typeof (object[]));
+      _baseMemberValues = (object[]?) info.GetValue("__baseMemberValues", typeof (object[]));
 
       // Usually, instantiate a deserialized object using GetSafeUninitializedObject.
       // However, _baseMemberValues being null means that the object itself manages its member deserialization via ISerializable. In such a case, we
       // need to use the deserialization constructor to instantiate the object.
       if (_baseMemberValues != null)
-        _deserializedObject = FormatterServices.GetSafeUninitializedObject (mixinType);
+        _deserializedObject = FormatterServices.GetSafeUninitializedObject(mixinType);
       else
       {
-        Assertion.IsTrue (typeof (ISerializable).IsAssignableFrom (mixinType));
-        _deserializedObject = Activator.CreateInstance (
+        Assertion.IsTrue(typeof (ISerializable).IsAssignableFrom(mixinType));
+        _deserializedObject = Activator.CreateInstance(
             mixinType, 
             BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
             null,
             new object[] { info, context },
             null)!;
       }
-      SerializationImplementer.RaiseOnDeserializing (_deserializedObject, _context);
+      SerializationImplementer.RaiseOnDeserializing(_deserializedObject, _context);
     }
 
     public object GetRealObject (StreamingContext context)
@@ -106,7 +106,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     
     void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      throw new NotImplementedException ("This should never be called.");
+      throw new NotImplementedException("This should never be called.");
     }
 
     // Here, we can rely on everything being deserialized as needed.
@@ -114,14 +114,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       if (_baseMemberValues != null)
       {
-        var baseType = _deserializedObject.GetType ().BaseType;
-        Assertion.IsNotNull (baseType, "Mixed types always have a base type.");
-        MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers (baseType);
-        FormatterServices.PopulateObjectMembers (_deserializedObject, baseMembers, _baseMemberValues);
+        var baseType = _deserializedObject.GetType().BaseType;
+        Assertion.IsNotNull(baseType, "Mixed types always have a base type.");
+        MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers(baseType);
+        FormatterServices.PopulateObjectMembers(_deserializedObject, baseMembers, _baseMemberValues);
       }
 
-      SerializationImplementer.RaiseOnDeserialized (_deserializedObject, _context);
-      SerializationImplementer.RaiseOnDeserialization (_deserializedObject, sender);
+      SerializationImplementer.RaiseOnDeserialized(_deserializedObject, _context);
+      SerializationImplementer.RaiseOnDeserialization(_deserializedObject, sender);
 
       // Note: This and Next properties are initialized from the target class via InitializeDeserializedMixinTarget
     }

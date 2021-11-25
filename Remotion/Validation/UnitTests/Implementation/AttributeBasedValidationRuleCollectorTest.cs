@@ -39,7 +39,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _propertyMetaValidationRuleCollector = new IPropertyMetaValidationRuleCollector[0];
       _removingPropertyValidationRuleCollector = new IRemovingPropertyValidationRuleCollector[0];
 
-      _collector = new AttributeBasedValidationRuleCollector (
+      _collector = new AttributeBasedValidationRuleCollector(
           _validatedType,
           _addingPropertyValidationRuleCollector,
           _propertyMetaValidationRuleCollector,
@@ -49,10 +49,10 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void Initialization ()
     {
-      Assert.That (_collector.ValidatedType, Is.SameAs (_validatedType));
-      Assert.That (_collector.AddedPropertyRules, Is.EqualTo (_addingPropertyValidationRuleCollector));
-      Assert.That (_collector.PropertyMetaValidationRules, Is.EqualTo (_propertyMetaValidationRuleCollector));
-      Assert.That (_collector.RemovedPropertyRules, Is.EqualTo (_removingPropertyValidationRuleCollector));
+      Assert.That(_collector.ValidatedType, Is.SameAs(_validatedType));
+      Assert.That(_collector.AddedPropertyRules, Is.EqualTo(_addingPropertyValidationRuleCollector));
+      Assert.That(_collector.PropertyMetaValidationRules, Is.EqualTo(_propertyMetaValidationRuleCollector));
+      Assert.That(_collector.RemovedPropertyRules, Is.EqualTo(_removingPropertyValidationRuleCollector));
     }
   }
 }

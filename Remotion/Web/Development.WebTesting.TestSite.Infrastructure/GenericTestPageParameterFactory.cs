@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
 
     public GenericTestPageParameter CreateHtmlIDSelector ()
     {
-      return new GenericTestPageParameter (
+      return new GenericTestPageParameter(
           TestConstants.HtmlIDSelectorID,
           TestConstants.VisibleHtmlID,
           TestConstants.HiddenHtmlID);
@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
 
     public GenericTestPageParameter CreateLocalIdSelector ()
     {
-      return new GenericTestPageParameter (
+      return new GenericTestPageParameter(
           TestConstants.LocalIDSelectorID,
           TestConstants.VisibleControlID,
           TestConstants.HiddenControlID,
@@ -42,17 +42,17 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
 
     public GenericTestPageParameter CreateFirstSelector ()
     {
-      return new GenericTestPageParameter (TestConstants.FirstSelectorID, TestConstants.VisibleHtmlID);
+      return new GenericTestPageParameter(TestConstants.FirstSelectorID, TestConstants.VisibleHtmlID);
     }
 
     public GenericTestPageParameter CreateSingleSelector ()
     {
-      return new GenericTestPageParameter (TestConstants.SingleSelectorID, TestConstants.VisibleHtmlID);
+      return new GenericTestPageParameter(TestConstants.SingleSelectorID, TestConstants.VisibleHtmlID);
     }
 
     public GenericTestPageParameter CreateDisabledTests ()
     {
-      return new GenericTestPageParameter (
+      return new GenericTestPageParameter(
           TestConstants.DisabledTestsID,
           TestConstants.VisibleHtmlID,
           TestConstants.DisabledHtmlID);
@@ -60,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
 
     public GenericTestPageParameter CreateIndexSelector ()
     {
-      return new GenericTestPageParameter (
+      return new GenericTestPageParameter(
           TestConstants.IndexSelectorID,
           TestConstants.VisibleIndex,
           TestConstants.HiddenIndex,

@@ -32,14 +32,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public TableScriptBuilder (ITableScriptElementFactory elementFactory, ICommentScriptElementFactory commentFactory)
     {
-      ArgumentUtility.CheckNotNull ("elementFactory", elementFactory);
-      ArgumentUtility.CheckNotNull ("commentFactory", commentFactory);
+      ArgumentUtility.CheckNotNull("elementFactory", elementFactory);
+      ArgumentUtility.CheckNotNull("commentFactory", commentFactory);
 
       _elementFactory = elementFactory;
       _createScriptElements = new ScriptElementCollection();
-      _createScriptElements.AddElement (commentFactory.GetCommentElement ("Create all tables"));
+      _createScriptElements.AddElement(commentFactory.GetCommentElement("Create all tables"));
       _dropScriptElements = new ScriptElementCollection();
-      _dropScriptElements.AddElement (commentFactory.GetCommentElement ("Drop all tables"));
+      _dropScriptElements.AddElement(commentFactory.GetCommentElement("Drop all tables"));
     }
 
     public ITableScriptElementFactory ElementFactory
@@ -49,11 +49,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public void AddEntityDefinition (IRdbmsStorageEntityDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull ("entityDefinition", entityDefinition);
+      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
 
-      InlineRdbmsStorageEntityDefinitionVisitor.Visit (
+      InlineRdbmsStorageEntityDefinitionVisitor.Visit(
           entityDefinition,
-          (table, continuation) => AddTableDefinition (table),
+          (table, continuation) => AddTableDefinition(table),
           (filterView, continuation) => { },
           (unionView, contination) => { },
           (emptyView, continuation) => { });
@@ -71,8 +71,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     private void AddTableDefinition (TableDefinition tableDefinition)
     {
-      _createScriptElements.AddElement (_elementFactory.GetCreateElement(tableDefinition));
-      _dropScriptElements.AddElement (_elementFactory.GetDropElement (tableDefinition));
+      _createScriptElements.AddElement(_elementFactory.GetCreateElement(tableDefinition));
+      _dropScriptElements.AddElement(_elementFactory.GetDropElement(tableDefinition));
     }
   }
 }

@@ -36,17 +36,17 @@ namespace Remotion.Web.UI.Controls
 
     public int Add (MainMenuTab tab)
     {
-      return base.Add (tab);
+      return base.Add(tab);
     }
 
     public void AddRange (params MainMenuTab[] tabs)
     {
-      base.AddRange (tabs);
+      base.AddRange(tabs);
     }
 
     public void Insert (int index, MainMenuTab tab)
     {
-      base.Insert (index, tab);
+      base.Insert(index, tab);
     }
 
     //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
@@ -75,18 +75,18 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnInsertComplete (int index, object? value)
     {
-      SubMenuTab tab = ArgumentUtility.CheckNotNullAndType<SubMenuTab> ("value", value!);
+      SubMenuTab tab = ArgumentUtility.CheckNotNullAndType<SubMenuTab>("value", value!);
 
-      base.OnInsertComplete (index, value);
-      tab.SetParent (_parent!); // TODO RM-8118: not null assertion
+      base.OnInsertComplete(index, value);
+      tab.SetParent(_parent!); // TODO RM-8118: not null assertion
     }
 
     protected override void OnSetComplete (int index, object? oldValue, object? newValue)
     {
-      SubMenuTab tab = ArgumentUtility.CheckNotNullAndType<SubMenuTab> ("newValue", newValue!);
+      SubMenuTab tab = ArgumentUtility.CheckNotNullAndType<SubMenuTab>("newValue", newValue!);
 
-      base.OnSetComplete (index, oldValue, newValue);
-      tab.SetParent (_parent!); // TODO RM-8118: not null assertion
+      base.OnSetComplete(index, oldValue, newValue);
+      tab.SetParent(_parent!); // TODO RM-8118: not null assertion
     }
 
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -98,25 +98,25 @@ namespace Remotion.Web.UI.Controls
 
     protected internal void SetParent (MainMenuTab parent)
     {
-      ArgumentUtility.CheckNotNull ("parent", parent);
+      ArgumentUtility.CheckNotNull("parent", parent);
       _parent = parent;
       for (int i = 0; i < InnerList.Count; i++)
-        ((SubMenuTab) InnerList[i]!).SetParent (_parent);
+        ((SubMenuTab) InnerList[i]!).SetParent(_parent);
     }
 
     public int Add (SubMenuTab tab)
     {
-      return base.Add (tab);
+      return base.Add(tab);
     }
 
     public void AddRange (params SubMenuTab[] tabs)
     {
-      base.AddRange (tabs);
+      base.AddRange(tabs);
     }
 
     public void Insert (int index, SubMenuTab tab)
     {
-      base.Insert (index, tab);
+      base.Insert(index, tab);
     }
 
     //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.

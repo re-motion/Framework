@@ -42,14 +42,14 @@ namespace Remotion.Web.Infrastructure
 
     public Type? GetType (string typeName, bool throwOnError, bool ignoreCase)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
-      return _innerBuildManager.GetType (typeName, throwOnError, ignoreCase);
+      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
+      return _innerBuildManager.GetType(typeName, throwOnError, ignoreCase);
     }
 
     public Type? GetCompiledType (string virtualPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
-      return _innerBuildManager.GetCompiledType (virtualPath);
+      ArgumentUtility.CheckNotNullOrEmpty("virtualPath", virtualPath);
+      return _innerBuildManager.GetCompiledType(virtualPath);
     }
 
     public IList? CodeAssemblies

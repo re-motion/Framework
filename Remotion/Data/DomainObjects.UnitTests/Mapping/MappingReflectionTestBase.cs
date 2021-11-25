@@ -44,9 +44,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [SetUp]
     public virtual void SetUp ()
     {
-      DomainObjectsConfiguration.SetCurrent (TestMappingConfiguration.Instance.GetDomainObjectsConfiguration());
-      MappingConfiguration.SetCurrent (TestMappingConfiguration.Instance.GetMappingConfiguration());
-      ConfigurationWrapper.SetCurrent (null);
+      DomainObjectsConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetDomainObjectsConfiguration());
+      MappingConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetMappingConfiguration());
+      ConfigurationWrapper.SetCurrent(null);
       
       ClassIDProviderStub = MockRepository.GenerateStub<IClassIDProvider>();
       DomainModelConstraintProviderStub = MockRepository.GenerateStub<IDomainModelConstraintProvider>();
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       SortExpressionDefinitionProviderStub = MockRepository.GenerateStub<ISortExpressionDefinitionProvider>();
       PropertyMetadataProvider = new PropertyMetadataReflector();
 
-      MappingObjectFactory = new ReflectionBasedMappingObjectFactory (
+      MappingObjectFactory = new ReflectionBasedMappingObjectFactory(
           Configuration.NameResolver,
           ClassIDProviderStub,
           PropertyMetadataProvider,
@@ -71,9 +71,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [OneTimeSetUp]
     public virtual void OneTimeSetUp ()
     {
-      DomainObjectsConfiguration.SetCurrent (TestMappingConfiguration.Instance.GetDomainObjectsConfiguration());
-      MappingConfiguration.SetCurrent (TestMappingConfiguration.Instance.GetMappingConfiguration());
-      ConfigurationWrapper.SetCurrent (null);
+      DomainObjectsConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetDomainObjectsConfiguration());
+      MappingConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetMappingConfiguration());
+      ConfigurationWrapper.SetCurrent(null);
       FakeMappingConfiguration.Reset();
     }
 

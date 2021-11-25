@@ -28,60 +28,60 @@ namespace Remotion.Web.UnitTests.Core.Security.UI
     [Test]
     public void Initialize_WithMethodName ()
     {
-      DemandTargetMethodPermissionAttribute attribute = new DemandTargetMethodPermissionAttribute ("Show");
+      DemandTargetMethodPermissionAttribute attribute = new DemandTargetMethodPermissionAttribute("Show");
 
-      Assert.That (attribute.PermissionSource, Is.EqualTo (PermissionSource.SecurableObject));
-      Assert.That (attribute.MethodName, Is.EqualTo ("Show"));
-      Assert.That (attribute.SecurableClass, Is.Null);
+      Assert.That(attribute.PermissionSource, Is.EqualTo(PermissionSource.SecurableObject));
+      Assert.That(attribute.MethodName, Is.EqualTo("Show"));
+      Assert.That(attribute.SecurableClass, Is.Null);
     }
 
     [Test]
     public void Initialize_WithMethodNameAndSecurableClass ()
     {
-      DemandTargetMethodPermissionAttribute attribute = new DemandTargetMethodPermissionAttribute ("Show", typeof (SecurableObject));
+      DemandTargetMethodPermissionAttribute attribute = new DemandTargetMethodPermissionAttribute("Show", typeof (SecurableObject));
 
-      Assert.That (attribute.PermissionSource, Is.EqualTo (PermissionSource.SecurableObject));
-      Assert.That (attribute.MethodName, Is.EqualTo ("Show"));
-      Assert.That (attribute.SecurableClass, Is.SameAs (typeof (SecurableObject)));
+      Assert.That(attribute.PermissionSource, Is.EqualTo(PermissionSource.SecurableObject));
+      Assert.That(attribute.MethodName, Is.EqualTo("Show"));
+      Assert.That(attribute.SecurableClass, Is.SameAs(typeof (SecurableObject)));
     }
 
     [Test]
     public void Initialize_WithMethodNameEnum ()
     {
-      DemandTargetMethodPermissionAttribute attribute = new DemandTargetMethodPermissionAttribute (SecurableObject.Method.Show);
+      DemandTargetMethodPermissionAttribute attribute = new DemandTargetMethodPermissionAttribute(SecurableObject.Method.Show);
 
-      Assert.That (attribute.PermissionSource, Is.EqualTo (PermissionSource.SecurableObject));
-      Assert.That (attribute.MethodName, Is.EqualTo ("Show"));
-      Assert.That (attribute.SecurableClass, Is.SameAs (typeof (SecurableObject)));
+      Assert.That(attribute.PermissionSource, Is.EqualTo(PermissionSource.SecurableObject));
+      Assert.That(attribute.MethodName, Is.EqualTo("Show"));
+      Assert.That(attribute.SecurableClass, Is.SameAs(typeof (SecurableObject)));
     }
 
     [Test]
     public void Initialize_WithMethodNameEnumAndSecurableClass ()
     {
-      DemandTargetMethodPermissionAttribute attribute = new DemandTargetMethodPermissionAttribute (SecurableObject.Method.Show, typeof (DerivedSecurableObject));
+      DemandTargetMethodPermissionAttribute attribute = new DemandTargetMethodPermissionAttribute(SecurableObject.Method.Show, typeof (DerivedSecurableObject));
 
-      Assert.That (attribute.PermissionSource, Is.EqualTo (PermissionSource.SecurableObject));
-      Assert.That (attribute.MethodName, Is.EqualTo ("Show"));
-      Assert.That (attribute.SecurableClass, Is.SameAs (typeof (DerivedSecurableObject)));
+      Assert.That(attribute.PermissionSource, Is.EqualTo(PermissionSource.SecurableObject));
+      Assert.That(attribute.MethodName, Is.EqualTo("Show"));
+      Assert.That(attribute.SecurableClass, Is.SameAs(typeof (DerivedSecurableObject)));
     }
 
     [Test]
     public void Initialize_WithMethodNameEnumNotNestedType ()
     {
-      Assert.That (
-          () => new DemandTargetMethodPermissionAttribute (MethodNameEnum.Show),
+      Assert.That(
+          () => new DemandTargetMethodPermissionAttribute(MethodNameEnum.Show),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Enumerated type 'Remotion.Web.UnitTests.Core.Security.Domain.MethodNameEnum' is not declared as a nested type.", "methodNameEnum"));
     }
 
     [Test]
     public void Initialize_WithMethodNameEnumNotHavingValidDeclaringType ()
     {
-      Assert.That (
-          () => new DemandTargetMethodPermissionAttribute (SimpleType.MethodNameEnum.Show),
+      Assert.That(
+          () => new DemandTargetMethodPermissionAttribute(SimpleType.MethodNameEnum.Show),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The declaring type of enumerated type 'Remotion.Web.UnitTests.Core.Security.Domain.SimpleType+MethodNameEnum' does not implement interface"
                   + " 'Remotion.Security.ISecurableObject'.", "methodNameEnum"));
     }
@@ -89,10 +89,10 @@ namespace Remotion.Web.UnitTests.Core.Security.UI
     [Test]
     public void TestWithParameterNotOfNotMatchingType ()
     {
-      Assert.That (
-          () => new DemandTargetMethodPermissionAttribute (SecurableObject.Method.Show, typeof (OtherSecurableObject)),
+      Assert.That(
+          () => new DemandTargetMethodPermissionAttribute(SecurableObject.Method.Show, typeof (OtherSecurableObject)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Type 'Remotion.Web.UnitTests.Core.Security.Domain.OtherSecurableObject' cannot be assigned to the declaring type of enumerated type"
                   + " 'Remotion.Web.UnitTests.Core.Security.Domain.SecurableObject+Method'.", "securableClass"));
     }

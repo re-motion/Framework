@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Validation
         string errorMessage)
         : base (errorMessage, null)
     {
-      ArgumentUtility.CheckNotNull ("affectedObjects", affectedObjects);
-      ArgumentUtility.CheckNotNull ("validationFailures", validationFailures);
+      ArgumentUtility.CheckNotNull("affectedObjects", affectedObjects);
+      ArgumentUtility.CheckNotNull("validationFailures", validationFailures);
 
       _affectedObjects = affectedObjects;
       _validationFailures = validationFailures;

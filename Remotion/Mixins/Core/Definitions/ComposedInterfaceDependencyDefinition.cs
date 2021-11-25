@@ -29,7 +29,7 @@ namespace Remotion.Mixins.Definitions
     public ComposedInterfaceDependencyDefinition (RequiredTargetCallTypeDefinition requirement, Type composedInterface, DependencyDefinitionBase? aggregator)
         : base (requirement, aggregator)
     {
-      ArgumentUtility.CheckNotNull ("composedInterface", composedInterface);
+      ArgumentUtility.CheckNotNull("composedInterface", composedInterface);
       _composedInterface = composedInterface;
     }
 
@@ -50,13 +50,13 @@ namespace Remotion.Mixins.Definitions
 
     public override string GetDependencyDescription ()
     {
-      return string.Format ("composed interface '{0}'", _composedInterface);
+      return string.Format("composed interface '{0}'", _composedInterface);
     }
 
     public override void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
     }
   }
 }

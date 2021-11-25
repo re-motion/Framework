@@ -32,13 +32,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _productReview = DomainObjectIDs.ProductReview1.GetObject<ProductReview>();
       _product = _productReview.Product;
 
-      _eventReceiver = CreateEventReceiver ();
-      Assert.That (_product.Reviews.IsDataComplete, Is.False);
+      _eventReceiver = CreateEventReceiver();
+      Assert.That(_product.Reviews.IsDataComplete, Is.False);
     }
 
     [Test]
@@ -48,13 +48,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       ChangeState[] expectedStates =
       {
-          new ObjectDeletionState (_productReview, "1. Deleting event of productReview"),
-          new RelationChangeState (_product, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews", _productReview, null, "2. Relation changing event of product"),
-          new RelationChangeState (_product, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews", null, null, "3. Relation changed event of product"),
-          new ObjectDeletionState (_productReview, "4. Deleted event of productReview"),
+          new ObjectDeletionState(_productReview, "1. Deleting event of productReview"),
+          new RelationChangeState(_product, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews", _productReview, null, "2. Relation changing event of product"),
+          new RelationChangeState(_product, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews", null, null, "3. Relation changed event of product"),
+          new ObjectDeletionState(_productReview, "4. Deleted event of productReview"),
       };
 
-      _eventReceiver.Check (expectedStates);
+      _eventReceiver.Check(expectedStates);
     }
 
     [Test]
@@ -62,10 +62,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _eventReceiver.CancelEventNumber = 1;
 
-      Assert.That (() => _productReview.Delete(), Throws.TypeOf<EventReceiverCancelException>());
-      ChangeState[] expectedStates = { new ObjectDeletionState (_productReview, "1. Deleting event of productReview") };
+      Assert.That(() => _productReview.Delete(), Throws.TypeOf<EventReceiverCancelException>());
+      ChangeState[] expectedStates = { new ObjectDeletionState(_productReview, "1. Deleting event of productReview") };
 
-      _eventReceiver.Check (expectedStates);
+      _eventReceiver.Check(expectedStates);
     }
 
     [Test]
@@ -73,11 +73,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _eventReceiver.CancelEventNumber = 2;
 
-      Assert.That (() => _productReview.Delete(), Throws.TypeOf<EventReceiverCancelException>());
+      Assert.That(() => _productReview.Delete(), Throws.TypeOf<EventReceiverCancelException>());
       ChangeState[] expectedStates =
       {
-          new ObjectDeletionState (_productReview, "1. Deleting event of productReview"),
-          new RelationChangeState (
+          new ObjectDeletionState(_productReview, "1. Deleting event of productReview"),
+          new RelationChangeState(
               _product,
               "Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews",
               _productReview,
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
               "2. Relation changing event of product")
       };
 
-      _eventReceiver.Check (expectedStates);
+      _eventReceiver.Check(expectedStates);
     }
 
     [Test]
@@ -94,29 +94,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       int numberOfOrderItemsBeforeDelete = _product.Reviews.Count;
       _productReview.Delete();
 
-      Assert.That (_productReview.Product, Is.Null);
-      Assert.That (_product.Reviews.Count, Is.EqualTo (numberOfOrderItemsBeforeDelete - 1));
-      Assert.That (_product.Reviews.Contains (_productReview.ID), Is.False);
-      Assert.That (_productReview.Properties[typeof (ProductReview), "Product"].GetRelatedObjectID(), Is.Null);
-      Assert.That (_product.State.IsChanged, Is.True);
-      Assert.That (_product.InternalDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(_productReview.Product, Is.Null);
+      Assert.That(_product.Reviews.Count, Is.EqualTo(numberOfOrderItemsBeforeDelete - 1));
+      Assert.That(_product.Reviews.Contains(_productReview.ID), Is.False);
+      Assert.That(_productReview.Properties[typeof (ProductReview), "Product"].GetRelatedObjectID(), Is.Null);
+      Assert.That(_product.State.IsChanged, Is.True);
+      Assert.That(_product.InternalDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void ChangePropertyBeforeDeletion ()
     {
       _productReview.Product = null;
-      _eventReceiver = CreateEventReceiver ();
+      _eventReceiver = CreateEventReceiver();
 
       _productReview.Delete();
 
       ChangeState[] expectedStates =
       {
-          new ObjectDeletionState (_productReview, "1. Deleting event of productReview"),
-          new ObjectDeletionState (_productReview, "2. Deleted event of productReview"),
+          new ObjectDeletionState(_productReview, "1. Deleting event of productReview"),
+          new ObjectDeletionState(_productReview, "2. Deleted event of productReview"),
       };
 
-      _eventReceiver.Check (expectedStates);
+      _eventReceiver.Check(expectedStates);
     }
 
     [Test]
@@ -124,19 +124,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _productReview.Delete();
 
-      var originalReviews = _product.GetOriginalRelatedObjectsAsVirtualCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
+      var originalReviews = _product.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
 
-      Assert.That (originalReviews, Is.Not.Null);
-      Assert.That (
-          originalReviews.Select (o => o.ID),
-          Is.EquivalentTo (new[] { DomainObjectIDs.ProductReview1, DomainObjectIDs.ProductReview2, DomainObjectIDs.ProductReview3 }));
+      Assert.That(originalReviews, Is.Not.Null);
+      Assert.That(
+          originalReviews.Select(o => o.ID),
+          Is.EquivalentTo(new[] { DomainObjectIDs.ProductReview1, DomainObjectIDs.ProductReview2, DomainObjectIDs.ProductReview3 }));
     }
 
     [Test]
     public void SetRelatedObjectOfDeletedObject ()
     {
       _productReview.Delete();
-      Assert.That (
+      Assert.That(
           () => _productReview.Product = _product,
           Throws.InstanceOf<ObjectDeletedException>());
     }
@@ -148,13 +148,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       ChangeState[] expectedStates = 
       {
-          new ObjectDeletionState (_product, "1. Deleting event of product"),
-          new RelationChangeState (_productReview, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product", _product, null, "2. Relation changing event of productReview"),
-          new RelationChangeState (_productReview, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product", null, null, "3. Relation changed event of productReview"),
-          new ObjectDeletionState (_product, "4. Deleted event of product"),
+          new ObjectDeletionState(_product, "1. Deleting event of product"),
+          new RelationChangeState(_productReview, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product", _product, null, "2. Relation changing event of productReview"),
+          new RelationChangeState(_productReview, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product", null, null, "3. Relation changed event of productReview"),
+          new ObjectDeletionState(_product, "4. Deleted event of product"),
       };
 
-      _eventReceiver.Check (expectedStates);
+      _eventReceiver.Check(expectedStates);
     }
 
     [Test]
@@ -162,11 +162,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _eventReceiver.CancelEventNumber = 2;
 
-      Assert.That (() => _product.Delete(), Throws.TypeOf<EventReceiverCancelException>());
+      Assert.That(() => _product.Delete(), Throws.TypeOf<EventReceiverCancelException>());
       ChangeState[] expectedStates =
       {
-          new ObjectDeletionState (_product, "1. Deleting event of product"),
-          new RelationChangeState (
+          new ObjectDeletionState(_product, "1. Deleting event of product"),
+          new RelationChangeState(
               _productReview,
               "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product",
               _product,
@@ -174,15 +174,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
               "2. Relation changing event of productReview"),
       };
 
-      _eventReceiver.Check (expectedStates);
+      _eventReceiver.Check(expectedStates);
 
-      Assert.That (_product.State.IsDeleted, Is.False);
-      Assert.That (_product.Reviews, Is.Not.Empty);
+      Assert.That(_product.State.IsDeleted, Is.False);
+      Assert.That(_product.Reviews, Is.Not.Empty);
     }
 
     private SequenceEventReceiver CreateEventReceiver ()
     {
-      return new SequenceEventReceiver (
+      return new SequenceEventReceiver(
           new DomainObject[] { _productReview, _product },
           new DomainObjectCollection[0]);
     }

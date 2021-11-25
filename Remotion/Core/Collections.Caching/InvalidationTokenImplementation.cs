@@ -32,7 +32,7 @@ namespace Remotion.Collections.Caching
     {
       // Use the instance's hash-code as revision seed value to allow for a reasonably different number space. 
       // The hash-code is often different between reference types and therefor adds a bit of randomness to the revisions.
-      _currentRevisionValue = Math.Abs (GetHashCode()) * -1;
+      _currentRevisionValue = Math.Abs(GetHashCode()) * -1;
     }
 
     public override void Invalidate ()

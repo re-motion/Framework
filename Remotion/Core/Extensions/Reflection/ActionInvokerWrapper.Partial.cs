@@ -32,12 +32,12 @@ namespace Remotion.Reflection
 
     public void Invoke (Type[] valueTypes, object[] values)
     {
-      _invoker.Invoke (valueTypes, values);
+      _invoker.Invoke(valueTypes, values);
     }
 
     public void Invoke (object[] values)
     {
-      _invoker.Invoke (values);
+      _invoker.Invoke(values);
     }
   }
 }

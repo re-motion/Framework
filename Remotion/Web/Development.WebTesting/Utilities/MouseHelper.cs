@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     private const uint c_rightDown = 0x8;
     private const uint c_rightUp = 0x10;
 
-    private static readonly int s_dtoStructureSize = Marshal.SizeOf (typeof (SendInputDto));
+    private static readonly int s_dtoStructureSize = Marshal.SizeOf(typeof (SendInputDto));
     private static readonly uint[] s_doubleLeftClickData = { c_leftDown, c_leftUp, c_leftDown, c_leftUp };
     private static readonly uint[] s_fakeMoveData = { c_moveRelative };
     private static readonly uint[] s_leftClickData = { c_leftDown, c_leftUp };
@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public MouseHelper ([NotNull] IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
 
       BrowserConfiguration = browserConfiguration;
     }
@@ -77,7 +77,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public void DoubleLeftClick ()
     {
-      Send (s_doubleLeftClickData);
+      Send(s_doubleLeftClickData);
     }
 
     /// <summary>
@@ -85,9 +85,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public void Hover ([NotNull] ControlObject control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
-      Hover (BrowserConfiguration.LocatorHelper.GetBounds (control, CoordinateSystem.Desktop));
+      Hover(BrowserConfiguration.LocatorHelper.GetBounds(control, CoordinateSystem.Desktop));
     }
 
     /// <summary>
@@ -95,9 +95,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public void Hover ([NotNull] ElementScope element)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
+      ArgumentUtility.CheckNotNull("element", element);
 
-      Hover (BrowserConfiguration.LocatorHelper.GetBounds (element, CoordinateSystem.Desktop));
+      Hover(BrowserConfiguration.LocatorHelper.GetBounds(element, CoordinateSystem.Desktop));
     }
 
     /// <summary>
@@ -105,9 +105,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public void Hover ([NotNull] IWebElement webElement)
     {
-      ArgumentUtility.CheckNotNull ("webElement", webElement);
+      ArgumentUtility.CheckNotNull("webElement", webElement);
 
-      Hover (BrowserConfiguration.LocatorHelper.GetBounds (webElement, CoordinateSystem.Desktop));
+      Hover(BrowserConfiguration.LocatorHelper.GetBounds(webElement, CoordinateSystem.Desktop));
     }
 
     /// <summary>
@@ -116,9 +116,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public void Hover (Rectangle rectangle)
     {
       if (rectangle.Width == 0 && rectangle.Height == 0)
-        throw new ArgumentException ("Cannot hover over an empty rectangle.");
+        throw new ArgumentException("Cannot hover over an empty rectangle.");
 
-      Hover (new Point (rectangle.X + rectangle.Width / 2, rectangle.Y + rectangle.Height / 2));
+      Hover(new Point(rectangle.X + rectangle.Width / 2, rectangle.Y + rectangle.Height / 2));
     }
 
     /// <summary>
@@ -135,7 +135,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public void LeftClick ()
     {
-      Send (s_leftClickData);
+      Send(s_leftClickData);
     }
 
     /// <summary>
@@ -143,7 +143,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public void RightClick ()
     {
-      Send (s_rightClickData);
+      Send(s_rightClickData);
     }
 
     /// <summary>
@@ -152,10 +152,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     [Obsolete ("Tooltip display is not working correctly in certain configurations and should be used with that in mind.")]
     public void ShowTooltip ([NotNull] ControlObject control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
-      Hover (control);
-      Thread.Sleep (3000);
+      Hover(control);
+      Thread.Sleep(3000);
     }
 
     /// <summary>
@@ -164,10 +164,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     [Obsolete ("Tooltip display is not working correctly in certain configurations and should be used with that in mind.")]
     public void ShowTooltip ([NotNull] ElementScope element)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
+      ArgumentUtility.CheckNotNull("element", element);
 
-      Hover (element);
-      Thread.Sleep (3000);
+      Hover(element);
+      Thread.Sleep(3000);
     }
 
     /// <summary>
@@ -176,10 +176,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     [Obsolete ("Tooltip display is not working correctly in certain configurations and should be used with that in mind.")]
     public void ShowTooltip ([NotNull] IWebElement webElement)
     {
-      ArgumentUtility.CheckNotNull ("webElement", webElement);
+      ArgumentUtility.CheckNotNull("webElement", webElement);
 
-      Hover (webElement);
-      Thread.Sleep (3000);
+      Hover(webElement);
+      Thread.Sleep(3000);
     }
 
     /// <summary>
@@ -189,7 +189,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     private void SendFakeMove ()
     {
-      Send (s_fakeMoveData);
+      Send(s_fakeMoveData);
     }
 
     private void Send (uint[] flags)
@@ -198,7 +198,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       for (var i = 0; i < data.Length; i++)
         data[i] = new SendInputDto { Type = 0, MouseInfo = { Flags = flags[i] } };
 
-      SendInput ((uint) data.Length, data, s_dtoStructureSize);
+      SendInput((uint) data.Length, data, s_dtoStructureSize);
     }
   }
 }

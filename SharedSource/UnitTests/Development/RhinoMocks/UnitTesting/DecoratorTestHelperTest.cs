@@ -35,73 +35,73 @@ namespace Remotion.UnitTests.Development.RhinoMocks.UnitTesting
     [SetUp]
     public void SetUp ()
     {
-      _helperForDecorator = CreateDecoratorTestHelper (
-          inner => inner.Get (),
-          (inner, s) => inner.Do (s));
+      _helperForDecorator = CreateDecoratorTestHelper(
+          inner => inner.Get(),
+          (inner, s) => inner.Do(s));
 
-      _helperForNonDelegatingDecorator = CreateDecoratorTestHelper (inner => "Abc", (inner, s) => { });
-      _helperForFaultyDecorator = CreateDecoratorTestHelper (
+      _helperForNonDelegatingDecorator = CreateDecoratorTestHelper(inner => "Abc", (inner, s) => { });
+      _helperForFaultyDecorator = CreateDecoratorTestHelper(
           inner =>
           {
-            inner.Get ();
+            inner.Get();
             return "faulty";
           },
-          (inner, s) => inner.Do ("faulty"));
+          (inner, s) => inner.Do("faulty"));
     }
 
     [Test]
     public void CheckDelegation_Func ()
     {
-      Assert.That (() => _helperForDecorator.CheckDelegation (d => d.Get (), "Abc"), Throws.Nothing);
-      Assert.That (
-          () => _helperForNonDelegatingDecorator.CheckDelegation (d => d.Get (), "Abc"),
-          Throws.TypeOf<ExpectationViolationException> ().And.Message.EqualTo ("IMyInterface.Get(); Expected #1, Actual #0."));
-      Assert.That (
-          () => _helperForFaultyDecorator.CheckDelegation (d => d.Get (), "Abc"),
-          Throws.TypeOf<AssertionException> ().And.Message.StartsWith ("  Expected string length 3 but was 6. Strings differ at index 0."));
+      Assert.That(() => _helperForDecorator.CheckDelegation(d => d.Get(), "Abc"), Throws.Nothing);
+      Assert.That(
+          () => _helperForNonDelegatingDecorator.CheckDelegation(d => d.Get(), "Abc"),
+          Throws.TypeOf<ExpectationViolationException>().And.Message.EqualTo("IMyInterface.Get(); Expected #1, Actual #0."));
+      Assert.That(
+          () => _helperForFaultyDecorator.CheckDelegation(d => d.Get(), "Abc"),
+          Throws.TypeOf<AssertionException>().And.Message.StartsWith("  Expected string length 3 but was 6. Strings differ at index 0."));
     }
 
     [Test]
     public void CheckDelegation_Func_MultipleCallsForSameMock ()
     {
-      Assert.That (() => _helperForDecorator.CheckDelegation (d => d.Get (), "Abc"), Throws.Nothing);
-      Assert.That (() => _helperForDecorator.CheckDelegation (d => d.Get (), "Abc"), Throws.Nothing);
+      Assert.That(() => _helperForDecorator.CheckDelegation(d => d.Get(), "Abc"), Throws.Nothing);
+      Assert.That(() => _helperForDecorator.CheckDelegation(d => d.Get(), "Abc"), Throws.Nothing);
     }
 
     [Test]
     public void CheckDelegation_Action ()
     {
-      Assert.That (() => _helperForDecorator.CheckDelegation (d => d.Do ("Abc")), Throws.Nothing);
-      Assert.That (
-          () => _helperForNonDelegatingDecorator.CheckDelegation (d => d.Do ("Abc")),
-          Throws.TypeOf<ExpectationViolationException> ().And.Message.EqualTo ("IMyInterface.Do(\"Abc\"); Expected #1, Actual #0."));
-      Assert.That (
-          () => _helperForFaultyDecorator.CheckDelegation (d => d.Do ("Abc")),
-          Throws.TypeOf<ExpectationViolationException> ().And.Message.EqualTo (
+      Assert.That(() => _helperForDecorator.CheckDelegation(d => d.Do("Abc")), Throws.Nothing);
+      Assert.That(
+          () => _helperForNonDelegatingDecorator.CheckDelegation(d => d.Do("Abc")),
+          Throws.TypeOf<ExpectationViolationException>().And.Message.EqualTo("IMyInterface.Do(\"Abc\"); Expected #1, Actual #0."));
+      Assert.That(
+          () => _helperForFaultyDecorator.CheckDelegation(d => d.Do("Abc")),
+          Throws.TypeOf<ExpectationViolationException>().And.Message.EqualTo(
               "IMyInterface.Do(\"faulty\"); Expected #0, Actual #1.\r\nIMyInterface.Do(\"Abc\"); Expected #1, Actual #0."));
     }
 
     [Test]
     public void CheckDelegation_Action_MultipleCallsForSameMock ()
     {
-      Assert.That (() => _helperForDecorator.CheckDelegation (d => d.Do ("Abc")), Throws.Nothing);
-      Assert.That (() => _helperForDecorator.CheckDelegation (d => d.Do ("Abc")), Throws.Nothing);
-      Assert.That (() => _helperForDecorator.CheckDelegation (d => d.Do ("Abc")), Throws.Nothing);
+      Assert.That(() => _helperForDecorator.CheckDelegation(d => d.Do("Abc")), Throws.Nothing);
+      Assert.That(() => _helperForDecorator.CheckDelegation(d => d.Do("Abc")), Throws.Nothing);
+      Assert.That(() => _helperForDecorator.CheckDelegation(d => d.Do("Abc")), Throws.Nothing);
     }
 
     [Test]
     public void CheckDelegation_Mixed_MultipleCallsForSameMock ()
     {
-      Assert.That (() => _helperForDecorator.CheckDelegation (d => d.Do ("Abc")), Throws.Nothing);
-      Assert.That (() => _helperForDecorator.CheckDelegation (d => d.Get (), "test"), Throws.Nothing);
+      Assert.That(() => _helperForDecorator.CheckDelegation(d => d.Do("Abc")), Throws.Nothing);
+      Assert.That(() => _helperForDecorator.CheckDelegation(d => d.Get(), "test"), Throws.Nothing);
     }
 
     private DecoratorTestHelper<IMyInterface> CreateDecoratorTestHelper (Func<IMyInterface, string> getMethod, Action<IMyInterface, string> doMethod)
     {
-      var innerMock = MockRepository.GenerateStrictMock<IMyInterface> ();
-      var decorator = new Decorator (innerMock, getMethod, doMethod);
+      var innerMock = MockRepository.GenerateStrictMock<IMyInterface>();
+      var decorator = new Decorator(innerMock, getMethod, doMethod);
 
-      return new DecoratorTestHelper<IMyInterface> (decorator, innerMock);
+      return new DecoratorTestHelper<IMyInterface>(decorator, innerMock);
     }
 
     public interface IMyInterface
@@ -125,12 +125,12 @@ namespace Remotion.UnitTests.Development.RhinoMocks.UnitTesting
 
       public string Get ()
       {
-        return _getMethod (_inner);
+        return _getMethod(_inner);
       }
 
       public void Do (string s)
       {
-        _doMethod (_inner, s);
+        _doMethod(_inner, s);
       }
     }
   }

@@ -42,8 +42,8 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         AccessibilityTestImpact impact,
         [NotNull] IReadOnlyCollection<AccessibilityTestSuccessCriteria> successCriteria)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("description", description);
-      ArgumentUtility.CheckNotNullOrEmpty ("successCriteria", successCriteria);
+      ArgumentUtility.CheckNotNullOrEmpty("description", description);
+      ArgumentUtility.CheckNotNullOrEmpty("successCriteria", successCriteria);
 
       ID = id;
       Description = description;

@@ -36,29 +36,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
       _derivedClassDefinition = TypeDefinitions[typeof (Shadower)];
       _baseClassDefinition = _derivedClassDefinition.BaseClass;
 
-      _basePropertyInfo = GetPropertyInformation ((Base b) => b.Name);
-      _newPropertyInfo = GetPropertyInformation ((Shadower s) => s.Name);
+      _basePropertyInfo = GetPropertyInformation((Base b) => b.Name);
+      _newPropertyInfo = GetPropertyInformation((Shadower s) => s.Name);
     }
 
     [Test]
     public void BothProperties_ShouldHaveDifferentPropertyDefinitions ()
     {
-      var basePropertyDefinition = _baseClassDefinition.ResolveProperty (_basePropertyInfo);
-      Assert.That (basePropertyDefinition, Is.Not.Null);
+      var basePropertyDefinition = _baseClassDefinition.ResolveProperty(_basePropertyInfo);
+      Assert.That(basePropertyDefinition, Is.Not.Null);
 
-      var newPropertyDefinition = _derivedClassDefinition.ResolveProperty (_newPropertyInfo);
-      Assert.That (newPropertyDefinition, Is.Not.Null);
+      var newPropertyDefinition = _derivedClassDefinition.ResolveProperty(_newPropertyInfo);
+      Assert.That(newPropertyDefinition, Is.Not.Null);
 
-      Assert.That (newPropertyDefinition, Is.Not.SameAs (basePropertyDefinition));
+      Assert.That(newPropertyDefinition, Is.Not.SameAs(basePropertyDefinition));
     }
 
     [Test]
     public void TheDerivedClass_ShouldAlsoHaveTheBasePropertyDefinition_AsPartOfItsInheritedProperties ()
     {
-      var basePropertyDefinitionOnBaseClass = _baseClassDefinition.ResolveProperty (_basePropertyInfo);
+      var basePropertyDefinitionOnBaseClass = _baseClassDefinition.ResolveProperty(_basePropertyInfo);
 
-      Assert.That (_derivedClassDefinition.MyPropertyDefinitions, Has.No.Member (basePropertyDefinitionOnBaseClass));
-      Assert.That (_derivedClassDefinition.GetPropertyDefinitions(), Has.Member (basePropertyDefinitionOnBaseClass));
+      Assert.That(_derivedClassDefinition.MyPropertyDefinitions, Has.No.Member(basePropertyDefinitionOnBaseClass));
+      Assert.That(_derivedClassDefinition.GetPropertyDefinitions(), Has.Member(basePropertyDefinitionOnBaseClass));
     }
   }
 }

@@ -26,40 +26,40 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
   {
     protected override MemberInfo BaseMemberWithSingleAttribute
     {
-      get { return typeof (SampleClass).GetEvent ("EventWithSingleAttribute"); }
+      get { return typeof (SampleClass).GetEvent("EventWithSingleAttribute"); }
     }
 
     protected override MemberInfo BaseMemberWithNonInheritedAttribute
     {
-      get { return typeof (SampleClass).GetEvent ("EventWithNotInheritedAttribute"); }
+      get { return typeof (SampleClass).GetEvent("EventWithNotInheritedAttribute"); }
     }
 
     protected override MemberInfo DerivedMemberWithSingleAttribute
     {
-      get { return typeof (DerivedSampleClass).GetEvent ("EventWithSingleAttribute"); }
+      get { return typeof (DerivedSampleClass).GetEvent("EventWithSingleAttribute"); }
     }
 
     protected override MemberInfo DerivedMemberWithMultipleAttribute
     {
-      get { return typeof (DerivedSampleClass).GetEvent ("EventWithMultipleAttribute"); }
+      get { return typeof (DerivedSampleClass).GetEvent("EventWithMultipleAttribute"); }
     }
 
     protected override MemberInfo DerivedProtectedMember
     {
       get
       {
-        return typeof (DerivedSampleClass).GetEvent ("ProtectedEventWithAttribute", BindingFlags.NonPublic | BindingFlags.Instance);
+        return typeof (DerivedSampleClass).GetEvent("ProtectedEventWithAttribute", BindingFlags.NonPublic | BindingFlags.Instance);
       }
     }
 
     protected override MemberInfo DerivedMemberNotInheritingAttribute
     {
-      get { return typeof (DerivedSampleClass).GetEvent ("EventWithNotInheritedAttribute"); }
+      get { return typeof (DerivedSampleClass).GetEvent("EventWithNotInheritedAttribute"); }
     }
 
     protected override MemberInfo DerivedMemberHidingAttribute
     {
-      get { return typeof (DerivedSampleClass).GetEvent ("EventWithInheritedNotMultipleAttribute"); }
+      get { return typeof (DerivedSampleClass).GetEvent("EventWithInheritedNotMultipleAttribute"); }
     }
   }
 }

@@ -50,9 +50,9 @@ namespace Remotion.Web.UI.Controls
       _bottomControlsStyle = new Style();
     }
 
-    [MemberNotNull (nameof (_view))]
-    [MemberNotNull (nameof (_topControl))]
-    [MemberNotNull (nameof (_bottomControl))]
+    [MemberNotNull (nameof(_view))]
+    [MemberNotNull (nameof(_topControl))]
+    [MemberNotNull (nameof(_bottomControl))]
     private void CreateControls ()
     {
       _view = new PlaceHolder();
@@ -63,30 +63,30 @@ namespace Remotion.Web.UI.Controls
     protected override void CreateChildControls ()
     {
       _view.ID = ID + "_View";
-      Controls.Add (_view);
+      Controls.Add(_view);
 
       _topControl.ID = ID + "_TopControl";
-      Controls.Add (_topControl);
+      Controls.Add(_topControl);
 
       _bottomControl.ID = ID + "_BottomControl";
-      Controls.Add (_bottomControl);
+      Controls.Add(_bottomControl);
     }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
       //CreateTemplatedControls (DesignMode);
       EnsureChildControls();
 
-      RegisterHtmlHeadContents (HtmlHeadAppender.Current);
+      RegisterHtmlHeadContents(HtmlHeadAppender.Current);
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender, this);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender, this);
     }
 
     //private void CreateTemplatedControls (bool recreate)
@@ -130,22 +130,22 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     protected virtual ISingleViewRenderer CreateRenderer ()
     {
-      return SafeServiceLocator.Current.GetInstance<ISingleViewRenderer> ();
+      return SafeServiceLocator.Current.GetInstance<ISingleViewRenderer>();
     }
 
     protected virtual SingleViewRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      return new SingleViewRenderingContext (Page!.Context!, writer, this); // TODO RM-8118: not null assertion
+      return new SingleViewRenderingContext(Page!.Context!, writer, this); // TODO RM-8118: not null assertion
     }
 
     protected string ViewClientID
@@ -165,7 +165,7 @@ namespace Remotion.Web.UI.Controls
 
     public new IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]

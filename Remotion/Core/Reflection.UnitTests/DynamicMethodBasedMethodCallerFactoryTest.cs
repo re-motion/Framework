@@ -114,137 +114,137 @@ namespace Remotion.Reflection.UnitTests
     public void GetMethodDelegate_PublicInstanceMethod ()
     {
       Type declaringType = typeof (ClassWithMethods);
-      var methodInfo = declaringType.GetMethod ("PublicInstanceMethod", BindingFlags.Public | BindingFlags.Instance);
+      var methodInfo = declaringType.GetMethod("PublicInstanceMethod", BindingFlags.Public | BindingFlags.Instance);
 
-      var @delegate = (Func<ClassWithMethods, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (
+      var @delegate = (Func<ClassWithMethods, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate(
           methodInfo, typeof (Func<ClassWithMethods, string, string>));
 
       var obj = new ClassWithMethods();
-      Assert.That (@delegate (obj, "TheValue"), Is.EqualTo ("TheValue"));
-      Assert.That (obj.InstanceValue, Is.EqualTo ("TheValue"));
+      Assert.That(@delegate(obj, "TheValue"), Is.EqualTo("TheValue"));
+      Assert.That(obj.InstanceValue, Is.EqualTo("TheValue"));
     }
 
     [Test]
     public void GetMethodDelegate_NonPublicInstanceMethod ()
     {
       Type declaringType = typeof (ClassWithMethods);
-      var methodInfo = declaringType.GetMethod ("NonPublicInstanceMethod", BindingFlags.NonPublic | BindingFlags.Instance);
+      var methodInfo = declaringType.GetMethod("NonPublicInstanceMethod", BindingFlags.NonPublic | BindingFlags.Instance);
 
-      var @delegate = (Func<ClassWithMethods, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (
+      var @delegate = (Func<ClassWithMethods, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate(
           methodInfo, typeof (Func<ClassWithMethods, string, string>));
 
       var obj = new ClassWithMethods();
-      Assert.That (@delegate (obj, "TheValue"), Is.EqualTo ("TheValue"));
-      Assert.That (obj.InstanceValue, Is.EqualTo ("TheValue"));
+      Assert.That(@delegate(obj, "TheValue"), Is.EqualTo("TheValue"));
+      Assert.That(obj.InstanceValue, Is.EqualTo("TheValue"));
     }
 
     [Test]
     public void GetMethodDelegate_PublicInterface_ImplicitInterfaceMethod ()
     {
       Type declaringType = typeof (IPublicInterfaceWithMethods);
-      var methodInfo = declaringType.GetMethod ("ImplicitInterfaceMethod", BindingFlags.Public | BindingFlags.Instance);
+      var methodInfo = declaringType.GetMethod("ImplicitInterfaceMethod", BindingFlags.Public | BindingFlags.Instance);
 
-      var @delegate = (Func<object, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (
+      var @delegate = (Func<object, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate(
           methodInfo, typeof (Func<object, string, string>));
 
       var obj = new ClassWithMethods();
-      Assert.That (@delegate (obj, "TheValue"), Is.EqualTo ("TheValue"));
-      Assert.That (obj.InstanceValue, Is.EqualTo ("TheValue"));
+      Assert.That(@delegate(obj, "TheValue"), Is.EqualTo("TheValue"));
+      Assert.That(obj.InstanceValue, Is.EqualTo("TheValue"));
     }
 
     [Test]
     public void GetMethodDelegate_PublicInterface_ExplicitInterfaceMethod ()
     {
       Type declaringType = typeof (IList);
-      var methodInfo = declaringType.GetMethod ("Contains", BindingFlags.Public | BindingFlags.Instance);
+      var methodInfo = declaringType.GetMethod("Contains", BindingFlags.Public | BindingFlags.Instance);
 
-      var @delegate = (Func<object, object, bool>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (
+      var @delegate = (Func<object, object, bool>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate(
           methodInfo, typeof (Func<object, object, bool>));
 
       var obj = new[] { new object() };
-      Assert.That (@delegate (obj, obj[0]), Is.True);
+      Assert.That(@delegate(obj, obj[0]), Is.True);
     }
 
     [Test]
     public void GetMethodDelegate_NestedPublicInterface_ExplicitInterfaceMethod ()
     {
       Type declaringType = typeof (IPublicInterfaceWithMethods);
-      var methodInfo = declaringType.GetMethod ("ExplicitInterfaceMethod", BindingFlags.Public | BindingFlags.Instance);
+      var methodInfo = declaringType.GetMethod("ExplicitInterfaceMethod", BindingFlags.Public | BindingFlags.Instance);
 
-      var @delegate = (Func<object, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (
+      var @delegate = (Func<object, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate(
           methodInfo, typeof (Func<object, string, string>));
 
       var obj = new ClassWithMethods();
-      Assert.That (@delegate (obj, "TheValue"), Is.EqualTo ("TheValue"));
-      Assert.That (obj.InstanceValue, Is.EqualTo ("TheValue"));
+      Assert.That(@delegate(obj, "TheValue"), Is.EqualTo("TheValue"));
+      Assert.That(obj.InstanceValue, Is.EqualTo("TheValue"));
     }
 
     [Test]
     public void GetMethodDelegate_NestedPrivateInterface_ExplicitInterfaceMethod ()
     {
       Type declaringType = typeof (IPrivateInterfaceWithMethods);
-      var methodInfo = declaringType.GetMethod ("ExplicitInterfaceMethod", BindingFlags.Public | BindingFlags.Instance);
+      var methodInfo = declaringType.GetMethod("ExplicitInterfaceMethod", BindingFlags.Public | BindingFlags.Instance);
 
-      var @delegate = (Func<object, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (
+      var @delegate = (Func<object, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate(
           methodInfo, typeof (Func<object, string, string>));
 
-      var obj = new ClassWithMethods ();
-      Assert.That (@delegate (obj, "TheValue"), Is.EqualTo ("TheValue"));
-      Assert.That (obj.InstanceValue, Is.EqualTo ("TheValue"));
+      var obj = new ClassWithMethods();
+      Assert.That(@delegate(obj, "TheValue"), Is.EqualTo("TheValue"));
+      Assert.That(obj.InstanceValue, Is.EqualTo("TheValue"));
     }
 
     [Test]
     public void GetMethodDelegate_NestedInternalInterface_ExplicitInterfaceMethod ()
     {
       Type declaringType = typeof (IInternalInterfaceWithMethods);
-      var methodInfo = declaringType.GetMethod ("ExplicitInterfaceMethod", BindingFlags.Public | BindingFlags.Instance);
+      var methodInfo = declaringType.GetMethod("ExplicitInterfaceMethod", BindingFlags.Public | BindingFlags.Instance);
 
-      var @delegate = (Func<object, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (
+      var @delegate = (Func<object, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate(
           methodInfo, typeof (Func<object, string, string>));
 
-      var obj = new ClassWithMethods ();
-      Assert.That (@delegate (obj, "TheValue"), Is.EqualTo ("TheValue"));
-      Assert.That (obj.InstanceValue, Is.EqualTo ("TheValue"));
+      var obj = new ClassWithMethods();
+      Assert.That(@delegate(obj, "TheValue"), Is.EqualTo("TheValue"));
+      Assert.That(obj.InstanceValue, Is.EqualTo("TheValue"));
     }
 
     [Test]
     public void GetMethodDelegate_NestedProtectedInterface_ExplicitInterfaceMethod ()
     {
       Type declaringType = typeof (IProtectedInterfaceWithMethods);
-      var methodInfo = declaringType.GetMethod ("ExplicitInterfaceMethod", BindingFlags.Public | BindingFlags.Instance);
+      var methodInfo = declaringType.GetMethod("ExplicitInterfaceMethod", BindingFlags.Public | BindingFlags.Instance);
 
-      var @delegate = (Func<object, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (
+      var @delegate = (Func<object, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate(
           methodInfo, typeof (Func<object, string, string>));
 
-      var obj = new ClassWithMethods ();
-      Assert.That (@delegate (obj, "TheValue"), Is.EqualTo ("TheValue"));
-      Assert.That (obj.InstanceValue, Is.EqualTo ("TheValue"));
+      var obj = new ClassWithMethods();
+      Assert.That(@delegate(obj, "TheValue"), Is.EqualTo("TheValue"));
+      Assert.That(obj.InstanceValue, Is.EqualTo("TheValue"));
     }
 
     [Test]
     public void GetMethodDelegate_PublicStaticMethod ()
     {
       Type declaringType = typeof (ClassWithMethods);
-      var methodInfo = declaringType.GetMethod ("PublicStaticMethod", BindingFlags.Public | BindingFlags.Static);
+      var methodInfo = declaringType.GetMethod("PublicStaticMethod", BindingFlags.Public | BindingFlags.Static);
 
-      var @delegate = (Func<ClassWithMethods, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (
+      var @delegate = (Func<ClassWithMethods, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate(
           methodInfo, typeof (Func<ClassWithMethods, string, string>));
 
-      Assert.That (@delegate (null, "TheValue"), Is.EqualTo ("TheValue"));
-      Assert.That (ClassWithMethods.StaticValue, Is.EqualTo ("TheValue"));
+      Assert.That(@delegate(null, "TheValue"), Is.EqualTo("TheValue"));
+      Assert.That(ClassWithMethods.StaticValue, Is.EqualTo("TheValue"));
     }
 
     [Test]
     public void GetMethodDelegate_NonPublicStaticMethod ()
     {
       Type declaringType = typeof (ClassWithMethods);
-      var methodInfo = declaringType.GetMethod ("NonPublicStaticMethod", BindingFlags.NonPublic | BindingFlags.Static);
+      var methodInfo = declaringType.GetMethod("NonPublicStaticMethod", BindingFlags.NonPublic | BindingFlags.Static);
 
-      var @delegate = (Func<ClassWithMethods, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (
+      var @delegate = (Func<ClassWithMethods, string, string>) DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate(
           methodInfo, typeof (Func<ClassWithMethods, string, string>));
 
-      Assert.That (@delegate (null, "TheValue"), Is.EqualTo ("TheValue"));
-      Assert.That (ClassWithMethods.StaticValue, Is.EqualTo ("TheValue"));
+      Assert.That(@delegate(null, "TheValue"), Is.EqualTo("TheValue"));
+      Assert.That(ClassWithMethods.StaticValue, Is.EqualTo("TheValue"));
     }
   }
 }

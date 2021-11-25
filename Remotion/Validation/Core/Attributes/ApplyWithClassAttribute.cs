@@ -33,7 +33,7 @@ namespace Remotion.Validation.Attributes
 
     public ApplyWithClassAttribute (Type classType)
     {
-      ArgumentUtility.CheckNotNull ("classType", classType);
+      ArgumentUtility.CheckNotNull("classType", classType);
 
       _classType = classType;
     }

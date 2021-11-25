@@ -40,11 +40,11 @@ public class UrlMappingConfiguration: ConfigurationBase
   public const string SchemaUri = "http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0";
 
   private static readonly DoubleCheckedLockingContainer<UrlMappingConfiguration> s_current = 
-      new DoubleCheckedLockingContainer<UrlMappingConfiguration> (CreateConfig);
+      new DoubleCheckedLockingContainer<UrlMappingConfiguration>(CreateConfig);
 
   public static UrlMappingConfiguration CreateUrlMappingConfiguration (string configurationFile)
   {
-    UrlMappingLoader loader = new UrlMappingLoader (configurationFile, typeof (UrlMappingConfiguration));
+    UrlMappingLoader loader = new UrlMappingLoader(configurationFile, typeof (UrlMappingConfiguration));
     return loader.CreateUrlMappingConfiguration();
   }
 
@@ -57,10 +57,10 @@ public class UrlMappingConfiguration: ConfigurationBase
   private static UrlMappingConfiguration CreateConfig ()
   {
     string mappingFile = WebConfiguration.Current.ExecutionEngine.UrlMappingFile;
-    if (string.IsNullOrEmpty (mappingFile))
+    if (string.IsNullOrEmpty(mappingFile))
       return new UrlMappingConfiguration();
     else
-      return UrlMappingConfiguration.CreateUrlMappingConfiguration (WebConfiguration.Current.ExecutionEngine.UrlMappingFile);
+      return UrlMappingConfiguration.CreateUrlMappingConfiguration(WebConfiguration.Current.ExecutionEngine.UrlMappingFile);
   }
 
   /// <summary> Sets the current <see cref="UrlMappingConfiguration"/>. </summary>
@@ -128,7 +128,7 @@ public class UrlMappingEntry
     }
     set
     {
-      _id = StringUtility.EmptyToNull (value); 
+      _id = StringUtility.EmptyToNull(value); 
     }
   }
 
@@ -152,8 +152,8 @@ public class UrlMappingEntry
     }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("FunctionTypeName", value);
-      FunctionType = WebTypeUtility.GetType (value, true)!;
+      ArgumentUtility.CheckNotNullOrEmpty("FunctionTypeName", value);
+      FunctionType = WebTypeUtility.GetType(value, true)!;
     }
   }
 
@@ -171,9 +171,9 @@ public class UrlMappingEntry
     }
     set
     {
-      ArgumentUtility.CheckNotNull ("FunctionType", value);
-      if (! typeof (WxeFunction).IsAssignableFrom (value))
-        throw new ArgumentException (string.Format ("The FunctionType '{0}' must be derived from WxeFunction.", value), "FunctionType");
+      ArgumentUtility.CheckNotNull("FunctionType", value);
+      if (! typeof (WxeFunction).IsAssignableFrom(value))
+        throw new ArgumentException(string.Format("The FunctionType '{0}' must be derived from WxeFunction.", value), "FunctionType");
       _functionType = value;
       _functionTypeName = _functionType.GetAssemblyQualifiedNameChecked();
     }
@@ -192,12 +192,12 @@ public class UrlMappingEntry
     }
     set 
     {
-      ArgumentUtility.CheckNotNull ("Resource", value);
+      ArgumentUtility.CheckNotNull("Resource", value);
       value = value!.Trim();
-      ArgumentUtility.CheckNotNullOrEmpty ("Resource", value);
-      if (value.StartsWith ("/") || value.IndexOf (":") != -1)
-        throw new ArgumentException (string.Format ("No absolute paths are allowed. Resource: '{0}'", value), "Resource");
-      if (! value.StartsWith ("~/"))
+      ArgumentUtility.CheckNotNullOrEmpty("Resource", value);
+      if (value.StartsWith("/") || value.IndexOf(":") != -1)
+        throw new ArgumentException(string.Format("No absolute paths are allowed. Resource: '{0}'", value), "Resource");
+      if (! value.StartsWith("~/"))
         value = "~/" + value;
       _resource = value; 
     }
@@ -218,45 +218,45 @@ public class UrlMappingCollection: CollectionBase
 
   public UrlMappingEntry? this[string path]
   {
-    get { return Find (path); }
+    get { return Find(path); }
   }
 
   public UrlMappingEntry? this[Type functionType]
   {
-    get { return Find (functionType); }
+    get { return Find(functionType); }
   }
 
   public int Add (UrlMappingEntry entry)
   {
-    return List.Add (entry);
+    return List.Add(entry);
   }
 
   public void Remove (UrlMappingEntry entry)
   {
     if (entry != null)
-      List.Remove (entry);
+      List.Remove(entry);
   }
 
   protected virtual void ValidateNewValue (object? value)
   {
-    UrlMappingEntry entry = ArgumentUtility.CheckNotNullAndType<UrlMappingEntry> ("value", value!);
-    base.OnValidate (entry);
-    if (Find (entry.Resource) != null)
-      throw new ArgumentException (string.Format ("The mapping already contains an entry for the following resource: '{0}'.", entry.Resource), "value");
-    if (FindByID (entry.ID) != null)
-      throw new ArgumentException (string.Format ("The mapping already contains an entry for the following ID: '{0}'.", entry.ID), "value");
+    UrlMappingEntry entry = ArgumentUtility.CheckNotNullAndType<UrlMappingEntry>("value", value!);
+    base.OnValidate(entry);
+    if (Find(entry.Resource) != null)
+      throw new ArgumentException(string.Format("The mapping already contains an entry for the following resource: '{0}'.", entry.Resource), "value");
+    if (FindByID(entry.ID) != null)
+      throw new ArgumentException(string.Format("The mapping already contains an entry for the following ID: '{0}'.", entry.ID), "value");
   }
 
   protected override void OnInsert (int index, object? value)
   {
-    ValidateNewValue (value);
-    base.OnInsert (index, value);
+    ValidateNewValue(value);
+    base.OnInsert(index, value);
   }
 
   protected override void OnSet (int index, object? oldValue, object? newValue)
   {
-    ValidateNewValue (newValue);
-    base.OnSet (index, oldValue, newValue);
+    ValidateNewValue(newValue);
+    base.OnSet(index, oldValue, newValue);
   }
 
   /// <summary> Finds the mapping for the specified <paramref name="path"/>. </summary>
@@ -267,7 +267,7 @@ public class UrlMappingCollection: CollectionBase
   /// </returns>
   public Type? FindType (string path)
   {
-    UrlMappingEntry? entry = Find (path);
+    UrlMappingEntry? entry = Find(path);
     if (entry == null)
       return null;
     return entry.FunctionType;
@@ -280,7 +280,7 @@ public class UrlMappingCollection: CollectionBase
   /// </returns>
   public string? FindResource (Type? type)
   {
-    UrlMappingEntry? entry = Find (type);
+    UrlMappingEntry? entry = Find(type);
     if (entry == null)
       return null;
     return entry.Resource;
@@ -294,10 +294,10 @@ public class UrlMappingCollection: CollectionBase
   /// </returns>
   public string? FindResource (string typeName)
   {
-    if (string.IsNullOrEmpty (typeName))
+    if (string.IsNullOrEmpty(typeName))
       return null;
-    Type type = WebTypeUtility.GetType (typeName, throwOnError: true)!;
-    return FindResource (type);
+    Type type = WebTypeUtility.GetType(typeName, throwOnError: true)!;
+    return FindResource(type);
   }
 
   /// <summary> Finds the mapping for the specified <paramref name="path"/>. </summary>
@@ -308,11 +308,11 @@ public class UrlMappingCollection: CollectionBase
   /// </returns>
   public UrlMappingEntry? Find (string? path)
   {
-    if (string.IsNullOrEmpty (path))
+    if (string.IsNullOrEmpty(path))
       return null;
     for (int i = 0; i < Count; i++)
     {
-      if (string.Compare (this[i].Resource, path, true) == 0)
+      if (string.Compare(this[i].Resource, path, true) == 0)
         return this[i];
     }
     return null;
@@ -343,7 +343,7 @@ public class UrlMappingCollection: CollectionBase
   /// </returns>
   public UrlMappingEntry? FindByID (string? id)
   {
-    if (string.IsNullOrEmpty (id))
+    if (string.IsNullOrEmpty(id))
       return null;
     for (int i = 0; i < Count; i++)
     {

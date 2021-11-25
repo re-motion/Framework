@@ -29,31 +29,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     protected void CheckQueryResult<T> (IEnumerable<T> query, params ObjectID[] expectedObjectIDs)
         where T : DomainObject
     {
-      T[] results = query.ToArray ();
-      T[] expected = GetExpectedObjects<T> (expectedObjectIDs);
+      T[] results = query.ToArray();
+      T[] expected = GetExpectedObjects<T>(expectedObjectIDs);
       if (expectedObjectIDs != null)
       {
-        Assert.That (
+        Assert.That(
             results.Length,
-            Is.EqualTo (expected.Length),
-            "Number of returned objects doesn't match; returned: " + string.Join (", ", results.Select (obj => obj.ID.ToString())));
+            Is.EqualTo(expected.Length),
+            "Number of returned objects doesn't match; returned: " + string.Join(", ", results.Select(obj => obj.ID.ToString())));
       }
-      Assert.That (results, Is.EquivalentTo (expected));
+      Assert.That(results, Is.EquivalentTo(expected));
     }
 
     protected void CheckOrderedQueryResult<T> (IEnumerable<T> query, params ObjectID[] expectedObjectIDs)
         where T : DomainObject
     {
-      T[] results = query.ToArray ();
-      T[] expected = GetExpectedObjects<T> (expectedObjectIDs);
+      T[] results = query.ToArray();
+      T[] expected = GetExpectedObjects<T>(expectedObjectIDs);
       if (expectedObjectIDs != null)
       {
-        Assert.That (
+        Assert.That(
             results.Length,
-            Is.EqualTo (expected.Length),
-            "Number of returned objects doesn't match; returned: " + string.Join (", ", results.Select (obj => obj.ID.ToString ())));
+            Is.EqualTo(expected.Length),
+            "Number of returned objects doesn't match; returned: " + string.Join(", ", results.Select(obj => obj.ID.ToString())));
       }
-      Assert.That (results, Is.EqualTo (expected));
+      Assert.That(results, Is.EqualTo(expected));
     }
 
     protected T[] GetExpectedObjects<T> (params ObjectID[] expectedObjectIDs)
@@ -62,14 +62,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       if(expectedObjectIDs==null)
         return new T[] { null };
       return (from id in expectedObjectIDs 
-              select (id == null ? null : (T) LifetimeService.GetObject (TestableClientTransaction, id, false))).ToArray ();
+              select (id == null ? null : (T) LifetimeService.GetObject(TestableClientTransaction, id, false))).ToArray();
     }
 
     protected void CheckDataContainersRegistered (params ObjectID[] objectIDs)
     {
       // check that related objects have been loaded
       foreach (var id in objectIDs)
-        Assert.That (TestableClientTransaction.DataManager.DataContainers[id], Is.Not.Null);
+        Assert.That(TestableClientTransaction.DataManager.DataContainers[id], Is.Not.Null);
     }
 
     protected void CheckDomainObjectCollectionRelationRegistered (
@@ -83,18 +83,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         ObjectID originatingObjectID, Type declaringType, string shortPropertyName, bool checkOrdering, params ObjectID[] expectedRelatedObjectIDs)
     {
       var relationEndPointDefinition =
-          originatingObjectID.ClassDefinition.GetMandatoryRelationEndPointDefinition (
+          originatingObjectID.ClassDefinition.GetMandatoryRelationEndPointDefinition(
               declaringType.FullName + "." + shortPropertyName);
 
-      var endPointID = RelationEndPointID.Create (originatingObjectID, relationEndPointDefinition);
-      var collectionEndPoint = (IDomainObjectCollectionEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID);
-      Assert.That (collectionEndPoint, Is.Not.Null);
+      var endPointID = RelationEndPointID.Create(originatingObjectID, relationEndPointDefinition);
+      var collectionEndPoint = (IDomainObjectCollectionEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID);
+      Assert.That(collectionEndPoint, Is.Not.Null);
 
-      var expectedRelatedObjects = expectedRelatedObjectIDs.Select (id => LifetimeService.GetObject (TestableClientTransaction, id, false)).ToArray();
+      var expectedRelatedObjects = expectedRelatedObjectIDs.Select(id => LifetimeService.GetObject(TestableClientTransaction, id, false)).ToArray();
       if (checkOrdering)
-        Assert.That (collectionEndPoint.Collection, Is.EqualTo (expectedRelatedObjects));
+        Assert.That(collectionEndPoint.Collection, Is.EqualTo(expectedRelatedObjects));
       else
-        Assert.That (collectionEndPoint.Collection, Is.EquivalentTo (expectedRelatedObjects));
+        Assert.That(collectionEndPoint.Collection, Is.EquivalentTo(expectedRelatedObjects));
     }
 
     protected void CheckObjectRelationRegistered (ObjectID originatingObjectID, string shortPropertyName, ObjectID expectedRelatedObjectID)
@@ -107,13 +107,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var longPropertyName = declaringType.FullName + "." + shortPropertyName;
       var relationEndPointDefinition =
-          originatingObjectID.ClassDefinition.GetMandatoryRelationEndPointDefinition (
+          originatingObjectID.ClassDefinition.GetMandatoryRelationEndPointDefinition(
               longPropertyName);
 
       var endPointID = RelationEndPointID.Create(originatingObjectID, relationEndPointDefinition);
-      var objectEndPoint = (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID);
-      Assert.That (objectEndPoint, Is.Not.Null);
-      Assert.That (objectEndPoint.OppositeObjectID, Is.EqualTo (expectedRelatedObjectID));
+      var objectEndPoint = (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID);
+      Assert.That(objectEndPoint, Is.Not.Null);
+      Assert.That(objectEndPoint.OppositeObjectID, Is.EqualTo(expectedRelatedObjectID));
     }
   }
 }

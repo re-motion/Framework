@@ -32,7 +32,7 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
 
     public AttributeConcreteMixinTypeIdentifierDeserializer (object[] values)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
+      ArgumentUtility.CheckNotNull("values", values);
       _values = values;
     }
 
@@ -44,22 +44,22 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
     public HashSet<MethodInfo> GetOverriders ()
     {
       var overriderArray = (object[]) _values[1];
-      return DeserializeTriplets (overriderArray);
+      return DeserializeTriplets(overriderArray);
     }
 
     public HashSet<MethodInfo> GetOverridden ()
     {
       var overriddenArray = (object[]) _values[2];
-      return DeserializeTriplets (overriddenArray);
+      return DeserializeTriplets(overriddenArray);
     }
 
     private HashSet<MethodInfo> DeserializeTriplets (object[] overriderArray)
     {
-      return new HashSet<MethodInfo> (from object[] triplet in overriderArray
+      return new HashSet<MethodInfo>(from object[] triplet in overriderArray
                                       let declaringType = (Type) triplet[0]
                                       let name = (string) triplet[1]
                                       let signature = (string) triplet[2]
-                                      select MethodResolver.ResolveMethod (declaringType, name, signature));
+                                      select MethodResolver.ResolveMethod(declaringType, name, signature));
     }
   }
 }

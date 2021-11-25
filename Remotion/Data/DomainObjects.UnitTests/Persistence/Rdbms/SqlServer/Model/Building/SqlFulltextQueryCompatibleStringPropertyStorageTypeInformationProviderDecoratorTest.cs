@@ -38,11 +38,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
       var isStorageTypeNullable = BooleanObjectMother.GetRandomBoolean();
-      innerStub.Stub (_ => _.GetStorageTypeForID (isStorageTypeNullable)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageTypeForID(isStorageTypeNullable)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      Assert.That (decorator.GetStorageTypeForID (isStorageTypeNullable), Is.SameAs (expectedValue));
+      Assert.That(decorator.GetStorageTypeForID(isStorageTypeNullable), Is.SameAs(expectedValue));
     }
 
     [Test]
@@ -52,11 +52,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
       var isStorageTypeNullable = BooleanObjectMother.GetRandomBoolean();
-      innerStub.Stub (_ => _.GetStorageTypeForClassID (isStorageTypeNullable)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageTypeForClassID(isStorageTypeNullable)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      Assert.That (decorator.GetStorageTypeForClassID (isStorageTypeNullable), Is.SameAs (expectedValue));
+      Assert.That(decorator.GetStorageTypeForClassID(isStorageTypeNullable), Is.SameAs(expectedValue));
     }
 
     [Test]
@@ -66,11 +66,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
       var isStorageTypeNullable = BooleanObjectMother.GetRandomBoolean();
-      innerStub.Stub (_ => _.GetStorageTypeForSerializedObjectID (isStorageTypeNullable)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageTypeForSerializedObjectID(isStorageTypeNullable)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      Assert.That (decorator.GetStorageTypeForSerializedObjectID (isStorageTypeNullable), Is.SameAs (expectedValue));
+      Assert.That(decorator.GetStorageTypeForSerializedObjectID(isStorageTypeNullable), Is.SameAs(expectedValue));
     }
 
     [Test]
@@ -80,11 +80,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
       var isStorageTypeNullable = BooleanObjectMother.GetRandomBoolean();
-      innerStub.Stub (_ => _.GetStorageTypeForTimestamp (isStorageTypeNullable)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageTypeForTimestamp(isStorageTypeNullable)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      Assert.That (decorator.GetStorageTypeForTimestamp (isStorageTypeNullable), Is.SameAs (expectedValue));
+      Assert.That(decorator.GetStorageTypeForTimestamp(isStorageTypeNullable), Is.SameAs(expectedValue));
     }
 
     [Test]
@@ -99,18 +99,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
         DbType storageDbType, 
         int? storageTypeLength)
     {
-      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation (
+      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(
           storageDbType: storageDbType,
           storageTypeLength: storageTypeLength);
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
-      var propertyDefinition = CreatePropertyDefinition ();
+      var propertyDefinition = CreatePropertyDefinition();
       var forceNullable = BooleanObjectMother.GetRandomBoolean();
-      innerStub.Stub (_ => _.GetStorageType (propertyDefinition, forceNullable)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageType(propertyDefinition, forceNullable)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      Assert.That (decorator.GetStorageType (propertyDefinition, forceNullable), Is.SameAs (expectedValue));
+      Assert.That(decorator.GetStorageType(propertyDefinition, forceNullable), Is.SameAs(expectedValue));
     }
 
     [Test]
@@ -120,21 +120,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
         DbType storageDbType, 
         int supportedMaxLength)
     {
-      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation (storageDbType: storageDbType, storageTypeLength: null);
+      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(storageDbType: storageDbType, storageTypeLength: null);
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
-      var propertyDefinition = CreatePropertyDefinition ();
+      var propertyDefinition = CreatePropertyDefinition();
       var forceNullable = BooleanObjectMother.GetRandomBoolean();
-      innerStub.Stub (_ => _.GetStorageType (propertyDefinition, forceNullable)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageType(propertyDefinition, forceNullable)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      var result = decorator.GetStorageType (propertyDefinition, forceNullable);
+      var result = decorator.GetStorageType(propertyDefinition, forceNullable);
 
-      Assert.That (result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
+      Assert.That(result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
       var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator) result;
-      Assert.That (decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo (supportedMaxLength));
-      Assert.That (decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs (expectedValue));
+      Assert.That(decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo(supportedMaxLength));
+      Assert.That(decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs(expectedValue));
     }
 
     [Test]
@@ -149,17 +149,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
         DbType storageDbType, 
         int? storageTypeLength)
     {
-      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation (
+      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(
           storageDbType: storageDbType,
           storageTypeLength: storageTypeLength);
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
       var type = typeof (object);
-      innerStub.Stub (_ => _.GetStorageType (type)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageType(type)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      Assert.That (decorator.GetStorageType (type), Is.SameAs (expectedValue));
+      Assert.That(decorator.GetStorageType(type), Is.SameAs(expectedValue));
     }
 
     [Test]
@@ -167,20 +167,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     [TestCase (DbType.String, 4000, TestName = "GetStorageType_ForType_WithoutStorageTypeLength_AndString_ReturnsDecoratedStorageTypeInformation")]
     public void GetStorageType_ForType_WithoutStorageTypeLength_ReturnsDecoratedStorageTypeInformation (DbType storageDbType, int supportedMaxLength)
     {
-      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation (storageDbType: storageDbType, storageTypeLength: null);
+      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(storageDbType: storageDbType, storageTypeLength: null);
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
       var type = typeof (object);
-      innerStub.Stub (_ => _.GetStorageType (type)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageType(type)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      var result = decorator.GetStorageType (type);
+      var result = decorator.GetStorageType(type);
 
-      Assert.That (result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
+      Assert.That(result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
       var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator) result;
-      Assert.That (decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo (supportedMaxLength));
-      Assert.That (decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs (expectedValue));
+      Assert.That(decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo(supportedMaxLength));
+      Assert.That(decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs(expectedValue));
     }
 
     [Test]
@@ -197,16 +197,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
         int? storageTypeLength,
         object value)
     {
-      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation (
+      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(
           storageDbType: storageDbType,
           storageTypeLength: storageTypeLength);
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
-      innerStub.Stub (_ => _.GetStorageType (value)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageType(value)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      Assert.That (decorator.GetStorageType (value), Is.SameAs (expectedValue));
+      Assert.That(decorator.GetStorageType(value), Is.SameAs(expectedValue));
     }
 
     [Test]
@@ -219,25 +219,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
         int supportedMaxLength,
         object value)
     {
-      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation (storageDbType: storageDbType, storageTypeLength: null);
+      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(storageDbType: storageDbType, storageTypeLength: null);
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
-      innerStub.Stub (_ => _.GetStorageType (value)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageType(value)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      var result = decorator.GetStorageType (value);
+      var result = decorator.GetStorageType(value);
 
-      Assert.That (result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
+      Assert.That(result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
       var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator) result;
-      Assert.That (decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo (supportedMaxLength));
-      Assert.That (decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs (expectedValue));
+      Assert.That(decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo(supportedMaxLength));
+      Assert.That(decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs(expectedValue));
     }
 
     private PropertyDefinition CreatePropertyDefinition ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
-      return PropertyDefinitionObjectMother.CreateForFakePropertyInfo (
+      return PropertyDefinitionObjectMother.CreateForFakePropertyInfo(
           classDefinition,
           "Name",
           false,

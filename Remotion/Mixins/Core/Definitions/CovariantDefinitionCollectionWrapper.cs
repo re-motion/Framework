@@ -36,7 +36,7 @@ namespace Remotion.Mixins.Definitions
 
     public TValueBase[] ToArray ()
     {
-      return _items.ToArray ();
+      return _items.ToArray();
     }
 
     public int Count
@@ -46,7 +46,7 @@ namespace Remotion.Mixins.Definitions
 
     public bool ContainsKey (TKey key)
     {
-      return _items.ContainsKey (key);
+      return _items.ContainsKey(key);
     }
 
     public TValueBase this [int index]

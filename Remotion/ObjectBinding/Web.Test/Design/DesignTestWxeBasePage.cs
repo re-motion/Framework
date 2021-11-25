@@ -30,13 +30,13 @@ namespace OBWTest.Design
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
-      HtmlHeadAppender.Current.RegisterStylesheetLink ("design", new StaticResourceUrl ("Html/Design.css"));
+      base.OnPreRender(e);
+      HtmlHeadAppender.Current.RegisterStylesheetLink("design", new StaticResourceUrl("Html/Design.css"));
     }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
     }
   }
 }

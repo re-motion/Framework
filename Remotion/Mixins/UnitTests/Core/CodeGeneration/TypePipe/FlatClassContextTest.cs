@@ -31,8 +31,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     [SetUp]
     public void SetUp ()
     {
-      _originalClassContext = ClassContextObjectMother.Create (typeof (string), typeof (DateTime));
-      _flatClassContext = FlatClassContext.Create (_originalClassContext);
+      _originalClassContext = ClassContextObjectMother.Create(typeof (string), typeof (DateTime));
+      _flatClassContext = FlatClassContext.Create(_originalClassContext);
     }
 
     [Test]
@@ -40,16 +40,16 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       var result = _flatClassContext.GetRealValue();
 
-      Assert.That (result, Is.EqualTo (_originalClassContext));
+      Assert.That(result, Is.EqualTo(_originalClassContext));
     }
 
     [Test]
     public void Serializable ()
     {
-      var result = Serializer.SerializeAndDeserialize (_flatClassContext);
+      var result = Serializer.SerializeAndDeserialize(_flatClassContext);
 
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result.GetRealValue(), Is.EqualTo (_originalClassContext));
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.GetRealValue(), Is.EqualTo(_originalClassContext));
     }
   }
 }

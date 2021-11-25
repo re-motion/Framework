@@ -38,67 +38,67 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       _bindableObjectProviderForDeclaringType = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
       _bindableObjectProviderForPropertyType = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
 
-      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute> (_bindableObjectProviderForDeclaringType);
-      BusinessObjectProvider.SetProvider<BindableObjectWithIdentityProviderAttribute> (_bindableObjectProviderForPropertyType);
+      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute>(_bindableObjectProviderForDeclaringType);
+      BusinessObjectProvider.SetProvider<BindableObjectWithIdentityProviderAttribute>(_bindableObjectProviderForPropertyType);
     }
 
     [Test]
     public void Search_WithSearchSupported ()
     {
       var stubBusinessObject = new Mock<IBusinessObject>();
-      var mockService = new Mock<ISearchServiceOnProperty> (MockBehavior.Strict);
-      IBusinessObjectReferenceProperty property = CreateProperty ("SearchServiceFromPropertyDeclaration");
+      var mockService = new Mock<ISearchServiceOnProperty>(MockBehavior.Strict);
+      IBusinessObjectReferenceProperty property = CreateProperty("SearchServiceFromPropertyDeclaration");
       IBusinessObject[] expected = new IBusinessObject[0];
       var searchArgumentsStub = new Mock<ISearchAvailableObjectsArguments>();
 
       var sequence = new MockSequence();
-      mockService.InSequence (sequence).Setup (_ => _.SupportsProperty (property)).Returns (true).Verifiable();
+      mockService.InSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
 
-      mockService.InSequence (sequence).Setup (_ => _.Search (stubBusinessObject.Object, property, searchArgumentsStub.Object)).Returns (expected).Verifiable();
+      mockService.InSequence(sequence).Setup(_ => _.Search(stubBusinessObject.Object, property, searchArgumentsStub.Object)).Returns(expected).Verifiable();
 
-      _bindableObjectProviderForDeclaringType.AddService (mockService.Object);
-      IBusinessObject[] actual = property.SearchAvailableObjects (stubBusinessObject.Object, searchArgumentsStub.Object);
+      _bindableObjectProviderForDeclaringType.AddService(mockService.Object);
+      IBusinessObject[] actual = property.SearchAvailableObjects(stubBusinessObject.Object, searchArgumentsStub.Object);
 
       mockService.Verify();
-      Assert.That (actual, Is.SameAs (expected));
+      Assert.That(actual, Is.SameAs(expected));
     }
 
     [Test]
     public void Search_WithSearchSupportedAndReferencingObjectNull ()
     {
-      var mockService = new Mock<ISearchServiceOnType> (MockBehavior.Strict);
-      IBusinessObjectReferenceProperty property = CreateProperty ("SearchServiceFromPropertyType");
+      var mockService = new Mock<ISearchServiceOnType>(MockBehavior.Strict);
+      IBusinessObjectReferenceProperty property = CreateProperty("SearchServiceFromPropertyType");
       IBusinessObject[] expected = new IBusinessObject[0];
       var searchArgumentsStub = new Mock<ISearchAvailableObjectsArguments>();
 
       var sequence = new MockSequence();
-      mockService.InSequence (sequence).Setup (_ => _.SupportsProperty (property)).Returns (true).Verifiable();
+      mockService.InSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
 
-      mockService.InSequence (sequence).Setup (_ => _.Search (null, property, searchArgumentsStub.Object)).Returns (expected).Verifiable();
+      mockService.InSequence(sequence).Setup(_ => _.Search(null, property, searchArgumentsStub.Object)).Returns(expected).Verifiable();
 
-      _bindableObjectProviderForPropertyType.AddService (mockService.Object);
-      IBusinessObject[] actual = property.SearchAvailableObjects (null, searchArgumentsStub.Object);
+      _bindableObjectProviderForPropertyType.AddService(mockService.Object);
+      IBusinessObject[] actual = property.SearchAvailableObjects(null, searchArgumentsStub.Object);
 
       mockService.Verify();
-      Assert.That (actual, Is.SameAs (expected));
+      Assert.That(actual, Is.SameAs(expected));
     }
 
     [Test]
     public void Search_WithSearchNotSupported ()
     {
-      IBusinessObject businessObject = (IBusinessObject) ObjectFactory.Create<ClassWithBusinessObjectProperties> (ParamList.Empty);
-      var mockService = new Mock<ISearchServiceOnProperty> (MockBehavior.Strict);
-      IBusinessObjectReferenceProperty property = CreateProperty ("SearchServiceFromPropertyDeclaration");
+      IBusinessObject businessObject = (IBusinessObject) ObjectFactory.Create<ClassWithBusinessObjectProperties>(ParamList.Empty);
+      var mockService = new Mock<ISearchServiceOnProperty>(MockBehavior.Strict);
+      IBusinessObjectReferenceProperty property = CreateProperty("SearchServiceFromPropertyDeclaration");
       var searchArgumentsStubb = new Mock<ISearchAvailableObjectsArguments>();
 
-      mockService.Setup (_ => _.SupportsProperty (property)).Returns (false).Verifiable();
+      mockService.Setup(_ => _.SupportsProperty(property)).Returns(false).Verifiable();
 
-      _bindableObjectProviderForDeclaringType.AddService (mockService.Object);
+      _bindableObjectProviderForDeclaringType.AddService(mockService.Object);
 
-      Assert.That (
-          () => property.SearchAvailableObjects (businessObject, searchArgumentsStubb.Object),
+      Assert.That(
+          () => property.SearchAvailableObjects(businessObject, searchArgumentsStubb.Object),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Searching is not supported for reference property 'SearchServiceFromPropertyDeclaration' of business object class "
                   + "'Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain.ClassWithBusinessObjectProperties, "
                   + "Remotion.ObjectBinding.UnitTests'."));
@@ -109,9 +109,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     private ReferenceProperty CreateProperty (string propertyName)
     {
       PropertyBase.Parameters propertyParameters =
-          GetPropertyParameters (GetPropertyInfo (typeof (ClassWithBusinessObjectProperties), propertyName), _bindableObjectProviderForDeclaringType);
-      ReferenceProperty property = new ReferenceProperty (propertyParameters);
-      property.SetReflectedClass (BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassWithBusinessObjectProperties)));
+          GetPropertyParameters(GetPropertyInfo(typeof (ClassWithBusinessObjectProperties), propertyName), _bindableObjectProviderForDeclaringType);
+      ReferenceProperty property = new ReferenceProperty(propertyParameters);
+      property.SetReflectedClass(BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (ClassWithBusinessObjectProperties)));
 
       return property;
     }

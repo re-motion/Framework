@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   {
     public new static AbstractWithoutConcreteClass NewObject ()
     {
-      return NewObject<AbstractWithoutConcreteClass> ();
+      return NewObject<AbstractWithoutConcreteClass>();
     }
 
     protected AbstractWithoutConcreteClass ()

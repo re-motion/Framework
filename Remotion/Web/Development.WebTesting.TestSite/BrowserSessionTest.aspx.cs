@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       CreateSessionCookie.Command += CreateSessionCookieCommand;
       CreatePersistentCookie.Command += CreatePersistentCookieCommand;
@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     private void CreateSessionCookieCommand (object sender, CommandEventArgs e)
     {
       var testSessionCookie = new HttpCookie("TestSessionCookie", "TestSessionCookie");
-      Response.Cookies.Add (testSessionCookie);
+      Response.Cookies.Add(testSessionCookie);
     }
 
     private void CreatePersistentCookieCommand (object sender, CommandEventArgs e)

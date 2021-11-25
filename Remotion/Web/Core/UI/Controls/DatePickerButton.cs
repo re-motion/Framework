@@ -52,16 +52,16 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
-      RegisterHtmlHeadContents (HtmlHeadAppender.Current);
+      base.OnInit(e);
+      RegisterHtmlHeadContents(HtmlHeadAppender.Current);
     }
     
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     IControl? IDatePickerButton.Parent
@@ -71,27 +71,27 @@ namespace Remotion.Web.UI.Controls
 
     public new IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
     protected virtual IDatePickerButtonRenderer CreateRenderer ()
     {
-      return SafeServiceLocator.Current.GetInstance<IDatePickerButtonRenderer> ();
+      return SafeServiceLocator.Current.GetInstance<IDatePickerButtonRenderer>();
     }
 
     protected virtual DatePickerButtonRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      return new DatePickerButtonRenderingContext (Page!.Context!, writer, this); // TODO RM-8118: not null assertions
+      return new DatePickerButtonRenderingContext(Page!.Context!, writer, this); // TODO RM-8118: not null assertions
     }
 
     string IControlWithDiagnosticMetadata.ControlType

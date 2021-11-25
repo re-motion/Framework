@@ -27,22 +27,22 @@ namespace Remotion.Web.ExecutionEngine
   public sealed class WxePermaUrlCallArguments : WxeCallArgumentsBase
   {
     public WxePermaUrlCallArguments ()
-        : base (new WxeCallOptions (new WxePermaUrlOptions (false, null)))
+        : base (new WxeCallOptions(new WxePermaUrlOptions(false, null)))
     {
     }
 
     public WxePermaUrlCallArguments (bool useParentPermaUrl)
-        : base (new WxeCallOptions (new WxePermaUrlOptions (useParentPermaUrl, null)))
+        : base (new WxeCallOptions(new WxePermaUrlOptions(useParentPermaUrl, null)))
     {
     }
 
     public WxePermaUrlCallArguments (NameValueCollection urlParameters)
-        : base (new WxeCallOptions (new WxePermaUrlOptions (false, urlParameters)))
+        : base (new WxeCallOptions(new WxePermaUrlOptions(false, urlParameters)))
     {
     }
 
     public WxePermaUrlCallArguments (bool useParentPermaUrl, NameValueCollection urlParameters)
-        : base (new WxeCallOptions (new WxePermaUrlOptions (useParentPermaUrl, urlParameters)))
+        : base (new WxeCallOptions(new WxePermaUrlOptions(useParentPermaUrl, urlParameters)))
     {
     }
   }

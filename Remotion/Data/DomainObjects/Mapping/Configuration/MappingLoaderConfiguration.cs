@@ -29,13 +29,13 @@ namespace Remotion.Data.DomainObjects.Mapping.Configuration
 
     public MappingLoaderConfiguration ()
     {
-      _mappingLoaderProperty = new ConfigurationProperty (
+      _mappingLoaderProperty = new ConfigurationProperty(
           "loader",
           typeof (TypeElement<IMappingLoader, MappingReflector>),
           null,
           ConfigurationPropertyOptions.None);
 
-      _properties.Add (_mappingLoaderProperty);
+      _properties.Add(_mappingLoaderProperty);
     }
 
     protected override ConfigurationPropertyCollection Properties

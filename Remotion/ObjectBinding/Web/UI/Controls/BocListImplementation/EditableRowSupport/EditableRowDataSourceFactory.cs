@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     public virtual IBusinessObjectReferenceDataSource Create (IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
       BusinessObjectReferenceDataSource dataSource = new BusinessObjectReferenceDataSource();
       dataSource.BusinessObject = businessObject;

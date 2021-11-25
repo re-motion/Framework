@@ -39,9 +39,9 @@ namespace Remotion.SecurityManager.UnitTests.SecurityProvider
     {
       var obj = _serviceLocator.GetInstance<ISecurityProvider>();
 
-      Assert.That (obj, Is.Not.Null);
-      Assert.That (obj, Is.TypeOf<RevisionBasedCachingSecurityProviderDecorator>());
-      Assert.That (((RevisionBasedCachingSecurityProviderDecorator) obj).InnerSecurityProvider, Is.TypeOf<SecurityService>());
+      Assert.That(obj, Is.Not.Null);
+      Assert.That(obj, Is.TypeOf<RevisionBasedCachingSecurityProviderDecorator>());
+      Assert.That(((RevisionBasedCachingSecurityProviderDecorator) obj).InnerSecurityProvider, Is.TypeOf<SecurityService>());
     }
 
     [Test]
@@ -50,7 +50,7 @@ namespace Remotion.SecurityManager.UnitTests.SecurityProvider
       var obj1 = _serviceLocator.GetInstance<ISecurityProvider>();
       var obj2 = _serviceLocator.GetInstance<ISecurityProvider>();
 
-      Assert.That (obj1, Is.SameAs (obj2));
+      Assert.That(obj1, Is.SameAs(obj2));
     }
   }
 }

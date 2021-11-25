@@ -45,9 +45,9 @@ namespace Remotion.Validation.RuleCollectors
        [NotNull]Func<object, object> propertyFunc,
        [NotNull]Type collectorType)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      ArgumentUtility.CheckNotNull ("propertyFunc", propertyFunc);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("collectorType", collectorType, typeof (IValidationRuleCollector));
+      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull("propertyFunc", propertyFunc);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("collectorType", collectorType, typeof (IValidationRuleCollector));
 
       CollectorType = collectorType;
       ValidatedType = typeof (TValidatedType);
@@ -58,27 +58,27 @@ namespace Remotion.Validation.RuleCollectors
 
     IValidationRule IAddingPropertyValidationRuleCollector.CreateValidationRule (IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
+      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
       foreach (var tuple in _uninitializedValidationMessages)
       {
         var validator = tuple.Validator;
-        var validationMessage = validationMessageFactory.CreateValidationMessageForPropertyValidator (validator, Property);
-        Assertion.IsNotNull (
+        var validationMessage = validationMessageFactory.CreateValidationMessageForPropertyValidator(validator, Property);
+        Assertion.IsNotNull(
             validationMessage,
-            string.Format (
+            string.Format(
                 "The {0} did not return a result for {1} applied to property '{2}' on type '{3}'.",
-                nameof (IValidationMessageFactory),
+                nameof(IValidationMessageFactory),
                 validator.GetType().Name,
                 Property.Name,
                 Property.GetOriginalDeclaringType()!.GetFullNameSafe()));
 
-        tuple.ValidationMessage.Initialize (validationMessage);
+        tuple.ValidationMessage.Initialize(validationMessage);
       }
 
       _uninitializedValidationMessages.Clear();
 
-      return new PropertyValidationRule<TValidatedType, TProperty> (Property, PropertyFunc, Condition, _validators.ToArray());
+      return new PropertyValidationRule<TValidatedType, TProperty>(Property, PropertyFunc, Condition, _validators.ToArray());
     }
 
     public IEnumerable<IPropertyValidator> Validators
@@ -88,10 +88,10 @@ namespace Remotion.Validation.RuleCollectors
 
     public void SetCondition<TValidatedTypeForCondition> (Func<TValidatedTypeForCondition, bool> predicate)
     {
-      ArgumentUtility.CheckNotNull ("predicate", predicate);
+      ArgumentUtility.CheckNotNull("predicate", predicate);
 
       if (typeof (TValidatedTypeForCondition) != typeof (TValidatedType))
-        throw new ArgumentException (
+        throw new ArgumentException(
             $"The type '{typeof (TValidatedTypeForCondition).GetFullNameSafe()}' of the predicate does not match the type '{typeof (TValidatedType).GetFullNameSafe()}' of the validation rule.");
 
       Condition = (Func<TValidatedType, bool>) (object) predicate;
@@ -104,29 +104,29 @@ namespace Remotion.Validation.RuleCollectors
 
     public void RegisterValidator (Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory)
     {
-      ArgumentUtility.CheckNotNull ("validatorFactory", validatorFactory);
+      ArgumentUtility.CheckNotNull("validatorFactory", validatorFactory);
 
       var deferredInitializationValidationMessage = new DeferredInitializationValidationMessage();
-      var initializationParameters = new PropertyValidationRuleInitializationParameters (deferredInitializationValidationMessage);
-      var validator = validatorFactory (initializationParameters);
-      Assertion.IsNotNull (validator, "validatorFactory evaluated and returned null.");
+      var initializationParameters = new PropertyValidationRuleInitializationParameters(deferredInitializationValidationMessage);
+      var validator = validatorFactory(initializationParameters);
+      Assertion.IsNotNull(validator, "validatorFactory evaluated and returned null.");
 
       // TODO RM-5906: unique validators
-      _validators.Add (validator);
-      _uninitializedValidationMessages.Add ((ValidationMessage: deferredInitializationValidationMessage, Validator: validator));
+      _validators.Add(validator);
+      _uninitializedValidationMessages.Add((ValidationMessage: deferredInitializationValidationMessage, Validator: validator));
     }
 
     public void ApplyRemoveValidatorRegistrations (IPropertyValidatorExtractor propertyValidatorExtractor)
     {
-      ArgumentUtility.CheckNotNull ("propertyValidatorExtractor", propertyValidatorExtractor);
+      ArgumentUtility.CheckNotNull("propertyValidatorExtractor", propertyValidatorExtractor);
 
-      var validatorsToRemove = propertyValidatorExtractor.ExtractPropertyValidatorsToRemove (this).ToArray();
-      CheckForNonRemovablePropertyValidatorViolation (validatorsToRemove);
+      var validatorsToRemove = propertyValidatorExtractor.ExtractPropertyValidatorsToRemove(this).ToArray();
+      CheckForNonRemovablePropertyValidatorViolation(validatorsToRemove);
       foreach (var validator in validatorsToRemove)
       {
         // TODO RM-5906: test
-        _validators.RemoveAll (v => v == validator);
-        _uninitializedValidationMessages.RemoveAll (t => t.Validator == validator);
+        _validators.RemoveAll(v => v == validator);
+        _uninitializedValidationMessages.RemoveAll(t => t.Validator == validator);
       }
     }
 
@@ -134,9 +134,9 @@ namespace Remotion.Validation.RuleCollectors
     {
       if (!IsRemovable && validatorsToRemove.Any())
       {
-        throw new ValidationConfigurationException (
-            string.Format ("Attempted to remove non-removable validator(s) '{0}' on property '{1}.{2}'.",
-                string.Join (", ", validatorsToRemove.Select (v => v.GetType().Name).ToArray()),
+        throw new ValidationConfigurationException(
+            string.Format("Attempted to remove non-removable validator(s) '{0}' on property '{1}.{2}'.",
+                string.Join(", ", validatorsToRemove.Select(v => v.GetType().Name).ToArray()),
                 Property.DeclaringType!.GetFullNameSafe(),
                 Property.Name));
       }
@@ -144,27 +144,27 @@ namespace Remotion.Validation.RuleCollectors
 
     public override string ToString ()
     {
-      var sb = new StringBuilder (nameof (AddingPropertyValidationRuleCollector));
+      var sb = new StringBuilder(nameof(AddingPropertyValidationRuleCollector));
 
       var hasCondition = Condition != null;
       if (hasCondition || IsRemovable)
-        sb.Append (" (");
+        sb.Append(" (");
 
       if (hasCondition)
-        sb.Append ("CONDITIONAL");
+        sb.Append("CONDITIONAL");
 
       if (hasCondition && IsRemovable)
-        sb.Append (", ");
+        sb.Append(", ");
 
       if (IsRemovable)
-        sb.Append ("REMOVABLE");
+        sb.Append("REMOVABLE");
 
       if (hasCondition || IsRemovable)
-        sb.Append (")");
+        sb.Append(")");
 
-      sb.Append (": ");
-      sb.Append (Property.DeclaringType != null ? Property.DeclaringType.GetFullNameSafe() + "#" : string.Empty);
-      sb.Append (Property.Name);
+      sb.Append(": ");
+      sb.Append(Property.DeclaringType != null ? Property.DeclaringType.GetFullNameSafe() + "#" : string.Empty);
+      sb.Append(Property.Name);
 
       return sb.ToString();
     }

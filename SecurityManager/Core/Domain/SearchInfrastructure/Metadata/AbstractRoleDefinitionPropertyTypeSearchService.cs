@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.Metadata
         TenantConstraint tenantConstraint,
         DisplayNameConstraint displayNameConstraint)
     {
-      return AbstractRoleDefinition.FindAll().AsEnumerable().Apply (displayNameConstraint).Cast<IBusinessObject>().AsQueryable();
+      return AbstractRoleDefinition.FindAll().AsEnumerable().Apply(displayNameConstraint).Cast<IBusinessObject>().AsQueryable();
     }
   }
 }

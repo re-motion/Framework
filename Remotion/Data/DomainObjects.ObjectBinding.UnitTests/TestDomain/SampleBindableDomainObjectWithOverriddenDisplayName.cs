@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
   {
     public new static SampleBindableDomainObjectWithOverriddenDisplayName NewObject ()
     {
-      return NewObject<SampleBindableDomainObjectWithOverriddenDisplayName> ();
+      return NewObject<SampleBindableDomainObjectWithOverriddenDisplayName>();
     }
 
     public override string DisplayName

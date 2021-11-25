@@ -31,29 +31,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       var sqlStorageObjectFactory = new SqlStorageObjectFactory();
       var nonPersistentStorageObjectFactory = new NonPersistentStorageObjectFactory();
 
-      storageProviderDefinitionCollection.Add (
-          new RdbmsProviderDefinition (
+      storageProviderDefinitionCollection.Add(
+          new RdbmsProviderDefinition(
               DatabaseTest.c_testDomainProviderID,
               sqlStorageObjectFactory,
               DatabaseTest.TestDomainConnectionString));
 
-      storageProviderDefinitionCollection.Add (
-          new NonPersistentProviderDefinition (
+      storageProviderDefinitionCollection.Add(
+          new NonPersistentProviderDefinition(
               DatabaseTest.c_nonPersistentTestDomainProviderID,
               nonPersistentStorageObjectFactory));
 
-      storageProviderDefinitionCollection.Add (
-          new RdbmsProviderDefinition (
+      storageProviderDefinitionCollection.Add(
+          new RdbmsProviderDefinition(
               DatabaseTest.DefaultStorageProviderID,
               sqlStorageObjectFactory,
               DatabaseTest.TestDomainConnectionString));
 
-      storageProviderDefinitionCollection.Add (
-          new UnitTestStorageProviderStubDefinition (
+      storageProviderDefinitionCollection.Add(
+          new UnitTestStorageProviderStubDefinition(
               DatabaseTest.c_unitTestStorageProviderStubID));
 
-      storageProviderDefinitionCollection.Add (
-          new RdbmsProviderDefinition (
+      storageProviderDefinitionCollection.Add(
+          new RdbmsProviderDefinition(
               TableInheritanceMappingTest.TableInheritanceTestDomainProviderID,
               sqlStorageObjectFactory,
               DatabaseTest.TestDomainConnectionString));

@@ -26,16 +26,16 @@ namespace Remotion.Web.ExecutionEngine
   {
     public static WxeParameterAttribute? GetAttribute (PropertyInfo property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("property", property);
 
-      WxeParameterAttribute? attribute = AttributeUtility.GetCustomAttribute<WxeParameterAttribute> (property, false);
+      WxeParameterAttribute? attribute = AttributeUtility.GetCustomAttribute<WxeParameterAttribute>(property, false);
       if (attribute == null)
         return null;
 
       if (!property.IsOriginalDeclaration())
       {
-        throw new WxeException (
-            string.Format (
+        throw new WxeException(
+            string.Format(
                 "Property '{0}', overridden by '{1}', has a WxeParameterAttribute applied. The WxeParameterAttribute may only be applied to the original declaration of a property.",
                 property.Name,
                 property.DeclaringType));

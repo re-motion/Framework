@@ -23,13 +23,13 @@ namespace Remotion.Mixins.Validation.Rules
   {
     public override void Install (ValidatingVisitor visitor)
     {
-      visitor.MixinDependencyRules.Add (new DelegateValidationRule<MixinDependencyDefinition> (DependencyMustBeSatisfiedByAnotherMixin));
+      visitor.MixinDependencyRules.Add(new DelegateValidationRule<MixinDependencyDefinition>(DependencyMustBeSatisfiedByAnotherMixin));
     }
 
     [DelegateRuleDescription (Message = "A mixin is configured with a dependency to another mixin, but that dependency is not satisfied.")]
     private void DependencyMustBeSatisfiedByAnotherMixin (DelegateValidationRule<MixinDependencyDefinition>.Args args)
     {
-      SingleMust (args.Definition.GetImplementer() != null || args.Definition.IsAggregate, args.Log, args.Self);
+      SingleMust(args.Definition.GetImplementer() != null || args.Definition.IsAggregate, args.Log, args.Self);
     }
   }
 }

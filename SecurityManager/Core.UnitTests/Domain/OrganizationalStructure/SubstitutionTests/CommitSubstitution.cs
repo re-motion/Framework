@@ -33,11 +33,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
     {
       base.SetUp();
 
-      var tenant = TestHelper.CreateTenant ("TestTenant", "UID: testTenant");
-      var userGroup = TestHelper.CreateGroup ("UserGroup", Guid.NewGuid().ToString(), null, tenant);
-      _substitutedUser = TestHelper.CreateUser ("user", "Firstname", "Lastname", "Title", userGroup, tenant);
+      var tenant = TestHelper.CreateTenant("TestTenant", "UID: testTenant");
+      var userGroup = TestHelper.CreateGroup("UserGroup", Guid.NewGuid().ToString(), null, tenant);
+      _substitutedUser = TestHelper.CreateUser("user", "Firstname", "Lastname", "Title", userGroup, tenant);
 
-      var substitutingUser = TestHelper.CreateUser ("substitutingUser", "Firstname", "Lastname", "Title", userGroup, tenant);
+      var substitutingUser = TestHelper.CreateUser("substitutingUser", "Firstname", "Lastname", "Title", userGroup, tenant);
       _substitution = Substitution.NewObject();
       _substitution.SubstitutedUser = _substitutedUser;
       _substitution.SubstitutingUser = substitutingUser;
@@ -52,12 +52,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
       _substitutedUser.Committing += (sender, e) =>
       {
         commitOnClassWasCalled = true;
-        Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+        Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
       };
       _substitution.RegisterForCommit();
       ClientTransaction.Current.Commit();
 
-      Assert.That (commitOnClassWasCalled, Is.True);
+      Assert.That(commitOnClassWasCalled, Is.True);
     }
 
     [Test]
@@ -67,12 +67,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
       _substitutedUser.Committing += (sender, e) =>
       {
         commitOnClassWasCalled = true;
-        Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+        Assert.That(GetDataContainer((DomainObject) sender).HasBeenMarkedChanged, Is.True);
       };
       _substitution.Delete();
       ClientTransaction.Current.Commit();
 
-      Assert.That (commitOnClassWasCalled, Is.True);
+      Assert.That(commitOnClassWasCalled, Is.True);
     }
   }
 }

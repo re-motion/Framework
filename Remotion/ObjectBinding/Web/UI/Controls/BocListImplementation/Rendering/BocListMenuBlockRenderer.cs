@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </remarks>
     public BocListMenuBlockRenderer (BocListCssClassDefinition cssClasses)
     {
-      ArgumentUtility.CheckNotNull ("cssClasses", cssClasses);
+      ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
 
       _cssClasses = cssClasses;
     }
@@ -66,13 +66,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <remarks> Contains the drop down list for selcting a column configuration and the options menu.  </remarks> 
     public void Render (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      RenderAvailableViewsList (renderingContext);
+      RenderAvailableViewsList(renderingContext);
 
-      RenderOptionsMenu (renderingContext);
+      RenderOptionsMenu(renderingContext);
 
-      RenderListMenu (renderingContext);
+      RenderListMenu(renderingContext);
     }
 
     private void RenderListMenu (BocListRenderingContext renderingContext)
@@ -80,14 +80,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!renderingContext.Control.HasListMenu)
         return;
 
-      Assertion.IsTrue (
+      Assertion.IsTrue(
           renderingContext.Control.ListMenu.Visible,
           "BocList '{0}': The ListMenu must remain visible if BocList.HasListMenu is evaluates 'true'.",
           renderingContext.Control.ID);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.ListMenuContainer);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
-      renderingContext.Control.ListMenu.RenderControl (renderingContext.Writer);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.ListMenuContainer);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
+      renderingContext.Control.ListMenu.RenderControl(renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
     }
 
@@ -96,30 +96,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!renderingContext.Control.HasOptionsMenu)
         return;
 
-      Assertion.IsTrue (
+      Assertion.IsTrue(
           renderingContext.Control.OptionsMenu.Visible,
           "BocList '{0}': The OptionsMenu must remain visible if BocList.HasOptionsMenu is evaluates 'true'.",
           renderingContext.Control.ID);
 
-      if (!string.IsNullOrEmpty (renderingContext.Control.ControlServicePath))
+      if (!string.IsNullOrEmpty(renderingContext.Control.ControlServicePath))
       {
         var stringValueParametersDictionary = new Dictionary<string, string?>();
-        stringValueParametersDictionary.Add ("controlID", renderingContext.Control.ID);
-        stringValueParametersDictionary.Add (
+        stringValueParametersDictionary.Add("controlID", renderingContext.Control.ID);
+        stringValueParametersDictionary.Add(
             "controlType",
-            TypeUtility.GetPartialAssemblyQualifiedName (MixinTypeUtility.GetUnderlyingTargetType (renderingContext.Control.GetType())));
-        stringValueParametersDictionary.Add ("businessObjectClass", renderingContext.BusinessObjectWebServiceContext.BusinessObjectClass);
-        stringValueParametersDictionary.Add ("businessObjectProperty", renderingContext.BusinessObjectWebServiceContext.BusinessObjectProperty);
-        stringValueParametersDictionary.Add ("businessObject", renderingContext.BusinessObjectWebServiceContext.BusinessObjectIdentifier);
-        stringValueParametersDictionary.Add ("arguments", renderingContext.BusinessObjectWebServiceContext.Arguments);
+            TypeUtility.GetPartialAssemblyQualifiedName(MixinTypeUtility.GetUnderlyingTargetType(renderingContext.Control.GetType())));
+        stringValueParametersDictionary.Add("businessObjectClass", renderingContext.BusinessObjectWebServiceContext.BusinessObjectClass);
+        stringValueParametersDictionary.Add("businessObjectProperty", renderingContext.BusinessObjectWebServiceContext.BusinessObjectProperty);
+        stringValueParametersDictionary.Add("businessObject", renderingContext.BusinessObjectWebServiceContext.BusinessObjectIdentifier);
+        stringValueParametersDictionary.Add("arguments", renderingContext.BusinessObjectWebServiceContext.Arguments);
 
-        renderingContext.Control.OptionsMenu.SetLoadMenuItemStatus (
+        renderingContext.Control.OptionsMenu.SetLoadMenuItemStatus(
             renderingContext.Control.ControlServicePath,
-            nameof (IBocListWebService.GetMenuItemStatusForOptionsMenu),
+            nameof(IBocListWebService.GetMenuItemStatusForOptionsMenu),
             stringValueParametersDictionary);
       }
 
-      renderingContext.Control.OptionsMenu.RenderControl (renderingContext.Writer);
+      renderingContext.Control.OptionsMenu.RenderControl(renderingContext.Writer);
     }
 
     private void RenderAvailableViewsList (BocListRenderingContext renderingContext)
@@ -128,30 +128,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         return;
 
       var availableViewsList = renderingContext.Control.GetAvailableViewsList();
-      Assertion.DebugIsNotNull (availableViewsList, "GetAvailableViewsList() must not return null when HasAvailableViewsList is true.");
+      Assertion.DebugIsNotNull(availableViewsList, "GetAvailableViewsList() must not return null when HasAvailableViewsList is true.");
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, $"{CssClasses.Themed} {CssClasses.AvailableViewsList}");
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, $"{CssClasses.Themed} {CssClasses.AvailableViewsList}");
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.AvailableViewsListLabel);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.For, availableViewsList.ClientID);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Label);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.AvailableViewsListLabel);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.For, availableViewsList.ClientID);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Label);
 
       string availableViewsListTitle;
-      if (string.IsNullOrEmpty (renderingContext.Control.AvailableViewsListTitle))
-        availableViewsListTitle = renderingContext.Control.GetResourceManager().GetString (Controls.BocList.ResourceIdentifier.AvailableViewsListTitle);
+      if (string.IsNullOrEmpty(renderingContext.Control.AvailableViewsListTitle))
+        availableViewsListTitle = renderingContext.Control.GetResourceManager().GetString(Controls.BocList.ResourceIdentifier.AvailableViewsListTitle);
       else
         availableViewsListTitle = renderingContext.Control.AvailableViewsListTitle;
       // Do not HTML encode.
-      renderingContext.Writer.Write (availableViewsListTitle);
+      renderingContext.Writer.Write(availableViewsListTitle);
       renderingContext.Writer.RenderEndTag();
 
-      renderingContext.Writer.Write (c_whiteSpace);
+      renderingContext.Writer.Write(c_whiteSpace);
 
       availableViewsList.Enabled = !renderingContext.Control.EditModeController.IsRowEditModeActive && 
                                    !renderingContext.Control.EditModeController.IsListEditModeActive;
       availableViewsList.CssClass = CssClasses.AvailableViewsListDropDownList;
-      availableViewsList.RenderControl (renderingContext.Writer);
+      availableViewsList.RenderControl(renderingContext.Writer);
 
       renderingContext.Writer.RenderEndTag();
     }

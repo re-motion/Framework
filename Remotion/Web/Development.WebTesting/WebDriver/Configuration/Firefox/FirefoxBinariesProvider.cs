@@ -44,15 +44,15 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     /// <summary>
     /// First Firefox version supported by <see cref="FirefoxBinariesProvider"/>.
     /// </summary>
-    private static readonly Version s_minimumSupportedFirefoxVersion = new Version (57, 0);
+    private static readonly Version s_minimumSupportedFirefoxVersion = new Version(57, 0);
 
     [NotNull]
     public FirefoxExecutable GetInstalledExecutable ()
     {
       var browserPath = GetInstalledFirefoxPath();
-      var driverPath = GetDriverPathAndDownloadIfMissing (browserPath);
+      var driverPath = GetDriverPathAndDownloadIfMissing(browserPath);
 
-      return new FirefoxExecutable (browserPath, driverPath);
+      return new FirefoxExecutable(browserPath, driverPath);
     }
 
     /// <summary>
@@ -60,65 +60,65 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     /// </summary>
     private string GetInstalledFirefoxPath ()
     {
-      var localMachine64BitViewKey = RegistryKey.OpenBaseKey (RegistryHive.LocalMachine, RegistryView.Registry64);
+      var localMachine64BitViewKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
 
       // While Chrome overrides its registry entries whenever a different build of Chrome (e.g. Canary, Beta) is installed,
       // Firefox has distinct registry paths for each. In addition, all installed versions are listed with all locations,
       // meaning the newest version must be found and selected.
-      var installedFirefoxSubKeys = localMachine64BitViewKey.OpenSubKey (c_firefoxRegistryPath)?.GetSubKeyNames();
-      var latestFirefoxSubKeyName = installedFirefoxSubKeys?.OrderByDescending (x => new Version (x.Split (' ')[0])).FirstOrDefault();
+      var installedFirefoxSubKeys = localMachine64BitViewKey.OpenSubKey(c_firefoxRegistryPath)?.GetSubKeyNames();
+      var latestFirefoxSubKeyName = installedFirefoxSubKeys?.OrderByDescending(x => new Version(x.Split(' ')[0])).FirstOrDefault();
 
       const string errorMessage = "Installed Firefox path could not be read from the registry ({0}).";
-      Assertion.IsNotNull (latestFirefoxSubKeyName, errorMessage, c_firefoxRegistryPath);
+      Assertion.IsNotNull(latestFirefoxSubKeyName, errorMessage, c_firefoxRegistryPath);
 
-      var installedFirefoxRegistryKey = localMachine64BitViewKey.OpenSubKey (Path.Combine (c_firefoxRegistryPath, latestFirefoxSubKeyName, "Main"));
-      Assertion.IsNotNull (installedFirefoxRegistryKey, errorMessage, c_firefoxRegistryPath);
+      var installedFirefoxRegistryKey = localMachine64BitViewKey.OpenSubKey(Path.Combine(c_firefoxRegistryPath, latestFirefoxSubKeyName, "Main"));
+      Assertion.IsNotNull(installedFirefoxRegistryKey, errorMessage, c_firefoxRegistryPath);
 
-      return Assertion.IsNotNull (installedFirefoxRegistryKey.GetValue ("PathToExe"), errorMessage, c_firefoxRegistryPath).ToString()!;
+      return Assertion.IsNotNull(installedFirefoxRegistryKey.GetValue("PathToExe"), errorMessage, c_firefoxRegistryPath).ToString()!;
     }
 
     private string GetDriverPathAndDownloadIfMissing (string firefoxPath)
     {
-      var firefoxVersion = GetFileVersion (firefoxPath);
+      var firefoxVersion = GetFileVersion(firefoxPath);
 
       if (firefoxVersion < s_minimumSupportedFirefoxVersion)
       {
-        throw new NotSupportedException (
-            string.Format (
+        throw new NotSupportedException(
+            string.Format(
                 "The installed Firefox version ({0}) is lower than the minimum required version of {1}.",
-                firefoxVersion.ToString (1),
-                s_minimumSupportedFirefoxVersion.ToString (1)));
+                firefoxVersion.ToString(1),
+                s_minimumSupportedFirefoxVersion.ToString(1)));
       }
 
       var driverReleaseInfo = GetLatestGeckoDriverReleaseInfo();
 
-      var driverDownloadUrl = GetBrowserDownloadUrl (driverReleaseInfo);
-      var driverVersion = GetDriverVersion (driverReleaseInfo);
+      var driverDownloadUrl = GetBrowserDownloadUrl(driverReleaseInfo);
+      var driverVersion = GetDriverVersion(driverReleaseInfo);
 
-      var versionedGeckoDriverDirectory = GetVersionedDriverDirectory (driverVersion);
+      var versionedGeckoDriverDirectory = GetVersionedDriverDirectory(driverVersion);
 
-      if (!DriverExists (driverVersion))
-        DownloadDriver (driverDownloadUrl, versionedGeckoDriverDirectory);
+      if (!DriverExists(driverVersion))
+        DownloadDriver(driverDownloadUrl, versionedGeckoDriverDirectory);
 
-      return GetDriverPath (driverVersion);
+      return GetDriverPath(driverVersion);
     }
 
     private string GetDriverVersion (GithubResponse driverReleaseInfo)
     {
-      var driverVersion = driverReleaseInfo.TagName?.TrimStart ('v');
-      return Assertion.IsNotNull (driverVersion, "Could not fetch the driver's version from GitHub. This could mean GitHub's API has changed.");
+      var driverVersion = driverReleaseInfo.TagName?.TrimStart('v');
+      return Assertion.IsNotNull(driverVersion, "Could not fetch the driver's version from GitHub. This could mean GitHub's API has changed.");
     }
 
     private string GetBrowserDownloadUrl (GithubResponse driverReleaseInfo)
     {
       var driverDownloadUrl = driverReleaseInfo.Assets
-          .Select (asset => asset.BrowserDownloadUrl)
-          .Where (url => url != null)
-          .SingleOrDefault (url => url!.Contains ($"win{c_driverBitness}"));
+          .Select(asset => asset.BrowserDownloadUrl)
+          .Where(url => url != null)
+          .SingleOrDefault(url => url!.Contains($"win{c_driverBitness}"));
 
-      return Assertion.IsNotNull (
+      return Assertion.IsNotNull(
           driverDownloadUrl,
-          string.Format (
+          string.Format(
               "Could not fetch the driver's download URL from GitHub. This could mean GitHub's API has changed, or the release does not contain the win{0} archive.",
               c_driverBitness));
     }
@@ -128,24 +128,24 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
       using (var webClient = new WebClient())
       {
         // The user-agent header is required for github requests.
-        webClient.Headers.Add ("user-agent", "unknown");
+        webClient.Headers.Add("user-agent", "unknown");
 
         string githubResponseJson;
 
         try
         {
-          githubResponseJson = webClient.DownloadString (c_latestDriverReleaseUrl);
+          githubResponseJson = webClient.DownloadString(c_latestDriverReleaseUrl);
         }
         catch (WebException ex)
         {
-          throw new WebException ($"Could not fetch the latest geckodriver download URL from '{c_latestDriverReleaseUrl}': {ex.Message}", ex.Status);
+          throw new WebException($"Could not fetch the latest geckodriver download URL from '{c_latestDriverReleaseUrl}': {ex.Message}", ex.Status);
         }
 
-        var serializer = new DataContractJsonSerializer (typeof (GithubResponse));
-        using (var stream = new MemoryStream (Encoding.UTF8.GetBytes (githubResponseJson)))
+        var serializer = new DataContractJsonSerializer(typeof (GithubResponse));
+        using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(githubResponseJson)))
         {
-          var githubResponse = (GithubResponse?) serializer.ReadObject (stream);
-          Assertion.IsNotNull (githubResponse, "Could not parse the result of the GitHub API. The API might have changed.");
+          var githubResponse = (GithubResponse?) serializer.ReadObject(stream);
+          Assertion.IsNotNull(githubResponse, "Could not parse the result of the GitHub API. The API might have changed.");
           return githubResponse;
         }
       }
@@ -154,57 +154,57 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     private void DownloadDriver (string downloadUrl, string tempPath)
     {
       RemoveDriverRootDirectoryIfExists();
-      Directory.CreateDirectory (tempPath);
+      Directory.CreateDirectory(tempPath);
 
-      var fullZipPath = Path.Combine (Path.GetTempPath(), c_driverZipFileName);
+      var fullZipPath = Path.Combine(Path.GetTempPath(), c_driverZipFileName);
 
       using (var webClient = new WebClient())
       {
         try
         {
-          webClient.DownloadFile (downloadUrl, fullZipPath);
+          webClient.DownloadFile(downloadUrl, fullZipPath);
         }
         catch (WebException ex)
         {
-          throw new WebException ($"Could not download the latest geckodriver from '{downloadUrl}': {ex.Message}", ex.Status);
+          throw new WebException($"Could not download the latest geckodriver from '{downloadUrl}': {ex.Message}", ex.Status);
         }
       }
 
-      ZipFile.ExtractToDirectory (fullZipPath, tempPath);
-      File.Delete (fullZipPath);
+      ZipFile.ExtractToDirectory(fullZipPath, tempPath);
+      File.Delete(fullZipPath);
     }
 
     private Version GetFileVersion (string filePath)
     {
-      var fileVersion = Assertion.IsNotNull (FileVersionInfo.GetVersionInfo (filePath).FileVersion, "File version could not be read from '{0}'.", filePath);
-      return Version.Parse (fileVersion);
+      var fileVersion = Assertion.IsNotNull(FileVersionInfo.GetVersionInfo(filePath).FileVersion, "File version could not be read from '{0}'.", filePath);
+      return Version.Parse(fileVersion);
     }
 
     private bool DriverExists (string driverVersion)
     {
-      return File.Exists (GetDriverPath (driverVersion));
+      return File.Exists(GetDriverPath(driverVersion));
     }
 
     private void RemoveDriverRootDirectoryIfExists ()
     {
       var driverRootDirectory = GetDriverRootDirectory();
-      if (Directory.Exists (driverRootDirectory))
-        Directory.Delete (driverRootDirectory, true);
+      if (Directory.Exists(driverRootDirectory))
+        Directory.Delete(driverRootDirectory, true);
     }
 
     private string GetDriverPath (string driverVersion)
     {
-      return Path.Combine (GetVersionedDriverDirectory (driverVersion), c_driverExecutableName);
+      return Path.Combine(GetVersionedDriverDirectory(driverVersion), c_driverExecutableName);
     }
 
     private string GetVersionedDriverDirectory (string driverVersion)
     {
-      return Path.Combine (GetDriverRootDirectory(), $"geckodriver_v{driverVersion}");
+      return Path.Combine(GetDriverRootDirectory(), $"geckodriver_v{driverVersion}");
     }
 
     private string GetDriverRootDirectory ()
     {
-      return Path.Combine (Path.GetTempPath(), c_driverFolderName);
+      return Path.Combine(Path.GetTempPath(), c_driverFolderName);
     }
 #nullable disable
     [DataContract]

@@ -36,32 +36,32 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public IMixinInfo GetMixinInfo (IProxyTypeAssemblyContext context, MixinDefinition mixin)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("mixin", mixin);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("mixin", mixin);
 
       if (!mixin.NeedsDerivedMixinType())
-        return new RegularMixinInfo (mixin.Type);
+        return new RegularMixinInfo(mixin.Type);
 
       var concreteMixinTypeIdentifier = mixin.GetConcreteMixinTypeIdentifier();
-      return GetOrGenerateConcreteMixinType (context, concreteMixinTypeIdentifier);
+      return GetOrGenerateConcreteMixinType(context, concreteMixinTypeIdentifier);
     }
 
     public ConcreteMixinType GetOrGenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("concreteMixinTypeIdentifier", concreteMixinTypeIdentifier);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("concreteMixinTypeIdentifier", concreteMixinTypeIdentifier);
 
-      var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache (context.ParticipantState);
+      var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache(context.ParticipantState);
 
       ConcreteMixinType? concreteMixinType;
-      if (!concreteMixinTypeCache.TryGetValue (concreteMixinTypeIdentifier, out concreteMixinType))
+      if (!concreteMixinTypeCache.TryGetValue(concreteMixinTypeIdentifier, out concreteMixinType))
       {
-        concreteMixinType = GenerateConcreteMixinType (context, concreteMixinTypeIdentifier);
+        concreteMixinType = GenerateConcreteMixinType(context, concreteMixinTypeIdentifier);
 
         context.GenerationCompleted += generatedTypeContext =>
         {
-          var completedConcreteMixinType = concreteMixinType.SubstituteMutableReflectionObjects (generatedTypeContext);
-          concreteMixinTypeCache.Add (concreteMixinTypeIdentifier, completedConcreteMixinType);
+          var completedConcreteMixinType = concreteMixinType.SubstituteMutableReflectionObjects(generatedTypeContext);
+          concreteMixinTypeCache.Add(concreteMixinTypeIdentifier, completedConcreteMixinType);
         };
       }
 
@@ -70,9 +70,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private ConcreteMixinType GenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
     {
-      var mixinProxyType = context.CreateAddtionalProxyType (concreteMixinTypeIdentifier, concreteMixinTypeIdentifier.MixinType);
+      var mixinProxyType = context.CreateAddtionalProxyType(concreteMixinTypeIdentifier, concreteMixinTypeIdentifier.MixinType);
 
-      var generator = new MixinTypeGenerator (concreteMixinTypeIdentifier, mixinProxyType, new AttributeGenerator(), context.ParticipantConfigurationID);
+      var generator = new MixinTypeGenerator(concreteMixinTypeIdentifier, mixinProxyType, new AttributeGenerator(), context.ParticipantConfigurationID);
       generator.AddInterfaces();
       generator.AddFields();
       generator.AddTypeInitializer();
@@ -81,10 +81,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       generator.AddMixinTypeAttribute();
       generator.AddDebuggerAttributes();
 
-      var overrideInterface = generator.GenerateOverrides ();
+      var overrideInterface = generator.GenerateOverrides();
       var methodWrappers = generator.GenerateMethodWrappers();
 
-      return new ConcreteMixinType (
+      return new ConcreteMixinType(
           concreteMixinTypeIdentifier, mixinProxyType, overrideInterface.Type, overrideInterface.InterfaceMethodsByOverriddenMethods, methodWrappers);
     }
 
@@ -92,11 +92,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         IParticipantState participantState)
     {
       const string key = "ConcreteMixinTypes";
-      var concreteMixinTypeCache = (Dictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType>) participantState.GetState (key);
+      var concreteMixinTypeCache = (Dictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType>) participantState.GetState(key);
       if (concreteMixinTypeCache == null)
       {
         concreteMixinTypeCache = new Dictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType>();
-        participantState.AddState (key, concreteMixinTypeCache);
+        participantState.AddState(key, concreteMixinTypeCache);
       }
 
       return concreteMixinTypeCache;

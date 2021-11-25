@@ -38,9 +38,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
         IRdbmsStorageEntityDefinitionProvider entityDefinitionProvider,
         IScriptToStringConverter scriptToStringConverter)
     {
-      ArgumentUtility.CheckNotNull ("scriptBuilderFactory", scriptBuilderFactory);
-      ArgumentUtility.CheckNotNull ("entityDefinitionProvider", entityDefinitionProvider);
-      ArgumentUtility.CheckNotNull ("scriptToStringConverter", scriptToStringConverter);
+      ArgumentUtility.CheckNotNull("scriptBuilderFactory", scriptBuilderFactory);
+      ArgumentUtility.CheckNotNull("entityDefinitionProvider", entityDefinitionProvider);
+      ArgumentUtility.CheckNotNull("scriptToStringConverter", scriptToStringConverter);
 
       _scriptBuilderFactory = scriptBuilderFactory;
       _entityDefinitionProvider = entityDefinitionProvider;
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public IEnumerable<Script> GetScripts (IEnumerable<ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
 
       var classDefinitionsByStorageProvider =
           from cd in classDefinitions
@@ -60,12 +60,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
       
       foreach (var group in classDefinitionsByStorageProvider)
       {
-        var scriptBuilder = _scriptBuilderFactory (group.StorageProviderDefinition);
-        var entities = _entityDefinitionProvider.GetEntityDefinitions (group.ClassDefinitions);
+        var scriptBuilder = _scriptBuilderFactory(group.StorageProviderDefinition);
+        var entities = _entityDefinitionProvider.GetEntityDefinitions(group.ClassDefinitions);
         foreach (var entityDefinition in entities)
-          scriptBuilder.AddEntityDefinition (entityDefinition);
+          scriptBuilder.AddEntityDefinition(entityDefinition);
         var scripts = _scriptToStringConverter.Convert(scriptBuilder);
-        yield return new Script (group.StorageProviderDefinition, scripts.SetUpScript, scripts.TearDownScript);
+        yield return new Script(group.StorageProviderDefinition, scripts.SetUpScript, scripts.TearDownScript);
       }
     }
   }

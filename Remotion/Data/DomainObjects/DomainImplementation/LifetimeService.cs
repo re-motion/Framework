@@ -56,11 +56,11 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </exception>
     public static DomainObject NewObject (ClientTransaction clientTransaction, Type domainObjectType, ParamList constructorParameters)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
-      ArgumentUtility.CheckNotNull ("constructorParameters", constructorParameters);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("domainObjectType", domainObjectType);
+      ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
 
-      return clientTransaction.NewObject (domainObjectType, constructorParameters);
+      return clientTransaction.NewObject(domainObjectType, constructorParameters);
     }
 
     /// <summary>
@@ -90,10 +90,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <see langword="false" />.</exception>
     public static DomainObject GetObject (ClientTransaction clientTransaction, ObjectID objectID, bool includeDeleted)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      return clientTransaction.GetObject (objectID, includeDeleted);
+      return clientTransaction.GetObject(objectID, includeDeleted);
     }
 
     /// <summary>
@@ -114,10 +114,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </exception>
     public static DomainObject TryGetObject (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      return clientTransaction.TryGetObject (objectID);
+      return clientTransaction.TryGetObject(objectID);
     }
 
     /// <summary>
@@ -143,10 +143,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <paramref name="clientTransaction"/>.</exception>
     public static DomainObject GetObjectReference (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      return clientTransaction.GetObjectReference (objectID);
+      return clientTransaction.GetObjectReference(objectID);
     }
 
     /// <summary>
@@ -170,10 +170,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     public static T[] GetObjects<T> (ClientTransaction clientTransaction, params ObjectID[] objectIDs)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-      return GetObjects<T> (clientTransaction, (IEnumerable<ObjectID>) objectIDs);
+      return GetObjects<T>(clientTransaction, (IEnumerable<ObjectID>) objectIDs);
     }
 
     /// <summary>
@@ -197,10 +197,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     public static T[] GetObjects<T> (ClientTransaction clientTransaction, IEnumerable<ObjectID> objectIDs)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-      return clientTransaction.GetObjects<T> (objectIDs);
+      return clientTransaction.GetObjects<T>(objectIDs);
     }
 
     /// <summary>
@@ -219,10 +219,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     public static T[] TryGetObjects<T> (ClientTransaction clientTransaction, params ObjectID[] objectIDs)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-      return clientTransaction.TryGetObjects<T> (objectIDs);
+      return clientTransaction.TryGetObjects<T>(objectIDs);
     }
 
     /// <summary>
@@ -241,10 +241,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     public static T[] TryGetObjects<T> (ClientTransaction clientTransaction, IEnumerable<ObjectID> objectIDs)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
       
-      return clientTransaction.TryGetObjects<T> (objectIDs);
+      return clientTransaction.TryGetObjects<T>(objectIDs);
     }
     /// <summary>
     /// Deletes the given <see cref="DomainObject"/>.
@@ -257,10 +257,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <remarks>See also <see cref="DomainObject.Delete"/>.</remarks>
     public static void DeleteObject (ClientTransaction clientTransaction, DomainObject objectToBeDeleted)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("objectToBeDeleted", objectToBeDeleted);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectToBeDeleted", objectToBeDeleted);
 
-      clientTransaction.Delete (objectToBeDeleted);
+      clientTransaction.Delete(objectToBeDeleted);
     }
   }
 }

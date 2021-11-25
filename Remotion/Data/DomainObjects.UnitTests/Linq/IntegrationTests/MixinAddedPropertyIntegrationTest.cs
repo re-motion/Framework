@@ -28,51 +28,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void PropertyDeclaredByMixin_AppliedToSameObject ()
     {
-      var mixins = (from t in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin> ()
+      var mixins = (from t in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
                     where ((IMixinAddingPersistentProperties) t).PersistentProperty == 99
                     select t);
 
-      CheckQueryResult (mixins, DomainObjectIDs.TargetClassForPersistentMixins1);
+      CheckQueryResult(mixins, DomainObjectIDs.TargetClassForPersistentMixins1);
     }
 
     [Test]
     public void PropertyDeclaredByMixin_AppliedToBaseObject ()
     {
-      var mixins = (from m in QueryFactory.CreateLinqQuery<DerivedTargetClassForPersistentMixin> ()
+      var mixins = (from m in QueryFactory.CreateLinqQuery<DerivedTargetClassForPersistentMixin>()
                     where ((IMixinAddingPersistentProperties) m).PersistentProperty == 199
                     select m);
 
-      CheckQueryResult (mixins, DomainObjectIDs.DerivedTargetClassForPersistentMixin1);
+      CheckQueryResult(mixins, DomainObjectIDs.DerivedTargetClassForPersistentMixin1);
     }
 
     [Test]
     public void PropertyDeclaredByMixin_AppliedToBaseObject_WithInterfaceIntroducedByTwoMixins ()
     {
-      var mixins = (from m in QueryFactory.CreateLinqQuery<DerivedTargetClassWithDerivedMixinWithInterface> ()
+      var mixins = (from m in QueryFactory.CreateLinqQuery<DerivedTargetClassWithDerivedMixinWithInterface>()
                     where ((IMixinAddingPersistentProperties) m).PersistentProperty == 199
                     select m);
 
-      CheckQueryResult (mixins, DomainObjectIDs.DerivedTargetClassWithDerivedMixinWithInterface1);
+      CheckQueryResult(mixins, DomainObjectIDs.DerivedTargetClassWithDerivedMixinWithInterface1);
     }
 
     [Test]
     public void PropertyDeclaredByMixin_AppliedToBaseBaseObject ()
     {
-      var mixins = (from m in QueryFactory.CreateLinqQuery<DerivedDerivedTargetClassForPersistentMixin> ()
+      var mixins = (from m in QueryFactory.CreateLinqQuery<DerivedDerivedTargetClassForPersistentMixin>()
                     where ((IMixinAddingPersistentProperties) m).PersistentProperty == 299
                     select m);
 
-      CheckQueryResult (mixins, DomainObjectIDs.DerivedDerivedTargetClassForPersistentMixin1);
+      CheckQueryResult(mixins, DomainObjectIDs.DerivedDerivedTargetClassForPersistentMixin1);
     }
 
     [Test]
     public void RelationWithForeignKeyAddedByMixin ()
     {
       var query =
-          from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin> ()
+          from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
           where ((IMixinAddingPersistentProperties) o).RelationProperty != null
           select o;
-      CheckQueryResult (query, DomainObjectIDs.TargetClassForPersistentMixins2);
+      CheckQueryResult(query, DomainObjectIDs.TargetClassForPersistentMixins2);
     }
 
     [Test]
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
           where ((IMixinAddingPersistentProperties) o).VirtualRelationProperty != null
           select o;
-      CheckQueryResult (query, DomainObjectIDs.TargetClassForPersistentMixins2);
+      CheckQueryResult(query, DomainObjectIDs.TargetClassForPersistentMixins2);
     }
 
     [Test]
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
           where ((IMixinAddingPersistentProperties) o).RelationProperty.ID != null
           select o;
-      CheckQueryResult (query, DomainObjectIDs.TargetClassForPersistentMixins2);
+      CheckQueryResult(query, DomainObjectIDs.TargetClassForPersistentMixins2);
     }
 
     [Test]
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
           where ((IMixinAddingPersistentProperties) o).VirtualRelationProperty.ID != null
           select o;
-      CheckQueryResult (query, DomainObjectIDs.TargetClassForPersistentMixins2);
+      CheckQueryResult(query, DomainObjectIDs.TargetClassForPersistentMixins2);
     }
 
     [Test]
@@ -112,27 +112,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
           from related in ((IMixinAddingPersistentProperties) o).CollectionProperty1Side
           select related;
-      CheckQueryResult (query, DomainObjectIDs.RelationTargetForPersistentMixin3);
+      CheckQueryResult(query, DomainObjectIDs.RelationTargetForPersistentMixin3);
     }
 
     [Test]
     public void MixedProperties_AccessedViaCastProperty ()
     {
       var query =
-          from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin> ()
+          from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
           where o.MixedMembers.PersistentProperty == 99
           select o;
-      CheckQueryResult (query, DomainObjectIDs.TargetClassForPersistentMixins1);
+      CheckQueryResult(query, DomainObjectIDs.TargetClassForPersistentMixins1);
     }
 
     [Test]
     public void MixedProperties_AccessedViaCastExtensionMethod ()
     {
       var query =
-          from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin> ()
+          from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
           where o.GetMixedMembers().PersistentProperty == 99
           select o;
-      CheckQueryResult (query, DomainObjectIDs.TargetClassForPersistentMixins1);
+      CheckQueryResult(query, DomainObjectIDs.TargetClassForPersistentMixins1);
     }
   }
 }

@@ -43,70 +43,70 @@ namespace Remotion.UnitTests
     {
       SampleClass expected = new SampleClass();
       DoubleCheckedLockingContainer<SampleClass> container =
-          new DoubleCheckedLockingContainer<SampleClass> (delegate { throw new NotImplementedException(); });
+          new DoubleCheckedLockingContainer<SampleClass>(delegate { throw new NotImplementedException(); });
 
       container.Value = expected;
-      Assert.That (container.Value, Is.SameAs (expected));
+      Assert.That(container.Value, Is.SameAs(expected));
     }
 
     [Test]
     public void GetValueFromFactory ()
     {
       SampleClass expected = new SampleClass();
-      var mockFactory = new Mock<IFactory> (MockBehavior.Strict);
+      var mockFactory = new Mock<IFactory>(MockBehavior.Strict);
       DoubleCheckedLockingContainer<SampleClass> container =
-          new DoubleCheckedLockingContainer<SampleClass> (delegate { return mockFactory.Object.Create(); });
-      mockFactory.Setup (_ => _.Create()).Returns (expected).Verifiable();
+          new DoubleCheckedLockingContainer<SampleClass>(delegate { return mockFactory.Object.Create(); });
+      mockFactory.Setup(_ => _.Create()).Returns(expected).Verifiable();
 
       SampleClass actual = container.Value;
 
       mockFactory.Verify();
-      Assert.That (actual, Is.SameAs (expected));
+      Assert.That(actual, Is.SameAs(expected));
     }
 
     [Test]
     public void SetNull ()
     {
-      SampleClass expected = new SampleClass ();
-      var mockFactory = new Mock<IFactory> (MockBehavior.Strict);
+      SampleClass expected = new SampleClass();
+      var mockFactory = new Mock<IFactory>(MockBehavior.Strict);
       DoubleCheckedLockingContainer<SampleClass> container =
-          new DoubleCheckedLockingContainer<SampleClass> (delegate { return mockFactory.Object.Create (); });
+          new DoubleCheckedLockingContainer<SampleClass>(delegate { return mockFactory.Object.Create(); });
 
       container.Value = null;
 
       mockFactory.Verify();
 
       mockFactory.Reset();
-      mockFactory.Setup (_ => _.Create ()).Returns (expected).Verifiable();
+      mockFactory.Setup(_ => _.Create()).Returns(expected).Verifiable();
 
       SampleClass actual = container.Value;
 
       mockFactory.Verify();
-      Assert.That (actual, Is.SameAs (expected));
+      Assert.That(actual, Is.SameAs(expected));
     }
 
     [Test]
     public void HasValue ()
     {
-      SampleClass expected = new SampleClass ();
-      var mockFactory = new Mock<IFactory> (MockBehavior.Strict);
+      SampleClass expected = new SampleClass();
+      var mockFactory = new Mock<IFactory>(MockBehavior.Strict);
       DoubleCheckedLockingContainer<SampleClass> container =
-          new DoubleCheckedLockingContainer<SampleClass> (delegate { return mockFactory.Object.Create (); });
+          new DoubleCheckedLockingContainer<SampleClass>(delegate { return mockFactory.Object.Create(); });
 
-      Assert.That (container.HasValue, Is.False);
+      Assert.That(container.HasValue, Is.False);
 
       mockFactory.Verify();
 
       mockFactory.Reset();
-      mockFactory.Setup (_ => _.Create ()).Returns (expected).Verifiable();
+      mockFactory.Setup(_ => _.Create()).Returns(expected).Verifiable();
 
       SampleClass actual = container.Value;
 
-      Assert.That (container.HasValue, Is.True);
+      Assert.That(container.HasValue, Is.True);
       mockFactory.Verify();
 
       container.Value = null;
-      Assert.That (container.HasValue, Is.False);
+      Assert.That(container.HasValue, Is.False);
     }
   }
 }

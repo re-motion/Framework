@@ -23,9 +23,9 @@ namespace Remotion.Validation.RuleCollectors
   {
     public static AddingObjectValidationRuleCollector<TValidatedType> Create<TValidatedType> (Type collectorType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("collectorType", collectorType, typeof (IValidationRuleCollector));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("collectorType", collectorType, typeof (IValidationRuleCollector));
 
-      return new AddingObjectValidationRuleCollector<TValidatedType> (collectorType);
+      return new AddingObjectValidationRuleCollector<TValidatedType>(collectorType);
     }
   }
 }

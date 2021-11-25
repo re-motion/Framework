@@ -24,10 +24,10 @@ namespace Remotion.Web.Test.Shared.IFrameSupport
   {
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
       if (!IsPostBack)
-        Context.Response.AppendCookie (
-            new HttpCookie ("Rubicon.Dms.Web::Classes.DetectionState_DetectedRenderMode", "ManagedControlsOrHtmlControlsPossible"));
+        Context.Response.AppendCookie(
+            new HttpCookie("Rubicon.Dms.Web::Classes.DetectionState_DetectedRenderMode", "ManagedControlsOrHtmlControlsPossible"));
     }
   }
 }

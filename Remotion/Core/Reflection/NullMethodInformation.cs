@@ -96,20 +96,20 @@ namespace Remotion.Reflection
 
     public T GetFastInvoker<T> () where T: class
     {
-      return (T)(object)GetFastInvoker (typeof (T));
+      return (T)(object)GetFastInvoker(typeof (T));
     }
 
     public Delegate GetFastInvoker (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
 
-      var delegateMethodInfo = delegateType.GetMethod ("Invoke")!;
+      var delegateMethodInfo = delegateType.GetMethod("Invoke")!;
       var returnType = delegateMethodInfo.ReturnType;
 
-      var nullMethod = Expression.Lambda (
+      var nullMethod = Expression.Lambda(
           delegateType,
-          Expression.Default (returnType),
-          delegateMethodInfo.GetParameters().Select (pi => Expression.Parameter (pi.ParameterType)));
+          Expression.Default(returnType),
+          delegateMethodInfo.GetParameters().Select(pi => Expression.Parameter(pi.ParameterType)));
 
       return nullMethod.Compile();
     }

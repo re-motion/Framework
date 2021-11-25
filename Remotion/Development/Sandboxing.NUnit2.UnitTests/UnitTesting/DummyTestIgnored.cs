@@ -26,7 +26,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [Test]
     public void TestIgnored ()
     {
-      throw new TestFailedException (typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException ());
+      throw new TestFailedException(typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException());
     }
   }
 }

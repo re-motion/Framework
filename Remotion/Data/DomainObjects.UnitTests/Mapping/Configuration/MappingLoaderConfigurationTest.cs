@@ -41,9 +41,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Configuration
             <loader type=""Remotion.Data.DomainObjects.UnitTests::Mapping.FakeMappingLoader""/>
           </mapping>";
 
-      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
+      ConfigurationHelper.DeserializeSection(_configuration, xmlFragment);
 
-      Assert.IsInstanceOf (typeof (FakeMappingLoader), _configuration.CreateMappingLoader());
+      Assert.IsInstanceOf(typeof (FakeMappingLoader), _configuration.CreateMappingLoader());
     }
 
     [Test]
@@ -51,9 +51,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Configuration
     {
       string xmlFragment = @"<mapping />";
 
-      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
+      ConfigurationHelper.DeserializeSection(_configuration, xmlFragment);
 
-      Assert.IsInstanceOf (typeof (MappingReflector), _configuration.CreateMappingLoader());
+      Assert.IsInstanceOf(typeof (MappingReflector), _configuration.CreateMappingLoader());
     }
   }
 }

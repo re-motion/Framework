@@ -28,44 +28,44 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
     [Test]
     public void OnCommitting_WithCircularParentHierarchy_ThrowsInvalidOperationException ()
     {
-      Tenant tenant = TestHelper.CreateTenant (ClientTransactionScope.CurrentTransaction, "Tenant", Guid.NewGuid().ToString());
-      Group grandParent = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "GrandParent", Guid.NewGuid().ToString(), null, tenant);
-      Group parent = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "Parent", Guid.NewGuid().ToString(), grandParent, tenant);
-      Group child = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "Child", Guid.NewGuid().ToString(), parent, tenant);
+      Tenant tenant = TestHelper.CreateTenant(ClientTransactionScope.CurrentTransaction, "Tenant", Guid.NewGuid().ToString());
+      Group grandParent = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "GrandParent", Guid.NewGuid().ToString(), null, tenant);
+      Group parent = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "Parent", Guid.NewGuid().ToString(), grandParent, tenant);
+      Group child = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "Child", Guid.NewGuid().ToString(), parent, tenant);
 
       ClientTransactionScope.CurrentTransaction.Commit();
 
       grandParent.Parent = child;
 
-      Assert.That (
-          () => ClientTransactionScope.CurrentTransaction.Commit (),
+      Assert.That(
+          () => ClientTransactionScope.CurrentTransaction.Commit(),
           Throws.InvalidOperationException
-              .And.Message.EqualTo ("Group '" + grandParent.ID + "' cannot be committed because it would result in a cirucular parent hierarchy."));
+              .And.Message.EqualTo("Group '" + grandParent.ID + "' cannot be committed because it would result in a cirucular parent hierarchy."));
     }
 
     [Test]
     public void OnCommitting_WithCircularParentHierarchy_GroupIsOwnParent_ThrowsInvalidOperationException ()
     {
-      Tenant tenant = TestHelper.CreateTenant (ClientTransactionScope.CurrentTransaction, "Tenant", Guid.NewGuid().ToString());
-      Group root = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "Root", Guid.NewGuid().ToString(), null, tenant);
+      Tenant tenant = TestHelper.CreateTenant(ClientTransactionScope.CurrentTransaction, "Tenant", Guid.NewGuid().ToString());
+      Group root = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "Root", Guid.NewGuid().ToString(), null, tenant);
 
       ClientTransactionScope.CurrentTransaction.Commit();
 
       root.Parent = root;
 
-      Assert.That (
-          () => ClientTransactionScope.CurrentTransaction.Commit (),
+      Assert.That(
+          () => ClientTransactionScope.CurrentTransaction.Commit(),
           Throws.InvalidOperationException
-              .And.Message.EqualTo ("Group '" + root.ID + "' cannot be committed because it would result in a cirucular parent hierarchy."));
+              .And.Message.EqualTo("Group '" + root.ID + "' cannot be committed because it would result in a cirucular parent hierarchy."));
     }
 
     [Test]
     public void OnCommitting_WithCircularParentHierarchy_ChecksOnlyIfParentHasChanged_ThrowsInvalidOperationException ()
     {
-      Tenant tenant = TestHelper.CreateTenant (ClientTransactionScope.CurrentTransaction, "Tenant", Guid.NewGuid().ToString());
-      Group grandParent = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "GrandParent", Guid.NewGuid().ToString(), null, tenant);
-      Group parent = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "Parent", Guid.NewGuid().ToString(), grandParent, tenant);
-      Group child = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "Child", Guid.NewGuid().ToString(), null, tenant);
+      Tenant tenant = TestHelper.CreateTenant(ClientTransactionScope.CurrentTransaction, "Tenant", Guid.NewGuid().ToString());
+      Group grandParent = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "GrandParent", Guid.NewGuid().ToString(), null, tenant);
+      Group parent = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "Parent", Guid.NewGuid().ToString(), grandParent, tenant);
+      Group child = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "Child", Guid.NewGuid().ToString(), null, tenant);
       grandParent.Parent = child;
 
       ClientTransactionScope.CurrentTransaction.Commit();
@@ -75,55 +75,55 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
 
       // Order of DomainObjects is stable and equal to order in which the objects have been added to DataManager
       // Should this ever change, call OnCommitting manually in order to ensure that the parent check is skipped and the child causes the exception
-      Assert.That (
+      Assert.That(
           () => ClientTransactionScope.CurrentTransaction.Commit(),
           Throws.InvalidOperationException
-              .And.Message.EqualTo ("Group '" + child.ID + "' cannot be committed because it would result in a cirucular parent hierarchy."));
+              .And.Message.EqualTo("Group '" + child.ID + "' cannot be committed because it would result in a cirucular parent hierarchy."));
     }
 
     [Test]
     public void OnCommitting_WithCircularParentHierarchy_ChangesHappensInDifferentTransactions_ThrowsInvalidOperationException ()
     {
-      Tenant tenant = TestHelper.CreateTenant (ClientTransactionScope.CurrentTransaction, "Tenant", Guid.NewGuid().ToString());
-      Group grandParent = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "GrandParent", Guid.NewGuid().ToString(), null, tenant);
-      Group parent = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "Parent", Guid.NewGuid().ToString(), null, tenant);
+      Tenant tenant = TestHelper.CreateTenant(ClientTransactionScope.CurrentTransaction, "Tenant", Guid.NewGuid().ToString());
+      Group grandParent = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "GrandParent", Guid.NewGuid().ToString(), null, tenant);
+      Group parent = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "Parent", Guid.NewGuid().ToString(), null, tenant);
 
       ClientTransactionScope.CurrentTransaction.Commit();
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        Group parentInOtherThread = parent.ID.GetObject<Group> ();
-        parentInOtherThread.Parent = grandParent.ID.GetObject<Group> ();
+        Group parentInOtherThread = parent.ID.GetObject<Group>();
+        parentInOtherThread.Parent = grandParent.ID.GetObject<Group>();
         ClientTransaction.Current.Commit();
       }
 
-      Group child = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "Child", Guid.NewGuid().ToString(), parent, tenant);
+      Group child = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "Child", Guid.NewGuid().ToString(), parent, tenant);
       grandParent.Parent = child;
 
-      Assert.That (
-          () => ClientTransactionScope.CurrentTransaction.Commit (),
+      Assert.That(
+          () => ClientTransactionScope.CurrentTransaction.Commit(),
           Throws.InvalidOperationException
-              .And.Message.EqualTo ("Group '" + grandParent.ID + "' cannot be committed because it would result in a cirucular parent hierarchy."));
+              .And.Message.EqualTo("Group '" + grandParent.ID + "' cannot be committed because it would result in a cirucular parent hierarchy."));
     }
 
     [Test]
     public void OnCommitting_ReloadsUnchangedParentGroupsDuringOnCommittingToPreventConcurrencyExceptions ()
     {
-      Tenant tenant = TestHelper.CreateTenant (ClientTransactionScope.CurrentTransaction, "Tenant", Guid.NewGuid().ToString());
-      Group grandParent = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "GrandParent", Guid.NewGuid().ToString(), null, tenant);
-      Group parent = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "Parent", Guid.NewGuid().ToString(), grandParent, tenant);
-      Group child = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "Child", Guid.NewGuid().ToString(), parent, tenant);
+      Tenant tenant = TestHelper.CreateTenant(ClientTransactionScope.CurrentTransaction, "Tenant", Guid.NewGuid().ToString());
+      Group grandParent = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "GrandParent", Guid.NewGuid().ToString(), null, tenant);
+      Group parent = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "Parent", Guid.NewGuid().ToString(), grandParent, tenant);
+      Group child = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "Child", Guid.NewGuid().ToString(), parent, tenant);
 
       ClientTransactionScope.CurrentTransaction.Commit();
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        Group parentInOtherThread = parent.ID.GetObject<Group> ();
+        Group parentInOtherThread = parent.ID.GetObject<Group>();
         parentInOtherThread.Name = "NewName";
         ClientTransaction.Current.Commit();
       }
 
-      TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "GrandChild", Guid.NewGuid().ToString(), child, tenant);
+      TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "GrandChild", Guid.NewGuid().ToString(), child, tenant);
 
       ClientTransactionScope.CurrentTransaction.Commit();
     }
@@ -131,20 +131,20 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
     [Test]
     public void OnCommitting_ReloadsParentGroupsHavingAChangedVirtualEndPointDuringOnCommittingToPreventConcurrencyExceptions ()
     {
-      Tenant tenant = TestHelper.CreateTenant (ClientTransactionScope.CurrentTransaction, "Tenant", Guid.NewGuid().ToString());
-      Group grandParent = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "GrandParent", Guid.NewGuid().ToString(), null, tenant);
-      Group parent = TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "Parent", Guid.NewGuid().ToString(), grandParent, tenant);
+      Tenant tenant = TestHelper.CreateTenant(ClientTransactionScope.CurrentTransaction, "Tenant", Guid.NewGuid().ToString());
+      Group grandParent = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "GrandParent", Guid.NewGuid().ToString(), null, tenant);
+      Group parent = TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "Parent", Guid.NewGuid().ToString(), grandParent, tenant);
 
       ClientTransactionScope.CurrentTransaction.Commit();
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        Group parentInOtherThread = parent.ID.GetObject<Group> ();
+        Group parentInOtherThread = parent.ID.GetObject<Group>();
         parentInOtherThread.Name = "NewName";
         ClientTransaction.Current.Commit();
       }
 
-      TestHelper.CreateGroup (ClientTransactionScope.CurrentTransaction, "Child", Guid.NewGuid().ToString(), parent, tenant);
+      TestHelper.CreateGroup(ClientTransactionScope.CurrentTransaction, "Child", Guid.NewGuid().ToString(), parent, tenant);
 
       ClientTransactionScope.CurrentTransaction.Commit();
     }

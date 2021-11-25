@@ -37,29 +37,29 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
     {
       return new IPermission[]
                {
-                   new AspNetHostingPermission (AspNetHostingPermissionLevel.Medium),
-                   new DnsPermission (PermissionState.Unrestricted),
-                   new EnvironmentPermission (EnvironmentPermissionAccess.Read, "TEMP;TMP;USERNAME;OS;COMPUTERNAME"), 
-                   CreateRWAPFileIOPermission (appDir),
-                   new IsolatedStorageFilePermission (PermissionState.None)
+                   new AspNetHostingPermission(AspNetHostingPermissionLevel.Medium),
+                   new DnsPermission(PermissionState.Unrestricted),
+                   new EnvironmentPermission(EnvironmentPermissionAccess.Read, "TEMP;TMP;USERNAME;OS;COMPUTERNAME"), 
+                   CreateRWAPFileIOPermission(appDir),
+                   new IsolatedStorageFilePermission(PermissionState.None)
                      {UsageAllowed = IsolatedStorageContainment.AssemblyIsolationByUser, UserQuota = 9223372036854775807L},
-                   new PrintingPermission (PrintingPermissionLevel.DefaultPrinting),
-                   new SecurityPermission (SecurityPermissionFlag.Assertion | SecurityPermissionFlag.Execution | SecurityPermissionFlag.ControlThread
+                   new PrintingPermission(PrintingPermissionLevel.DefaultPrinting),
+                   new SecurityPermission(SecurityPermissionFlag.Assertion | SecurityPermissionFlag.Execution | SecurityPermissionFlag.ControlThread
                                            | SecurityPermissionFlag.ControlPrincipal | SecurityPermissionFlag.RemotingConfiguration),
-                   new SmtpPermission (SmtpAccess.Connect),
-                   new SqlClientPermission (PermissionState.Unrestricted),
-                   new WebPermission (NetworkAccess.Connect, originHost),
-                   new ReflectionPermission (ReflectionPermissionFlag.RestrictedMemberAccess)
+                   new SmtpPermission(SmtpAccess.Connect),
+                   new SqlClientPermission(PermissionState.Unrestricted),
+                   new WebPermission(NetworkAccess.Connect, originHost),
+                   new ReflectionPermission(ReflectionPermissionFlag.RestrictedMemberAccess)
                };
     }
 
     private static FileIOPermission CreateRWAPFileIOPermission (params string[] paths)
     {
-      var permission = new FileIOPermission (PermissionState.None);
-      permission.AddPathList (FileIOPermissionAccess.Read, paths);
-      permission.AddPathList (FileIOPermissionAccess.Write, paths);
-      permission.AddPathList (FileIOPermissionAccess.Append, paths);
-      permission.AddPathList (FileIOPermissionAccess.PathDiscovery, paths);
+      var permission = new FileIOPermission(PermissionState.None);
+      permission.AddPathList(FileIOPermissionAccess.Read, paths);
+      permission.AddPathList(FileIOPermissionAccess.Write, paths);
+      permission.AddPathList(FileIOPermissionAccess.Append, paths);
+      permission.AddPathList(FileIOPermissionAccess.PathDiscovery, paths);
       return permission;
     }
 

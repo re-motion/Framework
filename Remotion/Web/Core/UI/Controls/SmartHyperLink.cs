@@ -40,12 +40,12 @@ public class SmartHyperLink : HyperLink, IControl
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     string navigateUrlBackup = NavigateUrl;
-    bool hasNavigateUrl = ! string.IsNullOrEmpty (NavigateUrl);
+    bool hasNavigateUrl = ! string.IsNullOrEmpty(NavigateUrl);
 
     if (Page is ISmartNavigablePage && hasNavigateUrl)
-      NavigateUrl = ((ISmartNavigablePage) Page).AppendNavigationUrlParameters (NavigateUrl);
+      NavigateUrl = ((ISmartNavigablePage) Page).AppendNavigationUrlParameters(NavigateUrl);
 
-    base.AddAttributesToRender (writer);
+    base.AddAttributesToRender(writer);
     
     if (hasNavigateUrl)
       NavigateUrl = navigateUrlBackup;
@@ -53,7 +53,7 @@ public class SmartHyperLink : HyperLink, IControl
 
   public new IPage? Page
   {
-    get { return PageWrapper.CastOrCreate (base.Page); }
+    get { return PageWrapper.CastOrCreate(base.Page); }
   }
 }
 

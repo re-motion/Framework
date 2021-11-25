@@ -41,56 +41,56 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
     [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
     public void GetLabelForEditableControl ()
     {
-      var control = Selector.GetByID (Parameter.FormGridControlHtmlId);
+      var control = Selector.GetByID(Parameter.FormGridControlHtmlId);
 
-      Assert.That (control.GetLabels().Count, Is.EqualTo (1));
-      Assert.That (control.GetLabels().First().GetText(), Is.EqualTo (Parameter.FormGridLabel));
+      Assert.That(control.GetLabels().Count, Is.EqualTo(1));
+      Assert.That(control.GetLabels().First().GetText(), Is.EqualTo(Parameter.FormGridLabel));
     }
 
     [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
     public void GetLabelForReadOnlyControl ()
     {
-      var control = Selector.GetByID (Parameter.ReadonlyFormGridControlHtmlId);
+      var control = Selector.GetByID(Parameter.ReadonlyFormGridControlHtmlId);
 
-      Assert.That (control.GetLabels().Count, Is.EqualTo (1));
-      Assert.That (control.GetLabels().First().GetText(), Is.EqualTo (Parameter.FormGridLabel));
+      Assert.That(control.GetLabels().Count, Is.EqualTo(1));
+      Assert.That(control.GetLabels().First().GetText(), Is.EqualTo(Parameter.FormGridLabel));
     }
 
     [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
     public void GetLabelForControlOverMultipleFormGridRows ()
     {
-      var control = Selector.GetByID (Parameter.OneControlOverMultipleRowsFormGridControlHtmlId);
+      var control = Selector.GetByID(Parameter.OneControlOverMultipleRowsFormGridControlHtmlId);
 
-      Assert.That (control.GetLabels().Count, Is.EqualTo (1));
-      Assert.That (control.GetLabels().First().GetText(), Is.EqualTo (Parameter.FormGridLabel));
+      Assert.That(control.GetLabels().Count, Is.EqualTo(1));
+      Assert.That(control.GetLabels().First().GetText(), Is.EqualTo(Parameter.FormGridLabel));
     }
 
     [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
     public void GetLabelForControlWithShiftedFormGridColumns ()
     {
-      var control = Selector.GetByID (Parameter.ColumnsShiftedFormGridControlHtmlId);
+      var control = Selector.GetByID(Parameter.ColumnsShiftedFormGridControlHtmlId);
 
-      Assert.That (control.GetLabels().Count, Is.EqualTo (1));
-      Assert.That (control.GetLabels().First().GetText(), Is.EqualTo (Parameter.FormGridLabel));
+      Assert.That(control.GetLabels().Count, Is.EqualTo(1));
+      Assert.That(control.GetLabels().First().GetText(), Is.EqualTo(Parameter.FormGridLabel));
     }
 
     [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
     public void GetLabelForControlWithMultipleControlsInOneFormGrid ()
     {
-      var control1 = Selector.GetByID (Parameter.FormGridMultiControl1HtmlId);
-      var control2 = Selector.GetByID (Parameter.FormGridMultiControl2HtmlId);
+      var control1 = Selector.GetByID(Parameter.FormGridMultiControl1HtmlId);
+      var control2 = Selector.GetByID(Parameter.FormGridMultiControl2HtmlId);
 
-      Assert.That (control1.GetLabels().Count, Is.EqualTo (1));
-      Assert.That (control1.GetLabels().First().GetText(), Is.EqualTo (Parameter.FormGridLabel));
-      Assert.That (control2.GetLabels().Count, Is.EqualTo (1));
-      Assert.That (control2.GetLabels().First().GetText(), Is.EqualTo (Parameter.FormGridLabel));
+      Assert.That(control1.GetLabels().Count, Is.EqualTo(1));
+      Assert.That(control1.GetLabels().First().GetText(), Is.EqualTo(Parameter.FormGridLabel));
+      Assert.That(control2.GetLabels().Count, Is.EqualTo(1));
+      Assert.That(control2.GetLabels().First().GetText(), Is.EqualTo(Parameter.FormGridLabel));
     }
 
     [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
     public void GetLabelForControlNotInFormGrid ()
     {
-      var control = Selector.GetByID (Parameter.ControlNotInFormGridHtmlId);
-      Assert.That (() => control.GetLabels().Count, Is.EqualTo (0));
+      var control = Selector.GetByID(Parameter.ControlNotInFormGridHtmlId);
+      Assert.That(() => control.GetLabels().Count, Is.EqualTo(0));
     }
   }
 }

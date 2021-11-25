@@ -26,91 +26,91 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Hotkey
     [Test]
     public void Initialize_WithText_AndHotkeyIndex ()
     {
-      var textWithHotkey = new TextWithHotkey ("foo bar", 4);
+      var textWithHotkey = new TextWithHotkey("foo bar", 4);
 
-      Assert.That (textWithHotkey.Text, Is.EqualTo ("foo bar"));
-      Assert.That (textWithHotkey.HotkeyIndex, Is.EqualTo (4));
-      Assert.That (textWithHotkey.Hotkey, Is.EqualTo ('b'));
+      Assert.That(textWithHotkey.Text, Is.EqualTo("foo bar"));
+      Assert.That(textWithHotkey.HotkeyIndex, Is.EqualTo(4));
+      Assert.That(textWithHotkey.Hotkey, Is.EqualTo('b'));
     }
 
     [Test]
     public void Initialize_WithText_AndHotkeyIndexNull ()
     {
-      var textWithHotkey = new TextWithHotkey ("foo bar", null);
+      var textWithHotkey = new TextWithHotkey("foo bar", null);
 
-      Assert.That (textWithHotkey.Text, Is.EqualTo ("foo bar"));
-      Assert.That (textWithHotkey.HotkeyIndex, Is.Null);
-      Assert.That (textWithHotkey.Hotkey, Is.Null);
+      Assert.That(textWithHotkey.Text, Is.EqualTo("foo bar"));
+      Assert.That(textWithHotkey.HotkeyIndex, Is.Null);
+      Assert.That(textWithHotkey.Hotkey, Is.Null);
     }
 
     [Test]
     public void Initialize_WithTextEmpty_AndHotkeyIndexNull ()
     {
-      var textWithHotkey = new TextWithHotkey ("", null);
+      var textWithHotkey = new TextWithHotkey("", null);
 
-      Assert.That (textWithHotkey.Text, Is.Empty);
-      Assert.That (textWithHotkey.HotkeyIndex, Is.Null);
-      Assert.That (textWithHotkey.Hotkey, Is.Null);
+      Assert.That(textWithHotkey.Text, Is.Empty);
+      Assert.That(textWithHotkey.HotkeyIndex, Is.Null);
+      Assert.That(textWithHotkey.Hotkey, Is.Null);
     }
 
     [Test]
     public void Initialize_WithTextNull_ThrowsArgumentNullException ()
     {
       // ReSharper disable AssignNullToNotNullAttribute
-      Assert.That (() => new TextWithHotkey (null, null), Throws.InstanceOf<ArgumentNullException>());
+      Assert.That(() => new TextWithHotkey(null, null), Throws.InstanceOf<ArgumentNullException>());
       // ReSharper restore AssignNullToNotNullAttribute
     }
 
     [Test]
     public void Initialize_WithText_AndHotkeyIndexTooBig_ThrowsArgumentOutOfRangeException ()
     {
-      Assert.That (() => new TextWithHotkey ("foo", 3), Throws.InstanceOf<ArgumentOutOfRangeException>());
+      Assert.That(() => new TextWithHotkey("foo", 3), Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
     public void Initialize_WithText_AndHotkeyNegative_ThrowsArgumentOutOfRangeException ()
     {
-      Assert.That (() => new TextWithHotkey ("foo", -1), Throws.InstanceOf<ArgumentOutOfRangeException>());
+      Assert.That(() => new TextWithHotkey("foo", -1), Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
     public void Initialize_WithText_AndHotkeyIndexNotInidicatingLetterOrDigit_ThrowsArgumentException ()
     {
-      Assert.That (() => new TextWithHotkey ("fo.o", 2), Throws.InstanceOf<ArgumentException>());
+      Assert.That(() => new TextWithHotkey("fo.o", 2), Throws.InstanceOf<ArgumentException>());
     }
 
     [Test]
     public void Initialize_WithText_AndHotkey ()
     {
-      var textWithHotkey = new TextWithHotkey ("foo bar", 'X');
+      var textWithHotkey = new TextWithHotkey("foo bar", 'X');
 
-      Assert.That (textWithHotkey.Text, Is.EqualTo ("foo bar"));
-      Assert.That (textWithHotkey.HotkeyIndex, Is.Null);
-      Assert.That (textWithHotkey.Hotkey, Is.EqualTo ('X'));
+      Assert.That(textWithHotkey.Text, Is.EqualTo("foo bar"));
+      Assert.That(textWithHotkey.HotkeyIndex, Is.Null);
+      Assert.That(textWithHotkey.Hotkey, Is.EqualTo('X'));
     }
 
     [Test]
     public void Initialize_WithTextEmpty_AndHotkey ()
     {
-      var textWithHotkey = new TextWithHotkey ("", 'X');
+      var textWithHotkey = new TextWithHotkey("", 'X');
 
-      Assert.That (textWithHotkey.Text, Is.Empty);
-      Assert.That (textWithHotkey.HotkeyIndex, Is.Null);
-      Assert.That (textWithHotkey.Hotkey, Is.EqualTo ('X'));
+      Assert.That(textWithHotkey.Text, Is.Empty);
+      Assert.That(textWithHotkey.HotkeyIndex, Is.Null);
+      Assert.That(textWithHotkey.Hotkey, Is.EqualTo('X'));
     }
 
     [Test]
     public void Initialize_WithTextNull_AndHotkey_ThrowsArgumentNullException ()
     {
       // ReSharper disable AssignNullToNotNullAttribute
-      Assert.That (() => new TextWithHotkey (null, 'X'), Throws.InstanceOf<ArgumentNullException>());
+      Assert.That(() => new TextWithHotkey(null, 'X'), Throws.InstanceOf<ArgumentNullException>());
       // ReSharper restore AssignNullToNotNullAttribute
     }
 
     [Test]
     public void Initialize_WithText_AndHotkeyNotLetterOrDigit_ThrowsArgumentException ()
     {
-      Assert.That (() => new TextWithHotkey ("foo", '/'), Throws.InstanceOf<ArgumentException>());
+      Assert.That(() => new TextWithHotkey("foo", '/'), Throws.InstanceOf<ArgumentException>());
     }
   }
 }

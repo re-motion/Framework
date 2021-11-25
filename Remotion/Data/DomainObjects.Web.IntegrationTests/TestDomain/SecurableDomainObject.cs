@@ -33,13 +33,13 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.TestDomain
 
     public IObjectSecurityStrategy GetSecurityStrategy ()
     {
-      Assertion.IsNotNull (SecurityStrategy, "Must set SecurityStrategy first.");
+      Assertion.IsNotNull(SecurityStrategy, "Must set SecurityStrategy first.");
       return SecurityStrategy;
     }
 
     public Type GetSecurableType ()
     {
-      Assertion.IsNotNull (SecurableType, "Must set SecurableType first.");
+      Assertion.IsNotNull(SecurableType, "Must set SecurableType first.");
       return SecurableType;
     }
 

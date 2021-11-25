@@ -37,18 +37,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     public IEnumerable<BaseValidator> CreateValidators (IBocAutoCompleteReferenceValue control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       if (isReadOnly)
         yield break;
 
       var resourceManager = control.GetResourceManager();
 
-      var requiredFieldValidator = CreateRequiredFieldValidator (control, resourceManager);
+      var requiredFieldValidator = CreateRequiredFieldValidator(control, resourceManager);
       if (requiredFieldValidator != null)
         yield return requiredFieldValidator;
 
-      yield return CreateInvalidDisplayNameValidator (control, resourceManager);
+      yield return CreateInvalidDisplayNameValidator(control, resourceManager);
     }
 
     private RequiredFieldValidator? CreateRequiredFieldValidator (IBocAutoCompleteReferenceValue control, IResourceManager resourceManage)
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         var requiredFieldValidator = new RequiredFieldValidator();
         requiredFieldValidator.ID = control.ID + "_ValidatorNotNullItem";
         requiredFieldValidator.ControlToValidate = control.ID;
-        requiredFieldValidator.ErrorMessage = resourceManage.GetString (BocAutoCompleteReferenceValue.ResourceIdentifier.NullItemErrorMessage);
+        requiredFieldValidator.ErrorMessage = resourceManage.GetString(BocAutoCompleteReferenceValue.ResourceIdentifier.NullItemErrorMessage);
         requiredFieldValidator.EnableViewState = false;
 
         return requiredFieldValidator;
@@ -75,10 +75,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private BocAutoCompleteReferenceValueInvalidDisplayNameValidator CreateInvalidDisplayNameValidator (IBocAutoCompleteReferenceValue control, IResourceManager resourceManage)
     {
-      var invalidDisplayNameValidator = new BocAutoCompleteReferenceValueInvalidDisplayNameValidator ();
+      var invalidDisplayNameValidator = new BocAutoCompleteReferenceValueInvalidDisplayNameValidator();
       invalidDisplayNameValidator.ID = control.ID + "_ValidatorValidDisplayName";
       invalidDisplayNameValidator.ControlToValidate = control.ID;
-      invalidDisplayNameValidator.ErrorMessage = resourceManage.GetString (BocAutoCompleteReferenceValue.ResourceIdentifier.InvalidItemErrorMessage);
+      invalidDisplayNameValidator.ErrorMessage = resourceManage.GetString(BocAutoCompleteReferenceValue.ResourceIdentifier.InvalidItemErrorMessage);
       invalidDisplayNameValidator.EnableViewState = false;
 
       return invalidDisplayNameValidator;

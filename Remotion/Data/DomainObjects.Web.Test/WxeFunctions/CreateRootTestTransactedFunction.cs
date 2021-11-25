@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
     private void Step1 ()
     {
       if (ClientTransactionScope.CurrentTransaction == PreviousClientTransaction)
-        throw new TestFailureException ("The WxeTransactedFunction did not properly set a new ClientTransaction.");
+        throw new TestFailureException("The WxeTransactedFunction did not properly set a new ClientTransaction.");
     }
   }
 }

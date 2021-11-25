@@ -46,8 +46,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
         IDataContainerMapReadOnlyView dataContainerMap,
         ValueAccess valueAccess)
     {
-      ArgumentUtility.CheckNotNull ("associatedEndPointID", associatedEndPointID);
-      ArgumentUtility.CheckNotNull ("dataContainerMap", dataContainerMap);
+      ArgumentUtility.CheckNotNull("associatedEndPointID", associatedEndPointID);
+      ArgumentUtility.CheckNotNull("dataContainerMap", dataContainerMap);
 
       _associatedEndPointID = associatedEndPointID;
       _dataContainerMap = dataContainerMap;
@@ -60,8 +60,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public ReadOnlyVirtualCollectionDataDecorator GetOriginalData ()
     {
-      var originalData = new VirtualCollectionData (_associatedEndPointID, _dataContainerMap, ValueAccess.Original);
-      return new ReadOnlyVirtualCollectionDataDecorator (originalData);
+      var originalData = new VirtualCollectionData(_associatedEndPointID, _dataContainerMap, ValueAccess.Original);
+      return new ReadOnlyVirtualCollectionDataDecorator(originalData);
     }
 
     public bool IsCacheUpToDate
@@ -95,18 +95,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public bool ContainsObjectID (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      return GetCachedDomainObjects().ContainsKey (objectID);
+      return GetCachedDomainObjects().ContainsKey(objectID);
     }
 
     public DomainObject GetObject (int index)
     {
       if (index < 0)
-        throw new ArgumentOutOfRangeException ("index");
+        throw new ArgumentOutOfRangeException("index");
 
       if (index >= GetCachedDomainObjects().Count)
-        throw new ArgumentOutOfRangeException ("index");
+        throw new ArgumentOutOfRangeException("index");
 
       var cachedDomainObjects = GetCachedDomainObjectsSorted();
       int itemIndex = 0;
@@ -118,19 +118,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
         itemIndex++;
       }
 
-      throw new ArgumentOutOfRangeException ("index");
+      throw new ArgumentOutOfRangeException("index");
     }
 
     public DomainObject GetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      return GetCachedDomainObjects().GetValueOrDefault (objectID);
+      return GetCachedDomainObjects().GetValueOrDefault(objectID);
     }
 
     public int IndexOf (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
       var cachedDomainObjects = GetCachedDomainObjectsSorted();
       int itemIndex = 0;
@@ -185,15 +185,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
         var foreignKeyValue = _associatedEndPointID.ObjectID;
 
         _cachedDomainObjects = _dataContainerMap
-            .Where (dc => !dc.State.IsDiscarded)
-            .Where (dc => dc.HasDomainObject)
-            .Where (dc => requiredItemType.IsAssignableFrom (dc.DomainObjectType))
+            .Where(dc => !dc.State.IsDiscarded)
+            .Where(dc => dc.HasDomainObject)
+            .Where(dc => requiredItemType.IsAssignableFrom(dc.DomainObjectType))
 #if DEBUG
             // Only in debug builds for performance reasons. The .NET type comparison is sufficient for filtering the types until interface support is added.
-            .Where (dc => requiredClassDefinition.IsSameOrBaseClassOf (dc.ClassDefinition))
+            .Where(dc => requiredClassDefinition.IsSameOrBaseClassOf(dc.ClassDefinition))
 #endif
-            .Where (dc => (ObjectID) dc.GetValueWithoutEvents (foreignKeyPropertyDefinition, _valueAccess) == foreignKeyValue)
-            .ToDictionary (dc => dc.ID, dc => dc.DomainObject);
+            .Where(dc => (ObjectID) dc.GetValueWithoutEvents(foreignKeyPropertyDefinition, _valueAccess) == foreignKeyValue)
+            .ToDictionary(dc => dc.ID, dc => dc.DomainObject);
       }
 
       return _cachedDomainObjects;
@@ -203,17 +203,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     private IEnumerable<DomainObject> GetCachedDomainObjectsSorted ()
     {
       var comparer = GetDomainObjectComparer();
-      return GetCachedDomainObjects().Values.OrderBy (obj => obj, comparer);
+      return GetCachedDomainObjects().Values.OrderBy(obj => obj, comparer);
     }
 
     private IComparer<DomainObject> GetDomainObjectComparer ()
     {
-      var idComparer = new DelegateBasedComparer<DomainObject> ((left, right) => left.ID.CompareTo (right.ID));
+      var idComparer = new DelegateBasedComparer<DomainObject>((left, right) => left.ID.CompareTo(right.ID));
       var sortExpression = ((VirtualCollectionRelationEndPointDefinition) _associatedEndPointID.Definition).GetSortExpression();
       if (sortExpression != null)
       {
-        var propertyComparer = SortedPropertyComparer.CreateCompoundComparer (sortExpression.SortedProperties, _dataContainerMap, _valueAccess);
-        return new CompoundComparer<DomainObject> (propertyComparer, idComparer);
+        var propertyComparer = SortedPropertyComparer.CreateCompoundComparer(sortExpression.SortedProperties, _dataContainerMap, _valueAccess);
+        return new CompoundComparer<DomainObject>(propertyComparer, idComparer);
       }
       else
       {
@@ -232,20 +232,20 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       if (hasCachedDomainObjects)
       {
         var cachedDomainObjects = new List<DomainObject>();
-        info.FillCollection (cachedDomainObjects);
-        _cachedDomainObjects = cachedDomainObjects.ToDictionary (obj => obj.ID);
+        info.FillCollection(cachedDomainObjects);
+        _cachedDomainObjects = cachedDomainObjects.ToDictionary(obj => obj.ID);
       }
     }
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddHandle (_associatedEndPointID);
-      info.AddHandle (_dataContainerMap);
-      info.AddIntValue ((int) _valueAccess);
+      info.AddHandle(_associatedEndPointID);
+      info.AddHandle(_dataContainerMap);
+      info.AddIntValue((int) _valueAccess);
       var hasCachedDomainObjects = _cachedDomainObjects != null;
-      info.AddBoolValue (hasCachedDomainObjects);
+      info.AddBoolValue(hasCachedDomainObjects);
       if (hasCachedDomainObjects)
-        info.AddCollection ((ICollection<DomainObject>) _cachedDomainObjects.Values);
+        info.AddCollection((ICollection<DomainObject>) _cachedDomainObjects.Values);
     }
 
     #endregion

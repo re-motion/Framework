@@ -33,17 +33,17 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
   public class DomainObjectSequenceQueryAdapter<TItem> : QueryAdapterBase<IEnumerable<TItem>>
   {
     public DomainObjectSequenceQueryAdapter (IQuery query)
-        : base (ArgumentUtility.CheckNotNull ("query", query))
+        : base (ArgumentUtility.CheckNotNull("query", query))
     {
       if (query.QueryType != QueryType.Collection)
-        throw new ArgumentException ("Only collection queries can be used to load data containers.", "query");
+        throw new ArgumentException("Only collection queries can be used to load data containers.", "query");
     }
 
     public override IEnumerable<TItem> Execute (IQueryManager queryManager)
     {
-      ArgumentUtility.CheckNotNull ("queryManager", queryManager);
+      ArgumentUtility.CheckNotNull("queryManager", queryManager);
 
-      return queryManager.GetCollection (this).AsEnumerable().Cast<TItem>();
+      return queryManager.GetCollection(this).AsEnumerable().Cast<TItem>();
     }
   }
 }

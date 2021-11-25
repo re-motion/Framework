@@ -32,8 +32,8 @@ namespace Remotion.Validation.Implementation
 
     public CompoundValidator (IEnumerable<IValidator> validators, Type typeToValidate)
     {
-      ArgumentUtility.CheckNotNull ("validators", validators);
-      ArgumentUtility.CheckNotNull ("typeToValidate", typeToValidate);
+      ArgumentUtility.CheckNotNull("validators", validators);
+      ArgumentUtility.CheckNotNull("typeToValidate", typeToValidate);
 
       _validators = validators.ToList().AsReadOnly();
       _typeToValidate = typeToValidate;
@@ -46,45 +46,45 @@ namespace Remotion.Validation.Implementation
 
     public ValidationResult Validate (object instance)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull("instance", instance);
 
-      return Validate (new ValidationContext (instance));
+      return Validate(new ValidationContext(instance));
     }
 
     public ValidationResult Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var failures = _validators.SelectMany (v => v.Validate (context).Errors).ToArray();
-      return new ValidationResult (failures);
+      var failures = _validators.SelectMany(v => v.Validate(context).Errors).ToArray();
+      return new ValidationResult(failures);
     }
 
     public ValidatorDescriptor CreateDescriptor ()
     {
-      return new ValidatorDescriptor (_validators.SelectMany (v => v.CreateDescriptor().ValidationRules).ToArray());
+      return new ValidatorDescriptor(_validators.SelectMany(v => v.CreateDescriptor().ValidationRules).ToArray());
     }
 
     public bool CanValidateInstancesOfType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return _validators.All (v => v.CanValidateInstancesOfType (type));
+      return _validators.All(v => v.CanValidateInstancesOfType(type));
     }
 
     ValidationResult IValidator.Validate (object instance)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull("instance", instance);
 
-      if (!CanValidateInstancesOfType (instance.GetType()))
+      if (!CanValidateInstancesOfType(instance.GetType()))
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "Cannot validate instances of type '{0}'. This validator can only validate instances of type '{1}'.",
                 instance.GetType().Name,
                 _typeToValidate.Name));
       }
 
-      return Validate (instance);
+      return Validate(instance);
     }
   }
 }

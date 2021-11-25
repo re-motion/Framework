@@ -37,18 +37,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     protected override IEnumerable<RelationEndPointID> GetOwnedEndPointIDs (DataContainer dataContainer)
     {
-      return dataContainer.AssociatedRelationEndPointIDs.Where (id => !id.Definition.IsVirtual);
+      return dataContainer.AssociatedRelationEndPointIDs.Where(id => !id.Definition.IsVirtual);
     }
 
     protected override string GetUnregisterProblem (IRelationEndPoint endPoint, RelationEndPointMap relationEndPointMap)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull ("relationEndPointMap", relationEndPointMap);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("relationEndPointMap", relationEndPointMap);
 
       // An end-point must be unchanged to be unregisterable.
       if (endPoint.HasChanged)
       {
-        return string.Format (
+        return string.Format(
             "Relation end-point '{0}' has changed. Only unchanged relation end-points can be unregistered.",
             endPoint.ID);
       }
@@ -63,12 +63,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (realObjectEndPoint == null)
         return null;
 
-      var oppositeEndPointID = RelationEndPointID.CreateOpposite (realObjectEndPoint.Definition, realObjectEndPoint.OppositeObjectID);
+      var oppositeEndPointID = RelationEndPointID.CreateOpposite(realObjectEndPoint.Definition, realObjectEndPoint.OppositeObjectID);
       var oppositeEndPoint = relationEndPointMap[oppositeEndPointID];
 
       if (oppositeEndPoint?.HasChanged ?? false)
       {
-        return string.Format (
+        return string.Format(
             "The opposite relation property '{0}' of relation end-point '{1}' has changed. Non-virtual end-points that are part of changed relations "
             + "cannot be unloaded.",
             oppositeEndPoint.Definition.PropertyName,

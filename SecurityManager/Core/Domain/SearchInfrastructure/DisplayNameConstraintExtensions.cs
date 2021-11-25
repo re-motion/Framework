@@ -29,35 +29,35 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
     {
       if (constraint == null)
         return query;
-      return constraint.ApplyTo (query);
+      return constraint.ApplyTo(query);
     }
 
     public static IQueryable<Group> Apply (this IQueryable<Group> query, DisplayNameConstraint constraint)
     {
       if (constraint == null)
         return query;
-      return constraint.ApplyTo (query);
+      return constraint.ApplyTo(query);
     }
 
     public static IQueryable<User> Apply (this IQueryable<User> query, DisplayNameConstraint constraint)
     {
       if (constraint == null)
         return query;
-      return constraint.ApplyTo (query);
+      return constraint.ApplyTo(query);
     }
 
     public static IQueryable<Position> Apply (this IQueryable<Position> query, DisplayNameConstraint constraint)
     {
       if (constraint == null)
         return query;
-      return constraint.ApplyTo (query);
+      return constraint.ApplyTo(query);
     }
 
     public static IQueryable<GroupType> Apply (this IQueryable<GroupType> query, DisplayNameConstraint constraint)
     {
       if (constraint == null)
         return query;
-      return constraint.ApplyTo (query);
+      return constraint.ApplyTo(query);
     }
 
     public static IEnumerable<T> Apply<T> (this IEnumerable<T> query, DisplayNameConstraint constraint)
@@ -65,7 +65,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
     {
       if (constraint == null)
         return query;
-      return constraint.ApplyTo (query);
+      return constraint.ApplyTo(query);
     }
   }
 }

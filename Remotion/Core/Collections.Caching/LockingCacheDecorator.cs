@@ -41,30 +41,30 @@ namespace Remotion.Collections.Caching
       where TKey: notnull
   {
     private readonly ICache<TKey, TValue> _innerCache;
-    private readonly object _lock = new object ();
+    private readonly object _lock = new object();
 
     public LockingCacheDecorator (ICache<TKey, TValue> innerCache)
     {
-      ArgumentUtility.CheckNotNull ("innerCache", innerCache);
+      ArgumentUtility.CheckNotNull("innerCache", innerCache);
 
       _innerCache = innerCache;
     }
 
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
 
       lock (_lock)
-        return _innerCache.GetOrCreateValue (key, valueFactory);
+        return _innerCache.GetOrCreateValue(key, valueFactory);
     }
 
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
       lock (_lock)
-        return _innerCache.TryGetValue (key, out value);
+        return _innerCache.TryGetValue(key, out value);
     }
 
     IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator ()
@@ -89,7 +89,7 @@ namespace Remotion.Collections.Caching
     public void Clear ()
     {
       lock (_lock)
-        _innerCache.Clear ();
+        _innerCache.Clear();
     }
 
     bool INullObject.IsNull

@@ -31,23 +31,23 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class ExpressionClassContextSerializer : ClassContextSerializerBase
   {
     private static readonly ConstructorInfo s_constructor =
-        MemberInfoFromExpressionUtility.GetConstructor (() => new ClassContext (null!, new MixinContext[0], Type.EmptyTypes));
+        MemberInfoFromExpressionUtility.GetConstructor(() => new ClassContext(null!, new MixinContext[0], Type.EmptyTypes));
 
     public Expression CreateNewExpression ()
     {
       // new ClassContext (Type, new MixinContext[] { ... }, ComposedInterfaces)
 
-      return Expression.New (
+      return Expression.New(
           s_constructor,
-          Expression.Constant (Type),
-          Expression.NewArrayInit (typeof (MixinContext), MixinContexts!.Select (CreateMixinContextExpression)), // TODO RM-7691 Change serializer properties to non-nullable return values
-          Expression.ArrayConstant (ComposedInterfaces));
+          Expression.Constant(Type),
+          Expression.NewArrayInit(typeof (MixinContext), MixinContexts!.Select(CreateMixinContextExpression)), // TODO RM-7691 Change serializer properties to non-nullable return values
+          Expression.ArrayConstant(ComposedInterfaces));
     }
 
     private Expression CreateMixinContextExpression (MixinContext mixinContext)
     {
       var serializer = new ExpressionMixinContextSerializer();
-      mixinContext.Serialize (serializer);
+      mixinContext.Serialize(serializer);
 
       return serializer.CreateNewExpression();
     }

@@ -36,10 +36,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     public void SetUp ()
     {
       WxeContextFactory wxeContextFactory = new WxeContextFactory();
-      _wxeContext = wxeContextFactory.CreateContext (new TestFunction());
+      _wxeContext = wxeContextFactory.CreateContext(new TestFunction());
 
-      _securityAdapterMock = new Mock<IWxeSecurityAdapter> (MockBehavior.Strict);
-      _innerListenerMock = new Mock<IWxeFunctionExecutionListener> (MockBehavior.Strict);
+      _securityAdapterMock = new Mock<IWxeSecurityAdapter>(MockBehavior.Strict);
+      _innerListenerMock = new Mock<IWxeFunctionExecutionListener>(MockBehavior.Strict);
 
       _function = new TestFunction();
     }
@@ -47,22 +47,22 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void Initialization ()
     {
-      var securityListener = CreateSecurityListener (_securityAdapterMock.Object);
+      var securityListener = CreateSecurityListener(_securityAdapterMock.Object);
 
-      Assert.That (((SecurityExecutionListener) securityListener).Function, Is.SameAs (_function));
-      Assert.That (((SecurityExecutionListener) securityListener).InnerListener, Is.SameAs (_innerListenerMock.Object));
+      Assert.That(((SecurityExecutionListener) securityListener).Function, Is.SameAs(_function));
+      Assert.That(((SecurityExecutionListener) securityListener).InnerListener, Is.SameAs(_innerListenerMock.Object));
     }
 
     [Test]
     public void ExecutionPlay_WithAccessGranted ()
     {
-      var securityListener = CreateSecurityListener (_securityAdapterMock.Object);
+      var securityListener = CreateSecurityListener(_securityAdapterMock.Object);
 
       var sequence = new MockSequence();
-      _securityAdapterMock.InSequence (sequence).Setup (mock => mock.CheckAccess (_function)).Verifiable();
-      _innerListenerMock.InSequence (sequence).Setup (mock => mock.OnExecutionPlay (_wxeContext)).Verifiable();
+      _securityAdapterMock.InSequence(sequence).Setup(mock => mock.CheckAccess(_function)).Verifiable();
+      _innerListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(_wxeContext)).Verifiable();
 
-      securityListener.OnExecutionPlay (_wxeContext);
+      securityListener.OnExecutionPlay(_wxeContext);
 
       _securityAdapterMock.Verify();
       _innerListenerMock.Verify();
@@ -71,12 +71,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void ExecutionPlay_WithAccessDenied ()
     {
-      _securityAdapterMock.Setup (mock => mock.CheckAccess (_function)).Throws (new PermissionDeniedException()).Verifiable();
+      _securityAdapterMock.Setup(mock => mock.CheckAccess(_function)).Throws(new PermissionDeniedException()).Verifiable();
 
-      var securityListener = CreateSecurityListener (_securityAdapterMock.Object);
+      var securityListener = CreateSecurityListener(_securityAdapterMock.Object);
 
-      Assert.That (
-          () => securityListener.OnExecutionPlay (_wxeContext),
+      Assert.That(
+          () => securityListener.OnExecutionPlay(_wxeContext),
           Throws.InstanceOf<PermissionDeniedException>());
       _securityAdapterMock.Verify();
       _innerListenerMock.Verify();
@@ -85,11 +85,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void ExecutionPlay_WithoutWxeSecurityProvider ()
     {
-      _innerListenerMock.Setup (mock => mock.OnExecutionPlay (_wxeContext)).Verifiable();
+      _innerListenerMock.Setup(mock => mock.OnExecutionPlay(_wxeContext)).Verifiable();
 
-      var securityListener = CreateSecurityListener (null);
+      var securityListener = CreateSecurityListener(null);
 
-      securityListener.OnExecutionPlay (_wxeContext);
+      securityListener.OnExecutionPlay(_wxeContext);
 
       _securityAdapterMock.Verify();
       _innerListenerMock.Verify();
@@ -98,14 +98,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void ExecutionPlay_AfterExecutionStarted ()
     {
-      _function.Execute (_wxeContext);
+      _function.Execute(_wxeContext);
       _securityAdapterMock.Reset();
       _innerListenerMock.Reset();
-      _innerListenerMock.Setup (mock => mock.OnExecutionPlay (_wxeContext)).Verifiable();
+      _innerListenerMock.Setup(mock => mock.OnExecutionPlay(_wxeContext)).Verifiable();
 
-      var securityListener = CreateSecurityListener (_securityAdapterMock.Object);
+      var securityListener = CreateSecurityListener(_securityAdapterMock.Object);
 
-      securityListener.OnExecutionPlay (_wxeContext);
+      securityListener.OnExecutionPlay(_wxeContext);
 
       _securityAdapterMock.Verify();
       _innerListenerMock.Verify();
@@ -114,11 +114,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void OnExecutionStop ()
     {
-      _innerListenerMock.Setup (mock => mock.OnExecutionStop (_wxeContext)).Verifiable();
+      _innerListenerMock.Setup(mock => mock.OnExecutionStop(_wxeContext)).Verifiable();
 
-      var securityListener = CreateSecurityListener (_securityAdapterMock.Object);
+      var securityListener = CreateSecurityListener(_securityAdapterMock.Object);
 
-      securityListener.OnExecutionStop (_wxeContext);
+      securityListener.OnExecutionStop(_wxeContext);
 
       _securityAdapterMock.Verify();
       _innerListenerMock.Verify();
@@ -127,11 +127,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void OnExecutionPause ()
     {
-      _innerListenerMock.Setup (mock => mock.OnExecutionPause (_wxeContext)).Verifiable();
+      _innerListenerMock.Setup(mock => mock.OnExecutionPause(_wxeContext)).Verifiable();
 
-      var securityListener = CreateSecurityListener (_securityAdapterMock.Object);
+      var securityListener = CreateSecurityListener(_securityAdapterMock.Object);
 
-      securityListener.OnExecutionPause (_wxeContext);
+      securityListener.OnExecutionPause(_wxeContext);
 
       _securityAdapterMock.Verify();
       _innerListenerMock.Verify();
@@ -141,11 +141,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     public void OnExecutionFail ()
     {
       Exception exception = new Exception();
-      _innerListenerMock.Setup (mock => mock.OnExecutionFail (_wxeContext, exception)).Verifiable();
+      _innerListenerMock.Setup(mock => mock.OnExecutionFail(_wxeContext, exception)).Verifiable();
 
-      var securityListener = CreateSecurityListener (_securityAdapterMock.Object);
+      var securityListener = CreateSecurityListener(_securityAdapterMock.Object);
 
-      securityListener.OnExecutionFail (_wxeContext, exception);
+      securityListener.OnExecutionFail(_wxeContext, exception);
 
       _securityAdapterMock.Verify();
       _innerListenerMock.Verify();
@@ -154,14 +154,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void IsNull ()
     {
-      var securityListener = CreateSecurityListener (_securityAdapterMock.Object);
+      var securityListener = CreateSecurityListener(_securityAdapterMock.Object);
 
-      Assert.That (securityListener.IsNull, Is.False);
+      Assert.That(securityListener.IsNull, Is.False);
     }
 
     private IWxeFunctionExecutionListener CreateSecurityListener (IWxeSecurityAdapter securityAdapter)
     {
-      return new SecurityExecutionListener (_function, _innerListenerMock.Object, securityAdapter);
+      return new SecurityExecutionListener(_function, _innerListenerMock.Object, securityAdapter);
     }
   }
 }

@@ -27,65 +27,65 @@ namespace Remotion.UnitTests.Collections
     public void CtorTest ()
     {
       var comparer = 
-        new CompoundValueEqualityComparer<CompoundValueEqualityComparerTestClass> (x => (new object[] { x.Number, x.TestClass, x.Text, x.Text2 }));
+        new CompoundValueEqualityComparer<CompoundValueEqualityComparerTestClass>(x => (new object[] { x.Number, x.TestClass, x.Text, x.Text2 }));
 
       var y = new CompoundValueEqualityComparerTestClass { Text = "changed1" };
-      Assert.That (comparer.GetEqualityParticipatingObjects(y), Is.EqualTo (new object[] { y.Number, y.TestClass, y.Text, y.Text2 }));
+      Assert.That(comparer.GetEqualityParticipatingObjects(y), Is.EqualTo(new object[] { y.Number, y.TestClass, y.Text, y.Text2 }));
     }
 
     [Test]
     public void EqualsTest ()
     {
-      var comparer = new CompoundValueEqualityComparer<CompoundValueEqualityComparerTestClass> (x => (new object[] { x.Number, x.TestClass, x.Text, x.Text2 }));
-      var comparerIgnoreText = new CompoundValueEqualityComparer<CompoundValueEqualityComparerTestClass> (x => (new object[] { x.Number, x.TestClass, x.Text2 }));
-      var testClass = new CompoundValueEqualityComparerTestClass ();
-      var testClassCopy = new CompoundValueEqualityComparerTestClass ();
+      var comparer = new CompoundValueEqualityComparer<CompoundValueEqualityComparerTestClass>(x => (new object[] { x.Number, x.TestClass, x.Text, x.Text2 }));
+      var comparerIgnoreText = new CompoundValueEqualityComparer<CompoundValueEqualityComparerTestClass>(x => (new object[] { x.Number, x.TestClass, x.Text2 }));
+      var testClass = new CompoundValueEqualityComparerTestClass();
+      var testClassCopy = new CompoundValueEqualityComparerTestClass();
       var testClass2 = new CompoundValueEqualityComparerTestClass { Text = "changed1" };
 
-      Assert.That (comparer.Equals (testClass, testClassCopy), Is.True);
-      Assert.That (comparer.Equals (testClass, testClass2), Is.False);
+      Assert.That(comparer.Equals(testClass, testClassCopy), Is.True);
+      Assert.That(comparer.Equals(testClass, testClass2), Is.False);
 
-      Assert.That (comparerIgnoreText.Equals (testClass, testClassCopy), Is.True);
-      Assert.That (comparerIgnoreText.Equals (testClass, testClass2), Is.True);
+      Assert.That(comparerIgnoreText.Equals(testClass, testClassCopy), Is.True);
+      Assert.That(comparerIgnoreText.Equals(testClass, testClass2), Is.True);
     }
 
 
     [Test]
     public void EqualsObjectTest ()
     {
-      var comparer = new CompoundValueEqualityComparer<CompoundValueEqualityComparerTestClass> (x => (new object[] { x.Number, x.TestClass, x.Text, x.Text2 }));
-      var testClass = new CompoundValueEqualityComparerTestClass ();
-      var testClassCopy = new CompoundValueEqualityComparerTestClass ();
+      var comparer = new CompoundValueEqualityComparer<CompoundValueEqualityComparerTestClass>(x => (new object[] { x.Number, x.TestClass, x.Text, x.Text2 }));
+      var testClass = new CompoundValueEqualityComparerTestClass();
+      var testClassCopy = new CompoundValueEqualityComparerTestClass();
       var testClass2 = new CompoundValueEqualityComparerTestClass { Text = "changed1" };
-      Object obj = new Object ();
+      Object obj = new Object();
       const Object objNull = null;
 
-      Assert.That (comparer.Equals (testClass, objNull), Is.False);
-      Assert.That (comparer.Equals (testClass, obj), Is.False);
-      Assert.That (comparer.Equals (testClass, (object) testClass), Is.True);
-      Assert.That (comparer.Equals (testClass, (object) testClassCopy), Is.True);
-      Assert.That (comparer.Equals (testClass, (object) testClass2), Is.False);
+      Assert.That(comparer.Equals(testClass, objNull), Is.False);
+      Assert.That(comparer.Equals(testClass, obj), Is.False);
+      Assert.That(comparer.Equals(testClass, (object) testClass), Is.True);
+      Assert.That(comparer.Equals(testClass, (object) testClassCopy), Is.True);
+      Assert.That(comparer.Equals(testClass, (object) testClass2), Is.False);
     }
 
 
     [Test]
     public void GetHashCodeConsistencyTest ()
     {
-      var comparer = new CompoundValueEqualityComparer<CompoundValueEqualityComparerTestClass> (x => (new object[] { x.Number, x.TestClass, x.Text, x.Text2 }));
-      var comparerIgnoreText = new CompoundValueEqualityComparer<CompoundValueEqualityComparerTestClass> (x => (new object[] { x.Number, x.TestClass, x.Text2 }));
+      var comparer = new CompoundValueEqualityComparer<CompoundValueEqualityComparerTestClass>(x => (new object[] { x.Number, x.TestClass, x.Text, x.Text2 }));
+      var comparerIgnoreText = new CompoundValueEqualityComparer<CompoundValueEqualityComparerTestClass>(x => (new object[] { x.Number, x.TestClass, x.Text2 }));
       var testClass = new CompoundValueEqualityComparerTestClass { Number = 987654, TestClass = new ComparableTestClass(34567), Text = "the", Text2 = "quick"};
-      var testClassCopy = new CompoundValueEqualityComparerTestClass { Number = 987654, TestClass = new ComparableTestClass (34567), Text = "the", Text2 = "quick" };
-      var testClass2 = new CompoundValueEqualityComparerTestClass { Number = 987654, TestClass = new ComparableTestClass (34567), Text = "Wabra", Text2 = "quick" };
+      var testClassCopy = new CompoundValueEqualityComparerTestClass { Number = 987654, TestClass = new ComparableTestClass(34567), Text = "the", Text2 = "quick" };
+      var testClass2 = new CompoundValueEqualityComparerTestClass { Number = 987654, TestClass = new ComparableTestClass(34567), Text = "Wabra", Text2 = "quick" };
 
-      Assert.That (comparer.Equals (testClass, testClassCopy), Is.True);
-      Assert.That (comparer.Equals (testClass, testClass2), Is.False);
-      Assert.That (comparer.GetHashCode (testClass), Is.EqualTo (comparer.GetHashCode (testClassCopy)));
-      Assert.That (comparer.GetHashCode (testClass), Is.Not.EqualTo (comparer.GetHashCode (testClass2)));
+      Assert.That(comparer.Equals(testClass, testClassCopy), Is.True);
+      Assert.That(comparer.Equals(testClass, testClass2), Is.False);
+      Assert.That(comparer.GetHashCode(testClass), Is.EqualTo(comparer.GetHashCode(testClassCopy)));
+      Assert.That(comparer.GetHashCode(testClass), Is.Not.EqualTo(comparer.GetHashCode(testClass2)));
 
-      Assert.That (comparerIgnoreText.Equals (testClass, testClassCopy), Is.True);
-      Assert.That (comparerIgnoreText.Equals (testClass, testClass2), Is.True);
-      Assert.That (comparerIgnoreText.GetHashCode (testClass), Is.EqualTo (comparerIgnoreText.GetHashCode (testClassCopy)));
-      Assert.That (comparerIgnoreText.GetHashCode (testClass), Is.EqualTo (comparerIgnoreText.GetHashCode (testClass2)));
+      Assert.That(comparerIgnoreText.Equals(testClass, testClassCopy), Is.True);
+      Assert.That(comparerIgnoreText.Equals(testClass, testClass2), Is.True);
+      Assert.That(comparerIgnoreText.GetHashCode(testClass), Is.EqualTo(comparerIgnoreText.GetHashCode(testClassCopy)));
+      Assert.That(comparerIgnoreText.GetHashCode(testClass), Is.EqualTo(comparerIgnoreText.GetHashCode(testClass2)));
     }
 
   }
@@ -96,7 +96,7 @@ namespace Remotion.UnitTests.Collections
     public string Text = "1st";
     public string Text2 = "2nd";
     public int Number = 71;
-    public ComparableTestClass TestClass = new ComparableTestClass (111);
+    public ComparableTestClass TestClass = new ComparableTestClass(111);
   }
 
 

@@ -43,29 +43,29 @@ namespace Remotion.Web.UI.Controls
 
     protected override bool EvaluateIsValid ()
     {
-      string text = GetControlValidationValue (ControlToValidate);
+      string text = GetControlValidationValue(ControlToValidate);
 
-      if (string.IsNullOrEmpty (text))
+      if (string.IsNullOrEmpty(text))
         return true;
 
       switch (_dataType)
       {
         case NumericValidationDataType.Byte:
-          return EvaluateIsValid<Byte> (text, _numberStyle, Byte.TryParse, Byte.TryParse);
+          return EvaluateIsValid<Byte>(text, _numberStyle, Byte.TryParse, Byte.TryParse);
         case NumericValidationDataType.Decimal:
-          return EvaluateIsValid<Decimal> (text, _numberStyle, Decimal.TryParse, Decimal.TryParse);
+          return EvaluateIsValid<Decimal>(text, _numberStyle, Decimal.TryParse, Decimal.TryParse);
         case NumericValidationDataType.Double:
-          return EvaluateIsValid<Double> (text, _numberStyle, Double.TryParse, Double.TryParse);
+          return EvaluateIsValid<Double>(text, _numberStyle, Double.TryParse, Double.TryParse);
         case NumericValidationDataType.Int16:
-          return EvaluateIsValid<Int16> (text, _numberStyle, Int16.TryParse, Int16.TryParse);
+          return EvaluateIsValid<Int16>(text, _numberStyle, Int16.TryParse, Int16.TryParse);
         case NumericValidationDataType.Int32:
-          return EvaluateIsValid<Int32> (text, _numberStyle, Int32.TryParse, Int32.TryParse);
+          return EvaluateIsValid<Int32>(text, _numberStyle, Int32.TryParse, Int32.TryParse);
         case NumericValidationDataType.Int64:
-          return EvaluateIsValid<Int64> (text, _numberStyle, Int64.TryParse, Int64.TryParse);
+          return EvaluateIsValid<Int64>(text, _numberStyle, Int64.TryParse, Int64.TryParse);
         case NumericValidationDataType.Single:
-          return EvaluateIsValid<Single> (text, _numberStyle, Single.TryParse, Single.TryParse);
+          return EvaluateIsValid<Single>(text, _numberStyle, Single.TryParse, Single.TryParse);
         default:
-          throw new InvalidOperationException (string.Format ("The value '{0}' of the 'DataType' property is not a valid value.", _dataType));
+          throw new InvalidOperationException(string.Format("The value '{0}' of the 'DataType' property is not a valid value.", _dataType));
       }
     }
 
@@ -78,20 +78,20 @@ namespace Remotion.Web.UI.Controls
       {
         try
         {
-          if (!tryParseWithNumberStyle (text, numberStyle, null, out parsedValue))
+          if (!tryParseWithNumberStyle(text, numberStyle, null, out parsedValue))
             return false;
         }
         catch (ArgumentException e)
         {
-          throw new InvalidOperationException ("The combination of the flags in the 'NumberStyle' property is invalid.", e);
+          throw new InvalidOperationException("The combination of the flags in the 'NumberStyle' property is invalid.", e);
         }
       }
-      else if (!tryParse (text, out parsedValue))
+      else if (!tryParse(text, out parsedValue))
       {
         return false;
       }
 
-      if (!_allowNegative && parsedValue.CompareTo (default (T)) < 0)
+      if (!_allowNegative && parsedValue.CompareTo(default (T)) < 0)
         return false;
 
       return true;
@@ -105,7 +105,7 @@ namespace Remotion.Web.UI.Controls
     public NumericValidationDataType DataType
     {
       get { return _dataType; }
-      set { _dataType = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<NumericValidationDataType> ("value", value); }
+      set { _dataType = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<NumericValidationDataType>("value", value); }
     }
 
     /// <summary> Gets or sets a value that determines whether negative values are allowed. </summary>

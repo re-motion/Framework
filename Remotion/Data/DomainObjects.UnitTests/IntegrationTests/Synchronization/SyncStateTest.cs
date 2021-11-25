@@ -31,19 +31,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     public void CollectionItems_Synchronized_WithUnload ()
     {
       var orderItem = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
-      var endPointID = RelationEndPointID.Resolve (orderItem, oi => oi.Order);
-      var endPoint = (RealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID);
-      Assert.That (endPoint, Is.Not.Null);
+      var endPointID = RelationEndPointID.Resolve(orderItem, oi => oi.Order);
+      var endPoint = (RealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID);
+      Assert.That(endPoint, Is.Not.Null);
 
-      Assert.That (RealObjectEndPointTestHelper.GetSyncState (endPoint), Is.TypeOf (typeof (UnknownRealObjectEndPointSyncState)));
+      Assert.That(RealObjectEndPointTestHelper.GetSyncState(endPoint), Is.TypeOf(typeof (UnknownRealObjectEndPointSyncState)));
 
       orderItem.Order.OrderItems.EnsureDataComplete();
 
-      Assert.That (RealObjectEndPointTestHelper.GetSyncState (endPoint), Is.TypeOf (typeof (SynchronizedRealObjectEndPointSyncState)));
+      Assert.That(RealObjectEndPointTestHelper.GetSyncState(endPoint), Is.TypeOf(typeof (SynchronizedRealObjectEndPointSyncState)));
 
-      UnloadService.UnloadVirtualEndPoint (TestableClientTransaction, orderItem.Order.OrderItems.AssociatedEndPointID);
+      UnloadService.UnloadVirtualEndPoint(TestableClientTransaction, orderItem.Order.OrderItems.AssociatedEndPointID);
 
-      Assert.That (RealObjectEndPointTestHelper.GetSyncState (endPoint), Is.TypeOf (typeof (UnknownRealObjectEndPointSyncState)));
+      Assert.That(RealObjectEndPointTestHelper.GetSyncState(endPoint), Is.TypeOf(typeof (UnknownRealObjectEndPointSyncState)));
     }
 
     [Test]
@@ -51,24 +51,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       SetDatabaseModifyable();
 
-      var order = DomainObjectIDs.Order1.GetObject<Order> ();
+      var order = DomainObjectIDs.Order1.GetObject<Order>();
       order.OrderItems.EnsureDataComplete();
 
-      var orderItemID = RelationInconcsistenciesTestHelper.CreateObjectAndSetRelationInOtherTransaction<OrderItem, Order> (order.ID, (oi, o) => oi.Order = o);
+      var orderItemID = RelationInconcsistenciesTestHelper.CreateObjectAndSetRelationInOtherTransaction<OrderItem, Order>(order.ID, (oi, o) => oi.Order = o);
       var orderItem = orderItemID.GetObject<OrderItem>();
-      var endPointID = RelationEndPointID.Resolve (orderItem, oi => oi.Order);
-      var endPoint = (RealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID);
-      Assert.That (endPoint, Is.Not.Null);
+      var endPointID = RelationEndPointID.Resolve(orderItem, oi => oi.Order);
+      var endPoint = (RealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID);
+      Assert.That(endPoint, Is.Not.Null);
 
-      Assert.That (RealObjectEndPointTestHelper.GetSyncState (endPoint), Is.TypeOf (typeof (UnsynchronizedRealObjectEndPointSyncState)));
+      Assert.That(RealObjectEndPointTestHelper.GetSyncState(endPoint), Is.TypeOf(typeof (UnsynchronizedRealObjectEndPointSyncState)));
 
-      UnloadService.UnloadVirtualEndPoint (TestableClientTransaction, orderItem.Order.OrderItems.AssociatedEndPointID);
+      UnloadService.UnloadVirtualEndPoint(TestableClientTransaction, orderItem.Order.OrderItems.AssociatedEndPointID);
 
-      Assert.That (RealObjectEndPointTestHelper.GetSyncState (endPoint), Is.TypeOf (typeof (UnknownRealObjectEndPointSyncState)));
+      Assert.That(RealObjectEndPointTestHelper.GetSyncState(endPoint), Is.TypeOf(typeof (UnknownRealObjectEndPointSyncState)));
 
       order.OrderItems.EnsureDataComplete();
 
-      Assert.That (RealObjectEndPointTestHelper.GetSyncState (endPoint), Is.TypeOf (typeof (SynchronizedRealObjectEndPointSyncState)));
+      Assert.That(RealObjectEndPointTestHelper.GetSyncState(endPoint), Is.TypeOf(typeof (SynchronizedRealObjectEndPointSyncState)));
     }
   }
 }

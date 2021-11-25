@@ -19,13 +19,13 @@ namespace Remotion.Web.UnitTests
     {
       if (_expected == null || _actual == null)
       {
-        base.WriteMessageTo (writer);
+        base.WriteMessageTo(writer);
       }
       else
       {
-        writer.DisplayStringDifferences (
-            string.Format ("{{ {0} , {1} }}", _expected.First, _expected.Second),
-            string.Format ("{{ {0} , {1} }}", _actual.First, _actual.Second),
+        writer.DisplayStringDifferences(
+            string.Format("{{ {0} , {1} }}", _expected.First, _expected.Second),
+            string.Format("{{ {0} , {1} }}", _actual.First, _actual.Second),
             -1,
             false,
             false);

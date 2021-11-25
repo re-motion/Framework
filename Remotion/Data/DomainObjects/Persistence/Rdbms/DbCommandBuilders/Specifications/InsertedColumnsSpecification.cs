@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public InsertedColumnsSpecification (IEnumerable<ColumnValue> columnValues)
     {
-      ArgumentUtility.CheckNotNull ("columnValues", columnValues);
+      ArgumentUtility.CheckNotNull("columnValues", columnValues);
 
       _columnValues = columnValues.ToArray();
     }
@@ -47,31 +47,31 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public void AppendColumnNames (StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("dbCommand", dbCommand);
-      ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("dbCommand", dbCommand);
+      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
 
-      var columNames = string.Join (", ", _columnValues.Select (cv => sqlDialect.DelimitIdentifier (cv.Column.Name)));
-      statement.Append (columNames);
+      var columNames = string.Join(", ", _columnValues.Select(cv => sqlDialect.DelimitIdentifier(cv.Column.Name)));
+      statement.Append(columNames);
     }
 
     public void AppendColumnValues (StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("dbCommand", dbCommand);
-      ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("dbCommand", dbCommand);
+      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
 
-      var parameters = _columnValues.Select (
+      var parameters = _columnValues.Select(
           cv =>
           {
-            var parameter = cv.Column.StorageTypeInfo.CreateDataParameter (dbCommand, cv.Value);
-            parameter.ParameterName = sqlDialect.GetParameterName (cv.Column.Name);
-            dbCommand.Parameters.Add (parameter);
+            var parameter = cv.Column.StorageTypeInfo.CreateDataParameter(dbCommand, cv.Value);
+            parameter.ParameterName = sqlDialect.GetParameterName(cv.Column.Name);
+            dbCommand.Parameters.Add(parameter);
             return parameter;
           });
 
-      var parameterNames = string.Join (", ", parameters.Select (p => p.ParameterName));
-      statement.Append (parameterNames);
+      var parameterNames = string.Join(", ", parameters.Select(p => p.ParameterName));
+      statement.Append(parameterNames);
     }
   }
 }

@@ -34,9 +34,9 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   {
     public static TenantProxy Create (Tenant tenant)
     {
-      ArgumentUtility.CheckNotNull ("tenant", tenant);
+      ArgumentUtility.CheckNotNull("tenant", tenant);
 
-      return new TenantProxy (
+      return new TenantProxy(
           tenant.GetHandle(),
           ((IBusinessObjectWithIdentity) tenant).UniqueIdentifier,
           ((IBusinessObjectWithIdentity) tenant).DisplayName);

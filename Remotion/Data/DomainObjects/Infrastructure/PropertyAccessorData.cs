@@ -33,11 +33,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentException">The domain object does not have a property with the given identifier.</exception>
     public static PropertyKind GetPropertyKind (ClassDefinition classDefinition, string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
 
-      Tuple<PropertyDefinition, IRelationEndPointDefinition> propertyObjects = GetPropertyDefinitionObjects (classDefinition, propertyIdentifier);
-      return GetPropertyKind (propertyObjects.Item2);
+      Tuple<PropertyDefinition, IRelationEndPointDefinition> propertyObjects = GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
+      return GetPropertyKind(propertyObjects.Item2);
     }
 
     private static PropertyKind GetPropertyKind (IRelationEndPointDefinition relationEndPointDefinition)
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         case PropertyKind.RelatedObject:
           return RelatedObjectPropertyAccessorStrategy.Instance;
         default:
-          Assertion.IsTrue (kind == PropertyKind.RelatedObjectCollection);
+          Assertion.IsTrue(kind == PropertyKind.RelatedObjectCollection);
           return RelatedObjectCollectionPropertyAccessorStrategy.Instance;
       }
     }
@@ -77,13 +77,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentException">The class definition does not have a property with the given identifier.</exception>
     public static Type GetPropertyType (ClassDefinition classDefinition, string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
 
       Tuple<PropertyDefinition, IRelationEndPointDefinition> definitionObjects =
-          GetPropertyDefinitionObjects (classDefinition, propertyIdentifier);
+          GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
 
-      return GetStrategy (GetPropertyKind (definitionObjects.Item2)).GetPropertyType (definitionObjects.Item1, definitionObjects.Item2);
+      return GetStrategy(GetPropertyKind(definitionObjects.Item2)).GetPropertyType(definitionObjects.Item1, definitionObjects.Item2);
     }
 
     /// <summary>
@@ -98,23 +98,23 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClassDefinition classDefinition,
         string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
 
-      PropertyDefinition propertyDefinition = classDefinition.GetPropertyDefinition (propertyIdentifier);
-      IRelationEndPointDefinition relationEndPointDefinition = classDefinition.GetRelationEndPointDefinition (propertyIdentifier);
+      PropertyDefinition propertyDefinition = classDefinition.GetPropertyDefinition(propertyIdentifier);
+      IRelationEndPointDefinition relationEndPointDefinition = classDefinition.GetRelationEndPointDefinition(propertyIdentifier);
 
       if (propertyDefinition == null && relationEndPointDefinition == null)
       {
-        string message = String.Format (
+        string message = String.Format(
             "The domain object type {0} does not have a mapping property named '{1}'.",
             classDefinition.ClassType.GetFullNameSafe(),
             propertyIdentifier);
 
-        throw new ArgumentException (message, "propertyIdentifier");
+        throw new ArgumentException(message, "propertyIdentifier");
       }
       else
-        return new Tuple<PropertyDefinition, IRelationEndPointDefinition> (propertyDefinition, relationEndPointDefinition);
+        return new Tuple<PropertyDefinition, IRelationEndPointDefinition>(propertyDefinition, relationEndPointDefinition);
     }
 
     private readonly string _propertyIdentifier;
@@ -129,20 +129,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public PropertyAccessorData (ClassDefinition classDefinition, string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
 
       _propertyIdentifier = propertyIdentifier;
       _classDefinition = classDefinition;
 
-      Tuple<PropertyDefinition, IRelationEndPointDefinition> propertyObjects = GetPropertyDefinitionObjects (_classDefinition, propertyIdentifier);
+      Tuple<PropertyDefinition, IRelationEndPointDefinition> propertyObjects = GetPropertyDefinitionObjects(_classDefinition, propertyIdentifier);
       _propertyDefinition = propertyObjects.Item1;
       _relationEndPointDefinition = propertyObjects.Item2;
 
-      _kind = GetPropertyKind (_relationEndPointDefinition);
-      _strategy = GetStrategy (_kind);
+      _kind = GetPropertyKind(_relationEndPointDefinition);
+      _strategy = GetStrategy(_kind);
 
-      _propertyType = _strategy.GetPropertyType (_propertyDefinition, _relationEndPointDefinition);
+      _propertyType = _strategy.GetPropertyType(_propertyDefinition, _relationEndPointDefinition);
     }
 
     /// <summary>
@@ -213,13 +213,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       var other = obj as PropertyAccessorData;
       return other != null
-          && Equals (PropertyIdentifier, other.PropertyIdentifier)
-          && Equals (ClassDefinition, other.ClassDefinition);
+          && Equals(PropertyIdentifier, other.PropertyIdentifier)
+          && Equals(ClassDefinition, other.ClassDefinition);
     }
 
     public override int GetHashCode ()
     {
-      return EqualityUtility.GetRotatedHashCode (PropertyIdentifier, ClassDefinition);
+      return EqualityUtility.GetRotatedHashCode(PropertyIdentifier, ClassDefinition);
     }
   }
 }

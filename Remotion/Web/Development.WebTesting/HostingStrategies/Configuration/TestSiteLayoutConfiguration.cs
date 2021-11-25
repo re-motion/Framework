@@ -35,29 +35,29 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
 
     public TestSiteLayoutConfiguration ([NotNull] WebTestConfigurationSection configSettings)
     {
-      ArgumentUtility.CheckNotNull ("configSettings", configSettings);
+      ArgumentUtility.CheckNotNull("configSettings", configSettings);
 
-      RootPath = GetRootedRootPath (configSettings.TestSiteLayoutConfiguration.RootPath);
+      RootPath = GetRootedRootPath(configSettings.TestSiteLayoutConfiguration.RootPath);
       Resources = configSettings.TestSiteLayoutConfiguration.Resources
-          .Select (resourceElement => EnsureRootedPath (RootPath, resourceElement.Path))
-          .Select (rootedPath => new TestSiteResource (rootedPath)).ToArray();
+          .Select(resourceElement => EnsureRootedPath(RootPath, resourceElement.Path))
+          .Select(rootedPath => new TestSiteResource(rootedPath)).ToArray();
     }
 
     private string GetRootedRootPath ([NotNull] string path)
     {
-      return EnsureRootedPath (AppContext.BaseDirectory, path);
+      return EnsureRootedPath(AppContext.BaseDirectory, path);
     }
 
     private string EnsureRootedPath ([NotNull] string rootPath, [NotNull] string path)
     {
-      if (Path.IsPathRooted (path))
+      if (Path.IsPathRooted(path))
       {
-        return Path.GetFullPath (path);
+        return Path.GetFullPath(path);
       }
 
-      var combinedPath = Path.Combine (rootPath, path);
+      var combinedPath = Path.Combine(rootPath, path);
 
-      return Path.GetFullPath (combinedPath);
+      return Path.GetFullPath(combinedPath);
     }
   }
 }

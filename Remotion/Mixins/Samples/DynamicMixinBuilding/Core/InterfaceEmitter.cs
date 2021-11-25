@@ -27,11 +27,11 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
   {
     private static TypeBuilder CreateTypeBuilder (ModuleScope scope, string typeName)
     {
-      return scope.ObtainDynamicModule (true).DefineType (typeName, TypeAttributes.Public | TypeAttributes.Interface | TypeAttributes.Abstract);
+      return scope.ObtainDynamicModule(true).DefineType(typeName, TypeAttributes.Public | TypeAttributes.Interface | TypeAttributes.Abstract);
     }
 
     public InterfaceEmitter (ModuleScope scope, string typeName)
-        : base (CreateTypeBuilder (ArgumentUtility.CheckNotNull ("scope", scope), ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName)))
+        : base (CreateTypeBuilder(ArgumentUtility.CheckNotNull("scope", scope), ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName)))
     {
     }
 

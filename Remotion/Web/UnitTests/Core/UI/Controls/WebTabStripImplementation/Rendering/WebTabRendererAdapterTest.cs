@@ -36,22 +36,22 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
     public void SetUp ()
     {
       _httpContextStub = new Mock<HttpContextBase>();
-      _htmlTextWriterStub = new Mock<HtmlTextWriter> (TextWriter.Null);
+      _htmlTextWriterStub = new Mock<HtmlTextWriter>(TextWriter.Null);
     }
 
     [Test]
     public void Render ()
     {
-      var webTabRendererMock = new Mock<IWebTabRenderer> (MockBehavior.Strict);
+      var webTabRendererMock = new Mock<IWebTabRenderer>(MockBehavior.Strict);
       var webTabStub = new Mock<IWebTab>();
-      var renderingContext = new WebTabStripRenderingContext (
+      var renderingContext = new WebTabStripRenderingContext(
           _httpContextStub.Object, _htmlTextWriterStub.Object, new WebTabStripMock(), new WebTabRendererAdapter[0]);
        var webTabStyle = new WebTabStyle();
 
-      webTabRendererMock.Setup (mock => mock.Render (renderingContext, webTabStub.Object, true, true, webTabStyle)).Verifiable();
+      webTabRendererMock.Setup(mock => mock.Render(renderingContext, webTabStub.Object, true, true, webTabStyle)).Verifiable();
 
-      var rendererAdapter = new WebTabRendererAdapter (webTabRendererMock.Object, webTabStub.Object, true, true, webTabStyle);
-      rendererAdapter.Render (renderingContext);
+      var rendererAdapter = new WebTabRendererAdapter(webTabRendererMock.Object, webTabStub.Object, true, true, webTabStyle);
+      rendererAdapter.Render(renderingContext);
 
       webTabRendererMock.Verify();
     }

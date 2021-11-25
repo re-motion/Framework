@@ -31,11 +31,11 @@ namespace Remotion.Validation.Implementation
 
     public TypedValidatorDecorator (IValidator validator)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
-      if (!validator.CanValidateInstancesOfType (typeof (T)))
+      ArgumentUtility.CheckNotNull("validator", validator);
+      if (!validator.CanValidateInstancesOfType(typeof (T)))
       {
-        throw new ArgumentException (
-            string.Format ("The validated type '{0}' is not supported by the passed validator.", typeof (T).Name),
+        throw new ArgumentException(
+            string.Format("The validated type '{0}' is not supported by the passed validator.", typeof (T).Name),
             "validator");
       }
 
@@ -49,9 +49,9 @@ namespace Remotion.Validation.Implementation
 
     public ValidationResult Validate (T instance)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull("instance", instance);
 
-      return _validator.Validate (instance);
+      return _validator.Validate(instance);
     }
 
     public ValidatorDescriptor CreateDescriptor ()
@@ -61,23 +61,23 @@ namespace Remotion.Validation.Implementation
 
     public bool CanValidateInstancesOfType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return _validator.CanValidateInstancesOfType (type);
+      return _validator.CanValidateInstancesOfType(type);
     }
 
     ValidationResult IValidator.Validate (object instance)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull("instance", instance);
 
-      return _validator.Validate (instance);
+      return _validator.Validate(instance);
     }
 
     ValidationResult IValidator.Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return _validator.Validate (context);
+      return _validator.Validate(context);
     }
   }
 }

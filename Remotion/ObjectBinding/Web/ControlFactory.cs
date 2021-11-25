@@ -34,7 +34,7 @@ public sealed class ControlFactory
 
   public static IBusinessObjectBoundWebControl? CreateControl (IBusinessObjectProperty property)
   {
-    return CreateControl (property, EditMode.Edit);
+    return CreateControl(property, EditMode.Edit);
   }
 
   /// <summary>

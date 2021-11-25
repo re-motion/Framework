@@ -29,7 +29,7 @@ namespace Remotion.Web.ExecutionEngine
 
     protected WxeCallOptionsBase ([NotNull] WxePermaUrlOptions permaUrlOptions)
     {
-      ArgumentUtility.CheckNotNull ("permaUrlOptions", permaUrlOptions);
+      ArgumentUtility.CheckNotNull("permaUrlOptions", permaUrlOptions);
 
       _permaUrlOptions = permaUrlOptions;
     }

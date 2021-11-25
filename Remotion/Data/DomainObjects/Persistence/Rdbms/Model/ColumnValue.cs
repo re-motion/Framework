@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ColumnValue (ColumnDefinition column, object value)
     {
-      ArgumentUtility.CheckNotNull ("column", column);
+      ArgumentUtility.CheckNotNull("column", column);
 
       _column = column;
       _value = value;

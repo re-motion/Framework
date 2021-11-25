@@ -33,7 +33,7 @@ namespace Remotion.Utilities
     /// </summary>
     public static int SafeGetHashCode<T> (T obj)
     {
-      return (obj == null) ? 0 : obj.GetHashCode ();
+      return (obj == null) ? 0 : obj.GetHashCode();
     }
 
     /// <summary>
@@ -53,84 +53,84 @@ namespace Remotion.Utilities
     /// </remarks>
     public static int GetRotatedHashCode<A0, A1> (A0 a0, A1 a1)
     {
-      int hc = SafeGetHashCode (a0);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a1);
+      int hc = SafeGetHashCode(a0);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a1);
       return hc;
     }
 
     /// <inheritdoc cref="GetRotatedHashCode{A0,A1}" />
     public static int GetRotatedHashCode<A0, A1, A2> (A0 a0, A1 a1, A2 a2)
     {
-      int hc = SafeGetHashCode (a0);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a1);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a2);
+      int hc = SafeGetHashCode(a0);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a1);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a2);
       return hc;
     }
 
     /// <inheritdoc cref="GetRotatedHashCode{A0,A1}" />
     public static int GetRotatedHashCode<A0, A1, A2, A3> (A0 a0, A1 a1, A2 a2, A3 a3)
     {
-      int hc = SafeGetHashCode (a0);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a1);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a2);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a3);
+      int hc = SafeGetHashCode(a0);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a1);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a2);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a3);
       return hc;
     }
 
     /// <inheritdoc cref="GetRotatedHashCode{A0,A1}" />
     public static int GetRotatedHashCode<A0, A1, A2, A3, A4> (A0 a0, A1 a1, A2 a2, A3 a3, A4 a4)
     {
-      int hc = SafeGetHashCode (a0);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a1);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a2);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a3);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a4);
+      int hc = SafeGetHashCode(a0);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a1);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a2);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a3);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a4);
       return hc;
     }
 
     /// <inheritdoc cref="GetRotatedHashCode{A0,A1}" />
     public static int GetRotatedHashCode<A0, A1, A2, A3, A4, A5> (A0 a0, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5)
     {
-      int hc = SafeGetHashCode (a0);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a1);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a2);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a3);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a4);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a5);
+      int hc = SafeGetHashCode(a0);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a1);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a2);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a3);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a4);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a5);
       return hc;
     }
 
     /// <inheritdoc cref="GetRotatedHashCode{A0,A1}" />
     public static int GetRotatedHashCode<A0, A1, A2, A3, A4, A5, A6> (A0 a0, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6)
     {
-      int hc = SafeGetHashCode (a0);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a1);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a2);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a3);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a4);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a5);
-      Rotate (ref hc);
-      hc ^= SafeGetHashCode (a6);
+      int hc = SafeGetHashCode(a0);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a1);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a2);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a3);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a4);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a5);
+      Rotate(ref hc);
+      hc ^= SafeGetHashCode(a6);
       return hc;
     }
 
@@ -140,8 +140,8 @@ namespace Remotion.Utilities
       int hc = 0;
       for (int i = 0; i < fields.Length; ++i)
       {
-        hc ^= SafeGetHashCode (fields[i]);
-        Rotate (ref hc);
+        hc ^= SafeGetHashCode(fields[i]);
+        Rotate(ref hc);
       }
       return hc;
     }
@@ -154,12 +154,12 @@ namespace Remotion.Utilities
     /// <exception cref="ArgumentNullException">The <paramref name="objects"/> parameter was <see langword="null"/>.</exception>
     public static int GetRotatedHashCode (IEnumerable objects)
     {
-      ArgumentUtility.CheckNotNull ("objects", objects);
+      ArgumentUtility.CheckNotNull("objects", objects);
       int hc = 0;
       foreach (object value in objects)
       {
-        hc ^= SafeGetHashCode (value);
-        Rotate (ref hc);
+        hc ^= SafeGetHashCode(value);
+        Rotate(ref hc);
       }
       return hc;
     }
@@ -182,7 +182,7 @@ namespace Remotion.Utilities
     {
       int hc = 0;
       foreach (object value in objects)
-        hc ^= SafeGetHashCode (value);
+        hc ^= SafeGetHashCode(value);
 
       return hc;
     }
@@ -200,7 +200,7 @@ namespace Remotion.Utilities
       if (a == null)
         return (b == null);
       else
-        return a.Equals ((T) b!);
+        return a.Equals((T) b!);
     }
 
     /// <summary>
@@ -212,7 +212,7 @@ namespace Remotion.Utilities
       //TODO RM-7432: bugfix 'a.Equals' can throw a NPE
       T? other = b as T;
       if (other != null)
-        return a!.Equals (other);
+        return a!.Equals(other);
       else
         return false;
     }
@@ -224,7 +224,7 @@ namespace Remotion.Utilities
       where T : struct, IEquatable<T>
     {
       if (b is T) // ignore incorrect ReSharper warning
-        return a.Equals ((T) b);
+        return a.Equals((T) b);
       else
         return false;
     }
@@ -232,7 +232,7 @@ namespace Remotion.Utilities
     public static bool NotNullAndSameType<T> (T a, [NotNullWhen (true)] T? b)
       where T: class, IEquatable<T>
     {
-      ArgumentUtility.CheckNotNull ("a", a);
+      ArgumentUtility.CheckNotNull("a", a);
       return (b != null) && a.GetType() == b.GetType();
     }
 
@@ -247,7 +247,7 @@ namespace Remotion.Utilities
       if (a == null)
         return (b == null);
       else
-        return a.Equals ((object?) b);
+        return a.Equals((object?) b);
     }
    
   }

@@ -44,8 +44,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Gene
     /// <inheritdoc />
     public void AddParameters (Dictionary<string, GenericTestPageParameter> parameterCollection, GenericTestOptions options)
     {
-      parameterCollection.Add (TestConstants.DisplayNameSelectorID, DisplayName, "Hidden" + DisplayName, options.HtmlID);
-      parameterCollection.Add (
+      parameterCollection.Add(TestConstants.DisplayNameSelectorID, DisplayName, "Hidden" + DisplayName, options.HtmlID);
+      parameterCollection.Add(
           TestConstants.DomainPropertySelectorID,
           DomainProperty,
           "Hidden" + DomainProperty,
@@ -54,14 +54,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Gene
           options.IncorrectDomainProperty);
 
       var oldLabelParameter = parameterCollection[TestConstants.LabelTestsID];
-      var newLabelParameter = oldLabelParameter.AppendArguments (DisplayName);
+      var newLabelParameter = oldLabelParameter.AppendArguments(DisplayName);
       parameterCollection[TestConstants.LabelTestsID] = newLabelParameter;
     }
 
     /// <inheritdoc />
     Control IGenericTestPage<GenericTestOptions>.CreateControl (GenericTestOptions options)
     {
-      return CreateControl (options);
+      return CreateControl(options);
     }
 
     /// <summary>

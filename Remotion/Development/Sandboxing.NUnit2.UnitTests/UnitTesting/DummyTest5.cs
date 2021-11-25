@@ -25,34 +25,34 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [Ignore ("Ignored Test")]
     public void TestIgnored ()
     {
-      throw new TestFailedException (typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException ());
+      throw new TestFailedException(typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException());
     }
 
     public void TestSucceeded ()
     {
-      Assert.That (1, Is.EqualTo (1));
+      Assert.That(1, Is.EqualTo(1));
     }
 
     public void TestFailed ()
     {
-      Assert.That (1, Is.EqualTo (0));
+      Assert.That(1, Is.EqualTo(0));
     }
 
     [ExpectedException (typeof (TestFailedException))]
     public void TestExpectedExceptionSucceeded ()
     {
-      throw new TestFailedException (typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException());
+      throw new TestFailedException(typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException());
     }
 
     [ExpectedException (typeof (TestFailedException))]
     public void TestExpectedExceptionFailed ()
     {
-      Assert.That (1, Is.EqualTo (1));
+      Assert.That(1, Is.EqualTo(1));
     }
 
     public void TestThrowsException ()
     {
-      throw new TestFailedException (typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException ());
+      throw new TestFailedException(typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException());
     }
 
   }

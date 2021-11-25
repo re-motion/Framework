@@ -28,38 +28,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void PerformDomainObjectCollectionAddWithOtherClientTransaction ()
     {
-      var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
-      var orderItem3 = DomainObjectMother.GetObjectInOtherTransaction<OrderItem> (DomainObjectIDs.OrderItem3);
-      Assert.That (
-          () => order1.OrderItems.Add (orderItem3),
+      var order1 = DomainObjectIDs.Order1.GetObject<Order>();
+      var orderItem3 = DomainObjectMother.GetObjectInOtherTransaction<OrderItem>(DomainObjectIDs.OrderItem3);
+      Assert.That(
+          () => order1.OrderItems.Add(orderItem3),
           Throws.InstanceOf<ClientTransactionsDifferException>()
-              .With.Message.Matches (
+              .With.Message.Matches(
                   "Cannot insert DomainObject '.*'  at position 2 into collection of property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction."));
     }
 
     [Test]
     public void PerformDomainObjectCollectionInsertWithOtherClientTransaction ()
     {
-      var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
-      var orderItem3 = DomainObjectMother.GetObjectInOtherTransaction<OrderItem> (DomainObjectIDs.OrderItem3);
-      Assert.That (
-          () => order1.OrderItems.Insert (0, orderItem3),
+      var order1 = DomainObjectIDs.Order1.GetObject<Order>();
+      var orderItem3 = DomainObjectMother.GetObjectInOtherTransaction<OrderItem>(DomainObjectIDs.OrderItem3);
+      Assert.That(
+          () => order1.OrderItems.Insert(0, orderItem3),
           Throws.InstanceOf<ClientTransactionsDifferException>()
-              .With.Message.Matches (
+              .With.Message.Matches(
                   "Cannot insert DomainObject '.*' at position 0 into collection of property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction."));
     }
 
     [Test]
     public void PerformDomainObjectCollectionRemoveWithOtherClientTransaction ()
     {
-      var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
-      var orderItem1 = DomainObjectMother.GetObjectInOtherTransaction<OrderItem> (DomainObjectIDs.OrderItem1);
+      var order1 = DomainObjectIDs.Order1.GetObject<Order>();
+      var orderItem1 = DomainObjectMother.GetObjectInOtherTransaction<OrderItem>(DomainObjectIDs.OrderItem1);
 
-      var endPoint = DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint (order1.OrderItems);
-      Assert.That (
-          () => endPoint.Collection.Remove (orderItem1),
+      var endPoint = DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint(order1.OrderItems);
+      Assert.That(
+          () => endPoint.Collection.Remove(orderItem1),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The object to be removed has the same ID as an object in this collection, but is a different object reference.",
                   "domainObject"));
     }
@@ -67,15 +67,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void PerformDomainObjectCollectionReplaceWithOtherClientTransaction ()
     {
-      var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
-      var orderItem3 = DomainObjectMother.GetObjectInOtherTransaction<OrderItem> (DomainObjectIDs.OrderItem3);
+      var order1 = DomainObjectIDs.Order1.GetObject<Order>();
+      var orderItem3 = DomainObjectMother.GetObjectInOtherTransaction<OrderItem>(DomainObjectIDs.OrderItem3);
 
-      int index = order1.OrderItems.IndexOf (DomainObjectIDs.OrderItem1);
+      int index = order1.OrderItems.IndexOf(DomainObjectIDs.OrderItem1);
 
       try
       {
         order1.OrderItems[index] = orderItem3;
-        Assert.Fail ("This test expects a ClientTransactionsDifferException.");
+        Assert.Fail("This test expects a ClientTransactionsDifferException.");
       }
       catch (ClientTransactionsDifferException ex)
       {
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
             "Cannot put DomainObject 'OrderItem|0d7196a5-8161-4048-820d-b1bbdabe3293|System.Guid' into the collection of property "
             + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject "
             + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'. The objects do not belong to the same ClientTransaction.";
-        Assert.That (ex.Message, Is.EqualTo (expectedMessage));
+        Assert.That(ex.Message, Is.EqualTo(expectedMessage));
       }
     }
 

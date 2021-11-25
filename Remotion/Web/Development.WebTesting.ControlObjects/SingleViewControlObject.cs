@@ -36,8 +36,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public ScopeControlObject GetTopControls ()
     {
-      var scope = Scope.FindChild ("TopControl");
-      return new ScopeControlObject (Context.CloneForControl (scope));
+      var scope = Scope.FindChild("TopControl");
+      return new ScopeControlObject(Context.CloneForControl(scope));
     }
 
     /// <summary>
@@ -45,8 +45,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public ScopeControlObject GetView ()
     {
-      var scope = Scope.FindChild ("View");
-      return new ScopeControlObject (Context.CloneForControl (scope));
+      var scope = Scope.FindChild("View");
+      return new ScopeControlObject(Context.CloneForControl(scope));
     }
 
     /// <summary>
@@ -54,34 +54,34 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public ScopeControlObject GetBottomControls ()
     {
-      var scope = Scope.FindChild ("BottomControl");
-      return new ScopeControlObject (Context.CloneForControl (scope));
+      var scope = Scope.FindChild("BottomControl");
+      return new ScopeControlObject(Context.CloneForControl(scope));
     }
 
     /// <inheritdoc/>
     public TControlObject GetControl<TControlObject> (IControlSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return Children.GetControl (controlSelectionCommand);
+      return Children.GetControl(controlSelectionCommand);
     }
 
     /// <inheritdoc/>
     public TControlObject? GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return Children.GetControlOrNull (controlSelectionCommand);
+      return Children.GetControlOrNull(controlSelectionCommand);
     }
 
     /// <inheritdoc/>
     public bool HasControl (IControlExistsCommand controlSelectionCommand)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return Children.HasControl (controlSelectionCommand);
+      return Children.HasControl(controlSelectionCommand);
     }
   }
 }

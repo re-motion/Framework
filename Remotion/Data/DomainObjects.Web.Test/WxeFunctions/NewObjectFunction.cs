@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
       objectForRelationTest2.ClassWithAllDataTypesMandatory = objectWithAllDataTypes2;
     }
 
-    private WxePageStep Step2 = new WxePageStep ("NewObject.aspx");
+    private WxePageStep Step2 = new WxePageStep("NewObject.aspx");
 
 
     private ClassWithAllDataTypes CreateTestObjectWithAllDataTypes ()
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
       test.DateTimeProperty = DateTime.Now;
       test.DecimalProperty = 23.2m;
       test.DoubleProperty = 23.2;
-      test.GuidProperty = new Guid ("{00000008-0000-0000-0000-000000000009}");
+      test.GuidProperty = new Guid("{00000008-0000-0000-0000-000000000009}");
       test.Int16Property = 2;
       test.Int32Property = 4;
       test.Int64Property = 8;

@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding
 
     public string DisplayName
     {
-      get { return _property.GetDisplayName (_value); }
+      get { return _property.GetDisplayName(_value); }
     }
 
     public string Identifier
@@ -61,8 +61,8 @@ namespace Remotion.ObjectBinding
 
     public BooleanToEnumPropertyConverter (IBusinessObjectBooleanProperty property)
     {
-      _enumInfoTrue = new BooleanEnumerationValueInfo (true, property);
-      _enumInfoFalse = new BooleanEnumerationValueInfo (false, property);
+      _enumInfoTrue = new BooleanEnumerationValueInfo(true, property);
+      _enumInfoFalse = new BooleanEnumerationValueInfo(false, property);
     }
 
     /// <summary>Returns the <see cref="IEnumerationValueInfo"/> objects for <see langword="true"/> and <see langword="false"/>.</summary>
@@ -82,12 +82,12 @@ namespace Remotion.ObjectBinding
     {
       if (value == null)
         return null;
-      else if (value.Equals (true))
+      else if (value.Equals(true))
         return _enumInfoTrue;
-      else if (value.Equals (false))
+      else if (value.Equals(false))
         return _enumInfoFalse;
       else
-        throw new ArgumentOutOfRangeException ("value");
+        throw new ArgumentOutOfRangeException("value");
     }
 
     /// <summary>
@@ -98,14 +98,14 @@ namespace Remotion.ObjectBinding
     /// <returns> An <see cref="IEnumerationValueInfo"/> or <see langword="null"/>. </returns>
     public IEnumerationValueInfo? GetValueInfoByIdentifier (string? identifier)
     {
-      if (string.IsNullOrEmpty (identifier))
+      if (string.IsNullOrEmpty(identifier))
         return null;
       else if (identifier == _enumInfoTrue.Identifier)
         return _enumInfoTrue;
       else if (identifier == _enumInfoFalse.Identifier)
         return _enumInfoFalse;
       else
-        throw new ArgumentOutOfRangeException ("identifier");
+        throw new ArgumentOutOfRangeException("identifier");
     }
   }
 }

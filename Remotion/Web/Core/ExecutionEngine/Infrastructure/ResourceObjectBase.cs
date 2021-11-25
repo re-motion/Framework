@@ -34,10 +34,10 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     protected ResourceObjectBase (IResourcePathBuilder resourcePathBuilder, Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("resourcePathBuilder", resourcePathBuilder);
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull("resourcePathBuilder", resourcePathBuilder);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
 
-      _resourceRoot = resourcePathBuilder.BuildAbsolutePath (assembly);
+      _resourceRoot = resourcePathBuilder.BuildAbsolutePath(assembly);
     }
 
     public string ResourceRoot

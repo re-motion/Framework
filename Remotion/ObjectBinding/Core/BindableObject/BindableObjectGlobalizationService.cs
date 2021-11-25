@@ -55,13 +55,13 @@ namespace Remotion.ObjectBinding.BindableObject
         IEnumerationGlobalizationService enumerationGlobalizationService,
         IExtensibleEnumGlobalizationService extensibleEnumGlobalizationService)
     {
-      ArgumentUtility.CheckNotNull ("globalizationServices", globalizationServices);
-      ArgumentUtility.CheckNotNull ("memberInformationGlobalizationService", memberInformationGlobalizationService);
-      ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull ("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
+      ArgumentUtility.CheckNotNull("globalizationServices", globalizationServices);
+      ArgumentUtility.CheckNotNull("memberInformationGlobalizationService", memberInformationGlobalizationService);
+      ArgumentUtility.CheckNotNull("enumerationGlobalizationService", enumerationGlobalizationService);
+      ArgumentUtility.CheckNotNull("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
 
-      _resourceManager = new Lazy<IResourceManager> (
-          () => globalizationServices.GetResourceManager (typeof (ResourceIdentifier)),
+      _resourceManager = new Lazy<IResourceManager>(
+          () => globalizationServices.GetResourceManager(typeof (ResourceIdentifier)),
           LazyThreadSafetyMode.ExecutionAndPublication);
       _memberInformationGlobalizationService = memberInformationGlobalizationService;
       _enumerationGlobalizationService = enumerationGlobalizationService;
@@ -75,8 +75,8 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <returns>The localized display name.</returns>
     public string GetEnumerationValueDisplayName (Enum value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      return _enumerationGlobalizationService.GetEnumerationValueDisplayName (value);
+      ArgumentUtility.CheckNotNull("value", value);
+      return _enumerationGlobalizationService.GetEnumerationValueDisplayName(value);
     }
 
     /// <summary>
@@ -86,8 +86,8 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <returns>The localized display name.</returns>
     public string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value) //move to member info globalization service
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      return _extensibleEnumGlobalizationService.GetExtensibleEnumValueDisplayName (value);
+      ArgumentUtility.CheckNotNull("value", value);
+      return _extensibleEnumGlobalizationService.GetExtensibleEnumValueDisplayName(value);
     }
 
     /// <summary>
@@ -97,7 +97,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <returns>The localized display name.</returns>
     public string GetBooleanValueDisplayName (bool value)
     {
-      return _resourceManager.Value.GetString (value ? ResourceIdentifier.True : ResourceIdentifier.False);
+      return _resourceManager.Value.GetString(value ? ResourceIdentifier.True : ResourceIdentifier.False);
     }
 
     /// <summary>
@@ -108,10 +108,10 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <returns>The localized display name.</returns>
     public string GetTypeDisplayName (ITypeInformation typeInformation, ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
-      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
-      return _memberInformationGlobalizationService.GetTypeDisplayName (typeInformation, typeInformationForResourceResolution);
+      return _memberInformationGlobalizationService.GetTypeDisplayName(typeInformation, typeInformationForResourceResolution);
     }
 
     /// <summary>
@@ -122,8 +122,8 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <returns>The localized display name.</returns>
     public string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
       var mixinIntroducedPropertyInformation = propertyInformation as MixinIntroducedPropertyInformation;
       if (mixinIntroducedPropertyInformation != null)
@@ -134,7 +134,7 @@ namespace Remotion.ObjectBinding.BindableObject
         // from the class-qualified name, then the interfaces-qualified names, and finally, the unqualified name.
         var interfaceImplementationPropertyInfo = mixinIntroducedPropertyInformation.InterfaceImplementationPropertyInfo;
 
-        if (_memberInformationGlobalizationService.TryGetPropertyDisplayName (
+        if (_memberInformationGlobalizationService.TryGetPropertyDisplayName(
             interfaceImplementationPropertyInfo.DeclarationPropertyInfo,
             typeInformationForResourceResolution,
             out var displayNameFromInterface))
@@ -142,7 +142,7 @@ namespace Remotion.ObjectBinding.BindableObject
           return displayNameFromInterface;
         }
 
-        if (_memberInformationGlobalizationService.TryGetPropertyDisplayName (
+        if (_memberInformationGlobalizationService.TryGetPropertyDisplayName(
             interfaceImplementationPropertyInfo.ImplementationPropertyInfo,
             typeInformationForResourceResolution,
             out var displayNameFromImplementation))
@@ -151,7 +151,7 @@ namespace Remotion.ObjectBinding.BindableObject
         }
       }
 
-      return _memberInformationGlobalizationService.GetPropertyDisplayName (
+      return _memberInformationGlobalizationService.GetPropertyDisplayName(
           propertyInformation.GetOriginalDeclaration(),
           typeInformationForResourceResolution);
     }

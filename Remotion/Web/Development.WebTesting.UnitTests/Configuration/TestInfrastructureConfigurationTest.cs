@@ -32,26 +32,26 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     public void CreateFromWebTestConfigurationSection ()
     {
       var webTestConfigurationSection = CreateWebTestConfigurationSection();
-      PrivateInvoke.InvokeNonPublicMethod (webTestConfigurationSection, "set_Item", "webApplicationRoot", "http://some.url:1337/");
-      PrivateInvoke.InvokeNonPublicMethod (webTestConfigurationSection, "set_Item", "screenshotDirectory", @".\SomeScreenshotDirectory");
-      PrivateInvoke.InvokeNonPublicMethod (webTestConfigurationSection, "set_Item", "closeBrowserWindowsOnSetUpAndTearDown", false);
-      PrivateInvoke.InvokeNonPublicMethod (
+      PrivateInvoke.InvokeNonPublicMethod(webTestConfigurationSection, "set_Item", "webApplicationRoot", "http://some.url:1337/");
+      PrivateInvoke.InvokeNonPublicMethod(webTestConfigurationSection, "set_Item", "screenshotDirectory", @".\SomeScreenshotDirectory");
+      PrivateInvoke.InvokeNonPublicMethod(webTestConfigurationSection, "set_Item", "closeBrowserWindowsOnSetUpAndTearDown", false);
+      PrivateInvoke.InvokeNonPublicMethod(
           webTestConfigurationSection,
           "set_Item",
           "requestErrorDetectionStrategy",
           _testRequestErrorDetectionStrategyAssemblyQualifiedName);
 
-      var testInfrastructureConfiguration = new TestInfrastructureConfiguration (webTestConfigurationSection);
+      var testInfrastructureConfiguration = new TestInfrastructureConfiguration(webTestConfigurationSection);
 
-      Assert.That (testInfrastructureConfiguration.WebApplicationRoot, Is.EqualTo ("http://some.url:1337/"));
-      Assert.That (testInfrastructureConfiguration.ScreenshotDirectory, Is.EqualTo (Path.GetFullPath (@".\SomeScreenshotDirectory")));
-      Assert.That (testInfrastructureConfiguration.CloseBrowserWindowsOnSetUpAndTearDown, Is.EqualTo (false));
-      Assert.That (testInfrastructureConfiguration.RequestErrorDetectionStrategy, Is.InstanceOf<TestRequestErrorDetectionStrategy>());
+      Assert.That(testInfrastructureConfiguration.WebApplicationRoot, Is.EqualTo("http://some.url:1337/"));
+      Assert.That(testInfrastructureConfiguration.ScreenshotDirectory, Is.EqualTo(Path.GetFullPath(@".\SomeScreenshotDirectory")));
+      Assert.That(testInfrastructureConfiguration.CloseBrowserWindowsOnSetUpAndTearDown, Is.EqualTo(false));
+      Assert.That(testInfrastructureConfiguration.RequestErrorDetectionStrategy, Is.InstanceOf<TestRequestErrorDetectionStrategy>());
     }
 
     private WebTestConfigurationSection CreateWebTestConfigurationSection ()
     {
-      return (WebTestConfigurationSection) Activator.CreateInstance (typeof (WebTestConfigurationSection), true);
+      return (WebTestConfigurationSection) Activator.CreateInstance(typeof (WebTestConfigurationSection), true);
     }
 
     private class TestRequestErrorDetectionStrategy : IRequestErrorDetectionStrategy

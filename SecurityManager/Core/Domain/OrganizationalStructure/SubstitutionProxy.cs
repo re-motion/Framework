@@ -34,9 +34,9 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   {
     public static SubstitutionProxy Create (Substitution substitution)
     {
-      ArgumentUtility.CheckNotNull ("substitution", substitution);
+      ArgumentUtility.CheckNotNull("substitution", substitution);
 
-      return new SubstitutionProxy (
+      return new SubstitutionProxy(
           substitution.GetHandle(),
           ((IBusinessObjectWithIdentity) substitution).UniqueIdentifier,
           ((IBusinessObjectWithIdentity) substitution).DisplayName);

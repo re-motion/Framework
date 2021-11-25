@@ -106,7 +106,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </returns>
     public virtual bool SupportsProperty (IBusinessObjectProperty property)
     {
-      return _binding.SupportsProperty (property);
+      return _binding.SupportsProperty(property);
     }
 
     /// <summary>Gets a flag specifying whether the <see cref="IBusinessObjectBoundControl"/> has a valid binding configuration.</summary>
@@ -144,22 +144,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BocLiteral ()
     {
-      _binding = new BusinessObjectBinding (this);
+      _binding = new BusinessObjectBinding(this);
     }
 
     /// <remarks>Calls <see cref="Control.EnsureChildControls"/> and the <see cref="BusinessObjectBinding.EnsureDataSource"/> method.</remarks>
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
-      EnsureChildControls ();
-      _binding.EnsureDataSource ();
-      Page!.RegisterRequiresControlState (this);
+      base.OnInit(e);
+      EnsureChildControls();
+      _binding.EnsureDataSource();
+      Page!.RegisterRequiresControlState(this);
     }
 
     protected override void OnUnload (EventArgs e)
     {
       _binding.UnregisterDataSource();
-      base.OnUnload (e);
+      base.OnUnload(e);
     }
 
     /// <value> 
@@ -187,26 +187,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      if (!string.IsNullOrEmpty (_value))
+      if (!string.IsNullOrEmpty(_value))
       {
         if (_mode != LiteralMode.Encode)
-          writer.Write (_value);
+          writer.Write(_value);
         else
-          HttpUtility.HtmlEncode (_value, writer);
+          HttpUtility.HtmlEncode(_value, writer);
       }
     }
 
     protected override void LoadControlState (object? savedState)
     {
       object?[] values = (object[]?) savedState!;
-      base.LoadControlState (values[0]);
+      base.LoadControlState(values[0]);
       _mode = (LiteralMode) values[1]!;
     }
 
     protected override object SaveControlState ()
     {
       object?[] values = new object?[4];
-      values[0] = base.SaveControlState ();
+      values[0] = base.SaveControlState();
       values[1] = _mode;
       return values;
     }
@@ -225,9 +225,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       string? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (string?) DataSource.BusinessObject.GetProperty (Property);
+        value = (string?) DataSource.BusinessObject.GetProperty(Property);
 
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
@@ -236,7 +236,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='..\..\doc\include\UI\Controls\BocLiteral.xml' path='BocLiteral/LoadUnboundValue/*' />
     public void LoadUnboundValue (string value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
@@ -258,7 +258,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>Gets a flag indicating whether the <see cref="BocLiteral"/> contains a value. </summary>
     public bool HasValue
     {
-      get { return _value != null && _value.Trim ().Length > 0; }
+      get { return _value != null && _value.Trim().Length > 0; }
     }
 
     object? IBusinessObjectBoundControl.Value
@@ -276,7 +276,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     bool IBusinessObjectBoundWebControl.SupportsPropertyMultiplicity (bool isList)
     {
-      return SupportsPropertyMultiplicity (isList);
+      return SupportsPropertyMultiplicity(isList);
     }
 
     /// <summary> The <see cref="BocLiteral"/> supports only scalar properties. </summary>
@@ -314,7 +314,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     HelpInfo? ISmartControl.HelpInfo
     {
-      get { return BusinessObjectBoundWebControl.GetHelpInfo (this); }
+      get { return BusinessObjectBoundWebControl.GetHelpInfo(this); }
     }
 
     bool ISmartControl.UseLabel
@@ -324,7 +324,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     void ISmartControl.AssignLabel (string labelID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("labelID", labelID);
+      ArgumentUtility.CheckNotNullOrEmpty("labelID", labelID);
 
       //BocLiteral does not have a root element that could be labeled.
     }
@@ -346,7 +346,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     IPage? IControl.Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
     [Category ("Behavior")]

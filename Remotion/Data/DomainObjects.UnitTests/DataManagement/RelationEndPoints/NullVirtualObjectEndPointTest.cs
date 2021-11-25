@@ -32,9 +32,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _definition = DomainObjectIDs.Order1.ClassDefinition.GetRelationEndPointDefinition (typeof (Order).FullName + ".OrderTicket");
+      _definition = DomainObjectIDs.Order1.ClassDefinition.GetRelationEndPointDefinition(typeof (Order).FullName + ".OrderTicket");
       _nullEndPoint = new NullVirtualObjectEndPoint(TestableClientTransaction, _definition);
 
       _oppositeEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
@@ -43,29 +43,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CanBeCollected ()
     {
-      Assert.That (_nullEndPoint.CanBeCollected, Is.False);
+      Assert.That(_nullEndPoint.CanBeCollected, Is.False);
     }
 
     [Test]
     public void CanBeMarkedIncomplete ()
     {
-      Assert.That (_nullEndPoint.CanBeMarkedIncomplete, Is.False);
+      Assert.That(_nullEndPoint.CanBeMarkedIncomplete, Is.False);
     }
 
     [Test]
     public void SynchronizeOppositeEndPoint ()
     {
-      var objectEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint> ();
-      Assert.That (
-          () => _nullEndPoint.SynchronizeOppositeEndPoint (objectEndPointStub),
+      var objectEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      Assert.That(
+          () => _nullEndPoint.SynchronizeOppositeEndPoint(objectEndPointStub),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("A NullObjectEndPoint cannot be used to synchronize an opposite end-point."));
+              .With.Message.EqualTo("A NullObjectEndPoint cannot be used to synchronize an opposite end-point."));
     }
 
     [Test]
     public void MarkDataIncomplete ()
     {
-      Assert.That (
+      Assert.That(
           () => _nullEndPoint.MarkDataIncomplete(),
           Throws.InvalidOperationException);
     }
@@ -73,37 +73,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void RegisterOriginalOppositeEndPoint ()
     {
-      var relatedEndPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint> ();
-      relatedEndPointMock.Expect (mock => mock.MarkSynchronized ());
-      relatedEndPointMock.Replay ();
+      var relatedEndPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
+      relatedEndPointMock.Expect(mock => mock.MarkSynchronized());
+      relatedEndPointMock.Replay();
 
-      _nullEndPoint.RegisterOriginalOppositeEndPoint (relatedEndPointMock);
+      _nullEndPoint.RegisterOriginalOppositeEndPoint(relatedEndPointMock);
 
-      relatedEndPointMock.VerifyAllExpectations ();
+      relatedEndPointMock.VerifyAllExpectations();
     }
 
     [Test]
     public void UnregisterOriginalOppositeEndPoint ()
     {
-      var relatedEndPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint> ();
-      relatedEndPointMock.Expect (mock => mock.ResetSyncState ());
-      relatedEndPointMock.Replay ();
+      var relatedEndPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
+      relatedEndPointMock.Expect(mock => mock.ResetSyncState());
+      relatedEndPointMock.Replay();
 
-      _nullEndPoint.UnregisterOriginalOppositeEndPoint (relatedEndPointMock);
+      _nullEndPoint.UnregisterOriginalOppositeEndPoint(relatedEndPointMock);
 
-      relatedEndPointMock.VerifyAllExpectations ();
+      relatedEndPointMock.VerifyAllExpectations();
     }
 
     [Test]
     public void RegisterCurrentOppositeEndPoint ()
     {
-      _nullEndPoint.RegisterCurrentOppositeEndPoint (_oppositeEndPointStub);
+      _nullEndPoint.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub);
     }
 
     [Test]
     public void UnregisterCurrentOppositeEndPoint ()
     {
-      _nullEndPoint.UnregisterCurrentOppositeEndPoint (_oppositeEndPointStub);
+      _nullEndPoint.UnregisterCurrentOppositeEndPoint(_oppositeEndPointStub);
     }
   }
 }

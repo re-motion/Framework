@@ -38,8 +38,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public NullVirtualCollectionEndPoint (ClientTransaction clientTransaction, IRelationEndPointDefinition definition)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("definition", definition);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("definition", definition);
 
       _clientTransaction = clientTransaction;
       _definition = definition;
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public RelationEndPointID ID
     {
-      get { return RelationEndPointID.Create (null, Definition); }
+      get { return RelationEndPointID.Create(null, Definition); }
     }
 
     public ClientTransaction ClientTransaction
@@ -117,37 +117,37 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void ValidateMandatory ()
     {
-      throw new InvalidOperationException ("ValidateMandatory cannot be called on a NullVirtualCollectionEndPoint.");
+      throw new InvalidOperationException("ValidateMandatory cannot be called on a NullVirtualCollectionEndPoint.");
     }
 
     public IEnumerable<RelationEndPointID> GetOppositeRelationEndPointIDs ()
     {
-      throw new InvalidOperationException ("GetOppositeRelationEndPointIDs cannot be called on a NullVirtualCollectionEndPoint.");
+      throw new InvalidOperationException("GetOppositeRelationEndPointIDs cannot be called on a NullVirtualCollectionEndPoint.");
     }
 
     public void SetDataFromSubTransaction (IRelationEndPoint source)
     {
-      throw new InvalidOperationException ("SetDataFromSubTransaction cannot be called on a NullVirtualCollectionEndPoint.");
+      throw new InvalidOperationException("SetDataFromSubTransaction cannot be called on a NullVirtualCollectionEndPoint.");
     }
 
     public IObjectList<IDomainObject> Collection
     {
-      get { return new VirtualObjectList<DomainObject> (new VirtualCollectionData (ID, new NullDataContainerMapReadOnlyView(), ValueAccess.Current)); }
+      get { return new VirtualObjectList<DomainObject>(new VirtualCollectionData(ID, new NullDataContainerMapReadOnlyView(), ValueAccess.Current)); }
     }
 
     public ReadOnlyVirtualCollectionDataDecorator GetData ()
     {
-      throw new InvalidOperationException ("It is not possible to call GetData on a NullVirtualCollectionEndPoint.");
+      throw new InvalidOperationException("It is not possible to call GetData on a NullVirtualCollectionEndPoint.");
     }
 
     public ReadOnlyVirtualCollectionDataDecorator GetOriginalData ()
     {
-      throw new InvalidOperationException ("It is not possible to call GetOriginalData on a NullVirtualCollectionEndPoint.");
+      throw new InvalidOperationException("It is not possible to call GetOriginalData on a NullVirtualCollectionEndPoint.");
     }
 
     public IObjectList<IDomainObject> GetCollectionWithOriginalData ()
     {
-      throw new InvalidOperationException ("It is not possible to call GetCollectionWithOriginalData on a NullCollectionEndPoint.");
+      throw new InvalidOperationException("It is not possible to call GetCollectionWithOriginalData on a NullCollectionEndPoint.");
     }
 
     public void MarkDataComplete (DomainObject[] items)
@@ -157,22 +157,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void MarkDataIncomplete ()
     {
-      throw new InvalidOperationException ("MarkDataIncomplete cannot be called on a NullVirtualCollectionEndPoint.");
+      throw new InvalidOperationException("MarkDataIncomplete cannot be called on a NullVirtualCollectionEndPoint.");
     }
 
     public IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject)
     {
-      return new NullEndPointModificationCommand (this);
+      return new NullEndPointModificationCommand(this);
     }
 
     public IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
     {
-      return new NullEndPointModificationCommand (this);
+      return new NullEndPointModificationCommand(this);
     }
 
     public IDataManagementCommand CreateDeleteCommand ()
     {
-      return new NullEndPointModificationCommand (this);
+      return new NullEndPointModificationCommand(this);
     }
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
@@ -200,12 +200,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void Synchronize ()
     {
-      throw new InvalidOperationException ("Synchronize cannot be called on a NullVirtualCollectionEndPoint.");
+      throw new InvalidOperationException("Synchronize cannot be called on a NullVirtualCollectionEndPoint.");
     }
 
     public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      throw new InvalidOperationException ("SynchronizeOppositeEndPoint cannot be called on a NullVirtualCollectionEndPoint.");
+      throw new InvalidOperationException("SynchronizeOppositeEndPoint cannot be called on a NullVirtualCollectionEndPoint.");
     }
 
     public void EnsureDataComplete ()
@@ -220,17 +220,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void Commit ()
     {
-      throw new InvalidOperationException ("Commit cannot be called on a NullVirtualCollectionEndPoint.");
+      throw new InvalidOperationException("Commit cannot be called on a NullVirtualCollectionEndPoint.");
     }
 
     public void Rollback ()
     {
-      throw new InvalidOperationException ("Rollback cannot be called on a NullVirtualCollectionEndPoint.");
+      throw new InvalidOperationException("Rollback cannot be called on a NullVirtualCollectionEndPoint.");
     }
 
     public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      throw new InvalidOperationException ("SerializeIntoFlatStructure cannot be called on a NullVirtualCollectionEndPoint.");
+      throw new InvalidOperationException("SerializeIntoFlatStructure cannot be called on a NullVirtualCollectionEndPoint.");
     }
   }
 }

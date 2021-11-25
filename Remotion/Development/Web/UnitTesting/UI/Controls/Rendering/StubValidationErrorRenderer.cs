@@ -35,12 +35,12 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<string> validationErrors)
     {
-      ArgumentUtility.CheckNotNull ("attributeAccessor", attributeAccessor);
-      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull("attributeAccessor", attributeAccessor);
+      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
 
-      attributeAccessor.SetAttribute (ValidationErrorsIDAttribute, validationErrorID);
-      attributeAccessor.SetAttribute (ValidationErrorsAttribute, string.Join (" ", validationErrors));
+      attributeAccessor.SetAttribute(ValidationErrorsIDAttribute, validationErrorID);
+      attributeAccessor.SetAttribute(ValidationErrorsAttribute, string.Join(" ", validationErrors));
     }
 
     public void AddValidationErrorsReference (
@@ -48,23 +48,23 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<string> validationErrors)
     {
-      ArgumentUtility.CheckNotNull ("attributeCollection", attributeCollection);
-      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull("attributeCollection", attributeCollection);
+      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
 
       attributeCollection[ValidationErrorsIDAttribute] = validationErrorID;
-      attributeCollection[ValidationErrorsAttribute] = string.Join (" ", validationErrors);
+      attributeCollection[ValidationErrorsAttribute] = string.Join(" ", validationErrors);
     }
 
     public void RenderValidationErrors (HtmlTextWriter htmlTextWriter, string validationErrorID, IReadOnlyCollection<string> validationErrors)
     {
-      ArgumentUtility.CheckNotNull ("htmlTextWriter", htmlTextWriter);
-      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull("htmlTextWriter", htmlTextWriter);
+      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
 
-      htmlTextWriter.AddAttribute (ValidationErrorsIDAttribute, validationErrorID);
-      htmlTextWriter.AddAttribute (ValidationErrorsAttribute, string.Join (" ", validationErrors));
-      htmlTextWriter.RenderBeginTag ("fake");
+      htmlTextWriter.AddAttribute(ValidationErrorsIDAttribute, validationErrorID);
+      htmlTextWriter.AddAttribute(ValidationErrorsAttribute, string.Join(" ", validationErrors));
+      htmlTextWriter.RenderBeginTag("fake");
       htmlTextWriter.RenderEndTag();
     }
   }

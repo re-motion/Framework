@@ -29,17 +29,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
     [Ignore ("TODO: Implement referential integrity for unidirectional relationships.")]
     public void DeleteAndCommitWithConcreteTableInheritance ()
     {
-      SetDatabaseModifyable ();
+      SetDatabaseModifyable();
 
       TIClassWithUnidirectionalRelation classWithUnidirectionalRelation =
           DomainObjectIDs.ClassWithUnidirectionalRelation.GetObject<TIClassWithUnidirectionalRelation>();
-      classWithUnidirectionalRelation.DomainBase.Delete ();
-      ClientTransactionScope.CurrentTransaction.Commit ();
+      classWithUnidirectionalRelation.DomainBase.Delete();
+      ClientTransactionScope.CurrentTransaction.Commit();
 
       try
       {
         Dev.Null = classWithUnidirectionalRelation.DomainBase;
-        Assert.Fail ("Expected ObjectInvalidException");
+        Assert.Fail("Expected ObjectInvalidException");
       }
       catch (ObjectInvalidException)
       {
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
         TIClassWithUnidirectionalRelation reloadedObject =
             DomainObjectIDs.ClassWithUnidirectionalRelation.GetObject<TIClassWithUnidirectionalRelation>();
 
-        Assert.That (reloadedObject.DomainBase, Is.Null);
+        Assert.That(reloadedObject.DomainBase, Is.Null);
       }
     }
   }

@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     protected NonInterceptableTypeException (SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
-      _type = (Type) info.GetValue ("_type", typeof (Type));
+      _type = (Type) info.GetValue("_type", typeof (Type));
     }
 
     /// <summary>
@@ -56,8 +56,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      base.GetObjectData (info, context);
-      info.AddValue ("_type", _type);
+      base.GetObjectData(info, context);
+      info.AddValue("_type", _type);
     }
   }
 }

@@ -30,17 +30,17 @@ namespace Remotion.Mixins.Context.Serialization
 
     public string GetKind ()
     {
-      return GetValue<string> (0);
+      return GetValue<string>(0);
     }
 
     public Assembly GetAssembly ()
     {
-      return GetValue<Assembly> (1);
+      return GetValue<Assembly>(1);
     }
 
     public string GetLocation ()
     {
-      return GetValue<string> (2);
+      return GetValue<string>(2);
     }
   }
 }

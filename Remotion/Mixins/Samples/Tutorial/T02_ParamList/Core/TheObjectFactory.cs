@@ -25,7 +25,7 @@ namespace Remotion.Mixins.Samples.Tutorial.T02_ParamList.Core
     public static T Create<T> (ParamList ctorArgs) where T : class
     {
       var pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
-      return pipelineRegistry.DefaultPipeline.Create<T> (ctorArgs);
+      return pipelineRegistry.DefaultPipeline.Create<T>(ctorArgs);
     }
   }
 }

@@ -39,13 +39,13 @@ namespace Remotion.ObjectBinding.BindableObject
         IMetadataFactory metadataFactory,
         BindableObjectGlobalizationService bindableObjectGlobalizationService)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
-      ArgumentUtility.CheckNotNull ("metadataFactory", metadataFactory);
-      ArgumentUtility.CheckNotNull ("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
+      ArgumentUtility.CheckNotNull("metadataFactory", metadataFactory);
+      ArgumentUtility.CheckNotNull("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
 
       _targetType = targetType;
-      _concreteType = BindableObjectProvider.GetConcreteTypeForBindableObjectImplementation (_targetType);
+      _concreteType = BindableObjectProvider.GetConcreteTypeForBindableObjectImplementation(_targetType);
       _businessObjectProvider = businessObjectProvider;
       _metadataFactory = metadataFactory;
       _bindableObjectGlobalizationService = bindableObjectGlobalizationService;
@@ -72,35 +72,35 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </summary>
     public virtual BindableObjectClass GetMetadata ()
     {
-      if (typeof (IBusinessObjectWithIdentity).IsAssignableFrom (_concreteType))
-        return new BindableObjectClassWithIdentity (_concreteType, _businessObjectProvider, _bindableObjectGlobalizationService, GetProperties ());
+      if (typeof (IBusinessObjectWithIdentity).IsAssignableFrom(_concreteType))
+        return new BindableObjectClassWithIdentity(_concreteType, _businessObjectProvider, _bindableObjectGlobalizationService, GetProperties());
 
-      if (typeof (IBusinessObject).IsAssignableFrom (_concreteType))
-        return new BindableObjectClass (_concreteType, _businessObjectProvider, _bindableObjectGlobalizationService, GetProperties());
+      if (typeof (IBusinessObject).IsAssignableFrom(_concreteType))
+        return new BindableObjectClass(_concreteType, _businessObjectProvider, _bindableObjectGlobalizationService, GetProperties());
 
-      throw new NotSupportedException (
-          string.Format ("Type '{0}' does not implement the required IBusinessObject interface.", _concreteType.GetFullNameSafe()));
+      throw new NotSupportedException(
+          string.Format("Type '{0}' does not implement the required IBusinessObject interface.", _concreteType.GetFullNameSafe()));
     }
 
     protected IEnumerable<PropertyBase> GetProperties ()
     {
-      IPropertyFinder propertyFinder = _metadataFactory.CreatePropertyFinder (_concreteType);
+      IPropertyFinder propertyFinder = _metadataFactory.CreatePropertyFinder(_concreteType);
 
       Dictionary<string, PropertyBase> propertiesByName = new Dictionary<string, PropertyBase>();
       foreach (IPropertyInformation propertyInfo in propertyFinder.GetPropertyInfos())
       {
-        PropertyReflector propertyReflector = _metadataFactory.CreatePropertyReflector (_concreteType, propertyInfo, _businessObjectProvider);
+        PropertyReflector propertyReflector = _metadataFactory.CreatePropertyReflector(_concreteType, propertyInfo, _businessObjectProvider);
         PropertyBase property = propertyReflector.GetMetadata();
-        if (propertiesByName.ContainsKey (property.Identifier))
+        if (propertiesByName.ContainsKey(property.Identifier))
         {
-          string message = string.Format (
+          string message = string.Format(
               "Type '{0}' has two properties called '{1}', this is currently not supported.",
               TargetType.GetFullNameSafe(),
               property.Identifier);
-          throw new NotSupportedException (message);
+          throw new NotSupportedException(message);
         }
         else
-          propertiesByName.Add (property.Identifier, property);
+          propertiesByName.Add(property.Identifier, property);
       }
 
       return propertiesByName.Values;

@@ -36,41 +36,41 @@ namespace Remotion.Reflection
 
     public Tuple<Type[], Type> GetSignature (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof (Delegate));
 
-      var invokeMethod = delegateType.GetMethod ("Invoke");
-      Assertion.IsNotNull (invokeMethod, "Delegate has no Invoke() method.");
+      var invokeMethod = delegateType.GetMethod("Invoke");
+      Assertion.IsNotNull(invokeMethod, "Delegate has no Invoke() method.");
 
-      var parameterTypes = invokeMethod.GetParameters().Select (p => p.ParameterType).ToArray();
+      var parameterTypes = invokeMethod.GetParameters().Select(p => p.ParameterType).ToArray();
       var returnType = invokeMethod.ReturnType;
 
-      return Tuple.Create (parameterTypes, returnType);
+      return Tuple.Create(parameterTypes, returnType);
     }
 
     public Delegate CreateConstructorCall (ConstructorInfo constructor, Type delegateType)
     {
-      ArgumentUtility.CheckNotNull ("constructor", constructor);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNull("constructor", constructor);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof (Delegate));
 
-      var parameters = constructor.GetParameters().Select (p => Expression.Parameter (p.ParameterType, p.Name)).ToArray();
-      var constructorCall = Expression.New (constructor, parameters.Cast<Expression>());
+      var parameters = constructor.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name)).ToArray();
+      var constructorCall = Expression.New(constructor, parameters.Cast<Expression>());
       return CreateConvertedDelegate(delegateType, constructorCall, parameters);
     }
 
     public Delegate CreateDefaultConstructorCall (Type constructedType, Type delegateType)
     {
-      ArgumentUtility.CheckNotNull ("constructedType", constructedType);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNull("constructedType", constructedType);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof (Delegate));
 
-      var constructorCall = Expression.New (constructedType);
-      return CreateConvertedDelegate (delegateType, constructorCall);
+      var constructorCall = Expression.New(constructedType);
+      return CreateConvertedDelegate(delegateType, constructorCall);
     }
 
     private Delegate CreateConvertedDelegate (Type delegateType, NewExpression constructorCall, ParameterExpression[]? parameters = null)
     {
-      var returnType = GetSignature (delegateType).Item2;
-      var boxedConstructorCall = Expression.Convert (constructorCall, returnType);
-      var lambda = Expression.Lambda (delegateType, boxedConstructorCall, parameters);
+      var returnType = GetSignature(delegateType).Item2;
+      var boxedConstructorCall = Expression.Convert(constructorCall, returnType);
+      var lambda = Expression.Lambda(delegateType, boxedConstructorCall, parameters);
 
       return lambda.Compile();
     }

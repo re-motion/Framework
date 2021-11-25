@@ -42,7 +42,7 @@ namespace Remotion.Mixins.Utilities
     [ThreadStatic]
     private static MixedObjectInstantiationScope? s_current;
 
-    private static readonly MixedObjectInstantiationScope s_empty = new MixedObjectInstantiationScope (false, new object[0]);
+    private static readonly MixedObjectInstantiationScope s_empty = new MixedObjectInstantiationScope(false, new object[0]);
 
     public static MixedObjectInstantiationScope Current
     {
@@ -67,7 +67,7 @@ namespace Remotion.Mixins.Utilities
     private MixedObjectInstantiationScope (bool setCurrent, object[] suppliedMixinInstances)
     {
       if (setCurrent)
-        StorePreviousAndSetCurrent ();
+        StorePreviousAndSetCurrent();
 
       _suppliedMixinInstances = suppliedMixinInstances;
     }
@@ -113,7 +113,7 @@ namespace Remotion.Mixins.Utilities
     {
       if (!_isDisposed)
       {
-        RestorePrevious ();
+        RestorePrevious();
         _isDisposed = true;
       }
     }

@@ -28,41 +28,41 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [SetUp]
     public void SetUp ()
     {
-      _testHelper = new BusinessObjectPropertyPathTestHelper ();
+      _testHelper = new BusinessObjectPropertyPathTestHelper();
     }
 
     [Test]
     public void GetValue ()
     {
-      var path = new TestableBusinessObjectPropertyPathBase (_testHelper.Property);
+      var path = new TestableBusinessObjectPropertyPathBase(_testHelper.Property);
 
-      var actual = path.GetResult (
+      var actual = path.GetResult(
           _testHelper.BusinessObjectWithIdentity,
           BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry);
 
       _testHelper.VerifyAll();
 
-      Assert.That (actual, Is.InstanceOf<EvaluatedBusinessObjectPropertyPathResult>());
-      Assert.That (actual.ResultObject, Is.SameAs (_testHelper.BusinessObjectWithIdentity));
-      Assert.That (actual.ResultProperty, Is.SameAs (_testHelper.Property));
+      Assert.That(actual, Is.InstanceOf<EvaluatedBusinessObjectPropertyPathResult>());
+      Assert.That(actual.ResultObject, Is.SameAs(_testHelper.BusinessObjectWithIdentity));
+      Assert.That(actual.ResultProperty, Is.SameAs(_testHelper.Property));
     }
 
     [Test]
     public void GetValue_LastPropertyIsReferenceProperty ()
     {
-      var path = new TestableBusinessObjectPropertyPathBase (_testHelper.ReferenceProperty);
+      var path = new TestableBusinessObjectPropertyPathBase(_testHelper.ReferenceProperty);
 
-      var actual = path.GetResult (
+      var actual = path.GetResult(
           _testHelper.BusinessObject,
           BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry);
 
       _testHelper.VerifyAll();
 
-      Assert.That (actual, Is.InstanceOf<EvaluatedBusinessObjectPropertyPathResult>());
-      Assert.That (actual.ResultObject, Is.SameAs (_testHelper.BusinessObject));
-      Assert.That (actual.ResultProperty, Is.SameAs (_testHelper.ReferenceProperty));
+      Assert.That(actual, Is.InstanceOf<EvaluatedBusinessObjectPropertyPathResult>());
+      Assert.That(actual.ResultObject, Is.SameAs(_testHelper.BusinessObject));
+      Assert.That(actual.ResultProperty, Is.SameAs(_testHelper.ReferenceProperty));
     }
   }
 }

@@ -33,11 +33,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       var factory = new UserControlBindingValidatorFactory();
       var control = new Mock<UserControlBinding>();
-      control.Setup (c => c.ID).Returns ("ID").Verifiable();
+      control.Setup(c => c.ID).Returns("ID").Verifiable();
 
-      var validators = factory.CreateValidators (control.Object, isReadOnly).ToArray();
-      Assert.That (validators.Select (v => v.GetType()), Is.EqualTo (new[] { typeof (UserControlBindingValidator) }));
-      Assert.That (validators, Has.All.Property ("EnableViewState").False);
+      var validators = factory.CreateValidators(control.Object, isReadOnly).ToArray();
+      Assert.That(validators.Select(v => v.GetType()), Is.EqualTo(new[] { typeof (UserControlBindingValidator) }));
+      Assert.That(validators, Has.All.Property("EnableViewState").False);
     }
   }
 }

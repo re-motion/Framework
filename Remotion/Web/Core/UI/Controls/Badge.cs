@@ -32,7 +32,7 @@ namespace Remotion.Web.UI.Controls
       if (badge == null)
         return false;
 
-      if (string.IsNullOrEmpty (badge.Value) && string.IsNullOrEmpty (badge.Description))
+      if (string.IsNullOrEmpty(badge.Value) && string.IsNullOrEmpty(badge.Description))
         return false;
 
       return true;
@@ -61,7 +61,7 @@ namespace Remotion.Web.UI.Controls
     public string Value
     {
       get { return _value; }
-      [MemberNotNull (nameof (_value))]
+      [MemberNotNull (nameof(_value))]
       set { _value = value ?? string.Empty; }
     }
 
@@ -74,7 +74,7 @@ namespace Remotion.Web.UI.Controls
     public string Description
     {
       get { return _description; }
-      [MemberNotNull (nameof (_description))]
+      [MemberNotNull (nameof(_description))]
       set { _description = value ?? string.Empty; }
     }
 

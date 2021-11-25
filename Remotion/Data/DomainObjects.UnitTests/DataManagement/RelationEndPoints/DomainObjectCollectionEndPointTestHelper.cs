@@ -31,33 +31,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public static IRealObjectEndPoint GetFakeOppositeEndPoint (DomainObject item)
     {
       var fakeEndPoint = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      fakeEndPoint.Stub (stub => stub.ObjectID).Return (item.ID);
-      fakeEndPoint.Stub (stub => stub.GetDomainObject()).Return (item);
-      fakeEndPoint.Stub (stub => stub.GetDomainObjectReference()).Return (item);
+      fakeEndPoint.Stub(stub => stub.ObjectID).Return(item.ID);
+      fakeEndPoint.Stub(stub => stub.GetDomainObject()).Return(item);
+      fakeEndPoint.Stub(stub => stub.GetDomainObjectReference()).Return(item);
       return fakeEndPoint;
     }
 
     public static void FillCollectionEndPointWithInitialContents (DomainObjectCollectionEndPoint endPoint, IEnumerable<DomainObject> initialContents)
     {
-      var dataManager = ClientTransactionTestHelper.GetDataManager (endPoint.ClientTransaction);
-      var domainObjects = initialContents.ToArray ();
+      var dataManager = ClientTransactionTestHelper.GetDataManager(endPoint.ClientTransaction);
+      var domainObjects = initialContents.ToArray();
       foreach (var domainObject in domainObjects)
       {
-        var oppositeEndPointID = RelationEndPointID.Create (domainObject.ID, endPoint.Definition.GetOppositeEndPointDefinition());
-        var oppositeEndPoint = (IRealObjectEndPoint) dataManager.GetRelationEndPointWithLazyLoad (oppositeEndPointID);
-        endPoint.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
+        var oppositeEndPointID = RelationEndPointID.Create(domainObject.ID, endPoint.Definition.GetOppositeEndPointDefinition());
+        var oppositeEndPoint = (IRealObjectEndPoint) dataManager.GetRelationEndPointWithLazyLoad(oppositeEndPointID);
+        endPoint.RegisterOriginalOppositeEndPoint(oppositeEndPoint);
       }
-      endPoint.MarkDataComplete (domainObjects);
+      endPoint.MarkDataComplete(domainObjects);
     }
 
     public static IDomainObjectCollectionEndPointLoadState GetLoadState (DomainObjectCollectionEndPoint collectionEndPoint)
     {
-      return (IDomainObjectCollectionEndPointLoadState) PrivateInvoke.GetNonPublicField (collectionEndPoint, "_loadState");
+      return (IDomainObjectCollectionEndPointLoadState) PrivateInvoke.GetNonPublicField(collectionEndPoint, "_loadState");
     }
 
     public static void SetLoadState (DomainObjectCollectionEndPoint collectionEndPoint, IDomainObjectCollectionEndPointLoadState loadState)
     {
-      PrivateInvoke.SetNonPublicField (collectionEndPoint, "_loadState", loadState);
+      PrivateInvoke.SetNonPublicField(collectionEndPoint, "_loadState", loadState);
     }
   }
 }

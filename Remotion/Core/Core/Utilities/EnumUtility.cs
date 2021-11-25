@@ -39,20 +39,20 @@ namespace Remotion.Utilities
 
       public EnumMetadata (Type enumType)
       {
-        UnderlyingType = Enum.GetUnderlyingType (enumType);
+        UnderlyingType = Enum.GetUnderlyingType(enumType);
         IsFlagsEnum = Attribute.IsDefined(enumType, typeof (FlagsAttribute), false);
 
-        var enumValueArray = Enum.GetValues (enumType);
+        var enumValueArray = Enum.GetValues(enumType);
 
-        var enumValues = new List<object> (enumValueArray.Length);
-        _enumValuesByNumericValue = new Dictionary<ulong, object> ();
+        var enumValues = new List<object>(enumValueArray.Length);
+        _enumValuesByNumericValue = new Dictionary<ulong, object>();
 
         foreach (object value in enumValueArray)
         {
-          enumValues.Add (value);
-          _enumValuesByNumericValue[ToUInt64 (value)] = value;
+          enumValues.Add(value);
+          _enumValuesByNumericValue[ToUInt64(value)] = value;
         }
-        _enumValues = enumValues.AsReadOnly ();
+        _enumValues = enumValues.AsReadOnly();
       }
 
       public ReadOnlyCollection<object> OrderedValues
@@ -75,7 +75,7 @@ namespace Remotion.Utilities
       [CLSCompliant (false)]
       public bool ContainsNumericValue (ulong numericValue)
       {
-        return _enumValuesByNumericValue.ContainsKey (numericValue);
+        return _enumValuesByNumericValue.ContainsKey(numericValue);
       }
     }
 
@@ -86,17 +86,17 @@ namespace Remotion.Utilities
     /// </summary>
     public static bool IsValidEnumValue (object enumValue)
     {
-      ArgumentUtility.CheckNotNull ("enumValue", enumValue);
+      ArgumentUtility.CheckNotNull("enumValue", enumValue);
 
       var enumType = enumValue.GetType();
       if (!enumType.IsEnum)
       {
-        throw new ArgumentException (
-            string.Format ("Argument was of type '{0}' but only enum-types are supported with this overload.", enumType.GetFullNameSafe()), "enumValue");
+        throw new ArgumentException(
+            string.Format("Argument was of type '{0}' but only enum-types are supported with this overload.", enumType.GetFullNameSafe()), "enumValue");
       }
 
-      var enumMetadata = GetEnumMetadata (enumType);
-      return IsValidEnumValueInternal (enumMetadata, enumValue);
+      var enumMetadata = GetEnumMetadata(enumType);
+      return IsValidEnumValueInternal(enumMetadata, enumValue);
     }
 
     /// <summary>
@@ -116,22 +116,22 @@ namespace Remotion.Utilities
     /// </exception>
     public static bool IsValidEnumValue (Type enumType, object value)
     {
-      ArgumentUtility.CheckNotNull ("enumType", enumType);
+      ArgumentUtility.CheckNotNull("enumType", enumType);
       if (!enumType.IsEnum)
       {
-        throw new ArgumentException (
-            string.Format ("Argument was a type representing '{0}' but only enum-types are supported.", enumType.GetFullNameSafe()), "enumType");
+        throw new ArgumentException(
+            string.Format("Argument was a type representing '{0}' but only enum-types are supported.", enumType.GetFullNameSafe()), "enumType");
       }
 
-      var enumMetadata = GetEnumMetadata (enumType);
+      var enumMetadata = GetEnumMetadata(enumType);
 
       var enumValueType = value.GetType();
       if (enumValueType.IsEnum)
       {
         if (enumType != enumValueType)
         {
-          throw new ArgumentException (
-              string.Format (
+          throw new ArgumentException(
+              string.Format(
                   "Object must be the same type as the enum. The type passed in was '{0}'; the enum type was '{1}'.",
                   enumValueType,
                   enumType),
@@ -142,8 +142,8 @@ namespace Remotion.Utilities
       {
         if (enumMetadata.UnderlyingType != enumValueType)
         {
-          throw new ArgumentException (
-              string.Format (
+          throw new ArgumentException(
+              string.Format(
                   "Enum underlying type and the object must be same type. The type passed in was '{0}'; the enum underlying type was '{1}'.",
                   enumValueType,
                   enumMetadata.UnderlyingType),
@@ -151,35 +151,35 @@ namespace Remotion.Utilities
         }
       }
 
-      return IsValidEnumValueInternal (enumMetadata, value);
+      return IsValidEnumValueInternal(enumMetadata, value);
     }
 
     public static bool IsFlagsEnumValue (object enumValue)
     {
-      ArgumentUtility.CheckNotNull ("enumValue", enumValue);
+      ArgumentUtility.CheckNotNull("enumValue", enumValue);
 
-      return IsFlagsEnumType (enumValue.GetType());
+      return IsFlagsEnumType(enumValue.GetType());
     }
 
     public static bool IsFlagsEnumType (Type enumType)
     {
-      ArgumentUtility.CheckNotNull ("enumType", enumType);
+      ArgumentUtility.CheckNotNull("enumType", enumType);
       if (!enumType.IsEnum)
       {
-        throw new ArgumentException (
-            string.Format ("Argument was a type representing '{0}' but only enum-types are supported.", enumType.GetFullNameSafe()), "enumType");
+        throw new ArgumentException(
+            string.Format("Argument was a type representing '{0}' but only enum-types are supported.", enumType.GetFullNameSafe()), "enumType");
       }
 
-      return GetEnumMetadata (enumType).IsFlagsEnum;
+      return GetEnumMetadata(enumType).IsFlagsEnum;
     }
 
     private static bool IsValidEnumValueInternal (EnumMetadata enumMetaData, object enumValue)
     {
-      var numericEnumValue = ToUInt64 (enumValue);
+      var numericEnumValue = ToUInt64(enumValue);
       if (enumMetaData.IsFlagsEnum)
       {
         if (numericEnumValue == 0L)
-          return enumMetaData.ContainsNumericValue (numericEnumValue);
+          return enumMetaData.ContainsNumericValue(numericEnumValue);
 
         var missingBits = ulong.MaxValue;
         foreach (var definedValue in enumMetaData.NumericValues)
@@ -191,34 +191,34 @@ namespace Remotion.Utilities
       }
       else
       {
-        return enumMetaData.ContainsNumericValue (numericEnumValue);
+        return enumMetaData.ContainsNumericValue(numericEnumValue);
       }
     }
 
     public static EnumMetadata GetEnumMetadata (Type enumType)
     {
       // C# compiler 7.2 already provides caching for anonymous method.
-      return s_cache.GetOrAdd (enumType, t => new EnumMetadata (t));
+      return s_cache.GetOrAdd(enumType, t => new EnumMetadata(t));
     }
 
     private static ulong ToUInt64 (object value)
     {
-      switch (Convert.GetTypeCode (value))
+      switch (Convert.GetTypeCode(value))
       {
         case TypeCode.SByte:
         case TypeCode.Int16:
         case TypeCode.Int32:
         case TypeCode.Int64:
-          return (ulong) Convert.ToInt64 (value, CultureInfo.InvariantCulture);
+          return (ulong) Convert.ToInt64(value, CultureInfo.InvariantCulture);
 
         case TypeCode.Byte:
         case TypeCode.UInt16:
         case TypeCode.UInt32:
         case TypeCode.UInt64:
-          return Convert.ToUInt64 (value, CultureInfo.InvariantCulture);
+          return Convert.ToUInt64(value, CultureInfo.InvariantCulture);
       }
       //unreachable
-      throw new InvalidOperationException ("Unknown Enum Type");
+      throw new InvalidOperationException("Unknown Enum Type");
     }
   }
 }

@@ -23,7 +23,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
   {
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
       ExecuteNextStep();
     }
 

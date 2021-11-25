@@ -71,27 +71,25 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       _webServiceFactoryStub = new Mock<IWebServiceFactory>();
 
-      _control = new BocAutoCompleteReferenceValueMock (_webServiceFactoryStub.Object);
+      _control = new BocAutoCompleteReferenceValueMock(_webServiceFactoryStub.Object);
       _control.ID = "BocAutoCompleteReferenceValue";
       _control.Value = (IBusinessObjectWithIdentity) _businessObject;
 
-      _page = new Mock<Page> () { CallBase = true };
-      _page.As<ISmartPage>().Setup (stub => stub.Context).Returns (new HttpContextWrapper (HttpContext.Current));
-      _page.As<ISmartPage>().Setup (stub => stub.Site).Returns ((ISite) null);
-      _page.Object.Controls.Add (_control);
+      _page = new Mock<Page>() { CallBase = true };
+      _page.As<ISmartPage>().Setup(stub => stub.Context).Returns(new HttpContextWrapper(HttpContext.Current));
+      _page.As<ISmartPage>().Setup(stub => stub.Site).Returns((ISite) null);
+      _page.Object.Controls.Add(_control);
 
       _businessObject = TypeWithReference.Create();
 
       _propertyReferenceValue =
-          (IBusinessObjectReferenceProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue");
+          (IBusinessObjectReferenceProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue");
 
-      _dataSource = new StubDataSource (((IBusinessObject) _businessObject).BusinessObjectClass);
+      _dataSource = new StubDataSource(((IBusinessObject) _businessObject).BusinessObjectClass);
       _dataSource.BusinessObject = (IBusinessObject) _businessObject;
 
-      ((IBusinessObject) _businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IGetObjectService>
-          (new GetObjectService ((IBusinessObjectWithIdentity) TypeWithReference.Create()));
-      ((IBusinessObject) _businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IBusinessObjectWebUIService>
-          (new ReflectionBusinessObjectWebUIService());
+      ((IBusinessObject) _businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IGetObjectService>(new GetObjectService((IBusinessObjectWithIdentity) TypeWithReference.Create()));
+      ((IBusinessObject) _businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IBusinessObjectWebUIService>(new ReflectionBusinessObjectWebUIService());
     }
 
     [Test]
@@ -100,8 +98,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
       _control.EvaluateWaiConformity();
 
-      Assert.That (WcagHelperMock.HasWarning, Is.False);
-      Assert.That (WcagHelperMock.HasError, Is.False);
+      Assert.That(WcagHelperMock.HasWarning, Is.False);
+      Assert.That(WcagHelperMock.HasError, Is.False);
     }
 
     [Test]
@@ -110,9 +108,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
       _control.EvaluateWaiConformity();
 
-      Assert.That (WcagHelperMock.HasWarning, Is.False);
-      Assert.That (WcagHelperMock.HasError, Is.True);
-      Assert.That (WcagHelperMock.Control, Is.EqualTo (_control));
+      Assert.That(WcagHelperMock.HasWarning, Is.False);
+      Assert.That(WcagHelperMock.HasError, Is.True);
+      Assert.That(WcagHelperMock.Control, Is.EqualTo(_control));
     }
 
     [Test]
@@ -120,8 +118,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       _control.ReadOnly = true;
       string[] actual = _control.GetTrackedClientIDs();
-      Assert.That (actual, Is.Not.Null);
-      Assert.That (actual.Length, Is.EqualTo (0));
+      Assert.That(actual, Is.Not.Null);
+      Assert.That(actual.Length, Is.EqualTo(0));
     }
 
     [Test]
@@ -129,9 +127,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       _control.ReadOnly = false;
       string[] actual = _control.GetTrackedClientIDs();
-      Assert.That (actual, Is.Not.Null);
-      Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (((IBocAutoCompleteReferenceValue) _control).GetTextValueName()));
+      Assert.That(actual, Is.Not.Null);
+      Assert.That(actual.Length, Is.EqualTo(1));
+      Assert.That(actual[0], Is.EqualTo(((IBocAutoCompleteReferenceValue) _control).GetTextValueName()));
     }
 
     [Test]
@@ -140,8 +138,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       IBusinessObjectWithIdentity referencedObject = (IBusinessObjectWithIdentity) TypeWithReference.Create();
       _control.IsDirty = false;
       _control.Value = referencedObject;
-      Assert.That (_control.Value, Is.EqualTo (referencedObject));
-      Assert.That (_control.IsDirty, Is.True);
+      Assert.That(_control.Value, Is.EqualTo(referencedObject));
+      Assert.That(_control.IsDirty, Is.True);
     }
 
     [Test]
@@ -149,8 +147,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       _control.IsDirty = false;
       _control.Value = null;
-      Assert.That (_control.Value, Is.EqualTo (null));
-      Assert.That (_control.IsDirty, Is.True);
+      Assert.That(_control.Value, Is.EqualTo(null));
+      Assert.That(_control.IsDirty, Is.True);
     }
 
     [Test]
@@ -158,14 +156,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       IBusinessObjectWithIdentity referencedObject = (IBusinessObjectWithIdentity) TypeWithReference.Create();
       _control.Value = referencedObject;
-      Assert.That (_control.HasValue, Is.True);
+      Assert.That(_control.HasValue, Is.True);
     }
 
     [Test]
     public void HasValue_ValueIsNull_ReturnsFalse ()
     {
       _control.Value = null;
-      Assert.That (_control.HasValue, Is.False);
+      Assert.That(_control.HasValue, Is.False);
     }
 
     [Test]
@@ -177,9 +175,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = null;
       _control.IsDirty = true;
 
-      _control.LoadValue (true);
-      Assert.That (_control.Value, Is.EqualTo (null));
-      Assert.That (_control.IsDirty, Is.True);
+      _control.LoadValue(true);
+      Assert.That(_control.Value, Is.EqualTo(null));
+      Assert.That(_control.IsDirty, Is.True);
     }
 
     [Test]
@@ -191,9 +189,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = null;
       _control.IsDirty = true;
 
-      _control.LoadValue (false);
-      Assert.That (_control.Value, Is.EqualTo (_businessObject.ReferenceValue));
-      Assert.That (_control.IsDirty, Is.False);
+      _control.LoadValue(false);
+      Assert.That(_control.Value, Is.EqualTo(_businessObject.ReferenceValue));
+      Assert.That(_control.IsDirty, Is.False);
     }
 
     [Test]
@@ -205,9 +203,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
       _control.IsDirty = true;
 
-      _control.LoadValue (false);
-      Assert.That (_control.Value, Is.EqualTo (_businessObject.ReferenceValue));
-      Assert.That (_control.IsDirty, Is.False);
+      _control.LoadValue(false);
+      Assert.That(_control.Value, Is.EqualTo(_businessObject.ReferenceValue));
+      Assert.That(_control.IsDirty, Is.False);
     }
 
     [Test]
@@ -218,9 +216,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = null;
       _control.IsDirty = true;
 
-      _control.LoadUnboundValue (value, true);
-      Assert.That (_control.Value, Is.EqualTo (null));
-      Assert.That (_control.IsDirty, Is.True);
+      _control.LoadUnboundValue(value, true);
+      Assert.That(_control.Value, Is.EqualTo(null));
+      Assert.That(_control.IsDirty, Is.True);
     }
 
     [Test]
@@ -231,9 +229,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = null;
       _control.IsDirty = true;
 
-      _control.LoadUnboundValue (value, false);
-      Assert.That (_control.Value, Is.EqualTo (value));
-      Assert.That (_control.IsDirty, Is.False);
+      _control.LoadUnboundValue(value, false);
+      Assert.That(_control.Value, Is.EqualTo(value));
+      Assert.That(_control.IsDirty, Is.False);
     }
 
     [Test]
@@ -244,9 +242,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
       _control.IsDirty = true;
 
-      _control.LoadUnboundValue (value, false);
-      Assert.That (_control.Value, Is.EqualTo (value));
-      Assert.That (_control.IsDirty, Is.False);
+      _control.LoadUnboundValue(value, false);
+      Assert.That(_control.Value, Is.EqualTo(value));
+      Assert.That(_control.IsDirty, Is.False);
     }
 
     [Test]
@@ -255,14 +253,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = (IBusinessObjectWithIdentity) _businessObject;
 
       object state = _control.SaveControlState();
-      Assert.That (state is object[]);
+      Assert.That(state is object[]);
 
       object[] stateArray = (object[]) state;
-      Assert.That (stateArray.Length, Is.EqualTo (4));
+      Assert.That(stateArray.Length, Is.EqualTo(4));
 
-      Assert.That (stateArray[1], Is.EqualTo (_control.Value.UniqueIdentifier));
-      Assert.That (stateArray[2], Is.EqualTo (_control.Value.DisplayName));
-      Assert.That (stateArray[3], Is.InstanceOf<BusinessObjectWebServiceContext>());
+      Assert.That(stateArray[1], Is.EqualTo(_control.Value.UniqueIdentifier));
+      Assert.That(stateArray[2], Is.EqualTo(_control.Value.DisplayName));
+      Assert.That(stateArray[3], Is.InstanceOf<BusinessObjectWebServiceContext>());
     }
 
     [Test]
@@ -275,258 +273,258 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       state[0] = parentState;
       state[1] = uniqueIdentifier.ToString();
       state[2] = "DisplayName";
-      state[3] = BusinessObjectWebServiceContext.Create (null, null, null);
+      state[3] = BusinessObjectWebServiceContext.Create(null, null, null);
 
-      _control.LoadControlState (state);
-      Assert.That (((IBocReferenceValueBase) _control).GetLabelText(), Is.EqualTo ("DisplayName"));
-      Assert.That (_control.BusinessObjectUniqueIdentifier, Is.EqualTo (uniqueIdentifier.ToString()));
+      _control.LoadControlState(state);
+      Assert.That(((IBocReferenceValueBase) _control).GetLabelText(), Is.EqualTo("DisplayName"));
+      Assert.That(_control.BusinessObjectUniqueIdentifier, Is.EqualTo(uniqueIdentifier.ToString()));
     }
 
     [Test]
     public void LoadPostDataNotRequired ()
     {
-      PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", false);
+      PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", false);
 
-      bool result = ((IPostBackDataHandler) _control).LoadPostData (null, null);
-      Assert.That (result, Is.False);
+      bool result = ((IPostBackDataHandler) _control).LoadPostData(null, null);
+      Assert.That(result, Is.False);
     }
 
     [Test]
     public void LoadPostData_ContainsNoData ()
     {
-      PrivateInvoke.InvokeNonPublicMethod (_control, "CreateChildControls");
+      PrivateInvoke.InvokeNonPublicMethod(_control, "CreateChildControls");
 
       var postbackCollection = new NameValueCollection();
 
       _control.IsDirty = false;
-      PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+      PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", true);
+      Mock.Get((Page) _control.Page).As<ISmartPage>().Setup(stub => stub.GetPostBackCollection()).Returns(postbackCollection);
 
-      _webServiceFactoryStub.Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
-          .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
+      _webServiceFactoryStub.Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
+          .Returns(new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
 
-      bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
-      Assert.That (_control.IsDirty, Is.False);
-      Assert.That (result, Is.False);
+      bool result = ((IPostBackDataHandler) _control).LoadPostData(_control.UniqueID, postbackCollection);
+      Assert.That(_control.IsDirty, Is.False);
+      Assert.That(result, Is.False);
     }
 
     [Test]
     public void LoadPostData_Empty_NotChanged ()
     {
-      PrivateInvoke.InvokeNonPublicMethod (_control, "CreateChildControls");
+      PrivateInvoke.InvokeNonPublicMethod(_control, "CreateChildControls");
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (
+      postbackCollection.Add(
           ((IBocAutoCompleteReferenceValue) _control).GetKeyValueName(),
           ((IBocAutoCompleteReferenceValue) _control).NullValueString);
-      postbackCollection.Add (((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), string.Empty);
+      postbackCollection.Add(((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), string.Empty);
 
       _control.Value = null;
       _control.IsDirty = false;
-      PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+      PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", true);
+      Mock.Get((Page) _control.Page).As<ISmartPage>().Setup(stub => stub.GetPostBackCollection()).Returns(postbackCollection);
 
-      _webServiceFactoryStub.Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
-          .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
+      _webServiceFactoryStub.Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
+          .Returns(new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
 
-      bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
-      Assert.That (_control.IsDirty, Is.False);
-      Assert.That (result, Is.False);
+      bool result = ((IPostBackDataHandler) _control).LoadPostData(_control.UniqueID, postbackCollection);
+      Assert.That(_control.IsDirty, Is.False);
+      Assert.That(result, Is.False);
     }
 
     [Test]
     public void LoadPostData_NotEmpty_SetEmpty ()
     {
-      PrivateInvoke.InvokeNonPublicMethod (_control, "CreateChildControls");
+      PrivateInvoke.InvokeNonPublicMethod(_control, "CreateChildControls");
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (((IBocAutoCompleteReferenceValue) _control).GetKeyValueName(), string.Empty);
-      postbackCollection.Add (((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), string.Empty);
+      postbackCollection.Add(((IBocAutoCompleteReferenceValue) _control).GetKeyValueName(), string.Empty);
+      postbackCollection.Add(((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), string.Empty);
 
       _control.IsDirty = false;
-      PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+      PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", true);
+      Mock.Get((Page) _control.Page).As<ISmartPage>().Setup(stub => stub.GetPostBackCollection()).Returns(postbackCollection);
 
-      _webServiceFactoryStub.Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/SearchService.asmx"))
-          .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
+      _webServiceFactoryStub.Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/SearchService.asmx"))
+          .Returns(new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/SearchService.asmx";
 
-      bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
-      Assert.That (_control.IsDirty, Is.True);
-      Assert.That (result, Is.True);
-      Assert.That (_control.Value, Is.Null);
-      Assert.That (_control.BusinessObjectUniqueIdentifier, Is.Null);
-      Assert.That (((IBocAutoCompleteReferenceValue) _control).GetLabelText(), Is.Null);
+      bool result = ((IPostBackDataHandler) _control).LoadPostData(_control.UniqueID, postbackCollection);
+      Assert.That(_control.IsDirty, Is.True);
+      Assert.That(result, Is.True);
+      Assert.That(_control.Value, Is.Null);
+      Assert.That(_control.BusinessObjectUniqueIdentifier, Is.Null);
+      Assert.That(((IBocAutoCompleteReferenceValue) _control).GetLabelText(), Is.Null);
     }
 
     [Test]
     public void LoadPostData_NotEmpty_ChangedToValidValue ()
     {
-      PrivateInvoke.InvokeNonPublicMethod (_control, "CreateChildControls");
+      PrivateInvoke.InvokeNonPublicMethod(_control, "CreateChildControls");
 
       var postbackCollection = new NameValueCollection();
 
       Guid value = Guid.NewGuid();
-      postbackCollection.Add (((IBocAutoCompleteReferenceValue) _control).GetKeyValueName(), value.ToString());
-      postbackCollection.Add (((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), "NewValue");
+      postbackCollection.Add(((IBocAutoCompleteReferenceValue) _control).GetKeyValueName(), value.ToString());
+      postbackCollection.Add(((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), "NewValue");
 
       _control.IsDirty = false;
 
-      PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+      PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", true);
+      Mock.Get((Page) _control.Page).As<ISmartPage>().Setup(stub => stub.GetPostBackCollection()).Returns(postbackCollection);
 
       _webServiceFactoryStub
-          .Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
-          .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
+          .Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
+          .Returns(new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
 
-      bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
-      Assert.That (_control.IsDirty, Is.True);
-      Assert.That (result, Is.True);
-      Assert.That (_control.BusinessObjectUniqueIdentifier, Is.EqualTo (value.ToString()));
-      Assert.That (((IBocAutoCompleteReferenceValue) _control).GetLabelText(), Is.EqualTo ("NewValue"));
+      bool result = ((IPostBackDataHandler) _control).LoadPostData(_control.UniqueID, postbackCollection);
+      Assert.That(_control.IsDirty, Is.True);
+      Assert.That(result, Is.True);
+      Assert.That(_control.BusinessObjectUniqueIdentifier, Is.EqualTo(value.ToString()));
+      Assert.That(((IBocAutoCompleteReferenceValue) _control).GetLabelText(), Is.EqualTo("NewValue"));
     }
 
     [Test]
     public void LoadPostData_NotEmpty_NotChanged ()
     {
-      PrivateInvoke.InvokeNonPublicMethod (_control, "CreateChildControls");
+      PrivateInvoke.InvokeNonPublicMethod(_control, "CreateChildControls");
 
       var postbackCollection = new NameValueCollection();
 
       string value = _control.Value.UniqueIdentifier;
       string displayName = _control.Value.DisplayName;
-      Assert.That (value, Is.Not.Null.Or.Empty);
-      Assert.That (displayName, Is.Not.Null.Or.Empty);
-      postbackCollection.Add (((IBocAutoCompleteReferenceValue) _control).GetKeyValueName(), value);
-      postbackCollection.Add (((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), displayName);
+      Assert.That(value, Is.Not.Null.Or.Empty);
+      Assert.That(displayName, Is.Not.Null.Or.Empty);
+      postbackCollection.Add(((IBocAutoCompleteReferenceValue) _control).GetKeyValueName(), value);
+      postbackCollection.Add(((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), displayName);
 
       _control.IsDirty = false;
 
-      PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+      PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", true);
+      Mock.Get((Page) _control.Page).As<ISmartPage>().Setup(stub => stub.GetPostBackCollection()).Returns(postbackCollection);
 
       _webServiceFactoryStub
-          .Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
-          .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
+          .Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
+          .Returns(new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
 
-      bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
-      Assert.That (_control.IsDirty, Is.False);
-      Assert.That (result, Is.False);
-      Assert.That (((IBocAutoCompleteReferenceValue) _control).BusinessObjectUniqueIdentifier, Is.EqualTo (displayName));
-      Assert.That (((IBocAutoCompleteReferenceValue) _control).GetLabelText(), Is.EqualTo (displayName));
+      bool result = ((IPostBackDataHandler) _control).LoadPostData(_control.UniqueID, postbackCollection);
+      Assert.That(_control.IsDirty, Is.False);
+      Assert.That(result, Is.False);
+      Assert.That(((IBocAutoCompleteReferenceValue) _control).BusinessObjectUniqueIdentifier, Is.EqualTo(displayName));
+      Assert.That(((IBocAutoCompleteReferenceValue) _control).GetLabelText(), Is.EqualTo(displayName));
     }
 
     [Test]
     public void LoadPostData_Empty_ChangedToInvalidValue ()
     {
-      PrivateInvoke.InvokeNonPublicMethod (_control, "CreateChildControls");
+      PrivateInvoke.InvokeNonPublicMethod(_control, "CreateChildControls");
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (
+      postbackCollection.Add(
           ((IBocAutoCompleteReferenceValue) _control).GetKeyValueName(),
           ((IBocAutoCompleteReferenceValue) _control).NullValueString);
-      postbackCollection.Add (((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), "InvalidValue");
+      postbackCollection.Add(((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), "InvalidValue");
 
       _control.Value = null;
       _control.IsDirty = false;
 
-      PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+      PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", true);
+      Mock.Get((Page) _control.Page).As<ISmartPage>().Setup(stub => stub.GetPostBackCollection()).Returns(postbackCollection);
 
       _webServiceFactoryStub
-          .Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
-          .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
+          .Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
+          .Returns(new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
 
-      bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
-      Assert.That (_control.IsDirty, Is.True);
-      Assert.That (result, Is.True);
-      Assert.That (_control.BusinessObjectUniqueIdentifier, Is.Null);
-      Assert.That (((IBocAutoCompleteReferenceValue) _control).GetLabelText(), Is.EqualTo ("InvalidValue"));
+      bool result = ((IPostBackDataHandler) _control).LoadPostData(_control.UniqueID, postbackCollection);
+      Assert.That(_control.IsDirty, Is.True);
+      Assert.That(result, Is.True);
+      Assert.That(_control.BusinessObjectUniqueIdentifier, Is.Null);
+      Assert.That(((IBocAutoCompleteReferenceValue) _control).GetLabelText(), Is.EqualTo("InvalidValue"));
     }
 
     [Test]
     public void LoadPostData_NotEmpty_ChangedToInvalidValue ()
     {
-      PrivateInvoke.InvokeNonPublicMethod (_control, "CreateChildControls");
+      PrivateInvoke.InvokeNonPublicMethod(_control, "CreateChildControls");
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (
+      postbackCollection.Add(
           ((IBocAutoCompleteReferenceValue) _control).GetKeyValueName(),
           ((IBocAutoCompleteReferenceValue) _control).NullValueString);
-      postbackCollection.Add (((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), "InvalidValue");
+      postbackCollection.Add(((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), "InvalidValue");
 
       _control.IsDirty = false;
 
-      PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+      PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", true);
+      Mock.Get((Page) _control.Page).As<ISmartPage>().Setup(stub => stub.GetPostBackCollection()).Returns(postbackCollection);
 
       _webServiceFactoryStub
-          .Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
-          .Returns (new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
+          .Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
+          .Returns(new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
 
-      bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
-      Assert.That (_control.IsDirty, Is.True);
-      Assert.That (result, Is.True);
-      Assert.That (_control.BusinessObjectUniqueIdentifier, Is.Null);
-      Assert.That (((IBocAutoCompleteReferenceValue) _control).GetLabelText(), Is.EqualTo ("InvalidValue"));
+      bool result = ((IPostBackDataHandler) _control).LoadPostData(_control.UniqueID, postbackCollection);
+      Assert.That(_control.IsDirty, Is.True);
+      Assert.That(result, Is.True);
+      Assert.That(_control.BusinessObjectUniqueIdentifier, Is.Null);
+      Assert.That(((IBocAutoCompleteReferenceValue) _control).GetLabelText(), Is.EqualTo("InvalidValue"));
     }
 
     [Test]
     public void LoadPostData_ResolvesDisplayName ()
     {
-      PrivateInvoke.InvokeNonPublicMethod (_control, "CreateChildControls");
+      PrivateInvoke.InvokeNonPublicMethod(_control, "CreateChildControls");
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (
+      postbackCollection.Add(
           ((IBocAutoCompleteReferenceValue) _control).GetKeyValueName(),
           ((IBocAutoCompleteReferenceValue) _control).NullValueString);
-      postbackCollection.Add (((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), "SomeValue");
+      postbackCollection.Add(((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), "SomeValue");
 
       _control.IsDirty = false;
-      PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
-      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (_dataSource, _propertyReferenceValue, "Args");
-      PrivateInvoke.SetNonPublicField (_control, "_businessObjectWebServiceContextFromPreviousLifeCycle", businessObjectWebServiceContext);
-      Mock.Get ((Page) _control.Page).As<ISmartPage>().Setup (stub => stub.GetPostBackCollection()).Returns (postbackCollection);
+      PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", true);
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(_dataSource, _propertyReferenceValue, "Args");
+      PrivateInvoke.SetNonPublicField(_control, "_businessObjectWebServiceContextFromPreviousLifeCycle", businessObjectWebServiceContext);
+      Mock.Get((Page) _control.Page).As<ISmartPage>().Setup(stub => stub.GetPostBackCollection()).Returns(postbackCollection);
 
       var searchServiceStub = new Mock<IBocAutoCompleteReferenceValueWebService>();
       searchServiceStub
-          .Setup (
-              stub => stub.SearchExact (
+          .Setup(
+              stub => stub.SearchExact(
                   "SomeValue",
                   businessObjectWebServiceContext.BusinessObjectClass,
                   businessObjectWebServiceContext.BusinessObjectProperty,
                   businessObjectWebServiceContext.BusinessObjectIdentifier,
                   businessObjectWebServiceContext.Arguments))
-          .Returns (new BusinessObjectWithIdentityProxy { DisplayName = "ValidName", UniqueIdentifier = "ValidIdentifier" });
+          .Returns(new BusinessObjectWithIdentityProxy { DisplayName = "ValidName", UniqueIdentifier = "ValidIdentifier" });
       _webServiceFactoryStub
-          .Setup (stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService> ("~/ControlService.asmx"))
-          .Returns (searchServiceStub.Object);
+          .Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
+          .Returns(searchServiceStub.Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
 
-      bool result = ((IPostBackDataHandler) _control).LoadPostData (_control.UniqueID, postbackCollection);
-      Assert.That (_control.IsDirty, Is.True);
-      Assert.That (result, Is.True);
-      Assert.That (_control.BusinessObjectUniqueIdentifier, Is.EqualTo ("ValidIdentifier"));
-      Assert.That (((IBocAutoCompleteReferenceValue) _control).GetLabelText(), Is.EqualTo ("ValidName"));
+      bool result = ((IPostBackDataHandler) _control).LoadPostData(_control.UniqueID, postbackCollection);
+      Assert.That(_control.IsDirty, Is.True);
+      Assert.That(result, Is.True);
+      Assert.That(_control.BusinessObjectUniqueIdentifier, Is.EqualTo("ValidIdentifier"));
+      Assert.That(((IBocAutoCompleteReferenceValue) _control).GetLabelText(), Is.EqualTo("ValidName"));
     }
 
     [Test]
@@ -539,12 +537,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       var newValue = (IBusinessObjectWithIdentity) TypeWithReference.Create();
       _control.Value = newValue;
-      Assert.That (_control.Value, Is.EqualTo (newValue));
+      Assert.That(_control.Value, Is.EqualTo(newValue));
 
-      _control.LoadValue (true);
+      _control.LoadValue(true);
 
-      Assert.That (_control.Value, Is.EqualTo (newValue));
-      Assert.That (_control.IsDirty);
+      Assert.That(_control.Value, Is.EqualTo(newValue));
+      Assert.That(_control.IsDirty);
     }
 
     [Test]
@@ -555,15 +553,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Property = _propertyReferenceValue;
       _control.DataSource = _dataSource;
 
-      var propertyValue = _dataSource.BusinessObject.GetProperty (_propertyReferenceValue);
+      var propertyValue = _dataSource.BusinessObject.GetProperty(_propertyReferenceValue);
       var newValue = (IBusinessObjectWithIdentity) TypeWithReference.Create();
       _control.Value = newValue;
-      Assert.That (_control.Value, Is.EqualTo (newValue));
+      Assert.That(_control.Value, Is.EqualTo(newValue));
 
-      _control.LoadValue (false);
+      _control.LoadValue(false);
 
-      Assert.That (_control.Value, Is.EqualTo (propertyValue));
-      Assert.That (!_control.IsDirty);
+      Assert.That(_control.Value, Is.EqualTo(propertyValue));
+      Assert.That(!_control.IsDirty);
     }
 
     [Test]
@@ -575,9 +573,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = value;
       _control.IsDirty = true;
 
-      _control.LoadValue (false);
-      Assert.That (_control.Value, Is.EqualTo (value));
-      Assert.That (_control.IsDirty, Is.True);
+      _control.LoadValue(false);
+      Assert.That(_control.Value, Is.EqualTo(value));
+      Assert.That(_control.IsDirty, Is.True);
     }
 
     [Test]
@@ -589,9 +587,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = value;
       _control.IsDirty = true;
 
-      _control.LoadValue (false);
-      Assert.That (_control.Value, Is.EqualTo (value));
-      Assert.That (_control.IsDirty, Is.True);
+      _control.LoadValue(false);
+      Assert.That(_control.Value, Is.EqualTo(value));
+      Assert.That(_control.IsDirty, Is.True);
     }
 
     [Test]
@@ -603,9 +601,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
       _control.IsDirty = true;
 
-      _control.LoadValue (false);
-      Assert.That (_control.Value, Is.EqualTo (null));
-      Assert.That (_control.IsDirty, Is.False);
+      _control.LoadValue(false);
+      Assert.That(_control.Value, Is.EqualTo(null));
+      Assert.That(_control.IsDirty, Is.False);
     }
 
 
@@ -615,10 +613,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var oldValue = _control.Value;
       var newValue = (IBusinessObjectWithIdentity) TypeWithReference.Create();
 
-      _control.LoadUnboundValue (newValue, true);
+      _control.LoadUnboundValue(newValue, true);
 
-      Assert.That (_control.Value, Is.EqualTo (oldValue));
-      Assert.That (_control.IsDirty);
+      Assert.That(_control.Value, Is.EqualTo(oldValue));
+      Assert.That(_control.IsDirty);
     }
 
     [Test]
@@ -626,10 +624,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       var newValue = (IBusinessObjectWithIdentity) TypeWithReference.Create();
 
-      _control.LoadUnboundValue (newValue, false);
+      _control.LoadUnboundValue(newValue, false);
 
-      Assert.That (_control.Value, Is.EqualTo (newValue));
-      Assert.That (!_control.IsDirty);
+      Assert.That(_control.Value, Is.EqualTo(newValue));
+      Assert.That(!_control.IsDirty);
     }
 
     [Test]
@@ -642,10 +640,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = null;
       _control.IsDirty = true;
 
-      var result = _control.SaveValue (true);
-      Assert.That (result, Is.False);
-      Assert.That (_businessObject.ReferenceValue, Is.EqualTo (value));
-      Assert.That (_control.IsDirty, Is.True);
+      var result = _control.SaveValue(true);
+      Assert.That(result, Is.False);
+      Assert.That(_businessObject.ReferenceValue, Is.EqualTo(value));
+      Assert.That(_control.IsDirty, Is.True);
     }
 
     [Test]
@@ -658,10 +656,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = null;
       _control.IsDirty = true;
 
-      var result = _control.SaveValue (false);
-      Assert.That (result, Is.True);
-      Assert.That (_businessObject.ReferenceValue, Is.EqualTo (null));
-      Assert.That (_control.IsDirty, Is.False);
+      var result = _control.SaveValue(false);
+      Assert.That(result, Is.True);
+      Assert.That(_businessObject.ReferenceValue, Is.EqualTo(null));
+      Assert.That(_control.IsDirty, Is.False);
     }
 
     [Test]
@@ -673,12 +671,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Property = _propertyReferenceValue;
       _control.Value = null;
       _control.IsDirty = true;
-      _control.RegisterValidator (new AlwaysInvalidValidator());
+      _control.RegisterValidator(new AlwaysInvalidValidator());
 
-      var result = _control.SaveValue (false);
-      Assert.That (result, Is.False);
-      Assert.That (_businessObject.ReferenceValue, Is.EqualTo (value));
-      Assert.That (_control.IsDirty, Is.True);
+      var result = _control.SaveValue(false);
+      Assert.That(result, Is.False);
+      Assert.That(_businessObject.ReferenceValue, Is.EqualTo(value));
+      Assert.That(_control.IsDirty, Is.True);
     }
 
     [Test]
@@ -691,10 +689,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.Value = null;
       _control.IsDirty = false;
 
-      var result = _control.SaveValue (false);
-      Assert.That (result, Is.True);
-      Assert.That (_businessObject.ReferenceValue, Is.EqualTo (value));
-      Assert.That (_control.IsDirty, Is.False);
+      var result = _control.SaveValue(false);
+      Assert.That(result, Is.True);
+      Assert.That(_businessObject.ReferenceValue, Is.EqualTo(value));
+      Assert.That(_control.IsDirty, Is.False);
     }
 
     [Test]
@@ -704,7 +702,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.SelectionChanged += (sender, e) => { eventHandlerCalled = true; };
       ((IPostBackDataHandler) _control).RaisePostDataChangedEvent();
 
-      Assert.That (eventHandlerCalled);
+      Assert.That(eventHandlerCalled);
     }
 
     [Test]
@@ -715,7 +713,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.SelectionChanged += (sender, e) => { eventHandlerCalled = true; };
       ((IPostBackDataHandler) _control).RaisePostDataChangedEvent();
 
-      Assert.That (!eventHandlerCalled);
+      Assert.That(!eventHandlerCalled);
     }
 
     [Test]
@@ -726,16 +724,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _control.SelectionChanged += (sender, e) => { eventHandlerCalled = true; };
       ((IPostBackDataHandler) _control).RaisePostDataChangedEvent();
 
-      Assert.That (!eventHandlerCalled);
+      Assert.That(!eventHandlerCalled);
     }
 
     [Test]
     public void GetValidationValue_ValueSet ()
     {
-      var value = TypeWithReference.Create ("Name");
+      var value = TypeWithReference.Create("Name");
       _control.Value = (IBusinessObjectWithIdentity) value;
 
-      Assert.That (_control.ValidationValue, Is.EqualTo (value.UniqueIdentifier + "\n" + value.DisplayName));
+      Assert.That(_control.ValidationValue, Is.EqualTo(value.UniqueIdentifier + "\n" + value.DisplayName));
     }
 
     [Test]
@@ -743,7 +741,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       _control.Value = null;
 
-      Assert.That (_control.ValidationValue, Is.Null);
+      Assert.That(_control.ValidationValue, Is.Null);
     }
 
     [Test]
@@ -753,28 +751,28 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var propertyStub = new Mock<IBusinessObjectProperty>();
       var businessObjectWithIdentityStub = new Mock<IBusinessObjectWithIdentity>();
 
-      businessObjectWithIdentityStub.Setup (stub => stub.UniqueIdentifier).Returns ((string) null);
-      businessObjectWithIdentityStub.Setup (_ => _.BusinessObjectClass).Returns (classStub.Object);
-      businessObjectWithIdentityStub.Setup (_ => _.GetProperty (propertyStub.Object)).Returns ("Name");
+      businessObjectWithIdentityStub.Setup(stub => stub.UniqueIdentifier).Returns((string) null);
+      businessObjectWithIdentityStub.Setup(_ => _.BusinessObjectClass).Returns(classStub.Object);
+      businessObjectWithIdentityStub.Setup(_ => _.GetProperty(propertyStub.Object)).Returns("Name");
 
-      classStub.Setup (_ => _.GetPropertyDefinition ("DisplayName")).Returns (propertyStub.Object);
-      propertyStub.Setup (_ => _.IsAccessible (businessObjectWithIdentityStub.Object)).Returns (true);
+      classStub.Setup(_ => _.GetPropertyDefinition("DisplayName")).Returns(propertyStub.Object);
+      propertyStub.Setup(_ => _.IsAccessible(businessObjectWithIdentityStub.Object)).Returns(true);
 
       _control.Value = businessObjectWithIdentityStub.Object;
 
-      Assert.That (_control.ValidationValue, Is.EqualTo ("\nName"));
+      Assert.That(_control.ValidationValue, Is.EqualTo("\nName"));
     }
 
     [Test]
     public void GetTextValueName ()
     {
-      Assert.That (((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), Is.EqualTo ("BocAutoCompleteReferenceValue_TextValue"));
+      Assert.That(((IBocAutoCompleteReferenceValue) _control).GetTextValueName(), Is.EqualTo("BocAutoCompleteReferenceValue_TextValue"));
     }
 
     [Test]
     public void GetKeyValueName ()
     {
-      Assert.That (((IBocAutoCompleteReferenceValue) _control).GetKeyValueName(), Is.EqualTo ("BocAutoCompleteReferenceValue_KeyValue"));
+      Assert.That(((IBocAutoCompleteReferenceValue) _control).GetKeyValueName(), Is.EqualTo("BocAutoCompleteReferenceValue_KeyValue"));
     }
 
     [Test]
@@ -783,10 +781,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var control = new BocAutoCompleteReferenceValue();
       var serviceLocatorMock = new Mock<IServiceLocator>();
       var factoryMock = new Mock<IBocAutoCompleteReferenceValueValidatorFactory>();
-      serviceLocatorMock.Setup (m => m.GetInstance<IBocAutoCompleteReferenceValueValidatorFactory>()).Returns (factoryMock.Object).Verifiable();
-      factoryMock.Setup (f => f.CreateValidators (control, false)).Returns (new List<BaseValidator>()).Verifiable();
+      serviceLocatorMock.Setup(m => m.GetInstance<IBocAutoCompleteReferenceValueValidatorFactory>()).Returns(factoryMock.Object).Verifiable();
+      factoryMock.Setup(f => f.CreateValidators(control, false)).Returns(new List<BaseValidator>()).Verifiable();
 
-      using (new ServiceLocatorScope (serviceLocatorMock.Object))
+      using (new ServiceLocatorScope(serviceLocatorMock.Object))
       {
         control.CreateValidators();
       }

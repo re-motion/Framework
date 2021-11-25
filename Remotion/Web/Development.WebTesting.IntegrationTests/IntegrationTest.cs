@@ -54,15 +54,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void IntegrationTestOneTimeSetUp ()
     {
       _webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
-      _webTestHelper.OnFixtureSetUp (MaximizeMainBrowserSession);
-      s_webApplicationRoot = new Lazy<Uri> (
+      _webTestHelper.OnFixtureSetUp(MaximizeMainBrowserSession);
+      s_webApplicationRoot = new Lazy<Uri>(
           () =>
           {
-            var uri = new Uri (_webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot);
+            var uri = new Uri(_webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot);
 
             // RM-7401: Edge loads pages slower due to repeated hostname resolution.
             if (_webTestHelper.BrowserConfiguration.IsEdge())
-              return HostnameResolveHelper.ResolveHostname (uri);
+              return HostnameResolveHelper.ResolveHostname(uri);
 
             return uri;
           });
@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [SetUp]
     public void IntegrationTestSetUp ()
     {
-      _webTestHelper.OnSetUp (GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
+      _webTestHelper.OnSetUp(GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
 
       var requestErrorDetection =
           (DiagnosticInformationCollectioningRequestErrorDetectionStrategy) Helper.TestInfrastructureConfiguration.RequestErrorDetectionStrategy;
@@ -87,7 +87,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void IntegrationTestTearDown ()
     {
       var hasSucceeded = TestContext.CurrentContext.Result.Outcome.Status != TestStatus.Failed;
-      _webTestHelper.OnTearDown (hasSucceeded);
+      _webTestHelper.OnTearDown(hasSucceeded);
       _aspNetRequestErrorDetectionScope.Dispose();
     }
 
@@ -101,14 +101,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       where TPageObject : PageObject
     {
       var url = s_webApplicationRoot.Value + page;
-      _webTestHelper.MainBrowserSession.Window.Visit (url);
+      _webTestHelper.MainBrowserSession.Window.Visit(url);
 
-      return _webTestHelper.CreateInitialPageObject<TPageObject> (_webTestHelper.MainBrowserSession);
+      return _webTestHelper.CreateInitialPageObject<TPageObject>(_webTestHelper.MainBrowserSession);
     }
 
     private static void KillAnyExistingWindowsErrorReportingProcesses ()
     {
-      ProcessUtils.KillAllProcessesWithName ("WerFault");
+      ProcessUtils.KillAllProcessesWithName("WerFault");
     }
   }
 }

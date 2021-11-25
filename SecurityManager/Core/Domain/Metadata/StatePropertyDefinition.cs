@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static StatePropertyDefinition NewObject (Guid metadataItemID, string name)
     {
-      return NewObject<StatePropertyDefinition> (ParamList.Create (metadataItemID, name));
+      return NewObject<StatePropertyDefinition>(ParamList.Create(metadataItemID, name));
     }
 
     private DomainObjectDeleteHandler _deleteHandler;
@@ -63,41 +63,41 @@ namespace Remotion.SecurityManager.Domain.Metadata
     [StorageClassNone]
     public ReadOnlyCollection<StateDefinition> DefinedStates
     {
-      get { return DefinedStatesInternal.OrderBy (s => s.Index).ToList().AsReadOnly(); }
+      get { return DefinedStatesInternal.OrderBy(s => s.Index).ToList().AsReadOnly(); }
     }
 
     public StateDefinition GetState (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
-      return DefinedStatesInternal.Single (
+      return DefinedStatesInternal.Single(
           s => s.Name == name,
-          () => CreateArgumentException ("name", "The state '{0}' is not defined for the property '{1}'.", name, Name));
+          () => CreateArgumentException("name", "The state '{0}' is not defined for the property '{1}'.", name, Name));
     }
 
     public bool ContainsState (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
-      return DefinedStatesInternal.Any (s => s.Name == name);
+      return DefinedStatesInternal.Any(s => s.Name == name);
     }
 
     public StateDefinition GetState (int stateValue)
     {
-      return DefinedStatesInternal.Single (
+      return DefinedStatesInternal.Single(
           s => s.Value == stateValue,
-          () => CreateArgumentException ("stateValue", "A state with the value {0} is not defined for the property '{1}'.", stateValue, Name));
+          () => CreateArgumentException("stateValue", "A state with the value {0} is not defined for the property '{1}'.", stateValue, Name));
     }
 
     public bool ContainsState (int stateValue)
     {
-      return DefinedStatesInternal.Any (s => s.Value == stateValue);
+      return DefinedStatesInternal.Any(s => s.Value == stateValue);
     }
 
     [StorageClassNone]
     public StateDefinition this [string stateName]
     {
-      get { return GetState (stateName); }
+      get { return GetState(stateName); }
     }
 
     /// <summary>
@@ -109,13 +109,13 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void AddState (StateDefinition state)
     {
-      ArgumentUtility.CheckNotNull ("state", state);
-      if (ContainsState (state.Name))
-        throw CreateArgumentException ("state", "A state with the name '{0}' was already added to the property '{1}'.", state.Name, Name);
-      if (ContainsState (state.Value))
-        throw CreateArgumentException ("state", "A state with the value {0} was already added to the property '{1}'.", state.Value, Name);
+      ArgumentUtility.CheckNotNull("state", state);
+      if (ContainsState(state.Name))
+        throw CreateArgumentException("state", "A state with the name '{0}' was already added to the property '{1}'.", state.Name, Name);
+      if (ContainsState(state.Value))
+        throw CreateArgumentException("state", "A state with the value {0} was already added to the property '{1}'.", state.Value, Name);
 
-      DefinedStatesInternal.Add (state);
+      DefinedStatesInternal.Add(state);
     }
 
     /// <summary>
@@ -131,16 +131,16 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void RemoveState (StateDefinition state)
     {
-      ArgumentUtility.CheckNotNull ("state", state);
+      ArgumentUtility.CheckNotNull("state", state);
 
-      if (!DefinedStatesInternal.Contains (state.ID))
-          throw CreateArgumentException ("state", "The state '{0}' does not exist on the property '{1}'.", state.Name, Name);
+      if (!DefinedStatesInternal.Contains(state.ID))
+          throw CreateArgumentException("state", "The state '{0}' does not exist on the property '{1}'.", state.Name, Name);
 
-      DefinedStatesInternal.Remove (state);
+      DefinedStatesInternal.Remove(state);
 
-      foreach (var acl in StatePropertyReferences.SelectMany (r=> r.Class.StatefulAccessControlLists).ToList())
+      foreach (var acl in StatePropertyReferences.SelectMany(r=> r.Class.StatefulAccessControlLists).ToList())
       {
-        var stateCombinationsContainingRemovedState = acl.StateCombinations.Where (sc => sc.GetStates().Contains (state)).ToList();
+        var stateCombinationsContainingRemovedState = acl.StateCombinations.Where(sc => sc.GetStates().Contains(state)).ToList();
         foreach (var stateCombination in stateCombinationsContainingRemovedState)
         {
           stateCombination.Delete();
@@ -154,18 +154,18 @@ namespace Remotion.SecurityManager.Domain.Metadata
     {
       if (StatePropertyReferences.Any())
       {
-        throw new InvalidOperationException (
-            string.Format ("State property '{0}' cannot be deleted because it is associated with at least one securable class definition.", Name));
+        throw new InvalidOperationException(
+            string.Format("State property '{0}' cannot be deleted because it is associated with at least one securable class definition.", Name));
       }
-      base.OnDeleting (args);
+      base.OnDeleting(args);
 
       //TODO: Rewrite with test
-      _deleteHandler = new DomainObjectDeleteHandler (LocalizedNames);
+      _deleteHandler = new DomainObjectDeleteHandler(LocalizedNames);
     }
 
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
       //TODO: Rewrite with test
       _deleteHandler.Delete();
@@ -173,7 +173,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     private ArgumentException CreateArgumentException (string argumentName, string format, params object[] args)
     {
-      return new ArgumentException (string.Format (format, args), argumentName);
+      return new ArgumentException(string.Format(format, args), argumentName);
     }
   }
 }

@@ -28,31 +28,31 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     [Test]
     public void TokenWithAbstractRole_Matches ()
     {
-      AccessControlEntry entry = AccessControlEntry.NewObject ();
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (entry);
-      SecurityToken token = TestHelper.CreateTokenWithAbstractRole (TestHelper.CreateTestAbstractRole ());
+      AccessControlEntry entry = AccessControlEntry.NewObject();
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(entry);
+      SecurityToken token = TestHelper.CreateTokenWithAbstractRole(TestHelper.CreateTestAbstractRole());
 
-      Assert.That (matcher.MatchesToken (token), Is.True);
+      Assert.That(matcher.MatchesToken(token), Is.True);
     }
 
     [Test]
     public void TokenWithoutUser_Matches ()
     {
-      AccessControlEntry entry = AccessControlEntry.NewObject ();
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (entry);
-      SecurityToken token = TestHelper.CreateTokenWithoutUser ();
+      AccessControlEntry entry = AccessControlEntry.NewObject();
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(entry);
+      SecurityToken token = TestHelper.CreateTokenWithoutUser();
 
-      Assert.That (matcher.MatchesToken (token), Is.True);
+      Assert.That(matcher.MatchesToken(token), Is.True);
     }
 
     [Test]
     public void TokenWithNullPrincipal_NotMatches ()
     {
-      AccessControlEntry entry = AccessControlEntry.NewObject ();
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (entry);
-      SecurityToken token = TestHelper.CreateTokenWithNullPrincipal ();
+      AccessControlEntry entry = AccessControlEntry.NewObject();
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(entry);
+      SecurityToken token = TestHelper.CreateTokenWithNullPrincipal();
 
-      Assert.That (matcher.MatchesToken (token), Is.False);
+      Assert.That(matcher.MatchesToken(token), Is.False);
     }
   }
 }

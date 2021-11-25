@@ -15,7 +15,7 @@ namespace Remotion.Web.UI.Controls
       if (context == null && sourceType == typeof (string))
         return true;
 
-      return base.CanConvertFrom (context, sourceType);
+      return base.CanConvertFrom(context, sourceType);
     }
 
     public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
@@ -23,7 +23,7 @@ namespace Remotion.Web.UI.Controls
       if (destinationType == typeof (string))
         return true;
 
-      return base.CanConvertTo (context, destinationType);
+      return base.CanConvertTo(context, destinationType);
     }
 
     public override object? ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object? value)
@@ -36,7 +36,7 @@ namespace Remotion.Web.UI.Controls
         var badge = new Badge();
         if (stringValue != string.Empty)
         {
-          var valueParts = stringValue.Split (new[] { '\0' }, 2);
+          var valueParts = stringValue.Split(new[] { '\0' }, 2);
           badge.Value = valueParts[0];
           badge.Description = valueParts[1];
         }
@@ -44,7 +44,7 @@ namespace Remotion.Web.UI.Controls
         return badge;
       }
 
-      return base.ConvertFrom (context, culture, value);
+      return base.ConvertFrom(context, culture, value);
     }
 
     public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo culture, object? value, Type destinationType)
@@ -58,11 +58,11 @@ namespace Remotion.Web.UI.Controls
         {
           if (context == null) // Required to circumvent the Designer
           {
-            if (Badge.ShouldSerialize (badge))
+            if (Badge.ShouldSerialize(badge))
             {
               var serializedValue = new StringBuilder();
-              serializedValue.Append (badge.Value).Append ('\0');
-              serializedValue.Append (badge.Description);
+              serializedValue.Append(badge.Value).Append('\0');
+              serializedValue.Append(badge.Description);
               return serializedValue.ToString();
             }
 
@@ -73,7 +73,7 @@ namespace Remotion.Web.UI.Controls
         }
       }
 
-      return base.ConvertTo (context, culture, value, destinationType);
+      return base.ConvertTo(context, culture, value, destinationType);
     }
   }
 }

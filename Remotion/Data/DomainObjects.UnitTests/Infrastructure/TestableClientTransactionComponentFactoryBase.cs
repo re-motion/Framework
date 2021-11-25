@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
     public IEnumerable<IClientTransactionListener> CallCreateListeners (ClientTransaction constructedTransaction)
     {
-      return CreateListeners (constructedTransaction);
+      return CreateListeners(constructedTransaction);
     }
 
     public IRelationEndPointManager CallCreateRelationEndPointManager (
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
         IClientTransactionEventSink eventSink,
         IDataContainerMapReadOnlyView dataContainerMap)
     {
-      return CreateRelationEndPointManager (constructedTransaction, endPointProvider, lazyLoader, eventSink, dataContainerMap);
+      return CreateRelationEndPointManager(constructedTransaction, endPointProvider, lazyLoader, eventSink, dataContainerMap);
     }
 
     public IObjectLoader CallCreateObjectLoader (
@@ -97,22 +97,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
         IDataManager dataManager,
         ITransactionHierarchyManager hierarchyManager)
     {
-      return CreateObjectLoader (constructedTransaction, eventSink, persistenceStrategy, invalidDomainObjectManager, dataManager, hierarchyManager);
+      return CreateObjectLoader(constructedTransaction, eventSink, persistenceStrategy, invalidDomainObjectManager, dataManager, hierarchyManager);
     }
 
     public IDataContainerEventListener CallCreateDataContainerEventListener (IClientTransactionEventSink eventSink)
     {
-      return CreateDataContainerEventListener (eventSink);
+      return CreateDataContainerEventListener(eventSink);
     }
 
     public IRelationEndPointProvider CallGetEndPointProvider (IDataManager dataManager)
     {
-      return GetEndPointProvider (dataManager);
+      return GetEndPointProvider(dataManager);
     }
 
     public ILazyLoader CallGetLazyLoader (IDataManager dataManager)
     {
-      return GetLazyLoader (dataManager);
+      return GetLazyLoader(dataManager);
     }
   }
 }

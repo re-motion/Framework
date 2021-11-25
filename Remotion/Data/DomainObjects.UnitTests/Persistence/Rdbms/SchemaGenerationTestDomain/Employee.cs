@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   {
     public static Employee NewObject ()
     {
-      return DomainObject.NewObject<Employee> ();
+      return DomainObject.NewObject<Employee>();
     }
 
     protected Employee ()

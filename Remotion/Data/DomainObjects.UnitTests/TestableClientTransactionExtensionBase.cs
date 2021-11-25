@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public new bool TryInstall (ClientTransaction clientTransaction)
     {
-      return base.TryInstall (clientTransaction);
+      return base.TryInstall(clientTransaction);
     }
   }
 }

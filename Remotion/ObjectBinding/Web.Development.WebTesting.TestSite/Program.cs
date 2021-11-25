@@ -11,15 +11,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
   {
     public static void Main (string[] args)
     {
-      LegacyAspNetInitialization.Init ("/", Environment.CurrentDirectory, true);
+      LegacyAspNetInitialization.Init("/", Environment.CurrentDirectory, true);
 
-      CreateHostBuilder (args).Build().Run();
+      CreateHostBuilder(args).Build().Run();
     }
 
     public static IHostBuilder CreateHostBuilder (string[] args)
     {
-      return Host.CreateDefaultBuilder (args)
-          .ConfigureWebHostDefaults (webBuilder => { webBuilder.UseStartup<Startup>(); });
+      return Host.CreateDefaultBuilder(args)
+          .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
   }
 }

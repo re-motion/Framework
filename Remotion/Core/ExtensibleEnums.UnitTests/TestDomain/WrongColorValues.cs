@@ -22,7 +22,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
   {
     public static int WrongReturnType (this ExtensibleEnumDefinition<Color> definition)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
 // ReSharper disable UnusedMember.Local
@@ -31,34 +31,34 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
 // ReSharper restore UnusedParameter.Local
 // ReSharper restore UnusedMember.Local
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     internal static Color WrongVisibility2 (this ExtensibleEnumDefinition<Color> definition)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public static Color NonExtensionMethod (ExtensibleEnumDefinition<Color> definition)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public static Color WrongParameterCount (this ExtensibleEnumDefinition<Color> definition, int index)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public static Color NotDerivedFromValuesClass (this Color values)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
 // ReSharper disable UnusedTypeParameter
     public static Color Generic<T> (this ExtensibleEnumDefinition<Color> definition)
 // ReSharper restore UnusedTypeParameter
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
   }
 }

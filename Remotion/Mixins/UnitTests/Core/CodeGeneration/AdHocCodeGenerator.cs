@@ -37,15 +37,15 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
     public AdHocCodeGenerator (string assemblyDirectory, string assemblyName = "AdHocCodeGenerator")
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("assemblyName", assemblyName);
+      ArgumentUtility.CheckNotNullOrEmpty("assemblyName", assemblyName);
 
       _filename = assemblyName + ".dll";
 #if NETFRAMEWORK && !NO_PEVERIFY
-      _assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly (new AssemblyName (assemblyName), AssemblyBuilderAccess.RunAndSave, assemblyDirectory);
+      _assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.RunAndSave, assemblyDirectory);
 #else
-      _assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly (new AssemblyName (assemblyName), AssemblyBuilderAccess.Run);
+      _assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.Run);
 #endif
-      _moduleBuilder = _assemblyBuilder.DefineDynamicModule (_filename);
+      _moduleBuilder = _assemblyBuilder.DefineDynamicModule(_filename);
     }
 
     public AssemblyBuilder AssemblyBuilder
@@ -73,11 +73,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
         Type[] parameterTypes = null,
         Action<MethodBuilder> action = null)
     {
-      var typeBuilder = CreateType (typeName);
+      var typeBuilder = CreateType(typeName);
 
       var methodBuilder = CreateMethod(typeBuilder, methodName, methodAttributes, returnType, parameterTypes, action);
 
-      return Tuple.Create (typeBuilder, methodBuilder);
+      return Tuple.Create(typeBuilder, methodBuilder);
     }
 
     public MethodBuilder CreateMethod (
@@ -92,9 +92,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       returnType = returnType ?? typeof(void);
       parameterTypes = parameterTypes ?? Type.EmptyTypes;
 
-      var methodBuilder = typeBuilder.DefineMethod (methodName, methodAttributes, returnType, parameterTypes);
+      var methodBuilder = typeBuilder.DefineMethod(methodName, methodAttributes, returnType, parameterTypes);
       if (action != null)
-        action (methodBuilder);
+        action(methodBuilder);
       return methodBuilder;
     }
 
@@ -108,32 +108,32 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var returnType = typeof (T);
       var parameterTypes = Type.EmptyTypes;
 
-      var tuple = CreateMethod (typeName, methodName, methodAttributes, returnType, parameterTypes, action);
+      var tuple = CreateMethod(typeName, methodName, methodAttributes, returnType, parameterTypes, action);
       var actualType = tuple.Item1.CreateType();
 
       try
       {
-        return (T) actualType.InvokeMember (tuple.Item2.Name, BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, null);
+        return (T) actualType.InvokeMember(tuple.Item2.Name, BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, null);
       }
       catch (Exception)
       {
         if (saveOnError)
-          Console.WriteLine (Save());
+          Console.WriteLine(Save());
         throw;
       }
     }
 
     public string Save ()
     {
-      if (File.Exists (_filename))
+      if (File.Exists(_filename))
       {
         try
         {
-          File.Delete (_filename);
+          File.Delete(_filename);
         }
         catch (UnauthorizedAccessException)
         {
-          Assert.Fail (
+          Assert.Fail(
               "Assembly '{0}' already exists, likely because it could not be properly cleaned during a previous test-run. "
               + "Please delete the bin-directory manually and re-run the tests.",
               _filename);
@@ -141,7 +141,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       }
 
 #if NETFRAMEWORK && !NO_PEVERIFY
-      _assemblyBuilder.Save (_filename);
+      _assemblyBuilder.Save(_filename);
 #endif
       return _moduleBuilder.FullyQualifiedName;
     }
@@ -154,9 +154,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
     public CustomAttributeBuilder CreateCustomAttributeBuilder (Type type)
     {
-      var constructorInfo = type.GetConstructor (Type.EmptyTypes);
-      Assertion.IsNotNull (constructorInfo, "Type must have a public default constructor.");
-      var customAttributeBuilder = new CustomAttributeBuilder (constructorInfo, new object[0]);
+      var constructorInfo = type.GetConstructor(Type.EmptyTypes);
+      Assertion.IsNotNull(constructorInfo, "Type must have a public default constructor.");
+      var customAttributeBuilder = new CustomAttributeBuilder(constructorInfo, new object[0]);
       return customAttributeBuilder;
     }
   }

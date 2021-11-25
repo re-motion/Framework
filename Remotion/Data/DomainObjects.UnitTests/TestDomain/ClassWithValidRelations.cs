@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   {
     public static ClassWithValidRelations NewObject ()
     {
-      return NewObject<ClassWithValidRelations> ();
+      return NewObject<ClassWithValidRelations>();
     }
 
     protected ClassWithValidRelations ()

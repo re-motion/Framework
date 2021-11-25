@@ -86,21 +86,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
 
       var results = new List<SubTestResult>();
 
-      if (type.HasFlag (ScreenshotTestingType.Desktop))
+      if (type.HasFlag(ScreenshotTestingType.Desktop))
       {
-        using (var diagnosticScreenshotBuilder = DiagnosticScreenshotBuilder.CreateDesktopScreenshot (helper.BrowserConfiguration.Locator))
+        using (var diagnosticScreenshotBuilder = DiagnosticScreenshotBuilder.CreateDesktopScreenshot(helper.BrowserConfiguration.Locator))
         {
-          results.Add (
-              RunSubTest<TValue, TTarget> (helper, diagnosticScreenshotBuilder, test, value, "Desktop", testName, savePath, maxVariance, maxRatio));
+          results.Add(
+              RunSubTest<TValue, TTarget>(helper, diagnosticScreenshotBuilder, test, value, "Desktop", testName, savePath, maxVariance, maxRatio));
         }
       }
 
-      if (type.HasFlag (ScreenshotTestingType.Browser))
+      if (type.HasFlag(ScreenshotTestingType.Browser))
       {
-        using (var diagnosticScreenshotBuilder = DiagnosticScreenshotBuilder.CreateBrowserScreenshot (helper.BrowserConfiguration.Locator, helper.MainBrowserSession))
+        using (var diagnosticScreenshotBuilder = DiagnosticScreenshotBuilder.CreateBrowserScreenshot(helper.BrowserConfiguration.Locator, helper.MainBrowserSession))
         {
-          results.Add (
-              RunSubTest<TValue, TTarget> (
+          results.Add(
+              RunSubTest<TValue, TTarget>(
                   helper,
                   diagnosticScreenshotBuilder,
                   test,
@@ -114,11 +114,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
       }
 
       var stringBuilder = new StringBuilder();
-      var failed = results.Count (t => !t.HasSucceeded);
+      var failed = results.Count(t => !t.HasSucceeded);
       if (failed == 0)
-        stringBuilder.AppendLine (string.Format ("All {0} tests completed successfully.", results.Count));
+        stringBuilder.AppendLine(string.Format("All {0} tests completed successfully.", results.Count));
       else
-        stringBuilder.AppendLine (string.Format ("{0} out of {1} sub tests failed:", failed, results.Count));
+        stringBuilder.AppendLine(string.Format("{0} out of {1} sub tests failed:", failed, results.Count));
 
       var hasFailed = false;
       foreach (var testResult in results)
@@ -127,19 +127,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
         if (!testResult.HasSucceeded)
         {
           hasFailed = true;
-          stringBuilder.AppendLine (string.Format ("Test '{0}' failed:", testResult.Name));
-          stringBuilder.AppendLine (string.Format ("message: {0}", testResult.Message));
-          stringBuilder.AppendLine (string.Format ("source: {0}", testResult.ImageSource));
+          stringBuilder.AppendLine(string.Format("Test '{0}' failed:", testResult.Name));
+          stringBuilder.AppendLine(string.Format("message: {0}", testResult.Message));
+          stringBuilder.AppendLine(string.Format("source: {0}", testResult.ImageSource));
         }
         else
         {
-          stringBuilder.AppendLine (string.Format ("Test '{0}' succeeded:", testResult.Name));
+          stringBuilder.AppendLine(string.Format("Test '{0}' succeeded:", testResult.Name));
         }
-        stringBuilder.AppendLine (string.Format ("resource(s): {0}", testResult.ResourceName));
+        stringBuilder.AppendLine(string.Format("resource(s): {0}", testResult.ResourceName));
       }
 
       if (hasFailed)
-        Assert.Fail (stringBuilder.ToString());
+        Assert.Fail(stringBuilder.ToString());
     }
 
     private static SubTestResult RunSubTest<TValue, TTarget> (
@@ -155,54 +155,54 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
     {
       diagnosticScreenshotBuilder.DrawMouseCursor = false;
 
-      test (diagnosticScreenshotBuilder, value);
+      test(diagnosticScreenshotBuilder, value);
 
       var typeName = typeof (TTarget).FullName;
       var testAssembly = test.Method.DeclaringType.Assembly;
       var testAssemblyName = testAssembly.GetName().Name;
-      var embeddedResources = new HashSet<string> (testAssembly.GetManifestResourceNames());
-      if (typeName.StartsWith (testAssemblyName + "."))
-        typeName = typeName.Substring (testAssemblyName.Length + 1);
+      var embeddedResources = new HashSet<string>(testAssembly.GetManifestResourceNames());
+      if (typeName.StartsWith(testAssemblyName + "."))
+        typeName = typeName.Substring(testAssemblyName.Length + 1);
 
       // Save the screenshot
       string path;
-      if (!string.IsNullOrWhiteSpace (testPrefix))
-        path = Path.Combine (savePath, string.Join (".", typeName, helper.BrowserConfiguration.BrowserName, testPrefix, testName));
+      if (!string.IsNullOrWhiteSpace(testPrefix))
+        path = Path.Combine(savePath, string.Join(".", typeName, helper.BrowserConfiguration.BrowserName, testPrefix, testName));
       else
-        path = Path.Combine (savePath, string.Join (".", typeName, helper.BrowserConfiguration.BrowserName, testName));
+        path = Path.Combine(savePath, string.Join(".", typeName, helper.BrowserConfiguration.BrowserName, testName));
 
-      var screenshotPath = string.Join (".", path, "png");
-      var annotationPath = string.Join (".", path, "AnnotationsOnly", "png");
+      var screenshotPath = string.Join(".", path, "png");
+      var annotationPath = string.Join(".", path, "AnnotationsOnly", "png");
 
-      diagnosticScreenshotBuilder.Save (screenshotPath, true);
-      diagnosticScreenshotBuilder.SaveAnnotation (annotationPath, true);
+      diagnosticScreenshotBuilder.Save(screenshotPath, true);
+      diagnosticScreenshotBuilder.SaveAnnotation(annotationPath, true);
 
       // Try to find the resource which belongs to the current test
-      var resourcePrefixes = GenerateResourcePrefixes (typeName, testAssemblyName, helper.BrowserConfiguration.BrowserName, testPrefix, testName);
+      var resourcePrefixes = GenerateResourcePrefixes(typeName, testAssemblyName, helper.BrowserConfiguration.BrowserName, testPrefix, testName);
       var resourceNames = new List<string>();
       foreach (var resourcePrefix in resourcePrefixes)
       {
         // try to find a/some resource/s with that resource prefix
-        var neutralName = string.Join (".", resourcePrefix, "png");
-        if (embeddedResources.Contains (neutralName))
-          resourceNames.Add (neutralName);
+        var neutralName = string.Join(".", resourcePrefix, "png");
+        if (embeddedResources.Contains(neutralName))
+          resourceNames.Add(neutralName);
         else
-          resourceNames.AddRange (
-              Enumerable.Range (0, 10).Select (n => string.Format ("{0}{1}.png", resourcePrefix, n)).TakeWhile (embeddedResources.Contains));
+          resourceNames.AddRange(
+              Enumerable.Range(0, 10).Select(n => string.Format("{0}{1}.png", resourcePrefix, n)).TakeWhile(embeddedResources.Contains));
       }
 
-      var testNameWithPrefix = string.Join (".", testPrefix, testName);
+      var testNameWithPrefix = string.Join(".", testPrefix, testName);
 
       if (resourceNames.Count == 0)
-        return new SubTestResult (
+        return new SubTestResult(
             false,
             "Can not find a resource image that belongs to the specified test.",
             screenshotPath,
-            string.Join (", ", resourcePrefixes),
+            string.Join(", ", resourcePrefixes),
             testNameWithPrefix);
 
       var result =
-          CompareScreenshots (
+          CompareScreenshots(
               resourceNames.ToArray(),
               testAssembly,
               screenshotPath,
@@ -211,8 +211,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
               testNameWithPrefix);
       if (result.HasSucceeded)
       {
-        File.Delete (screenshotPath);
-        File.Delete (annotationPath);
+        File.Delete(screenshotPath);
+        File.Delete(annotationPath);
       }
 
       return result;
@@ -222,10 +222,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
     {
       return new[]
              {
-                 string.Join (".", assemblyName, c_savedScreenshotsFolder, typeName, browser, format, name),
-                 string.Join (".", assemblyName, c_savedScreenshotsFolder, typeName, browser, "any", name),
-                 string.Join (".", assemblyName, c_savedScreenshotsFolder, typeName, format, name),
-                 string.Join (".", assemblyName, c_savedScreenshotsFolder, typeName, name)
+                 string.Join(".", assemblyName, c_savedScreenshotsFolder, typeName, browser, format, name),
+                 string.Join(".", assemblyName, c_savedScreenshotsFolder, typeName, browser, "any", name),
+                 string.Join(".", assemblyName, c_savedScreenshotsFolder, typeName, format, name),
+                 string.Join(".", assemblyName, c_savedScreenshotsFolder, typeName, name)
              };
     }
 
@@ -233,25 +233,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
     {
       var stringBuilder = new StringBuilder();
 
-      using (var source = (Bitmap) Image.FromFile (sourcePath))
+      using (var source = (Bitmap) Image.FromFile(sourcePath))
       {
         foreach (var resourceName in resourceNames)
         {
-          stringBuilder.Append ("resource: ");
-          stringBuilder.AppendLine (resourceName);
+          stringBuilder.Append("resource: ");
+          stringBuilder.AppendLine(resourceName);
 
-          using (var resourceStream = testAssembly.GetManifestResourceStream (resourceName))
+          using (var resourceStream = testAssembly.GetManifestResourceStream(resourceName))
           {
             if (resourceStream == null)
-              Assert.Fail ("Could not open saved resource image: '{0}'", resourceName);
+              Assert.Fail("Could not open saved resource image: '{0}'", resourceName);
 
-            var resource = (Bitmap) Image.FromStream (resourceStream);
+            var resource = (Bitmap) Image.FromStream(resourceStream);
 
             if (resource.Size != source.Size)
             {
-              stringBuilder.AppendLine ("Image sizes do not match.");
-              stringBuilder.AppendLine (string.Format ("source size: {0}x{1}", source.Width, source.Height));
-              stringBuilder.AppendLine (string.Format ("resource size: {0}x{1}", resource.Width, resource.Height));
+              stringBuilder.AppendLine("Image sizes do not match.");
+              stringBuilder.AppendLine(string.Format("source size: {0}x{1}", source.Width, source.Height));
+              stringBuilder.AppendLine(string.Format("resource size: {0}x{1}", resource.Width, resource.Height));
               stringBuilder.AppendLine();
               continue;
             }
@@ -261,11 +261,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
             for (var i = 0; i < source.Width; i++)
               for (var j = 0; j < source.Height; j++)
               {
-                var sourceColor = source.GetPixel (i, j);
-                var resourceColor = resource.GetPixel (i, j);
+                var sourceColor = source.GetPixel(i, j);
+                var resourceColor = resource.GetPixel(i, j);
 
                 int variance;
-                if (!AreSameColor (sourceColor, resourceColor, out variance, maxVariance) || variance != 0)
+                if (!AreSameColor(sourceColor, resourceColor, out variance, maxVariance) || variance != 0)
                 {
                   pixelOverLimit++;
                 }
@@ -274,18 +274,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
             var unequalPixelRatio = pixelOverLimit / (double) totalPixel;
             if (unequalPixelRatio > maxRatio)
             {
-              stringBuilder.AppendLine ("Images are not considered identical.");
-              stringBuilder.AppendLine (string.Format ("unequal ratio: {0}", unequalPixelRatio));
-              stringBuilder.AppendLine (string.Format ("max unequal ratio: {0}", maxRatio));
+              stringBuilder.AppendLine("Images are not considered identical.");
+              stringBuilder.AppendLine(string.Format("unequal ratio: {0}", unequalPixelRatio));
+              stringBuilder.AppendLine(string.Format("max unequal ratio: {0}", maxRatio));
               stringBuilder.AppendLine();
               continue;
             }
 
-            return new SubTestResult (true, null, null, resourceName, testName);
+            return new SubTestResult(true, null, null, resourceName, testName);
           }
         }
 
-        return new SubTestResult (false, stringBuilder.ToString(), sourcePath, string.Join (", ", resourceNames), testName);
+        return new SubTestResult(false, stringBuilder.ToString(), sourcePath, string.Join(", ", resourceNames), testName);
       }
     }
 

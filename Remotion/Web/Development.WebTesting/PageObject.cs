@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting
     public virtual string GetTitle ()
     {
       // Note: do not use Context.Window.Title - this would return wrong titles for page objects representing the contents of an IFRAME.
-      return Scope.FindCss ("title").InnerHTML.Trim();
+      return Scope.FindCss("title").InnerHTML.Trim();
     }
 
     /// <summary>
@@ -58,26 +58,26 @@ namespace Remotion.Web.Development.WebTesting
     public TControlObject GetControl<TControlObject> (IControlSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return controlSelectionCommand.Select (Context.CloneForControlSelection (this));
+      return controlSelectionCommand.Select(Context.CloneForControlSelection(this));
     }
 
     /// <inheritdoc/>
     public TControlObject? GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return controlSelectionCommand.SelectOptional (Context.CloneForControlSelection (this));
+      return controlSelectionCommand.SelectOptional(Context.CloneForControlSelection(this));
     }
 
     /// <inheritdoc/>
     public bool HasControl (IControlExistsCommand controlSelectionCommand)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return controlSelectionCommand.Exists (Context.CloneForControlSelection (this));
+      return controlSelectionCommand.Exists(Context.CloneForControlSelection(this));
     }
   }
 }

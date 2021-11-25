@@ -35,72 +35,72 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      _mockRepository = new MockRepository ();
+      base.SetUp();
+      _mockRepository = new MockRepository();
       _id = RelationEndPointID.Create(DomainObjectIDs.Computer1,
-                   ReflectionMappingHelper.GetPropertyName (typeof (Computer), "Employee"));
+                   ReflectionMappingHelper.GetPropertyName(typeof (Computer), "Employee"));
 
-      _endPointMock = _mockRepository.StrictMock<IRelationEndPoint> ();
+      _endPointMock = _mockRepository.StrictMock<IRelationEndPoint>();
 
-      _command = new NullEndPointModificationCommand (_endPointMock);
+      _command = new NullEndPointModificationCommand(_endPointMock);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_command.AffectedEndPoint, Is.SameAs (_endPointMock));
+      Assert.That(_command.AffectedEndPoint, Is.SameAs(_endPointMock));
     }
 
     [Test]
     public void Initialization_FromNullObjectEndPoint ()
     {
-      var endPoint = new NullObjectEndPoint (TestableClientTransaction, _id.Definition);
-      var command = (NullEndPointModificationCommand) endPoint.CreateSetCommand (Employee.NewObject());
-      Assert.That (command.AffectedEndPoint, Is.SameAs (endPoint));
+      var endPoint = new NullObjectEndPoint(TestableClientTransaction, _id.Definition);
+      var command = (NullEndPointModificationCommand) endPoint.CreateSetCommand(Employee.NewObject());
+      Assert.That(command.AffectedEndPoint, Is.SameAs(endPoint));
     }
 
     [Test]
     public void GetAllExceptions ()
     {
-      Assert.That (_command.GetAllExceptions (), Is.Empty);
+      Assert.That(_command.GetAllExceptions(), Is.Empty);
     }
 
     [Test]
     public void Begin_DoesNothing ()
     {
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
-      _command.Begin ();
+      _command.Begin();
 
-      _mockRepository.VerifyAll ();
+      _mockRepository.VerifyAll();
     }
 
     [Test]
     public void PerformDoesNothing ()
     {
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
-      _command.Perform ();
+      _command.Perform();
 
-      _mockRepository.VerifyAll ();
+      _mockRepository.VerifyAll();
     }
 
     [Test]
     public void End_DoesNothing ()
     {
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
-      _command.End ();
+      _command.End();
 
-      _mockRepository.VerifyAll ();
+      _mockRepository.VerifyAll();
     }
 
     [Test]
     public void ExpandToAllRelatedObjects ()
     {
-      var result = ((IDataManagementCommand) _command).ExpandToAllRelatedObjects ();
+      var result = ((IDataManagementCommand) _command).ExpandToAllRelatedObjects();
 
-      Assert.That (result.GetNestedCommands(), Is.EqualTo (new[] { _command }));
+      Assert.That(result.GetNestedCommands(), Is.EqualTo(new[] { _command }));
     }
   }
 }

@@ -32,26 +32,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _virtualEndPointProviderStub = MockRepository.GenerateStub<IVirtualEndPointProvider>();
-      _factory = new AssociatedDomainObjectCollectionDataStrategyFactory (_virtualEndPointProviderStub);
+      _factory = new AssociatedDomainObjectCollectionDataStrategyFactory(_virtualEndPointProviderStub);
     }
 
     [Test]
     public void CreateDataStrategyForEndPoint ()
     {
-      var ordersEndPointID = RelationEndPointID.Create (DomainObjectIDs.Customer1, typeof (Customer), "Orders");
+      var ordersEndPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof (Customer), "Orders");
 
-      var result = _factory.CreateDataStrategyForEndPoint (ordersEndPointID);
+      var result = _factory.CreateDataStrategyForEndPoint(ordersEndPointID);
 
-      Assert.That (result, Is.TypeOf<ModificationCheckingDomainObjectCollectionDataDecorator> ());
+      Assert.That(result, Is.TypeOf<ModificationCheckingDomainObjectCollectionDataDecorator>());
       var checkingDecorator = (ModificationCheckingDomainObjectCollectionDataDecorator) result;
-      Assert.That (checkingDecorator.RequiredItemType, Is.SameAs (typeof (Order)));
+      Assert.That(checkingDecorator.RequiredItemType, Is.SameAs(typeof (Order)));
 
-      var delegator = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EndPointDelegatingDomainObjectCollectionData> (checkingDecorator);
-      Assert.That (delegator.AssociatedEndPointID, Is.EqualTo (ordersEndPointID));
-      Assert.That (delegator.VirtualEndPointProvider, Is.SameAs (_virtualEndPointProviderStub));
+      var delegator = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EndPointDelegatingDomainObjectCollectionData>(checkingDecorator);
+      Assert.That(delegator.AssociatedEndPointID, Is.EqualTo(ordersEndPointID));
+      Assert.That(delegator.VirtualEndPointProvider, Is.SameAs(_virtualEndPointProviderStub));
     } 
   }
 }

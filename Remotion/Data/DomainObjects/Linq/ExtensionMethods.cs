@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Linq
     {
       var result = new ObjectList<T>();
       foreach (T item in source)
-        result.Add (item);
+        result.Add(item);
       return result;
     }
   }

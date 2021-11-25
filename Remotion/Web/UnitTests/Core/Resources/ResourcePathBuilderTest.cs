@@ -29,78 +29,78 @@ namespace Remotion.Web.UnitTests.Core.Resources
     [Test]
     public void BuildAbsolutePath_MultiplePathParts_ResultingPathDoesNotEndWithTrailingSlash ()
     {
-      var builder = CreateResourcePathBuilder (new Uri ("http://localhost/appDir/file"), "/appDir");
+      var builder = CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir");
 
-      Assert.That (
-          builder.BuildAbsolutePath (GetType().Assembly, "part1", "part2"),
-          Is.EqualTo ("/appDir/resourceRoot/Remotion.Web.UnitTests/part1/part2"));
+      Assert.That(
+          builder.BuildAbsolutePath(GetType().Assembly, "part1", "part2"),
+          Is.EqualTo("/appDir/resourceRoot/Remotion.Web.UnitTests/part1/part2"));
     }
 
     [Test]
     public void BuildAbsolutePath_MiddlePartBeginsIsDot_SkipsPart ()
     {
-      var builder = CreateResourcePathBuilder (new Uri ("http://localhost/appDir/file"), "/appDir");
+      var builder = CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir");
 
-      Assert.That (
-          builder.BuildAbsolutePath (GetType().Assembly, ".", "part2"),
-          Is.EqualTo ("/appDir/resourceRoot/Remotion.Web.UnitTests/part2"));
+      Assert.That(
+          builder.BuildAbsolutePath(GetType().Assembly, ".", "part2"),
+          Is.EqualTo("/appDir/resourceRoot/Remotion.Web.UnitTests/part2"));
     }
 
     [Test]
     public void BuildAbsolutePath_LastPathPartIsDot_SkipsPart ()
     {
-      var builder = CreateResourcePathBuilder (new Uri ("http://localhost/appDir/file"), "/appDir");
+      var builder = CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir");
 
-      Assert.That (
-          builder.BuildAbsolutePath (GetType().Assembly, "part1", "."),
-          Is.EqualTo ("/appDir/resourceRoot/Remotion.Web.UnitTests/part1"));
+      Assert.That(
+          builder.BuildAbsolutePath(GetType().Assembly, "part1", "."),
+          Is.EqualTo("/appDir/resourceRoot/Remotion.Web.UnitTests/part1"));
     }
 
     [Test]
     public void BuildAbsolutePath_EmptyPathParts_ResultingPathDoesNotEndWithTrailingSlash ()
     {
-      var builder = CreateResourcePathBuilder (new Uri ("http://localhost/appDir/file"), "/appDir");
+      var builder = CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir");
 
-      Assert.That (
-          builder.BuildAbsolutePath (GetType().Assembly, new string[0]),
-          Is.EqualTo ("/appDir/resourceRoot/Remotion.Web.UnitTests"));
+      Assert.That(
+          builder.BuildAbsolutePath(GetType().Assembly, new string[0]),
+          Is.EqualTo("/appDir/resourceRoot/Remotion.Web.UnitTests"));
     }
 
     [Test]
     public void BuildAbsolutePath_UsesVirtualApplicationPathFromUrl ()
     {
-      var builder = CreateResourcePathBuilder (new Uri ("http://localhost/AppdiR/file"), "/appDir");
+      var builder = CreateResourcePathBuilder(new Uri("http://localhost/AppdiR/file"), "/appDir");
 
-      Assert.That (
-          builder.BuildAbsolutePath (GetType().Assembly, "part"),
-          Is.EqualTo ("/AppdiR/resourceRoot/Remotion.Web.UnitTests/part"));
+      Assert.That(
+          builder.BuildAbsolutePath(GetType().Assembly, "part"),
+          Is.EqualTo("/AppdiR/resourceRoot/Remotion.Web.UnitTests/part"));
     }
 
     [Test]
     public void BuildAbsolutePath_MultipleCalls_DoesNotCacheHttpContext ()
     {
-      var builder = (TestableResourcePathBuilder) CreateResourcePathBuilder (new Uri ("http://localhost/appDir/file"), "/appDir");
+      var builder = (TestableResourcePathBuilder) CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir");
 
-      builder.BuildAbsolutePath (GetType().Assembly, "part1");
-      Mock.Get (builder.HttpContextProvider).Verify (_ => _.GetCurrentHttpContext());
+      builder.BuildAbsolutePath(GetType().Assembly, "part1");
+      Mock.Get(builder.HttpContextProvider).Verify(_ => _.GetCurrentHttpContext());
 
-      builder.BuildAbsolutePath (GetType().Assembly, "part1");
-      Mock.Get (builder.HttpContextProvider).Verify (_ => _.GetCurrentHttpContext(), Times.Exactly (2));
+      builder.BuildAbsolutePath(GetType().Assembly, "part1");
+      Mock.Get(builder.HttpContextProvider).Verify(_ => _.GetCurrentHttpContext(), Times.Exactly(2));
     }
 
     private ResourcePathBuilder CreateResourcePathBuilder (Uri url, string applicationPath)
     {
       var httpRequestStub = new Mock<HttpRequestBase>();
-      httpRequestStub.Setup (_ => _.Url).Returns (url);
-      httpRequestStub.Setup (_ => _.ApplicationPath).Returns (applicationPath);
+      httpRequestStub.Setup(_ => _.Url).Returns(url);
+      httpRequestStub.Setup(_ => _.ApplicationPath).Returns(applicationPath);
 
       var httpContextStub = new Mock<HttpContextBase>();
-      httpContextStub.Setup (_ => _.Request).Returns (httpRequestStub.Object);
+      httpContextStub.Setup(_ => _.Request).Returns(httpRequestStub.Object);
 
       var httpContextProviderStub = new Mock<IHttpContextProvider>();
-      httpContextProviderStub.Setup (_ => _.GetCurrentHttpContext()).Returns (httpContextStub.Object);
+      httpContextProviderStub.Setup(_ => _.GetCurrentHttpContext()).Returns(httpContextStub.Object);
 
-      return new TestableResourcePathBuilder (httpContextProviderStub.Object, "resourceRoot");
+      return new TestableResourcePathBuilder(httpContextProviderStub.Object, "resourceRoot");
     }
   }
 }

@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ImageSelector, ImageControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<ImageSelector, ImageControlObject> testAction)
     {
-      testAction (Helper, e => e.Images(), "image");
+      testAction(Helper, e => e.Images(), "image");
     }
 
     [Test]
@@ -43,11 +43,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var image = home.Images().GetByLocalID ("MyImage");
-      Assert.That (image.GetSourceUrl(), Does.EndWith ("/Images/SampleIcon.gif"));
+      var image = home.Images().GetByLocalID("MyImage");
+      Assert.That(image.GetSourceUrl(), Does.EndWith("/Images/SampleIcon.gif"));
 
-      var image3 = home.Images().GetByLocalID ("MyImage3");
-      Assert.That (image3.GetSourceUrl(), Is.Null);
+      var image3 = home.Images().GetByLocalID("MyImage3");
+      Assert.That(image3.GetSourceUrl(), Is.Null);
     }
 
     [Test]
@@ -55,16 +55,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var image = home.Images().GetByLocalID ("MyImage");
-      Assert.That (image.GetAltText(), Does.EndWith ("My alternative text"));
+      var image = home.Images().GetByLocalID("MyImage");
+      Assert.That(image.GetAltText(), Does.EndWith("My alternative text"));
 
-      var image2 = home.Images().GetByLocalID ("MyImage2");
-      Assert.That (image2.GetAltText(), Is.Empty);
+      var image2 = home.Images().GetByLocalID("MyImage2");
+      Assert.That(image2.GetAltText(), Is.Empty);
     }
 
     private WebFormsTestPageObject Start ()
     {
-      return Start<WebFormsTestPageObject> ("ImageTest.aspx");
+      return Start<WebFormsTestPageObject>("ImageTest.aspx");
     }
   }
 }

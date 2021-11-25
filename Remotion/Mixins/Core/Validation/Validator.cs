@@ -28,62 +28,62 @@ namespace Remotion.Mixins.Validation
   {
     public static ValidationLogData Validate (IVisitableDefinition startingPoint, params IRuleSet[] customRuleSets)
     {
-      ArgumentUtility.CheckNotNull ("startingPoint", startingPoint);
-      ArgumentUtility.CheckNotNull ("customRuleSets", customRuleSets);
+      ArgumentUtility.CheckNotNull("startingPoint", startingPoint);
+      ArgumentUtility.CheckNotNull("customRuleSets", customRuleSets);
 
-      var log = new DefaultValidationLog ();
-      Validate (startingPoint, log, customRuleSets);
+      var log = new DefaultValidationLog();
+      Validate(startingPoint, log, customRuleSets);
       return log.GetData();
     }
 
     public static ValidationLogData Validate (IEnumerable<IVisitableDefinition> startingPoints, params IRuleSet[] customRuleSets)
     {
-      ArgumentUtility.CheckNotNull ("startingPoints", startingPoints);
-      ArgumentUtility.CheckNotNull ("customRuleSets", customRuleSets);
+      ArgumentUtility.CheckNotNull("startingPoints", startingPoints);
+      ArgumentUtility.CheckNotNull("customRuleSets", customRuleSets);
 
-      var log = new DefaultValidationLog ();
-      Validate (startingPoints, log, customRuleSets);
+      var log = new DefaultValidationLog();
+      Validate(startingPoints, log, customRuleSets);
       return log.GetData();
     }
 
         public static void Validate (IVisitableDefinition startingPoint, IValidationLog log, params IRuleSet[] customRuleSets)
     {
-      ArgumentUtility.CheckNotNull ("startingPoint", startingPoint);
-      ArgumentUtility.CheckNotNull ("log", log);
-      ArgumentUtility.CheckNotNull ("customRuleSets", customRuleSets);
+      ArgumentUtility.CheckNotNull("startingPoint", startingPoint);
+      ArgumentUtility.CheckNotNull("log", log);
+      ArgumentUtility.CheckNotNull("customRuleSets", customRuleSets);
 
-      Validate (new[] { startingPoint }, log, customRuleSets);
+      Validate(new[] { startingPoint }, log, customRuleSets);
     }
 
     public static void Validate (IEnumerable<IVisitableDefinition> startingPoints, IValidationLog log, params IRuleSet[] customRuleSets)
     {
-      ArgumentUtility.CheckNotNull ("startingPoints", startingPoints);
-      ArgumentUtility.CheckNotNull ("log", log);
-      ArgumentUtility.CheckNotNull ("customRuleSets", customRuleSets);
+      ArgumentUtility.CheckNotNull("startingPoints", startingPoints);
+      ArgumentUtility.CheckNotNull("log", log);
+      ArgumentUtility.CheckNotNull("customRuleSets", customRuleSets);
 
-      var visitor = CreateValidatingVisitor (log, customRuleSets);
+      var visitor = CreateValidatingVisitor(log, customRuleSets);
       foreach (IVisitableDefinition startingPoint in startingPoints)
-        startingPoint.Accept (visitor);
+        startingPoint.Accept(visitor);
     }
 
     private static ValidatingVisitor CreateValidatingVisitor (IValidationLog log, IRuleSet[] customRuleSets)
     {
-      ValidatingVisitor visitor = new ValidatingVisitor (log);
-      InstallDefaultRules (visitor);
+      ValidatingVisitor visitor = new ValidatingVisitor(log);
+      InstallDefaultRules(visitor);
 
       foreach (IRuleSet ruleSet in customRuleSets)
-        ruleSet.Install (visitor);
+        ruleSet.Install(visitor);
       return visitor;
     }
 
     private static void InstallDefaultRules (ValidatingVisitor visitor)
     {
-      foreach (Type t in AssemblyTypeCache.GetTypes (Assembly.GetExecutingAssembly()))
+      foreach (Type t in AssemblyTypeCache.GetTypes(Assembly.GetExecutingAssembly()))
       {
-        if (!t.IsAbstract && typeof (IRuleSet).IsAssignableFrom (t) && t.Namespace == typeof (IRuleSet).GetNamespaceChecked())
+        if (!t.IsAbstract && typeof (IRuleSet).IsAssignableFrom(t) && t.Namespace == typeof (IRuleSet).GetNamespaceChecked())
         {
-          IRuleSet ruleSet = (IRuleSet) Activator.CreateInstance (t)!;
-          ruleSet.Install (visitor);
+          IRuleSet ruleSet = (IRuleSet) Activator.CreateInstance(t)!;
+          ruleSet.Install(visitor);
         }
       }
     }

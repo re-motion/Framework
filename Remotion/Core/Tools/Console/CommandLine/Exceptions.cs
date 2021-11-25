@@ -31,13 +31,13 @@ internal abstract class FormatArgument
   public static string Format (CommandLineArgument argument)
   {
     if (argument is CommandLineGroupArgument)
-      return string.Format (c_messageGroupArgument, argument.Placeholder);
+      return string.Format(c_messageGroupArgument, argument.Placeholder);
     else if (argument.Name != null)
-      return string.Format (c_messageByName, argument.Parser!.ArgumentDeclarationPrefix + argument.Name);
+      return string.Format(c_messageByName, argument.Parser!.ArgumentDeclarationPrefix + argument.Name);
     else if (argument.Placeholder != null)
-      return string.Format (c_messageByPlaceholder, argument.Placeholder);
+      return string.Format(c_messageByPlaceholder, argument.Placeholder);
     else if (argument.Parser != null)
-      return string.Format (c_messageByNumber, argument.Position + 1);
+      return string.Format(c_messageByNumber, argument.Position + 1);
     else
       return c_messageUnknownArgument;
   }
@@ -83,7 +83,7 @@ public class InvalidCommandLineArgumentValueException: CommandLineArgumentExcept
   }
 
   public InvalidCommandLineArgumentValueException (CommandLineArgument argument, string message)
-    : this (FormatArgument.Format (argument) + ": " + message)
+    : this (FormatArgument.Format(argument) + ": " + message)
   {
   }
 
@@ -113,7 +113,7 @@ public class InvalidCommandLineArgumentNameException: CommandLineArgumentExcepti
   internal const string MessageAmbiguous = "Argument /{0}: ambiguous argument name.";
  
   public InvalidCommandLineArgumentNameException (string name, string message)
-    : base (string.Format (message, name))
+    : base (string.Format(message, name))
   {
   }
 
@@ -132,7 +132,7 @@ public class InvalidNumberOfCommandLineArgumentsException: CommandLineArgumentEx
   private const string c_message = "Argument /{0}: unexpected argument. Only {1} unnamed arguments are allowed.";
  
   public InvalidNumberOfCommandLineArgumentsException (string argument, int number)
-    : base (string.Format (c_message, argument, number))
+    : base (string.Format(c_message, argument, number))
   {
   }
 
@@ -151,7 +151,7 @@ public class MissingRequiredCommandLineParameterException: CommandLineArgumentEx
   private const string c_message = ": Required Argument not specified.";
  
   public MissingRequiredCommandLineParameterException (CommandLineArgument argument)
-    : base (FormatArgument.Format (argument) + c_message)
+    : base (FormatArgument.Format(argument) + c_message)
   {
   }
 
@@ -170,7 +170,7 @@ public class ConflictCommandLineParameterException: CommandLineArgumentException
   private const string c_message = "Conflicting Arguments: {0} and {1} cannot be used together.";
  
   public ConflictCommandLineParameterException (CommandLineArgument argument1, CommandLineArgument argument2)
-    : base (string.Format (c_message, FormatArgument.Format (argument1), FormatArgument.Format (argument2)))
+    : base (string.Format(c_message, FormatArgument.Format(argument1), FormatArgument.Format(argument2)))
   {
   }
 

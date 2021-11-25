@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     {
       HtmlHeadAppender.Current.RegisterPageStylesheetLink();
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     public void SetTestInformation (string testHelpOutput)

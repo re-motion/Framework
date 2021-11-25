@@ -31,14 +31,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void DelegatingMembers ()
     {
       var objectID = DomainObjectIDs.Order1;
-      var dataContainer = DataContainer.CreateNew (objectID);
+      var dataContainer = DataContainer.CreateNew(objectID);
       var enumeratorGeneric = MockRepository.GenerateStub<IEnumerator<DataContainer>>();
       var enumeratorObject = MockRepository.GenerateStub<IEnumerator>();
 
-      CheckDelegation (dm => dm.Count, 5);
-      CheckDelegation (dm => dm[objectID], dataContainer);
-      CheckDelegation (dm => dm.GetEnumerator(), enumeratorGeneric);
-      CheckDelegation (dm => ((IEnumerable) dm).GetEnumerator(), enumeratorObject);
+      CheckDelegation(dm => dm.Count, 5);
+      CheckDelegation(dm => dm[objectID], dataContainer);
+      CheckDelegation(dm => dm.GetEnumerator(), enumeratorGeneric);
+      CheckDelegation(dm => ((IEnumerable) dm).GetEnumerator(), enumeratorObject);
     }
 
     private void CheckDelegation<TR> (Func<IDataContainerMapReadOnlyView, TR> func, TR fakeResult)
@@ -47,13 +47,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var delegatingDataContainerMap = new DelegatingDataContainerMap();
       delegatingDataContainerMap.InnerDataContainerMap = innerMock;
 
-      var helper = new DecoratorTestHelper<IDataContainerMapReadOnlyView> (delegatingDataContainerMap, innerMock);
-      helper.CheckDelegation (func, fakeResult);
+      var helper = new DecoratorTestHelper<IDataContainerMapReadOnlyView>(delegatingDataContainerMap, innerMock);
+      helper.CheckDelegation(func, fakeResult);
 
       delegatingDataContainerMap.InnerDataContainerMap = null;
-      Assert.That (
-          () => func (delegatingDataContainerMap),
-          Throws.InvalidOperationException.With.Message.EqualTo ("InnerDataContainerMap property must be set before it can be used."));
+      Assert.That(
+          () => func(delegatingDataContainerMap),
+          Throws.InvalidOperationException.With.Message.EqualTo("InnerDataContainerMap property must be set before it can be used."));
     }
   }
 }

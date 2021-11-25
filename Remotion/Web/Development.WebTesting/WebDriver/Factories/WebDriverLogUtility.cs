@@ -23,42 +23,42 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
 {
   public static class WebDriverLogUtility
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (WebDriverLogUtility));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof (WebDriverLogUtility));
     private const string SubDirectoryName = "BrowserLogs";
 
     public static string CreateLogFile (string logsDirectory, string browserName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("logsDirectory", logsDirectory);
-      ArgumentUtility.CheckNotNullOrEmpty ("browserName", browserName);
+      ArgumentUtility.CheckNotNullOrEmpty("logsDirectory", logsDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty("browserName", browserName);
 
-      var finalLogsDirectory = Path.Combine (logsDirectory, SubDirectoryName);
+      var finalLogsDirectory = Path.Combine(logsDirectory, SubDirectoryName);
 
-      EnsureLogsDirectoryExists (finalLogsDirectory);
+      EnsureLogsDirectoryExists(finalLogsDirectory);
 
       //Note: unfortunately there is no append-mode for this log and we do not have enough context information to create a nice name.
       for (var i = 0;; ++i)
       {
-        var fileName = string.Format ("{0}driver{1}.log", browserName, i);
+        var fileName = string.Format("{0}driver{1}.log", browserName, i);
 
-        var logFile = Path.Combine (finalLogsDirectory, fileName);
+        var logFile = Path.Combine(finalLogsDirectory, fileName);
 
-        if (File.Exists (logFile))
+        if (File.Exists(logFile))
           continue;
 
-        using (File.Open (logFile, FileMode.CreateNew))
+        using (File.Open(logFile, FileMode.CreateNew))
         {
           //NOP
         }
 
         // Log file name in order to give the user the chance to correlate the log file to test executions.
-        s_log.InfoFormat ("{0} driver logs to: '{1}'.", browserName, fileName);
+        s_log.InfoFormat("{0} driver logs to: '{1}'.", browserName, fileName);
         return logFile;
       }
     }
 
     private static void EnsureLogsDirectoryExists (string logsDirectory)
     {
-      Directory.CreateDirectory (logsDirectory);
+      Directory.CreateDirectory(logsDirectory);
     }
   }
 }

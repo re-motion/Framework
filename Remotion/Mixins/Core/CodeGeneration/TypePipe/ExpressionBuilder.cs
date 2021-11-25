@@ -32,37 +32,37 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     public Expression CreateNewClassContext (ClassContext classContext)
     {
-      ArgumentUtility.CheckNotNull ("classContext", classContext);
+      ArgumentUtility.CheckNotNull("classContext", classContext);
 
       var serializer = new ExpressionClassContextSerializer();
-      classContext.Serialize (serializer);
+      classContext.Serialize(serializer);
 
       return serializer.CreateNewExpression();
     }
 
     public Expression CreateInitialization (MutableType concreteTarget, MethodInfo initializationMethod)
     {
-      ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
-      ArgumentUtility.CheckNotNull ("initializationMethod", initializationMethod);
+      ArgumentUtility.CheckNotNull("concreteTarget", concreteTarget);
+      ArgumentUtility.CheckNotNull("initializationMethod", initializationMethod);
 
       // this.__InitializationMethod (isDeserialization: false);
-      return Expression.Call (new ThisExpression (concreteTarget), initializationMethod, Expression.Constant (false));
+      return Expression.Call(new ThisExpression(concreteTarget), initializationMethod, Expression.Constant(false));
     }
 
     public Expression CreateInitializingDelegation (
         MethodBodyContextBase ctx, MethodInfo initializationMethod, Expression instance, MethodInfo methodToCall)
     {
-      ArgumentUtility.CheckNotNull ("ctx", ctx);
-      ArgumentUtility.CheckNotNull ("initializationMethod", initializationMethod);
-      ArgumentUtility.CheckNotNull ("instance", instance);
-      ArgumentUtility.CheckNotNull ("methodToCall", methodToCall);
+      ArgumentUtility.CheckNotNull("ctx", ctx);
+      ArgumentUtility.CheckNotNull("initializationMethod", initializationMethod);
+      ArgumentUtility.CheckNotNull("instance", instance);
+      ArgumentUtility.CheckNotNull("methodToCall", methodToCall);
 
       // <CreateInitialization>
       // instance<GenericParameters>.MethodToCall(<parameters>);
 
-      return Expression.Block (
-          CreateInitialization (ctx.DeclaringType, initializationMethod),
-          ctx.DelegateTo (instance, methodToCall));
+      return Expression.Block(
+          CreateInitialization(ctx.DeclaringType, initializationMethod),
+          ctx.DelegateTo(instance, methodToCall));
     }
   }
 }

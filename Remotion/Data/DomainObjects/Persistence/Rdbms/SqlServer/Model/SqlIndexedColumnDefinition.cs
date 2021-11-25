@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
 
     public SqlIndexedColumnDefinition (ColumnDefinition columnn, IndexOrder? indexOrder = null)
     {
-      ArgumentUtility.CheckNotNull ("columnn", columnn);
+      ArgumentUtility.CheckNotNull("columnn", columnn);
 
       _columnn = columnn;
       _indexOrder = indexOrder;

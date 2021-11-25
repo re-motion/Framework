@@ -30,8 +30,8 @@ namespace Remotion.Development.UnitTesting
     public static PEVerifier CreateDefault ()
     {
       return
-          new PEVerifier (
-              new CompoundPEVerifyPathSource (
+          new PEVerifier(
+              new CompoundPEVerifyPathSource(
                   new WindowsSdk81aPEVerifyPathSource(),
                   new WindowsSdk80aPEVerifyPathSource(),
                   new WindowsSdk71PEVerifyPathSource(),
@@ -49,14 +49,14 @@ namespace Remotion.Development.UnitTesting
 
     public string GetVerifierPath (PEVerifyVersion version)
     {
-      string? verifierPath = _pathSource.GetPEVerifyPath (version);
+      string? verifierPath = _pathSource.GetPEVerifyPath(version);
       if (verifierPath == null)
       {
-        var message = string.Format (
+        var message = string.Format(
             "PEVerify for version '{0}' could not be found. Locations searched:\r\n{1}",
             version,
-            _pathSource.GetLookupDiagnostics (version));
-        throw new PEVerifyException (message);
+            _pathSource.GetLookupDiagnostics(version));
+        throw new PEVerifyException(message);
       }
       return verifierPath;
     }
@@ -69,38 +69,38 @@ namespace Remotion.Development.UnitTesting
 
     public void VerifyPEFile (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
 
-      VerifyPEFile (assembly.ManifestModule.FullyQualifiedName);
+      VerifyPEFile(assembly.ManifestModule.FullyQualifiedName);
     }
 
     public void VerifyPEFile (Assembly assembly, PEVerifyVersion version)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
 
-      VerifyPEFile (assembly.ManifestModule.FullyQualifiedName, version);
+      VerifyPEFile(assembly.ManifestModule.FullyQualifiedName, version);
     }
 
     public void VerifyPEFile (string modulePath)
     {
-      ArgumentUtility.CheckNotNull ("modulePath", modulePath);
+      ArgumentUtility.CheckNotNull("modulePath", modulePath);
 
       var version = GetDefaultVerifierVersion();
-      VerifyPEFile (modulePath, version);
+      VerifyPEFile(modulePath, version);
     }
 
     public void VerifyPEFile (string modulePath, PEVerifyVersion version)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("modulePath", modulePath);
+      ArgumentUtility.CheckNotNullOrEmpty("modulePath", modulePath);
 
-      var process = StartPEVerifyProcess (modulePath, version);
+      var process = StartPEVerifyProcess(modulePath, version);
 
       string output = process.StandardOutput.ReadToEnd();
       process.WaitForExit();
 
       if (process.ExitCode != 0)
       {
-        throw new PEVerifyException (process.ExitCode, output);
+        throw new PEVerifyException(process.ExitCode, output);
       }
     }
 
@@ -114,7 +114,7 @@ namespace Remotion.Development.UnitTesting
       process.StartInfo.RedirectStandardOutput = true;
       process.StartInfo.UseShellExecute = false;
       process.StartInfo.WorkingDirectory = AppContext.BaseDirectory;
-      process.StartInfo.Arguments = string.Format ("/verbose \"{0}\"", modulePath);
+      process.StartInfo.Arguments = string.Format("/verbose \"{0}\"", modulePath);
       process.Start();
       return process;
     }

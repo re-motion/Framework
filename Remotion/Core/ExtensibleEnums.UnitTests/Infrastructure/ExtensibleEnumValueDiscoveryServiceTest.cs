@@ -37,9 +37,9 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
       }
     }
 
-    private readonly MethodInfo _redMethod = typeof (ColorExtensions).GetMethod ("Red");
-    private readonly MethodInfo _greenMethod = typeof (ColorExtensions).GetMethod ("Green");
-    private readonly MethodInfo _redMetallicMethod = typeof (MetallicColorExtensions).GetMethod ("RedMetallic");
+    private readonly MethodInfo _redMethod = typeof (ColorExtensions).GetMethod("Red");
+    private readonly MethodInfo _greenMethod = typeof (ColorExtensions).GetMethod("Green");
+    private readonly MethodInfo _redMetallicMethod = typeof (MetallicColorExtensions).GetMethod("RedMetallic");
 
     private ExtensibleEnumDefinition<Color> _fakeColorDefinition;
     private ExtensibleEnumDefinition<Planet> _fakePlanetDefinition;
@@ -50,11 +50,11 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [SetUp]
     public void SetUp ()
     {
-      _fakeColorDefinition = new ExtensibleEnumDefinition<Color> (new Mock<IExtensibleEnumValueDiscoveryService>().Object);
-      _fakePlanetDefinition = new ExtensibleEnumDefinition<Planet> (new Mock<IExtensibleEnumValueDiscoveryService>().Object);
+      _fakeColorDefinition = new ExtensibleEnumDefinition<Color>(new Mock<IExtensibleEnumValueDiscoveryService>().Object);
+      _fakePlanetDefinition = new ExtensibleEnumDefinition<Planet>(new Mock<IExtensibleEnumValueDiscoveryService>().Object);
 
        _typeDiscoveryServiceStub = new Mock<ITypeDiscoveryService>();
-       _service = new TestableExtensibleEnumValueDiscoveryService (_typeDiscoveryServiceStub.Object);
+       _service = new TestableExtensibleEnumValueDiscoveryService(_typeDiscoveryServiceStub.Object);
 #pragma warning disable SYSLIB0005
       _excludeGlobalTypes = !typeof (ExtensibleEnum<>).Assembly.GlobalAssemblyCache;
 #pragma warning restore SYSLIB0005
@@ -72,9 +72,9 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
           typeof (WrongColorValuesGeneric<>)
       };
 
-      var result = _service.GetStaticTypes (types).ToArray ();
+      var result = _service.GetStaticTypes(types).ToArray();
 
-      Assert.That (result, Is.EqualTo (new[] { typeof (ColorExtensions) }));
+      Assert.That(result, Is.EqualTo(new[] { typeof (ColorExtensions) }));
     }
 
     [Test]
@@ -82,146 +82,146 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     {
       var types = new[] { typeof (ColorExtensions), typeof (MetallicColorExtensions), typeof (object) };
 
-      var result = _service.GetValueInfosForTypes (_fakeColorDefinition, types).ToArray ();
+      var result = _service.GetValueInfosForTypes(_fakeColorDefinition, types).ToArray();
 
       var expected = new[] { 
-          new { Value = Color.Values.Red (), DeclaringMethod = _redMethod }, 
-          new { Value = Color.Values.Green (), DeclaringMethod = _greenMethod }, 
-          new { Value = (Color) Color.Values.RedMetallic (), DeclaringMethod = _redMetallicMethod }, };
+          new { Value = Color.Values.Red(), DeclaringMethod = _redMethod }, 
+          new { Value = Color.Values.Green(), DeclaringMethod = _greenMethod }, 
+          new { Value = (Color) Color.Values.RedMetallic(), DeclaringMethod = _redMetallicMethod }, };
 
-      Assert.That (result.Select (info => new { info.Value, DeclaringMethod = info.DefiningMethod }).ToArray (), Is.EquivalentTo (expected));
+      Assert.That(result.Select(info => new { info.Value, DeclaringMethod = info.DefiningMethod }).ToArray(), Is.EquivalentTo(expected));
     }
 
     [Test]
     public void GetValueInfosForType ()
     {
-      var result = _service.GetValueInfosForType (_fakeColorDefinition, typeof (ColorExtensions)).ToArray ();
+      var result = _service.GetValueInfosForType(_fakeColorDefinition, typeof (ColorExtensions)).ToArray();
 
       var expected = new[] { 
-          new { Value = Color.Values.Red (), DeclaringMethod = _redMethod }, 
-          new { Value = Color.Values.Green (), DeclaringMethod = _greenMethod }, };
+          new { Value = Color.Values.Red(), DeclaringMethod = _redMethod }, 
+          new { Value = Color.Values.Green(), DeclaringMethod = _greenMethod }, };
 
-      Assert.That (result.Select (info => new { info.Value, DeclaringMethod = info.DefiningMethod }).ToArray (), Is.EquivalentTo (expected));
+      Assert.That(result.Select(info => new { info.Value, DeclaringMethod = info.DefiningMethod }).ToArray(), Is.EquivalentTo(expected));
     }
 
     [Test]
     public void GetValueInfosForType_PositionalKey_Default ()
     {
-      var result = _service.GetValueInfosForType (_fakePlanetDefinition, typeof (SmallPlanetExtensions)).ToArray ();
+      var result = _service.GetValueInfosForType(_fakePlanetDefinition, typeof (SmallPlanetExtensions)).ToArray();
 
-      var valueWithDefaultKey = result.Single (p => p.Value.ValueName == "Earth");
+      var valueWithDefaultKey = result.Single(p => p.Value.ValueName == "Earth");
 
-      Assert.That (valueWithDefaultKey.PositionalKey, Is.EqualTo (0.0));
+      Assert.That(valueWithDefaultKey.PositionalKey, Is.EqualTo(0.0));
     }
 
     [Test]
     public void GetValueInfosForType_PositionalKey_ViaAttribute ()
     {
-      var result = _service.GetValueInfosForType (_fakePlanetDefinition, typeof (SmallPlanetExtensions)).ToArray ();
+      var result = _service.GetValueInfosForType(_fakePlanetDefinition, typeof (SmallPlanetExtensions)).ToArray();
 
-      var valueWithAttributeKey = result.Single (p => p.Value.ValueName == "Mars");
+      var valueWithAttributeKey = result.Single(p => p.Value.ValueName == "Mars");
 
-      Assert.That (valueWithAttributeKey.PositionalKey, Is.EqualTo (1.0));
+      Assert.That(valueWithAttributeKey.PositionalKey, Is.EqualTo(1.0));
     }
 
     [Test]
     public void GetValueInfosForType_PassesEnumDefinitionToMethod ()
     {
-      _service.GetValueInfosForType (_fakeColorDefinition, typeof (ColorExtensions)).ToArray ();
+      _service.GetValueInfosForType(_fakeColorDefinition, typeof (ColorExtensions)).ToArray();
 
-      Assert.That (ColorExtensions.LastCallArgument, Is.EqualTo (_fakeColorDefinition));
+      Assert.That(ColorExtensions.LastCallArgument, Is.EqualTo(_fakeColorDefinition));
     }
 
     [Test]
     public void GetValueExtensionMethods_ReturnType_MustBeExtensibleEnum ()
     {
-      CheckFilteredMethods ("WrongReturnType");
+      CheckFilteredMethods("WrongReturnType");
     }
 
     [Test]
     public void GetValueExtensionMethods_ReturnType_CanBeAssignable ()
     {
       var methods = new[] { _redMetallicMethod };
-      var result = _service.GetValueExtensionMethods (typeof (Color), methods).ToArray ();
+      var result = _service.GetValueExtensionMethods(typeof (Color), methods).ToArray();
 
       var expectedMethods = new[] { _redMetallicMethod };
 
-      Assert.That (result, Is.EqualTo (expectedMethods));
+      Assert.That(result, Is.EqualTo(expectedMethods));
     }
 
     [Test]
     public void GetValueExtensionMethods_Visibility_MustBePublic ()
     {
-      CheckFilteredMethods ("WrongVisibility1", "WrongVisibility2");
+      CheckFilteredMethods("WrongVisibility1", "WrongVisibility2");
     }
 
     [Test]
     public void GetValueExtensionMethods_ParameterCount_MustBeOne ()
     {
-      CheckFilteredMethods ("WrongParameterCount");
+      CheckFilteredMethods("WrongParameterCount");
     }
 
     [Test]
     public void GetValueExtensionMethods_Parameter_MustBeEnumValues ()
     {
-      CheckFilteredMethods ("NotDerivedFromValuesClass");
+      CheckFilteredMethods("NotDerivedFromValuesClass");
     }
 
     [Test]
     public void GetValueExtensionMethods_MustBeExtensionMethod ()
     {
-      CheckFilteredMethods ("NonExtensionMethod");
+      CheckFilteredMethods("NonExtensionMethod");
     }
 
     [Test]
     public void GetValueExtensionMethods_MustNotBeGeneric ()
     {
-      CheckFilteredMethods ("Generic");
+      CheckFilteredMethods("Generic");
     }
 
     [Test]
     public void GetValueInfos_Value ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes)).Returns (new[] { typeof (ColorExtensions) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, _excludeGlobalTypes)).Returns(new[] { typeof (ColorExtensions) });
 
-      var valueInfos = _service.GetValueInfos (new ExtensibleEnumDefinition<Color> (_service));
-      Assert.That (valueInfos.Select (info => info.Value).ToArray (),
-          Is.EquivalentTo (new[] { Color.Values.Red (), Color.Values.Green () }));
+      var valueInfos = _service.GetValueInfos(new ExtensibleEnumDefinition<Color>(_service));
+      Assert.That(valueInfos.Select(info => info.Value).ToArray(),
+          Is.EquivalentTo(new[] { Color.Values.Red(), Color.Values.Green() }));
     }
 
     [Test]
     public void GetValueInfos_Method ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes)).Returns (new[] { typeof (ColorExtensions) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, _excludeGlobalTypes)).Returns(new[] { typeof (ColorExtensions) });
 
-      var valueInfos = _service.GetValueInfos (new ExtensibleEnumDefinition<Color> (_service));
+      var valueInfos = _service.GetValueInfos(new ExtensibleEnumDefinition<Color>(_service));
 
-      var declaringMethodOfGreen = valueInfos.Where (info => info.Value.ID == "Green").Single ().DefiningMethod;
-      var declaringMethodOfRed = valueInfos.Where (info => info.Value.ID == "Red").Single ().DefiningMethod;
+      var declaringMethodOfGreen = valueInfos.Where(info => info.Value.ID == "Green").Single().DefiningMethod;
+      var declaringMethodOfRed = valueInfos.Where(info => info.Value.ID == "Red").Single().DefiningMethod;
       
-      Assert.That (declaringMethodOfGreen, Is.EqualTo (_greenMethod));
-      Assert.That (declaringMethodOfRed, Is.EqualTo (_redMethod));
+      Assert.That(declaringMethodOfGreen, Is.EqualTo(_greenMethod));
+      Assert.That(declaringMethodOfRed, Is.EqualTo(_redMethod));
     }
 
     [Test]
     public void GetValueInfos_PassesDefinition_ToExtensionMethod ()
     {
-      _typeDiscoveryServiceStub.Setup (stub => stub.GetTypes (null, _excludeGlobalTypes)).Returns (new[] { typeof (ColorExtensions) });
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, _excludeGlobalTypes)).Returns(new[] { typeof (ColorExtensions) });
 
-      var definition = new ExtensibleEnumDefinition<Color> (_service);
+      var definition = new ExtensibleEnumDefinition<Color>(_service);
 
-      _service.GetValueInfos (definition).ToArray();
+      _service.GetValueInfos(definition).ToArray();
 
-      Assert.That (ColorExtensions.LastCallArgument, Is.SameAs (definition));
+      Assert.That(ColorExtensions.LastCallArgument, Is.SameAs(definition));
     }
 
     private void CheckFilteredMethods (params string[] methodNames)
     {
       const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
-      var methods = methodNames.Select (n => typeof (WrongColorValues).GetMethod (n, bindingFlags));
-      var result = _service.GetValueExtensionMethods (typeof (Color), methods).ToArray ();
+      var methods = methodNames.Select(n => typeof (WrongColorValues).GetMethod(n, bindingFlags));
+      var result = _service.GetValueExtensionMethods(typeof (Color), methods).ToArray();
 
-      Assert.That (result, Is.Empty);
+      Assert.That(result, Is.Empty);
     }
   }
 }

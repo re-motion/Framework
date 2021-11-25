@@ -38,7 +38,7 @@ namespace OBWTest
     protected override void OnPreInit (EventArgs e)
     {
       MasterPageFile = (Global.PreferQuirksModeRendering) ? "~/QuirksMode.Master" : "~/StandardMode.Master";
-      base.OnPreInit (e);
+      base.OnPreInit(e);
     }
 
     protected new TFunction CurrentFunction
@@ -49,24 +49,24 @@ namespace OBWTest
     protected override void OnInit (EventArgs e)
     {
       RegisterEventHandlers();
-      base.OnInit (e);
+      base.OnInit(e);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
       //  A call to the ResourceDispatcher to get have the automatic resources dispatched
-      ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
+      ResourceDispatcher.Dispatch(this, ResourceManagerUtility.GetResourceManager(this));
 
-      HtmlHeadAppender.Current.RegisterPageStylesheetLink ();
+      HtmlHeadAppender.Current.RegisterPageStylesheetLink();
 
       var key = GetType().FullName + "_Global";
-      if (! HtmlHeadAppender.Current.IsRegistered (key))
+      if (! HtmlHeadAppender.Current.IsRegistered(key))
       {
-        string href = ResolveClientUrl ("~/Html/global.css");
-        HtmlHeadAppender.Current.RegisterStylesheetLink (key, new StaticResourceUrl (href));
+        string href = ResolveClientUrl("~/Html/global.css");
+        HtmlHeadAppender.Current.RegisterStylesheetLink(key, new StaticResourceUrl(href));
       }
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     protected virtual void RegisterEventHandlers ()
@@ -76,7 +76,7 @@ namespace OBWTest
     protected virtual IResourceManager GetResourceManager ()
     {
       Type type = GetType();
-      return GlobalizationService.GetResourceManager (type);
+      return GlobalizationService.GetResourceManager(type);
     }
 
     protected IGlobalizationService GlobalizationService

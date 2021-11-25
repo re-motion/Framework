@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain
   {
     public static BaseClassWithMixinWithInterface NewObject ()
     {
-      return NewObject<BaseClassWithMixinWithInterface> ();
+      return NewObject<BaseClassWithMixinWithInterface>();
     }
   }
 }

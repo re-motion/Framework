@@ -35,12 +35,12 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 
     public BaseType2 (SerializationInfo info, StreamingContext context)
     {
-      S = info.GetString ("S");
+      S = info.GetString("S");
     }
 
     public void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      info.AddValue ("S", S);
+      info.AddValue("S", S);
     }
 
     public string IfcMethod ()

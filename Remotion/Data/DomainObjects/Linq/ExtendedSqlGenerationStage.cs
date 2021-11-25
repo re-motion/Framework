@@ -31,10 +31,10 @@ namespace Remotion.Data.DomainObjects.Linq
         Expression expression,
         SetOperationsMode setOperationsMode)
     {
-      ArgumentUtility.CheckNotNull ("commandBuilder", commandBuilder);
-      ArgumentUtility.CheckNotNull ("expression", expression);
+      ArgumentUtility.CheckNotNull("commandBuilder", commandBuilder);
+      ArgumentUtility.CheckNotNull("expression", expression);
       
-      ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql (expression, commandBuilder, this, setOperationsMode);
+      ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql(expression, commandBuilder, this, setOperationsMode);
     }
   }
 }

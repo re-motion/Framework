@@ -22,7 +22,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
     public string Method (T parameter)
     {
-      return string.Format ("GenericMixinImplementingGenericInterfaceWithMembers<{0}>.Method", typeof (T).Name);
+      return string.Format("GenericMixinImplementingGenericInterfaceWithMembers<{0}>.Method", typeof (T).Name);
     }
   }
 }

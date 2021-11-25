@@ -80,7 +80,7 @@ namespace Remotion.Globalization
     /// <summary> Initalizes an instance. </summary>
     public MultiLingualResourcesAttribute (string baseName)
     {
-      SetBaseName (baseName);
+      SetBaseName(baseName);
     }
 
     /// <summary>
@@ -95,10 +95,10 @@ namespace Remotion.Globalization
       get { return _baseName; }
     }
 
-    [MemberNotNull (nameof (_baseName))]
+    [MemberNotNull (nameof(_baseName))]
     protected void SetBaseName (string baseName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("baseName", baseName);
+      ArgumentUtility.CheckNotNullOrEmpty("baseName", baseName);
       _baseName = baseName;
     }
 
@@ -109,7 +109,7 @@ namespace Remotion.Globalization
 
     protected void SetResourceAssembly (Assembly resourceAssembly)
     {
-      ArgumentUtility.CheckNotNull ("resourceAssembly", resourceAssembly);
+      ArgumentUtility.CheckNotNull("resourceAssembly", resourceAssembly);
       _resourceAssembly = resourceAssembly;
     }
 

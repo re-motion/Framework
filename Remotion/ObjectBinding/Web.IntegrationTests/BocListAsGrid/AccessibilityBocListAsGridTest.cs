@@ -31,31 +31,31 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocListAsGrid
     public void Normal ()
     {
       var home = Start();
-      var bocListAsGrid = home.ListAsGrids().GetByLocalID ("JobList_Normal");
+      var bocListAsGrid = home.ListAsGrids().GetByLocalID("JobList_Normal");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocListAsGrid.Analyze (analyzer);
+      var result = bocListAsGrid.Analyze(analyzer);
 
-      Assert.That (result.Violations.IgnoreKnownWorkarounds (Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
     }
 
     [Test]
     public void AlwaysInvalid_WithValidationErrors ()
     {
       var home = Start();
-      var bocList = home.Lists().GetByLocalID ("JobList_AlwaysInvalid");
+      var bocList = home.Lists().GetByLocalID("JobList_AlwaysInvalid");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
       var validateButton = home.GetValidateButton();
       validateButton.Click();
-      var result = bocList.Analyze (analyzer);
+      var result = bocList.Analyze(analyzer);
 
-      Assert.That (bocList.GetValidationErrors(), Is.Not.Empty);
-      Assert.That (result.Violations.IgnoreKnownWorkarounds (Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(bocList.GetValidationErrors(), Is.Not.Empty);
+      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocListAsGrid");
+      return Start("BocListAsGrid");
     }
   }
 }

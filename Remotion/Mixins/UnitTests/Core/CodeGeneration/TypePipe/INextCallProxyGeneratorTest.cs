@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       var instance = _serviceLocator.GetInstance<INextCallProxyGenerator>();
 
-      Assert.That (instance, Is.TypeOf<NextCallProxyGenerator>());
+      Assert.That(instance, Is.TypeOf<NextCallProxyGenerator>());
     }
 
     [Test]
@@ -46,7 +46,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var instance1 = _serviceLocator.GetInstance<INextCallProxyGenerator>();
       var instance2 = _serviceLocator.GetInstance<INextCallProxyGenerator>();
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

@@ -27,10 +27,10 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
     private SimpleReferenceType[] _array;
     private SimpleReferenceType[] _readOnlyArray = new SimpleReferenceType[0];
     private SimpleReferenceType[] _readOnlyAttributeArray;
-    private List<SimpleReferenceType> _listOfT = new List<SimpleReferenceType> ();
-    private List<SimpleReferenceType> _readOnlyListOfT = new List<SimpleReferenceType> ();
-    private ArrayList _arrayList = new ArrayList ();
-    private ArrayList _readOnlyArrayList = new ArrayList ();
+    private List<SimpleReferenceType> _listOfT = new List<SimpleReferenceType>();
+    private List<SimpleReferenceType> _readOnlyListOfT = new List<SimpleReferenceType>();
+    private ArrayList _arrayList = new ArrayList();
+    private ArrayList _readOnlyArrayList = new ArrayList();
     private List<SimpleValueType> _listOfTForValueType = new List<SimpleValueType>();
 
     public ClassWithListProperties ()
@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
 
     public ReadOnlyCollection<SimpleReferenceType> ReadOnlyCollectionOfTWithSetter
     {
-      get { return _listOfT.AsReadOnly (); }
+      get { return _listOfT.AsReadOnly(); }
       set { ; }
     }
 

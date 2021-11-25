@@ -39,26 +39,26 @@ namespace Remotion.SecurityManager.Metadata.Importer
   {
     public static int Main (string[] args)
     {
-      CommandLineArguments arguments = GetArguments (args);
+      CommandLineArguments arguments = GetArguments(args);
       if (arguments == null)
         return 1;
 
-      Program program = new Program (arguments);
+      Program program = new Program(arguments);
       return program.Run();
     }
 
     private static CommandLineArguments GetArguments (string[] args)
     {
-      CommandLineClassParser parser = new CommandLineClassParser (typeof (CommandLineArguments));
+      CommandLineClassParser parser = new CommandLineClassParser(typeof (CommandLineArguments));
 
       try
       {
-        return (CommandLineArguments) parser.Parse (args);
+        return (CommandLineArguments) parser.Parse(args);
       }
       catch (CommandLineArgumentException e)
       {
-        Console.WriteLine (e.Message);
-        WriteUsage (parser);
+        Console.WriteLine(e.Message);
+        WriteUsage(parser);
 
         return null;
       }
@@ -66,17 +66,17 @@ namespace Remotion.SecurityManager.Metadata.Importer
 
     private static void WriteUsage (CommandLineClassParser parser)
     {
-      Console.WriteLine ("Usage:");
+      Console.WriteLine("Usage:");
 
       string commandName = Environment.GetCommandLineArgs()[0];
-      Console.WriteLine (parser.GetAsciiSynopsis (commandName, Console.BufferWidth));
+      Console.WriteLine(parser.GetAsciiSynopsis(commandName, Console.BufferWidth));
     }
 
     private CommandLineArguments _arguments;
 
     private Program (CommandLineArguments arguments)
     {
-      ArgumentUtility.CheckNotNull ("arguments", arguments);
+      ArgumentUtility.CheckNotNull("arguments", arguments);
       _arguments = arguments;
     }
 
@@ -84,16 +84,16 @@ namespace Remotion.SecurityManager.Metadata.Importer
     {
       try
       {
-        ServiceLocator.SetLocatorProvider (() => null);
+        ServiceLocator.SetLocatorProvider(() => null);
 
-        var assemblyLoader = new FilteringAssemblyLoader (ApplicationAssemblyLoaderFilter.Instance);
-        var rootAssemblyFinder = new FixedRootAssemblyFinder (new RootAssembly (typeof (BaseSecurityManagerObject).Assembly, true));
-        var assemblyFinder = new CachingAssemblyFinderDecorator (new AssemblyFinder (rootAssemblyFinder, assemblyLoader));
+        var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
+        var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof (BaseSecurityManagerObject).Assembly, true));
+        var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
 
-        ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService (assemblyFinder);
-        MappingConfiguration.SetCurrent (
-            new MappingConfiguration (
-                new MappingReflector (
+        ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
+        MappingConfiguration.SetCurrent(
+            new MappingConfiguration(
+                new MappingReflector(
                     typeDiscoveryService,
                     new ClassIDProvider(),
                     new ReflectionBasedMemberInformationNameResolver(),
@@ -101,17 +101,17 @@ namespace Remotion.SecurityManager.Metadata.Importer
                     new DomainModelConstraintProvider(),
                     new SortExpressionDefinitionProvider(),
                     MappingReflector.CreateDomainObjectCreator()),
-                new PersistenceModelLoader (new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage))));
+                new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
 
         ClientTransaction transaction = ClientTransaction.CreateRootTransaction();
 
         if (_arguments.ImportMetadata)
-          ImportMetadata (transaction);
+          ImportMetadata(transaction);
 
         transaction.Commit();
 
         if (_arguments.ImportLocalization)
-          ImportLocalization (transaction);
+          ImportLocalization(transaction);
 
         transaction.Commit();
 
@@ -119,51 +119,51 @@ namespace Remotion.SecurityManager.Metadata.Importer
       }
       catch (Exception e)
       {
-        HandleException (e);
+        HandleException(e);
         return 1;
       }
     }
 
     private void ImportMetadata (ClientTransaction transaction)
     {
-      MetadataImporter importer = new MetadataImporter (transaction);
-      WriteInfo ("Importing metadata file '{0}'.", _arguments.MetadataFile);
-      importer.Import (_arguments.MetadataFile);
+      MetadataImporter importer = new MetadataImporter(transaction);
+      WriteInfo("Importing metadata file '{0}'.", _arguments.MetadataFile);
+      importer.Import(_arguments.MetadataFile);
     }
 
     private void ImportLocalization (ClientTransaction transaction)
     {
-      CultureImporter importer = new CultureImporter (transaction);
+      CultureImporter importer = new CultureImporter(transaction);
       LocalizationFileNameStrategy localizationFileNameStrategy = new LocalizationFileNameStrategy();
-      string[] localizationFileNames = localizationFileNameStrategy.GetLocalizationFileNames (_arguments.MetadataFile);
+      string[] localizationFileNames = localizationFileNameStrategy.GetLocalizationFileNames(_arguments.MetadataFile);
 
       foreach (string localizationFileName in localizationFileNames)
       {
-        WriteInfo ("Importing localization file '{0}'.", localizationFileName);
-        importer.Import (localizationFileName);
+        WriteInfo("Importing localization file '{0}'.", localizationFileName);
+        importer.Import(localizationFileName);
       }
 
       if (localizationFileNames.Length == 0)
-        WriteInfo ("Localization files not found.");
+        WriteInfo("Localization files not found.");
     }
 
     private void HandleException (Exception exception)
     {
       if (_arguments.Verbose)
       {
-        Console.Error.WriteLine ("Execution aborted. Exception stack:");
+        Console.Error.WriteLine("Execution aborted. Exception stack:");
 
         for (; exception != null; exception = exception.InnerException)
-          Console.Error.WriteLine ("{0}: {1}\n{2}", exception.GetType().GetFullNameSafe(), exception.Message, exception.StackTrace);
+          Console.Error.WriteLine("{0}: {1}\n{2}", exception.GetType().GetFullNameSafe(), exception.Message, exception.StackTrace);
       }
       else
-        Console.Error.WriteLine ("Execution aborted: {0}", exception.Message);
+        Console.Error.WriteLine("Execution aborted: {0}", exception.Message);
     }
 
     private void WriteInfo (string text, params object[] args)
     {
       if (_arguments.Verbose)
-        Console.WriteLine (text, args);
+        Console.WriteLine(text, args);
     }
   }
 }

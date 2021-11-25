@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       _dataReaderStub = MockRepository.GenerateStub<IDataReader>();
       _storageTypeInformationProviderStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
-      _queryResultRow = new QueryResultRow (_dataReaderStub, _storageTypeInformationProviderStub);
+      _queryResultRow = new QueryResultRow(_dataReaderStub, _storageTypeInformationProviderStub);
 
       _storageTypeInformationMock = MockRepository.GenerateStrictMock<IStorageTypeInformation>();
     }
@@ -45,19 +45,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [Test]
     public void Initialization ()
     {
-      Assert.That (_queryResultRow.DataReader, Is.SameAs (_dataReaderStub));
-      Assert.That (_queryResultRow.StorageTypeInformationProvider, Is.SameAs (_storageTypeInformationProviderStub));
+      Assert.That(_queryResultRow.DataReader, Is.SameAs(_dataReaderStub));
+      Assert.That(_queryResultRow.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
     }
 
     [Test]
     public void ValueCount ()
     {
       int fakeFieldCount = 10;
-      _dataReaderStub.Stub (stub => stub.FieldCount).Return (fakeFieldCount);
+      _dataReaderStub.Stub(stub => stub.FieldCount).Return(fakeFieldCount);
 
       var result = _queryResultRow.ValueCount;
 
-      Assert.That (result, Is.EqualTo (fakeFieldCount));
+      Assert.That(result, Is.EqualTo(fakeFieldCount));
     }
 
     [Test]
@@ -67,26 +67,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       var value2 = true;
       var value3 = 45;
 
-      _dataReaderStub.Stub (stub => stub.GetValue (0)).Return (value1);
-      _dataReaderStub.Stub (stub => stub.GetValue (1)).Return (value2);
-      _dataReaderStub.Stub (stub => stub.GetValue (2)).Return (value3);
+      _dataReaderStub.Stub(stub => stub.GetValue(0)).Return(value1);
+      _dataReaderStub.Stub(stub => stub.GetValue(1)).Return(value2);
+      _dataReaderStub.Stub(stub => stub.GetValue(2)).Return(value3);
 
-      Assert.That( _queryResultRow.GetRawValue (0), Is.EqualTo(value1));
-      Assert.That (_queryResultRow.GetRawValue (1), Is.EqualTo (value2));
-      Assert.That (_queryResultRow.GetRawValue (2), Is.EqualTo (value3));
+      Assert.That( _queryResultRow.GetRawValue(0), Is.EqualTo(value1));
+      Assert.That(_queryResultRow.GetRawValue(1), Is.EqualTo(value2));
+      Assert.That(_queryResultRow.GetRawValue(2), Is.EqualTo(value3));
     }
 
     [Test]
     public void GetConvertedValue_ValidType ()
     {
-      _storageTypeInformationProviderStub.Stub (stub => stub.GetStorageType (typeof (string))).Return (_storageTypeInformationMock);
+      _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof (string))).Return(_storageTypeInformationMock);
 
       var fakeResult = "fake";
-      _storageTypeInformationMock.Expect (mock => mock.Read (_dataReaderStub, 1)).Return (fakeResult);
+      _storageTypeInformationMock.Expect(mock => mock.Read(_dataReaderStub, 1)).Return(fakeResult);
 
-      var result = _queryResultRow.GetConvertedValue (1, typeof (string));
+      var result = _queryResultRow.GetConvertedValue(1, typeof (string));
 
-      Assert.That (result, Is.EqualTo (fakeResult));
+      Assert.That(result, Is.EqualTo(fakeResult));
       _storageTypeInformationMock.VerifyAllExpectations();
     }
 
@@ -94,24 +94,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     public void GetConvertedValue_ThrowsNotSupportedException_TypeNotObjectID ()
     {
       _storageTypeInformationProviderStub
-        .Stub (stub => stub.GetStorageType (typeof (int)))
+        .Stub(stub => stub.GetStorageType(typeof (int)))
         .Throw(new NotSupportedException("Type not supported."));
-      Assert.That (
-          () => _queryResultRow.GetConvertedValue (1, typeof (int)),
+      Assert.That(
+          () => _queryResultRow.GetConvertedValue(1, typeof (int)),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo ("Type not supported."));
+              .With.Message.EqualTo("Type not supported."));
     }
 
     [Test]
     public void GetConvertedValue_ThrowsNotSupportedException_TypeObjectID ()
     {
       _storageTypeInformationProviderStub
-        .Stub (stub => stub.GetStorageType (typeof (ObjectID)))
-        .Throw (new NotSupportedException ("Type not supported."));
-      Assert.That (
-          () => _queryResultRow.GetConvertedValue (1, typeof (ObjectID)),
+        .Stub(stub => stub.GetStorageType(typeof (ObjectID)))
+        .Throw(new NotSupportedException("Type not supported."));
+      Assert.That(
+          () => _queryResultRow.GetConvertedValue(1, typeof (ObjectID)),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Type 'ObjectID' ist not supported by this storage provider.\r\n"
                   + "Please select the ID and ClassID values separately, then create an ObjectID with it in memory "
                   + "(e.g., 'select new ObjectID (o.ID.ClassID, o.ID.Value)')."));
@@ -120,16 +120,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [Test]
     public void GetConvertedValue_GenericOverload_DelegatesToNoGenericOverload ()
     {
-      _storageTypeInformationProviderStub.Stub (stub => stub.GetStorageType (typeof (string))).Return (_storageTypeInformationMock);
+      _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof (string))).Return(_storageTypeInformationMock);
 
       var fakeResult = "fake";
-      _storageTypeInformationMock.Expect (mock => mock.Read (_dataReaderStub, 1)).Return (fakeResult);
-      _storageTypeInformationMock.Replay ();
+      _storageTypeInformationMock.Expect(mock => mock.Read(_dataReaderStub, 1)).Return(fakeResult);
+      _storageTypeInformationMock.Replay();
 
-      var result = _queryResultRow.GetConvertedValue<string> (1);
+      var result = _queryResultRow.GetConvertedValue<string>(1);
 
-      Assert.That (result, Is.EqualTo (fakeResult));
-      _storageTypeInformationMock.VerifyAllExpectations ();
+      Assert.That(result, Is.EqualTo(fakeResult));
+      _storageTypeInformationMock.VerifyAllExpectations();
     }
   }
 }

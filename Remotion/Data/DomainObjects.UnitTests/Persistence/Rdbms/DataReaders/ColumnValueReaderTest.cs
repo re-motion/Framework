@@ -40,25 +40,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       _dataReaderStub = MockRepository.GenerateStub<IDataReader>();
       _columnOrdinalProviderStub = MockRepository.GenerateStub<IColumnOrdinalProvider>();
       _storageTypeInformationStrictMock = MockRepository.GenerateStrictMock<IStorageTypeInformation>();
-      _columnDefinition = ColumnDefinitionObjectMother.CreateColumn (storageTypeInformation: _storageTypeInformationStrictMock);
+      _columnDefinition = ColumnDefinitionObjectMother.CreateColumn(storageTypeInformation: _storageTypeInformationStrictMock);
 
-      _columnValueReader = new ColumnValueReader (_dataReaderStub, _columnOrdinalProviderStub);
+      _columnValueReader = new ColumnValueReader(_dataReaderStub, _columnOrdinalProviderStub);
     }
 
     [Test]
     public void GetValueForColumn ()
     {
-      _columnOrdinalProviderStub.Stub (stub => stub.GetOrdinal (_columnDefinition, _dataReaderStub)).Return (17);
+      _columnOrdinalProviderStub.Stub(stub => stub.GetOrdinal(_columnDefinition, _dataReaderStub)).Return(17);
 
       _storageTypeInformationStrictMock
-          .Expect (mock => mock.Read (_dataReaderStub, 17))
-          .Return ("value");
+          .Expect(mock => mock.Read(_dataReaderStub, 17))
+          .Return("value");
       _storageTypeInformationStrictMock.Replay();
 
-      var result = _columnValueReader.GetValueForColumn (_columnDefinition);
+      var result = _columnValueReader.GetValueForColumn(_columnDefinition);
 
       _storageTypeInformationStrictMock.VerifyAllExpectations();
-      Assert.That (result, Is.EqualTo ("value"));
+      Assert.That(result, Is.EqualTo("value"));
     }
   }
 }

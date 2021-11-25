@@ -28,6 +28,6 @@ namespace Remotion.Web.Test.Shared.PathTests
     {
     }
 
-    private WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (TestForm), "PathTests/TestForm.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof (TestForm), "PathTests/TestForm.aspx");
   }
 }

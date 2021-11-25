@@ -34,64 +34,64 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       _provider = new MixinParticipantTypeIdentifierProvider();
 
-      var mixinContext = new MixinContext (
+      var mixinContext = new MixinContext(
           MixinKind.Extending,
           typeof (int),
           MemberVisibility.Private,
           new Type[0],
-          new MixinContextOrigin ("some kind", GetType().Assembly, "some location"));
-      _classContext = ClassContextObjectMother.Create (typeof (string), mixinContext);
+          new MixinContextOrigin("some kind", GetType().Assembly, "some location"));
+      _classContext = ClassContextObjectMother.Create(typeof (string), mixinContext);
     }
 
     [Test]
     public void GetID_ForMixedClass_ReturnsClassContext ()
     {
-      using (new MixinConfiguration (new ClassContextCollection (_classContext)).EnterScope())
+      using (new MixinConfiguration(new ClassContextCollection(_classContext)).EnterScope())
       {
-        var result = _provider.GetID (typeof (string));
+        var result = _provider.GetID(typeof (string));
 
-        Assert.That (result, Is.SameAs (_classContext));
+        Assert.That(result, Is.SameAs(_classContext));
       }
     }
 
     [Test]
     public void GetID_ForNonMixedClass_ReturnsNull ()
     {
-      using (MixinConfiguration.BuildNew().EnterScope ())
+      using (MixinConfiguration.BuildNew().EnterScope())
       {
-        var result = _provider.GetID (typeof (string));
+        var result = _provider.GetID(typeof (string));
 
-        Assert.That (result, Is.Null);
+        Assert.That(result, Is.Null);
       }
     }
 
     [Test]
     public void GetExpression_ReturnsExpressionConstructingClassContext ()
     {
-      var result = _provider.GetExpression (_classContext);
+      var result = _provider.GetExpression(_classContext);
 
-      Assert.That (result.NodeType, Is.EqualTo (ExpressionType.Convert));
+      Assert.That(result.NodeType, Is.EqualTo(ExpressionType.Convert));
       var inner = ((UnaryExpression) result).Operand;
       
       // Must _not_ be a ConstantExpression containing the ClassContext, but instead a NewExpression constructing the ClassContext from scratch.
-      Assert.That (inner.NodeType, Is.EqualTo (ExpressionType.New));
+      Assert.That(inner.NodeType, Is.EqualTo(ExpressionType.New));
 
-      var compiledResult = Expression.Lambda<Func<object>> (result).Compile();
+      var compiledResult = Expression.Lambda<Func<object>>(result).Compile();
       var evaluatedResult = compiledResult();
 
-      Assert.That (evaluatedResult, Is.EqualTo (_classContext));
+      Assert.That(evaluatedResult, Is.EqualTo(_classContext));
     }
 
     [Test]
     public void GetFlatValueExpressionForSerialization_ReturnsExpressionSerializingClassContext ()
     {
-      var result = _provider.GetFlatValueExpressionForSerialization (_classContext);
+      var result = _provider.GetFlatValueExpressionForSerialization(_classContext);
 
-      var compiledResult = Expression.Lambda<Func<object>> (result).Compile ();
-      var evaluatedResult = compiledResult ();
+      var compiledResult = Expression.Lambda<Func<object>>(result).Compile();
+      var evaluatedResult = compiledResult();
 
-      Assert.That (evaluatedResult, Is.TypeOf<FlatClassContext>());
-      Assert.That (((FlatClassContext) evaluatedResult).GetRealValue(), Is.EqualTo (_classContext));
+      Assert.That(evaluatedResult, Is.TypeOf<FlatClassContext>());
+      Assert.That(((FlatClassContext) evaluatedResult).GetRealValue(), Is.EqualTo(_classContext));
     }
   }
 }

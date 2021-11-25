@@ -41,12 +41,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     {
       get {
         return Properties["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.DerivedClassWithDifferentProperties.PrivateString"]
-            .GetValue<string> ();
+            .GetValue<string>();
       }
       set
       {
         Properties["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.DerivedClassWithDifferentProperties.PrivateString"]
-            .SetValue (value);
+            .SetValue(value);
       }
     }
   }

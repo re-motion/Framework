@@ -34,28 +34,28 @@ namespace Remotion.Web.Resources
 
     public ResourceUrlFactory (IResourcePathBuilder builder, ResourceTheme resourceTheme)
     {
-      ArgumentUtility.CheckNotNull ("builder", builder);
-      ArgumentUtility.CheckNotNull ("resourceTheme", resourceTheme);
+      ArgumentUtility.CheckNotNull("builder", builder);
+      ArgumentUtility.CheckNotNull("resourceTheme", resourceTheme);
       _builder = builder;
       _resourceTheme = resourceTheme;
     }
 
     public IResourceUrl CreateResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
     {
-      ArgumentUtility.CheckNotNull ("definingType", definingType);
-      ArgumentUtility.CheckNotNull ("resourceType", resourceType);
-      ArgumentUtility.CheckNotNullOrEmpty ("relativeUrl", relativeUrl);
+      ArgumentUtility.CheckNotNull("definingType", definingType);
+      ArgumentUtility.CheckNotNull("resourceType", resourceType);
+      ArgumentUtility.CheckNotNullOrEmpty("relativeUrl", relativeUrl);
 
-      return new ResourceUrl (_builder, definingType, resourceType, relativeUrl);
+      return new ResourceUrl(_builder, definingType, resourceType, relativeUrl);
     }
 
     public IResourceUrl CreateThemedResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
     {
-      ArgumentUtility.CheckNotNull ("definingType", definingType);
-      ArgumentUtility.CheckNotNull ("resourceType", resourceType);
-      ArgumentUtility.CheckNotNullOrEmpty ("relativeUrl", relativeUrl);
+      ArgumentUtility.CheckNotNull("definingType", definingType);
+      ArgumentUtility.CheckNotNull("resourceType", resourceType);
+      ArgumentUtility.CheckNotNullOrEmpty("relativeUrl", relativeUrl);
 
-      return new ThemedResourceUrl (_builder, definingType, resourceType, _resourceTheme, relativeUrl);
+      return new ThemedResourceUrl(_builder, definingType, resourceType, _resourceTheme, relativeUrl);
     }
   }
 }

@@ -31,7 +31,7 @@ namespace Remotion.Security.Metadata
     private List<StatePropertyInfo> _properties = new List<StatePropertyInfo>();
     private List<EnumValueInfo> _accessTypes = new List<EnumValueInfo>();
     private SecurableClassInfo? _baseClass;
-    private List<SecurableClassInfo> _derivedClasses = new List<SecurableClassInfo> ();
+    private List<SecurableClassInfo> _derivedClasses = new List<SecurableClassInfo>();
 
     // construction and disposing
 

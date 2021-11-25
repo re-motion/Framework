@@ -30,8 +30,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
         [NotNull] IBusinessObjectBoundEditableWebControl control,
         bool markAsHandled = true)
     {
-      ArgumentUtility.CheckNotNull ("validationResult", validationResult);
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("validationResult", validationResult);
+      ArgumentUtility.CheckNotNull("control", control);
 
       if (!control.HasValidBinding)
         return Enumerable.Empty<BusinessObjectValidationFailure>();
@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
       if (businessObjectProperty == null)
         return Enumerable.Empty<BusinessObjectValidationFailure>();
 
-      return validationResult.GetValidationFailures (businessObject, businessObjectProperty, markAsHandled);
+      return validationResult.GetValidationFailures(businessObject, businessObjectProperty, markAsHandled);
     }
   }
 }

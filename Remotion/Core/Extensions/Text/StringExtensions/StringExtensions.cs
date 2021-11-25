@@ -30,10 +30,10 @@ namespace Remotion.Text.StringExtensions
     /// </summary>
     public static string LeftUntilChar (this string s, char separator)
     {
-      int iSeparator = s.IndexOf (separator);
+      int iSeparator = s.IndexOf(separator);
       if (iSeparator >= 0)
       {
-        return s.Substring (0, iSeparator);
+        return s.Substring(0, iSeparator);
       }
       else
       {
@@ -47,10 +47,10 @@ namespace Remotion.Text.StringExtensions
     /// </summary>
     public static string RightUntilChar (this string s, char separator)
     {
-      int iSeparator = s.LastIndexOf (separator);
+      int iSeparator = s.LastIndexOf(separator);
       if (iSeparator >= 0)
       {
-        return s.Substring (iSeparator + 1, s.Length - iSeparator - 1);
+        return s.Substring(iSeparator + 1, s.Length - iSeparator - 1);
       }
       else
       {
@@ -69,14 +69,14 @@ namespace Remotion.Text.StringExtensions
       foreach (char c in s)
       {
         string? mappedString;
-        _escapeStringMapping.TryGetValue (c, out mappedString);
+        _escapeStringMapping.TryGetValue(c, out mappedString);
         if (mappedString == null)
         {
-          stringBuilder.Append (c);
+          stringBuilder.Append(c);
         }
         else
         {
-          stringBuilder.Append (mappedString);
+          stringBuilder.Append(mappedString);
         }
       }
     }
@@ -88,18 +88,18 @@ namespace Remotion.Text.StringExtensions
     /// </summary>
     public static string Escape (this string s)
     {
-      var stringBuilder = new StringBuilder (2 * s.Length);
+      var stringBuilder = new StringBuilder(2 * s.Length);
       foreach (char c in s)
       {
         string? mappedString;
-        _escapeStringMapping.TryGetValue (c, out mappedString);
+        _escapeStringMapping.TryGetValue(c, out mappedString);
         if (mappedString == null)
         {
-          stringBuilder.Append (c);
+          stringBuilder.Append(c);
         }
         else
         {
-          stringBuilder.Append (mappedString);
+          stringBuilder.Append(mappedString);
         }
       }
       return stringBuilder.ToString();

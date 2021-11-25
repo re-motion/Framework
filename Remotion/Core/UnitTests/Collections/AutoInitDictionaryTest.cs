@@ -35,12 +35,12 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void Add ()
     {
-      Assert.That (_dictionary["key"].Count, Is.EqualTo (0));
-      _dictionary.Add ("key", "value1");
-      _dictionary.Add ("key", "value2");
-      Assert.That (_dictionary["key"].Count, Is.EqualTo (2));
-      Assert.That (_dictionary["key"][0], Is.EqualTo ("value1"));
-      Assert.That (_dictionary["key"][1], Is.EqualTo ("value2"));
+      Assert.That(_dictionary["key"].Count, Is.EqualTo(0));
+      _dictionary.Add("key", "value1");
+      _dictionary.Add("key", "value2");
+      Assert.That(_dictionary["key"].Count, Is.EqualTo(2));
+      Assert.That(_dictionary["key"][0], Is.EqualTo("value1"));
+      Assert.That(_dictionary["key"][1], Is.EqualTo("value2"));
     }
 
     [Test]
@@ -48,18 +48,18 @@ namespace Remotion.UnitTests.Collections
     {
       Dev.Null = _dictionary["a"];
       Dev.Null = _dictionary["b"];
-      Assert.That (_dictionary.Count, Is.EqualTo (2));
+      Assert.That(_dictionary.Count, Is.EqualTo(2));
     }
 
     [Test]
     public void CountWithSameValues ()
     {
-      _dictionary.Add ("key", "value1");
-      _dictionary.Add ("key", "value2");
-      _dictionary.Add ("key2", "value3");
-      Assert.That (_dictionary.Count, Is.EqualTo (2));
-      Assert.That (_dictionary.KeyCount, Is.EqualTo (2));
-      Assert.That (_dictionary.CountValues(), Is.EqualTo (3));
+      _dictionary.Add("key", "value1");
+      _dictionary.Add("key", "value2");
+      _dictionary.Add("key2", "value3");
+      Assert.That(_dictionary.Count, Is.EqualTo(2));
+      Assert.That(_dictionary.KeyCount, Is.EqualTo(2));
+      Assert.That(_dictionary.CountValues(), Is.EqualTo(3));
     }
   }
 }

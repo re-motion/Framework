@@ -35,14 +35,14 @@ namespace Remotion.Development.UnitTesting.ObjectMothers
     public static Dictionary<TKey, TValue> New<TKey, TValue> ()
         where TKey : notnull
     {
-      var container = new Dictionary<TKey, TValue> ();
+      var container = new Dictionary<TKey, TValue>();
       return container;
     }
 
     public static Dictionary<TKey, TValue> New<TKey, TValue> (TKey key0, TValue value0)
         where TKey : notnull
     {
-      var container = new Dictionary<TKey, TValue> (1);
+      var container = new Dictionary<TKey, TValue>(1);
       container[key0] = value0;
       return container;
     }
@@ -50,7 +50,7 @@ namespace Remotion.Development.UnitTesting.ObjectMothers
     public static Dictionary<TKey, TValue> New<TKey, TValue> (TKey key0, TValue value0, TKey key1, TValue value1)
         where TKey : notnull
     {
-      var container = new Dictionary<TKey, TValue> (2);
+      var container = new Dictionary<TKey, TValue>(2);
       container[key0] = value0;
       container[key1] = value1;
       return container;
@@ -59,7 +59,7 @@ namespace Remotion.Development.UnitTesting.ObjectMothers
     public static Dictionary<TKey, TValue> New<TKey, TValue> (TKey key0, TValue value0, TKey key1, TValue value1, TKey key2, TValue value2)
         where TKey : notnull
     {
-      var container = new Dictionary<TKey, TValue> (3);
+      var container = new Dictionary<TKey, TValue>(3);
       container[key0] = value0;
       container[key1] = value1;
       container[key2] = value2;
@@ -69,7 +69,7 @@ namespace Remotion.Development.UnitTesting.ObjectMothers
     public static Dictionary<TKey, TValue> New<TKey, TValue> (TKey key0, TValue value0, TKey key1, TValue value1, TKey key2, TValue value2, TKey key3, TValue value3)
         where TKey : notnull
     {
-      var container = new Dictionary<TKey, TValue> (4);
+      var container = new Dictionary<TKey, TValue>(4);
       container[key0] = value0;
       container[key1] = value1;
       container[key2] = value2;

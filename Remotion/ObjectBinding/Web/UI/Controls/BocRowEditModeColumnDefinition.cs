@@ -30,11 +30,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class BocRowEditModeColumnDefinition : BocColumnDefinition
   {
     private string _editText = string.Empty;
-    private IconInfo _editIcon = new IconInfo ();
+    private IconInfo _editIcon = new IconInfo();
     private string _saveText = string.Empty;
-    private IconInfo _saveIcon = new IconInfo ();
+    private IconInfo _saveIcon = new IconInfo();
     private string _cancelText = string.Empty;
-    private IconInfo _cancelIcon = new IconInfo ();
+    private IconInfo _cancelIcon = new IconInfo();
     private BocRowEditColumnDefinitionShow _show = BocRowEditColumnDefinitionShow.EditMode;
 
     public BocRowEditModeColumnDefinition ()
@@ -87,19 +87,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _editIcon; }
       set
       {
-        ArgumentUtility.CheckNotNull ("EditIcon", value);
+        ArgumentUtility.CheckNotNull("EditIcon", value);
         _editIcon = value;
       }
     }
 
     private bool ShouldSerializeEditIcon ()
     {
-      return IconInfo.ShouldSerialize (_editIcon);
+      return IconInfo.ShouldSerialize(_editIcon);
     }
 
     private void ResetEditIcon ()
     {
-      _editIcon.Reset ();
+      _editIcon.Reset();
     }
 
 
@@ -134,19 +134,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _saveIcon; }
       set
       {
-        ArgumentUtility.CheckNotNull ("SaveIcon", value);
+        ArgumentUtility.CheckNotNull("SaveIcon", value);
         _saveIcon = value;
       }
     }
 
     private bool ShouldSerializeSaveIcon ()
     {
-      return IconInfo.ShouldSerialize (_saveIcon);
+      return IconInfo.ShouldSerialize(_saveIcon);
     }
 
     private void ResetSaveIcon ()
     {
-      _saveIcon.Reset ();
+      _saveIcon.Reset();
     }
 
     /// <summary> Gets or sets the text representing the cancel command in the rendered page. </summary>
@@ -180,26 +180,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _cancelIcon; }
       set
       {
-        ArgumentUtility.CheckNotNull ("CancelIcon", value);
+        ArgumentUtility.CheckNotNull("CancelIcon", value);
         _cancelIcon = value;
       }
     }
 
     private bool ShouldSerializeCancelIcon ()
     {
-      return IconInfo.ShouldSerialize (_cancelIcon);
+      return IconInfo.ShouldSerialize(_cancelIcon);
     }
 
     private void ResetCancelIcon ()
     {
-      _cancelIcon.Reset ();
+      _cancelIcon.Reset();
     }
 
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
+      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
       
-      return serviceLocator.GetInstance<IBocRowEditModeColumnRenderer> ();
+      return serviceLocator.GetInstance<IBocRowEditModeColumnRenderer>();
     }
 
     /// <summary> Gets the human readable name of this type. </summary>
@@ -210,29 +210,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
       
-      base.LoadResources (resourceManager, globalizationService);
+      base.LoadResources(resourceManager, globalizationService);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (EditText);
-      if (!string.IsNullOrEmpty (key))
-        EditText = resourceManager.GetString (key);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(EditText);
+      if (!string.IsNullOrEmpty(key))
+        EditText = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (SaveText);
-      if (!string.IsNullOrEmpty (key))
-        SaveText = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(SaveText);
+      if (!string.IsNullOrEmpty(key))
+        SaveText = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (CancelText);
-      if (!string.IsNullOrEmpty (key))
-        CancelText = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(CancelText);
+      if (!string.IsNullOrEmpty(key))
+        CancelText = resourceManager.GetString(key);
 
       if (EditIcon != null)
-        EditIcon.LoadResources (resourceManager);
+        EditIcon.LoadResources(resourceManager);
       if (SaveIcon != null)
-        SaveIcon.LoadResources (resourceManager);
+        SaveIcon.LoadResources(resourceManager);
       if (CancelIcon != null)
-        CancelIcon.LoadResources (resourceManager);
+        CancelIcon.LoadResources(resourceManager);
     }
   }
 }
