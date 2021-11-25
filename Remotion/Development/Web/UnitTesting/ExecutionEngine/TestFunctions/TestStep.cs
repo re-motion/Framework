@@ -31,17 +31,17 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions
     private bool _isAbortRecursiveCalled;
     private WxeContext? _wxeContext;
 
-    public TestStep()
+    public TestStep ()
     {
     }
 
-    public override void Execute(WxeContext context)
+    public override void Execute (WxeContext context)
     {
       _isExecuteCalled = true;
       _wxeContext = context;
     }
 
-    protected override void AbortRecursive()
+    protected override void AbortRecursive ()
     {
       base.AbortRecursive ();
       _isAbortRecursiveCalled = true;

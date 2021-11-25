@@ -24,7 +24,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   public class BT7Mixin8 : Mixin<object, IBaseType7>, IBT7Mixin8
   {
     [OverrideTarget]
-    public string Five()
+    public string Five ()
     {
       return "BT7Mixin8.Five-" + Next.Five();
     }

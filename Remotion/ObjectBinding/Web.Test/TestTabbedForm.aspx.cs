@@ -65,7 +65,7 @@ public class TestTabbedForm : TestWxeBasePage
     get { return (TestTabbedFormWxeFunction) CurrentFunction; }
   }
 
-  protected override void OnLoad(EventArgs e)
+  protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
 
@@ -186,7 +186,7 @@ public class TestTabbedForm : TestWxeBasePage
     }
   }
 
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -234,7 +234,7 @@ public class TestTabbedForm : TestWxeBasePage
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{    
     MultiView.ActiveViewChanged += new EventHandler(MultiView_ActiveViewChanged);
   }
@@ -262,12 +262,12 @@ public class TestTabbedForm : TestWxeBasePage
     return base.SaveControlState ();
   }
 
-  private void CancelButton_Click(object sender, EventArgs e)
+  private void CancelButton_Click (object sender, EventArgs e)
   {
     ExecuteNextStep();
   }
 
-  private void SaveButton_Click(object sender, EventArgs e)
+  private void SaveButton_Click (object sender, EventArgs e)
   {
     MultiView.EnsureAllLazyLoadedViews();
     PrepareValidation();
@@ -324,7 +324,7 @@ public class TestTabbedForm : TestWxeBasePage
     return combinedValidationResult.IsValid;
   }
 
-  private void MultiView_ActiveViewChanged(object sender, EventArgs e)
+  private void MultiView_ActiveViewChanged (object sender, EventArgs e)
   {
   
   }

@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
     private readonly IRelationEndPointProvider _endPointProvider;
     private readonly IClientTransactionEventSink _transactionEventSink;
 
-    public SynchronizedRealObjectEndPointSyncState(IRelationEndPointProvider endPointProvider, IClientTransactionEventSink transactionEventSink)
+    public SynchronizedRealObjectEndPointSyncState (IRelationEndPointProvider endPointProvider, IClientTransactionEventSink transactionEventSink)
     {
       ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
       ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink);

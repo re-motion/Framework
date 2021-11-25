@@ -27,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
       string M1 ();
     }
 
-    public string M1()
+    public string M1 ()
     {
       return "ClassDerivedFromBaseClassWithHasComleteInterface.M1";
     }

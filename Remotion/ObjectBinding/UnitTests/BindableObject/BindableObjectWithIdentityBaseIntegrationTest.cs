@@ -30,14 +30,14 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     private ClassDerivedFromBindableObjectWithIdentityBaseOverridingDisplayName _instanceOverridingDisplayName;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _instance = new ClassDerivedFromBindableObjectWithIdentityBase ();
       _instanceOverridingDisplayName = new ClassDerivedFromBindableObjectWithIdentityBaseOverridingDisplayName ();
     }
 
     [Test]
-    public void BusinessObjectClass()
+    public void BusinessObjectClass ()
     {
       Assert.That (_instance.BusinessObjectClass, Is.InstanceOf (typeof (BindableObjectClass)));
       var bindableObjectClass = (BindableObjectClass) _instance.BusinessObjectClass;
@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void DisplayName_Default()
+    public void DisplayName_Default ()
     {
       Assert.That (_instance.DisplayName, Is.EqualTo (TypeUtility.GetPartialAssemblyQualifiedName (typeof (ClassDerivedFromBindableObjectWithIdentityBase))));
     }
@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void GetProperty()
+    public void GetProperty ()
     {
       _instance.String = "hoo";
       Assert.That (_instance.GetProperty ("String"), Is.EqualTo ("hoo"));
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void UniqueIdentifier()
+    public void UniqueIdentifier ()
     {
       _instance.SetUniqueIdentifier ("hu");
       Assert.That (_instance.UniqueIdentifier, Is.EqualTo ("hu"));

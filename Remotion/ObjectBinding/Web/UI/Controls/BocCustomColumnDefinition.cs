@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     [NotNull]
-    public IBusinessObjectPropertyPath GetPropertyPath()
+    public IBusinessObjectPropertyPath GetPropertyPath ()
     {
       return _propertyPathBinding.GetPropertyPath();
     }

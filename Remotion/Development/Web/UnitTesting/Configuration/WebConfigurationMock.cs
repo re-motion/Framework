@@ -25,7 +25,7 @@ namespace Remotion.Development.Web.UnitTesting.Configuration
   /// </summary>
   public class WebConfigurationMock: WebConfiguration
   {
-    public WebConfigurationMock()
+    public WebConfigurationMock ()
     {
     }
   

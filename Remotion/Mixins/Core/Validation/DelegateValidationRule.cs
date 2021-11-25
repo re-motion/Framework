@@ -106,7 +106,7 @@ namespace Remotion.Mixins.Validation
     private readonly string _ruleName;
     private readonly string _message;
 
-    public DelegateValidationRule(Rule rule, string ruleName, string message)
+    public DelegateValidationRule (Rule rule, string ruleName, string message)
     {
       ArgumentUtility.CheckNotNull ("rule", rule);
       ArgumentUtility.CheckNotNull ("ruleName", ruleName);

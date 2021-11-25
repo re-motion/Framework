@@ -166,12 +166,12 @@ namespace OBWTest.IndividualControlTests
       base.OnPreRender (e);
     }
 
-    private void PartnerField_MenuItemClick(object sender, WebMenuItemClickEventArgs e)
+    private void PartnerField_MenuItemClick (object sender, WebMenuItemClickEventArgs e)
     {
       MenuItemClickEventArgsLabel.Text = "Partner-Menu: " + e.Item.ItemID;
     }
 
-    private void UnboundField_MenuItemClick(object sender, WebMenuItemClickEventArgs e)
+    private void UnboundField_MenuItemClick (object sender, WebMenuItemClickEventArgs e)
     {
       MenuItemClickEventArgsLabel.Text = "Unbound-Menu: " + e.Item.ItemID;
     }

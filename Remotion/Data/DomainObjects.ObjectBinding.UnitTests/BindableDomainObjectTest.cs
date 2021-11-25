@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     private IBusinessObjectClass _businessObjectClassFake;
 
     [SetUp]
-    public override void SetUp()
+    public override void SetUp ()
     {
       base.SetUp ();
 
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     }
 
     [Test]
-    public void BindableObjectProviderAttribute()
+    public void BindableObjectProviderAttribute ()
     {
       Assert.That (typeof (BindableDomainObject).IsDefined (typeof (BindableDomainObjectProviderAttribute), false), Is.True);
     }
@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     }
     
     [Test]
-    public void GetProperty()
+    public void GetProperty ()
     {
       var instance = SampleBindableDomainObject.NewObject (_implementationMock);
 
@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     }
 
     [Test]
-    public void GetPropertyString()
+    public void GetPropertyString ()
     {
       var instance = SampleBindableDomainObject.NewObject (_implementationMock);
 
@@ -192,7 +192,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     }
 
     [Test]
-    public void DisplayName()
+    public void DisplayName ()
     {
       var instance = SampleBindableDomainObject.NewObject (_implementationMock);
 

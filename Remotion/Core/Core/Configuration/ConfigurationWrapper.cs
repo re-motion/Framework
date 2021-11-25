@@ -52,7 +52,7 @@ namespace Remotion.Configuration
       s_current.Value = configuration;
     }
 
-    protected ConfigurationWrapper()
+    protected ConfigurationWrapper ()
     {
     }
 

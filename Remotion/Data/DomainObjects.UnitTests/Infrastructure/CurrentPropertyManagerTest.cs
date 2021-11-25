@@ -42,20 +42,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    public void CurrentPropertyName_Null()
+    public void CurrentPropertyName_Null ()
     {
       Assert.That (CurrentPropertyManager.CurrentPropertyName, Is.Null);
     }
 
     [Test]
-    public void PreparePropertyAccess()
+    public void PreparePropertyAccess ()
     {
       CurrentPropertyManager.PreparePropertyAccess ("prop");
       Assert.That (CurrentPropertyManager.CurrentPropertyName, Is.EqualTo ("prop"));
     }
 
     [Test]
-    public void PropertyAccessFinished()
+    public void PropertyAccessFinished ()
     {
       CurrentPropertyManager.PreparePropertyAccess ("prop");
       CurrentPropertyManager.PropertyAccessFinished ();
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    public void GetAndCheckCurrentPropertyName()
+    public void GetAndCheckCurrentPropertyName ()
     {
       CurrentPropertyManager.PreparePropertyAccess ("prop");
       Assert.That (CurrentPropertyManager.GetAndCheckCurrentPropertyName (), Is.EqualTo ("prop"));

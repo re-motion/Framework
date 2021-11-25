@@ -64,7 +64,7 @@ namespace Remotion.Globalization.UnitTests
     }
 
     [TearDown]
-    public void TearDown()
+    public void TearDown ()
     {
       LogManager.ResetConfiguration();
     }

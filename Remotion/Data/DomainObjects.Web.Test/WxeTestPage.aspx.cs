@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
     /// Required method for Designer support - do not modify
     /// the contents of this method with the code editor.
     /// </summary>
-    private void InitializeComponent()
+    private void InitializeComponent ()
     {
       this.WxeTransactedFunctionCreateNewButton.Click += new System.EventHandler (this.WxeTransactedFunctionCreateNewButton_Click);
       this.WxeTransactedFunctionCreateNewAutoCommitButton.Click += new System.EventHandler (this.WxeTransactedFunctionCreateNewAutoCommitButton_Click);
@@ -181,12 +181,12 @@ namespace Remotion.Data.DomainObjects.Web.Test
       }
     }
 
-    private void RememberCurrentClientTransaction()
+    private void RememberCurrentClientTransaction ()
     {
       CurrentWxeTestPageFunction.CurrentClientTransaction = ClientTransactionScope.CurrentTransaction;
     }
 
-    private void CheckCurrentClientTransactionRestored()
+    private void CheckCurrentClientTransactionRestored ()
     {
       if (CurrentWxeTestPageFunction.CurrentClientTransaction != ClientTransactionScope.CurrentTransaction)
         throw new TestFailureException (

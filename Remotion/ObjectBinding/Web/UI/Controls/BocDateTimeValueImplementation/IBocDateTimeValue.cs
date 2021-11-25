@@ -45,11 +45,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation
     /// <summary>
     /// Gets the list of validation errors for the date value of this control.
     /// </summary>
-    IEnumerable<string> GetDateValueValidationErrors();
+    IEnumerable<string> GetDateValueValidationErrors ();
 
     /// <summary>
     /// Gets the list of validation errors for the time value of this control.
     /// </summary>
-    IEnumerable<string> GetTimeValueValidationErrors();
+    IEnumerable<string> GetTimeValueValidationErrors ();
   }
 }

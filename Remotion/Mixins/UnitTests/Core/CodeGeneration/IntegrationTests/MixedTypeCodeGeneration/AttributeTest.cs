@@ -26,7 +26,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
   public class AttributeTest : CodeGenerationBaseTest
   {
     [Test]
-    public void AttributesReplicatedFromMixinViaIntroduction()
+    public void AttributesReplicatedFromMixinViaIntroduction ()
     {
       BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (MixinWithPropsEventAtts));
 
@@ -65,7 +65,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    public void IntroducedAttributes()
+    public void IntroducedAttributes ()
     {
       Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType1));
       Assert.That (concreteType.GetCustomAttributes (typeof (BT1Attribute), true).Length, Is.EqualTo (1));
@@ -83,7 +83,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    public void IntroducedMultiAttributes()
+    public void IntroducedMultiAttributes ()
     {
       Type concreteType = CreateMixedType (
           typeof (BaseTypeWithAllowMultiple),
@@ -95,7 +95,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    public void IntroducedAttributesTargetClassWins()
+    public void IntroducedAttributesTargetClassWins ()
     {
       Type concreteType = CreateMixedType (typeof (BaseType1), typeof (MixinAddingBT1Attribute));
       Assert.That (concreteType.GetCustomAttributes (typeof (BT1Attribute), true).Length, Is.EqualTo (1));
@@ -114,7 +114,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    public void AttributesOnMixedTypesBehaveLikeOnDerivedTypes()
+    public void AttributesOnMixedTypesBehaveLikeOnDerivedTypes ()
     {
       object[] attributes = GetRelevantAttributes (CreateMixedType (typeof (TargetWithoutAttributes), typeof (MixinWithAttributes)));
       Assert.That (attributes.Length, Is.EqualTo (2));
@@ -133,14 +133,14 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    public void AttributesSuppressedByMixin_AreNotReplicatedFromBaseType()
+    public void AttributesSuppressedByMixin_AreNotReplicatedFromBaseType ()
     {
       object[] attributes = GetRelevantAttributes (CreateMixedType (typeof (TargetWithNonInheritedAttributes), typeof (MixinSuppressingAllAttributes)));
       Assert.That (attributes.Length, Is.EqualTo (0));
     }
 
     [Test]
-    public void AttributesSuppressedByMixin_AreNotIntroducedFromOtherMixin()
+    public void AttributesSuppressedByMixin_AreNotIntroducedFromOtherMixin ()
     {
       object[] attributes =
           GetRelevantAttributes (CreateMixedType (typeof (NullTarget), typeof (MixinSuppressingAllAttributes), typeof (MixinAddingAttributes)));
@@ -148,7 +148,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    public void AttributesSuppressedByMixin_AreIntroducedForSameMixin()
+    public void AttributesSuppressedByMixin_AreIntroducedForSameMixin ()
     {
       object[] attributes = GetRelevantAttributes (CreateMixedType (typeof (NullTarget), typeof (MixinSuppressingAllAttributesAddingAttributes)));
       Assert.That (attributes.Length, Is.EqualTo (2));
@@ -156,7 +156,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    public void AttributesOnDerivedMethodsBehaveLikeOnDerivedTypes()
+    public void AttributesOnDerivedMethodsBehaveLikeOnDerivedTypes ()
     {
       object[] attributes =
           GetRelevantAttributes (CreateMixedType (typeof (TargetWithoutAttributes), typeof (MixinWithAttributes)).GetMethod ("Method"));
@@ -198,7 +198,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
     
     [Test]
-    public void AttributesOnDerivedEventsBehaveLikeMethods()
+    public void AttributesOnDerivedEventsBehaveLikeMethods ()
     {
       object[] attributes =
           GetRelevantAttributes (CreateMixedType (typeof (TargetWithoutAttributes), typeof (MixinWithAttributes)).GetEvent ("Event"));

@@ -53,7 +53,7 @@ public class NavigationCommandTest
   private HtmlTextWriterSingleTagMock _writer;
 
   [SetUp]
-  public virtual void SetUp()
+  public virtual void SetUp ()
   {
     _currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "default.html", null);
     _currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
@@ -94,7 +94,7 @@ public class NavigationCommandTest
   }
 
   [TearDown]
-  public virtual void TearDown()
+  public virtual void TearDown ()
   { 
     WebConfigurationMock.Current = null;
     Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
@@ -102,7 +102,7 @@ public class NavigationCommandTest
   }
 
   [Test]
-  public void RenderWxeFunctionCommand()
+  public void RenderWxeFunctionCommand ()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();    
     
@@ -141,7 +141,7 @@ public class NavigationCommandTest
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithDefaultWxeHandler()
+  public void GetWxeFunctionPermanentUrlWithDefaultWxeHandler ()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();    
     
@@ -165,7 +165,7 @@ public class NavigationCommandTest
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeByTypeName()
+  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeByTypeName ()
   {
     string resource = "~/Test.wxe";
     UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (_functionType, resource));
@@ -188,7 +188,7 @@ public class NavigationCommandTest
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeByMappingID()
+  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeByMappingID ()
   {
     string mappingID = "Test";
     string resource = "~/Test.wxe";
@@ -212,7 +212,7 @@ public class NavigationCommandTest
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeAndInvalidTypeNameMappingIDCombination()
+  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeAndInvalidTypeNameMappingIDCombination ()
   {
     string mappingID = "Test";
     string resource = "~/Test.wxe";
@@ -231,7 +231,7 @@ public class NavigationCommandTest
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithDefaultWxeHandlerAndAdditionalUrlParameters()
+  public void GetWxeFunctionPermanentUrlWithDefaultWxeHandlerAndAdditionalUrlParameters ()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();    
     
@@ -259,7 +259,7 @@ public class NavigationCommandTest
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeAndAdditionalUrlParameters()
+  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeAndAdditionalUrlParameters ()
   {
     string resource = "~/Test.wxe";
     UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (_functionType, resource));
@@ -286,7 +286,7 @@ public class NavigationCommandTest
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithoutDefaultWxeHandler()
+  public void GetWxeFunctionPermanentUrlWithoutDefaultWxeHandler ()
   {
     WebConfigurationMock.Current = null;
     string parameter1 = "Hello World!";

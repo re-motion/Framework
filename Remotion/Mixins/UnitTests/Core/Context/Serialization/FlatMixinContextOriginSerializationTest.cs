@@ -26,7 +26,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     private FlatMixinContextOriginSerializer _serializer;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _serializer = new FlatMixinContextOriginSerializer();
     }

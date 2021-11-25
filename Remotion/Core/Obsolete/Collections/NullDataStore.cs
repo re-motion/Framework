@@ -23,7 +23,7 @@ namespace Remotion.Collections
   {
     public static readonly NullDataStore<TKey, TValue> Instance = null;
 
-    private NullDataStore()
+    private NullDataStore ()
     {
       throw new NotImplementedException();
     }

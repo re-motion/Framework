@@ -38,7 +38,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Framework
       get { return Target.Events; }
     }
 
-    protected virtual void OnTargetReferenceInitializing()
+    protected virtual void OnTargetReferenceInitializing ()
     {
     }
 

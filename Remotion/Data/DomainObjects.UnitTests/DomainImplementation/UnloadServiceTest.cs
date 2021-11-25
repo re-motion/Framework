@@ -780,7 +780,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     }
 
     [Test]
-    public void UnloadVirtualEndPointAndItemData_AppliedToParentTransaction_UnloadsFromWholeHierarchy()
+    public void UnloadVirtualEndPointAndItemData_AppliedToParentTransaction_UnloadsFromWholeHierarchy ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order> ();
       var parentOrderItemsEndPoint = DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint (order.OrderItems);

@@ -35,12 +35,12 @@ public class BocTest
   private NamingContainerMock _namingContainer;
   private ControlInvoker _invoker;
 
-  public BocTest()
+  public BocTest ()
   {
   }
   
   [SetUp]
-  public virtual void SetUp()
+  public virtual void SetUp ()
   {
     _wcagHelperMock = new WcagHelperMock();
     WcagHelper.SetInstance (_wcagHelperMock);
@@ -63,7 +63,7 @@ public class BocTest
   }
 
   [TearDown]
-  public virtual void TearDown()
+  public virtual void TearDown ()
   {
     WcagHelper.SetInstance (null);
     HttpContextHelper.SetCurrent (null);

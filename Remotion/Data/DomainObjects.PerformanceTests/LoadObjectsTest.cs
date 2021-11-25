@@ -35,13 +35,13 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
     // construction and disposing
 
-    public LoadObjectsTest()
+    public LoadObjectsTest ()
     {
     }
 
     // methods and properties
 
-    public override void OneTimeSetUp()
+    public override void OneTimeSetUp ()
     {
       base.OneTimeSetUp();
 
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     }
 
     [Test]
-    public void LoadObjectsOverRelationTest()
+    public void LoadObjectsOverRelationTest ()
     {
       const int numberOfTests = 10;
 
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     }
 
     [Test]
-    public void LoadObjectsOverRelationWithAbstractBaseClass()
+    public void LoadObjectsOverRelationWithAbstractBaseClass ()
     {
       const int numberOfTests = 10;
 

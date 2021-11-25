@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
       return NewObject<ClassWithRelatedClassIDColumnAndNoInheritance> ();
     }
 
-    protected ClassWithRelatedClassIDColumnAndNoInheritance()
+    protected ClassWithRelatedClassIDColumnAndNoInheritance ()
     {
     }
 

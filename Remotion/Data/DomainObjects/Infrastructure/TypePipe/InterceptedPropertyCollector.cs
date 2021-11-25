@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       AnalyzeAndValidateBaseType();
     }
 
-    public HashSet<Tuple<PropertyInfo, string>> GetProperties()
+    public HashSet<Tuple<PropertyInfo, string>> GetProperties ()
     {
       return _properties;
     }

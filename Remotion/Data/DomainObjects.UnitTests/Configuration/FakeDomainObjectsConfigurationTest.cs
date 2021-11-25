@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
   public class FakeDomainObjectsConfigurationTest
   {
     [Test]
-    public void Initialize()
+    public void Initialize ()
     {
       StorageConfiguration storage = new StorageConfiguration ();
       MappingLoaderConfiguration mappingLoader = new MappingLoaderConfiguration ();
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     }
 
     [Test]
-    public void InitializeWithDefaults()
+    public void InitializeWithDefaults ()
     {
       IDomainObjectsConfiguration configuration = new FakeDomainObjectsConfiguration ();
 

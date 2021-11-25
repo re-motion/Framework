@@ -24,7 +24,7 @@ namespace OBWTest
 [MultiLingualResources ("OBWTest.Globalization.SingleBocTestBasePage")]
 public class SingleBocTestWxeBasePage: TestWxeBasePage
 {
-  protected override void OnInit(EventArgs e)
+  protected override void OnInit (EventArgs e)
   {
     base.OnInit (e);
     this.EnableAbort = true;

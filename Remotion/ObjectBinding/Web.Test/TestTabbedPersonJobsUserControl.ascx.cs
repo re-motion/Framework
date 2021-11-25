@@ -40,7 +40,7 @@ public class TestTabbedPersonJobsUserControl :
   private AutoInitDictionary<HtmlTable,StringCollection> _listOfHiddenRows = new AutoInitDictionary<HtmlTable,StringCollection>();
   private Control _incomeField;
 
-  protected override void OnLoad(EventArgs e)
+  protected override void OnLoad (EventArgs e)
   {
     base.OnLoad (e);
     _incomeField.Visible = false;
@@ -66,7 +66,7 @@ public class TestTabbedPersonJobsUserControl :
     return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
   }
 
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -207,7 +207,7 @@ public class TestTabbedPersonJobsUserControl :
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{
 
   }

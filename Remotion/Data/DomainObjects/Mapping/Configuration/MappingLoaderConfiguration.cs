@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Configuration
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
     private readonly ConfigurationProperty _mappingLoaderProperty;
 
-    public MappingLoaderConfiguration()
+    public MappingLoaderConfiguration ()
     {
       _mappingLoaderProperty = new ConfigurationProperty (
           "loader",
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Configuration
       get { return _properties; }
     }
 
-    public IMappingLoader CreateMappingLoader()
+    public IMappingLoader CreateMappingLoader ()
     {
       return MappingLoaderElement.CreateInstance();
     }

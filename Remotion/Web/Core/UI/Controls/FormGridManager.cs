@@ -130,7 +130,7 @@ namespace Remotion.Web.UI.Controls
       ///   <see cref="FormGridRow"/> objects collection.
       /// </summary>
       /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/GetValidationErrors/*' />
-      public virtual ValidationError[] GetValidationErrors()
+      public virtual ValidationError[] GetValidationErrors ()
       {
         ArrayList validationErrorList = new ArrayList();
 
@@ -148,7 +148,7 @@ namespace Remotion.Web.UI.Controls
       ///   Searches through the <see cref="FormGridRow"/> objects collection for a validation error.
       /// </summary>
       /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/HasValidationErrors/*' />
-      public virtual bool HasValidationErrors()
+      public virtual bool HasValidationErrors ()
       {
         for (int i = 0; i < _rows.Count; i++)
         {
@@ -167,7 +167,7 @@ namespace Remotion.Web.UI.Controls
       ///   Searches through the <see cref="FormGridRow"/> objects collection for a validation markers.
       /// </summary>
       /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/HasValidationMarkers/*' />
-      public virtual bool HasValidationMarkers()
+      public virtual bool HasValidationMarkers ()
       {
         for (int i = 0; i < _rows.Count; i++)
         {
@@ -186,7 +186,7 @@ namespace Remotion.Web.UI.Controls
       ///   Searches through the <see cref="FormGridRow"/> objects collection for a required markers.
       /// </summary>
       /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/HasRequiredMarkers/*' />
-      public virtual bool HasRequiredMarkers()
+      public virtual bool HasRequiredMarkers ()
       {
         for (int i = 0; i < _rows.Count; i++)
         {
@@ -203,7 +203,7 @@ namespace Remotion.Web.UI.Controls
 
       /// <summary> Searches through the <see cref="FormGridRow"/> objects collection for a help providers. </summary>
       /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/HasHelpProviders/*' />
-      public virtual bool HasHelpProviders()
+      public virtual bool HasHelpProviders ()
       {
         for (int i = 0; i < _rows.Count; i++)
         {
@@ -219,7 +219,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> Build the ID collection for this form grid. </summary>
-      public virtual void BuildIDCollection()
+      public virtual void BuildIDCollection ()
       {
         for (int i = 0; i < _rows.Count; i++)
         {
@@ -414,7 +414,7 @@ namespace Remotion.Web.UI.Controls
 
       /// <summary> Allows only the insertion of objects of type of <see cref="FormGridRow"/>. </summary>
       /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRowCollection/OnInsert/*' />
-      protected override void OnInsert(int index, object? value)
+      protected override void OnInsert (int index, object? value)
       {
         ArgumentUtility.CheckNotNull ("value", value!);
         FormGridRow formGridRow = ArgumentUtility.CheckType<FormGridRow> ("value", value);
@@ -623,7 +623,7 @@ namespace Remotion.Web.UI.Controls
       ///   <see cref="FormGridRow"/>, using their ID as a key.
       /// </summary>
       /// <remarks> Considers only controls where <see cref="Control.ID"/> is set.</remarks>
-      public virtual void BuildIDCollection()
+      public virtual void BuildIDCollection ()
       {
         //  Assume an average of 2 controls per cell
         _controls = new Hashtable (2 * _htmlTableRows.Count * _htmlTableRows[0].Cells.Count);
@@ -666,7 +666,7 @@ namespace Remotion.Web.UI.Controls
       ///   Checks whether the row should be rendered.
       /// </summary>
       /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/CheckVisibility/*' />
-      public virtual bool CheckVisibility()
+      public virtual bool CheckVisibility ()
       {
         if (!_visible)
           return false;
@@ -690,7 +690,7 @@ namespace Remotion.Web.UI.Controls
       ///   Sets the <see cref="FormGridRow"/> and its contained <see cref="HtmlTableRow"/> objects
       ///   invisible.
       /// </summary>
-      public virtual void Hide()
+      public virtual void Hide ()
       {
         _visible = false;
 
@@ -705,7 +705,7 @@ namespace Remotion.Web.UI.Controls
       ///   Sets the <see cref="FormGridRow"/> and its contained <see cref="HtmlTableRow"/> 
       ///   visible.
       /// </summary>
-      public virtual void Show()
+      public virtual void Show ()
       {
         _visible = true;
 
@@ -1025,7 +1025,7 @@ namespace Remotion.Web.UI.Controls
     // construction and disposing
 
     /// <summary> Simple constructor. </summary>
-    public FormGridManager()
+    public FormGridManager ()
     {
       _labelsColumn = 0;
       _controlsColumn = 1;
@@ -1046,7 +1046,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Prepares all all <c>FormGrid</c> objects managed by this <c>FormGridManager</c> for validation. </summary>
-    public void PrepareValidation()
+    public void PrepareValidation ()
     {
       EnsureTransformationStep (TransformationStep.PostLoadTransformationCompleted);
 
@@ -1056,7 +1056,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Validates all <c>FormGrid</c> objects managed by this <c>FormGridManager</c>. </summary>
     /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/Validate/*' />
-    public bool Validate()
+    public bool Validate ()
     {
       EnsureTransformationStep (TransformationStep.PostLoadTransformationCompleted);
 
@@ -1070,7 +1070,7 @@ namespace Remotion.Web.UI.Controls
     ///   Assembles all <see cref="ValidationError"/> objects in the managed <c>FormGrids</c>.
     /// </summary>
     /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/GetValidationErrors/*' />
-    public ValidationError[] GetValidationErrors()
+    public ValidationError[] GetValidationErrors ()
     {
       ArrayList validationErrorList = new ArrayList();
 
@@ -1227,7 +1227,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    protected override void OnInit(EventArgs e)
+    protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
 
@@ -1291,7 +1291,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary>
     /// Optionally called after the <c>Load</c> event.
     /// </summary>
-    public void OnPostLoad()
+    public void OnPostLoad ()
     {
       EnsureTransformationStep (TransformationStep.PostLoadTransformationCompleted);
     }
@@ -1374,7 +1374,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> This member overrides <see cref="Control.SaveViewState"/>. </summary>
-    protected override object? SaveViewState()
+    protected override object? SaveViewState ()
     {
       // Hashtable<string, object>
       Hashtable formGridViewStates = new Hashtable (_formGrids.Count);
@@ -1427,7 +1427,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> This member overrides <see cref="Control.Render"/>. </summary>
-    protected override void Render(HtmlTextWriter output)
+    protected override void Render (HtmlTextWriter output)
     {
       //  nothing, required get a usefull designer output without much coding.
     }
@@ -1993,7 +1993,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Find the <see cref="IResourceManager"/> for this <see cref="FormGridManager"/>. </summary>
-    protected IResourceManager GetResourceManager()
+    protected IResourceManager GetResourceManager ()
     {
       //  Provider has already been identified.
       if (_cachedResourceManager != null)
@@ -3048,7 +3048,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Returns a spacer to be used instead of a marker. </summary>
     /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateBlankMarker/*' />
-    protected virtual Control CreateBlankMarker()
+    protected virtual Control CreateBlankMarker ()
     {
       Image spacer = new Image();
       spacer.ImageUrl = IconInfo.CreateSpacer (ResourceUrlFactory).Url;
@@ -3079,7 +3079,7 @@ namespace Remotion.Web.UI.Controls
       return dataRow.LabelsRowIndex != dataRow.ControlsRowIndex;
     }
 
-    protected void EnsureFormGridListPopulated()
+    protected void EnsureFormGridListPopulated ()
     {
       if (! _formGridListPopulated)
       {

@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     // construction and disposing
 
-    public EditObjectFunction()
+    public EditObjectFunction ()
       : base (WxeTransactionMode.CreateRootWithAutoCommit)
     {
       ReturnUrl = "default.aspx";
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
       set { Variables["ObjectWithAllDataTypes"] = value; }
     }
 
-    private void Step1()
+    private void Step1 ()
     {
       ObjectWithAllDataTypes = DomainObjectIDs.ObjectWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
     }

@@ -23,12 +23,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [Instantiable]
   public abstract class Order : DomainObject
   {
-    public static Order NewObject()
+    public static Order NewObject ()
     {
       return DomainObject.NewObject<Order> ();
     }
 
-    protected Order()
+    protected Order ()
     {
     }
 

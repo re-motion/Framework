@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void ContainsObject_True()
+    public void ContainsObject_True ()
     {
       Assert.That (_collection.ContainsObject (_customer1), Is.True);
     }

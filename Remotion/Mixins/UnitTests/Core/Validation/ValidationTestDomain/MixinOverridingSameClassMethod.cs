@@ -21,7 +21,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
   public class MixinOverridingSameClassMethod
   {
     [OverrideTarget]
-    public virtual string AbstractMethod(int i)
+    public virtual string AbstractMethod (int i)
     {
       return "MixinOverridingSameClassMethod.AbstractMethod-" + i;
     }

@@ -40,13 +40,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
   public class DomainObjectsConfigurationTest
   {
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       DomainObjectsConfiguration.SetCurrent (null);
     }
 
     [Test]
-    public void GetAndSet()
+    public void GetAndSet ()
     {
       IDomainObjectsConfiguration configuration =
           new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration(), new StorageConfiguration(), new QueryConfiguration());
@@ -56,13 +56,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     }
 
     [Test]
-    public void Get()
+    public void Get ()
     {
       Assert.That (DomainObjectsConfiguration.Current, Is.Not.Null);
     }
 
     [Test]
-    public void Initialize()
+    public void Initialize ()
     {
       DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     }
 
     [Test]
-    public void Initialize_WithConfigurationHavingMinimumSettings()
+    public void Initialize_WithConfigurationHavingMinimumSettings ()
     {
       using (TempFile configFile = new TempFile())
       {
@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     }
 
     [Test]
-    public void Initialize_WithConfigurationHavingCustomMappingLoader()
+    public void Initialize_WithConfigurationHavingCustomMappingLoader ()
     {
       using (TempFile configFile = new TempFile())
       {
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     }
 
     [Test]
-    public void Initialize_WithConfigurationHavingCustomSectionGroupName()
+    public void Initialize_WithConfigurationHavingCustomSectionGroupName ()
     {
       using (TempFile configFile = new TempFile())
       {
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     }
 
     [Test]
-    public void GetMappingLoader_SameInstanceTwice()
+    public void GetMappingLoader_SameInstanceTwice ()
     {
       DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     }
 
     [Test]
-    public void GetStorage_SameInstanceTwice()
+    public void GetStorage_SameInstanceTwice ()
     {
       DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 

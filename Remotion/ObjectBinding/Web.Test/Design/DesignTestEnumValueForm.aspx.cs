@@ -98,7 +98,7 @@ public class DesignTestEnumValueForm : DesignTestWxeBasePage
   protected BocEnumValue Bocenumvalue66;
   protected HtmlHeadContents HtmlHeadContents;
 
-  private void Page_Load(object sender, EventArgs e)
+  private void Page_Load (object sender, EventArgs e)
 	{
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject (personID);
@@ -108,7 +108,7 @@ public class DesignTestEnumValueForm : DesignTestWxeBasePage
     CurrentObject.LoadValues (IsPostBack);
   }
 
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -126,7 +126,7 @@ public class DesignTestEnumValueForm : DesignTestWxeBasePage
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{    
     this.EnableAbort = false;
     this.ShowAbortConfirmation = Remotion.Web.UI.ShowAbortConfirmation.Always;

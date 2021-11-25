@@ -26,7 +26,7 @@ public class EmailAddressValidatorTest
   private EmailAddressValidatorMock _validator;
 
   [SetUp]
-  public virtual void SetUp()
+  public virtual void SetUp ()
   {
     _validator = new EmailAddressValidatorMock();
   }
@@ -34,7 +34,7 @@ public class EmailAddressValidatorTest
   #region public void MatchValidEmailAddress*
 
 	[Test]
-  public void MatchValidEmailAddress()
+  public void MatchValidEmailAddress ()
   {
     string text = @"jdoe@provider.net";
     bool result = _validator.IsMatchComplete (text);
@@ -46,7 +46,7 @@ public class EmailAddressValidatorTest
   #region public void MatchValidUserPart*
 
 	[Test]
-  public void MatchValidUserPartSingleCharacter()
+  public void MatchValidUserPartSingleCharacter ()
   {
     string text = @"j";
     bool result = _validator.IsMatchUserPart (text);
@@ -54,7 +54,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartAllLowerCase()
+  public void MatchValidUserPartAllLowerCase ()
   {
     string text = @"jdoe";
     bool result = _validator.IsMatchUserPart (text);
@@ -62,7 +62,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartWithLeadingCapitalCharacter()
+  public void MatchValidUserPartWithLeadingCapitalCharacter ()
   {
     string text = @"Jdoe";
     bool result = _validator.IsMatchUserPart (text);
@@ -70,7 +70,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartWithMiddleCapitalCharacter()
+  public void MatchValidUserPartWithMiddleCapitalCharacter ()
   {
     string text = @"jDoe";
     bool result = _validator.IsMatchUserPart (text);
@@ -78,7 +78,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartWithTrailingCapitalCharacter()
+  public void MatchValidUserPartWithTrailingCapitalCharacter ()
   {
     string text = @"jdoE";
     bool result = _validator.IsMatchUserPart (text);
@@ -86,7 +86,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartWithLeadingDigit()
+  public void MatchValidUserPartWithLeadingDigit ()
   {
     string text = @"2jdoe";
     bool result = _validator.IsMatchUserPart (text);
@@ -94,7 +94,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartWithMiddleDigit()
+  public void MatchValidUserPartWithMiddleDigit ()
   {
     string text = @"j2doe";
     bool result = _validator.IsMatchUserPart (text);
@@ -102,7 +102,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartWithTrailingDigit()
+  public void MatchValidUserPartWithTrailingDigit ()
   {
     string text = @"jdoe2";
     bool result = _validator.IsMatchUserPart (text);
@@ -110,7 +110,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartWithLeadingUnderscore()
+  public void MatchValidUserPartWithLeadingUnderscore ()
   {
     string text = @"_jdoe";
     bool result = _validator.IsMatchUserPart (text);
@@ -118,7 +118,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartWithMiddleUnderscore()
+  public void MatchValidUserPartWithMiddleUnderscore ()
   {
     string text = @"j_doe";
     bool result = _validator.IsMatchUserPart (text);
@@ -126,7 +126,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartWithTrailingUnderscore()
+  public void MatchValidUserPartWithTrailingUnderscore ()
   {
     string text = @"jdoe_";
     bool result = _validator.IsMatchUserPart (text);
@@ -134,7 +134,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartWithLeadingUmlaut()
+  public void MatchValidUserPartWithLeadingUmlaut ()
   {
     string text = @"äjdoe";
     bool result = _validator.IsMatchUserPart (text);
@@ -142,7 +142,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartWithMiddleUmlaut()
+  public void MatchValidUserPartWithMiddleUmlaut ()
   {
     string text = @"jädoe";
     bool result = _validator.IsMatchUserPart (text);
@@ -150,7 +150,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartWithTrailingUmlaut()
+  public void MatchValidUserPartWithTrailingUmlaut ()
   {
     string text = @"jdoeä";
     bool result = _validator.IsMatchUserPart (text);
@@ -158,7 +158,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartWithHyphen()
+  public void MatchValidUserPartWithHyphen ()
   {
     string text = @"j-doe";
     bool result = _validator.IsMatchUserPart (text);
@@ -166,7 +166,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidUserPartWithDot()
+  public void MatchValidUserPartWithDot ()
   {
     string text = @"j.doe";
     bool result = _validator.IsMatchUserPart (text);
@@ -178,7 +178,7 @@ public class EmailAddressValidatorTest
   #region public void MatchValidDomainPart*
 
 	[Test]
-  public void MatchValidDomainPartTwoCharacters()
+  public void MatchValidDomainPartTwoCharacters ()
   {
     string text = @"pr.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -186,7 +186,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartAllLowerCase()
+  public void MatchValidDomainPartAllLowerCase ()
   {
     string text = @"provider.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -194,7 +194,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithLeadingCapitalCharacter()
+  public void MatchValidDomainPartWithLeadingCapitalCharacter ()
   {
     string text = @"Provider.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -202,7 +202,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithMiddleCapitalCharacter()
+  public void MatchValidDomainPartWithMiddleCapitalCharacter ()
   {
     string text = @"proVider.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -210,7 +210,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithTrailingCapitalCharacter()
+  public void MatchValidDomainPartWithTrailingCapitalCharacter ()
   {
     string text = @"provideR.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -218,7 +218,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithLeadingDigit()
+  public void MatchValidDomainPartWithLeadingDigit ()
   {
     string text = @"2provider.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -226,7 +226,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithMiddleDigit()
+  public void MatchValidDomainPartWithMiddleDigit ()
   {
     string text = @"pro2vider.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -234,7 +234,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithTrailingDigit()
+  public void MatchValidDomainPartWithTrailingDigit ()
   {
     string text = @"provider2.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -242,7 +242,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithLeadingUnderscore()
+  public void MatchValidDomainPartWithLeadingUnderscore ()
   {
     string text = @"_provider.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -250,7 +250,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithMiddleUnderscore()
+  public void MatchValidDomainPartWithMiddleUnderscore ()
   {
     string text = @"pro_vider.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -258,7 +258,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithTrailingUnderscore()
+  public void MatchValidDomainPartWithTrailingUnderscore ()
   {
     string text = @"provider_.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -266,7 +266,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithLeadingUmlaut()
+  public void MatchValidDomainPartWithLeadingUmlaut ()
   {
     string text = @"äprovider.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -274,7 +274,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithMiddleUmlaut()
+  public void MatchValidDomainPartWithMiddleUmlaut ()
   {
     string text = @"proävider.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -282,7 +282,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithTrailingUmlaut()
+  public void MatchValidDomainPartWithTrailingUmlaut ()
   {
     string text = @"providerä.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -290,7 +290,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithHyphen()
+  public void MatchValidDomainPartWithHyphen ()
   {
     string text = @"pro-vider.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -298,7 +298,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithDot()
+  public void MatchValidDomainPartWithDot ()
   {
     string text = @"pro.vider.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -306,7 +306,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithTwoCharacterRoot()
+  public void MatchValidDomainPartWithTwoCharacterRoot ()
   {
     string text = @"provider.ab";
     bool result = _validator.IsMatchDomainPart (text);
@@ -314,7 +314,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchValidDomainPartWithNineCharacterRoot()
+  public void MatchValidDomainPartWithNineCharacterRoot ()
   {
     string text = @"provider.abcdefghi";
     bool result = _validator.IsMatchDomainPart (text);
@@ -326,7 +326,7 @@ public class EmailAddressValidatorTest
   #region public void MatchInvalidEmailAddress*
 
 	[Test]
-  public void MatchInvalidEmailAddressNoAtCharacter()
+  public void MatchInvalidEmailAddressNoAtCharacter ()
   {
     string text = @"jdoeprovider.net";
     bool result = _validator.IsMatchComplete (text);
@@ -334,7 +334,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidEmailAddressTwoAtCharacter()
+  public void MatchInvalidEmailAddressTwoAtCharacter ()
   {
     string text = @"jdoe@pro@vider.net";
     bool result = _validator.IsMatchComplete (text);
@@ -342,7 +342,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidEmailAddressNoCharacters()
+  public void MatchInvalidEmailAddressNoCharacters ()
   {
     string text = @"";
     bool result = _validator.IsMatchComplete (text);
@@ -354,7 +354,7 @@ public class EmailAddressValidatorTest
   #region public void MatchInvalidUserPart*
 
 	[Test]
-  public void MatchInvalidUserPartWithNoCharacters()
+  public void MatchInvalidUserPartWithNoCharacters ()
   {
     string text = @"";
     bool result = _validator.IsMatchUserPart (text);
@@ -362,7 +362,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidUserPartWithLeadingWhitespace()
+  public void MatchInvalidUserPartWithLeadingWhitespace ()
   {
     string text = @" jdoe";
     bool result = _validator.IsMatchUserPart (text);
@@ -370,7 +370,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidUserPartWithTrailingWhitespace()
+  public void MatchInvalidUserPartWithTrailingWhitespace ()
   {
     string text = @"jdoe ";
     bool result = _validator.IsMatchUserPart (text);
@@ -378,7 +378,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidUserPartWithLeadingHyphen()
+  public void MatchInvalidUserPartWithLeadingHyphen ()
   {
     string text = @"-jdoe";
     bool result = _validator.IsMatchUserPart (text);
@@ -386,7 +386,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidUserPartWithTrailingHyphen()
+  public void MatchInvalidUserPartWithTrailingHyphen ()
   {
     string text = @"jdoe-";
     bool result = _validator.IsMatchUserPart (text);
@@ -398,7 +398,7 @@ public class EmailAddressValidatorTest
   #region public void MatchInvalidDomainPart*
 
 	[Test]
-  public void MatchInvalidDomainPartWithNoCharacters()
+  public void MatchInvalidDomainPartWithNoCharacters ()
   {
     string text = @"";
     bool result = _validator.IsMatchDomainPart (text);
@@ -406,7 +406,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidDomainPartSingleCharacter()
+  public void MatchInvalidDomainPartSingleCharacter ()
   {
     string text = @"p.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -414,7 +414,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidDomainPartWithLeadingWhitespace()
+  public void MatchInvalidDomainPartWithLeadingWhitespace ()
   {
     string text = @" provider.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -422,7 +422,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidDomainPartWithTrailingWhitespace()
+  public void MatchInvalidDomainPartWithTrailingWhitespace ()
   {
     string text = @"provider.net ";
     bool result = _validator.IsMatchDomainPart (text);
@@ -430,7 +430,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidDomainPartWithLeadingHyphen()
+  public void MatchInvalidDomainPartWithLeadingHyphen ()
   {
     string text = @"-provider.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -438,7 +438,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidDomainPartWithTrailingHyphen()
+  public void MatchInvalidDomainPartWithTrailingHyphen ()
   {
     string text = @"provider-.net";
     bool result = _validator.IsMatchDomainPart (text);
@@ -446,7 +446,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidDomainPartWithMissingTld()
+  public void MatchInvalidDomainPartWithMissingTld ()
   {
     string text = @"provider.";
     bool result = _validator.IsMatchDomainPart (text);
@@ -454,7 +454,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidDomainPartWithMissingTldAndDot()
+  public void MatchInvalidDomainPartWithMissingTldAndDot ()
   {
     string text = @"provider";
     bool result = _validator.IsMatchDomainPart (text);
@@ -462,7 +462,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidDomainPartWithSingleCharacterTld()
+  public void MatchInvalidDomainPartWithSingleCharacterTld ()
   {
     string text = @"provider.a";
     bool result = _validator.IsMatchDomainPart (text);
@@ -470,7 +470,7 @@ public class EmailAddressValidatorTest
   }
 
 	[Test]
-  public void MatchInvalidDomainPartWithTenCharacterTld()
+  public void MatchInvalidDomainPartWithTenCharacterTld ()
   {
     string text = @"provider.abcdefghij";
     bool result = _validator.IsMatchDomainPart (text);

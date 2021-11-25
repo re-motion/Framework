@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader
 {
   public interface IMappingLoader : IMappingValidatorFactory
   {
-    ClassDefinition[] GetClassDefinitions();
+    ClassDefinition[] GetClassDefinitions ();
     RelationDefinition[] GetRelationDefinitions (IDictionary<Type, ClassDefinition> classDefinitions);
     bool ResolveTypes { get; }
     IMemberInformationNameResolver NameResolver { get; }

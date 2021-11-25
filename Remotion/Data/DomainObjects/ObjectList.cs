@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects
       return dataStrategy;
     }
 
-    public ObjectList()
+    public ObjectList ()
         : base (typeof (T))
     {
     }
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects
         yield return t;
     }
 
-    public T[] ToArray()
+    public T[] ToArray ()
     {
       return ArrayUtility.Convert (this);
     }

@@ -33,7 +33,7 @@ public class BocMenuItemCommand: BocCommand
   public class MenuItemHrefCommandInfo: BocCommand.BocHrefCommandInfo
   {
     /// <summary> Initalizes a new instance </summary>
-    public MenuItemHrefCommandInfo()
+    public MenuItemHrefCommandInfo ()
     {
     }
 
@@ -54,7 +54,7 @@ public class BocMenuItemCommand: BocCommand
   public class MenuItemWxeFunctionCommandInfo: BocCommand.BocWxeFunctionCommandInfo
   {
     /// <summary> Create a new instance. </summary>
-    public MenuItemWxeFunctionCommandInfo()
+    public MenuItemWxeFunctionCommandInfo ()
     {
     }
 

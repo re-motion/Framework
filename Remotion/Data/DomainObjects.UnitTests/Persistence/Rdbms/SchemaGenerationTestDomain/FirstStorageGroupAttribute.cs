@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 {
   public class FirstStorageGroupAttribute : DBStorageGroupAttribute
   {
-    public FirstStorageGroupAttribute()
+    public FirstStorageGroupAttribute ()
     {
     }
   }

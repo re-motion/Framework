@@ -32,19 +32,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       }
     }
 
-    public static void Initialize()
+    public static void Initialize ()
     {
       s_instance = new TableInheritanceConfiguration();
     }
 
     private readonly TableInheritanceDomainObjectIDs _domainObjectIDs;
 
-    private TableInheritanceConfiguration()
+    private TableInheritanceConfiguration ()
     {
       _domainObjectIDs = new TableInheritanceDomainObjectIDs (GetMappingConfiguration ());
     }
 
-    public TableInheritanceDomainObjectIDs GetDomainObjectIDs()
+    public TableInheritanceDomainObjectIDs GetDomainObjectIDs ()
     {
       return _domainObjectIDs;
     }

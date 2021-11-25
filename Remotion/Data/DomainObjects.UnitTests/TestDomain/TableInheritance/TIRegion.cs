@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
       return NewObject<TIRegion> ();
     }
 
-    protected TIRegion()
+    protected TIRegion ()
     {
     }
 

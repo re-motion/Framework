@@ -127,7 +127,7 @@ public class BusinessObjectTreeNode: BocTreeNode
     get { return "ObjectNode"; }
   }
 
-  private void EnsureBusinessObject()
+  private void EnsureBusinessObject ()
   {
     if (_businessObject != null)
       return;
@@ -174,7 +174,7 @@ public class BusinessObjectTreeNode: BocTreeNode
     }
   }
 
-  private void EnsureProperty()
+  private void EnsureProperty ()
   {
     if (_property != null)
       return;
@@ -249,7 +249,7 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
   }
 
   [MemberNotNull (nameof (_property))]
-  private void EnsureProperty()
+  private void EnsureProperty ()
   {
     if (_property != null)
       return;

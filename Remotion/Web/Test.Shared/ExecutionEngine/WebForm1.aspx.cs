@@ -76,7 +76,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     }
 
     #region Web Form Designer generated code
-    override protected void OnInit(EventArgs e)
+    override protected void OnInit (EventArgs e)
     {
       //
       // CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -89,7 +89,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     /// Required method for Designer support - do not modify
     /// the contents of this method with the code editor.
     /// </summary>
-    private void InitializeComponent()
+    private void InitializeComponent ()
     {    
       this.ThrowText.Click += new System.EventHandler(this.ThrowText_Click);
       this.Stay.Click += new System.EventHandler(this.Stay_Click);
@@ -137,12 +137,12 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       throw new ApplicationException (string.Empty);
     }
 
-    private void ThrowText_Click(object sender, System.EventArgs e)
+    private void ThrowText_Click (object sender, System.EventArgs e)
     {
       throw new ApplicationException ("test");
     }
 
-    private void SubExtButton_Click(object sender, System.EventArgs e)
+    private void SubExtButton_Click (object sender, System.EventArgs e)
     {
       if (! IsReturningPostBack)
       {
@@ -171,7 +171,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       this.ExecuteFunctionNoRepost (new SubFunction ("v1", "textbox"), (Control) sender);    
     }
 
-    private void Calendar1_SelectionChanged(object sender, System.EventArgs e)
+    private void Calendar1_SelectionChanged (object sender, System.EventArgs e)
     {
       if (! IsReturningPostBack)
       {

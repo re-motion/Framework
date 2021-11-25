@@ -94,7 +94,7 @@ public class BocTextValueUserControl : BaseUserControl
   }
 
   #region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -107,7 +107,7 @@ public class BocTextValueUserControl : BaseUserControl
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{
 
   }
@@ -160,27 +160,27 @@ line 3", IsPostBack);
       label.Text = "not set";
   }
 
-  private void FirstNameTestSetNullButton_Click(object sender, EventArgs e)
+  private void FirstNameTestSetNullButton_Click (object sender, EventArgs e)
   {
     FirstNameField.Value = null;
   }
 
-  private void FirstNameTestSetNewValueButton_Click(object sender, EventArgs e)
+  private void FirstNameTestSetNewValueButton_Click (object sender, EventArgs e)
   {
     FirstNameField.Value = "Foo Bar";
   }
 
-  private void ReadOnlyFirstNameTestSetNullButton_Click(object sender, EventArgs e)
+  private void ReadOnlyFirstNameTestSetNullButton_Click (object sender, EventArgs e)
   {
     ReadOnlyFirstNameField.Value = null;
   }
 
-  private void ReadOnlyFirstNameTestSetNewValueButton_Click(object sender, EventArgs e)
+  private void ReadOnlyFirstNameTestSetNewValueButton_Click (object sender, EventArgs e)
   {
     ReadOnlyFirstNameField.Value = "Foo Bar";
   }
 
-  private void FirstNameField_TextChanged(object sender, EventArgs e)
+  private void FirstNameField_TextChanged (object sender, EventArgs e)
   {
     if (FirstNameField.Value != null)
       FirstNameFieldTextChangedLabel.Text = FirstNameField.Value.ToString();

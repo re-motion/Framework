@@ -40,7 +40,7 @@ public class WcagHelper
     s_instance.Value = instance;
   }
 
-  protected WcagHelper()
+  protected WcagHelper ()
 	{
 	}
 
@@ -74,23 +74,23 @@ public class WcagHelper
     return IsWaiConformanceLevelTripleARequired (GetWaiConformanceLevel());
   }
 
-  public virtual bool IsWcagDebuggingEnabled()
+  public virtual bool IsWcagDebuggingEnabled ()
   {
     return WebConfiguration.Current.Wcag.Debugging != WcagDebugMode.Disabled;
   }
 
-  public virtual bool IsWcagDebugLogEnabled()
+  public virtual bool IsWcagDebugLogEnabled ()
   {
     return WebConfiguration.Current.Wcag.Debugging == WcagDebugMode.Logging
         || WebConfiguration.Current.Wcag.Debugging == WcagDebugMode.Exception;
   }
 
-  public virtual bool IsWcagDebugExceptionEnabled()
+  public virtual bool IsWcagDebugExceptionEnabled ()
   {
     return WebConfiguration.Current.Wcag.Debugging == WcagDebugMode.Exception;
   }
 
-  public virtual WaiConformanceLevel GetWaiConformanceLevel()
+  public virtual WaiConformanceLevel GetWaiConformanceLevel ()
   {
     return WebConfiguration.Current.Wcag.ConformanceLevel;
   }

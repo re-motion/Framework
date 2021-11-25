@@ -42,7 +42,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     }
 
     #region Web Form Designer generated code
-    override protected void OnInitComplete(EventArgs e)
+    override protected void OnInitComplete (EventArgs e)
     {
       //
       // CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -55,7 +55,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     ///		Required method for Designer support - do not modify
     ///		the contents of this method with the code editor.
     /// </summary>
-    private void InitializeComponent()
+    private void InitializeComponent ()
     {
       this.Stay.Click += new System.EventHandler(this.Stay_Click);
       this.Sub.Click += new System.EventHandler(this.Sub_Click);

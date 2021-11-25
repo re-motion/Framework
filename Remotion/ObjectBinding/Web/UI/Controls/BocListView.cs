@@ -54,18 +54,18 @@ public class BocListView: BusinessObjectControlItem
   }
 
   /// <summary> Initialize a new instance. </summary>
-  public BocListView()
+  public BocListView ()
     : this (null, string.Empty, null)
   {
   }
 
-  protected override void OnOwnerControlChanged()
+  protected override void OnOwnerControlChanged ()
   {
     base.OnOwnerControlChanged();
     _columnDefinitions.OwnerControl = OwnerControl;
   }
 
-  public override string ToString()
+  public override string ToString ()
   {
     string? displayName = ItemID;
     if (string.IsNullOrEmpty (displayName))

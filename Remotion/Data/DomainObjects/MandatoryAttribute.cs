@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects
   [AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public sealed class MandatoryAttribute : Attribute, INullablePropertyAttribute
   {
-    public MandatoryAttribute()
+    public MandatoryAttribute ()
     {
     }
 

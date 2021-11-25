@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
   public static class CompoundStoragePropertyDefinitionObjectMother
   {
-    public static CompoundStoragePropertyDefinition CreateWithTwoProperties()
+    public static CompoundStoragePropertyDefinition CreateWithTwoProperties ()
     {
       return new CompoundStoragePropertyDefinition(
           typeof (Tuple<int, string>),

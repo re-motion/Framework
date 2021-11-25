@@ -57,12 +57,12 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 
   public class MixinWithIndirectRequirements : Mixin <IIndirectTargetAggregator, IIndirectBaseAggregator>
   {
-    public string GetStuffViaThis()
+    public string GetStuffViaThis ()
     {
       return Target.Method1() + "-" + Target.BaseMethod1() + "-" + Target.Method3();
     }
 
-    public string GetStuffViaBase()
+    public string GetStuffViaBase ()
     {
       return Next.Method1() + "-" + Next.BaseMethod1() + "-" + Next.Method3();
     }

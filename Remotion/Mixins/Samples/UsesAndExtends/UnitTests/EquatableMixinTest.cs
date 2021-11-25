@@ -33,7 +33,7 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.UnitTests
     }
 
     [Test]
-    public void ImplementsEquatable()
+    public void ImplementsEquatable ()
     {
       C c = new C();
       Assert.That (c is IEquatable<C>, Is.False);

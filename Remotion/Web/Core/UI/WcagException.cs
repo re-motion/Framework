@@ -23,7 +23,7 @@ namespace Remotion.Web.UI
 
 public class WcagException: Exception
 {
-  public WcagException()
+  public WcagException ()
     : this ("An element on the page is not WCAG conform.", null)
   {
   }

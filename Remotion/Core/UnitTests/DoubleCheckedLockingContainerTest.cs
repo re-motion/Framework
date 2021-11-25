@@ -31,7 +31,7 @@ namespace Remotion.UnitTests
   {
     public interface IFactory
     {
-      SampleClass Create();
+      SampleClass Create ();
     }
 
     public class SampleClass
@@ -39,7 +39,7 @@ namespace Remotion.UnitTests
     }
 
     [Test]
-    public void SetAndGetValue()
+    public void SetAndGetValue ()
     {
       SampleClass expected = new SampleClass();
       DoubleCheckedLockingContainer<SampleClass> container =
@@ -50,7 +50,7 @@ namespace Remotion.UnitTests
     }
 
     [Test]
-    public void GetValueFromFactory()
+    public void GetValueFromFactory ()
     {
       SampleClass expected = new SampleClass();
       var mockFactory = new Mock<IFactory> (MockBehavior.Strict);
@@ -65,7 +65,7 @@ namespace Remotion.UnitTests
     }
 
     [Test]
-    public void SetNull()
+    public void SetNull ()
     {
       SampleClass expected = new SampleClass ();
       var mockFactory = new Mock<IFactory> (MockBehavior.Strict);

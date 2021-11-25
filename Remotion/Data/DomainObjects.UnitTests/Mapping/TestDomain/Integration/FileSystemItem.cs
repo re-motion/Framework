@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
       return NewObject<FileSystemItem> ();
     }
 
-    protected FileSystemItem()
+    protected FileSystemItem ()
     {
     }
 

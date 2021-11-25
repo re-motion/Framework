@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
   public class TableInheritanceTestDomainAttribute: StorageGroupAttribute
   {
-    public TableInheritanceTestDomainAttribute()
+    public TableInheritanceTestDomainAttribute ()
     {
     }
   }

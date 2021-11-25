@@ -222,7 +222,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   A <see cref="NameValueCollection"/> containing the URL parameters required by this 
   ///   <see cref="ISmartNavigablePage"/> to restore its navigation state when using hyperlinks.
   /// </returns>
-  public NameValueCollection GetNavigationUrlParameters()
+  public NameValueCollection GetNavigationUrlParameters ()
   {
     return _smartPageInfo.GetNavigationUrlParameters();
   }
@@ -241,7 +241,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   private bool? _enableSmartFocusing;
   private readonly SmartPageClientScriptManager _clientScriptManager;
 
-  public SmartPage()
+  public SmartPage ()
   {
     _smartPageInfo = new SmartPageInfo (this);
     _validatableControlInitializer = new ValidatableControlInitializer (this);
@@ -249,7 +249,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _clientScriptManager = new SmartPageClientScriptManager (base.ClientScript);
   }
 
-  protected override NameValueCollection? DeterminePostBackMode()
+  protected override NameValueCollection? DeterminePostBackMode ()
   {
     NameValueCollection? result = base.DeterminePostBackMode();
     return result;
@@ -275,7 +275,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   Call this method before validating when using <see cref="Remotion.Web.UI.Controls.FormGridManager"/> 
   ///   and <see cref="M:Remotion.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl.Validate()"/>.
   /// </summary>
-  public void PrepareValidation()
+  public void PrepareValidation ()
   {
     EnsurePostLoadInvoked();
     EnsureValidatableControlsInitialized();
@@ -308,7 +308,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   has values that must be persisted before the user leaves the page. 
   /// </summary>
   /// <value> The value returned by <see cref="IsDirty"/>. </value>
-  public virtual bool EvaluateDirtyState()
+  public virtual bool EvaluateDirtyState ()
   {
     if (_isDirty)
       return true;
@@ -527,14 +527,14 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     RegisterRequiresControlState (this);
   }
 
-  protected override void LoadControlState(object? savedState)
+  protected override void LoadControlState (object? savedState)
   {
     object?[] values = (object?[]) savedState!;
     base.LoadControlState (values[0]);
     _isDirty = (bool) values[1]!;
   }
 
-  protected override object? SaveControlState()
+  protected override object? SaveControlState ()
   {
     object?[] values = new object?[2];
     values[0] = base.SaveControlState();

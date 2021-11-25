@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     }
 
     [Test]
-    public void GetObject_ObjectExists()
+    public void GetObject_ObjectExists ()
     {
       Assert.That (_service.GetObject (_businessObjectClass, _id), Is.SameAs (_instance));
     }
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     }
 
     [Test]
-    public void GetObject_ObjectInvalid()
+    public void GetObject_ObjectInvalid ()
     {
       _instance.Delete();
       Assert.That (_instance.State.IsInvalid, Is.True);
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     }
 
     [Test]
-    public void GetObject_ObjectDeleted()
+    public void GetObject_ObjectDeleted ()
     {
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {

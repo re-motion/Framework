@@ -241,7 +241,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    public void AddMethodCannotBeSetToNull()
+    public void AddMethodCannotBeSetToNull ()
     {
       CustomEventEmitter eventEmitter = _classEmitter.CreateEvent ("AddMethodCannotBeSetToNull", EventKind.Static, typeof (string));
       Assert.That (

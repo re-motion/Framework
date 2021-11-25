@@ -36,7 +36,7 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.UnitTests
       public Data Data = new Data();
 
       [OverrideMixin]
-      public void CleanupManagedResources()
+      public void CleanupManagedResources ()
       {
         Data.ManagedCalled = true;
       }
@@ -49,7 +49,7 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.UnitTests
     }
 
     [Test]
-    public void DisposeCallsAllCleanupMethods()
+    public void DisposeCallsAllCleanupMethods ()
     {
       C c = ObjectFactory.Create<C>(ParamList.Empty);
       Data data = c.Data;

@@ -363,7 +363,7 @@ namespace Remotion.Collections.DataStore.UnitTests
     }
 
     [Test]
-    public void GetOrCreateValue_WithNestedEnumeration_SkipsNewItem()
+    public void GetOrCreateValue_WithNestedEnumeration_SkipsNewItem ()
     {
       int expected = 15;
       KeyValuePair<string, int?>[] nestedItems = null;

@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    public void UnregisterDataSource()
+    public void UnregisterDataSource ()
     {
       if (_dataSource != null)
       {

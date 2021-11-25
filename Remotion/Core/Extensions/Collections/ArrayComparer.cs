@@ -68,12 +68,12 @@ namespace Remotion.Collections
 
     private static ArrayComparer<T> _instance = new ArrayComparer<T>();
 
-    public static ArrayComparer<T> GetComparer()
+    public static ArrayComparer<T> GetComparer ()
     {
       return _instance;
     }
 
-    private ArrayComparer()
+    private ArrayComparer ()
     {
     }
 

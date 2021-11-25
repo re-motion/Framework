@@ -26,7 +26,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
   public class CodeGenerationMixinContextOriginSerializerTest : CodeGenerationBaseTest
   {
     [Test]
-    public void IntegrationTest()
+    public void IntegrationTest ()
     {
       var someAssembly = GetType().Assembly;
       var referenceContextOrigin = new MixinContextOrigin ("some kind", someAssembly, "some location");

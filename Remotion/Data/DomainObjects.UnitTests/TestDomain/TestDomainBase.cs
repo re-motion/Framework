@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     [NonSerialized]
     public DomainObjectState UnloadedState;
 
-    protected TestDomainBase()
+    protected TestDomainBase ()
     {
       if (StaticCtorHandler != null)
         StaticCtorHandler (this, EventArgs.Empty);

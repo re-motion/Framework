@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<ClassWithValidRelations> ();
     }
 
-    protected ClassWithValidRelations()
+    protected ClassWithValidRelations ()
     {
     }
 

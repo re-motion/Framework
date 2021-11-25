@@ -23,12 +23,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [Uses (typeof(PersistentMixin))]
   public abstract class SecondDerivedClass : ConcreteClass
   {
-    public new static SecondDerivedClass NewObject()
+    public new static SecondDerivedClass NewObject ()
     {
       return DomainObject.NewObject<SecondDerivedClass> ();
     }
 
-    protected SecondDerivedClass()
+    protected SecondDerivedClass ()
     {
     }
 

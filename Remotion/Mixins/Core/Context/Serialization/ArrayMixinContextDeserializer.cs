@@ -31,22 +31,22 @@ namespace Remotion.Mixins.Context.Serialization
     {
     }
 
-    public Type GetMixinType()
+    public Type GetMixinType ()
     {
       return GetValue<Type> (0);
     }
 
-    public MixinKind GetMixinKind()
+    public MixinKind GetMixinKind ()
     {
       return GetValue<MixinKind> (1);
     }
 
-    public MemberVisibility GetIntroducedMemberVisibility()
+    public MemberVisibility GetIntroducedMemberVisibility ()
     {
       return GetValue<MemberVisibility> (2);
     }
 
-    public IEnumerable<Type> GetExplicitDependencies()
+    public IEnumerable<Type> GetExplicitDependencies ()
     {
       return GetValue<Type[]> (3);
     }

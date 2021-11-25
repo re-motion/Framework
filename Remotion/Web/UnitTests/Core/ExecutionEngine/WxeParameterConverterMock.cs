@@ -39,7 +39,7 @@ public class WxeParameterConverterMock: WxeParameterConverter
     return base.ConvertObjectToString (value);
   }
 
-  public new void CheckForRequiredOutParameter()
+  public new void CheckForRequiredOutParameter ()
   {
     base.CheckForRequiredOutParameter();
   }

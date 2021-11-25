@@ -38,13 +38,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     private IBusinessObjectDateTimeProperty _propertyDateTimeValue;
     private IBusinessObjectDateTimeProperty _propertyNullableDateTimeValue;
 
-    public BocDateTimeValueTest()
+    public BocDateTimeValueTest ()
     {
     }
 
 
     [SetUp]
-    public override void SetUp()
+    public override void SetUp ()
     {
       base.SetUp();
       _bocDateTimeValue = new BocDateTimeValueMock();
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
 
     [Test]
-    public void EvaluateWaiConformityDebugLevelUndefined()
+    public void EvaluateWaiConformityDebugLevelUndefined ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
       _bocDateTimeValue.EvaluateWaiConformity();
@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void EvaluateWaiConformityLevelA()
+    public void EvaluateWaiConformityLevelA ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
       _bocDateTimeValue.DateTextBoxStyle.AutoPostBack = true;
@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void EvaluateWaiConformityDebugLevelDoubleAWithTimeTextBoxActive()
+    public void EvaluateWaiConformityDebugLevelDoubleAWithTimeTextBoxActive ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelDoubleA();
       _bocDateTimeValue.ValueType = BocDateTimeValueType.DateTime;
@@ -96,7 +96,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void EvaluateWaiConformityDebugLevelAWithDateTimeTextBoxStyleAutoPostBackTrue()
+    public void EvaluateWaiConformityDebugLevelAWithDateTimeTextBoxStyleAutoPostBackTrue ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
       _bocDateTimeValue.DateTimeTextBoxStyle.AutoPostBack = true;
@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
 
     [Test]
-    public void EvaluateWaiConformityDebugLevelAWithDateTextBoxStyleAutoPostBackTrue()
+    public void EvaluateWaiConformityDebugLevelAWithDateTextBoxStyleAutoPostBackTrue ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
       _bocDateTimeValue.DateTextBoxStyle.AutoPostBack = true;
@@ -123,7 +123,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void EvaluateWaiConformityDebugLevelAWithTimeTextBoxStyleAutoPostBackTrue()
+    public void EvaluateWaiConformityDebugLevelAWithTimeTextBoxStyleAutoPostBackTrue ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
       _bocDateTimeValue.TimeTextBoxStyle.AutoPostBack = true;
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void GetTrackedClientIDsInReadOnlyMode()
+    public void GetTrackedClientIDsInReadOnlyMode ()
     {
       _bocDateTimeValue.ReadOnly = true;
       string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
@@ -145,7 +145,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void GetTrackedClientIDsInEditModeAndValueTypeIsDateTime()
+    public void GetTrackedClientIDsInEditModeAndValueTypeIsDateTime ()
     {
       _bocDateTimeValue.ReadOnly = false;
       _bocDateTimeValue.ValueType = BocDateTimeValueType.DateTime;
@@ -157,7 +157,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void GetTrackedClientIDsInEditModeAndValueTypeIsDate()
+    public void GetTrackedClientIDsInEditModeAndValueTypeIsDate ()
     {
       _bocDateTimeValue.ReadOnly = false;
       _bocDateTimeValue.ValueType = BocDateTimeValueType.Date;
@@ -168,7 +168,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void GetTrackedClientIDsInEditModeAndValueTypeIsUndefined()
+    public void GetTrackedClientIDsInEditModeAndValueTypeIsUndefined ()
     {
       _bocDateTimeValue.ReadOnly = false;
       _bocDateTimeValue.ValueType = BocDateTimeValueType.Undefined;
@@ -181,7 +181,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
 
     [Test]
-    public void SetValueToDateTime()
+    public void SetValueToDateTime ()
     {
       DateTime dateTime = new DateTime (2006, 1, 1, 1, 1, 1);
       _bocDateTimeValue.IsDirty = false;
@@ -191,7 +191,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void SetValueToNull()
+    public void SetValueToNull ()
     {
       _bocDateTimeValue.IsDirty = false;
       _bocDateTimeValue.Value = null;
@@ -200,7 +200,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void SetValueToNullableDateTime()
+    public void SetValueToNullableDateTime ()
     {
       DateTime? dateTime = new DateTime (2006, 1, 1, 1, 1, 1);
       _bocDateTimeValue.IsDirty = false;
@@ -210,7 +210,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void SetValueToNullableDateTimeNull()
+    public void SetValueToNullableDateTimeNull ()
     {
       _bocDateTimeValue.IsDirty = false;
       _bocDateTimeValue.Value = null;
@@ -274,7 +274,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
 
     [Test]
-    public void LoadValueAndInterimTrue()
+    public void LoadValueAndInterimTrue ()
     {
       _businessObject.DateTimeValue = new DateTime (2006, 1, 1, 1, 1, 1);
       _bocDateTimeValue.DataSource = _dataSource;
@@ -288,7 +288,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void LoadValueAndInterimFalseWithDateTime()
+    public void LoadValueAndInterimFalseWithDateTime ()
     {
       _businessObject.DateTimeValue = new DateTime (2006, 1, 1, 1, 1, 1);
       _bocDateTimeValue.DataSource = _dataSource;
@@ -302,7 +302,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void LoadValueAndInterimFalseWithValueNullableDateTime()
+    public void LoadValueAndInterimFalseWithValueNullableDateTime ()
     {
       _businessObject.NullableDateTimeValue = new DateTime (2006, 1, 1, 1, 1, 1);
       _bocDateTimeValue.DataSource = _dataSource;
@@ -316,7 +316,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void LoadValueAndInterimFalseWithValueNullableDateTimeNull()
+    public void LoadValueAndInterimFalseWithValueNullableDateTimeNull ()
     {
       _businessObject.NullableDateTimeValue = null;
       _bocDateTimeValue.DataSource = _dataSource;
@@ -370,7 +370,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void LoadUnboundValueAndInterimTrue()
+    public void LoadUnboundValueAndInterimTrue ()
     {
       DateTime value = new DateTime (2006, 1, 1, 1, 1, 1);
       _bocDateTimeValue.Value = null;
@@ -382,7 +382,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void LoadUnboundValueAndInterimFalseWithDateTime()
+    public void LoadUnboundValueAndInterimFalseWithDateTime ()
     {
       DateTime value = new DateTime (2006, 1, 1, 1, 1, 1);
       _bocDateTimeValue.Value = null;
@@ -394,7 +394,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void LoadUnboundValueAndInterimFalseWithValueNull()
+    public void LoadUnboundValueAndInterimFalseWithValueNull ()
     {
       DateTime? value = null;
       _bocDateTimeValue.Value = DateTime.Now;
@@ -406,7 +406,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void LoadUnboundValueAndInterimFalseWithValueNullableDateTime()
+    public void LoadUnboundValueAndInterimFalseWithValueNullableDateTime ()
     {
       DateTime? value = new DateTime (2006, 1, 1, 1, 1, 1);
       _bocDateTimeValue.Value = null;
@@ -418,7 +418,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void LoadUnboundValueAndInterimFalseWithValueNullableDateTimeNull()
+    public void LoadUnboundValueAndInterimFalseWithValueNullableDateTimeNull ()
     {
       DateTime? value = null;
       _bocDateTimeValue.Value = DateTime.Now;

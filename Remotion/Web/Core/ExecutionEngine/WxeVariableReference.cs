@@ -46,7 +46,7 @@ namespace Remotion.Web.ExecutionEngine
       return this._name == other._name;
     }
 
-    public override int GetHashCode()
+    public override int GetHashCode ()
     {
       return _name.GetHashCode();
     }

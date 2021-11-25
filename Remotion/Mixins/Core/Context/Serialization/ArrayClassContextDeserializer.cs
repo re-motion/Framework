@@ -36,13 +36,13 @@ namespace Remotion.Mixins.Context.Serialization
       return GetValue<Type> (0);
     }
 
-    public IEnumerable<MixinContext> GetMixins()
+    public IEnumerable<MixinContext> GetMixins ()
     {
       var mixins = GetValue<object[]> (1);
       return mixins.Select (oa => MixinContext.Deserialize (CreateMixinContextDeserializer ((object[]) oa)));
     }
 
-    public IEnumerable<Type> GetComposedInterfaces()
+    public IEnumerable<Type> GetComposedInterfaces ()
     {
       return GetValue<Type[]> (2);
     }

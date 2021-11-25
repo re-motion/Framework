@@ -29,12 +29,12 @@ namespace Remotion.Development.Web.UnitTesting.UI
     private Control? _control;
     private string? _property;
 
-    public WcagHelperMock()
+    public WcagHelperMock ()
     {
       Reset();
     }
 
-    public void Reset()
+    public void Reset ()
     {
       _hasError = false;
       _hasWarning = false;

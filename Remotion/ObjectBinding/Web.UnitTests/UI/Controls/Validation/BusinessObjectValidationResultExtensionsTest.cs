@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     }
 
     [Test]
-    public void GetValidationFailures_WithDataSourceNull_ReturnsEmpty()
+    public void GetValidationFailures_WithDataSourceNull_ReturnsEmpty ()
     {
       var controlMock = new Mock<IBusinessObjectBoundEditableWebControl>();
       controlMock.Setup (_ => _.HasValidBinding).Returns (true).Verifiable();
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     }
 
     [Test]
-    public void GetValidationFailures_WithPropertyNull_ReturnsEmpty()
+    public void GetValidationFailures_WithPropertyNull_ReturnsEmpty ()
     {
       var businessObjectStub = new Mock<IBusinessObject>();
 

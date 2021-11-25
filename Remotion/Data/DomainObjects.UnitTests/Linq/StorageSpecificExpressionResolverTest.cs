@@ -431,7 +431,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    public void ResolveEntityIdentityViaForeignKey()
+    public void ResolveEntityIdentityViaForeignKey ()
     {
       // Order.Customer
       var propertyDefinition = CreatePropertyDefinitionAndAssociateWithClass (_classDefinition, "Customer", "Customer");

@@ -26,7 +26,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
   public class CodeGenerationMixinContextSerializerTest : CodeGenerationBaseTest
   {
     [Test]
-    public void IntegrationTest()
+    public void IntegrationTest ()
     {
       var referenceContext = MixinContextObjectMother.Create();
 

@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects
   [AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public class StringPropertyAttribute: NullableLengthConstrainedPropertyAttribute
   {
-    public StringPropertyAttribute()
+    public StringPropertyAttribute ()
     {
     }
   }

@@ -299,7 +299,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     }
 
     [Test]
-    public void RootedPath_UnaffectedByDirectoryChange()
+    public void RootedPath_UnaffectedByDirectoryChange ()
     {
       QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml");
       string pathBefore = configuration.QueryFiles[0].RootedFileName;

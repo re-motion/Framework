@@ -43,7 +43,7 @@ public class NameValueCollectionUtilityTest
   // methods and properties
 
   [SetUp]
-  public void SetUp()
+  public void SetUp ()
   { 
     _collection = new NameValueCollection();
     _collection.Add ("FirstKey", "FirstValue");
@@ -58,7 +58,7 @@ public class NameValueCollectionUtilityTest
   }
 
   [Test]
-  public void Clone()
+  public void Clone ()
   {
     NameValueCollection actual = NameValueCollectionUtility.Clone (_collection);
 
@@ -76,7 +76,7 @@ public class NameValueCollectionUtilityTest
   }
 
   [Test]
-  public void AppendWithNull()
+  public void AppendWithNull ()
   {
     NameValueCollectionUtility.Append (_collection, null);
 
@@ -92,7 +92,7 @@ public class NameValueCollectionUtilityTest
   } 
 
   [Test]
-  public void AppendWithEmptyCollection()
+  public void AppendWithEmptyCollection ()
   {
     NameValueCollectionUtility.Append (_collection, new NameValueCollection());
 
@@ -108,7 +108,7 @@ public class NameValueCollectionUtilityTest
   } 
 
   [Test]
-  public void AppendWithOtherCollection()
+  public void AppendWithOtherCollection ()
   {
     NameValueCollectionUtility.Append (_collection, _otherCollection);
 
@@ -128,13 +128,13 @@ public class NameValueCollectionUtilityTest
   } 
 
   [Test]
-  public void MergeWithFirstNullAndSecondNull()
+  public void MergeWithFirstNullAndSecondNull ()
   {
     Assert.That (NameValueCollectionUtility.Merge (null, null), Is.Null);
   }
 
   [Test]
-  public void MergeWithFirstValueAndSecondNull()
+  public void MergeWithFirstValueAndSecondNull ()
   {
     NameValueCollection actual = NameValueCollectionUtility.Merge (_collection, null);
 
@@ -152,7 +152,7 @@ public class NameValueCollectionUtilityTest
   }
 
   [Test]
-  public void MergeWithFirstNullAndSecondValue()
+  public void MergeWithFirstNullAndSecondValue ()
   {
     NameValueCollection actual = NameValueCollectionUtility.Merge (null, _collection);
 
@@ -170,7 +170,7 @@ public class NameValueCollectionUtilityTest
   }
 
   [Test]
-  public void MergeWithFirstValueAndSecondValue()
+  public void MergeWithFirstValueAndSecondValue ()
   {
     NameValueCollection actual = NameValueCollectionUtility.Merge (_collection, _otherCollection);
 

@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
   [Serializable]
   public class ShowSecondUserControlFunction : WxeFunction
   {
-    public ShowSecondUserControlFunction(ITransactionMode transactionMode, params object[] actualParameters) : base(transactionMode, actualParameters)
+    public ShowSecondUserControlFunction (ITransactionMode transactionMode, params object[] actualParameters) : base(transactionMode, actualParameters)
     {
     }
 

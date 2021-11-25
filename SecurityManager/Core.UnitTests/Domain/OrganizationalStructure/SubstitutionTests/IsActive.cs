@@ -50,7 +50,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
     }
 
     [Test]
-    public void WithIsEnabledFalse_WithoutTimeSpan()
+    public void WithIsEnabledFalse_WithoutTimeSpan ()
     {
       _substitution.IsEnabled = false;
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
@@ -94,7 +94,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
     }
 
     [Test]
-    public void EvaluatesFalse_WithIsEnabledTrue_WithBeginDateGreaterThanCurrentDate()
+    public void EvaluatesFalse_WithIsEnabledTrue_WithBeginDateGreaterThanCurrentDate ()
     {
       _substitution.BeginDate = DateTime.Today.AddDays (+2);
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
@@ -116,7 +116,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
     }
 
     [Test]
-    public void EvaluatesTrue_WithIsEnabledTrue_WithEndDateSameAsCurrentDateButLessTime()
+    public void EvaluatesTrue_WithIsEnabledTrue_WithEndDateSameAsCurrentDateButLessTime ()
     {
       // Guard midnight
       if (DateTime.Now.AddMinutes (-1).Date != DateTime.Now.Date)
@@ -129,7 +129,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
     }
 
     [Test]
-    public void EvaluatesFalse_WithIsEnabledTrue_WithEndDateLessThanCurrentDate()
+    public void EvaluatesFalse_WithIsEnabledTrue_WithEndDateLessThanCurrentDate ()
     {
       _substitution.EndDate = DateTime.Today.AddDays (-2);
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();

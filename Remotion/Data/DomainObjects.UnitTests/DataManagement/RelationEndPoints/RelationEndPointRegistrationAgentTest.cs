@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void UnregisterEndPoint_NonRealEndPoint()
+    public void UnregisterEndPoint_NonRealEndPoint ()
     {
       var endPointMock = CreateVirtualEndPointMock ();
       endPointMock.Stub (stub => stub.HasChanged).Return (false);

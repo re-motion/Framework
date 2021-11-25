@@ -27,7 +27,7 @@ public class BocColumnDefinitionCollection: BusinessObjectControlItemCollection
   {
   }
 
-  public new BocColumnDefinition[] ToArray()
+  public new BocColumnDefinition[] ToArray ()
   {
     return (BocColumnDefinition[]) InnerList.ToArray (typeof (BocColumnDefinition));
   }

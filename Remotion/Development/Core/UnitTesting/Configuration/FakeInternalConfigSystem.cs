@@ -29,7 +29,7 @@ namespace Remotion.Development.UnitTesting.Configuration
   {
     private Dictionary<string, object> _sections = new Dictionary<string, object>();
 
-    public FakeInternalConfigSystem()
+    public FakeInternalConfigSystem ()
     {
     }
 

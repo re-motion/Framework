@@ -28,7 +28,7 @@ public class ViewPersonsWxeFunction: WxeFunction
   static readonly WxeParameterDeclaration[] s_parameters =  { 
       new WxeParameterDeclaration ("objects", true, WxeParameterDirection.In, typeof (IBusinessObject[]))};
 
-  public ViewPersonsWxeFunction()
+  public ViewPersonsWxeFunction ()
     : base (new NoneTransactionMode(), s_parameters)
   {
   }

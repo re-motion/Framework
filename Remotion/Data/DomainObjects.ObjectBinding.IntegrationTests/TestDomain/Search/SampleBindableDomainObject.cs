@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
       return NewObject<SampleBindableDomainObject> (ParamList.Create (implementation));
     }
 
-    protected SampleBindableDomainObject()
+    protected SampleBindableDomainObject ()
     {
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
     [DBBidirectionalRelation ("OppositeSampleObjects")]
     public abstract OppositeBidirectionalBindableDomainObject RelatedObjectProperty2 { get; set; }
 
-    public new void Delete()
+    public new void Delete ()
     {
       base.Delete();
     }

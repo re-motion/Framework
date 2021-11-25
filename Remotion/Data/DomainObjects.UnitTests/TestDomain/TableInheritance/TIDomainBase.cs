@@ -22,12 +22,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   [TableInheritanceTestDomain]
   public abstract class TIDomainBase : DomainObject
   {
-    protected TIDomainBase()
+    protected TIDomainBase ()
     {
         InitializeNew();
     }
   
-    private void InitializeNew()
+    private void InitializeNew ()
     {
       CreatedBy = "UnitTests";
       CreatedAt = DateTime.Now;

@@ -26,7 +26,7 @@ namespace Remotion.UnitTests.Utilities
 /// <summary> Exposes non-public members of the <see cref="StringUtility"/> type. </summary>
 public class StubStringUtility
 {
-  public static MethodInfo GetParseMethod  (Type type, bool throwIfNotFound)
+  public static MethodInfo GetParseMethod (Type type, bool throwIfNotFound)
   {
     return (MethodInfo) PrivateInvoke.InvokeNonPublicStaticMethod (
         typeof (StringUtility), "GetParseMethod", new object[]{type, throwIfNotFound});
@@ -44,7 +44,7 @@ public class StubStringUtility
         typeof (StringUtility), "GetParseMethodFromType", new object[]{type});
   }
 
-  public static void ClearCache()
+  public static void ClearCache ()
   {
     var cache = (ConcurrentDictionary<Type, MethodInfo>) PrivateInvoke.GetNonPublicStaticField (typeof (StringUtility), "s_parseMethods");
     cache.Clear();

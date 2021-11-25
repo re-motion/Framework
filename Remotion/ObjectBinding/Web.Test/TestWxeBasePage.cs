@@ -39,7 +39,7 @@ public class TestWxeBasePage:
 {  
   private Button _nextButton = new Button();
 
-  protected override void OnInit(EventArgs e)
+  protected override void OnInit (EventArgs e)
   {
     try
     {
@@ -64,7 +64,7 @@ public class TestWxeBasePage:
     RegisterEventHandlers();
   }
 
-  protected override void OnPreRender(EventArgs e)
+  protected override void OnPreRender (EventArgs e)
   {
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched
     ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
@@ -93,12 +93,12 @@ public class TestWxeBasePage:
     WxeControls.Add (stack);
   }
 
-  protected virtual void RegisterEventHandlers()
+  protected virtual void RegisterEventHandlers ()
   {
     _nextButton.Click += new EventHandler(NextButton_Click);
   }
 
-  protected virtual IResourceManager GetResourceManager()
+  protected virtual IResourceManager GetResourceManager ()
   {
     Type type = GetType();
     return GlobalizationService.GetResourceManager (type);
@@ -109,7 +109,7 @@ public class TestWxeBasePage:
     get { return SafeServiceLocator.Current.GetInstance<IGlobalizationService>(); }
   }
 
-  IResourceManager IObjectWithResources.GetResourceManager()
+  IResourceManager IObjectWithResources.GetResourceManager ()
   {
     return GetResourceManager();
   }
@@ -122,7 +122,7 @@ public class TestWxeBasePage:
 //      return Page.ResolveUrl (resourceType.Name + "/" + relativeUrl);
 //  }
 
-  private void NextButton_Click(object sender, EventArgs e)
+  private void NextButton_Click (object sender, EventArgs e)
   {
     ExecuteNextStep();
   }

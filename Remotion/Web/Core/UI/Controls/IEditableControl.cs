@@ -30,7 +30,7 @@ public interface IEditableControl: IControl
   /// </remarks>
   // TODO: redesign IsDirty semantics!
   bool IsDirty { get; }
-  string[] GetTrackedClientIDs();
+  string[] GetTrackedClientIDs ();
 }
 
 }

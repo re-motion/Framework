@@ -141,7 +141,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
     sb.Append ("}");
   }
 
-  protected internal override void AttachParser(CommandLineParser? parser)
+  protected internal override void AttachParser (CommandLineParser? parser)
   {
     _isCaseSensitive = parser!.IsCaseSensitive;
     base.AttachParser (parser);

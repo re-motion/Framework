@@ -38,7 +38,7 @@ namespace Remotion.Mixins.Utilities
       _items = new MultiDictionary<T, T> (comparer);
     }
 
-    public void Add(T item)
+    public void Add (T item)
     {
       _items.Add (item, item);
     }
@@ -59,20 +59,20 @@ namespace Remotion.Mixins.Utilities
       return _items[item].Count;
     }
 
-    public IEnumerable<T> GetUniqueItems()
+    public IEnumerable<T> GetUniqueItems ()
     {
       foreach (T firstItem in _items.Keys)
         yield return firstItem;
     }
 
-    public IEnumerator<T> GetEnumerator()
+    public IEnumerator<T> GetEnumerator ()
     {
       foreach (T firstItem in _items.Keys)
         foreach (T item in _items[firstItem])
           yield return item;
     }
 
-    IEnumerator IEnumerable.GetEnumerator()
+    IEnumerator IEnumerable.GetEnumerator ()
     {
       return GetEnumerator();
     }

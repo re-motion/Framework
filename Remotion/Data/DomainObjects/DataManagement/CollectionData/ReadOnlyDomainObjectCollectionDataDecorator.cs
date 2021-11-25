@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       get { return true; }
     }
 
-    public override void  Clear()
+    public override void  Clear ()
     {
       throw new NotSupportedException ("Cannot clear a read-only collection.");
     }

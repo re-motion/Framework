@@ -33,7 +33,7 @@ namespace Remotion.Development.UnitTesting.Configuration
     private ConnectionStringsSection _connectionStringsSection = new ConnectionStringsSection();
     private NameValueCollection _appSettings = new NameValueCollection();
 
-    public FakeConfigurationWrapper()
+    public FakeConfigurationWrapper ()
     {
     }
 

@@ -40,7 +40,7 @@ namespace Remotion.Collections
       get { return base.Count; }
     }
 
-    public int CountValues()
+    public int CountValues ()
     {
       int count = 0;
       foreach (TKey key in Keys)

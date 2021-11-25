@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    public void ExecuteSingle()
+    public void ExecuteSingle ()
     {
       _queryGeneratorMock
           .Expect (

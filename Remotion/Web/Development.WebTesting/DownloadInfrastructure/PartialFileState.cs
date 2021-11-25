@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
       _partialFileLastWriteAccessUtc = lastWriteTimeUtc;
     }
 
-    public DateTime GetPartialFileLastWriteTimeUtc()
+    public DateTime GetPartialFileLastWriteTimeUtc ()
     {
       return _partialFileLastWriteAccessUtc;
     }
@@ -58,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
       return _length;
     }
 
-    public string GetPartialFile()
+    public string GetPartialFile ()
     {
       return _partialFile;
     }

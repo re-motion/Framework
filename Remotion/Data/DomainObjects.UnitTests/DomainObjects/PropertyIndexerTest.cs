@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void Item()
+    public void Item ()
     {
       var indexer = new PropertyIndexer (_industrialSector);
       var accessor = indexer["Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name"];
@@ -351,7 +351,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void PropertyIndexer_CachesPropertyData()
+    public void PropertyIndexer_CachesPropertyData ()
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order> (_transaction);
       var indexer = new PropertyIndexer (order);

@@ -35,7 +35,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
   public class AttributeBasedMetadataImporterTest
   {
     [Test]
-    public void GetMetadataForMixedType_Wrapper()
+    public void GetMetadataForMixedType_Wrapper ()
     {
       var importerMock = new MockRepository ().PartialMock<AttributeBasedMetadataImporter> ();
       var expectedResult = ClassContextObjectMother.Create(typeof (object));
@@ -245,7 +245,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     }
 
     [Test]
-    public void GetMethodWrappersForMixinType()
+    public void GetMethodWrappersForMixinType ()
     {
       Type builtType = CreateTypeWithFakeWrappers();
 

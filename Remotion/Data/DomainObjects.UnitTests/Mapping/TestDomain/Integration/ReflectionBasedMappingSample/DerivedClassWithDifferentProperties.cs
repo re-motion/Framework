@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
   [Instantiable]
   public abstract class DerivedClassWithDifferentProperties : ClassWithDifferentProperties
   {
-    protected DerivedClassWithDifferentProperties()
+    protected DerivedClassWithDifferentProperties ()
     {
     }
 

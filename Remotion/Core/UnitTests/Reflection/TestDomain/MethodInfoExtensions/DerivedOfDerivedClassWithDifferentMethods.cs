@@ -20,16 +20,16 @@ namespace Remotion.UnitTests.Reflection.TestDomain.MethodInfoExtensions
 {
   public abstract class DerivedOfDerivedClassWithDifferentMethods : DerivedClassWithDifferentMethods
   {
-    public new static int GetStaticInt32()
+    public new static int GetStaticInt32 ()
     {
       return 0;
     }
-    public override int GetInt32()
+    public override int GetInt32 ()
     {
       return 0;
     }
 
-    protected override int GetProtectedInt32()
+    protected override int GetProtectedInt32 ()
     {
       return 0;
     }

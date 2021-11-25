@@ -28,7 +28,7 @@ public class PropertyPathBindingCollection : BusinessObjectControlItemCollection
   {
   }
 
-  public new PropertyPathBinding[] ToArray()
+  public new PropertyPathBinding[] ToArray ()
   {
     ArrayList arrayList = new ArrayList (List);
     return (PropertyPathBinding[]) arrayList.ToArray (typeof (PropertyPathBinding));

@@ -95,7 +95,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
     }
 
     [Test]
-    public void GeneratedTypeCorrectlySerializesThisAndBase()
+    public void GeneratedTypeCorrectlySerializesThisAndBase ()
     {
       ClassOverridingMixinMembers targetInstance = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers));
       var mixin = Mixin.Get<MixinWithAbstractMembers> (targetInstance);
@@ -125,7 +125,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
     }
 
     [Test]
-    public void ThrowsIfAbstractMixinTypeNotSerializable()
+    public void ThrowsIfAbstractMixinTypeNotSerializable ()
     {
       ClassOverridingMixinMembers targetInstance =
           CreateMixedObject<ClassOverridingMixinMembers> (typeof (NotSerializableMixin));

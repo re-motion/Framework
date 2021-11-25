@@ -53,7 +53,7 @@ namespace Remotion.Collections
     private readonly HashSet<T> _items;
     private readonly int _cachedHashCode;
 
-    public SetBasedCacheKey(params T[] items) : this((IEnumerable<T>) items)
+    public SetBasedCacheKey (params T[] items) : this((IEnumerable<T>) items)
     {
     }
 

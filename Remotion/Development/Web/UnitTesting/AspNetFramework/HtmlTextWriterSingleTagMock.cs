@@ -26,7 +26,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
     private Hashtable _attributes = new Hashtable();
     private HtmlTextWriterTag _tag;
 
-    public HtmlTextWriterSingleTagMock()
+    public HtmlTextWriterSingleTagMock ()
         : base (new StringWriter ())
     {
     }

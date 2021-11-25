@@ -74,7 +74,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       StateUsages.Add (stateUsage);
     }
 
-    public void ClearStates()
+    public void ClearStates ()
     {
       foreach (var stateUsage in StateUsages.ToList())
         stateUsage.Delete();

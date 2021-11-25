@@ -189,7 +189,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     }
 
     [Test]
-    public void RunTestMethod_TestFailed()
+    public void RunTestMethod_TestFailed ()
     {
       var instance = new DummyTest5 ();
       var testMethod = typeof (DummyTest5).GetMethod ("TestFailed");

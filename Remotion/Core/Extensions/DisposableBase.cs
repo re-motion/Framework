@@ -31,12 +31,12 @@ namespace Remotion
 
     protected abstract void Dispose (bool disposing);
 
-    void IDisposable.Dispose()
+    void IDisposable.Dispose ()
     {
       Dispose();
     }
 
-    protected void Dispose()
+    protected void Dispose ()
     {
       if (! _disposed)
       {
@@ -79,7 +79,7 @@ namespace Remotion
   [Serializable]
   public abstract class DisposableBase: DisposableExplicitBase
   {
-    public new void Dispose()
+    public new void Dispose ()
     {
       base.Dispose();
     }

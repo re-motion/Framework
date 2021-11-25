@@ -42,7 +42,7 @@ namespace Remotion.Mixins.Definitions.Building
       }
     }
 
-    private DependencyDefinitionBase BuildDependency(Type type, DependencyDefinitionBase? aggregator)
+    private DependencyDefinitionBase BuildDependency (Type type, DependencyDefinitionBase? aggregator)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 

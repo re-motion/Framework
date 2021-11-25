@@ -57,12 +57,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       get { return _provider; }
     }
 
-    public void Replay()
+    public void Replay ()
     {
       _executionListenerStrictMock.Replay();
     }
 
-    public void VerifyAllExpectations()
+    public void VerifyAllExpectations ()
     {
       _executionListenerStrictMock.VerifyAllExpectations();
     }

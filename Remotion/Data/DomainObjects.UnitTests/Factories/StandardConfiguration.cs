@@ -36,19 +36,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       }
     }
 
-    public static void Initialize()
+    public static void Initialize ()
     {
       s_instance = new StandardConfiguration();
     }
 
     private readonly DomainObjectIDs _domainObjectIDs;
 
-    private StandardConfiguration()
+    private StandardConfiguration ()
     {
       _domainObjectIDs = new DomainObjectIDs (GetMappingConfiguration ());      
     }
 
-    public DomainObjectIDs GetDomainObjectIDs()
+    public DomainObjectIDs GetDomainObjectIDs ()
     {
       return _domainObjectIDs;
     }

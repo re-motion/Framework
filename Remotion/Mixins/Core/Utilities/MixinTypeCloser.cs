@@ -28,7 +28,7 @@ namespace Remotion.Mixins.Utilities
     private readonly ConstraintBasedGenericParameterInstantiator _parameterInstantiator = new ConstraintBasedGenericParameterInstantiator ();
     private readonly Type _targetClass;
 
-    public MixinTypeCloser(Type targetClass)
+    public MixinTypeCloser (Type targetClass)
     {
       ArgumentUtility.CheckNotNull ("targetClass", targetClass);
 

@@ -79,7 +79,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     }
 
     [Test]
-    public void Commit()
+    public void Commit ()
     {
       _strategy.Commit();
     }

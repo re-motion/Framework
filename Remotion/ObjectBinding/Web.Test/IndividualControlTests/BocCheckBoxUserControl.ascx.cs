@@ -121,12 +121,12 @@ public class BocCheckBoxUserControl : BaseUserControl
       label.Text = "not set";
   }
 
-  private void DeceasedTestSetNullButton_Click(object sender, EventArgs e)
+  private void DeceasedTestSetNullButton_Click (object sender, EventArgs e)
   {
     DeceasedField.Value = null;
   }
 
-  private void DeceasedTestToggleValueButton_Click(object sender, EventArgs e)
+  private void DeceasedTestToggleValueButton_Click (object sender, EventArgs e)
   {
     if (DeceasedField.Value != null)
       DeceasedField.Value = ! (bool) DeceasedField.Value;
@@ -134,12 +134,12 @@ public class BocCheckBoxUserControl : BaseUserControl
       DeceasedField.Value = false;
   }
 
-  private void ReadOnlyDeceasedTestSetNullButton_Click(object sender, EventArgs e)
+  private void ReadOnlyDeceasedTestSetNullButton_Click (object sender, EventArgs e)
   {
     ReadOnlyDeceasedField.Value = null;
   }
 
-  private void ReadOnlyDeceasedTestToggleValueButton_Click(object sender, EventArgs e)
+  private void ReadOnlyDeceasedTestToggleValueButton_Click (object sender, EventArgs e)
   {
     if (ReadOnlyDeceasedField.Value != null)
       ReadOnlyDeceasedField.Value = ! (bool) ReadOnlyDeceasedField.Value;
@@ -147,7 +147,7 @@ public class BocCheckBoxUserControl : BaseUserControl
       ReadOnlyDeceasedField.Value = false;
   }
 
-  private void DeceasedField_CheckedChanged(object sender, EventArgs e)
+  private void DeceasedField_CheckedChanged (object sender, EventArgs e)
   {
     if (DeceasedField.Value != null)
       DeceasedFieldCheckedChangedLabel.Text = DeceasedField.Value.ToString();
@@ -164,7 +164,7 @@ public class BocCheckBoxUserControl : BaseUserControl
   }
 
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -177,7 +177,7 @@ public class BocCheckBoxUserControl : BaseUserControl
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{
 
   }

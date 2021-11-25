@@ -82,7 +82,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void GetInstance_CompoundIsSingleton_ImplementationIsInstancePerDependency_ImplementationsBehaveAsSingleton()
+    public void GetInstance_CompoundIsSingleton_ImplementationIsInstancePerDependency_ImplementationsBehaveAsSingleton ()
     {
       var compound = new ServiceImplementationInfo (typeof (TestCompound), LifetimeKind.Singleton, RegistrationType.Compound);
       var implementation = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.InstancePerDependency, RegistrationType.Multiple);

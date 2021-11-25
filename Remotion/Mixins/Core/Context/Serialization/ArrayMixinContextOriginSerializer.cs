@@ -25,7 +25,7 @@ namespace Remotion.Mixins.Context.Serialization
   /// </summary>
   public abstract class ArrayMixinContextOriginSerializer : ArrayContextSerializerBase, IMixinContextOriginSerializer
   {
-    protected ArrayMixinContextOriginSerializer()
+    protected ArrayMixinContextOriginSerializer ()
         : base(3)
     {
     }

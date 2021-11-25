@@ -29,7 +29,7 @@ namespace Remotion.Collections.DataStore
   {
     public static readonly NullDataStore<TKey, TValue> Instance = new NullDataStore<TKey, TValue> ();
 
-    private NullDataStore()
+    private NullDataStore ()
     {
     }
 

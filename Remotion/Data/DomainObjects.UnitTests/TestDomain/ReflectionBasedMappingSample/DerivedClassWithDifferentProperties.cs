@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
   [Instantiable]
   public abstract class DerivedClassWithDifferentProperties : ClassWithDifferentProperties
   {
-    protected DerivedClassWithDifferentProperties()
+    protected DerivedClassWithDifferentProperties ()
     {
     }
 

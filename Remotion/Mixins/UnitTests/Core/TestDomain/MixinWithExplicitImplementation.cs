@@ -20,7 +20,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   public interface IExplicit
   {
-    string Explicit();
+    string Explicit ();
   }
  
   public class MixinWithExplicitImplementation : IExplicit

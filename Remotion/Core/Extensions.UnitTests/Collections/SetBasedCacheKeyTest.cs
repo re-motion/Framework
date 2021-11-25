@@ -53,7 +53,7 @@ namespace Remotion.Extensions.UnitTests.Collections
     }
 
     [Test]
-    public void GetHashCode_Implicit_NoElements()
+    public void GetHashCode_Implicit_NoElements ()
     {
       var emptyKey = new SetBasedCacheKey<int> ();
       Assert.That (emptyKey.GetHashCode (), Is.EqualTo (0));

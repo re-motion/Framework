@@ -91,7 +91,7 @@ namespace Remotion.SecurityManager.UnitTests
       BasicConfigurator.Configure (_memoryAppender);
     }
 
-    public override void TearDown()
+    public override void TearDown ()
     {
       base.TearDown();
       LogManager.ResetConfiguration();

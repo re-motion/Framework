@@ -28,7 +28,7 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       public object ThisValue;
 
-      public MixinWithOnInitialize1()
+      public MixinWithOnInitialize1 ()
       {
         try
         {
@@ -55,7 +55,7 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    public void ThisAccessInCtorAndInitialize()
+    public void ThisAccessInCtorAndInitialize ()
     {
       BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (MixinWithOnInitialize1));
       MixinWithOnInitialize1 mixin = Mixin.Get<MixinWithOnInitialize1> (bt1);

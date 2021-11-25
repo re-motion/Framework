@@ -84,7 +84,7 @@ public class CommandLineModeArgument: CommandLineGroupArgument
     CreateChildren();
   }
 
-  public void CreateChildren()
+  public void CreateChildren ()
   {
     if (_enumType != null)
     {

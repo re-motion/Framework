@@ -27,7 +27,7 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     private bool _includeNamespaces = false;
     private XmlNamespaceManager _namespaceManager;
 
-    public NodeStackToXPathConverter()
+    public NodeStackToXPathConverter ()
     {
       _xmlnsAttributeHandler = new XmlnsAttributeHandler ();
       _xmlnsAttributeHandler.XmlnsAttributeFound += new XmlnsAttributeEventHandler (XmlnsAttributeHandler_XmlnsAttributeFound);

@@ -39,17 +39,17 @@ namespace Remotion.Mixins.Context.Serialization
       SetValue (0, mixinType);
     }
 
-    public void AddMixinKind(MixinKind mixinKind)
+    public void AddMixinKind (MixinKind mixinKind)
     {
       SetValue (1, mixinKind);
     }
 
-    public void AddIntroducedMemberVisibility(MemberVisibility introducedMemberVisibility)
+    public void AddIntroducedMemberVisibility (MemberVisibility introducedMemberVisibility)
     {
       SetValue (2, introducedMemberVisibility);
     }
 
-    public void AddExplicitDependencies(IEnumerable<Type> explicitDependencies)
+    public void AddExplicitDependencies (IEnumerable<Type> explicitDependencies)
     {
       ArgumentUtility.CheckNotNull ("explicitDependencies", explicitDependencies);
       SetValue (3, explicitDependencies.ToArray());

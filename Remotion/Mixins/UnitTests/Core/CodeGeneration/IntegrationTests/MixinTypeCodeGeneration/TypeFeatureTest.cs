@@ -72,7 +72,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     }
 
     [Test]
-    public void AbstractMixinWithoutAbstractMembers()
+    public void AbstractMixinWithoutAbstractMembers ()
     {
       var instance = CreateMixedObject<NullTarget> (typeof (AbstractMixinWithoutAbstractMembers));
       var m1 = Mixin.Get<AbstractMixinWithoutAbstractMembers> (instance);

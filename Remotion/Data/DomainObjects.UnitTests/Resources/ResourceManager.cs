@@ -36,17 +36,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Resources
       return ResourceUtility.GetResource (typeof (ResourceManager), "DomainObjectsConfigurationWithMixedStorageObjectFactory.xml");
     }
 
-    public static byte[] GetImage1()
+    public static byte[] GetImage1 ()
     {
       return ResourceUtility.GetResource (typeof (ResourceManager), "Image1.png");
     }
 
-    public static byte[] GetImage2()
+    public static byte[] GetImage2 ()
     {
       return ResourceUtility.GetResource (typeof (ResourceManager), "Image2.png");
     }
 
-    public static byte[] GetImageLarger1MB()
+    public static byte[] GetImageLarger1MB ()
     {
       return ResourceUtility.GetResource (typeof (ResourceManager), "ImageLarger1MB.bmp");
     }

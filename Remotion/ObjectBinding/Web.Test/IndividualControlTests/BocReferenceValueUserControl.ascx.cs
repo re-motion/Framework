@@ -85,7 +85,7 @@ public class BocReferenceValueUserControl : BaseUserControl
     get { return CurrentObjectValidationResultDispatchingValidator; }
   }
 
-  override protected void OnInit(EventArgs e)
+  override protected void OnInit (EventArgs e)
   {
     InitializeComponent();
 
@@ -239,12 +239,12 @@ public class BocReferenceValueUserControl : BaseUserControl
       label.Text = "not set";
   }
 
-  private void PartnerTestSetNullButton_Click(object sender, EventArgs e)
+  private void PartnerTestSetNullButton_Click (object sender, EventArgs e)
   {
     PartnerField.Value = null;
   }
 
-  private void PartnerTestSetNewItemButton_Click(object sender, EventArgs e)
+  private void PartnerTestSetNewItemButton_Click (object sender, EventArgs e)
   {
     Person person = Person.CreateObject (Guid.NewGuid());
     person.LastName = person.ID.ToByteArray()[15].ToString();
@@ -253,12 +253,12 @@ public class BocReferenceValueUserControl : BaseUserControl
     PartnerField.Value = (IBusinessObjectWithIdentity) person;
   }
 
-  private void ReadOnlyPartnerTestSetNullButton_Click(object sender, EventArgs e)
+  private void ReadOnlyPartnerTestSetNullButton_Click (object sender, EventArgs e)
   {
     ReadOnlyPartnerField.Value = null;
   }
 
-  private void ReadOnlyPartnerTestSetNewItemButton_Click(object sender, EventArgs e)
+  private void ReadOnlyPartnerTestSetNewItemButton_Click (object sender, EventArgs e)
   {
     Person person = Person.CreateObject (Guid.NewGuid());
     person.LastName = person.ID.ToByteArray()[15].ToString();
@@ -267,7 +267,7 @@ public class BocReferenceValueUserControl : BaseUserControl
     ReadOnlyPartnerField.Value = (IBusinessObjectWithIdentity) person;
   }
 
-  private void PartnerField_SelectionChanged(object sender, EventArgs e)
+  private void PartnerField_SelectionChanged (object sender, EventArgs e)
   {
     if (PartnerField.Value != null)
       PartnerFieldSelectionChangedLabel.Text = PartnerField.Value.ToString();
@@ -275,7 +275,7 @@ public class BocReferenceValueUserControl : BaseUserControl
       PartnerFieldSelectionChangedLabel.Text = "not set";
   }
 
-  private void PartnerField_MenuItemClick(object sender, WebMenuItemClickEventArgs e)
+  private void PartnerField_MenuItemClick (object sender, WebMenuItemClickEventArgs e)
   {
     PartnerFieldMenuClickEventArgsLabel.Text = e.Item.Text;
   }
@@ -285,7 +285,7 @@ public class BocReferenceValueUserControl : BaseUserControl
   ///		Required method for Designer support - do not modify
   ///		the contents of this method with the code editor.
   /// </summary>
-  private void InitializeComponent()
+  private void InitializeComponent ()
   {
 
   }

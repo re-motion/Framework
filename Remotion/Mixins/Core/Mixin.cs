@@ -288,7 +288,7 @@ namespace Remotion.Mixins
     /// <summary>
     /// Called when the mixin has been initialized and its properties can be safely accessed.
     /// </summary>
-    protected virtual void OnInitialized()
+    protected virtual void OnInitialized ()
     {
       // nothing
     }

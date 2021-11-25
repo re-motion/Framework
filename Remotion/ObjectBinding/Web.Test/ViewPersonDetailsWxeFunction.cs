@@ -24,7 +24,7 @@ namespace OBWTest
 [Serializable]
 public class ViewPersonDetailsWxeFunction: WxeFunction
 {
-  public ViewPersonDetailsWxeFunction()
+  public ViewPersonDetailsWxeFunction ()
     :base (new NoneTransactionMode())
   {
   }

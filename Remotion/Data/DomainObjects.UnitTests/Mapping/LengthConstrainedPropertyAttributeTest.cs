@@ -35,21 +35,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private ILengthConstrainedPropertyAttribute _lengthConstraint;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _attribute = new StubLengthConstrainedPropertyAttribute ();
       _lengthConstraint = _attribute;
     }
 
     [Test]
-    public void GetMaximumLength_FromDefault()
+    public void GetMaximumLength_FromDefault ()
     {
       Assert.That (_attribute.HasMaximumLength, Is.False);
       Assert.That (_lengthConstraint.MaximumLength, Is.Null);
     }
 
     [Test]
-    public void GetMaximumLength_FromExplicitValue()
+    public void GetMaximumLength_FromExplicitValue ()
     {
       _attribute.MaximumLength = 100;
       Assert.That (_attribute.HasMaximumLength, Is.True);

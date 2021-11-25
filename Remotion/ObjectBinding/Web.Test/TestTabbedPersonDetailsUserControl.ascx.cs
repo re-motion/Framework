@@ -64,7 +64,7 @@ public class TestTabbedPersonDetailsUserControl :
     return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
   }
 
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
     StringCollection hiddenRows = (StringCollection)_listOfHiddenRows[FormGrid];
     FormGridRowInfoCollection newRows = (FormGridRowInfoCollection)_listOfFormGridRowInfos[FormGrid];
@@ -74,7 +74,7 @@ public class TestTabbedPersonDetailsUserControl :
 	  CreateExtraFormGrid("Init");
 	}
 	
-  private void InitalizePartnerFieldMenuItems()
+  private void InitalizePartnerFieldMenuItems ()
   {
     BocMenuItem menuItem = null;
 

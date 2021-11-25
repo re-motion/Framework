@@ -55,7 +55,7 @@ namespace Remotion.Collections.Caching.UnitTests
     }
 
     [Test]
-    public void GetEnumerator_Generic()
+    public void GetEnumerator_Generic ()
     {
       _cache.GetOrCreateValue ("key1", delegate { return new object(); });
       _cache.GetOrCreateValue ("key2", delegate { return new object(); });
@@ -64,7 +64,7 @@ namespace Remotion.Collections.Caching.UnitTests
     }
 
     [Test]
-    public void GetEnumerator_NonGeneric()
+    public void GetEnumerator_NonGeneric ()
     {
       _cache.GetOrCreateValue ("key1", delegate { return new object(); });
       _cache.GetOrCreateValue ("key2", delegate { return new object(); });
@@ -80,7 +80,7 @@ namespace Remotion.Collections.Caching.UnitTests
     }
 
     [Test]
-    public void GetIsNull()
+    public void GetIsNull ()
     {
       Assert.That (_cache.IsNull, Is.True);
     }

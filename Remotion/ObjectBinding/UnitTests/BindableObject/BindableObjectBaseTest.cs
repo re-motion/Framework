@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     private Mock<IBusinessObjectClass> _businessObjectClassFake;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _implementationMock = new Mock<IBindableObjectBaseImplementation>();
       _instance = new ClassDerivedFromBindableObjectBase (_implementationMock.Object);
@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void BindableObjectProviderAttribute()
+    public void BindableObjectProviderAttribute ()
     {
       Assert.That (typeof (BindableObjectBase).IsDefined (typeof (BindableObjectProviderAttribute), false), Is.True);
     }
@@ -81,7 +81,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void GetProperty()
+    public void GetProperty ()
     {
       _implementationMock.Setup (mock => mock.GetProperty (_propertyFake.Object)).Returns (12).Verifiable();
 
@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void GetPropertyString()
+    public void GetPropertyString ()
     {
       _implementationMock.Setup (mock => mock.GetPropertyString (_propertyFake.Object, "gj")).Returns ("yay").Verifiable();
 

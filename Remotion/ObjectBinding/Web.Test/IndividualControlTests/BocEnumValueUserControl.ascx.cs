@@ -154,32 +154,32 @@ public class BocEnumValueUserControl : BaseUserControl
       label.Text = "not set";
   }
 
-  private void GenderTestSetNullButton_Click(object sender, EventArgs e)
+  private void GenderTestSetNullButton_Click (object sender, EventArgs e)
   {
     GenderField.Value = null;
   }
 
-  private void GenderTestSetDisabledGenderButton_Click(object sender, EventArgs e)
+  private void GenderTestSetDisabledGenderButton_Click (object sender, EventArgs e)
   {
     GenderField.Value = Gender.UnknownGender;
   }
 
-  private void GenderTestSetMarriedButton_Click(object sender, EventArgs e)
+  private void GenderTestSetMarriedButton_Click (object sender, EventArgs e)
   {
     GenderField.Value = MarriageStatus.Married;
   }
 
-  private void ReadOnlyGenderTestSetNullButton_Click(object sender, EventArgs e)
+  private void ReadOnlyGenderTestSetNullButton_Click (object sender, EventArgs e)
   {
     ReadOnlyGenderField.Value = null;
   }
 
-  private void ReadOnlyGenderTestSetFemaleButton_Click(object sender, EventArgs e)
+  private void ReadOnlyGenderTestSetFemaleButton_Click (object sender, EventArgs e)
   {
     ReadOnlyGenderField.Value = Gender.Female;
   }
 
-  private void GenderField_SelectionChanged(object sender, EventArgs e)
+  private void GenderField_SelectionChanged (object sender, EventArgs e)
   {
     if (GenderField.Value != null)
       GenderFieldSelectionChangedLabel.Text = GenderField.Value.ToString();
@@ -188,7 +188,7 @@ public class BocEnumValueUserControl : BaseUserControl
   }
 
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -201,7 +201,7 @@ public class BocEnumValueUserControl : BaseUserControl
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{
 
   }

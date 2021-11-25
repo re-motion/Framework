@@ -385,7 +385,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void IsReadOnly_WithReadOnlyProperty_ReturnsTrue_DoesNotUseStrategy()
+    public void IsReadOnly_WithReadOnlyProperty_ReturnsTrue_DoesNotUseStrategy ()
     {
       var bindablePropertyWriteAccessStrategyMock = new Mock<IBindablePropertyWriteAccessStrategy>();
 
@@ -406,7 +406,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void IsReadOnly_WithWritableProperty_ReturnsValueFromStrategy()
+    public void IsReadOnly_WithWritableProperty_ReturnsValueFromStrategy ()
     {
       var bindablePropertyWriteAccessStrategyMock = new Mock<IBindablePropertyWriteAccessStrategy>();
 

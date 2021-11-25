@@ -21,7 +21,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
   public interface IVeryGenericMixin
   {
-    string GetMessage<T>(T t);
+    string GetMessage<T> (T t);
   }
 
   public interface IVeryGenericMixin<T1, T2>
@@ -56,7 +56,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
     where TTarget : class, IADUGMTargetCallDependencies
     where TNext : class, IADUGMNextCallDependencies
   {
-    protected abstract string AbstractGenericMethod<T>();
+    protected abstract string AbstractGenericMethod<T> ();
 
     public new string GetMessage<T> (T t)
     {

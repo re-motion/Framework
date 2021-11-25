@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   [TableInheritanceTestDomain]
   public abstract class TIFileSystemItem : DomainObject, ISupportsGetObject
   {
-    protected TIFileSystemItem()
+    protected TIFileSystemItem ()
     {
     }
 

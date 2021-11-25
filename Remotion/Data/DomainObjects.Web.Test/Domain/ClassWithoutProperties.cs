@@ -25,12 +25,12 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
   [DBStorageGroup]
   public abstract class ClassWithoutProperties: BindableDomainObject
   {
-    public static ClassWithoutProperties NewObject()
+    public static ClassWithoutProperties NewObject ()
     {
       return DomainObject.NewObject<ClassWithoutProperties> ();
     }
 
-    protected ClassWithoutProperties()
+    protected ClassWithoutProperties ()
     {
     }
   }

@@ -34,7 +34,7 @@ namespace Remotion.Xml.UnitTests
 
     private int _value;
 
-    public SampleClass()
+    public SampleClass ()
     {
     }
 

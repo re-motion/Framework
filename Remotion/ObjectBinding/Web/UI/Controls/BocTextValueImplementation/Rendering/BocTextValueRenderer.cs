@@ -124,7 +124,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       return text;
     }
 
-    public override string GetCssClassBase(IBocTextValue control)
+    public override string GetCssClassBase (IBocTextValue control)
     {
       return "bocTextValue";
     }

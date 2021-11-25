@@ -24,7 +24,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
   [TestFixture]
   public class MethodCallerTest
   {
-    private delegate void NoOpOutInt(A a, out int i);
+    private delegate void NoOpOutInt (A a, out int i);
 
     private class A
     {
@@ -40,12 +40,12 @@ namespace Remotion.Extensions.UnitTests.Reflection
         return msg + " " + Name + " from A";
       }
 
-      public string GetString()
+      public string GetString ()
       {
         return "string";
       }
 
-      public void NoOp()
+      public void NoOp ()
       {
       }
 
@@ -120,7 +120,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     //}
 
     [Test]
-    public void CallFunc()
+    public void CallFunc ()
     {
       A foo = new A ("foo");
       A bar = new A ("bar");
@@ -146,7 +146,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     }
     
     [Test]
-    public void CallAction()
+    public void CallAction ()
     {
       A foo = new A ("foo");
       MethodCaller.CallAction ("NoOp").With (foo);
@@ -160,7 +160,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     }
 
     [Test]
-    public void NoThisArgument()
+    public void NoThisArgument ()
     {
       Assert.That (
           () => MethodCaller.CallFunc<string> ("GetString").With(),

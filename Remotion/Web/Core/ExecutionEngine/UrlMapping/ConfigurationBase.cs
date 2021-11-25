@@ -40,7 +40,7 @@ public class ConfigurationBase
 
   /// <summary> XML Deserialization contructor. </summary>
   /// <exclude />
-  protected ConfigurationBase()
+  protected ConfigurationBase ()
   {
   }
 

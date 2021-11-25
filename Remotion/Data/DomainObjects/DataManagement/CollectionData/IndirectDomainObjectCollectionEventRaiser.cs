@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       GetAndCheckEventRaiser ().WithinReplaceData();
     }
 
-    private IDomainObjectCollectionEventRaiser GetAndCheckEventRaiser()
+    private IDomainObjectCollectionEventRaiser GetAndCheckEventRaiser ()
     {
       if (EventRaiser == null)
       {

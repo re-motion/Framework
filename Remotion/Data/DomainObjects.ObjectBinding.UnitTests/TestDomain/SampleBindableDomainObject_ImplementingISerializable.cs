@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 
     public virtual int IntProperty { get; set; }
     
-    public void GetObjectData(SerializationInfo info, StreamingContext context)
+    public void GetObjectData (SerializationInfo info, StreamingContext context)
     {
       BaseGetObjectData (info, context);
     }

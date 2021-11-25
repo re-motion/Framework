@@ -23,12 +23,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   [Instantiable]
   public abstract class TIFolder: TIFileSystemItem
   {
-    public static TIFolder NewObject()
+    public static TIFolder NewObject ()
     {
       return NewObject<TIFolder>();
     }
 
-    protected TIFolder()
+    protected TIFolder ()
     {
     }
 

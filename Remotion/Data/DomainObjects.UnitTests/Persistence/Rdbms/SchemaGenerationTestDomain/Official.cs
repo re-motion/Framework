@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [Instantiable]
   public abstract class Official : DomainObject
   {
-    protected Official()
+    protected Official ()
     {
     }
 

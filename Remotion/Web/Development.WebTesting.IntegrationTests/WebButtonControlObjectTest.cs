@@ -104,7 +104,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestHasStandardButtonType()
+    public void TestHasStandardButtonType ()
     {
       var home = Start();
 

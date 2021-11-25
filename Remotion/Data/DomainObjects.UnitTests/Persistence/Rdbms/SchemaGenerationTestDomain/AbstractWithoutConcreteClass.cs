@@ -20,12 +20,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 {
   public abstract class AbstractWithoutConcreteClass : Company
   {
-    public new static AbstractWithoutConcreteClass NewObject()
+    public new static AbstractWithoutConcreteClass NewObject ()
     {
       return NewObject<AbstractWithoutConcreteClass> ();
     }
 
-    protected AbstractWithoutConcreteClass()
+    protected AbstractWithoutConcreteClass ()
     {
     }
   }

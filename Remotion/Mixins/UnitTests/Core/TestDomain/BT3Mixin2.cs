@@ -24,7 +24,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
     public int I;
 
-    public BT3Mixin2()
+    public BT3Mixin2 ()
     {
     }
 

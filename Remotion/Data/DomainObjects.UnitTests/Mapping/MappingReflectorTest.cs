@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    public void GetClassDefinitions()
+    public void GetClassDefinitions ()
     {
       var assembly = GetType ().Assembly;
       var mappingReflector = MappingReflectorObjectMother.CreateMappingReflector (BaseConfiguration.GetTypeDiscoveryService (assembly, assembly));

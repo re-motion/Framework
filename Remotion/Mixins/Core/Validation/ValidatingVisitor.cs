@@ -48,7 +48,7 @@ namespace Remotion.Mixins.Validation
     private readonly List<IValidationRule<NonAttributeIntroductionDefinition>> _nonAttributeIntroductionRules = new List<IValidationRule<NonAttributeIntroductionDefinition>> ();
     private readonly List<IValidationRule<SuppressedAttributeIntroductionDefinition>> _suppressedAttributeIntroductionRules = new List<IValidationRule<SuppressedAttributeIntroductionDefinition>> ();
 
-    public ValidatingVisitor(IValidationLog validationLog)
+    public ValidatingVisitor (IValidationLog validationLog)
     {
       ArgumentUtility.CheckNotNull ("validationLog", validationLog);
       _validationLog = validationLog;

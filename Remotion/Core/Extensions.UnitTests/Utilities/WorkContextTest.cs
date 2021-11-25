@@ -41,33 +41,33 @@ public class WorkContextTest
   }
 
   [Test]
-  public void TestCatchSub1Inside()
+  public void TestCatchSub1Inside ()
   {
     Assert.That (PerformTest (ThrowLocation.sub1_inside, true), Is.EqualTo ("main\n" + 
                                                                             "? sub1"));
   }
 
   [Test]
-  public void TestCatchSub1Outside()
+  public void TestCatchSub1Outside ()
   {
     Assert.That (PerformTest (ThrowLocation.sub1_outside, true), Is.EqualTo ("main"));
   }
 
   [Test]
-  public void TestCatchSub2Inside()
+  public void TestCatchSub2Inside ()
   {
     Assert.That (PerformTest (ThrowLocation.sub2_inside, true), Is.EqualTo ("main\n" + 
                                                                             "? sub2"));
   }
 
   [Test]
-  public void TestCatchSub2Outside()
+  public void TestCatchSub2Outside ()
   {
     Assert.That (PerformTest (ThrowLocation.sub2_outside, true), Is.EqualTo ("main"));
   }
 
   [Test]
-  public void TestCatchSub2_1Inside()
+  public void TestCatchSub2_1Inside ()
   {
     Assert.That (PerformTest (ThrowLocation.sub2_1_inside, true), Is.EqualTo ("main\n" + 
                                                                               "? sub2\n" + 
@@ -89,33 +89,33 @@ public class WorkContextTest
   }
 
   [Test]
-  public void TestNoCatchSub1Inside()
+  public void TestNoCatchSub1Inside ()
   {
     Assert.That (PerformTest (ThrowLocation.sub1_inside, false), Is.EqualTo ("? main\n" + 
                                                                              "? sub1"));
   }
 
   [Test]
-  public void TestNoCatchSub1Outside()
+  public void TestNoCatchSub1Outside ()
   {
     Assert.That (PerformTest (ThrowLocation.sub1_outside, false), Is.EqualTo ("? main"));
   }
 
   [Test]
-  public void TestNoCatchSub2Inside()
+  public void TestNoCatchSub2Inside ()
   {
     Assert.That (PerformTest (ThrowLocation.sub2_inside, false), Is.EqualTo ("? main\n" + 
                                                                              "? sub2"));
   }
 
   [Test]
-  public void TestNoCatchSub2Outside()
+  public void TestNoCatchSub2Outside ()
   {
     Assert.That (PerformTest (ThrowLocation.sub2_outside, false), Is.EqualTo ("? main"));
   }
 
   [Test]
-  public void TestNoCatchSub2_1Inside()
+  public void TestNoCatchSub2_1Inside ()
   {
     Assert.That (PerformTest (ThrowLocation.sub2_1_inside, false), Is.EqualTo ("? main\n" + 
                                                                                "? sub2\n" + 

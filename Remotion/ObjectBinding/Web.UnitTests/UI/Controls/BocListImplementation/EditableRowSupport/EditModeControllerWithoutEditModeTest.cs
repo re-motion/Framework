@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    public void InitRecursive()
+    public void InitRecursive ()
     {
       Invoker.InitRecursive();
 

@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     private ClientTransactionScope _transactionScope;
 
-    protected TableInheritanceMappingTest()
+    protected TableInheritanceMappingTest ()
       : base (new DatabaseAgent (TestDomainConnectionString), CreateTestDataFileName)
     {
     }
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
 
-    public override void OneTimeSetUp()
+    public override void OneTimeSetUp ()
     {
       base.OneTimeSetUp();
       DomainObjectsConfiguration.SetCurrent (TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration());
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       ConfigurationWrapper.SetCurrent (null);
     }
 
-    public override void SetUp()
+    public override void SetUp ()
     {
       base.SetUp();
       DomainObjectsConfiguration.SetCurrent (TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration ());

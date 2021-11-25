@@ -31,11 +31,11 @@ public class WebTabCollectionTest: WebControlTest
   private WebTab _tab3;
   private WebTab _tabNew;
 
-  public WebTabCollectionTest()
+  public WebTabCollectionTest ()
   {
   }
   
-  protected override void SetUpPage()
+  protected override void SetUpPage ()
   {
     base.SetUpPage();
     _tabStrip = new WebTabStrip();
@@ -47,7 +47,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void AddTabs()
+  public void AddTabs ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -61,7 +61,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void InsertFirstTab()
+  public void InsertFirstTab ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -79,7 +79,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void InsertMiddleTab()
+  public void InsertMiddleTab ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -97,7 +97,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void InsertLastTab()
+  public void InsertLastTab ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -115,7 +115,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void ReplaceFirstTab()
+  public void ReplaceFirstTab ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -133,7 +133,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void ReplaceMiddleTab()
+  public void ReplaceMiddleTab ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -151,7 +151,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void ReplaceLastTab()
+  public void ReplaceLastTab ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -169,7 +169,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void ReplaceFirstTabWithTabBeingSelected()
+  public void ReplaceFirstTabWithTabBeingSelected ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -187,7 +187,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void ReplaceMiddleTabWithTabBeingSelected()
+  public void ReplaceMiddleTabWithTabBeingSelected ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -205,7 +205,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void ReplaceLastTabWithTabBeingSelected()
+  public void ReplaceLastTabWithTabBeingSelected ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -223,7 +223,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void ReplaceOnlyTab()
+  public void ReplaceOnlyTab ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tab0.IsSelected = true;
@@ -236,7 +236,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void RemoveFirstTab()
+  public void RemoveFirstTab ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -254,7 +254,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void RemoveMiddleTab()
+  public void RemoveMiddleTab ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -272,7 +272,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void RemoveLastTab()
+  public void RemoveLastTab ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -289,7 +289,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void RemoveFirstTabWithTabBeingSelected()
+  public void RemoveFirstTabWithTabBeingSelected ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -307,7 +307,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void RemoveMiddleTabWithTabBeingSelected()
+  public void RemoveMiddleTabWithTabBeingSelected ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -325,7 +325,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void RemoveLastTabWithTabBeingSelected()
+  public void RemoveLastTabWithTabBeingSelected ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -342,7 +342,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void RemoveOnlyTab()
+  public void RemoveOnlyTab ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tab0.IsSelected = true;
@@ -354,7 +354,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void ClearTabs()
+  public void ClearTabs ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -369,7 +369,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void AddFirstTabAsInvisibleTab()
+  public void AddFirstTabAsInvisibleTab ()
   {
     _tab0.IsVisible = false;
     _tabStrip.Tabs.Add (_tab0);
@@ -379,7 +379,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void AddSecondTabAfterInvisibleTab()
+  public void AddSecondTabAfterInvisibleTab ()
   {
     _tab0.IsVisible = false;
     _tabStrip.Tabs.Add (_tab0);
@@ -391,7 +391,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void SelectInvisibleTab()
+  public void SelectInvisibleTab ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -402,7 +402,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void HideFirstTabWithTabBeingSelected()
+  public void HideFirstTabWithTabBeingSelected ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -419,7 +419,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void HideMiddleTabWithTabBeingSelected()
+  public void HideMiddleTabWithTabBeingSelected ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -434,7 +434,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void HideLastTabWithTabBeingSelected()
+  public void HideLastTabWithTabBeingSelected ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -451,7 +451,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void AddFirstTabAsDisabledTab()
+  public void AddFirstTabAsDisabledTab ()
   {
     _tab0.IsDisabled = true;
     _tabStrip.Tabs.Add (_tab0);
@@ -461,7 +461,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void AddSecondTabAfterDisabledTab()
+  public void AddSecondTabAfterDisabledTab ()
   {
     _tab0.IsDisabled = true;
     _tabStrip.Tabs.Add (_tab0);
@@ -473,7 +473,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void SelectDisabledTab()
+  public void SelectDisabledTab ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -484,7 +484,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void DisableFirstTabWithTabBeingSelected()
+  public void DisableFirstTabWithTabBeingSelected ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -501,7 +501,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void DisableMiddleTabWithTabBeingSelected()
+  public void DisableMiddleTabWithTabBeingSelected ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);
@@ -516,7 +516,7 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
-  public void DisableLastTabWithTabBeingSelected()
+  public void DisableLastTabWithTabBeingSelected ()
   {
     _tabStrip.Tabs.Add (_tab0);
     _tabStrip.Tabs.Add (_tab1);

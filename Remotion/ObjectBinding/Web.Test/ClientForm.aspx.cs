@@ -48,7 +48,7 @@ public class ClientForm : TestWxeBasePage
     get { return (ClientFormWxeFunction) CurrentFunction; }
   }
 
-	private void Page_Load(object sender, EventArgs e)
+	private void Page_Load (object sender, EventArgs e)
 	{
     var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
     List<IDataEditControl> dataEditControls = new List<IDataEditControl>();
@@ -75,7 +75,7 @@ public class ClientForm : TestWxeBasePage
     Response.Cache.SetCacheability (HttpCacheability.NoCache);
   }
 
-  protected override void OnPreRender(EventArgs e)
+  protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
   }
@@ -110,7 +110,7 @@ public class ClientForm : TestWxeBasePage
     return null;
   }
 
-  override protected void OnInit(EventArgs e)
+  override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -150,7 +150,7 @@ public class ClientForm : TestWxeBasePage
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{    
     this.Unload += new System.EventHandler(this.Page_Unload);
     this.Load += new System.EventHandler(this.Page_Load);
@@ -162,12 +162,12 @@ public class ClientForm : TestWxeBasePage
   {
   }
 
-  private void CancelButton_Click(object sender, EventArgs e)
+  private void CancelButton_Click (object sender, EventArgs e)
   {
     ExecuteNextStep();
   }
 
-  private void SaveButton_Click(object sender, EventArgs e)
+  private void SaveButton_Click (object sender, EventArgs e)
   {
     ExecuteNextStep();
   }

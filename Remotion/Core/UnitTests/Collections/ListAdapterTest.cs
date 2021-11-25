@@ -141,7 +141,7 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void Contains()
+    public void Contains ()
     {
       Assert.That (_adapter.Contains ("7"), Is.False);
       Assert.That (_adapter.Contains ("1"), Is.True);

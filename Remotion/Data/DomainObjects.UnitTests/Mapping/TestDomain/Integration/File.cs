@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
   [Instantiable]
   public abstract class File : FileSystemItem
   {
-    protected File()
+    protected File ()
     {
     }
   }

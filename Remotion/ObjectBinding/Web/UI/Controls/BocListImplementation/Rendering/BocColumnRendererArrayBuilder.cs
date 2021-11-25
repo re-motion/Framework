@@ -109,7 +109,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       }
     }
 
-    private int GetInitialVisibleColumnIndex()
+    private int GetInitialVisibleColumnIndex ()
     {
       var visibleColumnIndex = 0;
 

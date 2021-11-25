@@ -68,7 +68,7 @@ public class CommonCollection : ICollection
 
     #region IDisposable Members
 
-    public void Dispose()
+    public void Dispose ()
     {
       _collection = null;
     }

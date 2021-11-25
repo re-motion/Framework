@@ -29,7 +29,7 @@ namespace Remotion.Web.UI.Controls
 [Obsolete ("Removed design-time support. (Version: 3.0.0)", true)]
 public interface IControlWithDesignTimeSupport
 {
-  void PreRenderForDesignMode();
+  void PreRenderForDesignMode ();
 }
 
 }

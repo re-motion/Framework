@@ -54,12 +54,12 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
       }
     }
 
-    public static IClassDerivedFromComposedObject NewObject()
+    public static IClassDerivedFromComposedObject NewObject ()
     {
       return NewObject<ClassDerivedFromComposedObject>(ParamList.Empty);
     }
 
-    public string MT()
+    public string MT ()
     {
       return "ClassDerivedFromComposedObject.MT";
     }

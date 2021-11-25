@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
-    public void DomainObjectGetOriginalRelatedObjectsForDomainObjectCollection  ()
+    public void DomainObjectGetOriginalRelatedObjectsForDomainObjectCollection ()
     {
       _newOrder.Delete ();
       Assert.That (

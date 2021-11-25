@@ -376,7 +376,7 @@ namespace Remotion.Collections.Caching.UnitTests
     }
 
     [Test]
-    public void GetOrCreateValue_WithNestedEnumeration_SkipsNewItem()
+    public void GetOrCreateValue_WithNestedEnumeration_SkipsNewItem ()
     {
       object expected1 = new object();
       object expected2 = new object();

@@ -418,7 +418,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin">The mixin type to collect.</typeparam>
     /// <param name="origin">A <see cref="MixinContextOrigin"/> object describing where the mixin configuration originates from.</param>
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
-    public virtual MixinContextBuilder EnsureMixin<TMixin>  (MixinContextOrigin origin)
+    public virtual MixinContextBuilder EnsureMixin<TMixin> (MixinContextOrigin origin)
     {
       ArgumentUtility.CheckNotNull ("origin", origin);
       return EnsureMixin (typeof (TMixin), origin);

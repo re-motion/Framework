@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     }
 
     [Test]
-    public void Begin()
+    public void Begin ()
     {
       CollectionMockEventReceiver.Expect (mock => mock.Deleting ()).WithCurrentTransaction (Transaction);
 

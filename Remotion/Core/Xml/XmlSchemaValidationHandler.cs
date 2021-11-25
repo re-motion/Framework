@@ -101,7 +101,7 @@ namespace Remotion.Xml
       get { return _firstException; }
     }
 
-    public void EnsureNoErrors()
+    public void EnsureNoErrors ()
     {
       if (_errors > 0)
       {

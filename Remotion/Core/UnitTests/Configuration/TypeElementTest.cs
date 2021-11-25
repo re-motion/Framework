@@ -28,7 +28,7 @@ namespace Remotion.UnitTests.Configuration
   public class TypeElementTest
   {
     [Test]
-    public void Initialize()
+    public void Initialize ()
     {
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 
@@ -43,7 +43,7 @@ namespace Remotion.UnitTests.Configuration
     }
 
     [Test]
-    public void GetAndSetType()
+    public void GetAndSetType ()
     {
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 
@@ -52,7 +52,7 @@ namespace Remotion.UnitTests.Configuration
     }
 
     [Test]
-    public void GetType_WithTypeNull()
+    public void GetType_WithTypeNull ()
     {
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 
@@ -60,7 +60,7 @@ namespace Remotion.UnitTests.Configuration
     }
 
     [Test]
-    public void CreateInstance_WithType()
+    public void CreateInstance_WithType ()
     {
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
       typeElement.Type = typeof (DerivedSampleType);
@@ -69,7 +69,7 @@ namespace Remotion.UnitTests.Configuration
     }
 
     [Test]
-    public void CreateInstance_WithoutType()
+    public void CreateInstance_WithoutType ()
     {
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 
@@ -77,7 +77,7 @@ namespace Remotion.UnitTests.Configuration
     }
 
     [Test]
-    public void Deserialize_WithValidType()
+    public void Deserialize_WithValidType ()
     {
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 
@@ -88,7 +88,7 @@ namespace Remotion.UnitTests.Configuration
     }
 
     [Test]
-    public void Deserialize_WithInvalidType()
+    public void Deserialize_WithInvalidType ()
     {
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
 

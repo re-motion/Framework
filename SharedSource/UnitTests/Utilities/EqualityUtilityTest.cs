@@ -28,7 +28,7 @@ namespace Remotion.UnitTests.Utilities
   public class EqualityUtilityTest
   {
     [Test]
-    public void GetRotatedHashCode_ForEnumerable()
+    public void GetRotatedHashCode_ForEnumerable ()
     {
       IEnumerable objects1 = new int[] {1, 2, 3};
       IEnumerable objects2 = new int[] {1, 2, 3};

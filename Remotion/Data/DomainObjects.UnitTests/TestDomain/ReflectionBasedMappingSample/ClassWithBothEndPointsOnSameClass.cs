@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
   [Instantiable]
   public abstract class ClassWithBothEndPointsOnSameClass: DomainObject
   {
-    protected ClassWithBothEndPointsOnSameClass()
+    protected ClassWithBothEndPointsOnSameClass ()
     {
     }
 

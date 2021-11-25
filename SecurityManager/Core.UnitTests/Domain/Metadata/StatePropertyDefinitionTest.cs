@@ -214,7 +214,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    public void RemoveState_DeletesAssociatedAccessControlListIfDeletedStateCombinationWasLastStateCombination()
+    public void RemoveState_DeletesAssociatedAccessControlListIfDeletedStateCombinationWasLastStateCombination ()
     {
       var state1 = _testHelper.CreateState ("State 1", 1);
       var state2 = _testHelper.CreateState ("State 2", 2);

@@ -72,7 +72,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    public void ForClass_Twice()
+    public void ForClass_Twice ()
     {
       var builder = new MixinConfigurationBuilder (null);
       ClassContextBuilder classBuilder = builder.ForClass (typeof (BaseType1));

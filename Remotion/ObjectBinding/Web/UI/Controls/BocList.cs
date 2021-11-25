@@ -2185,7 +2185,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>
     /// Gets the value from the backing field.
     /// </summary>
-    private IReadOnlyList<IBusinessObject>? GetValue()
+    private IReadOnlyList<IBusinessObject>? GetValue ()
     {
       return _value;
     }
@@ -2849,7 +2849,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <exception cref="InvalidOperationException">
     /// Thrown if the <see cref="BocList"/> is not currently in row-edit-mode or the <see cref="Value"/> has not yet been set.
     /// </exception>
-    public BocListRow GetEditedRow()
+    public BocListRow GetEditedRow ()
     {
       return _editModeController.GetEditedRow();
     }
@@ -3774,7 +3774,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return ClientID + c_allRowsSelectorPostfix;
     }
 
-    string IBocList.GetSelectionChangedHandlerScript()
+    string IBocList.GetSelectionChangedHandlerScript ()
     {
       return GetSelectionChangedHandlerScript();
     }
@@ -3815,7 +3815,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _rowIDProvider; }
     }
 
-    private void InitializeRowIDProvider()
+    private void InitializeRowIDProvider ()
     {
       if (Value == null)
         _rowIDProvider = new NullValueRowIDProvider();

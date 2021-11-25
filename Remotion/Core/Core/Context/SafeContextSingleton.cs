@@ -36,7 +36,7 @@ namespace Remotion.Context
     private readonly string _currentKey;
     private readonly Func<T> _creator;
 
-    public SafeContextSingleton(string currentKey, Func<T> creator)
+    public SafeContextSingleton (string currentKey, Func<T> creator)
     {
       ArgumentUtility.CheckNotNull ("currentKey", currentKey);
       ArgumentUtility.CheckNotNull ("creator", creator);

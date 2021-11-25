@@ -125,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Services
     }
 
     [Test]
-    public void Create_ArgsNull_SetsArgsNull()
+    public void Create_ArgsNull_SetsArgsNull ()
     {
       var serviceContext = BusinessObjectWebServiceContext.Create (null, null, null);
 
@@ -133,7 +133,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Services
     }
 
     [Test]
-    public void Create_ArgsEmpty_SetsArgsNull()
+    public void Create_ArgsEmpty_SetsArgsNull ()
     {
       var serviceContext = BusinessObjectWebServiceContext.Create (null, null, "");
 

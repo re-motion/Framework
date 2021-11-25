@@ -102,7 +102,7 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    public void ConvertFrom_NullValue()
+    public void ConvertFrom_NullValue ()
     {
       var result = _nullValueConverter.ConvertFrom (_typeDescriptorContextStub.Object, CultureInfo.CurrentCulture, null);
 

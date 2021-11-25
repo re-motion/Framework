@@ -487,7 +487,7 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    public void CreateInstance_ConcreteType()
+    public void CreateInstance_ConcreteType ()
     {
       var concreteMixedType = MixinTypeUtility.GetConcreteMixedType (typeof (BaseType1));
       Assert.That (MixinTypeUtility.CreateInstance (concreteMixedType).GetType (), Is.SameAs (concreteMixedType));

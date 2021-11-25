@@ -124,7 +124,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public class DerivedExtendingMixin2 : DerivedExtendingMixin { }
 
     [Test]
-    public void ExplicitApplicationOfBaseAndDerivedMixinToSameClass()
+    public void ExplicitApplicationOfBaseAndDerivedMixinToSameClass ()
     {
       MixinConfiguration configuration = new DeclarativeConfigurationBuilder (null).AddType (typeof (ExtendingMixin)).AddType (typeof (DerivedExtendingMixin))
           .AddType (typeof (DerivedExtendingMixin2)).BuildConfiguration ();

@@ -44,7 +44,7 @@ public class SearchObjectPage : WxePage
     get { return (SearchFunction) CurrentFunction; }
   }
 
-  private void Page_Load(object sender, System.EventArgs e)
+  private void Page_Load (object sender, System.EventArgs e)
 	{
     ResultList.ValueAsList = MyFunction.Result;
 
@@ -53,7 +53,7 @@ public class SearchObjectPage : WxePage
 	}
 
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -66,7 +66,7 @@ public class SearchObjectPage : WxePage
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{    
     this.SearchButton.Click += new System.EventHandler(this.SearchButton_Click);
     this.ResultList.EditableRowChangesSaved += new Remotion.ObjectBinding.Web.UI.Controls.BocListItemEventHandler (ResultList_EditableRowChangesSaved);
@@ -75,7 +75,7 @@ public class SearchObjectPage : WxePage
   }
 	#endregion
 
-  private void SearchButton_Click(object sender, System.EventArgs e)
+  private void SearchButton_Click (object sender, System.EventArgs e)
   {
     if (SearchFormGridManager.Validate ())
     {

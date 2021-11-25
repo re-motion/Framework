@@ -45,7 +45,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     private class TestWebService : WebService
     {
       [WebMethod]
-      public void Method()
+      public void Method ()
       {
       }
     }

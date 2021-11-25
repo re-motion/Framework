@@ -67,7 +67,7 @@ public class BidirectionalStringConverter: TypeConverter
   /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
   /// <param name="destinationType"> The <see cref="Type"/>  to convert a <see cref="String"/> value to. </param>
   /// <returns> <see langword="true"/> if the conversion is supported. </returns>
-  public override bool CanConvertTo(ITypeDescriptorContext? context, Type destinationType)
+  public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
   {
     if (destinationType == null)
       return false;

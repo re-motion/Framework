@@ -78,7 +78,7 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     }
 
     [Test]
-    public void IsValidEnumValue_WithTypeAndEnum()
+    public void IsValidEnumValue_WithTypeAndEnum ()
     {
       Assert.That (EnumUtility.IsValidEnumValue (typeof (TestEnum), TestEnum.Positive), Is.True);
     }

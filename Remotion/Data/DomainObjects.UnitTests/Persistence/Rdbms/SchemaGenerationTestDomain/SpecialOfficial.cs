@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [Instantiable]
   public abstract class SpecialOfficial : Official
   {
-    protected SpecialOfficial()
+    protected SpecialOfficial ()
     {
     }
 

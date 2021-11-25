@@ -152,7 +152,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return _validators;
     }
 
-    private void OverrideValidatorErrorMessages()
+    private void OverrideValidatorErrorMessages ()
     {
       if (!string.IsNullOrEmpty (_errorMessage) )
         UpdateValidtaorErrorMessages<CompareValidator> (_errorMessage);

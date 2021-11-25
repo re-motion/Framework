@@ -65,7 +65,7 @@ namespace Remotion.Mixins.Definitions
       get { return _overrides; }
     }
 
-    protected override IDefinitionCollection<Type, MemberDefinitionBase> GetInternalOverridesWrapper()
+    protected override IDefinitionCollection<Type, MemberDefinitionBase> GetInternalOverridesWrapper ()
     {
       return new CovariantDefinitionCollectionWrapper<Type, MethodDefinition, MemberDefinitionBase>(_overrides);
     }

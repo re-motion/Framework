@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
   {
     //RelationEndPointCombinationIsSupportedValidationRule
     [Test]
-    public void OneToOne_ContainsForeignKeyIsTrueOnBothSites()
+    public void OneToOne_ContainsForeignKeyIsTrueOnBothSites ()
     {
       Assert.That (
           () => ValidateMapping ("NotSupportedRelations.OneToOne_ContainsForeignKeyIsTrueOnBothSites"),

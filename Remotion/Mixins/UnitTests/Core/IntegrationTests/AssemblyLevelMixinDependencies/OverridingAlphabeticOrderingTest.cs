@@ -36,7 +36,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
 
     public class C : IC
     {
-      public virtual string M()
+      public virtual string M ()
       {
         return "C";
       }

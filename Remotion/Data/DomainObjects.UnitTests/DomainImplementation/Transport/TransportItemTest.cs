@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     }
 
     [Test]
-    public void PackageDataContainers()
+    public void PackageDataContainers ()
     {
       DataContainer container1 = DomainObjectIDs.Computer1.GetObject<Computer> ().InternalDataContainer;
       DataContainer container2 = DomainObjectIDs.Computer1.GetObject<Computer> ().InternalDataContainer;

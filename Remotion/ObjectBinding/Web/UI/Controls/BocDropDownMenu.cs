@@ -74,13 +74,13 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   // methods and properties
 
-  protected override void OnInit(EventArgs e)
+  protected override void OnInit (EventArgs e)
   {
     base.OnInit (e);
     InitializeMenusItems ();
   }
 
-  protected override void CreateChildControls()
+  protected override void CreateChildControls ()
   {
     base.CreateChildControls ();
     _dropDownMenu.ID = ID + "_Boc_DropDownMenu";
@@ -97,7 +97,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
       WcagHelper.Instance.HandleError (1, this);
   }
 
-  protected override void OnPreRender(EventArgs e)
+  protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
     PreRenderMenuItems();
@@ -116,11 +116,11 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     WebServiceFactory.CreateJsonService<IBocDropDownMenuWebService> (virtualServicePath);
   }
 
-  protected virtual void InitializeMenusItems()
+  protected virtual void InitializeMenusItems ()
   {
   }
 
-  protected virtual void PreRenderMenuItems()
+  protected virtual void PreRenderMenuItems ()
   {
     if (_hiddenMenuItems == null)
       return;
@@ -174,7 +174,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     }
   }
 
-  private void PreRenderDropDownMenu()
+  private void PreRenderDropDownMenu ()
   {
     _dropDownMenu.IsReadOnly = true;
     _dropDownMenu.Enabled = Enabled;
@@ -544,7 +544,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     get { return true; }
   }
 
-  IBusinessObject[] IBocMenuItemContainer.GetSelectedBusinessObjects()
+  IBusinessObject[] IBocMenuItemContainer.GetSelectedBusinessObjects ()
   {
     if (Value == null)
       return new IBusinessObject[0];
@@ -552,12 +552,12 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
       return new IBusinessObject[] {Value};
   }
 
-  void IBocMenuItemContainer.RemoveBusinessObjects(IBusinessObject[] businessObjects)
+  void IBocMenuItemContainer.RemoveBusinessObjects (IBusinessObject[] businessObjects)
   {
     throw new NotSupportedException ("BocDropDownMenu is a read-only control, even though the bound object might be modifiable.");
   }
 
-  void IBocMenuItemContainer.InsertBusinessObjects(IBusinessObject[] businessObjects)
+  void IBocMenuItemContainer.InsertBusinessObjects (IBusinessObject[] businessObjects)
   {
     throw new NotSupportedException ("BocDropDownMenu is a read-only control, even though the bound object might be modifiable.");
   }

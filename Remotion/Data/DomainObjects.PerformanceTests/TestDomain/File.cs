@@ -22,12 +22,12 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
   [DBTable]
   public abstract class File : DomainObject
   {
-    public static File NewObject()
+    public static File NewObject ()
     {
       return DomainObject.NewObject<File>();
     }
 
-    protected File()
+    protected File ()
     {
     }
 

@@ -40,7 +40,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     }
 
     [OverrideTarget]
-    public virtual string Two()
+    public virtual string Two ()
     {
       return "BT7Mixin2.Two";
     }

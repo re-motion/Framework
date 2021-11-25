@@ -43,7 +43,7 @@ namespace Remotion.Utilities
     /// <summary>
     /// Returns an invariant culture scope, i.e. initialized with <see cref="CultureInfo"/> = <see cref="CultureInfo.InvariantCulture"/>.
     /// </summary>
-    public static CultureScope CreateInvariantCultureScope()
+    public static CultureScope CreateInvariantCultureScope ()
     {
       return new CultureScope (CultureInfo.InvariantCulture, CultureInfo.InvariantCulture);
     }

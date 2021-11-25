@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<ClassWithoutRelatedClassIDColumn> ();
     }
 
-    protected ClassWithoutRelatedClassIDColumn()
+    protected ClassWithoutRelatedClassIDColumn ()
     {
     }
   

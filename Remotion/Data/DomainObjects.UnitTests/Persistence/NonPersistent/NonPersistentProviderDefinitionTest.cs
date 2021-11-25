@@ -16,7 +16,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     private StorageProviderDefinition _definition;
     private NonPersistentStorageObjectFactory _nonPersistentStorageObjectFactory;
 
-    public override void SetUp()
+    public override void SetUp ()
     {
       base.SetUp();
 
@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     }
 
     [Test]
-    public void Initialize_FromArguments()
+    public void Initialize_FromArguments ()
     {
       var provider = new NonPersistentProviderDefinition ("Provider", _nonPersistentStorageObjectFactory);
 
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     }
 
     [Test]
-    public void Initialize_FromConfig()
+    public void Initialize_FromConfig ()
     {
       var config = new NameValueCollection();
       config.Add ("description", "The Description");
@@ -79,25 +79,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     }
 
     [Test]
-    public void IsIdentityTypeSupportedFalse()
+    public void IsIdentityTypeSupportedFalse ()
     {
       Assert.That (_definition.IsIdentityTypeSupported (typeof (int)), Is.False);
     }
 
     [Test]
-    public void IsIdentityTypeSupportedTrue()
+    public void IsIdentityTypeSupportedTrue ()
     {
       Assert.That (_definition.IsIdentityTypeSupported (typeof (Guid)), Is.True);
     }
 
     [Test]
-    public void IsIdentityTypeSupportedNull()
+    public void IsIdentityTypeSupportedNull ()
     {
       Assert.That (() => _definition.IsIdentityTypeSupported (null), Throws.TypeOf<ArgumentNullException>());
     }
 
     [Test]
-    public void CheckValidIdentityType()
+    public void CheckValidIdentityType ()
     {
       _definition.CheckIdentityType (typeof (Guid));
     }

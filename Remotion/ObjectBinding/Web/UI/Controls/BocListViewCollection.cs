@@ -27,7 +27,7 @@ public class BocListViewCollection: BusinessObjectControlItemCollection
   {
   }
 
-  public new BocListView[] ToArray()
+  public new BocListView[] ToArray ()
   {
     return (BocListView[]) InnerList.ToArray (typeof (BocListView));
   }

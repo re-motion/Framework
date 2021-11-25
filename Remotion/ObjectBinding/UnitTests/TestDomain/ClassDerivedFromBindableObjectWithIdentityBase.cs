@@ -24,11 +24,11 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   {
     private string _uniqueIdentifier;
 
-    public ClassDerivedFromBindableObjectWithIdentityBase()
+    public ClassDerivedFromBindableObjectWithIdentityBase ()
     {
     }
 
-    public ClassDerivedFromBindableObjectWithIdentityBase(IBindableObjectWithIdentityBaseImplementation implementation) : base(implementation)
+    public ClassDerivedFromBindableObjectWithIdentityBase (IBindableObjectWithIdentityBaseImplementation implementation) : base(implementation)
     {
     }
 

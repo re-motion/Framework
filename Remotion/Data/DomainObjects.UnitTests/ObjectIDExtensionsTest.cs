@@ -233,7 +233,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void GetObjects_WithNotFound_Throws()
+    public void GetObjects_WithNotFound_Throws ()
     {
       Assert.That (() => new[] { _notFoundObjectID }.GetObjects<Order> (_clientTransaction), Throws.TypeOf<ObjectsNotFoundException> ());
     }

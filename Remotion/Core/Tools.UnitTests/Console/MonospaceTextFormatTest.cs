@@ -46,7 +46,7 @@ public class MonospaceTextFormatTest
   }
 
   [Test]
-  public void TestAppendIndentedText()
+  public void TestAppendIndentedText ()
   {
     string label = "this is the label  ";
     string description = "the quick brown fox jumps over the lazy dog. THE (VERY QUICK) FOX JUMPS OVER THE LAZY DOG.";

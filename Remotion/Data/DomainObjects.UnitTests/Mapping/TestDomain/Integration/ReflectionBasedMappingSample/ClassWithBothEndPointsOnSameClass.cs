@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
   [Instantiable]
   public abstract class ClassWithBothEndPointsOnSameClass: DomainObject
   {
-    protected ClassWithBothEndPointsOnSameClass()
+    protected ClassWithBothEndPointsOnSameClass ()
     {
     }
 

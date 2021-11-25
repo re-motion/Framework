@@ -70,7 +70,7 @@ public class CommandLineParserTest
     return parser;
   }
 
-  private CommandLineParser CreateParser()
+  private CommandLineParser CreateParser ()
   {
     CommandLineStringArgument argSourceDir;
     CommandLineStringArgument argDestinationDir;

@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    public void Initialization()
+    public void Initialization ()
     {
       Assert.That (_loadedOrder1Context.DomainObject, Is.SameAs (_loadedOrder1));
       Assert.That (_loadedOrder1Context.ClientTransaction, Is.SameAs (TestableClientTransaction));
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    public void State_IsInvalid_False()
+    public void State_IsInvalid_False ()
     {
       Assert.That (_newOrderContext.State.IsInvalid, Is.False);
     }
@@ -196,7 +196,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    public void Timestamp_LoadedObject()
+    public void Timestamp_LoadedObject ()
     {
       var timestamp = _loadedOrder1Context.Timestamp;
       Assert.That (timestamp, Is.Not.Null);

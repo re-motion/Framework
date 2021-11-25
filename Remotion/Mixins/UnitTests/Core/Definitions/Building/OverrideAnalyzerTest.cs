@@ -218,7 +218,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    public void ThrowsOnTargetClassOverridingMultipleMixinMethods()
+    public void ThrowsOnTargetClassOverridingMultipleMixinMethods ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<ClassOverridingMixinMembers> ().Clear().AddMixins (typeof (MixinWithAbstractMembers), typeof(MixinWithSingleAbstractMethod2)).EnterScope())
       {

@@ -26,7 +26,7 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
   public class DeserializeUsingSchema
   {
     [Test]
-    public void WithSchemaUriAndSchemaSet()
+    public void WithSchemaUriAndSchemaSet ()
     {
       SampleClass actual = (SampleClass) XmlSerializationUtility.DeserializeUsingSchema (
           GetReaderForDefaultFragment (1),
@@ -38,7 +38,7 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
     }
 
     [Test]
-    public void WithSchemaUriAndSchemaReader()
+    public void WithSchemaUriAndSchemaReader ()
     {
       SampleClass actual = (SampleClass) XmlSerializationUtility.DeserializeUsingSchema (
           GetReaderForDefaultFragment (1),
@@ -51,7 +51,7 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
     }
 
     [Test]
-    public void WithNamespaceAndSchemaSet()
+    public void WithNamespaceAndSchemaSet ()
     {
       SampleClass actual = (SampleClass) XmlSerializationUtility.DeserializeUsingSchema (
           GetReaderForDefaultFragment (1),
@@ -79,7 +79,7 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
         // Assert.AreEqual (26, e.LinePosition);
     }
 
-    private XmlSchemaSet GetXmlSchemaSet()
+    private XmlSchemaSet GetXmlSchemaSet ()
     {
       XmlSchemaSet schemas = new XmlSchemaSet();
       schemas.Add (SampleClass.SchemaUri, SampleClass.GetSchemaReader());

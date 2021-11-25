@@ -106,7 +106,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.NextCal
     }
 
     [Test]
-    public void NextCallToString()
+    public void NextCallToString ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<ClassOverridingToString>().Clear().AddMixins(typeof(MixinOverridingToString)).EnterScope())
       {

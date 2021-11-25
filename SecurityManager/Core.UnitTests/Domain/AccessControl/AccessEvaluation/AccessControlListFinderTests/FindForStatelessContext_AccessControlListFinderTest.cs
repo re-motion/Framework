@@ -101,7 +101,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       StubClassDefinition<TClass> (statelessAcl, CreateStatefulAcl());
     }
 
-    private SecurityContext CreateContext<TClass>()
+    private SecurityContext CreateContext<TClass> ()
         where TClass : ISecurableObject
     {
       return SecurityContext.CreateStateless (typeof (TClass));

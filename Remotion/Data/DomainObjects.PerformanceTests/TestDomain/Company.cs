@@ -22,12 +22,12 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
   [DBTable]
   public abstract class Company: ClientBoundBaseClass
   {
-    public static Company NewObject()
+    public static Company NewObject ()
     {
       return DomainObject.NewObject<Company>();
     }
 
-    protected Company()
+    protected Company ()
     {
     }
 

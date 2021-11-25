@@ -66,7 +66,7 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
     }
 
     [Test]
-    public void IsNewSlotMember()
+    public void IsNewSlotMember ()
     {
       Assert.That (ReflectionUtility.IsNewSlotMember (typeof (Derived).GetMethod ("Foo")), Is.True);
       Assert.That (ReflectionUtility.IsNewSlotMember (typeof (Derived).GetProperty ("FooP")), Is.True);

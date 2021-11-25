@@ -28,13 +28,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Configuration
     private MappingLoaderConfiguration _configuration;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _configuration = new MappingLoaderConfiguration();
     }
 
     [Test]
-    public void Deserialize_WithCustomMappingLoader()
+    public void Deserialize_WithCustomMappingLoader ()
     {
       string xmlFragment =
           @"<mapping>

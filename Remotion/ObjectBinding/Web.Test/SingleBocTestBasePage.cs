@@ -33,7 +33,7 @@ public class SingleBocTestBasePage:
     IObjectWithResources //  Provides the WebForm's ResourceManager via GetResourceManager() 
     // IResourceUrlResolver //  Provides the URLs for this WebForm (e.g. to the FormGridManager)
 {
-  protected override void OnInit(EventArgs e)
+  protected override void OnInit (EventArgs e)
   {
     base.OnInit (e);
     try
@@ -50,7 +50,7 @@ public class SingleBocTestBasePage:
     {}
   }
 
-  protected override void OnPreRender(EventArgs e)
+  protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
 
@@ -60,7 +60,7 @@ public class SingleBocTestBasePage:
     ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
   }
 
-  public virtual IResourceManager GetResourceManager()
+  public virtual IResourceManager GetResourceManager ()
   {
     Type type = GetType();
     return GlobalizationService.GetResourceManager (type);

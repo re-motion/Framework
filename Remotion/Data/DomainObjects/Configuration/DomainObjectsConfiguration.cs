@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Configuration
       s_current.Value = configuration;
     }
 
-    public DomainObjectsConfiguration()
+    public DomainObjectsConfiguration ()
     {
       _mappingLoaderConfiguration =new DoubleCheckedLockingContainer<MappingLoaderConfiguration> (GetMappingLoaderConfiguration);
       _persistenceConfiguration = new DoubleCheckedLockingContainer<StorageConfiguration> (GetPersistenceConfiguration);
@@ -74,14 +74,14 @@ namespace Remotion.Data.DomainObjects.Configuration
       get { return _queryConfiguration.Value; }
     }
 
-    private MappingLoaderConfiguration GetMappingLoaderConfiguration()
+    private MappingLoaderConfiguration GetMappingLoaderConfiguration ()
     {
       return
           (MappingLoaderConfiguration) ConfigurationWrapper.Current.GetSection (ConfigKey + "/" + MappingLoaderPropertyName, false)
           ?? new MappingLoaderConfiguration();
     }
 
-    private StorageConfiguration GetPersistenceConfiguration()
+    private StorageConfiguration GetPersistenceConfiguration ()
     {
       return
           (StorageConfiguration) ConfigurationWrapper.Current.GetSection (ConfigKey + "/" + StoragePropertyName, false) 

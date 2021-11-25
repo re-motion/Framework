@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   [Instantiable]
   public abstract class TISpecificFolder : TIFolder
   {
-    public new static TISpecificFolder NewObject()
+    public new static TISpecificFolder NewObject ()
     {
       return NewObject<TISpecificFolder> ();
     }

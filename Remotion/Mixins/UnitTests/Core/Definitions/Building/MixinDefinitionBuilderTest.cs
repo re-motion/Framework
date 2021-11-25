@@ -27,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
   public class MixinDefinitionBuilderTest
   {
     [Test]
-    public void CorrectlyCopiesContext()
+    public void CorrectlyCopiesContext ()
     {
       TargetClassDefinition targetClass = DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (BaseType1));
       Assert.That (targetClass.Parent, Is.Null);
@@ -39,7 +39,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    public void MixinAppliedToInterface()
+    public void MixinAppliedToInterface ()
     {
       TargetClassDefinition targetClass = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (IBaseType2), typeof (BT2Mixin1));
       Assert.That (targetClass.IsInterface, Is.True);
@@ -56,7 +56,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    public void MixinIndicesCorrespondToPositionInArray()
+    public void MixinIndicesCorrespondToPositionInArray ()
     {
       TargetClassDefinition bt3 = DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (BaseType3));
       for (int i = 0; i < bt3.Mixins.Count; ++i)
@@ -64,7 +64,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    public void OverriddenMixinMethod()
+    public void OverriddenMixinMethod ()
     {
       TargetClassDefinition overrider = DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (ClassOverridingMixinMembers));
       MixinDefinition mixin = overrider.Mixins[typeof (MixinWithAbstractMembers)];
@@ -81,7 +81,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    public void NotOverriddenAbstractMixinMethodSucceeds()
+    public void NotOverriddenAbstractMixinMethodSucceeds ()
     {
       TargetClassDefinition bt1 = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithAbstractMembers));
       MixinDefinition mixin = bt1.Mixins[typeof (MixinWithAbstractMembers)];
@@ -90,7 +90,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    public void ThrowsOnMixinMethodOverridedWrongSig()
+    public void ThrowsOnMixinMethodOverridedWrongSig ()
     {
       Assert.That (
           () => DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethodWrongSig), typeof (MixinWithAbstractMembers)),
@@ -98,7 +98,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    public void ThrowsOnMixinOverrideWithoutMixin()
+    public void ThrowsOnMixinOverrideWithoutMixin ()
     {
       Assert.That (
           () => DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMembers)),
@@ -106,7 +106,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    public void GenericMixinsAreAllowed()
+    public void GenericMixinsAreAllowed ()
     {
       Assert.That (DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin3<,>))
                                          .HasMixinWithConfiguredType(typeof(BT3Mixin3<,>)), Is.True);
@@ -139,7 +139,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    public void GenericInterfaceArgumentIsBaseTypeWhenPossible()
+    public void GenericInterfaceArgumentIsBaseTypeWhenPossible ()
     {
       TargetClassDefinition def = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType1),
                                                                                      typeof (MixinIntroducingGenericInterfaceWithTargetAsThisType<>));

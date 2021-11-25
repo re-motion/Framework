@@ -187,7 +187,7 @@ namespace Remotion.Mixins
     /// which it cannot make a closed generic type. Because closed types are needed for validation, this <see cref="MixinConfiguration"/>
     /// cannot be validated as a whole. Even in this case, the configuration might still be correct, but validation is deferred to
     /// <see cref="TargetClassDefinitionFactory.CreateAndValidate"/>.</exception>
-    public ValidationLogData Validate()
+    public ValidationLogData Validate ()
     {
       var definitions = from classContext in ClassContexts
                         where !classContext.Type.IsGenericTypeDefinition && !classContext.Type.IsInterface
