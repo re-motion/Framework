@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample
 {
-  [DBTable ("ClassHavingStorageSpecificIdentifierAttributeTable")]
+  [DBTable("ClassHavingStorageSpecificIdentifierAttributeTable")]
   [TestDomain]
   [Instantiable]
   public abstract class ClassHavingStorageSpecificIdentifierAttribute : DomainObject
@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
 
     public abstract int NoAttribute { get; set; }
 
-    [DBColumn ("CustomName")]
+    [DBColumn("CustomName")]
     public abstract int StorageSpecificName { get; set; }
   }
 }

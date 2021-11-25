@@ -20,7 +20,7 @@ using System.Reflection;
 
 namespace Remotion.Reflection
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
   internal sealed class NullMethodInformation : IMethodInformation
   {
     public string Name

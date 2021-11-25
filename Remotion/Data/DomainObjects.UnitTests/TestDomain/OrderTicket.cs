@@ -48,10 +48,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       Order = order;
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 255)]
+    [StringProperty(IsNullable = false, MaximumLength = 255)]
     public abstract string FileName { get; set; }
 
-    [DBBidirectionalRelation ("OrderTicket", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("OrderTicket", ContainsForeignKey = true)]
     [Mandatory]
     public abstract Order Order { get; set; }
 

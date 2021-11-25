@@ -39,7 +39,7 @@ namespace Remotion.Mixins
   /// apply the same mixin multiple times to the same target class.
   /// </para>
   /// </remarks>
-  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true, Inherited = false)]
   public class UsesAttribute : MixinRelationshipAttribute, IMixinConfigurationAttribute<Type>
   {
     private readonly Type _mixinType;

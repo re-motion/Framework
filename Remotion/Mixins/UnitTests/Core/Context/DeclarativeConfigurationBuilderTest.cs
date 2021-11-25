@@ -139,15 +139,15 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       Assert.That(_builder.AllTypes, Is.EquivalentTo(referenceBuilder.AllTypes));
     }
 
-    [Uses (typeof(NullMixin))]
+    [Uses(typeof(NullMixin))]
     [IgnoreForMixinConfiguration]
     class User { }
 
-    [Extends (typeof(NullTarget))]
+    [Extends(typeof(NullTarget))]
     [IgnoreForMixinConfiguration]
     class Extender { }
 
-    [ComposedInterface (typeof(NullTarget))]
+    [ComposedInterface(typeof(NullTarget))]
     [IgnoreForMixinConfiguration]
     interface IComposedInterface { }
 
@@ -224,7 +224,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       Assert.That(configuration.ClassContexts.ContainsWithInheritance(typeof(DisposableMixinTest.C)), Is.True);
     }
 
-    [AttributeUsage (AttributeTargets.Class, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class TestAttributeWithEquality : Attribute, IMixinConfigurationAttribute<Type>
     {
       private readonly bool _ignoreDuplicates;
@@ -262,12 +262,12 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       }
     }
 
-    [TestAttributeWithEquality (true), TestAttributeWithEquality (true), IgnoreForMixinConfiguration]
+    [TestAttributeWithEquality(true), TestAttributeWithEquality(true), IgnoreForMixinConfiguration]
     public class TypeWithDuplicateAttributeIgnoringDuplicates1 { }
-    [TestAttributeWithEquality (true), TestAttributeWithEquality (true), IgnoreForMixinConfiguration]
+    [TestAttributeWithEquality(true), TestAttributeWithEquality(true), IgnoreForMixinConfiguration]
     public class TypeWithDuplicateAttributeIgnoringDuplicates2 { }
 
-    [TestAttributeWithEquality (false), TestAttributeWithEquality (false), IgnoreForMixinConfiguration]
+    [TestAttributeWithEquality(false), TestAttributeWithEquality(false), IgnoreForMixinConfiguration]
     public class TypeWithDuplicateAttributeNotIgnoringDuplicates { }
   }
 }

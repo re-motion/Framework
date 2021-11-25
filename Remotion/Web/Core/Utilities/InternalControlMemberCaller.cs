@@ -31,7 +31,7 @@ namespace Remotion.Web.Utilities
   /// <summary>
   /// Default implementation of the <seealso cref="IInternalControlMemberCaller"/> interface.
   /// </summary>
-  [ImplementationFor (typeof(IInternalControlMemberCaller), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IInternalControlMemberCaller), Lifetime = LifetimeKind.Singleton)]
   public class InternalControlMemberCaller : IInternalControlMemberCaller
   {
     private const BindingFlags c_bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;

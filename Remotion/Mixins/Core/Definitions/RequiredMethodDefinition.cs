@@ -21,7 +21,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{InterfaceMethod}")]
+  [DebuggerDisplay("{InterfaceMethod}")]
   public class RequiredMethodDefinition : IVisitableDefinition
   {
     private RequirementDefinitionBase _declaringRequirement;

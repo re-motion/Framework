@@ -297,25 +297,25 @@ namespace Remotion.Validation.UnitTests.Merging
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void Merge_RemoveObjectValidatorWithNoCollectorTypeDefined_ValidatorIsRemoved ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void Merge_RemoveObjectValidatorWithAlreadyRegisteredCollectorTypeDefined_ValidatorIsRemoved ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void Merge_RemoveObjectValidator_AllRemoveRulesInSameGroupAreAppliedBeforeAllAddedRulesInSameGroup ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void Merge_RemoveObjectValidator_NoPropertyValidatorsToRemove_NoValidatorIsRemoved ()
     {
     }

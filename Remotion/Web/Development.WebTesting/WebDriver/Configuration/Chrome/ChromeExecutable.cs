@@ -25,13 +25,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
   /// </summary>
   public sealed class ChromeExecutable
   {
-    [Obsolete ("Use constructor (string, string, string) instead. (Version 1.21.3)", true)]
+    [Obsolete("Use constructor (string, string, string) instead. (Version 1.21.3)", true)]
     public static ChromeExecutable CreateForCustomInstance ([NotNull] string browserBinaryPath, [NotNull] string userDirectory)
     {
       throw new NotSupportedException("Use constructor (string, string, string) instead. (Version 1.21.3)");
     }
 
-    [Obsolete ("Use constructor (string, string, string) instead. (Version 1.21.3)", true)]
+    [Obsolete("Use constructor (string, string, string) instead. (Version 1.21.3)", true)]
     public static ChromeExecutable CreateForDefaultInstance ([NotNull] string userDirectory)
     {
       throw new NotSupportedException("Use constructor (string, string, string) instead. (Version 1.21.3)");

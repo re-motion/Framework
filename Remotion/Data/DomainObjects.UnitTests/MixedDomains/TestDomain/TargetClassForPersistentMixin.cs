@@ -20,9 +20,9 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
-  [Uses (typeof(MixinAddingPersistentProperties))]
-  [Uses (typeof(NullMixin))]
-  [DBTable ("MixedDomains_Target")]
+  [Uses(typeof(MixinAddingPersistentProperties))]
+  [Uses(typeof(NullMixin))]
+  [DBTable("MixedDomains_Target")]
   [TestDomain]
   public class TargetClassForPersistentMixin : DomainObject, ISupportsGetObject
   {
@@ -34,14 +34,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
     [StorageClassNone]
     public int RedirectedPersistentProperty
     {
-      [LinqPropertyRedirection (typeof(IMixinAddingPersistentProperties), "PersistentProperty")]
+      [LinqPropertyRedirection(typeof(IMixinAddingPersistentProperties), "PersistentProperty")]
       get { return ((IMixinAddingPersistentProperties)this).PersistentProperty; }
     }
 
     [StorageClassNone]
     public ObjectList<RelationTargetForPersistentMixin> RedirectedCollectionProperty1Side
     {
-      [LinqPropertyRedirection (typeof(IMixinAddingPersistentProperties), "CollectionProperty1Side")]
+      [LinqPropertyRedirection(typeof(IMixinAddingPersistentProperties), "CollectionProperty1Side")]
       get { return ((IMixinAddingPersistentProperties)this).CollectionProperty1Side; }
     }
 

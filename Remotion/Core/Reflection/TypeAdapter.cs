@@ -31,7 +31,7 @@ namespace Remotion.Reflection
   /// <summary>
   /// Implements the <see cref="ITypeInformation"/> to wrap a <see cref="System.Type"/> instance.
   /// </summary>
-  [TypeConverter (typeof(TypeAdapterConverter))]
+  [TypeConverter(typeof(TypeAdapterConverter))]
   public sealed class TypeAdapter : ITypeInformation
   {
     private static readonly ConcurrentDictionary<Type, TypeAdapter> s_dataStore =
@@ -47,8 +47,8 @@ namespace Remotion.Reflection
       return s_dataStore.GetOrAdd(type, s_ctorFunc);
     }
 
-    [ContractAnnotation ("null => null; notnull => notnull")]
-    [return: NotNullIfNotNull ("type")]
+    [ContractAnnotation("null => null; notnull => notnull")]
+    [return: NotNullIfNotNull("type")]
     public static TypeAdapter? CreateOrNull (Type? type)
     {
       if (type == null)

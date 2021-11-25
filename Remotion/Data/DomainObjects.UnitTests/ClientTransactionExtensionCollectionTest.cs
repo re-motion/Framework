@@ -293,7 +293,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    [Explicit ("Performance test")]
+    [Explicit("Performance test")]
     public void PropertyReading_Perf ()
     {
       var coll = new ClientTransactionExtensionCollection("key");

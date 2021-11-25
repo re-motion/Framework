@@ -503,7 +503,7 @@ public class DBUtility
     return (string[][])records.ToArray(typeof(string[]));
   }
 
-  [Conditional ("VERBOSE")]
+  [Conditional("VERBOSE")]
   private static void TimeTrace (string msg)
   {
     #if VERBOSE
@@ -515,13 +515,13 @@ public class DBUtility
     #endif 
   }
 
-  [Conditional ("VERBOSE")]
+  [Conditional("VERBOSE")]
   private static void Trace (string msg)
   {
     Debug.WriteLine(msg);
   }
 
-  [Conditional ("VERBOSE")]
+  [Conditional("VERBOSE")]
   private static void Trace (string format, params object[] args)
   {
     Debug.WriteLine(string.Format(format, args));

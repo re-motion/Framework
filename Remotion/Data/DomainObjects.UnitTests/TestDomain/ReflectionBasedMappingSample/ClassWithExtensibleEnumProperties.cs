@@ -29,10 +29,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
 
     public abstract TestExtensibleEnum NoAttribute { get; set; }
 
-    [ExtensibleEnumProperty (IsNullable = true)]
+    [ExtensibleEnumProperty(IsNullable = true)]
     public abstract TestExtensibleEnum NullableFromAttribute { get; set; }
 
-    [ExtensibleEnumProperty (IsNullable = false)]
+    [ExtensibleEnumProperty(IsNullable = false)]
     public abstract TestExtensibleEnum NotNullable { get; set; }
   }
 }

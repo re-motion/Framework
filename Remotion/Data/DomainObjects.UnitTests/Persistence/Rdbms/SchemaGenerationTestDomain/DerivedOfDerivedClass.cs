@@ -30,10 +30,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string PropertyInDerivedOfDerivedClass { get; set; }
 
-    [DBColumn ("ClassWithRelationsInDerivedOfDerivedClassID")]
+    [DBColumn("ClassWithRelationsInDerivedOfDerivedClassID")]
     public abstract ClassWithRelations ClassWithRelationsToDerivedOfDerivedClass { get; set; }
   }
 }

@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
-  [DBTable ("TableWithoutRelatedClassIDColumn")]
+  [DBTable("TableWithoutRelatedClassIDColumn")]
   [TestDomain]
   [Instantiable]
   public abstract class ClassWithoutRelatedClassIDColumn : TestDomainBase

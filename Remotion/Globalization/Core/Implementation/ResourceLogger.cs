@@ -37,7 +37,7 @@ namespace Remotion.Globalization.Implementation
       get { return s_log.IsEnabled(c_logLevel); }
     }
 
-    [StringFormatMethod ("idFormat")]
+    [StringFormatMethod("idFormat")]
     public static void LogResourceEntryNotFound (string idFormat, params object[]? args)
     {
       ArgumentUtility.CheckNotNullOrEmpty("idFormat", idFormat);

@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// Allows to disable specific values of an extensible enum type in the context of business object properties. This attribute can be applied
   /// either to the class defining the extensible enum values via extension methods or to a business object property with an extensible enum type.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public class DisableExtensibleEnumValuesAttribute : Attribute, IDisableEnumValuesAttribute
   {
     private readonly IEnumerationValueFilter _filter;

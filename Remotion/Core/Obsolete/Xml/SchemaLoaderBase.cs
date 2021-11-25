@@ -19,7 +19,7 @@ using System.Xml.Schema;
 
 namespace Remotion.Xml
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Xml.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Xml.dll", true)]
   public abstract class SchemaLoaderBase
   {
     protected abstract string SchemaFile { get; }

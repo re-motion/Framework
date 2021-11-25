@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   /// <para>During edit mode, the control is displayed using a <see cref="System.Web.UI.WebControls.TextBox"/> and a pop-up element.</para>
   /// <para>During read-only mode, the control's value is displayed using a <see cref="System.Web.UI.WebControls.Label"/>.</para>
   /// </remarks>
-  [ImplementationFor (typeof(IBocAutoCompleteReferenceValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocAutoCompleteReferenceValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocAutoCompleteReferenceValueRenderer : BocReferenceValueRendererBase<IBocAutoCompleteReferenceValue>, IBocAutoCompleteReferenceValueRenderer
   {
     /// <summary> A list of control specific resources. </summary>
@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocAutoCompleteReferenceValueRenderer")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocAutoCompleteReferenceValueRenderer")]
     public enum ResourceIdentifier
     {
       /// <summary> The error message dispayed when the icon could not be loaded from the server. </summary>

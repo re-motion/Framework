@@ -26,23 +26,23 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
   public class AxeTestEnvironment
   {
     /// <summary>Webdriver that was used.</summary>
-    [DataMember (Name = "userAgent")]
+    [DataMember(Name = "userAgent")]
     public string UserAgent { get; set; } = null!;
 
     /// <summary>Width of the window.</summary>
-    [DataMember (Name = "windowWidth")]
+    [DataMember(Name = "windowWidth")]
     public int WindowWidth { get; set; }
 
     /// <summary>Height of the window.</summary>
-    [DataMember (Name = "windowHeight")]
+    [DataMember(Name = "windowHeight")]
     public int WindowHeight { get; set; }
 
     /// <summary>Orientation angle of the screen.</summary>
-    [DataMember (Name = "orientationAngle")]
+    [DataMember(Name = "orientationAngle")]
     public int OrientationAngle { get; set; }
 
     /// <summary>Orientation type of the screen.</summary>
-    [DataMember (Name = "orientationType")]
+    [DataMember(Name = "orientationType")]
     public string OrientationType { get; set; } = null!;
   }
 }

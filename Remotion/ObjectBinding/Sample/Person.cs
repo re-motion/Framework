@@ -25,7 +25,7 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Sample
 {
-  [XmlRoot ("Person")]
+  [XmlRoot("Person")]
   [XmlType]
   [Serializable]
   public class Person : BindableXmlObject
@@ -109,7 +109,7 @@ namespace Remotion.ObjectBinding.Sample
     }
 
     [XmlAttribute]
-    [DisableEnumValues (MarriageStatus.Bigamist, MarriageStatus.Polygamist)]
+    [DisableEnumValues(MarriageStatus.Bigamist, MarriageStatus.Polygamist)]
     public MarriageStatus MarriageStatus
     {
       get { return _marriageStatus; }
@@ -117,7 +117,7 @@ namespace Remotion.ObjectBinding.Sample
     }
 
     [XmlElement]
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public Guid PartnerID
     {
       get { return _partnerID; }
@@ -132,7 +132,7 @@ namespace Remotion.ObjectBinding.Sample
     }
 
     [XmlElement]
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public Guid FatherID
     {
       get { return _fatherID; }
@@ -147,7 +147,7 @@ namespace Remotion.ObjectBinding.Sample
     }
 
     [XmlElement]
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public Guid[] ChildIDs
     {
       get { return _childIDs; }
@@ -192,7 +192,7 @@ namespace Remotion.ObjectBinding.Sample
     }
 
     [XmlElement]
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public Guid[] JobIDs
     {
       get { return _jobIDs; }
@@ -229,7 +229,7 @@ namespace Remotion.ObjectBinding.Sample
       }
     }
 
-    [XmlAttribute (DataType="date")]
+    [XmlAttribute(DataType="date")]
     [DateProperty]
     public DateTime DateOfDeath
     {

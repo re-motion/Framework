@@ -102,7 +102,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    [Ignore ("Currently not supported by DynamicProxy.")]
+    [Ignore("Currently not supported by DynamicProxy.")]
     public void OverrideGenericMethod_WithConstraint_ModifiedByClosedGenericClass ()
     {
       Type baseType = typeof(GenericClassWithGenericMethod<IConvertible, List<string>, int, object, IConvertible, List<List<IConvertible[]>>>);

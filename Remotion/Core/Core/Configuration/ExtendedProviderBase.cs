@@ -45,7 +45,7 @@ namespace Remotion.Configuration
       _config = configClone;
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public override sealed void Initialize (string name, NameValueCollection config)
     {
       base.Initialize(name, config);

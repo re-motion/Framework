@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering cells of <see cref="BocCommandColumnDefinition"/> columns.
   /// </summary>
-  [ImplementationFor (typeof(IBocCommandColumnRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocCommandColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocCommandColumnRenderer : BocCommandEnabledColumnRendererBase<BocCommandColumnDefinition>, IBocCommandColumnRenderer
   {
     /// <summary>

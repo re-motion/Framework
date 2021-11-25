@@ -20,19 +20,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
   public static class OrderExtensions
   {
-    [LinqPropertyRedirection (typeof(Order), "OrderNumber")]
+    [LinqPropertyRedirection(typeof(Order), "OrderNumber")]
     public static int GetRedirectedOrderNumber (this Order order)
     {
       throw new NotSupportedException();
     }
 
-    [LinqPropertyRedirection (typeof(Order), "RedirectedOrderNumber")]
+    [LinqPropertyRedirection(typeof(Order), "RedirectedOrderNumber")]
     public static int GetRedirectedRedirectedOrderNumber (this Order order)
     {
       throw new NotSupportedException();
     }
 
-    [LinqPropertyRedirection (typeof(Order), "OrderNumber")]
+    [LinqPropertyRedirection(typeof(Order), "OrderNumber")]
     public static int GetRedirectedOrderNumberWithInvalidSignature (this Order order, object o)
     {
       throw new NotSupportedException();

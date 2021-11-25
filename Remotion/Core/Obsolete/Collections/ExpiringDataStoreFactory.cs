@@ -20,7 +20,7 @@ using System.Threading;
 
 namespace Remotion.Collections
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
   public static class ExpiringDataStoreFactory
   {
     public static ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo> Create<TKey, TValue, TExpirationInfo, TScanInfo> (
@@ -30,7 +30,7 @@ namespace Remotion.Collections
       throw new NotImplementedException();
     }
 
-    [Obsolete ("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
+    [Obsolete("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
     public static LockingDataStoreDecorator<TKey, TValue> CreateWithLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
         IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> policy,
         IEqualityComparer<TKey> comparer)
@@ -38,7 +38,7 @@ namespace Remotion.Collections
       throw new NotImplementedException();
     }
 
-    [Obsolete ("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
+    [Obsolete("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
     public static LazyLockingDataStoreAdapter<TKey, TValue> CreateWithLazyLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
         IExpirationPolicy<Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> policy,
         IEqualityComparer<TKey> comparer)

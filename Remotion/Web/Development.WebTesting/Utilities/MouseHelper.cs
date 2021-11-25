@@ -30,14 +30,14 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 {
   public class MouseHelper
   {
-    [StructLayout (LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     private struct SendInputDto
     {
       public uint Type;
       public MouseInputDto MouseInfo;
     }
 
-    [StructLayout (LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     internal struct MouseInputDto
     {
       public int X;
@@ -60,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     private static readonly uint[] s_leftClickData = { c_leftDown, c_leftUp };
     private static readonly uint[] s_rightClickData = { c_rightDown, c_rightUp };
 
-    [DllImport ("user32.dll", SetLastError = true)]
+    [DllImport("user32.dll", SetLastError = true)]
     private static extern void SendInput (uint inputCount, SendInputDto[] data, int structureSize);
 
     public readonly IBrowserConfiguration BrowserConfiguration;
@@ -149,7 +149,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <summary>
     /// Displays the tooltip of the specified <paramref name="control"/> by hovering over it.
     /// </summary>
-    [Obsolete ("Tooltip display is not working correctly in certain configurations and should be used with that in mind.")]
+    [Obsolete("Tooltip display is not working correctly in certain configurations and should be used with that in mind.")]
     public void ShowTooltip ([NotNull] ControlObject control)
     {
       ArgumentUtility.CheckNotNull("control", control);
@@ -161,7 +161,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <summary>
     /// Displays the tooltip of the specified <paramref name="element"/> by hovering over it.
     /// </summary>
-    [Obsolete ("Tooltip display is not working correctly in certain configurations and should be used with that in mind.")]
+    [Obsolete("Tooltip display is not working correctly in certain configurations and should be used with that in mind.")]
     public void ShowTooltip ([NotNull] ElementScope element)
     {
       ArgumentUtility.CheckNotNull("element", element);
@@ -173,7 +173,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <summary>
     /// Displays the tooltip of the specified <paramref name="webElement"/> by hovering over it.
     /// </summary>
-    [Obsolete ("Tooltip display is not working correctly in certain configurations and should be used with that in mind.")]
+    [Obsolete("Tooltip display is not working correctly in certain configurations and should be used with that in mind.")]
     public void ShowTooltip ([NotNull] IWebElement webElement)
     {
       ArgumentUtility.CheckNotNull("webElement", webElement);

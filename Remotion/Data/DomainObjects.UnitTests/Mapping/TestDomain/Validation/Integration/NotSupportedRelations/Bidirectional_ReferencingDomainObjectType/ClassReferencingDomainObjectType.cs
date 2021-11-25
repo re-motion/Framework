@@ -19,10 +19,10 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations.Bidirectional_ReferencingDomainObjectType
 {
   [DBTable]
-  [ClassID ("Bidirectional_ReferencingDomainObjectType_ClassReferencingDomainObjectType")]
+  [ClassID("Bidirectional_ReferencingDomainObjectType_ClassReferencingDomainObjectType")]
   public class ClassReferencingDomainObjectType : DomainObject
   {
-    [DBBidirectionalRelation ("Whatever")]
+    [DBBidirectionalRelation("Whatever")]
     public DomainObject BidirectionalRelationProperty { get; set; }
   }
 }

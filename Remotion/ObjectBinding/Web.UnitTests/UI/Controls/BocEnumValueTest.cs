@@ -381,9 +381,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    [TestCase (ListControlType.DropDownList, TestName = "GetNullItemText_WithTextFromProperty_ForDropDownList_ReturnsTextFromProperty")]
-    [TestCase (ListControlType.ListBox, TestName = "GetNullItemText_WithTextFromProperty_ForListBox_ReturnsTextFromProperty")]
-    [TestCase (ListControlType.RadioButtonList, TestName = "GetNullItemText_WithTextFromProperty_ForRadioButtonList_ReturnsTextFromProperty")]
+    [TestCase(ListControlType.DropDownList, TestName = "GetNullItemText_WithTextFromProperty_ForDropDownList_ReturnsTextFromProperty")]
+    [TestCase(ListControlType.ListBox, TestName = "GetNullItemText_WithTextFromProperty_ForListBox_ReturnsTextFromProperty")]
+    [TestCase(ListControlType.RadioButtonList, TestName = "GetNullItemText_WithTextFromProperty_ForRadioButtonList_ReturnsTextFromProperty")]
     public void GetNullItemText_WithTextFromProperty (ListControlType listControlType)
     {
       var control = new BocEnumValue();
@@ -394,9 +394,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    [TestCase (ListControlType.DropDownList, TestName = "GetNullItemText_WithTextFromResourceManager_ForDropDownList_ReturnsTextFromResourceManager")]
-    [TestCase (ListControlType.ListBox, TestName = "GetNullItemText_WithTextFromResourceManager_ForListBox_ReturnsTextFromResourceManager")]
-    [TestCase (ListControlType.RadioButtonList, TestName = "GetNullItemText_WithTextFromResourceManager_ForRadioButtonList_ReturnsTextFromResourceManager")]
+    [TestCase(ListControlType.DropDownList, TestName = "GetNullItemText_WithTextFromResourceManager_ForDropDownList_ReturnsTextFromResourceManager")]
+    [TestCase(ListControlType.ListBox, TestName = "GetNullItemText_WithTextFromResourceManager_ForListBox_ReturnsTextFromResourceManager")]
+    [TestCase(ListControlType.RadioButtonList, TestName = "GetNullItemText_WithTextFromResourceManager_ForRadioButtonList_ReturnsTextFromResourceManager")]
     public void GetNullItemText_WithTextFromResourceManager (ListControlType listControlType)
     {
       var control = new BocEnumValue();

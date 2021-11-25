@@ -38,9 +38,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit a tri-state value (true, false, and undefined). </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/Class/*' />
-  [ValidationProperty ("Value")]
-  [DefaultEvent ("SelectionChanged")]
-  [ToolboxItemFilter ("System.Web.UI")]
+  [ValidationProperty("Value")]
+  [DefaultEvent("SelectionChanged")]
+  [ToolboxItemFilter("System.Web.UI")]
   public class BocBooleanValue : BocBooleanValueBase, IBocBooleanValue
   {
     // constants
@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocBooleanValue")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocBooleanValue")]
     public enum ResourceIdentifier
     {
       /// <summary> The descripton rendered next the check box when it is checked. </summary>
@@ -126,7 +126,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return new BocBooleanValueRenderingContext(Context, writer, this);
     }
 
-    [Obsolete ("For DependDB only.", true)]
+    [Obsolete("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
       throw new NotImplementedException("For DependDB only.");
@@ -238,9 +238,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if there is an error.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
+    [Description("Validation message displayed if there is an error.")]
+    [Category("Validator")]
+    [DefaultValue("")]
     public string? ErrorMessage
     {
       get { return _errorMessage; }
@@ -276,8 +276,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Returns the <see cref="Control.ClientID"/> of the <see cref="HyperLink"/> if the control is in edit mode, 
     ///   otherwise <see langword="null"/>. 
     /// </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public override string? FocusID
     {
       get { return IsReadOnly ? null : GetDisplayValueName(); }
@@ -288,11 +288,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   description. 
     /// </summary>
     /// <value>The <see cref="Style"/> object to be applied on the label part of the control.</value>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the label used for displaying the description.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the label used for displaying the description.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public override Style LabelStyle
     {
       get { return _labelStyle; }
@@ -300,9 +300,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the flag that determines whether to show the description next to the checkbox. </summary>
     /// <value> <see langword="true"/> to enable the description. The default value is <see langword="true"/>. </value>
-    [Description ("The flag that determines whether to show the description next to the checkbox")]
-    [Category ("Appearance")]
-    [DefaultValue (true)]
+    [Description("The flag that determines whether to show the description next to the checkbox")]
+    [Category("Appearance")]
+    [DefaultValue(true)]
     public bool ShowDescription
     {
       get { return _showDescription; }

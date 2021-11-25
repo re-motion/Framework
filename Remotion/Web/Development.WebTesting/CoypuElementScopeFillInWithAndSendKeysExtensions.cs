@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
     /// <param name="value">The value to fill in.</param>
-    [Obsolete ("Use scope.SendKeys (string) instead to send OpenQA.Selenium.Keys or individual characters. (Version 1.21.3)", false)]
+    [Obsolete("Use scope.SendKeys (string) instead to send OpenQA.Selenium.Keys or individual characters. (Version 1.21.3)", false)]
     public static void SendKeysFixed ([NotNull] this ElementScope scope, [NotNull] string value)
     {
       ArgumentUtility.CheckNotNull("scope", scope);

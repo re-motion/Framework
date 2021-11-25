@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   /// <summary>
   /// Implementation of the <see cref="IBindablePropertyReadAccessStrategy"/> interface for <see cref="DomainObject"/>.
   /// </summary>
-  [ImplementationFor (typeof(IBindablePropertyReadAccessStrategy),
+  [ImplementationFor(typeof(IBindablePropertyReadAccessStrategy),
       Lifetime = LifetimeKind.Singleton,
       RegistrationType = RegistrationType.Multiple,
       Position = Position)]

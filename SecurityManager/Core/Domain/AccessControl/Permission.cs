@@ -38,11 +38,11 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public abstract bool? Allowed { get; set; }
 
-    [DBColumn ("AccessTypeDefinitionID")]
+    [DBColumn("AccessTypeDefinitionID")]
     [Mandatory]
     public abstract AccessTypeDefinition AccessType { get; set; }
 
-    [DBBidirectionalRelation ("PermissionsInternal")]
+    [DBBidirectionalRelation("PermissionsInternal")]
     [Mandatory]
     public abstract AccessControlEntry AccessControlEntry { get; }
 

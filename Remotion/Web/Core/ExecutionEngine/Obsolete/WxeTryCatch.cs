@@ -23,7 +23,7 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.ExecutionEngine.Obsolete
 {
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
   public class WxeExceptionAttribute : Attribute
   {
     public static WxeExceptionAttribute? GetAttribute (Type type)
@@ -94,8 +94,8 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       InitializeSteps();
     }
 
-    [MemberNotNull (nameof(_trySteps))]
-    [MemberNotNull (nameof(_catchBlocks))]
+    [MemberNotNull(nameof(_trySteps))]
+    [MemberNotNull(nameof(_catchBlocks))]
     private void InitializeSteps ()
     {
       Type type = this.GetType();

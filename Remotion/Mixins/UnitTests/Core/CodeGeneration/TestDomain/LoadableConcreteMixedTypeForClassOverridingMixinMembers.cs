@@ -20,7 +20,7 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
-  [ConcreteMixedType (
+  [ConcreteMixedType(
       new object[]
       {
         typeof(ClassOverridingMixinMembers),

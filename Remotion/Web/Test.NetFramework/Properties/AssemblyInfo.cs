@@ -45,5 +45,5 @@ using Remotion.Globalization;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]
-[assembly: NeutralResourcesLanguage ("en")]
-[assembly: AvailableResourcesLanguages ("", "de", "de-AT")]
+[assembly: NeutralResourcesLanguage("en")]
+[assembly: AvailableResourcesLanguages("", "de", "de-AT")]

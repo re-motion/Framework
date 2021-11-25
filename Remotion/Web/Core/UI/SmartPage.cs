@@ -114,8 +114,8 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
   /// </remarks>
   [Description("The message displayed when the user attempts to leave the page.")]
-  [Category ("Appearance")]
-  [DefaultValue ("")]
+  [Category("Appearance")]
+  [DefaultValue("")]
   public virtual string? AbortMessage
   {
     get { return _smartPageInfo.AbortMessage; }
@@ -129,8 +129,8 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
   /// </remarks>
   [Description("The message displayed when the user attempts to submit while the page is already submitting.")]
-  [Category ("Appearance")]
-  [DefaultValue ("")]
+  [Category("Appearance")]
+  [DefaultValue("")]
   public virtual string StatusIsSubmittingMessage
   {
     get { return _smartPageInfo.StatusIsSubmittingMessage; }
@@ -341,8 +341,8 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   Defaults to <see cref="F:ShowAbortConfirmation.OnlyIfDirty"/>.
   /// </value>
   [Description("Determines whether to display a confirmation dialog before leaving the page.")]
-  [Category ("Behavior")]
-  [DefaultValue (ShowAbortConfirmation.OnlyIfDirty)]
+  [Category("Behavior")]
+  [DefaultValue(ShowAbortConfirmation.OnlyIfDirty)]
   public virtual ShowAbortConfirmation ShowAbortConfirmation
   {
     get { return _showAbortConfirmation; }
@@ -386,8 +386,8 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// </remarks>
   [Description("The flag that determines whether to display a status message when the user attempts to start a "
              + "second request. Undefined is interpreted as true.")]
-  [Category ("Behavior")]
-  [DefaultValue (null)]
+  [Category("Behavior")]
+  [DefaultValue(null)]
   public virtual bool? EnableStatusIsSubmittingMessage
   {
     get { return _enableStatusIsSubmittingMessage; }
@@ -418,10 +418,10 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <remarks>
   ///   Use <see cref="IsQueuedSubmitToBeAborted"/> to evaluate this property.
   /// </remarks>
-  [Description (
+  [Description(
       "The flag that determines whether to continue or abort a queued submit upon completion of the postback. Undefined is interpreted as false.")]
-  [Category ("Behavior")]
-  [DefaultValue (null)]
+  [Category("Behavior")]
+  [DefaultValue(null)]
   public bool? AbortQueuedSubmit
   {
     get { return _abortQueuedSubmit; }
@@ -451,8 +451,8 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   Use <see cref="IsSmartScrollingEnabled"/> to evaluate this property.
   /// </remarks>
   [Description("The flag that determines whether to use smart scrolling. Undefined is interpreted as true.")]
-  [Category ("Behavior")]
-  [DefaultValue (null)]
+  [Category("Behavior")]
+  [DefaultValue(null)]
   public virtual bool? EnableSmartScrolling
   {
     get { return _enableSmartScrolling; }
@@ -491,8 +491,8 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   Use <see cref="IsSmartFocusingEnabled"/> to evaluate this property.
   /// </remarks>
   [Description("The flag that determines whether to use smart navigation. Undefined is interpreted as true.")]
-  [Category ("Behavior")]
-  [DefaultValue (null)]
+  [Category("Behavior")]
+  [DefaultValue(null)]
   public virtual bool? EnableSmartFocusing
   {
     get { return _enableSmartFocusing; }

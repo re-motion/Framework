@@ -253,8 +253,8 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the control to which this collection belongs. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public IControl? OwnerControl
     {
       get { return _ownerControl; }

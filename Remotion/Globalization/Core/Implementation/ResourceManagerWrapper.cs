@@ -165,7 +165,7 @@ namespace Remotion.Globalization.Implementation
     /// <summary>
     ///   Gets the value of the specified string resource. 
     /// </summary>
-    public bool TryGetString (string id, [MaybeNullWhen (false)] out string value)
+    public bool TryGetString (string id, [MaybeNullWhen(false)] out string value)
     {
       ArgumentUtility.CheckNotNullOrEmpty("id", id);
 

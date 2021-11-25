@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
   [Instantiable]
   public abstract class RelationTargetForMixinAddingBidirectionalRelationTwice : DomainObject
   {
-    [DBBidirectionalRelation ("RealSide")]
+    [DBBidirectionalRelation("RealSide")]
     public abstract TargetClass1ForMixinAddingBidirectionalRelationTwice VirtualSide { get; set; }
   }
 }

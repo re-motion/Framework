@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPropertyTypes.PropertyTypeOfObjectList_DomainObjectAboveInheritanceRoot
 {
-  [ClassID ("PropertyTypeOfObjectList_DomainObjectAboveInheritanceRoot_ClassAboveInheritanceRoot")]
+  [ClassID("PropertyTypeOfObjectList_DomainObjectAboveInheritanceRoot_ClassAboveInheritanceRoot")]
   public class ClassAboveInheritanceRoot : DomainObject
   {
   }

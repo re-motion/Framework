@@ -74,7 +74,7 @@ namespace Remotion.Globalization.Implementation
 
     public bool TryGetLocalizedNameForCurrentUICulture (
         [NotNull] TReflectionObject reflectionObject,
-        [CanBeNull][MaybeNullWhen (false)] out string result)
+        [CanBeNull][MaybeNullWhen(false)] out string result)
     {
       ArgumentUtility.CheckNotNull("reflectionObject", reflectionObject);
 

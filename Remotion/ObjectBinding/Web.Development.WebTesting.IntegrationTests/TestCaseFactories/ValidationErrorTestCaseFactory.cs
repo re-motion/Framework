@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       get { return "Validation Errors"; }
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledValidation)]
     public void GetValidationErrors_OneCustomValidator ()
     {
       var control = Selector.GetByID(Parameter.CustomValidatedControlHtmlId);
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(control.GetValidationErrors(), Is.EqualTo(new List<string> { "Always false." }));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledValidation)]
     public void GetValidationErrors_MultipleValidators ()
     {
       var control = Selector.GetByID(Parameter.MultipleValidatorsControlHtmlId);
@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(control.GetValidationErrors(), Is.EqualTo(new List<string> { "Always false.", "Always false. The second." }));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledValidation)]
     public void NotInFormGrid ()
     {
       var control = Selector.GetByID(Parameter.ControlNotInFormGridHtmlId);
@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(control.GetValidationErrors(), Is.EqualTo(new List<string>()));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledValidation)]
     public void NoValidationErrors ()
     {
       var control = Selector.GetByID(Parameter.ControlWithoutValidationHtmlId);
@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(control.GetValidationErrors(), Is.EqualTo(new List<string>()));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation, SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledValidation, SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void GetValidationErrorsForReadOnlyControl_Throws ()
     {
       var control = Selector.GetByID(Parameter.ReadOnlyControlHtmlId);
@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
               AssertionExceptionUtility.CreateControlReadOnlyException(control.Context.Browser.Driver).Message));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledValidation)]
     public void GetValidationErrorsForReadOnly_ReadOnlyControl ()
     {
       var control = Selector.GetByID(Parameter.CustomValidatedReadOnlyControlHtmlId);
@@ -102,7 +102,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(control.GetValidationErrorsForReadOnly(), Is.EqualTo(new List<string> { "Always false." }));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledValidation)]
     public void GetValidationErrorsForReadOnly_EditableControl_Throws ()
     {
       var control = Selector.GetByID(Parameter.ControlWithoutValidationHtmlId);

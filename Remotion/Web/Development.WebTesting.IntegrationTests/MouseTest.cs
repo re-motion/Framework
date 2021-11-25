@@ -126,7 +126,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That(GetColor(hoverElement).ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
     }
 
-    [Explicit ("Testing the tooltip is flaky as long as there is no good implementation of .ShowTooltip")]
+    [Explicit("Testing the tooltip is flaky as long as there is no good implementation of .ShowTooltip")]
     [Test]
     public void Test_Tooltip ()
     {

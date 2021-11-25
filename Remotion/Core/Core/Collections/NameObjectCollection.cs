@@ -25,7 +25,7 @@ namespace Remotion.Collections
   /// Case-sensitive name/object dictionary.
   /// </summary>
   [Serializable]
-  [DebuggerDisplay ("Count={Count}")]
+  [DebuggerDisplay("Count={Count}")]
   public class NameObjectCollection : ICollection, IDictionary, ISerializable, ICloneable
   {
     private Hashtable _hashtable;

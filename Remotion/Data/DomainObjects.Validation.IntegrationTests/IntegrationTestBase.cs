@@ -27,8 +27,8 @@ using LogManager = log4net.LogManager;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
 {
-  [SetUICulture ("")]
-  [SetCulture ("")]
+  [SetUICulture("")]
+  [SetCulture("")]
   public abstract class IntegrationTestBase
   {
     protected IValidatorProvider ValidationProvider;

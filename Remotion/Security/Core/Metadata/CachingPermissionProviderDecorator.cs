@@ -28,7 +28,7 @@ namespace Remotion.Security.Metadata
   /// <summary>
   /// Implements a cache for <see cref="IPermissionProvider"/> implementations.
   /// </summary>
-  [ImplementationFor (typeof(IPermissionProvider), RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor(typeof(IPermissionProvider), RegistrationType = RegistrationType.Decorator)]
   public class CachingPermissionProviderDecorator : IPermissionProvider
   {
     private struct CacheKey : IEquatable<CacheKey>

@@ -38,7 +38,7 @@ namespace Remotion.Collections.Caching
     {
     }
 
-    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
       value = default(TValue)!;
       return false;

@@ -25,7 +25,7 @@ namespace Remotion.Web.UI.Controls.WebButtonImplementation.Rendering
   {
     void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender);
 
-    [Obsolete ("The Render method is not supported at this time.", true)]
+    [Obsolete("The Render method is not supported at this time.", true)]
     void Render (WebButtonRenderingContext renderingContext);
   }
 }

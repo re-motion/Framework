@@ -54,7 +54,7 @@ namespace Remotion.Logging
     /// <param name="format">A String containing zero or more format items.</param>
     /// <param name="args">An Object array containing zero or more objects to format.</param>
     /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     void LogFormat (LogLevel logLevel, int? eventID, Exception? exceptionObject, string? format, params object?[]? args);
 
     /// <summary>

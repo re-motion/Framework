@@ -27,7 +27,7 @@ namespace Remotion.Globalization.Implementation
   /// </summary>
   /// <seealso cref="MultiLingualResourcesAttribute"/>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof(IResourceManagerFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IResourceManagerFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundResourceManagerFactory : IResourceManagerFactory
   {    private readonly IReadOnlyList<IResourceManagerFactory> _resourceManagerFactories;
 

@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
-  [AttributeUsage (AttributeTargets.Class, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Class, Inherited = false)]
   public class SampleCopyTemplateAttribute : Attribute
   {
   }

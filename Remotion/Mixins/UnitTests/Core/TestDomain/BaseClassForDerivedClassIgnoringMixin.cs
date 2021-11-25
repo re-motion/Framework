@@ -18,11 +18,11 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof(NullMixin))]
-  [Uses (typeof(DerivedNullMixin))]
-  [Uses (typeof(DerivedDerivedNullMixin))]
-  [Uses (typeof(GenericMixinWithVirtualMethod<>))]
-  [Uses (typeof(GenericMixinWithVirtualMethod2<object>))]
+  [Uses(typeof(NullMixin))]
+  [Uses(typeof(DerivedNullMixin))]
+  [Uses(typeof(DerivedDerivedNullMixin))]
+  [Uses(typeof(GenericMixinWithVirtualMethod<>))]
+  [Uses(typeof(GenericMixinWithVirtualMethod2<object>))]
   public class BaseClassForDerivedClassIgnoringMixin
   {
   }

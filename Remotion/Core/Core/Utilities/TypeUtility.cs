@@ -51,8 +51,8 @@ namespace Remotion.Utilities
     /// <param name="typeName"> A standard or abbreviated type name. </param>
     /// <returns> A standard type name as expected by <see cref="Type.GetType(string)"/>. </returns>
     [CanBeNull]
-    [ContractAnnotation ("typeName:notnull => notnull;typeName:null => null")]
-    [return: NotNullIfNotNull ("typeName")]
+    [ContractAnnotation("typeName:notnull => notnull;typeName:null => null")]
+    [return: NotNullIfNotNull("typeName")]
     public static string? ParseAbbreviatedTypeName ([CanBeNull]string? typeName)
     {
       if (typeName == null)
@@ -100,7 +100,7 @@ namespace Remotion.Utilities
     /// the designer services (<see cref="IDesignerHost"/>) are used for the lookup.
     /// </remarks>
     [CanBeNull]
-    [ContractAnnotation ("throwOnError:true => notnull")]
+    [ContractAnnotation("throwOnError:true => notnull")]
     public static Type? GetType ([JetBrains.Annotations.NotNull]string name, bool throwOnError)
     {
       ArgumentUtility.CheckNotNullOrEmpty("name", name);

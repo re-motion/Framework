@@ -28,19 +28,19 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
 
   public class MixinIntroducingMembersWithPrivateVisibilities : IMixinIntroducingMembersWithPrivateVisibilities
   {
-    [MemberVisibility (MemberVisibility.Private)]
+    [MemberVisibility(MemberVisibility.Private)]
     public void MethodWithPublicVisibility ()
     {
     }
 
-    [MemberVisibility (MemberVisibility.Private)]
+    [MemberVisibility(MemberVisibility.Private)]
     public int PropertyWithPublicVisibility
     {
       get { return 0; }
       set { Dev.Null = value; }
     }
 
-    [MemberVisibility (MemberVisibility.Private)]
+    [MemberVisibility(MemberVisibility.Private)]
     public event EventHandler EventWithPublicVisibility;
   }
 }

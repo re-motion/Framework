@@ -35,7 +35,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
   /// Responsible for rendering a <see cref="ListMenu"/> control in standard mode.
   /// <seealso cref="IListMenu"/>
   /// </summary>
-  [ImplementationFor (typeof(IListMenuRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IListMenuRenderer), Lifetime = LifetimeKind.Singleton)]
   public class ListMenuRenderer : RendererBase<IListMenu>, IListMenuRenderer
   {
     private const string c_whiteSpace = "&nbsp;";

@@ -18,12 +18,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
     public abstract decimal Price { get; set; }
 
-    [DBBidirectionalRelation ("Product", SortExpression = "CreatedAt ASC")]
+    [DBBidirectionalRelation("Product", SortExpression = "CreatedAt ASC")]
     public abstract IObjectList<ProductReview> Reviews { get; set; }
 
     public void DeleteWithProductReviews ()

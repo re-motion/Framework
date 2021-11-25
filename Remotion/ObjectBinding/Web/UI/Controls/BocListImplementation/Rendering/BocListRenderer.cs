@@ -40,11 +40,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// This class should not be instantiated directly. Use a <see cref="BocRowRenderer"/> to obtain an instance.</remarks>
   /// <seealso cref="BocListNavigationBlockRenderer"/>
   /// <seealso cref="BocListMenuBlockRenderer"/>
-  [ImplementationFor (typeof(IBocListRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocListRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocListRenderer : BocRendererBase<IBocList>, IBocListRenderer
   {
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocListRenderer")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocListRenderer")]
     public enum ResourceIdentifier
     {
       ControlTypeScreenReaderLabelText

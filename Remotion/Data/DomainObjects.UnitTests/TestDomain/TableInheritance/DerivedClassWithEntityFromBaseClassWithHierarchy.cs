@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_DerivedClassWithEntityFromBaseClassWithHierarchy")]
+  [ClassID("TI_DerivedClassWithEntityFromBaseClassWithHierarchy")]
   [Instantiable]
   public abstract class DerivedClassWithEntityFromBaseClassWithHierarchy: DerivedClassWithEntityWithHierarchy
   {
@@ -31,10 +31,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
     {
     }
 
-    [DBBidirectionalRelation ("ChildDerivedClassesWithEntityFromBaseClassWithHierarchy")]
+    [DBBidirectionalRelation("ChildDerivedClassesWithEntityFromBaseClassWithHierarchy")]
     public abstract DerivedClassWithEntityFromBaseClassWithHierarchy ParentDerivedClassWithEntityFromBaseClassWithHierarchy { get; set; }
 
-    [DBBidirectionalRelation ("ParentDerivedClassWithEntityFromBaseClassWithHierarchy", SortExpression = "Name ASC")]
+    [DBBidirectionalRelation("ParentDerivedClassWithEntityFromBaseClassWithHierarchy", SortExpression = "Name ASC")]
     public abstract ObjectList<DerivedClassWithEntityFromBaseClassWithHierarchy> ChildDerivedClassesWithEntityFromBaseClassWithHierarchy { get; }
 
     public abstract TIClient ClientFromDerivedClassWithEntityFromBaseClass { get; set; }

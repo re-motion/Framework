@@ -33,8 +33,8 @@ using Remotion.Utilities;
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Group")]
-  [PermanentGuid ("AA1761A4-226C-4ebe-91F0-8FFF4974B175")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Group")]
+  [PermanentGuid("AA1761A4-226C-4ebe-91F0-8FFF4974B175")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -82,8 +82,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateGroup ();
     //}
 
-    [DemandPermission (GeneralAccessTypes.Search)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DemandPermission(GeneralAccessTypes.Search)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static void Search ()
     {
       throw new NotImplementedException("This method is only intended for framework support and should never be called.");
@@ -109,31 +109,31 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     // methods and properties
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [StringProperty (MaximumLength = 20)]
+    [StringProperty(MaximumLength = 20)]
     public abstract string ShortName { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string UniqueIdentifier { get; set; }
 
     [Mandatory]
     public abstract Tenant Tenant { get; set; }
 
-    [DBBidirectionalRelation ("Children")]
-    [SearchAvailableObjectsServiceType (typeof(GroupPropertyTypeSearchService))]
+    [DBBidirectionalRelation("Children")]
+    [SearchAvailableObjectsServiceType(typeof(GroupPropertyTypeSearchService))]
     public abstract Group Parent { get; set; }
 
-    [DBBidirectionalRelation ("Parent")]
+    [DBBidirectionalRelation("Parent")]
     public abstract ObjectList<Group> Children { get; }
 
-    [SearchAvailableObjectsServiceType (typeof(GroupTypePropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(GroupTypePropertyTypeSearchService))]
     public abstract GroupType GroupType { get; set; }
 
 
-    [DBBidirectionalRelation ("Group")]
-    public abstract ObjectList<Role> Roles { get; [DemandPermission (SecurityManagerAccessTypes.AssignRole)] protected set; }
+    [DBBidirectionalRelation("Group")]
+    public abstract ObjectList<Role> Roles { get; [DemandPermission(SecurityManagerAccessTypes.AssignRole)] protected set; }
 
     protected override void OnDeleting (EventArgs args)
     {
@@ -186,7 +186,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     /// <exception cref="InvalidOperationException">
     /// Thrown if the parent hierarchy contains a circular reference.
     /// </exception>
-    [DemandPermission (GeneralAccessTypes.Read)]
+    [DemandPermission(GeneralAccessTypes.Read)]
     public IEnumerable<Group> GetParents ()
     {
       var securityClient = SecurityClient.CreateSecurityClientFromConfiguration();

@@ -115,7 +115,7 @@ namespace Remotion.Collections.Caching
       get { return _innerDictionary.Comparer; }
     }
 
-    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull("key", key);
 
@@ -174,8 +174,8 @@ namespace Remotion.Collections.Caching
       get { return false; }
     }
 
-    [MethodImpl (MethodImplOptions.AggressiveInlining)]
-    private bool TryGetValueInternal (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private bool TryGetValueInternal (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
       Data data;
       var hasData = _innerDictionary.TryGetValue(key, out data);
@@ -198,7 +198,7 @@ namespace Remotion.Collections.Caching
     /// <remarks>
     /// Method must be extracted into separate, non-inlined method because string-Format would otherwise incur a 20% performance overhead.
     /// </remarks>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     private static InvalidOperationException CreateExceptionRecursiveKeyAccess (TKey key)
     {
       return new InvalidOperationException(

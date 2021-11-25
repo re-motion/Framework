@@ -38,9 +38,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit a boolean value (true or false). </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/Class/*' />
-  [ValidationProperty ("ValidationValue")]
-  [DefaultEvent ("SelectionChanged")]
-  [ToolboxItemFilter ("System.Web.UI")]
+  [ValidationProperty("ValidationValue")]
+  [DefaultEvent("SelectionChanged")]
+  [ToolboxItemFilter("System.Web.UI")]
   public class BocCheckBox : BocBooleanValueBase, IBocCheckBox
   {
     // constants
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocCheckBox")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocCheckBox")]
     public enum ResourceIdentifier
     {
       /// <summary> The descripton rendered next the check box when it is checked. </summary>
@@ -269,8 +269,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Returns the <see cref="Control.ClientID"/> of the <see cref="CheckBox"/> if the control is in edit mode, 
     ///   otherwise <see langword="null"/>. 
     /// </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public override string? FocusID
     {
       get { return IsReadOnly ? null : GetValueName(); }
@@ -284,7 +284,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     This property is used for validation.
     ///   </para>
     /// </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool ValidationValue
     {
       get { return Value!.Value; }
@@ -295,11 +295,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets the <see cref="Style"/> that you want to apply to the <see cref="Label"/> used for displaying the 
     ///   description. 
     /// </summary>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the label used for displaying the description.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the label used for displaying the description.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public override Style LabelStyle
     {
       get { return _labelStyle; }
@@ -313,9 +313,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     ///   Use <see cref="IsDescriptionEnabled"/> to evaluate this property.
     /// </remarks>
-    [Description ("The flag that determines whether to show the description next to the checkbox. Undefined is interpreted as false.")]
-    [Category ("Appearance")]
-    [DefaultValue (typeof(bool?), "")]
+    [Description("The flag that determines whether to show the description next to the checkbox. Undefined is interpreted as false.")]
+    [Category("Appearance")]
+    [DefaultValue(typeof(bool?), "")]
     public bool? ShowDescription
     {
       get { return _showDescription; }
@@ -324,7 +324,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets a flag that determines whether the control is to be treated as a required value. </summary>
     /// <value> Always <see langword="false"/> since the checkbox has no undefined state in the user interface. </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public override bool IsRequired
     {
       get { return false; }
@@ -351,10 +351,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see langword="true"/> or <see langword="false"/> to explicitly specify the default value, or <see langword="null"/> to leave the decision 
     ///   to the object model. If the control  is unbound and no default value is specified, <see langword="false"/> is assumed as default value.
     /// </value>
-    [Category ("Behavior")]
-    [Description ("The boolean value to which this control defaults if the assigned value is null.")]
-    [NotifyParentProperty (true)]
-    [DefaultValue (typeof(bool?), "")]
+    [Category("Behavior")]
+    [Description("The boolean value to which this control defaults if the assigned value is null.")]
+    [NotifyParentProperty(true)]
+    [DefaultValue(typeof(bool?), "")]
     public bool? DefaultValue
     {
       get { return _defaultValue; }

@@ -98,8 +98,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         _concreteTarget.AddInterface(ifc);
     }
 
-    [MemberNotNull (nameof(_extensionsFieldInfo))]
-    [MemberNotNull (nameof(_extensionsField))]
+    [MemberNotNull(nameof(_extensionsFieldInfo))]
+    [MemberNotNull(nameof(_extensionsField))]
     public void AddExtensionsField ()
     {
       _extensionsFieldInfo = _concreteTarget.AddField("__extensions", FieldAttributes.Private, typeof(object[]));
@@ -108,7 +108,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _extensionsField = GetFieldExpression(_extensionsFieldInfo);
     }
 
-    [MemberNotNull (nameof(_nextCallProxy))]
+    [MemberNotNull(nameof(_nextCallProxy))]
     public void AddNextCallProxy (TargetClassDefinition targetClassDefinition, IList<IMixinInfo> mixinInfos)
     {
       ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
@@ -152,7 +152,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
               InitializeMixinArrayInitializerField(classContext.Type, mixinTypes)));
     }
 
-    [MemberNotNull (nameof(_initializationMethod))]
+    [MemberNotNull(nameof(_initializationMethod))]
     public void AddInitializations (List<Type> mixinTypes)
     {
       ArgumentUtility.CheckNotNull("mixinTypes", mixinTypes);

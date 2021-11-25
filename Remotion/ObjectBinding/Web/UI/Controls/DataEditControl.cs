@@ -81,7 +81,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     //}
 
     ///// <summary> Gets the control's data source. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public abstract IBusinessObjectDataSourceControl DataSource { get; }
 
     IPage? IControl.Page

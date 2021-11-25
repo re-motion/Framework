@@ -181,7 +181,7 @@ namespace Remotion.UnitTests.Utilities
     }
 
 #if !DEBUG
-  [Ignore ("Skipped unless DEBUG build")]
+  [Ignore("Skipped unless DEBUG build")]
 #endif
     [Test]
     public void DebugIsNotNull_Message_True ()
@@ -192,7 +192,7 @@ namespace Remotion.UnitTests.Utilities
     }
 
 #if !DEBUG
-  [Ignore ("Skipped unless DEBUG build")]
+  [Ignore("Skipped unless DEBUG build")]
 #endif
     [Test]
     public void DebugIsNotNull_Message_False ()
@@ -204,7 +204,7 @@ namespace Remotion.UnitTests.Utilities
     }
 
 #if !DEBUG
-  [Ignore ("Skipped unless DEBUG build")]
+  [Ignore("Skipped unless DEBUG build")]
 #endif
     [Test]
     public void DebugIsNotNull_Message_Args_True ()
@@ -215,7 +215,7 @@ namespace Remotion.UnitTests.Utilities
     }
 
 #if !DEBUG
-  [Ignore ("Skipped unless DEBUG build")]
+  [Ignore("Skipped unless DEBUG build")]
 #endif
     [Test]
     public void DebugIsNotNull_Message_Args_False ()

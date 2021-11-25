@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_Throws_WebTestException ()
     {
       Assert.That(
@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_WithClass_Throws_WebTestException ()
     {
       Assert.That(
@@ -108,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void GetOrNull_WithClass_Returns_Null ()
     {
       Assert.That(
@@ -146,7 +146,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(controlVisible, Is.True);
     }
 
-    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Exists_WithClass_Returns_False ()
     {
       Assert.That(

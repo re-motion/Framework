@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
       set { Properties[typeof(MixinAddingPersistentProperties), "PersistentProperty"].SetValue(value); }
     }
 
-    [StorageClass (StorageClass.Persistent)]
+    [StorageClass(StorageClass.Persistent)]
     public int ExtraPersistentProperty
     {
       get { return Properties[typeof(MixinAddingPersistentProperties), "ExtraPersistentProperty"].GetValue<int>(); }
@@ -45,27 +45,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
       set { Properties[typeof(MixinAddingPersistentProperties), "UnidirectionalRelationProperty"].SetValue(value); }
     }
 
-    [DBBidirectionalRelation ("RelationProperty1", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("RelationProperty1", ContainsForeignKey = true)]
     public RelationTargetForPersistentMixin RelationProperty
     {
       get { return Properties[typeof(MixinAddingPersistentProperties), "RelationProperty"].GetValue<RelationTargetForPersistentMixin>(); }
       set { Properties[typeof(MixinAddingPersistentProperties), "RelationProperty"].SetValue(value); }
     }
 
-    [DBBidirectionalRelation ("RelationProperty2", ContainsForeignKey = false)]
+    [DBBidirectionalRelation("RelationProperty2", ContainsForeignKey = false)]
     public RelationTargetForPersistentMixin VirtualRelationProperty
     {
       get { return Properties[typeof(MixinAddingPersistentProperties), "VirtualRelationProperty"].GetValue<RelationTargetForPersistentMixin>(); }
       set { Properties[typeof(MixinAddingPersistentProperties), "VirtualRelationProperty"].SetValue(value); }
     }
 
-    [DBBidirectionalRelation ("RelationProperty3")]
+    [DBBidirectionalRelation("RelationProperty3")]
     public ObjectList<RelationTargetForPersistentMixin> CollectionProperty1Side
     {
       get { return Properties[typeof(MixinAddingPersistentProperties), "CollectionProperty1Side"].GetValue<ObjectList<RelationTargetForPersistentMixin>>(); }
     }
 
-    [DBBidirectionalRelation ("RelationProperty4")]
+    [DBBidirectionalRelation("RelationProperty4")]
     public RelationTargetForPersistentMixin CollectionPropertyNSide
     {
       get { return Properties[typeof(MixinAddingPersistentProperties), "CollectionPropertyNSide"].GetValue<RelationTargetForPersistentMixin>(); }

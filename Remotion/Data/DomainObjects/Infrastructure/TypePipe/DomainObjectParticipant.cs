@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// </list>
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof(IParticipant), Position = 2, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IParticipant), Position = 2, RegistrationType = RegistrationType.Multiple)]
   public class DomainObjectParticipant : IParticipant
   {
     static DomainObjectParticipant ()
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       PipelineRegistryInitializer.InitializeWithServiceLocator();
     }
 
-    [Obsolete ("Use constructor instead. (Version 1.17.13")]
+    [Obsolete("Use constructor instead. (Version 1.17.13")]
     public static DomainObjectParticipant Create (ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder)
     {
       return new DomainObjectParticipant(typeDefinitionProvider, interceptedPropertyFinder);

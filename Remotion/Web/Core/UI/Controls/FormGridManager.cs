@@ -66,7 +66,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> A list of form grid manager wide resources. </summary>
     /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.Web.Globalization.FormGridManager")]
+    [MultiLingualResources("Remotion.Web.Globalization.FormGridManager")]
     public enum ResourceIdentifier
     {
       /// <summary>The tool tip text for the required icon.</summary>
@@ -3193,8 +3193,8 @@ namespace Remotion.Web.UI.Controls
       return false;
     }
 
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IGlobalizationService GlobalizationService
     {
       get
@@ -3203,7 +3203,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    [Browsable (false)]
+    [Browsable(false)]
     public HtmlTable[] Tables
     {
       get

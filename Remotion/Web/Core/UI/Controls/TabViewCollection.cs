@@ -67,7 +67,7 @@ public class TabViewCollection: ViewCollection
     Owner.OnTabViewRemoved(view);
   }
 
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
   public new TabView this[int index]
   {
     get { return (TabView)base[index]; }

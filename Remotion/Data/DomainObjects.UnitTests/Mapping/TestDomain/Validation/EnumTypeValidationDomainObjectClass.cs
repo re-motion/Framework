@@ -49,16 +49,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation
 
     public virtual float PropertyWithMandatoryOtherType { get; set; }
 
-    [ExtensibleEnumProperty (IsNullable = false)]
+    [ExtensibleEnumProperty(IsNullable = false)]
     public virtual ExtensibleEnumTypeWithValues PropertyWithMandatoryExtensibleEnumTypeWithValues { get; set; }
 
-    [ExtensibleEnumProperty (IsNullable = true)]
+    [ExtensibleEnumProperty(IsNullable = true)]
     public virtual ExtensibleEnumTypeWithValues PropertyWithNullableExtensibleEnumTypeWithValues { get; set; }
 
-    [ExtensibleEnumProperty (IsNullable = false)]
+    [ExtensibleEnumProperty(IsNullable = false)]
     public virtual ExtensibleEnumTypeWithoutValues PropertyWithMandatoryExtensibleEnumTypeWithoutValues { get; set; }
 
-    [ExtensibleEnumProperty (IsNullable = true)]
+    [ExtensibleEnumProperty(IsNullable = true)]
     public virtual ExtensibleEnumTypeWithoutValues PropertyWithNullableExtensibleEnumTypeWithoutValues { get; set; }
 
     public virtual NetEnumTypeWithValues PropertyWithMandatoryNetEnumTypeWithValues { get; set; }

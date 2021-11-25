@@ -334,7 +334,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  [Ignore (@"Bug in ParseArrayItem: Escape Sequence '\,' does not work.")]
+  [Ignore(@"Bug in ParseArrayItem: Escape Sequence '\,' does not work.")]
   public void ParseDoubleArrayWithCultureInvariant ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeDe;
@@ -363,7 +363,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  [Ignore (@"Bug in ParseArrayItem: Escape Sequence '\,' does not work.")]
+  [Ignore(@"Bug in ParseArrayItem: Escape Sequence '\,' does not work.")]
   public void ParseDoubleArrayWithCultureEnUs ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeDe;
@@ -392,7 +392,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  [Ignore (@"Bug in ParseArrayItem: Escape Sequence '\,' does not work.")]
+  [Ignore(@"Bug in ParseArrayItem: Escape Sequence '\,' does not work.")]
   public void ParseDoubleArrayWithCultureDeDe ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureEnUs;

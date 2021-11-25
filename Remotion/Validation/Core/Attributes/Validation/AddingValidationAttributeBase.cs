@@ -26,7 +26,7 @@ namespace Remotion.Validation.Attributes.Validation
   /// <summary>
   /// Base class for validation attributes used to substitute the API-based <see cref="ValidationRuleCollectorBase{TValidatedType}"/>.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Property)]
+  [AttributeUsage(AttributeTargets.Property)]
   public abstract class AddingValidationAttributeBase : Attribute
   {
     /// <summary>

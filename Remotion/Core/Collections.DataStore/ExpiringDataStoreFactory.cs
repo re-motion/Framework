@@ -71,7 +71,7 @@ namespace Remotion.Collections.DataStore
     /// complete. When the factory delegates take a long time to execute, consider using <see cref="CreateWithLazyLocking{TKey,TValue,TExpirationInfo,TScanInfo}"/> 
     /// instead to reduce contention.
     /// </remarks>
-    [Obsolete ("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
+    [Obsolete("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
     public static LockingDataStoreDecorator<TKey, TValue> CreateWithLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
         [NotNull] IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> policy,
         [NotNull] IEqualityComparer<TKey?> comparer)
@@ -103,7 +103,7 @@ namespace Remotion.Collections.DataStore
     /// in which the factory delegates passed to <see cref="IDataStore{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
     /// delegates do not take a long time, consider using <see cref="CreateWithLocking{TKey,TValue,TExpirationInfo,TScanInfo}"/> instead to reduce the number of locks used.
     /// </remarks>
-    [Obsolete ("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
+    [Obsolete("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
     public static LazyLockingDataStoreAdapter<TKey, TValue> CreateWithLazyLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
         [NotNull] IExpirationPolicy<Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> policy,
         [NotNull] IEqualityComparer<TKey> comparer)

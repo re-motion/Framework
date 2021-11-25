@@ -51,7 +51,7 @@ namespace Remotion.Collections.Caching
     /// The value of the element with the specified key, or <typeparamref name="TValue"/>'s default value if no such element exists.</param>
     /// <returns><see langword="true" /> if an element with the specified key was found; otherwise, <see langword="false" />.</returns>
     /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="GetOrCreateValue"/> from inside the factory using the <paramref name="key"/>.</exception>
-    bool TryGetValue ([JetBrains.Annotations.NotNull] TKey key, [CanBeNull, AllowNull, MaybeNullWhen (false)] out TValue value);
+    bool TryGetValue ([JetBrains.Annotations.NotNull] TKey key, [CanBeNull, AllowNull, MaybeNullWhen(false)] out TValue value);
 
     /// <summary>
     /// Removes all elements from the store.

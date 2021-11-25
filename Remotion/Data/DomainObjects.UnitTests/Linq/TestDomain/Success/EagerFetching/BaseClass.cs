@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching
 {
-  [DBTable ("EagerFetching_BaseClass")]
-  [ClassID ("EagerFetching_BaseClass")]
+  [DBTable("EagerFetching_BaseClass")]
+  [ClassID("EagerFetching_BaseClass")]
   public class BaseClass : DomainObject
   {
   }

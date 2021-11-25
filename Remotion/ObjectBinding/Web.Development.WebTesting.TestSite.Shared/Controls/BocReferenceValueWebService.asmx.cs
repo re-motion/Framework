@@ -25,9 +25,9 @@ using Remotion.Web.Services;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
 {
-  [WebService (Namespace = "http://re-motion.org/ObjectBinding.Web/")]
-  [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
-  [ToolboxItem (false)]
+  [WebService(Namespace = "http://re-motion.org/ObjectBinding.Web/")]
+  [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+  [ToolboxItem(false)]
   [ScriptService]
   public class BocReferenceValueWebService : WebService, IBocReferenceValueWebService
   {
@@ -39,14 +39,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     }
 
     [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments)
     {
       return _iconServiceImplementation.GetIcon(new HttpContextWrapper(Context), businessObjectClass, businessObject, arguments);
     }
 
     [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public WebMenuItemProxy[] GetMenuItemStatusForOptionsMenu (
         string controlID,
         string controlType,

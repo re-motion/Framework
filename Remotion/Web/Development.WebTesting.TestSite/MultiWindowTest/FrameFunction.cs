@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
     {
     }
 
-    [WxeParameter (1, true, WxeParameterDirection.In)]
+    [WxeParameter(1, true, WxeParameterDirection.In)]
     public bool AlwaysRefreshMain
     {
       get { return (bool)Variables["AlwaysRefreshMain"]; }

@@ -24,19 +24,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
     {
     }
 
-    [DBBidirectionalRelation ("NoContainsKeyLeftSide")]
+    [DBBidirectionalRelation("NoContainsKeyLeftSide")]
     public abstract ClassWithInvalidBidirectionalRelationLeftSide NoContainsKeyRightSide { get; set; }
 
-    [DBBidirectionalRelation ("InvalidOppositePropertyTypeLeftSide")]
+    [DBBidirectionalRelation("InvalidOppositePropertyTypeLeftSide")]
     public abstract OtherClassWithInvalidBidirectionalRelationLeftSide InvalidOppositePropertyTypeRightSide { get; set; }
 
-    [DBBidirectionalRelation ("BaseInvalidOppositePropertyTypeLeftSide")]
+    [DBBidirectionalRelation("BaseInvalidOppositePropertyTypeLeftSide")]
     public abstract OtherClassWithInvalidBidirectionalRelationLeftSide BaseInvalidOppositePropertyTypeRightSide { get; set; }
 
-    [DBBidirectionalRelation ("InvalidOppositeCollectionPropertyTypeLeftSide")]
+    [DBBidirectionalRelation("InvalidOppositeCollectionPropertyTypeLeftSide")]
     public abstract OtherClassWithInvalidBidirectionalRelationLeftSide InvalidOppositeCollectionPropertyTypeRightSide { get; set; }
 
-    [DBBidirectionalRelation ("BaseInvalidOppositeCollectionPropertyTypeLeftSide")]
+    [DBBidirectionalRelation("BaseInvalidOppositeCollectionPropertyTypeLeftSide")]
     public abstract OtherClassWithInvalidBidirectionalRelationLeftSide BaseInvalidOppositeCollectionPropertyTypeRightSide { get; set; }
 
     //[DBBidirectionalRelation ("MissingBidirectionalRelationAttributeLeftSide")]
@@ -45,13 +45,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
     //[DBBidirectionalRelation ("MissingBidirectionalRelationAttributeForCollectionPropertyLeftSide")]
     public abstract ClassWithInvalidBidirectionalRelationLeftSide MissingBidirectionalRelationAttributeForCollectionPropertyRightSide { get; set; }
 
-    [DBBidirectionalRelation ("Invalid")]
+    [DBBidirectionalRelation("Invalid")]
     public abstract ClassWithInvalidBidirectionalRelationLeftSide InvalidPropertyNameInBidirectionalRelationAttributeOnOppositePropertyRightSide { get; set; }
 
-    [DBBidirectionalRelation ("CollectionPropertyContainsKeyLeftSide")]
+    [DBBidirectionalRelation("CollectionPropertyContainsKeyLeftSide")]
     public abstract ClassWithInvalidBidirectionalRelationLeftSide CollectionPropertyContainsKeyRightSide { get; set; }
 
-    [DBBidirectionalRelation ("NonCollectionPropertyHavingASortExpressionLeftSide")]
+    [DBBidirectionalRelation("NonCollectionPropertyHavingASortExpressionLeftSide")]
     public abstract ObjectList<ClassWithInvalidBidirectionalRelationLeftSide> NonCollectionPropertyHavingASortExpressionRightSide { get; set; }
   }
 }

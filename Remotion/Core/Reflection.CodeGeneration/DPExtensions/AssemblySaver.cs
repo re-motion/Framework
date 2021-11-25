@@ -22,7 +22,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
   public static class AssemblySaver
   {
 #if !FEATURE_ASSEMBLYBUILDER_SAVE
-    [Obsolete ("The current platform does not support saving a generated assembly. (Version 3.0.0)")]
+    [Obsolete("The current platform does not support saving a generated assembly. (Version 3.0.0)")]
 #endif
     public static string[] SaveAssemblies (ModuleScope scope)
     {

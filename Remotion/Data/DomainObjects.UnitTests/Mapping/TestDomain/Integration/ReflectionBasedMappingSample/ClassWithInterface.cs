@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
       set { throw new Exception("The method or operation is not implemented."); }
     }
 
-    [StorageClass (StorageClass.Persistent)]
+    [StorageClass(StorageClass.Persistent)]
     string IInterfaceWithProperties.ExplicitManagedProperty
     {
       get { throw new Exception("The method or operation is not implemented."); }

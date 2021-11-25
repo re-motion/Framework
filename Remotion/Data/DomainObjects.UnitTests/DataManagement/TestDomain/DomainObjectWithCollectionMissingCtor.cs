@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain
   [DBTable]
   public class DomainObjectWithCollectionMissingCtor : DomainObject
   {
-    [DBBidirectionalRelation ("DomainObjectWithCollectionMissingCtor")]
+    [DBBidirectionalRelation("DomainObjectWithCollectionMissingCtor")]
     public virtual CollectionWithMissingDataCtor OppositeObjects { get; set; }
   }
 }

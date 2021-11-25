@@ -35,12 +35,12 @@ namespace Remotion.SecurityManager.Domain.Metadata
     {
     }
 
-    [DBBidirectionalRelation ("StatePropertyReferences")]
-    [DBColumn ("SecurableClassID")]
+    [DBBidirectionalRelation("StatePropertyReferences")]
+    [DBColumn("SecurableClassID")]
     [Mandatory]
     public abstract SecurableClassDefinition Class { get; }
 
-    [DBBidirectionalRelation ("StatePropertyReferences")]
+    [DBBidirectionalRelation("StatePropertyReferences")]
     [Mandatory]
     public abstract StatePropertyDefinition StateProperty { get; set; }
 

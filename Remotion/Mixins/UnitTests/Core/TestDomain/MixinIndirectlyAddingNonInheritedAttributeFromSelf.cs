@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [CopyCustomAttributes (typeof(MixinIndirectlyAddingNonInheritedAttributeFromSelf))]
+  [CopyCustomAttributes(typeof(MixinIndirectlyAddingNonInheritedAttributeFromSelf))]
   [NonInheritable]
   public class MixinIndirectlyAddingNonInheritedAttributeFromSelf : Mixin<object>
   {

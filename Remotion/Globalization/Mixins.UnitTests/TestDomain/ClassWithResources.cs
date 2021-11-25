@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Globalization.Mixins.UnitTests.TestDomain
 {
-  [MultiLingualResources ("Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources.ClassWithResources")]
+  [MultiLingualResources("Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources.ClassWithResources")]
   public class ClassWithResources
   {
     private string _value1;

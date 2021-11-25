@@ -22,16 +22,16 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
   [TestFixture]
   public class AttributeSpike
   {
-    [AttributeUsage (AttributeTargets.All, AllowMultiple = true, Inherited = true)]
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = true)]
     public class MultiInheritedAttribute : Attribute { }
 
-    [AttributeUsage (AttributeTargets.All, AllowMultiple = true, Inherited = false)]
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)]
     public class MultiNonInheritedAttribute : Attribute { }
 
-    [AttributeUsage (AttributeTargets.All, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
     public class NonMultiInheritedAttribute : Attribute { }
 
-    [AttributeUsage (AttributeTargets.All, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = false)]
     public class NonMultiNonInheritedAttribute : Attribute { }
 
     [MultiInherited, MultiNonInherited, NonMultiInherited, NonMultiNonInherited]

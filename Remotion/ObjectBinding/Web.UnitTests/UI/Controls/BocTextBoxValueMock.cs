@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
 /// <summary> Exposes non-public members of the <see cref="BocTextValue"/> type. </summary>
-[ToolboxItem (false)]
+[ToolboxItem(false)]
 public class BocTextValueMock: BocTextValue
 {
 	public new void EvaluateWaiConformity ()

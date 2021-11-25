@@ -20,7 +20,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{FullName} introduced via {Attribute.DeclaringDefinition.FullName}")]
+  [DebuggerDisplay("{FullName} introduced via {Attribute.DeclaringDefinition.FullName}")]
   public class AttributeIntroductionDefinition : IVisitableDefinition
   {
     private readonly IAttributeIntroductionTarget _target;

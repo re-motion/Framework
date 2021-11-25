@@ -5,7 +5,7 @@ using System.Web.UI.WebControls;
 
 namespace Remotion.Web.UI.Controls.Rendering
 {
-  [ToolboxItem (false)]
+  [ToolboxItem(false)]
   public class RenderOnlyTextBox : TextBox
   {
     protected override void OnPreRender (EventArgs e)

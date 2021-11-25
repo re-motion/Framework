@@ -24,7 +24,7 @@ using Remotion.Web.UI.Globalization;
 
 namespace OBWTest
 {
-  [MultiLingualResources ("OBWTest.Globalization.TestBasePage")]
+  [MultiLingualResources("OBWTest.Globalization.TestBasePage")]
   public class TestBasePage<TFunction> :
       WxePage,
       Remotion.Web.UI.Controls.IControl,

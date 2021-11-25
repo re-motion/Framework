@@ -25,10 +25,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class InfrastructureTests : IntegrationTest
   {
     [Test]
-    [TestCase (null, "New Input")]
-    [TestCase ("TODO RM-6402: Chrome Bug", "^   ! \" § $ % & / ( ) = ? ²   { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
-    [TestCase ("TODO RM-6402: Chrome Bug", "^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
-    [TestCase ("TODO RM-6402: Chrome Bug", "^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9 ^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
+    [TestCase(null, "New Input")]
+    [TestCase("TODO RM-6402: Chrome Bug", "^   ! \" § $ % & / ( ) = ? ²   { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
+    [TestCase("TODO RM-6402: Chrome Bug", "^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
+    [TestCase("TODO RM-6402: Chrome Bug", "^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9 ^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
     public void TestCoypuElementScopeFillInWithAndSendKeysExtensions_FillWithAndWait (string ignore, string input)
     {
       if (ignore != null)

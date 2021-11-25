@@ -68,7 +68,7 @@ namespace Remotion.Mixins
   /// }
   /// </code>
   /// </example>
-  [AttributeUsage (AttributeTargets.Interface, AllowMultiple = true, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true, Inherited = false)]
   public class ComposedInterfaceAttribute : Attribute, IMixinConfigurationAttribute<Type>
   {
     private readonly Type _targetType;

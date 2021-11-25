@@ -25,7 +25,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   /// Caches <see cref="ExtensibleEnumDefinition{T}"/> instances for non-generic, reflective access.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof(ExtensibleEnumDefinitionCache), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ExtensibleEnumDefinitionCache), Lifetime = LifetimeKind.Singleton)]
   public sealed class ExtensibleEnumDefinitionCache
   {
     private readonly ConcurrentDictionary<Type, IExtensibleEnumDefinition> _cache = new ConcurrentDictionary<Type, IExtensibleEnumDefinition>();

@@ -28,5 +28,5 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 
-[assembly: InternalsVisibleTo ("Remotion.SharedSource.Development")]
-[assembly: InternalsVisibleTo ("Remotion.SharedSource.UnitTests")]
+[assembly: InternalsVisibleTo("Remotion.SharedSource.Development")]
+[assembly: InternalsVisibleTo("Remotion.SharedSource.UnitTests")]

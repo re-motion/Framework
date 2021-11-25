@@ -24,43 +24,43 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
   public class AxeResult
   {
     /// <summary>Timestamp of analysis.</summary>
-    [DataMember (Name = "timestamp")]
+    [DataMember(Name = "timestamp")]
     public string Timestamp { get; set; } = null!;
 
     /// <summary>Engine the test ran on.</summary>
-    [DataMember (Name = "testEngine")]
+    [DataMember(Name = "testEngine")]
     public AxeTestEngine TestEngine { get; set; } = null!;
 
     /// <summary>Name of the test runner.</summary>
-    [DataMember (Name = "testRunner")]
+    [DataMember(Name = "testRunner")]
     public AxeTestRunner TestRunner { get; set; } = null!;
 
     /// <summary>Test environment the test ran in.</summary>
-    [DataMember (Name = "testEnvironment")]
+    [DataMember(Name = "testEnvironment")]
     public AxeTestEnvironment TestEnvironment { get; set; } = null!;
 
     /// <summary>Url of the website that was tested.</summary>
-    [DataMember (Name = "url")]
+    [DataMember(Name = "url")]
     public string Url { get; set; } = null!;
 
     /// <summary>The options the test ran with.</summary>
-    [DataMember (Name = "toolOptions")]
+    [DataMember(Name = "toolOptions")]
     public AxeToolOptions ToolOptions { get; set; } = null!;
 
     /// <summary>Contains elements that violated the rules.</summary>
-    [DataMember (Name = "violations")]
+    [DataMember(Name = "violations")]
     public AxeRuleResult[] Violations { get; set; } = new AxeRuleResult[0];
 
     /// <summary>Contains elements that passed the rules.</summary>
-    [DataMember (Name = "passes")]
+    [DataMember(Name = "passes")]
     public AxeRuleResult[] Passes { get; set; } = new AxeRuleResult[0];
 
     /// <summary>Indicates which rules did not run because no matching content was found on the page.</summary>
-    [DataMember (Name = "inapplicable")]
+    [DataMember(Name = "inapplicable")]
     public AxeRuleResult[] Inapplicable { get; set; } = new AxeRuleResult[0];
 
     /// <summary>Contains elements which could not be checked.</summary>
-    [DataMember (Name = "incomplete")]
+    [DataMember(Name = "incomplete")]
     public AxeRuleResult[] Incomplete { get; set; } = new AxeRuleResult[0];
   }
 }

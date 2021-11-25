@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  [DBTable ("TableWithRelatedClassIDColumnAndNoInheritance")]
+  [DBTable("TableWithRelatedClassIDColumnAndNoInheritance")]
   [TestDomain]
   [Instantiable]
   public abstract class ClassWithRelatedClassIDColumnAndNoInheritance : TestDomainBase
@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     {
     }
 
-    [DBBidirectionalRelation ("ClassWithRelatedClassIDColumnAndNoInheritance", ContainsForeignKey = true)]
-    [DBColumn ("TableWithGuidKeyID")]
+    [DBBidirectionalRelation("ClassWithRelatedClassIDColumnAndNoInheritance", ContainsForeignKey = true)]
+    [DBColumn("TableWithGuidKeyID")]
     public abstract ClassWithGuidKey ClassWithGuidKey { get; set; }
   }
 }

@@ -26,7 +26,7 @@ namespace Remotion.Validation.Mixins.Attributes
   /// but the collector should only applied with one or more specific mixin types.
   /// </summary>
   /// //TODO RM-5906: sample for derived type inhieriting interface
-  [AttributeUsage (AttributeTargets.Class)]
+  [AttributeUsage(AttributeTargets.Class)]
   public class ApplyWithMixinAttribute : Attribute
   {
     private readonly Type _mixinType;

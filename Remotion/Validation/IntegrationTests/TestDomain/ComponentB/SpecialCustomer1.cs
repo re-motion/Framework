@@ -22,13 +22,13 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentB
 {
-  [MultiLingualResources ("Remotion.Validation.IntegrationTests.TestDomain.Resources.SpecialCustomer")]
+  [MultiLingualResources("Remotion.Validation.IntegrationTests.TestDomain.Resources.SpecialCustomer")]
   public class SpecialCustomer1 : Customer
   {
     public override string LastName { get; set; }
 
-    [LengthValidation (0, 10)]
-    [RemoveValidator (typeof(LengthValidator))]
+    [LengthValidation(0, 10)]
+    [RemoveValidator(typeof(LengthValidator))]
     public override string UserName { get; set; }
   }
 }

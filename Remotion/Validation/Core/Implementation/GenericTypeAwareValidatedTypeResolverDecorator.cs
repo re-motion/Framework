@@ -27,7 +27,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via <see cref="IValidationRuleCollector{TValidatedType}"/>.
   /// </summary>
-  [ImplementationFor (typeof(IValidatedTypeResolver), Position = 0, RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor(typeof(IValidatedTypeResolver), Position = 0, RegistrationType = RegistrationType.Decorator)]
   public class GenericTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private static readonly ConcurrentDictionary<Type, (bool CanAscribeTo, Type? ItemType)> s_genericValidationRuleCollectorTypeCache = new();

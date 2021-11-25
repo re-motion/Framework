@@ -36,7 +36,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
       }
 
       [WebMethod]
-      [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+      [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
       public void JsonMethod ()
       {
       }
@@ -47,13 +47,13 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
       }
 
       [WebMethod]
-      [ScriptMethod (ResponseFormat = ResponseFormat.Xml)]
+      [ScriptMethod(ResponseFormat = ResponseFormat.Xml)]
       public void MethodWithResponeFormatNotJson ()
       {
       }
 
       [WebMethod]
-      [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+      [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
       public void MethodWithParameters (int param1, bool param2)
       {
       }

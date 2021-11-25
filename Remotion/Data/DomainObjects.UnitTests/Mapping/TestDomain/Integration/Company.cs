@@ -34,14 +34,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
       set { Properties["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Name"].SetValue(value); }
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("Company")]
+    [DBBidirectionalRelation("Company")]
     [Mandatory]
     public abstract Ceo Ceo { get; set; }
 
-    [DBBidirectionalRelation ("Companies")]
+    [DBBidirectionalRelation("Companies")]
     public virtual IndustrialSector IndustrialSector
     {
       get { return CurrentProperty.GetValue<IndustrialSector>(); }

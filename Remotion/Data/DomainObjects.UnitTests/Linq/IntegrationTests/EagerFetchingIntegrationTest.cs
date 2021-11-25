@@ -466,7 +466,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    [Ignore ("RM-6131: Add integration test for sort property from derived type")]
+    [Ignore("RM-6131: Add integration test for sort property from derived type")]
     public void EagerFetching_RelationSortExpressionUsesPropertyFromDerivedType ()
     {
     }

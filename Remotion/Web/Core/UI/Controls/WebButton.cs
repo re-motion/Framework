@@ -38,7 +38,7 @@ namespace Remotion.Web.UI.Controls
 {
   /// <summary> A <c>Button</c> using <c>&amp;</c> as access key prefix in <see cref="Button.Text"/>. </summary>
   /// <include file='..\..\doc\include\UI\Controls\WebButton.xml' path='WebButton/Class/*' />
-  [ToolboxData ("<{0}:WebButton runat=server></{0}:WebButton>")]
+  [ToolboxData("<{0}:WebButton runat=server></{0}:WebButton>")]
   public class WebButton
       :
           Button,
@@ -134,7 +134,7 @@ namespace Remotion.Web.UI.Controls
       _hasPagePreRenderCompleted = true;
     }
 
-    [MemberNotNull (nameof(_textWithHotkey))]
+    [MemberNotNull(nameof(_textWithHotkey))]
     protected override void Render (HtmlTextWriter writer)
     {
       _textWithHotkey = HotkeyParser.Parse(Text);
@@ -327,11 +327,11 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the icon displayed in this menu item. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Category ("Appearance")]
-    [Description ("The icon displayed.")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Category("Appearance")]
+    [Description("The icon displayed.")]
+    [NotifyParentProperty(true)]
     public IconInfo Icon
     {
       get { return _icon; }
@@ -366,9 +366,9 @@ namespace Remotion.Web.UI.Controls
     /// <remarks>
     /// Depending on the button types the css classes <see cref="CssClassPrimary"/> or <see cref="CssClassSupplemental"/> will be applied to the button.
     /// </remarks>
-    [Description ("Determines how the button is displayed on the page.")]
-    [Category ("Appearance")]
-    [DefaultValue (UI.Controls.ButtonType.Standard)]
+    [Description("Determines how the button is displayed on the page.")]
+    [Category("Appearance")]
+    [DefaultValue(UI.Controls.ButtonType.Standard)]
     public ButtonType ButtonType
     {
       get { return _buttonType; }
@@ -381,9 +381,9 @@ namespace Remotion.Web.UI.Controls
     /// <value> 
     ///   <see langword="true"/> to enable the legacy version. Defaults to <see langword="false"/>.
     /// </value>
-    [Description ("Determines whether to use a legacy (i.e. input) element for the button or the modern form (i.e. button).")]
-    [Category ("Behavior")]
-    [DefaultValue (false)]
+    [Description("Determines whether to use a legacy (i.e. input) element for the button or the modern form (i.e. button).")]
+    [Category("Behavior")]
+    [DefaultValue(false)]
     public bool UseLegacyButton
     {
       get { return _useLegacyButton; }
@@ -395,8 +395,8 @@ namespace Remotion.Web.UI.Controls
       get { return WcagHelper.Instance.IsWaiConformanceLevelARequired() || _useLegacyButton; }
     }
 
-    [Category ("Behavior")]
-    [DefaultValue (false)]
+    [Category("Behavior")]
+    [DefaultValue(false)]
     public bool IsDefaultButton
     {
       get { return _isDefaultButton; }
@@ -460,7 +460,7 @@ namespace Remotion.Web.UI.Controls
       set { base.Enabled = value; }
     }
 
-    [Category ("Action")]
+    [Category("Action")]
     public new event EventHandler Click
     {
       add { Events.AddHandler(s_clickEvent, value); }
@@ -476,28 +476,28 @@ namespace Remotion.Web.UI.Controls
         clickHandler(this, e);
     }
 
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public ISecurableObject? SecurableObject
     {
       get { return _securableObject; }
       set { _securableObject = value; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [NotifyParentProperty (true)]
-    [DefaultValue (MissingPermissionBehavior.Invisible)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [NotifyParentProperty(true)]
+    [DefaultValue(MissingPermissionBehavior.Invisible)]
     public MissingPermissionBehavior MissingPermissionBehavior
     {
       get { return _missingPermissionBehavior; }
       set { _missingPermissionBehavior = value; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("True to require a synchronous postback within Ajax Update Panels.")]
-    [DefaultValue (false)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("True to require a synchronous postback within Ajax Update Panels.")]
+    [DefaultValue(false)]
     public bool RequiresSynchronousPostBack
     {
       get { return _requiresSynchronousPostBack; }

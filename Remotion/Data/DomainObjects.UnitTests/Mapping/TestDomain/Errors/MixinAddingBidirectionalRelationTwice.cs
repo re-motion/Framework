@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
 {
   public class MixinAddingBidirectionalRelationTwice : DomainObjectMixin<DomainObject>
   {
-    [DBBidirectionalRelation ("VirtualSide", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("VirtualSide", ContainsForeignKey = true)]
     public RelationTargetForMixinAddingBidirectionalRelationTwice RealSide
     {
       get

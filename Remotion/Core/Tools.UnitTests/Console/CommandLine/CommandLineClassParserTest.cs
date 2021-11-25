@@ -22,19 +22,19 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
 {
   public class Arguments
   {
-    [CommandLineStringArgument (true, Placeholder = "source-directory", Description = "Directory to copy from")]
+    [CommandLineStringArgument(true, Placeholder = "source-directory", Description = "Directory to copy from")]
     public string SourceDirectory;
 
-    [CommandLineStringArgument (true, Placeholder = "destination-directory", Description = "This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to.")]
+    [CommandLineStringArgument(true, Placeholder = "destination-directory", Description = "This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to.")]
     public string DestinationDirectory;
 
-    [CommandLineFlagArgument ("b", true, Description = "binary copy on (+, default) or off (-)")]
+    [CommandLineFlagArgument("b", true, Description = "binary copy on (+, default) or off (-)")]
     public bool CopyBinary = true;
 
-    [CommandLineEnumArgument ("rep", true)]
+    [CommandLineEnumArgument("rep", true)]
     public TestOption ReplaceTarget = TestOption.yes;
 
-    [CommandLineModeArgument (true)]
+    [CommandLineModeArgument(true)]
     public TestMode Mode = TestMode.Mode1;
   }
 

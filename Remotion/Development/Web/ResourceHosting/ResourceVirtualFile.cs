@@ -48,8 +48,8 @@ namespace Remotion.Development.Web.ResourceHosting
       }
     }
 
-    [MemberNotNullWhen (true, nameof(_physicalFile))]
-    [MemberNotNullWhen (true, nameof(PhysicalPath))]
+    [MemberNotNullWhen(true, nameof(_physicalFile))]
+    [MemberNotNullWhen(true, nameof(PhysicalPath))]
     public bool Exists
     {
       get { return _physicalFile != null && _physicalFile.Exists; }

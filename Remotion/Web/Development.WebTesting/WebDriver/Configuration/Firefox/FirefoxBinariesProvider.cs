@@ -210,16 +210,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     [DataContract]
     private class GithubResponse
     {
-      [DataMember (Name = "tag_name")]
+      [DataMember(Name = "tag_name")]
       public string TagName { get; set; }
 
-      [DataMember (Name = "assets")]
+      [DataMember(Name = "assets")]
       public Asset[] Assets { get; set; }
 
       [DataContract]
       public class Asset
       {
-        [DataMember (Name = "browser_download_url")]
+        [DataMember(Name = "browser_download_url")]
         public string BrowserDownloadUrl { get; set; }
       }
     }

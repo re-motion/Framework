@@ -115,7 +115,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void AddMixin_NonGeneric_WithoutOrigin ()
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
@@ -196,7 +196,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void AddMixin_Generic_WithoutOrigin ()
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
@@ -227,7 +227,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void AddMixins_NonGeneric_WithoutOrigin ()
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
@@ -256,7 +256,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void AddMixins_Generic2_WithoutOrigin ()
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
@@ -283,7 +283,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void AddMixins_Generic3_WithoutOrigin ()
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
@@ -316,7 +316,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void AddOrderedMixins_NonGeneric_WithoutOrigin ()
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
@@ -349,7 +349,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void AddOrderedMixins_Generic2_WithoutOrigin ()
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
@@ -385,7 +385,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void AddOrderedMixins_Generic3_WithoutOrigin ()
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
@@ -420,7 +420,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void EnsureMixin_NonGeneric_WithoutOrigin ()
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
@@ -465,7 +465,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void EnsureMixin_Generic_WithoutOrigin ()
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
@@ -495,7 +495,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void EnsureMixins_NonGeneric_WithoutOrigin ()
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
@@ -524,7 +524,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void EnsureMixins_Generic2_WithoutOrigin ()
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
@@ -551,7 +551,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void EnsureMixins_Generic3_WithoutOrigin ()
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());

@@ -19,7 +19,7 @@ using System.Diagnostics;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
-  [DebuggerDisplay ("On Target")]
+  [DebuggerDisplay("On Target")]
   public class ClassWithDebuggerDisplay
   {
   }

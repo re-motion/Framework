@@ -20,10 +20,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     ManyToMany
 {
   [DBTable]
-  [ClassID ("ManyToMany_InvalidRelationClass1")]
+  [ClassID("ManyToMany_InvalidRelationClass1")]
   public class InvalidRelationClass1 : DomainObject
   {
-    [DBBidirectionalRelation ("RelationProperty")]
+    [DBBidirectionalRelation("RelationProperty")]
     public ObjectList<InvalidRelationClass2> RelationProperty { get; set; }
   }
 }

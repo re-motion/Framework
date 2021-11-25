@@ -24,7 +24,7 @@ using Remotion.Globalization;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: NeutralResourcesLanguage ("en")]
-[assembly: AvailableResourcesLanguages ("")]
+[assembly: NeutralResourcesLanguage("en")]
+[assembly: AvailableResourcesLanguages("")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

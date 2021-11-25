@@ -42,7 +42,7 @@ namespace Remotion.Mixins
   /// </para>
   /// </remarks>
   [MeansImplicitUse]
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
   public class ExtendsAttribute : MixinRelationshipAttribute, IMixinConfigurationAttribute<Type>
   {
     private readonly Type _targetType;

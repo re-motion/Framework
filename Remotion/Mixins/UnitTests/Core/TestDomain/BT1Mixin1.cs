@@ -27,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 
   public class BT1M1Attribute : Attribute {}
 
-  [Extends (typeof(BaseType1))]
+  [Extends(typeof(BaseType1))]
   [Serializable]
   [BT1M1]
   [AcceptsAlphabeticOrdering]

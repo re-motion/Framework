@@ -31,7 +31,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
 {
-  [Explicit ("Performance measurement for caching")]
+  [Explicit("Performance measurement for caching")]
   [TestFixture]
   public class CachePerformanceTest
   {
@@ -104,7 +104,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
     }
 
     [DBTable]
-    [Uses (typeof(object))]
+    [Uses(typeof(object))]
     public class DomainType : DomainObject { }
   }
 }

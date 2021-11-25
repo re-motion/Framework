@@ -26,11 +26,11 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
   public class AxeTestEngine
   {
     /// <summary>Name of the Test Engine.</summary>
-    [DataMember (Name = "name")]
+    [DataMember(Name = "name")]
     public string Name { get; set; } = null!;
 
     /// <summary>Version of the Test Engine.</summary>
-    [DataMember (Name = "version")]
+    [DataMember(Name = "version")]
     public string Version { get; set; } = null!;
   }
 }

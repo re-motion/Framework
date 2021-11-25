@@ -27,7 +27,7 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager
 {
-  [ImplementationFor (typeof(ISecurityProvider), Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor(typeof(ISecurityProvider), Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
   public class SecurityService : ISecurityProvider
   {
     public const int Position = NullSecurityProvider.Position - 1;

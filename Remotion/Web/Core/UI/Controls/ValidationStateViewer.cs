@@ -43,7 +43,7 @@ public class ValidationStateViewer : WebControl, IControl
   /// <summary> A list of validation state viewer wide resources. </summary>
   /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
   [ResourceIdentifiers]
-  [MultiLingualResources ("Remotion.Web.Globalization.ValidationStateViewer")]
+  [MultiLingualResources("Remotion.Web.Globalization.ValidationStateViewer")]
   public enum ResourceIdentifier
   {
     /// <summary>The summary message displayed if validation errors where found. </summary>
@@ -271,8 +271,8 @@ public class ValidationStateViewer : WebControl, IControl
     return _cachedResourceManager;
   }
 
-  [Browsable (false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
   public IGlobalizationService GlobalizationService
   {
     get
@@ -311,9 +311,9 @@ public class ValidationStateViewer : WebControl, IControl
   ///   in front of the error message.
   /// </summary>
   /// <value> <see langword="true"/> to render the label. </value>
-  [Category ("Apearance")]
-  [Description ("true to render the label associated with the erroneous control in front of the error message.")]
-  [DefaultValue (true)]
+  [Category("Apearance")]
+  [Description("true to render the label associated with the erroneous control in front of the error message.")]
+  [DefaultValue(true)]
   public bool ShowLabels
   {
     get { return _showLabels; }

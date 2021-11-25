@@ -39,7 +39,7 @@ namespace Remotion.Globalization
     /// <param name="id">The ID of the resource to get. Must not be <see langword="null" />.</param>
     /// <param name="value">The value of the resource lookup result.</param>
     /// <returns><see langword="true"/> if the <see cref="IResourceManager"/> contains the specified resource.</returns>
-    bool TryGetString ([NotNull]string id, [MaybeNullWhen (false)] out string value);
+    bool TryGetString ([NotNull]string id, [MaybeNullWhen(false)] out string value);
 
     /// <summary>Returns the name of the resource manager.</summary>
     string Name { get; }

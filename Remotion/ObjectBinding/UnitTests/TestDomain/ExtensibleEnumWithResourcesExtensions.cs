@@ -21,7 +21,7 @@ using Remotion.Globalization;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.Globalization.ExtensibleEnumWithResources")]
+  [MultiLingualResources("Remotion.ObjectBinding.UnitTests.Globalization.ExtensibleEnumWithResources")]
   public static class ExtensibleEnumWithResourcesExtensions
   {
     public static ExtensibleEnumWithResources Value1 (this ExtensibleEnumDefinition<ExtensibleEnumWithResources> definition)

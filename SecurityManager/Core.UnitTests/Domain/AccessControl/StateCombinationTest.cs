@@ -67,7 +67,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [Ignore ("TODO: Implement")]
+    [Ignore("TODO: Implement")]
     public void MatchesStates_StatefulWithWildcard ()
     {
       StateCombination combination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder();

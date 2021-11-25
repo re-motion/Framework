@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    [Category ("LongRunning")]
+    [Category("LongRunning")]
     public void WxeCompletionDetectionHelpers_GetWxePostBackSequenceNumber_CallsRequestErrorDetectionStrategyWithCorrectScope ()
     {
       var home = Start();
@@ -60,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    [Category ("LongRunning")]
+    [Category("LongRunning")]
     public void WxeCompletionDetectionHelpers_GetWxeFunctionToken_CallsRequestErrorDetectionStrategyWithCorrectScope ()
     {
       var home = Start();

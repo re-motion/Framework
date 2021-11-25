@@ -21,7 +21,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
   [BindableObject]
   [BindableObjectWithIdentityProvider]
-  [SuppressAttributes (typeof(BusinessObjectProviderAttribute))]
+  [SuppressAttributes(typeof(BusinessObjectProviderAttribute))]
   [Serializable]
   public class DerivedBusinessObjectClassWithSpecificBusinessObjectProviderAttribute : BaseBusinessObjectClass
   {

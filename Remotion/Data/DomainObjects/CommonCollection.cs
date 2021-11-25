@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects
 /// Base class for all collections of Remotion.Data.DomainObjects.
 /// </summary>
 [Serializable]
-[DebuggerDisplay ("Collection: {GetType().Name} - Count: {Count}")]
+[DebuggerDisplay("Collection: {GetType().Name} - Count: {Count}")]
 public class CommonCollection : ICollection
 {
   // types

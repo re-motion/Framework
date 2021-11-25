@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     }
 
     [Test]
-    [Ignore ("TODO: RM-7294: test mandatory collection")]
+    [Ignore("TODO: RM-7294: test mandatory collection")]
     public void AccessingRelatedVirtualCollection_ExceptionOnLoading_IsTriggeredOnDemand ()
     {
       //var orderWithoutReviews = DomainObjectIDs.OrderWithoutReviews.GetObject<Order>();

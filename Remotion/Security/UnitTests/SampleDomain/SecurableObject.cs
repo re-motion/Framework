@@ -25,7 +25,7 @@ namespace Remotion.Security.UnitTests.SampleDomain
     {
     }
 
-    [DemandPermission (GeneralAccessTypes.Create)]
+    [DemandPermission(GeneralAccessTypes.Create)]
     public static SecurableObject CreateForSpecialCase ()
     {
       return new SecurableObject();
@@ -36,13 +36,13 @@ namespace Remotion.Security.UnitTests.SampleDomain
       return false;
     }
 
-    [DemandPermission (GeneralAccessTypes.Read)]
+    [DemandPermission(GeneralAccessTypes.Read)]
     public static bool IsValid (SecurableObject securableClass)
     {
       return true;
     }
 
-    [DemandPermission (GeneralAccessTypes.Read)]
+    [DemandPermission(GeneralAccessTypes.Read)]
     public static string GetObjectName (SecurableObject securableObject)
     {
       return null;
@@ -69,32 +69,32 @@ namespace Remotion.Security.UnitTests.SampleDomain
       return GetType();
     }
 
-    [DemandPermission (GeneralAccessTypes.Edit, GeneralAccessTypes.Create)]
+    [DemandPermission(GeneralAccessTypes.Edit, GeneralAccessTypes.Create)]
     public void Show ()
     {
     }
 
-    [DemandPermission (GeneralAccessTypes.Edit)]
+    [DemandPermission(GeneralAccessTypes.Edit)]
     public virtual void Record ()
     {
     }
 
-    [DemandPermission (GeneralAccessTypes.Delete)]
+    [DemandPermission(GeneralAccessTypes.Delete)]
     public void Load ()
     {
     }
 
-    [DemandPermission (GeneralAccessTypes.Create)]
+    [DemandPermission(GeneralAccessTypes.Create)]
     public void Load (string filename)
     {
     }
 
-    [DemandPermission (GeneralAccessTypes.Find)]
+    [DemandPermission(GeneralAccessTypes.Find)]
     public virtual void Print ()
     {
     }
 
-    [DemandPermission (GeneralAccessTypes.Delete)]
+    [DemandPermission(GeneralAccessTypes.Delete)]
     public void Send ()
     {
     }
@@ -103,7 +103,7 @@ namespace Remotion.Security.UnitTests.SampleDomain
     {
     }
 
-    [DemandPermission (GeneralAccessTypes.Create)]
+    [DemandPermission(GeneralAccessTypes.Create)]
     public virtual void Make ()
     {
     }
@@ -112,12 +112,12 @@ namespace Remotion.Security.UnitTests.SampleDomain
     {
     }
 
-    [DemandPermission (GeneralAccessTypes.Delete)]
+    [DemandPermission(GeneralAccessTypes.Delete)]
     public void Delete (int count)
     {
     }
 
-    [DemandPermission (GeneralAccessTypes.Edit, GeneralAccessTypes.Find, GeneralAccessTypes.Edit)]
+    [DemandPermission(GeneralAccessTypes.Edit, GeneralAccessTypes.Find, GeneralAccessTypes.Edit)]
     public void Close ()
     {
     }
@@ -130,23 +130,23 @@ namespace Remotion.Security.UnitTests.SampleDomain
     public bool IsVisible
     {
       get { return true; }
-      [DemandPermission (TestAccessTypes.Fourth)]
+      [DemandPermission(TestAccessTypes.Fourth)]
       set { Dev.Null = value; }
     }
 
     private object NonPublicProperty
     {
-      [DemandPermission (TestAccessTypes.First)]
+      [DemandPermission(TestAccessTypes.First)]
       get { return null; }
-      [DemandPermission (TestAccessTypes.Second)]
+      [DemandPermission(TestAccessTypes.Second)]
       set { Dev.Null = value; }
     }
 
     object IInterfaceWithProperty.InterfaceProperty
     {
-      [DemandPermission (TestAccessTypes.First)]
+      [DemandPermission(TestAccessTypes.First)]
       get { return null; }
-      [DemandPermission (TestAccessTypes.Second)]
+      [DemandPermission(TestAccessTypes.Second)]
       set { Dev.Null = value; }
     }
   }

@@ -57,7 +57,7 @@ namespace Remotion.Collections.Caching
       return _innerCache.GetOrCreateValue(key, valueFactory);
     }
 
-    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull("key", key);
 

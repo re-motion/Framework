@@ -677,7 +677,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
-    [Ignore ("TODO 2264")]
+    [Ignore("TODO 2264")]
     public void ReadingVirtualRelationEndPoints_DoesNotReloadObject ()
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order>();
@@ -703,7 +703,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
-    [Ignore ("TODO 2264")]
+    [Ignore("TODO 2264")]
     public void ReadingOriginalVirtualRelationEndPoints_DoesNotReloadObject ()
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order>();
@@ -727,7 +727,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
-    [Ignore ("TODO 2263")]
+    [Ignore("TODO 2263")]
     public void ChangingVirtualRelationEndPoints_DoesNotReloadObject ()
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order>();
@@ -753,7 +753,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
-    [Ignore ("TODO 2263")]
+    [Ignore("TODO 2263")]
     public void ChangingRealRelationEndPoints_DoesNotReloadOppositeObjects ()
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order>();
@@ -819,7 +819,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
-    [Ignore ("TODO 2263")]
+    [Ignore("TODO 2263")]
     public void AddingToCollectionEndPoint_DoesntReloadOtherItems ()
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order>();

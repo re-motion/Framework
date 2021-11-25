@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
     public abstract OppositeAnonymousBindableDomainObject RequiredRelatedObjectProperty { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("OppositeRequiredRelatedObject")]
+    [DBBidirectionalRelation("OppositeRequiredRelatedObject")]
     public abstract ObjectList<OppositeBidirectionalBindableDomainObject> RequiredBidirectionalRelatedObjectsProperty { get; set; }
 
     [StorageClassNone]

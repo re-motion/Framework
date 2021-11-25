@@ -18,14 +18,14 @@ using System;
 
 namespace Remotion.Globalization.UnitTests.TestDomain
 {
-  [MultiLingualName ("Invariant Derived Type Name", "")]
-  [MultiLingualName ("de-AT Derived Type Name", "de-AT")]
-  [MultiLingualName ("de Derived Type Name", "de")]
+  [MultiLingualName("Invariant Derived Type Name", "")]
+  [MultiLingualName("de-AT Derived Type Name", "de-AT")]
+  [MultiLingualName("de Derived Type Name", "de")]
   public class DerivedClassWithMultiLingualNameAttribute : ClassWithMultiLingualNameAttribute
   {
     public override int PropertyWithMultiLingualNameAttribute { get; set; }
 
-    [MultiLingualName ("Invariant Property Name", "")]
+    [MultiLingualName("Invariant Property Name", "")]
     public override int PropertyWithMultiLingualNameAttributeOnOverride { get; set; }
   }
 }

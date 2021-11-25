@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Queries
   /// <summary>
   /// Creates the components required to initialize the LINQ provider.
   /// </summary>
-  [ImplementationFor (typeof(ILinqProviderComponentFactory))]
+  [ImplementationFor(typeof(ILinqProviderComponentFactory))]
   public class LinqProviderComponentFactory : ILinqProviderComponentFactory
   {
     private readonly IMethodCallTransformerProvider _methodCallTransformerProvider;

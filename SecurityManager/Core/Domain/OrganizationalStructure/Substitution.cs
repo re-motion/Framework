@@ -29,8 +29,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   /// <see cref="SubstitutingUser"/> can act as a stand-in for the <see cref="SubstitutedUser"/> and <see cref="SubstitutedRole"/>.
   /// </summary>
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Substitution")]
-  [PermanentGuid ("5F3FEEE1-38E3-4ecb-AC2F-2D74AFFE3A27")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Substitution")]
+  [PermanentGuid("5F3FEEE1-38E3-4ecb-AC2F-2D74AFFE3A27")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -48,17 +48,17 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       // ReSharper restore DoNotCallOverridableMethodsInConstructor
     }
 
-    [DBBidirectionalRelation ("SubstitutingFor")]
+    [DBBidirectionalRelation("SubstitutingFor")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof(UserPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(UserPropertyTypeSearchService))]
     public abstract User SubstitutingUser { get; set; }
 
-    [DBBidirectionalRelation ("SubstitutedBy")]
+    [DBBidirectionalRelation("SubstitutedBy")]
     [Mandatory]
     public abstract User SubstitutedUser { get; set; }
 
-    [DBBidirectionalRelation ("SubstitutedBy")]
-    [SearchAvailableObjectsServiceType (typeof(SubstitutionPropertiesSearchService))]
+    [DBBidirectionalRelation("SubstitutedBy")]
+    [SearchAvailableObjectsServiceType(typeof(SubstitutionPropertiesSearchService))]
     public abstract Role SubstitutedRole { get; set; }
 
     [DateProperty]

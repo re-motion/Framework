@@ -24,7 +24,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
-  [DebuggerDisplay ("{GetType().Name}: {PropertyName}")]
+  [DebuggerDisplay("{GetType().Name}: {PropertyName}")]
   public class PropertyDefinition
   {
     private readonly string _propertyName;

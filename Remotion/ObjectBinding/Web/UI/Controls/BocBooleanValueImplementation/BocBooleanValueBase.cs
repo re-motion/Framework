@@ -58,8 +58,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     }
 
     /// <summary> Occurs when the <see cref="Value"/> property changes between postbacks. </summary>
-    [Category ("Action")]
-    [Description ("Fires when the value of the control has changed.")]
+    [Category("Action")]
+    [Description("Fires when the value of the control has changed.")]
     public event EventHandler CheckedChanged
     {
       add { Events.AddHandler(s_checkedChangedEvent, value); }
@@ -130,7 +130,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     /// <summary> Gets or sets the current value. </summary>
     /// <value> The boolean value currently displayed or <see langword="null"/>. </value>
     /// <remarks> The dirty state is set when the value is set. </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public new bool? Value
     {
       get { return GetValue(); }
@@ -166,8 +166,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectBooleanProperty"/> object this control is bound to. </summary>
     /// <value> An instance of type <see cref="IBusinessObjectBooleanProperty"/>. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectBooleanProperty? Property
     {
       get { return (IBusinessObjectBooleanProperty?)base.Property; }
@@ -179,8 +179,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     ///   Returns the <see cref="Control.ClientID"/> of the <see cref="CheckBox"/> if the control is in edit mode, 
     ///   otherwise <see langword="null"/>. 
     /// </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public abstract string? FocusID { get; }
 
     /// <summary>
@@ -208,10 +208,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     /// <remarks>
     ///   Use <see cref="IsAutoPostBackEnabled"/> to evaluate this property.
     /// </remarks>
-    [Description ("Automatically postback to the server after the checked state is modified. Undefined is interpreted as false.")]
-    [Category ("Behavior")]
-    [DefaultValue (typeof(bool?), "")]
-    [NotifyParentProperty (true)]
+    [Description("Automatically postback to the server after the checked state is modified. Undefined is interpreted as false.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
+    [NotifyParentProperty(true)]
     public bool? AutoPostBack
     {
       get { return _autoPostBack; }
@@ -223,9 +223,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     ///   The text displayed for <see langword="true"/>. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("The description displayed when the checkbox is set to True.")]
-    [Category ("Appearance")]
-    [DefaultValue ("")]
+    [Description("The description displayed when the checkbox is set to True.")]
+    [Category("Appearance")]
+    [DefaultValue("")]
     public string TrueDescription
     {
       get { return _trueDescription; }
@@ -237,9 +237,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     ///   The text displayed for <see langword="false"/>. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("The description displayed when the checkbox is set to False.")]
-    [Category ("Appearance")]
-    [DefaultValue ("")]
+    [Description("The description displayed when the checkbox is set to False.")]
+    [Category("Appearance")]
+    [DefaultValue("")]
     public string FalseDescription
     {
       get { return _falseDescription; }
@@ -251,9 +251,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     ///   The text displayed for <see langword="null"/>. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("The description displayed when the checkbox is set to null.")]
-    [Category ("Appearance")]
-    [DefaultValue ("")]
+    [Description("The description displayed when the checkbox is set to null.")]
+    [Category("Appearance")]
+    [DefaultValue("")]
     public string NullDescription
     {
       get { return _nullDescription; }

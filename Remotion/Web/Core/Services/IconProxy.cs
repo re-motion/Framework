@@ -67,7 +67,7 @@ namespace Remotion.Web.Services
     }
 
 #nullable disable
-    [Obsolete ("Default ctor for ASMX WSDL page.", true)]
+    [Obsolete("Default ctor for ASMX WSDL page.", true)]
     private IconProxy ()
     {
     }

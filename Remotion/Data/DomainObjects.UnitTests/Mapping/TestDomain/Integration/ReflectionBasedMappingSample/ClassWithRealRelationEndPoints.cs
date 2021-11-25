@@ -27,30 +27,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     {
     }
 
-    [DBBidirectionalRelation ("NoAttributeForDomainObjectCollection")]
+    [DBBidirectionalRelation("NoAttributeForDomainObjectCollection")]
     public abstract ClassWithVirtualRelationEndPoints NoAttributeForDomainObjectCollection { get; set; }
 
-    [DBBidirectionalRelation ("NoAttributeForVirtualCollection")]
+    [DBBidirectionalRelation("NoAttributeForVirtualCollection")]
     public abstract ClassWithVirtualRelationEndPoints NoAttributeForVirtualCollection { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("NotNullableForDomainObjectCollection")]
+    [DBBidirectionalRelation("NotNullableForDomainObjectCollection")]
     public abstract ClassWithVirtualRelationEndPoints NotNullableForDomainObjectCollection { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("NotNullableForVirtualCollection")]
+    [DBBidirectionalRelation("NotNullableForVirtualCollection")]
     public abstract ClassWithVirtualRelationEndPoints NotNullableForVirtualCollection { get; set; }
 
 
     public abstract ClassWithVirtualRelationEndPoints Unidirectional { get; set; }
 
-    [DBBidirectionalRelation ("BidirectionalOneToOne", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("BidirectionalOneToOne", ContainsForeignKey = true)]
     public abstract ClassWithVirtualRelationEndPoints BidirectionalOneToOne { get; set; }
 
-    [DBBidirectionalRelation ("BidirectionalOneToManyForDomainObjectCollection")]
+    [DBBidirectionalRelation("BidirectionalOneToManyForDomainObjectCollection")]
     public abstract ClassWithVirtualRelationEndPoints BidirectionalOneToManyForDomainObjectCollection { get; set; }
 
-    [DBBidirectionalRelation ("BidirectionalOneToManyForVirtualCollection")]
+    [DBBidirectionalRelation("BidirectionalOneToManyForVirtualCollection")]
     public abstract ClassWithVirtualRelationEndPoints BidirectionalOneToManyForVirtualCollection { get; set; }
   }
 }

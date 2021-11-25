@@ -42,22 +42,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocAutoCompleteReferenceValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof(DisabledTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof(ReadOnlyTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof(LabelTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof(ValidationErrorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(ReadOnlyTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(LabelTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(ValidationErrorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject> testAction)
     {
       testAction(Helper, e => e.AutoCompletes(), "autoCompleteReferenceValue");
     }
 
-    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof(DomainPropertyControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof(DisplayNameControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(DomainPropertyControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(DisplayNameControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject> testAction)
     {
       testAction(Helper, e => e.AutoCompletes(), "autoCompleteReferenceValue");
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests that the various parts of the <see cref="BocAutoCompleteReferenceValueControlObject"/> can be annotated when using the screenshot API.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest ()
     {
@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     /// Tests that all the navigation and select methods are working and that 
     /// the items are correctly annotated when using the screenshot API.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_AutoComplete ()
     {
@@ -146,7 +146,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests the visibility of the auto-complete (show via input, wait until visible, hide).
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_AutoCompleteVisibility ()
     {
@@ -175,7 +175,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests that the bounding box is correctly displayed when using the screenshot API.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_Popup ()
     {
@@ -209,7 +209,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests that the popup can display custom text via the <c>Display</c> method.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_PopupDisplay ()
     {
@@ -234,7 +234,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests the visibility of the popup (show via input, wait until visible, hide).
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_PopupVisibility ()
     {
@@ -260,7 +260,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That(informationPopup.IsVisible(), Is.False);
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_DerivedType ()
     {

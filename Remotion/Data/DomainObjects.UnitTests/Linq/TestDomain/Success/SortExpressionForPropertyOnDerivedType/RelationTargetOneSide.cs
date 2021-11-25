@@ -19,10 +19,10 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.SortExpressionForPropertyOnDerivedType
 {
   [DBTable]
-  [ClassID ("Success_SortExpressionForNonPublicProperty_RelationTargetOneSide")]
+  [ClassID("Success_SortExpressionForNonPublicProperty_RelationTargetOneSide")]
   public class RelationTargetOneSide : DomainObject
   {
-    [DBBidirectionalRelation ("CollectionProperty")]
+    [DBBidirectionalRelation("CollectionProperty")]
     public RelationTargetManySide ScalarProperty
     {
       get { return null; }

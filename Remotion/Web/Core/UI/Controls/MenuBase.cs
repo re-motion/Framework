@@ -45,17 +45,17 @@ namespace Remotion.Web.UI.Controls
       get { return _ownerControl; }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
-    [Category ("Behavior")]
-    [Description ("The menu items displayed by this drop down menu.")]
-    [DefaultValue ((string?)null)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
+    [Category("Behavior")]
+    [Description("The menu items displayed by this drop down menu.")]
+    [DefaultValue((string?)null)]
     public WebMenuItemCollection MenuItems
     {
       get { return _menuItems; }
     }
 
-    [DefaultValue (false)]
+    [DefaultValue(false)]
     public bool IsReadOnly
     {
       get { return _isReadOnly; }
@@ -115,13 +115,13 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Occurs when a command of type <see cref="CommandType.Event"/> is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Occurs when a command of type Event is clicked.")]
+    [Category("Action")]
+    [Description("Occurs when a command of type Event is clicked.")]
     public virtual event WebMenuItemClickEventHandler? EventCommandClick;
 
     /// <summary> Occurs when a command of type <see cref="CommandType.WxeFunction"/> is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Occurs when a command of type WxeFunction is clicked.")]
+    [Category("Action")]
+    [Description("Occurs when a command of type WxeFunction is clicked.")]
     public virtual event WebMenuItemClickEventHandler? WxeFunctionCommandClick;
 
     /// <summary> Fires the <see cref="MenuBase.EventCommandClick"/> event. </summary>

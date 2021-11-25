@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// <summary>
   /// Creates new domain object instances via an instance of <see cref="IPipeline"/>.
   /// </summary>
-  [ImplementationFor (typeof(IDomainObjectCreator), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IDomainObjectCreator), Lifetime = LifetimeKind.Singleton)]
   public class DomainObjectCreator : IDomainObjectCreator
   {
     private readonly IPipelineRegistry _pipelineRegistry;

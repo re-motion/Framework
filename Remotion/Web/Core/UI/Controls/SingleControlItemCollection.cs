@@ -109,7 +109,7 @@ public class SingleControlItemCollection
 
   /// <summary> For Designer Support. (VS2003, VS2005) </summary>
   /// <exclude/>
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public IControlItem? this[int index]
   {
 	  get
@@ -126,7 +126,7 @@ public class SingleControlItemCollection
 
   /// <summary> For Designer Support. (VS2003, VS2005) </summary>
   /// <exclude/>
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public int Add (IControlItem value)
   {
     ControlItem = value;

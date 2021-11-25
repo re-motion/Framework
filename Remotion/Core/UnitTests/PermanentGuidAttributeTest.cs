@@ -23,18 +23,18 @@ namespace Remotion.UnitTests
   [TestFixture]
   public class PermanentGuidAttributeTest
   {
-    [PermanentGuid ("BA2F9118-6516-4F47-9AF1-58632B5F9F9E")]
+    [PermanentGuid("BA2F9118-6516-4F47-9AF1-58632B5F9F9E")]
     private class TheClass
     {
 #pragma warning disable 169
-      [PermanentGuid ("823BAC5E-2685-4535-8B12-F2C7BF943FDC")]
+      [PermanentGuid("823BAC5E-2685-4535-8B12-F2C7BF943FDC")]
       private object _field;
 #pragma warning restore 169
 
-      [PermanentGuid ("A9EC3641-CBEE-41D6-8867-F202CDF66660")]
+      [PermanentGuid("A9EC3641-CBEE-41D6-8867-F202CDF66660")]
       public object Property { get; set; }
 
-      [PermanentGuid ("C60DA8F6-F3C0-4B00-AFB5-298B4B929408")]
+      [PermanentGuid("C60DA8F6-F3C0-4B00-AFB5-298B4B929408")]
       public void Method ()
       {
       }
@@ -44,20 +44,20 @@ namespace Remotion.UnitTests
     {
     }
 
-    [PermanentGuid ("467BB753-98AC-4F60-90BA-FF5A02A45649")]
+    [PermanentGuid("467BB753-98AC-4F60-90BA-FF5A02A45649")]
     private interface ITheInterface
     {
     }
 
-    [PermanentGuid ("E6A34024-80B8-4774-9AD8-E8367D5D0387")]
+    [PermanentGuid("E6A34024-80B8-4774-9AD8-E8367D5D0387")]
     private struct TheStruct
     {
     }
 
-    [PermanentGuid ("B6EA85C3-1179-4BFA-9D85-15F081348759")]
+    [PermanentGuid("B6EA85C3-1179-4BFA-9D85-15F081348759")]
     private enum TheEnum
     {
-      [PermanentGuid ("3F50B378-390F-44E8-86F6-61AAC722A19E")]
+      [PermanentGuid("3F50B378-390F-44E8-86F6-61AAC722A19E")]
       Value
     }
 

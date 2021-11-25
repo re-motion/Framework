@@ -36,7 +36,7 @@ namespace Remotion.Globalization.Implementation
   /// The long name is resolved using <see cref="IMemberInformationNameResolver"/>.
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof(IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton,
+  [ImplementationFor(typeof(IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton,
       Position = Position, RegistrationType = RegistrationType.Multiple)]
   public sealed class ResourceManagerBasedMemberInformationGlobalizationService : IMemberInformationGlobalizationService
   {
@@ -59,7 +59,7 @@ namespace Remotion.Globalization.Implementation
     public bool TryGetTypeDisplayName (
         ITypeInformation typeInformation,
         ITypeInformation typeInformationForResourceResolution,
-        [MaybeNullWhen (false)] out string result)
+        [MaybeNullWhen(false)] out string result)
     {
       ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
       ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
@@ -76,7 +76,7 @@ namespace Remotion.Globalization.Implementation
     public bool TryGetPropertyDisplayName (
         IPropertyInformation propertyInformation,
         ITypeInformation typeInformationForResourceResolution,
-        [MaybeNullWhen (false)] out string result)
+        [MaybeNullWhen(false)] out string result)
     {
       ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
       ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);

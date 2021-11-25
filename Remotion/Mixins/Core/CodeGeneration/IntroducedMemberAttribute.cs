@@ -22,7 +22,7 @@ namespace Remotion.Mixins.CodeGeneration
   /// <summary>
   /// Added to a member introduced by a mixin on the generated concrete type.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, AllowMultiple = false, Inherited = true)]
   public class IntroducedMemberAttribute : Attribute
   {
     public IntroducedMemberAttribute (Type mixin, string mixinMemberName, Type introducedInterface, string interfaceMemberName)

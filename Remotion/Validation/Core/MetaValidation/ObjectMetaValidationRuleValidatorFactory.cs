@@ -26,7 +26,7 @@ namespace Remotion.Validation.MetaValidation
   /// <summary>
   /// Default implementation of the <see cref="IObjectMetaValidationRuleValidatorFactory"/> interface.
   /// </summary>
-  [ImplementationFor (typeof(IObjectMetaValidationRuleValidatorFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IObjectMetaValidationRuleValidatorFactory), Lifetime = LifetimeKind.Singleton)]
   public class ObjectMetaValidationRuleValidatorFactory : IObjectMetaValidationRuleValidatorFactory
   {
     public ObjectMetaValidationRuleValidatorFactory ()

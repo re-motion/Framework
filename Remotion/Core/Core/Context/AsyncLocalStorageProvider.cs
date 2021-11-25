@@ -24,7 +24,7 @@ using Remotion.Logging;
 
 namespace Remotion.Context
 {
-  [ImplementationFor (typeof(ISafeContextStorageProvider), Lifetime = LifetimeKind.Singleton, Position = 1)]
+  [ImplementationFor(typeof(ISafeContextStorageProvider), Lifetime = LifetimeKind.Singleton, Position = 1)]
   public class AsyncLocalStorageProvider : ISafeContextStorageProvider
   {
     /// <summary>

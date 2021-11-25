@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [FirstStorageGroup]
   public class ThirdClass : DomainObject
   {
-    [DBBidirectionalRelation ("ThirdClass")]
+    [DBBidirectionalRelation("ThirdClass")]
     public ObjectList<FirstClass> FirstClass { get; set; }
   }
 }

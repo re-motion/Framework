@@ -41,14 +41,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories
       get { return "Disabled"; }
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledDisabled)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledDisabled)]
     public void IsEnabled ()
     {
       var control = Selector.GetByID(Parameter.EnabledHtmlID);
       Assert.That(control.IsDisabled(), Is.False);
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledDisabled)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledDisabled)]
     public void IsDisabled ()
     {
       var control = Selector.GetByID(Parameter.DisabledHtmlID);

@@ -48,13 +48,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     public abstract DateTime? CustomerSince { get; set; }
 
-    [DBColumn ("CustomerType")]
+    [DBColumn("CustomerType")]
     public abstract CustomerType Type { get; set; }
 
-    [DBBidirectionalRelation ("Customer", SortExpression = "OrderNumber asc")]
+    [DBBidirectionalRelation("Customer", SortExpression = "OrderNumber asc")]
     public abstract OrderCollection Orders { get; set;  }
 
-    [DBBidirectionalRelation ("AssociatedCustomerCompany", ContainsForeignKey = false)]
+    [DBBidirectionalRelation("AssociatedCustomerCompany", ContainsForeignKey = false)]
     public abstract Person ContactPerson { get; set; }
 
     public void OnDeserialization (object sender)

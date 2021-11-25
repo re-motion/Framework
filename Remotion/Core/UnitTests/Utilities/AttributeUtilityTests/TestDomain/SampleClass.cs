@@ -71,7 +71,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
       get { return null; }
     }
 
-    [InheritedNotMultiple ("Base")]
+    [InheritedNotMultiple("Base")]
     [UsedImplicitly]
     public virtual string PropertyWithInheritedNotMultipleAttribute
     {
@@ -94,7 +94,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
     [UsedImplicitly]
     public virtual event EventHandler EventWithNotInheritedAttribute;
 
-    [InheritedNotMultiple ("Base")]
+    [InheritedNotMultiple("Base")]
     [UsedImplicitly]
     public virtual event EventHandler EventWithInheritedNotMultipleAttribute;
 
@@ -126,7 +126,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
       return null;
     }
 
-    [InheritedNotMultiple ("Base")]
+    [InheritedNotMultiple("Base")]
     [UsedImplicitly]
     public virtual string MethodWithInheritedNotMultipleAttribute ()
     {

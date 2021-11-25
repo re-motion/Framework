@@ -40,9 +40,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    [TestCase (DbType.Boolean, false, null, TestName = "Initialization_WithDbTypeIsNullable.")]
-    [TestCase (DbType.Boolean, true, null, TestName = "Initialization_WithDbTypeIsNotNullable.")]
-    [TestCase (DbType.String, false, 5, TestName = "Initialization_WithDbTypeHasSize.")]
+    [TestCase(DbType.Boolean, false, null, TestName = "Initialization_WithDbTypeIsNullable.")]
+    [TestCase(DbType.Boolean, true, null, TestName = "Initialization_WithDbTypeIsNotNullable.")]
+    [TestCase(DbType.String, false, 5, TestName = "Initialization_WithDbTypeHasSize.")]
     public void Initialization (DbType storageDbType, bool storageTypeNullable, int? storageTypeLength)
     {
       var storageTypeInformation = new StorageTypeInformation(
@@ -103,12 +103,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       Assert.That(result, Is.EqualTo("converted null value"));
     }
 
-    [CLSCompliant (false)]
+    [CLSCompliant(false)]
     [Test]
-    [TestCase (new object[] { null }, TestName = "CreateDataParameter_WithoutSize_DoesNotSetSizeOnParameter.")]
-    [TestCase (-1, TestName = "CreateDataParameter_WithNegativeSize_SetsSizeOnParameter.")]
-    [TestCase (0, TestName = "CreateDataParameter_WithSizeZero_SetsSizeOnParameter.")]
-    [TestCase (1, TestName = "CreateDataParameter_WithPositiveSize_SetsSizeOnParameter.")]
+    [TestCase(new object[] { null }, TestName = "CreateDataParameter_WithoutSize_DoesNotSetSizeOnParameter.")]
+    [TestCase(-1, TestName = "CreateDataParameter_WithNegativeSize_SetsSizeOnParameter.")]
+    [TestCase(0, TestName = "CreateDataParameter_WithSizeZero_SetsSizeOnParameter.")]
+    [TestCase(1, TestName = "CreateDataParameter_WithPositiveSize_SetsSizeOnParameter.")]
     public void CreateDataParameter (int? storageTypeSize)
     {
       var commandMock = MockRepository.GenerateStrictMock<IDbCommand>();

@@ -31,7 +31,7 @@ namespace Remotion.Web.Services
   /// Default implementation of the <see cref="IWebServiceFactory"/> interface.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof(IWebServiceFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IWebServiceFactory), Lifetime = LifetimeKind.Singleton)]
   public class WebServiceFactory : IWebServiceFactory
   {
     private static readonly ConcurrentDictionary<Type, IReadOnlyCollection<Tuple<string, IReadOnlyCollection<string>>>> s_serviceMethodCache =

@@ -26,7 +26,7 @@ namespace Remotion.Mixins
   /// When applied to a mixin, specifies a class whose custom attributes should be added to the mixin's target class. This is useful when a mixin
   /// should add certain attributes without itself exposing those attributes.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
   public class CopyCustomAttributesAttribute : Attribute
   {
     private readonly Type _attributeSourceType;

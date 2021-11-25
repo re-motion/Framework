@@ -26,10 +26,10 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
   /// Decorates created <see cref="IModuleBuilderFactory"/> instances with <see cref="RemotionModuleBuilderFactoryDecorator"/>.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof(IPipelineFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IPipelineFactory), Lifetime = LifetimeKind.Singleton)]
   public class RemotionPipelineFactory : DefaultPipelineFactory
   {
-    [CLSCompliant (false)]
+    [CLSCompliant(false)]
     protected override IModuleBuilderFactory NewModuleBuilderFactory (string participantConfigurationID)
     {
       var moduleBuilderFactory = base.NewModuleBuilderFactory(participantConfigurationID);

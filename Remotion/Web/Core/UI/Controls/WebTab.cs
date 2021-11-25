@@ -29,7 +29,7 @@ using Remotion.Web.UI.Globalization;
 namespace Remotion.Web.UI.Controls
 {
 
-[TypeConverter (typeof(ExpandableObjectConverter))]
+[TypeConverter(typeof(ExpandableObjectConverter))]
 public class WebTab: IWebTab, IControlStateManager
 {
   /// <summary> The control to which this object belongs. </summary>
@@ -69,7 +69,7 @@ public class WebTab: IWebTab, IControlStateManager
 
   /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
   /// <exclude/>
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public WebTab ()
   {
     _icon = new IconInfo();
@@ -143,11 +143,11 @@ public class WebTab: IWebTab, IControlStateManager
 
   /// <summary> Gets or sets the ID of this tab. </summary>
   /// <remarks> Must be unique within the collection of tabs. Must not be <see langword="null"/> or emtpy. </remarks>
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("The ID of this tab.")]
+  [PersistenceMode(PersistenceMode.Attribute)]
+  [Description("The ID of this tab.")]
   //No Default value
-  [NotifyParentProperty (true)]
-  [ParenthesizePropertyName (true)]
+  [NotifyParentProperty(true)]
+  [ParenthesizePropertyName(true)]
   public virtual string ItemID
   {
     get { return _itemID; }
@@ -177,11 +177,11 @@ public class WebTab: IWebTab, IControlStateManager
 
   /// <summary> Gets or sets the text displayed in this tab. </summary>
   /// <remarks> Must not be <see langword="null"/> or emtpy. The value will not be HTML encoded. </remarks>
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Appearance")]
-  [Description ("The text displayed in this tab. Use '-' for a separator tab. The value will not be HTML encoded.")]
+  [PersistenceMode(PersistenceMode.Attribute)]
+  [Category("Appearance")]
+  [Description("The text displayed in this tab. Use '-' for a separator tab. The value will not be HTML encoded.")]
   //No Default value
-  [NotifyParentProperty (true)]
+  [NotifyParentProperty(true)]
   public virtual string Text
   {
     get { return _text; }
@@ -193,22 +193,22 @@ public class WebTab: IWebTab, IControlStateManager
   }
 
   /// <summary> Gets or sets the icon displayed in this tab. </summary>
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-  [Category ("Appearance")]
-  [Description ("The icon displayed in this tab.")]
-  [NotifyParentProperty (true)]
+  [PersistenceMode(PersistenceMode.Attribute)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [Category("Appearance")]
+  [Description("The icon displayed in this tab.")]
+  [NotifyParentProperty(true)]
   public virtual IconInfo Icon
   {
     get { return _icon; }
     set { _icon = value; }
   }
 
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Behavior")]
-  [Description ("False to hide the tab.")]
-  [NotifyParentProperty (true)]
-  [DefaultValue (true)]
+  [PersistenceMode(PersistenceMode.Attribute)]
+  [Category("Behavior")]
+  [Description("False to hide the tab.")]
+  [NotifyParentProperty(true)]
+  [DefaultValue(true)]
   public bool IsVisible
   {
     get
@@ -223,11 +223,11 @@ public class WebTab: IWebTab, IControlStateManager
     }
   }
 
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Behavior")]
-  [Description ("True to manually disable the tab.")]
-  [NotifyParentProperty (true)]
-  [DefaultValue (false)]
+  [PersistenceMode(PersistenceMode.Attribute)]
+  [Category("Behavior")]
+  [Description("True to manually disable the tab.")]
+  [NotifyParentProperty(true)]
+  [DefaultValue(false)]
   public bool IsDisabled
   {
     get
@@ -253,8 +253,8 @@ public class WebTab: IWebTab, IControlStateManager
   }
 
   /// <summary> Gets the <see cref="WebTabStrip"/> to which this tab belongs. </summary>
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public WebTabStrip? TabStrip
   {
     get { return _tabStrip; }
@@ -264,8 +264,8 @@ public class WebTab: IWebTab, IControlStateManager
   /// <exception cref="InvalidOperationException"> 
   ///   Thrown if <see cref="IsVisible"/> is <see langword="false"/> but <paramref name="value"/> is <see langword="true"/>.
   /// </exception>
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public bool IsSelected
   {
     get { return _isSelected; }
@@ -289,8 +289,8 @@ public class WebTab: IWebTab, IControlStateManager
   }
 
   /// <summary> Gets or sets the control to which this object belongs. </summary>
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public IControl? OwnerControl
   {
     get { return OwnerControlImplementation;  }
@@ -426,9 +426,9 @@ public class WebTabClickEventArgs: EventArgs
 public class WebTabStyle: Style
 {
   /// <exclude />
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public new Color BorderColor
   {
     get { return base.BorderColor; }
@@ -436,9 +436,9 @@ public class WebTabStyle: Style
   }
 
   /// <exclude />
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public new BorderStyle BorderStyle
   {
     get { return base.BorderStyle; }
@@ -446,9 +446,9 @@ public class WebTabStyle: Style
   }
 
   /// <exclude />
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public new Unit BorderWidth
   {
     get { return base.BorderWidth; }
@@ -456,9 +456,9 @@ public class WebTabStyle: Style
   }
 
   /// <exclude />
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public new Unit Width
   {
     get { return base.Width; }
@@ -466,9 +466,9 @@ public class WebTabStyle: Style
   }
 
   /// <exclude />
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public new Unit Height
   {
     get { return base.Height; }

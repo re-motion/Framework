@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   [DBTable]
   [Serializable]
   [Instantiable]
-  [Uses (typeof(MixinWithSerializationCallbacks))]
+  [Uses(typeof(MixinWithSerializationCallbacks))]
   public abstract class ClassWithSerializationCallbacks : DomainObject, IDeserializationCallback
   {
     private static ISerializationEventReceiver s_receiver;

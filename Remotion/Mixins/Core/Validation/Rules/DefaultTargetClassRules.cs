@@ -31,19 +31,19 @@ namespace Remotion.Mixins.Validation.Rules
     	visitor.TargetClassRules.Add(new DelegateValidationRule<TargetClassDefinition>(TargetClassMustBePublic));
     }
 
-  	[DelegateRuleDescription (Message = "A target class for mixins is declared sealed (or it is a value type).")]
+  	[DelegateRuleDescription(Message = "A target class for mixins is declared sealed (or it is a value type).")]
     private void TargetClassMustNotBeSealed (DelegateValidationRule<TargetClassDefinition>.Args args)
     {
       SingleMust(!args.Definition.Type.IsSealed, args.Log, args.Self);
     }
 
-    [DelegateRuleDescription (Message = "An interface is used as a target class for mixins.")]
+    [DelegateRuleDescription(Message = "An interface is used as a target class for mixins.")]
     private void TargetClassMustNotBeAnInterface (DelegateValidationRule<TargetClassDefinition>.Args args)
     {
       SingleMust(!args.Definition.Type.IsInterface, args.Log, args.Self);
     }
 
-    [DelegateRuleDescription (Message = "A target class for mixins does not have a public or protected constructor.")]
+    [DelegateRuleDescription(Message = "A target class for mixins does not have a public or protected constructor.")]
     private void TargetClassMustHavePublicOrProtectedCtor (DelegateValidationRule<TargetClassDefinition>.Args args)
     {
       ConstructorInfo[] ctors = args.Definition.Type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
@@ -52,7 +52,7 @@ namespace Remotion.Mixins.Validation.Rules
       SingleMust(publicOrProtectedCtors.Length > 0, args.Log, args.Self);
     }
 
-		[DelegateRuleDescription (Message = "A target class for mixins is not publicly visible.")]
+		[DelegateRuleDescription(Message = "A target class for mixins is not publicly visible.")]
 		private void TargetClassMustBePublic (DelegateValidationRule<TargetClassDefinition>.Args args)
 		{
 			SingleMust(args.Definition.Type.IsVisible, args.Log, args.Self);

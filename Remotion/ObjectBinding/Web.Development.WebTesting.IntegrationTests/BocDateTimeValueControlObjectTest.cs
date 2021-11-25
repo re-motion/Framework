@@ -43,22 +43,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocDateTimeValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof(DisabledTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [TestCaseSource (typeof(ReadOnlyTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [TestCaseSource (typeof(LabelTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [TestCaseSource (typeof(ValidationErrorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource(typeof(ReadOnlyTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource(typeof(LabelTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource(typeof(ValidationErrorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocDateTimeValueSelector, BocDateTimeValueControlObject> testAction)
     {
       testAction(Helper, e => e.DateTimeValues(), "dateTimeValue");
     }
 
-    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [TestCaseSource (typeof(DomainPropertyControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
-    [TestCaseSource (typeof(DisplayNameControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource(typeof(DomainPropertyControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
+    [TestCaseSource(typeof(DisplayNameControlSelectorTestCaseFactory<BocDateTimeValueSelector, BocDateTimeValueControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocDateTimeValueSelector, BocDateTimeValueControlObject> testAction)
     {
       testAction(Helper, e => e.DateTimeValues(), "dateTimeValue");
@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     /// <summary>
     /// Tests that the various parts of the <see cref="BocDateTimeValueControlObject"/> can be annotated when using the screenshot API.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest ()
     {
@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           });
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_DatePicker ()
     {
@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           });
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_DerivedType ()
     {

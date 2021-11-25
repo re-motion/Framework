@@ -37,23 +37,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocReferenceValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof(DisabledTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [TestCaseSource (typeof(ReadOnlyTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [TestCaseSource (typeof(LabelTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [TestCaseSource (typeof(ValidationErrorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(ReadOnlyTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(LabelTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(ValidationErrorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocReferenceValueSelector, BocReferenceValueControlObject> testAction)
     {
       testAction(Helper, e => e.ReferenceValues(), "referenceValue");
     }
 
     [Test]
-    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [TestCaseSource (typeof(DomainPropertyControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [TestCaseSource (typeof(DisplayNameControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(DomainPropertyControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(DisplayNameControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocReferenceValueSelector, BocReferenceValueControlObject> testAction)
     {
       testAction(Helper, e => e.ReferenceValues(), "referenceValue");

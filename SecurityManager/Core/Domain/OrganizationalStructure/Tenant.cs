@@ -31,8 +31,8 @@ using Remotion.Utilities;
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Tenant")]
-  [PermanentGuid ("BD8FB1A4-E300-4663-AB1E-D6BD7B106619")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Tenant")]
+  [PermanentGuid("BD8FB1A4-E300-4663-AB1E-D6BD7B106619")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -66,8 +66,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       return result.SingleOrDefault();
     }
 
-    [DemandPermission (GeneralAccessTypes.Search)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DemandPermission(GeneralAccessTypes.Search)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static void Search ()
     {
       throw new NotImplementedException("This method is only intended for framework support and should never be called.");
@@ -85,19 +85,19 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       }
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string UniqueIdentifier { get; set; }
 
     public abstract bool IsAbstract { get; set; }
 
-    [DBBidirectionalRelation ("Children")]
-    [SearchAvailableObjectsServiceType (typeof(TenantPropertyTypeSearchService))]
+    [DBBidirectionalRelation("Children")]
+    [SearchAvailableObjectsServiceType(typeof(TenantPropertyTypeSearchService))]
     public abstract Tenant Parent { get; set; }
 
-    [DBBidirectionalRelation ("Parent")]
+    [DBBidirectionalRelation("Parent")]
     public abstract ObjectList<Tenant> Children { get; }
 
     public override string DisplayName
@@ -121,7 +121,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     /// <exception cref="InvalidOperationException">
     /// Thrown if the parent hierarchy contains a circular reference.
     /// </exception>
-    [DemandPermission (GeneralAccessTypes.Read)]
+    [DemandPermission(GeneralAccessTypes.Read)]
     public IEnumerable<Tenant> GetParents ()
     {
       var securityClient = SecurityClient.CreateSecurityClientFromConfiguration();

@@ -306,10 +306,10 @@ namespace Remotion.Collections.Caching.UnitTests
     }
 
     [Test]
-    [TestCase (1, 6000)]
-    [TestCase (2, 13000)]
-    [TestCase (3, 21000)]
-    [TestCase (4, 28000)]
+    [TestCase(1, 6000)]
+    [TestCase(2, 13000)]
+    [TestCase(3, 21000)]
+    [TestCase(4, 28000)]
     [Explicit]
     public void Performance (int threadCount, int timeTakenExpected)
     {

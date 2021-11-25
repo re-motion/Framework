@@ -22,7 +22,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{MemberInfo}, DeclaringClass = {DeclaringClass.Type}")]
+  [DebuggerDisplay("{MemberInfo}, DeclaringClass = {DeclaringClass.Type}")]
   public abstract class MemberDefinitionBase : IAttributeIntroductionTarget, IAttributeIntroductionSource
   {
     private IVisitableDefinition _parent;

@@ -22,7 +22,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{Type}")]
+  [DebuggerDisplay("{Type}")]
   public class TargetClassDefinition : ClassDefinitionBase, IAttributeIntroductionTarget
   {
     private readonly UniqueDefinitionCollection<Type, MixinDefinition> _mixins =

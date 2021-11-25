@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
       return new MappingValidationResult(true, null);
     }
 
-    [JetBrains.Annotations.StringFormatMethod ("messageFormat")]
+    [JetBrains.Annotations.StringFormatMethod("messageFormat")]
     public static MappingValidationResult CreateInvalidResult (string messageFormat, params object[] args)
     {
       ArgumentUtility.CheckNotNullOrEmpty("messageFormat", messageFormat);
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
       return new MappingValidationResult(false, string.Format(messageFormat, args));
     }
 
-    [JetBrains.Annotations.StringFormatMethod ("messageFormat")]
+    [JetBrains.Annotations.StringFormatMethod("messageFormat")]
     public static MappingValidationResult CreateInvalidResultForType (Type type, string messageFormat, params object[] args)
     {
       ArgumentUtility.CheckNotNull("type", type);
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
       return CreateInvalidResultForType(TypeAdapter.Create(type), messageFormat, args);
     }
 
-    [JetBrains.Annotations.StringFormatMethod ("messageFormat")]
+    [JetBrains.Annotations.StringFormatMethod("messageFormat")]
     public static MappingValidationResult CreateInvalidResultForType (ITypeInformation type, string messageFormat, params object[] args)
     {
       ArgumentUtility.CheckNotNull("type", type);
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
       return new MappingValidationResult(false, BuildMessage(type, null, null, messageFormat, args));
     }
 
-    [JetBrains.Annotations.StringFormatMethod ("messageFormat")]
+    [JetBrains.Annotations.StringFormatMethod("messageFormat")]
     public static MappingValidationResult CreateInvalidResultForProperty (IPropertyInformation propertyInfo, string messageFormat, params object[] args)
     {
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
       return new MappingValidationResult(false, BuildMessage(propertyInfo.DeclaringType, propertyInfo, null, messageFormat, args));
     }
 
-    [JetBrains.Annotations.StringFormatMethod ("messageFormat")]
+    [JetBrains.Annotations.StringFormatMethod("messageFormat")]
     public static MappingValidationResult CreateInvalidResultForRelation (string relationID, IPropertyInformation propertyInfo, string messageFormat, params object[] args)
     {
       ArgumentUtility.CheckNotNullOrEmpty("relationID", relationID);

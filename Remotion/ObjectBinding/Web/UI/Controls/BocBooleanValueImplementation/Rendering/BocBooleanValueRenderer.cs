@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
   /// Responsible for rendering <see cref="BocBooleanValue"/> controls.
   /// <seealso cref="IBocBooleanValue"/>
   /// </summary>
-  [ImplementationFor (typeof(IBocBooleanValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocBooleanValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocBooleanValueRenderer : BocBooleanValueRendererBase<IBocBooleanValue>, IBocBooleanValueRenderer
   {
     /// <summary> A list of control specific resources. </summary>
@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocBooleanValueRenderer")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocBooleanValueRenderer")]
     public enum ResourceIdentifier
     {
       /// <summary> Additional text to announce required information since the required-attribute is not supported on anchor elements.</summary>

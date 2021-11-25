@@ -24,8 +24,8 @@ using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructu
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Role")]
-  [PermanentGuid ("23C68C62-5B0F-4857-8DF2-C161C0077745")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Role")]
+  [PermanentGuid("23C68C62-5B0F-4857-8DF2-C161C0077745")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -42,21 +42,21 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
     }
 
-    [DBBidirectionalRelation ("Roles")]
+    [DBBidirectionalRelation("Roles")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof(GroupPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(GroupPropertyTypeSearchService))]
     public abstract Group Group { get; set; }
 
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof(RolePropertiesSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(RolePropertiesSearchService))]
     public abstract Position Position { get; set; }
 
-    [DBBidirectionalRelation ("Roles")]
+    [DBBidirectionalRelation("Roles")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof(UserPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(UserPropertyTypeSearchService))]
     public abstract User User { get; set; }
 
-    [DBBidirectionalRelation ("SubstitutedRole")]
+    [DBBidirectionalRelation("SubstitutedRole")]
     public abstract ObjectList<Substitution> SubstitutedBy { get; }
 
     protected override void OnDeleting (EventArgs args)

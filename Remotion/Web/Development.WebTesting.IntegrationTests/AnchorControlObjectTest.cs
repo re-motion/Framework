@@ -30,12 +30,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class AnchorControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
-    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
-    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
-    [TestCaseSource (typeof(TextContentControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
-    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
-    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
+    [TestCaseSource(typeof(TextContentControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<AnchorSelector, AnchorControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<AnchorSelector, AnchorControlObject> testAction)
     {
       testAction(Helper, e => e.Anchors(), "anchor");

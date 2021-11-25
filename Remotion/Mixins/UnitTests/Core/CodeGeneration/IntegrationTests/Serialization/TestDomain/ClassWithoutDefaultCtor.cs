@@ -20,7 +20,7 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Serialization.TestDomain
 {
   [Serializable]
-  [Uses (typeof(NullMixin))]
+  [Uses(typeof(NullMixin))]
   public class ClassWithoutDefaultCtor
   {
     public string S;

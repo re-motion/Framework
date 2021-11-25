@@ -26,14 +26,14 @@ using Remotion.Web.Services;
 
 namespace OBWTest.IndividualControlTests
 {
-  [WebService (Namespace = "http://re-motion.org/ObjectBinding.Web/")]
-  [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
-  [ToolboxItem (false)]
+  [WebService(Namespace = "http://re-motion.org/ObjectBinding.Web/")]
+  [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+  [ToolboxItem(false)]
   [ScriptService]
   public class BocTreeViewWebService : WebService, IBocTreeViewWebService
   {
     [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public WebMenuItemProxy[] GetMenuItemStatusForTreeNode (
         string controlID,
         string controlType,

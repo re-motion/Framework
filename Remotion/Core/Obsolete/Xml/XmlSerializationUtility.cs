@@ -20,7 +20,7 @@ using System.Xml.Schema;
 
 namespace Remotion.Xml
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Xml.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Xml.dll", true)]
   public static class XmlSerializationUtility
   {
     public static object DeserializeUsingSchema (XmlReader reader, Type type, string defaultNamespace, XmlReaderSettings settings)

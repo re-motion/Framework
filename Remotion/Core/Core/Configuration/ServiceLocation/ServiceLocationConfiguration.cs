@@ -70,7 +70,7 @@ namespace Remotion.Configuration.ServiceLocation
     /// configured using <see cref="ServiceLocator.SetLocatorProvider"/>.
     /// </summary>
     /// <value>A <see cref="TypeElement{TBase}"/> describing the custom <see cref="IServiceLocatorProvider"/> type to be used.</value>
-    [ConfigurationProperty ("serviceLocatorProvider", IsRequired = false)]
+    [ConfigurationProperty("serviceLocatorProvider", IsRequired = false)]
     public TypeElement<IServiceLocatorProvider, DefaultServiceLocatorProvider> ServiceLocatorProvider
     {
       get { return (TypeElement<IServiceLocatorProvider, DefaultServiceLocatorProvider>)this["serviceLocatorProvider"]; }

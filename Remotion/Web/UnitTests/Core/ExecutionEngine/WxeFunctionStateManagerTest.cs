@@ -105,7 +105,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    [Category ("LongRunning")]
+    [Category("LongRunning")]
     public void IsExpired_DelaysForOneMinute ()
     {
       WxeFunctionState functionState = new WxeFunctionState(new TestFunction(), 1, true);
@@ -124,7 +124,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
-    [Category ("LongRunning")]
+    [Category("LongRunning")]
     public void CleanupExpired_DelaysForOneMinute ()
     {
       WxeFunctionState functionStateExpired = new WxeFunctionState(new TestFunction(), 1, true);

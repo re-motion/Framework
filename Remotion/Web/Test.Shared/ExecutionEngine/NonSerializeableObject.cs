@@ -19,7 +19,7 @@ using System.ComponentModel;
 
 namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
-  [TypeConverter (typeof(NonSerializeableObjectConverter))]
+  [TypeConverter(typeof(NonSerializeableObjectConverter))]
   public class NonSerializeableObject
   {
     private readonly string _value;

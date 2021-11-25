@@ -26,9 +26,9 @@ public enum IncrementalTestOptions { no, nor, normal, anything };
 public enum TestOption { yes, no, almost };
 public enum TestMode
 {
-  [CommandLineMode ("m1", Description = "Primary mode")]
+  [CommandLineMode("m1", Description = "Primary mode")]
   Mode1,
-  [CommandLineMode ("m2", Description = "Secondary mode")]
+  [CommandLineMode("m2", Description = "Secondary mode")]
   Mode2
 };
 

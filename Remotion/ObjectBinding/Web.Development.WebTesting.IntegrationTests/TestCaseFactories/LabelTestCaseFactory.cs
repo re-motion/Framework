@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       get { return "Label"; }
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledFormGrid)]
     public void GetLabelForEditableControl ()
     {
       var control = Selector.GetByID(Parameter.FormGridControlHtmlId);
@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(control.GetLabels().First().GetText(), Is.EqualTo(Parameter.FormGridLabel));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledFormGrid)]
     public void GetLabelForReadOnlyControl ()
     {
       var control = Selector.GetByID(Parameter.ReadonlyFormGridControlHtmlId);
@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(control.GetLabels().First().GetText(), Is.EqualTo(Parameter.FormGridLabel));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledFormGrid)]
     public void GetLabelForControlOverMultipleFormGridRows ()
     {
       var control = Selector.GetByID(Parameter.OneControlOverMultipleRowsFormGridControlHtmlId);
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(control.GetLabels().First().GetText(), Is.EqualTo(Parameter.FormGridLabel));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledFormGrid)]
     public void GetLabelForControlWithShiftedFormGridColumns ()
     {
       var control = Selector.GetByID(Parameter.ColumnsShiftedFormGridControlHtmlId);
@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(control.GetLabels().First().GetText(), Is.EqualTo(Parameter.FormGridLabel));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledFormGrid)]
     public void GetLabelForControlWithMultipleControlsInOneFormGrid ()
     {
       var control1 = Selector.GetByID(Parameter.FormGridMultiControl1HtmlId);
@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       Assert.That(control2.GetLabels().First().GetText(), Is.EqualTo(Parameter.FormGridLabel));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledFormGrid)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledFormGrid)]
     public void GetLabelForControlNotInFormGrid ()
     {
       var control = Selector.GetByID(Parameter.ControlNotInFormGridHtmlId);

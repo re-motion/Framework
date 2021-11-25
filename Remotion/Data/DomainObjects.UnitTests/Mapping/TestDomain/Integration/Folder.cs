@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     {
     }
 
-    [DBBidirectionalRelation ("ParentFolder")]
+    [DBBidirectionalRelation("ParentFolder")]
     public abstract ObjectList<FileSystemItem> FileSystemItems { get; }
 
   }

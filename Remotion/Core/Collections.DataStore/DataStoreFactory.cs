@@ -106,7 +106,7 @@ namespace Remotion.Collections.DataStore
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}()"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> ()
         where TKey : notnull
     {
@@ -128,7 +128,7 @@ namespace Remotion.Collections.DataStore
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}()"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey>? comparer)
         where TKey : notnull
     {
@@ -149,7 +149,7 @@ namespace Remotion.Collections.DataStore
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}()"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ()
         where TKey : notnull
         where TValue: class?
@@ -173,7 +173,7 @@ namespace Remotion.Collections.DataStore
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}()"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey>? comparer)
         where TKey : notnull
         where TValue: class?

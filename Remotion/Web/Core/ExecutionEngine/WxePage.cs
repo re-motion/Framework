@@ -52,14 +52,14 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Gets a flag describing whether this post-back has been triggered by returning from a WXE function. </summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool IsReturningPostBack
     {
       get { return _wxePageInfo.IsReturningPostBack; }
     }
 
     /// <summary> Gets the WXE function that has been executed in the current page. </summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public WxeFunction? ReturningFunction
     {
       get { return _wxePageInfo.ReturningFunction; }
@@ -100,9 +100,9 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks> 
     ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
     /// </remarks>
-    [Description ("The message displayed when the user attempts to submit while the page is already aborting.")]
-    [Category ("Appearance")]
-    [DefaultValue ("")]
+    [Description("The message displayed when the user attempts to submit while the page is already aborting.")]
+    [Category("Appearance")]
+    [DefaultValue("")]
     public virtual string StatusIsAbortingMessage
     {
       get { return _wxePageInfo.StatusIsAbortingMessage; }
@@ -116,9 +116,9 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks> 
     ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
     /// </remarks>
-    [Description ("The message displayed when the user returnes to a cached page that has already been submitted or aborted.")]
-    [Category ("Appearance")]
-    [DefaultValue ("")]
+    [Description("The message displayed when the user returnes to a cached page that has already been submitted or aborted.")]
+    [Category("Appearance")]
+    [DefaultValue("")]
     public virtual string StatusIsCachedMessage
     {
       get { return _wxePageInfo.StatusIsCachedMessage; }
@@ -222,7 +222,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Gets the <see cref="WxePageStep"/> that called this <see cref="WxePage"/>. </summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public WxePageStep CurrentPageStep
     {
       get { return _wxePageInfo.CurrentPageStep; }
@@ -238,7 +238,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   A <see cref="WxeFunction"/> or <see langwrpd="null"/> if the <see cref="CurrentPageStep"/> is not part of a
     ///   <see cref="WxeFunction"/>.
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public WxeFunction CurrentFunction
     {
       get { return _wxePageInfo.CurrentPageFunction; }
@@ -249,7 +249,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   A <see cref="NameObjectCollection"/> or <see langword="null"/> if the step is not part of a 
     ///   <see cref="WxeFunction"/>
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public NameObjectCollection Variables
     {
       get { return _wxePageInfo.PageVariables; }
@@ -307,9 +307,9 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks>
     ///   Use <see cref="IsAbortEnabled"/> to evaluate this property.
     /// </remarks>
-    [Description ("The flag that determines whether to abort the session when the window is closed. Undefined is interpreted as true.")]
-    [Category ("Behavior")]
-    [DefaultValue (null)]
+    [Description("The flag that determines whether to abort the session when the window is closed. Undefined is interpreted as true.")]
+    [Category("Behavior")]
+    [DefaultValue(null)]
     public virtual bool? EnableAbort
     {
       get { return _enableAbort; }
@@ -345,10 +345,10 @@ namespace Remotion.Web.ExecutionEngine
     ///     Setting this flag disables the function abort and the abort confirmation message.
     ///   </para>
     /// </remarks>
-    [Description ("The flag that determines whether to allow out-of-sequence postbacks (i.e. post-backs from an already "
+    [Description("The flag that determines whether to allow out-of-sequence postbacks (i.e. post-backs from an already "
                   + "submitted page because of the cache). Undefined is interpreted as false.")]
-    [Category ("Behavior")]
-    [DefaultValue (null)]
+    [Category("Behavior")]
+    [DefaultValue(null)]
     public virtual bool? EnableOutOfSequencePostBacks
     {
       get { return _enableOutOfSequencePostBacks; }
@@ -410,11 +410,11 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks>
     ///   Use <see cref="AreStatusMessagesEnabled"/> to evaluate this property.
     /// </remarks>
-    [Description ("The flag that determines whether to display a status message when the user attempts to start a "
+    [Description("The flag that determines whether to display a status message when the user attempts to start a "
                   + "second request or returns to a page that has already been submitted (i.e. a cached page). "
                   + "Undefined is interpreted as true.")]
-    [Category ("Behavior")]
-    [DefaultValue (null)]
+    [Category("Behavior")]
+    [DefaultValue(null)]
     public virtual bool? EnableStatusMessages
     {
       get { return _enableStatusMessages; }
@@ -437,9 +437,9 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <exclude/>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public override bool? EnableStatusIsSubmittingMessage
     {
       get
@@ -453,7 +453,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Overridden to return the value of <see cref="AreStatusMessagesEnabled"/>. </summary>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     protected override bool IsStatusIsSubmittingMessageEnabled
     {
       get { return AreStatusMessagesEnabled; }

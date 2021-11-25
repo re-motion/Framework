@@ -26,27 +26,27 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos
   public class AxeToolOptions
   {
     /// <summary>Limit which rules are executed, based on names or tags.</summary>
-    [DataMember (Name = "runOnly")]
+    [DataMember(Name = "runOnly")]
     public AxeExecutionConstraint RunOnly { get; set; } = null!;
 
     /// <summary>Whether <see cref="IAccessibilityConfiguration.IncludeIFrames" /> were allowed during the test.</summary>
-    [DataMember (Name = "iframes")]
+    [DataMember(Name = "iframes")]
     public bool IFrames { get; set; }
 
     /// <summary>Whether XPaths were allowed during the test.</summary>
-    [DataMember (Name = "xpath")]
+    [DataMember(Name = "xpath")]
     public bool XPath { get; set; }
 
     /// <summary>The set IFrameTimeout in milliseconds.</summary>
-    [DataMember (Name = "frameWaitTime")]
+    [DataMember(Name = "frameWaitTime")]
     public int FrameWaitTime { get; set; }
 
     /// <summary>Whether Absolute Paths were allowed during the test.</summary>
-    [DataMember (Name = "absolutePaths")]
+    [DataMember(Name = "absolutePaths")]
     public bool AbsolutePaths { get; set; }
 
     /// <summary>Whether RestoreScroll was enabled during the test.</summary>
-    [DataMember (Name = "restoreScroll")]
+    [DataMember(Name = "restoreScroll")]
     public bool RestoreScroll { get; set; }
   }
 }

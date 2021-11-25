@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     }
 
     [Test]
-    [Ignore ("TODO: discuss desired behavior")]
+    [Ignore("TODO: discuss desired behavior")]
     public void WithoutGetter ()
     {
       IBusinessObject businessObject = Mixin.Get<BindableObjectMixin>(ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty));

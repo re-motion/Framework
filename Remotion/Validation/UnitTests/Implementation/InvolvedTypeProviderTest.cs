@@ -128,7 +128,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    [Ignore ("Include reimplemented interfaces (with Mono.Cecil ??)")]
+    [Ignore("Include reimplemented interfaces (with Mono.Cecil ??)")]
     public void GetAffectedType_WithBaseTypeAndSeveralInterfacesReImplementingInterfaceAndNoMixins ()
     {
       var result =

@@ -60,7 +60,7 @@ namespace Remotion.Mixins
   /// <see cref="ConfigurationException"/> is raised at attribute analysis time.
   /// </para>
   /// </remarks>
-  [AttributeUsage (AttributeTargets.Assembly, AllowMultiple = true)]
+  [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
   public class AdditionalMixinDependencyAttribute : Attribute, IMixinConfigurationAttribute<Assembly>
   {
     private readonly Type _targetType;

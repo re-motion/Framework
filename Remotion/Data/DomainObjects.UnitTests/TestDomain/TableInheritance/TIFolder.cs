@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_Folder")]
-  [DBTable ("TableInheritance_Folder")]
+  [ClassID("TI_Folder")]
+  [DBTable("TableInheritance_Folder")]
   [Instantiable]
   public abstract class TIFolder: TIFileSystemItem
   {
@@ -32,10 +32,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
     {
     }
 
-    [DBBidirectionalRelation ("ParentFolder", SortExpression = "Name ASC")]
+    [DBBidirectionalRelation("ParentFolder", SortExpression = "Name ASC")]
     public abstract ObjectList<TIFileSystemItem> FileSystemItems { get; }
 
-    [DBColumn ("FolderCreatedAt")]
+    [DBColumn("FolderCreatedAt")]
     public abstract DateTime CreatedAt { get; set; }
   }
 }

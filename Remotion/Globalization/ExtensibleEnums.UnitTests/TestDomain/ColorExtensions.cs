@@ -19,7 +19,7 @@ using Remotion.ExtensibleEnums;
 
 namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
 {
-  [MultiLingualResources ("Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.Resources.ColorExtensions")]
+  [MultiLingualResources("Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.Resources.ColorExtensions")]
   public static class ColorExtensions
   {
     public static ExtensibleEnumDefinition<Color> LastCallArgument;

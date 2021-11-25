@@ -22,7 +22,7 @@ namespace Remotion.Mixins
   /// When applied to an interface member, defines the visibility of that member when it is introduced into a mixed type. This overrides the value
   /// specified via <see cref="MixinRelationshipAttribute.IntroducedMemberVisibility"/>.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Event, AllowMultiple = false, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Event, AllowMultiple = false, Inherited = false)]
   public class MemberVisibilityAttribute : Attribute
   {
     private readonly MemberVisibility _visibility;

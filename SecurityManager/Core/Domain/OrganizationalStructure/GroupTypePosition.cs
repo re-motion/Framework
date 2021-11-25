@@ -24,8 +24,8 @@ using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructu
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupTypePosition")]
-  [PermanentGuid ("E2BF5572-DDFF-4319-8824-B41653950860")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupTypePosition")]
+  [PermanentGuid("E2BF5572-DDFF-4319-8824-B41653950860")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -40,14 +40,14 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
     }
 
-    [DBBidirectionalRelation ("Positions")]
+    [DBBidirectionalRelation("Positions")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof(GroupTypePropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(GroupTypePropertyTypeSearchService))]
     public abstract GroupType GroupType { get; set; }
 
-    [DBBidirectionalRelation ("GroupTypes")]
+    [DBBidirectionalRelation("GroupTypes")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof(PositionPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(PositionPropertyTypeSearchService))]
     public abstract Position Position { get; set; }
 
     public override string DisplayName

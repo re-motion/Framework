@@ -42,10 +42,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 
     public abstract int Position { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Product { get; set; }
 
-    [DBBidirectionalRelation ("OrderItems")]
+    [DBBidirectionalRelation("OrderItems")]
     [Mandatory]
     public abstract Order Order { get; set; }
 

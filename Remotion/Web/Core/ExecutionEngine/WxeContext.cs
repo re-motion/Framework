@@ -46,7 +46,7 @@ namespace Remotion.Web.ExecutionEngine
       get { return s_context.Current; }
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static void SetCurrent (WxeContext value)
     {
       s_context.SetCurrent(value);

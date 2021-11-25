@@ -22,7 +22,7 @@ using Remotion.ExtensibleEnums.Infrastructure;
 
 namespace Remotion.ExtensibleEnums
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.ExtensibleEnums.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.ExtensibleEnums.dll", true)]
   internal abstract class ExtensibleEnumDefinition<T>
   {
     public ExtensibleEnumDefinition (IExtensibleEnumValueDiscoveryService valueDiscoveryService)

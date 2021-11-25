@@ -23,7 +23,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     string Mixin2Method ();
   }
 
-  [Extends (typeof(BaseType6))]
+  [Extends(typeof(BaseType6))]
   public class BT6Mixin2 : Mixin<IBaseType6>, IBT6Mixin2
   {
     public string Mixin2Method ()
@@ -32,7 +32,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     }
   }
 
-  [ComposedInterface (typeof(BaseType6))]
+  [ComposedInterface(typeof(BaseType6))]
   public interface ICBT6Mixin2 : IBT6Mixin2, IBaseType6
   {
   }

@@ -79,7 +79,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
       _pageStatePersister = pageStatePersister;
     }
 
-    [MemberNotNull (nameof(_pageStatePersister))]
+    [MemberNotNull(nameof(_pageStatePersister))]
     private void EnsurePageStatePersister ()
     {
       if (_pageStatePersister == null)

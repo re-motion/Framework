@@ -20,7 +20,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{FullName}, not introduced by {Attribute.DeclaringDefinition.FullName}")]
+  [DebuggerDisplay("{FullName}, not introduced by {Attribute.DeclaringDefinition.FullName}")]
   public class NonAttributeIntroductionDefinition : IVisitableDefinition
   {
     public NonAttributeIntroductionDefinition (AttributeDefinition attribute, bool explicitSuppression)

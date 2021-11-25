@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
-  [CopyCustomAttributes (typeof(CopyTemplate))]
+  [CopyCustomAttributes(typeof(CopyTemplate))]
   public class ClassWithCopyCustomAttributes
   {
     [SampleCopyTemplate]

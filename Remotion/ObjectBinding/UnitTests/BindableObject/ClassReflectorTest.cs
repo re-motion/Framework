@@ -283,7 +283,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [Ignore ("TODO: RM-936")]
+    [Ignore("TODO: RM-936")]
     public void ClassReflector_CreatesBaseClass_CompatibleWithDerivedInstances_WithMixins_WithOverriddenProperty ()
     {
       using (MixinConfiguration.BuildNew()

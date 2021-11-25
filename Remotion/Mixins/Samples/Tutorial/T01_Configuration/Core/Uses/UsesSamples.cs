@@ -24,7 +24,7 @@ namespace Remotion.Mixins.Samples.Tutorial.T01_Configuration.Core.Uses
     {
     }
 
-    [Uses (typeof(MyMixin))]
+    [Uses(typeof(MyMixin))]
     public class MyClass
     {
     }
@@ -37,7 +37,7 @@ namespace Remotion.Mixins.Samples.Tutorial.T01_Configuration.Core.Uses
       }
     }
 
-    [Uses (typeof(CloneabilityMixin))]
+    [Uses(typeof(CloneabilityMixin))]
     public class MyCloneableClass
     {
     }

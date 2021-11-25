@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
 {
-  [BaseNonInherited ("ClassWithNonInheritedAttribute")]
+  [BaseNonInherited("ClassWithNonInheritedAttribute")]
   public class ClassWithNonInheritedAttribute
   {
 

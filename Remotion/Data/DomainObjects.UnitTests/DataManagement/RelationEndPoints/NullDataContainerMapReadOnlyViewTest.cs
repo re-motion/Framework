@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   public class NullDataContainerMapReadOnlyViewTest : StandardMappingTest
   {
     [Test]
-    [Ignore ("TODO RM-7294: Tests for NullDataContainerMapReadOnlyView")]
+    [Ignore("TODO RM-7294: Tests for NullDataContainerMapReadOnlyView")]
     public void Add_Tests_For_NullDataContainerMapReadOnlyView ()
     {
     }

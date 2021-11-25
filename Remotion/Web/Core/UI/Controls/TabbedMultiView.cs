@@ -30,8 +30,8 @@ using Remotion.Web.UI.Controls.WebTabStripImplementation;
 namespace Remotion.Web.UI.Controls
 {
   /// <include file='..\..\doc\include\UI\Controls\TabbedMultiView.xml' path='TabbedMultiView/Class/*' />
-  [ToolboxData ("<{0}:TabbedMultiView id=\"MultiView\" runat=\"server\"></{0}:TabbedMultiView>")]
-  [DefaultEvent ("ActiveViewChanged")]
+  [ToolboxData("<{0}:TabbedMultiView id=\"MultiView\" runat=\"server\"></{0}:TabbedMultiView>")]
+  [DefaultEvent("ActiveViewChanged")]
   public class TabbedMultiView : WebControl, ITabbedMultiView
   {
     // constants
@@ -192,11 +192,11 @@ namespace Remotion.Web.UI.Controls
 
     // methods and properties
 
-    [MemberNotNull (nameof(_tabStrip))]
-    [MemberNotNull (nameof(_multiViewInternal))]
-    [MemberNotNull (nameof(_topControl))]
-    [MemberNotNull (nameof(_bottomControl))]
-    [MemberNotNull (nameof(_placeHolderTabView))]
+    [MemberNotNull(nameof(_tabStrip))]
+    [MemberNotNull(nameof(_multiViewInternal))]
+    [MemberNotNull(nameof(_topControl))]
+    [MemberNotNull(nameof(_bottomControl))]
+    [MemberNotNull(nameof(_placeHolderTabView))]
     private void CreateControls ()
     {
       _tabStrip = new WebTabStrip(this);
@@ -385,9 +385,9 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Browsable(false)]
     public TabViewCollection Views
     {
       get { return (TabViewCollection)MultiViewInternal.Controls; }
@@ -426,76 +426,76 @@ namespace Remotion.Web.UI.Controls
         view.EnsureLazyControls();
     }
 
-    [Category ("Behavior")]
-    [Description ("Enables the lazy (i.e. On-Demand) loading of the individual tabs.")]
-    [DefaultValue (false)]
+    [Category("Behavior")]
+    [Description("Enables the lazy (i.e. On-Demand) loading of the individual tabs.")]
+    [DefaultValue(false)]
     public bool EnableLazyLoading
     {
       get { return _enableLazyLoading; }
       set { _enableLazyLoading = value; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the active view.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the active view.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style ActiveViewStyle
     {
       get { return _activeViewStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to a tab that is not selected.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to a tab that is not selected.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public WebTabStyle TabStyle
     {
       get { return _tabStrip.TabStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the selected tab.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the selected tab.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public WebTabStyle SelectedTabStyle
     {
       get { return _tabStrip.SelectedTabStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to the top section. The height cannot be provided in percent.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to the top section. The height cannot be provided in percent.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style TopControlsStyle
     {
       get { return _topControlsStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the bottom section. The height cannot be provided in percent.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the bottom section. The height cannot be provided in percent.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style BottomControlsStyle
     {
       get { return _bottomControlsStyle; }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Browsable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
     public ControlCollection TopControls
     {
       get { return _topControl.Controls; }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Browsable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
     public ControlCollection BottomControls
     {
       get { return _bottomControl.Controls; }

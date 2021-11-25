@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.Concrete
 {
   [Instantiable]
   [DBTable]
-  [Uses (typeof(ConcreteInheritancePersistentMixin))]
+  [Uses(typeof(ConcreteInheritancePersistentMixin))]
   public abstract class ConcreteInheritanceSecondDerivedClass : ConcreteInheritanceBaseClass
   {
     public static ConcreteInheritanceSecondDerivedClass NewObject ()

@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
   public class TableInheritanceUnidirectionalRelationTest : TableInheritanceMappingTest
   {
     [Test]
-    [Ignore ("TODO: Implement referential integrity for unidirectional relationships.")]
+    [Ignore("TODO: Implement referential integrity for unidirectional relationships.")]
     public void DeleteAndCommitWithConcreteTableInheritance ()
     {
       SetDatabaseModifyable();

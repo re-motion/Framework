@@ -144,7 +144,7 @@ namespace Remotion.Web.ExecutionEngine
       }
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunction (PreProcessingSubFunctionStateParameters parameters, WxeRepostOptions repostOptions)
     {
       ArgumentUtility.CheckNotNull("parameters", parameters);
@@ -159,7 +159,7 @@ namespace Remotion.Web.ExecutionEngine
       Execute();
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunctionExternalByRedirect (PreProcessingSubFunctionStateParameters parameters, WxeReturnOptions returnOptions)
     {
       ArgumentUtility.CheckNotNull("parameters", parameters);
@@ -174,7 +174,7 @@ namespace Remotion.Web.ExecutionEngine
       Execute();
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunction (WxeUserControl userControl, WxeFunction subFunction, Control sender, bool usesEventTarget)
     {
       ArgumentUtility.CheckNotNull("userControl", userControl);
@@ -354,14 +354,14 @@ namespace Remotion.Web.ExecutionEngine
       get { return _userControlExecutor; }
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void SetPageExecutor (IWxePageExecutor pageExecutor)
     {
       ArgumentUtility.CheckNotNull("pageExecutor", pageExecutor);
       _pageExecutor = pageExecutor;
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void SetUserControlExecutor (IUserControlExecutor userControlExecutor)
     {
       ArgumentUtility.CheckNotNull("userControlExecutor", userControlExecutor);

@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects
   /// <note type="inotes">Implementations of the interface must be threadsafe.</note>
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
-  [TypeConverter (typeof(DomainObjectHandleConverter))]
+  [TypeConverter(typeof(DomainObjectHandleConverter))]
   [DomainObjectHandle]
   public interface IDomainObjectHandle<out T> : IEquatable<IDomainObjectHandle<IDomainObject>>
       where T : IDomainObject

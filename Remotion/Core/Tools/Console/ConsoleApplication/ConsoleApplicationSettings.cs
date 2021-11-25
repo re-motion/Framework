@@ -29,16 +29,16 @@ namespace Remotion.Tools.Console.ConsoleApplication
     // "/?"-command-line-switch outputs usage information.
     public enum ShowUsageMode
     {
-      [CommandLineMode ("?", Description = "Show usage")]
+      [CommandLineMode("?", Description = "Show usage")]
       ShowUsage
     };
 
     // Assign non-enum value != to ShowUsageMode.ShowUsage here, to default to not show usage.
     // Introducing an extra enum value for this state, would lead to it being listed in the "usage" output, which is not what we want.
-    [CommandLineModeArgument (true)]
+    [CommandLineModeArgument(true)]
     public ShowUsageMode Mode = (ShowUsageMode)987654321;
 
-    [CommandLineFlagArgument ("wait", false, Description = "Wait for keypress at end of program execution.")]
+    [CommandLineFlagArgument("wait", false, Description = "Wait for keypress at end of program execution.")]
     public bool WaitForKeypress;
   }
 }

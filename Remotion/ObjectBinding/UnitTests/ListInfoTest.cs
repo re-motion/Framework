@@ -74,19 +74,19 @@ namespace Remotion.ObjectBinding.UnitTests
     }
 
     [Test]
-    [Ignore ("TODO: implement and integrate with BocList")]
+    [Ignore("TODO: implement and integrate with BocList")]
     public void InsertItem ()
     {
     }
 
     [Test]
-    [Ignore ("TODO: implement and integrate with BocList")]
+    [Ignore("TODO: implement and integrate with BocList")]
     public void RemoveItem ()
     {
     }
 
     [Test]
-    [Ignore ("TODO: test")]
+    [Ignore("TODO: test")]
     public void Initialize_WithMismatchedItemType ()
     {
     }

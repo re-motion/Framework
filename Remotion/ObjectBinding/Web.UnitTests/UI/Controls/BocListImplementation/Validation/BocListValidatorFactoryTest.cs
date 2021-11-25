@@ -22,10 +22,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    [TestCase (true, true, new Type[0], Description = "Required/ReadOnly")]
-    [TestCase (true, false, new[] { typeof(EditModeValidator) }, Description = "Required/Not ReadOnly")]
-    [TestCase (false, true, new Type[0], Description = "Required/ReadOnly")]
-    [TestCase (false, false, new Type[0], Description = "Required/ReadOnly")]
+    [TestCase(true, true, new Type[0], Description = "Required/ReadOnly")]
+    [TestCase(true, false, new[] { typeof(EditModeValidator) }, Description = "Required/Not ReadOnly")]
+    [TestCase(false, true, new Type[0], Description = "Required/ReadOnly")]
+    [TestCase(false, false, new Type[0], Description = "Required/ReadOnly")]
     public void CreateValidators_ListEditMode (bool isListEditModeEnabled, bool isReadonly, Type[] expectedValidatorTypes)
     {
       // EnableEditModeValidator true
@@ -43,10 +43,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    [TestCase (true, true, new Type[0], Description = "Required/ReadOnly")]
-    [TestCase (true, false, new[] { typeof(EditModeValidator) }, Description = "Required/Not ReadOnly")]
-    [TestCase (false, true, new Type[0], Description = "Required/ReadOnly")]
-    [TestCase (false, false, new Type[0], Description = "Required/ReadOnly")]
+    [TestCase(true, true, new Type[0], Description = "Required/ReadOnly")]
+    [TestCase(true, false, new[] { typeof(EditModeValidator) }, Description = "Required/Not ReadOnly")]
+    [TestCase(false, true, new Type[0], Description = "Required/ReadOnly")]
+    [TestCase(false, false, new Type[0], Description = "Required/ReadOnly")]
     public void CreateValidators_RowEditMode (bool isRowEditModeActive, bool isReadonly, Type[] expectedValidatorTypes)
     {
       // EnableEditModeValidator true

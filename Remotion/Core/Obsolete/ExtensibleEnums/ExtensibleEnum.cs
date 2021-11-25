@@ -21,7 +21,7 @@ using Remotion.Utilities;
 // ReSharper disable once CheckNamespace
 namespace Remotion.ExtensibleEnums
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.ExtensibleEnums.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.ExtensibleEnums.dll", true)]
   internal abstract class ExtensibleEnum<T> {
 
     public static readonly ExtensibleEnumDefinition<T> Values = (ExtensibleEnumDefinition<T>)ExtensibleEnumUtility.GetDefinition(typeof(T));

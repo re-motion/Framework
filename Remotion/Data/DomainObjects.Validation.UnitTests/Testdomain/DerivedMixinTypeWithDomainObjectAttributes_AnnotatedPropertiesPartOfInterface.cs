@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
       set => base.PropertyWithNullableStringPropertyAttribute = value;
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 20)]
+    [StringProperty(IsNullable = false, MaximumLength = 20)]
     public virtual string PropertyInDerivedType
     {
       get { return Properties[s_type, "PropertyInDerivedType"].GetValue<string>(); }

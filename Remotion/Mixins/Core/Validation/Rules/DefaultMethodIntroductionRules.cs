@@ -36,7 +36,7 @@ namespace Remotion.Mixins.Validation.Rules
       visitor.MethodIntroductionRules.Add(new DelegateValidationRule<MethodIntroductionDefinition>(PublicMethodNameMustBeUniqueInOtherMixins));
     }
 
-    [DelegateRuleDescription (Message = "A method introduced by a mixin cannot be public if the target class already has a method of the same name.")]
+    [DelegateRuleDescription(Message = "A method introduced by a mixin cannot be public if the target class already has a method of the same name.")]
     private void PublicMethodNameMustBeUniqueInTargetClass (DelegateValidationRule<MethodIntroductionDefinition>.Args args)
     {
       if (args.Definition.Visibility == MemberVisibility.Public)
@@ -59,7 +59,7 @@ namespace Remotion.Mixins.Validation.Rules
       args.Log.Succeed(args.Self);
     }
 
-    [DelegateRuleDescription (Message = "A method introduced by a mixin cannot be public if another mixin also introduces a public method of the same name.")]
+    [DelegateRuleDescription(Message = "A method introduced by a mixin cannot be public if another mixin also introduces a public method of the same name.")]
     private void PublicMethodNameMustBeUniqueInOtherMixins (DelegateValidationRule<MethodIntroductionDefinition>.Args args)
     {
       if (args.Definition.Visibility == MemberVisibility.Public)

@@ -29,7 +29,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
-  [DebuggerDisplay ("{GetType().Name} for {ClassType.GetFullNameSafe()}")]
+  [DebuggerDisplay("{GetType().Name} for {ClassType.GetFullNameSafe()}")]
   public class ClassDefinition
   {
     private readonly string _id;
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return this;
     }
 
-    [Obsolete ("Contains (...) method was ambiguous between GetPropertyDefinitions() and MyPropertyDefinitions. Use GetPropertyDefinitions().Contains (...) instead. (Version: 3.0.0)", true)]
+    [Obsolete("Contains (...) method was ambiguous between GetPropertyDefinitions() and MyPropertyDefinitions. Use GetPropertyDefinitions().Contains (...) instead. (Version: 3.0.0)", true)]
     public bool Contains (PropertyDefinition propertyDefinition)
     {
       throw new NotSupportedException("Use GetPropertyDefinitions().Contains (...) instead. (Version: 3.0.0)");

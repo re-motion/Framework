@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects.Validation
   /// Validates that a string property's value does not exceed the maximum length defined for this property.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof(IDataContainerValidator), RegistrationType = RegistrationType.Multiple, Position = DataContainerValidatorPosition)]
-  [ImplementationFor (typeof(IPersistableDataValidator), RegistrationType = RegistrationType.Multiple, Position = PersistableDataValidatorPosition)]
+  [ImplementationFor(typeof(IDataContainerValidator), RegistrationType = RegistrationType.Multiple, Position = DataContainerValidatorPosition)]
+  [ImplementationFor(typeof(IPersistableDataValidator), RegistrationType = RegistrationType.Multiple, Position = PersistableDataValidatorPosition)]
   public class StringPropertyMaxLengthValidator : IPersistableDataValidator, IDataContainerValidator
   {
     public const int DataContainerValidatorPosition = NotNullablePropertyValidator.DataContainerValidatorPosition + 1;

@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects
   /// <summary>
   /// Use the <see cref="DBTableAttribute"/> to define the distribution of the types within a persistence hierarchy into one or more database tables.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
   public class DBTableAttribute: Attribute, IStorageSpecificIdentifierAttribute
   {
     private string _name;

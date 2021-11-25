@@ -433,7 +433,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <remarks>
     /// For more information why and when a <see cref="DataContainer"/> is discarded see <see cref="ObjectInvalidException"/>.
     /// </remarks>
-    [Obsolete ("Use State.IsDiscarded instead. (Version: 1.21.8)", false)]
+    [Obsolete("Use State.IsDiscarded instead. (Version: 1.21.8)", false)]
     public bool IsDiscarded
     {
       get { return _isDiscarded; }
@@ -504,7 +504,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// or <see cref="UnloadAllCommand"/>. Otherwise, the <see cref="DataContainer"/> will not be properly removed from the <see cref="DataManager"/>,
     /// resulting in runtime errors, e.g. when accessing <see cref="DomainObject"/>.<see cref="DomainObjects.DomainObject.State"/>.
     /// </remarks>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void Discard ()
     {
       CheckNotDiscarded();

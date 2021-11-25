@@ -20,10 +20,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Re
 {
   public class DerivedRelationEndPointPropertyClass1 : BaseRelationEndPointPropertyClass1
   {
-    [DBBidirectionalRelation ("RelationProperty3")]
+    [DBBidirectionalRelation("RelationProperty3")]
     public DerivedRelationEndPointPropertyClass2 RelationProperty3 { get; set; }
 
-    [DBBidirectionalRelation ("RelationProperty4")]
+    [DBBidirectionalRelation("RelationProperty4")]
     public ClassNotInMapping RelationProperty4 { get; set; }
   }
 }

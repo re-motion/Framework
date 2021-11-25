@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   /// Cache-based implementation of the <see cref="ISecurityContextRepository"/> interface.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof(ISecurityContextRepository), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ISecurityContextRepository), Lifetime = LifetimeKind.Singleton)]
   public sealed class SecurityContextRepository : ISecurityContextRepository
   {
     //TODO RM-5640: test

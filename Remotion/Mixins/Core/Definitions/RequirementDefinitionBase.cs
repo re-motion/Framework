@@ -22,7 +22,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{Type}, TargetClass = {TargetClass.Type}")]
+  [DebuggerDisplay("{Type}, TargetClass = {TargetClass.Type}")]
   public abstract class RequirementDefinitionBase : IVisitableDefinition
   {
     private readonly UniqueDefinitionCollection<DependencyDefinitionBase, DependencyDefinitionBase> _requiringDependencies =

@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.TestDomain
     }
 
     [UsedImplicitly]
-    [DemandPermission (TestAccessTypes.Value)]
+    [DemandPermission(TestAccessTypes.Value)]
     public void SecuredMethod ()
     {
     }

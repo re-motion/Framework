@@ -21,7 +21,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
   /// <summary>
   /// Specifies that a WXE function should automatically be created by the WXE function generator (wxegen.exe).
   /// </summary>
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
   public class WxeFunctionPageAttribute : Attribute
   {
     private string _axpxPageName;
@@ -53,7 +53,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
   /// Specifies a WXE function parameter that should automatically be created by the WXE function generator (wxegen.exe). 
   /// Requires <see cref="WxeFunctionPageAttribute"/>.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
   public class WxePageParameterAttribute: Attribute
   {
     private int _index;

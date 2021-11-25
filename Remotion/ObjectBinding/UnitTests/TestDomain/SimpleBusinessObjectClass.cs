@@ -21,7 +21,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
   [BindableObject]
   [Serializable]
-  [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.Globalization.SimpleBusinessObjectClass")]
+  [MultiLingualResources("Remotion.ObjectBinding.UnitTests.Globalization.SimpleBusinessObjectClass")]
   public class SimpleBusinessObjectClass
   {
     private string _string;

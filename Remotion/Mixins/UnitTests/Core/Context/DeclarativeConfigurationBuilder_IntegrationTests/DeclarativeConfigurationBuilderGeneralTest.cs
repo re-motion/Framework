@@ -212,7 +212,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
       Assert.That(classContext.ComposedInterfaces, Has.Member(typeof(ICBT6Mixin3)));
     }
 
-    [Extends (typeof(BaseType1))]
+    [Extends(typeof(BaseType1))]
     [IgnoreForMixinConfiguration]
     public class MixinWithIgnoreForMixinConfigurationAttribute { }
   }

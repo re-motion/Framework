@@ -28,7 +28,7 @@ namespace Remotion.UnitTests.Utilities
     {
     }
 
-    [TypeConverter (typeof(StubTypeConverter))]
+    [TypeConverter(typeof(StubTypeConverter))]
     private class BaseType
     {
     }

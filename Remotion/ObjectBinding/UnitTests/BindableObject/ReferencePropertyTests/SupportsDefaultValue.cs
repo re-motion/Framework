@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     }
 
     [Test]
-    [Ignore ("TODO RM-4106: Extend fallback behavior to include property type.")]
+    [Ignore("TODO RM-4106: Extend fallback behavior to include property type.")]
     public void WithoutDefaultValueServiceAttribute_AndDefaultDefaultValueService_FromPropertyType ()
     {
       var createObjectServiceMock = new Mock<IDefaultValueService>(MockBehavior.Strict);
@@ -135,7 +135,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     }
 
     [Test]
-    [Ignore ("TODO RM-4106: Extend fallback behavior to include property type.")]
+    [Ignore("TODO RM-4106: Extend fallback behavior to include property type.")]
     public void WithoutDefaultValueServiceAttribute_AndNoDefaultDefaultValueService_FromPropertyType ()
     {
       var businessObjectClassServiceMock = new Mock<IBusinessObjectClassService>(MockBehavior.Strict);

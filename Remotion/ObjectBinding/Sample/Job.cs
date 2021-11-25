@@ -19,7 +19,7 @@ using System.Xml.Serialization;
 
 namespace Remotion.ObjectBinding.Sample
 {
-  [XmlRoot ("Job")]
+  [XmlRoot("Job")]
   [XmlType]
   [Serializable]
   public class Job : BindableXmlObject
@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Sample
       set { _title = value; }
     }
 
-    [XmlAttribute (DataType="date")]
+    [XmlAttribute(DataType="date")]
     [DateProperty]
     public DateTime StartDate
     {
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Sample
       set { _startDate = value; }
     }
 
-    [XmlAttribute (DataType="date")]
+    [XmlAttribute(DataType="date")]
     [DateProperty]
     public DateTime EndDate
     {

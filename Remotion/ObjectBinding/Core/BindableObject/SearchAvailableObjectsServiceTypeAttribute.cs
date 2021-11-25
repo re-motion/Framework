@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// <seealso cref="ISearchAvailableObjectsService"/>
   /// <seealso cref="ReferenceProperty"/>
   /// <seealso cref="ReferenceProperty.SearchAvailableObjects"/>
-  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public sealed class SearchAvailableObjectsServiceTypeAttribute : Attribute, IBusinessObjectServiceTypeAttribute<ISearchAvailableObjectsService>
   {
     private readonly Type _type;

@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  [DBTable ("SiblingOfTableWithRelations")]
+  [DBTable("SiblingOfTableWithRelations")]
   [Instantiable]
   public class SiblingOfClassWithRelations : ClassWithRelationsBase
   {

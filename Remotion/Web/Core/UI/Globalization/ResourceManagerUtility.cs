@@ -30,7 +30,7 @@ public static class ResourceManagerUtility
 {
   private const string c_globalResourceKeyPrefix = "$res:";
 
-  public static bool IsGlobalResourceKey ([NotNullWhen (true)]string? elementValue)
+  public static bool IsGlobalResourceKey ([NotNullWhen(true)]string? elementValue)
   {
     if (string.IsNullOrEmpty(elementValue))
       return false;

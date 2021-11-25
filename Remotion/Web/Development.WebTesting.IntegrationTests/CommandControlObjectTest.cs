@@ -33,18 +33,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class CommandControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof(DisabledTestCaseFactory<CommandSelector, CommandControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<CommandSelector, CommandControlObject>))]
     public void GenericTests (GenericSelectorTestAction<CommandSelector, CommandControlObject> testAction)
     {
       testAction(Helper, e => e.Commands(), "command");
     }
 
     [Test]
-    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
-    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
-    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
-    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
-    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<CommandSelector, CommandControlObject> testAction)
     {
       testAction(Helper, e => e.Commands(), "command");

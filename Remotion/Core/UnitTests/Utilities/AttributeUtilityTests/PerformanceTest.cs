@@ -170,7 +170,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
       return elapsed;
     }
 
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     private void PerformMeasurement (MemberInfo[] members, Func<MemberInfo[], int> utilityFunc, Func<MemberInfo[], int> referenceFunc)
     {
       var callingMethod = new StackFrame(1).GetMethod().Name;

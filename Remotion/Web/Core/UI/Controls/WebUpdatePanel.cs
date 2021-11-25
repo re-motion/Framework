@@ -36,26 +36,26 @@ namespace Remotion.Web.UI.Controls
     {
     }
 
-    [Category ("Appearance")]
+    [Category("Appearance")]
     [CssClassProperty]
-    [DefaultValue ("")]
-    [Description ("Class name applied to the control.")]
+    [DefaultValue("")]
+    [Description("Class name applied to the control.")]
     public string CssClass
     {
       get { return _cssClass; }
       set { _cssClass = value ?? string.Empty; }
     }
 
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public CssStyleCollection Style
     {
       get { return Attributes.CssStyle; }
     }
 
-    [Description ("Indicates whether the UpdatePanel should render as a block tag (<div>), an inline tag (<span>), or a table section (tbody, thead, tfoot).")]
-    [DefaultValue (WebUpdatePanelRenderMode.Div)]
-    [Category ("Layout")]
+    [Description("Indicates whether the UpdatePanel should render as a block tag (<div>), an inline tag (<span>), or a table section (tbody, thead, tfoot).")]
+    [DefaultValue(WebUpdatePanelRenderMode.Div)]
+    [Category("Layout")]
     public new WebUpdatePanelRenderMode RenderMode
     {
       get

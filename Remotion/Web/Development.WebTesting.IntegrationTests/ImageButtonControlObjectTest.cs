@@ -33,18 +33,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ImageButtonControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof(DisabledTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
     public void GenericTests (GenericSelectorTestAction<ImageButtonSelector, ImageButtonControlObject> testAction)
     {
       testAction(Helper, e => e.ImageButtons(), "imageButton");
     }
 
     [Test]
-    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
-    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
-    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
-    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
-    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<ImageButtonSelector, ImageButtonControlObject> testAction)
     {
       testAction(Helper, e => e.ImageButtons(), "imageButton");

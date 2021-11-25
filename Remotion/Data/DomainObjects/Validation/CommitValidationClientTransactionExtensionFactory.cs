@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.Validation
   /// Implementation of the <see cref="IClientTransactionExtensionFactory"/> interface. 
   /// Registers the <see cref="CommitValidationClientTransactionExtension"/> for root <see cref="ClientTransaction"/>s.
   /// </summary>
-  [ImplementationFor (typeof(IClientTransactionExtensionFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IClientTransactionExtensionFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class CommitValidationClientTransactionExtensionFactory : IClientTransactionExtensionFactory
   {
     private readonly IPersistableDataValidator _persistableDataValidator;

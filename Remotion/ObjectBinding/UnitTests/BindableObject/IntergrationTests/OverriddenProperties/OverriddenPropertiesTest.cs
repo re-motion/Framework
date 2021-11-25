@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Over
     }
 
     [Test]
-    [Ignore ("RM-6877 - InvalidCaseException")]
+    [Ignore("RM-6877 - InvalidCaseException")]
     public void GetProperty_OverriddenByMixin_AndOnlyAccessorIsMixed_AndDerivedInstanceType ()
     {
       var instance = ObjectFactory.Create<TargetClass>();
@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Over
     }
 
     [Test]
-    [Ignore ("RM-6877 - InvalidCaseException")]
+    [Ignore("RM-6877 - InvalidCaseException")]
     public void GetProperty_OverriddenByMixin_PropertyMetadataIsMixed_AndDerivedInstanceType ()
     {
       var instance = ObjectFactory.Create<TargetClass>();

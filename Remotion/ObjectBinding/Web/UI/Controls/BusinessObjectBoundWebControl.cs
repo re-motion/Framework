@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary>Gets the <see cref="BusinessObjectBinding"/> object used to manage the binding for this <see cref="BusinessObjectBoundWebControl"/>.</summary>
     /// <value> The <see cref="BusinessObjectBinding"/> instance used to manage this control's binding. </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public BusinessObjectBinding Binding
     {
       get { return _binding; }
@@ -58,8 +58,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary>Gets or sets the <see cref="IBusinessObjectDataSource"/> this <see cref="IBusinessObjectBoundWebControl"/> is bound to.</summary>
     /// <value> An <see cref="IBusinessObjectDataSource"/> providing the current <see cref="IBusinessObject"/>. </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public IBusinessObjectDataSource? DataSource
     {
       get { return _binding.DataSource; }
@@ -71,10 +71,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   A string that can be used to query the <see cref="IBusinessObjectClass.GetPropertyDefinition"/> method for the 
     ///   <see cref="IBusinessObjectProperty"/>. 
     /// </value>
-    [Category ("Data")]
-    [Description ("The string representation of the Property.")]
-    [DefaultValue ("")]
-    [MergableProperty (false)]
+    [Category("Data")]
+    [Description("The string representation of the Property.")]
+    [DefaultValue("")]
+    [MergableProperty(false)]
     public string? PropertyIdentifier
     {
       get { return _binding.PropertyIdentifier; }
@@ -83,8 +83,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary>Gets or sets the <see cref="IBusinessObjectProperty"/> used for accessing the data to be loaded into <see cref="Value"/>.</summary>
     /// <value>An <see cref="IBusinessObjectProperty"/> that is part of the bound <see cref="IBusinessObject"/>'s <see cref="IBusinessObjectClass"/>.</value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IBusinessObjectProperty? Property
     {
       get { return _binding.Property; }
@@ -96,10 +96,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   this  <see cref="IBusinessObjectBoundWebControl"/> is bound to.
     /// </summary>
     /// <value>A string set to the <b>ID</b> of an <see cref="IBusinessObjectDataSourceControl"/> inside the current naming container.</value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Data")]
-    [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
-    [DefaultValue ("")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Data")]
+    [Description("The ID of the BusinessObjectDataSourceControl control used as data source.")]
+    [DefaultValue("")]
     public string? DataSourceControl
     {
       get { return _binding.DataSourceControl; }
@@ -131,7 +131,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     <item>Otherwise, <see langword="false"/> is returned.</item>
     ///   </list>
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool HasValidBinding
     {
       get { return _binding.HasValidBinding; }
@@ -280,7 +280,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     Redefine <see cref="Value"/> using the keyword <see langword="new"/> to provide a typesafe implementation in derived classes.
     ///   </para>
     /// </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public object? Value
     {
       get { return ValueImplementation; }
@@ -290,7 +290,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
     /// <value> An object or boxed value. </value>
     /// <remarks>The implementation should be <see langword="sealed"/> since it is only possible to do one meaningful re-definition of <see cref="Value"/>.</remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     protected abstract object? ValueImplementation { get; set; }
 
     /// <summary>Gets a flag indicating whether the <see cref="BusinessObjectBoundWebControl"/> contains a value. </summary>
@@ -299,7 +299,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// The flag only specifies the presense of data. It does not specify whether the data is in a format compatible with the <see cref="Property"/>.
     /// For this, a separate validation step is required.
     /// </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public abstract bool HasValue { get; }
 
     /// <summary>
@@ -339,7 +339,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </summary>
     /// <value> <see langword="null"/> in the default implementation. </value>
     /// <remarks> Used by <see cref="SupportsProperty"/>. </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     protected virtual Type[]? SupportedPropertyInterfaces
     {
       get { return null; }
@@ -381,7 +381,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the text to be written into the label for this control. </summary>
     /// <value> <see langword="null"/> for the default implementation. </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public virtual string? DisplayName
     {
       get { return (Property != null) ? Property.DisplayName : null; }
@@ -393,7 +393,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary>Gets an instance of the <see cref="HelpInfo"/> type, which contains all information needed for rendering a help-link.</summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public virtual HelpInfo? HelpInfo
     {
       get { return GetHelpInfo(this); }
@@ -401,14 +401,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary>Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its <see cref="Control.ClientID"/>.</summary>
     /// <value> This instance for the default implementation. </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public virtual Control TargetControl
     {
       get { return this; }
     }
 
     /// <summary>Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the <see cref="TargetControl"/>.</summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public abstract bool UseLabel { get; }
 
     public void AssignLabel (string labelID)
@@ -427,7 +427,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Evaluates whether this control is in <b>Design Mode</b>. </summary>
     /// <value><see langword="true"/> if the control is currently rendered by the Visual Studio Designer.</value>
-    [Obsolete ("Design-mode support has been removed, method always returns false. (Version: 3.0.0)", false)]
+    [Obsolete("Design-mode support has been removed, method always returns false. (Version: 3.0.0)", false)]
     protected bool IsDesignMode
     {
       get { return false; }

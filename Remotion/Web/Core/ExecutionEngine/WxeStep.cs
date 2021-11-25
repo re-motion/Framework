@@ -85,7 +85,7 @@ public abstract class WxeStep
   ///     This method should only be invoked by the WXE infrastructure.
   ///   </note>
   /// </remarks>
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public void Execute ()
   {
     Execute(WxeContext.Current!); // TODO RM-8118: not null assertion
@@ -99,7 +99,7 @@ public abstract class WxeStep
   ///     This method should only be invoked by the WXE infrastructure.
   ///   </note>
   /// </remarks>
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public abstract void Execute (WxeContext context);
 
   /// <summary> Gets the scope's variables collection. </summary>
@@ -118,7 +118,7 @@ public abstract class WxeStep
 
   /// <summary> Sets the parent step of this <see cref="WxeStep"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/SetParentStep/*' />
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public void SetParentStep (WxeStep parentStep)
   {
     ArgumentUtility.CheckNotNull("parentStep", parentStep);
@@ -182,7 +182,7 @@ public abstract class WxeStep
 
   /// <summary> Aborts the <b>WxeStep</b> by calling <see cref="AbortRecursive"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Abort/*' />
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public void Abort ()
   {
     if (! _isAborted && ! _isAborting)

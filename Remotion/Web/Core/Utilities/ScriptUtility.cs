@@ -26,7 +26,7 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.Web.Utilities
 {
   /// <summary> Utility class for client-side scripts. </summary>
-  [ImplementationFor (typeof(IScriptUtility), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IScriptUtility), Lifetime = LifetimeKind.Singleton)]
   public class ScriptUtility : IScriptUtility
   {
     private readonly IInfrastructureResourceUrlFactory _infrastructureResourceUrlFactory;

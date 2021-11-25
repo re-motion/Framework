@@ -230,13 +230,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     }
 
     [Test]
-    [Ignore ("TODO: test")]
+    [Ignore("TODO: test")]
     public void GetMetadata_WithRequiredStringAttribute ()
     {
     }
 
     [Test]
-    [Ignore ("TODO: test")]
+    [Ignore("TODO: test")]
     public void GetMetadata_WithMaxLengthStringAttribute ()
     {
     }

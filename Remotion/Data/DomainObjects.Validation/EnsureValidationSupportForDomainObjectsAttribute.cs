@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.Validation
   /// <summary>
   /// Apply this <see cref="Attribute"/> to an assembly to force the inclusing of the validation-extension for domain objects.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Assembly)]
+  [AttributeUsage(AttributeTargets.Assembly)]
   public class EnsureValidationSupportForDomainObjectsAttribute : Attribute
   {
 

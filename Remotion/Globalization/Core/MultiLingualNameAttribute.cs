@@ -36,7 +36,7 @@ namespace Remotion.Globalization
   /// </item>
   /// </list>
   /// </remarks>
-  [AttributeUsage (MultiLingualNameAttribute.AttributeTargets, AllowMultiple = true, Inherited = true)]
+  [AttributeUsage(MultiLingualNameAttribute.AttributeTargets, AllowMultiple = true, Inherited = true)]
   public class MultiLingualNameAttribute : Attribute
   {
     protected const AttributeTargets AttributeTargets =

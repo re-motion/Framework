@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.MixinAddedTwiceWithDifferentNullability
 {
   [DBTable]
-  [ClassID ("MixinAddedTwiceWithDifferentNullability_BaseClassWithDBTable")]
+  [ClassID("MixinAddedTwiceWithDifferentNullability_BaseClassWithDBTable")]
   public class BaseClassWithDBTable : LayerSupertype
   {
   }

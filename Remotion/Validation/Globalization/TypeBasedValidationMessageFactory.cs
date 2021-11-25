@@ -24,7 +24,7 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Globalization
 {
-  [ImplementationFor (typeof(IValidationMessageFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IValidationMessageFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class TypeBasedValidationMessageFactory : IValidationMessageFactory
   {
     public const int Position = LocalizedValidationMessageFactory.Position - 1;

@@ -24,49 +24,49 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
 
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void Initialization ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void SetValidator ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void CanBeRemoved ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void AddMetaValidationRule ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void AddMetaValidationRule_FuncOverload ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void AddMetaValidationRule_ExpressionOverload_IsValidIsTrue ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void AddMetaValidationRule_ExpressionOverload_IsValidIsFalse ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void SetCondition ()
     {
     }

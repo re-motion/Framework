@@ -30,10 +30,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Data")]
-    [DefaultValue (null)]
-    [TypeConverter (typeof(TypeNameConverter))]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Data")]
+    [DefaultValue(null)]
+    [TypeConverter(typeof(TypeNameConverter))]
     public Type? Type
     {
       get { return _dataSource.Type; }

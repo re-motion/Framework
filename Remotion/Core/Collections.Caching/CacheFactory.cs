@@ -189,7 +189,7 @@ namespace Remotion.Collections.Caching
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}()"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static LockingCacheDecorator<TKey, TValue> CreateWithLocking<TKey, TValue> ()
         where TKey : notnull
     {
@@ -211,7 +211,7 @@ namespace Remotion.Collections.Caching
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}(LockingInvalidationToken)"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLocking<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken)
         where TKey : notnull
@@ -237,7 +237,7 @@ namespace Remotion.Collections.Caching
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}(IEqualityComparer{TKey})"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey>? comparer)
         where TKey : notnull
     {
@@ -260,7 +260,7 @@ namespace Remotion.Collections.Caching
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}(LockingInvalidationToken, IEqualityComparer{TKey})"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLocking<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken,
         [CanBeNull] IEqualityComparer<TKey>? comparer)
@@ -288,7 +288,7 @@ namespace Remotion.Collections.Caching
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLazyLocking{TKey,TValue}()"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ()
         where TKey : notnull
         where TValue : class?
@@ -312,7 +312,7 @@ namespace Remotion.Collections.Caching
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLazyLocking{TKey,TValue}(LockingInvalidationToken)"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken)
         where TKey : notnull
@@ -341,7 +341,7 @@ namespace Remotion.Collections.Caching
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLazyLocking{TKey,TValue}(IEqualityComparer{TKey})"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey>? comparer)
         where TKey : notnull
         where TValue : class?
@@ -366,7 +366,7 @@ namespace Remotion.Collections.Caching
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLazyLocking{TKey,TValue}(LockingInvalidationToken, IEqualityComparer{TKey})"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static ICache<TKey, TValue> CreateWithLazyLocking<TKey, TValue> (
         [NotNull] LockingInvalidationToken invalidationToken,
         [CanBeNull] IEqualityComparer<TKey>? comparer)

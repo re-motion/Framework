@@ -32,11 +32,11 @@ using Remotion.Web.Compilation;
 
 namespace Remotion.SecurityManager.Clients.Web.UI
 {
-  [FileLevelControlBuilder (typeof(CodeProcessingUserControlBuilder))]
+  [FileLevelControlBuilder(typeof(CodeProcessingUserControlBuilder))]
   public partial class SecurityManagerUserContextControl : UserControl
   {
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.SecurityManager.Clients.Web.Globalization.UI.SecurityManagerUserContextControlResources")]
+    [MultiLingualResources("Remotion.SecurityManager.Clients.Web.Globalization.UI.SecurityManagerUserContextControlResources")]
     public enum ResourceIdentifier
     {
       CurrentUserLabelText,
@@ -49,7 +49,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
     private static readonly string s_isSubstitutionSelectionEnabledKey = typeof(SecurityManagerUserContextControl).GetFullNameChecked() + "_IsSubstitutionSelectionEnabled";
 
 
-    [DefaultValue (true)]
+    [DefaultValue(true)]
     public bool EnableAbstractTenants
     {
       get { return (bool?)ViewState[s_enableAbstractTenantsKey] ?? true; }

@@ -31,7 +31,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   /// via reflection and <see cref="ITypeDiscoveryService"/>.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof(IExtensibleEnumValueDiscoveryService), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IExtensibleEnumValueDiscoveryService), Lifetime = LifetimeKind.Singleton)]
   public class ExtensibleEnumValueDiscoveryService : IExtensibleEnumValueDiscoveryService
   {
     private readonly ITypeDiscoveryService _typeDiscoveryService;

@@ -98,46 +98,46 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
     public abstract OppositeClassWithAnonymousRelationProperties Unary9 { get; set; }
     public abstract OppositeClassWithAnonymousRelationProperties Unary10 { get; set; }
 
-    [DBBidirectionalRelation ("Virtual1", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual1", ContainsForeignKey = true)]
     public abstract ObjectWithSecurity Real1 { get; set; }
-    [DBBidirectionalRelation ("Virtual2", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual2", ContainsForeignKey = true)]
     public abstract ObjectWithSecurity Real2 { get; set; }
-    [DBBidirectionalRelation ("Virtual3", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual3", ContainsForeignKey = true)]
     public abstract ObjectWithSecurity Real3 { get; set; }
-    [DBBidirectionalRelation ("Virtual4", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual4", ContainsForeignKey = true)]
     public abstract ObjectWithSecurity Real4 { get; set; }
-    [DBBidirectionalRelation ("Virtual5", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual5", ContainsForeignKey = true)]
     public abstract ObjectWithSecurity Real5 { get; set; }
-    [DBBidirectionalRelation ("Virtual6", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual6", ContainsForeignKey = true)]
     public abstract ObjectWithSecurity Real6 { get; set; }
-    [DBBidirectionalRelation ("Virtual7", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual7", ContainsForeignKey = true)]
     public abstract ObjectWithSecurity Real7 { get; set; }
-    [DBBidirectionalRelation ("Virtual8", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual8", ContainsForeignKey = true)]
     public abstract ObjectWithSecurity Real8 { get; set; }
-    [DBBidirectionalRelation ("Virtual9", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual9", ContainsForeignKey = true)]
     public abstract ObjectWithSecurity Real9 { get; set; }
-    [DBBidirectionalRelation ("Virtual10", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual10", ContainsForeignKey = true)]
     public abstract ObjectWithSecurity Real10 { get; set; }
 
-    [DBBidirectionalRelation ("Real1")]
+    [DBBidirectionalRelation("Real1")]
     public abstract ObjectList<ObjectWithSecurity> Virtual1 { get; set; }
-    [DBBidirectionalRelation ("Real2")]
+    [DBBidirectionalRelation("Real2")]
     public abstract ObjectList<ObjectWithSecurity> Virtual2 { get; set; }
-    [DBBidirectionalRelation ("Real3")]
+    [DBBidirectionalRelation("Real3")]
     public abstract ObjectList<ObjectWithSecurity> Virtual3 { get; set; }
-    [DBBidirectionalRelation ("Real4")]
+    [DBBidirectionalRelation("Real4")]
     public abstract ObjectList<ObjectWithSecurity> Virtual4 { get; set; }
-    [DBBidirectionalRelation ("Real5")]
+    [DBBidirectionalRelation("Real5")]
     public abstract ObjectList<ObjectWithSecurity> Virtual5 { get; set; }
-    [DBBidirectionalRelation ("Real6")]
+    [DBBidirectionalRelation("Real6")]
     public abstract ObjectList<ObjectWithSecurity> Virtual6 { get; set; }
-    [DBBidirectionalRelation ("Real7")]
+    [DBBidirectionalRelation("Real7")]
     public abstract ObjectList<ObjectWithSecurity> Virtual7 { get; set; }
-    [DBBidirectionalRelation ("Real8")]
+    [DBBidirectionalRelation("Real8")]
     public abstract ObjectList<ObjectWithSecurity> Virtual8 { get; set; }
-    [DBBidirectionalRelation ("Real9")]
+    [DBBidirectionalRelation("Real9")]
     public abstract ObjectList<ObjectWithSecurity> Virtual9 { get; set; }
-    [DBBidirectionalRelation ("Real10")]
+    [DBBidirectionalRelation("Real10")]
     public abstract ObjectList<ObjectWithSecurity> Virtual10 { get; set; }
 
     #endregion

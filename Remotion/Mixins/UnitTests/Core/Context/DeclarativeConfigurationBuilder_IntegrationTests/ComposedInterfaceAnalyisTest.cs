@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     }
 
     [Test]
-    [Ignore ("TODO 3536")]
+    [Ignore("TODO 3536")]
     public void ComposedInterface_ViaAttribute_Derived ()
     {
       var result = new DeclarativeConfigurationBuilder(null)

@@ -163,7 +163,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>
     /// A <see cref="MixinContextBuilder"/> object for further configuration of the mixin.
     /// </returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public MixinContextBuilder AddMixin (Type mixinType)
     {
       var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
@@ -187,7 +187,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </summary>
     /// <typeparam name="TMixin">The mixin type to collect.</typeparam>
     /// <returns>A <see cref="MixinContextBuilder"/> object for further configuration of the mixin.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public MixinContextBuilder AddMixin<TMixin> ()
     {
       var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
@@ -215,7 +215,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </summary>
     /// <param name="mixinTypes">The mixin types to collect.</param>
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder AddMixins (params Type[] mixinTypes)
     {
       ArgumentUtility.CheckNotNull("mixinTypes", mixinTypes);
@@ -244,7 +244,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin1">The first mixin type to collect.</typeparam>
     /// <typeparam name="TMixin2">The second mixin type to collect.</typeparam>
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder AddMixins<TMixin1, TMixin2> ()
     {
       var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
@@ -272,7 +272,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin2">The second mixin type to collect.</typeparam>
     /// <typeparam name="TMixin3">The third mixin type to collect.</typeparam>
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder AddMixins<TMixin1, TMixin2, TMixin3> ()
     {
       var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
@@ -308,7 +308,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </summary>
     /// <param name="mixinTypes">The mixin types to collect with dependencies.</param>
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder AddOrderedMixins (params Type[] mixinTypes)
     {
       ArgumentUtility.CheckNotNull("mixinTypes", mixinTypes);
@@ -338,7 +338,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin1">The first mixin type to collect with dependencies.</typeparam>
     /// <typeparam name="TMixin2">The second mixin type to collect with dependencies.</typeparam>
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder AddOrderedMixins<TMixin1, TMixin2> ()
     {
       var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
@@ -368,7 +368,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin2">The second mixin type to collect with dependencies.</typeparam>
     /// <typeparam name="TMixin3">The third mixin type to collect with dependencies.</typeparam>
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder AddOrderedMixins<TMixin1, TMixin2, TMixin3> ()
     {
       var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
@@ -402,7 +402,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </summary>
     /// <param name="mixinType">The mixin type to collect.</param>
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public MixinContextBuilder EnsureMixin (Type mixinType)
     {
       ArgumentUtility.CheckNotNull("mixinType", mixinType);
@@ -432,7 +432,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </summary>
     /// <typeparam name="TMixin">The mixin type to collect.</typeparam>
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public MixinContextBuilder EnsureMixin<TMixin> ()
     {
       var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
@@ -465,7 +465,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </summary>
     /// <param name="mixinTypes">The mixin types to collect.</param>
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder EnsureMixins (params Type[] mixinTypes)
     {
       ArgumentUtility.CheckNotNullOrEmpty("mixinTypes", mixinTypes);
@@ -498,7 +498,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin1">The first mixin type to collect.</typeparam>
     /// <typeparam name="TMixin2">The second mixin type to collect.</typeparam>
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder EnsureMixins<TMixin1, TMixin2> ()
     {
       var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
@@ -531,7 +531,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin2">The second mixin type to collect.</typeparam>
     /// <typeparam name="TMixin3">The third mixin type to collect.</typeparam>
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder EnsureMixins<TMixin1, TMixin2, TMixin3> ()
     {
       var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));

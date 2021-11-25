@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering the cells containing the row selector controls.
   /// </summary>
-  [ImplementationFor (typeof(IBocSelectorColumnRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocSelectorColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocSelectorColumnRenderer : IBocSelectorColumnRenderer
   {
     private const string c_whiteSpace = "&nbsp;";
@@ -77,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
     }
 
-    [Obsolete ("RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
+    [Obsolete("RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
     protected virtual string GetAriaRoleForTableDataElement ()
     {
       return HtmlRoleAttributeValue.Cell;

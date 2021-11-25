@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       get { return _readOnlyArray; }
     }
 
-    [ObjectBinding (ReadOnly = true)]
+    [ObjectBinding(ReadOnly = true)]
     public SimpleReferenceType[] ReadOnlyAttributeArray
     {
       get { return _readOnlyAttributeArray; }
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       get { return _listOfTForValueType; }
     }
 
-    [ObjectBinding (ReadOnly = true)]
+    [ObjectBinding(ReadOnly = true)]
     public List<SimpleReferenceType> ReadOnlyListOfT
     {
       get { return _readOnlyListOfT; }
@@ -92,14 +92,14 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       get { return _listOfTForValueType.AsReadOnly(); }
     }
 
-    [ItemType (typeof(SimpleReferenceType))]
+    [ItemType(typeof(SimpleReferenceType))]
     public ArrayList ArrayList
     {
       get { return _arrayList; }
     }
 
-    [ObjectBinding (ReadOnly = true)]
-    [ItemType (typeof(SimpleReferenceType))]
+    [ObjectBinding(ReadOnly = true)]
+    [ItemType(typeof(SimpleReferenceType))]
     public ArrayList ReadOnlyArrayList
     {
       get { return _readOnlyArrayList; }

@@ -21,7 +21,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects
 {
   /// <summary>Overrides the name used as the column name in the <b>RDBMS</b>.</summary>
-  [AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public class DBColumnAttribute : Attribute, IStorageSpecificIdentifierAttribute
   {
     private string _name;

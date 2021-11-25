@@ -21,10 +21,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
 {
   [DBTable]
   [Instantiable]
-  [Uses (typeof(MixinRealSides))]
+  [Uses(typeof(MixinRealSides))]
   public abstract class TargetClassWithRelationPropertyRealSides : DomainObject
   {
-    [DBBidirectionalRelation ("Opposite", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Opposite", ContainsForeignKey = true)]
     [DBColumn("One")]
     public abstract RelationTargetRealSides Relation { get; set; }
   }
@@ -33,14 +33,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
   [Instantiable]
   public abstract class RelationTargetRealSides : DomainObject
   {
-    [DBBidirectionalRelation ("Relation", ContainsForeignKey = false)]
+    [DBBidirectionalRelation("Relation", ContainsForeignKey = false)]
     public abstract TargetClassWithRelationPropertyRealSides Opposite { get; set; }
   }
 
   public class MixinRealSides : DomainObjectMixin<TargetClassWithRelationPropertyRealSides>
   {
-    [DBBidirectionalRelation ("Opposite", ContainsForeignKey = true)]
-    [DBColumn ("Two")]
+    [DBBidirectionalRelation("Opposite", ContainsForeignKey = true)]
+    [DBColumn("Two")]
     public RelationTargetRealSides Relation
     {
       get { return Properties[typeof(MixinRealSides), "Relation"].GetValue<RelationTargetRealSides>(); }

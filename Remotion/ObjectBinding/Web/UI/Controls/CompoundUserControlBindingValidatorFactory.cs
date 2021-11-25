@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </summary>
   /// <seealso cref="IUserControlBindingValidatorFactory"/>
   /// <seealso cref="CompoundValidatorFactory{T}"/>
-  [ImplementationFor (typeof(IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundUserControlBindingValidatorFactory : CompoundValidatorFactory<UserControlBinding>, IUserControlBindingValidatorFactory
   {
     public CompoundUserControlBindingValidatorFactory (IEnumerable<IUserControlBindingValidatorFactory> innerFactories)

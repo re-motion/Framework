@@ -36,9 +36,9 @@ namespace Remotion.Web.UI.Controls
     ///   Gets or sets a flag that determines whether to ignore line feed and line break characters during validation. 
     /// </summary>
     /// <value> <see langword="true"/> to ignore line feed and line break characters. Defaults to <see langword="false"/>. </value>
-    [Category ("Behavior")]
-    [Description ("Set this flag to allow line feed and line break characters in the text.")]
-    [DefaultValue (false)]
+    [Category("Behavior")]
+    [Description("Set this flag to allow line feed and line break characters in the text.")]
+    [DefaultValue(false)]
     public bool EnableMultilineText { get; set; }
 
     /// <summary>
@@ -46,8 +46,8 @@ namespace Remotion.Web.UI.Controls
     /// Use <c>{0}</c> for the text fragment where the error occurred. Use <c>{1}</c> for the line position and <c>{2}</c> for the line number.
     /// </summary>
     [Category("Appearance")]
-    [Description ("Set this property to specify a format string to be used as ErrorMessage. Use '{0}' for the text fragment where the error occurred. Use '{1}' for the line position and '{2}' for the line number.")]
-    [DefaultValue ("")]
+    [Description("Set this property to specify a format string to be used as ErrorMessage. Use '{0}' for the text fragment where the error occurred. Use '{1}' for the line position and '{2}' for the line number.")]
+    [DefaultValue("")]
 
     public string? ErrorMessageFormat { get; set; }
 
@@ -56,8 +56,8 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     /// <value> Defaults to <c>5</c>. </value>
     [Category("Appearance")]
-    [Description ("Set length of the leading and trailing text sample to be included in the error message.")]
-    [DefaultValue (c_sampleTextLengthDefaultValue)]
+    [Description("Set length of the leading and trailing text sample to be included in the error message.")]
+    [DefaultValue(c_sampleTextLengthDefaultValue)]
 
     public int SampleTextLength { get; set; }
 

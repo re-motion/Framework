@@ -20,7 +20,7 @@ using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  [DBTable ("TableWithDefaultStorageClassTransaction")]
+  [DBTable("TableWithDefaultStorageClassTransaction")]
   [TestDomainWithStorageClassTransaction]
   [Instantiable]
   public abstract class ClassWithDefaultStorageClassTransaction : DomainObject
@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 
     public abstract int NoAttribute { get; set; }
 
-    [StorageClass (StorageClass.Persistent)]
+    [StorageClass(StorageClass.Persistent)]
     public abstract int Persistent { get; set; }
 
     [StorageClassTransaction]

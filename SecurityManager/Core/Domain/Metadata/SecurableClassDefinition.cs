@@ -76,15 +76,15 @@ namespace Remotion.SecurityManager.Domain.Metadata
     {
     }
 
-    [DBBidirectionalRelation ("DerivedClasses")]
-    [DBColumn ("BaseSecurableClassID")]
+    [DBBidirectionalRelation("DerivedClasses")]
+    [DBColumn("BaseSecurableClassID")]
     public abstract SecurableClassDefinition BaseClass { get; set; }
 
-    [DBBidirectionalRelation ("BaseClass", SortExpression = "Index ASC")]
+    [DBBidirectionalRelation("BaseClass", SortExpression = "Index ASC")]
     public abstract ObjectList<SecurableClassDefinition> DerivedClasses { get; }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
-    [DBBidirectionalRelation ("Class")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [DBBidirectionalRelation("Class")]
     protected abstract ObjectList<StatePropertyReference> StatePropertyReferences { get; }
 
     [StorageClassNone]
@@ -93,8 +93,8 @@ namespace Remotion.SecurityManager.Domain.Metadata
       get { return StatePropertyReferences.Select(propertyReference => propertyReference.StateProperty).ToList().AsReadOnly(); }
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
-    [DBBidirectionalRelation ("Class", SortExpression = "Index ASC")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [DBBidirectionalRelation("Class", SortExpression = "Index ASC")]
     protected abstract ObjectList<AccessTypeReference> AccessTypeReferences { get; }
 
     [StorageClassNone]
@@ -104,7 +104,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     }
 
     [StorageClassNone]
-    [ObjectBinding (ReadOnly = true)]
+    [ObjectBinding(ReadOnly = true)]
     public ReadOnlyCollection<StateCombination> StateCombinations
     {
       get { return StatefulAccessControlLists.SelectMany(acl => acl.StateCombinations).ToList().AsReadOnly(); }
@@ -122,10 +122,10 @@ namespace Remotion.SecurityManager.Domain.Metadata
       return StateCombinations.Count < possibleStateCombinations;
     }
 
-    [DBBidirectionalRelation ("MyClass")]
+    [DBBidirectionalRelation("MyClass")]
     public abstract StatelessAccessControlList StatelessAccessControlList { get; set; }
 
-    [DBBidirectionalRelation ("MyClass", SortExpression = "Index ASC")]
+    [DBBidirectionalRelation("MyClass", SortExpression = "Index ASC")]
     public abstract ObjectList<StatefulAccessControlList> StatefulAccessControlLists { get; }
 
     /// <summary>

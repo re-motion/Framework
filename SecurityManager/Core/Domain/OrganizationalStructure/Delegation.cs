@@ -22,7 +22,7 @@ using Remotion.Security;
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [SecurityState]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Delegation")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Delegation")]
   public enum Delegation
   {
     Disabled = 0,

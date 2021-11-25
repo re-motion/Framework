@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding
     ///   The <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/> to which this
     ///   <see cref="IBusinessObjectReferenceDataSource"/> connects.
     ///  </value>
-    [Category ("Data")]
+    [Category("Data")]
     public IBusinessObjectDataSource? DataSource
     {
       get { return _dataSource; }
@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding
     ///   A string that can be used to query the <see cref="IBusinessObjectClass.GetPropertyDefinition"/> method for
     ///   the <see cref="IBusinessObjectReferenceProperty"/> returned by <see cref="ReferenceProperty"/>. 
     /// </value>
-    [Category ("Data")]
+    [Category("Data")]
     public string? PropertyIdentifier
     {
       get { return _propertyIdentifier; }
@@ -128,7 +128,7 @@ namespace Remotion.ObjectBinding
     ///   An <see cref="IBusinessObjectReferenceProperty"/> that is part of the 
     ///   <see cref="IBusinessObjectDataSource.BusinessObjectClass"/>.
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public override sealed IBusinessObjectReferenceProperty? ReferenceProperty
     {
       get
@@ -171,7 +171,7 @@ namespace Remotion.ObjectBinding
     ///   <see cref="DataSource"/>'s <see cref="IBusinessObjectDataSource.BusinessObjectClass"/>
     ///   and <see cref="IBusinessObjectDataSource.BusinessObject"/>.
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     bool IBusinessObjectBoundControl.HasValidBinding
     {
       get

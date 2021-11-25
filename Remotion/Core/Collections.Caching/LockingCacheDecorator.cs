@@ -35,7 +35,7 @@ namespace Remotion.Collections.Caching
   /// <see cref="ICache{TKey,TValue}"/> thread-safe, as long as the cache is only accessed through this wrapper.
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
-  [Obsolete ("Use ConcurrentCache<TKey, TValue> instead. (Version: 1.19.3)")]
+  [Obsolete("Use ConcurrentCache<TKey, TValue> instead. (Version: 1.19.3)")]
   [Serializable]
   public sealed class LockingCacheDecorator<TKey, TValue> : ICache<TKey, TValue>
       where TKey: notnull
@@ -59,7 +59,7 @@ namespace Remotion.Collections.Caching
         return _innerCache.GetOrCreateValue(key, valueFactory);
     }
 
-    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull("key", key);
 

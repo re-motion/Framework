@@ -130,10 +130,10 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       string M ();
     }
 
-    [Extends (typeof(ClassWithOpenMixin_WithDependencyForOpenMixin))]
-    [Extends (typeof(ClassWithOpenMixin_WithDependencyForClosedMixin))]
-    [Extends (typeof(ClassWithClosedMixin_WithDependencyForOpenMixin), MixinTypeArguments = new[] { typeof(int) })]
-    [Extends (typeof(ClassWithClosedMixin_WithDependencyForClosedMixin), MixinTypeArguments = new[] { typeof(int) })]
+    [Extends(typeof(ClassWithOpenMixin_WithDependencyForOpenMixin))]
+    [Extends(typeof(ClassWithOpenMixin_WithDependencyForClosedMixin))]
+    [Extends(typeof(ClassWithClosedMixin_WithDependencyForOpenMixin), MixinTypeArguments = new[] { typeof(int) })]
+    [Extends(typeof(ClassWithClosedMixin_WithDependencyForClosedMixin), MixinTypeArguments = new[] { typeof(int) })]
     public class M1<[BindToTargetType] T> : Mixin<object, IC>
     {
       [OverrideTarget]
@@ -143,10 +143,10 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       }
     }
 
-    [Extends (typeof(ClassWithOpenMixin_WithDependencyForOpenMixin))]
-    [Extends (typeof(ClassWithOpenMixin_WithDependencyForClosedMixin))]
-    [Extends (typeof(ClassWithClosedMixin_WithDependencyForOpenMixin))]
-    [Extends (typeof(ClassWithClosedMixin_WithDependencyForClosedMixin))]
+    [Extends(typeof(ClassWithOpenMixin_WithDependencyForOpenMixin))]
+    [Extends(typeof(ClassWithOpenMixin_WithDependencyForClosedMixin))]
+    [Extends(typeof(ClassWithClosedMixin_WithDependencyForOpenMixin))]
+    [Extends(typeof(ClassWithClosedMixin_WithDependencyForClosedMixin))]
     public class M2 : Mixin<object, IC>
     {
       [OverrideTarget]

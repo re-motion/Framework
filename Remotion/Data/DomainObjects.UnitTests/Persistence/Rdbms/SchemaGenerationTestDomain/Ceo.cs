@@ -32,10 +32,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("Ceo", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Ceo", ContainsForeignKey = true)]
     [Mandatory]
     public abstract Company Company { get; set; }
 

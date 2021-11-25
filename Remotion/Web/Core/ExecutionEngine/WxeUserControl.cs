@@ -51,7 +51,7 @@ namespace Remotion.Web.ExecutionEngine
     /// In order for the control-replacing to work, the initialization logic of the <see cref="UserControl"/> 
     /// has to be placed into the <see cref="OnInitComplete"/> method.
     /// </summary>
-    [Obsolete ("Override OnInitComplete instead.", true)]
+    [Obsolete("Override OnInitComplete instead.", true)]
     protected override sealed void OnInit (EventArgs e)
 #pragma warning restore 0809
     {
@@ -144,7 +144,7 @@ namespace Remotion.Web.ExecutionEngine
         CurrentUserControlStep!.ExecuteFunction(this, function, sender, usesEventTarget ?? UsesEventTarget); // TODO RM-8118: Debug not null assertion
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public string SaveAllState ()
     {
       return _replacer!.SaveAllState();

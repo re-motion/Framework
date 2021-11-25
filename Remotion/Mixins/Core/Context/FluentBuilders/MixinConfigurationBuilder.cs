@@ -134,7 +134,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <param name="introducedMemberVisibility">The default visibility to be used for introduced members.</param>
     /// <param name="explicitDependencies">The explicit dependencies of the mixin in the context of the target type.</param>
     /// <param name="suppressedMixins">The mixins suppressed by this mixin in the context of the target type.</param>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public MixinConfigurationBuilder AddMixinToClass (
         MixinKind mixinKind,
         Type targetType,

@@ -41,7 +41,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
       ReturnUrl = TestFunction.ReturnUrlValue;
     }
 
-    [WxeParameter (1, false, WxeParameterDirection.In)]
+    [WxeParameter(1, false, WxeParameterDirection.In)]
     public string Parameter1
     {
       get { return (string)Variables["Parameter1"]; }

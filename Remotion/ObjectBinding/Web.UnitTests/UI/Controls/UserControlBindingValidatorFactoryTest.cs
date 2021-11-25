@@ -27,8 +27,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
   public class UserControlBindingValidatorFactoryTest
   {
     [Test]
-    [TestCase (true)]
-    [TestCase (false)]
+    [TestCase(true)]
+    [TestCase(false)]
     public void CreateValidators (bool isReadOnly)
     {
       var factory = new UserControlBindingValidatorFactory();

@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
       Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_Throws_WebTestException ()
     {
       Assert.That(

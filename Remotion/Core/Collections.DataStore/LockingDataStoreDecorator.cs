@@ -32,7 +32,7 @@ namespace Remotion.Collections.DataStore
   /// <see cref="IDataStore{TKey,TValue}"/> thread-safe, as long as the store is only accessed through this wrapper.
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
-  [Obsolete ("Use ConcurrentDataStore<TKey, TValue> instead. (Version: 1.19.3)")]
+  [Obsolete("Use ConcurrentDataStore<TKey, TValue> instead. (Version: 1.19.3)")]
   [Serializable]
   public class LockingDataStoreDecorator<TKey, TValue> : IDataStore<TKey, TValue>
       where TKey : notnull
@@ -173,7 +173,7 @@ namespace Remotion.Collections.DataStore
     /// <returns>
     /// true if an element with the specified key was found; otherwise, false.
     /// </returns>
-    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
       ArgumentUtility.DebugCheckNotNull("key", key);
 

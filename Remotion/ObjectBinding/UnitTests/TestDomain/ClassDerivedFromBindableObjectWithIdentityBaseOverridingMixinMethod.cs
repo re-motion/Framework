@@ -20,7 +20,7 @@ using Remotion.Mixins;
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
   [Serializable]
-  [Uses (typeof(MixinWithOverridableMethod))]
+  [Uses(typeof(MixinWithOverridableMethod))]
   public class ClassDerivedFromBindableObjectWithIdentityBaseOverridingMixinMethod : BindableObjectWithIdentityBase
   {
     public string String { get; set; }

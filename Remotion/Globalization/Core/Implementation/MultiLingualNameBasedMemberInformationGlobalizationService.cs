@@ -30,7 +30,7 @@ namespace Remotion.Globalization.Implementation
   /// applied to the respective reflection object.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof(IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton,
+  [ImplementationFor(typeof(IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton,
       Position = Position, RegistrationType = RegistrationType.Multiple)]
   public sealed class MultiLingualNameBasedMemberInformationGlobalizationService : IMemberInformationGlobalizationService
   {
@@ -121,7 +121,7 @@ namespace Remotion.Globalization.Implementation
     public bool TryGetTypeDisplayName (
         ITypeInformation typeInformation,
         ITypeInformation typeInformationForResourceResolution,
-        [MaybeNullWhen (false)] out string result)
+        [MaybeNullWhen(false)] out string result)
     {
       ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
       ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
@@ -132,7 +132,7 @@ namespace Remotion.Globalization.Implementation
     public bool TryGetPropertyDisplayName (
         IPropertyInformation propertyInformation,
         ITypeInformation typeInformationForResourceResolution,
-        [MaybeNullWhen (false)] out string result)
+        [MaybeNullWhen(false)] out string result)
     {
       ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
       ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);

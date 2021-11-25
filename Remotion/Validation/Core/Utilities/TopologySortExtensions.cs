@@ -65,7 +65,7 @@ namespace Remotion.Validation.Utilities
 
       public bool Included { get; private set; }
 
-      [MemberNotNull (nameof(_dependencies))]
+      [MemberNotNull(nameof(_dependencies))]
       public void CalculateDependencies (Dictionary<object, Node<T>> nodes, TopologySortMissingDependencyBehavior missingDependencies)
       {
         _dependencies = new HashSet<Node<T>>();

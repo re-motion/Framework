@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
   public class BaseForMixinAddingPersistentProperties : DomainObjectMixin<DomainObject>
   {
-    [DBBidirectionalRelation ("RelationProperty5", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("RelationProperty5", ContainsForeignKey = true)]
     private RelationTargetForPersistentMixin PrivateBaseRelationProperty
     {
       get { return Properties[typeof(BaseForMixinAddingPersistentProperties), "PrivateBaseRelationProperty"].GetValue<RelationTargetForPersistentMixin>(); }

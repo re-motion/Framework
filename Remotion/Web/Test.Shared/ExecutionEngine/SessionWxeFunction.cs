@@ -33,7 +33,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     {
     }
 
-    [WxeParameter (0, true)]
+    [WxeParameter(0, true)]
     public bool ReadOnly
     {
       get { return (bool)Variables["ReadOnly"]; }

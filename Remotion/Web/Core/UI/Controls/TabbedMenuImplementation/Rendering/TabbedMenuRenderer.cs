@@ -30,7 +30,7 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
   /// Implements <see cref="ITabbedMenuRenderer"/> for standard mode rendering of <see cref="TabbedMenu"/> controls.
   /// <seealso cref="ITabbedMenu"/>
   /// </summary>
-  [ImplementationFor (typeof(ITabbedMenuRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ITabbedMenuRenderer), Lifetime = LifetimeKind.Singleton)]
   public class TabbedMenuRenderer : RendererBase<ITabbedMenu>, ITabbedMenuRenderer
   {
     public TabbedMenuRenderer (

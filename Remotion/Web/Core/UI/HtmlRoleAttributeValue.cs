@@ -34,7 +34,7 @@ namespace Remotion.Web.UI
     public const string MenuBar = "menubar";
     public const string MenuItem = "menuitem";
     public const string None = "none";
-    [Obsolete ("Use HtmlRoleAttributeValue.None instead.")]
+    [Obsolete("Use HtmlRoleAttributeValue.None instead.")]
     public const string Presentation = "presentation";
     public const string Radio = "radio";
     public const string RadioGroup = "radiogroup";

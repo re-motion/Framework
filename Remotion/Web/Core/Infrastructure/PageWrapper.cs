@@ -33,7 +33,7 @@ namespace Remotion.Web.Infrastructure
   /// </summary>
   public class PageWrapper : ControlWrapper, IPage
   {
-    [return: NotNullIfNotNull ("page")]
+    [return: NotNullIfNotNull("page")]
     public static IPage? CastOrCreate (Page? page)
     {
       if (page == null)

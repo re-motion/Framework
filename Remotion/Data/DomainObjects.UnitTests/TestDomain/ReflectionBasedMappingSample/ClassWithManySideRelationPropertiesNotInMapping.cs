@@ -26,10 +26,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
 
     public abstract ClassWithOneSideRelationProperties BaseUnidirectional { get; set; }
 
-    [DBBidirectionalRelation ("BaseBidirectionalOneToOne", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("BaseBidirectionalOneToOne", ContainsForeignKey = true)]
     public abstract ClassWithOneSideRelationProperties BaseBidirectionalOneToOne { get; set; }
 
-    [DBBidirectionalRelation ("BaseBidirectionalOneToMany")]
+    [DBBidirectionalRelation("BaseBidirectionalOneToMany")]
     public abstract ClassWithOneSideRelationProperties BaseBidirectionalOneToMany { get; set; }
 
     private ClassWithOneSideRelationProperties BasePrivateUnidirectional
@@ -38,14 +38,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
       set { throw new NotImplementedException(); }
     }
 
-    [DBBidirectionalRelation ("BasePrivateBidirectionalOneToOne", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("BasePrivateBidirectionalOneToOne", ContainsForeignKey = true)]
     private ClassWithOneSideRelationProperties BasePrivateBidirectionalOneToOne
     {
       get { throw new NotImplementedException(); }
       set { throw new NotImplementedException(); }
     }
 
-    [DBBidirectionalRelation ("BasePrivateBidirectionalOneToMany")]
+    [DBBidirectionalRelation("BasePrivateBidirectionalOneToMany")]
     private ClassWithOneSideRelationProperties BasePrivateBidirectionalOneToMany
     {
       get { throw new NotImplementedException(); }

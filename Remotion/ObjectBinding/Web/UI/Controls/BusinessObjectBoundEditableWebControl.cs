@@ -64,9 +64,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Set this property to <see langword="null"/> in order to use the default value 
     ///   (see <see cref="IsRequired"/>).
     /// </remarks>
-    [Description ("Explicitly specifies whether the control is required.")]
-    [Category ("Data")]
-    [DefaultValue (typeof(bool?), "")]
+    [Description("Explicitly specifies whether the control is required.")]
+    [Category("Data")]
+    [DefaultValue(typeof(bool?), "")]
     public bool? Required
     {
       get { return _required; }
@@ -79,9 +79,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   (see <see cref="IsReadOnly"/>). Note that if the data source is in read-only mode, the
     ///   control is read-only too, even if this property is set to <see langword="false" />.
     /// </remarks>
-    [Description ("Explicitly specifies whether the control should be displayed in read-only mode.")]
-    [Category ("Data")]
-    [DefaultValue (typeof(bool?), "")]
+    [Description("Explicitly specifies whether the control should be displayed in read-only mode.")]
+    [Category("Data")]
+    [DefaultValue(typeof(bool?), "")]
     public bool? ReadOnly
     {
       get { return _readOnly; }
@@ -108,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Thrown if the <see cref="IsDirty"/> flag is set to <see langword="true"/> and the control is bound to a read-only
     ///   <see cref="BusinessObjectBoundWebControl.Property"/>.
     /// </exception>
-    [Browsable (false)]
+    [Browsable(false)]
     public virtual bool IsDirty
     {
       get { return _isDirty; }
@@ -191,7 +191,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     </item>
     ///   </list>
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public virtual bool IsReadOnly
     {
       get
@@ -230,7 +230,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     <item>Otherwise, <see langword="false"/> is returned.</item>
     ///   </list>
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public virtual bool IsRequired
     {
       get
@@ -247,9 +247,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets a flag that specifies whether the control's validation goes beyond the .NET data type requirements. </summary>
     /// <remarks> Set this property to <see langword="null"/> in order to use the default value (see <see cref="AreOptionalValidatorsEnabled"/>). </remarks>
-    [Description ("Explicitly specifies whether the control automatically validates more than .NET data type requirements.")]
-    [Category ("Behavior")]
-    [DefaultValue (typeof(bool?), "")]
+    [Description("Explicitly specifies whether the control automatically validates more than .NET data type requirements.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
     public bool? EnableOptionalValidators
     {
       get { return _enableOptionalValidators; }
@@ -272,7 +272,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     <item>Otherwise, <see langword="false"/> is returned.</item>
     ///   </list>
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool AreOptionalValidatorsEnabled
     {
       get

@@ -328,7 +328,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void AddMixinToClass_WithoutOrigin ()
     {
       var mockRepository = new MockRepository();

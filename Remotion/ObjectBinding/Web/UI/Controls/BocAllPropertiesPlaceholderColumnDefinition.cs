@@ -31,16 +31,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       throw new NotSupportedException(GetType().Name + " cannot be rendered directly, but must be replaced by other column definitions.");
     }
 
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public override string? ItemID
     {
       get { return base.ItemID; }
       set { base.ItemID = value; }
     }
 
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public override string ColumnTitle
     {
       get { return base.ColumnTitle; }
@@ -49,11 +49,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the combined width of the generated column definitions. </summary>
     /// <value> A <see cref="Unit"/> providing the combined width of the generated columns when they are rendered. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Layout")]
-    [Description ("The width used for all generated property columns combined.")]
-    [DefaultValue (typeof(Unit), "")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Layout")]
+    [Description("The width used for all generated property columns combined.")]
+    [DefaultValue(typeof(Unit), "")]
+    [NotifyParentProperty(true)]
     public new Unit Width
     {
       get { return base.Width; }
@@ -62,11 +62,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the CSS-class of the generated column definitions. </summary>
     /// <value> A <see cref="string"/> providing the CSS-class added to the class attribute when the columns are rendered. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Layout")]
-    [Description ("The CSS-class of the generated columns' cells.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Layout")]
+    [Description("The CSS-class of the generated columns' cells.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public new string CssClass
     {
       get { return base.CssClass; }

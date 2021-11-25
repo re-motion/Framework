@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <remarks>
   ///   May only be added to an <see cref="IBusinessObjectBoundWebControl"/>.
   /// </remarks>
-  [TypeConverter (typeof(ExpandableObjectConverter))]
+  [TypeConverter(typeof(ExpandableObjectConverter))]
   public class BocMenuItem : WebMenuItem
   {
     public BocMenuItem (
@@ -90,8 +90,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this object belongs. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public new IBusinessObjectBoundWebControl? OwnerControl
     {
       get { return (IBusinessObjectBoundWebControl?)base.OwnerControlImplementation; }

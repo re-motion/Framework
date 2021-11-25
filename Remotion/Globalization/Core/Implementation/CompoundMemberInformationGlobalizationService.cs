@@ -30,7 +30,7 @@ namespace Remotion.Globalization.Implementation
   /// delegates to them to retrieve localized name for a specified member.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof(IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompoundMemberInformationGlobalizationService : IMemberInformationGlobalizationService
   {
     private readonly IReadOnlyCollection<IMemberInformationGlobalizationService> _memberInformationGlobalizationServices;
@@ -54,7 +54,7 @@ namespace Remotion.Globalization.Implementation
     public bool TryGetTypeDisplayName (
         ITypeInformation typeInformation,
         ITypeInformation typeInformationForResourceResolution,
-        [MaybeNullWhen (false)] out string result)
+        [MaybeNullWhen(false)] out string result)
     {
       ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
       ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
@@ -72,7 +72,7 @@ namespace Remotion.Globalization.Implementation
     public bool TryGetPropertyDisplayName (
         IPropertyInformation propertyInformation,
         ITypeInformation typeInformationForResourceResolution,
-        [MaybeNullWhen (false)] out string result)
+        [MaybeNullWhen(false)] out string result)
     {
       ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
       ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);

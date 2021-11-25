@@ -59,12 +59,12 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public abstract int Index { get; set; }
 
-    [DBBidirectionalRelation ("StatefulAccessControlLists")]
-    [DBColumn ("StatefulAcl_ClassID")]
+    [DBBidirectionalRelation("StatefulAccessControlLists")]
+    [DBColumn("StatefulAcl_ClassID")]
     [Mandatory]
     protected abstract SecurableClassDefinition MyClass { get; }
 
-    [DBBidirectionalRelation ("AccessControlList", SortExpression = "Index ASC")]
+    [DBBidirectionalRelation("AccessControlList", SortExpression = "Index ASC")]
     [Mandatory]
     protected abstract ObjectList<StateCombination> StateCombinationsInternal { get; }
 

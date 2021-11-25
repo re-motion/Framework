@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.ReflectionBas
   [DBTable]
   public class ClassWithInterfaceExplicitImplementation : DomainObject, IInterfaceWithProperty
   {
-    [StorageClass (StorageClass.Persistent)]
+    [StorageClass(StorageClass.Persistent)]
     int IInterfaceWithProperty.Property { get; set; }
   }
 }

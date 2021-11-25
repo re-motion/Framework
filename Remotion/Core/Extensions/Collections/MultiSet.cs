@@ -22,7 +22,7 @@ using Remotion.Collections;
 
 namespace Remotion.Mixins.Utilities
 {
-  [DebuggerDisplay ("Count = {_items.Count}")]
+  [DebuggerDisplay("Count = {_items.Count}")]
   internal class MultiSet<T> : IEnumerable<T>
       where T : notnull
   {

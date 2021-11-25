@@ -113,7 +113,7 @@ namespace Remotion.Validation.IntegrationTests
     }
 
     [Test]
-    [Ignore ("RM-5906: Build test for each validator type and evaluate message for all supported cultures.")]
+    [Ignore("RM-5906: Build test for each validator type and evaluate message for all supported cultures.")]
     public void LengthValidator_CanBuildFormattedValidationMessage ()
     {
 

@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
   /// </summary>
   public class CursorInformation
   {
-    [StructLayout (LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     private struct CursorInfoDto
     {
       // ReSharper disable FieldCanBeMadeReadOnly.Local
@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     private const uint c_cursorVisible = 0x1;
 
-    [DllImport ("user32.dll", SetLastError = true)]
+    [DllImport("user32.dll", SetLastError = true)]
     private static extern bool GetCursorInfo (ref CursorInfoDto info);
 
     /// <summary>

@@ -22,19 +22,19 @@ namespace Remotion.Validation.UnitTests.Implementation
   [TestFixture]
   public class PropertyValidatorFactoryTest
   {
-    [Ignore ("RM-5906")]
+    [Ignore("RM-5906")]
     [Test]
     public void Create ()
     {
     }
 
-    [Ignore ("RM-5906")]
+    [Ignore("RM-5906")]
     [Test]
     public void Create_WithFactoryDelegateReturnsNull_ThrowsInvalidOperationException ()
     {
     }
 
-    [Ignore ("RM-5906")]
+    [Ignore("RM-5906")]
     [Test]
     public void Create_WithValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {

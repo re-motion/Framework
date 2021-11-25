@@ -31,11 +31,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class WebTabStripControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
-    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
-    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
-    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
-    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<WebTabStripSelector, WebTabStripControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<WebTabStripSelector, WebTabStripControlObject> testAction)
     {
       testAction(Helper, e => e.WebTabStrips(), "webTabStrip");

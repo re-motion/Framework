@@ -56,7 +56,7 @@ public class TestTabbedFormWxeFunction: WxeFunction
     set { Variables["Object"] = value; }
   }
 
-  [WxeParameter (1, true)]
+  [WxeParameter(1, true)]
   public bool ReadOnly
   {
     get { return (bool)Variables["ReadOnly"]; }

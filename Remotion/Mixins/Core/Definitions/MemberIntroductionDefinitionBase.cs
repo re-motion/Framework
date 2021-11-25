@@ -21,7 +21,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{InterfaceMember}")]
+  [DebuggerDisplay("{InterfaceMember}")]
   public abstract class MemberIntroductionDefinitionBase<TMemberInfo, TMemberDefinition>: IMemberIntroductionDefinition where TMemberInfo : MemberInfo
       where TMemberDefinition : MemberDefinitionBase
   {

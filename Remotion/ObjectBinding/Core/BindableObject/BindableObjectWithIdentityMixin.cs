@@ -25,10 +25,10 @@ namespace Remotion.ObjectBinding.BindableObject
   /// </summary>
   [Serializable]
   [BindableObjectWithIdentityProvider]
-  [CopyCustomAttributes (typeof(DebuggerDisplay))]
+  [CopyCustomAttributes(typeof(DebuggerDisplay))]
   public abstract class BindableObjectWithIdentityMixin : BindableObjectMixinBase<object>, IBusinessObjectWithIdentity
   {
-    [DebuggerDisplay ("{UniqueIdentifier} ({((Remotion.Mixins.IMixinTarget)this).ClassContext.Type.FullName})")]
+    [DebuggerDisplay("{UniqueIdentifier} ({((Remotion.Mixins.IMixinTarget)this).ClassContext.Type.FullName})")]
     private class DebuggerDisplay // the attributes of this class are copied to the target class
     {
     }

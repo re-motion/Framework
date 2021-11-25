@@ -276,7 +276,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
-    [Ignore ("TODO RM-7294: implement test for VirtualCollection")]
+    [Ignore("TODO RM-7294: implement test for VirtualCollection")]
     public void CreateSequenceQuery_EntityQuery_WithFetchRequestDoesNotSupportExpression ()
     {
     }

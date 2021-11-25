@@ -89,8 +89,8 @@ namespace Remotion.Web.UI.Controls
       tab.SetParent(_parent!); // TODO RM-8118: not null assertion
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public MainMenuTab? Parent
     {
       get { return _parent; }

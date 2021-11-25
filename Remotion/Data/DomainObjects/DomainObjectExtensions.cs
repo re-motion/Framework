@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The <paramref name="domainObjectOrNull"/>'s <see cref="DomainObject.ID"/>, or <see langword="null" /> if <paramref name="domainObjectOrNull"/>
     /// is <see langword="null" />.</returns>
     [CanBeNull]
-    [ContractAnnotation ("null => null; notnull => notnull")]
+    [ContractAnnotation("null => null; notnull => notnull")]
     public static ObjectID GetSafeID ([CanBeNull] this IDomainObject domainObjectOrNull)
     {
       if (domainObjectOrNull == null)
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>A typed handle to the given <paramref name="domainObjectOrNull"/>, or <see langword="null" /> if <paramref name="domainObjectOrNull"/>
     /// is <see langword="null" />.</returns>
     [CanBeNull]
-    [ContractAnnotation ("null => null; notnull => notnull")]
+    [ContractAnnotation("null => null; notnull => notnull")]
     public static IDomainObjectHandle<T> GetSafeHandle<T> ([CanBeNull] this T domainObjectOrNull) where T : class, IDomainObject
     {
       return domainObjectOrNull != null ? domainObjectOrNull.GetHandle() : null;

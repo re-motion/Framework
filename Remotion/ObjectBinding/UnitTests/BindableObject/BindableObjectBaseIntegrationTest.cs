@@ -104,7 +104,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [Ignore ("COMMONS-1439")]
+    [Ignore("COMMONS-1439")]
     public void SetProperty_ImplicitInterfaceReadOnlyScalar_WithReadWriteImplementation ()
     {
       var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);

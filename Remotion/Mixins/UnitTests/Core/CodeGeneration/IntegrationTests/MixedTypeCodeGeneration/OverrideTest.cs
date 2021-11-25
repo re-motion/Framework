@@ -38,7 +38,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    [Ignore ("TODO: This does not work on the build server, check why.")]
+    [Ignore("TODO: This does not work on the build server, check why.")]
     public void OverrideClassProperties ()
     {
       BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof(BT1Mixin1));
@@ -161,7 +161,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       }
     }
 
-    [Extends (typeof(TypeWithArrayArray))]
+    [Extends(typeof(TypeWithArrayArray))]
     public class MixinMixingTypeWithArrayArray : Mixin<MixinMixingTypeWithArrayArray.IRequirements, MixinMixingTypeWithArrayArray.IRequirements>
     {
       public interface IRequirements

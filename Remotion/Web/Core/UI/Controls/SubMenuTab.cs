@@ -36,13 +36,13 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
     /// <exclude/>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public SubMenuTab ()
     {
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public MainMenuTab? Parent
     {
       get { return _parent; }

@@ -19,7 +19,7 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
-  [Uses (typeof(NullMixin))]
+  [Uses(typeof(NullMixin))]
   public class TargetClassGettingMixinFromCtor
   {
     public NullMixin MixinInstance;

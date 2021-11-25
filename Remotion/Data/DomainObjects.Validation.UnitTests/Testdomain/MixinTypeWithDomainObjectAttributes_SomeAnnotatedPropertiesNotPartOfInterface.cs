@@ -34,13 +34,13 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
     [Mandatory]
     public TestDomainObject PropertyWithMandatoryAttribute { get; set; }
 
-    [StringProperty (IsNullable = true, MaximumLength = 10)]
+    [StringProperty(IsNullable = true, MaximumLength = 10)]
     public string PropertyWithNullableStringPropertyAttribute { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 20)]
+    [StringProperty(IsNullable = false, MaximumLength = 20)]
     public string PropertyWithMandatoryStringPropertyAttribute { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 20)]
+    [StringProperty(IsNullable = false, MaximumLength = 20)]
     public string PropertyWithMandatoryStringPropertyAttributePartOfInterface { get; set; }
   }
 }

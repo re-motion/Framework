@@ -32,8 +32,8 @@ using Remotion.Utilities;
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.User")]
-  [PermanentGuid ("759DA370-E2C4-4221-B878-BE378C916042")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.User")]
+  [PermanentGuid("759DA370-E2C4-4221-B878-BE378C916042")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -82,8 +82,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateUser ();
     //}
 
-    [DemandPermission (GeneralAccessTypes.Search)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DemandPermission(GeneralAccessTypes.Search)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static void Search ()
     {
       throw new NotImplementedException("This method is only intended for framework support and should never be called.");
@@ -95,20 +95,20 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
     }
 
-    [StringProperty (MaximumLength = 100)]
+    [StringProperty(MaximumLength = 100)]
     public abstract string Title { get; set; }
 
-    [StringProperty (MaximumLength = 100)]
+    [StringProperty(MaximumLength = 100)]
     public abstract string FirstName { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string LastName { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string UserName { get; set; }
 
-    [DBBidirectionalRelation ("User")]
-    public abstract ObjectList<Role> Roles { get; [DemandPermission (SecurityManagerAccessTypes.AssignRole)] protected set; }
+    [DBBidirectionalRelation("User")]
+    public abstract ObjectList<Role> Roles { get; [DemandPermission(SecurityManagerAccessTypes.AssignRole)] protected set; }
 
     [Mandatory]
     public abstract Tenant Tenant { get; set; }
@@ -117,11 +117,11 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     [SearchAvailableObjectsServiceType(typeof(GroupPropertyTypeSearchService))]
     public abstract Group OwningGroup { get; set; }
 
-    [DBBidirectionalRelation ("SubstitutingUser")]
+    [DBBidirectionalRelation("SubstitutingUser")]
     protected abstract ObjectList<Substitution> SubstitutingFor { get; }
 
-    [DBBidirectionalRelation ("SubstitutedUser")]
-    public abstract ObjectList<Substitution> SubstitutedBy { get; [DemandPermission (SecurityManagerAccessTypes.AssignSubstitute)] protected set; }
+    [DBBidirectionalRelation("SubstitutedUser")]
+    public abstract ObjectList<Substitution> SubstitutedBy { get; [DemandPermission(SecurityManagerAccessTypes.AssignSubstitute)] protected set; }
 
     public IEnumerable<Substitution> GetActiveSubstitutions ()
     {

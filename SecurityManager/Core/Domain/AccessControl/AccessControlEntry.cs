@@ -32,7 +32,7 @@ using Remotion.Utilities;
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.AccessControl.AccessControlEntry")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.AccessControl.AccessControlEntry")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -69,38 +69,38 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public abstract int Index { get; set; }
 
-    [DisableEnumValues (typeof(AccessControlEntryPropertiesEnumerationValueFilter))]
+    [DisableEnumValues(typeof(AccessControlEntryPropertiesEnumerationValueFilter))]
     public abstract TenantCondition TenantCondition { get; set; }
 
     public abstract TenantHierarchyCondition TenantHierarchyCondition { get; set; }
 
-    [DisableEnumValues (typeof(AccessControlEntryPropertiesEnumerationValueFilter))]
+    [DisableEnumValues(typeof(AccessControlEntryPropertiesEnumerationValueFilter))]
     public abstract GroupCondition GroupCondition { get; set; }
 
     public abstract GroupHierarchyCondition GroupHierarchyCondition { get; set; }
 
-    [DisableEnumValues (typeof(AccessControlEntryPropertiesEnumerationValueFilter))]
+    [DisableEnumValues(typeof(AccessControlEntryPropertiesEnumerationValueFilter))]
     public abstract UserCondition UserCondition { get; set; }
 
-    [SearchAvailableObjectsServiceType (typeof(TenantPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(TenantPropertyTypeSearchService))]
     public abstract Tenant SpecificTenant { get; set; }
 
-    [SearchAvailableObjectsServiceType (typeof(GroupPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(GroupPropertyTypeSearchService))]
     public abstract Group SpecificGroup { get; set; }
 
-    [SearchAvailableObjectsServiceType (typeof(GroupTypePropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(GroupTypePropertyTypeSearchService))]
     public abstract GroupType SpecificGroupType { get; set; }
 
-    [SearchAvailableObjectsServiceType (typeof(PositionPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(PositionPropertyTypeSearchService))]
     public abstract Position SpecificPosition { get; set; }
 
-    [SearchAvailableObjectsServiceType (typeof(UserPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(UserPropertyTypeSearchService))]
     public abstract User SpecificUser { get; set; }
 
-    [SearchAvailableObjectsServiceType (typeof(AbstractRoleDefinitionPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(AbstractRoleDefinitionPropertyTypeSearchService))]
     public abstract AbstractRoleDefinition SpecificAbstractRole { get; set; }
 
-    [DBBidirectionalRelation ("AccessControlEntries")]
+    [DBBidirectionalRelation("AccessControlEntries")]
     public abstract AccessControlList AccessControlList { get; set; }
 
     [StorageClassNone]
@@ -114,7 +114,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       }
     }
 
-    [DBBidirectionalRelation ("AccessControlEntry")]
+    [DBBidirectionalRelation("AccessControlEntry")]
     protected abstract ObjectList<Permission> PermissionsInternal { get; }
 
     public ReadOnlyCollection<Permission> GetPermissions ()

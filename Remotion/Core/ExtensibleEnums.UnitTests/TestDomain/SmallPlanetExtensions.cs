@@ -21,13 +21,13 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
 {
   public static class SmallPlanetExtensions
   {
-    [ExtensibleEnumPosition (-1.0)]
+    [ExtensibleEnumPosition(-1.0)]
     public static Planet Mercury (this ExtensibleEnumDefinition<Planet> definition)
     {
       return new Planet(MethodBase.GetCurrentMethod());
     }
 
-    [ExtensibleEnumPosition (-0.5)]
+    [ExtensibleEnumPosition(-0.5)]
     public static Planet Venus (this ExtensibleEnumDefinition<Planet> definition)
     {
       return new Planet(MethodBase.GetCurrentMethod());
@@ -38,7 +38,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
       return new Planet(MethodBase.GetCurrentMethod());
     }
 
-    [ExtensibleEnumPosition (1.0)]
+    [ExtensibleEnumPosition(1.0)]
     public static Planet Mars (this ExtensibleEnumDefinition<Planet> definition)
     {
       return new Planet(MethodBase.GetCurrentMethod());

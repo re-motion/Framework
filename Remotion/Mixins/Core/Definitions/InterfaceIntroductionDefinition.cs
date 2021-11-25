@@ -22,7 +22,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{FullName} introduced via {Implementer.FullName}")]
+  [DebuggerDisplay("{FullName} introduced via {Implementer.FullName}")]
   public class InterfaceIntroductionDefinition : IVisitableDefinition
   {
     private readonly UniqueDefinitionCollection<MethodInfo, MethodIntroductionDefinition> _introducedMethods =

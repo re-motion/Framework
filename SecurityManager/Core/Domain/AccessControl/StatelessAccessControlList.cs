@@ -34,8 +34,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
     }
 
-    [DBBidirectionalRelation ("StatelessAccessControlList", ContainsForeignKey = true)]
-    [DBColumn ("StatelessAcl_ClassID")]
+    [DBBidirectionalRelation("StatelessAccessControlList", ContainsForeignKey = true)]
+    [DBColumn("StatelessAcl_ClassID")]
     [Mandatory]
     protected abstract SecurableClassDefinition MyClass { get; }
 

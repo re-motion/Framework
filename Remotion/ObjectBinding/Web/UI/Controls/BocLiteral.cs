@@ -32,14 +32,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
   /// <summary> This control can be used to render text without any escaping applied. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocLiteral.xml' path='BocLiteral/Class/*' />
-  [ToolboxItemFilter ("System.Web.UI")]
+  [ToolboxItemFilter("System.Web.UI")]
   public class BocLiteral : Control, IBusinessObjectBoundWebControl
   {
     #region BusinessObjectBinding implementation
 
     /// <summary>Gets the <see cref="BusinessObjectBinding"/> object used to manage the binding for this <see cref="BusinessObjectBoundWebControl"/>.</summary>
     /// <value> The <see cref="BusinessObjectBinding"/> instance used to manage this control's binding. </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public BusinessObjectBinding Binding
     {
       get { return _binding; }
@@ -47,8 +47,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary>Gets or sets the <see cref="IBusinessObjectDataSource"/> this <see cref="IBusinessObjectBoundWebControl"/> is bound to.</summary>
     /// <value> An <see cref="IBusinessObjectDataSource"/> providing the current <see cref="IBusinessObject"/>. </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public IBusinessObjectDataSource? DataSource
     {
       get { return _binding.DataSource; }
@@ -60,10 +60,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   A string that can be used to query the <see cref="IBusinessObjectClass.GetPropertyDefinition"/> method for the 
     ///   <see cref="IBusinessObjectProperty"/>. 
     /// </value>
-    [Category ("Data")]
-    [Description ("The string representation of the Property.")]
-    [DefaultValue ("")]
-    [MergableProperty (false)]
+    [Category("Data")]
+    [Description("The string representation of the Property.")]
+    [DefaultValue("")]
+    [MergableProperty(false)]
     public string? PropertyIdentifier
     {
       get { return _binding.PropertyIdentifier; }
@@ -72,8 +72,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary>Gets or sets the <see cref="IBusinessObjectProperty"/> used for accessing the data to be loaded into <see cref="Value"/>.</summary>
     /// <value>An <see cref="IBusinessObjectProperty"/> that is part of the bound <see cref="IBusinessObject"/>'s <see cref="IBusinessObjectClass"/>.</value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IBusinessObjectProperty? Property
     {
       get { return _binding.Property; }
@@ -85,10 +85,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   this  <see cref="IBusinessObjectBoundWebControl"/> is bound to.
     /// </summary>
     /// <value>A string set to the <b>ID</b> of an <see cref="IBusinessObjectDataSourceControl"/> inside the current naming container.</value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Data")]
-    [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
-    [DefaultValue ("")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Data")]
+    [Description("The ID of the BusinessObjectDataSourceControl control used as data source.")]
+    [DefaultValue("")]
     public string? DataSourceControl
     {
       get { return _binding.DataSourceControl; }
@@ -120,7 +120,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     <item>Otherwise, <see langword="false"/> is returned.</item>
     ///   </list>
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool HasValidBinding
     {
       get { return _binding.HasValidBinding; }
@@ -246,9 +246,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the current value. </summary>
-    [Description ("The text to be shown in for the BocLiteral.")]
-    [Category ("Data")]
-    [DefaultValue ("")]
+    [Description("The text to be shown in for the BocLiteral.")]
+    [Category("Data")]
+    [DefaultValue("")]
     public string? Value
     {
       get { return _value; }
@@ -302,7 +302,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the text to be written into the label for this control. </summary>
     /// <value> <see langword="null"/> for the default implementation. </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public virtual string? DisplayName
     {
       get { return (Property != null) ? Property.DisplayName : null; }
@@ -349,9 +349,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
-    [Category ("Behavior")]
-    [Description ("Determines whether the text is transformed or encoded.")]
-    [DefaultValue (LiteralMode.Transform)]
+    [Category("Behavior")]
+    [Description("Determines whether the text is transformed or encoded.")]
+    [DefaultValue(LiteralMode.Transform)]
     public LiteralMode Mode
     {
       get { return _mode; }

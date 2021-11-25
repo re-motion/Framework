@@ -27,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// <summary>
     /// Extends <see cref="TestCaseFactoryBase.TestMethodAttribute"/> for the generic test page.
     /// </summary>
-    [AttributeUsage (AttributeTargets.Method, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
     protected class GenericPageTestMethodAttribute : TestMethodAttribute
     {
       public GenericPageTestMethodAttribute ()

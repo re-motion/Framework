@@ -40,7 +40,7 @@ public class SmartLabel: WebControl, IControl
   /// <summary>
   ///   The ID of the control to display a label for.
   /// </summary>
-  [Category ("Behavior")]
+  [Category("Behavior")]
   public string? ForControl
   {
     get { return _forControl; }
@@ -52,9 +52,9 @@ public class SmartLabel: WebControl, IControl
   ///   <see cref="ISmartControl "/> or the <see cref="ISmartControl"/> does provide a 
   ///   <see cref="ISmartControl.DisplayName"/>.
   /// </summary>
-  [Category ("Appearance")]
-  [Description ("The text displayed if the SmartLabel is not bound to an ISmartControl or the ISmartControl does provide a DisplayName.")]
-  [DefaultValue (null)]
+  [Category("Appearance")]
+  [Description("The text displayed if the SmartLabel is not bound to an ISmartControl or the ISmartControl does provide a DisplayName.")]
+  [DefaultValue(null)]
   public string? Text
   {
     get { return _text; }

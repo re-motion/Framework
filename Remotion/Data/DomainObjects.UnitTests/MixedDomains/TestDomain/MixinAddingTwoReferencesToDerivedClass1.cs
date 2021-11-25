@@ -19,10 +19,10 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
-  [Extends (typeof(TargetClassReceivingTwoReferencesToDerivedClass))]
+  [Extends(typeof(TargetClassReceivingTwoReferencesToDerivedClass))]
   public class MixinAddingTwoReferencesToDerivedClass1 : DomainObjectMixin<TargetClassReceivingTwoReferencesToDerivedClass>
   {
-    [DBBidirectionalRelation ("MyBase1")]
+    [DBBidirectionalRelation("MyBase1")]
     public virtual ObjectList<DerivedClassWithTwoBaseReferencesViaMixins> MyDerived1
     {
       get

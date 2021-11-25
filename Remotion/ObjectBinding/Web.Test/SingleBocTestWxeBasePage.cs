@@ -21,7 +21,7 @@ using Remotion.Web.UI;
 namespace OBWTest
 {
 
-[MultiLingualResources ("OBWTest.Globalization.SingleBocTestBasePage")]
+[MultiLingualResources("OBWTest.Globalization.SingleBocTestBasePage")]
 public class SingleBocTestWxeBasePage: TestWxeBasePage
 {
   protected override void OnInit (EventArgs e)

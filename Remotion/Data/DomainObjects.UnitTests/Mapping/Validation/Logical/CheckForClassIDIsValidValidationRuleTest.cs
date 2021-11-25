@@ -33,12 +33,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     }
 
     [Test]
-    [TestCase ("a")]
-    [TestCase ("ä")]
-    [TestCase ("_")]
-    [TestCase ("aä")]
-    [TestCase ("a_")]
-    [TestCase ("a1")]
+    [TestCase("a")]
+    [TestCase("ä")]
+    [TestCase("_")]
+    [TestCase("aä")]
+    [TestCase("a_")]
+    [TestCase("a1")]
     public void ValidClassID (string classID)
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(id: classID);
@@ -49,11 +49,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     }
 
     [Test]
-    [TestCase ("a|")]
-    [TestCase ("1a")]
-    [TestCase ("a.a")]
-    [TestCase ("a a")]
-    [TestCase ("a+a")]
+    [TestCase("a|")]
+    [TestCase("1a")]
+    [TestCase("a.a")]
+    [TestCase("a a")]
+    [TestCase("a+a")]
     public void InvalidClassID (string classID)
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(id: classID);

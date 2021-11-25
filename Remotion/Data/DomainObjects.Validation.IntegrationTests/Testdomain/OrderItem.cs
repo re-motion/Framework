@@ -10,11 +10,11 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
       return NewObject<OrderItem>();
     }
 
-    [DBBidirectionalRelation ("OrderItems")]
+    [DBBidirectionalRelation("OrderItems")]
     [Mandatory]
     public virtual Order Order { get; set; }
 
-    [DBBidirectionalRelation ("OrderItem", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("OrderItem", ContainsForeignKey = true)]
     [Mandatory]
     public virtual ProductReference ProductReference { get; set; }
   }

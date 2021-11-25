@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   /// The <see cref="UserSubstitedByListEditableRowControlFactory"/> instance is retrieved form the <see cref="IServiceLocator"/> using the type
   /// <see cref="UserSubstitedByListEditableRowControlFactory"/> as key.
   /// </remarks>
-  [ImplementationFor (typeof(UserSubstitedByListEditableRowControlFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(UserSubstitedByListEditableRowControlFactory), Lifetime = LifetimeKind.Singleton)]
   public class UserSubstitedByListEditableRowControlFactory : EditableRowAutoCompleteControlFactory
   {
     public UserSubstitedByListEditableRowControlFactory ()

@@ -24,25 +24,25 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
   [Serializable]
   public abstract class OppositeClassWithVirtualRelationProperties : SimpleDomainObject<OppositeClassWithVirtualRelationProperties>
   {
-    [DBBidirectionalRelation ("Real1")]
+    [DBBidirectionalRelation("Real1")]
     public abstract ClassWithRelationProperties Virtual1 { get; set; }
-    [DBBidirectionalRelation ("Real2")]
+    [DBBidirectionalRelation("Real2")]
     public abstract ClassWithRelationProperties Virtual2 { get; set; }
-    [DBBidirectionalRelation ("Real3")]
+    [DBBidirectionalRelation("Real3")]
     public abstract ClassWithRelationProperties Virtual3 { get; set; }
-    [DBBidirectionalRelation ("Real4")]
+    [DBBidirectionalRelation("Real4")]
     public abstract ClassWithRelationProperties Virtual4 { get; set; }
-    [DBBidirectionalRelation ("Real5")]
+    [DBBidirectionalRelation("Real5")]
     public abstract ClassWithRelationProperties Virtual5 { get; set; }
-    [DBBidirectionalRelation ("Real6")]
+    [DBBidirectionalRelation("Real6")]
     public abstract ClassWithRelationProperties Virtual6 { get; set; }
-    [DBBidirectionalRelation ("Real7")]
+    [DBBidirectionalRelation("Real7")]
     public abstract ClassWithRelationProperties Virtual7 { get; set; }
-    [DBBidirectionalRelation ("Real8")]
+    [DBBidirectionalRelation("Real8")]
     public abstract ClassWithRelationProperties Virtual8 { get; set; }
-    [DBBidirectionalRelation ("Real9")]
+    [DBBidirectionalRelation("Real9")]
     public abstract ClassWithRelationProperties Virtual9 { get; set; }
-    [DBBidirectionalRelation ("Real10")]
+    [DBBidirectionalRelation("Real10")]
     public abstract ClassWithRelationProperties Virtual10 { get; set; }
   }
 }

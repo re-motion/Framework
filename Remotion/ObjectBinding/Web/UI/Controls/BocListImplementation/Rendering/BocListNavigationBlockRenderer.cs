@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// Responsible for rendering the navigation block of a <see cref="BocList"/>.
   /// </summary>
   /// <remarks>This class should not be instantiated directly. It is meant to be used by a <see cref="BocListRenderer"/>.</remarks>
-  [ImplementationFor (typeof(IBocListNavigationBlockRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocListNavigationBlockRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocListNavigationBlockRenderer : RendererBase<BocList>, IBocListNavigationBlockRenderer
   {
     /// <summary> A list of control specific resources. </summary>
@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocListNavigationBlockRenderer")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocListNavigationBlockRenderer")]
     public enum ResourceIdentifier
     {
       PageLabelText,

@@ -21,8 +21,8 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
 {
   public static class DarkColorExtensions
   {
-    [MultiLingualName ("The Invariant Dark Red", "")]
-    [MultiLingualName ("The en-US Dark Red", "en-US")]
+    [MultiLingualName("The Invariant Dark Red", "")]
+    [MultiLingualName("The en-US Dark Red", "en-US")]
     public static Color DarkRed (this ExtensibleEnumDefinition<Color> definition)
     {
       return new Color("DarkColor", "DarkRed");

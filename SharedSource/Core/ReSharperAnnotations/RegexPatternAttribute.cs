@@ -68,7 +68,7 @@ namespace JetBrains.Annotations
   /// <summary>
   /// Indicates that parameter is regular expression pattern.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Parameter)]
+  [AttributeUsage(AttributeTargets.Parameter)]
   sealed partial class RegexPatternAttribute : Attribute
   {
   }

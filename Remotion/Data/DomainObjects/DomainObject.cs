@@ -319,7 +319,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>
     /// For more information why and when an object becomes invalid see <see cref="ObjectInvalidException"/>.
     /// </remarks>
-    [Obsolete ("Use State.IsInvalid instead. (Version: 1.21.8)", false)]
+    [Obsolete("Use State.IsInvalid instead. (Version: 1.21.8)", false)]
     public bool IsInvalid
     {
       get { return State.IsInvalid; }
@@ -344,7 +344,7 @@ namespace Remotion.Data.DomainObjects
     /// generates a concrete <see cref="DomainObject"/> type, it overrides this method to disable the exception. This ensures that 
     /// <see cref="DomainObject"/> instances cannot be created simply by calling the <see cref="DomainObject"/>'s constructor.
     /// </remarks>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     protected virtual void PerformConstructorCheck ()
     {
       throw new InvalidOperationException(
@@ -412,7 +412,7 @@ namespace Remotion.Data.DomainObjects
     /// <see cref="DomainObject.GetPublicDomainObjectType"/> can be used to get the Type object of the original underlying domain object type. If
     /// the <see cref="Type"/> object for the generated class is explicitly required, this object can be cast to 'object' before calling GetType.
     /// </summary>
-    [Obsolete ("GetType might return a Type object for a generated class, which is usually not what is expected. "
+    [Obsolete("GetType might return a Type object for a generated class, which is usually not what is expected. "
                + "DomainObject.GetPublicDomainObjectType can be used to get the Type object of the original underlying domain object type. If the Type object"
                + "for the generated class is explicitly required, this object can be cast to 'object' before calling GetType.", true)]
     public new Type GetType ()

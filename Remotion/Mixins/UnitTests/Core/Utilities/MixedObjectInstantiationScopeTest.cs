@@ -43,7 +43,7 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
       Assert.That(MixedObjectInstantiationScope.HasCurrent, Is.True);
     }
 
-    [Test (Description = "Checks (in conjunction with ScopeInitializedOnDemand) whether this test fixture correctly resets the scope.")]
+    [Test(Description = "Checks (in conjunction with ScopeInitializedOnDemand) whether this test fixture correctly resets the scope.")]
     public void CurrentIsReset ()
     {
       Assert.That(MixedObjectInstantiationScope.HasCurrent, Is.False);

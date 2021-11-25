@@ -20,10 +20,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     OneToMany_WithInvalidSortExpression
 {
   [DBTable]
-  [ClassID ("OneToMany_InvalidSortExpressionPropertyName_InvalidRelationClass1")]
+  [ClassID("OneToMany_InvalidSortExpressionPropertyName_InvalidRelationClass1")]
   public class InvalidRelationClass1 : DomainObject
   {
-    [DBBidirectionalRelation ("RelationProperty2")]
+    [DBBidirectionalRelation("RelationProperty2")]
     public InvalidRelationClass2 RelationProperty1 { get; set; }
   }
 }

@@ -54,7 +54,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     }
 
     [Test]
-    [Ignore ("RM-5902")]
+    [Ignore("RM-5902")]
     public void DeserializeAfterFlusheCode ()
     {
       var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers>(typeof(MixinWithAbstractMembers));
@@ -70,7 +70,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     }
 
     [Test]
-    [Ignore ("RM-5902")]
+    [Ignore("RM-5902")]
     public void LoadFlushedCode_IncludesSerializationHelperTypes ()
     {
       var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers>(typeof(MixinWithAbstractMembers));

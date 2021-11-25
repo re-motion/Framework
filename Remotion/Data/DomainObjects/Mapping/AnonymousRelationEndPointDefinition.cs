@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// <summary>
   /// Represents the non-existing side of a unidirectional relationship.
   /// </summary>
-  [DebuggerDisplay ("{GetType().Name}: Cardinality: {Cardinality}")]
+  [DebuggerDisplay("{GetType().Name}: Cardinality: {Cardinality}")]
   public class AnonymousRelationEndPointDefinition : IRelationEndPointDefinition
   {
     private RelationDefinition _relationDefinition;

@@ -20,10 +20,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject
 {
   [DBTable]
-  [ClassID ("PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject_PersistentRelationClass")]
+  [ClassID("PropertyWithStorageClassPersistentReferencesNonPersistentDomainObject_PersistentRelationClass")]
   public class PersistentRelationClass : DomainObject
   {
-    [DBBidirectionalRelation ("NonPersistentRelationProperty", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("NonPersistentRelationProperty", ContainsForeignKey = true)]
     public NonPersistentRelationClass PersistentRelationProperty { get; set; }
   }
 }

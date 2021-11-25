@@ -20,7 +20,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
   }
 
   [ResourceIdentifiers]
-  [MultiLingualResources ("Remotion.SecurityManager.Clients.Web.Globalization.UI.GlobalResources")]
+  [MultiLingualResources("Remotion.SecurityManager.Clients.Web.Globalization.UI.GlobalResources")]
   public enum GlobalResources
   {
     User,

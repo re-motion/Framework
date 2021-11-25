@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_AbstractBaseClassWithHierarchy")]
+  [ClassID("TI_AbstractBaseClassWithHierarchy")]
   [TableInheritanceTestDomain]
   public abstract class AbstractBaseClassWithHierarchy : DomainObject, ISupportsGetObject
   {
@@ -26,13 +26,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("ChildAbstractBaseClassesWithHierarchy")]
+    [DBBidirectionalRelation("ChildAbstractBaseClassesWithHierarchy")]
     public abstract AbstractBaseClassWithHierarchy ParentAbstractBaseClassWithHierarchy { get; set; }
 
-    [DBBidirectionalRelation ("ParentAbstractBaseClassWithHierarchy", SortExpression = "Name DESC")]
+    [DBBidirectionalRelation("ParentAbstractBaseClassWithHierarchy", SortExpression = "Name DESC")]
     public abstract ObjectList<AbstractBaseClassWithHierarchy> ChildAbstractBaseClassesWithHierarchy { get;}
 
     public abstract TIClient ClientFromAbstractBaseClass { get; set; }

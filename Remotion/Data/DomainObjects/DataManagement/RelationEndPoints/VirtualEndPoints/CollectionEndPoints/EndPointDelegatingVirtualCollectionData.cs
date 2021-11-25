@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <see cref="IVirtualCollectionEndPoint"/>.
   /// </summary>
   [Serializable]
-  [System.Runtime.InteropServices.Guid ("37550759-6300-4DDC-88EB-12B0FC29703F")]
+  [System.Runtime.InteropServices.Guid("37550759-6300-4DDC-88EB-12B0FC29703F")]
   public class EndPointDelegatingVirtualCollectionData : IVirtualCollectionData
   {
     private readonly RelationEndPointID _endPointID;

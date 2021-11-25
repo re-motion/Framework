@@ -28,7 +28,7 @@ namespace Remotion.Web.Security.UI
     WxeFunction
   }
 
-  [AttributeUsage (AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
   public abstract class DemandTargetPermissionAttribute : Attribute
   {
     // types

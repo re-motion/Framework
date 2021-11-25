@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   /// Cache-based implementation of the <see cref="ISecurityPrincipalRepository"/> interface.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof(ISecurityPrincipalRepository), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ISecurityPrincipalRepository), Lifetime = LifetimeKind.Singleton)]
   public sealed class SecurityPrincipalRepository : ISecurityPrincipalRepository
   {
     private readonly IUserRevisionProvider _revisionProvider;

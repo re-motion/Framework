@@ -521,7 +521,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     }
 
     [Test]
-    [Ignore ("Reason is missing")]
+    [Ignore("Reason is missing")]
     public void GetWrappedControl_BeforeReplaceAndWrap ()
     {
       Assert.That(

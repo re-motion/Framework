@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_BaseClassWithInvalidRelationClassIDColumns")]
-  [DBTable ("TableInheritance_BaseClassWithInvalidRelationClassIDColumns")]
+  [ClassID("TI_BaseClassWithInvalidRelationClassIDColumns")]
+  [DBTable("TableInheritance_BaseClassWithInvalidRelationClassIDColumns")]
   [TableInheritanceTestDomain]
   public abstract class BaseClassWithInvalidRelationClassIDColumns : DomainObject
   {

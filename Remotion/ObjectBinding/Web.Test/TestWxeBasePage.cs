@@ -30,7 +30,7 @@ using Remotion.Web.UI.Globalization;
 namespace OBWTest
 {
 
-[MultiLingualResources ("OBWTest.Globalization.TestBasePage")]
+[MultiLingualResources("OBWTest.Globalization.TestBasePage")]
 public class TestWxeBasePage:
     WxePage,
     Remotion.Web.UI.Controls.IControl,

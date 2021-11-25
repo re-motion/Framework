@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   /// Apply this attribute to a <see cref="DomainObject"/> class to have the <see cref="MappingReflector"/> ignore the class when building the
   /// mapping configuration.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
   public sealed class IgnoreForMappingConfigurationAttribute : Attribute
   {
   }

@@ -24,7 +24,7 @@ namespace Remotion.Mixins
   /// </summary>
   /// <remarks>Use this attribute if a mixin should implement an interface or declare an attribute "just for itself" and the interface should not be
   /// forwarded to the target class.</remarks>
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
   public class NonIntroducedAttribute : Attribute
   {
     private readonly Type _nonIntroducedType;

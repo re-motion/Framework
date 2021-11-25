@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Reflection.CodeGeneration.UnitTests.TestDomain
 {
-  [Simple (S = "whazzup1")]
-  [Simple (S = "whazzup2")]
+  [Simple(S = "whazzup1")]
+  [Simple(S = "whazzup2")]
   public class ClassWithCustomAttribute
   {
 

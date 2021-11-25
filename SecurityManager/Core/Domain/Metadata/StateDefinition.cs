@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     // methods and properties
 
-    [DBBidirectionalRelation ("DefinedStatesInternal")]
+    [DBBidirectionalRelation("DefinedStatesInternal")]
     [Mandatory]
     public abstract StatePropertyDefinition StateProperty { get; }
 

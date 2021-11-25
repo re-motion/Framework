@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Collections
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
   public interface IDataStore<TKey, TValue> : INullObject
   {
     bool ContainsKey (TKey key);

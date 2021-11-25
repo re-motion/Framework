@@ -178,7 +178,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <seealso cref="IDefaultValueService"/>
     /// <seealso cref="CreateDefaultValue"/>
     /// <seealso cref="IsDefaultValue"/>
-    [Obsolete ("The default value feature is not supported. (Version 1.13.142)")]
+    [Obsolete("The default value feature is not supported. (Version 1.13.142)")]
     public bool SupportsDefaultValue
     {
       get
@@ -244,7 +244,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <seealso cref="IDefaultValueService"/>
     /// <seealso cref="SupportsDefaultValue"/>
     /// <seealso cref="IsDefaultValue"/>
-    [Obsolete ("The default value feature is not supported. (Version 1.13.142)")]
+    [Obsolete("The default value feature is not supported. (Version 1.13.142)")]
     public IBusinessObject CreateDefaultValue (IBusinessObject referencingObject)
     {
       if (!SupportsDefaultValue)
@@ -290,7 +290,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <seealso cref="IDefaultValueService"/>
     /// <seealso cref="SupportsDefaultValue"/>
     /// <seealso cref="CreateDefaultValue"/>
-    [Obsolete ("The default value feature is not supported. (Version 1.13.142)")]
+    [Obsolete("The default value feature is not supported. (Version 1.13.142)")]
     public bool IsDefaultValue (IBusinessObject? referencingObject, IBusinessObject value, IBusinessObjectProperty[] emptyProperties)
     {
       ArgumentUtility.CheckNotNull("value", value);
@@ -324,7 +324,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <seealso cref="DeleteObjectServiceTypeAttribute"/>
     /// <seealso cref="IDeleteObjectService"/>
     /// <seealso cref="Delete"/>
-    [Obsolete ("The delete-object feature is not supported. (Version 1.13.142)")]
+    [Obsolete("The delete-object feature is not supported. (Version 1.13.142)")]
     public bool SupportsDelete
     {
       get
@@ -392,7 +392,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <seealso cref="DeleteObjectServiceTypeAttribute"/>
     /// <seealso cref="IDeleteObjectService"/>
     /// <seealso cref="SupportsDelete"/>
-    [Obsolete ("The delete-object feature is not supported. (Version 1.13.142)")]
+    [Obsolete("The delete-object feature is not supported. (Version 1.13.142)")]
     public void Delete (IBusinessObject? referencingObject, IBusinessObject value)
     {
       ArgumentUtility.CheckNotNull("value", value);

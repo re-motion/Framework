@@ -55,9 +55,9 @@ public class LengthValidator : BaseValidator
   /// <value> 
   ///  The minimum length of the validated string, or <see langword="null"/> to disable the validation of the minimum length.
   /// </value>
-  [Category ("Behavior")]
-  [Description ("The maximum number of characters allowed in the validated property. Clear the MinimumLength property to not validate the minimum length.")]
-  [DefaultValue (null)]
+  [Category("Behavior")]
+  [Description("The maximum number of characters allowed in the validated property. Clear the MinimumLength property to not validate the minimum length.")]
+  [DefaultValue(null)]
   public int? MinimumLength
   {
     get { return _minimumLength; }
@@ -73,9 +73,9 @@ public class LengthValidator : BaseValidator
   /// <value> 
   ///  The maximum length of the validated string, or <see langword="null"/> to disable the validation of the maximum length.
   /// </value>
-  [Category ("Behavior")]
-  [Description ("The maximum number of characters allowed in the validated property. Clear the MaximumLength proprety to not validate the maximum length.")]
-  [DefaultValue (null)]
+  [Category("Behavior")]
+  [Description("The maximum number of characters allowed in the validated property. Clear the MaximumLength proprety to not validate the maximum length.")]
+  [DefaultValue(null)]
   public int? MaximumLength
   {
     get { return _maximumLength; }

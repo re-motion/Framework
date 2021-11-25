@@ -32,7 +32,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// Generates <see cref="INextCallProxy"/> instances.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof(INextCallProxyGenerator), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor(typeof(INextCallProxyGenerator), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class NextCallProxyGenerator : INextCallProxyGenerator
   {
     public NextCallProxyGenerator ()

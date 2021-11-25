@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering the table (consisting of title and data rows) that shows the items contained in the <see cref="IBocList"/>.
   /// </summary>
-  [ImplementationFor (typeof(IBocListTableBlockRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocListTableBlockRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocListTableBlockRenderer : IBocListTableBlockRenderer
   {
     private readonly BocListCssClassDefinition _cssClasses;
@@ -229,7 +229,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Table);
     }
 
-    [Obsolete ("RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
+    [Obsolete("RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
     protected virtual string GetAriaRoleForTableElement ()
     {
       return HtmlRoleAttributeValue.Table;

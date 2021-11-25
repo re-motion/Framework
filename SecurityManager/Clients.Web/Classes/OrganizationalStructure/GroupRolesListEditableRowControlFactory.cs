@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   /// <see cref="GroupRolesListEditableRowControlFactory"/> as key.
   /// </remarks>
 
-  [ImplementationFor (typeof(GroupRolesListEditableRowControlFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(GroupRolesListEditableRowControlFactory), Lifetime = LifetimeKind.Singleton)]
   public class GroupRolesListEditableRowControlFactory : EditableRowAutoCompleteControlFactory
   {
     public GroupRolesListEditableRowControlFactory ()

@@ -174,7 +174,7 @@ namespace Remotion.Web.Utilities
     /// <returns> 
     ///   Returns <see langword="true"/> if the <paramref name="control"/> is in design mode.
     /// </returns>
-    [Obsolete ("Design-mode support has been removed, method always returns false. (Version: 3.0.0)", false)]
+    [Obsolete("Design-mode support has been removed, method always returns false. (Version: 3.0.0)", false)]
     public static bool IsDesignModeForControl (Control control)
     {
       return false;
@@ -193,7 +193,7 @@ namespace Remotion.Web.Utilities
     /// <returns> 
     ///   Returns <see langword="true"/> if the <paramref name="control"/> is in design mode.
     /// </returns>
-    [Obsolete ("Design-mode support has been removed, method always returns false. (Version: 3.0.0)", false)]
+    [Obsolete("Design-mode support has been removed, method always returns false. (Version: 3.0.0)", false)]
     public static bool IsDesignMode (IControl control)
     {
       return false;

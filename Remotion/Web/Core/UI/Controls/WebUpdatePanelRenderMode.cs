@@ -28,9 +28,9 @@ namespace Remotion.Web.UI.Controls
     Tbody,
     Thead,
     Tfoot,
-    [Obsolete ("Use WebUpdatePanelRenderMode.Div instead.")]
+    [Obsolete("Use WebUpdatePanelRenderMode.Div instead.")]
     Block,
-    [Obsolete ("Use WebUpdatePanelRenderMode.Span instead.")]
+    [Obsolete("Use WebUpdatePanelRenderMode.Span instead.")]
     Inline,
   }
 }

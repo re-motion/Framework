@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding
   /// <summary>
   /// Specifies the type of items for properties returning an <see cref="IList"/>.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public sealed class ItemTypeAttribute : Attribute
   {
     private Type _itemType;

@@ -26,13 +26,13 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Globalization
 {
-  [ImplementationFor (typeof(IValidationMessageFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IValidationMessageFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class LocalizedValidationMessageFactory : IValidationMessageFactory
   {
     public const int Position = 0;
 
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.Validation.Globalization.Globalization.LocalizedValidationMessageFactory")]
+    [MultiLingualResources("Remotion.Validation.Globalization.Globalization.LocalizedValidationMessageFactory")]
     public enum ResourceIdentifier
     {
       ValueMustBeEqualValidationMessage,

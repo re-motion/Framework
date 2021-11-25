@@ -28,8 +28,8 @@ using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
-  [PersistChildren (true)]
-  [ParseChildren (true, "RealControls")]
+  [PersistChildren(true)]
+  [ParseChildren(true, "RealControls")]
   public class LazyContainer : Control, INamingContainer, IControl
   {
     // types
@@ -105,7 +105,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    [Browsable (false)]
+    [Browsable(false)]
     public ControlCollection RealControls
     {
       get
@@ -117,7 +117,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    [MemberNotNull (nameof(_placeHolder))]
+    [MemberNotNull(nameof(_placeHolder))]
     private void EnsurePlaceHolderCreated ()
     {
       if (_placeHolder == null)

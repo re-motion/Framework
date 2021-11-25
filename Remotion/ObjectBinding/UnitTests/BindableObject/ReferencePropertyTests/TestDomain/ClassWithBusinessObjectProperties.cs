@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 
     public ClassWithIdentityAndSearchServiceTypeAttribute SearchServiceFromPropertyType { get; set; }
 
-    [SearchAvailableObjectsServiceType (typeof(ISearchServiceOnProperty))]
+    [SearchAvailableObjectsServiceType(typeof(ISearchServiceOnProperty))]
     public ClassWithIdentityAndSearchServiceTypeAttribute SearchServiceFromPropertyDeclaration { get; set; }
 
     public ClassFromOtherBusinessObjectImplementation NoSearchService { get; set; }
@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     public ClassWithDefaultValueServiceTypeAttribute DefaultValueServiceFromPropertyType { get; set; }
 
 #pragma warning disable 612,618
-    [DefaultValueServiceType (typeof(IDefaultValueServiceOnProperty))]
+    [DefaultValueServiceType(typeof(IDefaultValueServiceOnProperty))]
     public ClassWithDefaultValueServiceTypeAttribute DefaultValueServiceFromPropertyDeclaration { get; set; }
 #pragma warning restore 612,618
 
@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     public ClassWithDeleteObjectServiceTypeAttribute DeleteObjectServiceFromPropertyType { get; set; }
 
 #pragma warning disable 612,618
-    [DeleteObjectServiceType (typeof(IDeleteObjectServiceOnProperty))]
+    [DeleteObjectServiceType(typeof(IDeleteObjectServiceOnProperty))]
     public ClassWithDeleteObjectServiceTypeAttribute DeleteObjectServiceFromPropertyDeclaration { get; set; }
 #pragma warning restore 612,618
 

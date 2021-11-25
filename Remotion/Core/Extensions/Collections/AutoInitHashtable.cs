@@ -28,7 +28,7 @@ namespace Remotion.Collections
   ///		This collection cannot be modified using <see cref="Hashtable.Add"/> and setting values through the indexer. Getting values through the indexer
   ///		will assign a new object to the specified key if none exists.
   /// </remarks>
-  [DebuggerDisplay ("Count={Count}")]
+  [DebuggerDisplay("Count={Count}")]
   public class AutoInitHashtable : Hashtable
   {
     public delegate object CreateMethod ();
@@ -76,7 +76,7 @@ namespace Remotion.Collections
     }
 
     #pragma warning disable 809 // C# 3.0: specifying obsolete for overridden methods causes a warning, but this is intended here.
-    [Obsolete ("Explicitly adding or setting keys or values is not supported.", true)]
+    [Obsolete("Explicitly adding or setting keys or values is not supported.", true)]
     public override void Add (object key, object? value)
     {
       throw new NotSupportedException("Explicitly adding or setting keys or values is not supported.");

@@ -29,21 +29,21 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
       set { Properties[typeof(MixinAddingPersistentProperties), "MixedProperty"].SetValue(value); }
     }
 
-    [MemberVisibility (MemberVisibility.Public)]
+    [MemberVisibility(MemberVisibility.Public)]
     public DateTime PublicMixedProperty
     {
       get { return Properties[typeof(MixinAddingPersistentProperties), "PublicMixedProperty"].GetValue<DateTime>(); }
       set { Properties[typeof(MixinAddingPersistentProperties), "PublicMixedProperty"].SetValue(value); }
     }
 
-    [MemberVisibility (MemberVisibility.Private)]
+    [MemberVisibility(MemberVisibility.Private)]
     public DateTime PrivateMixedProperty
     {
       get { return Properties[typeof(MixinAddingPersistentProperties), "PrivateMixedProperty"].GetValue<DateTime>(); }
       set { Properties[typeof(MixinAddingPersistentProperties), "PrivateMixedProperty"].SetValue(value); }
     }
 
-    [DBColumn ("ExplicitMixedProperty")]
+    [DBColumn("ExplicitMixedProperty")]
     [StorageClass(StorageClass.Persistent)]
     DateTime IMixinAddingPersistentProperties.ExplicitMixedProperty
     {

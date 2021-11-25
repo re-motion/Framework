@@ -99,9 +99,9 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Gets or sets the data type to be tested. </summary>
     /// <value> A value of the <see cref="NumericValidationDataType"/> enumeration. Defaults to <see cref="NumericValidationDataType.Int32"/>. </value>
-    [Category ("Behavior")]
-    [Description ("The data type to be tested.")]
-    [DefaultValue (NumericValidationDataType.Int32)]
+    [Category("Behavior")]
+    [Description("The data type to be tested.")]
+    [DefaultValue(NumericValidationDataType.Int32)]
     public NumericValidationDataType DataType
     {
       get { return _dataType; }
@@ -112,9 +112,9 @@ namespace Remotion.Web.UI.Controls
     /// <value>
     /// <see langword="true"/> to allow negative values. Defaults to <see lagnword="true"/>.
     /// </value>
-    [Category ("Behavior")]
-    [Description ("A value that determines whether negative values are allowed.")]
-    [DefaultValue (true)]
+    [Category("Behavior")]
+    [Description("A value that determines whether negative values are allowed.")]
+    [DefaultValue(true)]
     public bool AllowNegative
     {
       get { return _allowNegative; }
@@ -127,9 +127,9 @@ namespace Remotion.Web.UI.Controls
     ///   The number style is used by the <b>Parse</b> method. If it is set to <b>None</b>, the <b>Parse</b> method is 
     ///   called without the <b>NumberStyles</b> argument.
     /// </remarks>
-    [Category ("Behavior")]
-    [Description ("The allowed NumberStyles of the value to be tested.")]
-    [DefaultValue (NumberStyles.None)]
+    [Category("Behavior")]
+    [Description("The allowed NumberStyles of the value to be tested.")]
+    [DefaultValue(NumberStyles.None)]
     public NumberStyles NumberStyle
     {
       get { return _numberStyle; }

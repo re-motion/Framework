@@ -23,11 +23,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     }
 
     [Test]
-    [TestCase (true, true, new Type[0], Description = "Required/ReadOnly")]
-    [TestCase (true, false, new[] { typeof(RequiredFieldValidator), typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) },
+    [TestCase(true, true, new Type[0], Description = "Required/ReadOnly")]
+    [TestCase(true, false, new[] { typeof(RequiredFieldValidator), typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) },
         Description = "Required/Not ReadOnly")]
-    [TestCase (false, true, new Type[0], Description = "Not Required/ReadOnly")]
-    [TestCase (false, false, new[] { typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Not Required/Not ReadOnly")]
+    [TestCase(false, true, new Type[0], Description = "Not Required/ReadOnly")]
+    [TestCase(false, false, new[] { typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Not Required/Not ReadOnly")]
     public void CreateValidators_WithOptionalValidatorsEnabled (bool isRequired, bool isReadonly, Type[] expectedValidatorTypes)
     {
       var control = GetControlWithOptionalValidatorsEnabled(isRequired);
@@ -38,13 +38,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     }
 
     [Test]
-    [TestCase (true, true, true, true, true, new Type[0], Description = "Required/ReadOnly")]
-    [TestCase (true, false, true, true, true, new[] { typeof(RequiredFieldValidator), typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Required/Not ReadOnly")]
-    [TestCase (false, true, true, true, true, new Type[0], Description = "Not Required/ReadOnly")]
-    [TestCase (false, false, true, true, true, new[] { typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Not Required/Not ReadOnly")]
-    [TestCase (true, false, false, false, true, new[] { typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Required/Not ReadOnly/No DataSource")]
-    [TestCase (true, false, true, false, true, new[] { typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Required/Not ReadOnly/No BusinessObject")]
-    [TestCase (true, false, true, true, false, new[] { typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Required/Not ReadOnly/No Property")]
+    [TestCase(true, true, true, true, true, new Type[0], Description = "Required/ReadOnly")]
+    [TestCase(true, false, true, true, true, new[] { typeof(RequiredFieldValidator), typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Required/Not ReadOnly")]
+    [TestCase(false, true, true, true, true, new Type[0], Description = "Not Required/ReadOnly")]
+    [TestCase(false, false, true, true, true, new[] { typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Not Required/Not ReadOnly")]
+    [TestCase(true, false, false, false, true, new[] { typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Required/Not ReadOnly/No DataSource")]
+    [TestCase(true, false, true, false, true, new[] { typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Required/Not ReadOnly/No BusinessObject")]
+    [TestCase(true, false, true, true, false, new[] { typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Required/Not ReadOnly/No Property")]
     public void CreateValidators_WithOptionalValidatorsDisabled (bool isRequired, bool isReadonly, bool hasDataSource, bool hasBusinessObject, bool hasProperty, Type[] expectedValidatorTypes)
     {
       var control = GetControlWithOptionalValidatorsDisabled(isRequired, hasDataSource, hasBusinessObject, hasProperty);

@@ -25,7 +25,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
   [TestFixture]
   public class UsesAnalysisTest
   {
-    [Uses (typeof(NullMixin))]
+    [Uses(typeof(NullMixin))]
     [IgnoreForMixinConfiguration]
     public class User
     {
@@ -45,13 +45,13 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
       Assert.That(mixinContext.Origin, Is.EqualTo(expectedOrigin));
     }
 
-    [Uses (typeof(NullMixin))]
+    [Uses(typeof(NullMixin))]
     [IgnoreForMixinConfiguration]
     public class UserWithoutDependencies
     {
     }
 
-    [Uses (typeof(NullMixin), AdditionalDependencies = new[] { typeof(string) })]
+    [Uses(typeof(NullMixin), AdditionalDependencies = new[] { typeof(string) })]
     [IgnoreForMixinConfiguration]
     public class UserWithDependencies
     {
@@ -67,7 +67,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
       Assert.That(configuration.GetContext(typeof(UserWithDependencies)).Mixins[typeof(NullMixin)].ExplicitDependencies, Has.Member(typeof(string)));
     }
 
-    [Uses (typeof(NullMixin), AdditionalDependencies = new[] { typeof(object) })]
+    [Uses(typeof(NullMixin), AdditionalDependencies = new[] { typeof(object) })]
     [IgnoreForMixinConfiguration]
     public class BaseWithUses { }
 
@@ -101,7 +101,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
       Assert.That(configuration.GetContext(typeof(DerivedWithOwnUses)).Mixins.Count, Is.EqualTo(2));
     }
 
-    [Uses (typeof(NullMixin))]
+    [Uses(typeof(NullMixin))]
 // ReSharper disable UnusedTypeParameter
     public class GenericBaseWithMixin<T>
     {
@@ -132,7 +132,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
       Assert.That(configuration.GetContext(typeof(NonGenericDerivedWithInheritedMixinFromGeneric)).Mixins.Count, Is.EqualTo(1));
     }
 
-    [Uses (typeof(NullMixin))]
+    [Uses(typeof(NullMixin))]
     [IgnoreForMixinConfiguration]
     public class DerivedWithUses : BaseWithUses
     {
@@ -147,7 +147,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
       Assert.That(configuration.GetContext(typeof(DerivedWithUses)).Mixins.Count, Is.EqualTo(1));
     }
 
-    [Uses (typeof(DerivedNullMixin))]
+    [Uses(typeof(DerivedNullMixin))]
     [IgnoreForMixinConfiguration]
     public class DerivedWithMoreSpecificUses : BaseWithUses
     {
@@ -175,49 +175,49 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
 
     public class DerivedClosedMixin : BaseGenericMixin<object, object> { }
 
-    [Uses (typeof(BaseGenericMixin<,>))]
+    [Uses(typeof(BaseGenericMixin<,>))]
     [IgnoreForMixinConfiguration]
     public class BaseWithOpenGeneric
     {
     }
 
-    [Uses (typeof(BaseGenericMixin<BaseWithClosedGeneric, object>))]
+    [Uses(typeof(BaseGenericMixin<BaseWithClosedGeneric, object>))]
     [IgnoreForMixinConfiguration]
     public class BaseWithClosedGeneric
     {
     }
 
-    [Uses (typeof(DerivedGenericMixin<,>))]
+    [Uses(typeof(DerivedGenericMixin<,>))]
     [IgnoreForMixinConfiguration]
     public class DerivedWithOpenOverridingOpen : BaseWithOpenGeneric
     {
     }
 
-    [Uses (typeof(DerivedGenericMixin<object, object>))]
+    [Uses(typeof(DerivedGenericMixin<object, object>))]
     [IgnoreForMixinConfiguration]
     public class DerivedWithClosedOverridingOpen : BaseWithOpenGeneric
     {
     }
 
-    [Uses (typeof(DerivedGenericMixin<,>))]
+    [Uses(typeof(DerivedGenericMixin<,>))]
     [IgnoreForMixinConfiguration]
     public class DerivedWithOpenOverridingClosed : BaseWithClosedGeneric
     {
     }
 
-    [Uses (typeof(DerivedGenericMixin<object, object>))]
+    [Uses(typeof(DerivedGenericMixin<object, object>))]
     [IgnoreForMixinConfiguration]
     public class DerivedWithClosedOverridingClosed : BaseWithClosedGeneric
     {
     }
 
-    [Uses (typeof(DerivedClosedMixin))]
+    [Uses(typeof(DerivedClosedMixin))]
     [IgnoreForMixinConfiguration]
     public class DerivedWithRealClosedOverridingOpen : BaseWithOpenGeneric
     {
     }
 
-    [Uses (typeof(DerivedClosedMixin))]
+    [Uses(typeof(DerivedClosedMixin))]
     [IgnoreForMixinConfiguration]
     public class DerivedWithRealClosedOverridingClosed : BaseWithClosedGeneric
     {
@@ -277,8 +277,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
       Assert.That(ctx.Mixins.Count, Is.EqualTo(1));
     }
 
-    [Uses (typeof(NullMixin))]
-    [Uses (typeof(NullMixin))]
+    [Uses(typeof(NullMixin))]
+    [Uses(typeof(NullMixin))]
     [IgnoreForMixinConfiguration]
     public class DerivedWithDuplicateUses : BaseWithUses
     {
@@ -295,22 +295,22 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
                   + ".*DerivedWithDuplicateUses."));
     }
 
-    [Uses (typeof(BaseGenericMixin<,>))]
-    [Uses (typeof(BaseGenericMixin<,>))]
+    [Uses(typeof(BaseGenericMixin<,>))]
+    [Uses(typeof(BaseGenericMixin<,>))]
     [IgnoreForMixinConfiguration]
     public class DuplicateWithGenerics1
     {
     }
 
-    [Uses (typeof(BaseGenericMixin<,>))]
-    [Uses (typeof(BaseGenericMixin<object, object>))]
+    [Uses(typeof(BaseGenericMixin<,>))]
+    [Uses(typeof(BaseGenericMixin<object, object>))]
     [IgnoreForMixinConfiguration]
     public class DuplicateWithGenerics2
     {
     }
 
-    [Uses (typeof(BaseGenericMixin<DuplicateWithGenerics3, object>))]
-    [Uses (typeof(BaseGenericMixin<object, object>))]
+    [Uses(typeof(BaseGenericMixin<DuplicateWithGenerics3, object>))]
+    [Uses(typeof(BaseGenericMixin<object, object>))]
     [IgnoreForMixinConfiguration]
     public class DuplicateWithGenerics3
     {

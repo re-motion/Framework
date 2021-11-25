@@ -61,7 +61,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
           .Test_DeserializationCallbacks();
     }
 
-    [Uses (typeof(AbstractMixinWithSerializationCallbacks))]
+    [Uses(typeof(AbstractMixinWithSerializationCallbacks))]
     [Serializable]
     public class TargetClassForAbstractMixinWithSerializationCallbacks
     {

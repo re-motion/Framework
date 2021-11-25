@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
-  [DBTable ("TableWithValidRelations")]
+  [DBTable("TableWithValidRelations")]
   [TestDomain]
   [Instantiable]
   public abstract class ClassWithValidRelations : TestDomainBase
@@ -32,12 +32,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    [DBBidirectionalRelation ("ClassWithValidRelationsOptional", ContainsForeignKey = true)]
-    [DBColumn ("TableWithGuidKeyOptionalID")]
+    [DBBidirectionalRelation("ClassWithValidRelationsOptional", ContainsForeignKey = true)]
+    [DBColumn("TableWithGuidKeyOptionalID")]
     public abstract ClassWithGuidKey ClassWithGuidKeyOptional { get; set; }
 
-    [DBBidirectionalRelation ("ClassWithValidRelationsNonOptional", ContainsForeignKey = true)]
-    [DBColumn ("TableWithGuidKeyNonOptionalID")]
+    [DBBidirectionalRelation("ClassWithValidRelationsNonOptional", ContainsForeignKey = true)]
+    [DBColumn("TableWithGuidKeyNonOptionalID")]
     [Mandatory]
     public abstract ClassWithGuidKey ClassWithGuidKeyNonOptional { get; set; }
   }

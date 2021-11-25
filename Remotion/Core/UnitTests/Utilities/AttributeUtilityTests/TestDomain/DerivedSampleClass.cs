@@ -53,7 +53,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
       get { return null; }
     }
 
-    [InheritedNotMultiple ("Derived")]
+    [InheritedNotMultiple("Derived")]
     public override string PropertyWithInheritedNotMultipleAttribute
     {
       get { return null; }
@@ -64,7 +64,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
     [Multiple]
     public override event System.EventHandler EventWithMultipleAttribute;
     public override event System.EventHandler EventWithNotInheritedAttribute;
-    [InheritedNotMultiple ("Derived")]
+    [InheritedNotMultiple("Derived")]
     public override event System.EventHandler EventWithInheritedNotMultipleAttribute;
 
     [UsedImplicitly]
@@ -91,7 +91,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
       return base.MethodWithNotInheritedAttribute();
     }
 
-    [InheritedNotMultiple ("Derived")]
+    [InheritedNotMultiple("Derived")]
     public override string MethodWithInheritedNotMultipleAttribute ()
     {
       return base.MethodWithInheritedNotMultipleAttribute();

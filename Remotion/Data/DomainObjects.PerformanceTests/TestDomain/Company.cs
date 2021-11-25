@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
   }
 }

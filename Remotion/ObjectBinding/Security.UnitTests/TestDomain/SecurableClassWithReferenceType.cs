@@ -39,6 +39,6 @@ namespace Remotion.ObjectBinding.Security.UnitTests.TestDomain
       return typeof(SecurableClassWithReferenceType<T>);
     }
 
-    public T CustomPermissisons { [DemandPermission (TestAccessTypes.TestRead)] get; [DemandPermission (TestAccessTypes.TestEdit)] set; }
+    public T CustomPermissisons { [DemandPermission(TestAccessTypes.TestRead)] get; [DemandPermission(TestAccessTypes.TestEdit)] set; }
   }
 }

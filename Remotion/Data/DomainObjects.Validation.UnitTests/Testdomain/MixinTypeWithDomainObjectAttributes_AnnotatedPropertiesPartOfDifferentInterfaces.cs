@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
       set { Properties[s_type, "PropertyWithMandatoryAttribute"].SetValue(value); }
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 20)]
+    [StringProperty(IsNullable = false, MaximumLength = 20)]
     public virtual string PropertyWithMandatoryStringPropertyAttribute
     {
       get { return Properties[s_type, "PropertyWithMandatoryStringPropertyAttribute"].GetValue<string>(); }

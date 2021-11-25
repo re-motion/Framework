@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     Bidirectional_RelatedObjectTypeDoesNotMatchOppositeProperty_BelowInheritanceRoot
 {
   [DBTable]
-  [ClassID ("Bidirectional_WithInvalidPropertyReferences_BaseRelationClass1")]
+  [ClassID("Bidirectional_WithInvalidPropertyReferences_BaseRelationClass1")]
   public class BaseRelationClass1 : DomainObject
   {
 

@@ -19,7 +19,7 @@ using Remotion.Globalization;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.Globalization.MixinAddingResources")]
+  [MultiLingualResources("Remotion.ObjectBinding.UnitTests.Globalization.MixinAddingResources")]
   public class MixinAddingResources
   {
   }

@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <summary>
   /// Identifies the <see cref="IDomainObjectHandle{T}"/> interface as a handle to the security infrastructure.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Interface, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
   public class DomainObjectHandleAttribute : Attribute, IHandleAttribute
   {
     public Type GetReferencedType (Type handleType)

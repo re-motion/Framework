@@ -105,7 +105,7 @@ namespace Remotion.ObjectBinding.Sample
 
       /// <summary> Gets or sets the current value. </summary>
       /// <value> An object implementing <see cref="IList"/>. </value>
-      [Browsable (false)]
+      [Browsable(false)]
       public new IList Value
       {
         get { return _value; }
@@ -186,7 +186,7 @@ namespace Remotion.ObjectBinding.Sample
 
     #region BusinessObjectBoundEditableWebControl implementation
 
-    [Browsable (false)]
+    [Browsable(false)]
     public BusinessObjectBinding Binding
     {
       get { return _repeaterInternal.Binding; }
@@ -195,18 +195,18 @@ namespace Remotion.ObjectBinding.Sample
     /// <summary>
     ///   Gets or sets the <see cref="IBusinessObjectDataSource"/> this <see cref="ObjectBoundRepeater"/> is bound to.
     /// </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public new IBusinessObjectDataSource DataSource
     {
       get { return _repeaterInternal.DataSource; }
       set { _repeaterInternal.DataSource = value; }
     }
 
-    [Category ("Data")]
-    [Description ("The string representation of the Property.")]
-    [DefaultValue ("")]
-    [MergableProperty (false)]
+    [Category("Data")]
+    [Description("The string representation of the Property.")]
+    [DefaultValue("")]
+    [MergableProperty(false)]
     public string PropertyIdentifier
     {
       get { return _repeaterInternal.PropertyIdentifier; }
@@ -217,18 +217,18 @@ namespace Remotion.ObjectBinding.Sample
     ///   Gets or sets the <see cref="IBusinessObjectProperty"/> used for accessing the data to be loaded into 
     ///   <see cref="Value"/>.
     /// </summary>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IBusinessObjectProperty Property
     {
       get { return _repeaterInternal.Property; }
       set { _repeaterInternal.Property = value; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Data")]
-    [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
-    [DefaultValue ("")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Data")]
+    [Description("The ID of the BusinessObjectDataSourceControl control used as data source.")]
+    [DefaultValue("")]
     public string DataSourceControl
     {
       get { return _repeaterInternal.DataSourceControl; }
@@ -257,7 +257,7 @@ namespace Remotion.ObjectBinding.Sample
       get { return _repeaterInternal.HasValue; }
     }
 
-    [Browsable (false)]
+    [Browsable(false)]
     public bool IsDirty
     {
       get { return _repeaterInternal.IsDirty; }
@@ -279,7 +279,7 @@ namespace Remotion.ObjectBinding.Sample
       return _repeaterInternal.Validate();
     }
 
-    [Browsable (false)]
+    [Browsable(false)]
     public bool HasValidBinding
     {
       get
@@ -296,25 +296,25 @@ namespace Remotion.ObjectBinding.Sample
     }
 
 
-    [Browsable (false)]
+    [Browsable(false)]
     public string DisplayName
     {
       get { return _repeaterInternal.DisplayName; }
     }
 
-    [Browsable (false)]
+    [Browsable(false)]
     public virtual HelpInfo HelpInfo
     {
       get { return null; }
     }
 
-    [Browsable (false)]
+    [Browsable(false)]
     public virtual Control TargetControl
     {
       get { return this; }
     }
 
-    [Browsable (false)]
+    [Browsable(false)]
     public virtual bool UseLabel
     {
       get { return false; }
@@ -326,9 +326,9 @@ namespace Remotion.ObjectBinding.Sample
     }
 
     /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>
-    [Description ("Explicitly specifies whether the control is required.")]
-    [Category ("Data")]
-    [DefaultValue (typeof(bool?), "")]
+    [Description("Explicitly specifies whether the control is required.")]
+    [Category("Data")]
+    [DefaultValue(typeof(bool?), "")]
     public bool? Required
     {
       get { return _repeaterInternal.Required; }
@@ -336,22 +336,22 @@ namespace Remotion.ObjectBinding.Sample
     }
 
     /// <summary> Gets or sets a flag that specifies whether the control should be displayed in read-only mode. </summary>
-    [Description ("Explicitly specifies whether the control should be displayed in read-only mode.")]
-    [Category ("Data")]
-    [DefaultValue (typeof(bool?), "")]
+    [Description("Explicitly specifies whether the control should be displayed in read-only mode.")]
+    [Category("Data")]
+    [DefaultValue(typeof(bool?), "")]
     public bool? ReadOnly
     {
       get { return _repeaterInternal.ReadOnly; }
       set { _repeaterInternal.ReadOnly = value; }
     }
 
-    [Browsable (false)]
+    [Browsable(false)]
     public bool IsReadOnly
     {
       get { return _repeaterInternal.IsReadOnly; }
     }
 
-    [Browsable (false)]
+    [Browsable(false)]
     public bool IsRequired
     {
       get { return _repeaterInternal.IsRequired; }
@@ -359,16 +359,16 @@ namespace Remotion.ObjectBinding.Sample
 
     /// <summary> Gets or sets a flag that specifies whether the control's validation goes beyond the .NET data type requirements. </summary>
     /// <remarks> Set this property to <see langword="null"/> in order to use the default value (see <see cref="AreOptionalValidatorsEnabled"/>). </remarks>
-    [Description ("Explicitly specifies whether the control automatically validates more than .NET data type requirements.")]
-    [Category ("Behavior")]
-    [DefaultValue (typeof(bool?), "")]
+    [Description("Explicitly specifies whether the control automatically validates more than .NET data type requirements.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
     public bool? EnableOptionalValidators
     {
       get { return _repeaterInternal.EnableOptionalValidators; }
       set { _repeaterInternal.EnableOptionalValidators = value; }
     }
 
-    [Browsable (false)]
+    [Browsable(false)]
     public bool AreOptionalValidatorsEnabled
     {
       get { return _repeaterInternal.AreOptionalValidatorsEnabled; }
@@ -440,8 +440,8 @@ namespace Remotion.ObjectBinding.Sample
     }
 
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public override string DataMember
     {
       get { return string.Empty; }
@@ -509,7 +509,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <value> 
     ///   An object implementing <see cref="IList"/>, containing objects of implementing <see cref="IBusinessObject"/>. 
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public IList Value
     {
       get { return _repeaterInternal.Value; }

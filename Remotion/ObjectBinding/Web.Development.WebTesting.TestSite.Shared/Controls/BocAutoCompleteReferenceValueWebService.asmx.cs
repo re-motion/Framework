@@ -30,9 +30,9 @@ using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
 {
-  [WebService (Namespace = "http://re-motion.org/ObjectBinding.Web/")]
-  [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
-  [ToolboxItem (false)]
+  [WebService(Namespace = "http://re-motion.org/ObjectBinding.Web/")]
+  [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+  [ToolboxItem(false)]
   [ScriptService]
   public class BocAutoCompleteReferenceValueWebService : WebService, IBocAutoCompleteReferenceValueWebService
   {
@@ -44,14 +44,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     }
 
     [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments)
     {
       return _iconServiceImplementation.GetIcon(new HttpContextWrapper(Context), businessObjectClass, businessObject, arguments);
     }
 
     [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public WebMenuItemProxy[] GetMenuItemStatusForOptionsMenu (
         string controlID,
         string controlType,
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     }
 
     [WebMethod]
-    [ScriptMethod (UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
     public BusinessObjectWithIdentityProxy[] Search (
         string searchString,
         int? completionSetCount,
@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     }
 
     [WebMethod]
-    [ScriptMethod (UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
     public BusinessObjectWithIdentityProxy SearchExact (
         string searchString,
         string businessObjectClass,

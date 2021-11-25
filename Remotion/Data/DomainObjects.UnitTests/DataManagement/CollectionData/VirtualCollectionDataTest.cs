@@ -26,7 +26,7 @@ using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 {
-  [Ignore ("TODO RM-7294: Tests for VirtualCollectionData")]
+  [Ignore("TODO RM-7294: Tests for VirtualCollectionData")]
   [TestFixture]
   public class VirtualCollectionDataTest : StandardMappingTest
   {

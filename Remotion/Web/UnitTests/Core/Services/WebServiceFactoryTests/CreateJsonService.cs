@@ -52,19 +52,19 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceFactoryTests
     private class TestScriptService : WebService, IValidJsonService, IInvalidJsonServiceWithWrongResponseFormat
     {
       [WebMethod]
-      [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+      [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
       public void JsonMethod ()
       {
       }
 
       [WebMethod]
-      [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+      [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
       public void MethodWithParameters (int param1, bool param2)
       {
       }
 
       [WebMethod]
-      [ScriptMethod (ResponseFormat = ResponseFormat.Xml)]
+      [ScriptMethod(ResponseFormat = ResponseFormat.Xml)]
       public void XmlMethod ()
       {
       }

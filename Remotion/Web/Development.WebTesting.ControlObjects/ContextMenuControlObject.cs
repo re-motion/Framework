@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
     }
 
-    [Obsolete ("Use the Open() method instead. (Version 1.17.15.0)", false)]
+    [Obsolete("Use the Open() method instead. (Version 1.17.15.0)", false)]
     protected void OpenDropDownMenu ()
     {
       Open();

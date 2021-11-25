@@ -23,14 +23,14 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
 {
   public interface ICustomerIntroduced
   {
-    [NotEqualValidation ("Chef1")]
+    [NotEqualValidation("Chef1")]
     string Title { get; set; }
 
     Address Address { get; set; }
   }
 
-  [Extends (typeof(Customer))]
-  [MultiLingualResources ("Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Resources.CustomerMixin")]
+  [Extends(typeof(Customer))]
+  [MultiLingualResources("Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Resources.CustomerMixin")]
   public class CustomerMixin : DomainObjectMixin<Customer>, ICustomerIntroduced
   {
     [Mandatory]

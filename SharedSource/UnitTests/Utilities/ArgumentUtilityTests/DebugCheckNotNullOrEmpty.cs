@@ -27,7 +27,7 @@ using Remotion.Utilities;
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 {
 #if !DEBUG
-  [Ignore ("Skipped unless DEBUG build")]
+  [Ignore("Skipped unless DEBUG build")]
 #endif
   [TestFixture]
   public class DebugCheckNotNullOrEmpty

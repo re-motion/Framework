@@ -29,7 +29,7 @@ using Remotion.Web.UI.Globalization;
 namespace OBWTest.IndividualControlTests
 {
 
-[WebMultiLingualResources ("OBWTest.Globalization.IndividualControlTests.BocListUserControl")]
+[WebMultiLingualResources("OBWTest.Globalization.IndividualControlTests.BocListUserControl")]
 public class BocListUserControl : BaseUserControl
 {
   private const string c_deleteItemID = "Delete";

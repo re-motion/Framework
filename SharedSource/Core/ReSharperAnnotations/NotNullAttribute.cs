@@ -95,7 +95,7 @@ namespace JetBrains.Annotations
   ///   return null; // Warning: Possible 'null' assignment
   /// }
   /// </code></example>
-  [AttributeUsage (
+  [AttributeUsage(
       AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
       AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event |
       AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.GenericParameter)]

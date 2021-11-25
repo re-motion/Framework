@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding
     /// The flag only specifies the presense of data. It does not specify whether the data is in a format compatible with the <see cref="Property"/>.
     /// For this, a separate validation step is required.
     /// </remarks>
-    [MemberNotNullWhen (true, nameof(Value))]
+    [MemberNotNullWhen(true, nameof(Value))]
     bool HasValue { get; }
 
     /// <summary> 

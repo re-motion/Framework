@@ -26,14 +26,14 @@ namespace Remotion.Configuration.TypeDiscovery
   /// </summary>
   public class ByNameRootAssemblyElement : ConfigurationElement
   {
-    [ConfigurationProperty ("name", IsRequired = true, IsKey = true)]
+    [ConfigurationProperty("name", IsRequired = true, IsKey = true)]
     public string Name
     {
       get { return (string)this["name"]; }
       set { this["name"] = value; }
     }
 
-    [ConfigurationProperty ("includeReferencedAssemblies", DefaultValue = "false", IsRequired = false)]
+    [ConfigurationProperty("includeReferencedAssemblies", DefaultValue = "false", IsRequired = false)]
     public bool IncludeReferencedAssemblies
     {
       get { return (bool)this["includeReferencedAssemblies"]; }

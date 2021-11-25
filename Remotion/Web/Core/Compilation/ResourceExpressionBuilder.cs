@@ -25,7 +25,7 @@ using Remotion.Web.UI.Globalization;
 namespace Remotion.Web.Compilation
 {
   //TODO: Check if this is realy the optimal solution
-  [ExpressionPrefix ("res")]
+  [ExpressionPrefix("res")]
   public class ResourceExpressionBuilder : ExpressionBuilder
   {
     // constants

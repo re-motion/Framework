@@ -206,8 +206,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   An <see cref="IBusinessObjectReferenceProperty"/> that is part of the <see cref="IBusinessObjectDataSource.BusinessObjectClass"/>.
     /// </value>
     /// <remarks> Identical to <see cref="BusinessObjectBoundWebControl.Property"/>. </remarks>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IBusinessObjectReferenceProperty? ReferenceProperty
     {
       get { return (IBusinessObjectReferenceProperty?)Property; }
@@ -222,8 +222,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="BusinessObjectReferenceDataSourceControl"/> connects.
     ///  </value>
     /// <remarks> Identical to <see cref="BusinessObjectBoundWebControl.DataSource"/>. </remarks>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IBusinessObjectDataSource? ReferencedDataSource
     {
       get { return _internalDataSource.ReferencedDataSource; }
@@ -234,8 +234,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets the <see cref="IBusinessObject"/> accessed through the <see cref="ReferenceProperty"/>.
     /// </summary>
     /// <value> An <see cref="IBusinessObject"/> or <see langword="null"/>. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IBusinessObject? BusinessObject
     {
       get { return _internalDataSource.BusinessObject; }
@@ -248,8 +248,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> 
     ///   An <see cref="IBusinessObjectClass"/> or <see langword="null"/> if no <see cref="ReferenceProperty"/> is set.
     /// </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IBusinessObjectClass? BusinessObjectClass
     {
       get { return _internalDataSource.BusinessObjectClass; }
@@ -259,8 +259,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets the <see cref="IBusinessObjectProvider"/> of this <see cref="BusinessObjectReferenceDataSourceControl"/>.
     /// </summary>
     /// <value> The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IBusinessObjectProvider? BusinessObjectProvider
     {
       get { return _internalDataSource.BusinessObjectProvider; }
@@ -293,8 +293,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="BusinessObjectReferenceDataSourceControl"/>.
     /// </summary>
     /// <value> A value of the <see cref="DataSourceMode"/> enumeration. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public virtual DataSourceMode Mode
     {
       get
@@ -315,8 +315,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary>Gets the <see cref="IBusinessObjectBoundControl"/> objects bound to this <see cref="BusinessObjectReferenceDataSourceControl"/>.</summary>
     /// <returns> A read-only collection of <see cref="IBusinessObjectBoundControl"/> objects. </returns>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public ReadOnlyCollection<IBusinessObjectBoundControl> GetAllBoundControls ()
     {
       return _internalDataSource.GetAllBoundControls();
@@ -330,8 +330,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   A sequence of <see cref="IBusinessObjectBoundControl"/> objects where the <see cref="IBusinessObjectBoundControl.HasValidBinding"/> property 
     ///   evaluates <see langword="true"/>. 
     /// </returns>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IEnumerable<IBusinessObjectBoundControl> GetBoundControlsWithValidBinding ()
     {
       return _internalDataSource.GetBoundControlsWithValidBinding();

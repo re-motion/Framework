@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     [StorageClassNone]
     public abstract SecurableClassDefinition Class { get; }
 
-    [DBBidirectionalRelation ("AccessControlList", SortExpression = "Index ASC")]
+    [DBBidirectionalRelation("AccessControlList", SortExpression = "Index ASC")]
     public abstract ObjectList<AccessControlEntry> AccessControlEntries { get; }
 
     /// <summary>

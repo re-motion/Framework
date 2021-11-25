@@ -34,7 +34,7 @@ namespace Remotion.Mixins.Validation.Rules
       visitor.PropertyIntroductionRules.Add(new DelegateValidationRule<PropertyIntroductionDefinition>(PublicPropertyNameMustBeUniqueInOtherMixins));
     }
 
-    [DelegateRuleDescription (Message = "A property introduced by a mixin cannot be public if the target class already has a property of the same name.")]
+    [DelegateRuleDescription(Message = "A property introduced by a mixin cannot be public if the target class already has a property of the same name.")]
     private void PublicPropertyNameMustBeUniqueInTargetClass (DelegateValidationRule<PropertyIntroductionDefinition>.Args args)
     {
       if (args.Definition.Visibility == MemberVisibility.Public)
@@ -50,7 +50,7 @@ namespace Remotion.Mixins.Validation.Rules
       args.Log.Succeed(args.Self);
     }
 
-    [DelegateRuleDescription (Message = "A property introduced by a mixin cannot be public if another mixin also introduces a public property of the same name.")]
+    [DelegateRuleDescription(Message = "A property introduced by a mixin cannot be public if another mixin also introduces a public property of the same name.")]
     private void PublicPropertyNameMustBeUniqueInOtherMixins (DelegateValidationRule<PropertyIntroductionDefinition>.Args args)
     {
       if (args.Definition.Visibility == MemberVisibility.Public)

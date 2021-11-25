@@ -25,23 +25,23 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
   [TestFixture]
   public class DeclarativeConfigurationBuilderInheritanceTest
   {
-    [Uses (typeof(NullMixin))]
+    [Uses(typeof(NullMixin))]
     public class Base { }
 
     public class Derived : Base { }
 
-    [Uses (typeof(NullMixin2))]
+    [Uses(typeof(NullMixin2))]
     public class DerivedWithOwnMixin : Base { }
 
     public class DerivedDerived : Derived { }
 
-    [Uses (typeof(NullMixin2))]
+    [Uses(typeof(NullMixin2))]
     public class DerivedDerivedWithOwnMixin : Derived { }
 
-    [Uses (typeof(DerivedNullMixin))]
+    [Uses(typeof(DerivedNullMixin))]
     public class DerivedWithOverride : Base { }
 
-    [Uses (typeof(DerivedNullMixin))]
+    [Uses(typeof(DerivedNullMixin))]
     public class DerivedDerivedWithOwnMixinAndOverride : DerivedDerivedWithOwnMixin { }
 
     [Test]

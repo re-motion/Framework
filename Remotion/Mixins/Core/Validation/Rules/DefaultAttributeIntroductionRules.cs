@@ -28,7 +28,7 @@ namespace Remotion.Mixins.Validation.Rules
           new DelegateValidationRule<AttributeIntroductionDefinition>(AllowMultipleRequiredIfAttributeIntroducedMultipleTimes));
     }
 
-    [DelegateRuleDescription (Message = "Multiple attributes of the same attribute type are introduced by mixins, but the attribute type does "
+    [DelegateRuleDescription(Message = "Multiple attributes of the same attribute type are introduced by mixins, but the attribute type does "
         + "not specify 'AllowMultiple = true' in its AttributeUsage declaration.")]
     private void AllowMultipleRequiredIfAttributeIntroducedMultipleTimes (DelegateValidationRule<AttributeIntroductionDefinition>.Args args)
     {

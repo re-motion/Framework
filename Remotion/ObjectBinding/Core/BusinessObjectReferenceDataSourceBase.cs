@@ -293,8 +293,8 @@ namespace Remotion.ObjectBinding
       }
     }
 
-    [MemberNotNullWhen (true, nameof(ReferencedDataSource))]
-    [MemberNotNullWhen (true, nameof(ReferenceProperty))]
+    [MemberNotNullWhen(true, nameof(ReferencedDataSource))]
+    [MemberNotNullWhen(true, nameof(ReferenceProperty))]
     private bool HasValidBinding
     {
       get { return ReferencedDataSource != null && ReferenceProperty != null; }
