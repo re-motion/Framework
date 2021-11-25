@@ -42,7 +42,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     // steps
 
-    void Step1()
+    void Step1 ()
     {
     }
 

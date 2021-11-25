@@ -25,7 +25,7 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.Core
   {
     private static readonly FieldInfo[] s_targetFields;
 
-    static EquatableMixin()
+    static EquatableMixin ()
     {
       s_targetFields = typeof (T).GetFields (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
     }

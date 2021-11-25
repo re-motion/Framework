@@ -29,12 +29,12 @@ namespace Remotion.Mixins.Definitions
   {
     private readonly UniqueDefinitionCollection<TKey, TValue> _items;
 
-    public CovariantDefinitionCollectionWrapper(UniqueDefinitionCollection<TKey, TValue> items)
+    public CovariantDefinitionCollectionWrapper (UniqueDefinitionCollection<TKey, TValue> items)
     {
       _items = items;
     }
 
-    public TValueBase[] ToArray()
+    public TValueBase[] ToArray ()
     {
       return _items.ToArray ();
     }
@@ -59,7 +59,7 @@ namespace Remotion.Mixins.Definitions
       get { return _items[key]; }
     }
 
-    public IEnumerator<TValueBase> GetEnumerator()
+    public IEnumerator<TValueBase> GetEnumerator ()
     {
       foreach (TValue item in _items)
         yield return item;

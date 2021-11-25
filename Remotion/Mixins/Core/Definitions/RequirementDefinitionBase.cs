@@ -34,7 +34,7 @@ namespace Remotion.Mixins.Definitions
     private readonly TargetClassDefinition _targetClass;
     private readonly Type _type;
 
-    protected RequirementDefinitionBase(TargetClassDefinition targetClass, Type type)
+    protected RequirementDefinitionBase (TargetClassDefinition targetClass, Type type)
     {
       ArgumentUtility.CheckNotNull ("targetClass", targetClass);
       ArgumentUtility.CheckNotNull ("type", type);

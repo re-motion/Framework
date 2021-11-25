@@ -20,7 +20,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   public class ClassOverridingToString
   {
-    public override string ToString()
+    public override string ToString ()
     {
       return "ClassOverridingToString";
     }

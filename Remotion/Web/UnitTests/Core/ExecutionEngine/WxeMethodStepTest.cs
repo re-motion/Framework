@@ -32,7 +32,7 @@ public class WxeMethodStepTest: WxeTest
   private TestFunctionWithInvalidSteps _functionWithInvalidSteps;
 
   [SetUp]
-  public override void SetUp()
+  public override void SetUp ()
   {
     base.SetUp();
 
@@ -41,7 +41,7 @@ public class WxeMethodStepTest: WxeTest
   }
 
   [Test]
-  public void CheckCtorArgumentNotInstanceMember()
+  public void CheckCtorArgumentNotInstanceMember ()
   {
     Type functionType = typeof (TestFunctionWithInvalidSteps);
     MethodInfo step1 = functionType.GetMethod ("InvalidStep1", BindingFlags.Static | BindingFlags.NonPublic);
@@ -51,7 +51,7 @@ public class WxeMethodStepTest: WxeTest
   }
 
   [Test]
-  public void CheckCtorArgumentWrongParameterType()
+  public void CheckCtorArgumentWrongParameterType ()
   {
     Type functionType = typeof (TestFunctionWithInvalidSteps);
     MethodInfo step2 = functionType.GetMethod ("InvalidStep2", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -61,7 +61,7 @@ public class WxeMethodStepTest: WxeTest
   }
 
   [Test]
-  public void CheckCtorArgumentTooManyParameters()
+  public void CheckCtorArgumentTooManyParameters ()
   {
     Type functionType = typeof (TestFunctionWithInvalidSteps);
     MethodInfo step3 = functionType.GetMethod ("InvalidStep3", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -71,7 +71,7 @@ public class WxeMethodStepTest: WxeTest
   }
 
   [Test]
-  public void CheckCtorArgumentWrongStepListInstance()
+  public void CheckCtorArgumentWrongStepListInstance ()
   {
     Type functionType = typeof (TestFunction);
     MethodInfo step1 = functionType.GetMethod ("Step1", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -81,7 +81,7 @@ public class WxeMethodStepTest: WxeTest
   }
 
   [Test]
-  public void ExecuteMethodStep()
+  public void ExecuteMethodStep ()
   {
     Type functionType = typeof (TestFunction);
     MethodInfo step1 = functionType.GetMethod ("Step1", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -156,7 +156,7 @@ public class WxeMethodStepTest: WxeTest
   }
 
   [Test]
-  public void ExecuteMethodStepWithContext()
+  public void ExecuteMethodStepWithContext ()
   {
     Type functionType = typeof (TestFunction);
     MethodInfo step2 = functionType.GetMethod ("Step2", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -169,7 +169,7 @@ public class WxeMethodStepTest: WxeTest
   }
 
   [Test]
-  public void ExecuteMethodStepWithDelegateWithContext()
+  public void ExecuteMethodStepWithDelegateWithContext ()
   {
     WxeMethodStep methodStepWithContext = new WxeMethodStep (_function.PublicStepMethodWithContext);
     

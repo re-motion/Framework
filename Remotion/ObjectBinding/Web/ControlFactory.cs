@@ -72,7 +72,7 @@ public sealed class ControlFactory
     return null;
   }
 
-	private ControlFactory()
+	private ControlFactory ()
 	{
 	}
 }

@@ -24,12 +24,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   [Instantiable]
   public abstract class TIOrder: DomainObject, ISupportsGetObject
   {
-    public static TIOrder NewObject()
+    public static TIOrder NewObject ()
     {
       return NewObject<TIOrder>();
     }
 
-    protected TIOrder()
+    protected TIOrder ()
     {
     }
 

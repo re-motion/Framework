@@ -134,7 +134,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
       context.Items["AspSession"] = sessionState;
     }
 
-    private HttpContextHelper()
+    private HttpContextHelper ()
     {
     }
   }

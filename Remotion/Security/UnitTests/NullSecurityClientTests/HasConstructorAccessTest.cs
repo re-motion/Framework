@@ -27,14 +27,14 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     private SecurityClient _securityClient;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _testHelper = NullSecurityClientTestHelper.CreateForStatelessSecurity();
       _securityClient = _testHelper.CreateSecurityClient();
     }
 
     [Test]
-    public void Test_AccessGranted()
+    public void Test_AccessGranted ()
     {
       bool hasAccess = _securityClient.HasConstructorAccess (typeof (SecurableObject));
 
@@ -43,7 +43,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     }
 
     [Test]
-    public void Test_WithinSecurityFreeSection_AccessGranted()
+    public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
       bool hasAccess;
 

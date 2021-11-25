@@ -236,7 +236,7 @@ namespace Remotion.Collections.Caching.UnitTests
     }
 
     [Test]
-    public void GetOrCreateValue_WithNestedEnumeration_SkipsNewItem()
+    public void GetOrCreateValue_WithNestedEnumeration_SkipsNewItem ()
     {
       object expected1 = new object();
       object expected2 = new object();
@@ -268,7 +268,7 @@ namespace Remotion.Collections.Caching.UnitTests
     }
 
     [Test]
-    public void GetEnumerator_Generic()
+    public void GetEnumerator_Generic ()
     {
       object expected1 = new object();
       object expected2 = new object();
@@ -307,7 +307,7 @@ namespace Remotion.Collections.Caching.UnitTests
     }
 
     [Test]
-    public void GetEnumerator_NonGeneric()
+    public void GetEnumerator_NonGeneric ()
     {
       object expected1 = new object();
       object expected2 = new object();
@@ -326,7 +326,7 @@ namespace Remotion.Collections.Caching.UnitTests
     }
 
     [Test]
-    public void GetIsNull()
+    public void GetIsNull ()
     {
       Assert.That (_cache.IsNull, Is.False);
     }

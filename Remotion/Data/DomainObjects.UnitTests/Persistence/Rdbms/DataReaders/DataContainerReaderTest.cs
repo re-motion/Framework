@@ -250,7 +250,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       Assert.That (dataContainer.GetValue (GetPropertyDefinition (typeof (OrderTicket), "Int32TransactionProperty")), Is.EqualTo (0));
     }
 
-    private void ReplayAll()
+    private void ReplayAll ()
     {
       _dataReaderStrictMock.Replay();
       _idPropertyStrictMock.Replay();
@@ -259,7 +259,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       _orderPropertyStrictMock.Replay();
     }
 
-    private void VerifyAll()
+    private void VerifyAll ()
     {
       _dataReaderStrictMock.VerifyAllExpectations();
       _idPropertyStrictMock.VerifyAllExpectations();

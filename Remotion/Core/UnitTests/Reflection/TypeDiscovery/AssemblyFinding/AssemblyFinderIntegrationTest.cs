@@ -35,7 +35,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
   public class AssemblyFinderIntegrationTest
   {
 #if !NETFRAMEWORK
-    private delegate void CrossAppDomainDelegate();
+    private delegate void CrossAppDomainDelegate ();
 #endif
 
     private const string c_testAssemblySourceDirectoryRoot = @"Reflection\TypeDiscovery\TestAssemblies";

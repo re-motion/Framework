@@ -90,13 +90,13 @@ public class BocListUserControl : BaseUserControl
     get { return CurrentObjectValidationResultDispatchingValidator; }
   }
 
-  override protected void OnInit(EventArgs e)
+  override protected void OnInit (EventArgs e)
   {
     base.OnInit (e);
     InitializeMenuItems();
   }
 
-  private void InitializeMenuItems()
+  private void InitializeMenuItems ()
   {
     BocMenuItem menuItem = null;
 
@@ -346,7 +346,7 @@ public class BocListUserControl : BaseUserControl
     base.OnPreRender (e);
   }
 
-  public override void LoadValues(bool interim)
+  public override void LoadValues (bool interim)
   {
     base.LoadValues (interim);
 
@@ -357,13 +357,13 @@ public class BocListUserControl : BaseUserControl
     }
   }
 
-  private void AddAndEditButton_Click(object sender, EventArgs e)
+  private void AddAndEditButton_Click (object sender, EventArgs e)
   {
     Person person = Person.CreateObject (Guid.NewGuid());
     ChildrenList.AddAndEditRow ((IBusinessObject) person);
   }
 
-  private void ChildrenListEndEditModeButton_Click(object sender, EventArgs e)
+  private void ChildrenListEndEditModeButton_Click (object sender, EventArgs e)
   {
     ChildrenList.EndRowEditMode (true);
   }
@@ -373,7 +373,7 @@ public class BocListUserControl : BaseUserControl
     ChildrenList.SetPageIndex (0);
   }
 
-  private void ChildrenListAddRowButton_Click(object sender, EventArgs e)
+  private void ChildrenListAddRowButton_Click (object sender, EventArgs e)
   {
     Person person = Person.CreateObject (Guid.NewGuid());
     person.LastName = "X";
@@ -383,7 +383,7 @@ public class BocListUserControl : BaseUserControl
     ChildrenList.SynchronizeRows();
   }
 
-  private void ChildrenListRemoveRowsButton_Click(object sender, EventArgs e)
+  private void ChildrenListRemoveRowsButton_Click (object sender, EventArgs e)
   {
     IBusinessObject[] selectedBusinessObjects = ChildrenList.GetSelectedBusinessObjects();
     foreach (var obj in selectedBusinessObjects)
@@ -391,7 +391,7 @@ public class BocListUserControl : BaseUserControl
     ChildrenList.SynchronizeRows();
   }
 
-  private void ChildrenList_ListItemCommandClick(object sender, BocListItemCommandClickEventArgs e)
+  private void ChildrenList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
   {
     ChildrenListEventCheckBox.Checked = true;
     ChildrenListEventArgsLabel.Text += string.Format ("ColumnID: {0}<br />", e.Column.ItemID);
@@ -403,7 +403,7 @@ public class BocListUserControl : BaseUserControl
       ChildrenList.SwitchRowIntoEditMode (e.ListIndex);
   }
 
-  private void ChildrenList_MenuItemClick(object sender, WebMenuItemClickEventArgs e)
+  private void ChildrenList_MenuItemClick (object sender, WebMenuItemClickEventArgs e)
   {
     ChildrenListEventArgsLabel.Text = e.Item.ItemID;
     if (e.Item.ItemID == c_deleteItemID)
@@ -419,7 +419,7 @@ public class BocListUserControl : BaseUserControl
   }
 
 
-  private void ChildrenList_DataRowRender(object sender, BocListDataRowRenderEventArgs e)
+  private void ChildrenList_DataRowRender (object sender, BocListDataRowRenderEventArgs e)
   {
     if (e.ListIndex == 3)
     {
@@ -428,28 +428,28 @@ public class BocListUserControl : BaseUserControl
     }
   }
 
-  private void ChildrenList_EditableRowChangesCanceling(object sender, BocListEditableRowChangesEventArgs e)
+  private void ChildrenList_EditableRowChangesCanceling (object sender, BocListEditableRowChangesEventArgs e)
   {
   }
 
-  private void ChildrenList_EditableRowChangesCanceled(object sender, BocListItemEventArgs e)
+  private void ChildrenList_EditableRowChangesCanceled (object sender, BocListItemEventArgs e)
   {
   }
 
-  private void ChildrenList_EditableRowChangesSaving(object sender, BocListEditableRowChangesEventArgs e)
+  private void ChildrenList_EditableRowChangesSaving (object sender, BocListEditableRowChangesEventArgs e)
   {
   }
 
-  private void ChildrenList_EditableRowChangesSaved(object sender, BocListItemEventArgs e)
+  private void ChildrenList_EditableRowChangesSaved (object sender, BocListItemEventArgs e)
   {
   }
 
-  private void ChildrenList_SortingOrderChanging(object sender, BocListSortingOrderChangeEventArgs e)
+  private void ChildrenList_SortingOrderChanging (object sender, BocListSortingOrderChangeEventArgs e)
   {
   
   }
 
-  private void ChildrenList_SortingOrderChanged(object sender, BocListSortingOrderChangeEventArgs e)
+  private void ChildrenList_SortingOrderChanged (object sender, BocListSortingOrderChangeEventArgs e)
   {
   
   }

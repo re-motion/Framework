@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
   public class TestDomainAttribute: StorageGroupAttribute
   {
-    public TestDomainAttribute()
+    public TestDomainAttribute ()
     {
     }
   }

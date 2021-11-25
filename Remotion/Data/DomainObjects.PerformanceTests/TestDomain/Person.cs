@@ -22,12 +22,12 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
   [DBTable]
   public abstract class Person: ClientBoundBaseClass
   {
-    public static Person NewObject()
+    public static Person NewObject ()
     {
       return NewObject<Person>();
     }
 
-    protected Person()
+    protected Person ()
     {
     }
 

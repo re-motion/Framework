@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
       return NewObject<TICustomer> ();
     }
 
-    protected TICustomer()
+    protected TICustomer ()
     {
     }
 

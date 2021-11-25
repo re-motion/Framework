@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Sample
 {
   public class TestBocListValidator : CustomValidator
   {
-    protected override bool EvaluateIsValid()
+    protected override bool EvaluateIsValid ()
     {
       Control control = this.NamingContainer.FindControl(ControlToValidate);
       BocList bocList = (BocList) control;
@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <exception cref="HttpException"> 
     ///   Thrown if the <see cref="ControlToValidate"/> is not of type <see cref="TestBocList"/>.
     /// </exception>
-    protected override bool ControlPropertiesValid()
+    protected override bool ControlPropertiesValid ()
     {
       Control control = this.NamingContainer.FindControl(ControlToValidate);
 

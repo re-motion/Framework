@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     private StorageProviderDefinition _definition;
     private SqlStorageObjectFactory _sqlStorageObjectFactory;
 
-    public override void SetUp()
+    public override void SetUp ()
     {
       base.SetUp();
 
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    public void Initialize_FromArguments()
+    public void Initialize_FromArguments ()
     {
       RdbmsProviderDefinition provider = new RdbmsProviderDefinition ("Provider", _sqlStorageObjectFactory, "ConnectionString");
 
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    public void Initialize_FromConfig()
+    public void Initialize_FromConfig ()
     {
       NameValueCollection config = new NameValueCollection();
       config.Add ("description", "The Description");
@@ -100,19 +100,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    public void IsIdentityTypeSupportedFalse()
+    public void IsIdentityTypeSupportedFalse ()
     {
       Assert.That (_definition.IsIdentityTypeSupported (typeof (int)), Is.False);
     }
 
     [Test]
-    public void IsIdentityTypeSupportedTrue()
+    public void IsIdentityTypeSupportedTrue ()
     {
       Assert.That (_definition.IsIdentityTypeSupported (typeof (Guid)), Is.True);
     }
 
     [Test]
-    public void IsIdentityTypeSupportedNull()
+    public void IsIdentityTypeSupportedNull ()
     {
       Assert.That (
           () => _definition.IsIdentityTypeSupported (null),
@@ -120,13 +120,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    public void CheckValidIdentityType()
+    public void CheckValidIdentityType ()
     {
       _definition.CheckIdentityType (typeof (Guid));
     }
 
     [Test]
-    public void CheckInvalidIdentityType()
+    public void CheckInvalidIdentityType ()
     {
       Assert.That (
           () => _definition.CheckIdentityType (typeof (string)),
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    public void CheckDetailsOfInvalidIdentityType()
+    public void CheckDetailsOfInvalidIdentityType ()
     {
       try
       {

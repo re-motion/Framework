@@ -62,7 +62,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 
-    private void Page_Load(object sender, System.EventArgs e)
+    private void Page_Load (object sender, System.EventArgs e)
     {
       RegisterClientSidePageEventHandler (SmartPageEvents.OnPostBack, "Page_PostBack", "Page_PostBack");
       RegisterClientSidePageEventHandler (SmartPageEvents.OnPostBack, "Page_Abort", "Page_Abort");
@@ -87,7 +87,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       HtmlHeadAppender.Current.RegisterPageStylesheetLink ();
     }
 
-    override protected void OnInit(EventArgs e)
+    override protected void OnInit (EventArgs e)
     {
       //
       // CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -102,7 +102,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     /// Required method for Designer support - do not modify
     /// the contents of this method with the code editor.
     /// </summary>
-    private void InitializeComponent()
+    private void InitializeComponent ()
     {    
       this.PostBackButton.Click += new System.EventHandler(this.PostBackButton_Click);
       this.OpenSelfButton.Click += new System.EventHandler(this.OpenSelfButton_Click);
@@ -137,7 +137,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private DateTime _viewStateToken = DateTime.MinValue;
 
-    protected override void LoadViewState(object savedState)
+    protected override void LoadViewState (object savedState)
     {
       if (savedState is Pair)
       {
@@ -151,43 +151,43 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       }
     }
 
-    protected override object SaveViewState()
+    protected override object SaveViewState ()
     {
       return new Pair (base.SaveViewState (), DateTime.Now);
     }
 
-    private void PostBackButton_Click(object sender, System.EventArgs e)
+    private void PostBackButton_Click (object sender, System.EventArgs e)
     {
       System.Threading.Thread.Sleep (10000);  
     }
 
-    private void OpenSelfButton_Click(object sender, System.EventArgs e)
+    private void OpenSelfButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
         this.ExecuteFunctionExternal (new SessionWxeFunction (true), "_blank", OpenSelfButton, true);
     }
 
-    private void Button1_Click(object sender, System.EventArgs e)
+    private void Button1_Click (object sender, System.EventArgs e)
     {
   
     }
 
-    private void Button1Button_Click(object sender, System.EventArgs e)
+    private void Button1Button_Click (object sender, System.EventArgs e)
     {
   
     }
 
-    private void Submit1Button_Click(object sender, System.EventArgs e)
+    private void Submit1Button_Click (object sender, System.EventArgs e)
     {
   
     }
 
-    private void Button2Button_Click(object sender, System.EventArgs e)
+    private void Button2Button_Click (object sender, System.EventArgs e)
     {
   
     }
     
-    private void ImageButton_Click(object sender, System.EventArgs e)
+    private void ImageButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
         ExecuteFunction (new SampleWxeFunction(), new WxeCallArguments ((Control) sender, new WxeCallOptions()));
@@ -195,7 +195,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
         ImageButtonLabel.Text = "returning postback";
     }
 
-    private void ExecuteButton_Click(object sender, System.EventArgs e)
+    private void ExecuteButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
         this.ExecuteFunction (new SampleWxeFunction ());
@@ -238,13 +238,13 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       }
     }
 
-    private void OpenSessionFunctionButton_Click(object sender, System.EventArgs e)
+    private void OpenSessionFunctionButton_Click (object sender, System.EventArgs e)
     {
       if (! IsReturningPostBack)
         this.ExecuteFunction (new SessionWxeFunction (true), false, false);
     }
 
-    private void OpenSessionFunctionWithPermanentUrlButton_Click(object sender, System.EventArgs e)
+    private void OpenSessionFunctionWithPermanentUrlButton_Click (object sender, System.EventArgs e)
     {
       if (! IsReturningPostBack)
         this.ExecuteFunction (new SessionWxeFunction (true), true, true);
@@ -262,7 +262,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
         this.ExecuteFunctionExternal (new SessionWxeFunction (true), "_blank", (Control) sender, true, true, true);
     }
 
-    private void OpenSampleFunctionByRedirectButton_Click(object sender, System.EventArgs e)
+    private void OpenSampleFunctionByRedirectButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
       {
@@ -272,7 +272,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       }
     }
 
-    private void OpenSampleFunctionByRedirectDoNotReturnButton_Click(object sender, System.EventArgs e)
+    private void OpenSampleFunctionByRedirectDoNotReturnButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
       {
@@ -282,7 +282,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       }
     }
 
-    private void OpenSampleFunctionWithPermanentUrlByRedirectButton_Click(object sender, System.EventArgs e)
+    private void OpenSampleFunctionWithPermanentUrlByRedirectButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
       {
@@ -290,7 +290,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       }
     }
 
-    private void OpenSampleFunctionWithPermanentUrlByDoNotReturnRedirectButton_Click(object sender, System.EventArgs e)
+    private void OpenSampleFunctionWithPermanentUrlByDoNotReturnRedirectButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
       {
@@ -298,28 +298,28 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       }
     }
 
-    private void ContextOpenSampleFunctionButton_Click(object sender, System.EventArgs e)
+    private void ContextOpenSampleFunctionButton_Click (object sender, System.EventArgs e)
     {
       NameValueCollection queryString = new NameValueCollection();
       queryString.Add ("Parameter", "Hello World!");
       WxeContext.ExecuteFunctionExternal (this, new SampleWxeFunction (), queryString, true);
     }
 
-    private void ContextOpenSampleFunctionInNewWindowButton_Click(object sender, System.EventArgs e)
+    private void ContextOpenSampleFunctionInNewWindowButton_Click (object sender, System.EventArgs e)
     {
       NameValueCollection queryString = new NameValueCollection();
       queryString.Add ("Parameter", "Hello World!");
       WxeContext.ExecuteFunctionExternal (this, new SampleWxeFunction (), "_blank", string.Empty, queryString);
     }
 
-    private void ContextOpenSampleFunctionWithPermanentUrlButton_Click(object sender, System.EventArgs e)
+    private void ContextOpenSampleFunctionWithPermanentUrlButton_Click (object sender, System.EventArgs e)
     {
       NameValueCollection queryString = new NameValueCollection();
       queryString.Add ("Parameter", "Hello World!");
       WxeContext.ExecuteFunctionExternal (this, new SampleWxeFunction (), true, queryString, true);
     }
 
-    private void ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton_Click(object sender, System.EventArgs e)
+    private void ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton_Click (object sender, System.EventArgs e)
     {
       NameValueCollection queryString = new NameValueCollection();
       queryString.Add ("Parameter", "Hello World!");

@@ -81,7 +81,7 @@ public class TestFunction: WxeFunction
   }
 
   // steps
-  private void Step1()
+  private void Step1 ()
   {
     if (string.IsNullOrEmpty (UserControl))
       UserControl = "BocBooleanValueUserControl.ascx";
@@ -89,7 +89,7 @@ public class TestFunction: WxeFunction
     ExceptionHandler.AppendCatchExceptionTypes (typeof (WxeUserCancelException));
   }
 
-  private void Step2()
+  private void Step2 ()
   {
     XmlReflectionBusinessObjectStorageProvider.Current.Reset();
 
@@ -156,7 +156,7 @@ public class TestFunction: WxeFunction
 
   private WxeStep Step3 = new WxePageStep ("IndividualControlTests/Form.aspx");
 
-  private void Step4()
+  private void Step4 ()
   {
     _person.SaveObject();
     if (_person.Children != null)

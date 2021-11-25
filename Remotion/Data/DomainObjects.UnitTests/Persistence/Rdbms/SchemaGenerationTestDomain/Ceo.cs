@@ -23,12 +23,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [Instantiable]
   public abstract class Ceo : DomainObject
   {
-    public static Ceo NewObject()
+    public static Ceo NewObject ()
     {
       return DomainObject.NewObject<Ceo> ();
     }
 
-    protected Ceo()
+    protected Ceo ()
     {
     }
 

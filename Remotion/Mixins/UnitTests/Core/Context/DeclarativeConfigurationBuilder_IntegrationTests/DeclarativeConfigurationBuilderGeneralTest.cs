@@ -31,7 +31,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
   public class DeclarativeConfigurationBuilderGeneralTest
   {
     [Test]
-    public void BuildFromAssemblies()
+    public void BuildFromAssemblies ()
     {
       var assemblies = new[] { typeof (BaseType1).Assembly, typeof (object).Assembly };
       MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (assemblies);
@@ -87,7 +87,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     }
 
     [Test]
-    public void BuildDefault()
+    public void BuildDefault ()
     {
       MixinConfiguration ac = DeclarativeConfigurationBuilder.BuildDefaultConfiguration();
       Assert.That (ac, Is.Not.Null);
@@ -117,7 +117,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     }
 
     [Test]
-    public void IgnoreForMixinConfiguration()
+    public void IgnoreForMixinConfiguration ()
     {
       MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromTypes (
           null, 

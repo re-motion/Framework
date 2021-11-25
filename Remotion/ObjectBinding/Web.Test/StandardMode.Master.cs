@@ -25,7 +25,7 @@ namespace OBWTest
       ID = "MP";
     }
 
-    public void SetPageContentScrollable()
+    public void SetPageContentScrollable ()
     {
       Html.Attributes["class"] = "scrollable";
     }

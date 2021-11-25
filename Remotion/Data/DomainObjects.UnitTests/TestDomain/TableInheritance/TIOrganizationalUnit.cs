@@ -23,12 +23,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   [Instantiable]
   public abstract class TIOrganizationalUnit: TIDomainBase
   {
-    public static TIOrganizationalUnit NewObject()
+    public static TIOrganizationalUnit NewObject ()
     {
       return NewObject<TIOrganizationalUnit>();
     }
 
-    protected TIOrganizationalUnit()
+    protected TIOrganizationalUnit ()
     {
     }
 

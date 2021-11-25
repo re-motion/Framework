@@ -323,7 +323,7 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    public void EnsureAllPropertiesAreTested()
+    public void EnsureAllPropertiesAreTested ()
     {
       var bindingFlags = BindingFlags.Instance | BindingFlags.Public;
       var properties = from p in typeof (MixAttribute).GetProperties (bindingFlags)

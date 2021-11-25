@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.BindableObject
       _wrapper = wrapper;
     }
 
-    void IDeserializationCallback.OnDeserialization(object? sender)
+    void IDeserializationCallback.OnDeserialization (object? sender)
     {
       Assertion.DebugAssert (!TypeExtensions.CanAscribeTo (typeof (BindableObjectMixin), typeof (Mixin<,>)),
           "we assume the mixin does not have a base object");

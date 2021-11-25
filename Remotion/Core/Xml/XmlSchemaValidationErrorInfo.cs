@@ -64,7 +64,7 @@ namespace Remotion.Xml
       get { return _linePosition; }
     }
 
-    public bool HasLineInfo()
+    public bool HasLineInfo ()
     {
       return _hasLineInfo;
     }
@@ -74,7 +74,7 @@ namespace Remotion.Xml
       get { return _severity; }
     }
 
-    public override string ToString()
+    public override string ToString ()
     {
       StringBuilder sb = new StringBuilder (200);
       sb.Append ("Schema validation ");

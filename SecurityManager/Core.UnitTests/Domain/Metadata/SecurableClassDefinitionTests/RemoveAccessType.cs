@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     }
 
     [Test]
-    public void RemovesAccessType()
+    public void RemovesAccessType ()
     {
       var accessType0 = AccessTypeDefinition.NewObject();
       var accessType1 = AccessTypeDefinition.NewObject();
@@ -62,7 +62,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     }
 
     [Test]
-    public void RemovesPermissionsForRemovedAccessType()
+    public void RemovesPermissionsForRemovedAccessType ()
     {
       var accessType0 = AccessTypeDefinition.NewObject();
       var accessType1 = AccessTypeDefinition.NewObject();

@@ -25,7 +25,7 @@ namespace Remotion.UnitTests.Utilities
 public class ArrayUtilityTest
 {
   [Test]
-  public void TestCombine()
+  public void TestCombine ()
   {
     string[] s1 = { "a", "b", "c" };
     string[] s2 = { "d" };
@@ -51,28 +51,28 @@ public class ArrayUtilityTest
   }
 
   [Test]
-  public void TestInsertFirst()
+  public void TestInsertFirst ()
   {
     string[] s1 = { "a", "b", "c", "d" };
     string[] res = ArrayUtility.Insert (s1, 0, "X");
     Assert.That (string.Concat (res), Is.EqualTo ("Xabcd"));
   }
   [Test]
-  public void TestInsertMiddle()
+  public void TestInsertMiddle ()
   {
     string[] s1 = { "a", "b", "c", "d" };
     string[] res = ArrayUtility.Insert (s1, 2, "X");
     Assert.That (string.Concat (res), Is.EqualTo ("abXcd"));
   }
   [Test]
-  public void TestInsertEnd()
+  public void TestInsertEnd ()
   {
     string[] s1 = { "a", "b", "c", "d" };
     string[] res = ArrayUtility.Insert (s1, 4, "X");
     Assert.That (string.Concat (res), Is.EqualTo ("abcdX"));
   }
   [Test]
-  public void TestInsertPastEnd()
+  public void TestInsertPastEnd ()
   {
     string[] s1 = { "a", "b", "c", "d" };
     Assert.That (

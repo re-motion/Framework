@@ -70,23 +70,23 @@ public class WebTab: IWebTab, IControlStateManager
   /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
   /// <exclude/>
   [EditorBrowsable (EditorBrowsableState.Never)]
-  public WebTab()
+  public WebTab ()
   {
     _icon = new IconInfo();
   }
 
   /// <summary> Is called when the value of <see cref="OwnerControl"/> has changed. </summary>
-  protected virtual void OnOwnerControlChanged()
+  protected virtual void OnOwnerControlChanged ()
   {
   }
 
-  private void OwnerControl_PreRender(object? sender, EventArgs e)
+  private void OwnerControl_PreRender (object? sender, EventArgs e)
   {
     PreRender();
   }
 
   /// <summary> Is called when the <see cref="OwnerControl"/> is Pre-Rendered. </summary>
-  protected virtual void PreRender()
+  protected virtual void PreRender ()
   {
   }
 
@@ -130,7 +130,7 @@ public class WebTab: IWebTab, IControlStateManager
   {
   }
 
-  public override string ToString()
+  public override string ToString ()
   {
     string displayName = ItemID;
     if (string.IsNullOrEmpty (displayName))
@@ -170,7 +170,7 @@ public class WebTab: IWebTab, IControlStateManager
   }
 
   // TODO: Test if still required in VS 2005. Workaround for Designer bug: Get Accessor does not evalute.
-  internal bool HasItemID()
+  internal bool HasItemID ()
   {
     return ! string.IsNullOrEmpty (_itemID);
   }
@@ -242,12 +242,12 @@ public class WebTab: IWebTab, IControlStateManager
     }
   }
 
-  private bool ShouldSerializeIcon()
+  private bool ShouldSerializeIcon ()
   {
     return IconInfo.ShouldSerialize (_icon);
   }
 
-  private void ResetIcon()
+  private void ResetIcon ()
   {
     _icon.Reset();
   }
@@ -350,7 +350,7 @@ public class WebTab: IWebTab, IControlStateManager
     return GetPostBackClientEvent();
   }
 
-  public virtual void OnClick()
+  public virtual void OnClick ()
   {
   }
 
@@ -388,7 +388,7 @@ public class WebTab: IWebTab, IControlStateManager
     return SaveControlState();
   }
 
-  protected virtual object? SaveControlState()
+  protected virtual object? SaveControlState ()
   {
     if (! IsSelected)
       return null;

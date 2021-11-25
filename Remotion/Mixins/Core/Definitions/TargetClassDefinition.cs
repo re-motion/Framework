@@ -128,13 +128,13 @@ namespace Remotion.Mixins.Definitions
       _composedInterfaceDependencies.Accept (visitor);
     }
 
-    public bool HasMixinWithConfiguredType(Type configuredType)
+    public bool HasMixinWithConfiguredType (Type configuredType)
     {
       Type realType = MixinTypeCloser.GetClosedMixinType (configuredType);
       return _mixins.ContainsKey (realType);
     }
 
-    public MixinDefinition GetMixinByConfiguredType(Type configuredType)
+    public MixinDefinition GetMixinByConfiguredType (Type configuredType)
     {
       Type realType = MixinTypeCloser.GetClosedMixinType (configuredType);
       return _mixins[realType];

@@ -24,6 +24,6 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Framework
   /// </summary>
   public interface IDomainObjectMixin
   {
-    void OnTargetReferenceInitializing();
+    void OnTargetReferenceInitializing ();
   }
 }

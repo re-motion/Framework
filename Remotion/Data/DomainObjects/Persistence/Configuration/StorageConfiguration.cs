@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     private readonly List<ProviderHelperBase> _providerHelpers = new List<ProviderHelperBase>();
     private readonly ConfigurationProperty _storageProviderGroupsProperty;
 
-    public StorageConfiguration()
+    public StorageConfiguration ()
     {
       _storageProviderGroupsProperty = new ConfigurationProperty (
           "groups",
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       get { return _defaultStorageProviderDefinitionHelper.Providers; }
     }
 
-    protected override void PostDeserialize()
+    protected override void PostDeserialize ()
     {
       base.PostDeserialize();
 

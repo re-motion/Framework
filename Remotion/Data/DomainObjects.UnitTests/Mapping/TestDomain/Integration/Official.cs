@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
   [Instantiable]
   public abstract class Official : StorageProviderStubDomainBase
   {
-    protected Official()
+    protected Official ()
     {
     }
 

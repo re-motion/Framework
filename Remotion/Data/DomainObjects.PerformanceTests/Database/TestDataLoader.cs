@@ -74,7 +74,7 @@ public class TestDataLoader : IDisposable
 
   #region IDisposable Members
 
-  public void Dispose()
+  public void Dispose ()
   {
     Dispose (true);
     GC.SuppressFinalize(this);

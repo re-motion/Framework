@@ -34,7 +34,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   public class BaseWithOverrideAttributes
   {
     [OverrideTarget]
-    public virtual void Method(int i)
+    public virtual void Method (int i)
     {
     }
 

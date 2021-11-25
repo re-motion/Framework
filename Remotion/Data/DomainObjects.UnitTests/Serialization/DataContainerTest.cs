@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    public void DataContainer_MarkAsChanged_Contents()
+    public void DataContainer_MarkAsChanged_Contents ()
     {
       Employee employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
       Computer computer = employee.Computer;

@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
     }
 
     [TearDown]
-    public virtual void TearDown()
+    public virtual void TearDown ()
     {
       _container.Value = _originalAppender;
     }

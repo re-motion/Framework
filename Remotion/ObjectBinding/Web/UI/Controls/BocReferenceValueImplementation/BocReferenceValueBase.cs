@@ -920,7 +920,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return OptionsMenu; }
     }
 
-    bool IBocReferenceValueBase.IsIconEnabled()
+    bool IBocReferenceValueBase.IsIconEnabled ()
     {
       if (!EnableIcon)
         return false;

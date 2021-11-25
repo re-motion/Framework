@@ -28,17 +28,17 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
 public class UrlMappingSchemaTest
 {
   [SetUp]
-  public virtual void SetUp()
+  public virtual void SetUp ()
   {
   }
 
   [TearDown]
-  public virtual void TearDown()
+  public virtual void TearDown ()
   {
   }
 
   [Test]
-  public void LoadMappingWithMissingPath()
+  public void LoadMappingWithMissingPath ()
   {
     Assert.That (
         () => UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithMissingPath.xml"),
@@ -46,7 +46,7 @@ public class UrlMappingSchemaTest
   }
 
   [Test]
-  public void LoadMappingWithEmptyPath()
+  public void LoadMappingWithEmptyPath ()
   {
     Assert.That (
         () => UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyPath.xml"),
@@ -54,7 +54,7 @@ public class UrlMappingSchemaTest
   }
 
   [Test]
-  public void LoadMappingWithMissingFunctionType()
+  public void LoadMappingWithMissingFunctionType ()
   {
     Assert.That (
         () => UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithMissingFunctionType.xml"),
@@ -62,7 +62,7 @@ public class UrlMappingSchemaTest
   }
 
   [Test]
-  public void LoadMappingWithEmptyFunctionType()
+  public void LoadMappingWithEmptyFunctionType ()
   {
     Assert.That (
         () => UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyFunctionType.xml"),
@@ -70,7 +70,7 @@ public class UrlMappingSchemaTest
   }
 
   [Test]
-  public void LoadMappingWithFunctionTypeHavingNoAssembly()
+  public void LoadMappingWithFunctionTypeHavingNoAssembly ()
   {
     Assert.That (
         () => UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithFunctionTypeHavingNoAssembly.xml"),

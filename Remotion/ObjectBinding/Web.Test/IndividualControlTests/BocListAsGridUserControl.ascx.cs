@@ -107,14 +107,14 @@ public class BocListAsGridUserControl : BaseUserControl
     get { return CurrentObjectValidationResultDispatchingValidator; }
   }
 
-  override protected void OnInit(EventArgs e)
+  override protected void OnInit (EventArgs e)
   {
     InitializeComponent();
     base.OnInit (e);
     InitializeMenuItems();
   }
 
-  private void InitializeMenuItems()
+  private void InitializeMenuItems ()
   {
     BocMenuItem menuItem = null;
 
@@ -218,7 +218,7 @@ public class BocListAsGridUserControl : BaseUserControl
     NumberOfNewRowsField.IsDirty = false;
   }
 
-  protected override void OnPreRender(EventArgs e)
+  protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
 
@@ -228,22 +228,22 @@ public class BocListAsGridUserControl : BaseUserControl
     CancelEditModeButton.Enabled = ChildrenList.IsListEditModeActive;
   }
 
-  private void SwitchToEditModeButton_Click(object sender, EventArgs e)
+  private void SwitchToEditModeButton_Click (object sender, EventArgs e)
   {
     ChildrenList.SwitchListIntoEditMode ();
   }
 
-  private void EndEditModeButton_Click(object sender, EventArgs e)
+  private void EndEditModeButton_Click (object sender, EventArgs e)
   {
     ChildrenList.EndListEditMode (true);
   }
 
-  private void CancelEditModeButton_Click(object sender, EventArgs e)
+  private void CancelEditModeButton_Click (object sender, EventArgs e)
   {
     ChildrenList.EndListEditMode (false);
   }
 
-  private void AddItemButton_Click(object sender, EventArgs e)
+  private void AddItemButton_Click (object sender, EventArgs e)
   {
     Person person = Person.CreateObject (Guid.NewGuid());
     person.LastName = "X";
@@ -253,7 +253,7 @@ public class BocListAsGridUserControl : BaseUserControl
     ChildrenList.SynchronizeRows();
   }
 
-  private void AddRowButton_Click(object sender, EventArgs e)
+  private void AddRowButton_Click (object sender, EventArgs e)
   {
     Person person = Person.CreateObject (Guid.NewGuid());
     person.LastName = "X";
@@ -261,7 +261,7 @@ public class BocListAsGridUserControl : BaseUserControl
     ChildrenList.AddRow ((IBusinessObject) person);
   }
 
-  private void AddRowsButton_Click(object sender, EventArgs e)
+  private void AddRowsButton_Click (object sender, EventArgs e)
   {
     int count = 0;
     
@@ -275,13 +275,13 @@ public class BocListAsGridUserControl : BaseUserControl
     ChildrenList.AddRows ((IBusinessObjectWithIdentity[]) ArrayUtility.Convert (persons, typeof (IBusinessObjectWithIdentity)));
   }
 
-  private void RemoveRowsButton_Click(object sender, EventArgs e)
+  private void RemoveRowsButton_Click (object sender, EventArgs e)
   {
     IBusinessObject[] selectedBusinessObjects = ChildrenList.GetSelectedBusinessObjects();
     ChildrenList.RemoveRows (selectedBusinessObjects);
   }
 
-  private void RemoveItemsButton_Click(object sender, EventArgs e)
+  private void RemoveItemsButton_Click (object sender, EventArgs e)
   {
     IBusinessObject[] selectedBusinessObjects = ChildrenList.GetSelectedBusinessObjects();
     foreach (var obj in selectedBusinessObjects)
@@ -309,19 +309,19 @@ public class BocListAsGridUserControl : BaseUserControl
       e.SetRowReadOnly();
   }
 
-  private void ChildrenList_EditableRowChangesCanceling(object sender, BocListEditableRowChangesEventArgs e)
+  private void ChildrenList_EditableRowChangesCanceling (object sender, BocListEditableRowChangesEventArgs e)
   {
   }
 
-  private void ChildrenList_EditableRowChangesCanceled(object sender, BocListItemEventArgs e)
+  private void ChildrenList_EditableRowChangesCanceled (object sender, BocListItemEventArgs e)
   {
   }
 
-  private void ChildrenList_EditableRowChangesSaving(object sender, BocListEditableRowChangesEventArgs e)
+  private void ChildrenList_EditableRowChangesSaving (object sender, BocListEditableRowChangesEventArgs e)
   {
   }
 
-  private void ChildrenList_EditableRowChangesSaved(object sender, BocListItemEventArgs e)
+  private void ChildrenList_EditableRowChangesSaved (object sender, BocListItemEventArgs e)
   {
   }
 
@@ -330,7 +330,7 @@ public class BocListAsGridUserControl : BaseUserControl
   ///		Required method for Designer support - do not modify
   ///		the contents of this method with the code editor.
   /// </summary>
-  private void InitializeComponent()
+  private void InitializeComponent ()
   {
 
   }

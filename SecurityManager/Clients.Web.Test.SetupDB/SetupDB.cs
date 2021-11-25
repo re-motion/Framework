@@ -185,7 +185,7 @@ public class SetupDB
       _databaseName = arguments["dbn"].ToString ();
   }
 
-	private SetupDB()
+	private SetupDB ()
 	{
 	}
 }

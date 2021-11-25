@@ -32,7 +32,7 @@ namespace Remotion.UnitTests.Logging.LogExtensionsTests
     }
 
     [Test]
-    public void IsEnabled_WithLevelError()
+    public void IsEnabled_WithLevelError ()
     {
       SetLoggingThreshold (Level.Error);
       Assert.That (Log.IsErrorEnabled(), Is.True);

@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<FileSystemItem> ();
     }
 
-    protected FileSystemItem()
+    protected FileSystemItem ()
     {
     }
 

@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting
     private readonly ControlObject _controlObject;
     private readonly ElementScope _styledScope;
 
-    public DefaultStyleInformation([NotNull] ControlObject controlObject, [NotNull] ElementScope styledScope)
+    public DefaultStyleInformation ([NotNull] ControlObject controlObject, [NotNull] ElementScope styledScope)
     {
       ArgumentUtility.CheckNotNull ("controlObject", controlObject);
       ArgumentUtility.CheckNotNull ("styledScope", styledScope);

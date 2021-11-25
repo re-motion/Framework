@@ -46,13 +46,13 @@ namespace OBWTest
       get { return (TFunction) base.CurrentFunction; }
     }
 
-    protected override void OnInit(EventArgs e)
+    protected override void OnInit (EventArgs e)
     {
       RegisterEventHandlers();
       base.OnInit (e);
     }
 
-    protected override void OnPreRender(EventArgs e)
+    protected override void OnPreRender (EventArgs e)
     {
       //  A call to the ResourceDispatcher to get have the automatic resources dispatched
       ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
@@ -69,11 +69,11 @@ namespace OBWTest
       base.OnPreRender (e);
     }
 
-    protected virtual void RegisterEventHandlers()
+    protected virtual void RegisterEventHandlers ()
     {
     }
 
-    protected virtual IResourceManager GetResourceManager()
+    protected virtual IResourceManager GetResourceManager ()
     {
       Type type = GetType();
       return GlobalizationService.GetResourceManager (type);
@@ -84,7 +84,7 @@ namespace OBWTest
       get { return SafeServiceLocator.Current.GetInstance<IGlobalizationService>(); }
     }
 
-    IResourceManager IObjectWithResources.GetResourceManager()
+    IResourceManager IObjectWithResources.GetResourceManager ()
     {
       return GetResourceManager();
     }

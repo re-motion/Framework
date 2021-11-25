@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       get { return _propertyMetadataProvider; }
     }
 
-    public StorageClass GetStorageClass()
+    public StorageClass GetStorageClass ()
     {
       return _propertyMetadataProvider.GetStorageClass (_propertyInfo) ?? GetDefaultStorageClass();
     }

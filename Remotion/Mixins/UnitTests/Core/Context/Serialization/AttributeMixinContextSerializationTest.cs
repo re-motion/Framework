@@ -30,14 +30,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     private AttributeMixinContextDeserializer _invalidDeserializer;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _serializer = new AttributeMixinContextSerializer ();
       _invalidDeserializer = new AttributeMixinContextDeserializer (new object[] {1, 2, 3, 4, 5});
     }
 
     [Test]
-    public void AddMixinType()
+    public void AddMixinType ()
     {
       _serializer.AddMixinType (typeof (DateTime));
 
@@ -46,7 +46,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     }
 
     [Test]
-    public void AddMixinKind()
+    public void AddMixinKind ()
     {
       _serializer.AddMixinKind (MixinKind.Used);
 
@@ -88,7 +88,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     }
 
     [Test]
-    public void Deserializer_InvalidArray()
+    public void Deserializer_InvalidArray ()
     {
       Assert.That (
           () => new AttributeMixinContextDeserializer (new[] { "x" }),
@@ -98,7 +98,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     }
 
     [Test]
-    public void GetMixinType_Invalid()
+    public void GetMixinType_Invalid ()
     {
       Assert.That (
           () => _invalidDeserializer.GetMixinType (),

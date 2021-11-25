@@ -71,7 +71,7 @@ public class UrlMappingConfiguration: ConfigurationBase
 
   private UrlMappingCollection _mappings = new UrlMappingCollection();
 
-  public UrlMappingConfiguration()
+  public UrlMappingConfiguration ()
   {
   }
 
@@ -90,7 +90,7 @@ public class UrlMappingEntry
   private Type _functionType = null!;
   private string _resource = null!;
 
-  public UrlMappingEntry()
+  public UrlMappingEntry ()
   {
   }
 
@@ -206,7 +206,7 @@ public class UrlMappingEntry
 
 public class UrlMappingCollection: CollectionBase
 {
-  public UrlMappingCollection()
+  public UrlMappingCollection ()
   {
   }
 
@@ -247,13 +247,13 @@ public class UrlMappingCollection: CollectionBase
       throw new ArgumentException (string.Format ("The mapping already contains an entry for the following ID: '{0}'.", entry.ID), "value");
   }
 
-  protected override void OnInsert(int index, object? value)
+  protected override void OnInsert (int index, object? value)
   {
     ValidateNewValue (value);
     base.OnInsert (index, value);
   }
 
-  protected override void OnSet(int index, object? oldValue, object? newValue)
+  protected override void OnSet (int index, object? oldValue, object? newValue)
   {
     ValidateNewValue (newValue);
     base.OnSet (index, oldValue, newValue);

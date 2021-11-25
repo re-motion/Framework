@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Initializes a new <see cref="DomainObjectCollection" />.
     /// </summary>
-    public DomainObjectCollection()
+    public DomainObjectCollection ()
         : this ((Type) null)
     {
     }
@@ -519,7 +519,7 @@ namespace Remotion.Data.DomainObjects
     /// Removes all items from the <see cref="DomainObjectCollection"/>.
     /// </summary>
     /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
-    public void Clear()
+    public void Clear ()
     {
       this.CheckNotReadOnly ("Cannot clear a read-only collection.");
 
@@ -690,7 +690,7 @@ namespace Remotion.Data.DomainObjects
     /// use the <see cref="OnDeleted"/> method, because the operation could be cancelled after the <see cref="OnDeleting"/> method has been called.<br/><br/>
     /// <note type="inotes">Inheritors overriding this method must not throw an exception from the override.</note>
     /// </remarks>
-    protected virtual void OnDeleting()
+    protected virtual void OnDeleting ()
     {
       if (Deleting != null)
         Deleting (this, EventArgs.Empty);
@@ -705,7 +705,7 @@ namespace Remotion.Data.DomainObjects
     /// to allow derived collections to adjust their internal state or to unsubscribe from events of contained <see cref="DomainObject"/>s.<br/><br/>
     /// <note type="inotes">Inheritors overriding this method must not throw an exception from the override.</note>
     /// </remarks>
-    protected virtual void OnDeleted()
+    protected virtual void OnDeleted ()
     {
       if (Deleted != null)
         Deleted (this, EventArgs.Empty);

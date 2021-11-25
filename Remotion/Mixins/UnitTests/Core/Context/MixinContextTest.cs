@@ -115,7 +115,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     }
 
     [Test]
-    public void Equals_False()
+    public void Equals_False ()
     {
       var origin = MixinContextOriginObjectMother.Create();
       var c1 = new MixinContext (
@@ -227,7 +227,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     }
 
     [Test]
-    public void Serialize()
+    public void Serialize ()
     {
       var context = MixinContextObjectMother.Create();
 
@@ -260,7 +260,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     }
 
     [Test]
-    public void Serialization_IsUpToDate()
+    public void Serialization_IsUpToDate ()
     {
       var properties = typeof (MixinContext).GetProperties (BindingFlags.Public |BindingFlags.Instance);
       Assert.That (typeof (IMixinContextSerializer).GetMethods ().Length, Is.EqualTo (properties.Length));

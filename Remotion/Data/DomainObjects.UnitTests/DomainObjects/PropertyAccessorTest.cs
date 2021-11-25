@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
   public class PropertyAccessorTest : ClientTransactionBaseTest
   {
     [Test]
-    public void Construction()
+    public void Construction ()
     {
       var transaction = ClientTransaction.CreateRootTransaction ();
       IndustrialSector sector;
@@ -353,7 +353,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void HasChangedAndOriginalValueSimple()
+    public void HasChangedAndOriginalValueSimple ()
     {
       IndustrialSector sector = DomainObjectIDs.IndustrialSector1.GetObject<IndustrialSector> ();
       PropertyAccessor property = CreateAccessor (sector, "Name");
@@ -370,7 +370,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void HasChangedAndOriginalValueRelated()
+    public void HasChangedAndOriginalValueRelated ()
     {
       Computer computer = DomainObjectIDs.Computer1.GetObject<Computer> ();
       PropertyAccessor property = CreateAccessor (computer, "Employee");
@@ -389,7 +389,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void HasChangedAndOriginalValueRelatedCollection()
+    public void HasChangedAndOriginalValueRelatedCollection ()
     {
       IndustrialSector sector = DomainObjectIDs.IndustrialSector1.GetObject<IndustrialSector> ();
       PropertyAccessor property = CreateAccessor (sector, "Companies");
@@ -410,7 +410,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void GetOriginalValueThrowsWithWrongType()
+    public void GetOriginalValueThrowsWithWrongType ()
     {
       Assert.That (
           () => CreateAccessor (IndustrialSector.NewObject(), "Companies").GetOriginalValue<int>(),

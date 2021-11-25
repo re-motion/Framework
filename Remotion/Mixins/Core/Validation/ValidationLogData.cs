@@ -81,12 +81,12 @@ namespace Remotion.Mixins.Validation
       }
     }
 
-    public ReadOnlyCollection<ValidationResult> GetResults()
+    public ReadOnlyCollection<ValidationResult> GetResults ()
     {
       return _results.AsReadOnly();
     }
 
-    public int GetNumberOfFailures()
+    public int GetNumberOfFailures ()
     {
       return _failures;
     }

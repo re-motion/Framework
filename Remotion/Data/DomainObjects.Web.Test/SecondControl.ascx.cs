@@ -70,13 +70,13 @@ namespace Remotion.Data.DomainObjects.Web.Test
       RefreshText ();
     }
 
-    private void LoadObjectFromFunction(bool interim)
+    private void LoadObjectFromFunction (bool interim)
     {
       ControlWithAllDataTypes.ObjectWithAllDataTypes = MyFunction.ObjectWithAllDataTypes;
       ControlWithAllDataTypes.LoadValues (interim);
     }
 
-    private void RefreshText()
+    private void RefreshText ()
     {
       GuidInLabel.Text = GetObjectString (MyFunction.ObjectWithAllDataTypes);
       var outObject = MyFunction.ReturnedObjectWithAllDataTypes;
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
       RefreshText ();
     }
 
-    private ClassWithAllDataTypes CreateSaveableNewObject()
+    private ClassWithAllDataTypes CreateSaveableNewObject ()
     {
       var result = ClassWithAllDataTypes.NewObject ();
       result.FillMandatoryProperties();

@@ -26,7 +26,7 @@ namespace Remotion.UnitTests.Reflection.CodeGeneration
   public class MethodReferencingAttributeTest
   {
     [Test]
-    public void ResolveReferencedMethod()
+    public void ResolveReferencedMethod ()
     {
       var wrappedMethod = typeof (DateTime).GetMethod ("get_Now");
       var attribute = new TestMethodReferencingAttribute (typeof (DateTime), "get_Now", wrappedMethod.ToString());

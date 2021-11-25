@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void GetEnumerationValueFilter_FromFilterTypeCtor()
+    public void GetEnumerationValueFilter_FromFilterTypeCtor ()
     {
       DisableEnumValuesAttribute attribute = new DisableEnumValuesAttribute (typeof (StubEnumerationValueFilter));
 

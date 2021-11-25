@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   [Instantiable]
   public abstract class TIFile: TIFileSystemItem
   {
-    public static TIFile NewObject()
+    public static TIFile NewObject ()
     {
       return NewObject<TIFile>();
     }

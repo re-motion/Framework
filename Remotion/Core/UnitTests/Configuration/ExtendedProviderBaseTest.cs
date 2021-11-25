@@ -26,7 +26,7 @@ namespace Remotion.UnitTests.Configuration
   public class ExtendedProviderBaseTest
   {
     [Test]
-    public void Initialize()
+    public void Initialize ()
     {
       NameValueCollection config = new NameValueCollection();
       config.Add ("description", "The Description");

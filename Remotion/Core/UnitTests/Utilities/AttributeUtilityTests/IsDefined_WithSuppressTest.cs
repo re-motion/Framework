@@ -31,7 +31,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     }
 
     [Test]
-    public void IsDefined_WithAttributesAndSuppressed()
+    public void IsDefined_WithAttributesAndSuppressed ()
     {
       Assert.That (AttributeUtility.IsDefined (typeof (DerivedWithAttributesAndSuppressed), typeof (Attribute), true), Is.True);
     }

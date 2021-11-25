@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
   {
     
     [Test]
-    public void GetMetadata_NoDomainObjectAndNoValueType_NullableTrue()
+    public void GetMetadata_NoDomainObjectAndNoValueType_NullableTrue ()
     {
       var propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties> ("NoAttribute", DomainModelConstraintProviderStub);
 
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     }
     
     [Test]
-    public void GetMetadata_WithMaximumLength()
+    public void GetMetadata_WithMaximumLength ()
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties> ("MaximumLength", DomainModelConstraintProviderStub);
 

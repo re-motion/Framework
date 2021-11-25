@@ -496,7 +496,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject GetOriginalOppositeObject()
+    public DomainObject GetOriginalOppositeObject ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter (_innerEndPoint))

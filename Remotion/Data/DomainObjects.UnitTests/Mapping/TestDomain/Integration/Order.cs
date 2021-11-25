@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
       CurrentPropertyManager.PreparePropertyAccess (propertyName);
     }
 
-    public void PropertyAccessFinished()
+    public void PropertyAccessFinished ()
     {
       CurrentPropertyManager.PropertyAccessFinished();
     }

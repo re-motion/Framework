@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   [Instantiable]
   public abstract class ClassWithoutIDColumn : TestDomainBase
   {
-    protected ClassWithoutIDColumn()
+    protected ClassWithoutIDColumn ()
     {
     }
   }

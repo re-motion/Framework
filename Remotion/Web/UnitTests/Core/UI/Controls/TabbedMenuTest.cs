@@ -57,7 +57,7 @@ public class TabbedMenuTest: WebControlTest
     HttpContextHelper.SetCurrent (_currentHttpContext);
   }
 
-  protected override void SetUpPage()
+  protected override void SetUpPage ()
   {
     base.SetUpPage();
 
@@ -90,7 +90,7 @@ public class TabbedMenuTest: WebControlTest
   }
 
   [Test]
-  public void GetUrlParametersForMainMenuTab()
+  public void GetUrlParametersForMainMenuTab ()
   {
     string expectedParameterValue = _mainMenuTab2.ItemID;
     
@@ -105,7 +105,7 @@ public class TabbedMenuTest: WebControlTest
   }
 
   [Test]
-  public void GetUrlParametersForSubMenuTab()
+  public void GetUrlParametersForSubMenuTab ()
   {
     string expectedParameterValue = string.Format ("{0},{1}", _subMenuTab22.Parent.ItemID, _subMenuTab22.ItemID);
     
@@ -120,7 +120,7 @@ public class TabbedMenuTest: WebControlTest
   }
 
   [Test]
-  public void FormatUrlForMainMenuTab()
+  public void FormatUrlForMainMenuTab ()
   {
     string url = "/AppDir/page.aspx";
     string expectedParameterValue = _mainMenuTab2.ItemID;
@@ -133,7 +133,7 @@ public class TabbedMenuTest: WebControlTest
   }
 
   [Test]
-  public void FormatUrlForSubMenuTab()
+  public void FormatUrlForSubMenuTab ()
   {
     string url = "/AppDir/page.aspx";
     string expectedParameterValue = string.Format ("{0},{1}", _subMenuTab22.Parent.ItemID, _subMenuTab22.ItemID);
@@ -146,7 +146,7 @@ public class TabbedMenuTest: WebControlTest
   }
 
   [Test]
-  public void FormatUrlForSelectedMainMenuTab()
+  public void FormatUrlForSelectedMainMenuTab ()
   {
     string url = "/AppDir/page.aspx";
     _mainMenuTab3.IsSelected = true;
@@ -160,7 +160,7 @@ public class TabbedMenuTest: WebControlTest
   }
 
   [Test]
-  public void FormatUrlForSelectedSubMenuTab()
+  public void FormatUrlForSelectedSubMenuTab ()
   {
     string url = "/AppDir/page.aspx";
     _subMenuTab12.IsSelected = true;
@@ -174,7 +174,7 @@ public class TabbedMenuTest: WebControlTest
   }
 
 	[Test]
-  public void EvaluateWaiConformityDebugLevelUndefined()
+  public void EvaluateWaiConformityDebugLevelUndefined ()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _mainMenuTab1.Command.Type = CommandType.Event;
@@ -187,7 +187,7 @@ public class TabbedMenuTest: WebControlTest
   }
 
 	[Test]
-  public void EvaluateWaiConformityDebugLevelAWithMainMenuTabSetToEvent()
+  public void EvaluateWaiConformityDebugLevelAWithMainMenuTabSetToEvent ()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _tabbedMenu.Tabs.Clear();
@@ -201,7 +201,7 @@ public class TabbedMenuTest: WebControlTest
   }
 
 	[Test]
-  public void EvaluateWaiConformityDebugLevelAWithSubMenuTabSetToEvent()
+  public void EvaluateWaiConformityDebugLevelAWithSubMenuTabSetToEvent ()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _tabbedMenu.Tabs.Clear();

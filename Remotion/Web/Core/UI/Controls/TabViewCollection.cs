@@ -42,7 +42,7 @@ public class TabViewCollection: ViewCollection
     Owner.OnTabViewInserted (view);
   }
 
-  public override void AddAt(int index, Control control)
+  public override void AddAt (int index, Control control)
   {
     TabView view = ArgumentUtility.CheckNotNullAndType<TabView> ("control", control);
     base.AddAt (index, view);

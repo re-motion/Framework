@@ -71,7 +71,7 @@ namespace Remotion.Configuration
 
     /// <summary>When overridden in a derived class, creates a new <see cref="ConfigurationElement"/>.</summary>
     /// <returns>A new <see cref="ConfigurationElement"/>.</returns>
-    protected override ConfigurationElement CreateNewElement()
+    protected override ConfigurationElement CreateNewElement ()
     {
       return new TElement();
 

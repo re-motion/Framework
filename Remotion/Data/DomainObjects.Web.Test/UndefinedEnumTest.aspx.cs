@@ -40,7 +40,7 @@ public class UndefinedEnumTestPage : WxePage
     get { return (UndefinedEnumTestFunction) CurrentFunction; }
   }
 
-  private void Page_Load(object sender, System.EventArgs e)
+  private void Page_Load (object sender, System.EventArgs e)
 	{
     NewObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject) MyFunction.NewObjectWithUndefinedEnum;
     ExistingObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject) MyFunction.ExistingObjectWithUndefinedEnum;
@@ -52,7 +52,7 @@ public class UndefinedEnumTestPage : WxePage
 	}
 
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -65,7 +65,7 @@ public class UndefinedEnumTestPage : WxePage
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{    
     this.TestButton.Click += new System.EventHandler(this.TestButton_Click);
     this.Load += new System.EventHandler(this.Page_Load);
@@ -73,7 +73,7 @@ public class UndefinedEnumTestPage : WxePage
   }
 	#endregion
 
-  private void TestButton_Click(object sender, System.EventArgs e)
+  private void TestButton_Click (object sender, System.EventArgs e)
   {
     if (FormGridManager.Validate ())
     {

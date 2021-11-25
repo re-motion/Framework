@@ -26,7 +26,7 @@ namespace Remotion.SecurityManager.Configuration
   {
     private static readonly DoubleCheckedLockingContainer<SecurityManagerConfiguration> s_current;
 
-    static SecurityManagerConfiguration()
+    static SecurityManagerConfiguration ()
     {
       s_current = new DoubleCheckedLockingContainer<SecurityManagerConfiguration> (
           delegate { return (SecurityManagerConfiguration) ConfigurationManager.GetSection ("remotion.securityManager") ?? new SecurityManagerConfiguration (); });
@@ -50,7 +50,7 @@ namespace Remotion.SecurityManager.Configuration
    
     private readonly ConfigurationProperty _accessControlProperty;
 
-    public SecurityManagerConfiguration()
+    public SecurityManagerConfiguration ()
     {
       _xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
 

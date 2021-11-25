@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
       get { return (NewObjectFunction) CurrentFunction; }
     }
 
-		private void Page_Load(object sender, System.EventArgs e)
+		private void Page_Load (object sender, System.EventArgs e)
 		{
       ControlWithAllDataTypesControl.ObjectWithAllDataTypes = MyFunction.ObjectWithAllDataTypes;
       if (!IsPostBack)
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
 		}
 
 		#region Web Form Designer generated code
-		override protected void OnInit(EventArgs e)
+		override protected void OnInit (EventArgs e)
 		{
 			//
 			// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
-		private void InitializeComponent()
+		private void InitializeComponent ()
 		{    
       this.Load += new System.EventHandler(this.Page_Load);
 

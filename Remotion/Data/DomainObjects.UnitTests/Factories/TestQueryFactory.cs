@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
   public static class TestQueryFactory
   {
-    public static QueryDefinition CreateOrderQueryWithCustomCollectionType()
+    public static QueryDefinition CreateOrderQueryWithCustomCollectionType ()
     {
       return new QueryDefinition (
           "OrderQueryWithCustomCollectionType",
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           typeof (ObjectList<Order>));
     }
 
-    public static QueryDefinition CreateCustomerTypeQueryDefinition()
+    public static QueryDefinition CreateCustomerTypeQueryDefinition ()
     {
       return new QueryDefinition (
           "CustomerTypeQuery",
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           typeof (DomainObjectCollection));
     }
 
-    public static QueryDefinition CreateOrderSumQueryDefinition()
+    public static QueryDefinition CreateOrderSumQueryDefinition ()
     {
       return new QueryDefinition (
           "OrderSumQuery",

@@ -48,7 +48,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public class MixinForDerivedDerivedClosedGeneric { }
 
     [Test]
-    public void OpenGenericClassContext_Open()
+    public void OpenGenericClassContext_Open ()
     {
       MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = configuration.GetContext (typeof (GenericClass<>));

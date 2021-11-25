@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
   [Instantiable]
   public abstract class OrderItem : TestDomainBase
   {
-    protected OrderItem()
+    protected OrderItem ()
     {
     }
 

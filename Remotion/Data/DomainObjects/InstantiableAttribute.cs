@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Initializes a new instance of the <see cref="InstantiableAttribute"/> class.
     /// </summary>
-    public InstantiableAttribute()
+    public InstantiableAttribute ()
     {
     }
   }

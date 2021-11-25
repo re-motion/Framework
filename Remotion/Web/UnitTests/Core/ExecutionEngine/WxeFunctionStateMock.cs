@@ -53,7 +53,7 @@ public class WxeFunctionStateMock: WxeFunctionState
     set {PrivateInvoke.SetNonPublicField (this, "_functionToken", value); }
   }
 
-  public new void Abort()
+  public new void Abort ()
   {
     base.Abort();
   }

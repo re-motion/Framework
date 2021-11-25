@@ -20,7 +20,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   public interface IMixinIII1
   {
-    string Method1();
+    string Method1 ();
   }
 
   public interface IMixinIII2 : IMixinIII1

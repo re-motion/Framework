@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     private FakeConfigurationWrapper _configurationWrapper;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _configurationWrapper = new FakeConfigurationWrapper();
       _configurationWrapper.SetUpConnectionString ("Rdbms", "ConnectionString", null);
@@ -37,13 +37,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     }
 
     [TearDown]
-    public void TearDown()
+    public void TearDown ()
     {
       ConfigurationWrapper.SetCurrent (null);
     }
 
     [Test]
-    public void GetConfigurationFileName()
+    public void GetConfigurationFileName ()
     {
       _configurationWrapper.SetUpAppSetting ("ConfigurationFileThatDoesNotExist", @"C:\NonExistingConfigurationFile.xml");
 
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     }
 
     [Test]
-    public void GetEmptyConfigurationFileName()
+    public void GetEmptyConfigurationFileName ()
     {
       _configurationWrapper.SetUpAppSetting ("EmptyConfigurationFileName", string.Empty);
 
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     }
 
     [Test]
-    public void GetConfigurationFileNameForNonExistingAppSettingsKey()
+    public void GetConfigurationFileNameForNonExistingAppSettingsKey ()
     {
       Assert.That (LoaderUtility.GetConfigurationFileName ("AppSettingKeyDoesNotExist", "Mapping.xml"), Is.EqualTo (Path.Combine (ReflectionUtility.GetConfigFileDirectory(), "Mapping.xml")));
     }

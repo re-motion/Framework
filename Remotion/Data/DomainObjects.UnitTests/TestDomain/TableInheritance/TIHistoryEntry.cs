@@ -24,12 +24,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   [Instantiable]
   public abstract class TIHistoryEntry: DomainObject, ISupportsGetObject
   {
-    public static TIHistoryEntry NewObject()
+    public static TIHistoryEntry NewObject ()
     {
       return NewObject<TIHistoryEntry>();
     }
 
-    protected TIHistoryEntry()
+    protected TIHistoryEntry ()
     {
     }
 

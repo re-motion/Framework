@@ -178,7 +178,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       return true;
     }
 
-    public void RemoveControls()
+    public void RemoveControls ()
     {
       ClearChildState();
       Controls.Clear();
@@ -186,7 +186,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       _validatorControls = null;
     }
 
-    public IBusinessObjectReferenceDataSource GetDataSource()
+    public IBusinessObjectReferenceDataSource GetDataSource ()
     {
       return Assertion.IsNotNull (_dataSource, "CreateControls must be called before GetDataSource.");
     }
@@ -277,7 +277,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     ///   Validators must be added to the controls collection after LoadPostData is complete.
     ///   If not, invalid validators will know that they are invalid without first calling validate.
     /// </remarks>
-    public void EnsureValidatorsRestored()
+    public void EnsureValidatorsRestored ()
     {
       if (_isRowEditModeValidatorsRestored)
         return;
@@ -354,7 +354,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       return isValid;
     }
 
-    public string[] GetTrackedClientIDs()
+    public string[] GetTrackedClientIDs ()
     {
       StringCollection trackedIDs = new StringCollection();
 
@@ -377,7 +377,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         return new string[0];
     }
 
-    public bool IsDirty()
+    public bool IsDirty ()
     {
       if (HasEditControls())
       {
@@ -406,7 +406,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         return false;
     }
 
-    public IBusinessObjectBoundEditableWebControl[] GetEditControlsAsArray()
+    public IBusinessObjectBoundEditableWebControl[] GetEditControlsAsArray ()
     {
       Assertion.IsNotNull (_rowEditModeControls, "_rowEditModeControls must not be null.");
 

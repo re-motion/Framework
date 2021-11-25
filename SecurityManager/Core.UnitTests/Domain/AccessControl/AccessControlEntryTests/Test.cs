@@ -120,7 +120,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     }
 
     [Test]
-    public void AddAccessType()
+    public void AddAccessType ()
     {
       var accessType = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Access Type 0", 0);
       var securableClassDefinition = SecurableClassDefinition.NewObject();
@@ -148,7 +148,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     }
 
     [Test]
-    public void RemoveAccessType()
+    public void RemoveAccessType ()
     {
       var accessType0 = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Access Type 0", 0);
       var accessType1 = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Access Type 1", 1);

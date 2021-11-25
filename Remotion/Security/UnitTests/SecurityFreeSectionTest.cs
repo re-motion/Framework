@@ -133,7 +133,7 @@ namespace Remotion.Security.UnitTests
     }
 
     [Test]
-    public void Deactivate_WithoutActiveSection_StaysDeactivated()
+    public void Deactivate_WithoutActiveSection_StaysDeactivated ()
     {
       Assert.That (SecurityFreeSection.IsActive, Is.False);
 

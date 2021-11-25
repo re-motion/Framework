@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 [ToolboxItemFilter("System.Web.UI")]
 public class DateTimeValidator: BaseValidator
 {
-  protected override bool EvaluateIsValid()
+  protected override bool EvaluateIsValid ()
   {
     string text = GetControlValidationValue (ControlToValidate);
     if (text == null )

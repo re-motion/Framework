@@ -38,13 +38,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     private IBusinessObjectBooleanProperty _propertyBooleanValue;
     private IBusinessObjectBooleanProperty _propertyNullableBooleanValue;
 
-    public BocCheckBoxTest()
+    public BocCheckBoxTest ()
     {
     }
 
 
     [SetUp]
-    public override void SetUp()
+    public override void SetUp ()
     {
       base.SetUp();
       _bocCheckBox = new BocCheckBoxMock();
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
 
     [Test]
-    public void EvaluateWaiConformityDebugLevelUndefined()
+    public void EvaluateWaiConformityDebugLevelUndefined ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
       _bocCheckBox.EvaluateWaiConformity();
@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void EvaluateWaiConformityLevelA()
+    public void EvaluateWaiConformityLevelA ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
       _bocCheckBox.AutoPostBack = true;
@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
 
     [Test]
-    public void EvaluateWaiConformityDebugLevelAWithAutoPostBackTrue()
+    public void EvaluateWaiConformityDebugLevelAWithAutoPostBackTrue ()
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
       _bocCheckBox.AutoPostBack = true;
@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
 
     [Test]
-    public void GetTrackedClientIDsInReadOnlyMode()
+    public void GetTrackedClientIDsInReadOnlyMode ()
     {
       _bocCheckBox.ReadOnly = true;
       string[] actual = _bocCheckBox.GetTrackedClientIDs();
@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void GetTrackedClientIDsInEditMode()
+    public void GetTrackedClientIDsInEditMode ()
     {
       _bocCheckBox.ReadOnly = false;
       string[] actual = _bocCheckBox.GetTrackedClientIDs();
@@ -117,7 +117,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
     
     [Test]
-    public void SetValueToTrue()
+    public void SetValueToTrue ()
     {
       _bocCheckBox.IsDirty = false;
       _bocCheckBox.Value = true;
@@ -126,7 +126,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void SetValueToFalse()
+    public void SetValueToFalse ()
     {
       _bocCheckBox.IsDirty = false;
       _bocCheckBox.Value = false;
@@ -135,7 +135,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void SetValueToNull()
+    public void SetValueToNull ()
     {
       _bocCheckBox.DefaultValue = false;
       _bocCheckBox.IsDirty = false;
@@ -145,7 +145,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void SetValueToNullableBooleanTrue()
+    public void SetValueToNullableBooleanTrue ()
     {
       _bocCheckBox.IsDirty = false;
       _bocCheckBox.Value = true;
@@ -154,7 +154,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void SetValueToNullableBooleanFalse()
+    public void SetValueToNullableBooleanFalse ()
     {
       _bocCheckBox.IsDirty = false;
       _bocCheckBox.Value = false;
@@ -163,7 +163,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void SetValueToNullableBooleanNull()
+    public void SetValueToNullableBooleanNull ()
     {
       _bocCheckBox.DefaultValue = false;
       _bocCheckBox.IsDirty = false;
@@ -246,7 +246,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
 
     [Test]
-    public void LoadValueAndInterimTrue()
+    public void LoadValueAndInterimTrue ()
     {
       _businessObject.BooleanValue = true;
       _bocCheckBox.DataSource = _dataSource;
@@ -260,7 +260,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void LoadValueAndInterimFalseWithValueTrue()
+    public void LoadValueAndInterimFalseWithValueTrue ()
     {
       _businessObject.BooleanValue = true;
       _bocCheckBox.DataSource = _dataSource;
@@ -274,7 +274,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void LoadValueAndInterimFalseWithValueFalse()
+    public void LoadValueAndInterimFalseWithValueFalse ()
     {
       _businessObject.BooleanValue = false;
       _bocCheckBox.DataSource = _dataSource;
@@ -372,7 +372,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
 
     [Test]
-    public void LoadUnboundValueAndInterimTrue()
+    public void LoadUnboundValueAndInterimTrue ()
     {
       bool value = true;
       _bocCheckBox.Value = false;
@@ -384,7 +384,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void LoadUnboundValueAndInterimFalseWithValueTrue()
+    public void LoadUnboundValueAndInterimFalseWithValueTrue ()
     {
       bool value = true;
       _bocCheckBox.Value = false;
@@ -396,7 +396,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void LoadUnboundValueAndInterimFalseWithValueFalse()
+    public void LoadUnboundValueAndInterimFalseWithValueFalse ()
     {
       bool value = false;
       _bocCheckBox.Value = true;
@@ -408,7 +408,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    public void LoadUnboundValueAndInterimFalseWithValueNull()
+    public void LoadUnboundValueAndInterimFalseWithValueNull ()
     {
       _bocCheckBox.DefaultValue = false;
       _bocCheckBox.Value = true;

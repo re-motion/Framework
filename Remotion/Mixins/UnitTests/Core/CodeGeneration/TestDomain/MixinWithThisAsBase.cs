@@ -22,7 +22,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
   public class MixinWithThisAsBase : Mixin<BaseType3, IBaseType31>
   {
     [OverrideTarget]
-    public string IfcMethod()
+    public string IfcMethod ()
     {
       return "MixinWithThisAsBase.IfcMethod-" + Next.IfcMethod();
     }

@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
     }
 
 
-    public ClassForRelationTest()
+    public ClassForRelationTest ()
     {
     }
 

@@ -260,7 +260,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TReplacedMixinType1">The first mixin type, base type, or generic type definition denoting mixin types to be replaced.</typeparam>
     /// <typeparam name="TReplacedMixinType2">The second mixin type, base type, or generic type definition denoting mixin types to be replaced.</typeparam>
     /// <returns>This object for further configuration of the mixin.</returns>
-    public MixinContextBuilder ReplaceMixins<TReplacedMixinType1, TReplacedMixinType2>  ()
+    public MixinContextBuilder ReplaceMixins<TReplacedMixinType1, TReplacedMixinType2> ()
     {
       return ReplaceMixins (typeof (TReplacedMixinType1), typeof (TReplacedMixinType2));
     }

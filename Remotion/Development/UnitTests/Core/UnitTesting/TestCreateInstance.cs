@@ -39,7 +39,7 @@ public class PublicClass
       _s = "private ctor";
     }
 
-    protected override string f()
+    protected override string f ()
     {
       return _s;
     }
@@ -65,7 +65,7 @@ public class TestCreateInstance
   const string c_internalClassName = "Remotion.Development.UnitTests.Core.UnitTesting.PublicClass+InternalClass";
 
   [Test]
-  public void TestCreateInstances()
+  public void TestCreateInstances ()
   {
     PublicClass internalInstance;
 
@@ -84,7 +84,7 @@ public class TestCreateInstance
   }
 
   [Test]
-  public void TestCreateInstanceAmbiguous()
+  public void TestCreateInstanceAmbiguous ()
   {
     Assert.That (
         () => (PublicClass) PrivateInvoke.CreateInstancePublicCtor (c_assemblyName, c_internalClassName, null),

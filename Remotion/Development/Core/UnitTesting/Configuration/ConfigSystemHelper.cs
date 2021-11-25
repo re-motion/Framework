@@ -40,7 +40,7 @@ namespace Remotion.Development.UnitTesting.Configuration
     private ConnectionStringsSection _connectionStringsSection = new ConnectionStringsSection ();
     private NameValueCollection _appSettings = new NameValueCollection();
 
-    public void SetUpConfigSystem()
+    public void SetUpConfigSystem ()
     {
       Type initStateType = typeof (ConfigurationElement).Assembly.GetType ("System.Configuration.ConfigurationManager+InitState", true, false)!;
       _notStarted = (Enum) Enum.Parse (initStateType, "NotStarted");
@@ -70,7 +70,7 @@ namespace Remotion.Development.UnitTesting.Configuration
       _appSettings.Add (name, key);
     }
     
-    public void TearDownConfigSystem()
+    public void TearDownConfigSystem ()
     {
       PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_initState", _notStarted);
       PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_configSystem", null);

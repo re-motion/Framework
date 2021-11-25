@@ -26,7 +26,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
   public class AdvancedCachingTest : CodeGenerationBaseTest
   {
     [Test]
-    public void BaseClassNotOverridingMixinMethod()
+    public void BaseClassNotOverridingMixinMethod ()
     {
       var instance = ObjectFactory.Create<BaseClassNotOverridingMixinMethod> (ParamList.Empty);
       var mixin = Mixin.Get<MixinWithMethodsOverriddenByDifferentClasses>(instance);
@@ -100,7 +100,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     }
 
     [Test]
-    public void Caching_Bottom_To_Top()
+    public void Caching_Bottom_To_Top ()
     {
       var instance1 = ObjectFactory.Create<BaseClassNotOverridingMixinMethod> (ParamList.Empty);
       var mixin1 = Mixin.Get<MixinWithMethodsOverriddenByDifferentClasses> (instance1);

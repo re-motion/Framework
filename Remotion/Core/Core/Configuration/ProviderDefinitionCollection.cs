@@ -25,7 +25,7 @@ namespace Remotion.Configuration
   public class ProviderCollection<T>: ProviderCollection where T: class
   {
     /// <summary>Initializes a new instance of the <see cref="ProviderCollection{T}"/> class.</summary>
-    public ProviderCollection()
+    public ProviderCollection ()
     {
     }
 

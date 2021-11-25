@@ -168,7 +168,7 @@ namespace Remotion.Mixins.UnitTests.Core
       return attributeIntroduction;
     }
 
-    public static AttributeDefinition CreateAttributeDefinition(IAttributableDefinition declaringDefinition)
+    public static AttributeDefinition CreateAttributeDefinition (IAttributableDefinition declaringDefinition)
     {
       ArgumentUtility.CheckNotNull ("declaringDefinition", declaringDefinition);
 

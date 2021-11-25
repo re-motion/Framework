@@ -44,7 +44,7 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void Count()
+    public void Count ()
     {
       Dev.Null = _dictionary["a"];
       Dev.Null = _dictionary["b"];

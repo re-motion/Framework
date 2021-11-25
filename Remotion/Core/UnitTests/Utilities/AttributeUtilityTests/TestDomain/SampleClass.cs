@@ -128,7 +128,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
 
     [InheritedNotMultiple ("Base")]
     [UsedImplicitly]
-    public virtual string MethodWithInheritedNotMultipleAttribute()
+    public virtual string MethodWithInheritedNotMultipleAttribute ()
     {
       return null;
     }

@@ -159,14 +159,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       Assert.That (result, Is.Empty);
     }
 
-    private void ReplayAll()
+    private void ReplayAll ()
     {
       _dataReaderStrictMock.Replay();
       _idPropertyStrictMock.Replay();
       _timestampStrictMock.Replay();
     }
 
-    private void VerifyAll()
+    private void VerifyAll ()
     {
       _dataReaderStrictMock.VerifyAllExpectations();
       _idPropertyStrictMock.VerifyAllExpectations();

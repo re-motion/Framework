@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     }
 
     [Test]
-    public void CommitSubTransaction_ValueProperties()
+    public void CommitSubTransaction_ValueProperties ()
     {
       Console.WriteLine ("Expected average duration of CommitSubTransaction_ValueProperties on reference system: ~120 ms");
 

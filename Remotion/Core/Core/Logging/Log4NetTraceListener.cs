@@ -61,7 +61,7 @@ namespace Remotion.Logging
     /// <summary>
     /// Initializes a new instance of the <see cref="Log4NetTraceListener"/> class. 
     /// </summary>
-    public Log4NetTraceListener()
+    public Log4NetTraceListener ()
     {
     }
 

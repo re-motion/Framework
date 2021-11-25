@@ -73,7 +73,7 @@ namespace Remotion.Mixins.Definitions
     /// <remarks>When calling <see cref="System.Type.GetInterfaceMap"/>, the <see cref="MemberInfo.ReflectedType"/> properties of the returned 
     /// <see cref="MethodInfo"/> objects do not match those of the <see cref="MethodInfo"/> objects stored by this <see cref="ClassDefinitionBase"/>.
     /// This method remedies this by aligning the returned <see cref="MethodInfo"/> instances with the stored ones.</remarks>
-    public InterfaceMapping GetAdjustedInterfaceMap(Type interfaceType)
+    public InterfaceMapping GetAdjustedInterfaceMap (Type interfaceType)
     {
       InterfaceMapping mapping = Type.GetInterfaceMap (interfaceType);
       for (int i = 0; i < mapping.InterfaceMethods.Length; ++i)
@@ -126,7 +126,7 @@ namespace Remotion.Mixins.Definitions
       get { return _events; }
     }
 
-    public IEnumerable<MemberDefinitionBase> GetAllMembers()
+    public IEnumerable<MemberDefinitionBase> GetAllMembers ()
     {
       foreach (MethodDefinition method in _methods)
         yield return method;

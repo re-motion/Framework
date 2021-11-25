@@ -123,27 +123,27 @@ public class BocMultilineTextValueUserControl : BaseUserControl
       label.Text = "not set";
   }
 
-  private void CVTestSetNullButton_Click(object sender, EventArgs e)
+  private void CVTestSetNullButton_Click (object sender, EventArgs e)
   {
     CVField.Value = null;
   }
 
-  private void CVTestSetNewValueButton_Click(object sender, EventArgs e)
+  private void CVTestSetNewValueButton_Click (object sender, EventArgs e)
   {
     CVField.Value = new string[] {"Foo", "Bar"};
   }
 
-  private void ReadOnlyCVTestSetNullButton_Click(object sender, EventArgs e)
+  private void ReadOnlyCVTestSetNullButton_Click (object sender, EventArgs e)
   {
     ReadOnlyCVField.Value = null;
   }
 
-  private void ReadOnlyCVTestSetNewValueButton_Click(object sender, EventArgs e)
+  private void ReadOnlyCVTestSetNewValueButton_Click (object sender, EventArgs e)
   {
     ReadOnlyCVField.Value = new string[] {"Foo", "Bar"};
   }
 
-  private void CVField_TextChanged(object sender, EventArgs e)
+  private void CVField_TextChanged (object sender, EventArgs e)
   {
     if (CVField.Value != null)
       CVFieldTextChangedLabel.Text = string.Join ("<br />", CVField.Value);
@@ -152,7 +152,7 @@ public class BocMultilineTextValueUserControl : BaseUserControl
   }
 
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -165,7 +165,7 @@ public class BocMultilineTextValueUserControl : BaseUserControl
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{
 
   }

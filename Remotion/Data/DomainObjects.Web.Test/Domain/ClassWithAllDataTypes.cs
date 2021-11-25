@@ -263,7 +263,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
     [DBBidirectionalRelation ("ClassWithAllDataTypesOptional")]
     public abstract ObjectList<ClassForRelationTest> ClassesForRelationTestOptionalNavigateOnly { get; }
 
-    public void FillMandatoryProperties()
+    public void FillMandatoryProperties ()
     {
       BooleanProperty = true;
       ByteProperty = 8;

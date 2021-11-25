@@ -33,7 +33,7 @@ public class SmartLabel: WebControl, IControl
   private string? _forControl = null;
   private string? _text = null;
 
-  public SmartLabel()
+  public SmartLabel ()
   {
   }
 
@@ -88,7 +88,7 @@ public class SmartLabel: WebControl, IControl
     }
   }
 
-  protected override void Render(HtmlTextWriter writer)
+  protected override void Render (HtmlTextWriter writer)
   {
     RenderBeginTag (writer);
     string text = GetText();
@@ -97,7 +97,7 @@ public class SmartLabel: WebControl, IControl
     RenderEndTag (writer);
   }
 
-  public string GetText()
+  public string GetText ()
   {
     if (! string.IsNullOrEmpty (_text))
       return _text;
@@ -122,7 +122,7 @@ public class SmartLabel: WebControl, IControl
     return text;
   }
 
-  protected override void AddAttributesToRender(HtmlTextWriter writer)
+  protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     base.AddAttributesToRender (writer);
 

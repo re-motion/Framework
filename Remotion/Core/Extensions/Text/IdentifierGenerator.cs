@@ -482,7 +482,7 @@ public class IdentifierGenerator: ICloneable
     }
   }
 
-  object ICloneable.Clone()
+  object ICloneable.Clone ()
   {
     return this.Clone();
   }

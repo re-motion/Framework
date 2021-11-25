@@ -22,12 +22,12 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
 {
   public class NullSecurityClientTestHelper
   {
-    public static NullSecurityClientTestHelper CreateForStatelessSecurity()
+    public static NullSecurityClientTestHelper CreateForStatelessSecurity ()
     {
       return new NullSecurityClientTestHelper();
     }
 
-    public static NullSecurityClientTestHelper CreateForStatefulSecurity()
+    public static NullSecurityClientTestHelper CreateForStatefulSecurity ()
     {
       return new NullSecurityClientTestHelper();
     }
@@ -35,14 +35,14 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     private Mock<IObjectSecurityStrategy> _mockObjectSecurityStrategy;
     private SecurableObject _securableObject;
 
-    private NullSecurityClientTestHelper()
+    private NullSecurityClientTestHelper ()
     {
       _mockObjectSecurityStrategy = new Mock<IObjectSecurityStrategy> (MockBehavior.Strict);
       
       _securableObject = new SecurableObject (_mockObjectSecurityStrategy.Object);
     }
 
-    public NullSecurityClient CreateSecurityClient()
+    public NullSecurityClient CreateSecurityClient ()
     {
       return new NullSecurityClient();
     }
@@ -52,7 +52,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       get { return _securableObject; }
     }
 
-    public void VerifyAll()
+    public void VerifyAll ()
     {
       _mockObjectSecurityStrategy.Verify();
     }

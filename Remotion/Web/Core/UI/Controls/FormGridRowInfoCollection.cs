@@ -46,7 +46,7 @@ public sealed class FormGridRowInfoCollection : CollectionBase
   }
 
   /// <summary> Initalizates a new <see cref="FormGridRowInfoCollection"/> class. </summary>
-  public FormGridRowInfoCollection()
+  public FormGridRowInfoCollection ()
   {}
 
   /// <summary> Allows only the insertion of form grid row prototypes. </summary>

@@ -30,7 +30,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.IO
   public class TempFileTest
   {
     [Test]
-    public void Initialize()
+    public void Initialize ()
     {
       using (TempFile tempFile = new TempFile())
       {
@@ -40,7 +40,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.IO
     }
 
     [Test]
-    public void Dispose()
+    public void Dispose ()
     {
       TempFile tempFile = new TempFile();
       string fileName = tempFile.FileName;
@@ -49,7 +49,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.IO
     }
 
     [Test]
-    public void GetFileNameAfterDispose_Throws()
+    public void GetFileNameAfterDispose_Throws ()
     {
       TempFile tempFile = new TempFile();
       tempFile.Dispose();
@@ -60,7 +60,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.IO
     }
 
     [Test]
-    public void WriteStream()
+    public void WriteStream ()
     {
       using (TempFile tempFile = new TempFile())
       {
@@ -79,7 +79,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.IO
     }
 
     [Test]
-    public void WriteStream_WithContentLongerThanBuffer()
+    public void WriteStream_WithContentLongerThanBuffer ()
     {
       using (TempFile tempFile = new TempFile())
       {
@@ -101,7 +101,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.IO
     }
 
     [Test]
-    public void WriteAllBytes()
+    public void WriteAllBytes ()
     {
       using (TempFile tempFile = new TempFile())
       {

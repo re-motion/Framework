@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     private readonly ConfigurationProperty _storageGroupTypeProperty;
     private readonly DoubleCheckedLockingContainer<StorageGroupAttribute> _storageGroup;
 
-    public StorageGroupElement()
+    public StorageGroupElement ()
     {
       _storageGroup = new DoubleCheckedLockingContainer<StorageGroupAttribute> (
           delegate { return (StorageGroupAttribute) Activator.CreateInstance (StorageGroupType); });

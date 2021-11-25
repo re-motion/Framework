@@ -63,7 +63,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     private class TestWebService : WebService
     {
       [WebMethod]
-      public void Method()
+      public void Method ()
       {
       }
     }
@@ -121,7 +121,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     }
 
     [Test]
-    public void Test_MissingParameter()
+    public void Test_MissingParameter ()
     {
       Assert.That (
           () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithParameters", new [] { "param1", "param3" }),
@@ -145,7 +145,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     }
 
     [Test]
-    public void Test_ParameterWithWrongCase()
+    public void Test_ParameterWithWrongCase ()
     {
       Assert.That (
           () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithParameters", new [] { "param1", "Param2" }),

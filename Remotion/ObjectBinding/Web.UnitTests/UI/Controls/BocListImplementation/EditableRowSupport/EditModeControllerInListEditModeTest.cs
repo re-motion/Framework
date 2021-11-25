@@ -460,7 +460,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    public void EnsureEditModeRestored_CallsLoadValueWithInterimTrue()
+    public void EnsureEditModeRestored_CallsLoadValueWithInterimTrue ()
     {
       var dataSourceStub = new Mock<IBusinessObjectReferenceDataSource>();
       dataSourceStub.SetupProperty (_ => _.BusinessObject);
@@ -481,7 +481,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    public void EnsureEditModeRestored_CallsLoadValueWithInterimTrue_ForAddedRow()
+    public void EnsureEditModeRestored_CallsLoadValueWithInterimTrue_ForAddedRow ()
     {
       var addedBusinessObject = (IBusinessObject) EditModeHost.Value[2];
       var dataSourceStub = new Mock<IBusinessObjectReferenceDataSource>();
@@ -574,7 +574,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    public void SynchronizeEditModeControls_CallsLoadValueWithInterimTrue_ForAddedRow()
+    public void SynchronizeEditModeControls_CallsLoadValueWithInterimTrue_ForAddedRow ()
     {
       var addedBusinessObject = (IBusinessObject) NewValues[0];
       var dataSourceStub = new Mock<IBusinessObjectReferenceDataSource>();

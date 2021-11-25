@@ -29,7 +29,7 @@ namespace Remotion.Web.UI.Controls
 /// </summary>
 public class SmartHyperLink : HyperLink, IControl
 {
-	public SmartHyperLink()
+	public SmartHyperLink ()
 	{
 	}
 
@@ -37,7 +37,7 @@ public class SmartHyperLink : HyperLink, IControl
   ///   Uses <see cref="ISmartNavigablePage.AppendNavigationUrlParameters"/> to include the navigation URL parameters
   ///   with the rendered <see cref="HyperLink.NavigateUrl"/>.
   /// </summary>
-  protected override void AddAttributesToRender(HtmlTextWriter writer)
+  protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     string navigateUrlBackup = NavigateUrl;
     bool hasNavigateUrl = ! string.IsNullOrEmpty (NavigateUrl);

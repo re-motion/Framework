@@ -349,7 +349,7 @@ namespace Remotion.Development.UnitTesting
       return GetNonPublicField(target, declaringType, fieldName);
     }
 
-    public static object? GetNonPublicField(object target, Type declaringType, string fieldName)
+    public static object? GetNonPublicField (object target, Type declaringType, string fieldName)
     {
       ArgumentUtility.CheckNotNull ("target", target);
       ArgumentUtility.CheckNotNull ("declaringType", declaringType);

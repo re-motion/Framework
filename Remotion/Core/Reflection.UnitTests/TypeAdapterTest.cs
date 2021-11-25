@@ -454,7 +454,7 @@ namespace Remotion.Reflection.UnitTests
     }
 
     [Test]
-    public void GetGenericTypeDefintion_GenericTypeDefinition()
+    public void GetGenericTypeDefintion_GenericTypeDefinition ()
     {
       var type = typeof (List<>);
       Assert.That (

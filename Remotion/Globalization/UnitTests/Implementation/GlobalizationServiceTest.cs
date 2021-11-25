@@ -46,7 +46,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     }
 
     [Test]
-    public void GetResourceManager_WithTypeWithoutResources()
+    public void GetResourceManager_WithTypeWithoutResources ()
     {
       var type = typeof (ResourceTarget);
       var typeInformation = TypeAdapter.Create (type);

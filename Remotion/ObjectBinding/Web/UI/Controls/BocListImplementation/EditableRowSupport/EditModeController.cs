@@ -582,7 +582,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       get { return _editModeHost.EnableEditModeValidator; }
     }
 
-    public BocListRow GetEditedRow()
+    public BocListRow GetEditedRow ()
     {
       Assertion.IsNotNull (_editedRowIDs, "_editedRowIDs must not be null.");
 

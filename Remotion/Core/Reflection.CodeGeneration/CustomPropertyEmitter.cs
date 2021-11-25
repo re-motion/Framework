@@ -171,7 +171,7 @@ namespace Remotion.Reflection.CodeGeneration
     }
 
     // TODO FS: Test
-    public static string BuildAccessorMethodName(string propertyName, string accessorName)
+    public static string BuildAccessorMethodName (string propertyName, string accessorName)
     {
       string s = propertyName;
       string sPath = "";

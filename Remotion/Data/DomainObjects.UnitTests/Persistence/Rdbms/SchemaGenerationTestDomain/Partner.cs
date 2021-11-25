@@ -20,12 +20,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 {
   public abstract class Partner : Company
   {
-    public new static Partner NewObject()
+    public new static Partner NewObject ()
     {
       return DomainObject.NewObject<Partner> ();
     }
 
-    protected Partner()
+    protected Partner ()
     {
     }
 

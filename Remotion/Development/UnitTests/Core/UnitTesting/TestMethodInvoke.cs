@@ -76,7 +76,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     DerivedType _dt = new DerivedType();
 
     [Test]
-    public void TestInvoke()
+    public void TestInvoke ()
     {
       Assert.That (PrivateInvoke.InvokePublicMethod (_twm, "f"), Is.EqualTo ("f"));
       Assert.That (PrivateInvoke.InvokePublicMethod (_twm, "f", 1), Is.EqualTo ("f int"));
@@ -94,14 +94,14 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     }
 
     [Test]
-    public void TestStaticInvoke()
+    public void TestStaticInvoke ()
     {
       Assert.That (PrivateInvoke.InvokePublicStaticMethod (typeof(TypeWithMethods), "s", 1), Is.EqualTo ("s int"));
       Assert.That (PrivateInvoke.InvokeNonPublicStaticMethod (typeof(TypeWithMethods), "s", "test"), Is.EqualTo ("s string"));
     }
 
     [Test]
-    public void TestPublicInvokeAmbiguous()
+    public void TestPublicInvokeAmbiguous ()
     {
       Assert.That (
           () => PrivateInvoke.InvokePublicMethod (_twm, "f", null),
@@ -109,7 +109,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     }
 
     [Test]
-    public void TestPublicInvokeMethodNotFound()
+    public void TestPublicInvokeMethodNotFound ()
     {
       Assert.That (
           () => PrivateInvoke.InvokePublicMethod (_twm, "f", 1.0),

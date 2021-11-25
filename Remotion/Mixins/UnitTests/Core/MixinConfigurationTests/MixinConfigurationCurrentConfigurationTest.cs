@@ -42,7 +42,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     }
 
     [Test]
-    public void ActiveConfigurationIsThreadSpecific()
+    public void ActiveConfigurationIsThreadSpecific ()
     {
       var newConfiguration = new MixinConfiguration ();
       MixinConfiguration.SetActiveConfiguration (newConfiguration);
@@ -51,7 +51,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     }
 
     [Test]
-    public void EnterScope()
+    public void EnterScope ()
     {
       var configuration1 = new MixinConfiguration ();
       var configuration2 = new MixinConfiguration ();

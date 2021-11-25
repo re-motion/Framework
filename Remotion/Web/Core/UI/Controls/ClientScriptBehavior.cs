@@ -31,7 +31,7 @@ namespace Remotion.Web.UI.Controls
     {
     }
 
-    public bool IsBrowserCapableOfScripting(HttpContextBase? httpContext, IControl control)
+    public bool IsBrowserCapableOfScripting (HttpContextBase? httpContext, IControl control)
     {
       return true;
     }

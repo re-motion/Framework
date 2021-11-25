@@ -38,10 +38,10 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     }
     
     protected abstract DownloadedFileFinder CreateDownloadedFileFinderForExpectedFileName ([NotNull] string fileName);
-    protected abstract DownloadedFileFinder CreateDownloadedFileFinderForUnknownFileName();
+    protected abstract DownloadedFileFinder CreateDownloadedFileFinderForUnknownFileName ();
     protected abstract IDownloadedFile HandleDownload ([NotNull] DownloadedFileFinder downloadedFileFinder, TimeSpan downloadStartedTimeout, TimeSpan downloadUpdatedTimeout);
 
-    protected abstract void AdditionalCleanup();
+    protected abstract void AdditionalCleanup ();
 
     public IDownloadedFile HandleDownloadWithExpectedFileName (string fileName, TimeSpan? downloadStartedTimeout = null, TimeSpan? downloadUpdatedTimeout = null)
     {

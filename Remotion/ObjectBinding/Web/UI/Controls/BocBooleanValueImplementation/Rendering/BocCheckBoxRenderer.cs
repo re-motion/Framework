@@ -263,7 +263,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       return renderingContext.Control.Value!.Value ? trueDescription : falseDescription;
     }
 
-    public override string GetCssClassBase(IBocCheckBox control)
+    public override string GetCssClassBase (IBocCheckBox control)
     {
       return "bocCheckBox";
     }

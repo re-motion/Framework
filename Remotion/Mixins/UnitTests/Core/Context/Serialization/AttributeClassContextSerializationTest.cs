@@ -31,14 +31,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     private AttributeClassContextDeserializer _invalidDeserializer;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _serializer = new AttributeClassContextSerializer ();
       _invalidDeserializer = new AttributeClassContextDeserializer (new object[] { 1, 2, 3 });
     }
 
     [Test]
-    public void AddClassType()
+    public void AddClassType ()
     {
       _serializer.AddClassType (typeof (DateTime));
 
@@ -74,7 +74,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     }
 
     [Test]
-    public void Deserializer_InvalidArray()
+    public void Deserializer_InvalidArray ()
     {
       Assert.That (
           () => new AttributeClassContextDeserializer (new[] { "x" }),
@@ -84,7 +84,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     }
 
     [Test]
-    public void GetClassType_Invalid()
+    public void GetClassType_Invalid ()
     {
       Assert.That (
           () => _invalidDeserializer.GetClassType (),

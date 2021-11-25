@@ -815,7 +815,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    public void GetPublicMethodWrapper_HasAttribute()
+    public void GetPublicMethodWrapper_HasAttribute ()
     {
       var classEmitter = new CustomClassEmitter (Scope, "GetPublicMethodWrapper_HasAttribute", typeof (ClassWithProtectedMethod));
       classEmitter.GetPublicMethodWrapper (typeof (ClassWithProtectedMethod).GetMethod ("GetSecret", _declaredInstanceBindingFlags));
@@ -854,7 +854,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    public void ForceUnsignedFalse()
+    public void ForceUnsignedFalse ()
     {
       var classEmitter = new CustomClassEmitter (Scope, "ForceUnsignedFalse", typeof (object), Type.EmptyTypes, TypeAttributes.Public, false);
       Type t = classEmitter.BuildType ();

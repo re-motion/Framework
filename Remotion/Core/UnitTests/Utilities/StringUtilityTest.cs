@@ -51,7 +51,7 @@ public class StringUtilityTest
   private readonly Type _stringArray = typeof (string[]);
 
   [SetUp]
-  public void SetUp()
+  public void SetUp ()
   {
     _cultureEnUs = new CultureInfo ("en-US");
     _cultureDeDe = new CultureInfo ("de-DE");
@@ -63,20 +63,20 @@ public class StringUtilityTest
   }
 
   [TearDown]
-  public void TearDown()
+  public void TearDown ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureBackup;
   }
 
   [Test]
-	public void NullToEmpty()
+	public void NullToEmpty ()
 	{
     Assert.That (StringUtility.NullToEmpty (null), Is.EqualTo (string.Empty));
     Assert.That (StringUtility.NullToEmpty ("1"), Is.EqualTo ("1"));
 	}
 
   [Test]
-  public void IsNullOrEmpty()
+  public void IsNullOrEmpty ()
   {
     Assert.That (StringUtility.IsNullOrEmpty (null), Is.EqualTo (true));
     Assert.That (StringUtility.IsNullOrEmpty (string.Empty), Is.EqualTo (true));
@@ -84,7 +84,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void AreEqual()
+  public void AreEqual ()
   {
     Assert.That (StringUtility.AreEqual ("test1", "test1", false), Is.EqualTo (true));
     Assert.That (StringUtility.AreEqual ("test1", "test1", true), Is.EqualTo (true));
@@ -95,7 +95,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void CanParseInt32()
+  public void CanParseInt32 ()
   {
     Assert.That (StringUtility.CanParse (_int32), Is.True);
   }
@@ -119,7 +119,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void GetParseMethodForInt32()
+  public void GetParseMethodForInt32 ()
   {
     MethodInfo parseMethod = StubStringUtility.GetParseMethod (_int32, true);
     Assert.That (parseMethod, Is.Not.Null);
@@ -133,7 +133,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void GetParseMethodFromTypeForInt32()
+  public void GetParseMethodFromTypeForInt32 ()
   {
     MethodInfo parseMethod = StubStringUtility.GetParseMethodFromType (_int32);
     Assert.That (parseMethod, Is.Not.Null);
@@ -146,7 +146,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void GetParseMethodWithFormatProviderFromTypeForInt32()
+  public void GetParseMethodWithFormatProviderFromTypeForInt32 ()
   {
     MethodInfo parseMethod = StubStringUtility.GetParseMethodWithFormatProviderFromType (_int32);
     Assert.That (parseMethod, Is.Not.Null);
@@ -160,13 +160,13 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void CanParseObject()
+  public void CanParseObject ()
   {
     Assert.That (StringUtility.CanParse (_object), Is.False);
   }
 
   [Test]
-  public void GetParseMethodForObjectWithException()
+  public void GetParseMethodForObjectWithException ()
   {
     Assert.That (
         () => StubStringUtility.GetParseMethod (_object, true),
@@ -174,19 +174,19 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void GetParseMethodForObjectWithoutException()
+  public void GetParseMethodForObjectWithoutException ()
   {
     Assert.That (StubStringUtility.GetParseMethod (_object, false), Is.Null);
   }
 
   [Test]
-  public void GetParseMethodFromTypeForObject()
+  public void GetParseMethodFromTypeForObject ()
   {
     Assert.That (StubStringUtility.GetParseMethodFromType (_object), Is.Null);
   }
 
   [Test]
-  public void GetParseMethodWithFormatProviderFromTypeForObject()
+  public void GetParseMethodWithFormatProviderFromTypeForObject ()
   {
     Assert.That (StubStringUtility.GetParseMethodWithFormatProviderFromType (_object), Is.Null);
   }
@@ -286,7 +286,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void ParseDoubleWithCultureInvariant()
+  public void ParseDoubleWithCultureInvariant ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeDe;
     object value = StringUtility.Parse (_double, "4,321.123", CultureInfo.InvariantCulture);
@@ -296,7 +296,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void ParseDoubleWithCultureEnUs()
+  public void ParseDoubleWithCultureEnUs ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeDe;
     object value = StringUtility.Parse (_double, "4,321.123", _cultureEnUs);
@@ -306,7 +306,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void ParseDoubleEnUsWithCultureDeDe()
+  public void ParseDoubleEnUsWithCultureDeDe ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureEnUs;
     Assert.That (
@@ -315,7 +315,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void ParseDoubleWithCultureDeDe()
+  public void ParseDoubleWithCultureDeDe ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureEnUs;
     object value = StringUtility.Parse (_double, "4.321,123", _cultureDeDe);
@@ -325,7 +325,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void ParseDoubleDeDeWithCultureEnUs()
+  public void ParseDoubleDeDeWithCultureEnUs ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeDe;
     Assert.That (
@@ -335,7 +335,7 @@ public class StringUtilityTest
 
   [Test]
   [Ignore (@"Bug in ParseArrayItem: Escape Sequence '\,' does not work.")]
-  public void ParseDoubleArrayWithCultureInvariant()
+  public void ParseDoubleArrayWithCultureInvariant ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeDe;
     object value = StringUtility.Parse (_doubleArray, @"6\,543.123,5\,432.123,4\,321.123", CultureInfo.InvariantCulture);
@@ -349,7 +349,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void ParseDoubleArrayWithCultureInvariantNoThousands()
+  public void ParseDoubleArrayWithCultureInvariantNoThousands ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeDe;
     object value = StringUtility.Parse (_doubleArray, @"6543.123,5432.123,4321.123", CultureInfo.InvariantCulture);
@@ -364,7 +364,7 @@ public class StringUtilityTest
 
   [Test]
   [Ignore (@"Bug in ParseArrayItem: Escape Sequence '\,' does not work.")]
-  public void ParseDoubleArrayWithCultureEnUs()
+  public void ParseDoubleArrayWithCultureEnUs ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeDe;
     object value = StringUtility.Parse (_doubleArray, @"6\,543.123,5\,432.123,4\,321.123", _cultureEnUs);
@@ -378,7 +378,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void ParseDoubleArrayWithCultureEnUsNoThousands()
+  public void ParseDoubleArrayWithCultureEnUsNoThousands ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeDe;
     object value = StringUtility.Parse (_doubleArray, @"6543.123,5432.123,4321.123", _cultureEnUs);
@@ -393,7 +393,7 @@ public class StringUtilityTest
 
   [Test]
   [Ignore (@"Bug in ParseArrayItem: Escape Sequence '\,' does not work.")]
-  public void ParseDoubleArrayWithCultureDeDe()
+  public void ParseDoubleArrayWithCultureDeDe ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureEnUs;
     object value = StringUtility.Parse (_doubleArray, @"6.543\,123,5.432\,123,4.321\,123", _cultureDeDe);
@@ -407,7 +407,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void ParseStringArray()
+  public void ParseStringArray ()
   {
     object value = StringUtility.Parse (_stringArray, "\"a\",\"b\",\"c\",\"d\"", null);
     Assert.That (value, Is.Not.Null);
@@ -421,7 +421,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void ParseArrayOfDoubleArrays()
+  public void ParseArrayOfDoubleArrays ()
   {
     Assert.That (
         () => StringUtility.Parse (typeof (double[][]), "1,2,3", null),
@@ -429,31 +429,31 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void CanParseDoubleArray()
+  public void CanParseDoubleArray ()
   {
     Assert.That (StringUtility.CanParse (_doubleArray), Is.True);
   }
 
   [Test]
-  public void CanParseArrayDoubleArray()
+  public void CanParseArrayDoubleArray ()
   {
     Assert.That (StringUtility.CanParse (typeof (double[][])), Is.False);
   }
 
   [Test]
-  public void CanParseString()
+  public void CanParseString ()
   {
     Assert.That (StringUtility.CanParse (_string), Is.True);
   }
 
   [Test]
-  public void CanParseDBNull()
+  public void CanParseDBNull ()
   {
     Assert.That (StringUtility.CanParse (_dbNull), Is.True);
   }
 
   [Test]
-  public void ParseDBNull()
+  public void ParseDBNull ()
   {
     object value = StringUtility.Parse (_dbNull, DBNull.Value.ToString(), null);
     Assert.That (value, Is.Not.Null);
@@ -462,13 +462,13 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void CanParseGuid()
+  public void CanParseGuid ()
   {
     Assert.That (StringUtility.CanParse (_guid), Is.True);
   }
 
   [Test]
-  public void ParseGuid()
+  public void ParseGuid ()
   {
     Guid guid = Guid.NewGuid();
     object value = StringUtility.Parse (_guid, guid.ToString(), null);
@@ -494,7 +494,7 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void ParseEmptyGuid()
+  public void ParseEmptyGuid ()
   {
     Guid guid = Guid.Empty;
     object value = StringUtility.Parse (_guid, guid.ToString(), null);
@@ -526,41 +526,41 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void FormatNull()
+  public void FormatNull ()
   {
     Assert.That (StringUtility.Format (null, null), Is.EqualTo (string.Empty));
   }
 
   [Test]
-  public void FormatString()
+  public void FormatString ()
   {
     const string value = "Hello World!";
     Assert.That (StringUtility.Format (value, null), Is.EqualTo (value));
   }
 
   [Test]
-  public void FormatDoubleWithCultureEnUs()
+  public void FormatDoubleWithCultureEnUs ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeDe;
     Assert.That (StringUtility.Format (4321.123, _cultureEnUs), Is.EqualTo ("4321.123"));
   }
 
   [Test]
-  public void FormatDoubleWithCultureDeDe()
+  public void FormatDoubleWithCultureDeDe ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureEnUs;
     Assert.That (StringUtility.Format (4321.123, _cultureDeDe), Is.EqualTo ("4321,123"));
   }
 
   [Test]
-  public void FormatGuid()
+  public void FormatGuid ()
   {
     Guid guid = Guid.Empty;
     Assert.That (StringUtility.Format (guid, null), Is.EqualTo (guid.ToString()));
   }
 
   [Test]
-  public void FormatDoubleArrayWithCultureEnUsNoThousands()
+  public void FormatDoubleArrayWithCultureEnUsNoThousands ()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeDe;
     double[] values = new double[] {6543.123, 5432.123, 4321.123};
@@ -622,13 +622,13 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void ParseNewLineSeparatedString_WithString_ReturnsOneItem()
+  public void ParseNewLineSeparatedString_WithString_ReturnsOneItem ()
   {
     Assert.That (StringUtility.ParseNewLineSeparatedString ("First"), Is.EqualTo (new[] { "First" }));
   }
 
   [Test]
-  public void ParseNewLineSeparatedString_WithEmptyString_ReturnsOneEmptyItem()
+  public void ParseNewLineSeparatedString_WithEmptyString_ReturnsOneEmptyItem ()
   {
     Assert.That (StringUtility.ParseNewLineSeparatedString (""), Is.EqualTo (new[] { "" }));
   }
@@ -638,7 +638,7 @@ public class StringUtilityTest
 public class StringUtility_ParseSeparatedListTest
 {
   [Test]
-  public void TestParseSeparatedList()
+  public void TestParseSeparatedList ()
   {
     // char doubleq = '\"';
     const char singleq = '\'';

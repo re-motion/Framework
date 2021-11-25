@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<Location> ();
     }
 
-    protected Location()
+    protected Location ()
     {
     }
 

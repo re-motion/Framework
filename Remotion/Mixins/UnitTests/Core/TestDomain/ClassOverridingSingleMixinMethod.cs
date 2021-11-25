@@ -23,7 +23,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   public class ClassOverridingSingleMixinMethod
   {
     [OverrideMixin]
-    public string AbstractMethod(int i)
+    public string AbstractMethod (int i)
     {
       return "ClassOverridingSingleMixinMethod.AbstractMethod-" + i;
     }

@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation
     Style LabelStyle { get; }
     ListControlStyle ListControlStyle { get; }
     string NullIdentifier { get; }
-    IEnumerationValueInfo[] GetEnabledValues();
+    IEnumerationValueInfo[] GetEnabledValues ();
     string GetNullItemText ();
     string GetValueName ();
 

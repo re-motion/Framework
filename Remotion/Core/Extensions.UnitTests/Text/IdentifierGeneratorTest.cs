@@ -25,7 +25,7 @@ namespace Remotion.Extensions.UnitTests.Text
 public class IdentifierGeneratorTest
 {
   [Test]
-	public void TestUseTemplateGenerator()
+	public void TestUseTemplateGenerator ()
 	{
     IdentifierGenerator idGen = IdentifierGenerator.CStyle;
 	  Assert.That (
@@ -34,7 +34,7 @@ public class IdentifierGeneratorTest
   }
 
   [Test]
-	public void TestChangeUseCaseSensitiveNamesAfterGeneratingUniqueIdentifier()
+	public void TestChangeUseCaseSensitiveNamesAfterGeneratingUniqueIdentifier ()
 	{
     IdentifierGenerator idGen = IdentifierGenerator.CStyle.Clone();
     idGen.GetUniqueIdentifier ("some name");
@@ -44,7 +44,7 @@ public class IdentifierGeneratorTest
   }
 
   [Test]
-	public void TestCStyle()
+	public void TestCStyle ()
 	{
     IdentifierGenerator idGen = IdentifierGenerator.CStyle.Clone();
 
@@ -64,7 +64,7 @@ public class IdentifierGeneratorTest
   }
 
   [Test]
-	public void TestUniqueObjects()
+	public void TestUniqueObjects ()
 	{
     IdentifierGenerator idGen = IdentifierGenerator.CStyle.Clone();
     object o1 = new object(), o2 = new object(), o3 = new object();
@@ -78,7 +78,7 @@ public class IdentifierGeneratorTest
 	}
 
   [Test]
-	public void TestHtmlStyle()
+	public void TestHtmlStyle ()
 	{
     IdentifierGenerator idGen = IdentifierGenerator.HtmlStyle.Clone();
     idGen.UseCaseSensitiveNames = false;
@@ -100,7 +100,7 @@ public class IdentifierGeneratorTest
   }
 
   [Test]
-	public void TestXmlStyle()
+	public void TestXmlStyle ()
 	{
     IdentifierGenerator idGen = IdentifierGenerator.XmlStyle.Clone();
 

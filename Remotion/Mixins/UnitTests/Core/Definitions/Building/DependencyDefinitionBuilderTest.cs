@@ -193,7 +193,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    public void ThrowsWhenUnfulfilledDuckTargetCall()
+    public void ThrowsWhenUnfulfilledDuckTargetCall ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (DuckTargetCallMixinWithoutOverrides)).EnterScope())
       {
@@ -433,7 +433,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    public void EmptyInterface()
+    public void EmptyInterface ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<BaseType1> ().Clear().AddMixins (typeof (MixinWithEmptyInterface), typeof (MixinRequiringEmptyInterface)).EnterScope())
       {

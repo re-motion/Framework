@@ -52,7 +52,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       get { return (EditGroupFormFunction) base.CurrentFunction; }
     }
 
-    protected override FormGridManager GetFormGridManager()
+    protected override FormGridManager GetFormGridManager ()
     {
       return FormGridManager;
     }

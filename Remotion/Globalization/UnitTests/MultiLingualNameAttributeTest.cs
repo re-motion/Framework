@@ -33,7 +33,7 @@ namespace Remotion.Globalization.UnitTests
     }
 
     [Test]
-    public void Initialize_WithCultureIsEmpty_UsesInvariantCulture()
+    public void Initialize_WithCultureIsEmpty_UsesInvariantCulture ()
     {
       var attribute = new MultiLingualNameAttribute ("The Name", "");
 
@@ -42,7 +42,7 @@ namespace Remotion.Globalization.UnitTests
     }
 
     [Test]
-    public void Initialize_WithCultureIsNull_ThrowsArgumentNullException()
+    public void Initialize_WithCultureIsNull_ThrowsArgumentNullException ()
     {
       // ReSharper disable AssignNullToNotNullAttribute
       Assert.That (() => new MultiLingualNameAttribute ("The Name", null), Throws.TypeOf<ArgumentNullException>());

@@ -50,7 +50,7 @@ public class WorkContext: IDisposable
     /// <returns>
     ///   The items on the context thread, with the top-level stack items first.
     /// </returns>
-    public WorkContext[] ToArray()
+    public WorkContext[] ToArray ()
     {
       return (WorkContext[]) _stack.ToArray (typeof (WorkContext)); 
     }
@@ -63,7 +63,7 @@ public class WorkContext: IDisposable
     ///   Contexts that are already left, but not done, are marked with a question mark. See <see cref="Leave"/> and 
     ///   <see cref="Done"/>.
     /// </returns>
-    public override string ToString()
+    public override string ToString ()
     {
       bool pastLast = false;
       StringBuilder sb = new StringBuilder();
@@ -353,7 +353,7 @@ public class WorkContext: IDisposable
   ///     For C# users, it is recommended to call this method at the end of the <c>using</c> block that contains the context.
   ///   </para>
   /// </remarks>
-  public void Done()
+  public void Done ()
   {
     if (_entered)
     {

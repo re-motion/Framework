@@ -220,7 +220,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     }
 
     [Test]
-    public void ExecuteCollectionQuery()
+    public void ExecuteCollectionQuery ()
     {
       var queryStub = MockRepository.GenerateStub<IQuery>();
 
@@ -243,7 +243,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
 
 
     [Test]
-    public void ExecuteCustomQuery()
+    public void ExecuteCustomQuery ()
     {
       var queryStub = MockRepository.GenerateStub<IQuery>();
 
@@ -265,7 +265,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     }
 
     [Test]
-    public void ExecuteScalarQuery()
+    public void ExecuteScalarQuery ()
     {
       var queryStub = MockRepository.GenerateStub<IQuery>();
 

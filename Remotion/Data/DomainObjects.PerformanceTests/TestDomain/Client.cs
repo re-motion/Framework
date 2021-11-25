@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
   [DBTable]
   public abstract class Client : DomainObject, ISupportsGetObject
   {
-    public static Client NewObject()
+    public static Client NewObject ()
     {
       return DomainObject.NewObject<Client>();
     }

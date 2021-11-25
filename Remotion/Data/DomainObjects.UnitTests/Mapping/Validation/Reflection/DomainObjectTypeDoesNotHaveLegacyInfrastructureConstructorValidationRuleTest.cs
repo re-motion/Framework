@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     }
 
     [Test]
-    public void NonAbstractType_WithLegacyConstructor()
+    public void NonAbstractType_WithLegacyConstructor ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (NonAbstractClassWithLegacyConstructor));
       

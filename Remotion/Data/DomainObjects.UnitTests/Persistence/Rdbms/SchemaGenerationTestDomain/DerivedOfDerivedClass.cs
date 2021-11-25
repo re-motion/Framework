@@ -21,12 +21,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [Instantiable]
   public abstract class DerivedOfDerivedClass : DerivedClass
   {
-    public new static DerivedOfDerivedClass NewObject()
+    public new static DerivedOfDerivedClass NewObject ()
     {
       return DomainObject.NewObject<DerivedOfDerivedClass> ();
     }
 
-    protected DerivedOfDerivedClass()
+    protected DerivedOfDerivedClass ()
     {
     }
 

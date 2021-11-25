@@ -32,7 +32,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     private Mock<IMethodInformation> _methodInformation;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _testHelper = NullSecurityClientTestHelper.CreateForStatelessSecurity();
       _securityClient = _testHelper.CreateSecurityClient();
@@ -41,7 +41,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     }
 
     [Test]
-    public void Test_AccessGranted()
+    public void Test_AccessGranted ()
     {
       bool hasAccess = _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "Show");
 
@@ -68,7 +68,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     }
 
     [Test]
-    public void Test_WithinSecurityFreeSection_AccessGranted()
+    public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
       bool hasAccess;
       using (SecurityFreeSection.Activate())

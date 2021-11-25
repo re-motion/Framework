@@ -82,7 +82,7 @@ public class SingleControlItemCollection
     return false;
   }
 
-  IEnumerator IEnumerable.GetEnumerator()
+  IEnumerator IEnumerable.GetEnumerator ()
   {
      return new SingleControlItemCollectionEnumerator (_controlItem);
   }
@@ -147,7 +147,7 @@ public class SingleControlItemCollectionEnumerator: IEnumerator
     _isEnd = false;
   }
 
-  public void Reset()
+  public void Reset ()
   {
     _isMoved = false;
     _isEnd = false;
@@ -163,7 +163,7 @@ public class SingleControlItemCollectionEnumerator: IEnumerator
     }
   }
 
-  public bool MoveNext()
+  public bool MoveNext ()
   {
     if (_isMoved)
       _isEnd = true;

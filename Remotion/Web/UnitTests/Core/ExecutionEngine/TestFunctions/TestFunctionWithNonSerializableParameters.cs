@@ -22,7 +22,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
 {
   public class TestFunctionWithNonSerializableParameters: WxeFunction
   {
-    public TestFunctionWithNonSerializableParameters()
+    public TestFunctionWithNonSerializableParameters ()
       : base (new NoneTransactionMode ())
     {
     }

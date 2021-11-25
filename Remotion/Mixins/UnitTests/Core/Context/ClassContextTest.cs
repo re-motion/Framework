@@ -42,7 +42,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     }
 
     [Test]
-    public void ConstructorWithMixinParameters()
+    public void ConstructorWithMixinParameters ()
     {
       var context = ClassContextObjectMother.Create(typeof (BaseType1), typeof (BT1Mixin1), typeof (BT1Mixin2));
       Assert.That (context.Mixins.Count, Is.EqualTo (2));
@@ -74,7 +74,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     }
 
     [Test]
-    public void ComposedInterfaces_Empty()
+    public void ComposedInterfaces_Empty ()
     {
       var context = new ClassContext (typeof (BaseType5), new MixinContext[0], new Type[0]);
       Assert.That (context.ComposedInterfaces.Count, Is.EqualTo (0));
@@ -298,7 +298,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     }
 
     [Test]
-    public void Serialize()
+    public void Serialize ()
     {
       var serializer = MockRepository.GenerateMock<IClassContextSerializer> ();
       var context = new ClassContext (typeof (BaseType1), new[] { CreateBT1Mixin1Context() }, new[] { typeof (int), typeof (string) });

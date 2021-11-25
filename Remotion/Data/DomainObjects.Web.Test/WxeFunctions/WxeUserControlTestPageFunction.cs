@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
   [Serializable]
   public class WxeUserControlTestPageFunction : WxeFunction
   {
-    public WxeUserControlTestPageFunction()
+    public WxeUserControlTestPageFunction ()
         : base (WxeTransactionMode.CreateRoot)
     {
       ReturnUrl = "default.aspx";
@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     // methods and properties
 
-    private void Step1()
+    private void Step1 ()
     {
       ObjectPassedIntoSecondControl = DomainObjectIDs.ObjectWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
     }

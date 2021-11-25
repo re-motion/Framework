@@ -21,7 +21,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   public class ClassOverridingMixinMethodWrongSig
   {
     [OverrideMixin]
-    public string AbstractMethod(string s)
+    public string AbstractMethod (string s)
     {
       return "ClassOverridingMixinMethod.AbstractMethod" + s;
     }

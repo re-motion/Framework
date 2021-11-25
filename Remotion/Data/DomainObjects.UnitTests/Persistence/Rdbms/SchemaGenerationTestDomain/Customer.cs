@@ -24,12 +24,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [Uses (typeof (ProductLicenseMixin))]
   public abstract class Customer : Company
   {
-    public new static Customer NewObject()
+    public new static Customer NewObject ()
     {
       return DomainObject.NewObject<Customer> ();
     }
 
-    protected Customer()
+    protected Customer ()
     {
     }
 

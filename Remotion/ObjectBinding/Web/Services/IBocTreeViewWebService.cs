@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.Services
     /// <param name="arguments">Additional search arguments.</param>
     /// <param name="itemIDs">The IDs for the menu items displayed by the <see cref="DropDownMenu"/> before they are filtered based on the result.</param>
     /// <returns>An array of <see cref="BusinessObjectWithIdentityProxy"/> objects containing the search result.</returns>
-    WebMenuItemProxy[] GetMenuItemStatusForTreeNode(
+    WebMenuItemProxy[] GetMenuItemStatusForTreeNode (
         string controlID,
         string controlType,
         string businessObjectClass,

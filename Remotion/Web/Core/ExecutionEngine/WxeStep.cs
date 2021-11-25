@@ -183,7 +183,7 @@ public abstract class WxeStep
   /// <summary> Aborts the <b>WxeStep</b> by calling <see cref="AbortRecursive"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Abort/*' />
   [EditorBrowsable (EditorBrowsableState.Never)]
-  public void Abort()
+  public void Abort ()
   {
     if (! _isAborted && ! _isAborting)
     {
@@ -196,7 +196,7 @@ public abstract class WxeStep
 
   /// <summary> Contains the aborting logic for the <see cref="WxeStep"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/AbortRecursive/*' />
-  protected virtual void AbortRecursive()
+  protected virtual void AbortRecursive ()
   {
   }
 }

@@ -31,7 +31,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
   public class MixinDefinitionTest
   {
     [Test]
-    public void NeedsDerivedMixinType_True_OverriddenMember()
+    public void NeedsDerivedMixinType_True_OverriddenMember ()
     {
       var definition = DefinitionObjectMother.GetActiveTargetClassDefinition (typeof (ClassOverridingMixinMembers))
           .Mixins[typeof (MixinWithAbstractMembers)];
@@ -90,7 +90,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     }
 
     [Test]
-    public void GetConcreteMixinTypeIdentifier_Overriders()
+    public void GetConcreteMixinTypeIdentifier_Overriders ()
     {
       var overrider = typeof (MixinOverridingToString).GetMethod ("ToString");
 
@@ -127,7 +127,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     }
     
     [Test]
-    public void GetOrderRelevateDependencies()
+    public void GetOrderRelevateDependencies ()
     {
       using (MixinConfiguration.BuildNew ().ForClass<BaseType3> ()
           .AddMixin<BT3Mixin1> ().WithDependency<NullMixin>()
@@ -173,7 +173,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     }
 
     [Test]
-    public void GetAllOverrides()
+    public void GetAllOverrides ()
     {
       var definition = DefinitionObjectMother.CreateTargetClassDefinition (typeof (BaseType1), typeof (BT1Mixin1)).Mixins[0];
       

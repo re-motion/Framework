@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     }
 
     [Test]
-    public void GetTableDefinition_EmptyViewDefinition()
+    public void GetTableDefinition_EmptyViewDefinition ()
     {
       var emptyViewDefinition = EmptyViewDefinitionObjectMother.Create (TestDomainStorageProviderDefinition);
 

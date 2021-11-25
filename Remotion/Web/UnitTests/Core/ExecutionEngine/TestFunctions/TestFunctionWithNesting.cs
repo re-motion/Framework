@@ -28,7 +28,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     private WxeContext _wxeContext;
     private string _lastExecutedStepID;
 
-    public TestFunctionWithNesting()
+    public TestFunctionWithNesting ()
       : base (new NoneTransactionMode ())
     {
       ReturnUrl = TestFunction.ReturnUrlValue;
@@ -47,34 +47,34 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
       set { Variables["Parameter1"] = value; }
     }
 
-    void Step1()
+    void Step1 ()
     {
       _lastExecutedStepID = "1";
     }
   
-    void Step2()
+    void Step2 ()
     {
       _lastExecutedStepID = "2";
     }
 
     class Step3: WxeFunction
     {
-      public Step3()
+      public Step3 ()
         : base (new NoneTransactionMode ())
       {
       }
 
-      void Step1()
+      void Step1 ()
       {
         TestFunctionWithNesting._lastExecutedStepID = "3.1";
       }
     
-      void Step2()
+      void Step2 ()
       {
         TestFunctionWithNesting._lastExecutedStepID = "3.2";
       }
     
-      void Step3_()
+      void Step3_ ()
       {
         TestFunctionWithNesting._lastExecutedStepID = "3.3";
       }
@@ -86,7 +86,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
 
     }
   
-    void Step4()
+    void Step4 ()
     {
       _lastExecutedStepID = "4";
     }

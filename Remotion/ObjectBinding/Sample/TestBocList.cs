@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Sample
       return string.Format ("function (bocList, isInitializing) {{ var base = {0}; base (bocList, isInitializing); {1}; }}", baseScript, extensionScript);
     }
 
-    protected override WebMenuItem[] InitializeRowMenuItems(IBusinessObject businessObject, int listIndex)
+    protected override WebMenuItem[] InitializeRowMenuItems (IBusinessObject businessObject, int listIndex)
     {
       WebMenuItem[] baseMenuItems = base.InitializeRowMenuItems (businessObject, listIndex);
 
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Sample
       return ArrayUtility.Combine (baseMenuItems, menuItems);
     }
 
-    protected override void PreRenderRowMenuItems(WebMenuItemCollection menuItems, IBusinessObject businessObject, int listIndex)
+    protected override void PreRenderRowMenuItems (WebMenuItemCollection menuItems, IBusinessObject businessObject, int listIndex)
     {
       base.PreRenderRowMenuItems (menuItems, businessObject,  listIndex);
       if (listIndex == 1)
@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Sample
       get { return _businessObject; }
     }
 
-    protected override void OnClick()
+    protected override void OnClick ()
     {
       base.OnClick ();
       System.Diagnostics.Debug.WriteLine ("Clicked menu item '" + ItemID + "' for BusinessObject '" + _businessObject.ToString() + "'.");
@@ -115,13 +115,13 @@ namespace Remotion.ObjectBinding.Sample
       base.OwnerControl.LoadValue (true);
     }
 
-    protected override void PreRender()
+    protected override void PreRender ()
     {
       base.PreRender ();
       // Set Text and Icon
     }
 
-    public override bool EvaluateEnabled()
+    public override bool EvaluateEnabled ()
     {
       return base.EvaluateEnabled ();
       // if (base.EvaluateDisabled ())
@@ -130,7 +130,7 @@ namespace Remotion.ObjectBinding.Sample
       //   do your own stuff
     }
 
-    public override bool EvaluateVisible()
+    public override bool EvaluateVisible ()
     {
       return base.EvaluateVisible ();
       // if (! base.EvaluateVisible ())

@@ -24,12 +24,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [Uses (typeof (ProductLicenseMixin))]
   public abstract class DevelopmentPartner : Partner
   {
-    public new static DevelopmentPartner NewObject()
+    public new static DevelopmentPartner NewObject ()
     {
       return DomainObject.NewObject<DevelopmentPartner> ();
     }
 
-    protected DevelopmentPartner()
+    protected DevelopmentPartner ()
     {
     }
 

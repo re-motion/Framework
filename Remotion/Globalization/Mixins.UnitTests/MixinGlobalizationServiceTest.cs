@@ -295,7 +295,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
 
     
     [Test]
-    public void GetResourceManager_ChangingTheMasterConfigurationOnADifferentThreadIsRecognizedOnOtherThreads_CacheIsNotResetForCurrentFieldValue()
+    public void GetResourceManager_ChangingTheMasterConfigurationOnADifferentThreadIsRecognizedOnOtherThreads_CacheIsNotResetForCurrentFieldValue ()
     {
       var backup = MixinConfiguration.GetMasterConfiguration();
       try
@@ -351,7 +351,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
     }
 
     [Test]
-    public void GetResourceManager_ChangingTheMasterConfigurationOnADifferentThreadIsRecognizedOnOtherThreads_CacheIsResetForPossiblyStaleFieldValue()
+    public void GetResourceManager_ChangingTheMasterConfigurationOnADifferentThreadIsRecognizedOnOtherThreads_CacheIsResetForPossiblyStaleFieldValue ()
     {
       var backup = MixinConfiguration.GetMasterConfiguration();
       try

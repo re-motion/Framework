@@ -89,17 +89,17 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
   public ClassWithAllDataTypes ObjectWithAllDataTypes { get; set; }
   public bool PerformNextStepOnSave { get; set; }
 
-  public ControlWithAllDataTypes()
+  public ControlWithAllDataTypes ()
   {
     PerformNextStepOnSave = true;
   }
 
-  private void Page_Load(object sender, System.EventArgs e)
+  private void Page_Load (object sender, System.EventArgs e)
 	{
 	  LoadValues(IsPostBack);
 	}
 
-  public void LoadValues(bool interim)
+  public void LoadValues (bool interim)
   {
     CurrentObject.BusinessObject = (IBusinessObject) ObjectWithAllDataTypes;
     CurrentObject.LoadValues (interim);
@@ -115,7 +115,7 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
     CurrentObject.SaveValues (false);
   }
 
-  private void SaveButton_Click(object sender, EventArgs e)
+  private void SaveButton_Click (object sender, EventArgs e)
   {
     if (Validate ())
     {
@@ -130,7 +130,7 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
   }
 
   #region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -143,7 +143,7 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
     this.Load += new System.EventHandler(this.Page_Load);

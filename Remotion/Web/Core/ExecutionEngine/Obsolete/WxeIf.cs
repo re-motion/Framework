@@ -81,7 +81,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       }
     }
 
-    protected override void AbortRecursive()
+    protected override void AbortRecursive ()
     {
       base.AbortRecursive();
       if (_stepList != null)

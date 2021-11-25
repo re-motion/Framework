@@ -117,7 +117,7 @@ namespace Remotion.Web.UI.Controls
     ///   Must not be <see langword="null" /> or empty.
     /// </param>
     /// <returns>A Javascript statement, terminiated with a <c>;</c> (semicolon).</returns>
-    public string GetUpdateScriptReference(string getSelectionCount)
+    public string GetUpdateScriptReference (string getSelectionCount)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("getSelectionCount", getSelectionCount);
       

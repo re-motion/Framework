@@ -106,7 +106,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     }
 
     [Test]
-    public void TestValueTypeDefaultCtor()
+    public void TestValueTypeDefaultCtor ()
     {
       Struct @struct = TypesafeActivator.CreateInstance<Struct>().With();
       Assert.That (0, Is.EqualTo (@struct.Value));

@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       Value2 = 2
     }
 
-    public static ClassWithAllDataTypes NewObject()
+    public static ClassWithAllDataTypes NewObject ()
     {
       return NewObject<ClassWithAllDataTypes> ();
     }

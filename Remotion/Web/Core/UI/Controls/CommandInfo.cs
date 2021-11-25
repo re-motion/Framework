@@ -160,7 +160,7 @@ namespace Remotion.Web.UI.Controls
       return _href != "#";
     }
 
-    private bool IsTriggeringPostBack()
+    private bool IsTriggeringPostBack ()
     {
       return !IsTriggeringNavigation() && _onClick!.Contains ("__doPostBack"); // TODO RM-8104: Guard _onClick
     }

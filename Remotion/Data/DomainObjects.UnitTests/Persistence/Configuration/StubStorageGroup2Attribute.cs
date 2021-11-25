@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
 {
   public class StubStorageGroup2Attribute: StorageGroupAttribute
   {
-    public StubStorageGroup2Attribute()
+    public StubStorageGroup2Attribute ()
     {
     }
   }

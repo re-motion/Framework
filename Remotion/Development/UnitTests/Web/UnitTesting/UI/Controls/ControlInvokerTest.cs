@@ -58,7 +58,7 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls
     // methods and properties
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "default.html", null);
       HttpContextHelper.SetCurrent (_currentHttpContext);
@@ -110,7 +110,7 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls
     }
 
     [TearDown]
-    public void TearDown()
+    public void TearDown ()
     {
       _parent.Init -= new EventHandler (Control_Init);
       _parent.Load -= new EventHandler (Control_Load);

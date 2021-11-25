@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   [Serializable]
   public class RootClientTransactionComponentFactory : ClientTransactionComponentFactoryBase
   {
-    public static RootClientTransactionComponentFactory Create()
+    public static RootClientTransactionComponentFactory Create ()
     {
       return ObjectFactory.Create<RootClientTransactionComponentFactory> (true, ParamList.Empty);
     }

@@ -104,7 +104,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       MyTreeView.ShowLines = true;
     }
 
-    private void InitializeMyTreeViewWithSpecialChildren()
+    private void InitializeMyTreeViewWithSpecialChildren ()
     {
       var root = new TreeNode ("Root node 2", "RootValue2", "~/Images/SampleIcon.gif");
 

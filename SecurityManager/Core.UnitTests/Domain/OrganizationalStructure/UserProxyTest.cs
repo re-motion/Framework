@@ -108,7 +108,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
-    public void GetHashcode_EqualObject_SameHashcode()
+    public void GetHashcode_EqualObject_SameHashcode ()
     {
       var user = CreateUser ();
       var proxy1 = UserProxy.Create (user);

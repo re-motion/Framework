@@ -28,7 +28,7 @@ public class WxeOutParameterNotSupportedException: NotSupportedException
 {
   public new const string Message = "Cannot use WxeFunction constructors with one or more 'out' parameters. These constructors are provided for intellisense only.";
 
-	public WxeOutParameterNotSupportedException()
+	public WxeOutParameterNotSupportedException ()
     : base (Message)
 	{
   }

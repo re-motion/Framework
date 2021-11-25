@@ -20,7 +20,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
 {
   public class MixinWithNonVirtualMethodToBeOverridden
   {
-    public string AbstractMethod(int i)
+    public string AbstractMethod (int i)
     {
       return "This method is not really abstract.";
     }

@@ -77,7 +77,7 @@ public class DatePickerPage : Page
       UICulture = uiCultureName.Trim();
   }
 
-  override protected void OnInit(EventArgs e)
+  override protected void OnInit (EventArgs e)
   {
     Assertion.DebugIsNotNull (Page, "Page must not be null.");
 
@@ -119,7 +119,7 @@ public class DatePickerPage : Page
     renderer.RegisterHtmlHeadContents (htmlHeadAppender);
   }
 
-  protected override void OnLoad(EventArgs e)
+  protected override void OnLoad (EventArgs e)
   {
     string dateValue;
     if (IsPostBack)
@@ -151,7 +151,7 @@ public class DatePickerPage : Page
     base.OnLoad (e);
   }
 
-  private void Calendar_SelectionChanged(object? sender, EventArgs e)
+  private void Calendar_SelectionChanged (object? sender, EventArgs e)
   {
     Assertion.DebugIsNotNull (Page, "Page must not be null.");
 

@@ -268,7 +268,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void Equals_True()
+    public void Equals_True ()
     {
       var data1 = CreateAccessorData (typeof (IndustrialSector), "Name");
       var data2 = CreateAccessorData (typeof (IndustrialSector), "Name");
@@ -303,7 +303,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That (data1.GetHashCode(), Is.EqualTo (data2.GetHashCode()));
     }
 
-    private static string GetPropertyIdentifier(ClassDefinition classDefinition, string shortPropertyName)
+    private static string GetPropertyIdentifier (ClassDefinition classDefinition, string shortPropertyName)
     {
       return classDefinition.ClassType.FullName + "." + shortPropertyName;
     }

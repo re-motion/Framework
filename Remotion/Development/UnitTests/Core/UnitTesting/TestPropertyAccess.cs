@@ -73,7 +73,7 @@ public class TypeWithProperties
 public class TestPropertyAccess
 {
   [Test]
-	public void TestInstanceProperties()
+	public void TestInstanceProperties ()
 	{
     TypeWithProperties twp = new TypeWithProperties();
 
@@ -85,7 +85,7 @@ public class TestPropertyAccess
 	}
 
   [Test]
-	public void TestStaticProperties()
+	public void TestStaticProperties ()
 	{
     PrivateInvoke.SetPublicStaticProperty (typeof (TypeWithProperties), "StaticIntProperty", 13);
     Assert.That (PrivateInvoke.GetPublicStaticProperty (typeof (TypeWithProperties), "StaticIntProperty"), Is.EqualTo (13));

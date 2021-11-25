@@ -123,7 +123,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull( nameof (_classContextField))]
     [MemberNotNull( nameof (_mixinArrayInitializerField))]
     [MemberNotNull( nameof (_firstField))]
-    public void AddFields()
+    public void AddFields ()
     {
       Assertion.IsNotNull (_nextCallProxy, "AddNextCallProxy must be called first.");
 

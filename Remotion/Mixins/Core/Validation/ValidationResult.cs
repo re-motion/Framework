@@ -49,7 +49,7 @@ namespace Remotion.Mixins.Validation
       get { return _validatedDefinition; }
     }
 
-    public string GetDefinitionContextPath()
+    public string GetDefinitionContextPath ()
     {
       return string.Join (" -> ", ValidatedDefinition.Parent.CreateSequence (d => d.Parent).Select (d => d.FullName));
     }

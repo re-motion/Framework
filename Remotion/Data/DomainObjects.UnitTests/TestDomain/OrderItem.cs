@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<OrderItem> (ParamList.Create (product));
     }
 
-    protected OrderItem()
+    protected OrderItem ()
     {
     }
 

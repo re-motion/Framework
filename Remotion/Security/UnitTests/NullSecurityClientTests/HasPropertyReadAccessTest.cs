@@ -29,7 +29,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     private IMethodInformation _methodInformation;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _testHelper = NullSecurityClientTestHelper.CreateForStatefulSecurity();
       _securityClient = _testHelper.CreateSecurityClient();
@@ -37,7 +37,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     }
 
     [Test]
-    public void Test_AccessGranted()
+    public void Test_AccessGranted ()
     {
       bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, "IsVisible");
 
@@ -64,7 +64,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     }
 
     [Test]
-    public void Test_WithinSecurityFreeSection_AccessGranted()
+    public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
       bool hasAccess;
       using (SecurityFreeSection.Activate())
@@ -103,7 +103,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     }
 
     [Test]
-    public void Test_WithSecurityStrategyIsNull()
+    public void Test_WithSecurityStrategyIsNull ()
     {
       bool hasAccess = _securityClient.HasPropertyReadAccess (new SecurableObject (null), "IsVisible");
 

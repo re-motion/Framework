@@ -81,7 +81,7 @@ public class ValidationStateViewer : WebControl, IControl
   // construction and disposing
 
   /// <summary> Initializes a new instance of the <see cref="ValidationStateViewer"/> class. </summary>
-  public ValidationStateViewer()
+  public ValidationStateViewer ()
   {
   }
 
@@ -256,7 +256,7 @@ public class ValidationStateViewer : WebControl, IControl
   ///   Find the <see cref="IResourceManager"/> for this <see cref="ValidationStateViewer"/>.
   /// </summary>
   /// <returns></returns>
-  protected IResourceManager GetResourceManager()
+  protected IResourceManager GetResourceManager ()
   {
     //  Provider has already been identified.
     if (_cachedResourceManager != null)

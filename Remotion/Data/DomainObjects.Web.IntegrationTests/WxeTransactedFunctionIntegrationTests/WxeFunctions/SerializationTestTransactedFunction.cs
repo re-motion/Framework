@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
 
     // methods and properties
 
-    private void Step1()
+    private void Step1 ()
     {
       Assert.That (FirstStepExecuted, Is.False);
       FirstStepExecuted = true;

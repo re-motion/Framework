@@ -48,7 +48,7 @@ public class ClientFormWxeFunction: WxeFunction
 
   // steps
 
-  void Step1()
+  void Step1 ()
   {
     HttpContext.Current.Session["key"] = 123456789;
   }
@@ -73,7 +73,7 @@ public class ClientFormClosingWxeFunction: WxeFunction
   {
   }
 
-  void Step1()
+  void Step1 ()
   {
     object val = HttpContext.Current.Session["key"];
     if (val != null)
@@ -90,7 +90,7 @@ public class ClientFormKeepAliveWxeFunction: WxeFunction
   {
   }
 
-  void Step1()
+  void Step1 ()
   {
     object val = HttpContext.Current.Session["key"];
     if (val != null)

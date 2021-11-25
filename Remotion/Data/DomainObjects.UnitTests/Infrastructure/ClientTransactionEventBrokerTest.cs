@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    public void AddListener()
+    public void AddListener ()
     {
       var fakeListener = ClientTransactionListenerObjectMother.Create();
       Assert.That (_eventBroker.Listeners, Has.No.Member (fakeListener));

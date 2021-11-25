@@ -91,8 +91,7 @@ namespace Remotion.Web.Utilities
       return (Control[]) controlList.ToArray (type);
     }
 
-    private static void GetControlsRecursiveInternal
-        (Control parentControl, Type type, ArrayList stopList, ArrayList controlList)
+    private static void GetControlsRecursiveInternal (Control parentControl, Type type, ArrayList stopList, ArrayList controlList)
     {
       ControlCollection controls = parentControl.Controls;
       for (int i = 0; i < controls.Count; ++i)
@@ -108,8 +107,7 @@ namespace Remotion.Web.Utilities
       }
     }
 
-    private static void GetControlsRecursiveInternal
-        (Control parentControl, Type type, ArrayList controlList)
+    private static void GetControlsRecursiveInternal (Control parentControl, Type type, ArrayList controlList)
     {
       ControlCollection controls = parentControl.Controls;
       for (int i = 0; i < controls.Count; ++i)

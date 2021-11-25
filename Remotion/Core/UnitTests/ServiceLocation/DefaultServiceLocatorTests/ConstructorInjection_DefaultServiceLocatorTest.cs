@@ -41,7 +41,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void GetInstance_ConstructorWithMultipleParameters_PerformsIndirectResolutionCalls()
+    public void GetInstance_ConstructorWithMultipleParameters_PerformsIndirectResolutionCalls ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (
           typeof (ITestType),

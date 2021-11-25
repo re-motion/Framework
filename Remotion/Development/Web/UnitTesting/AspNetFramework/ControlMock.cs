@@ -64,7 +64,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
       _valueInViewState = (string?) savedState;
     }
 
-    protected override object? SaveViewState()
+    protected override object? SaveViewState ()
     {
       return _valueInViewState;
     }

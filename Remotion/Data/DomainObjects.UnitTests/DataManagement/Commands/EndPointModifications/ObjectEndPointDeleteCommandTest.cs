@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     }
 
     [Test]
-    public void Begin_NoEvents()
+    public void Begin_NoEvents ()
     {
       _transactionEventSinkWithMock.Replay();
 

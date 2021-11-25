@@ -39,12 +39,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     // methods and properties
 
-    protected override bool EvaluateIsValid()
+    protected override bool EvaluateIsValid ()
     {
       return _editModeController.Validate();
     }
 
-    protected override bool ControlPropertiesValid()
+    protected override bool ControlPropertiesValid ()
     {
       string controlToValidate = ControlToValidate;
       if (string.IsNullOrEmpty (controlToValidate))

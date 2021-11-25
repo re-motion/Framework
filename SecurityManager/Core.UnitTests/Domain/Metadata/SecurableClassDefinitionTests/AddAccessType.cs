@@ -68,7 +68,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     }
 
     [Test]
-    public void AddsPermissionsForNewAccessType()
+    public void AddsPermissionsForNewAccessType ()
     {
       var accessType0 = AccessTypeDefinition.NewObject();
       var accessType1 = AccessTypeDefinition.NewObject();

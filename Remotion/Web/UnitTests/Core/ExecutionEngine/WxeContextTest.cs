@@ -40,7 +40,7 @@ public class WxeContextTest
   private string _resource;
 
   [SetUp]
-  public virtual void SetUp()
+  public virtual void SetUp ()
   {
     NameValueCollection queryString = new NameValueCollection ();
     queryString.Add (WxeHandler.Parameters.ReturnUrl, "/Root.wxe");
@@ -62,14 +62,14 @@ public class WxeContextTest
   }
 
   [TearDown]
-  public virtual void TearDown()
+  public virtual void TearDown ()
   { 
     WebConfigurationMock.Current = null;
     Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
   }
 
   [Test]
-  public void GetStaticPermanentUrlWithDefaultWxeHandlerWithoutMappingForFunctionType()
+  public void GetStaticPermanentUrlWithDefaultWxeHandlerWithoutMappingForFunctionType ()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();
     Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
@@ -86,7 +86,7 @@ public class WxeContextTest
   }
 
   [Test]
-  public void GetStaticPermanentUrlWithDefaultWxeHandlerForMappedFunctionType()
+  public void GetStaticPermanentUrlWithDefaultWxeHandlerForMappedFunctionType ()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();
 
@@ -97,7 +97,7 @@ public class WxeContextTest
   }
 
   [Test]
-  public void GetStaticPermanentUrlWithEmptyQueryString()
+  public void GetStaticPermanentUrlWithEmptyQueryString ()
   {
     string expectedUrl = UrlUtility.ResolveUrlCaseSensitive (new HttpContextWrapper (_currentHttpContext), _resource);
     string permanentUrl = WxeContext.GetPermanentUrl (new HttpContextWrapper (_currentHttpContext), _functionType, new NameValueCollection ());
@@ -106,7 +106,7 @@ public class WxeContextTest
   }
 
   [Test]
-  public void GetStaticPermanentUrlWithQueryString()
+  public void GetStaticPermanentUrlWithQueryString ()
   {
     string parameterName = "Param";
     string parameterValue = "Hello World!";
@@ -126,7 +126,7 @@ public class WxeContextTest
   }
 
   [Test]
-  public void GetStaticPermanentUrlWithQueryStringExceedingMaxLength()
+  public void GetStaticPermanentUrlWithQueryStringExceedingMaxLength ()
   {
     string parameterName = "Param";
     string parameterValue = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
@@ -139,7 +139,7 @@ public class WxeContextTest
   }
 
   [Test]
-  public void GetStaticPermanentUrlWithoutWxeHandler()
+  public void GetStaticPermanentUrlWithoutWxeHandler ()
   {
     WebConfigurationMock.Current = null;
     Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
@@ -149,7 +149,7 @@ public class WxeContextTest
   }
 
   [Test]
-  public void GetPermanentUrlWithEmptyQueryString()
+  public void GetPermanentUrlWithEmptyQueryString ()
   {
     string expectedUrl = UrlUtility.ResolveUrlCaseSensitive (new HttpContextWrapper (_currentHttpContext), _resource);
     string permanentUrl = _currentWxeContext.GetPermanentUrl (_functionType, new NameValueCollection(), false);
@@ -158,7 +158,7 @@ public class WxeContextTest
   }
 
   [Test]
-  public void GetPermanentUrlWithQueryString()
+  public void GetPermanentUrlWithQueryString ()
   {
     string parameterName = "Param";
     string parameterValue = "Hello World!";
@@ -178,7 +178,7 @@ public class WxeContextTest
   }
 
   [Test]
-  public void GetPermanentUrlWithQueryStringExceedingMaxLength()
+  public void GetPermanentUrlWithQueryStringExceedingMaxLength ()
   {
     string parameterName = "Param";
     string parameterValue = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
@@ -191,7 +191,7 @@ public class WxeContextTest
   }
 
   [Test]
-  public void GetPermanentUrlWithQueryStringAndParentPermanentUrl()
+  public void GetPermanentUrlWithQueryStringAndParentPermanentUrl ()
   {
     string parameterName = "Param";
     string parameterValue = "Hello World!";
@@ -216,7 +216,7 @@ public class WxeContextTest
   }
 
   [Test]
-  public void GetPermanentUrlWithParentPermanentUrlAndRemoveBothReturnUrls()
+  public void GetPermanentUrlWithParentPermanentUrlAndRemoveBothReturnUrls ()
   {
     string parameterName = "Param";
     string parameterValue = "123456789 123456789 123456789 123456789 123456789 123456789 ";
@@ -237,7 +237,7 @@ public class WxeContextTest
   }
 
   [Test]
-  public void GetPermanentUrlWithParentPermanentUrlAndRemoveInnermostReturnUrl()
+  public void GetPermanentUrlWithParentPermanentUrlAndRemoveInnermostReturnUrl ()
   {
     string parameterName = "Param";
     string parameterValue = "123456789 123456789 123456789 123456789 ";
@@ -263,7 +263,7 @@ public class WxeContextTest
   }
 
   [Test]
-  public void GetPermanentUrlWithExistingReturnUrl()
+  public void GetPermanentUrlWithExistingReturnUrl ()
   {
     string parameterName = "Param";
     string parameterValue = "Hello World!";

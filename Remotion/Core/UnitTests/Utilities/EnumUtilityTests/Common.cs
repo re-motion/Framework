@@ -112,7 +112,7 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     }
 
     [Test]
-    public void IsValidEnumValue_FlagCombinations()
+    public void IsValidEnumValue_FlagCombinations ()
     {
       Assert.That (EnumUtility.IsValidEnumValue ((TestFlagsWithoutZero) 0), Is.False);
       Assert.That (EnumUtility.IsValidEnumValue ((TestFlagsWithoutZero) 1), Is.True);

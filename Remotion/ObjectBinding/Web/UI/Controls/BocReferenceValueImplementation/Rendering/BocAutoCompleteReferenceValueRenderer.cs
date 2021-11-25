@@ -391,7 +391,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return textBox;
     }
 
-    public override string GetCssClassBase(IBocAutoCompleteReferenceValue control)
+    public override string GetCssClassBase (IBocAutoCompleteReferenceValue control)
     {
       return "bocAutoCompleteReferenceValue";
     }

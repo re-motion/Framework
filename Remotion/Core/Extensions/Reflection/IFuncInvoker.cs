@@ -20,7 +20,7 @@ namespace Remotion.Reflection
 {
   public partial interface IFuncInvoker<TResult>
   {
-    TResult With();
+    TResult With ();
 
     TResult With<A1> (A1 a1);
 

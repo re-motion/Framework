@@ -153,22 +153,22 @@ public class BocDateTimeValueUserControl : BaseUserControl
       label.Text = "not set";
   }
 
-  private void BirthdayTestSetNullButton_Click(object sender, EventArgs e)
+  private void BirthdayTestSetNullButton_Click (object sender, EventArgs e)
   {
     BirthdayField.Value = null;
   }
 
-  private void BirthdayTestSetNewValueButton_Click(object sender, EventArgs e)
+  private void BirthdayTestSetNewValueButton_Click (object sender, EventArgs e)
   {
     BirthdayField.Value = new DateTime (1950, 1, 1);
   }
 
-  private void ReadOnlyBirthdayTestSetNullButton_Click(object sender, EventArgs e)
+  private void ReadOnlyBirthdayTestSetNullButton_Click (object sender, EventArgs e)
   {
     ReadOnlyBirthdayField.Value = null;
   }
 
-  private void ReadOnlyBirthdayTestSetNewValueButton_Click(object sender, EventArgs e)
+  private void ReadOnlyBirthdayTestSetNewValueButton_Click (object sender, EventArgs e)
   {
     ReadOnlyBirthdayField.Value = new DateTime (1950, 1, 1);;
   }
@@ -182,7 +182,7 @@ public class BocDateTimeValueUserControl : BaseUserControl
   }
 
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -195,7 +195,7 @@ public class BocDateTimeValueUserControl : BaseUserControl
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{
 
   }

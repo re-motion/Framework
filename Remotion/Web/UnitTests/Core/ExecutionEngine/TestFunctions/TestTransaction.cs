@@ -52,7 +52,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     public event EventHandler Committed;
     public event EventHandler RolledBack;
 
-    public TestTransaction()
+    public TestTransaction ()
     {
     }
 
@@ -67,7 +67,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
       return (TTransaction) (object) this;
     }
 
-    public void Rollback()
+    public void Rollback ()
     {
       if (Current != this)
         throw new InvalidOperationException ("Current transaction is not this transaction.");
@@ -78,7 +78,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
         RolledBack (this, EventArgs.Empty);
     }
 
-    public void Commit()
+    public void Commit ()
     {
       if (Current != this)
         throw new InvalidOperationException ("Current transaction is not this transaction.");
@@ -89,7 +89,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
         Committed (this, EventArgs.Empty);
     }
 
-    public ITransaction CreateChild()
+    public ITransaction CreateChild ()
     {
       _child = new TestTransaction();
       _child._isChild = true;
@@ -120,7 +120,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
       set { _canCreateChild = value; }
     }
 
-    public void Release()
+    public void Release ()
     {
       if (ThrowOnRelease)
         throw new ReleaseException ();

@@ -104,7 +104,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     }
 
     [OneTimeTearDown]
-    public void OneTimeTearDown()
+    public void OneTimeTearDown ()
     {
 #if FEATURE_ASSEMBLYBUILDER_SAVE
       try

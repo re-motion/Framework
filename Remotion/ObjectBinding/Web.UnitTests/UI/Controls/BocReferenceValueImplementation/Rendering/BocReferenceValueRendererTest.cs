@@ -384,7 +384,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     }
 
     [Test]
-    public void RenderDiagnosticMetadataAttributes()
+    public void RenderDiagnosticMetadataAttributes ()
     {
       Control.Object.DropDownListStyle.AutoPostBack = true;
 

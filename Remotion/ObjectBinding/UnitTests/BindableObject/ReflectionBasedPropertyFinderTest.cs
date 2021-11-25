@@ -123,7 +123,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void ImplicitInterfaceProperties_GetInterfaceBasedPropertyInfo()
+    public void ImplicitInterfaceProperties_GetInterfaceBasedPropertyInfo ()
     {
       var propertyInfos = new ReflectionBasedPropertyFinder (typeof (TestTypeWithInterfaces)).GetPropertyInfos ().ToArray ();
       var interfaceImplProperty = (from p in propertyInfos

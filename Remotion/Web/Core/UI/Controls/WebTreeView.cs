@@ -886,7 +886,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Find the <see cref="IResourceManager"/> for this <see cref="WebTreeView"/>. </summary>
-    protected IResourceManager GetResourceManager()
+    protected IResourceManager GetResourceManager ()
     {
       //  Provider has already been identified.
       if (_cachedResourceManager != null)

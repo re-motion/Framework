@@ -23,13 +23,13 @@ namespace Remotion.ObjectBinding.Sample
 {
   public class PersonCustomCell: BocCustomColumnDefinitionCell
   {
-    protected override Control CreateControl(BocCustomCellArguments arguments)
+    protected override Control CreateControl (BocCustomCellArguments arguments)
     {
       HtmlInputFile inputFile = new HtmlInputFile();
       return inputFile;
     }
 
-    protected override void OnLoad(BocCustomCellLoadArguments arguments)
+    protected override void OnLoad (BocCustomCellLoadArguments arguments)
     {
       if (arguments.List.Page.IsPostBack)
       {
@@ -47,11 +47,11 @@ namespace Remotion.ObjectBinding.Sample
         RegisterForSynchronousPostBack (row, "sync");
     }
 
-    protected override void OnClick(BocCustomCellClickArguments arguments, string eventArgument)
+    protected override void OnClick (BocCustomCellClickArguments arguments, string eventArgument)
     {
     }
 
-    protected override void OnValidate(BocCustomCellValidationArguments arguments)
+    protected override void OnValidate (BocCustomCellValidationArguments arguments)
     {
     }
 

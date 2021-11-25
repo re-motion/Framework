@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding
   {
     private readonly IBindableObjectWithIdentityBaseImplementation _implementation;
 
-    protected BindableObjectWithIdentityBase()
+    protected BindableObjectWithIdentityBase ()
     {
       _implementation = BindableObjectWithIdentityBaseImplementation.Create (this);
     }
@@ -47,17 +47,17 @@ namespace Remotion.ObjectBinding
       _implementation = implementation;
     }
 
-    public object? GetProperty(IBusinessObjectProperty property)
+    public object? GetProperty (IBusinessObjectProperty property)
     {
       return _implementation.GetProperty(property);
     }
 
-    public void SetProperty(IBusinessObjectProperty property, object? value)
+    public void SetProperty (IBusinessObjectProperty property, object? value)
     {
       _implementation.SetProperty(property, value);
     }
 
-    public string GetPropertyString(IBusinessObjectProperty property, string? format)
+    public string GetPropertyString (IBusinessObjectProperty property, string? format)
     {
       return _implementation.GetPropertyString(property, format);
     }

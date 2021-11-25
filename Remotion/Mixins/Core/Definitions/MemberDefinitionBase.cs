@@ -114,7 +114,7 @@ namespace Remotion.Mixins.Definitions
       }
     }
 
-    protected abstract IDefinitionCollection<Type, MemberDefinitionBase> GetInternalOverridesWrapper();
+    protected abstract IDefinitionCollection<Type, MemberDefinitionBase> GetInternalOverridesWrapper ();
 
     internal abstract void AddOverride (MemberDefinitionBase member);
 

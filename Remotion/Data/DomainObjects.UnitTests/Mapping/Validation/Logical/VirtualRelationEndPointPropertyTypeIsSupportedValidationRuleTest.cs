@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     }
 
     [Test]
-    public void PropertyTypIsObjectList()
+    public void PropertyTypIsObjectList ()
     {
       var propertyType = typeof (ObjectList<BaseOfBaseValidationDomainObjectClass>);
       var endPointDefinition = 

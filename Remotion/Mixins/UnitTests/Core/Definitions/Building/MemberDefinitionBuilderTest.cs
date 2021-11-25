@@ -196,7 +196,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    public void ShadowedMembers_AreExplicitlyRetrieved()
+    public void ShadowedMembers_AreExplicitlyRetrieved ()
     {
       var classDefinition = DefinitionObjectMother.CreateTargetClassDefinition (typeof (DerivedWithNewVirtualMembers));
       var builder = new MemberDefinitionBuilder (classDefinition, mi => true);

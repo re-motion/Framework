@@ -27,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
   public class CodeGenerationClassContextSerializerTest : CodeGenerationBaseTest
   {
     [Test]
-    public void IntegrationTest()
+    public void IntegrationTest ()
     {
       var referenceMixinContext1 = MixinContextObjectMother.Create (mixinType: typeof (BT1Mixin1));
       var referenceMixinContext2 = MixinContextObjectMother.Create (mixinType: typeof (BT1Mixin2));

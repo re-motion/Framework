@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
     }
 
     [Test]
-    public void GetClosedMixinType_NonGenericMixin()
+    public void GetClosedMixinType_NonGenericMixin ()
     {
       var instantiator = new MixinTypeCloser (typeof (BaseType3));
       Type t = instantiator.GetClosedMixinType (typeof (object));

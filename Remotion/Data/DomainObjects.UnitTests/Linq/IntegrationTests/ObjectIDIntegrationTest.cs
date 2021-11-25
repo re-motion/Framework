@@ -130,7 +130,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    public void Query_UsesClassID_InWhereClause()
+    public void Query_UsesClassID_InWhereClause ()
     {
       var query = QueryFactory.CreateLinqQuery<Company> ().Where (c => c.ID.ClassID == "Customer");
 

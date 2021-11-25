@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void SetNullIntoNonNullableValueType()
+    public void SetNullIntoNonNullableValueType ()
     {
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.NewObject();
       Assert.That (

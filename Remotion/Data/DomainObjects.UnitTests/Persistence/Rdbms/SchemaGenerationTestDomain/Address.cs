@@ -23,12 +23,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [Instantiable]
   public abstract class Address : DomainObject
   {
-    public static Address NewObject()
+    public static Address NewObject ()
     {
       return DomainObject.NewObject<Address> ();
     }
 
-    protected Address()
+    protected Address ()
     {
     }
 

@@ -466,7 +466,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       return new ArgumentOutOfRangeException(argumentName, actualValue, String.Format (format, args));
     }
 
-    private IEnumerable<AccessControlList> GetAccessControlLists()
+    private IEnumerable<AccessControlList> GetAccessControlLists ()
     {
       if (StatelessAccessControlList != null)
         yield return StatelessAccessControlList;

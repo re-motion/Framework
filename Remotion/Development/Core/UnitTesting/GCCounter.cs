@@ -35,7 +35,7 @@ namespace Remotion.Development.UnitTesting
     {
     }
 
-    public void BeginCount()
+    public void BeginCount ()
     {
       GC.Collect();
       for (int i = 0; i < s_generationCount; i++)

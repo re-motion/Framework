@@ -26,7 +26,7 @@ namespace Remotion.Configuration
   /// </summary>
   internal sealed class ConfigurationWrapperFromConfigurationManager: ConfigurationWrapper
   {
-    public ConfigurationWrapperFromConfigurationManager()
+    public ConfigurationWrapperFromConfigurationManager ()
     {
     }
 

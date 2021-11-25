@@ -32,7 +32,7 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     }
 
     [Test]
-    public void IsEnabled_WithLevelError()
+    public void IsEnabled_WithLevelError ()
     {
       SetLoggingThreshold (Level.Error);
       Assert.That (Log.IsEnabled (LogLevel.Error), Is.True);

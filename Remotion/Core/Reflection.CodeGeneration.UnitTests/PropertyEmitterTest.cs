@@ -157,7 +157,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     }
 
     [Test]
-    public void GetMethodCannotBeSetToNull()
+    public void GetMethodCannotBeSetToNull ()
     {
       CustomPropertyEmitter property = _classEmitter.CreateProperty ("GetMethodCannotBeSetToNull", PropertyKind.Static, typeof (string));
       property.CreateGetMethod ();

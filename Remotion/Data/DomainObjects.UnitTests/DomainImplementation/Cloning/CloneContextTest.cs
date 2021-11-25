@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     }
 
     [Test]
-    public void GetCloneFor_AddsToShallowClones()
+    public void GetCloneFor_AddsToShallowClones ()
     {
       CloneContext context = new CloneContext (_clonerMock);
       Order source = DomainObjectIDs.Order1.GetObject<Order> ();

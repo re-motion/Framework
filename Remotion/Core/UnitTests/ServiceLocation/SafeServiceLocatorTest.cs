@@ -62,7 +62,7 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
-    public void GetCurrent_WithLocatorProvider()
+    public void GetCurrent_WithLocatorProvider ()
     {
       var serviceLocatorStub = new Mock<IServiceLocator>();
       ServiceLocator.SetLocatorProvider (() => serviceLocatorStub.Object);

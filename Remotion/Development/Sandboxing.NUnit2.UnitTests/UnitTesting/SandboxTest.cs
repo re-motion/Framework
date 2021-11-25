@@ -113,7 +113,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
       Environment.GetEnvironmentVariable ("USERDOMAIN");
     }
 
-    public static void DangerousMethodRequiringPermission()
+    public static void DangerousMethodRequiringPermission ()
     {
       Environment.GetEnvironmentVariable ("USERDOMAIN");
     }

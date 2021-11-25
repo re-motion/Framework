@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
   public class DomainObjectTransactionContextIndexerTest : ClientTransactionBaseTest
   {
     [Test]
-    public void Item()
+    public void Item ()
     {
       var order = DomainObjectIDs.Order1.GetObject<Order> ();
       var tx = order.RootTransaction.CreateSubTransaction();

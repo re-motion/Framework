@@ -47,7 +47,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
   protected BocTextValue ParterFirstNameField;
   protected Button PostBackButton;
 
-	private void Page_Load(object sender, EventArgs e)
+	private void Page_Load (object sender, EventArgs e)
 	{
 	  var  personID = new Guid (((ViewPersonDetailsWxeFunction)CurrentFunction).ID);
 
@@ -69,7 +69,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     }
 	}
 
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -84,7 +84,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     InitalizeJobListMenuItems();
 	}
 
-  private void InitalizePartnerFieldMenuItems()
+  private void InitalizePartnerFieldMenuItems ()
   {
     BocMenuItem menuItem = null;
 
@@ -134,7 +134,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     PartnerField.OptionsMenuItems.Add (menuItem);
   }
 
-  private void InitalizeJobListMenuItems()
+  private void InitalizeJobListMenuItems ()
   {
     BocMenuItem menuItem = null;
 
@@ -224,7 +224,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{    
     this.PartnerField.SelectionChanged += new System.EventHandler(this.PartnerField_SelectionChanged);
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
@@ -233,7 +233,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
   }
 	#endregion
 
-  private void SaveButton_Click(object sender, EventArgs e)
+  private void SaveButton_Click (object sender, EventArgs e)
   {
     bool isValid = FormGridManager.Validate();
     if (isValid)
@@ -247,7 +247,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     XmlReflectionBusinessObjectStorageProvider.Current.Reset();
   }
 
-  private void PartnerField_SelectionChanged(object sender, EventArgs e)
+  private void PartnerField_SelectionChanged (object sender, EventArgs e)
   {
     PartnerField.SaveValue (false);
     PartnerDataSource.LoadValue (false);

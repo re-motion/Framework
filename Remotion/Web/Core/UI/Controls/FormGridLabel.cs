@@ -69,7 +69,7 @@ public class FormGridLabel: Label, ISmartControl
     get { return (_helpUrl != null) ? new HelpInfo (_helpUrl) : null; }
   }
 
-  IEnumerable<BaseValidator> ISmartControl.CreateValidators()
+  IEnumerable<BaseValidator> ISmartControl.CreateValidators ()
   {
     return Enumerable.Empty<BaseValidator>();
   }

@@ -98,7 +98,7 @@ namespace Remotion.Mixins.Definitions
       get { return _aggregatedDependencies; }
     }
 
-    public virtual ClassDefinitionBase? GetImplementer()
+    public virtual ClassDefinitionBase? GetImplementer ()
     {
       if (RequiredType.Type.IsAssignableFrom (TargetClass.Type))
         return TargetClass;

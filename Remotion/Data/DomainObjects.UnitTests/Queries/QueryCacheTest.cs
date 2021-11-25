@@ -29,14 +29,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     private QueryCache _cache;
 
     [SetUp]
-    public override void SetUp()
+    public override void SetUp ()
     {
       base.SetUp();
       _cache = new QueryCache();
     }
 
     [Test]
-    public void GetOrCreateQuery_Uncached()
+    public void GetOrCreateQuery_Uncached ()
     {
       IQuery query = _cache.GetQuery<Order> ("id", orders => from o in orders where o.OrderNumber > 1 select o);
 

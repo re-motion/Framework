@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   [Instantiable]
   public abstract class ClassWithoutTimestampColumn: TestDomainBase
   {
-    protected ClassWithoutTimestampColumn()
+    protected ClassWithoutTimestampColumn ()
     {
     }
   }

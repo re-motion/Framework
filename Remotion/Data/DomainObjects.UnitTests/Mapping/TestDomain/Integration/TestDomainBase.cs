@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
   [Serializable]
   public abstract class TestDomainBase : DomainObject
   {
-    protected TestDomainBase()
+    protected TestDomainBase ()
     {
     }
 

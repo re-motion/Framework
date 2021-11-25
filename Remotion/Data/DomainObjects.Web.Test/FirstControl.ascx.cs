@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
       RefreshText();
     }
 
-    private void RefreshText()
+    private void RefreshText ()
     {
       GuidInLabel.Text = GetObjectString (MyFunction.ObjectPassedIntoSecondControl);
       var outObject = MyFunction.ObjectReadFromSecondControl;
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
       ClientTransactionLabel.Text = ClientTransaction.Current.ToString ();
     }
 
-    private string GetObjectString(ClassWithAllDataTypes obj)
+    private string GetObjectString (ClassWithAllDataTypes obj)
     {
       return obj == null ? "<null>" : obj.ID + " (byte property: " + obj.ByteProperty + ", State: " + obj.State + ")";
     }

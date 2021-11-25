@@ -101,7 +101,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
       HandlePostBack (e.EventArgument);
     }
 
-    private void HandlePostBack(string result)
+    private void HandlePostBack (string result)
     {
       _label.Text = "Test Result: " + result;
       ScriptManager.RegisterHiddenField (_sutPage, LastClickFieldID, result);

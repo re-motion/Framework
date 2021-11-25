@@ -22,12 +22,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [Instantiable]
   public abstract class ClassWithRelations : ClassWithRelationsBase
   {
-    public static ClassWithRelations NewObject()
+    public static ClassWithRelations NewObject ()
     {
       return DomainObject.NewObject<ClassWithRelations>();
     }
 
-    protected ClassWithRelations()
+    protected ClassWithRelations ()
     {
     }
 

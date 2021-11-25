@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 
     public readonly string DisplayNameFromCtor;
 
-    protected SampleBindableDomainObject_AccessingImplementationFromCtor()
+    protected SampleBindableDomainObject_AccessingImplementationFromCtor ()
     {
       DisplayNameFromCtor = base.DisplayName;
     }
