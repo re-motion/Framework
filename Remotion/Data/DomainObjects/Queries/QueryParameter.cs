@@ -42,7 +42,7 @@ public class QueryParameter
   /// </summary>
   /// <param name="name">The name of the parameter.</param>
   /// <param name="value">The value of the parameter.</param>
-  public QueryParameter (string name, object value) : this (name, value, QueryParameterType.Value)
+  public QueryParameter (string name, object value) : this(name, value, QueryParameterType.Value)
   {
   }
 

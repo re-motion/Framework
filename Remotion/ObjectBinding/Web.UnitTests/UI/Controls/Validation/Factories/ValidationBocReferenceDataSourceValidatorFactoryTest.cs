@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
 
       var factories =
           ((CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>) instance).VlidatorFactories.Select(f => f.GetType()).ToList();
-      Assert.That(factories, Has.Member(typeof (ValidationBocReferenceDataSourceValidatorFactory)));
+      Assert.That(factories, Has.Member(typeof(ValidationBocReferenceDataSourceValidatorFactory)));
       Assert.That(factories.Count, Is.EqualTo(1));
     }
 
@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
       {
         Assert.That(
             validators.Select(v => v.GetType()),
-            Is.EquivalentTo(new[] { typeof (BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator) }));
+            Is.EquivalentTo(new[] { typeof(BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator) }));
         Assert.That(validators, Has.All.Property("EnableViewState").False);
       }
     }

@@ -49,7 +49,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     private class OuterProductProcessorOneLineString : OuterProductProcessorBase
     {
       public OuterProductProcessorOneLineString (Array rectangularArray)
-          : base (rectangularArray)
+          : base(rectangularArray)
       {
       }
 
@@ -80,7 +80,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     private class OuterProductProcessorPrettyPrinter : OuterProductProcessorBase
     {
       public OuterProductProcessorPrettyPrinter (Array rectangularArray)
-          : base (rectangularArray)
+          : base(rectangularArray)
       {
       }
 
@@ -117,7 +117,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     private class OuterProductProcessorArrayPrettyPrinter : OuterProductProcessorPrettyPrinter
     {
       public OuterProductProcessorArrayPrettyPrinter (Array rectangularArray)
-          : base (rectangularArray)
+          : base(rectangularArray)
       {
       }
 
@@ -135,7 +135,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
       public int NumberElementsToOutputOverall { get; set; }
 
       public OuterProductProcessorArrayPrinter (Array rectangularArray)
-          : base (rectangularArray)
+          : base(rectangularArray)
       {
         NumberElementsToOutputInnermost = -1;
         NumberElementsToOutputAllButInnermost = -1;

@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 public class BocMenuItemCommand: BocCommand
 {
   /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
-  [TypeConverter (typeof (ExpandableObjectConverter))]
+  [TypeConverter (typeof(ExpandableObjectConverter))]
   public class MenuItemHrefCommandInfo: BocCommand.BocHrefCommandInfo
   {
     /// <summary> Initalizes a new instance </summary>
@@ -50,7 +50,7 @@ public class BocMenuItemCommand: BocCommand
   }
 
   /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
-  [TypeConverter (typeof (ExpandableObjectConverter))]
+  [TypeConverter (typeof(ExpandableObjectConverter))]
   public class MenuItemWxeFunctionCommandInfo: BocCommand.BocWxeFunctionCommandInfo
   {
     /// <summary> Create a new instance. </summary>
@@ -111,12 +111,12 @@ public class BocMenuItemCommand: BocCommand
   public new WebMenuItemClickEventHandler? Click;
 
   public BocMenuItemCommand ()
-      : this (CommandType.Event, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+      : this(CommandType.Event, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
   {
   }
 
   public BocMenuItemCommand (CommandType defaultType)
-      : this (defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+      : this(defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
   {
   }
 
@@ -124,7 +124,7 @@ public class BocMenuItemCommand: BocCommand
       CommandType defaultType,
       [CanBeNull] IWebSecurityAdapter? webSecurityAdapter,
       [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
-      : base (defaultType, webSecurityAdapter, wxeSecurityAdapter)
+      : base(defaultType, webSecurityAdapter, wxeSecurityAdapter)
   {
     _hrefCommand = new MenuItemHrefCommandInfo();
     _wxeFunctionCommand = new MenuItemWxeFunctionCommandInfo();

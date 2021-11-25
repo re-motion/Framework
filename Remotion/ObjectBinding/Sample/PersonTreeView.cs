@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Sample
           if (i != 1)
             childrenList.Add(children[i]);
         }
-        return (IBusinessObjectWithIdentity[]) childrenList.ToArray(typeof (IBusinessObjectWithIdentity));
+        return (IBusinessObjectWithIdentity[]) childrenList.ToArray(typeof(IBusinessObjectWithIdentity));
       }
       return base.GetBusinessObjects(parentNode, parent, property);
     }

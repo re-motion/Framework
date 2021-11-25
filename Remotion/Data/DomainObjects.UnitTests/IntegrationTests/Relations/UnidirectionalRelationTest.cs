@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       _location.Client = _newClient;
 
       Assert.That(_location.Client, Is.SameAs(_newClient));
-      Assert.That(_location.Properties[typeof (Location), "Client"].GetRelatedObjectID(), Is.EqualTo(_newClient.ID));
+      Assert.That(_location.Properties[typeof(Location), "Client"].GetRelatedObjectID(), Is.EqualTo(_newClient.ID));
       Assert.That(_location.State.IsChanged, Is.True);
       Assert.That(_oldClient.State.IsUnchanged, Is.True);
       Assert.That(_newClient.State.IsUnchanged, Is.True);
@@ -303,14 +303,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     public void HasBeenTouched ()
     {
       CheckTouching(delegate { _location.Client = _newClient; }, _location, "Client",
-          RelationEndPointID.Create(_location.ID, typeof (Location).FullName + ".Client"));
+          RelationEndPointID.Create(_location.ID, typeof(Location).FullName + ".Client"));
     }
 
     [Test]
     public void HasBeenTouched_OriginalValue ()
     {
       CheckTouching(delegate { _location.Client = _location.Client; }, _location, "Client",
-          RelationEndPointID.Create(_location.ID, typeof (Location).FullName + ".Client"));
+          RelationEndPointID.Create(_location.ID, typeof(Location).FullName + ".Client"));
     }
   }
 }

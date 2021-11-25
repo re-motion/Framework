@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateRealObjectEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "Customer");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
       var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
 
       _decoratorTestHelper.CheckDelegation(
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateVirtualObjectEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
       var fakeResult = MockRepository.GenerateStub<IVirtualObjectEndPoint>();
       _decoratorTestHelper.CheckDelegation(
           f => f.CreateVirtualObjectEndPoint(endPointID),
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateVirtualCollectionEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Product1, typeof (Product), "Reviews");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Product1, typeof(Product), "Reviews");
 
       var fakeResult = MockRepository.GenerateStub<IVirtualCollectionEndPoint>();
       _decoratorTestHelper.CheckDelegation(
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateDomainObjectCollectionEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
 
       var fakeResult = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint>();
       _decoratorTestHelper.CheckDelegation(

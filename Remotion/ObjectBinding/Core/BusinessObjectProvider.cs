@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding
     public static IBusinessObjectProvider GetProvider (Type businessObjectProviderAttributeType)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(
-          "businessObjectProviderAttributeType", businessObjectProviderAttributeType, typeof (BusinessObjectProviderAttribute));
+          "businessObjectProviderAttributeType", businessObjectProviderAttributeType, typeof(BusinessObjectProviderAttribute));
 
       return s_businessObjectProviderStore.GetOrAdd(businessObjectProviderAttributeType, s_createBusinessObjectProviderFromAttribute);
     }
@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding
     public static IBusinessObjectProvider GetProvider<TBusinessObjectProviderAttribute> ()
         where TBusinessObjectProviderAttribute: BusinessObjectProviderAttribute
     {
-      return GetProvider(typeof (TBusinessObjectProviderAttribute));
+      return GetProvider(typeof(TBusinessObjectProviderAttribute));
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding
     public static void SetProvider (Type businessObjectProviderAttributeType, IBusinessObjectProvider provider)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(
-          "businessObjectProviderAttributeType", businessObjectProviderAttributeType, typeof (BusinessObjectProviderAttribute));
+          "businessObjectProviderAttributeType", businessObjectProviderAttributeType, typeof(BusinessObjectProviderAttribute));
 
       if (provider != null)
       {
@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding
     public static void SetProvider<TBusinessObjectProviderAttribute> (IBusinessObjectProvider provider)
         where TBusinessObjectProviderAttribute: BusinessObjectProviderAttribute
     {
-      SetProvider(typeof (TBusinessObjectProviderAttribute), provider);
+      SetProvider(typeof(TBusinessObjectProviderAttribute), provider);
     }
 
     private static IBusinessObjectProvider CreateBusinessObjectProviderFromAttribute (Type businessObjectProviderAttributeType)
@@ -168,7 +168,7 @@ namespace Remotion.ObjectBinding
     /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. Must not be <see langword="null" />.</summary>
     public IBusinessObjectService? GetService (Type serviceType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof (IBusinessObjectService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof(IBusinessObjectService));
 
       IDataStore<Type, IBusinessObjectService?> serviceStore = ServiceStore;
       Assertion.IsNotNull(serviceStore, "The ServiceStore evaluated and returned null. It should return a null object instead.");
@@ -185,7 +185,7 @@ namespace Remotion.ObjectBinding
     /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. </summary>
     public T? GetService<T> () where T: IBusinessObjectService
     {
-      return (T?) GetService(typeof (T));
+      return (T?) GetService(typeof(T));
     }
 
     /// <summary> Registers a new <see cref="IBusinessObjectService"/> with this <see cref="BusinessObjectProvider"/>. </summary>
@@ -193,7 +193,7 @@ namespace Remotion.ObjectBinding
     /// <param name="service"> The <see cref="IBusinessObjectService"/> to register. Must not be <see langword="null" />.</param>
     public void AddService (Type serviceType, IBusinessObjectService service)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof (IBusinessObjectService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof(IBusinessObjectService));
       ArgumentUtility.CheckNotNull("service", service);
 
       IDataStore<Type, IBusinessObjectService?> serviceStore = ServiceStore;
@@ -209,7 +209,7 @@ namespace Remotion.ObjectBinding
     {
       ArgumentUtility.CheckNotNull("service", service);
 
-      AddService(typeof (T), service);
+      AddService(typeof(T), service);
     }
 
     /// <summary>Returns the <see cref="Char"/> to be used as a serparator when formatting the property path's identifier.</summary>

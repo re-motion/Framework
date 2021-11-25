@@ -35,8 +35,8 @@ namespace Remotion.Globalization.UnitTests.TestDomain
     {
       var assemblyCompiler = AssemblyCompiler.CreateInMemoryAssemblyCompiler(
           Path.Combine(TestContext.CurrentContext.TestDirectory, c_testAssemblySourceDirectoryRoot, assemblyName),
-          Path.Combine(TestContext.CurrentContext.TestDirectory, typeof (MultiLingualNameAttribute).Module.Name),
-          Path.Combine(TestContext.CurrentContext.TestDirectory, typeof (TestAssemblies).Module.Name));
+          Path.Combine(TestContext.CurrentContext.TestDirectory, typeof(MultiLingualNameAttribute).Module.Name),
+          Path.Combine(TestContext.CurrentContext.TestDirectory, typeof(TestAssemblies).Module.Name));
       assemblyCompiler.Compile();
       return assemblyCompiler.CompiledAssembly;
     }

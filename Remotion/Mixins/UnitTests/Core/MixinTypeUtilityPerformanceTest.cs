@@ -46,9 +46,9 @@ namespace Remotion.Mixins.UnitTests.Core
     [SetUp]
     public void SetUp ()
     {
-      _unmixedType = typeof (object);
-      _targetType = typeof (BaseType3);
-      _concreteType = MixinTypeUtility.GetConcreteMixedType(typeof (BaseType3));
+      _unmixedType = typeof(object);
+      _targetType = typeof(BaseType3);
+      _concreteType = MixinTypeUtility.GetConcreteMixedType(typeof(BaseType3));
     }
 
     [Test]
@@ -101,7 +101,7 @@ namespace Remotion.Mixins.UnitTests.Core
         bool acc = false;
         for (long l = 0; l < runs; ++l)
         {
-          acc ^= MixinTypeUtility.IsAssignableFrom(typeof (IComparable), type);
+          acc ^= MixinTypeUtility.IsAssignableFrom(typeof(IComparable), type);
         }
         return acc;
       });
@@ -129,7 +129,7 @@ namespace Remotion.Mixins.UnitTests.Core
         bool acc = false;
         for (long l = 0; l < runs; ++l)
         {
-          acc ^= MixinTypeUtility.GetAscribableMixinType(type, typeof (BT1Mixin1)) != null;
+          acc ^= MixinTypeUtility.GetAscribableMixinType(type, typeof(BT1Mixin1)) != null;
         }
         return acc;
       });
@@ -143,7 +143,7 @@ namespace Remotion.Mixins.UnitTests.Core
         bool acc = false;
         for (long l = 0; l < runs; ++l)
         {
-          acc ^= MixinTypeUtility.HasAscribableMixin(type, typeof (BT3Mixin3<,>));
+          acc ^= MixinTypeUtility.HasAscribableMixin(type, typeof(BT3Mixin3<,>));
         }
         return acc;
       });

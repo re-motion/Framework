@@ -73,7 +73,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
       Type definitionType;
       try
       {
-        definitionType = typeof (ExtensibleEnumDefinition<>).MakeGenericType(extensibleEnumType);
+        definitionType = typeof(ExtensibleEnumDefinition<>).MakeGenericType(extensibleEnumType);
       }
       catch (ArgumentException ex) // constraint violation
       {

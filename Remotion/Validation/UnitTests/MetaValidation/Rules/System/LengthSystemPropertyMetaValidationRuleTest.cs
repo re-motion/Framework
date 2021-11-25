@@ -43,7 +43,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.System
       _minLengthValidator1 = new MinimumLengthValidator(10, new InvariantValidationMessage("Fake Message"));
       _minLengthValidator2 = new MinimumLengthValidator(20, new InvariantValidationMessage("Fake Message"));
 
-      _rule = new LengthSystemPropertyMetaValidationRule(PropertyInfoAdapter.Create(typeof (Customer).GetProperty("UserName")));
+      _rule = new LengthSystemPropertyMetaValidationRule(PropertyInfoAdapter.Create(typeof(Customer).GetProperty("UserName")));
     }
 
     [Test]

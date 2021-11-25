@@ -29,7 +29,7 @@ namespace Remotion.Validation.Mixins.Implementation
   /// <see cref="IValidationRuleCollector"/> instance is not a mixin.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IValidationRuleCollectorValidator), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor (typeof(IValidationRuleCollectorValidator), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class CheckNoMixinValidationRuleCollectorValidator : IValidationRuleCollectorValidator
   {
     public CheckNoMixinValidationRuleCollectorValidator ()

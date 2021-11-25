@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     [StorageClassNone]
     public object OriginalOrder
     {
-      get { return Properties[typeof (OrderItem), "Order"].GetOriginalValue<Order>(); }
+      get { return Properties[typeof(OrderItem), "Order"].GetOriginalValue<Order>(); }
     }
   }
 }

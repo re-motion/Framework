@@ -49,7 +49,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
 
     private static CommandLineArguments GetArguments (string[] args)
     {
-      CommandLineClassParser parser = new CommandLineClassParser(typeof (CommandLineArguments));
+      CommandLineClassParser parser = new CommandLineClassParser(typeof(CommandLineArguments));
 
       try
       {
@@ -87,7 +87,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
         ServiceLocator.SetLocatorProvider(() => null);
 
         var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
-        var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof (BaseSecurityManagerObject).Assembly, true));
+        var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof(BaseSecurityManagerObject).Assembly, true));
         var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
 
         ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);

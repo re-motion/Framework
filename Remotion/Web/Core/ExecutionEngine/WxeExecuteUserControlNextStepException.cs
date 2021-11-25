@@ -24,7 +24,7 @@ namespace Remotion.Web.ExecutionEngine
   public class WxeExecuteUserControlNextStepException : WxeExecutionControlException
   {
     public WxeExecuteUserControlNextStepException ()
-      : base (
+      : base(
       "This exception does not indicate an error. It is used to roll back the call stack. "
       + "It is recommended to disable breaking on this exeption type while debugging."
       )
@@ -32,7 +32,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     protected WxeExecuteUserControlNextStepException (SerializationInfo info, StreamingContext context)
-      : base (info, context)
+      : base(info, context)
     {
     }
   }

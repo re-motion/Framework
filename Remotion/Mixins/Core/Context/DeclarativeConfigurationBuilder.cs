@@ -38,7 +38,7 @@ namespace Remotion.Mixins.Context
   /// <threadsafety static="true" instance="false"/>
   public class DeclarativeConfigurationBuilder
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (DeclarativeConfigurationBuilder));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(DeclarativeConfigurationBuilder));
 
     /// <summary>
     /// Builds a new <see cref="MixinConfiguration"/> from the declarative configuration information in the given assemblies without inheriting
@@ -103,7 +103,7 @@ namespace Remotion.Mixins.Context
       var builder = new DeclarativeConfigurationBuilder(parentConfiguration);
       foreach (Type type in types)
       {
-        if (!type.IsDefined(typeof (IgnoreForMixinConfigurationAttribute), false))
+        if (!type.IsDefined(typeof(IgnoreForMixinConfigurationAttribute), false))
           builder.AddType(type);
       }
 
@@ -169,7 +169,7 @@ namespace Remotion.Mixins.Context
 
       foreach (var t in AssemblyTypeCache.GetTypes(assembly))
       {
-        if (!t.IsDefined(typeof (IgnoreForMixinConfigurationAttribute), false) && !MixinTypeUtility.IsGeneratedByMixinEngine(t))
+        if (!t.IsDefined(typeof(IgnoreForMixinConfigurationAttribute), false) && !MixinTypeUtility.IsGeneratedByMixinEngine(t))
           AddType(t);
       }
       return this;
@@ -239,7 +239,7 @@ namespace Remotion.Mixins.Context
         where T : ICustomAttributeProvider
     {
       var customAttributes =
-          (IMixinConfigurationAttribute<T>[]) attributeProvider.GetCustomAttributes(typeof (IMixinConfigurationAttribute<T>), false);
+          (IMixinConfigurationAttribute<T>[]) attributeProvider.GetCustomAttributes(typeof(IMixinConfigurationAttribute<T>), false);
 
       foreach (var attribute in customAttributes)
       {

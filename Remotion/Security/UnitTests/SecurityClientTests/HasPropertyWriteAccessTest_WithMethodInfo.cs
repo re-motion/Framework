@@ -38,7 +38,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       _testHelper = new SecurityClientTestHelper();
       _securityClient = _testHelper.CreateSecurityClient();
-      _propertyInfo = typeof (SecurableObject).GetProperty("IsVisible");
+      _propertyInfo = typeof(SecurableObject).GetProperty("IsVisible");
       _methodInformation = new Mock<IMethodInformation>();
       _methodInfo = _propertyInfo.GetGetMethod();
     }

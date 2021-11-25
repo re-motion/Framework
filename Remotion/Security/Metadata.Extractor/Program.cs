@@ -34,7 +34,7 @@ namespace Remotion.Security.Metadata.Extractor
 
     private static CommandLineArguments? GetArguments (string[] args)
     {
-      CommandLineClassParser parser = new CommandLineClassParser(typeof (CommandLineArguments));
+      CommandLineClassParser parser = new CommandLineClassParser(typeof(CommandLineArguments));
 
       try
       {

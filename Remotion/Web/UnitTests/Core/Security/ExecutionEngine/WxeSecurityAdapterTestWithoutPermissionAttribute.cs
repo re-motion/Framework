@@ -95,7 +95,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void HasStatelessAccess_AccessGranted ()
     {
-      bool hasAccess = _securityAdapter.HasStatelessAccess(typeof (TestFunctionWithoutPermissions));
+      bool hasAccess = _securityAdapter.HasStatelessAccess(typeof(TestFunctionWithoutPermissions));
 
       _mockSecurityProvider.Verify(_ => _.IsNull, Times.Never);
       _mockPrincipalProvider.Verify();

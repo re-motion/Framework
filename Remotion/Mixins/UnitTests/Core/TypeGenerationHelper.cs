@@ -58,7 +58,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static T ForceTypeGenerationAndCreateInstance<T> ()
     {
-      return (T) ForceTypeGenerationAndCreateInstance(typeof (T));
+      return (T) ForceTypeGenerationAndCreateInstance(typeof(T));
     }
   }
 }

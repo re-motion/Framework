@@ -55,7 +55,7 @@ namespace Remotion.Reflection
     {
       ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
 
-      if (!s_typeConversionProvider.CanConvert(typeInformation.GetType(), typeof (Type)))
+      if (!s_typeConversionProvider.CanConvert(typeInformation.GetType(), typeof(Type)))
       {
         throw new InvalidOperationException(
             string.Format(
@@ -64,7 +64,7 @@ namespace Remotion.Reflection
                 typeInformation.GetType()));
       }
 
-      return (Type) s_typeConversionProvider.Convert(typeInformation.GetType(), typeof (Type), typeInformation)!;
+      return (Type) s_typeConversionProvider.Convert(typeInformation.GetType(), typeof(Type), typeInformation)!;
     }
 
     [CanBeNull]
@@ -72,10 +72,10 @@ namespace Remotion.Reflection
     {
       ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
 
-      if (!s_typeConversionProvider.CanConvert(typeInformation.GetType(), typeof (Type)))
+      if (!s_typeConversionProvider.CanConvert(typeInformation.GetType(), typeof(Type)))
         return null;
 
-      return s_typeConversionProvider.Convert(typeInformation.GetType(), typeof (Type), typeInformation) as Type;
+      return s_typeConversionProvider.Convert(typeInformation.GetType(), typeof(Type), typeInformation) as Type;
     }
 
     [NotNull]

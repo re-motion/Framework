@@ -69,9 +69,9 @@ namespace Remotion.UnitTests.ServiceLocation
       Func<TestImplementation1> instanceFactory = () => new TestImplementation1();
       registry.RegisterSingle<ITestType>(instanceFactory);
 
-      Assert.That(registry.ServiceConfigurationEntry.ServiceType, Is.EqualTo(typeof (ITestType)));
+      Assert.That(registry.ServiceConfigurationEntry.ServiceType, Is.EqualTo(typeof(ITestType)));
       Assert.That(registry.ServiceConfigurationEntry.ImplementationInfos.Count, Is.EqualTo(1));
-      Assert.That(registry.ServiceConfigurationEntry.ImplementationInfos[0].ImplementationType, Is.EqualTo(typeof (ITestType)));
+      Assert.That(registry.ServiceConfigurationEntry.ImplementationInfos[0].ImplementationType, Is.EqualTo(typeof(ITestType)));
       Assert.That(registry.ServiceConfigurationEntry.ImplementationInfos[0].Factory, Is.SameAs(instanceFactory));
       Assert.That(registry.ServiceConfigurationEntry.ImplementationInfos[0].Lifetime, Is.EqualTo(LifetimeKind.InstancePerDependency));
       Assert.That(registry.ServiceConfigurationEntry.ImplementationInfos[0].RegistrationType, Is.EqualTo(RegistrationType.Single));

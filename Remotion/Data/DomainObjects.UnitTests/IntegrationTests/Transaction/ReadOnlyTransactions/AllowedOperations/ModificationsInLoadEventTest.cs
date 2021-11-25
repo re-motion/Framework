@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       _client1 = (Client) LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.Client1, false);
       _client2 = (Client) LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.Client2, false);
       _client3 = (Client) LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.Client3, false);
-      _client4 = (Client) LifetimeService.NewObject(WriteableSubTransaction, typeof (Client), ParamList.Empty);
+      _client4 = (Client) LifetimeService.NewObject(WriteableSubTransaction, typeof(Client), ParamList.Empty);
 
       _loadEventReceiverMock = MockRepository.GenerateStrictMock<ILoadEventReceiver>();
       _order.SetLoadEventReceiver(_loadEventReceiverMock);

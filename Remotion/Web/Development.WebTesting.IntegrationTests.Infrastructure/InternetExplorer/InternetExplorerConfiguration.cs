@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.In
     private readonly IBrowserContentLocator _locator = new InternetExplorerBrowserContentLocator();
 
     public InternetExplorerConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
-        : base (webTestConfigurationSection)
+        : base(webTestConfigurationSection)
     {
     }
 

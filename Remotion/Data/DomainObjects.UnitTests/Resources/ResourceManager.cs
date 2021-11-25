@@ -8,57 +8,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.Resources
   {
     public static byte[] GetDomainObjectsConfigurationWithFakeMappingLoader ()
     {
-      return ResourceUtility.GetResource(typeof (ResourceManager), "DomainObjectsConfigurationWithFakeMappingLoader.xml");
+      return ResourceUtility.GetResource(typeof(ResourceManager), "DomainObjectsConfigurationWithFakeMappingLoader.xml");
     }
 
     public static byte[] GetDomainObjectsConfigurationWithCustomSectionGroupName ()
     {
-      return ResourceUtility.GetResource(typeof (ResourceManager), "DomainObjectsConfigurationWithCustomSectionGroupName.xml");
+      return ResourceUtility.GetResource(typeof(ResourceManager), "DomainObjectsConfigurationWithCustomSectionGroupName.xml");
     }
 
     public static byte[] GetDomainObjectsConfigurationWithMinimumSettings ()
     {
-      return ResourceUtility.GetResource(typeof (ResourceManager), "DomainObjectsConfigurationWithMinimumSettings.xml");
+      return ResourceUtility.GetResource(typeof(ResourceManager), "DomainObjectsConfigurationWithMinimumSettings.xml");
     }
 
     public static byte[] GetDomainObjectsConfigurationWithResolvedInterfaceStorageObjectFactory ()
     {
-      return ResourceUtility.GetResource(typeof (ResourceManager), "DomainObjectsConfigurationWithResolvedInterfaceStorageObjectFactory.xml");
+      return ResourceUtility.GetResource(typeof(ResourceManager), "DomainObjectsConfigurationWithResolvedInterfaceStorageObjectFactory.xml");
     }
 
     public static byte[] GetDomainObjectsConfigurationWithUnresolvedInterfaceStorageObjectFactory ()
     {
-      return ResourceUtility.GetResource(typeof (ResourceManager), "DomainObjectsConfigurationWithUnresolvedInterfaceStorageObjectFactory.xml");
+      return ResourceUtility.GetResource(typeof(ResourceManager), "DomainObjectsConfigurationWithUnresolvedInterfaceStorageObjectFactory.xml");
     }
 
     public static byte[] GetDomainObjectsConfigurationWithMixedStorageObjectFactory ()
     {
-      return ResourceUtility.GetResource(typeof (ResourceManager), "DomainObjectsConfigurationWithMixedStorageObjectFactory.xml");
+      return ResourceUtility.GetResource(typeof(ResourceManager), "DomainObjectsConfigurationWithMixedStorageObjectFactory.xml");
     }
 
     public static byte[] GetImage1 ()
     {
-      return ResourceUtility.GetResource(typeof (ResourceManager), "Image1.png");
+      return ResourceUtility.GetResource(typeof(ResourceManager), "Image1.png");
     }
 
     public static byte[] GetImage2 ()
     {
-      return ResourceUtility.GetResource(typeof (ResourceManager), "Image2.png");
+      return ResourceUtility.GetResource(typeof(ResourceManager), "Image2.png");
     }
 
     public static byte[] GetImageLarger1MB ()
     {
-      return ResourceUtility.GetResource(typeof (ResourceManager), "ImageLarger1MB.bmp");
+      return ResourceUtility.GetResource(typeof(ResourceManager), "ImageLarger1MB.bmp");
     }
 
     public static byte[] GetMappingExportOutput ()
     {
-      return ResourceUtility.GetResource(typeof (ResourceManager), "MappingExportOutput.xml");
+      return ResourceUtility.GetResource(typeof(ResourceManager), "MappingExportOutput.xml");
     }
     
     public static byte[] GetRdbmsMappingSchema ()
     {
-      return ResourceUtility.GetResource(typeof (ResourceManager), "RdbmsMapping.xsd");
+      return ResourceUtility.GetResource(typeof(ResourceManager), "RdbmsMapping.xsd");
     }
 
     public static void IsEqualToImage1 (byte[] actual)

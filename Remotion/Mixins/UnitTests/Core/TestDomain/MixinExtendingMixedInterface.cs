@@ -18,6 +18,6 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Extends (typeof (IMixedInterface))]
+  [Extends (typeof(IMixedInterface))]
   public class MixinExtendingMixedInterface { }
 }

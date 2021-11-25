@@ -38,7 +38,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
       var factory = _serviceLocator.GetInstance<IPipelineFactory>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (RemotionPipelineFactory)));
+      Assert.That(factory, Is.TypeOf(typeof(RemotionPipelineFactory)));
     }
 
     [Test]

@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         DataContainer foreignKeyDataContainer,
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
-      : base (
+      : base(
           ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction),
           ArgumentUtility.CheckNotNull("id", id))
     {
@@ -208,7 +208,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     #region Serialization
     protected RealObjectEndPoint (FlattenedDeserializationInfo info)
-      : base (info)
+      : base(info)
     {
       _foreignKeyDataContainer = info.GetValueForHandle<DataContainer>();
       _propertyDefinition = GetPropertyDefinition();

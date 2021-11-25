@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       Assert.That(orderTicket.Order, Is.Null);
       Assert.That(order.OrderTicket, Is.Null);
-      Assert.That(orderTicket.Properties[typeof (OrderTicket), "Order"].GetRelatedObjectID(), Is.Null);
+      Assert.That(orderTicket.Properties[typeof(OrderTicket), "Order"].GetRelatedObjectID(), Is.Null);
       Assert.That(order.State.IsChanged, Is.True);
       Assert.That(order.InternalDataContainer.State.IsUnchanged, Is.True);
     }
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       computerWithoutEmployee.Delete();
 
       Assert.That(computerWithoutEmployee.Employee, Is.Null);
-      Assert.That(computerWithoutEmployee.Properties[typeof (Computer), "Employee"].GetRelatedObjectID(), Is.Null);
+      Assert.That(computerWithoutEmployee.Properties[typeof(Computer), "Employee"].GetRelatedObjectID(), Is.Null);
     }
 
     [Test]
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       Assert.That(orderTicket.Order, Is.Null);
       Assert.That(order.OrderTicket, Is.Null);
-      Assert.That(orderTicket.Properties[typeof (OrderTicket), "Order"].GetRelatedObjectID(), Is.Null);
+      Assert.That(orderTicket.Properties[typeof(OrderTicket), "Order"].GetRelatedObjectID(), Is.Null);
       Assert.That(orderTicket.InternalDataContainer.State.IsChanged, Is.True);
     }
 
@@ -83,8 +83,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       Assert.That(supervisor.Subordinates.Count, Is.EqualTo(0));
       Assert.That(subordinate1.Supervisor, Is.Null);
       Assert.That(subordinate2.Supervisor, Is.Null);
-      Assert.That(subordinate1.Properties[typeof (Employee), "Supervisor"].GetRelatedObjectID(), Is.Null);
-      Assert.That(subordinate2.Properties[typeof (Employee), "Supervisor"].GetRelatedObjectID(), Is.Null);
+      Assert.That(subordinate1.Properties[typeof(Employee), "Supervisor"].GetRelatedObjectID(), Is.Null);
+      Assert.That(subordinate2.Properties[typeof(Employee), "Supervisor"].GetRelatedObjectID(), Is.Null);
       Assert.That(subordinate1.InternalDataContainer.State.IsChanged, Is.True);
       Assert.That(subordinate2.InternalDataContainer.State.IsChanged, Is.True);
     }
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       Assert.That(orderItem.Order, Is.Null);
       Assert.That(order.OrderItems.Count, Is.EqualTo(1));
       Assert.That(order.OrderItems.Contains(orderItem.ID), Is.False);
-      Assert.That(orderItem.Properties[typeof (OrderItem), "Order"].GetRelatedObjectID(), Is.Null);
+      Assert.That(orderItem.Properties[typeof(OrderItem), "Order"].GetRelatedObjectID(), Is.Null);
       Assert.That(order.State.IsChanged, Is.True);
       Assert.That(order.InternalDataContainer.State.IsUnchanged, Is.True);
     }

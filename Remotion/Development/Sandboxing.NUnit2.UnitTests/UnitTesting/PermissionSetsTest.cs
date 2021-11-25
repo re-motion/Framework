@@ -69,7 +69,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
               | SecurityPermissionFlag.RemotingConfiguration));
       Assert.That(((SmtpPermission) mediumTrustPermissions[7]).Access, Is.EqualTo(SmtpAccess.Connect));
       Assert.That(((SqlClientPermission) mediumTrustPermissions[8]).IsUnrestricted(), Is.True);
-      Assert.That(mediumTrustPermissions[9], Is.TypeOf(typeof (WebPermission)));
+      Assert.That(mediumTrustPermissions[9], Is.TypeOf(typeof(WebPermission)));
       Assert.That(((ReflectionPermission) mediumTrustPermissions[10]).Flags, Is.EqualTo(ReflectionPermissionFlag.RestrictedMemberAccess));
     }
   }

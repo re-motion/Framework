@@ -42,12 +42,12 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     [DBBidirectionalRelation ("Positions")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof (GroupTypePropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType (typeof(GroupTypePropertyTypeSearchService))]
     public abstract GroupType GroupType { get; set; }
 
     [DBBidirectionalRelation ("GroupTypes")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof (PositionPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType (typeof(PositionPropertyTypeSearchService))]
     public abstract Position Position { get; set; }
 
     public override string DisplayName

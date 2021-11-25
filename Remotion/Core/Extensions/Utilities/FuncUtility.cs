@@ -25,27 +25,27 @@ namespace Remotion.Utilities
   {
     private static readonly Type[] s_types = new Type[]
                                              {
-                                                 typeof (Func<>),
-                                                 typeof (Func<,>),
-                                                 typeof (Func<,,>),
-                                                 typeof (Func<,,,>),
-                                                 typeof (Func<,,,,>),
-                                                 typeof (Func<,,,,,>),
-                                                 typeof (Func<,,,,,,>),
-                                                 typeof (Func<,,,,,,,>),
-                                                 typeof (Func<,,,,,,,,>),
-                                                 typeof (Func<,,,,,,,,,>),
-                                                 typeof (Func<,,,,,,,,,,>),
-                                                 typeof (Func<,,,,,,,,,,,>),
-                                                 typeof (Func<,,,,,,,,,,,,>),
-                                                 typeof (Func<,,,,,,,,,,,,,>),
-                                                 typeof (Func<,,,,,,,,,,,,,,>),
-                                                 typeof (Func<,,,,,,,,,,,,,,,>),
-                                                 typeof (Func<,,,,,,,,,,,,,,,,>),
-                                                 typeof (Func<,,,,,,,,,,,,,,,,,>),
-                                                 typeof (Func<,,,,,,,,,,,,,,,,,,>),
-                                                 typeof (Func<,,,,,,,,,,,,,,,,,,,>),
-                                                 typeof (Func<,,,,,,,,,,,,,,,,,,,,>)
+                                                 typeof(Func<>),
+                                                 typeof(Func<,>),
+                                                 typeof(Func<,,>),
+                                                 typeof(Func<,,,>),
+                                                 typeof(Func<,,,,>),
+                                                 typeof(Func<,,,,,>),
+                                                 typeof(Func<,,,,,,>),
+                                                 typeof(Func<,,,,,,,>),
+                                                 typeof(Func<,,,,,,,,>),
+                                                 typeof(Func<,,,,,,,,,>),
+                                                 typeof(Func<,,,,,,,,,,>),
+                                                 typeof(Func<,,,,,,,,,,,>),
+                                                 typeof(Func<,,,,,,,,,,,,>),
+                                                 typeof(Func<,,,,,,,,,,,,,>),
+                                                 typeof(Func<,,,,,,,,,,,,,,>),
+                                                 typeof(Func<,,,,,,,,,,,,,,,>),
+                                                 typeof(Func<,,,,,,,,,,,,,,,,>),
+                                                 typeof(Func<,,,,,,,,,,,,,,,,,>),
+                                                 typeof(Func<,,,,,,,,,,,,,,,,,,>),
+                                                 typeof(Func<,,,,,,,,,,,,,,,,,,,>),
+                                                 typeof(Func<,,,,,,,,,,,,,,,,,,,,>)
                                              };
 
     public static int MaxArguments

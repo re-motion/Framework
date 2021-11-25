@@ -36,9 +36,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [SetUp]
     public void SetUp ()
     {
-      _assembly1 = typeof (Enumerable).Assembly;
-      _assembly2 = typeof (AssemblyFinder).Assembly;
-      _assembly3 = typeof (AssemblyFinderTest).Assembly;
+      _assembly1 = typeof(Enumerable).Assembly;
+      _assembly2 = typeof(AssemblyFinder).Assembly;
+      _assembly3 = typeof(AssemblyFinderTest).Assembly;
     }
 
     [Test]
@@ -96,8 +96,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
         var outputManagerWithoutClosure = (AssemblyCompilerBuildOutputManager) args[0];
 
         // dependency chain: mixinSamples -> remotion -> log4net
-        var log4NetAssembly = typeof (log4net.LogManager).Assembly;
-        var remotionAssembly = typeof (AssemblyFinder).Assembly;
+        var log4NetAssembly = typeof(log4net.LogManager).Assembly;
+        var remotionAssembly = typeof(AssemblyFinder).Assembly;
         var referencingAssembly = CompileReferencingAssembly(outputManagerWithoutClosure, remotionAssembly);
 
         var loaderMock = new Mock<IAssemblyLoader>();
@@ -182,7 +182,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [Test]
     public void FindAssemblies_NoDuplicates ()
     {
-      var assembly4 = typeof (TestFixtureAttribute).Assembly;
+      var assembly4 = typeof(TestFixtureAttribute).Assembly;
       var loaderMock = new Mock<IAssemblyLoader>();
       loaderMock
           .Setup(mock => mock.TryLoadAssembly(ArgReferenceMatchesDefinition(assembly4), _assembly3.FullName))

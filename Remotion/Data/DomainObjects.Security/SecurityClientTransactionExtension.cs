@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Security
 
     public static string DefaultKey
     {
-      get { return typeof (SecurityClientTransactionExtension).GetFullNameChecked(); }
+      get { return typeof(SecurityClientTransactionExtension).GetFullNameChecked(); }
     }
 
     [NonSerialized]
@@ -50,12 +50,12 @@ namespace Remotion.Data.DomainObjects.Security
 
 
     public SecurityClientTransactionExtension ()
-        : this (DefaultKey)
+        : this(DefaultKey)
     {
     }
 
     protected SecurityClientTransactionExtension (string key)
-      : base (key)
+      : base(key)
     {
     }
 
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.Security
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("type", type);
 
-      if (!(typeof (ISecurableObject).IsAssignableFrom(type)))
+      if (!(typeof(ISecurableObject).IsAssignableFrom(type)))
         return;
 
       if (SecurityFreeSection.IsActive)

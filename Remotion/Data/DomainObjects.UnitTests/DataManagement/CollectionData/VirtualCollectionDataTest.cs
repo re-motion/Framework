@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     public void OriginalData_IsReadOnly ()
     {
       Assert.That(_decoratorWithRealData.GetOriginalData().IsReadOnly, Is.True);
-      Assert.That(_decoratorWithRealData.GetOriginalData(), Is.TypeOf(typeof (ReadOnlyVirtualCollectionDataDecorator)));
+      Assert.That(_decoratorWithRealData.GetOriginalData(), Is.TypeOf(typeof(ReadOnlyVirtualCollectionDataDecorator)));
     }
 
     [Test]

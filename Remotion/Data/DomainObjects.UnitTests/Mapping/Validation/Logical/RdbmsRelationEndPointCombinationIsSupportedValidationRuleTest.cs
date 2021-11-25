@@ -35,14 +35,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       _validationRule = new RdbmsRelationEndPointCombinationIsSupportedValidationRule();
 
-      _orderClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Order)];
+      _orderClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Order)];
     }
 
     [Test]
     public void PropertyNotFoundRelationEndPointDefinition_LeftEndPoint ()
     {
       var anonymousEndPointDefinition = new AnonymousRelationEndPointDefinition(_orderClass);
-      var invalidRelationEndPointDefinition = new PropertyNotFoundRelationEndPointDefinition(_orderClass, "Invalid", typeof (object));
+      var invalidRelationEndPointDefinition = new PropertyNotFoundRelationEndPointDefinition(_orderClass, "Invalid", typeof(object));
       var relationDefinition = new RelationDefinition("Test", invalidRelationEndPointDefinition, anonymousEndPointDefinition);
 
       var mappingValidationResult = _validationRule.Validate(relationDefinition);
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void PropertyNotFoundRelationEndPointDefinition_RightEndPoint ()
     {
       var anonymousEndPointDefinition = new AnonymousRelationEndPointDefinition(_orderClass);
-      var invalidRelationEndPointDefinition = new PropertyNotFoundRelationEndPointDefinition(_orderClass, "Invalid", typeof (object));
+      var invalidRelationEndPointDefinition = new PropertyNotFoundRelationEndPointDefinition(_orderClass, "Invalid", typeof(object));
       var relationDefinition = new RelationDefinition("Test", anonymousEndPointDefinition, invalidRelationEndPointDefinition);
 
       var mappingValidationResult = _validationRule.Validate(relationDefinition);
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void TwoVirtualRelationEndPoints ()
     {
       var virtualEndPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          _orderClass, "OrderNumber", false, PropertyInfoAdapter.Create(typeof (Order).GetProperty("OrderNumber")));
+          _orderClass, "OrderNumber", false, PropertyInfoAdapter.Create(typeof(Order).GetProperty("OrderNumber")));
       var relationDefinition = new RelationDefinition("Test", virtualEndPointDefinition, virtualEndPointDefinition);
 
       var mappingValidationResult = _validationRule.Validate(relationDefinition);
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var anonymousEndPointDefinition = new AnonymousRelationEndPointDefinition(_orderClass);
       var virtualEndPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          _orderClass, "OrderNumber", false, PropertyInfoAdapter.Create(typeof (Order).GetProperty("OrderNumber")));
+          _orderClass, "OrderNumber", false, PropertyInfoAdapter.Create(typeof(Order).GetProperty("OrderNumber")));
       var relationDefinition = new RelationDefinition("Test", virtualEndPointDefinition, anonymousEndPointDefinition);
 
       var mappingValidationResult = _validationRule.Validate(relationDefinition);

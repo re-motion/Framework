@@ -294,7 +294,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         Assert.That(customer1.Orders.ToArray(), Is.EqualTo(orders), "This would not be equal if the sort expression was executed.");
-        Assert.That(customer1.Properties[typeof (Customer).FullName + ".Orders"].HasChanged, Is.False);
+        Assert.That(customer1.Properties[typeof(Customer).FullName + ".Orders"].HasChanged, Is.False);
       }
     }
 
@@ -315,7 +315,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         Assert.That(product.Reviews, Is.EquivalentTo(productReviews));
         Assert.That(product.Reviews, Is.Not.EqualTo(productReviews));
-        Assert.That(product.Properties[typeof (Product).FullName + ".Reviews"].HasChanged, Is.False);
+        Assert.That(product.Properties[typeof(Product).FullName + ".Reviews"].HasChanged, Is.False);
       }
     }
 

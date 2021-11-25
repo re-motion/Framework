@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   /// The <see cref="BocListInlineEditingConfigurator"/> instance is retrieved form the <see cref="IServiceLocator"/> using the type
   /// <see cref="BocListInlineEditingConfigurator"/> as key.
   /// </remarks>
-  [ImplementationFor(typeof (BocListInlineEditingConfigurator), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(BocListInlineEditingConfigurator), Lifetime = LifetimeKind.Singleton)]
   public class BocListInlineEditingConfigurator
   {
     private readonly IResourceUrlFactory _resourceUrlFactory;
@@ -100,7 +100,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     private IconInfo GetIcon (string resourceUrl, string alternateText)
     {
-      var url = _resourceUrlFactory.CreateThemedResourceUrl(typeof (BocListInlineEditingConfigurator), ResourceType.Image, resourceUrl).GetUrl();
+      var url = _resourceUrlFactory.CreateThemedResourceUrl(typeof(BocListInlineEditingConfigurator), ResourceType.Image, resourceUrl).GetUrl();
       return new IconInfo(url) { AlternateText = alternateText };
     }
   }

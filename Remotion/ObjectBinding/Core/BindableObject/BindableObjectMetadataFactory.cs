@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.BindableObject
     private readonly BindableObjectGlobalizationService _bindableObjectGlobalizationService;
 
     protected BindableObjectMetadataFactory ()
-        : this (SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>())
+        : this(SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>())
     {
     }
 

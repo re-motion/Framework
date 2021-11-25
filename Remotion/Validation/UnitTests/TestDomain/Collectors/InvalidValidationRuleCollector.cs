@@ -20,7 +20,7 @@ using Remotion.Validation.Attributes;
 namespace Remotion.Validation.UnitTests.TestDomain.Collectors
 {
   [ApplyProgrammatically]
-  [ApplyWithClass (typeof (Customer))]
+  [ApplyWithClass (typeof(Customer))]
   public class InvalidValidationRuleCollector : ValidationRuleCollectorBase<Address>
   {
   }

@@ -85,7 +85,7 @@ namespace Remotion.Mixins
             "Type '{0}' is not associated with the composed interface '{1}'. You should instantiate the class via the ObjectFactory class or the "
             + "NewObject method. If you manually created a mixin configuration, don't forget to add the composed interface.",
             GetType(),
-            typeof (TComposedInterface).Name);
+            typeof(TComposedInterface).Name);
         throw new InvalidOperationException(message);
       }
     }

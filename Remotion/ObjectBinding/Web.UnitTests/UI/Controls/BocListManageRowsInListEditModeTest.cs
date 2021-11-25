@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _newValues[0] = (IBusinessObject) TypeWithString.Create("5", "C");
       _newValues[1] = (IBusinessObject) TypeWithString.Create("6", "D");
 
-      _typeWithStringClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithString));
+      _typeWithStringClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(TypeWithString));
 
       _typeWithStringFirstValuePath = BusinessObjectPropertyPath.CreateStatic(_typeWithStringClass, "FirstValue");
       _typeWithStringSecondValuePath = BusinessObjectPropertyPath.CreateStatic(_typeWithStringClass, "SecondValue");

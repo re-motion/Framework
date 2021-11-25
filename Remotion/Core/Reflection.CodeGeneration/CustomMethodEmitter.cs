@@ -120,7 +120,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     public IMethodEmitter ImplementByReturningDefault ()
     {
-      if (ReturnType == typeof (void))
+      if (ReturnType == typeof(void))
         return ImplementByReturningVoid();
       else
         return ImplementByReturning(new InitObjectExpression(this, ReturnType));

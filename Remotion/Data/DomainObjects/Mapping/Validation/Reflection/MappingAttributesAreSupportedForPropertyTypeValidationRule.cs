@@ -114,9 +114,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     private bool IsPropertyTypeSupported (IPropertyInformation propertyInfo, Type type)
     {
-      if (type == typeof (ObjectList<>))
+      if (type == typeof(ObjectList<>))
         return ReflectionUtility.IsObjectList(propertyInfo.PropertyType);
-      if (type == typeof (IObjectList<>))
+      if (type == typeof(IObjectList<>))
         return ReflectionUtility.IsIObjectList(propertyInfo.PropertyType);
       return type.IsAssignableFrom(propertyInfo.PropertyType);
     }
@@ -130,21 +130,21 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
     {
       ArgumentUtility.CheckNotNull("attributeConstraints", attributeConstraints);
 
-      attributeConstraints.Add(typeof (StringPropertyAttribute), CreateAttributeConstraintForPropertyType<StringPropertyAttribute, string>());
-      attributeConstraints.Add(typeof (BinaryPropertyAttribute), CreateAttributeConstraintForPropertyType<BinaryPropertyAttribute, byte[]>());
+      attributeConstraints.Add(typeof(StringPropertyAttribute), CreateAttributeConstraintForPropertyType<StringPropertyAttribute, string>());
+      attributeConstraints.Add(typeof(BinaryPropertyAttribute), CreateAttributeConstraintForPropertyType<BinaryPropertyAttribute, byte[]>());
       attributeConstraints.Add(
-          typeof (ExtensibleEnumPropertyAttribute), CreateAttributeConstraintForPropertyType<ExtensibleEnumPropertyAttribute, IExtensibleEnum>());
-      attributeConstraints.Add(typeof (MandatoryAttribute), CreateAttributeConstraintForRelationProperty<MandatoryAttribute>());
+          typeof(ExtensibleEnumPropertyAttribute), CreateAttributeConstraintForPropertyType<ExtensibleEnumPropertyAttribute, IExtensibleEnum>());
+      attributeConstraints.Add(typeof(MandatoryAttribute), CreateAttributeConstraintForRelationProperty<MandatoryAttribute>());
       attributeConstraints.Add(
-          typeof (DBBidirectionalRelationAttribute), CreateAttributeConstraintForRelationProperty<DBBidirectionalRelationAttribute>());
+          typeof(DBBidirectionalRelationAttribute), CreateAttributeConstraintForRelationProperty<DBBidirectionalRelationAttribute>());
     }
 
     private AttributeConstraint CreateAttributeConstraintForPropertyType<TAttribute, TProperty> ()
         where TAttribute: Attribute
     {
       return new AttributeConstraint(
-          string.Format("The '{0}' may be only applied to properties of type '{1}'.", typeof (TAttribute).Name, typeof (TProperty).Name),
-          typeof (TProperty));
+          string.Format("The '{0}' may be only applied to properties of type '{1}'.", typeof(TAttribute).Name, typeof(TProperty).Name),
+          typeof(TProperty));
     }
 
     private AttributeConstraint CreateAttributeConstraintForRelationProperty<TAttribute> ()
@@ -153,13 +153,13 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
       return new AttributeConstraint(
           string.Format(
               "The '{0}' may be only applied to properties assignable to types '{1}', '{2}', or '{3}'.",
-              typeof (TAttribute).Name,
-              typeof (DomainObject).Name,
-              typeof (ObjectList<>).Name,
-              typeof (IObjectList<>).Name),
-          typeof (DomainObject),
-          typeof (ObjectList<>),
-          typeof (IObjectList<>));
+              typeof(TAttribute).Name,
+              typeof(DomainObject).Name,
+              typeof(ObjectList<>).Name,
+              typeof(IObjectList<>).Name),
+          typeof(DomainObject),
+          typeof(ObjectList<>),
+          typeof(IObjectList<>));
     }
   }
 }

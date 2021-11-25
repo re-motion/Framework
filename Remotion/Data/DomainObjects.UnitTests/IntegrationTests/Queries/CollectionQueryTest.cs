@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
           "SELECT [Computer].* FROM [Computer] "
           + "WHERE [Computer].[ID] IN (@1, @2, @3) "
           + "ORDER BY [Computer].[ID] asc",
-          new QueryParameterCollection(), typeof (DomainObjectCollection));
+          new QueryParameterCollection(), typeof(DomainObjectCollection));
 
       query.Parameters.Add("@1", DomainObjectIDs.Computer2); // preloaded
       query.Parameters.Add("@2", DomainObjectIDs.Computer3);
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
           "SELECT [Employee].* FROM [Computer] LEFT OUTER JOIN [Employee] ON [Computer].[EmployeeID] = [Employee].[ID] "
           + "WHERE [Computer].[ID] IN (@1, @2, @3) "
           + "ORDER BY [Computer].[ID] asc",
-          new QueryParameterCollection(), typeof (DomainObjectCollection));
+          new QueryParameterCollection(), typeof(DomainObjectCollection));
 
       query.Parameters.Add("@1", DomainObjectIDs.Computer5); // no employee
       query.Parameters.Add("@3", DomainObjectIDs.Computer4); // no employee
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     {
       var query = QueryFactory.CreateCollectionQuery("test", DomainObjectIDs.Computer1.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition,
           "SELECT [Order].* FROM [OrderItem] INNER JOIN [Order] ON [OrderItem].[OrderID] = [Order].[ID] WHERE [Order].[OrderNo] = 1",
-          new QueryParameterCollection(), typeof (DomainObjectCollection));
+          new QueryParameterCollection(), typeof(DomainObjectCollection));
       Assert.That(
           () => QueryManager.GetCollection(query),
           Throws.InstanceOf<RdbmsProviderException>()
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
       Assert.That(customers, Is.Not.Null);
       Assert.That(customers.Count, Is.EqualTo(1));
       Assert.That(customers.ToArray()[0].ID, Is.EqualTo(DomainObjectIDs.Customer1));
-      Assert.That(customers.ToArray()[0].GetPublicDomainObjectType(), Is.EqualTo(typeof (Customer)));
+      Assert.That(customers.ToArray()[0].GetPublicDomainObjectType(), Is.EqualTo(typeof(Customer)));
     }
 
     [Test]
@@ -203,7 +203,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
           order1.ID.StorageProviderDefinition,
           "SELECT * FROM [Order] WHERE OrderNo=1 OR OrderNo=3 ORDER BY OrderNo ASC",
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
       var result = ClientTransaction.Current.QueryManager.GetCollection(query);
 
       Assert.That(result.Count, Is.EqualTo(2));
@@ -224,7 +224,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
           order1.ID.StorageProviderDefinition,
           "SELECT * FROM [Order] WHERE OrderNo=1",
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
 
       var result = ClientTransaction.Current.QueryManager.GetCollection(query);
       Assert.That(result.ToArray(), Is.EqualTo(new[] { order1 }));
@@ -253,7 +253,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     {
       var query = QueryFactory.CreateCollectionQuery("test", DomainObjectIDs.ClassWithAllDataTypes1.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition,
           "SELECT [TableWithAllDataTypes].* FROM [TableWithAllDataTypes] WHERE ([TableWithAllDataTypes].[ExtensibleEnum] = @1)",
-          new QueryParameterCollection(), typeof (DomainObjectCollection));
+          new QueryParameterCollection(), typeof(DomainObjectCollection));
 
       query.Parameters.Add("@1", Color.Values.Blue());
 

@@ -30,7 +30,7 @@ namespace Remotion.Web.UnitTests.Core
     {
       var converter = new PlainTextStringConverter();
 
-      var canConvert = converter.CanConvertFrom(typeof (string));
+      var canConvert = converter.CanConvertFrom(typeof(string));
       Assert.That(canConvert, Is.True);
 
       var result = converter.ConvertFromString(input);
@@ -51,7 +51,7 @@ namespace Remotion.Web.UnitTests.Core
     {
       var converter = new PlainTextStringConverter();
 
-      var canConvert = converter.CanConvertTo(typeof (string));
+      var canConvert = converter.CanConvertTo(typeof(string));
       Assert.That(canConvert, Is.True);
 
       var result = converter.ConvertToString(input);
@@ -72,10 +72,10 @@ namespace Remotion.Web.UnitTests.Core
       var converter = new PlainTextStringConverter();
       var input = PlainTextString.CreateFromText("test");
 
-      var canConvert = converter.CanConvertTo(typeof (InstanceDescriptor));
+      var canConvert = converter.CanConvertTo(typeof(InstanceDescriptor));
       Assert.That(canConvert, Is.True);
 
-      var result = converter.ConvertTo(input, typeof (InstanceDescriptor));
+      var result = converter.ConvertTo(input, typeof(InstanceDescriptor));
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.InstanceOf<InstanceDescriptor>());
 
@@ -94,10 +94,10 @@ namespace Remotion.Web.UnitTests.Core
     {
       var converter = new PlainTextStringConverter();
 
-      var canConvert = converter.CanConvertTo(typeof (InstanceDescriptor));
+      var canConvert = converter.CanConvertTo(typeof(InstanceDescriptor));
       Assert.That(canConvert, Is.True);
 
-      var result = converter.ConvertTo(null!, typeof (InstanceDescriptor));
+      var result = converter.ConvertTo(null!, typeof(InstanceDescriptor));
       Assert.That(result, Is.Null);
     }
 
@@ -109,7 +109,7 @@ namespace Remotion.Web.UnitTests.Core
           MemberInfoFromExpressionUtility.GetMethod(() => PlainTextString.CreateFromText(null)),
           new[] { "test" });
 
-      var canConvert = converter.CanConvertFrom(typeof (InstanceDescriptor));
+      var canConvert = converter.CanConvertFrom(typeof(InstanceDescriptor));
       Assert.That(canConvert, Is.True);
 
       var result = converter.ConvertFrom(input);
@@ -123,7 +123,7 @@ namespace Remotion.Web.UnitTests.Core
       var converter = new PlainTextStringConverter();
       var input = (InstanceDescriptor) null;
 
-      var canConvert = converter.CanConvertFrom(typeof (InstanceDescriptor));
+      var canConvert = converter.CanConvertFrom(typeof(InstanceDescriptor));
       Assert.That(canConvert, Is.True);
 
       var result = converter.ConvertFrom(input);

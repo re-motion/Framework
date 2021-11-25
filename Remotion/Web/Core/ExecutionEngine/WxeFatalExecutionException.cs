@@ -26,13 +26,13 @@ namespace Remotion.Web.ExecutionEngine
     private readonly Exception? _outerException;
 
     public WxeFatalExecutionException (Exception innerExcection, Exception? outerException)
-      : base ("Execution failed.\r\n" + innerExcection.Message + (outerException != null ? ("\r\n" + outerException.Message) : string.Empty), innerExcection)
+      : base("Execution failed.\r\n" + innerExcection.Message + (outerException != null ? ("\r\n" + outerException.Message) : string.Empty), innerExcection)
     {
       _outerException = outerException;
     }
 
     public WxeFatalExecutionException (SerializationInfo info, StreamingContext context)
-      : base (info, context)
+      : base(info, context)
     {
     }
 

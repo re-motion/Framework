@@ -23,12 +23,12 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
      
   }
 
-  [ImplementationFor (typeof (ITestOpenGenericService<int>))]
+  [ImplementationFor (typeof(ITestOpenGenericService<int>))]
   public class TestOpenGenericIntImplementation : ITestOpenGenericService<int>
   {
   }
 
-  [ImplementationFor (typeof (ITestOpenGenericService<string>))]
+  [ImplementationFor (typeof(ITestOpenGenericService<string>))]
   public class TestOpenGenericStringImplementation : ITestOpenGenericService<string>
   {
   }

@@ -78,7 +78,7 @@ namespace Remotion.Web.Utilities
       ArrayList controlList = new ArrayList();
       GetControlsRecursiveInternal(parentControl, type, controlList);
       if (type.IsInterface)
-        type = typeof (Control);
+        type = typeof(Control);
       return (Control[]) controlList.ToArray(type);
     }
 
@@ -87,7 +87,7 @@ namespace Remotion.Web.Utilities
       ArrayList controlList = new ArrayList();
       GetControlsRecursiveInternal(parentControl, type, new ArrayList(stopList), controlList);
       if (type.IsInterface)
-        type = typeof (Control);
+        type = typeof(Control);
       return (Control[]) controlList.ToArray(type);
     }
 

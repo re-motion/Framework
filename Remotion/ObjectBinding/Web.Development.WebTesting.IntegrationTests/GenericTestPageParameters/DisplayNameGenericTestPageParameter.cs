@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     public string VisibleDisplayName { get; private set; }
 
     public DisplayNameGenericTestPageParameter ()
-        : base (TestConstants.DisplayNameSelectorID, c_parameterCount)
+        : base(TestConstants.DisplayNameSelectorID, c_parameterCount)
     {
     }
 

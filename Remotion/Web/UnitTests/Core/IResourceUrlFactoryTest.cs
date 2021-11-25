@@ -30,7 +30,7 @@ namespace Remotion.Web.UnitTests.Core
     [SetUp]
     public void SetUp ()
     {
-            Console.WriteLine(typeof (HttpContext).AssemblyQualifiedName);
+            Console.WriteLine(typeof(HttpContext).AssemblyQualifiedName);
 
       _serviceLocator = DefaultServiceLocator.Create();
     }
@@ -41,7 +41,7 @@ namespace Remotion.Web.UnitTests.Core
       var factory = _serviceLocator.GetInstance<IResourceUrlFactory>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (ResourceUrlFactory)));
+      Assert.That(factory, Is.TypeOf(typeof(ResourceUrlFactory)));
     }
 
     [Test]

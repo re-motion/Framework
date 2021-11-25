@@ -29,7 +29,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void GetParameterDeclarations_ParametersDeclaredOnType_ReturnsParametersSortedByIndex ()
     {
-      var parameters = WxeVariablesContainer.GetParameterDeclarations(typeof (TestBaseFunctionWithParameters));
+      var parameters = WxeVariablesContainer.GetParameterDeclarations(typeof(TestBaseFunctionWithParameters));
       Assert.That(parameters.Length, Is.EqualTo(2));
       Assert.That(parameters[0].Name, Is.EqualTo("Parameter1"));
       Assert.That(parameters[1].Name, Is.EqualTo("Parameter2"));
@@ -38,7 +38,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void GetParameterDeclarations_ParametersDeclaredOnTypeAndBaseType_ReturnsParametersSortedByHierarchyAndIndex ()
     {
-      var parameters = WxeVariablesContainer.GetParameterDeclarations(typeof (TestDerivedFunctionWithParameters));
+      var parameters = WxeVariablesContainer.GetParameterDeclarations(typeof(TestDerivedFunctionWithParameters));
       Assert.That(parameters.Length, Is.EqualTo(4));
       Assert.That(parameters[0].Name, Is.EqualTo("Parameter1"));
       Assert.That(parameters[1].Name, Is.EqualTo("Parameter2"));
@@ -50,7 +50,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     public void GetParameterDeclarations_ParametersDeclaredOnOverride_ThrowsWxeException ()
     {
       Assert.That(
-          () => WxeVariablesContainer.GetParameterDeclarations(typeof (TestFunctionWithOverriddenParameter)),
+          () => WxeVariablesContainer.GetParameterDeclarations(typeof(TestFunctionWithOverriddenParameter)),
           Throws.TypeOf<WxeException>()
               .With.Message.EqualTo(
                   "Property 'Parameter1', overridden by 'Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions.TestFunctionWithOverriddenParameter', has a WxeParameterAttribute applied. "
@@ -61,7 +61,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     public void GetParameterDeclarations_DuplciateParameterIndex_ThrowsWxeException ()
     {
       Assert.That(
-          () => WxeVariablesContainer.GetParameterDeclarations(typeof (TestFunctionWithDuplicateParameterIndices)),
+          () => WxeVariablesContainer.GetParameterDeclarations(typeof(TestFunctionWithDuplicateParameterIndices)),
           Throws.TypeOf<WxeException>().With.Message.EqualTo(
               "'Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions.TestFunctionWithDuplicateParameterIndices' declares WxeParameters 'Parameter1' and 'Parameter2' with the same index. "
               + "The index of a WxeParameter must be unique within a type."));

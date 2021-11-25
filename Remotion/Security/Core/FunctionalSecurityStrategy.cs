@@ -25,7 +25,7 @@ namespace Remotion.Security
   /// Default implementation of the <see cref="IFunctionalSecurityStrategy"/> interface.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IFunctionalSecurityStrategy), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IFunctionalSecurityStrategy), Lifetime = LifetimeKind.Singleton)]
   public sealed class FunctionalSecurityStrategy : IFunctionalSecurityStrategy
   {
     public FunctionalSecurityStrategy ()
@@ -34,7 +34,7 @@ namespace Remotion.Security
 
     public bool HasAccess (Type type, ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
       ArgumentUtility.CheckNotNull("securityProvider", securityProvider);
       ArgumentUtility.CheckNotNull("principal", principal);
       ArgumentUtility.CheckNotNull("requiredAccessTypes", requiredAccessTypes);

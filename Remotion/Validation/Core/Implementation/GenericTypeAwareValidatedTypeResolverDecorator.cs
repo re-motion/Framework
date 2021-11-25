@@ -27,7 +27,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via <see cref="IValidationRuleCollector{TValidatedType}"/>.
   /// </summary>
-  [ImplementationFor (typeof (IValidatedTypeResolver), Position = 0, RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor (typeof(IValidatedTypeResolver), Position = 0, RegistrationType = RegistrationType.Decorator)]
   public class GenericTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private static readonly ConcurrentDictionary<Type, (bool CanAscribeTo, Type? ItemType)> s_genericValidationRuleCollectorTypeCache = new();
@@ -53,11 +53,11 @@ namespace Remotion.Validation.Implementation
               collectorType,
               static t =>
               {
-                var canAscribeTo = typeof (IValidationRuleCollector).IsAssignableFrom(t) && t.CanAscribeTo(typeof (IValidationRuleCollector<>));
+                var canAscribeTo = typeof(IValidationRuleCollector).IsAssignableFrom(t) && t.CanAscribeTo(typeof(IValidationRuleCollector<>));
                 return ValueTuple.Create(
                     canAscribeTo,
                     canAscribeTo
-                        ? t.GetAscribedGenericArguments(typeof (IValidationRuleCollector<>))[0]
+                        ? t.GetAscribedGenericArguments(typeof(IValidationRuleCollector<>))[0]
                         : null);
               })
           .ItemType;

@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly IPropertyInformation _relationProperty;
 
     public ClassDefinitionForUnresolvedRelationPropertyType (string id, Type classType, IPropertyInformation relationProperty)
-            : base (
+            : base(
                     id,
                     classType,
                     false,

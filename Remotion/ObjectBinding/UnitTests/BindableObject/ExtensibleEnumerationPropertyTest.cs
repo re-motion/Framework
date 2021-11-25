@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void CreateEnumerationValueInfo_ValueAndIdentifier ()
     {
       var extensibleEnumInfo = ExtensibleEnumWithResources.Values.Value1().GetValueInfo();
-      var property = CreateProperty(typeof (ExtensibleEnumWithResources));
+      var property = CreateProperty(typeof(ExtensibleEnumWithResources));
       var info = property.CreateEnumerationValueInfo(extensibleEnumInfo, null);
 
       Assert.That(info.Value, Is.SameAs(extensibleEnumInfo.Value));
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var mockExtensibleEnumerationGlobalizationService = new Mock<IExtensibleEnumGlobalizationService>();
 
       var property = CreateProperty(
-          typeof (ExtensibleEnumWithResources),
+          typeof(ExtensibleEnumWithResources),
           new BindableObjectGlobalizationService(
               new Mock<IGlobalizationService>().Object,
               new Mock<IMemberInformationGlobalizationService>().Object,
@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void CreateEnumerationValueInfo_IsEnabled_True ()
     {
       var extensibleEnumInfo = ExtensibleEnumWithResources.Values.Value1().GetValueInfo();
-      var property = CreateProperty(typeof (ExtensibleEnumWithResources));
+      var property = CreateProperty(typeof(ExtensibleEnumWithResources));
       var info = property.CreateEnumerationValueInfo(extensibleEnumInfo, null);
 
       Assert.That(info.IsEnabled, Is.True);
@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IsEnabled_IntegrationTest ()
     {
-      var property = CreateProperty(typeof (ExtensibleEnumWithFilter));
+      var property = CreateProperty(typeof(ExtensibleEnumWithFilter));
 
       Assert.That(IsEnabled(property, ExtensibleEnumWithFilter.Values.Value1()),  Is.False);
       Assert.That(IsEnabled(property, ExtensibleEnumWithFilter.Values.Value2()), Is.True);
@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       Assert.That(IsEnabled(property, ExtensibleEnumWithFilter.Values.Value4()), Is.True);
 
       var propertyInfoStub = new Mock<IPropertyInformation>();
-      propertyInfoStub.Setup(stub => stub.PropertyType).Returns(typeof (ExtensibleEnumWithResources));
+      propertyInfoStub.Setup(stub => stub.PropertyType).Returns(typeof(ExtensibleEnumWithResources));
       propertyInfoStub.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
       propertyInfoStub
           .Setup(stub => stub.GetCustomAttribute<DisableExtensibleEnumValuesAttribute>(true))
@@ -143,7 +143,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetAllValues ()
     {
-      var property = CreateProperty(typeof (ExtensibleEnumWithResources));
+      var property = CreateProperty(typeof(ExtensibleEnumWithResources));
       var valueInfos = property.GetAllValues(null);
 
       Assert.That(valueInfos.Length, Is.EqualTo(3));
@@ -156,7 +156,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetEnabledValues ()
     {
-      var property = CreateProperty(typeof (ExtensibleEnumWithFilter));
+      var property = CreateProperty(typeof(ExtensibleEnumWithFilter));
 
       var valueInfos = property.GetEnabledValues(null);
 
@@ -169,7 +169,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByIdentifier ()
     {
-      var property = CreateProperty(typeof (ExtensibleEnumWithResources));
+      var property = CreateProperty(typeof(ExtensibleEnumWithResources));
       var info = property.GetValueInfoByIdentifier(ExtensibleEnumWithResources.Values.Value1().ID, null);
       Assert.That(info.Value, Is.EqualTo(ExtensibleEnumWithResources.Values.Value1()));
     }
@@ -177,7 +177,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByIdentifier_NullOrEmpty ()
     {
-      var property = CreateProperty(typeof (ExtensibleEnumWithResources));
+      var property = CreateProperty(typeof(ExtensibleEnumWithResources));
       Assert.That(property.GetValueInfoByIdentifier("", null), Is.Null);
       Assert.That(property.GetValueInfoByIdentifier(null, null), Is.Null);
     }
@@ -185,7 +185,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByIdentifier_InvalidID ()
     {
-      var property = CreateProperty(typeof (ExtensibleEnumWithResources));
+      var property = CreateProperty(typeof(ExtensibleEnumWithResources));
       Assert.That(
           () => property.GetValueInfoByIdentifier("?", null),
           Throws.ArgumentException
@@ -197,7 +197,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByValue ()
     {
-      var property = CreateProperty(typeof (ExtensibleEnumWithResources));
+      var property = CreateProperty(typeof(ExtensibleEnumWithResources));
       var info = property.GetValueInfoByValue(ExtensibleEnumWithResources.Values.Value1(), null);
       Assert.That(info.Value, Is.EqualTo(ExtensibleEnumWithResources.Values.Value1()));
     }
@@ -205,7 +205,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByValue_Null ()
     {
-      var property = CreateProperty(typeof (ExtensibleEnumWithResources));
+      var property = CreateProperty(typeof(ExtensibleEnumWithResources));
       var info = property.GetValueInfoByValue(null, null);
       Assert.That(info, Is.Null);
     }
@@ -213,7 +213,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByValue_UndefinedValue ()
     {
-      var property = CreateProperty(typeof (ExtensibleEnumWithResources));
+      var property = CreateProperty(typeof(ExtensibleEnumWithResources));
       var info = property.GetValueInfoByValue(new ExtensibleEnumWithResources(MethodBase.GetCurrentMethod()), null);
       Assert.That(info, Is.Null);
     }
@@ -221,7 +221,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByValue_InvalidType ()
     {
-      var property = CreateProperty(typeof (ExtensibleEnumWithResources));
+      var property = CreateProperty(typeof(ExtensibleEnumWithResources));
       var info = property.GetValueInfoByValue("?", null);
       Assert.That(info, Is.Null);
     }
@@ -247,7 +247,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       PrivateInvoke.SetNonPublicField(attribute, "_filter", filterMock);
 
       var propertyInfoStub = new Mock<IPropertyInformation>();
-      propertyInfoStub.Setup(stub => stub.PropertyType).Returns(typeof (ExtensibleEnumWithResources));
+      propertyInfoStub.Setup(stub => stub.PropertyType).Returns(typeof(ExtensibleEnumWithResources));
       propertyInfoStub.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
       propertyInfoStub
           .Setup(stub => stub.GetCustomAttribute<DisableExtensibleEnumValuesAttribute>(true))

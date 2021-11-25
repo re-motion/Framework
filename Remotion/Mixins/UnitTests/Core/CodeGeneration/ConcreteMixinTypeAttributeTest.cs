@@ -34,27 +34,27 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [SetUp]
     public void SetUp ()
     {
-      _simpleIdentifier = new ConcreteMixinTypeIdentifier(typeof (object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
+      _simpleIdentifier = new ConcreteMixinTypeIdentifier(typeof(object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
     }
 
     [Test]
     public void FromAttributeApplication ()
     {
       var attribute = ((ConcreteMixinTypeAttribute[]) 
-          typeof (LoadableConcreteMixinTypeForMixinWithAbstractMembers)
-              .GetCustomAttributes(typeof (ConcreteMixinTypeAttribute), false))
+          typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers)
+              .GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false))
               .Single();
 
       var identifier = attribute.GetIdentifier();
-      Assert.That(identifier.MixinType, Is.SameAs(typeof (MixinWithAbstractMembers)));
+      Assert.That(identifier.MixinType, Is.SameAs(typeof(MixinWithAbstractMembers)));
 
       const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance;
       Assert.That(identifier.Overridden.ToArray(), Is.EquivalentTo(new[] {
-          typeof (MixinWithAbstractMembers).GetMethod("AbstractMethod", flags),
-          typeof (MixinWithAbstractMembers).GetMethod("RaiseEvent", flags),
-          typeof (MixinWithAbstractMembers).GetMethod("get_AbstractProperty", flags),
-          typeof (MixinWithAbstractMembers).GetMethod("add_AbstractEvent", flags),
-          typeof (MixinWithAbstractMembers).GetMethod("remove_AbstractEvent", flags)
+          typeof(MixinWithAbstractMembers).GetMethod("AbstractMethod", flags),
+          typeof(MixinWithAbstractMembers).GetMethod("RaiseEvent", flags),
+          typeof(MixinWithAbstractMembers).GetMethod("get_AbstractProperty", flags),
+          typeof(MixinWithAbstractMembers).GetMethod("add_AbstractEvent", flags),
+          typeof(MixinWithAbstractMembers).GetMethod("remove_AbstractEvent", flags)
 
       }));
     }

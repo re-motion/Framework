@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     public event EventHandler<DataChangeEventArgs> CollectionChanged;
 
     public ObservableDomainObjectCollectionDataDecorator (IDomainObjectCollectionData wrappedData)
-      : base (wrappedData)
+      : base(wrappedData)
     {
     }
 

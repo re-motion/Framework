@@ -49,11 +49,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void GetFromUniqueIdentifier ()
     {
-      BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>().AddService(typeof (IGetObjectService), new BindableDomainObjectGetObjectService());
+      BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>().AddService(typeof(IGetObjectService), new BindableDomainObjectGetObjectService());
       SampleBindableMixinDomainObject original = SampleBindableMixinDomainObject.NewObject();
       
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof (SampleBindableMixinDomainObject));
-      var boClass = (BindableObjectClassWithIdentity) provider.GetBindableObjectClass(typeof (SampleBindableMixinDomainObject));
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(SampleBindableMixinDomainObject));
+      var boClass = (BindableObjectClassWithIdentity) provider.GetBindableObjectClass(typeof(SampleBindableMixinDomainObject));
       Assert.That(boClass.GetObject(original.ID.ToString()), Is.SameAs(original));
     }
   }

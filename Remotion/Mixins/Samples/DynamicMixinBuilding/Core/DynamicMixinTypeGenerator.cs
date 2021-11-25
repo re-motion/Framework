@@ -28,8 +28,8 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
 {
   internal class DynamicMixinTypeGenerator
   {
-    private static readonly ConstructorInfo s_attributeConstructor = typeof (OverrideTargetAttribute).GetConstructor(Type.EmptyTypes);
-    private static readonly MethodInfo s_handlerInvokeMethod = typeof (MethodInvocationHandler).GetMethod("Invoke");
+    private static readonly ConstructorInfo s_attributeConstructor = typeof(OverrideTargetAttribute).GetConstructor(Type.EmptyTypes);
+    private static readonly MethodInfo s_handlerInvokeMethod = typeof(MethodInvocationHandler).GetMethod("Invoke");
 
     private readonly CustomClassEmitter _emitter;
     private readonly IReadOnlyCollection<MethodInfo> _methodsToOverride;
@@ -54,10 +54,10 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
 
       _baseCallInterface = BaseRequirements.BuildBaseRequirements(_methodsToOverride, className + "_BaseRequirements", scope);
 
-      Type mixinBase = typeof (Mixin<,>).MakeGenericType(typeof (object), _baseCallInterface.RequirementsType);
+      Type mixinBase = typeof(Mixin<,>).MakeGenericType(typeof(object), _baseCallInterface.RequirementsType);
       _emitter = new CustomClassEmitter(scope, className, mixinBase);
 
-      _invocationHandlerField = _emitter.CreateStaticField("InvocationHandler", typeof (MethodInvocationHandler), FieldAttributes.Public);
+      _invocationHandlerField = _emitter.CreateStaticField("InvocationHandler", typeof(MethodInvocationHandler), FieldAttributes.Public);
 
       foreach (MethodInfo method in _methodsToOverride)
         AddOverrider(method, _invocationHandlerField);
@@ -80,13 +80,13 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
       LocalReference argsLocal = CopyArgumentsToLocalVariable(overrider);
       Expression baseMethodInvoker = GetBaseInvokerExpression(method);
 
-      TypeReference handlerReference = new TypeReferenceWrapper(invocationHandler, typeof (MethodInvocationHandler));
+      TypeReference handlerReference = new TypeReferenceWrapper(invocationHandler, typeof(MethodInvocationHandler));
       Expression[] handlerArgs = new Expression[] { targetReference.ToExpression(), overriddenMethodToken, argsLocal.ToExpression(), baseMethodInvoker };
 
       Expression handlerInvocation = new VirtualMethodInvocationExpression(handlerReference, s_handlerInvokeMethod, handlerArgs);
 
-      if (method.ReturnType != typeof (void))
-        overrider.ImplementByReturning(new ConvertExpression(method.ReturnType, typeof (object), handlerInvocation));
+      if (method.ReturnType != typeof(void))
+        overrider.ImplementByReturning(new ConvertExpression(method.ReturnType, typeof(object), handlerInvocation));
       else
       {
         overrider.AddStatement(new ExpressionStatement(handlerInvocation));
@@ -98,7 +98,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
     private Expression GetBaseInvokerExpression (MethodInfo method)
     {
       MethodInfo baseCallStub = CreateBaseCallStub(method);
-      ConstructorInfo invokerCtor = typeof (BaseMethodInvoker).GetConstructor(new Type[] { typeof (object), typeof (IntPtr) });
+      ConstructorInfo invokerCtor = typeof(BaseMethodInvoker).GetConstructor(new Type[] { typeof(object), typeof(IntPtr) });
       Expression invokerExpression = new NewInstanceExpression(invokerCtor, SelfReference.Self.ToExpression(),
           new LoadFunctionExpression(baseCallStub));
       return invokerExpression;
@@ -109,18 +109,18 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
       var stubMethod = _emitter.CreateMethod(
           methodToBeStubbed.Name + "__stub",
           MethodAttributes.Private,
-          typeof (object),
-          new[] { typeof (object[]) });
+          typeof(object),
+          new[] { typeof(object[]) });
 
       PropertyReference baseReference = GetNextReference();
       ParameterInfo[] stubbedMethodSignature = methodToBeStubbed.GetParameters();
       Expression[] baseCallArgs = new Expression[stubbedMethodSignature.Length];
       for (int i = 0; i < baseCallArgs.Length; ++i)
-        baseCallArgs[i] = new ConvertExpression(stubbedMethodSignature[i].ParameterType, typeof (object), new LoadArrayElementExpression(i, stubMethod.ArgumentReferences[0], typeof (object)));
+        baseCallArgs[i] = new ConvertExpression(stubbedMethodSignature[i].ParameterType, typeof(object), new LoadArrayElementExpression(i, stubMethod.ArgumentReferences[0], typeof(object)));
 
       MethodInfo methodOnBaseInterface = _baseCallInterface.GetBaseCallMethod(methodToBeStubbed);
       Expression baseMethodCall = new VirtualMethodInvocationExpression(baseReference, methodOnBaseInterface, baseCallArgs);
-      if (methodToBeStubbed.ReturnType != typeof (void))
+      if (methodToBeStubbed.ReturnType != typeof(void))
         stubMethod.ImplementByReturning(baseMethodCall);
       else
       {
@@ -144,13 +144,13 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
 
     private LocalReference CopyArgumentsToLocalVariable (IMethodEmitter overrider)
     {
-      LocalReference argsLocal = overrider.DeclareLocal(typeof (object[]));
+      LocalReference argsLocal = overrider.DeclareLocal(typeof(object[]));
 
       ArgumentReference[] argumentReferences = overrider.ArgumentReferences;
-      overrider.AddStatement(new AssignStatement(argsLocal, new NewArrayExpression(argumentReferences.Length, typeof (object))));
+      overrider.AddStatement(new AssignStatement(argsLocal, new NewArrayExpression(argumentReferences.Length, typeof(object))));
       for (int i = 0; i < argumentReferences.Length; ++i)
       {
-        Expression castArgument = new ConvertExpression(typeof (object), argumentReferences[i].Type, argumentReferences[i].ToExpression());
+        Expression castArgument = new ConvertExpression(typeof(object), argumentReferences[i].Type, argumentReferences[i].ToExpression());
         overrider.AddStatement(new AssignArrayStatement(argsLocal, i, castArgument));
       }
       return argsLocal;

@@ -77,8 +77,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Initialization_Unidirectional ()
     {
-      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof (Client))
-          .GetMandatoryRelationEndPointDefinition(typeof (Client).FullName + ".ParentClient");
+      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof(Client))
+          .GetMandatoryRelationEndPointDefinition(typeof(Client).FullName + ".ParentClient");
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.Client1.GetObject<Client>().ID, definition);
       var endPoint = (IRealObjectEndPoint)
                      TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
@@ -95,8 +95,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Initialization_Bidirectional_OneOne ()
     {
-      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof (OrderTicket))
-          .GetMandatoryRelationEndPointDefinition(typeof (OrderTicket).FullName + ".Order");
+      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderTicket))
+          .GetMandatoryRelationEndPointDefinition(typeof(OrderTicket).FullName + ".Order");
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>().ID, definition);
       var endPoint = (IRealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
       Assert.That(

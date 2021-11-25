@@ -34,7 +34,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       {
         MethodInfo? ifMethod = type.GetMethod(
             "If", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, new Type[0], null);
-        if (ifMethod == null || ifMethod.ReturnType != typeof (bool))
+        if (ifMethod == null || ifMethod.ReturnType != typeof(bool))
           throw new WxeException("If-block " + type.FullName + " does not define method \"bool If()\".");
 
         bool result = (bool) ifMethod.Invoke(this, new object[0])!;
@@ -62,7 +62,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       Type? stepListType = type.GetNestedType(name, BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
       if (stepListType == null)
         return null;
-      if (! typeof (WxeStepList).IsAssignableFrom(stepListType))
+      if (! typeof(WxeStepList).IsAssignableFrom(stepListType))
         throw new WxeException("Type " + stepListType.FullName + " must be derived from WxeStepList.");
 
       WxeStepList resultList = (WxeStepList) System.Activator.CreateInstance(stepListType)!;

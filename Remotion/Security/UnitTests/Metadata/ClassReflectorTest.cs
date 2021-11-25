@@ -70,7 +70,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void Initialize ()
     {
-      Assert.IsInstanceOf(typeof (IClassReflector), _classReflector);
+      Assert.IsInstanceOf(typeof(IClassReflector), _classReflector);
       Assert.That(_classReflector.StatePropertyReflector, Is.SameAs(_statePropertyReflectorMock.Object));
       Assert.That(_classReflector.AccessTypeReflector, Is.SameAs(_accessTypeReflectorMock.Object));
     }
@@ -89,13 +89,13 @@ namespace Remotion.Security.UnitTests.Metadata
       paperFileAccessTypes.Add(AccessTypes.Journalize);
       paperFileAccessTypes.Add(AccessTypes.Archive);
 
-      _statePropertyReflectorMock.Setup(_ => _.GetMetadata(typeof (PaperFile).GetProperty("Confidentiality"), _cache)).Returns(_confidentialityProperty).Verifiable();
-      _statePropertyReflectorMock.Setup(_ => _.GetMetadata(typeof (PaperFile).GetProperty("State"), _cache)).Returns(_stateProperty).Verifiable();
-      _statePropertyReflectorMock.Setup(_ => _.GetMetadata(typeof (File).GetProperty("Confidentiality"), _cache)).Returns(_confidentialityProperty).Verifiable();
-      _accessTypeReflectorMock.Setup(_ => _.GetAccessTypesFromType(typeof (File), _cache)).Returns(fileAccessTypes).Verifiable();
-      _accessTypeReflectorMock.Setup(_ => _.GetAccessTypesFromType(typeof (PaperFile), _cache)).Returns(paperFileAccessTypes).Verifiable();
+      _statePropertyReflectorMock.Setup(_ => _.GetMetadata(typeof(PaperFile).GetProperty("Confidentiality"), _cache)).Returns(_confidentialityProperty).Verifiable();
+      _statePropertyReflectorMock.Setup(_ => _.GetMetadata(typeof(PaperFile).GetProperty("State"), _cache)).Returns(_stateProperty).Verifiable();
+      _statePropertyReflectorMock.Setup(_ => _.GetMetadata(typeof(File).GetProperty("Confidentiality"), _cache)).Returns(_confidentialityProperty).Verifiable();
+      _accessTypeReflectorMock.Setup(_ => _.GetAccessTypesFromType(typeof(File), _cache)).Returns(fileAccessTypes).Verifiable();
+      _accessTypeReflectorMock.Setup(_ => _.GetAccessTypesFromType(typeof(PaperFile), _cache)).Returns(paperFileAccessTypes).Verifiable();
 
-      SecurableClassInfo info = _classReflector.GetMetadata(typeof (PaperFile), _cache);
+      SecurableClassInfo info = _classReflector.GetMetadata(typeof(PaperFile), _cache);
 
       _statePropertyReflectorMock.Verify();
       _accessTypeReflectorMock.Verify();
@@ -123,12 +123,12 @@ namespace Remotion.Security.UnitTests.Metadata
     public void GetMetadataFromCache ()
     {
       ClassReflector reflector = new ClassReflector();
-      SecurableClassInfo paperFileInfo = reflector.GetMetadata(typeof (PaperFile), _cache);
+      SecurableClassInfo paperFileInfo = reflector.GetMetadata(typeof(PaperFile), _cache);
 
       Assert.That(paperFileInfo, Is.Not.Null);
-      Assert.That(_cache.GetSecurableClassInfo(typeof (PaperFile)), Is.EqualTo(paperFileInfo));
+      Assert.That(_cache.GetSecurableClassInfo(typeof(PaperFile)), Is.EqualTo(paperFileInfo));
 
-      SecurableClassInfo fileInfo = _cache.GetSecurableClassInfo(typeof (File));
+      SecurableClassInfo fileInfo = _cache.GetSecurableClassInfo(typeof(File));
       Assert.That(fileInfo, Is.Not.Null);
       Assert.That(fileInfo.Name, Is.EqualTo("Remotion.Security.UnitTests.TestDomain.File, Remotion.Security.UnitTests.TestDomain"));
     }
@@ -137,7 +137,7 @@ namespace Remotion.Security.UnitTests.Metadata
     public void GetMetadataWithInvalidType ()
     {
       Assert.That(
-          () => new ClassReflector().GetMetadata(typeof (Role), _cache),
+          () => new ClassReflector().GetMetadata(typeof(Role), _cache),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'type' is a 'Remotion.Security.UnitTests.TestDomain.Role', which cannot be assigned to type 'Remotion.Security.ISecurableObject'.",
@@ -148,7 +148,7 @@ namespace Remotion.Security.UnitTests.Metadata
     public void GetMetadataWithInvalidValueType ()
     {
       Assert.That(
-          () => new ClassReflector().GetMetadata(typeof (TestValueType), _cache),
+          () => new ClassReflector().GetMetadata(typeof(TestValueType), _cache),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Value types are not supported.", "type"));

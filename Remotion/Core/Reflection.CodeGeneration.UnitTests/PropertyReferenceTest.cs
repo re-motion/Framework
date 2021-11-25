@@ -28,16 +28,16 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void InstancePropertyReference ()
     {
-      CustomPropertyEmitter propertyEmitter = ClassEmitter.CreateProperty("Property", PropertyKind.Instance, typeof (string));
+      CustomPropertyEmitter propertyEmitter = ClassEmitter.CreateProperty("Property", PropertyKind.Instance, typeof(string));
       propertyEmitter.CreateGetMethod();
       propertyEmitter.CreateSetMethod();
       propertyEmitter.ImplementWithBackingField();
 
-      var methodEmitter = GetMethodEmitter(false, typeof (string), new Type[0]);
+      var methodEmitter = GetMethodEmitter(false, typeof(string), new Type[0]);
       
-      LocalReference oldValueLocal = methodEmitter.DeclareLocal(typeof (string));
+      LocalReference oldValueLocal = methodEmitter.DeclareLocal(typeof(string));
       PropertyReference propertyWithSelfOwner = new PropertyReference(propertyEmitter.PropertyBuilder);
-      Assert.That(propertyWithSelfOwner.Type, Is.EqualTo(typeof (string)));
+      Assert.That(propertyWithSelfOwner.Type, Is.EqualTo(typeof(string)));
 
       methodEmitter.AddStatement(new AssignStatement(oldValueLocal, propertyWithSelfOwner.ToExpression()));
       methodEmitter.AddStatement(new AssignStatement(propertyWithSelfOwner, new ConstReference("New").ToExpression()));
@@ -52,16 +52,16 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void StaticPropertyReference ()
     {
-      CustomPropertyEmitter propertyEmitter = ClassEmitter.CreateProperty("Property", PropertyKind.Static, typeof (string));
+      CustomPropertyEmitter propertyEmitter = ClassEmitter.CreateProperty("Property", PropertyKind.Static, typeof(string));
       propertyEmitter.CreateGetMethod();
       propertyEmitter.CreateSetMethod();
       propertyEmitter.ImplementWithBackingField();
 
-      var methodEmitter = GetMethodEmitter(true, typeof (string), new Type[0]);
+      var methodEmitter = GetMethodEmitter(true, typeof(string), new Type[0]);
 
-      LocalReference oldValueLocal = methodEmitter.DeclareLocal(typeof (string));
+      LocalReference oldValueLocal = methodEmitter.DeclareLocal(typeof(string));
       PropertyReference propertyWithNoOwner = new PropertyReference(null, propertyEmitter.PropertyBuilder);
-      Assert.That(propertyWithNoOwner.Type, Is.EqualTo(typeof (string)));
+      Assert.That(propertyWithNoOwner.Type, Is.EqualTo(typeof(string)));
 
       methodEmitter.AddStatement(new AssignStatement(oldValueLocal, propertyWithNoOwner.ToExpression()));
       methodEmitter.AddStatement(new AssignStatement(propertyWithNoOwner, new ConstReference("New").ToExpression()));
@@ -75,11 +75,11 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void LoadPropertyWithoutGetterThrows ()
     {
-      CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty("Property", PropertyKind.Instance, typeof (string));
+      CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty("Property", PropertyKind.Instance, typeof(string));
 
-      var methodEmitter = GetUnsavedMethodEmitter(false, typeof (string), new Type[0]);
+      var methodEmitter = GetUnsavedMethodEmitter(false, typeof(string), new Type[0]);
 
-      LocalReference oldValueLocal = methodEmitter.DeclareLocal(typeof (string));
+      LocalReference oldValueLocal = methodEmitter.DeclareLocal(typeof(string));
       PropertyReference propertyWithSelfOwner = new PropertyReference(propertyEmitter.PropertyBuilder);
 
       methodEmitter.AddStatement(new AssignStatement(oldValueLocal, propertyWithSelfOwner.ToExpression()));
@@ -93,9 +93,9 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void SavePropertyWithoutSetterThrows ()
     {
-      CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty("Property", PropertyKind.Instance, typeof (string));
+      CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty("Property", PropertyKind.Instance, typeof(string));
 
-      var methodEmitter = GetUnsavedMethodEmitter(false, typeof (string), new Type[0]);
+      var methodEmitter = GetUnsavedMethodEmitter(false, typeof(string), new Type[0]);
 
       PropertyReference propertyWithSelfOwner = new PropertyReference(propertyEmitter.PropertyBuilder);
 
@@ -110,11 +110,11 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void LoadPropertyAddressThrows ()
     {
-      CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty("Property", PropertyKind.Instance, typeof (string));
+      CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty("Property", PropertyKind.Instance, typeof(string));
 
-      var methodEmitter = GetUnsavedMethodEmitter(false, typeof (string), new Type[0]);
+      var methodEmitter = GetUnsavedMethodEmitter(false, typeof(string), new Type[0]);
 
-      LocalReference valueAddress = methodEmitter.DeclareLocal(typeof (string).MakeByRefType());
+      LocalReference valueAddress = methodEmitter.DeclareLocal(typeof(string).MakeByRefType());
       PropertyReference propertyWithSelfOwner = new PropertyReference(propertyEmitter.PropertyBuilder);
 
       methodEmitter.AddStatement(new AssignStatement(valueAddress, propertyWithSelfOwner.ToAddressOfExpression()));

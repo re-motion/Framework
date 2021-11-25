@@ -32,7 +32,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
   /// Responsible for rendering <see cref="DropDownMenu"/> controls in standard mode.
   /// <seealso cref="IDropDownMenu"/>
   /// </summary>
-  [ImplementationFor (typeof (IDropDownMenuRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IDropDownMenuRenderer), Lifetime = LifetimeKind.Singleton)]
   public class DropDownMenuRenderer : RendererBase<IDropDownMenu>, IDropDownMenuRenderer
   {
     /// <summary> A list of control specific resources. </summary>
@@ -60,7 +60,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
 
@@ -73,14 +73,14 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
-      string scriptKey = typeof (DropDownMenuRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof (DropDownMenuRenderer), ResourceType.Html, "DropDownMenu.js");
+      string scriptKey = typeof(DropDownMenuRenderer).GetFullNameChecked() + "_Script";
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(DropDownMenuRenderer), ResourceType.Html, "DropDownMenu.js");
       htmlHeadAppender.RegisterJavaScriptInclude(scriptKey, scriptUrl);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string styleSheetKey = typeof (DropDownMenuRenderer).GetFullNameChecked() + "_Style";
-      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof (DropDownMenuRenderer), ResourceType.Html, "DropDownMenu.css");
+      string styleSheetKey = typeof(DropDownMenuRenderer).GetFullNameChecked() + "_Style";
+      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(DropDownMenuRenderer), ResourceType.Html, "DropDownMenu.css");
       htmlHeadAppender.RegisterStylesheetLink(styleSheetKey, styleSheetUrl, HtmlHeadAppender.Priority.Library);
     }
 
@@ -280,7 +280,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
           getSelectionCount,
           hasDedicatedDropDownMenuElement);
 
-      renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock(renderingContext.Control, typeof (ClientScriptBehavior), key, script);
+      renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock(renderingContext.Control, typeof(ClientScriptBehavior), key, script);
 
       if (renderingContext.Control.Enabled && renderingContext.Control.Visible && renderingContext.Control.Mode == MenuMode.DropDownMenu)
       {
@@ -288,7 +288,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         string elementReference = string.Format("'#{0}'", renderingContext.Control.ClientID);
         string menuIDReference = string.Format("'{0}'", renderingContext.Control.ClientID);
         script = renderingContext.Control.GetBindOpenEventScript(elementReference, menuIDReference, false);
-        renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(renderingContext.Control, typeof (ClientScriptBehavior), key, script);
+        renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(renderingContext.Control, typeof(ClientScriptBehavior), key, script);
       }
     }
 
@@ -296,7 +296,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
     {
       string key = renderingContext.Control.UniqueID;
       if (renderingContext.Control.Enabled
-          && !renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered(typeof (DropDownMenuRenderer), key))
+          && !renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered(typeof(DropDownMenuRenderer), key))
       {
         StringBuilder script = new StringBuilder();
         script.Append("DropDownMenu.AddMenuInfo" + " (").AppendLine();
@@ -346,7 +346,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         script.Append(" );"); // Close AddMenuInfo
         renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(
             renderingContext.Control,
-            typeof (DropDownMenuRenderer),
+            typeof(DropDownMenuRenderer),
             key,
             script.ToString());
       }
@@ -483,7 +483,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
     protected virtual IResourceManager GetResourceManager (DropDownMenuRenderingContext renderingContext)
     {
-      return GetResourceManager(typeof (ResourceIdentifier), renderingContext.Control.GetResourceManager());
+      return GetResourceManager(typeof(ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
 
     protected string CssClassBase

@@ -29,8 +29,8 @@ namespace Remotion.Mixins.UnitTests.CoreComponentIntegration
     {
       using (MixinConfiguration.BuildNew().ForClass<DerivedWithAttributesAndSuppressed>().AddMixin<MixinAddingInheritedAttribute>().EnterScope())
       {
-        Type type = TypeFactory.GetConcreteType(typeof (DerivedWithAttributesAndSuppressed));
-        Assert.That(AttributeUtility.GetCustomAttributes(type, typeof (Attribute), true),
+        Type type = TypeFactory.GetConcreteType(typeof(DerivedWithAttributesAndSuppressed));
+        Assert.That(AttributeUtility.GetCustomAttributes(type, typeof(Attribute), true),
             Has.No.Member(new BaseInheritedAttribute("MixinAddingInheritedAttribute")));
       }
     }
@@ -40,13 +40,13 @@ namespace Remotion.Mixins.UnitTests.CoreComponentIntegration
     {
       using (MixinConfiguration.BuildNew().ForClass<BaseWithAttributesForSuppressed>().AddMixin<MixinAddingSuppressAttribute>().EnterScope())
       {
-        Type type = TypeFactory.GetConcreteType(typeof (BaseWithAttributesForSuppressed));
+        Type type = TypeFactory.GetConcreteType(typeof(BaseWithAttributesForSuppressed));
         Assert.That(type.GetCustomAttributes(true), Has.Member(new BaseInheritedAttribute("BaseWithAttributesForSuppressed")));
         Assert.That(type.GetCustomAttributes(true), Has.Member(new BaseInheritedAttribute("MixinAddingSuppressAttribute")));
 
-        Assert.That(AttributeUtility.GetCustomAttributes(type, typeof (Attribute), true),
+        Assert.That(AttributeUtility.GetCustomAttributes(type, typeof(Attribute), true),
             Has.No.Member(new BaseInheritedAttribute("BaseWithAttributesForSuppressed")));
-        Assert.That(AttributeUtility.GetCustomAttributes(type, typeof (Attribute), true),
+        Assert.That(AttributeUtility.GetCustomAttributes(type, typeof(Attribute), true),
             Has.Member(new BaseInheritedAttribute("MixinAddingSuppressAttribute")));
       }
     }
@@ -56,9 +56,9 @@ namespace Remotion.Mixins.UnitTests.CoreComponentIntegration
     {
       using (MixinConfiguration.BuildNew().ForClass<ClassWithNonInheritedAttribute>().AddMixin<MixinSuppressingNonInheritedAttribute>().EnterScope())
       {
-        Type type = TypeFactory.GetConcreteType(typeof (ClassWithNonInheritedAttribute));
+        Type type = TypeFactory.GetConcreteType(typeof(ClassWithNonInheritedAttribute));
 
-        Assert.That(AttributeUtility.GetCustomAttributes(type, typeof (Attribute), true),
+        Assert.That(AttributeUtility.GetCustomAttributes(type, typeof(Attribute), true),
             Has.No.Member(new BaseNonInheritedAttribute("ClassWithNonInheritedAttribute")));
       }
     }
@@ -70,9 +70,9 @@ namespace Remotion.Mixins.UnitTests.CoreComponentIntegration
           .ForClass<ClassWithoutAttributes>().AddMixin<MixinAddingInheritedAttribute>().AddMixin<MixinAddingSuppressAttribute>()
           .EnterScope())
       {
-        Type type = TypeFactory.GetConcreteType(typeof (ClassWithoutAttributes));
+        Type type = TypeFactory.GetConcreteType(typeof(ClassWithoutAttributes));
 
-        Assert.That(AttributeUtility.GetCustomAttributes(type, typeof (Attribute), true),
+        Assert.That(AttributeUtility.GetCustomAttributes(type, typeof(Attribute), true),
             Has.No.Member(new BaseInheritedAttribute("MixinAddingInheritedAttribute")));
       }
     }

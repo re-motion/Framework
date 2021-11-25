@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var result = ((TracingDbTransaction) _transaction).TransactionID;
 
-      Assert.That(result, Is.TypeOf(typeof (Guid)));
+      Assert.That(result, Is.TypeOf(typeof(Guid)));
     }
 
     [Test]

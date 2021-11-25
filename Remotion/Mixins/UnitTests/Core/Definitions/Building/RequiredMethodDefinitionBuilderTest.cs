@@ -31,40 +31,40 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
       Assert.That(requirement.Methods.Count, Is.EqualTo(5));
 
-      RequiredMethodDefinition method = requirement.Methods[typeof (IMixinRequiringAllMembersRequirements).GetMethod("Method", bf)];
+      RequiredMethodDefinition method = requirement.Methods[typeof(IMixinRequiringAllMembersRequirements).GetMethod("Method", bf)];
       Assert.That(method, Is.Not.Null);
-      Assert.That(method.InterfaceMethod, Is.EqualTo(typeof (IMixinRequiringAllMembersRequirements).GetMethod("Method", bf)));
+      Assert.That(method.InterfaceMethod, Is.EqualTo(typeof(IMixinRequiringAllMembersRequirements).GetMethod("Method", bf)));
       Assert.That(method.ImplementingMethod, Is.SameAs(implementer.Methods[implementer.Type.GetMethod(memberPrefix + "Method", bf)]));
 
-      RequiredMethodDefinition propertyGetter = requirement.Methods[typeof (IMixinRequiringAllMembersRequirements).GetMethod("get_Property", bf)];
+      RequiredMethodDefinition propertyGetter = requirement.Methods[typeof(IMixinRequiringAllMembersRequirements).GetMethod("get_Property", bf)];
       Assert.That(propertyGetter, Is.Not.Null);
-      Assert.That(propertyGetter.InterfaceMethod, Is.EqualTo(typeof (IMixinRequiringAllMembersRequirements).GetMethod("get_Property", bf)));
+      Assert.That(propertyGetter.InterfaceMethod, Is.EqualTo(typeof(IMixinRequiringAllMembersRequirements).GetMethod("get_Property", bf)));
       Assert.That(propertyGetter.ImplementingMethod, Is.SameAs(implementer.Properties[implementer.Type.GetProperty(memberPrefix + "Property", bf)].GetMethod));
 
-      RequiredMethodDefinition propertySetter = requirement.Methods[typeof (IMixinRequiringAllMembersRequirements).GetMethod("set_Property", bf)];
+      RequiredMethodDefinition propertySetter = requirement.Methods[typeof(IMixinRequiringAllMembersRequirements).GetMethod("set_Property", bf)];
       Assert.That(propertySetter, Is.Not.Null);
-      Assert.That(propertySetter.InterfaceMethod, Is.EqualTo(typeof (IMixinRequiringAllMembersRequirements).GetMethod("set_Property", bf)));
+      Assert.That(propertySetter.InterfaceMethod, Is.EqualTo(typeof(IMixinRequiringAllMembersRequirements).GetMethod("set_Property", bf)));
       Assert.That(propertySetter.ImplementingMethod, Is.SameAs(implementer.Properties[implementer.Type.GetProperty(memberPrefix + "Property", bf)].SetMethod));
 
-      RequiredMethodDefinition eventAdder = requirement.Methods[typeof (IMixinRequiringAllMembersRequirements).GetMethod("add_Event", bf)];
+      RequiredMethodDefinition eventAdder = requirement.Methods[typeof(IMixinRequiringAllMembersRequirements).GetMethod("add_Event", bf)];
       Assert.That(eventAdder, Is.Not.Null);
-      Assert.That(eventAdder.InterfaceMethod, Is.EqualTo(typeof (IMixinRequiringAllMembersRequirements).GetMethod("add_Event", bf)));
+      Assert.That(eventAdder.InterfaceMethod, Is.EqualTo(typeof(IMixinRequiringAllMembersRequirements).GetMethod("add_Event", bf)));
       Assert.That(eventAdder.ImplementingMethod, Is.SameAs(implementer.Events[implementer.Type.GetEvent(memberPrefix + "Event", bf)].AddMethod));
 
-      RequiredMethodDefinition eventRemover = requirement.Methods[typeof (IMixinRequiringAllMembersRequirements).GetMethod("remove_Event", bf)];
+      RequiredMethodDefinition eventRemover = requirement.Methods[typeof(IMixinRequiringAllMembersRequirements).GetMethod("remove_Event", bf)];
       Assert.That(eventRemover, Is.Not.Null);
-      Assert.That(eventRemover.InterfaceMethod, Is.EqualTo(typeof (IMixinRequiringAllMembersRequirements).GetMethod("remove_Event", bf)));
+      Assert.That(eventRemover.InterfaceMethod, Is.EqualTo(typeof(IMixinRequiringAllMembersRequirements).GetMethod("remove_Event", bf)));
       Assert.That(eventRemover.ImplementingMethod, Is.SameAs(implementer.Events[implementer.Type.GetEvent(memberPrefix + "Event", bf)].RemoveMethod));
     }
 
     [Test]
     public void RequiredTargetCallMethodsInterfaceImplementedOnBase ()
     {
-      TargetClassDefinition TargetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (ClassFulfillingAllMemberRequirements));
-      MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersTargetCall)];
+      TargetClassDefinition TargetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassFulfillingAllMemberRequirements));
+      MixinDefinition mixin = TargetClassDefinition.Mixins[typeof(MixinRequiringAllMembersTargetCall)];
       Assert.That(mixin, Is.Not.Null);
 
-      RequiredTargetCallTypeDefinition requirement = mixin.TargetCallDependencies[typeof (IMixinRequiringAllMembersRequirements)].RequiredType;
+      RequiredTargetCallTypeDefinition requirement = mixin.TargetCallDependencies[typeof(IMixinRequiringAllMembersRequirements)].RequiredType;
       Assert.That(requirement, Is.Not.Null);
 
       CheckRequiredMethods(requirement, TargetClassDefinition, "");
@@ -73,11 +73,11 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void RequiredNextCallMethodsInterfaceImplementedOnBase ()
     {
-      TargetClassDefinition TargetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (ClassFulfillingAllMemberRequirements));
-      MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersNextCall)];
+      TargetClassDefinition TargetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassFulfillingAllMemberRequirements));
+      MixinDefinition mixin = TargetClassDefinition.Mixins[typeof(MixinRequiringAllMembersNextCall)];
       Assert.That(mixin, Is.Not.Null);
 
-      RequiredNextCallTypeDefinition requirement = mixin.NextCallDependencies[typeof (IMixinRequiringAllMembersRequirements)].RequiredType;
+      RequiredNextCallTypeDefinition requirement = mixin.NextCallDependencies[typeof(IMixinRequiringAllMembersRequirements)].RequiredType;
       Assert.That(requirement, Is.Not.Null);
 
       CheckRequiredMethods(requirement, TargetClassDefinition, "");
@@ -86,16 +86,16 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void RequiredTargetCallMethodsInterfaceImplementedOnMixin ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof (ClassFulfillingNoMemberRequirements)).Clear().AddMixins(typeof (MixinRequiringAllMembersTargetCall), typeof (MixinFulfillingAllMemberRequirements)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(ClassFulfillingNoMemberRequirements)).Clear().AddMixins(typeof(MixinRequiringAllMembersTargetCall), typeof(MixinFulfillingAllMemberRequirements)).EnterScope())
       {
-        TargetClassDefinition TargetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (ClassFulfillingNoMemberRequirements));
-        MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersTargetCall)];
+        TargetClassDefinition TargetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassFulfillingNoMemberRequirements));
+        MixinDefinition mixin = TargetClassDefinition.Mixins[typeof(MixinRequiringAllMembersTargetCall)];
         Assert.That(mixin, Is.Not.Null);
 
-        MixinDefinition implementingMixin = TargetClassDefinition.Mixins[typeof (MixinFulfillingAllMemberRequirements)];
+        MixinDefinition implementingMixin = TargetClassDefinition.Mixins[typeof(MixinFulfillingAllMemberRequirements)];
         Assert.That(implementingMixin, Is.Not.Null);
 
-        RequiredTargetCallTypeDefinition requirement = mixin.TargetCallDependencies[typeof (IMixinRequiringAllMembersRequirements)].RequiredType;
+        RequiredTargetCallTypeDefinition requirement = mixin.TargetCallDependencies[typeof(IMixinRequiringAllMembersRequirements)].RequiredType;
         Assert.That(requirement, Is.Not.Null);
 
         CheckRequiredMethods(requirement, implementingMixin, "");
@@ -105,16 +105,16 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void RequiredNextCallMethodsInterfaceImplementedOnMixin ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof (ClassFulfillingNoMemberRequirements)).Clear().AddMixins(typeof (MixinRequiringAllMembersNextCall), typeof (MixinFulfillingAllMemberRequirements)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(ClassFulfillingNoMemberRequirements)).Clear().AddMixins(typeof(MixinRequiringAllMembersNextCall), typeof(MixinFulfillingAllMemberRequirements)).EnterScope())
       {
-        TargetClassDefinition TargetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (ClassFulfillingNoMemberRequirements));
-        MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersNextCall)];
+        TargetClassDefinition TargetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassFulfillingNoMemberRequirements));
+        MixinDefinition mixin = TargetClassDefinition.Mixins[typeof(MixinRequiringAllMembersNextCall)];
         Assert.That(mixin, Is.Not.Null);
 
-        MixinDefinition implementingMixin = TargetClassDefinition.Mixins[typeof (MixinFulfillingAllMemberRequirements)];
+        MixinDefinition implementingMixin = TargetClassDefinition.Mixins[typeof(MixinFulfillingAllMemberRequirements)];
         Assert.That(implementingMixin, Is.Not.Null);
 
-        RequiredNextCallTypeDefinition requirement = mixin.NextCallDependencies[typeof (IMixinRequiringAllMembersRequirements)].RequiredType;
+        RequiredNextCallTypeDefinition requirement = mixin.NextCallDependencies[typeof(IMixinRequiringAllMembersRequirements)].RequiredType;
         Assert.That(requirement, Is.Not.Null);
 
         CheckRequiredMethods(requirement, implementingMixin, "");
@@ -124,11 +124,11 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void RequiredTargetCallMethodsDuckImplementedOnBase ()
     {
-      TargetClassDefinition TargetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (ClassFulfillingAllMemberRequirementsDuck));
-      MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersTargetCall)];
+      TargetClassDefinition TargetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassFulfillingAllMemberRequirementsDuck));
+      MixinDefinition mixin = TargetClassDefinition.Mixins[typeof(MixinRequiringAllMembersTargetCall)];
       Assert.That(mixin, Is.Not.Null);
 
-      RequiredTargetCallTypeDefinition requirement = mixin.TargetCallDependencies[typeof (IMixinRequiringAllMembersRequirements)].RequiredType;
+      RequiredTargetCallTypeDefinition requirement = mixin.TargetCallDependencies[typeof(IMixinRequiringAllMembersRequirements)].RequiredType;
       Assert.That(requirement, Is.Not.Null);
 
       CheckRequiredMethods(requirement, TargetClassDefinition, "");
@@ -137,11 +137,11 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void RequiredNextCallMethodsDuckImplementedOnBase ()
     {
-      TargetClassDefinition TargetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (ClassFulfillingAllMemberRequirementsDuck));
-      MixinDefinition mixin = TargetClassDefinition.Mixins[typeof (MixinRequiringAllMembersNextCall)];
+      TargetClassDefinition TargetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassFulfillingAllMemberRequirementsDuck));
+      MixinDefinition mixin = TargetClassDefinition.Mixins[typeof(MixinRequiringAllMembersNextCall)];
       Assert.That(mixin, Is.Not.Null);
 
-      RequiredNextCallTypeDefinition requirement = mixin.NextCallDependencies[typeof (IMixinRequiringAllMembersRequirements)].RequiredType;
+      RequiredNextCallTypeDefinition requirement = mixin.NextCallDependencies[typeof(IMixinRequiringAllMembersRequirements)].RequiredType;
       Assert.That(requirement, Is.Not.Null);
 
       CheckRequiredMethods(requirement, TargetClassDefinition, "");
@@ -150,10 +150,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void ThrowsIfMethodRequirementIsNotFulfilled ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof (MixinRequiringSingleMethod)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof(MixinRequiringSingleMethod)).EnterScope())
       {
         Assert.That(
-            () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (NullTarget)),
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(NullTarget)),
             Throws.InstanceOf<ConfigurationException>()
                 .With.Message.EqualTo(
                     "The dependency 'IRequirement' (required by mixin "
@@ -166,10 +166,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void ThrowsIfPropertyRequirementIsNotFulfilled ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof (MixinRequiringSingleProperty)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof(MixinRequiringSingleProperty)).EnterScope())
       {
         Assert.That(
-            () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (NullTarget)),
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(NullTarget)),
             Throws.InstanceOf<ConfigurationException>()
                 .With.Message.EqualTo(
                     "The dependency 'IRequirement' (required by mixin "
@@ -182,10 +182,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void ThrowsIfEventRequirementIsNotFulfilled ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof (MixinRequiringSingleEvent)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof(MixinRequiringSingleEvent)).EnterScope())
       {
         Assert.That(
-            () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (NullTarget)),
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(NullTarget)),
             Throws.InstanceOf<ConfigurationException>()
                 .With.Message.EqualTo(
                     "The dependency 'IRequirement' (required by mixin "
@@ -198,10 +198,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void ThrowsIfRequiredMethodIsPrivate ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingPrivately>().Clear().AddMixins(typeof (MixinRequiringAllMembersTargetCall)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingPrivately>().Clear().AddMixins(typeof(MixinRequiringAllMembersTargetCall)).EnterScope())
       {
         Assert.That(
-            () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (ClassFulfillingPrivately)),
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassFulfillingPrivately)),
             Throws.InstanceOf<ConfigurationException>()
                 .With.Message.EqualTo(
                     "The dependency 'IMixinRequiringAllMembersRequirements' (required by mixin "
@@ -214,10 +214,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void ThrowsIfRequiredMethodIsInternal ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingInternally>().Clear().AddMixins(typeof (MixinRequiringAllMembersTargetCall)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingInternally>().Clear().AddMixins(typeof(MixinRequiringAllMembersTargetCall)).EnterScope())
       {
         Assert.That(
-            () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (ClassFulfillingInternally)),
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassFulfillingInternally)),
             Throws.InstanceOf<ConfigurationException>()
                 .With.Message.EqualTo(
                     "The dependency 'IMixinRequiringAllMembersRequirements' (required by "
@@ -238,7 +238,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
           .EnterScope())
       {
         Assert.That(
-            () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (NullTarget)),
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(NullTarget)),
             Throws.InstanceOf<ConfigurationException>()
                 .With.Message.EqualTo(
                     "The dependency 'ISimpleInterface' (required by composed interface "
@@ -251,10 +251,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void WorksIfRequiredMethodIsProtected ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingProtectedly>().Clear().AddMixins(typeof (MixinRequiringAllMembersTargetCall)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingProtectedly>().Clear().AddMixins(typeof(MixinRequiringAllMembersTargetCall)).EnterScope())
       {
-        TargetClassDefinition definition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (ClassFulfillingProtectedly));
-        RequiredTargetCallTypeDefinition requirement = definition.RequiredTargetCallTypes[typeof (IMixinRequiringAllMembersRequirements)];
+        TargetClassDefinition definition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassFulfillingProtectedly));
+        RequiredTargetCallTypeDefinition requirement = definition.RequiredTargetCallTypes[typeof(IMixinRequiringAllMembersRequirements)];
 
         CheckRequiredMethods(requirement, definition, "");
       }
@@ -263,20 +263,20 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void WorksIfExplicitlyImplemented ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingAllMemberRequirementsExplicitly>().Clear().AddMixins(typeof (MixinRequiringAllMembersTargetCall)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingAllMemberRequirementsExplicitly>().Clear().AddMixins(typeof(MixinRequiringAllMembersTargetCall)).EnterScope())
       {
-        TargetClassDefinition definition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (ClassFulfillingAllMemberRequirementsExplicitly));
-        RequiredTargetCallTypeDefinition requirement = definition.RequiredTargetCallTypes[typeof (IMixinRequiringAllMembersRequirements)];
+        TargetClassDefinition definition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassFulfillingAllMemberRequirementsExplicitly));
+        RequiredTargetCallTypeDefinition requirement = definition.RequiredTargetCallTypes[typeof(IMixinRequiringAllMembersRequirements)];
 
-        CheckRequiredMethods(requirement, definition, typeof (IMixinRequiringAllMembersRequirements).FullName + ".");
+        CheckRequiredMethods(requirement, definition, typeof(IMixinRequiringAllMembersRequirements).FullName + ".");
       }
     }
 
     [Test]
     public void NoRequiredMethodsWhenFaceRequirementIsClass ()
     {
-      TargetClassDefinition targetClass = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (ClassWithStaticMethod));
-      RequiredTargetCallTypeDefinition requirement = targetClass.RequiredTargetCallTypes[typeof (ClassWithStaticMethod)];
+      TargetClassDefinition targetClass = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassWithStaticMethod));
+      RequiredTargetCallTypeDefinition requirement = targetClass.RequiredTargetCallTypes[typeof(ClassWithStaticMethod)];
       Assert.That(requirement.Methods.Count, Is.EqualTo(0));
     }
   }

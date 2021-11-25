@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       var compound = (CompoundBusinessObjectPropertyConstraintProvider) instance;
       Assert.That(
           compound.BusinessObjectConstraintProviders.Select(p => p.GetType()),
-          Is.EqualTo(new[] { typeof (ValidationBusinessObjectPropertyConstraintProvider) }));
+          Is.EqualTo(new[] { typeof(ValidationBusinessObjectPropertyConstraintProvider) }));
     }
 
     [Test]

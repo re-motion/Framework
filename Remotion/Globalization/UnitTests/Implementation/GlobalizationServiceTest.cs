@@ -48,7 +48,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     [Test]
     public void GetResourceManager_WithTypeWithoutResources ()
     {
-      var type = typeof (ResourceTarget);
+      var type = typeof(ResourceTarget);
       var typeInformation = TypeAdapter.Create(type);
 
       _resourceManagerStub.Setup(stub=>stub.IsNull).Returns(true);
@@ -64,7 +64,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     [Test]
     public void GetResourceManager_WithExpectedType ()
     {
-      var type = typeof (ResourceTarget);
+      var type = typeof(ResourceTarget);
       var typeInformation = TypeAdapter.Create(type);
       var outValue = "TheValue";
 
@@ -94,7 +94,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     [Test]
     public void GetResourceManagerTwice_SameFromCache ()
     {
-      var type = typeof (ResourceTarget);
+      var type = typeof(ResourceTarget);
       var typeInformation = TypeAdapter.Create(type);
       var outValue = "TheValue";
 

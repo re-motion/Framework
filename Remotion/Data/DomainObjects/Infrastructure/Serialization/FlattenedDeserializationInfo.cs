@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 
     public T GetValue<T> ()
     {
-      if (typeof (IFlattenedSerializable).IsAssignableFrom(typeof (T)))
+      if (typeof(IFlattenedSerializable).IsAssignableFrom(typeof(T)))
         return GetFlattenedSerializable<T>();
       else
       {
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       }
       catch (InvalidOperationException ex)
       {
-        throw new SerializationException(typeof (T).Name + " stream: " + ex.Message, ex);
+        throw new SerializationException(typeof(T).Name + " stream: " + ex.Message, ex);
       }
     }
 
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
     {
       var typeName = GetValueForHandle<string>();
       if (typeName == null)
-        return default (T);
+        return default(T);
 
       // C# compiler 7.2 does not provide caching for delegate but during serialization there is already a significant amount of GC pressure so the delegate creation does not matter
       var instanceFactory = s_instanceFactoryCache.GetOrAdd(typeName, GetInstanceFactory);
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       var ctorInfo = type.GetConstructor(
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
           null,
-          new[] { typeof (FlattenedDeserializationInfo) },
+          new[] { typeof(FlattenedDeserializationInfo) },
           new ParameterModifier[0]);
 
       if (ctorInfo == null)
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
                 type));
       }
 
-      var parameter = Expression.Parameter(typeof (FlattenedDeserializationInfo));
+      var parameter = Expression.Parameter(typeof(FlattenedDeserializationInfo));
       var factoryLambda = Expression.Lambda<Func<FlattenedDeserializationInfo, object>>(Expression.New(ctorInfo, parameter), parameter);
       return factoryLambda.Compile();
     }
@@ -128,13 +128,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       catch (InvalidCastException ex)
       {
         string message = string.Format("{0} stream: The serialization stream contains an object of type {1} at position {2}, but an object of "
-            + "type {3} was expected.", streamName, uncastValue.GetType().GetFullNameSafe(), originalPosition, typeof (T).GetFullNameSafe());
+            + "type {3} was expected.", streamName, uncastValue.GetType().GetFullNameSafe(), originalPosition, typeof(T).GetFullNameSafe());
         throw new SerializationException(message, ex);
       }
       catch (NullReferenceException ex)
       {
         string message = string.Format("{0} stream: The serialization stream contains a null value at position {1}, but an object of type {2} was "
-            + "expected.", streamName, originalPosition, typeof (T).GetFullNameSafe());
+            + "expected.", streamName, originalPosition, typeof(T).GetFullNameSafe());
         throw new SerializationException(message, ex);
       }
       return value;

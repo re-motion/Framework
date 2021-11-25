@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     private MappingConfiguration _mappingConfiguration;
 
     protected CustomStorageObjectFactoryTestBase (string createTestDataFileName)
-        : base (new DatabaseAgent(TestDomainConnectionString), createTestDataFileName)
+        : base(new DatabaseAgent(TestDomainConnectionString), createTestDataFileName)
     {
     }
 

@@ -36,16 +36,16 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
       var generator = new AdHocCodeGenerator(TestContext.CurrentContext.TestDirectory, "MixinTypeCodeGeneration.GeneratedTypeInConfigurationTest");
       generator.AddCustomAttribute(typeof(NonApplicationAssemblyAttribute));
 
-      var generatedMixinTypeBuilder = generator.CreateType("GeneratedMixinType", typeof (Mixin<object>));
+      var generatedMixinTypeBuilder = generator.CreateType("GeneratedMixinType", typeof(Mixin<object>));
       _generatedMixinType = generatedMixinTypeBuilder.CreateType();
 
       var generatedTargetTypeWithMethodOverrideBuilder = generator.CreateType("GeneratedTargetType");
       var methodBuilder = generator.CreateMethod(
-          generatedTargetTypeWithMethodOverrideBuilder, "ToString", MethodAttributes.Public, typeof (string), Type.EmptyTypes);
+          generatedTargetTypeWithMethodOverrideBuilder, "ToString", MethodAttributes.Public, typeof(string), Type.EmptyTypes);
       var gen = methodBuilder.GetILGenerator();
       gen.Emit(OpCodes.Ldstr, "Generated _and_ overridden");
       gen.Emit(OpCodes.Ret);
-      methodBuilder.SetCustomAttribute(generator.CreateCustomAttributeBuilder(typeof (OverrideMixinAttribute)));
+      methodBuilder.SetCustomAttribute(generator.CreateCustomAttributeBuilder(typeof(OverrideMixinAttribute)));
       _generatedTargetTypeWithMethodOverride = generatedTargetTypeWithMethodOverrideBuilder.CreateType();
 
       var generatedAssemblyPath = generator.Save();
@@ -57,7 +57,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     {
       using (MixinConfiguration.BuildNew().ForClass<ClassOverridingMixinMethod>().Clear().AddMixins(_generatedMixinType).EnterScope())
       {
-        object instance = ObjectFactory.Create(typeof (ClassOverridingMixinMethod), ParamList.Empty);
+        object instance = ObjectFactory.Create(typeof(ClassOverridingMixinMethod), ParamList.Empty);
         Assert.That(Mixin.Get(_generatedMixinType, instance).ToString(), Is.EqualTo("Overridden!"));
       }
     }

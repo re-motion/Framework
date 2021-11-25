@@ -30,7 +30,7 @@ namespace Remotion.Validation.MetaValidation.Rules.System
   public class LengthSystemPropertyMetaValidationRule : SystemPropertyMetaValidationRuleBase<LengthValidator>
   {
     public LengthSystemPropertyMetaValidationRule (IPropertyInformation propertyInfo)
-        : base (propertyInfo)
+        : base(propertyInfo)
     {
     }
 

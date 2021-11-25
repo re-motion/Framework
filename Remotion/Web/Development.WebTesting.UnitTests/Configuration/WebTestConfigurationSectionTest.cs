@@ -58,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     [SetUp]
     public void SetUp ()
     {
-      _section = (WebTestConfigurationSection) Activator.CreateInstance(typeof (WebTestConfigurationSection), true);
+      _section = (WebTestConfigurationSection) Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
     }
 
     [Test]
@@ -176,7 +176,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
 
     private string GetSchemaContent ()
     {
-      var assembly = typeof (WebTestConfigurationSection).Assembly;
+      var assembly = typeof(WebTestConfigurationSection).Assembly;
       using (var resourceStream = assembly.GetManifestResourceStream("Remotion.Web.Development.WebTesting.Schemas.WebTestingConfiguration.xsd"))
       using (var reader = new StreamReader(resourceStream))
         return reader.ReadToEnd();

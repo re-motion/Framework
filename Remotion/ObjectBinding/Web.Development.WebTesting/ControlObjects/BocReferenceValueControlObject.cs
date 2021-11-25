@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           ISupportsValidationErrorsForReadOnly
   {
     public BocReferenceValueControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

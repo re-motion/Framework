@@ -28,10 +28,10 @@ namespace Remotion.Configuration
     {
       return new ConfigurationProperty(
           "type",
-          typeof (Type),
+          typeof(Type),
           defaultValue,
           new TypeNameConverter(),
-          new SubclassTypeValidator(typeof (TBase)),
+          new SubclassTypeValidator(typeof(TBase)),
           ConfigurationPropertyOptions.IsRequired);
     }
 
@@ -39,7 +39,7 @@ namespace Remotion.Configuration
     private readonly ConfigurationProperty _typeProperty;
 
     public TypeElement ()
-      : this (null)
+      : this(null)
     {
     }
 
@@ -76,7 +76,7 @@ namespace Remotion.Configuration
     where TDefault : TBase
   {
     public TypeElement ()
-      : base (typeof (TDefault))
+      : base(typeof(TDefault))
     {
     }
   }

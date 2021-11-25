@@ -49,13 +49,13 @@ namespace Remotion.Security
     private static AccessType GetInternal (Enum accessType)
     {
       Type type = accessType.GetType();
-      if (!Attribute.IsDefined(type, typeof (AccessTypeAttribute), false))
+      if (!Attribute.IsDefined(type, typeof(AccessTypeAttribute), false))
       {
         throw new ArgumentException(
             string.Format(
                 "Enumerated type '{0}' cannot be used as an access type. Valid access types must have the {1} applied.",
                 type.GetFullNameSafe(),
-                typeof (AccessTypeAttribute).GetFullNameSafe()),
+                typeof(AccessTypeAttribute).GetFullNameSafe()),
             "accessType");
       }
 
@@ -88,7 +88,7 @@ namespace Remotion.Security
     {
       if (obj == null)
         return false;
-      if (obj.GetType() != typeof (AccessType))
+      if (obj.GetType() != typeof(AccessType))
         return false;
       return Equals((AccessType) obj);
     }

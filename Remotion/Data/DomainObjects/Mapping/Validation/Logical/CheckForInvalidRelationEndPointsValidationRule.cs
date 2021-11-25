@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
             endPointDefinition.PropertyName,
             endPointDefinition.ClassDefinition.ClassType.Name,
             endPointDefinition.PropertyInfo.PropertyType.Name,
-            typeof (ObjectID).Name);
+            typeof(ObjectID).Name);
         }
         else if (endPointDefinition is TypeNotCompatibleWithVirtualRelationEndPointDefinition)
         {
@@ -56,9 +56,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
               endPointDefinition.PropertyName,
               endPointDefinition.ClassDefinition.ClassType.Name,
               endPointDefinition.PropertyInfo.PropertyType.Name,
-              typeof (DomainObject).Name,
-              typeof (ObjectList<>).Name,
-              typeof (IObjectList<>).Name);
+              typeof(DomainObject).Name,
+              typeof(ObjectList<>).Name,
+              typeof(IObjectList<>).Name);
         }
       }
       return MappingValidationResult.CreateValidResult();

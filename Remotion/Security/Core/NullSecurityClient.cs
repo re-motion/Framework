@@ -29,7 +29,7 @@ namespace Remotion.Security
   public class NullSecurityClient : SecurityClient, INullObject
   {
     public NullSecurityClient ()
-        : base (
+        : base(
             new NullSecurityProvider(),
             new PermissionReflector(),
             new NullPrincipalProvider(),

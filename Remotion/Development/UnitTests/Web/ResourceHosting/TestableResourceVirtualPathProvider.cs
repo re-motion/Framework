@@ -29,14 +29,14 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     private Func<string, string> _overrideMapPathFunc;
 
     public TestableResourceVirtualPathProvider (ResourcePathMapping[] mappings, string projectRoot)
-        : base (mappings)
+        : base(mappings)
     {
       _projectRoot = projectRoot;
     }
 
     public void SetPrevious (VirtualPathProvider provider)
     {
-      typeof (VirtualPathProvider).GetField("_previous", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this, provider);
+      typeof(VirtualPathProvider).GetField("_previous", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this, provider);
     }
 
     protected override string GetProjectRoot ()

@@ -34,17 +34,17 @@ namespace Remotion.Web.ExecutionEngine
     private readonly NameValueCollection? _urlParameters;
 
     public WxePermaUrlOptions ()
-        : this (true, false, null)
+        : this(true, false, null)
     {
     }
 
     public WxePermaUrlOptions (bool useParentPermaUrl)
-        : this (true, useParentPermaUrl, null)
+        : this(true, useParentPermaUrl, null)
     {
     }
 
     public WxePermaUrlOptions (bool useParentPermaUrl, NameValueCollection? urlParameters)
-        : this (true, useParentPermaUrl, urlParameters)
+        : this(true, useParentPermaUrl, urlParameters)
     {
     }
 

@@ -52,7 +52,7 @@ namespace Remotion.Mixins.Definitions
     private ConcreteMixinTypeIdentifier? _concreteTypeIdentifier;
     
     public MixinDefinition (MixinKind mixinKind, Type type, TargetClassDefinition targetClass, bool acceptsAlphabeticOrdering)
-        : base (type)
+        : base(type)
     {
       ArgumentUtility.CheckNotNull("targetClass", targetClass);
 

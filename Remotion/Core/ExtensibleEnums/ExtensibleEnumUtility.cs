@@ -28,8 +28,8 @@ namespace Remotion.ExtensibleEnums
   /// <threadsafety static="true" instance="true" />
   public static class ExtensibleEnumUtility
   {
-    private static readonly TypeAdapter s_extensibleEnumInterfaceType = TypeAdapter.Create(typeof (IExtensibleEnum));
-    private static readonly TypeAdapter s_extensibleEnumGenericBaseType = TypeAdapter.Create(typeof (ExtensibleEnum<>));
+    private static readonly TypeAdapter s_extensibleEnumInterfaceType = TypeAdapter.Create(typeof(IExtensibleEnum));
+    private static readonly TypeAdapter s_extensibleEnumGenericBaseType = TypeAdapter.Create(typeof(ExtensibleEnum<>));
 
     /// <summary>
     /// Determines whether the specified type is an <see cref="ExtensibleEnum{T}"/> type.

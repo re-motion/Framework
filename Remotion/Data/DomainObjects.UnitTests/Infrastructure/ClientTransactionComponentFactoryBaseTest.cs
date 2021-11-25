@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var result = _factory.CreateObjectLifetimeAgent(
           _fakeConstructedTransaction, eventSink, invalidDomainObjectManager, dataManager, enlistedDomainObjectManager, persistenceStrategy);
 
-      Assert.That(result, Is.TypeOf(typeof (ObjectLifetimeAgent)));
+      Assert.That(result, Is.TypeOf(typeof(ObjectLifetimeAgent)));
       
       var objectLifetimeAgent = ((ObjectLifetimeAgent) result);
       Assert.That(objectLifetimeAgent.ClientTransaction, Is.SameAs(_fakeConstructedTransaction));
@@ -198,7 +198,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       factoryPartialMock.VerifyAllExpectations();
 
-      Assert.That(result, Is.TypeOf(typeof (QueryManager)));
+      Assert.That(result, Is.TypeOf(typeof(QueryManager)));
       Assert.That(((QueryManager) result).PersistenceStrategy, Is.SameAs(persistenceStrategy));
       Assert.That(((QueryManager) result).TransactionEventSink, Is.SameAs(eventSink));
       Assert.That(((QueryManager) result).ObjectLoader, Is.SameAs(fakeObjectLoader));

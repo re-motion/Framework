@@ -40,16 +40,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 
       var column1 = new ColumnDefinition("Column1", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation(false), false);
       var column2 = new ColumnDefinition("Column2", StorageTypeInformationObjectMother.CreateBitStorageTypeInformation(true), false);
-      var property1 = new SimpleStoragePropertyDefinition(typeof (string), column1);
-      var property2 = new SimpleStoragePropertyDefinition(typeof (bool), column2);
+      var property1 = new SimpleStoragePropertyDefinition(typeof(string), column1);
+      var property2 = new SimpleStoragePropertyDefinition(typeof(bool), column2);
 
       var idColumn = new ColumnDefinition("ID", StorageTypeInformationObjectMother.CreateUniqueIdentifierStorageTypeInformation(false), true);
       var classIDColumn = new ColumnDefinition("ClassID", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation(true), false);
       var objectIDProperty = new ObjectIDStoragePropertyDefinition(
-          new SimpleStoragePropertyDefinition(typeof (object), idColumn), 
-          new SimpleStoragePropertyDefinition(typeof (string), classIDColumn));
+          new SimpleStoragePropertyDefinition(typeof(object), idColumn), 
+          new SimpleStoragePropertyDefinition(typeof(string), classIDColumn));
       var timestampColumn = new ColumnDefinition("Timestamp", StorageTypeInformationObjectMother.CreateDateTimeStorageTypeInformation(true), false);
-      var timestampProperty = new SimpleStoragePropertyDefinition(typeof (object), timestampColumn);
+      var timestampProperty = new SimpleStoragePropertyDefinition(typeof(object), timestampColumn);
 
       _tableDefinitionWithoutPrimaryKeyConstraint = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  [Column1] varchar(100) NOT NULL\r\n"
           + ")";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  CONSTRAINT [PKName] PRIMARY KEY CLUSTERED ([Column1])\r\n"
           + ")";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -132,7 +132,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  CONSTRAINT [PKName] PRIMARY KEY NONCLUSTERED ([Column1], [Column2])\r\n"
           + ")";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -145,7 +145,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'EntityName' AND TABLE_SCHEMA = 'SchemaName')\r\n"
           + "  DROP TABLE [SchemaName].[EntityName]";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'EntityName' AND TABLE_SCHEMA = 'dbo')\r\n"
           + "  DROP TABLE [dbo].[EntityName]";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
   }

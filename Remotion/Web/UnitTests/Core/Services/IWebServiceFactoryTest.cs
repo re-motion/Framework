@@ -21,7 +21,7 @@ namespace Remotion.Web.UnitTests.Core.Services
       var instance = _serviceLocator.GetInstance<IWebServiceFactory>();
 
       Assert.That(instance, Is.Not.Null);
-      Assert.That(instance, Is.TypeOf(typeof (WebServiceFactory)));
+      Assert.That(instance, Is.TypeOf(typeof(WebServiceFactory)));
     }
 
     [Test]

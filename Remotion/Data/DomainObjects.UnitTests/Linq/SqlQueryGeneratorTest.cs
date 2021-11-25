@@ -88,14 +88,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     public void CreateSqlQuery_QueryKindEntity ()
     {
       var selectProjection = CreateEntityDefinitionExpression();
-      CheckCreateSqlQuery_SelectedEntityType(typeof (Order), selectProjection);
+      CheckCreateSqlQuery_SelectedEntityType(typeof(Order), selectProjection);
     }
 
     [Test]
     public void CreateSqlQuery_QueryKindEntity_WrappedInUnaryExpressions ()
     {
-      var selectProjection = Expression.Convert(Expression.Convert(CreateEntityDefinitionExpression(), typeof (object)), typeof (Order));
-      CheckCreateSqlQuery_SelectedEntityType(typeof (Order), selectProjection);
+      var selectProjection = Expression.Convert(Expression.Convert(CreateEntityDefinitionExpression(), typeof(object)), typeof(Order));
+      CheckCreateSqlQuery_SelectedEntityType(typeof(Order), selectProjection);
     }
 
     [Test]
@@ -203,8 +203,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     private SqlStatement CreateSqlStatement (Expression selectProjection = null)
     {
       return new SqlStatement(
-          new StreamedSequenceInfo(typeof (IQueryable<Order>), Expression.Constant(null, typeof (Order))),
-          selectProjection ?? Expression.Constant(null, typeof (Order)),
+          new StreamedSequenceInfo(typeof(IQueryable<Order>), Expression.Constant(null, typeof(Order))),
+          selectProjection ?? Expression.Constant(null, typeof(Order)),
           new SqlTable[0],
           null,
           null,
@@ -218,7 +218,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
     private SqlEntityDefinitionExpression CreateEntityDefinitionExpression ()
     {
-      return new SqlEntityDefinitionExpression(typeof (Order), "t0", "o", e => e.GetColumn(typeof (int), "id", true));
+      return new SqlEntityDefinitionExpression(typeof(Order), "t0", "o", e => e.GetColumn(typeof(int), "id", true));
     }
   }
 }

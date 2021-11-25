@@ -56,12 +56,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public static PropertyDefinition CreateForFakePropertyInfo (ClassDefinition classDefinition, string propertyName)
     {
-      return CreateForFakePropertyInfo(classDefinition, propertyName, false, typeof (string), true, null, StorageClass.Persistent);
+      return CreateForFakePropertyInfo(classDefinition, propertyName, false, typeof(string), true, null, StorageClass.Persistent);
     }
 
     public static PropertyDefinition CreateForFakePropertyInfo (ClassDefinition classDefinition, string propertyName, StorageClass storageClass)
     {
-      return CreateForFakePropertyInfo(classDefinition, propertyName, false, typeof (string), true, null, storageClass);
+      return CreateForFakePropertyInfo(classDefinition, propertyName, false, typeof(string), true, null, storageClass);
     }
 
     public static PropertyDefinition CreateForFakePropertyInfo (ClassDefinition classDefinition, string propertyName, Type propertyType)
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public static PropertyDefinition CreateForFakePropertyInfo (ClassDefinition classDefinition, bool isNullable)
     {
-      return CreateForFakePropertyInfo(classDefinition, "Test", false, typeof (string), isNullable, null, StorageClass.Persistent);
+      return CreateForFakePropertyInfo(classDefinition, "Test", false, typeof(string), isNullable, null, StorageClass.Persistent);
     }
 
     public static PropertyDefinition CreateForFakePropertyInfo (
@@ -106,12 +106,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public static PropertyDefinition CreateForFakePropertyInfo_ObjectID (ClassDefinition classDefinition, string propertyName)
     {
-      return CreateForFakePropertyInfo(classDefinition, propertyName, true, typeof (ObjectID), true, null, StorageClass.Persistent);
+      return CreateForFakePropertyInfo(classDefinition, propertyName, true, typeof(ObjectID), true, null, StorageClass.Persistent);
     }
 
     public static PropertyDefinition CreateForFakePropertyInfo_ObjectID (ClassDefinition classDefinition, string propertyName, StorageClass storageClass)
     {
-      return CreateForFakePropertyInfo(classDefinition, propertyName, true, typeof (ObjectID), true, null, storageClass);
+      return CreateForFakePropertyInfo(classDefinition, propertyName, true, typeof(ObjectID), true, null, storageClass);
     }
 
     public static PropertyDefinition CreateForRealPropertyInfo (ClassDefinition classDefinition, Type declaringClassType, string propertyName)

@@ -41,8 +41,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
       _adapter = new InterceptedPropertyCollectorAdapter();
 
-      _classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (MyDomainObject));
-      _concreteBaseType = typeof (MyConcreteBaseType);
+      _classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(MyDomainObject));
+      _concreteBaseType = typeof(MyConcreteBaseType);
     }
 
     [Test]
@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       var result = _adapter.GetPropertyInterceptors(_classDefinition, _concreteBaseType);
 
-      var property = typeof (MyDomainObject).GetProperty("WriteOnlyProperty");
+      var property = typeof(MyDomainObject).GetProperty("WriteOnlyProperty");
       CheckContains(result, property.GetSetMethod());
     }
 

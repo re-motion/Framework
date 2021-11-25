@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       base.SetUp();
 
       _dataContainerMapStub = MockRepository.GenerateStub<IDataContainerMapReadOnlyView>();
-      _orderNumberPropertyDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryPropertyDefinition(typeof (Order).FullName + ".OrderNumber");
+      _orderNumberPropertyDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryPropertyDefinition(typeof(Order).FullName + ".OrderNumber");
     }
 
     [Test]
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Compare_PropertyOnBaseType ()
     {
-      var propertyDefinition = DomainObjectIDs.Company1.ClassDefinition.GetMandatoryPropertyDefinition(typeof (Company).FullName + ".Name");
+      var propertyDefinition = DomainObjectIDs.Company1.ClassDefinition.GetMandatoryPropertyDefinition(typeof(Company).FullName + ".Name");
 
       var domainObject1 = DomainObjectMother.CreateFakeObject<Company>();
       var domainObject2 = DomainObjectMother.CreateFakeObject<Customer>();
@@ -159,8 +159,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Compare_PropertyOnMixinType ()
     {
-      var propertyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (ClassWithMixedProperty))
-          .GetMandatoryPropertyDefinition(typeof (MixinAddingProperty).FullName + ".MixedProperty");
+      var propertyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(ClassWithMixedProperty))
+          .GetMandatoryPropertyDefinition(typeof(MixinAddingProperty).FullName + ".MixedProperty");
 
       var domainObject1 = DomainObjectMother.CreateFakeObject<ClassWithMixedProperty>();
       var domainObject2 = DomainObjectMother.CreateFakeObject<ClassWithMixedProperty>();
@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var domainObject = DomainObjectMother.CreateFakeObject<Order>();
       var unloadedDomainObject = DomainObjectMother.GetObjectReference<Order>(
           ClientTransaction.CreateRootTransaction(),
-          new ObjectID(typeof (Order), Guid.NewGuid()));
+          new ObjectID(typeof(Order), Guid.NewGuid()));
 
       PrepareDataContainer(_dataContainerMapStub, domainObject, 1);
 

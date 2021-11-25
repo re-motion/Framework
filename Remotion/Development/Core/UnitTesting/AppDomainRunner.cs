@@ -44,7 +44,7 @@ namespace Remotion.Development.UnitTesting
     private readonly object[] _args;
 
     public AppDomainRunner (AppDomainSetup domainSetup, Action<object[]> action, params object[] args)
-      : base (domainSetup)
+      : base(domainSetup)
     {
       _action = action;
       _args = args;

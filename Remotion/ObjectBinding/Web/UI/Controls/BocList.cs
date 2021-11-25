@@ -187,7 +187,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     // static members
-    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof (IBusinessObjectReferenceProperty) };
+    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof(IBusinessObjectReferenceProperty) };
 
     private static readonly ILog s_log = LogManager.GetLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
 
@@ -349,7 +349,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected IWebServiceFactory WebServiceFactory { get; }
 
     public BocList ()
-        : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
+        : this(SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
     {
     }
 
@@ -719,7 +719,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       eventArgumentParts[1] = eventArgumentParts[1].Trim();
       try
       {
-        command = (RowEditModeCommand) Enum.Parse(typeof (RowEditModeCommand), eventArgumentParts[1]);
+        command = (RowEditModeCommand) Enum.Parse(typeof(RowEditModeCommand), eventArgumentParts[1]);
       }
       catch (Exception ex)
       {
@@ -1572,7 +1572,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
     protected virtual IResourceManager GetResourceManager ()
     {
-      return GetResourceManager(typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     IResourceManager IControlWithResourceManager.GetResourceManager ()
@@ -3292,7 +3292,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Category ("Appearance")]
     [Description ("Enables the sorting order display after each sorting button. Undefined is interpreted as true.")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     public virtual bool? ShowSortingOrder
     {
       get { return _showSortingOrder; }
@@ -3311,7 +3311,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Category ("Behavior")]
     [Description ("Enables sorting by multiple columns. Undefined is interpreted as true.")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     public virtual bool? EnableMultipleSorting
     {
       get { return _enableMultipleSorting; }
@@ -3421,7 +3421,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> Defaults to <see langword="null"/>. </value>
     [Category ("Appearance")]
     [Description ("The offset for the rendered index.")]
-    [DefaultValue (typeof (int?), "")]
+    [DefaultValue (typeof(int?), "")]
     public int? IndexOffset
     {
       get { return _indexOffset; }
@@ -3459,7 +3459,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Category ("Appearance")]
     [Description ("The number of rows displayed per page. Set PageSize to null/0 to show all rows.")]
-    [DefaultValue (typeof (int?), "")]
+    [DefaultValue (typeof(int?), "")]
     public virtual int? PageSize
     {
       get { return _pageSize; }
@@ -3590,13 +3590,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <inheritdoc />
     [Category ("Menu")]
     [Description ("The minimum width reserved for the menu block.")]
-    [DefaultValue (typeof (Unit), "")]
+    [DefaultValue (typeof(Unit), "")]
     public Unit MenuBlockMinWidth { get; set; }
 
     /// <inheritdoc />
     [Category ("Menu")]
     [Description ("The maximum width reserved for the menu block.")]
-    [DefaultValue (typeof (Unit), "")]
+    [DefaultValue (typeof(Unit), "")]
     public Unit MenuBlockMaxWidth { get; set; }
 
     /// <summary> Gets or sets the list of menu items to be hidden. </summary>
@@ -3605,7 +3605,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
     [DefaultValue ((string?) null)]
     [PersistenceMode (PersistenceMode.Attribute)]
-    [TypeConverter (typeof (StringArrayConverter))]
+    [TypeConverter (typeof(StringArrayConverter))]
     public string[] HiddenMenuItems
     {
       get

@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQuery_FromDefinition ()
     {
-      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.Collection, typeof (OrderCollection));
+      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.Collection, typeof(OrderCollection));
 
       IQuery query = QueryFactory.CreateQuery(definition);
       Assert.That(query.CollectionType, Is.EqualTo(definition.CollectionType));
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQuery_FromDefinition_WithParameterCollection ()
     {
-      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.Collection, typeof (OrderCollection));
+      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.Collection, typeof(OrderCollection));
       var parameterCollection = new QueryParameterCollection();
 
       IQuery query = QueryFactory.CreateQuery(definition, parameterCollection);
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var id = "id";
       var statement = "stmt";
       var parameterCollection = new QueryParameterCollection();
-      var collectionType = typeof (OrderCollection);
+      var collectionType = typeof(OrderCollection);
 
       IQuery query = QueryFactory.CreateCollectionQuery(id, TestDomainStorageProviderDefinition, statement, parameterCollection, collectionType);
       Assert.That(query.ID, Is.EqualTo(id));
@@ -173,7 +173,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 
       IQuery query = QueryFactory.CreateQuery<Order>("<dynamico queryo>", queryable);
       Assert.That(query.EagerFetchQueries.Count, Is.EqualTo(1));
-      Assert.That(query.EagerFetchQueries.Single().Key.PropertyName, Is.EqualTo(typeof (Order).FullName + ".OrderItems"));
+      Assert.That(query.EagerFetchQueries.Single().Key.PropertyName, Is.EqualTo(typeof(Order).FullName + ".OrderItems"));
     }
 
     [Test]
@@ -246,11 +246,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     {
       var linqProviderComponentFactoryCache =
           (DoubleCheckedLockingContainer<ILinqProviderComponentFactory>)
-          PrivateInvoke.GetNonPublicStaticField(typeof (QueryFactory), "s_linqProviderComponentFactory");
+          PrivateInvoke.GetNonPublicStaticField(typeof(QueryFactory), "s_linqProviderComponentFactory");
       linqProviderComponentFactoryCache.Value = null;
 
       var queryParserCache =
-          (DoubleCheckedLockingContainer<IQueryParser>) PrivateInvoke.GetNonPublicStaticField(typeof (QueryFactory), "s_queryParser");
+          (DoubleCheckedLockingContainer<IQueryParser>) PrivateInvoke.GetNonPublicStaticField(typeof(QueryFactory), "s_queryParser");
       queryParserCache.Value = null;
     }
   }

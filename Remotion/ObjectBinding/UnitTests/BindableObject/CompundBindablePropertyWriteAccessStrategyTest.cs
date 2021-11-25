@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       _strategy = new CompundBindablePropertyWriteAccessStrategy(new[] { _innerStrategy1.Object, _innerStrategy2.Object, _innerStrategy3.Object });
 
       _businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
-      _property = new StubPropertyBase(GetPropertyParameters(GetPropertyInfo(typeof (ClassWithAllDataTypes), "Byte"), _businessObjectProvider));
+      _property = new StubPropertyBase(GetPropertyParameters(GetPropertyInfo(typeof(ClassWithAllDataTypes), "Byte"), _businessObjectProvider));
       _businessObject = new Mock<IBusinessObject>();
     }
 

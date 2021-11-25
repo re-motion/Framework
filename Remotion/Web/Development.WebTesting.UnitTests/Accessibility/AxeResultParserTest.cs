@@ -227,8 +227,8 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     }
 
     [Test]
-    [TestCase (null, typeof (ArgumentNullException))]
-    [TestCase ("", typeof (ArgumentException))]
+    [TestCase (null, typeof(ArgumentNullException))]
+    [TestCase ("", typeof(ArgumentException))]
     public void Parse_WithNullOrEmptyJson_ThrowsException (string rawJson, Type exceptionType)
     {
       var parser = new AxeResultParser();

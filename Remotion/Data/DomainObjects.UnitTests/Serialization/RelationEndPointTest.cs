@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     public override void SetUp ()
     {
       base.SetUp();
-      var id = RelationEndPointID.Create(DomainObjectIDs.Computer1, ReflectionMappingHelper.GetPropertyName(typeof (Computer), "Employee"));
+      var id = RelationEndPointID.Create(DomainObjectIDs.Computer1, ReflectionMappingHelper.GetPropertyName(typeof(Computer), "Employee"));
       _endPoint = new TestableRelationEndPoint(TestableClientTransaction, id);
 
       Assert2.IgnoreIfFeatureSerializationIsDisabled();

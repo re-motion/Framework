@@ -40,13 +40,13 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull("wrappedCollection", wrappedCollection);
 
-      var requiredItemType = wrappedCollection.RequiredItemType ?? typeof (DomainObject);
-      if (!typeof (T).IsAssignableFrom(requiredItemType))
+      var requiredItemType = wrappedCollection.RequiredItemType ?? typeof(DomainObject);
+      if (!typeof(T).IsAssignableFrom(requiredItemType))
       {
         var message = string.Format(
             "Cannot implement 'IList<{0}>' for a DomainObjectCollection with required item type '{1}'. The IList<T>'s item type must be assignable "
             + "from the required item type.", 
-            typeof (T), 
+            typeof(T), 
             requiredItemType);
         throw new ArgumentException(message, "wrappedCollection");
       }

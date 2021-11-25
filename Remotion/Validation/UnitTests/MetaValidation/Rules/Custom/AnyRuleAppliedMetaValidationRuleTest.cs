@@ -37,7 +37,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
       _propertyValidatorStub1 = new Mock<IPropertyValidator>();
       _propertyValidatorStub2 = new Mock<IPropertyValidator>();
 
-      _rule = new AnyRuleAppliedPropertyMetaValidationRule(typeof (Customer).GetProperty("UserName"));
+      _rule = new AnyRuleAppliedPropertyMetaValidationRule(typeof(Customer).GetProperty("UserName"));
     }
 
     [Test]

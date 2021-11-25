@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       CheckNotification(listener => listener.SubTransactionInitialize(TestableClientTransaction, clientTransaction2));
       CheckNotification(listener => listener.SubTransactionCreated(TestableClientTransaction, clientTransaction2));
 
-      CheckNotification(listener => listener.NewObjectCreating(TestableClientTransaction, typeof (string)));
+      CheckNotification(listener => listener.NewObjectCreating(TestableClientTransaction, typeof(string)));
 
       CheckNotification(listener => listener.ObjectsLoading(TestableClientTransaction, new ReadOnlyCollection<ObjectID>(new ObjectID[0])));
       CheckNotification(listener => listener.ObjectsLoaded(TestableClientTransaction, domainObjects));
@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       CheckNotification(listener => listener.TransactionRollingBack(TestableClientTransaction, domainObjects));
       CheckNotification(listener => listener.TransactionRolledBack(TestableClientTransaction, domainObjects));
 
-      var id = RelationEndPointID.Create(order.ID, typeof (Order).FullName + ".Customer");
+      var id = RelationEndPointID.Create(order.ID, typeof(Order).FullName + ".Customer");
       var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(id, null);
 
       CheckNotification(listener => listener.RelationEndPointMapRegistering(TestableClientTransaction, endPoint));

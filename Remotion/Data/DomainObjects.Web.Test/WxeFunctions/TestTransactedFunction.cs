@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
     // construction and disposing
 
     public TestTransactedFunction (ITransactionMode transactionMode, ObjectID objectWithAllDataTypes)
-        : base (transactionMode, objectWithAllDataTypes)
+        : base(transactionMode, objectWithAllDataTypes)
     {
     }
 

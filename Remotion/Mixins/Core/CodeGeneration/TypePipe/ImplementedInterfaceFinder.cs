@@ -59,7 +59,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       interfaces.UnionWith(_receivedInterfaces.Select(introduction => introduction.InterfaceType));
       interfaces.UnionWith(_mixinInfos.SelectMany(mixin => mixin.GetInterfacesToImplement()));
-      interfaces.Add(typeof (IMixinTarget));
+      interfaces.Add(typeof(IMixinTarget));
 
       return interfaces.ToArray();
     }

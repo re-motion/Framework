@@ -61,7 +61,7 @@ namespace Remotion.Validation.Implementation
 
       // TODO RM-5906: Replace with IPropertyInformation.GetGetMethod().GetFastInvoker.
       // TODO RM-5906: Add cache, try to unify with AddingComponentPropertyRule and DomainObjectAttributesBasedValidationPropertyRuleReflector
-      var parameterExpression = Expression.Parameter(typeof (object), "t");
+      var parameterExpression = Expression.Parameter(typeof(object), "t");
 
       // object o => (object) (TheType o).TheProperty
       var accessorExpression = Expression.Lambda<Func<object, object>>(
@@ -69,7 +69,7 @@ namespace Remotion.Validation.Implementation
               Expression.MakeMemberAccess(
                   Expression.Convert(parameterExpression, validatedType),
                   _propertyInfo),
-              typeof (object)),
+              typeof(object)),
           parameterExpression);
 
       return accessorExpression.Compile();

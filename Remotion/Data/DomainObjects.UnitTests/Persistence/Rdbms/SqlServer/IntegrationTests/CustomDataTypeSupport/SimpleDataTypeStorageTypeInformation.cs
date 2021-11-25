@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public Type StorageType
     {
-      get { return typeof (SimpleDataType); }
+      get { return typeof(SimpleDataType); }
     }
 
     public string StorageTypeName
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public Type DotNetType
     {
-      get { return typeof (string); }
+      get { return typeof(string); }
     }
 
     public IDbDataParameter CreateDataParameter (IDbCommand command, object value)

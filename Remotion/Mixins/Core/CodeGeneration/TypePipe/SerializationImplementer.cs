@@ -47,7 +47,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull("mutableType", mutableType);
       ArgumentUtility.CheckNotNull("delegatingExpressionFunc", delegatingExpressionFunc);
 
-      var baseIsISerializable = typeof (ISerializable).IsTypePipeAssignableFrom(mutableType.BaseType);
+      var baseIsISerializable = typeof(ISerializable).IsTypePipeAssignableFrom(mutableType.BaseType);
       var attributes = MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.Final;
       var md = MethodDeclaration.CreateEquivalent(s_getObjectDataMethod);
 
@@ -70,7 +70,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
           null,
           CallingConventions.Any,
-          new[] { typeof (SerializationInfo), typeof (StreamingContext) },
+          new[] { typeof(SerializationInfo), typeof(StreamingContext) },
           null);
       if (baseConstructor == null || !IsPublicOrProtected(baseConstructor))
       {
@@ -129,13 +129,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     public static void RaiseOnDeserializing (object deserializedObject, StreamingContext context)
     {
       ArgumentUtility.CheckNotNull("deserializedObject", deserializedObject);
-      s_serializationEventRaiser.InvokeAttributedMethod(deserializedObject, typeof (OnDeserializingAttribute), context);
+      s_serializationEventRaiser.InvokeAttributedMethod(deserializedObject, typeof(OnDeserializingAttribute), context);
     }
 
     public static void RaiseOnDeserialized (object deserializedObject, StreamingContext context)
     {
       ArgumentUtility.CheckNotNull("deserializedObject", deserializedObject);
-      s_serializationEventRaiser.InvokeAttributedMethod(deserializedObject, typeof (OnDeserializedAttribute), context);
+      s_serializationEventRaiser.InvokeAttributedMethod(deserializedObject, typeof(OnDeserializedAttribute), context);
     }
   }
 }

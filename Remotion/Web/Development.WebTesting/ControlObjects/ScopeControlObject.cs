@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class ScopeControlObject : ControlObject, IControlHost
   {
     public ScopeControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

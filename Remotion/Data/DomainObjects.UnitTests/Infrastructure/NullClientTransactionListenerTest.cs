@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _listener = NullClientTransactionListener.Instance;
       _domainObject = DomainObjectMother.CreateObjectInTransaction<Client>(TestableClientTransaction);
       _dataContainer = _domainObject.GetInternalDataContainerForTransaction(TestableClientTransaction);
-      _propertyDefinition = GetPropertyDefinition(typeof (Client), "ParentClient");
+      _propertyDefinition = GetPropertyDefinition(typeof(Client), "ParentClient");
       _relationEndPoint = TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(_dataContainer.AssociatedRelationEndPointIDs[0]);
     }
 

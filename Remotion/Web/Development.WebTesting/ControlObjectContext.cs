@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting
     /// If multiple matching controls are found.
     /// </exception>
     internal ControlObjectContext ([NotNull] PageObject pageObject, [NotNull] ElementScope scope)
-        : base (scope)
+        : base(scope)
     {
       ArgumentUtility.CheckNotNull("pageObject", pageObject);
 

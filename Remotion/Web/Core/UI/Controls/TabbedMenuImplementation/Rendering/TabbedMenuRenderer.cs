@@ -30,14 +30,14 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
   /// Implements <see cref="ITabbedMenuRenderer"/> for standard mode rendering of <see cref="TabbedMenu"/> controls.
   /// <seealso cref="ITabbedMenu"/>
   /// </summary>
-  [ImplementationFor (typeof (ITabbedMenuRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(ITabbedMenuRenderer), Lifetime = LifetimeKind.Singleton)]
   public class TabbedMenuRenderer : RendererBase<ITabbedMenu>, ITabbedMenuRenderer
   {
     public TabbedMenuRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
     }
 
@@ -47,8 +47,8 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string key = typeof (TabbedMenuRenderer).GetFullNameChecked() + "_Style";
-      var url = ResourceUrlFactory.CreateThemedResourceUrl(typeof (TabbedMenuRenderer), ResourceType.Html, "TabbedMenu.css");
+      string key = typeof(TabbedMenuRenderer).GetFullNameChecked() + "_Style";
+      var url = ResourceUrlFactory.CreateThemedResourceUrl(typeof(TabbedMenuRenderer), ResourceType.Html, "TabbedMenu.css");
       htmlHeadAppender.RegisterStylesheetLink(key, url, HtmlHeadAppender.Priority.Library);
     }
 

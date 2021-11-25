@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       catch (Exception ex)
       {
         hadException = true;
-        Assert.That(ex, Is.TypeOf(typeof (TException)));
+        Assert.That(ex, Is.TypeOf(typeof(TException)));
         var expectedMessage = String.Format(expectedMessageFormatString, formatArgs);
         Assert.That(
             ex.Message, 
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       }
 
       if (!hadException)
-        Assert.Fail("Expected " + typeof (TException).Name);
+        Assert.Fail("Expected " + typeof(TException).Name);
     }
 
     protected Company CreateCompanyInDatabaseAndLoad ()
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       ObjectID objectID;
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var domainObject = LifetimeService.NewObject(ClientTransaction.Current, typeof (T), ParamList.Empty);
+        var domainObject = LifetimeService.NewObject(ClientTransaction.Current, typeof(T), ParamList.Empty);
         ClientTransaction.Current.Commit();
         objectID = domainObject.ID;
       }
@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       var companyID = CreateCompanyAndSetIndustrialSectorInOtherTransaction(DomainObjectIDs.IndustrialSector1);
       company = companyID.GetObject<Company>();
 
-      Assert.That(company.Properties[typeof (Company), "IndustrialSector"].GetRelatedObjectID(), Is.EqualTo(DomainObjectIDs.IndustrialSector1));
+      Assert.That(company.Properties[typeof(Company), "IndustrialSector"].GetRelatedObjectID(), Is.EqualTo(DomainObjectIDs.IndustrialSector1));
 
       SetIndustrialSectorInOtherTransaction(company.ID, DomainObjectIDs.IndustrialSector2);
 

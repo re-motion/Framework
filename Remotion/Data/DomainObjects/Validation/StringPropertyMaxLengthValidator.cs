@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects.Validation
   /// Validates that a string property's value does not exceed the maximum length defined for this property.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IDataContainerValidator), RegistrationType = RegistrationType.Multiple, Position = DataContainerValidatorPosition)]
-  [ImplementationFor (typeof (IPersistableDataValidator), RegistrationType = RegistrationType.Multiple, Position = PersistableDataValidatorPosition)]
+  [ImplementationFor (typeof(IDataContainerValidator), RegistrationType = RegistrationType.Multiple, Position = DataContainerValidatorPosition)]
+  [ImplementationFor (typeof(IPersistableDataValidator), RegistrationType = RegistrationType.Multiple, Position = PersistableDataValidatorPosition)]
   public class StringPropertyMaxLengthValidator : IPersistableDataValidator, IDataContainerValidator
   {
     public const int DataContainerValidatorPosition = NotNullablePropertyValidator.DataContainerValidatorPosition + 1;
@@ -72,14 +72,14 @@ namespace Remotion.Data.DomainObjects.Validation
         return;
 
       Type propertyType = propertyDefinition.PropertyType;
-      if (propertyType != typeof (string))
+      if (propertyType != typeof(string))
         return;
 
       object propertyValue = dataContainer.GetValueWithoutEvents(propertyDefinition, ValueAccess.Current);
       if (propertyValue == null)
         return;
 
-      if (propertyType == typeof (string) && ((string) propertyValue).Length > maxLength.Value)
+      if (propertyType == typeof(string) && ((string) propertyValue).Length > maxLength.Value)
       {
         string message = string.Format(
             "Value for property '{0}' of domain object '{1}' is too long. Maximum number of characters: {2}.",

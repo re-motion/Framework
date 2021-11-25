@@ -27,7 +27,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// Generates concrete mixin types and meta data by calling the methods on <see cref="MixinTypeGenerator"/> in proper order.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IMixinTypeProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor (typeof(IMixinTypeProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class MixinTypeGeneratorFacade : IMixinTypeProvider
   {
     public MixinTypeGeneratorFacade ()

@@ -138,7 +138,7 @@ public class WxeParameterConverter
   protected object? TryConvertObjectToString (object? value)
   {
     Type sourceType = _parameter.Type;
-    Type destinationType = typeof (string);
+    Type destinationType = typeof(string);
 
     //TODO: #if DEBUG
     if (! s_typeConversionProvider.CanConvert(sourceType, destinationType))

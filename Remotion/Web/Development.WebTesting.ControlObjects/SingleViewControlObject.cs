@@ -27,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class SingleViewControlObject : WebFormsControlObjectWithDiagnosticMetadata, IControlHost
   {
     public SingleViewControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

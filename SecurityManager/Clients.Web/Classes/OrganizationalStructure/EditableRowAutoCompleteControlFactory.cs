@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   /// <see cref="EditableRowAutoCompleteControlFactory"/> as key.
   /// </remarks>
 
-  [ImplementationFor(typeof (EditableRowAutoCompleteControlFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(EditableRowAutoCompleteControlFactory), Lifetime = LifetimeKind.Singleton)]
   public class EditableRowAutoCompleteControlFactory : EditableRowControlFactory
   {
     public EditableRowAutoCompleteControlFactory ()
@@ -100,7 +100,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     private bool Is<T> (IBusinessObjectPropertyPath propertyPath)
         where T: OrganizationalStructureObject
     {
-      return typeof (T).IsAssignableFrom(propertyPath.Properties.Last().PropertyType);
+      return typeof(T).IsAssignableFrom(propertyPath.Properties.Last().PropertyType);
     }
   }
 }

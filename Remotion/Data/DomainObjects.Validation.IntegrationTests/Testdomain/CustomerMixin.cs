@@ -29,21 +29,21 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
     Address Address { get; set; }
   }
 
-  [Extends (typeof (Customer))]
+  [Extends (typeof(Customer))]
   [MultiLingualResources ("Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Resources.CustomerMixin")]
   public class CustomerMixin : DomainObjectMixin<Customer>, ICustomerIntroduced
   {
     [Mandatory]
     public virtual Address Address
     {
-      get { return Properties[typeof (CustomerMixin), "Address"].GetValue<Address>(); }
-      set { Properties[typeof (CustomerMixin), "Address"].SetValue(value); }
+      get { return Properties[typeof(CustomerMixin), "Address"].GetValue<Address>(); }
+      set { Properties[typeof(CustomerMixin), "Address"].SetValue(value); }
     }
 
     public virtual string Title
     {
-      get { return Properties[typeof (CustomerMixin), "Title"].GetValue<string>(); }
-      set { Properties[typeof (CustomerMixin), "Title"].SetValue(value); }
+      get { return Properties[typeof(CustomerMixin), "Title"].GetValue<string>(); }
+      set { Properties[typeof(CustomerMixin), "Title"].SetValue(value); }
     }
   }
 }

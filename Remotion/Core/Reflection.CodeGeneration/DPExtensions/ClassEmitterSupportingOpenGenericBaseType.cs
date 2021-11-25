@@ -28,7 +28,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
   {
     public ClassEmitterSupportingOpenGenericBaseType (ModuleScope modulescope, string name, Type baseType, Type[] interfaces, TypeAttributes flags,
         bool forceUnsigned)
-        : base (modulescope, name, CheckBaseType(baseType), interfaces, flags, forceUnsigned)
+        : base(modulescope, name, CheckBaseType(baseType), interfaces, flags, forceUnsigned)
     {
     }
 

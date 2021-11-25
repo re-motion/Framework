@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       where TEndPoint : IVirtualEndPoint<TData>
       where TDataManager : IVirtualEndPointDataManager
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (CompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager>));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(CompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager>));
 
     private readonly TDataManager _dataManager;
     private readonly IRelationEndPointProvider _endPointProvider;

@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
   public class StubPropertyBase : PropertyBase
   {
     public StubPropertyBase (Parameters parameters)
-        : base (parameters)
+        : base(parameters)
     {
     }
   }

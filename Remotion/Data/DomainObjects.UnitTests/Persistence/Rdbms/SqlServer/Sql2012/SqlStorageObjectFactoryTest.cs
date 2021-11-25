@@ -124,15 +124,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     {
       var result = _sqlProviderFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub);
 
-      Assert.That(result, Is.TypeOf(typeof (RdbmsProvider)));
+      Assert.That(result, Is.TypeOf(typeof(RdbmsProvider)));
       Assert.That(result.PersistenceExtension, Is.SameAs(_persistenceExtensionStub));
       Assert.That(result.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
 
       var commandFactory = (RdbmsProviderCommandFactory) PrivateInvoke.GetNonPublicProperty(result, "StorageProviderCommandFactory");
-      Assert.That(commandFactory.DbCommandBuilderFactory, Is.TypeOf(typeof (SqlDbCommandBuilderFactory)));
-      Assert.That(commandFactory.RdbmsPersistenceModelProvider, Is.TypeOf(typeof (RdbmsPersistenceModelProvider)));
-      Assert.That(commandFactory.ObjectReaderFactory, Is.TypeOf(typeof (ObjectReaderFactory)));
-      Assert.That(commandFactory.DataStoragePropertyDefinitionFactory, Is.TypeOf(typeof (DataStoragePropertyDefinitionFactory)));
+      Assert.That(commandFactory.DbCommandBuilderFactory, Is.TypeOf(typeof(SqlDbCommandBuilderFactory)));
+      Assert.That(commandFactory.RdbmsPersistenceModelProvider, Is.TypeOf(typeof(RdbmsPersistenceModelProvider)));
+      Assert.That(commandFactory.ObjectReaderFactory, Is.TypeOf(typeof(ObjectReaderFactory)));
+      Assert.That(commandFactory.DataStoragePropertyDefinitionFactory, Is.TypeOf(typeof(DataStoragePropertyDefinitionFactory)));
       var dataStoragePropertyDefinitionFactory = (DataStoragePropertyDefinitionFactory) commandFactory.DataStoragePropertyDefinitionFactory;
       var relationStoragePropertyDefinitionFactory =
           (RelationStoragePropertyDefinitionFactory) dataStoragePropertyDefinitionFactory.RelationStoragePropertyDefinitionFactory;
@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     [Test]
     public void CreateStorageProviderWithMixin ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof (RdbmsProvider)).Clear().AddMixins(typeof (SqlProviderTestMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(RdbmsProvider)).Clear().AddMixins(typeof(SqlProviderTestMixin)).EnterScope())
       {
         var result = _sqlProviderFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub);
 
@@ -155,19 +155,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     {
       var result = _sqlProviderFactory.CreatePersistenceModelLoader(_rdbmsProviderDefinition, _storageProviderDefinitionFinder);
 
-      Assert.That(result, Is.TypeOf(typeof (RdbmsPersistenceModelLoader)));
+      Assert.That(result, Is.TypeOf(typeof(RdbmsPersistenceModelLoader)));
       var rdbmsPersistenceModelLoader = (RdbmsPersistenceModelLoader) result;
 
-      Assert.That(rdbmsPersistenceModelLoader.DataStoragePropertyDefinitionFactory, Is.TypeOf(typeof (DataStoragePropertyDefinitionFactory)));
+      Assert.That(rdbmsPersistenceModelLoader.DataStoragePropertyDefinitionFactory, Is.TypeOf(typeof(DataStoragePropertyDefinitionFactory)));
       var dataStoragePropertyDefinitionFactory =
           (DataStoragePropertyDefinitionFactory) rdbmsPersistenceModelLoader.DataStoragePropertyDefinitionFactory;
       var relationStoragePropertyDefinitionFactory =
           (RelationStoragePropertyDefinitionFactory) dataStoragePropertyDefinitionFactory.RelationStoragePropertyDefinitionFactory;
       Assert.That(relationStoragePropertyDefinitionFactory.ForceClassIDColumnInForeignKeyProperties, Is.False);
 
-      Assert.That(rdbmsPersistenceModelLoader.EntityDefinitionFactory, Is.TypeOf(typeof (RdbmsStorageEntityDefinitionFactory)));
-      Assert.That(rdbmsPersistenceModelLoader.RdbmsPersistenceModelProvider, Is.TypeOf(typeof (RdbmsPersistenceModelProvider)));
-      Assert.That(rdbmsPersistenceModelLoader.StorageNameProvider, Is.TypeOf(typeof (ReflectionBasedStorageNameProvider)));
+      Assert.That(rdbmsPersistenceModelLoader.EntityDefinitionFactory, Is.TypeOf(typeof(RdbmsStorageEntityDefinitionFactory)));
+      Assert.That(rdbmsPersistenceModelLoader.RdbmsPersistenceModelProvider, Is.TypeOf(typeof(RdbmsPersistenceModelProvider)));
+      Assert.That(rdbmsPersistenceModelLoader.StorageNameProvider, Is.TypeOf(typeof(ReflectionBasedStorageNameProvider)));
     }
 
     [Test]
@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     {
       var result = _sqlProviderFactory.CreateInfrastructureStoragePropertyDefinitionProvider(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof (InfrastructureStoragePropertyDefinitionProvider)));
+      Assert.That(result, Is.TypeOf(typeof(InfrastructureStoragePropertyDefinitionProvider)));
     }
 
     [Test]
@@ -196,7 +196,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
 
       var result = testableSqlProviderFactory.CreateEntityDefinitionFactory(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof (RdbmsStorageEntityDefinitionFactory)));
+      Assert.That(result, Is.TypeOf(typeof(RdbmsStorageEntityDefinitionFactory)));
       var resultAsRdmsStorageEntityDefinitionFactory = (RdbmsStorageEntityDefinitionFactory) result;
       Assert.That(resultAsRdmsStorageEntityDefinitionFactory.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
       Assert.That(
@@ -237,7 +237,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       Assert.That(result, Is.TypeOf<SqlQueryGenerator>());
       
       var sqlQueryGenerator = (SqlQueryGenerator) result;
-      Assert.That(sqlQueryGenerator.PreparationStage, Is.TypeOf(typeof (DefaultSqlPreparationStage)));
+      Assert.That(sqlQueryGenerator.PreparationStage, Is.TypeOf(typeof(DefaultSqlPreparationStage)));
       
       var defaultSqlPreparationStage = ((DefaultSqlPreparationStage) sqlQueryGenerator.PreparationStage);
       Assert.That(defaultSqlPreparationStage.MethodCallTransformerProvider, Is.SameAs(_methodCallTransformerProviderStub));
@@ -276,7 +276,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
 
       var result = testableSqlProviderFactory.CreateDataStoragePropertyDefinitionFactory(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof (DataStoragePropertyDefinitionFactory)));
+      Assert.That(result, Is.TypeOf(typeof(DataStoragePropertyDefinitionFactory)));
       var resultAsDataStoragePropertyDefinitionFactory = (DataStoragePropertyDefinitionFactory) result;
       Assert.That(
           resultAsDataStoragePropertyDefinitionFactory.RelationStoragePropertyDefinitionFactory,
@@ -303,14 +303,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
 
       var result = testableSqlProviderFactory.CreateStorageProviderCommandFactory(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof (RdbmsProviderCommandFactory)));
+      Assert.That(result, Is.TypeOf(typeof(RdbmsProviderCommandFactory)));
       var resultAsRdbmsProviderCommandFactory = (RdbmsProviderCommandFactory) result;
       Assert.That(resultAsRdbmsProviderCommandFactory.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
       Assert.That(resultAsRdbmsProviderCommandFactory.DbCommandBuilderFactory, Is.SameAs(_dbCommandBuilderFactoryStub));
       Assert.That(resultAsRdbmsProviderCommandFactory.RdbmsPersistenceModelProvider, Is.SameAs(_rdbmsPersistenceModelProviderStub));
       Assert.That(resultAsRdbmsProviderCommandFactory.DataStoragePropertyDefinitionFactory, Is.SameAs(_dataStoragePropertyDefinitionFactoryStub));
       var objectReader = resultAsRdbmsProviderCommandFactory.ObjectReaderFactory.CreateDataContainerReader();
-      Assert.That(objectReader, Is.TypeOf(typeof (DataContainerReader)));
+      Assert.That(objectReader, Is.TypeOf(typeof(DataContainerReader)));
       var expectedDataContainerValidator = SafeServiceLocator.Current.GetInstance<IDataContainerValidator>();
       Assert.That(((DataContainerReader)objectReader).DataContainerValidator, Is.SameAs(expectedDataContainerValidator));
     }
@@ -324,7 +324,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       var result = testableSqlProviderFactory.CreateRelationStoragePropertyDefinitionFactory(
           _rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof (RelationStoragePropertyDefinitionFactory)));
+      Assert.That(result, Is.TypeOf(typeof(RelationStoragePropertyDefinitionFactory)));
       var resultAsRelationStoragePropertyDefinitionFactory = (RelationStoragePropertyDefinitionFactory) result;
       Assert.That(resultAsRelationStoragePropertyDefinitionFactory.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
       Assert.That(resultAsRelationStoragePropertyDefinitionFactory.StorageNameProvider, Is.SameAs(_storageNameProviderStub));
@@ -339,7 +339,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
 
       var result = testableSqlProviderFactory.CreateValueStoragePropertyDefinitionFactory(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof (ValueStoragePropertyDefinitionFactory)));
+      Assert.That(result, Is.TypeOf(typeof(ValueStoragePropertyDefinitionFactory)));
       var resultAsValueStoragePropertyDefinitionFactory = (ValueStoragePropertyDefinitionFactory) result;
       Assert.That(resultAsValueStoragePropertyDefinitionFactory.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
       Assert.That(resultAsValueStoragePropertyDefinitionFactory.StorageNameProvider, Is.SameAs(_storageNameProviderStub));
@@ -363,7 +363,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
 
       var result = testableSqlProviderFactory.CreateForeignKeyConstraintDefinitionsFactory(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof (ForeignKeyConstraintDefinitionFactory)));
+      Assert.That(result, Is.TypeOf(typeof(ForeignKeyConstraintDefinitionFactory)));
       var resultAsForeignKeyConstraintDefinitionFactory = (ForeignKeyConstraintDefinitionFactory) result;
       Assert.That(resultAsForeignKeyConstraintDefinitionFactory.StorageNameProvider, Is.SameAs(_storageNameProviderStub));
       Assert.That(
@@ -377,7 +377,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     {
       var result = _sqlProviderFactory.CreateStorageNameProvider(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof (ReflectionBasedStorageNameProvider)));
+      Assert.That(result, Is.TypeOf(typeof(ReflectionBasedStorageNameProvider)));
     }
 
     [Test]
@@ -385,7 +385,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     {
       var result = _sqlProviderFactory.CreateDbCommandBuilderFactory(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof (SqlDbCommandBuilderFactory)));
+      Assert.That(result, Is.TypeOf(typeof(SqlDbCommandBuilderFactory)));
     }
 
     [Test]
@@ -393,9 +393,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     {
       var result = _sqlProviderFactory.CreateStorageTypeInformationProvider(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator)));
+      Assert.That(result, Is.TypeOf(typeof(SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator)));
       var decoratedResult = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator) result;
-      Assert.That(decoratedResult.InnerStorageTypeInformationProvider, Is.TypeOf(typeof (SqlStorageTypeInformationProvider)));
+      Assert.That(decoratedResult.InnerStorageTypeInformationProvider, Is.TypeOf(typeof(SqlStorageTypeInformationProvider)));
     }
 
     [Test]
@@ -403,7 +403,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     {
       var result = _sqlProviderFactory.CreateRdbmsPersistenceModelProvider(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof (RdbmsPersistenceModelProvider)));
+      Assert.That(result, Is.TypeOf(typeof(RdbmsPersistenceModelProvider)));
     }
 
     [Test]
@@ -411,7 +411,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     {
       var result = _sqlProviderFactory.CreateSqlDialect(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof (SqlDialect)));
+      Assert.That(result, Is.TypeOf(typeof(SqlDialect)));
     }
 
     [Test]
@@ -422,7 +422,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       Assert.That(result, Is.TypeOf<TableScriptBuilder>());
 
       var tableScriptBuilder = (TableScriptBuilder) result;
-      Assert.That(tableScriptBuilder.ElementFactory, Is.TypeOf(typeof (SqlTableScriptElementFactory)));
+      Assert.That(tableScriptBuilder.ElementFactory, Is.TypeOf(typeof(SqlTableScriptElementFactory)));
     }
 
     [Test]
@@ -433,10 +433,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       Assert.That(result, Is.TypeOf<ViewScriptBuilder>());
 
       var viewScriptBuilder = (ViewScriptBuilder) result;
-      Assert.That(viewScriptBuilder.TableViewElementFactory, Is.TypeOf(typeof (SqlTableViewScriptElementFactory)));
-      Assert.That(viewScriptBuilder.UnionViewElementFactory, Is.TypeOf(typeof (SqlUnionViewScriptElementFactory)));
-      Assert.That(viewScriptBuilder.FilterViewElementFactory, Is.TypeOf(typeof (SqlFilterViewScriptElementFactory)));
-      Assert.That(viewScriptBuilder.EmptyViewElementFactory, Is.TypeOf(typeof (SqlEmptyViewScriptElementFactory)));
+      Assert.That(viewScriptBuilder.TableViewElementFactory, Is.TypeOf(typeof(SqlTableViewScriptElementFactory)));
+      Assert.That(viewScriptBuilder.UnionViewElementFactory, Is.TypeOf(typeof(SqlUnionViewScriptElementFactory)));
+      Assert.That(viewScriptBuilder.FilterViewElementFactory, Is.TypeOf(typeof(SqlFilterViewScriptElementFactory)));
+      Assert.That(viewScriptBuilder.EmptyViewElementFactory, Is.TypeOf(typeof(SqlEmptyViewScriptElementFactory)));
     }
 
     [Test]
@@ -449,7 +449,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       var foreignKeyConstraintScriptBuilder = (ForeignKeyConstraintScriptBuilder) result;
       Assert.That(
           foreignKeyConstraintScriptBuilder.ForeignKeyConstraintElementFactory,
-          Is.TypeOf(typeof (SqlForeignKeyConstraintScriptElementFactory)));
+          Is.TypeOf(typeof(SqlForeignKeyConstraintScriptElementFactory)));
     }
 
     [Test]
@@ -460,7 +460,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       Assert.That(result, Is.TypeOf<IndexScriptBuilder>());
 
       var indexScriptBuilder = (IndexScriptBuilder) result;
-      Assert.That(indexScriptBuilder.IndexScriptElementFactory, Is.TypeOf(typeof (SqlIndexScriptElementFactory)));
+      Assert.That(indexScriptBuilder.IndexScriptElementFactory, Is.TypeOf(typeof(SqlIndexScriptElementFactory)));
     }
 
     [Test]
@@ -469,10 +469,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       var result = _sqlProviderFactory.CreateSynonymBuilder(_rdbmsProviderDefinition);
 
       var synonymScriptBuilder = (SynonymScriptBuilder) result;
-      Assert.That(synonymScriptBuilder.TableViewElementFactory, Is.TypeOf(typeof (SqlSynonymScriptElementFactory)));
-      Assert.That(synonymScriptBuilder.UnionViewElementFactory, Is.TypeOf(typeof (SqlSynonymScriptElementFactory)));
-      Assert.That(synonymScriptBuilder.FilterViewElementFactory, Is.TypeOf(typeof (SqlSynonymScriptElementFactory)));
-      Assert.That(synonymScriptBuilder.EmptyViewElementFactory, Is.TypeOf(typeof (SqlSynonymScriptElementFactory)));
+      Assert.That(synonymScriptBuilder.TableViewElementFactory, Is.TypeOf(typeof(SqlSynonymScriptElementFactory)));
+      Assert.That(synonymScriptBuilder.UnionViewElementFactory, Is.TypeOf(typeof(SqlSynonymScriptElementFactory)));
+      Assert.That(synonymScriptBuilder.FilterViewElementFactory, Is.TypeOf(typeof(SqlSynonymScriptElementFactory)));
+      Assert.That(synonymScriptBuilder.EmptyViewElementFactory, Is.TypeOf(typeof(SqlSynonymScriptElementFactory)));
     }
 
     [Test]
@@ -483,8 +483,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
 
       var result = testableSqlProviderFactory.CreateSchemaScriptBuilder(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof (SqlDatabaseSelectionScriptElementBuilder)));
-      Assert.That(((SqlDatabaseSelectionScriptElementBuilder) result).InnerScriptBuilder, Is.TypeOf(typeof (CompositeScriptBuilder)));
+      Assert.That(result, Is.TypeOf(typeof(SqlDatabaseSelectionScriptElementBuilder)));
+      Assert.That(((SqlDatabaseSelectionScriptElementBuilder) result).InnerScriptBuilder, Is.TypeOf(typeof(CompositeScriptBuilder)));
       Assert.That(
           ((CompositeScriptBuilder) ((SqlDatabaseSelectionScriptElementBuilder) result).InnerScriptBuilder).RdbmsProviderDefinition,
           Is.SameAs(_rdbmsProviderDefinition));

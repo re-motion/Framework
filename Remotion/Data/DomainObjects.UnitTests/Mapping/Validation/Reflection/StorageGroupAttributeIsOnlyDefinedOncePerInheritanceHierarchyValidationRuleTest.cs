@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void NotInheritanceRoot ()
     {
-      var type = typeof (DerivedClassWithoutStorageGroupAttribute);
+      var type = typeof(DerivedClassWithoutStorageGroupAttribute);
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(type);
 
       var validationResult = _validationRule.Validate(classDefinition);
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void InheritanceRoot_WithoutStorageGroupAttribute ()
     {
-      var type = typeof (BaseClassWithoutStorageGroupAttribute);
+      var type = typeof(BaseClassWithoutStorageGroupAttribute);
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(type);
       
       var validationResult = _validationRule.Validate(classDefinition);
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void InheritanceRoot_WithStorageGroupAttribute_And_WithoutStorageGroupAttributeOnBaseClass ()
     {
-      var type = typeof (BaseClassWithStorageGroupAttribute);
+      var type = typeof(BaseClassWithStorageGroupAttribute);
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(type);
       
       var validationResult = _validationRule.Validate(classDefinition);
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void InheritanceRoot_WithStorageGroupAttribute_And_WithStorageGroupAttributeOnBaseClass ()
     {
-      var type = typeof (DerivedClassWithStorageGroupAttribute);
+      var type = typeof(DerivedClassWithStorageGroupAttribute);
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(type);
 
       var validationResult = _validationRule.Validate(classDefinition);

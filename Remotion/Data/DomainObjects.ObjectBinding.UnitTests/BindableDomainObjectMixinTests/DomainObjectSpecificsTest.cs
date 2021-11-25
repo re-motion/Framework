@@ -33,9 +33,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     {
       base.SetUp();
       
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof (BindableDomainObjectWithProperties));
-      _businessObjectClassWithProperties = provider.GetBindableObjectClass(typeof (BindableDomainObjectWithProperties));
-      _businessObjectSampleClass = provider.GetBindableObjectClass(typeof (SampleBindableMixinDomainObject));
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(BindableDomainObjectWithProperties));
+      _businessObjectClassWithProperties = provider.GetBindableObjectClass(typeof(BindableDomainObjectWithProperties));
+      _businessObjectSampleClass = provider.GetBindableObjectClass(typeof(SampleBindableMixinDomainObject));
     }
 
     [Test]
@@ -48,8 +48,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void UsesBindableDomainObjectMetadataFactory ()
     {
       Assert.That(
-        BindableObjectProvider.GetProviderForBindableObjectType(typeof (SampleBindableMixinDomainObject)).MetadataFactory,
-        Is.InstanceOf(typeof (BindableDomainObjectMetadataFactory)));
+        BindableObjectProvider.GetProviderForBindableObjectType(typeof(SampleBindableMixinDomainObject)).MetadataFactory,
+        Is.InstanceOf(typeof(BindableDomainObjectMetadataFactory)));
     }
 
     [Test]
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       PropertyBase[] properties = (PropertyBase[]) _businessObjectSampleClass.GetPropertyDefinitions();
 
       foreach (PropertyBase property in properties)
-        Assert.That(property.PropertyInfo.DeclaringType, Is.Not.EqualTo(typeof (DomainObject)));
+        Assert.That(property.PropertyInfo.DeclaringType, Is.Not.EqualTo(typeof(DomainObject)));
     }
 
     [Test]
@@ -158,8 +158,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void NullabilityResolvedFromAboveInheritanceRoot ()
     {
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof (BindableDomainObjectAboveInheritanceRoot));
-      var businessObjectClass = provider.GetBindableObjectClass(typeof (BindableDomainObjectAboveInheritanceRoot));
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(BindableDomainObjectAboveInheritanceRoot));
+      var businessObjectClass = provider.GetBindableObjectClass(typeof(BindableDomainObjectAboveInheritanceRoot));
 
       var notNullableBooleanProperty = businessObjectClass.GetPropertyDefinition("NotNullableBooleanProperty");
       Assert.That(notNullableBooleanProperty.IsRequired, Is.True);
@@ -189,8 +189,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void LengthConstraintResolvedFromAboveInheritanceRoot ()
     {
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof (BindableDomainObjectAboveInheritanceRoot));
-      var businessObjectClass = provider.GetBindableObjectClass(typeof (BindableDomainObjectAboveInheritanceRoot));
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(BindableDomainObjectAboveInheritanceRoot));
+      var businessObjectClass = provider.GetBindableObjectClass(typeof(BindableDomainObjectAboveInheritanceRoot));
 
       var stringPropertyWithLengthConstraint =
           (IBusinessObjectStringProperty) businessObjectClass.GetPropertyDefinition("NotNullableStringPropertyWithLengthConstraint");

@@ -169,7 +169,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     public void WrongConstructorCannotBeInstantiated ()
     {
       Assert.That(
-          () => LifetimeService.NewObject(TestableClientTransaction, typeof (Order), ParamList.Create("foo", "bar", "foobar", (object) null)),
+          () => LifetimeService.NewObject(TestableClientTransaction, typeof(Order), ParamList.Create("foo", "bar", "foobar", (object) null)),
           NUnit.Framework.Throws.InstanceOf<MissingMethodException>()
               .With.Message.EqualTo(
                   "Type 'Remotion.Data.DomainObjects.UnitTests.TestDomain."

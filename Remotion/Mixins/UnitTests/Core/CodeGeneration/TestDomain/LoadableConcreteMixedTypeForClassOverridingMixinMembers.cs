@@ -23,12 +23,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
   [ConcreteMixedType (
       new object[] 
       { 
-        typeof (ClassOverridingMixinMembers), 
+        typeof(ClassOverridingMixinMembers), 
         new object[] 
         { 
           new object[] 
           { 
-            typeof (MixinWithAbstractMembers), 
+            typeof(MixinWithAbstractMembers), 
             MixinKind.Used, 
             MemberVisibility.Private, 
             new Type[0],
@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
         }, 
         new Type[0] 
       }, 
-      new[] {typeof (MixinWithAbstractMembers)
+      new[] {typeof(MixinWithAbstractMembers)
     })]
   public class LoadableConcreteMixedTypeForClassOverridingMixinMembers
   { }

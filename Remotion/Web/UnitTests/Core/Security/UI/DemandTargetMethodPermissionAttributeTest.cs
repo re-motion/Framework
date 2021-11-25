@@ -38,11 +38,11 @@ namespace Remotion.Web.UnitTests.Core.Security.UI
     [Test]
     public void Initialize_WithMethodNameAndSecurableClass ()
     {
-      DemandTargetMethodPermissionAttribute attribute = new DemandTargetMethodPermissionAttribute("Show", typeof (SecurableObject));
+      DemandTargetMethodPermissionAttribute attribute = new DemandTargetMethodPermissionAttribute("Show", typeof(SecurableObject));
 
       Assert.That(attribute.PermissionSource, Is.EqualTo(PermissionSource.SecurableObject));
       Assert.That(attribute.MethodName, Is.EqualTo("Show"));
-      Assert.That(attribute.SecurableClass, Is.SameAs(typeof (SecurableObject)));
+      Assert.That(attribute.SecurableClass, Is.SameAs(typeof(SecurableObject)));
     }
 
     [Test]
@@ -52,17 +52,17 @@ namespace Remotion.Web.UnitTests.Core.Security.UI
 
       Assert.That(attribute.PermissionSource, Is.EqualTo(PermissionSource.SecurableObject));
       Assert.That(attribute.MethodName, Is.EqualTo("Show"));
-      Assert.That(attribute.SecurableClass, Is.SameAs(typeof (SecurableObject)));
+      Assert.That(attribute.SecurableClass, Is.SameAs(typeof(SecurableObject)));
     }
 
     [Test]
     public void Initialize_WithMethodNameEnumAndSecurableClass ()
     {
-      DemandTargetMethodPermissionAttribute attribute = new DemandTargetMethodPermissionAttribute(SecurableObject.Method.Show, typeof (DerivedSecurableObject));
+      DemandTargetMethodPermissionAttribute attribute = new DemandTargetMethodPermissionAttribute(SecurableObject.Method.Show, typeof(DerivedSecurableObject));
 
       Assert.That(attribute.PermissionSource, Is.EqualTo(PermissionSource.SecurableObject));
       Assert.That(attribute.MethodName, Is.EqualTo("Show"));
-      Assert.That(attribute.SecurableClass, Is.SameAs(typeof (DerivedSecurableObject)));
+      Assert.That(attribute.SecurableClass, Is.SameAs(typeof(DerivedSecurableObject)));
     }
 
     [Test]
@@ -90,7 +90,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI
     public void TestWithParameterNotOfNotMatchingType ()
     {
       Assert.That(
-          () => new DemandTargetMethodPermissionAttribute(SecurableObject.Method.Show, typeof (OtherSecurableObject)),
+          () => new DemandTargetMethodPermissionAttribute(SecurableObject.Method.Show, typeof(OtherSecurableObject)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Type 'Remotion.Web.UnitTests.Core.Security.Domain.OtherSecurableObject' cannot be assigned to the declaring type of enumerated type"

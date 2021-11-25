@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     private string _aclWithNoAssociatedStatesHtmlText = "(" + AclToolsExpansion.NoAssociatedStatesHtmlText + ")";
 
     public AclExpansionHtmlWriterImplementation (TextWriter textWriter, bool indentXml, AclExpansionHtmlWriterSettings settings)
-        : base (textWriter, indentXml)
+        : base(textWriter, indentXml)
     {
       _settings = settings;
     }

@@ -36,13 +36,13 @@ namespace Remotion.Mixins
 
     // For CLS compatibility...
     public CopyCustomAttributesAttribute (Type attributeSourceType)
-      : this (attributeSourceType, Type.EmptyTypes)
+      : this(attributeSourceType, Type.EmptyTypes)
     {
     }
 
     // For CLS compatibility...
     public CopyCustomAttributesAttribute (Type attributeSourceType, string attributeSourceMemberName)
-      : this (attributeSourceType, attributeSourceMemberName, Type.EmptyTypes)
+      : this(attributeSourceType, attributeSourceMemberName, Type.EmptyTypes)
     {
     }
 

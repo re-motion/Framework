@@ -88,12 +88,12 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     public void LoadAllState ()
     {
-      PrivateInvoke.InvokeNonPublicMethod(this, typeof (Page), "LoadAllState", new object[0]);
+      PrivateInvoke.InvokeNonPublicMethod(this, typeof(Page), "LoadAllState", new object[0]);
     }
 
     public void SaveAllState ()
     {
-      PrivateInvoke.InvokeNonPublicMethod(this, typeof (Page), "SaveAllState", new object[0]);
+      PrivateInvoke.InvokeNonPublicMethod(this, typeof(Page), "SaveAllState", new object[0]);
     }
 
     public override void VerifyRenderingInServerForm (Control control)

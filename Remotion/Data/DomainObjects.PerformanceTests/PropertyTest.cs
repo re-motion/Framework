@@ -55,13 +55,13 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       SecurityConfiguration.Current.DisableAccessChecks = true;
       ClientTransaction.CreateRootTransaction().EnterDiscardingScope();
 
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
 
       ClientTransactionScope.ResetActiveScope();
       SecurityConfiguration.Current.DisableAccessChecks = _disableAccessChecksBackup;

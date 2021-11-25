@@ -83,7 +83,7 @@ public class UndefinedEnumTestPage : WxePage
 
       AreEqual(UndefinedEnum.Value1, MyFunction.NewObjectWithUndefinedEnum.UndefinedEnum);
       AreEqual(UndefinedEnum.Value1, MyFunction.ExistingObjectWithUndefinedEnum.UndefinedEnum);
-      if (!Enum.IsDefined(typeof (UndefinedEnum), MyFunction.SearchObjectWithUndefinedEnum.UndefinedEnum))
+      if (!Enum.IsDefined(typeof(UndefinedEnum), MyFunction.SearchObjectWithUndefinedEnum.UndefinedEnum))
         throw new TestFailureException("SearchObjectWithUndefinedEnum.UndefinedEnum has an invalid value.");
 
       ExecuteNextStep();

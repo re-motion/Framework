@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void Loading ()
     {
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (Order), "Customer");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(Order), "Customer");
       var collection = Provider.LoadDataContainersByRelatedID(
           (RelationEndPointDefinition) relationEndPointDefinition,
           null,
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadOverInheritedProperty ()
     {
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (Partner), "ContactPerson");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(Partner), "ContactPerson");
 
       var collection = Provider.LoadDataContainersByRelatedID(
           (RelationEndPointDefinition) relationEndPointDefinition,
@@ -58,8 +58,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadWithOrderBy ()
     {
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (Order), "Customer");
-      var orderNumberProperty = GetPropertyDefinition(typeof (Order), "OrderNumber");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(Order), "Customer");
+      var orderNumberProperty = GetPropertyDefinition(typeof(Order), "OrderNumber");
       var sortExpression = new SortExpressionDefinition(new[] { new SortedPropertySpecification(orderNumberProperty, SortOrder.Ascending) });
 
       var orderContainers = Provider.LoadDataContainersByRelatedID(
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainersByRelatedIDOfDifferentStorageProvider ()
     {
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (Order), "Official");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(Order), "Official");
 
       var orderContainers = Provider.LoadDataContainersByRelatedID(
           (RelationEndPointDefinition) relationEndPointDefinition,
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainersByRelatedID_WithStorageClassTransactionProperty ()
     {
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (Computer), "EmployeeTransactionProperty");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(Computer), "EmployeeTransactionProperty");
 
       var result = Provider.LoadDataContainersByRelatedID(
           (RelationEndPointDefinition) relationEndPointDefinition,

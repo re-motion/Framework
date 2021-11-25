@@ -86,7 +86,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     private bool IsExplicitlyExcluded (AttributeDefinition attribute)
     {
-      var excluders = from NonIntroducedAttribute excluder in attribute.DeclaringDefinition.CustomAttributeProvider.GetCustomAttributes(typeof (NonIntroducedAttribute), true)
+      var excluders = from NonIntroducedAttribute excluder in attribute.DeclaringDefinition.CustomAttributeProvider.GetCustomAttributes(typeof(NonIntroducedAttribute), true)
                       where excluder.NonIntroducedType.IsAssignableFrom(attribute.AttributeType)
                       select attribute;
       return excluders.Any();

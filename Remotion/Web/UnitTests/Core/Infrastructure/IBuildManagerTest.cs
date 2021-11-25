@@ -38,7 +38,7 @@ namespace Remotion.Web.UnitTests.Core.Infrastructure
       var instance = _serviceLocator.GetInstance<IBuildManager>();
 
       Assert.That(instance, Is.Not.Null);
-      Assert.That(instance, Is.TypeOf(typeof (BuildManagerWrapper)));
+      Assert.That(instance, Is.TypeOf(typeof(BuildManagerWrapper)));
     }
 
     [Test]

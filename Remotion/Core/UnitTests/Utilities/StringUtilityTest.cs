@@ -37,18 +37,18 @@ public class StringUtilityTest
   private CultureInfo _cultureEnUs;
   private CultureInfo _cultureDeDe;
 
-  private readonly Type _int32 = typeof (int);
-  private readonly Type _nullableInt32 = typeof (int?);
-  private readonly Type _double = typeof (double);
-  private readonly Type _string = typeof (string);
-  private readonly Type _object = typeof (object);
-  private readonly Type _guid = typeof (Guid);
-  private readonly Type _nullableGuid = typeof (Guid?);
-  private readonly Type _enum = typeof (TestEnum);
-  private readonly Type _nullableEnum = typeof (TestEnum?);
-  private readonly Type _dbNull = typeof (DBNull);
-  private readonly Type _doubleArray = typeof (double[]);
-  private readonly Type _stringArray = typeof (string[]);
+  private readonly Type _int32 = typeof(int);
+  private readonly Type _nullableInt32 = typeof(int?);
+  private readonly Type _double = typeof(double);
+  private readonly Type _string = typeof(string);
+  private readonly Type _object = typeof(object);
+  private readonly Type _guid = typeof(Guid);
+  private readonly Type _nullableGuid = typeof(Guid?);
+  private readonly Type _enum = typeof(TestEnum);
+  private readonly Type _nullableEnum = typeof(TestEnum?);
+  private readonly Type _dbNull = typeof(DBNull);
+  private readonly Type _doubleArray = typeof(double[]);
+  private readonly Type _stringArray = typeof(string[]);
 
   [SetUp]
   public void SetUp ()
@@ -125,9 +125,9 @@ public class StringUtilityTest
     Assert.That(parseMethod, Is.Not.Null);
     Assert.That(parseMethod.Name, Is.EqualTo("Parse"));
     Assert.That(parseMethod.GetParameters().Length, Is.EqualTo(2));
-    Assert.That(parseMethod.GetParameters()[0].ParameterType, Is.EqualTo(typeof (string)));
-    Assert.That(parseMethod.GetParameters()[1].ParameterType, Is.EqualTo(typeof (IFormatProvider)));
-    Assert.That(parseMethod.ReturnType, Is.EqualTo(typeof (int)));
+    Assert.That(parseMethod.GetParameters()[0].ParameterType, Is.EqualTo(typeof(string)));
+    Assert.That(parseMethod.GetParameters()[1].ParameterType, Is.EqualTo(typeof(IFormatProvider)));
+    Assert.That(parseMethod.ReturnType, Is.EqualTo(typeof(int)));
     Assert.That(parseMethod.IsPublic, Is.True);
     Assert.That(parseMethod.IsStatic, Is.True);
   }
@@ -139,8 +139,8 @@ public class StringUtilityTest
     Assert.That(parseMethod, Is.Not.Null);
     Assert.That(parseMethod.Name, Is.EqualTo("Parse"));
     Assert.That(parseMethod.GetParameters().Length, Is.EqualTo(1));
-    Assert.That(parseMethod.GetParameters()[0].ParameterType, Is.EqualTo(typeof (string)));
-    Assert.That(parseMethod.ReturnType, Is.EqualTo(typeof (int)));
+    Assert.That(parseMethod.GetParameters()[0].ParameterType, Is.EqualTo(typeof(string)));
+    Assert.That(parseMethod.ReturnType, Is.EqualTo(typeof(int)));
     Assert.That(parseMethod.IsPublic, Is.True);
     Assert.That(parseMethod.IsStatic, Is.True);
   }
@@ -152,9 +152,9 @@ public class StringUtilityTest
     Assert.That(parseMethod, Is.Not.Null);
     Assert.That(parseMethod.Name, Is.EqualTo("Parse"));
     Assert.That(parseMethod.GetParameters().Length, Is.EqualTo(2));
-    Assert.That(parseMethod.GetParameters()[0].ParameterType, Is.EqualTo(typeof (string)));
-    Assert.That(parseMethod.GetParameters()[1].ParameterType, Is.EqualTo(typeof (IFormatProvider)));
-    Assert.That(parseMethod.ReturnType, Is.EqualTo(typeof (int)));
+    Assert.That(parseMethod.GetParameters()[0].ParameterType, Is.EqualTo(typeof(string)));
+    Assert.That(parseMethod.GetParameters()[1].ParameterType, Is.EqualTo(typeof(IFormatProvider)));
+    Assert.That(parseMethod.ReturnType, Is.EqualTo(typeof(int)));
     Assert.That(parseMethod.IsPublic, Is.True);
     Assert.That(parseMethod.IsStatic, Is.True);
   }
@@ -424,7 +424,7 @@ public class StringUtilityTest
   public void ParseArrayOfDoubleArrays ()
   {
     Assert.That(
-        () => StringUtility.Parse(typeof (double[][]), "1,2,3", null),
+        () => StringUtility.Parse(typeof(double[][]), "1,2,3", null),
         Throws.InstanceOf<ParseException>());
   }
 
@@ -437,7 +437,7 @@ public class StringUtilityTest
   [Test]
   public void CanParseArrayDoubleArray ()
   {
-    Assert.That(StringUtility.CanParse(typeof (double[][])), Is.False);
+    Assert.That(StringUtility.CanParse(typeof(double[][])), Is.False);
   }
 
   [Test]

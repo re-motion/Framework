@@ -292,9 +292,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       ScreenshotTestingDelegate<ControlObject> test = (builder, target) =>
       {
-        foreach (var value in Enum.GetValues(typeof (ContentAlignment)))
+        foreach (var value in Enum.GetValues(typeof(ContentAlignment)))
         {
-          var name = Enum.GetName(typeof (ContentAlignment), value);
+          var name = Enum.GetName(typeof(ContentAlignment), value);
           builder.Annotate(
               target,
               s_controlObjectResolver,
@@ -730,7 +730,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private class DerivedDropDownListControlObject : DropDownListControlObject
     {
       public DerivedDropDownListControlObject (ControlObjectContext context)
-          : base (context)
+          : base(context)
       {
       }
     }
@@ -738,7 +738,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private class DerivedDropDownMenuControlObject : DropDownMenuControlObject
     {
       public DerivedDropDownMenuControlObject (ControlObjectContext context)
-          : base (context)
+          : base(context)
       {
       }
     }
@@ -746,7 +746,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private class DerivedListMenuControlObject : ListMenuControlObject
     {
       public DerivedListMenuControlObject (ControlObjectContext context)
-          : base (context)
+          : base(context)
       {
       }
     }
@@ -754,7 +754,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private class DerivedTabbedMenuControlObject : TabbedMenuControlObject
     {
       public DerivedTabbedMenuControlObject (ControlObjectContext context)
-          : base (context)
+          : base(context)
       {
       }
     }
@@ -764,7 +764,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotTabbedSubMenu (
           IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> fluentTabbedMenu,
           IFluentScreenshotElement<ElementScope> fluentElement)
-          : base (fluentTabbedMenu, fluentElement)
+          : base(fluentTabbedMenu, fluentElement)
       {
       }
     }
@@ -772,7 +772,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private class DerivedWebTabStripControlObject : WebTabStripControlObject
     {
       public DerivedWebTabStripControlObject (ControlObjectContext context)
-          : base (context)
+          : base(context)
       {
       }
     }
@@ -780,7 +780,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private class DerivedWebTreeViewControlObject : WebTreeViewControlObject
     {
       public DerivedWebTreeViewControlObject (ControlObjectContext context)
-          : base (context)
+          : base(context)
       {
       }
     }
@@ -790,7 +790,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotWebTreeViewNodeControlObject (
           IFluentScreenshotElementWithCovariance<WebTreeViewNodeControlObject> fluentWebTreeViewNode,
           IFluentScreenshotElement<ElementScope> fluentElement)
-          : base (fluentWebTreeViewNode, fluentElement)
+          : base(fluentWebTreeViewNode, fluentElement)
       {
       }
     }

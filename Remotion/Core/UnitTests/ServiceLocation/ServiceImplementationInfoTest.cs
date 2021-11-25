@@ -31,7 +31,7 @@ namespace Remotion.UnitTests.ServiceLocation
       var implementationInfo = ServiceImplementationInfo.CreateSingle(factory);
 
       Assert.That(implementationInfo.Factory, Is.Not.Null);
-      Assert.That(implementationInfo.ImplementationType, Is.SameAs(typeof (ServiceImplementationInfoTest)));
+      Assert.That(implementationInfo.ImplementationType, Is.SameAs(typeof(ServiceImplementationInfoTest)));
       Assert.That(implementationInfo.Lifetime, Is.EqualTo(LifetimeKind.InstancePerDependency));
     }
 
@@ -42,7 +42,7 @@ namespace Remotion.UnitTests.ServiceLocation
       var implementationInfo = ServiceImplementationInfo.CreateSingle(factory, LifetimeKind.Singleton);
 
       Assert.That(implementationInfo.Factory, Is.Not.Null);
-      Assert.That(implementationInfo.ImplementationType, Is.SameAs(typeof (ServiceImplementationInfoTest)));
+      Assert.That(implementationInfo.ImplementationType, Is.SameAs(typeof(ServiceImplementationInfoTest)));
       Assert.That(implementationInfo.Lifetime, Is.EqualTo(LifetimeKind.Singleton));
     }
 
@@ -53,7 +53,7 @@ namespace Remotion.UnitTests.ServiceLocation
       var implementationInfo = ServiceImplementationInfo.CreateSingle(factory);
 
       Assert.That(implementationInfo.Factory, Is.Not.Null);
-      Assert.That(implementationInfo.ImplementationType, Is.SameAs(typeof (ServiceImplementationInfoTest)));
+      Assert.That(implementationInfo.ImplementationType, Is.SameAs(typeof(ServiceImplementationInfoTest)));
       Assert.That(implementationInfo.Lifetime, Is.EqualTo(LifetimeKind.InstancePerDependency));
     }
 
@@ -64,7 +64,7 @@ namespace Remotion.UnitTests.ServiceLocation
       var implementationInfo = ServiceImplementationInfo.CreateSingle(factory, LifetimeKind.Singleton);
 
       Assert.That(implementationInfo.Factory, Is.Not.Null);
-      Assert.That(implementationInfo.ImplementationType, Is.SameAs(typeof (ServiceImplementationInfoTest)));
+      Assert.That(implementationInfo.ImplementationType, Is.SameAs(typeof(ServiceImplementationInfoTest)));
       Assert.That(implementationInfo.Lifetime, Is.EqualTo(LifetimeKind.Singleton));
     }
 
@@ -72,7 +72,7 @@ namespace Remotion.UnitTests.ServiceLocation
     public void InitializeDecorator_WithLifetimeSingleton_ThrowsArgumentException ()
     {
       Assert.That(
-          () => new ServiceImplementationInfo(typeof (ServiceImplementationInfoTest), LifetimeKind.Singleton, RegistrationType.Decorator),
+          () => new ServiceImplementationInfo(typeof(ServiceImplementationInfoTest), LifetimeKind.Singleton, RegistrationType.Decorator),
           Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo(
               "For implementations of type 'Decorator', the lifetime can only be specified as 'InstancePerDependency'.", "lifetime"));
     }
@@ -80,8 +80,8 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void ToString_DebugInfo ()
     {
-      var implementation0 = new ServiceImplementationInfo(typeof (object), LifetimeKind.Singleton, RegistrationType.Compound);
-      var implementation1 = new ServiceImplementationInfo(typeof (string), LifetimeKind.InstancePerDependency, RegistrationType.Multiple);
+      var implementation0 = new ServiceImplementationInfo(typeof(object), LifetimeKind.Singleton, RegistrationType.Compound);
+      var implementation1 = new ServiceImplementationInfo(typeof(string), LifetimeKind.InstancePerDependency, RegistrationType.Multiple);
 
       Assert.That(implementation0.ToString(), Is.EqualTo("{System.Object, Singleton, Compound}"));
       Assert.That(implementation1.ToString(), Is.EqualTo("{System.String, InstancePerDependency, Multiple}"));

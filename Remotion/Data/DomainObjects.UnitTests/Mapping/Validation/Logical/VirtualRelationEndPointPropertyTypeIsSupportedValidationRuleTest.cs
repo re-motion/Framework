@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void SetUp ()
     {
       _validationRule = new VirtualRelationEndPointPropertyTypeIsSupportedValidationRule();
-      _classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Order)];
+      _classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Order)];
     }
 
     [Test]
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void PropertyTypIsObjectList ()
     {
-      var propertyType = typeof (ObjectList<BaseOfBaseValidationDomainObjectClass>);
+      var propertyType = typeof(ObjectList<BaseOfBaseValidationDomainObjectClass>);
       var endPointDefinition = 
           DomainObjectCollectionRelationEndPointDefinitionFactory.Create(_classDefinition, "Property", false, propertyType);
       var relationDefinition = new RelationDefinition("Test", endPointDefinition, endPointDefinition);
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void PropertyTypeIsDerivedFromObjectList ()
     {
-      var propertyType = typeof (DerivedObjectList<BaseOfBaseValidationDomainObjectClass>);
+      var propertyType = typeof(DerivedObjectList<BaseOfBaseValidationDomainObjectClass>);
       var endPointDefinition = 
           DomainObjectCollectionRelationEndPointDefinitionFactory.Create(_classDefinition, "Property", false, propertyType);
       var relationDefinition = new RelationDefinition("Test", endPointDefinition, endPointDefinition);
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void PropertyTypIsIObjectList ()
     {
-      var propertyType = typeof (IObjectList<BaseOfBaseValidationDomainObjectClass>);
+      var propertyType = typeof(IObjectList<BaseOfBaseValidationDomainObjectClass>);
       var endPointDefinition = 
           VirtualCollectionRelationEndPointDefinitionFactory.Create(_classDefinition, "Property", false, propertyType);
       var relationDefinition = new RelationDefinition("Test", endPointDefinition, endPointDefinition);
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void PropertyTypeIsDomainObject ()
     {
-      var propertyType = typeof (DomainObject);
+      var propertyType = typeof(DomainObject);
       var endPointDefinition = 
           VirtualObjectRelationEndPointDefinitionFactory.Create(_classDefinition, "Property", false, propertyType);
       var relationDefinition = new RelationDefinition("Test", endPointDefinition, endPointDefinition);
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void PropertyTypeIsSubclassOfDomainObject ()
     {
-      var propertyType = typeof (BaseOfBaseValidationDomainObjectClass);
+      var propertyType = typeof(BaseOfBaseValidationDomainObjectClass);
       var endPointDefinition = 
           VirtualObjectRelationEndPointDefinitionFactory.Create(_classDefinition, "Property", false, propertyType);
       var relationDefinition = new RelationDefinition("Test", endPointDefinition, endPointDefinition);
@@ -120,9 +120,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void LeftEndpointPropertyType_NotAssignableToObjectListOrDomainObjectOrOfTypeIObjectList ()
     {
       var leftEndPointDefinition = 
-          VirtualObjectRelationEndPointDefinitionFactory.Create(_classDefinition, "Left", false, typeof (string));
+          VirtualObjectRelationEndPointDefinitionFactory.Create(_classDefinition, "Left", false, typeof(string));
       var rightEndPointDefinition = 
-          VirtualObjectRelationEndPointDefinitionFactory.Create(_classDefinition, "Right", false, typeof (DomainObject));
+          VirtualObjectRelationEndPointDefinitionFactory.Create(_classDefinition, "Right", false, typeof(DomainObject));
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       
       var validationResult = _validationRule.Validate(relationDefinition);
@@ -138,9 +138,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void RightEndpointPropertyType_NotAssignableToIObjectListOrObjectListOrDomainObjectOrOfTypeIObjectList ()
     {
       var leftEndPointDefinition = 
-          DomainObjectCollectionRelationEndPointDefinitionFactory.Create(_classDefinition, "Left", false, typeof (ObjectList<>));
+          DomainObjectCollectionRelationEndPointDefinitionFactory.Create(_classDefinition, "Left", false, typeof(ObjectList<>));
       var rightEndPointDefinition = 
-          VirtualObjectRelationEndPointDefinitionFactory.Create(_classDefinition, "Right", false, typeof (string));
+          VirtualObjectRelationEndPointDefinitionFactory.Create(_classDefinition, "Right", false, typeof(string));
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
 
       var validationResult = _validationRule.Validate(relationDefinition);

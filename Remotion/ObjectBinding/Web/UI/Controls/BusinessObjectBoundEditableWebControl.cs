@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     [Description ("Explicitly specifies whether the control is required.")]
     [Category ("Data")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     public bool? Required
     {
       get { return _required; }
@@ -81,7 +81,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     [Description ("Explicitly specifies whether the control should be displayed in read-only mode.")]
     [Category ("Data")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     public bool? ReadOnly
     {
       get { return _readOnly; }
@@ -249,7 +249,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> Set this property to <see langword="null"/> in order to use the default value (see <see cref="AreOptionalValidatorsEnabled"/>). </remarks>
     [Description ("Explicitly specifies whether the control automatically validates more than .NET data type requirements.")]
     [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     public bool? EnableOptionalValidators
     {
       get { return _enableOptionalValidators; }

@@ -17,7 +17,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       _validationRule = new MandatoryExtensibleEnumTypeHasValuesDefinedValidationRule();
 
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (EnumTypeValidationDomainObjectClass));
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(EnumTypeValidationDomainObjectClass));
     }
 
     [Test]
@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithMandatoryOtherType")),
+          PropertyInfoAdapter.Create(typeof(EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithMandatoryOtherType")),
           "PropertyWithMandatoryOtherType",
           false,
           false,
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithMandatoryExtensibleEnumTypeWithValues")),
+          PropertyInfoAdapter.Create(typeof(EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithMandatoryExtensibleEnumTypeWithValues")),
           "PropertyWithMandatoryExtensibleEnumTypeWithValues",
           false,
           false,
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithNullableExtensibleEnumTypeWithValues")),
+          PropertyInfoAdapter.Create(typeof(EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithNullableExtensibleEnumTypeWithValues")),
           "PropertyWithNullableExtensibleEnumTypeWithValues",
           false,
           true,
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithMandatoryExtensibleEnumTypeWithoutValues")),
+          PropertyInfoAdapter.Create(typeof(EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithMandatoryExtensibleEnumTypeWithoutValues")),
           "PropertyWithMandatoryExtensibleEnumTypeWithoutValues",
           false,
           false,
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithNullableExtensibleEnumTypeWithoutValues")),
+          PropertyInfoAdapter.Create(typeof(EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithNullableExtensibleEnumTypeWithoutValues")),
           "PropertyWithNullableExtensibleEnumTypeWithoutValues",
           false,
           true,

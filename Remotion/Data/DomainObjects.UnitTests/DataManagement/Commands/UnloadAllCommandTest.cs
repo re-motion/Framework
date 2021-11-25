@@ -178,14 +178,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 
     private DataContainer CreateExistingDataContainer ()
     {
-      var dataContainer = DataContainer.CreateForExisting(new ObjectID(typeof (Order), Guid.NewGuid()), null, pd => pd.DefaultValue);
+      var dataContainer = DataContainer.CreateForExisting(new ObjectID(typeof(Order), Guid.NewGuid()), null, pd => pd.DefaultValue);
       dataContainer.SetDomainObject(DomainObjectMother.CreateFakeObject<Order>(dataContainer.ID));
       return dataContainer;
     }
 
     private DataContainer CreateNewDataContainer ()
     {
-      var dataContainer = DataContainer.CreateNew(new ObjectID(typeof (Order), Guid.NewGuid()));
+      var dataContainer = DataContainer.CreateNew(new ObjectID(typeof(Order), Guid.NewGuid()));
       dataContainer.SetDomainObject(DomainObjectMother.CreateFakeObject<Order>(dataContainer.ID));
       return dataContainer;
     }

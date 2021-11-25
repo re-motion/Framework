@@ -23,7 +23,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
   [BaseNonInherited ("DerivedClass")]
   [DerivedNonInherited ("DerivedClass")]
   [InheritedNotMultiple ("DerivedClass")]
-  [SuppressAttributes (typeof (InheritedNotMultipleAttribute))]
+  [SuppressAttributes (typeof(InheritedNotMultipleAttribute))]
   public class DerivedClassWithAttribute : BaseClassWithAttribute
   {
     

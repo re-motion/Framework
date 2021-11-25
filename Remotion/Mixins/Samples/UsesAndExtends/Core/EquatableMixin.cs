@@ -27,7 +27,7 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.Core
 
     static EquatableMixin ()
     {
-      s_targetFields = typeof (T).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+      s_targetFields = typeof(T).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
     }
 
     bool IEquatable<T>.Equals (T other)

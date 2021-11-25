@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
       public GenericFluentScreenshotElement (
           [NotNull] T target,
           [CanBeNull] ElementVisibility? minimumElementVisibility = null)
-          : base (target, GenericFluentResolver<T>.Instance, minimumElementVisibility)
+          : base(target, GenericFluentResolver<T>.Instance, minimumElementVisibility)
       {
       }
     }

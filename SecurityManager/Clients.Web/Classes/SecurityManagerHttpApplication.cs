@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 {
   public class SecurityManagerHttpApplication : HttpApplication
   {
-    private static readonly string s_principalKey = typeof (SecurityManagerHttpApplication).GetAssemblyQualifiedNameChecked() + "_Principal";
+    private static readonly string s_principalKey = typeof(SecurityManagerHttpApplication).GetAssemblyQualifiedNameChecked() + "_Principal";
     private ISecurityManagerPrincipalFactory _securityManagerPrincipalFactory;
 
     public SecurityManagerHttpApplication ()

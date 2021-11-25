@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// Combines one or more <see cref="IBindablePropertyReadAccessStrategy"/>-instances and delegates checking if the property can be read from.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IBindablePropertyReadAccessStrategy), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor (typeof(IBindablePropertyReadAccessStrategy), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompundBindablePropertyReadAccessStrategy : IBindablePropertyReadAccessStrategy
   {
     // Using an array instead of IReadOnlyList to support performance critical loop

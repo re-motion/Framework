@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       _client1 = (Client) LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.Client1, false);
       _client2 = (Client) LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.Client2, false);
       _client3 = (Client) LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.Client3, false);
-      _client4 = (Client) LifetimeService.NewObject(WriteableSubTransaction, typeof (Client), ParamList.Empty);
+      _client4 = (Client) LifetimeService.NewObject(WriteableSubTransaction, typeof(Client), ParamList.Empty);
       _orderTicket1 = (OrderTicket) LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.OrderTicket1, false);
 
       _loadEventReceiverMock = MockRepository.GenerateStrictMock<ILoadEventReceiver>();
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       {
         // Load _order, but trying to modify _order.OrderTicket would also modify _orderTicket1
         var offendingObject = _orderTicket1;
-        var offendingProperty = GetPropertyIdentifier(typeof (OrderTicket), "Order");
+        var offendingProperty = GetPropertyIdentifier(typeof(OrderTicket), "Order");
         ExpectOnLoadedCalls(
             _order,
             mi => CheckForbiddenSetProperty(ReadOnlyRootTransaction, _order, _order, o => o.OrderTicket, null, offendingObject, offendingProperty),
@@ -174,10 +174,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
         CheckNoDataLoadedForType(ReadOnlyRootTransaction);
         Assert.That(
             ClientTransactionTestHelper.GetIDataManager(ReadOnlyMiddleTransaction).DataContainers.All(
-                dc => dc.DomainObjectType != typeof (ClassWithAllDataTypes)));
+                dc => dc.DomainObjectType != typeof(ClassWithAllDataTypes)));
         Assert.That(
             ClientTransactionTestHelper.GetIDataManager(WriteableSubTransaction).DataContainers.All(
-                dc => dc.DomainObjectType != typeof (ClassWithAllDataTypes)));
+                dc => dc.DomainObjectType != typeof(ClassWithAllDataTypes)));
       }
     }
 
@@ -328,7 +328,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     private void CheckNoDataLoadedForType (ClientTransaction clientTransaction)
     {
       var dataManager = ClientTransactionTestHelper.GetIDataManager(clientTransaction);
-      Assert.That(dataManager.DataContainers.All(dc => dc.DomainObjectType != typeof (ClassWithAllDataTypes)));
+      Assert.That(dataManager.DataContainers.All(dc => dc.DomainObjectType != typeof(ClassWithAllDataTypes)));
     }
   }
 }

@@ -9,7 +9,7 @@ namespace Remotion.Web.UnitTests
     private readonly Pair _actual;
 
     public PairConstraintResult (PairConstraint constraint, Pair actualValue, Pair expected, bool isSuccess)
-        : base (constraint, actualValue, isSuccess)
+        : base(constraint, actualValue, isSuccess)
     {
       _actual = actualValue;
       _expected = expected;

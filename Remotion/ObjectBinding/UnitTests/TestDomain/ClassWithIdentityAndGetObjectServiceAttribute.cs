@@ -21,7 +21,7 @@ using Remotion.ObjectBinding.BindableObject;
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
   [BindableObjectWithIdentity]
-  [GetObjectServiceType (typeof (ICustomGetObjectService))]
+  [GetObjectServiceType (typeof(ICustomGetObjectService))]
   public class ClassWithIdentityAndGetObjectServiceAttribute
   {
     private readonly string _uniqueIdentifier;

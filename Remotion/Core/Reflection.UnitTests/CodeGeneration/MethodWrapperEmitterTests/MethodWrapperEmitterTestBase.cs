@@ -35,7 +35,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       var uniqueName = GetType().Name + "." + s_counter;
       s_counter++;
 
-      _typeBuilder = SetUpFixture.ModuleBuilder.DefineType(uniqueName, TypeAttributes.Class | TypeAttributes.Public, typeof (object), new Type[0]);
+      _typeBuilder = SetUpFixture.ModuleBuilder.DefineType(uniqueName, TypeAttributes.Class | TypeAttributes.Public, typeof(object), new Type[0]);
       _hasBeenBuilt = false;
     }
 

@@ -36,12 +36,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       base.SetUp();
 
-      _customerClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Customer));
+      _customerClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Customer));
       _customerOrdersEndPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
           _customerClassDefinition,
           "Orders",
           false,
-          typeof (OrderCollection));
+          typeof(OrderCollection));
 
       _orderClassDefinition = CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses();
     }
@@ -53,9 +53,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           _orderClassDefinition,
           "VirtualEndPoint",
           true,
-          typeof (OrderCollection));
+          typeof(OrderCollection));
 
-      Assert.That(endPoint.PropertyInfo.PropertyType, Is.SameAs(typeof (OrderCollection)));
+      Assert.That(endPoint.PropertyInfo.PropertyType, Is.SameAs(typeof(OrderCollection)));
     }
 
     [Test]
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           _orderClassDefinition,
           "OrderItems",
           false,
-          typeof (ObjectList<OrderItem>),
+          typeof(ObjectList<OrderItem>),
           new Lazy<SortExpressionDefinition>(() => null));
 
       Assert.That(endPoint.GetSortExpression(), Is.Null);
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           _orderClassDefinition,
           "OrderItems",
           false,
-          typeof (ObjectList<OrderItem>),
+          typeof(ObjectList<OrderItem>),
           new Lazy<SortExpressionDefinition>(() => sortExpressionDefinition));
 
       Assert.That(endPoint.GetSortExpression(), Is.SameAs(sortExpressionDefinition));
@@ -121,15 +121,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void PropertyInfo ()
     {
-      ClassDefinition orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Order));
+      ClassDefinition orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
       DomainObjectCollectionRelationEndPointDefinition relationEndPointDefinition =
-          (DomainObjectCollectionRelationEndPointDefinition) orderClassDefinition.GetRelationEndPointDefinition(typeof (Order) + ".OrderItems");
-      Assert.That(relationEndPointDefinition.PropertyInfo, Is.EqualTo(PropertyInfoAdapter.Create(typeof (Order).GetProperty("OrderItems"))));
+          (DomainObjectCollectionRelationEndPointDefinition) orderClassDefinition.GetRelationEndPointDefinition(typeof(Order) + ".OrderItems");
+      Assert.That(relationEndPointDefinition.PropertyInfo, Is.EqualTo(PropertyInfoAdapter.Create(typeof(Order).GetProperty("OrderItems"))));
     }
 
     private static ClassDefinition CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses ()
     {
-      return ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("Order", classType: typeof (Order));
+      return ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("Order", classType: typeof(Order));
     }
   }
 }

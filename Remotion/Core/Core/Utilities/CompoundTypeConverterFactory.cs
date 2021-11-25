@@ -25,7 +25,7 @@ namespace Remotion.Utilities
   /// <summary>
   /// Creates a <see cref="TypeConverter"/> from the list of <see cref="ITypeConverterFactory"/> implementations passed during initialization.
   /// </summary>
-  [ImplementationFor (typeof (ITypeConverterFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor (typeof(ITypeConverterFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompoundTypeConverterFactory : ITypeConverterFactory
   {
     private readonly IReadOnlyCollection<ITypeConverterFactory> _typeConverterFactories;

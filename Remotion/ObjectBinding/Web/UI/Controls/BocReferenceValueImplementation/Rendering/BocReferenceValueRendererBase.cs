@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
       ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
@@ -77,10 +77,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
-      string scriptKey = typeof (BocReferenceValueRendererBase<>).GetFullNameChecked() + "_Script";
+      string scriptKey = typeof(BocReferenceValueRendererBase<>).GetFullNameChecked() + "_Script";
       htmlHeadAppender.RegisterJavaScriptInclude(
           scriptKey,
-          ResourceUrlFactory.CreateResourceUrl(typeof (BocReferenceValueRendererBase<>), ResourceType.Html, "BocReferenceValueBase.js"));
+          ResourceUrlFactory.CreateResourceUrl(typeof(BocReferenceValueRendererBase<>), ResourceType.Html, "BocReferenceValueBase.js"));
     }
 
     [Obsolete ("Use Render (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]
@@ -126,9 +126,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private void RegisterInitializationScript (BocRenderingContext<TControl> renderingContext)
     {
-      string key = typeof (BocReferenceValueRendererBase<>).GetFullNameChecked() + "_InitializeGlobals";
+      string key = typeof(BocReferenceValueRendererBase<>).GetFullNameChecked() + "_InitializeGlobals";
 
-      if (renderingContext.Control.Page!.ClientScript.IsClientScriptBlockRegistered(typeof (BocReferenceValueRendererBase<>), key))
+      if (renderingContext.Control.Page!.ClientScript.IsClientScriptBlockRegistered(typeof(BocReferenceValueRendererBase<>), key))
         return;
 
       var nullIcon = IconInfo.CreateSpacer(ResourceUrlFactory);
@@ -139,7 +139,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       script.Append(");");
 
       renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(
-          renderingContext.Control, typeof (BocReferenceValueRendererBase<>), key, script.ToString());
+          renderingContext.Control, typeof(BocReferenceValueRendererBase<>), key, script.ToString());
     }
 
     protected string? GetControlServicePath (RenderingContext<TControl> renderingContext)

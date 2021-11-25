@@ -43,7 +43,7 @@ public class WxeMethodStepTest: WxeTest
   [Test]
   public void CheckCtorArgumentNotInstanceMember ()
   {
-    Type functionType = typeof (TestFunctionWithInvalidSteps);
+    Type functionType = typeof(TestFunctionWithInvalidSteps);
     MethodInfo step1 = functionType.GetMethod("InvalidStep1", BindingFlags.Static | BindingFlags.NonPublic);
     Assert.That(
         () => new WxeMethodStep(_functionWithInvalidSteps, step1),
@@ -53,7 +53,7 @@ public class WxeMethodStepTest: WxeTest
   [Test]
   public void CheckCtorArgumentWrongParameterType ()
   {
-    Type functionType = typeof (TestFunctionWithInvalidSteps);
+    Type functionType = typeof(TestFunctionWithInvalidSteps);
     MethodInfo step2 = functionType.GetMethod("InvalidStep2", BindingFlags.Instance | BindingFlags.NonPublic);
     Assert.That(
         () => new WxeMethodStep(_functionWithInvalidSteps, step2),
@@ -63,7 +63,7 @@ public class WxeMethodStepTest: WxeTest
   [Test]
   public void CheckCtorArgumentTooManyParameters ()
   {
-    Type functionType = typeof (TestFunctionWithInvalidSteps);
+    Type functionType = typeof(TestFunctionWithInvalidSteps);
     MethodInfo step3 = functionType.GetMethod("InvalidStep3", BindingFlags.Instance | BindingFlags.NonPublic);
     Assert.That(
         () => new WxeMethodStep(_functionWithInvalidSteps, step3),
@@ -73,7 +73,7 @@ public class WxeMethodStepTest: WxeTest
   [Test]
   public void CheckCtorArgumentWrongStepListInstance ()
   {
-    Type functionType = typeof (TestFunction);
+    Type functionType = typeof(TestFunction);
     MethodInfo step1 = functionType.GetMethod("Step1", BindingFlags.Instance | BindingFlags.NonPublic);
     Assert.That(
         () => new WxeMethodStep(_functionWithInvalidSteps, step1),
@@ -83,7 +83,7 @@ public class WxeMethodStepTest: WxeTest
   [Test]
   public void ExecuteMethodStep ()
   {
-    Type functionType = typeof (TestFunction);
+    Type functionType = typeof(TestFunction);
     MethodInfo step1 = functionType.GetMethod("Step1", BindingFlags.Instance | BindingFlags.NonPublic);
     WxeMethodStep methodStep = new WxeMethodStep(_function, step1);
     
@@ -158,7 +158,7 @@ public class WxeMethodStepTest: WxeTest
   [Test]
   public void ExecuteMethodStepWithContext ()
   {
-    Type functionType = typeof (TestFunction);
+    Type functionType = typeof(TestFunction);
     MethodInfo step2 = functionType.GetMethod("Step2", BindingFlags.Instance | BindingFlags.NonPublic);
     WxeMethodStep methodStepWithContext = new WxeMethodStep(_function, step2);
     

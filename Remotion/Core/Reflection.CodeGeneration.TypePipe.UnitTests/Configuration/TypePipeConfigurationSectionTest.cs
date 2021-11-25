@@ -92,7 +92,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
 
     private string GetSchemaContent ()
     {
-      var assembly = typeof (TypePipeConfigurationSection).Assembly;
+      var assembly = typeof(TypePipeConfigurationSection).Assembly;
       using (var resourceStream = assembly.GetManifestResourceStream("Remotion.Reflection.CodeGeneration.TypePipe.Schemas.TypePipeConfigurationSchema.xsd"))
       using (var reader = new StreamReader(resourceStream))
         return reader.ReadToEnd();

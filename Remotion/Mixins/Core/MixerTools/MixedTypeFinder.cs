@@ -27,7 +27,7 @@ namespace Remotion.Mixins.MixerTools
   // Change to be an ITypeDiscoveryService decorator
   public class MixedTypeFinder : IMixedTypeFinder
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (MixedTypeFinder));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(MixedTypeFinder));
 
     private readonly ITypeDiscoveryService _typeDiscoveryService;
 
@@ -54,7 +54,7 @@ namespace Remotion.Mixins.MixerTools
           types.Count);
 
       return from t in types.Cast<Type>()
-             where !t.IsDefined(typeof (IgnoreForMixinConfigurationAttribute), false)
+             where !t.IsDefined(typeof(IgnoreForMixinConfigurationAttribute), false)
              let context = configuration.GetContext(t)
              where context != null && !MixinTypeUtility.IsGeneratedConcreteMixedType(t) && ShouldProcessContext(context)
              select t;

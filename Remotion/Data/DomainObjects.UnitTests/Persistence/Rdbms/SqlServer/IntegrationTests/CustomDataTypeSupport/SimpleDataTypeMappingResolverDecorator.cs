@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public Expression ResolveMemberExpression (SqlEntityExpression originatingEntity, MemberInfo memberInfo)
     {
       var propertyInfo = memberInfo as PropertyInfo;
-      if (propertyInfo != null && propertyInfo.PropertyType == typeof (SimpleDataType))
+      if (propertyInfo != null && propertyInfo.PropertyType == typeof(SimpleDataType))
       {
         var classDefinition = MappingConfiguration.Current.GetTypeDefinition(propertyInfo.DeclaringType);
         var propertyName = MappingConfiguration.Current.NameResolver.GetPropertyName(PropertyInfoAdapter.Create(propertyInfo));
@@ -72,9 +72,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
             stringValueColumn.Name,
             stringValueColumn.IsPartOfPrimaryKey);
 
-        var simpleDataTypeCtor = typeof (SimpleDataType).GetConstructor(new[] { typeof (string) });
+        var simpleDataTypeCtor = typeof(SimpleDataType).GetConstructor(new[] { typeof(string) });
         Assertion.IsNotNull(simpleDataTypeCtor);
-        var stringValueMember = typeof (SimpleDataType).GetProperty("StringValue");
+        var stringValueMember = typeof(SimpleDataType).GetProperty("StringValue");
         var simpleDataTypeConstruction = Expression.New(
             simpleDataTypeCtor,
             new[] { stringValueColumnExpression },

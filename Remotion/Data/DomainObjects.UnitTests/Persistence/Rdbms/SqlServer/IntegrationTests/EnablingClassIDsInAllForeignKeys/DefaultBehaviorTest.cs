@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   public class DefaultBehaviorTest : CustomStorageObjectFactoryTestBase
   {
     public DefaultBehaviorTest ()
-        : base (CreateEmptyTestDataFileName)
+        : base(CreateEmptyTestDataFileName)
     {
     }
 

@@ -42,16 +42,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
 
       _searchServiceStub = new Mock<ISearchAvailableObjectsService>();
       _searchServiceArgsStub = new Mock<ISearchAvailableObjectsArguments>();
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>().AddService(
-          typeof (ISearchAvailableObjectsService), new Mock<ISearchAvailableObjectsService>().Object);
+          typeof(ISearchAvailableObjectsService), new Mock<ISearchAvailableObjectsService>().Object);
     }
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _aceClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (AccessControlEntry));
+      _aceClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(AccessControlEntry));
 
       _testHelper = new AccessControlTestHelper();
       _testHelper.Transaction.EnterNonDiscardingScope();
@@ -62,7 +62,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     public override void TestFixtureTearDown ()
     {
       base.TestFixtureTearDown();
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
 
     [Test]
@@ -74,7 +74,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
       var expected = new[] { new Mock<IBusinessObject>().Object };
 
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService(typeof (TenantPropertyTypeSearchService), _searchServiceStub.Object);
+          .AddService(typeof(TenantPropertyTypeSearchService), _searchServiceStub.Object);
       _searchServiceStub.Setup(stub => stub.SupportsProperty(property)).Returns(true);
       _searchServiceStub.Setup(stub => stub.Search(_ace, property, _searchServiceArgsStub.Object)).Returns(expected);
 
@@ -93,7 +93,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
       var expected = new[] { new Mock<IBusinessObject>().Object };
 
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService(typeof (GroupPropertyTypeSearchService), _searchServiceStub.Object);
+          .AddService(typeof(GroupPropertyTypeSearchService), _searchServiceStub.Object);
       _searchServiceStub.Setup(stub => stub.SupportsProperty(property)).Returns(true);
       _searchServiceStub.Setup(stub => stub.Search(_ace, property, _searchServiceArgsStub.Object)).Returns(expected);
 
@@ -112,7 +112,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
       var expected = new[] { new Mock<IBusinessObject>().Object };
 
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService(typeof (GroupTypePropertyTypeSearchService), _searchServiceStub.Object);
+          .AddService(typeof(GroupTypePropertyTypeSearchService), _searchServiceStub.Object);
       _searchServiceStub.Setup(stub => stub.SupportsProperty(property)).Returns(true);
       _searchServiceStub.Setup(stub => stub.Search(_ace, property, _searchServiceArgsStub.Object)).Returns(expected);
 
@@ -131,7 +131,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
       var expected = new[] { new Mock<IBusinessObject>().Object };
 
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService(typeof (UserPropertyTypeSearchService), _searchServiceStub.Object);
+          .AddService(typeof(UserPropertyTypeSearchService), _searchServiceStub.Object);
       _searchServiceStub.Setup(stub => stub.SupportsProperty(property)).Returns(true);
       _searchServiceStub.Setup(stub => stub.Search(_ace, property, _searchServiceArgsStub.Object)).Returns(expected);
 
@@ -150,7 +150,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
       var expected = new[] { new Mock<IBusinessObject>().Object };
 
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService(typeof (PositionPropertyTypeSearchService), _searchServiceStub.Object);
+          .AddService(typeof(PositionPropertyTypeSearchService), _searchServiceStub.Object);
       _searchServiceStub.Setup(stub => stub.SupportsProperty(property)).Returns(true);
       _searchServiceStub.Setup(stub => stub.Search(_ace, property, _searchServiceArgsStub.Object)).Returns(expected);
 
@@ -169,7 +169,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
       var expected = new[] { new Mock<IBusinessObject>().Object };
 
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>().AddService(
-          typeof (AbstractRoleDefinitionPropertyTypeSearchService), _searchServiceStub.Object);
+          typeof(AbstractRoleDefinitionPropertyTypeSearchService), _searchServiceStub.Object);
       _searchServiceStub.Setup(stub => stub.SupportsProperty(property)).Returns(true);
       _searchServiceStub.Setup(stub => stub.Search(_ace, property, _searchServiceArgsStub.Object)).Returns(expected);
 

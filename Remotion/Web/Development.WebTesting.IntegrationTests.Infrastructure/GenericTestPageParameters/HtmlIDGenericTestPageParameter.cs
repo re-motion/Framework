@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     public string HiddenControlID { get; private set; }
 
     public HtmlIDGenericTestPageParameter ()
-        : base (TestConstants.HtmlIDSelectorID, c_parameterCount)
+        : base(TestConstants.HtmlIDSelectorID, c_parameterCount)
     {
     }
 

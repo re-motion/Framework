@@ -32,7 +32,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
     [Test]
     public void GetResourceManager_WithSameArguments_ReturnsSameInstance ()
     {
-      var resourceType = typeof (string);
+      var resourceType = typeof(string);
       var resourceManager = new FakeResourceManager();
       var renderer = new TestableRendererBase(Mock.Of<IResourceUrlFactory>(), GlobalizationService, Mock.Of<IRenderingFeatures>());
 
@@ -62,7 +62,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
       var resourceManager = new FakeResourceManager();
       var resourceManagerReference = new WeakReference(resourceManager);
 
-      _ = renderer.GetResourceManager(typeof (string), resourceManager);
+      _ = renderer.GetResourceManager(typeof(string), resourceManager);
 
       return resourceManagerReference;
     }
@@ -94,7 +94,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
           [NotNull] IResourceUrlFactory resourceUrlFactory,
           [NotNull] IGlobalizationService globalizationService,
           [NotNull] IRenderingFeatures renderingFeatures)
-          : base (resourceUrlFactory, globalizationService, renderingFeatures)
+          : base(resourceUrlFactory, globalizationService, renderingFeatures)
       {
       }
 

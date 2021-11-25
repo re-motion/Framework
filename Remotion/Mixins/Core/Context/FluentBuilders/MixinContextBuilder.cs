@@ -146,7 +146,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder WithDependency<TRequiredMixin> ()
     {
-      return WithDependency(typeof (TRequiredMixin));
+      return WithDependency(typeof(TRequiredMixin));
     }
 
     /// <summary>
@@ -176,7 +176,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder WithDependencies<TMixin1, TMixin2> ()
     {
-      return WithDependencies(typeof (TMixin1), typeof (TMixin2));
+      return WithDependencies(typeof(TMixin1), typeof(TMixin2));
     }
 
     /// <summary>
@@ -191,7 +191,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder WithDependencies<TMixin1, TMixin2, TMixin3> ()
     {
-      return WithDependencies(typeof (TMixin1), typeof (TMixin2), typeof (TMixin3));
+      return WithDependencies(typeof(TMixin1), typeof(TMixin2), typeof(TMixin3));
     }
 
     /// <summary>
@@ -234,7 +234,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public MixinContextBuilder ReplaceMixin<TReplacedMixinType> ()
     {
-      return ReplaceMixin(typeof (TReplacedMixinType));
+      return ReplaceMixin(typeof(TReplacedMixinType));
     }
 
     /// <summary>
@@ -262,7 +262,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public MixinContextBuilder ReplaceMixins<TReplacedMixinType1, TReplacedMixinType2> ()
     {
-      return ReplaceMixins(typeof (TReplacedMixinType1), typeof (TReplacedMixinType2));
+      return ReplaceMixins(typeof(TReplacedMixinType1), typeof(TReplacedMixinType2));
     }
 
     /// <summary>
@@ -275,7 +275,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public MixinContextBuilder ReplaceMixins<TReplacedMixinType1, TReplacedMixinType2, TReplacedMixinType3> ()
     {
-      return ReplaceMixins(typeof (TReplacedMixinType1), typeof (TReplacedMixinType2), typeof (TReplacedMixinType3));
+      return ReplaceMixins(typeof(TReplacedMixinType1), typeof(TReplacedMixinType2), typeof(TReplacedMixinType3));
     }
 
     /// <summary>

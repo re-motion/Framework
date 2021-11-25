@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
   public class NestedPageStepTestTransactedFunction : WxeFunction
   {
     public NestedPageStepTestTransactedFunction ()
-      : base (WxeTransactionMode.CreateRootWithAutoCommit)
+      : base(WxeTransactionMode.CreateRootWithAutoCommit)
     {
     }
 

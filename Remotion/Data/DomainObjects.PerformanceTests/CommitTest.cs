@@ -185,8 +185,8 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     {
       var propertiesOne = new PropertyIndexer(one);
       var propertiesTwo  = new PropertyIndexer(two);
-      var accessorOne = propertiesOne[typeof (ClassWithRelationProperties), shortPropertyName];
-      var accessorTwo = propertiesTwo[typeof (ClassWithRelationProperties), shortPropertyName];
+      var accessorOne = propertiesOne[typeof(ClassWithRelationProperties), shortPropertyName];
+      var accessorTwo = propertiesTwo[typeof(ClassWithRelationProperties), shortPropertyName];
 
       var oldValue = accessorOne.GetValueWithoutTypeCheck();
       accessorOne.SetValueWithoutTypeCheck(accessorTwo.GetValueWithoutTypeCheck());

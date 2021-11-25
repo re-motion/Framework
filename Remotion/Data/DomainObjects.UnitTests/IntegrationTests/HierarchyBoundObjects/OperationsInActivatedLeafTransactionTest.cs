@@ -92,12 +92,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        Assert.That(_order1LoadedInMiddleTransaction.Properties[typeof (Order), "OrderNumber"].GetValue<int>(), Is.EqualTo(1));
+        Assert.That(_order1LoadedInMiddleTransaction.Properties[typeof(Order), "OrderNumber"].GetValue<int>(), Is.EqualTo(1));
         Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _leafTransaction).IsUnchanged, Is.True);
 
-        _order1LoadedInMiddleTransaction.Properties[typeof (Order), "OrderNumber"].SetValue(2);
+        _order1LoadedInMiddleTransaction.Properties[typeof(Order), "OrderNumber"].SetValue(2);
 
-        Assert.That(_order1LoadedInMiddleTransaction.Properties[typeof (Order), "OrderNumber"].GetValue<int>(), Is.EqualTo(2));
+        Assert.That(_order1LoadedInMiddleTransaction.Properties[typeof(Order), "OrderNumber"].GetValue<int>(), Is.EqualTo(2));
         Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _leafTransaction).IsChanged, Is.True);
       }
     }
@@ -214,7 +214,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        var order = (Order) LifetimeService.NewObject(_leafTransaction, typeof (Order), ParamList.Empty);
+        var order = (Order) LifetimeService.NewObject(_leafTransaction, typeof(Order), ParamList.Empty);
 
         Assert.That(GetStateFromTransaction(order, _leafTransaction).IsNew, Is.True);
         Assert.That(order.State.IsInvalid, Is.False);

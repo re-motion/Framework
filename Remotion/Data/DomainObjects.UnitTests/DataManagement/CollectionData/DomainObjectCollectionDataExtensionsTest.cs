@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void AddRangeAndCheckItems ()
     {
-      _data.AddRangeAndCheckItems(new[] { _order3, _order4 }, typeof (Order));
+      _data.AddRangeAndCheckItems(new[] { _order3, _order4 }, typeof(Order));
 
       Assert.That(_data.ToArray(), Is.EqualTo(new[] { _order1, _order2, _order3, _order4 }));
     }
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     public void AddRangeAndCheckItems_NullItem ()
     {
       Assert.That(
-          () => _data.AddRangeAndCheckItems(new[] { _order3, null }, typeof (Order)),
+          () => _data.AddRangeAndCheckItems(new[] { _order3, null }, typeof(Order)),
           Throws.InstanceOf<ArgumentNullException>()
               .With.ArgumentExceptionMessageEqualTo("Item 1 of parameter 'domainObjects' is null.", "domainObjects"));
     }
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     public void AddRangeAndCheckItems_DuplicateItem ()
     {
       Assert.That(
-          () => _data.AddRangeAndCheckItems(new[] { _order3, _order3 }, typeof (Order)),
+          () => _data.AddRangeAndCheckItems(new[] { _order3, _order3 }, typeof(Order)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Item 1 of parameter 'domainObjects' is a duplicate ('Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid').",
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     public void AddRangeAndCheckItems_InvalidType ()
     {
       Assert.That(
-          () => _data.AddRangeAndCheckItems(new[] { _order3 }, typeof (Customer)),
+          () => _data.AddRangeAndCheckItems(new[] { _order3 }, typeof(Customer)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Item 0 of parameter 'domainObjects' has the type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' " +

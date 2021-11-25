@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
       var factories = ((CompoundValidatorFactory<IBocTextValue>) instance).VlidatorFactories;
       Assert.That(
           factories.Select(f => f.GetType()),
-          Is.EqualTo(new[] { typeof (BocTextValueValidatorFactory), typeof (ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
+          Is.EqualTo(new[] { typeof(BocTextValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
     }
 
     [Test]

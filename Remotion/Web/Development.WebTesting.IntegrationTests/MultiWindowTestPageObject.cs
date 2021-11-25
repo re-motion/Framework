@@ -22,7 +22,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class MultiWindowTestPageObject : WxePageObject
   {
     public MultiWindowTestPageObject (PageObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

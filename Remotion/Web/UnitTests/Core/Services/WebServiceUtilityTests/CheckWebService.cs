@@ -52,14 +52,14 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     [Test]
     public void Test_Valid ()
     {
-      Assert.That(() => WebServiceUtility.CheckWebService(typeof (TestWebService), "Method"), Throws.Nothing);
+      Assert.That(() => WebServiceUtility.CheckWebService(typeof(TestWebService), "Method"), Throws.Nothing);
     }
 
     [Test]
     public void Test_BaseTypeNotWebService ()
     {
       Assert.That(
-          () => WebServiceUtility.CheckWebService(typeof (TestNotAWebService), "Method"),
+          () => WebServiceUtility.CheckWebService(typeof(TestNotAWebService), "Method"),
           Throws.ArgumentException
               .And.Message.EqualTo(
                   "Web service type 'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckWebService+TestNotAWebService'"
@@ -70,7 +70,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     public void Test_MissingWebServiceAttribute ()
     {
       Assert.That(
-          () => WebServiceUtility.CheckScriptService(typeof (TestWebServiceWithoutAttribute), "Method"),
+          () => WebServiceUtility.CheckScriptService(typeof(TestWebServiceWithoutAttribute), "Method"),
           Throws.ArgumentException
               .And.Message.EqualTo(
                   "Web service type 'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckWebService+TestWebServiceWithoutAttribute'"
@@ -81,7 +81,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     public void Test_MissingWebMethodAttribute ()
     {
       Assert.That(
-          () => WebServiceUtility.CheckScriptService(typeof (TestWebService), "MethodWithoutWebMethodAttribute"),
+          () => WebServiceUtility.CheckScriptService(typeof(TestWebService), "MethodWithoutWebMethodAttribute"),
           Throws.ArgumentException
               .And.Message.EqualTo(
                   "Web method 'MethodWithoutWebMethodAttribute' on web service type "
@@ -93,7 +93,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     public void Test_MissingWebMethod ()
     {
       Assert.That(
-          () => WebServiceUtility.CheckWebService(typeof (TestWebService), "NonPublicMethod"),
+          () => WebServiceUtility.CheckWebService(typeof(TestWebService), "NonPublicMethod"),
           Throws.ArgumentException
               .And.Message.EqualTo(
                   "Web method 'NonPublicMethod' was not found on the public API of web service type '"

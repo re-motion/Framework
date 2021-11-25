@@ -28,9 +28,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
     [Test]
     public void FindMappingProperties_IncludeBasePropertiesIsFalse ()
     {
-      var classDefinition = CreateClassDefinition(typeof (DerivedClassWithMappingAttribute));
+      var classDefinition = CreateClassDefinition(typeof(DerivedClassWithMappingAttribute));
       var propertyFinder = new AllMappingPropertiesFinder(
-          typeof (DerivedClassWithMappingAttribute),
+          typeof(DerivedClassWithMappingAttribute),
           false,
           true,
           new ReflectionBasedMemberInformationNameResolver(),
@@ -45,17 +45,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
           Is.EqualTo(
               new[]
               {
-                  GetProperty(typeof (DerivedClassWithMappingAttribute), "Property1"),
-                  GetProperty(typeof (DerivedClassWithMappingAttribute), "Property3")
+                  GetProperty(typeof(DerivedClassWithMappingAttribute), "Property1"),
+                  GetProperty(typeof(DerivedClassWithMappingAttribute), "Property3")
               }));
     }
 
     [Test]
     public void FindMappingProperties_IncludeBasePropertiesIsTrue ()
     {
-      var classDefinition = CreateClassDefinition(typeof (DerivedClassWithMappingAttribute));
+      var classDefinition = CreateClassDefinition(typeof(DerivedClassWithMappingAttribute));
       var propertyFinder = new AllMappingPropertiesFinder(
-          typeof (DerivedClassWithMappingAttribute),
+          typeof(DerivedClassWithMappingAttribute),
           true,
           true,
           new ReflectionBasedMemberInformationNameResolver(),
@@ -70,10 +70,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
           Is.EqualTo(
               new[]
               {
-                  GetProperty(typeof (BaseMappingAttributesClass), "Property1"),
-                  GetProperty(typeof (BaseMappingAttributesClass), "Property4"),
-                  GetProperty(typeof (DerivedClassWithMappingAttribute), "Property1"),
-                  GetProperty(typeof (DerivedClassWithMappingAttribute), "Property3")
+                  GetProperty(typeof(BaseMappingAttributesClass), "Property1"),
+                  GetProperty(typeof(BaseMappingAttributesClass), "Property4"),
+                  GetProperty(typeof(DerivedClassWithMappingAttribute), "Property1"),
+                  GetProperty(typeof(DerivedClassWithMappingAttribute), "Property3")
               }));
     }
   }

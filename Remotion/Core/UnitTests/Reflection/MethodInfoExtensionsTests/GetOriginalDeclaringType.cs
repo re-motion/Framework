@@ -30,7 +30,7 @@ namespace Remotion.UnitTests.Reflection.MethodInfoExtensionsTests
     {
       MethodInfo MethodInfo = GetMethodInfo<ClassWithDifferentMethods>("GetString");
 
-      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof (ClassWithDifferentMethods)));
+      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof(ClassWithDifferentMethods)));
     }
 
     [Test]
@@ -38,7 +38,7 @@ namespace Remotion.UnitTests.Reflection.MethodInfoExtensionsTests
     {
       MethodInfo MethodInfo = GetMethodInfo<DerivedClassWithDifferentMethods>("GetOtherString");
 
-      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof (DerivedClassWithDifferentMethods)));
+      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof(DerivedClassWithDifferentMethods)));
     }
 
     [Test]
@@ -46,7 +46,7 @@ namespace Remotion.UnitTests.Reflection.MethodInfoExtensionsTests
     {
       MethodInfo MethodInfo = GetMethodInfo<DerivedClassWithDifferentMethods>("GetString");
 
-      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof (DerivedClassWithDifferentMethods)));
+      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof(DerivedClassWithDifferentMethods)));
     }
 
     [Test]
@@ -54,7 +54,7 @@ namespace Remotion.UnitTests.Reflection.MethodInfoExtensionsTests
     {
       MethodInfo MethodInfo = GetMethodInfo<ClassWithDifferentMethods>("GetInt32");
 
-      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof (ClassWithDifferentMethods)));
+      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof(ClassWithDifferentMethods)));
     }
 
     [Test]
@@ -62,7 +62,7 @@ namespace Remotion.UnitTests.Reflection.MethodInfoExtensionsTests
     {
       MethodInfo MethodInfo = GetMethodInfo<DerivedClassWithDifferentMethods>("GetInt32");
 
-      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof (ClassWithDifferentMethods)));
+      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof(ClassWithDifferentMethods)));
     }
 
     [Test]
@@ -70,13 +70,13 @@ namespace Remotion.UnitTests.Reflection.MethodInfoExtensionsTests
     {
       MethodInfo MethodInfo = GetMethodInfo<DerivedOfDerivedClassWithDifferentMethods>("GetInt32");
 
-      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof (ClassWithDifferentMethods)));
+      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof(ClassWithDifferentMethods)));
     }
 
 
     protected MethodInfo GetMethodInfo<T> (string method)
     {
-      return typeof (T).GetMethod(method, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+      return typeof(T).GetMethod(method, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
     }
   }
 }

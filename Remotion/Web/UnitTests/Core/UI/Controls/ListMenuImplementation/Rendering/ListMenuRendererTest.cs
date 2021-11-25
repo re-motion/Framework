@@ -94,7 +94,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       script = string.Format(script, _control.Object.ClientID, GetItemScript(0), GetItemScript(1), GetItemScript(2), GetItemScript(4));
 
       _clientScriptManagerMock.Setup(
-          mock => mock.RegisterStartupScriptBlock(_control.Object, typeof (ListMenuRenderer), _control.Object.UniqueID + "_MenuItems", script)).Verifiable();
+          mock => mock.RegisterStartupScriptBlock(_control.Object, typeof(ListMenuRenderer), _control.Object.UniqueID + "_MenuItems", script)).Verifiable();
 
       var renderer = new ListMenuRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default);
       renderer.Render(new ListMenuRenderingContext(_httpContextStub.Object, _htmlHelper.Writer, _control.Object));

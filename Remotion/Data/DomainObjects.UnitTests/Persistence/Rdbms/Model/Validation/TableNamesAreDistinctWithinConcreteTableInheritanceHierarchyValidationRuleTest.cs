@@ -41,9 +41,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     {
       _validationRule = new TableNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule();
 
-      _baseOfBaseClass = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (BaseOfBaseValidationDomainObjectClass));
-      _derivedBaseClass1 = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (BaseValidationDomainObjectClass), baseClass: _baseOfBaseClass);
-      _derivedClass = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (DerivedValidationDomainObjectClass), baseClass: _derivedBaseClass1);
+      _baseOfBaseClass = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass));
+      _derivedBaseClass1 = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseValidationDomainObjectClass), baseClass: _baseOfBaseClass);
+      _derivedClass = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(DerivedValidationDomainObjectClass), baseClass: _derivedBaseClass1);
 
       _baseOfBaseClass.SetDerivedClasses(new[] { _derivedBaseClass1 });
       _derivedBaseClass1.SetDerivedClasses(new[] { _derivedClass });

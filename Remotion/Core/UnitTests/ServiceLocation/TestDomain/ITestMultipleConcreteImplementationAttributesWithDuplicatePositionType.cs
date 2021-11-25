@@ -23,13 +23,13 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ImplementationFor (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType))] // Position = 0
+  [ImplementationFor (typeof(ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType))] // Position = 0
   public class TestMultipleConcreteImplementationAttributesWithDuplicatePositionType1
       : ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType
   {
   }
 
-  [ImplementationFor (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType))] // Position = 0
+  [ImplementationFor (typeof(ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType))] // Position = 0
   public class TestMultipleConcreteImplementationAttributesWithDuplicatePositionType2
       : ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType
   {

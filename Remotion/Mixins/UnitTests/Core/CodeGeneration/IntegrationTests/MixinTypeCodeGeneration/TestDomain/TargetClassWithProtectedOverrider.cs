@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTypeCodeGeneration.TestDomain
 {
-  [Uses (typeof (MixinOverriddenByProtectedOverrider))]
+  [Uses (typeof(MixinOverriddenByProtectedOverrider))]
   public class TargetClassWithProtectedOverrider
   {
     [OverrideMixin]

@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       base.SetUp();
 
       _wrappedDataMock = MockRepository.GenerateMock<IDomainObjectCollectionData>();
-      _modificationCheckingDecorator = new ModificationCheckingDomainObjectCollectionDataDecorator(typeof (Order), _wrappedDataMock);
+      _modificationCheckingDecorator = new ModificationCheckingDomainObjectCollectionDataDecorator(typeof(Order), _wrappedDataMock);
       _modificationCheckingDecoratorWithoutRequiredItemType = new ModificationCheckingDomainObjectCollectionDataDecorator(null, _wrappedDataMock);
 
       _order1 = DomainObjectIDs.Order1.GetObject<Order>();
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void RequiredItemType ()
     {
-      Assert.That(_modificationCheckingDecorator.RequiredItemType, Is.SameAs(typeof (Order)));
+      Assert.That(_modificationCheckingDecorator.RequiredItemType, Is.SameAs(typeof(Order)));
       Assert.That(_modificationCheckingDecoratorWithoutRequiredItemType.RequiredItemType, Is.Null);
     }
 
@@ -248,7 +248,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      var decorator = new ModificationCheckingDomainObjectCollectionDataDecorator(typeof (Order), new DomainObjectCollectionData(new[] { _order1, _order3 }));
+      var decorator = new ModificationCheckingDomainObjectCollectionDataDecorator(typeof(Order), new DomainObjectCollectionData(new[] { _order1, _order3 }));
       var deserializedDecorator = Serializer.SerializeAndDeserialize(decorator);
 
       Assert.That(deserializedDecorator.Count(), Is.EqualTo(2));

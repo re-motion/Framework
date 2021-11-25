@@ -39,11 +39,11 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void Instantiate_WithMixin ()
     {
-      using (MixinConfiguration.BuildNew().ForClass(typeof (BindableObjectMetadataFactory)).AddMixin<MixinStub>().EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass(typeof(BindableObjectMetadataFactory)).AddMixin<MixinStub>().EnterScope())
       {
         BindableObjectMetadataFactory factory = BindableObjectMetadataFactory.Create();
-        Assert.That(factory, Is.InstanceOf(typeof (BindableObjectMetadataFactory)));
-        Assert.That(factory, Is.InstanceOf(typeof (IMixinTarget)));
+        Assert.That(factory, Is.InstanceOf(typeof(BindableObjectMetadataFactory)));
+        Assert.That(factory, Is.InstanceOf(typeof(IMixinTarget)));
       }
     }
 
@@ -51,17 +51,17 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void CreateClassReflector ()
     {
       BindableObjectProvider provider = new BindableObjectProvider();
-      IClassReflector classReflector = BindableObjectMetadataFactory.Create().CreateClassReflector(typeof (TestClass), provider);
-      Assert.That(classReflector.TargetType, Is.SameAs(typeof (TestClass)));
+      IClassReflector classReflector = BindableObjectMetadataFactory.Create().CreateClassReflector(typeof(TestClass), provider);
+      Assert.That(classReflector.TargetType, Is.SameAs(typeof(TestClass)));
       Assert.That(classReflector.BusinessObjectProvider, Is.SameAs(provider));
     }
 
     [Test]
     public void CreatePropertyFinder ()
     {
-      IPropertyFinder finder = BindableObjectMetadataFactory.Create().CreatePropertyFinder(typeof (TestClass));
-      Assert.That(finder.GetType(), Is.SameAs(typeof (ReflectionBasedPropertyFinder)));
-      Assert.That(new List<IPropertyInformation>(finder.GetPropertyInfos())[0].DeclaringType, Is.SameAs(TypeAdapter.Create(typeof (TestClass))));
+      IPropertyFinder finder = BindableObjectMetadataFactory.Create().CreatePropertyFinder(typeof(TestClass));
+      Assert.That(finder.GetType(), Is.SameAs(typeof(ReflectionBasedPropertyFinder)));
+      Assert.That(new List<IPropertyInformation>(finder.GetPropertyInfos())[0].DeclaringType, Is.SameAs(TypeAdapter.Create(typeof(TestClass))));
     }
 
     [Test]
@@ -69,11 +69,11 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        PropertyInfo propertyInfo = typeof (TestClass).GetProperty("Property");
+        PropertyInfo propertyInfo = typeof(TestClass).GetProperty("Property");
         IPropertyInformation property = PropertyInfoAdapter.Create(propertyInfo);
         PropertyReflector propertyReflector =
-            BindableObjectMetadataFactory.Create().CreatePropertyReflector(typeof (TestClass), property, new BindableObjectProvider());
-        Assert.That(propertyReflector.GetType(), Is.SameAs(typeof (PropertyReflector)));
+            BindableObjectMetadataFactory.Create().CreatePropertyReflector(typeof(TestClass), property, new BindableObjectProvider());
+        Assert.That(propertyReflector.GetType(), Is.SameAs(typeof(PropertyReflector)));
         Assert.That(propertyReflector.PropertyInfo, Is.SameAs(property));
       }
     }

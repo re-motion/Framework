@@ -29,7 +29,7 @@ namespace Remotion.Reflection.TypeDiscovery
   /// </summary>
   public sealed class BaseTypeCache
   {
-    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof (BaseTypeCache)));
+    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof(BaseTypeCache)));
 
     public static BaseTypeCache Create (IEnumerable<Type> types)
     {
@@ -102,7 +102,7 @@ namespace Remotion.Reflection.TypeDiscovery
     {
       ArgumentUtility.CheckNotNull("baseType", baseType);
 
-      if (baseType == typeof (object))
+      if (baseType == typeof(object))
         return _classCache.Concat(_interfaceCache).Select(g => g.Key).ToArray();
 
       var cache = baseType.IsInterface ? _interfaceCache : _classCache;

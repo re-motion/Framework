@@ -26,9 +26,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     public void TargetDependency_DoesntProvideOrdering ()
     {
       CheckOrderingException(
-          () => BuildMixedInstance<C>(typeof (MixinA), typeof (MixinB)), 
-          typeof (C), 
-          Tuple.Create(new[] { typeof (MixinA), typeof (MixinB) }, "Method1"));
+          () => BuildMixedInstance<C>(typeof(MixinA), typeof(MixinB)), 
+          typeof(C), 
+          Tuple.Create(new[] { typeof(MixinA), typeof(MixinB) }, "Method1"));
     }
 
     public class C

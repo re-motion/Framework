@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     public bool GenerateQueryModelAndSQL ()
     {
       var storageProviderDefinition =
-          (RdbmsProviderDefinition) MappingConfiguration.Current.GetTypeDefinition(typeof (Client)).StorageEntityDefinition.StorageProviderDefinition;
+          (RdbmsProviderDefinition) MappingConfiguration.Current.GetTypeDefinition(typeof(Client)).StorageEntityDefinition.StorageProviderDefinition;
       var storageObjectFactory = (SqlStorageObjectFactory) storageProviderDefinition.Factory;
       var sqlQueryGenerator = 
           storageObjectFactory.CreateSqlQueryGenerator(storageProviderDefinition, _methodCallTransformerProvider, _resultOperatorHandlerRegistry);

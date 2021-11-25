@@ -57,7 +57,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected override void OnPreRenderComplete (EventArgs e)
     {
-      var title = GlobalizationService.GetResourceManager(typeof (ResourceIdentifier)).GetString(ResourceIdentifier.Title);
+      var title = GlobalizationService.GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.Title);
       HtmlHeadAppender.Current.SetTitle(title);
       base.OnPreRenderComplete(e);
     }

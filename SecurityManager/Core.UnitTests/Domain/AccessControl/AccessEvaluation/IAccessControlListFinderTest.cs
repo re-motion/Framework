@@ -22,7 +22,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       var factory = _serviceLocator.GetInstance<IAccessControlListFinder>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (AccessControlListFinder)));
+      Assert.That(factory, Is.TypeOf(typeof(AccessControlListFinder)));
     }
 
     [Test]

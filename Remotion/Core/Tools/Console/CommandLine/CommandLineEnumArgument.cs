@@ -35,13 +35,13 @@ public class CommandLineEnumArgument: CommandLineValueArgument
   // construction and disposal
 
   public CommandLineEnumArgument (string? name, bool isOptional, Type? enumType)
-    : base (name, isOptional)
+    : base(name, isOptional)
   {
     EnumType = enumType;
   }
 
   public CommandLineEnumArgument (bool isOptional, Type? enumType)
-    : this (null, isOptional, enumType)
+    : this(null, isOptional, enumType)
   {
   }
 

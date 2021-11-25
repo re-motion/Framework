@@ -30,7 +30,7 @@ namespace Remotion.Security.UnitTests
       var strategy = new NullFunctionalSecurityStrategy();
 
       var result = strategy.HasAccess(
-          typeof (SecurableObject),
+          typeof(SecurableObject),
           new Mock<ISecurityProvider>().Object,
           new Mock<ISecurityPrincipal>().Object,
           new[] { AccessType.Get(GeneralAccessTypes.Read) });

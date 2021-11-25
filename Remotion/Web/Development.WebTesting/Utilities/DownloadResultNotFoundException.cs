@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     private readonly IReadOnlyCollection<string> _unmatchedFilesInDownloadDirectory;
 
     public DownloadResultNotFoundException ([NotNull] string message, [NotNull] IReadOnlyCollection<string> unmatchedFiles)
-        : base (FormatMessage(message, unmatchedFiles))
+        : base(FormatMessage(message, unmatchedFiles))
     {
       _unmatchedFilesInDownloadDirectory = unmatchedFiles;
     }

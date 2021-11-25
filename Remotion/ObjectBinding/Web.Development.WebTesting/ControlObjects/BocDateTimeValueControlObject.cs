@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private readonly bool _hasTimeField;
 
     public BocDateTimeValueControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
       _hasTimeField = Scope[DiagnosticMetadataAttributesForObjectBinding.BocDateTimeValueHasTimeField] == "true";
     }

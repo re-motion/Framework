@@ -26,109 +26,109 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
     [Test]
     public void ClosedGenericInterface ()
     {
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericInterface<ParameterType>), typeof (IGenericInterface<>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericInterface<ParameterType>), typeof (IGenericInterface<ParameterType>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericInterface<ParameterType>), typeof (IGenericInterface<object>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericInterface<ParameterType>), typeof(IGenericInterface<>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericInterface<ParameterType>), typeof(IGenericInterface<ParameterType>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericInterface<ParameterType>), typeof(IGenericInterface<object>)), Is.False);
 
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (IGenericInterface<ParameterType>), typeof (IGenericInterface<>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (IGenericInterface<ParameterType>), typeof (IGenericInterface<ParameterType>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (IGenericInterface<ParameterType>), typeof (IGenericInterface<object>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(IGenericInterface<ParameterType>), typeof(IGenericInterface<>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(IGenericInterface<ParameterType>), typeof(IGenericInterface<ParameterType>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(IGenericInterface<ParameterType>), typeof(IGenericInterface<object>)), Is.False);
     }
 
     [Test]
     public void ClosedGenericInterface_WithDerivedType ()
     {
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (DerivedTypeWithGenericInterface<ParameterType>), typeof (IGenericInterface<>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (DerivedTypeWithGenericInterface<ParameterType>), typeof (IGenericInterface<ParameterType>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (DerivedTypeWithGenericInterface<ParameterType>), typeof (IGenericInterface<object>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(DerivedTypeWithGenericInterface<ParameterType>), typeof(IGenericInterface<>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(DerivedTypeWithGenericInterface<ParameterType>), typeof(IGenericInterface<ParameterType>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(DerivedTypeWithGenericInterface<ParameterType>), typeof(IGenericInterface<object>)), Is.False);
 
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (IDerivedGenericInterface<ParameterType>), typeof (IGenericInterface<>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (IDerivedGenericInterface<ParameterType>), typeof (IGenericInterface<ParameterType>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (IDerivedGenericInterface<ParameterType>), typeof (IGenericInterface<object>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(IDerivedGenericInterface<ParameterType>), typeof(IGenericInterface<>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(IDerivedGenericInterface<ParameterType>), typeof(IGenericInterface<ParameterType>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(IDerivedGenericInterface<ParameterType>), typeof(IGenericInterface<object>)), Is.False);
     }
 
     [Test]
     public void ClosedGenericInterface_WithTwoTypeParameters ()
     {
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericInterface<ParameterType, int>), typeof (IGenericInterface<,>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericInterface<ParameterType, int>), typeof (IGenericInterface<ParameterType, int>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericInterface<ParameterType, int>), typeof (IGenericInterface<object, int>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericInterface<ParameterType, int>), typeof(IGenericInterface<,>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericInterface<ParameterType, int>), typeof(IGenericInterface<ParameterType, int>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericInterface<ParameterType, int>), typeof(IGenericInterface<object, int>)), Is.False);
     }
 
     [Test]
     public void OpenGenericInterface ()
     {
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericInterface<>), typeof (IGenericInterface<>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericInterface<>), typeof (IGenericInterface<ParameterType>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericInterface<>), typeof(IGenericInterface<>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericInterface<>), typeof(IGenericInterface<ParameterType>)), Is.False);
 
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (IGenericInterface<>), typeof (IGenericInterface<>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (IGenericInterface<>), typeof (IGenericInterface<ParameterType>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(IGenericInterface<>), typeof(IGenericInterface<>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(IGenericInterface<>), typeof(IGenericInterface<ParameterType>)), Is.False);
     }
 
     [Test]
     public void OpenGenericInterface_WithTwoTypeParameters ()
     {
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericInterface<,>), typeof (IGenericInterface<,>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericInterface<,>), typeof (IGenericInterface<ParameterType,int>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericInterface<,>), typeof(IGenericInterface<,>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericInterface<,>), typeof(IGenericInterface<ParameterType,int>)), Is.False);
     }
 
     [Test]
     public void OpenGenericInterface_WithOneOpenTypeParameter ()
     {
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithDerivedOpenGenericInterface<>), typeof (IGenericInterface<,>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithDerivedOpenGenericInterface<>), typeof (IGenericInterface<ParameterType,int>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithDerivedOpenGenericInterface<>), typeof(IGenericInterface<,>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithDerivedOpenGenericInterface<>), typeof(IGenericInterface<ParameterType,int>)), Is.False);
     }
 
     [Test]
     public void ClosedDerivedGenericInterface ()
     {
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithDerivedGenericInterface<ParameterType>), typeof (IGenericInterface<>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithDerivedGenericInterface<ParameterType>), typeof (IGenericInterface<ParameterType>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithDerivedGenericInterface<ParameterType>), typeof (IGenericInterface<object>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithDerivedGenericInterface<ParameterType>), typeof(IGenericInterface<>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithDerivedGenericInterface<ParameterType>), typeof(IGenericInterface<ParameterType>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithDerivedGenericInterface<ParameterType>), typeof(IGenericInterface<object>)), Is.False);
     }
 
     [Test]
     public void OpenDerivedGenericInterface ()
     {
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithDerivedGenericInterface<>), typeof (IGenericInterface<>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithDerivedGenericInterface<>), typeof (IGenericInterface<ParameterType>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithDerivedGenericInterface<>), typeof(IGenericInterface<>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithDerivedGenericInterface<>), typeof(IGenericInterface<ParameterType>)), Is.False);
 
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (IDerivedGenericInterface<>), typeof (IGenericInterface<>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (IDerivedGenericInterface<>), typeof (IGenericInterface<ParameterType>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(IDerivedGenericInterface<>), typeof(IGenericInterface<>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(IDerivedGenericInterface<>), typeof(IGenericInterface<ParameterType>)), Is.False);
     }
 
     [Test]
     public void NonGenericDerivedGenericInterface ()
     {
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithDerivedGenericInterface), typeof (IGenericInterface<>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithDerivedGenericInterface), typeof (IGenericInterface<ParameterType>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithDerivedGenericInterface), typeof (IGenericInterface<object>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithDerivedGenericInterface), typeof(IGenericInterface<>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithDerivedGenericInterface), typeof(IGenericInterface<ParameterType>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithDerivedGenericInterface), typeof(IGenericInterface<object>)), Is.False);
 
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (IDerivedGenericInterface), typeof (IGenericInterface<>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (IDerivedGenericInterface), typeof (IGenericInterface<ParameterType>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (IDerivedGenericInterface), typeof (IGenericInterface<object>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(IDerivedGenericInterface), typeof(IGenericInterface<>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(IDerivedGenericInterface), typeof(IGenericInterface<ParameterType>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(IDerivedGenericInterface), typeof(IGenericInterface<object>)), Is.False);
     }
 
     [Test]
     public void ClosedGenericDerivedGenericInterface ()
     {
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericDerivedGenericInterface<int>), typeof (IGenericInterface<>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericDerivedGenericInterface<int>), typeof (IGenericInterface<ParameterType>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericDerivedGenericInterface<int>), typeof (IGenericInterface<object>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericDerivedGenericInterface<int>), typeof(IGenericInterface<>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericDerivedGenericInterface<int>), typeof(IGenericInterface<ParameterType>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericDerivedGenericInterface<int>), typeof(IGenericInterface<object>)), Is.False);
     }
 
     [Test]
     public void OpenGenericDerivedGenericInterface ()
     {
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericDerivedGenericInterface<>), typeof (IGenericInterface<>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericDerivedGenericInterface<>), typeof (IGenericInterface<ParameterType>)), Is.True);
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithGenericDerivedGenericInterface<>), typeof (IGenericInterface<object>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericDerivedGenericInterface<>), typeof(IGenericInterface<>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericDerivedGenericInterface<>), typeof(IGenericInterface<ParameterType>)), Is.True);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithGenericDerivedGenericInterface<>), typeof(IGenericInterface<object>)), Is.False);
     }
 
     [Test]
     public void BaseInterface ()
     {
-      Assert.That(TypeExtensions.CanAscribeTo(typeof (TypeWithBaseInterface), typeof (IGenericInterface<>)), Is.False);
+      Assert.That(TypeExtensions.CanAscribeTo(typeof(TypeWithBaseInterface), typeof(IGenericInterface<>)), Is.False);
     }
   }
 }

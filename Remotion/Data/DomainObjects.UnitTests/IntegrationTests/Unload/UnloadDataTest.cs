@@ -427,7 +427,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     [Test]
     public void UnloadData_New ()
     {
-      var orderNew = (Order) LifetimeService.NewObject(TestableClientTransaction, typeof (Order), ParamList.Empty);
+      var orderNew = (Order) LifetimeService.NewObject(TestableClientTransaction, typeof(Order), ParamList.Empty);
       Assert.That(orderNew.State.IsNew, Is.True);
       Assert.That(TestableClientTransaction.GetEnlistedDomainObject(DomainObjectIDs.Order1), Is.Null);
 
@@ -609,7 +609,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       EnsureTransactionThrowsOnLoad();
 
-      order1.PreparePropertyAccess(typeof (Order).FullName + ".OrderNumber");
+      order1.PreparePropertyAccess(typeof(Order).FullName + ".OrderNumber");
       Dev.Null = order1.CurrentProperty;
       order1.PropertyAccessFinished();
 

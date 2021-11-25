@@ -22,9 +22,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
   [DBTable]
   [TestDomain]
-  [Uses (typeof (NullMixin))]
-  [Uses (typeof (MixinAddingInterface))]
-  [Uses (typeof (MixinOverridingPropertiesAndMethods))]
+  [Uses (typeof(NullMixin))]
+  [Uses (typeof(MixinAddingInterface))]
+  [Uses (typeof(MixinOverridingPropertiesAndMethods))]
   [Serializable]
   public class TargetClassForBehavioralMixin : DomainObject
   {

@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   {
     private T _scalar;
     private T? _nullableScalar;
-    private readonly T _readOnlyScalar = default (T);
+    private readonly T _readOnlyScalar = default(T);
     private T _readOnlyNonPublicSetterScalar;
     private T _notVisibleScalar;
     private T _readOnlyAttributeScalar;

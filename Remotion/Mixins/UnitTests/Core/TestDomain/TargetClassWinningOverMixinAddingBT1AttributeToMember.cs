@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof (MixinAddingBT1AttributeToMember))]
+  [Uses (typeof(MixinAddingBT1AttributeToMember))]
   public class TargetClassWinningOverMixinAddingBT1AttributeToMember
   {
     [BT1]

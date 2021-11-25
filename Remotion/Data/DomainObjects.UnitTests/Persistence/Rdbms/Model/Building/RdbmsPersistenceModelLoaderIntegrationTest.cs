@@ -257,14 +257,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
         ColumnDefinition[] columnDefinitions,
         PrimaryKeyConstraintDefinition primaryKeyConstraintDefinition)
     {
-      Assert.That(classDefinition.StorageEntityDefinition, Is.TypeOf(typeof (TableDefinition)));
+      Assert.That(classDefinition.StorageEntityDefinition, Is.TypeOf(typeof(TableDefinition)));
       Assert.That(classDefinition.StorageEntityDefinition.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
       Assert.That(((TableDefinition) classDefinition.StorageEntityDefinition).TableName.EntityName, Is.EqualTo(tableName));
       Assert.That(((TableDefinition) classDefinition.StorageEntityDefinition).TableName.SchemaName, Is.Null);
       Assert.That(((TableDefinition) classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo(viewName));
       Assert.That(((TableDefinition) classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);
       Assert.That(((TableDefinition) classDefinition.StorageEntityDefinition).GetAllColumns(), Is.EqualTo(columnDefinitions));
-      Assert.That(((TableDefinition) classDefinition.StorageEntityDefinition).Constraints[0], Is.TypeOf(typeof (PrimaryKeyConstraintDefinition)));
+      Assert.That(((TableDefinition) classDefinition.StorageEntityDefinition).Constraints[0], Is.TypeOf(typeof(PrimaryKeyConstraintDefinition)));
       var primaryKey = (PrimaryKeyConstraintDefinition) ((TableDefinition) classDefinition.StorageEntityDefinition).Constraints[0];
       Assert.That(primaryKey.ConstraintName, Is.EqualTo(primaryKeyConstraintDefinition.ConstraintName));
       Assert.That(primaryKey.Columns, Is.EqualTo(primaryKeyConstraintDefinition.Columns));
@@ -277,7 +277,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
         string[] classIDs,
         ColumnDefinition[] columnDefinitions)
     {
-      Assert.That(classDefinition.StorageEntityDefinition, Is.TypeOf(typeof (FilterViewDefinition)));
+      Assert.That(classDefinition.StorageEntityDefinition, Is.TypeOf(typeof(FilterViewDefinition)));
       Assert.That(classDefinition.StorageEntityDefinition.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
       Assert.That(((FilterViewDefinition) classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo(viewName));
       Assert.That(((FilterViewDefinition) classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);
@@ -292,7 +292,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
         IStorageEntityDefinition[] storageEntityDefinitions,
         ColumnDefinition[] columnDefinitions)
     {
-      Assert.That(classDefinition.StorageEntityDefinition, Is.TypeOf(typeof (UnionViewDefinition)));
+      Assert.That(classDefinition.StorageEntityDefinition, Is.TypeOf(typeof(UnionViewDefinition)));
       Assert.That(classDefinition.StorageEntityDefinition.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
       Assert.That(((UnionViewDefinition) classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo(viewName));
       Assert.That(((UnionViewDefinition) classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);

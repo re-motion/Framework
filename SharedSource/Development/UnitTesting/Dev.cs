@@ -55,7 +55,7 @@ namespace Remotion.Development.UnitTesting
     /// Use this in unit tests where you need a ref or out parameter but but don't care about the result of the assignment.
     /// Never rely on the value of the <see cref="Dummy"/> field, it will be changed by other tests.
     /// </summary>
-    public static T Dummy = default (T)!;
+    public static T Dummy = default(T)!;
 
     /// <summary>
     /// Use this in unit tests where you need to assign a value to
@@ -63,7 +63,7 @@ namespace Remotion.Development.UnitTesting
     /// </summary>
     public static T Null
     {
-      get { return default (T)!; }
+      get { return default(T)!; }
       set { Dev.Null = value; }
     }
   }

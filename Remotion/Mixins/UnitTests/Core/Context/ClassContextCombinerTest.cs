@@ -32,8 +32,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     public void SetUp ()
     {
       _combiner = new ClassContextCombiner();
-      _context1 = new ClassContext(typeof (object), new MixinContext[0], new[] { typeof (int), typeof (float) });
-      _context2 = ClassContextObjectMother.Create(typeof (string), new[] { typeof (double), typeof (int) });
+      _context1 = new ClassContext(typeof(object), new MixinContext[0], new[] { typeof(int), typeof(float) });
+      _context2 = ClassContextObjectMother.Create(typeof(string), new[] { typeof(double), typeof(int) });
     }
 
     [Test]
@@ -68,15 +68,15 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [Test]
     public void GetCombinedContexts_Null ()
     {
-      Assert.That(_combiner.GetCombinedContexts(typeof (int)), Is.Null);
+      Assert.That(_combiner.GetCombinedContexts(typeof(int)), Is.Null);
     }
 
     [Test]
     public void GetCombinedContexts_One ()
     {
       _combiner.AddIfNotNull(_context1);
-      ClassContext result = _combiner.GetCombinedContexts(typeof (int));
-      Assert.That(result.Type, Is.EqualTo(typeof (int)));
+      ClassContext result = _combiner.GetCombinedContexts(typeof(int));
+      Assert.That(result.Type, Is.EqualTo(typeof(int)));
       Assert.That(result.ComposedInterfaces, Is.EquivalentTo(_context1.ComposedInterfaces));
     }
 
@@ -86,8 +86,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       _combiner.AddIfNotNull(_context1);
       _combiner.AddIfNotNull(_context2);
 
-      ClassContext result = _combiner.GetCombinedContexts(typeof (int));
-      Assert.That(result.Type, Is.EqualTo(typeof (int)));
+      ClassContext result = _combiner.GetCombinedContexts(typeof(int));
+      Assert.That(result.Type, Is.EqualTo(typeof(int)));
 
       var expectedInterfaces = _context1.ComposedInterfaces.Union(_context2.ComposedInterfaces);
       Assert.That(result.ComposedInterfaces, Is.EquivalentTo(expectedInterfaces));

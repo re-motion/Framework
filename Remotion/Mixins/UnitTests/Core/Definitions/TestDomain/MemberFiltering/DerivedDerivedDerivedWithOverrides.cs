@@ -27,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.TestDomain.MemberFiltering
 
     public override int Property
     {
-      get { return default (int); }
+      get { return default(int); }
       set { Dev.Null = value; }
     }
 

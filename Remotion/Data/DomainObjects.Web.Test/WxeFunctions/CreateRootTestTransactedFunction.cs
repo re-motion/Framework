@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
     // construction and disposing
 
     public CreateRootTestTransactedFunction (ClientTransaction previousClientTransaction)
-        : base (WxeTransactionMode.CreateRootWithAutoCommit, previousClientTransaction)
+        : base(WxeTransactionMode.CreateRootWithAutoCommit, previousClientTransaction)
     {
     }
 

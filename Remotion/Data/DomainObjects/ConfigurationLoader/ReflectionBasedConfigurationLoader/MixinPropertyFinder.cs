@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       if (!type.IsGenericType)
         return false;
       Type genericTypeDefinition = type.GetGenericTypeDefinition();
-      return genericTypeDefinition == typeof (Mixin<>) || genericTypeDefinition == typeof (Mixin<,>);
+      return genericTypeDefinition == typeof(Mixin<>) || genericTypeDefinition == typeof(Mixin<,>);
     }
   }
 }

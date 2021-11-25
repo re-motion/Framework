@@ -54,7 +54,7 @@ namespace OBWTest
     public Global ()
     {
       //  Initialize Logger
-      LogManager.GetLogger(typeof (Global));
+      LogManager.GetLogger(typeof(Global));
       InitializeComponent();
     }
 
@@ -95,11 +95,11 @@ namespace OBWTest
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
       XmlReflectionBusinessObjectStorageProvider provider = new XmlReflectionBusinessObjectStorageProvider(reflectionBusinessObjectStorageProvider);
       XmlReflectionBusinessObjectStorageProvider.SetCurrent(provider);
-      BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>().AddService(typeof (IGetObjectService), provider);
+      BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>().AddService(typeof(IGetObjectService), provider);
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()
-                            .AddService(typeof (ISearchAvailableObjectsService), new BindableXmlObjectSearchService());
+                            .AddService(typeof(ISearchAvailableObjectsService), new BindableXmlObjectSearchService());
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()
-                            .AddService(typeof (IBusinessObjectWebUIService), new ReflectionBusinessObjectWebUIService(resourceUrlFactory));
+                            .AddService(typeof(IBusinessObjectWebUIService), new ReflectionBusinessObjectWebUIService(resourceUrlFactory));
 
       BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService(new ReferenceDataSourceTestDefaultValueService());
       BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService(new ReferenceDataSourceTestDeleteObjectService());

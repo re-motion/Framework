@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting
   public abstract class PageObject : WebTestObject<PageObjectContext>, IControlHost
   {
     protected PageObject ([NotNull] PageObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

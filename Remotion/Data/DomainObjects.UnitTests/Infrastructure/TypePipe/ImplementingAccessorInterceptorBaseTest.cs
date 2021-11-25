@@ -47,12 +47,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       _interceptedMethod = NormalizingMemberInfoFromExpressionUtility.GetMethod((object o) => o.Equals(null));
       _propertyName = "abc";
-      _propertyType = typeof (int);
+      _propertyType = typeof(int);
 
       _interceptorPartialMock = MockRepository.GeneratePartialMock<ImplementingAccessorInterceptorBase>(
           _interceptedMethod, _propertyName, _propertyType);
 
-      _proxyType = MutableTypeObjectMother.Create(typeof (DomainObject));
+      _proxyType = MutableTypeObjectMother.Create(typeof(DomainObject));
     }
 
     [Test]
@@ -60,8 +60,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       var accessorImplementationMethod =
           NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition((PropertyAccessor a) => a.SetValue<object>(null));
-      var arguments = new Expression[] { Expression.Parameter(typeof (int), "param") };
-      var ctx = new MethodBodyModificationContext(_proxyType, false, new ParameterExpression[0], Type.EmptyTypes, typeof (int), null, null);
+      var arguments = new Expression[] { Expression.Parameter(typeof(int), "param") };
+      var ctx = new MethodBodyModificationContext(_proxyType, false, new ParameterExpression[0], Type.EmptyTypes, typeof(int), null, null);
       _interceptorPartialMock
           .Stub(stub => PrivateInvoke.GetNonPublicProperty(stub, "AccessorImplementationMethod"))
           .Return(accessorImplementationMethod);
@@ -77,12 +77,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
               Expression.Call(
                   Expression.Property(
                       new ThisExpression(_proxyType),
-                      typeof (DomainObject).GetProperty("Properties", BindingFlags.Instance | BindingFlags.NonPublic)),
+                      typeof(DomainObject).GetProperty("Properties", BindingFlags.Instance | BindingFlags.NonPublic)),
                   "get_Item",
                   null,
                   Expression.Constant("abc")),
               "SetValue",
-              new[] { typeof (int) },
+              new[] { typeof(int) },
               arguments);
       ExpressionTreeComparer.CheckAreEqualTrees(expectedbody, result);
     }

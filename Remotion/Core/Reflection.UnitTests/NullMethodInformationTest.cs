@@ -75,7 +75,7 @@ namespace Remotion.Reflection.UnitTests
     public void FindInterfaceImplementation ()
     {
       Assert.That(
-          () => _nullMethodInformation.FindInterfaceImplementation(typeof (object)),
+          () => _nullMethodInformation.FindInterfaceImplementation(typeof(object)),
           Throws.InvalidOperationException);
     }
 

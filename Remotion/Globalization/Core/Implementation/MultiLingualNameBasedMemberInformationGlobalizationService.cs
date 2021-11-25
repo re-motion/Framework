@@ -30,7 +30,7 @@ namespace Remotion.Globalization.Implementation
   /// applied to the respective reflection object.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton, 
+  [ImplementationFor (typeof(IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton, 
       Position = Position, RegistrationType = RegistrationType.Multiple)]
   public sealed class MultiLingualNameBasedMemberInformationGlobalizationService : IMemberInformationGlobalizationService
   {

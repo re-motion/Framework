@@ -48,16 +48,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       DataContainer customerContainer = _provider.LoadDataContainer(DomainObjectIDs.Customer).LocatedObject;
       Assert.That(customerContainer, Is.Not.Null);
       Assert.That(customerContainer.ID, Is.EqualTo(DomainObjectIDs.Customer));
-      Assert.That(customerContainer.GetValue(GetPropertyDefinition(typeof (TIDomainBase), "CreatedBy")), Is.EqualTo("UnitTests"));
-      Assert.That(customerContainer.GetValue(GetPropertyDefinition(typeof (TIPerson), "FirstName")), Is.EqualTo("Zaphod"));
-      Assert.That(customerContainer.GetValue(GetPropertyDefinition(typeof (TICustomer), "CustomerType")), Is.EqualTo(CustomerType.Premium));
+      Assert.That(customerContainer.GetValue(GetPropertyDefinition(typeof(TIDomainBase), "CreatedBy")), Is.EqualTo("UnitTests"));
+      Assert.That(customerContainer.GetValue(GetPropertyDefinition(typeof(TIPerson), "FirstName")), Is.EqualTo("Zaphod"));
+      Assert.That(customerContainer.GetValue(GetPropertyDefinition(typeof(TICustomer), "CustomerType")), Is.EqualTo(CustomerType.Premium));
     }
 
     [Test]
     public void LoadDataContainersByRelatedID_WithAbstractBaseClass ()
     {
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (TIDomainBase), "Client");
-      var createdAtProperty = GetPropertyDefinition(typeof (TIDomainBase), "CreatedAt");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(TIDomainBase), "Client");
+      var createdAtProperty = GetPropertyDefinition(typeof(TIDomainBase), "CreatedAt");
       var sortExpression = new SortExpressionDefinition(new[] { new SortedPropertySpecification(createdAtProperty, SortOrder.Ascending) });
 
       var loadedDataContainers = _provider.LoadDataContainersByRelatedID(
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainersByRelatedID_WithAbstractClassWithoutDerivations ()
     {
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (AbstractClassWithoutDerivations), "DomainBase");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(AbstractClassWithoutDerivations), "DomainBase");
 
       var result = _provider.LoadDataContainersByRelatedID(
           (RelationEndPointDefinition) relationEndPointDefinition,

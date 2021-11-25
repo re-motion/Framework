@@ -37,7 +37,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [Test]
     public void FindAssemblies_FirstTime ()
     {
-      var assemblies = new[] { typeof (object).Assembly, GetType().Assembly };
+      var assemblies = new[] { typeof(object).Assembly, GetType().Assembly };
       _innerFinder.Setup(mock => mock.FindAssemblies()).Returns(assemblies).Verifiable();
 
       var result = _decorator.FindAssemblies();
@@ -49,7 +49,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [Test]
     public void FindAssemblies_MultipleTimes ()
     {
-      var assemblies = new[] { typeof (object).Assembly, GetType().Assembly };
+      var assemblies = new[] { typeof(object).Assembly, GetType().Assembly };
       _innerFinder
           .Setup(mock => mock.FindAssemblies())
           .Returns(assemblies)

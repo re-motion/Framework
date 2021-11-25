@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// </summary>
   public class VirtualCollectionEndPoint : RelationEndPoint, IVirtualCollectionEndPoint
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (VirtualCollectionEndPoint));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(VirtualCollectionEndPoint));
 
     private readonly IVirtualCollectionEndPointCollectionManager _collectionManager;
     private readonly ILazyLoader _lazyLoader;
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink,
         IVirtualCollectionEndPointDataManagerFactory dataManagerFactory)
-        : base (ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction), ArgumentUtility.CheckNotNull("id", id))
+        : base(ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction), ArgumentUtility.CheckNotNull("id", id))
     {
       ArgumentUtility.CheckNotNull("collectionManager", collectionManager);
       ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
@@ -432,7 +432,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
           else
           {
             //TODO: RM-7294: Hack for supporting unloaded collections. Will be reworked with changes to IVirtualCollectionEndPointDataManager.
-            throw new InvalidOperationException($"VirtualCollectionEndPoint can only handle collection data of type '{typeof (VirtualCollectionData)}' but collection data type was '{_dataManager.CollectionData.GetType()}'.");
+            throw new InvalidOperationException($"VirtualCollectionEndPoint can only handle collection data of type '{typeof(VirtualCollectionData)}' but collection data type was '{_dataManager.CollectionData.GetType()}'.");
           }
         }
       }
@@ -450,7 +450,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     #region Serialization
 
     protected VirtualCollectionEndPoint (FlattenedDeserializationInfo info)
-        : base (info)
+        : base(info)
     {
       _collectionManager = info.GetValueForHandle<IVirtualCollectionEndPointCollectionManager>();
       _lazyLoader = info.GetValueForHandle<ILazyLoader>();

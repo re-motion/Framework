@@ -59,7 +59,7 @@ namespace Remotion.Web.UI.Controls
       for (int i = 0; i < supportedTypes.Length; i++)
       {
         Type type = supportedTypes[i];
-        if (!typeof (IControlItem).IsAssignableFrom(type))
+        if (!typeof(IControlItem).IsAssignableFrom(type))
         {
           throw new ArgumentException(
               string.Format("Type '{0}' at index {1} does not implement interface 'IControlItem'.", type.GetFullNameSafe(), i), "supportedTypes");
@@ -170,7 +170,7 @@ namespace Remotion.Web.UI.Controls
     protected void AddRange (IList values)
     {
       ArgumentUtility.CheckNotNull("values", values);
-      ArgumentUtility.CheckItemsNotNullAndType("values", values, typeof (IControlItem));
+      ArgumentUtility.CheckItemsNotNullAndType("values", values, typeof(IControlItem));
 
       BeginEdit();
       for (int i = 0; i < values.Count; i++)
@@ -186,7 +186,7 @@ namespace Remotion.Web.UI.Controls
     /// <remarks> Redefine this member in a derived class if you wish to return a more specific array. </remarks>
     public IControlItem[] ToArray ()
     {
-      return (IControlItem[]) InnerList.ToArray(typeof (IControlItem));
+      return (IControlItem[]) InnerList.ToArray(typeof(IControlItem));
     }
 
     public virtual void Sort ()

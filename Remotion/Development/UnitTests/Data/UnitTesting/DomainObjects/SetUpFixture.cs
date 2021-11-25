@@ -55,7 +55,7 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
                 storageConfiguration,
                 new QueryConfiguration()));
 
-        var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof (TestDomainObject).Assembly, true));
+        var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof(TestDomainObject).Assembly, true));
         var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
         var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
         ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);

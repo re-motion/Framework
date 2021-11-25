@@ -77,7 +77,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       var innerExecutionListenerStub = new Mock<IWxeFunctionExecutionListener>();
       IWxeFunctionExecutionListener executionListener = _strategy.CreateExecutionListener(innerExecutionListenerStub.Object);
 
-      Assert.That(executionListener, Is.InstanceOf(typeof (ChildTransactionExecutionListener)));
+      Assert.That(executionListener, Is.InstanceOf(typeof(ChildTransactionExecutionListener)));
       Assert.That(((ChildTransactionExecutionListener) executionListener).InnerListener, Is.SameAs(innerExecutionListenerStub.Object));
     }
 

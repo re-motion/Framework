@@ -42,7 +42,7 @@ namespace Remotion.Mixins
     public static TMixin? Get<TMixin> (object mixinTarget) where TMixin : class
     {
       ArgumentUtility.CheckNotNull("mixinTarget", mixinTarget);
-      return (TMixin?) Get(typeof (TMixin), mixinTarget);
+      return (TMixin?) Get(typeof(TMixin), mixinTarget);
     }
 
     /// <summary>

@@ -42,7 +42,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override TTransaction? GetNativeTransaction<TTransaction> () where TTransaction : default
     {
-      return default (TTransaction);
+      return default(TTransaction);
     }
 
     public override TransactionStrategyBase? CreateChildTransactionStrategy (bool autoCommit, IWxeFunctionExecutionContext executionContext, WxeContext wxeContext)

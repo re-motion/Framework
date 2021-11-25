@@ -65,7 +65,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
     public string RuleSet => throw new NotImplementedException();
 
-    public Type CollectorType => typeof (Collector);
+    public Type CollectorType => typeof(Collector);
 
     public IPropertyInformation Property
     {

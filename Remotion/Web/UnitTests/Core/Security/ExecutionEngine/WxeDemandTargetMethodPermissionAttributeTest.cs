@@ -38,11 +38,11 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void Initialize_WithMethodNameAndSecurableClass ()
     {
-      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute("Show", typeof (SecurableObject));
+      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute("Show", typeof(SecurableObject));
 
       Assert.That(attribute.MethodType, Is.EqualTo(MethodType.Instance));
       Assert.That(attribute.MethodName, Is.EqualTo("Show"));
-      Assert.That(attribute.SecurableClass, Is.SameAs(typeof (SecurableObject)));
+      Assert.That(attribute.SecurableClass, Is.SameAs(typeof(SecurableObject)));
     }
 
     [Test]
@@ -52,17 +52,17 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
 
       Assert.That(attribute.MethodType, Is.EqualTo(MethodType.Instance));
       Assert.That(attribute.MethodName, Is.EqualTo("Show"));
-      Assert.That(attribute.SecurableClass, Is.SameAs(typeof (SecurableObject)));
+      Assert.That(attribute.SecurableClass, Is.SameAs(typeof(SecurableObject)));
     }
 
     [Test]
     public void Initialize_WithMethodNameEnumAndSecurableClass ()
     {
-      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute(SecurableObject.Method.Show, typeof (DerivedSecurableObject));
+      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute(SecurableObject.Method.Show, typeof(DerivedSecurableObject));
 
       Assert.That(attribute.MethodType, Is.EqualTo(MethodType.Instance));
       Assert.That(attribute.MethodName, Is.EqualTo("Show"));
-      Assert.That(attribute.SecurableClass, Is.SameAs(typeof (DerivedSecurableObject)));
+      Assert.That(attribute.SecurableClass, Is.SameAs(typeof(DerivedSecurableObject)));
     }
 
     [Test]
@@ -90,7 +90,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     public void TestWithParameterNotOfNotMatchingType ()
     {
       Assert.That(
-          () => new WxeDemandTargetMethodPermissionAttribute(SecurableObject.Method.Show, typeof (OtherSecurableObject)),
+          () => new WxeDemandTargetMethodPermissionAttribute(SecurableObject.Method.Show, typeof(OtherSecurableObject)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Type 'Remotion.Web.UnitTests.Core.Security.Domain.OtherSecurableObject' cannot be assigned to the declaring type of enumerated type"

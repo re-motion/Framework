@@ -87,8 +87,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       _dataReaderStrictMock.Expect(mock => mock.Read()).Return(true);
 
-      StubPersistenceModelProviderForProperty(typeof (OrderTicket), "FileName", _fileNamePropertyStrictMock);
-      StubPersistenceModelProviderForProperty(typeof (OrderTicket), "Order", _orderPropertyStrictMock);
+      StubPersistenceModelProviderForProperty(typeof(OrderTicket), "FileName", _fileNamePropertyStrictMock);
+      StubPersistenceModelProviderForProperty(typeof(OrderTicket), "Order", _orderPropertyStrictMock);
       
       ExpectPropertyCombinesForOrderTicket(DomainObjectIDs.OrderTicket1, 17, "abc", DomainObjectIDs.Order1);
       ReplayAll();
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       var dataContainer = _dataContainerReader.Read(_dataReaderStrictMock);
 
       _persistenceModelProviderStub.AssertWasNotCalled(
-          provider => provider.GetStoragePropertyDefinition(GetPropertyDefinition(typeof (OrderTicket), "Int32TransactionProperty")));
+          provider => provider.GetStoragePropertyDefinition(GetPropertyDefinition(typeof(OrderTicket), "Int32TransactionProperty")));
       VerifyAll();
       Assert.That(dataContainer, Is.Not.Null);
       CheckLoadedDataContainer(dataContainer, DomainObjectIDs.OrderTicket1, 17, "abc", DomainObjectIDs.Order1);
@@ -157,8 +157,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [Test]
     public void ReadSequence_DataReaderReadTrue ()
     {
-      StubPersistenceModelProviderForProperty(typeof (OrderTicket), "FileName", _fileNamePropertyStrictMock);
-      StubPersistenceModelProviderForProperty(typeof (OrderTicket), "Order", _orderPropertyStrictMock);
+      StubPersistenceModelProviderForProperty(typeof(OrderTicket), "FileName", _fileNamePropertyStrictMock);
+      StubPersistenceModelProviderForProperty(typeof(OrderTicket), "Order", _orderPropertyStrictMock);
 
       ExpectPropertyCombinesForOrderTicket(DomainObjectIDs.OrderTicket1, 0, "first", DomainObjectIDs.Order1);
       ExpectPropertyCombinesForOrderTicket(DomainObjectIDs.OrderTicket2, 1, "second", DomainObjectIDs.Order3);
@@ -242,12 +242,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       Assert.That(dataContainer.ID, Is.EqualTo(expectedID));
       Assert.That(dataContainer.Timestamp, Is.EqualTo(expectedTimestamp));
 
-      Assert.That(dataContainer.GetValue(GetPropertyDefinition(typeof (OrderTicket), "FileName"), ValueAccess.Original), Is.EqualTo(expectedFileName));
-      Assert.That(dataContainer.GetValue(GetPropertyDefinition(typeof (OrderTicket), "FileName")), Is.EqualTo(expectedFileName));
-      Assert.That(dataContainer.GetValue(GetPropertyDefinition(typeof (OrderTicket), "Order"), ValueAccess.Original), Is.EqualTo(expectedOrder));
-      Assert.That(dataContainer.GetValue(GetPropertyDefinition(typeof (OrderTicket), "Order")), Is.EqualTo(expectedOrder));
-      Assert.That(dataContainer.GetValue(GetPropertyDefinition(typeof (OrderTicket), "Int32TransactionProperty"), ValueAccess.Original), Is.EqualTo(0));
-      Assert.That(dataContainer.GetValue(GetPropertyDefinition(typeof (OrderTicket), "Int32TransactionProperty")), Is.EqualTo(0));
+      Assert.That(dataContainer.GetValue(GetPropertyDefinition(typeof(OrderTicket), "FileName"), ValueAccess.Original), Is.EqualTo(expectedFileName));
+      Assert.That(dataContainer.GetValue(GetPropertyDefinition(typeof(OrderTicket), "FileName")), Is.EqualTo(expectedFileName));
+      Assert.That(dataContainer.GetValue(GetPropertyDefinition(typeof(OrderTicket), "Order"), ValueAccess.Original), Is.EqualTo(expectedOrder));
+      Assert.That(dataContainer.GetValue(GetPropertyDefinition(typeof(OrderTicket), "Order")), Is.EqualTo(expectedOrder));
+      Assert.That(dataContainer.GetValue(GetPropertyDefinition(typeof(OrderTicket), "Int32TransactionProperty"), ValueAccess.Original), Is.EqualTo(0));
+      Assert.That(dataContainer.GetValue(GetPropertyDefinition(typeof(OrderTicket), "Int32TransactionProperty")), Is.EqualTo(0));
     }
 
     private void ReplayAll ()

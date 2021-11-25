@@ -27,7 +27,7 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
   /// Implements <see cref="IHtmlHeadContentsRenderer"/> for standard mode rendering of <see cref="HtmlHeadContents"/> controls.
   /// <seealso cref="IHtmlHeadContents"/>
   /// </summary>
-  [ImplementationFor (typeof (IHtmlHeadContentsRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IHtmlHeadContentsRenderer), Lifetime = LifetimeKind.Singleton)]
   public class HtmlHeadContentsRenderer : IHtmlHeadContentsRenderer
   {
     public HtmlHeadContentsRenderer ()

@@ -35,7 +35,7 @@ namespace Remotion.Collections
       ArgumentUtility.CheckNotNull("dictionary", dictionary);
       // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
 
-      return GetValueOrDefault(dictionary, key, default (TValue)!);
+      return GetValueOrDefault(dictionary, key, default(TValue)!);
     }
 
 #if NETFRAMEWORK
@@ -46,7 +46,7 @@ namespace Remotion.Collections
       ArgumentUtility.CheckNotNull("dictionary", dictionary);
       // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
 
-      return GetValueOrDefault(dictionary, key, default (TValue)!);
+      return GetValueOrDefault(dictionary, key, default(TValue)!);
     }
 #endif
 

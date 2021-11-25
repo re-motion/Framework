@@ -31,12 +31,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
     private readonly CompositeCommand _compositeCommand;
 
     public ExpandedCommand (IEnumerable<IDataManagementCommand> commands)
-      : this (new CompositeCommand(commands))
+      : this(new CompositeCommand(commands))
     {
     }
 
     public ExpandedCommand (params IDataManagementCommand[] commands)
-        : this ((IEnumerable<IDataManagementCommand>) commands)
+        : this((IEnumerable<IDataManagementCommand>) commands)
     {
     }
 

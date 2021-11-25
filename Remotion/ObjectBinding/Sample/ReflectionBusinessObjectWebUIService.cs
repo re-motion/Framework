@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Sample
     private class ToolTipBasedHelpInfo : HelpInfo
     {
       public ToolTipBasedHelpInfo (string toolTip)
-          : base ("#", null, toolTip, "return false;")
+          : base("#", null, toolTip, "return false;")
       {
       }
     }

@@ -34,12 +34,12 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
     }
 
     public TestFailedException (Type declaringType, string testName, SandboxTestStatus status, Exception exception)
-      : base (CreateMessage(declaringType, testName, status), exception)
+      : base(CreateMessage(declaringType, testName, status), exception)
     {
     }
 
     protected TestFailedException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
   }

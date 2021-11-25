@@ -25,7 +25,7 @@ namespace Remotion.Tools.Console.CommandLine
 public abstract class CommandLineGroupArgument: CommandLineArgument
 {
   public CommandLineGroupArgument (bool isOptional)
-    : base (isOptional)
+    : base(isOptional)
   {
   }
 
@@ -78,7 +78,7 @@ public class CommandLineModeArgument: CommandLineGroupArgument
   private Type? _enumType = null;
 
   public CommandLineModeArgument (bool isOptional, Type? enumType)
-    : base (isOptional)
+    : base(isOptional)
   {
     _enumType = enumType;
     CreateChildren();
@@ -157,7 +157,7 @@ public class CommandLineModeFlagArgument: CommandLineFlagArgument, ICommandLineP
   private CommandLineModeArgument _modeFlagGroup;
 
   public CommandLineModeFlagArgument (CommandLineModeArgument modeFlagGroup, string name, Enum enumValue)
-    : base (name, false)
+    : base(name, false)
   {
     _enumValue = enumValue;
     _modeFlagGroup = modeFlagGroup;

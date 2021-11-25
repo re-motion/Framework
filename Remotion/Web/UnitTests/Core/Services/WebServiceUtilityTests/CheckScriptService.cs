@@ -57,14 +57,14 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     [Test]
     public void Test_Valid ()
     {
-      Assert.That(() => WebServiceUtility.CheckJsonService(typeof (TestScriptService), "ScriptMethod", new string[0]), Throws.Nothing);
+      Assert.That(() => WebServiceUtility.CheckJsonService(typeof(TestScriptService), "ScriptMethod", new string[0]), Throws.Nothing);
     }
 
     [Test]
     public void Test_BaseTypeNotWebService ()
     {
       Assert.That(
-          () => WebServiceUtility.CheckJsonService(typeof (TestNotAWebService), "Method", new string[0]),
+          () => WebServiceUtility.CheckJsonService(typeof(TestNotAWebService), "Method", new string[0]),
           Throws.ArgumentException
               .And.Message.EqualTo(
                   "Web service type 'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckScriptService+TestNotAWebService'"
@@ -75,7 +75,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     public void Test_MissingScriptServiceAttribute ()
     {
       Assert.That(
-          () => WebServiceUtility.CheckScriptService(typeof (TestWebService), "Method"),
+          () => WebServiceUtility.CheckScriptService(typeof(TestWebService), "Method"),
           Throws.ArgumentException
               .And.Message.EqualTo(
                   "Web service type 'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckScriptService+TestWebService'"
@@ -86,7 +86,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     public void Test_MissingScriptMethodAttribute ()
     {
       Assert.That(
-          () => WebServiceUtility.CheckScriptService(typeof (TestScriptService), "MethodWithoutScriptMethodAttribute"),
+          () => WebServiceUtility.CheckScriptService(typeof(TestScriptService), "MethodWithoutScriptMethodAttribute"),
           Throws.ArgumentException
               .And.Message.EqualTo(
                   "Web method 'MethodWithoutScriptMethodAttribute' on web service type "

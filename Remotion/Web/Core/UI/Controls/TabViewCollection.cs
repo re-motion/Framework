@@ -26,12 +26,12 @@ namespace Remotion.Web.UI.Controls
 public class TabViewCollection: ViewCollection
 {
   public TabViewCollection (Control owner)
-    : this ((TabbedMultiView.MultiView) owner)
+    : this((TabbedMultiView.MultiView) owner)
   {
   }
 
   internal TabViewCollection (TabbedMultiView.MultiView owner)
-    : base (owner)
+    : base(owner)
   {
   }
 

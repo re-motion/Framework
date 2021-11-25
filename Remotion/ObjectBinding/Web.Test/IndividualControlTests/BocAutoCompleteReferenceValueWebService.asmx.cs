@@ -217,7 +217,7 @@ namespace OBWTest.IndividualControlTests
       }
 
       List<BusinessObjectWithIdentityProxy> persons = new List<BusinessObjectWithIdentityProxy>();
-      foreach (Person person in XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof (Person)))
+      foreach (Person person in XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)))
         persons.Add(
             new BusinessObjectWithIdentityProxy((IBusinessObjectWithIdentity) person) { IconUrl = GetUrl(GetIcon((IBusinessObject) person)) });
 

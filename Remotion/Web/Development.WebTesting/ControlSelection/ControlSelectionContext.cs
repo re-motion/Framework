@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// Private constructor, may be obtained only via a <see cref="PageObjectContext"/> or <see cref="ControlObjectContext"/>.
     /// </summary>
     internal ControlSelectionContext ([NotNull] PageObject pageObject, [NotNull] ElementScope scope)
-        : base (pageObject, scope)
+        : base(pageObject, scope)
     {
     }
 

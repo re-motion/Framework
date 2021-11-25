@@ -39,20 +39,20 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetValidatedType_CollectorWitApplyWithClassAttribute ()
     {
-      var collectorTypeWithApplyWithClassAttribute = typeof (PersonValidationRuleCollector2);
+      var collectorTypeWithApplyWithClassAttribute = typeof(PersonValidationRuleCollector2);
 
       var result = _resolver.GetValidatedType(collectorTypeWithApplyWithClassAttribute);
 
       _decoratedResolverMock.Verify();
-      Assert.That(result, Is.EqualTo(typeof (Person)));
+      Assert.That(result, Is.EqualTo(typeof(Person)));
     }
 
     [Test]
     public void GetValidatedType_CollectorWitApplyWithClassAttribute_ReturnedTypeNotAssignableToGenericType ()
     {
-      var collectorTypeWithApplyWithClassAttribute = typeof (InvalidValidationRuleCollector);
+      var collectorTypeWithApplyWithClassAttribute = typeof(InvalidValidationRuleCollector);
 
-      _decoratedResolverMock.Setup(mock => mock.GetValidatedType(collectorTypeWithApplyWithClassAttribute)).Returns(typeof (Customer)).Verifiable();
+      _decoratedResolverMock.Setup(mock => mock.GetValidatedType(collectorTypeWithApplyWithClassAttribute)).Returns(typeof(Customer)).Verifiable();
       Assert.That(
           () => _resolver.GetValidatedType(collectorTypeWithApplyWithClassAttribute),
           Throws.InvalidOperationException
@@ -64,9 +64,9 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetValidatedType_CollectorWitApplyWithClassAttribute_WithoutGenericType ()
     {
-      var collectorTypeWithApplyWithClassAttribute = typeof (InvalidValidationRuleRuleCollector2);
+      var collectorTypeWithApplyWithClassAttribute = typeof(InvalidValidationRuleRuleCollector2);
 
-      _decoratedResolverMock.Setup(mock => mock.GetValidatedType(collectorTypeWithApplyWithClassAttribute)).Returns(typeof (Customer)).Verifiable();
+      _decoratedResolverMock.Setup(mock => mock.GetValidatedType(collectorTypeWithApplyWithClassAttribute)).Returns(typeof(Customer)).Verifiable();
 
       var result = _resolver.GetValidatedType(collectorTypeWithApplyWithClassAttribute);
 
@@ -76,14 +76,14 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetValidatedType_CollectorWithoutApplyWithClassAttribute ()
     {
-      var collectorTypeWithApplyWithClassAttribute = typeof (PersonValidationRuleCollector1);
+      var collectorTypeWithApplyWithClassAttribute = typeof(PersonValidationRuleCollector1);
 
-      _decoratedResolverMock.Setup(mock => mock.GetValidatedType(collectorTypeWithApplyWithClassAttribute)).Returns(typeof (Person)).Verifiable();
+      _decoratedResolverMock.Setup(mock => mock.GetValidatedType(collectorTypeWithApplyWithClassAttribute)).Returns(typeof(Person)).Verifiable();
 
       var result = _resolver.GetValidatedType(collectorTypeWithApplyWithClassAttribute);
 
       _decoratedResolverMock.Verify();
-      Assert.That(result, Is.EqualTo(typeof (Person)));
+      Assert.That(result, Is.EqualTo(typeof(Person)));
     }
   }
 }

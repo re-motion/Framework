@@ -29,8 +29,8 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void SucceedsIfTargetClassWinsWhenDefiningAttributes ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType1),
-          typeof (MixinAddingBT1Attribute));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(BaseType1),
+          typeof(MixinAddingBT1Attribute));
       var log = Validator.Validate(definition);
 
       AssertSuccess(log);
@@ -39,8 +39,8 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void FailsTwiceIfDuplicateAttributeAddedByMixin ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType2), typeof (MixinAddingBT1Attribute),
-          typeof (MixinAddingBT1Attribute2));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(BaseType2), typeof(MixinAddingBT1Attribute),
+          typeof(MixinAddingBT1Attribute2));
       var log = Validator.Validate(definition);
 
       Assert.That(HasFailure(
@@ -51,8 +51,8 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void FailsTwiceIfDuplicateAttributeAddedByMixinToMember ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (ClassWithVirtualMethod),
-          typeof (MixinAddingBT1AttributeToMember), typeof (MixinAddingBT1AttributeToMember2));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(ClassWithVirtualMethod),
+          typeof(MixinAddingBT1AttributeToMember), typeof(MixinAddingBT1AttributeToMember2));
       var log = Validator.Validate(definition);
 
       Assert.That(HasFailure(
@@ -64,7 +64,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     public void SucceedsIfDuplicateAttributeAddedByMixinAllowsMultiple ()
     {
       TargetClassDefinition definition =
-          DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseTypeWithAllowMultiple), typeof (MixinAddingAllowMultipleToClassAndMember));
+          DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(BaseTypeWithAllowMultiple), typeof(MixinAddingAllowMultipleToClassAndMember));
       var log = Validator.Validate(definition);
 
       AssertSuccess(log);

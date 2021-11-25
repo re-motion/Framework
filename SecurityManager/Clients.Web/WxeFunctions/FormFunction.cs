@@ -31,12 +31,12 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
     }
 
     protected FormFunction (ITransactionMode transactionMode, params object[] args)
-      : base (transactionMode, args)
+      : base(transactionMode, args)
     {
     }
 
     protected FormFunction (ITransactionMode transactionMode, IDomainObjectHandle<T> currentObjectHandle)
-      : base (transactionMode, currentObjectHandle)
+      : base(transactionMode, currentObjectHandle)
     {
     }
 

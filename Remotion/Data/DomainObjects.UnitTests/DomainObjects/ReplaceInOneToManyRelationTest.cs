@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(_oldCustomerOfNewOrder.State.IsUnchanged, Is.True);
       Assert.That(_oldOrder.State.IsChanged, Is.True);
       Assert.That(newOrder.State.IsNew, Is.True);
-      Assert.That(newOrder.Properties[typeof (Order), "Customer"].GetRelatedObjectID(), Is.EqualTo(_customer.ID));
+      Assert.That(newOrder.Properties[typeof(Order), "Customer"].GetRelatedObjectID(), Is.EqualTo(_customer.ID));
 
       Assert.That(_customer.Orders[replaceIndex], Is.SameAs(newOrder));
       Assert.That(newOrder.Customer, Is.SameAs(_customer));

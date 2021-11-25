@@ -31,12 +31,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.NextCal
     [Test]
     public void GeneratedTypeImplementsRequiredNextCallInterfaces1 ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<BaseType3>().Clear().AddMixins(typeof (MixinWithThisAsBase)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType3>().Clear().AddMixins(typeof(MixinWithThisAsBase)).EnterScope())
       {
-        Type t = TypeFactory.GetConcreteType(typeof (BaseType3));
+        Type t = TypeFactory.GetConcreteType(typeof(BaseType3));
         Type proxyType = t.GetNestedType("NextCallProxy");
 
-        foreach (RequiredNextCallTypeDefinition req in DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (BaseType3)).RequiredNextCallTypes)
+        foreach (RequiredNextCallTypeDefinition req in DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(BaseType3)).RequiredNextCallTypes)
           Assert.That(req.Type.IsAssignableFrom(proxyType), Is.True);
       }
     }
@@ -44,17 +44,17 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.NextCal
     [Test]
     public void GeneratedTypeImplementsRequiredNextCallInterfaces2 ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<BaseType3>().Clear().AddMixins(typeof (BT3Mixin7Base), typeof (BT3Mixin4)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType3>().Clear().AddMixins(typeof(BT3Mixin7Base), typeof(BT3Mixin4)).EnterScope())
       {
-        Type t = TypeFactory.GetConcreteType(typeof (BaseType3));
+        Type t = TypeFactory.GetConcreteType(typeof(BaseType3));
         Type proxyType = t.GetNestedType("NextCallProxy");
 
         RequiredNextCallTypeDefinition bt3Mixin4Req =
-            DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (BaseType3)).RequiredNextCallTypes[typeof (IBT3Mixin4)];
+            DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(BaseType3)).RequiredNextCallTypes[typeof(IBT3Mixin4)];
         Assert.That(bt3Mixin4Req, Is.Not.Null);
         Assert.That(bt3Mixin4Req.Type.IsAssignableFrom(proxyType), Is.True);
 
-        foreach (RequiredNextCallTypeDefinition req in DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (BaseType3)).RequiredNextCallTypes)
+        foreach (RequiredNextCallTypeDefinition req in DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(BaseType3)).RequiredNextCallTypes)
           Assert.That(req.Type.IsAssignableFrom(proxyType), Is.True);
 
         MethodInfo methodImplementdByMixin =
@@ -74,7 +74,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.NextCal
     [Test]
     public void NextCallMethodToThis ()
     {
-      BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof (MixinWithThisAsBase));
+      BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof(MixinWithThisAsBase));
       Assert.That(bt3.IfcMethod(), Is.EqualTo("MixinWithThisAsBase.IfcMethod-BaseType3.IfcMethod"));
     }
 
@@ -98,7 +98,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.NextCal
     [Test]
     public void OverriddenMemberCalls ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<BaseType3>().Clear().AddMixins(typeof (BT3Mixin7Base), typeof (BT3Mixin4)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<BaseType3>().Clear().AddMixins(typeof(BT3Mixin7Base), typeof(BT3Mixin4)).EnterScope())
       {
         BaseType3 bt3 = ObjectFactory.Create<BaseType3>(ParamList.Empty);
         Assert.That(bt3.IfcMethod(), Is.EqualTo("BT3Mixin7Base.IfcMethod-BT3Mixin4.Foo-BaseType3.IfcMethod-BaseType3.IfcMethod2"));

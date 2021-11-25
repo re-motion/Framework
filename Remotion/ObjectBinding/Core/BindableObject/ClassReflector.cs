@@ -72,10 +72,10 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </summary>
     public virtual BindableObjectClass GetMetadata ()
     {
-      if (typeof (IBusinessObjectWithIdentity).IsAssignableFrom(_concreteType))
+      if (typeof(IBusinessObjectWithIdentity).IsAssignableFrom(_concreteType))
         return new BindableObjectClassWithIdentity(_concreteType, _businessObjectProvider, _bindableObjectGlobalizationService, GetProperties());
 
-      if (typeof (IBusinessObject).IsAssignableFrom(_concreteType))
+      if (typeof(IBusinessObject).IsAssignableFrom(_concreteType))
         return new BindableObjectClass(_concreteType, _businessObjectProvider, _bindableObjectGlobalizationService, GetProperties());
 
       throw new NotSupportedException(

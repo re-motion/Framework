@@ -38,7 +38,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
       var factory = _serviceLocator.GetInstance<IDelegateFactory>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (DelegateFactory)));
+      Assert.That(factory, Is.TypeOf(typeof(DelegateFactory)));
     }
 
     [Test]

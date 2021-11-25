@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IVirtualCollectionEndPoint modifiedEndPoint,
         IVirtualCollectionData collectionData,
         IClientTransactionEventSink transactionEventSink)
-        : base (
+        : base(
             ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
             null,
             null,

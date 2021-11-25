@@ -188,7 +188,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_AccessedViaDomainObject ()
     {
       _testHelper.AddExtension(_extension);
-      _testHelper.ExpectSecurityProviderGetAccess(SecurityContext.CreateStateless(typeof (SecurableObject)), GeneralAccessTypes.Find);
+      _testHelper.ExpectSecurityProviderGetAccess(SecurityContext.CreateStateless(typeof(SecurableObject)), GeneralAccessTypes.Find);
       _testHelper.ReplayAll();
 
       _testHelper.Transaction.QueryManager.GetCollection(_testHelper.CreateSecurableObjectQuery());
@@ -216,7 +216,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_WithSubtransaction_ViaDomainObjectQuery_EventIsExecutedInRoot ()
     {
       _testHelper.AddExtension(_extension);
-      _testHelper.ExpectSecurityProviderGetAccess(SecurityContext.CreateStateless(typeof (SecurableObject)), GeneralAccessTypes.Find);
+      _testHelper.ExpectSecurityProviderGetAccess(SecurityContext.CreateStateless(typeof(SecurableObject)), GeneralAccessTypes.Find);
       _testHelper.ReplayAll();
 
       _testHelper.Transaction.QueryManager.GetCollection(_testHelper.CreateSecurableObjectQuery());

@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
   public class Color : ExtensibleEnum<Color>
   {
     public Color (MethodBase currentMethod)
-        : base (currentMethod)
+        : base(currentMethod)
     {
     }
   }

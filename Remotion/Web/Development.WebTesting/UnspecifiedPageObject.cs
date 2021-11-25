@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting
   {
     /// <param name="context">Context of the <see cref="ControlObject"/> which triggered the interaction.</param>
     public UnspecifiedPageObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -135,7 +135,7 @@ namespace Remotion.Web.Development.WebTesting
         where TPageObject : PageObject
     {
       actualMatchesExpectedPageAssertion(newPageObjectContext);
-      return (TPageObject) Activator.CreateInstance(typeof (TPageObject), new object[] { newPageObjectContext })!;
+      return (TPageObject) Activator.CreateInstance(typeof(TPageObject), new object[] { newPageObjectContext })!;
     }
   }
 }

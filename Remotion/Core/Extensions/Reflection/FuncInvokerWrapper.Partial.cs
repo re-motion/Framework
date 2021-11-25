@@ -28,7 +28,7 @@ namespace Remotion.Reflection
     private readonly Func<TResult, TResult>? _afterAction;
 
     public FuncInvokerWrapper (IFuncInvoker<TResult> invoker)
-        : this (invoker, null)
+        : this(invoker, null)
     {
     }
 

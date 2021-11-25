@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Create_WithTypeAndPropertyName ()
     {
-      var endPointID = RelationEndPointID.Create(_objectID, typeof (Order), "OrderTicket");
+      var endPointID = RelationEndPointID.Create(_objectID, typeof(Order), "OrderTicket");
       Assert.That(endPointID.Definition, Is.EqualTo(_endPointDefinition));
       Assert.That(endPointID.ObjectID, Is.EqualTo(_objectID));
     }
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void Create_WithTypeAndPropertyName_NonExistingProperty ()
     {
       Assert.That(
-          () => RelationEndPointID.Create(_objectID, typeof (Order), "OrderJoe"),
+          () => RelationEndPointID.Create(_objectID, typeof(Order), "OrderJoe"),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property named "
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void Create_WithTypeAndPropertyName_NonRelationProperty ()
     {
       Assert.That(
-          () => RelationEndPointID.Create(_objectID, typeof (Order), "OrderNumber"),
+          () => RelationEndPointID.Create(_objectID, typeof(Order), "OrderNumber"),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' is not a relation property.",
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           endPointID1.Definition,
           Is.Not.Null.And.EqualTo(
               instance.ID.ClassDefinition.GetRelationEndPointDefinition(
-                  GetPropertyIdentifier(typeof (MixinAddingPersistentProperties), "RelationProperty"))));
+                  GetPropertyIdentifier(typeof(MixinAddingPersistentProperties), "RelationProperty"))));
       Assert.That(endPointID2, Is.EqualTo(endPointID1));
     }
 
@@ -198,24 +198,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CreateOpposite ()
     {
       var sourceEndPointDefinition =
-          Configuration.GetTypeDefinition(typeof (OrderItem)).GetRelationEndPointDefinition(typeof (OrderItem).FullName + ".Order");
+          Configuration.GetTypeDefinition(typeof(OrderItem)).GetRelationEndPointDefinition(typeof(OrderItem).FullName + ".Order");
       
       var endPointID = RelationEndPointID.CreateOpposite(sourceEndPointDefinition, DomainObjectIDs.Order1);
 
-      Assert.That(endPointID, Is.EqualTo(RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems")));
+      Assert.That(endPointID, Is.EqualTo(RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems")));
     }
 
     [Test]
     public void CreateOpposite_Null ()
     {
       var sourceEndPointDefinition =
-          Configuration.GetTypeDefinition(typeof (OrderItem)).GetRelationEndPointDefinition(typeof (OrderItem).FullName + ".Order");
+          Configuration.GetTypeDefinition(typeof(OrderItem)).GetRelationEndPointDefinition(typeof(OrderItem).FullName + ".Order");
 
       var endPointID = RelationEndPointID.CreateOpposite(sourceEndPointDefinition, null);
 
       var expected = RelationEndPointID.Create(
           null, 
-          Configuration.GetTypeDefinition(typeof (Order)).GetRelationEndPointDefinition(typeof (Order).FullName + ".OrderItems"));
+          Configuration.GetTypeDefinition(typeof(Order)).GetRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems"));
       Assert.That(endPointID, Is.EqualTo(expected));
     }
 
@@ -223,7 +223,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CreateOpposite_Unidirectional ()
     {
       var sourceEndPointDefinition =
-          Configuration.GetTypeDefinition(typeof (Location)).GetRelationEndPointDefinition(typeof (Location).FullName + ".Client");
+          Configuration.GetTypeDefinition(typeof(Location)).GetRelationEndPointDefinition(typeof(Location).FullName + ".Client");
 
       var endPointID = RelationEndPointID.CreateOpposite(sourceEndPointDefinition, DomainObjectIDs.Client1);
 

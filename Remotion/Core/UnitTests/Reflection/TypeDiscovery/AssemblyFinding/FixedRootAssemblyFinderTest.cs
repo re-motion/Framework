@@ -27,8 +27,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     public void FindAssemblies ()
     {
       var fixedSet = new[] { 
-          new RootAssembly(typeof (object).Assembly, true), 
-          new RootAssembly(typeof (FixedRootAssemblyFinderTest).Assembly, false) };
+          new RootAssembly(typeof(object).Assembly, true), 
+          new RootAssembly(typeof(FixedRootAssemblyFinderTest).Assembly, false) };
       var finder = new FixedRootAssemblyFinder(fixedSet);
 
       Assert.That(finder.FindRootAssemblies(), Is.EqualTo(fixedSet));

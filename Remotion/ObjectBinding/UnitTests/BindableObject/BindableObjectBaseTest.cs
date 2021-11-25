@@ -47,20 +47,20 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void BindableObjectProviderAttribute ()
     {
-      Assert.That(typeof (BindableObjectBase).IsDefined(typeof (BindableObjectProviderAttribute), false), Is.True);
+      Assert.That(typeof(BindableObjectBase).IsDefined(typeof(BindableObjectProviderAttribute), false), Is.True);
     }
 
     [Test]
     public void BindableObjectBaseClassAttribute ()
     {
-      Assert.That(typeof (BindableObjectBase).IsDefined(typeof (BindableObjectBaseClassAttribute), false), Is.True);
+      Assert.That(typeof(BindableObjectBase).IsDefined(typeof(BindableObjectBaseClassAttribute), false), Is.True);
     }
 
     [Test]
     public void CreateImplementation ()
     {
       var instance = new ClassDerivedFromBindableObjectBase();
-      Assert.That(PrivateInvoke.GetNonPublicField(instance, "_implementation"), Is.InstanceOf(typeof (BindableObjectBaseImplementation)));
+      Assert.That(PrivateInvoke.GetNonPublicField(instance, "_implementation"), Is.InstanceOf(typeof(BindableObjectBaseImplementation)));
     }
 
     [Test]
@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void BindableObjectMixin_ImplementsMixinWithoutBaseObjectDependency ()
     {
-      Assert.That(typeof (BindableObjectMixin).CanAscribeTo(typeof (Mixin<,>)), Is.False);
+      Assert.That(typeof(BindableObjectMixin).CanAscribeTo(typeof(Mixin<,>)), Is.False);
     }
   }
 }

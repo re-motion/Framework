@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void InstantiateMixedType ()
     {
-      Assert.That(SampleBindableMixinDomainObject.NewObject(), Is.InstanceOf(typeof (IBusinessObject)));
+      Assert.That(SampleBindableMixinDomainObject.NewObject(), Is.InstanceOf(typeof(IBusinessObject)));
     }
 
     [Test]
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
 
       SampleBindableMixinDomainObject value = SampleBindableMixinDomainObject.NewObject();
       byte[] serialized = Serializer.Serialize(Tuple.Create(TestableClientTransaction, value));
-      BusinessObjectProvider.SetProvider(typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       var deserialized = (Tuple<ClientTransaction, SampleBindableMixinDomainObject>) Serializer.Deserialize(serialized);
 
       using (deserialized.Item1.EnterDiscardingScope())

@@ -28,11 +28,11 @@ using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
-  [TypeConverter (typeof (ExpandableObjectConverter))]
+  [TypeConverter (typeof(ExpandableObjectConverter))]
   public class BocCommand : Command
   {
     /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
-    [TypeConverter (typeof (ExpandableObjectConverter))]
+    [TypeConverter (typeof(ExpandableObjectConverter))]
     public class BocHrefCommandInfo : HrefCommandInfo
     {
       /// <summary> Initalizes a new instance </summary>
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
-    [TypeConverter (typeof (ExpandableObjectConverter))]
+    [TypeConverter (typeof(ExpandableObjectConverter))]
     public class BocWxeFunctionCommandInfo : WxeFunctionCommandInfo
     {
       /// <summary> Initalizes a new instance </summary>
@@ -112,12 +112,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private BocWxeFunctionCommandInfo _wxeFunctionCommand;
 
     public BocCommand ()
-        : this (CommandType.None, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+        : this(CommandType.None, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
     {
     }
 
     public BocCommand (CommandType defaultType)
-        : this (defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+        : this(defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
     {
     }
 
@@ -125,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         CommandType defaultType,
         [CanBeNull] IWebSecurityAdapter? webSecurityAdapter,
         [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
-        : base (defaultType, webSecurityAdapter, wxeSecurityAdapter)
+        : base(defaultType, webSecurityAdapter, wxeSecurityAdapter)
     {
       _hrefCommand = new BocHrefCommandInfo();
       _wxeFunctionCommand = new BocWxeFunctionCommandInfo();
@@ -256,7 +256,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private readonly IBusinessObject? _businessObject;
 
     public BocCommandClickEventArgs (BocCommand command, IBusinessObject? businessObject)
-        : base (command)
+        : base(command)
     {
       _businessObject = businessObject;
     }

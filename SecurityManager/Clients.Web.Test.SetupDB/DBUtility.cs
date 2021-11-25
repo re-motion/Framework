@@ -285,7 +285,7 @@ public class DBUtility
     SqlCommand identityOnCommand = new SqlCommand(string.Format(sqlStatementTemplate, tableName, "ON"), connection, transaction);
     SqlCommand identityOffCommand = new SqlCommand(string.Format(sqlStatementTemplate, tableName, "OFF"), connection, transaction);
 
-    string commandString = GetCommandString(tableName, (string[]) columnNamesComplete.ToArray(typeof (string)));
+    string commandString = GetCommandString(tableName, (string[]) columnNamesComplete.ToArray(typeof(string)));
 
     TimeTrace("before set identity insert");
     identityOnCommand.ExecuteNonQuery();
@@ -318,44 +318,44 @@ public class DBUtility
         if (columnNames[idxColumn] == "ClassID")
           isClassIDPresent = true;
 
-        if (columnType == typeof (string))
+        if (columnType == typeof(string))
         {
           string columnStringValue = columnValue.Replace("\n", "\r\n");
           parameter = command.Parameters.Add(parameterName, SqlDbType.VarChar, columnStringValue.Length);
           parameter.Value = (columnStringValue.Trim() == string.Empty && columnIsNullable)
               ? DBNull.Value : (object) columnStringValue;
         }
-        else if (columnType == typeof (int))
+        else if (columnType == typeof(int))
         {
           parameter = command.Parameters.Add(parameterName, SqlDbType.Int);
           parameter.Value = isNull ? DBNull.Value : (object) int.Parse(columnValue);
         }
-        else if (columnType == typeof (bool))
+        else if (columnType == typeof(bool))
         {
           parameter = command.Parameters.Add(parameterName, SqlDbType.Bit);
           parameter.Value = isNull ? DBNull.Value : (object) (bool)(columnValue.Trim() == "1");
         }
-        else if (columnType == typeof (DateTime))
+        else if (columnType == typeof(DateTime))
         {
           parameter = command.Parameters.Add(parameterName, SqlDbType.DateTime);
           parameter.Value = isNull ? DBNull.Value : (object) DateTime.Parse(columnValue.Trim(), new CultureInfo("en-US"));
         }
-        else if (columnType == typeof (Decimal))
+        else if (columnType == typeof(Decimal))
         {
           parameter = command.Parameters.Add(parameterName, SqlDbType.Decimal);
           parameter.Value = isNull ? DBNull.Value : (object) Decimal.Parse(columnValue, CultureInfo.InvariantCulture);
         }
-        else if (columnType == typeof (Double))
+        else if (columnType == typeof(Double))
         {
           parameter = command.Parameters.Add(parameterName, SqlDbType.Float);
           parameter.Value = isNull ? DBNull.Value : (object) Double.Parse(columnValue, CultureInfo.InvariantCulture);
         }
-        else if (columnType == typeof (Guid))
+        else if (columnType == typeof(Guid))
         {
           parameter = command.Parameters.Add(parameterName, SqlDbType.UniqueIdentifier);
           parameter.Value = isNull ? DBNull.Value : (object) new Guid(columnValue);
         }
-        else if (columnType == typeof (Byte[]))
+        else if (columnType == typeof(Byte[]))
         {
           parameter = command.Parameters.Add(parameterName, SqlDbType.Image);
           parameter.Value = isNull ? DBNull.Value : (object) Encoding.UTF8.GetBytes(columnValue);
@@ -500,7 +500,7 @@ public class DBUtility
           break;
       }
     }
-    return (string[][]) records.ToArray(typeof (string[]));
+    return (string[][]) records.ToArray(typeof(string[]));
   }
 
   [Conditional ("VERBOSE")]

@@ -26,9 +26,9 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void GetUnderlyingMixedType ()
     {
-      var mixedType = TypeFactory.GetConcreteType(typeof (BaseType1));
-      Assert.That(mixedType, Is.Not.SameAs(typeof (BaseType1)));
-      Assert.That(mixedType.GetUnderlyingMixedType(), Is.SameAs(typeof (BaseType1)));
+      var mixedType = TypeFactory.GetConcreteType(typeof(BaseType1));
+      Assert.That(mixedType, Is.Not.SameAs(typeof(BaseType1)));
+      Assert.That(mixedType.GetUnderlyingMixedType(), Is.SameAs(typeof(BaseType1)));
     }
   }
 }

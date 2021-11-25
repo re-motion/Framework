@@ -104,7 +104,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     private SecurityContext CreateContext<TClass> ()
         where TClass : ISecurableObject
     {
-      return SecurityContext.CreateStateless(typeof (TClass));
+      return SecurityContext.CreateStateless(typeof(TClass));
     }
   }
 }

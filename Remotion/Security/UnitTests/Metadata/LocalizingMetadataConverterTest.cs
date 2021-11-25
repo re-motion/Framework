@@ -77,7 +77,7 @@ namespace Remotion.Security.UnitTests.Metadata
       LocalizingMetadataConverter converter = new LocalizingMetadataConverter(_localizationConverter.Object, cultures);
       string filename = "metadata.xml";
       MetadataCache cache = new MetadataCache();
-      SecurableClassInfo classInfo = AddSecurableClassInfo(cache, typeof (SecurableObject), "21df1db3-affd-4c1a-b14e-340c1405bd69");
+      SecurableClassInfo classInfo = AddSecurableClassInfo(cache, typeof(SecurableObject), "21df1db3-affd-4c1a-b14e-340c1405bd69");
 
       LocalizedName expectedGermanName = CreateLocalizedName(classInfo);
       _localizationConverter.Setup(_ => _.ConvertAndSave(new LocalizedName[] { expectedGermanName }, cultures[0], filename)).Verifiable();
@@ -137,7 +137,7 @@ namespace Remotion.Security.UnitTests.Metadata
       LocalizingMetadataConverter converter = new LocalizingMetadataConverter(_localizationConverter.Object, cultures);
       string filename = "metadata.xml";
       MetadataCache cache = new MetadataCache();
-      StatePropertyInfo propertyInfo = AddStatePropertyInfo(cache, typeof (PaperFile), "State", "00000000-0000-0000-0002-000000000001", new List<EnumValueInfo>());
+      StatePropertyInfo propertyInfo = AddStatePropertyInfo(cache, typeof(PaperFile), "State", "00000000-0000-0000-0002-000000000001", new List<EnumValueInfo>());
 
       LocalizedName expectedGermanName = CreateLocalizedName(propertyInfo);
       _localizationConverter.Setup(_ => _.ConvertAndSave(new LocalizedName[] { expectedGermanName }, cultures[0], filename)).Verifiable();
@@ -159,7 +159,7 @@ namespace Remotion.Security.UnitTests.Metadata
       MetadataCache cache = new MetadataCache();
       List<EnumValueInfo> states = new List<EnumValueInfo>();
       states.Add(new EnumValueInfo("Remotion.Security.UnitTests.TestDomain.FileState", "Archived", 2));
-      StatePropertyInfo propertyInfo = AddStatePropertyInfo(cache, typeof (PaperFile), "State", "00000000-0000-0000-0002-000000000001", states);
+      StatePropertyInfo propertyInfo = AddStatePropertyInfo(cache, typeof(PaperFile), "State", "00000000-0000-0000-0002-000000000001", states);
 
       string stateDescription = propertyInfo.Description + "|Archived";
       LocalizedName[] expectedGermanNames = new LocalizedName[] {
@@ -189,7 +189,7 @@ namespace Remotion.Security.UnitTests.Metadata
       converter.MetadataConverter = _metadataConverter.Object;
       string filename = "metadata.xml";
       MetadataCache cache = new MetadataCache();
-      SecurableClassInfo classInfo = AddSecurableClassInfo(cache, typeof (SecurableObject), "21df1db3-affd-4c1a-b14e-340c1405bd69");
+      SecurableClassInfo classInfo = AddSecurableClassInfo(cache, typeof(SecurableObject), "21df1db3-affd-4c1a-b14e-340c1405bd69");
 
       _metadataConverter.Setup(_ => _.ConvertAndSave(cache, filename)).Verifiable();
       LocalizedName expectedGermanName = CreateLocalizedName(classInfo);

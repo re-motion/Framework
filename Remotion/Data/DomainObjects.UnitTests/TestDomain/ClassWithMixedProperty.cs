@@ -19,7 +19,7 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
-  [Uses (typeof (MixinAddingProperty))]
+  [Uses (typeof(MixinAddingProperty))]
   [DBTable]
   public class ClassWithMixedProperty : DomainObject
   {

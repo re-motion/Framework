@@ -37,7 +37,7 @@ namespace Remotion.Reflection.UnitTests
       var factory = _serviceLocator.GetInstance<IMemberInformationNameResolver>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (ReflectionBasedMemberInformationNameResolver)));
+      Assert.That(factory, Is.TypeOf(typeof(ReflectionBasedMemberInformationNameResolver)));
     }
 
     [Test]

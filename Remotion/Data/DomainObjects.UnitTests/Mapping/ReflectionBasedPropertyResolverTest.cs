@@ -29,12 +29,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (ClassWithSimpleProperties).GetProperty("StorageClassPersistentProperty"));
+      var property = PropertyInfoAdapter.Create(typeof(ClassWithSimpleProperties).GetProperty("StorageClassPersistentProperty"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithSimpleProperties));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithSimpleProperties));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
-      var expected = GetPropertyDefinition(typeof (ClassWithSimpleProperties), "StorageClassPersistentProperty");
+      var expected = GetPropertyDefinition(typeof(ClassWithSimpleProperties), "StorageClassPersistentProperty");
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
     }
@@ -42,9 +42,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_StorageClassNoneProperty ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (ClassWithSimpleProperties).GetProperty("StorageClassNoneProperty"));
+      var property = PropertyInfoAdapter.Create(typeof(ClassWithSimpleProperties).GetProperty("StorageClassNoneProperty"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithSimpleProperties));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithSimpleProperties));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
       Assert.That(result, Is.Null);
@@ -53,12 +53,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_InterfaceImplementation_FromInterfaceProperty ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (IInterfaceWithProperty).GetProperty("Property"));
+      var property = PropertyInfoAdapter.Create(typeof(IInterfaceWithProperty).GetProperty("Property"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithInterface));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithInterface));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
-      var expected = GetPropertyDefinition(typeof (ClassWithInterface), "Property");
+      var expected = GetPropertyDefinition(typeof(ClassWithInterface), "Property");
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
     }
@@ -66,13 +66,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_ExplicitInterfaceImplementation_FromInterfaceProperty ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (IInterfaceWithProperty).GetProperty("Property"));
+      var property = PropertyInfoAdapter.Create(typeof(IInterfaceWithProperty).GetProperty("Property"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithInterfaceExplicitImplementation));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithInterfaceExplicitImplementation));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
       var implementationPropertyName = property.DeclaringType.FullName + "." + property.Name;
-      var expected = GetPropertyDefinition(typeof (ClassWithInterfaceExplicitImplementation), implementationPropertyName);
+      var expected = GetPropertyDefinition(typeof(ClassWithInterfaceExplicitImplementation), implementationPropertyName);
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
     }
@@ -80,13 +80,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_ExplicitInterfaceImplementation_FromInterfaceProperty_FromDerivedClass ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (IInterfaceWithProperty).GetProperty("Property"));
+      var property = PropertyInfoAdapter.Create(typeof(IInterfaceWithProperty).GetProperty("Property"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassDerivedFromClassWithInterfaceExplicitImplementation));
+      var classDefinition = GetTypeDefinition(typeof(ClassDerivedFromClassWithInterfaceExplicitImplementation));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
       var implementationPropertyName = property.DeclaringType.FullName +  "." + property.Name;
-      var expected = GetPropertyDefinition(typeof (ClassWithInterfaceExplicitImplementation), implementationPropertyName);
+      var expected = GetPropertyDefinition(typeof(ClassWithInterfaceExplicitImplementation), implementationPropertyName);
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
     }
@@ -94,12 +94,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_InterfaceImplementation_FromImplementationProperty ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (ClassWithInterface).GetProperty("Property"));
+      var property = PropertyInfoAdapter.Create(typeof(ClassWithInterface).GetProperty("Property"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithInterface));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithInterface));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
-      var expected = GetPropertyDefinition(typeof (ClassWithInterface), "Property");
+      var expected = GetPropertyDefinition(typeof(ClassWithInterface), "Property");
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
     }
@@ -107,12 +107,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_InterfaceImplementation_FromInterfaceProperty_GetAccessorOnly ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (IInterfaceWithPropertiesWithSingleAccessors).GetProperty("PropertyWithGetAccessorOnly"));
+      var property = PropertyInfoAdapter.Create(typeof(IInterfaceWithPropertiesWithSingleAccessors).GetProperty("PropertyWithGetAccessorOnly"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithInterfaceWithPropertiesWithSingleAccessors));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithInterfaceWithPropertiesWithSingleAccessors));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
-      var expected = GetPropertyDefinition(typeof (ClassWithInterfaceWithPropertiesWithSingleAccessors), "PropertyWithGetAccessorOnly");
+      var expected = GetPropertyDefinition(typeof(ClassWithInterfaceWithPropertiesWithSingleAccessors), "PropertyWithGetAccessorOnly");
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
     }
@@ -120,12 +120,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_InterfaceImplementation_FromInterfaceProperty_SetAccessorOnly ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (IInterfaceWithPropertiesWithSingleAccessors).GetProperty("PropertyWithSetAccessorOnly"));
+      var property = PropertyInfoAdapter.Create(typeof(IInterfaceWithPropertiesWithSingleAccessors).GetProperty("PropertyWithSetAccessorOnly"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithInterfaceWithPropertiesWithSingleAccessors));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithInterfaceWithPropertiesWithSingleAccessors));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
-      var expected = GetPropertyDefinition(typeof (ClassWithInterfaceWithPropertiesWithSingleAccessors), "PropertyWithSetAccessorOnly");
+      var expected = GetPropertyDefinition(typeof(ClassWithInterfaceWithPropertiesWithSingleAccessors), "PropertyWithSetAccessorOnly");
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
     }
@@ -133,9 +133,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_InterfaceImplementation_NotImplemented ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (IInterfaceWithProperty).GetProperty("Property"));
+      var property = PropertyInfoAdapter.Create(typeof(IInterfaceWithProperty).GetProperty("Property"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithSimpleProperties)); // does not implement this property
+      var classDefinition = GetTypeDefinition(typeof(ClassWithSimpleProperties)); // does not implement this property
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
       Assert.That(result, Is.Null);
@@ -145,14 +145,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void ResolveDefinition_ExplicitInterfaceImplementation_FromImplementationProperty ()
     {
       var property = CreatePropertyInfoAdapterForExplicitImplementation(
-          typeof (IInterfaceWithProperty), 
+          typeof(IInterfaceWithProperty), 
           "Property", 
-          typeof (ClassWithInterfaceExplicitImplementation));
+          typeof(ClassWithInterfaceExplicitImplementation));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithInterfaceExplicitImplementation));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithInterfaceExplicitImplementation));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
-      var expected = GetPropertyDefinition(typeof (ClassWithInterfaceExplicitImplementation), property.Name);
+      var expected = GetPropertyDefinition(typeof(ClassWithInterfaceExplicitImplementation), property.Name);
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
     }
@@ -160,12 +160,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_MixinProperty_FromInterfaceProperty ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (IInterfaceWithProperty).GetProperty("Property"));
+      var property = PropertyInfoAdapter.Create(typeof(IInterfaceWithProperty).GetProperty("Property"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithMixinWithPersistentProperty));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithMixinWithPersistentProperty));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
-      var expected = GetPropertyDefinition(typeof (ClassWithMixinWithPersistentProperty), typeof (MixinWithPersistentProperty), "Property");
+      var expected = GetPropertyDefinition(typeof(ClassWithMixinWithPersistentProperty), typeof(MixinWithPersistentProperty), "Property");
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
     }
@@ -173,15 +173,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_ExplicitMixinProperty_FromInterfaceProperty ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (IInterfaceWithProperty).GetProperty("Property"));
+      var property = PropertyInfoAdapter.Create(typeof(IInterfaceWithProperty).GetProperty("Property"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithMixinWithPersistentPropertyExplicitImplementation));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithMixinWithPersistentPropertyExplicitImplementation));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
       var implementationPropertyName = property.DeclaringType.FullName + "." + property.Name;
       var expected = GetPropertyDefinition(
-          typeof (ClassWithMixinWithPersistentPropertyExplicitImplementation),
-          typeof (MixinWithPersistentPropertyExplicitImplementation),
+          typeof(ClassWithMixinWithPersistentPropertyExplicitImplementation),
+          typeof(MixinWithPersistentPropertyExplicitImplementation),
           implementationPropertyName);
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
@@ -190,12 +190,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_MixinProperty_FromImplementationProperty ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (MixinWithPersistentProperty).GetProperty("Property"));
+      var property = PropertyInfoAdapter.Create(typeof(MixinWithPersistentProperty).GetProperty("Property"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithMixinWithPersistentProperty));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithMixinWithPersistentProperty));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
-      var expected = GetPropertyDefinition(typeof (ClassWithMixinWithPersistentProperty), typeof (MixinWithPersistentProperty), "Property");
+      var expected = GetPropertyDefinition(typeof(ClassWithMixinWithPersistentProperty), typeof(MixinWithPersistentProperty), "Property");
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
     }
@@ -204,16 +204,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void ResolveDefinition_ExplicitMixinProperty_FromImplementationProperty ()
     {
       var property = CreatePropertyInfoAdapterForExplicitImplementation(
-          typeof (IInterfaceWithProperty),
+          typeof(IInterfaceWithProperty),
           "Property",
-          typeof (MixinWithPersistentPropertyExplicitImplementation));
+          typeof(MixinWithPersistentPropertyExplicitImplementation));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithMixinWithPersistentPropertyExplicitImplementation));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithMixinWithPersistentPropertyExplicitImplementation));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
       var expected = GetPropertyDefinition(
-          typeof (ClassWithMixinWithPersistentPropertyExplicitImplementation),
-          typeof (MixinWithPersistentPropertyExplicitImplementation),
+          typeof(ClassWithMixinWithPersistentPropertyExplicitImplementation),
+          typeof(MixinWithPersistentPropertyExplicitImplementation),
           property.Name);
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
@@ -222,12 +222,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_MixinPropertyOnBaseClass ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (IInterfaceWithProperty).GetProperty("Property"));
+      var property = PropertyInfoAdapter.Create(typeof(IInterfaceWithProperty).GetProperty("Property"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassDerivedFromClassWithMixinWithPersistentProperty));
+      var classDefinition = GetTypeDefinition(typeof(ClassDerivedFromClassWithMixinWithPersistentProperty));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
-      var expected = GetPropertyDefinition(typeof (ClassWithMixinWithPersistentProperty), typeof (MixinWithPersistentProperty), "Property");
+      var expected = GetPropertyDefinition(typeof(ClassWithMixinWithPersistentProperty), typeof(MixinWithPersistentProperty), "Property");
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
     }
@@ -235,12 +235,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_MixinWithDuplicateInterface_DueToInheritance ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (IInterfaceWithProperty).GetProperty("Property"));
+      var property = PropertyInfoAdapter.Create(typeof(IInterfaceWithProperty).GetProperty("Property"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithDerivedMixinDerivedFromClassWithMixinWithPersistentProperty));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithDerivedMixinDerivedFromClassWithMixinWithPersistentProperty));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
-      var expected = GetPropertyDefinition(typeof (ClassWithMixinWithPersistentProperty), typeof (MixinWithPersistentProperty), "Property");
+      var expected = GetPropertyDefinition(typeof(ClassWithMixinWithPersistentProperty), typeof(MixinWithPersistentProperty), "Property");
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
     }
@@ -248,12 +248,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_ClassWithSameInterfaceAsMixin_ButStorageClassNone ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (IInterfaceWithProperty).GetProperty("Property"));
+      var property = PropertyInfoAdapter.Create(typeof(IInterfaceWithProperty).GetProperty("Property"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithSameInterfaceAsMixinWithStorageClassNone));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithSameInterfaceAsMixinWithStorageClassNone));
       var result = ReflectionBasedPropertyResolver.ResolveDefinition(property, classDefinition, classDefinition.GetPropertyDefinition);
 
-      var expected = GetPropertyDefinition(typeof (ClassWithSameInterfaceAsMixinWithStorageClassNone), typeof (MixinWithPersistentProperty), "Property");
+      var expected = GetPropertyDefinition(typeof(ClassWithSameInterfaceAsMixinWithStorageClassNone), typeof(MixinWithPersistentProperty), "Property");
       Assert.That(result, Is.Not.Null);
       Assert.That(result, Is.SameAs(expected));
     }
@@ -261,9 +261,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ResolveDefinition_ClassWithSameInterfaceAsMixin_BothStorageClassPersistent ()
     {
-      var property = PropertyInfoAdapter.Create(typeof (IInterfaceWithProperty).GetProperty("Property"));
+      var property = PropertyInfoAdapter.Create(typeof(IInterfaceWithProperty).GetProperty("Property"));
 
-      var classDefinition = GetTypeDefinition(typeof (ClassWithSameInterfaceAsMixinWithStorageClassPersistent));
+      var classDefinition = GetTypeDefinition(typeof(ClassWithSameInterfaceAsMixinWithStorageClassPersistent));
       Assert.That(() => ReflectionBasedPropertyResolver.ResolveDefinition(
           property, classDefinition, classDefinition.GetPropertyDefinition),
           Throws.TypeOf<InvalidOperationException>().With.Message.EqualTo(

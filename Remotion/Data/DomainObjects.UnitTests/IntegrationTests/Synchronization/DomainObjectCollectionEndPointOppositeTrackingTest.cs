@@ -331,7 +331,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     private void CheckOriginalData (params FileSystemItem[] expected)
     {
-      Assert.That(_folder1.Properties[typeof (Folder), "FileSystemItems"].GetOriginalValue<ObjectList<FileSystemItem>>(), Is.EquivalentTo(expected));
+      Assert.That(_folder1.Properties[typeof(Folder), "FileSystemItems"].GetOriginalValue<ObjectList<FileSystemItem>>(), Is.EquivalentTo(expected));
     }
 
     private void CheckCurrentData (params FileSystemItem[] expected)

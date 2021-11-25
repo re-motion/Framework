@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void SupportedStateTypes ()
     {
       Assert.That(
-          typeof (DomainObjectState).GetProperties(BindingFlags.Instance | BindingFlags.Public).Length,
+          typeof(DomainObjectState).GetProperties(BindingFlags.Instance | BindingFlags.Public).Length,
           Is.EqualTo(6),
           "DomainObjectState enum has changed. BindableDomainObjectPropertyWriteAccessStrategy implementation must be updated accordingly.");
     }
@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       var instance = (SampleBindableDomainObject) LifetimeService.GetObjectReference(
           ClientTransaction.Current,
-          new ObjectID(typeof (SampleBindableDomainObject), Guid.NewGuid()));
+          new ObjectID(typeof(SampleBindableDomainObject), Guid.NewGuid()));
 
       var property = GetProperty(instance);
       var strategy = (IBindablePropertyWriteAccessStrategy) new BindableDomainObjectPropertyWriteAccessStrategy();

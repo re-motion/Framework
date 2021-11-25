@@ -54,15 +54,15 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     [SetUp]
     public void SetUp ()
     {
-      _propertyWithoutAttribute = typeof (TypeWithDomainObjectAttributes).GetProperty("PropertyWithoutAttribute");
-      _propertyWithMandatoryAttribute = typeof (TypeWithDomainObjectAttributes).GetProperty("PropertyWithMandatoryAttribute");
+      _propertyWithoutAttribute = typeof(TypeWithDomainObjectAttributes).GetProperty("PropertyWithoutAttribute");
+      _propertyWithMandatoryAttribute = typeof(TypeWithDomainObjectAttributes).GetProperty("PropertyWithMandatoryAttribute");
       _propertyWithNullableStringPropertyAttribute =
-          typeof (TypeWithDomainObjectAttributes).GetProperty("PropertyWithNullableStringPropertyAttribute");
+          typeof(TypeWithDomainObjectAttributes).GetProperty("PropertyWithNullableStringPropertyAttribute");
       _propertyWithMandatoryStringPropertyAttribute =
-          typeof (TypeWithDomainObjectAttributes).GetProperty("PropertyWithMandatoryStringPropertyAttribute");
-      _binaryProperty = typeof (TypeWithDomainObjectAttributes).GetProperty("BinaryProperty");
-      _domainObjectCollectionProperty = typeof (TypeWithDomainObjectAttributes).GetProperty("DomainObjectCollectionProperty");
-      _virtualCollectionProperty = typeof (TypeWithDomainObjectAttributes).GetProperty("VirtualCollectionProperty");
+          typeof(TypeWithDomainObjectAttributes).GetProperty("PropertyWithMandatoryStringPropertyAttribute");
+      _binaryProperty = typeof(TypeWithDomainObjectAttributes).GetProperty("BinaryProperty");
+      _domainObjectCollectionProperty = typeof(TypeWithDomainObjectAttributes).GetProperty("DomainObjectCollectionProperty");
+      _virtualCollectionProperty = typeof(TypeWithDomainObjectAttributes).GetProperty("VirtualCollectionProperty");
 
       _domainModelConstraintProvider = new DomainModelConstraintProvider();
       _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
@@ -130,7 +130,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
       validationMessageStub.Stub(_ => _.ToString()).Return("Stub Message");
       Assert.That(result.Length, Is.EqualTo(1));
-      Assert.That(result[0], Is.TypeOf(typeof (NotNullValidator)));
+      Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
       Assert.That(((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
@@ -155,7 +155,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
       validationMessageStub.Stub(_ => _.ToString()).Return("Stub Message");
       Assert.That(result.Length, Is.EqualTo(1));
-      Assert.That(result[0], Is.TypeOf(typeof (MaximumLengthValidator)));
+      Assert.That(result[0], Is.TypeOf(typeof(MaximumLengthValidator)));
       Assert.That(((MaximumLengthValidator) result[0]).Max, Is.EqualTo(10));
       Assert.That(((MaximumLengthValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
@@ -189,12 +189,12 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
       lengthValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for Length");
       Assert.That(result.Length, Is.EqualTo(2));
-      Assert.That(result[0], Is.TypeOf(typeof (MaximumLengthValidator)));
+      Assert.That(result[0], Is.TypeOf(typeof(MaximumLengthValidator)));
       Assert.That(((MaximumLengthValidator) result[0]).Max, Is.EqualTo(20));
       Assert.That(((MaximumLengthValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for Length"));
 
       notEmptyValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for NotEmpty");
-      Assert.That(result[1], Is.TypeOf(typeof (NotEmptyValidator)));
+      Assert.That(result[1], Is.TypeOf(typeof(NotEmptyValidator)));
       Assert.That(((NotEmptyValidator) result[1]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotEmpty"));
     }
 
@@ -219,7 +219,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
       validationMessageStub.Stub(_ => _.ToString()).Return("Stub Message");
       Assert.That(result.Length, Is.EqualTo(1));
-      Assert.That(result[0], Is.TypeOf(typeof (NotEmptyValidator)));
+      Assert.That(result[0], Is.TypeOf(typeof(NotEmptyValidator)));
       Assert.That(((NotEmptyValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
@@ -252,11 +252,11 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
       notNullValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for NotNull");
       Assert.That(result.Count(), Is.EqualTo(2));
-      Assert.That(result[0], Is.TypeOf(typeof (NotNullValidator)));
+      Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
       Assert.That(((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotNull"));
 
       notEmptyValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for NotEmpty");
-      Assert.That(result[1], Is.TypeOf(typeof (NotEmptyValidator)));
+      Assert.That(result[1], Is.TypeOf(typeof(NotEmptyValidator)));
       Assert.That(((NotEmptyValidator) result[1]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotEmpty"));
     }
 
@@ -289,11 +289,11 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
       notNullValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for NotNull");
       Assert.That(result.Count(), Is.EqualTo(2));
-      Assert.That(result[0], Is.TypeOf(typeof (NotNullValidator)));
+      Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
       Assert.That(((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotNull"));
 
       notEmptyValidationMessageStub.Stub(_ => _.ToString()).Return("Stub Message for NotEmpty");
-      Assert.That(result[1], Is.TypeOf(typeof (NotEmptyValidator)));
+      Assert.That(result[1], Is.TypeOf(typeof(NotEmptyValidator)));
       Assert.That(((NotEmptyValidator) result[1]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotEmpty"));
     }
 
@@ -338,7 +338,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
       validationMessageStub.Stub(_ => _.ToString()).Return("Stub Message");
       Assert.That(result.Count(), Is.EqualTo(1));
-      Assert.That(result[0], Is.TypeOf(typeof (NotNullValidator)));
+      Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
       Assert.That(((NotNullValidator) result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
@@ -364,14 +364,14 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       var result = _propertyWithNullableStringPropertyAttributeReflector.GetMetaValidationRules().ToArray();
 
       Assert.That(result.Count(), Is.EqualTo(1));
-      Assert.That(result[0], Is.TypeOf(typeof (RemotionMaxLengthPropertyMetaValidationRule)));
+      Assert.That(result[0], Is.TypeOf(typeof(RemotionMaxLengthPropertyMetaValidationRule)));
       Assert.That(((RemotionMaxLengthPropertyMetaValidationRule) result[0]).MaxLength, Is.EqualTo(10));
     }
 
     [Test]
     public void Initialize_WithDerivedImplementationProperty_ThrowsArgumentException ()
     {
-      var overriddenProperty = typeof (DerivedTypeWithDomainObjectAttributes).GetProperty("PropertyWithNullableStringPropertyAttribute");
+      var overriddenProperty = typeof(DerivedTypeWithDomainObjectAttributes).GetProperty("PropertyWithNullableStringPropertyAttribute");
 
       Assert.That(
           () => new DomainObjectAttributesBasedValidationPropertyRuleReflector(

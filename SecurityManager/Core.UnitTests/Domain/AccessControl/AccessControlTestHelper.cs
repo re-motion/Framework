@@ -37,7 +37,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     private readonly OrganizationalStructureFactory _factory;
 
     public AccessControlTestHelper ()
-      : this ( ClientTransaction.CreateRootTransaction())
+      : this( ClientTransaction.CreateRootTransaction())
     {
     }
 

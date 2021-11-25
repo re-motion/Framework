@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     private readonly Action<ElementScope> _action;
 
     public CustomAction ([NotNull] ControlObject control, [NotNull] ElementScope scope, [NotNull] string name, [NotNull] Action<ElementScope> action)
-        : base (control, scope)
+        : base(control, scope)
     {
       ArgumentUtility.CheckNotNullOrEmpty("name", name);
       ArgumentUtility.CheckNotNull("action", action);

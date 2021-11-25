@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink,
         IDomainObjectCollectionEndPointDataManagerFactory dataManagerFactory)
-        : base (ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction), ArgumentUtility.CheckNotNull("id", id))
+        : base(ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction), ArgumentUtility.CheckNotNull("id", id))
     {
       ArgumentUtility.CheckNotNull("collectionManager", collectionManager);
       ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
@@ -407,7 +407,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     #region Serialization
 
     protected DomainObjectCollectionEndPoint (FlattenedDeserializationInfo info)
-        : base (info)
+        : base(info)
     {
       _collectionManager = info.GetValueForHandle<IDomainObjectCollectionEndPointCollectionManager>();
       _lazyLoader = info.GetValueForHandle<ILazyLoader>();

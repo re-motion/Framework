@@ -31,12 +31,12 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl
     }
 
     protected SecurableClassDefinitionListFormFunction (ITransactionMode transactionMode, params object[] args)
-      : base (transactionMode, args)
+      : base(transactionMode, args)
     {
     }
 
     public SecurableClassDefinitionListFormFunction (ITransactionMode transactionMode, IDomainObjectHandle<Tenant> tenantHandle)
-      : base (transactionMode, tenantHandle)
+      : base(transactionMode, tenantHandle)
     {
     }
 
@@ -44,6 +44,6 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl
     {
     }
 
-    WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof (SecurableClassDefinitionListForm), "UI/AccessControl/SecurableClassDefinitionListForm.aspx");
+    WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof(SecurableClassDefinitionListForm), "UI/AccessControl/SecurableClassDefinitionListForm.aspx");
   }
 }

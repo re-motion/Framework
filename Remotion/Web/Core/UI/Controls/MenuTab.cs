@@ -35,7 +35,7 @@ namespace Remotion.Web.UI.Controls
     private MissingPermissionBehavior _missingPermissionBehavior;
 
     protected MenuTab (string itemID, string text, IconInfo? icon)
-      : base (itemID, text, icon)
+      : base(itemID, text, icon)
     {
       Initialize();
     }
@@ -48,7 +48,7 @@ namespace Remotion.Web.UI.Controls
     [MemberNotNull (nameof(_command))]
     private void Initialize ()
     {
-      _command = new SingleControlItemCollection(new NavigationCommand(), new[] { typeof (NavigationCommand) });
+      _command = new SingleControlItemCollection(new NavigationCommand(), new[] { typeof(NavigationCommand) });
     }
 
     public override IWebTabRenderer GetRenderer ()

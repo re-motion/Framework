@@ -30,7 +30,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
       _ctor = ctor;
     }
 
-    public AttributeWithParameters (int ctor, string dummy) : this (ctor)
+    public AttributeWithParameters (int ctor, string dummy) : this(ctor)
     {
     }
 

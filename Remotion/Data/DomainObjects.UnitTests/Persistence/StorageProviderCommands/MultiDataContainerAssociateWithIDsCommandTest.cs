@@ -131,8 +131,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
     [Test]
     public void Execute_DataContainersNotMatchingAnyID ()
     {
-      var wrongID1 = new ObjectID(typeof (OrderItem), _order1Container.ID.Value);
-      var wrongID2 = new ObjectID(typeof (OrderTicket), _order1Container.ID.Value);
+      var wrongID1 = new ObjectID(typeof(OrderItem), _order1Container.ID.Value);
+      var wrongID2 = new ObjectID(typeof(OrderTicket), _order1Container.ID.Value);
 
       var command = new MultiDataContainerAssociateWithIDsCommand(new[] { wrongID1, wrongID1, wrongID2, _order3Container.ID }, _commandStub);
 

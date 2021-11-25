@@ -111,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting
       return new WebTestHelper(new TFactory());
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (WebTestHelper));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(WebTestHelper));
 
     private readonly IBrowserConfiguration _browserConfiguration;
     private readonly DriverConfiguration _driverConfiguration;
@@ -168,10 +168,10 @@ namespace Remotion.Web.Development.WebTesting
     public void OnFixtureSetUp (bool maximizeWindow = true, [CanBeNull] DriverConfigurationOverride? configurationOverride = null)
     {
       s_log.InfoFormat("WebTestHelper.OnFixtureSetup() has been called.");
-      s_log.InfoFormat("Remotion version: " + typeof (WebTestHelper).Assembly.GetName().Version);
-      s_log.InfoFormat("Selenium (WebDriver) version: " + typeof (IWebDriver).Assembly.GetName().Version);
-      s_log.InfoFormat("Selenium Support (WebDriver.Support) version: " + typeof (WebDriverWait).Assembly.GetName().Version);
-      s_log.InfoFormat("Coypu version: " + typeof (Element).Assembly.GetName().Version);
+      s_log.InfoFormat("Remotion version: " + typeof(WebTestHelper).Assembly.GetName().Version);
+      s_log.InfoFormat("Selenium (WebDriver) version: " + typeof(IWebDriver).Assembly.GetName().Version);
+      s_log.InfoFormat("Selenium Support (WebDriver.Support) version: " + typeof(WebDriverWait).Assembly.GetName().Version);
+      s_log.InfoFormat("Coypu version: " + typeof(Element).Assembly.GetName().Version);
 
       // Note: otherwise the Selenium web driver may get confused when searching for windows.
       // Confusion could theoretically happen when calling Coypu.BrowserSession.FindWindow(string locator), as the window gets found per title.
@@ -249,11 +249,11 @@ namespace Remotion.Web.Development.WebTesting
     private TPageObject CreateInitialPageObject<TPageObject> (IBrowserSession browser, IRequestErrorDetectionStrategy requestErrorDetectionStrategy)
         where TPageObject : PageObject
     {
-      s_log.InfoFormat("WebTestHelper.CreateInitialPageObject<" + typeof (TPageObject).FullName + "> has been called.");
+      s_log.InfoFormat("WebTestHelper.CreateInitialPageObject<" + typeof(TPageObject).FullName + "> has been called.");
       var context = PageObjectContext.New(browser, requestErrorDetectionStrategy);
       s_log.InfoFormat("New PageObjectContext has been created.");
 
-      var pageObject = (TPageObject) Activator.CreateInstance(typeof (TPageObject), new object[] { context })!;
+      var pageObject = (TPageObject) Activator.CreateInstance(typeof(TPageObject), new object[] { context })!;
       s_log.InfoFormat("Initial PageObject has been created.");
       return pageObject;
     }
@@ -380,7 +380,7 @@ namespace Remotion.Web.Development.WebTesting
           _accessibilityConfiguration,
           new AxeSourceProvider(),
           new AccessibilityResultMapper(),
-          LogManager.GetLogger(typeof (AccessibilityAnalyzer)));
+          LogManager.GetLogger(typeof(AccessibilityAnalyzer)));
     }
 
     /// <summary>

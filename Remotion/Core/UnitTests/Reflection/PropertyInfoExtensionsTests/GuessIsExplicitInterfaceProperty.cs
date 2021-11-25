@@ -170,7 +170,7 @@ namespace Remotion.UnitTests.Reflection.PropertyInfoExtensionsTests
     [Test]
     public void NonInterfaceProperties ()
     {
-      Type type = typeof (ClassWithoutInterfaceProperties);
+      Type type = typeof(ClassWithoutInterfaceProperties);
       PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.That(properties.Length, Is.EqualTo(11));
 
@@ -181,7 +181,7 @@ namespace Remotion.UnitTests.Reflection.PropertyInfoExtensionsTests
     [Test]
     public void InterfaceProperties ()
     {
-      Type type = typeof (ClassWithInterfaceProperties);
+      Type type = typeof(ClassWithInterfaceProperties);
       PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.That(properties.Length, Is.EqualTo(11));
 

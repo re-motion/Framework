@@ -33,10 +33,10 @@ public class QueryConfigurationException : ConfigurationException
 
   // construction and disposing
 
-  public QueryConfigurationException () : this ("Error in query configuration.") {}
-  public QueryConfigurationException (string message) : base (message) {}
-  public QueryConfigurationException (string message, Exception inner) : base (message, inner) {}
-  protected QueryConfigurationException (SerializationInfo info, StreamingContext context) : base (info, context) {}
+  public QueryConfigurationException () : this("Error in query configuration.") {}
+  public QueryConfigurationException (string message) : base(message) {}
+  public QueryConfigurationException (string message, Exception inner) : base(message, inner) {}
+  protected QueryConfigurationException (SerializationInfo info, StreamingContext context) : base(info, context) {}
 
   // methods and properties
 

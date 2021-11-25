@@ -511,81 +511,81 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       SetDatabaseModifyable();
 
       ClassWithAllDataTypes cwadt = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
-      Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.False);
-      Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.False);
-      Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.False);
-      Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.False);
-      Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(32767));
-      Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(2147483647));
+      Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
+      Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.False);
+      Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
+      Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.False);
+      Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(32767));
+      Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(2147483647));
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         cwadt.Int32Property = 7;
-        Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.True);
-        Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.False);
-        Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.True);
-        Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.False);
-        Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(32767));
-        Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(2147483647));
+        Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.True);
+        Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.False);
+        Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.True);
+        Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.False);
+        Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(32767));
+        Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(2147483647));
 
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
-          Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.False);
-          Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.False);
-          Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.False);
-          Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.False);
-          Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(32767));
-          Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(7));
+          Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
+          Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.False);
+          Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
+          Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.False);
+          Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(32767));
+          Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(7));
 
           cwadt.Int16Property = 8;
 
-          Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.False);
-          Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.True);
-          Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.False);
-          Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.True);
+          Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
+          Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.True);
+          Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
+          Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.True);
 
           ClientTransaction.Current.Commit();
 
-          Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.False);
-          Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.False);
-          Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.False);
-          Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.False);
-          Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(8));
-          Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(7));
+          Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
+          Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.False);
+          Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
+          Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.False);
+          Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(8));
+          Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(7));
         }
 
-        Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.True);
-        Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.True);
-        Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.True);
-        Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.True);
-        Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(32767));
-        Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(2147483647));
+        Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.True);
+        Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.True);
+        Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.True);
+        Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.True);
+        Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(32767));
+        Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(2147483647));
 
         ClientTransaction.Current.Commit();
 
-        Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.False);
-        Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.False);
-        Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.False);
-        Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.False);
-        Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(8));
-        Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(7));
+        Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
+        Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.False);
+        Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
+        Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.False);
+        Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(8));
+        Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(7));
       }
 
-      Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.True);
-      Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.True);
-      Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.True);
-      Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.True);
-      Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(32767));
-      Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(2147483647));
+      Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.True);
+      Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.True);
+      Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.True);
+      Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.True);
+      Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(32767));
+      Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(2147483647));
 
       TestableClientTransaction.Commit();
 
-      Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.False);
-      Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.False);
-      Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property")), Is.False);
-      Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property")), Is.False);
-      Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(8));
-      Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(7));
+      Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
+      Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.False);
+      Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
+      Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.False);
+      Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property"), ValueAccess.Original), Is.EqualTo(8));
+      Assert.That(cwadt.InternalDataContainer.GetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property"), ValueAccess.Original), Is.EqualTo(7));
     }
 
     [Test]
@@ -603,7 +603,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       OrderTicket oldOrderTicket2 = newOrder2.OrderTicket;
 
 
-      RelationEndPointID propertyID = RelationEndPointID.Create(orderTicket.ID, typeof (OrderTicket).FullName + ".Order");
+      RelationEndPointID propertyID = RelationEndPointID.Create(orderTicket.ID, typeof(OrderTicket).FullName + ".Order");
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -660,7 +660,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Order order4 = DomainObjectIDs.Order3.GetObject<Order>();
       OrderTicket orderTicket3 = order4.OrderTicket;
 
-      RelationEndPointID propertyID = RelationEndPointID.Create(order4.ID, typeof (Order).FullName + ".OrderTicket");
+      RelationEndPointID propertyID = RelationEndPointID.Create(order4.ID, typeof(Order).FullName + ".OrderTicket");
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -713,7 +713,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       OrderItem newItem = OrderItem.NewObject();
       OrderItem firstItem = order.OrderItems[0];
 
-      RelationEndPointID propertyID = RelationEndPointID.Create(order.ID, typeof (Order).FullName + ".OrderItems");
+      RelationEndPointID propertyID = RelationEndPointID.Create(order.ID, typeof(Order).FullName + ".OrderItems");
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {

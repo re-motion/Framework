@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain
     public bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
       ArgumentUtility.CheckNotNull("property", property);
-      return typeof (ReferenceDataSourceTestDomainBase).IsAssignableFrom(property.PropertyType);
+      return typeof(ReferenceDataSourceTestDomainBase).IsAssignableFrom(property.PropertyType);
     }
 
     public IBusinessObject Create (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property)

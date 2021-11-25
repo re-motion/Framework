@@ -49,7 +49,7 @@ namespace Remotion.ExtensibleEnums
           }
           catch (ArgumentException ex)
           {
-            string message = string.Format("Extensible enum '{0}' defines two values with ID '{1}'.", typeof (T), valueInfo.Value.ID);
+            string message = string.Format("Extensible enum '{0}' defines two values with ID '{1}'.", typeof(T), valueInfo.Value.ID);
             throw new InvalidExtensibleEnumDefinitionException(message, ex);
           }
         }
@@ -88,7 +88,7 @@ namespace Remotion.ExtensibleEnums
     /// <inheritdoc />
     public Type GetEnumType ()
     {
-      return typeof (T);
+      return typeof(T);
     }
 
     /// <inheritdoc />
@@ -133,7 +133,7 @@ namespace Remotion.ExtensibleEnums
       }
       else
       {
-        var message = string.Format("The extensible enum type '{0}' does not define a value called '{1}'.", typeof (T), id);
+        var message = string.Format("The extensible enum type '{0}' does not define a value called '{1}'.", typeof(T), id);
         throw new KeyNotFoundException(message);
       }
     }

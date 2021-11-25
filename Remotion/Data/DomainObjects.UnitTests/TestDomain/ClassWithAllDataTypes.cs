@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     }
 
     protected ClassWithAllDataTypes (SerializationInfo info, StreamingContext context)
-      : base (info, context)
+      : base(info, context)
     {
     }
 

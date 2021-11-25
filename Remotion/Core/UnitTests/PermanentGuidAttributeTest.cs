@@ -64,7 +64,7 @@ namespace Remotion.UnitTests
     [Test]
     public void TypeIsClass ()
     {
-      var type = typeof (TheClass);
+      var type = typeof(TheClass);
       var attribute = type.GetCustomAttribute<PermanentGuidAttribute>();
 
       Assert.That(attribute.Value, Is.EqualTo(new Guid("BA2F9118-6516-4F47-9AF1-58632B5F9F9E")));
@@ -73,7 +73,7 @@ namespace Remotion.UnitTests
     [Test]
     public void TypeIsInterface ()
     {
-      var type = typeof (ITheInterface);
+      var type = typeof(ITheInterface);
       var attribute = type.GetCustomAttribute<PermanentGuidAttribute>();
 
       Assert.That(attribute.Value, Is.EqualTo(new Guid("467BB753-98AC-4F60-90BA-FF5A02A45649")));
@@ -82,7 +82,7 @@ namespace Remotion.UnitTests
     [Test]
     public void TypeIsStruct ()
     {
-      var type = typeof (TheStruct);
+      var type = typeof(TheStruct);
       var attribute = type.GetCustomAttribute<PermanentGuidAttribute>();
 
       Assert.That(attribute.Value, Is.EqualTo(new Guid("E6A34024-80B8-4774-9AD8-E8367D5D0387")));
@@ -91,7 +91,7 @@ namespace Remotion.UnitTests
     [Test]
     public void TypeIsEnum ()
     {
-      var type = typeof (TheEnum);
+      var type = typeof(TheEnum);
       var attribute = type.GetCustomAttribute<PermanentGuidAttribute>();
 
       Assert.That(attribute.Value, Is.EqualTo(new Guid("B6EA85C3-1179-4BFA-9D85-15F081348759")));
@@ -100,7 +100,7 @@ namespace Remotion.UnitTests
     [Test]
     public void Property ()
     {
-      var type = typeof (TheClass);
+      var type = typeof(TheClass);
       var value = type.GetProperty("Property", BindingFlags.Instance | BindingFlags.Public);
       var attribute = value.GetCustomAttribute<PermanentGuidAttribute>();
 
@@ -110,7 +110,7 @@ namespace Remotion.UnitTests
     [Test]
     public void Field ()
     {
-      var type = typeof (TheClass);
+      var type = typeof(TheClass);
       var value = type.GetField("_field", BindingFlags.Instance | BindingFlags.NonPublic);
       var attribute = value.GetCustomAttribute<PermanentGuidAttribute>();
 
@@ -120,7 +120,7 @@ namespace Remotion.UnitTests
     [Test]
     public void Method ()
     {
-      var type = typeof (TheClass);
+      var type = typeof(TheClass);
       var value = type.GetMethod("Method", BindingFlags.Instance | BindingFlags.Public);
       var attribute = value.GetCustomAttribute<PermanentGuidAttribute>();
 
@@ -130,7 +130,7 @@ namespace Remotion.UnitTests
     [Test]
     public void EnumValue ()
     {
-      var type = typeof (TheEnum);
+      var type = typeof(TheEnum);
       var value = type.GetField("Value", BindingFlags.Static | BindingFlags.Public);
       var attribute = value.GetCustomAttribute<PermanentGuidAttribute>();
 
@@ -140,7 +140,7 @@ namespace Remotion.UnitTests
     [Test]
     public void DerivedClass_DoesNotInherit ()
     {
-      var type = typeof (DerivedClass);
+      var type = typeof(DerivedClass);
       var attribute = type.GetCustomAttribute<PermanentGuidAttribute>();
 
       Assert.That(attribute, Is.Null);

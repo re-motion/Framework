@@ -26,8 +26,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [Test]
     public void Equals_True ()
     {
-      var rootAsm1 = new RootAssembly(typeof (object).Assembly, true);
-      var rootAsm2 = new RootAssembly(typeof (object).Assembly, false);
+      var rootAsm1 = new RootAssembly(typeof(object).Assembly, true);
+      var rootAsm2 = new RootAssembly(typeof(object).Assembly, false);
 
       Assert.That(rootAsm1, Is.EqualTo(rootAsm2));
     }
@@ -35,8 +35,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [Test]
     public void Equals_False ()
     {
-      var rootAsm1 = new RootAssembly(typeof (object).Assembly, true);
-      var rootAsm2 = new RootAssembly(typeof (RootAssemblyTest).Assembly, true);
+      var rootAsm1 = new RootAssembly(typeof(object).Assembly, true);
+      var rootAsm2 = new RootAssembly(typeof(RootAssemblyTest).Assembly, true);
 
       Assert.That(rootAsm1, Is.Not.EqualTo(rootAsm2));
     }
@@ -44,8 +44,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [Test]
     public void GetHashCode_EqualObjects ()
     {
-      var rootAsm1 = new RootAssembly(typeof (object).Assembly, true);
-      var rootAsm2 = new RootAssembly(typeof (object).Assembly, false);
+      var rootAsm1 = new RootAssembly(typeof(object).Assembly, true);
+      var rootAsm2 = new RootAssembly(typeof(object).Assembly, false);
 
       Assert.That(rootAsm1.GetHashCode(), Is.EqualTo(rootAsm2.GetHashCode()));
     }
@@ -53,7 +53,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [Test]
     public void ToString_WithFollowReferencesSetToTrue ()
     {
-      var rootAsm = new RootAssembly(typeof (object).Assembly, true);
+      var rootAsm = new RootAssembly(typeof(object).Assembly, true);
 
       Assert.That(rootAsm.ToString(), Is.EqualTo(typeof(object).Assembly.FullName + ", including references"));
     }
@@ -61,7 +61,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [Test]
     public void ToString_WithFollowReferencesSetToFalse ()
     {
-      var rootAsm = new RootAssembly(typeof (object).Assembly, false);
+      var rootAsm = new RootAssembly(typeof(object).Assembly, false);
 
       Assert.That(rootAsm.ToString(), Is.EqualTo(typeof(object).Assembly.FullName));
     }

@@ -50,7 +50,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [Test]
     public void ExecuteCodeWhichIsNotAllowedInMediumTrust_WithFullTrustAssembly ()
     {
-      using (var sandbox = Sandbox.CreateSandbox(_mediumTrustPermissions, new[] { typeof (SandboxTest).Assembly }))
+      using (var sandbox = Sandbox.CreateSandbox(_mediumTrustPermissions, new[] { typeof(SandboxTest).Assembly }))
       {
         sandbox.AppDomain.DoCallBack(DangerousMethodAssertingPermission);
       }
@@ -93,7 +93,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
       {
         var result = sandbox.CreateSandboxedInstance<SampleTestRunner>();
         
-        Assert.That(result, Is.TypeOf(typeof (SampleTestRunner)));
+        Assert.That(result, Is.TypeOf(typeof(SampleTestRunner)));
         Assert.That(RemotingServices.IsTransparentProxy(result), Is.True);
         Assert.That(result.GetCurrentDomain(), Is.SameAs(sandbox.AppDomain));
       }

@@ -37,12 +37,12 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     }
 
     public WxeHttpExceptionPreservingException (HttpException exception)
-        : base (string.Format("{0} was thrown.", exception), ArgumentUtility.CheckNotNull("exception", exception))
+        : base(string.Format("{0} was thrown.", exception), ArgumentUtility.CheckNotNull("exception", exception))
     {
     }
 
     private WxeHttpExceptionPreservingException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
 

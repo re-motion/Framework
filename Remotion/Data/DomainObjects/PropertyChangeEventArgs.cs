@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="oldValue">The old value.</param>
     /// <param name="newValue">The new value.</param>
     public PropertyChangeEventArgs (PropertyDefinition propertyDefinition, object oldValue, object newValue)
-        : base (oldValue, newValue)
+        : base(oldValue, newValue)
     {
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
       _propertyDefinition = propertyDefinition;

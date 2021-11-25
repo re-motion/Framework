@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Security.BindableObject
   /// Checks if the current <see cref="ISecurityPrincipal"/> can access the property's getter.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IBindablePropertyReadAccessStrategy),
+  [ImplementationFor (typeof(IBindablePropertyReadAccessStrategy),
       Lifetime = LifetimeKind.Singleton,
       RegistrationType = RegistrationType.Multiple,
       Position = Position)]

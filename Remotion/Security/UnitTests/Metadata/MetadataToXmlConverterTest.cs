@@ -56,7 +56,7 @@ namespace Remotion.Security.UnitTests.Metadata
       SecurableClassInfo classInfo = new SecurableClassInfo();
       classInfo.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
       classInfo.Name = "File";
-      _cache.AddSecurableClassInfo(typeof (File), classInfo);
+      _cache.AddSecurableClassInfo(typeof(File), classInfo);
 
       XmlDocument document = _converter.Convert(_cache);
 
@@ -80,7 +80,7 @@ namespace Remotion.Security.UnitTests.Metadata
       propertyInfo.Values.Add(new EnumValueInfo("Domain.Confidentiality, Domain", "Confidential", 1));
       propertyInfo.Values.Add(new EnumValueInfo("Domain.Confidentiality, Domain", "Private", 2));
 
-      Type type = typeof (File);
+      Type type = typeof(File);
       PropertyInfo property = type.GetProperty("Confidentiality");
       _cache.AddStatePropertyInfo(property, propertyInfo);
 
@@ -144,17 +144,17 @@ namespace Remotion.Security.UnitTests.Metadata
       SecurableClassInfo baseClassInfo = new SecurableClassInfo();
       baseClassInfo.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
       baseClassInfo.Name = "File";
-      _cache.AddSecurableClassInfo(typeof (File), baseClassInfo);
+      _cache.AddSecurableClassInfo(typeof(File), baseClassInfo);
 
       SecurableClassInfo derivedClassInfo1 = new SecurableClassInfo();
       derivedClassInfo1.ID = "00000000-0000-0000-0002-000000000000";
       derivedClassInfo1.Name = "PaperFile";
-      _cache.AddSecurableClassInfo(typeof (PaperFile), derivedClassInfo1);
+      _cache.AddSecurableClassInfo(typeof(PaperFile), derivedClassInfo1);
 
       SecurableClassInfo derivedClassInfo2 = new SecurableClassInfo();
       derivedClassInfo2.ID = "118a9d5e-4f89-40af-ade5-e4613e4638d5";
       derivedClassInfo2.Name = "InputFile";
-      _cache.AddSecurableClassInfo(typeof (SecurableClassInfo), derivedClassInfo2);
+      _cache.AddSecurableClassInfo(typeof(SecurableClassInfo), derivedClassInfo2);
 
       XmlDocument document = _converter.Convert(_cache);
 
@@ -176,17 +176,17 @@ namespace Remotion.Security.UnitTests.Metadata
       SecurableClassInfo baseClassInfo = new SecurableClassInfo();
       baseClassInfo.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
       baseClassInfo.Name = "File";
-      _cache.AddSecurableClassInfo(typeof (File), baseClassInfo);
+      _cache.AddSecurableClassInfo(typeof(File), baseClassInfo);
 
       SecurableClassInfo derivedClassInfo1 = new SecurableClassInfo();
       derivedClassInfo1.ID = "00000000-0000-0000-0002-000000000000";
       derivedClassInfo1.Name = "PaperFile";
-      _cache.AddSecurableClassInfo(typeof (PaperFile), derivedClassInfo1);
+      _cache.AddSecurableClassInfo(typeof(PaperFile), derivedClassInfo1);
 
       SecurableClassInfo derivedClassInfo2 = new SecurableClassInfo();
       derivedClassInfo2.ID = "118a9d5e-4f89-40af-ade5-e4613e4638d5";
       derivedClassInfo2.Name = "InputFile";
-      _cache.AddSecurableClassInfo(typeof (SecurableClassInfo), derivedClassInfo2);
+      _cache.AddSecurableClassInfo(typeof(SecurableClassInfo), derivedClassInfo2);
 
       derivedClassInfo1.BaseClass = baseClassInfo;
       derivedClassInfo2.BaseClass = baseClassInfo;
@@ -224,7 +224,7 @@ namespace Remotion.Security.UnitTests.Metadata
       propertyInfo2.Values.Add(new EnumValueInfo("Namespace.TypeName, Assembly", "Second", 1));
       propertyInfo2.Values.Add(new EnumValueInfo("Namespace.TypeName, Assembly", "Third", 2));
 
-      Type type = typeof (File);
+      Type type = typeof(File);
       PropertyInfo property1 = type.GetProperty("Confidentiality");
       _cache.AddStatePropertyInfo(property1, propertyInfo1);
       PropertyInfo property2 = type.GetProperty("SimpleEnum");
@@ -306,7 +306,7 @@ namespace Remotion.Security.UnitTests.Metadata
       SecurableClassInfo classInfo = new SecurableClassInfo();
       classInfo.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
       classInfo.Name = "File";
-      _cache.AddSecurableClassInfo(typeof (File), classInfo);
+      _cache.AddSecurableClassInfo(typeof(File), classInfo);
 
       StatePropertyInfo propertyInfo = new StatePropertyInfo();
       propertyInfo.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
@@ -315,7 +315,7 @@ namespace Remotion.Security.UnitTests.Metadata
       propertyInfo.Values.Add(new EnumValueInfo("Domain.Confidentiality, Domain", "Confidential", 1));
       propertyInfo.Values.Add(new EnumValueInfo("Domain.Confidentiality, Domain", "Private", 2));
 
-      Type type = typeof (File);
+      Type type = typeof(File);
       PropertyInfo property = type.GetProperty("Confidentiality");
       _cache.AddStatePropertyInfo(property, propertyInfo);
 
@@ -351,7 +351,7 @@ namespace Remotion.Security.UnitTests.Metadata
       SecurableClassInfo classInfo = new SecurableClassInfo();
       classInfo.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
       classInfo.Name = "File";
-      _cache.AddSecurableClassInfo(typeof (File), classInfo);
+      _cache.AddSecurableClassInfo(typeof(File), classInfo);
 
       EnumValueInfo accessType1 = new EnumValueInfo("Domain.AccessType, Domain", "Archive", 0);
       accessType1.ID = "64d8f74e-685f-44ab-9705-1fda9ff836a4";
@@ -392,12 +392,12 @@ namespace Remotion.Security.UnitTests.Metadata
       SecurableClassInfo classInfo = new SecurableClassInfo();
       classInfo.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
       classInfo.Name = "File";
-      _cache.AddSecurableClassInfo(typeof (File), classInfo);
+      _cache.AddSecurableClassInfo(typeof(File), classInfo);
 
       SecurableClassInfo derivedClassInfo = new SecurableClassInfo();
       derivedClassInfo.ID = "ac101f66-6d1f-4002-b32b-f951db36582c";
       derivedClassInfo.Name = "PaperFile";
-      _cache.AddSecurableClassInfo(typeof (PaperFile), derivedClassInfo);
+      _cache.AddSecurableClassInfo(typeof(PaperFile), derivedClassInfo);
 
       classInfo.DerivedClasses.Add(derivedClassInfo);
       derivedClassInfo.BaseClass = classInfo;
@@ -416,7 +416,7 @@ namespace Remotion.Security.UnitTests.Metadata
       propertyInfo2.Values.Add(new EnumValueInfo("Namespace.TypeName, Assembly", "Second", 1));
       propertyInfo2.Values.Add(new EnumValueInfo("Namespace.TypeName, Assembly", "Third", 2));
 
-      Type type = typeof (File);
+      Type type = typeof(File);
       PropertyInfo property1 = type.GetProperty("Confidentiality");
       _cache.AddStatePropertyInfo(property1, propertyInfo1);
       PropertyInfo property2 = type.GetProperty("SimpleEnum");

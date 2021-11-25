@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
       _listenerMock = MockRepository.GenerateStrictMock<IVirtualEndPointStateUpdateListener>();
       _innerEndPointMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPoint>();
       _innerEndPointMock.Stub(stub => stub.HasChangedFast).Return(false);
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void DelegatedMembers ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
       var endPoint = MockRepository.GenerateStub<IRealObjectEndPoint>();
       var readOnlyCollectionDataDecorator = new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData());
       var domainObjectCollection = new DomainObjectCollection();
@@ -195,8 +195,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _decoratorTestHelper.CheckDelegation(ep => ep.IsNull, true);
       _decoratorTestHelper.CheckDelegation(ep => ep.ClientTransaction, ClientTransaction.CreateRootTransaction());
       _decoratorTestHelper.CheckDelegation(ep => ep.ObjectID, DomainObjectIDs.Order1);
-      _decoratorTestHelper.CheckDelegation(ep => ep.Definition, GetEndPointDefinition(typeof (Order), "OrderItems"));
-      _decoratorTestHelper.CheckDelegation(ep => ep.RelationDefinition, GetRelationDefinition(typeof (Order), "OrderItems"));
+      _decoratorTestHelper.CheckDelegation(ep => ep.Definition, GetEndPointDefinition(typeof(Order), "OrderItems"));
+      _decoratorTestHelper.CheckDelegation(ep => ep.RelationDefinition, GetRelationDefinition(typeof(Order), "OrderItems"));
       _decoratorTestHelper.CheckDelegation(ep => ep.HasChanged, false);
       _decoratorTestHelper.CheckDelegation(ep => ep.HasChanged, true);
       _decoratorTestHelper.CheckDelegation(ep => ep.HasBeenTouched, false);

@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(
           accessor.PropertyData.PropertyDefinition,
           Is.SameAs(
-              MappingConfiguration.Current.GetTypeDefinition(typeof (IndustrialSector))
+              MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector))
                   .GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name")));
     }
 
@@ -91,12 +91,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void Item_WithShortNotation ()
     {
       var indexer = new PropertyIndexer(_industrialSector);
-      var accessor = indexer[typeof (IndustrialSector), "Name"];
+      var accessor = indexer[typeof(IndustrialSector), "Name"];
       Assert.That(accessor.ClientTransaction, Is.SameAs(_transaction));
       Assert.That(
           accessor.PropertyData.PropertyDefinition,
           Is.SameAs(
-              MappingConfiguration.Current.GetTypeDefinition(typeof (IndustrialSector))
+              MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector))
                   .GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name")));
     }
 
@@ -106,10 +106,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       var transaction = _industrialSector.RootTransaction.CreateSubTransaction();
 
       var indexer = new PropertyIndexer(_industrialSector);
-      var accessor1 = indexer[typeof (IndustrialSector), "Name"];
+      var accessor1 = indexer[typeof(IndustrialSector), "Name"];
       Assert.That(accessor1.ClientTransaction, Is.Not.SameAs(transaction));
 
-      var accessor2 = indexer[typeof (IndustrialSector), "Name", transaction];
+      var accessor2 = indexer[typeof(IndustrialSector), "Name", transaction];
       Assert.That(accessor2.ClientTransaction, Is.SameAs(transaction));
     }
 
@@ -208,7 +208,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void ShortNameAndType ()
     {
       Assert.That(
-          _order.Properties[typeof (Order), "OrderNumber"],
+          _order.Properties[typeof(Order), "OrderNumber"],
           Is.EqualTo(_order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]));
     }
 
@@ -216,27 +216,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void ShortNameAndTypeWithShadowedProperties ()
     {
       var classWithDifferentProperties = (DerivedClassWithDifferentProperties) 
-          LifetimeService.NewObject(_transaction, typeof (DerivedClassWithDifferentProperties), ParamList.Empty);
+          LifetimeService.NewObject(_transaction, typeof(DerivedClassWithDifferentProperties), ParamList.Empty);
 
       var indexer = new PropertyIndexer(classWithDifferentProperties);
       Assert.That(
-          indexer[typeof (DerivedClassWithDifferentProperties), "String"],
-          Is.EqualTo(indexer[typeof (DerivedClassWithDifferentProperties).FullName + ".String"]));
+          indexer[typeof(DerivedClassWithDifferentProperties), "String"],
+          Is.EqualTo(indexer[typeof(DerivedClassWithDifferentProperties).FullName + ".String"]));
       Assert.That(
-          indexer[typeof (ClassWithDifferentProperties), "String"], Is.EqualTo(indexer[typeof (ClassWithDifferentProperties).FullName + ".String"]));
+          indexer[typeof(ClassWithDifferentProperties), "String"], Is.EqualTo(indexer[typeof(ClassWithDifferentProperties).FullName + ".String"]));
     }
 
     [Test]
     public void Find_Property ()
     {
-      var result = _order.Properties.Find(typeof (Order), "OrderNumber");
+      var result = _order.Properties.Find(typeof(Order), "OrderNumber");
       Assert.That(result, Is.EqualTo(_order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]));
     }
 
     [Test]
     public void Find_VirtualRelationEndPoint ()
     {
-      var result = _order.Properties.Find(typeof (Order), "OrderItems");
+      var result = _order.Properties.Find(typeof(Order), "OrderItems");
       Assert.That(result, Is.EqualTo(_order.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"]));
     }
 
@@ -244,22 +244,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void Find_WithoutExplicitType ()
     {
       Distributor distributor = _transaction.ExecuteInScope(() => Distributor.NewObject());
-      Assert.That(distributor.Properties.Contains(typeof (Distributor).FullName + ".ContactPerson"), Is.False);
-      Assert.That(distributor.Properties.Find("ContactPerson"), Is.EqualTo(distributor.Properties[typeof (Partner), "ContactPerson"]));
+      Assert.That(distributor.Properties.Contains(typeof(Distributor).FullName + ".ContactPerson"), Is.False);
+      Assert.That(distributor.Properties.Find("ContactPerson"), Is.EqualTo(distributor.Properties[typeof(Partner), "ContactPerson"]));
     }
 
     [Test]
     public void Find_Generic_WithInferredType ()
     {
       var classWithDifferentProperties =
-          (DerivedClassWithDifferentProperties) LifetimeService.NewObject(_transaction, typeof (DerivedClassWithDifferentProperties), ParamList.Empty);
+          (DerivedClassWithDifferentProperties) LifetimeService.NewObject(_transaction, typeof(DerivedClassWithDifferentProperties), ParamList.Empty);
       var indexer = new PropertyIndexer(classWithDifferentProperties);
       
       var resultOnDerived = indexer.Find(classWithDifferentProperties, "String");
-      Assert.That(resultOnDerived, Is.EqualTo(indexer[typeof (DerivedClassWithDifferentProperties).FullName + ".String"]));
+      Assert.That(resultOnDerived, Is.EqualTo(indexer[typeof(DerivedClassWithDifferentProperties).FullName + ".String"]));
 
       var resultOnBase = indexer.Find((ClassWithDifferentProperties) classWithDifferentProperties, "String");
-      Assert.That(resultOnBase, Is.EqualTo(indexer[typeof (ClassWithDifferentProperties).FullName + ".String"]));
+      Assert.That(resultOnBase, Is.EqualTo(indexer[typeof(ClassWithDifferentProperties).FullName + ".String"]));
     }
 
     [Test]
@@ -267,7 +267,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       Distributor distributor = _transaction.ExecuteInScope(() => Distributor.NewObject());
       Assert.That(
-          () => distributor.Properties.Find(typeof (Distributor), "Frobbers"),
+          () => distributor.Properties.Find(typeof(Distributor), "Frobbers"),
           Throws.ArgumentException
               .With.Message.Contains(
                   "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Distributor' does not have or inherit a mapping property with the "
@@ -355,7 +355,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order>(_transaction);
       var indexer = new PropertyIndexer(order);
-      Assert.That(indexer[typeof (Order), "OrderNumber"].PropertyData, Is.SameAs(indexer[typeof (Order), "OrderNumber"].PropertyData));
+      Assert.That(indexer[typeof(Order), "OrderNumber"].PropertyData, Is.SameAs(indexer[typeof(Order), "OrderNumber"].PropertyData));
     }
   }
 }

@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
     {
       ArgumentUtility.CheckNotNull("type", type);
 
-      if (AttributeUtility.IsDefined(type, typeof (StorageGroupAttribute), false)
-          && AttributeUtility.IsDefined(type.BaseType, typeof (StorageGroupAttribute), true))
+      if (AttributeUtility.IsDefined(type, typeof(StorageGroupAttribute), false)
+          && AttributeUtility.IsDefined(type.BaseType, typeof(StorageGroupAttribute), true))
       {
         Type baseType = type.BaseType;
         while (!AttributeUtility.IsDefined<StorageGroupAttribute>(baseType, false)) //get base type which has the attribute applied
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
         return MappingValidationResult.CreateInvalidResultForType(
             type,
             "The domain object type cannot redefine the '{0}' already defined on base type '{1}'.",
-            typeof (StorageGroupAttribute).Name,
+            typeof(StorageGroupAttribute).Name,
             baseType.Name);
       }
       return MappingValidationResult.CreateValidResult();

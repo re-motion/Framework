@@ -33,7 +33,7 @@ namespace Remotion.Development.Web.ResourceHosting
     private readonly string? _displayName;
 
     public ResourceVirtualDirectory (string virtualPath, DirectoryInfo physicalDirectory, string? displayName = null)
-        : base (virtualPath)
+        : base(virtualPath)
     {
       ArgumentUtility.CheckNotNullOrEmpty("virtualPath", virtualPath);
       ArgumentUtility.CheckNotNull("physicalDirectory", physicalDirectory);

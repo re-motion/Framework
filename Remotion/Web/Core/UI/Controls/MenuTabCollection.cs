@@ -24,13 +24,13 @@ namespace Remotion.Web.UI.Controls
   {
     /// <summary> Initializes a new instance. </summary>
     public MainMenuTabCollection (IControl? ownerControl, Type[] supportedTypes)
-        : base (ownerControl, supportedTypes)
+        : base(ownerControl, supportedTypes)
     {
     }
 
     /// <summary> Initializes a new instance. </summary>
     public MainMenuTabCollection (IControl? ownerControl)
-        : this (ownerControl, new[] { typeof (SubMenuTab) })
+        : this(ownerControl, new[] { typeof(SubMenuTab) })
     {
     }
 
@@ -63,13 +63,13 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Initializes a new instance. </summary>
     public SubMenuTabCollection (IControl? ownerControl, Type[] supportedTypes)
-        : base (ownerControl, supportedTypes)
+        : base(ownerControl, supportedTypes)
     {
     }
 
     /// <summary> Initializes a new instance. </summary>
     public SubMenuTabCollection (IControl? ownerControl)
-        : this (ownerControl, new Type[] { typeof (SubMenuTab) })
+        : this(ownerControl, new Type[] { typeof(SubMenuTab) })
     {
     }
 

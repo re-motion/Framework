@@ -22,7 +22,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       var factory = _serviceLocator.GetInstance<ISecurityPrincipalRepository>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (SecurityPrincipalRepository)));
+      Assert.That(factory, Is.TypeOf(typeof(SecurityPrincipalRepository)));
     }
 
     [Test]

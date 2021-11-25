@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Sample
 
       return (IBusinessObject[]) ArrayUtility.Convert(
                                      XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(bindableObjectClass.TargetType),
-                                     typeof (IBusinessObject));
+                                     typeof(IBusinessObject));
     }
   }
 }

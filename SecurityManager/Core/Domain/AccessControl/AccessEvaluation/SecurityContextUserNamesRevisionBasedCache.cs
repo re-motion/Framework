@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       internal Data (
           GuidRevisionValue revision,
           IReadOnlyDictionary<string, IDomainObjectHandle<User>> users)
-          : base (revision)
+          : base(revision)
       {
         Users = users;
       }
@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod().DeclaringType);
 
     public SecurityContextUserNamesRevisionBasedCache (IUserNamesRevisionProvider revisionProvider)
-        : base (revisionProvider)
+        : base(revisionProvider)
     {
     }
 

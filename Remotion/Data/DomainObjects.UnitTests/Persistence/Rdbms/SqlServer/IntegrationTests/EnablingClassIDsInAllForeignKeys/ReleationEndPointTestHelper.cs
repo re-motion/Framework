@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       ArgumentUtility.CheckNotNull("mappingConfiguration", mappingConfiguration);
       ArgumentUtility.CheckNotNull("propertyAccessExpression", propertyAccessExpression);
 
-      var typeDefinition = mappingConfiguration.GetTypeDefinition(typeof (TSource));
+      var typeDefinition = mappingConfiguration.GetTypeDefinition(typeof(TSource));
       var propertyInfoAdapter = PropertyInfoAdapter.Create(NormalizingMemberInfoFromExpressionUtility.GetProperty(propertyAccessExpression));
       return (RelationEndPointDefinition) typeDefinition.ResolveRelationEndPoint(propertyInfoAdapter);
     }

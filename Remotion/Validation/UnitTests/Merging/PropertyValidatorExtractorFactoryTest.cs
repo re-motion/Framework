@@ -39,7 +39,7 @@ namespace Remotion.Validation.UnitTests.Merging
     {
       var result = _factory.Create(new RemovingPropertyValidatorRegistration[0], new Mock<ILogContext>().Object);
 
-      Assert.That(result, Is.TypeOf(typeof (PropertyValidatorExtractor)));
+      Assert.That(result, Is.TypeOf(typeof(PropertyValidatorExtractor)));
     }
   }
 }

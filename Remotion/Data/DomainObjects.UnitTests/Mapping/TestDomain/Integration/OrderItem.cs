@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     [StorageClassNone]
     public object OriginalOrder
     {
-      get { return Properties[typeof (OrderItem), "Order"].GetOriginalValue<Order>(); }
+      get { return Properties[typeof(OrderItem), "Order"].GetOriginalValue<Order>(); }
     }
   }
 }

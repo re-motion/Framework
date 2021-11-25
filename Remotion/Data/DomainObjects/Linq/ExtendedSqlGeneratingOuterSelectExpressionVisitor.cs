@@ -59,14 +59,14 @@ namespace Remotion.Data.DomainObjects.Linq
         ISqlCommandBuilder commandBuilder,
         ISqlGenerationStage stage,
         SetOperationsMode setOperationsMode)
-        : base (commandBuilder, stage, setOperationsMode)
+        : base(commandBuilder, stage, setOperationsMode)
     {
     }
 
     protected override Expression VisitNew (NewExpression expression)
     {
       var baseResult = base.VisitNew(expression);
-      if (expression.Type == typeof (ObjectID))
+      if (expression.Type == typeof(ObjectID))
       {
         // If the NewExpression represents a selected ObjectID, we want to return null if the ID value is null. Therefore, change the projection
         // to use the GetObjectIDOrNull method.

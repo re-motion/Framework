@@ -42,7 +42,7 @@ public sealed class ResourceDispatcher
   /// <summary> Use this ID to dispatch resources to the control that provides the resource manager. </summary>
   private const string c_thisElementID = "this";
 
-	private static readonly ILog s_log = LogManager.GetLogger(typeof (ResourceDispatcher));
+	private static readonly ILog s_log = LogManager.GetLogger(typeof(ResourceDispatcher));
   private static ArrayList _registeredDispatchTargets = new ArrayList();
 
   /// <summary>
@@ -142,7 +142,7 @@ public sealed class ResourceDispatcher
       string propertyName = (string) entry.Key;
       string? propertyValue = (string?) entry.Value;
 
-      PropertyInfo? property = obj.GetType().GetProperty(propertyName, typeof (string));
+      PropertyInfo? property = obj.GetType().GetProperty(propertyName, typeof(string));
       if (property != null)
       {
         property.SetValue(obj, propertyValue, new object[0]); 

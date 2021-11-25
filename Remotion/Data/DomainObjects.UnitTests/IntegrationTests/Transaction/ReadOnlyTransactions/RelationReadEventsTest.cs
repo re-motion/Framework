@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void RelationReadEvents_OnlyRaisedInWriteableSub_NonVirtualEndPoint ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Order), "Customer");
+      var endPointDefinition = GetEndPointDefinition(typeof(Order), "Customer");
       ExpectRelationReadEvents(WriteableSubTransaction, _loadedOrder, endPointDefinition, _relatedCustomer);
 
       Dev.Null = ExecuteInWriteableSubTransaction(() => _loadedOrder.Customer);
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void RelationReadEvents_OnlyRaisedInWriteableSub_VirtualEndPoint_One ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Order), "OrderTicket");
+      var endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
       ExpectRelationReadEvents(WriteableSubTransaction, _loadedOrder, endPointDefinition, _relatedOrderTicket);
 
       Dev.Null = ExecuteInWriteableSubTransaction(() => _loadedOrder.OrderTicket);
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void RelationReadEvents_OnlyRaisedInWriteableSub_VirtualEndPoint_Many ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Order), "OrderItems");
+      var endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderItems");
       ExpectRelationReadEvents(WriteableSubTransaction, _loadedOrder, endPointDefinition, new[] { _relatedOrderItem1, _relatedOrderItem2 });
 
       ExecuteInWriteableSubTransaction(() => _loadedOrder.OrderItems.EnsureDataComplete());

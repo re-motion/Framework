@@ -28,18 +28,18 @@ namespace Remotion.Security.UnitTests
     public void GetMethodInformation ()
     {
       var resolver = new NullMemberResolver();
-      var result = resolver.GetMethodInformation(typeof (ISecurableObject), "method", MemberAffiliation.Instance);
+      var result = resolver.GetMethodInformation(typeof(ISecurableObject), "method", MemberAffiliation.Instance);
 
-      Assert.That(result, Is.TypeOf(typeof (NullMethodInformation)));
+      Assert.That(result, Is.TypeOf(typeof(NullMethodInformation)));
     }
 
     [Test]
     public void GetPropertyInformation ()
     {
       var resolver = new NullMemberResolver();
-      var result = resolver.GetPropertyInformation(typeof (ISecurableObject), "property");
+      var result = resolver.GetPropertyInformation(typeof(ISecurableObject), "property");
 
-      Assert.That(result, Is.TypeOf(typeof (NullPropertyInformation)));
+      Assert.That(result, Is.TypeOf(typeof(NullPropertyInformation)));
     }
 
     [Test]

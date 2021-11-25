@@ -80,8 +80,8 @@ namespace OBWTest.Validation
       {
         GridBocList.SwitchListIntoEditMode();
         IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert(
-            XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof (Person)),
-            typeof (IBusinessObjectWithIdentity));
+            XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)),
+            typeof(IBusinessObjectWithIdentity));
         ReferenceField.SetBusinessObjectList(objects);
       }
       
@@ -118,14 +118,14 @@ namespace OBWTest.Validation
       if (CurrentObject.SaveValues(false))
       {
         var person = (Person) CurrentObject.BusinessObject;
-        var validationResult = ValidatorProvider.GetValidator(typeof (Person)).Validate(person);
+        var validationResult = ValidatorProvider.GetValidator(typeof(Person)).Validate(person);
         ValidationResult validationResultPartner = new ValidationResult();
         
         if (person.Partner != null)
-          validationResultPartner = ValidatorProvider.GetValidator(typeof (Person)).Validate(person.Partner);
-        var validationResultFather = ValidatorProvider.GetValidator(typeof (Person)).Validate(person.Father);
+          validationResultPartner = ValidatorProvider.GetValidator(typeof(Person)).Validate(person.Partner);
+        var validationResultFather = ValidatorProvider.GetValidator(typeof(Person)).Validate(person.Father);
 
-        var jobValidator = ValidatorProvider.GetValidator(typeof (Job));
+        var jobValidator = ValidatorProvider.GetValidator(typeof(Job));
         List<ValidationFailure> jobFailures = new List<ValidationFailure>();
         foreach (var job in person.Jobs)
         {

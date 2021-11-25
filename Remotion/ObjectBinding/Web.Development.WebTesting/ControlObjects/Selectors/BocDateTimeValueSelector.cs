@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   public class BocDateTimeValueSelector : BocControlSelectorBase<BocDateTimeValueControlObject>
   {
     public BocDateTimeValueSelector ()
-        : base ("BocDateTimeValue")
+        : base("BocDateTimeValue")
     {
     }
 

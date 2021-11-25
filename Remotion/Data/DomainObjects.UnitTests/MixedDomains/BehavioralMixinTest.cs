@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 
     [DBTable]
     [TestDomain]
-    [Uses (typeof (NullMixin))]
+    [Uses (typeof(NullMixin))]
     public class NestedDomainObject : DomainObject
     {
       public static NestedDomainObject NewObject ()

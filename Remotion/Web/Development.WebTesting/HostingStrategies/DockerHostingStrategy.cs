@@ -73,7 +73,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     /// <param name="properties">The configuration properties.</param>
     [UsedImplicitly]
     public DockerHostingStrategy ([NotNull] TestSiteLayoutConfiguration testSiteLayoutConfiguration, [NotNull] NameValueCollection properties)
-        : this (
+        : this(
             testSiteLayoutConfiguration,
             int.Parse(ArgumentUtility.CheckNotNull("properties", properties)["port"]!),
             properties["dockerImageName"]!,

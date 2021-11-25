@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void AccessingOriginalRelatedVirtualCollection_LoadsContentsForBothOriginalAndCurrentCollection ()
     {
-      Assert.That(_product.Properties[typeof (Product), "Reviews"].GetOriginalValue<IObjectList<ProductReview>>().IsDataComplete, Is.True);
+      Assert.That(_product.Properties[typeof(Product), "Reviews"].GetOriginalValue<IObjectList<ProductReview>>().IsDataComplete, Is.True);
       // Since the data had to be loaded for the original contents, it has also been loaded into the actual collection.
       Assert.That(_product.Reviews.IsDataComplete, Is.True);
     }

@@ -39,7 +39,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(TestAccessTypes.First, true);
 
-      bool hasAccess = _securityClient.HasStatelessAccess(typeof (SecurableObject), AccessType.Get(TestAccessTypes.First));
+      bool hasAccess = _securityClient.HasStatelessAccess(typeof(SecurableObject), AccessType.Get(TestAccessTypes.First));
 
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.EqualTo(true));
@@ -51,7 +51,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(TestAccessTypes.First, true);
 
       var securityPrincipal = _securityClient.PrincipalProvider.GetPrincipal();
-      bool hasAccess = _securityClient.HasStatelessAccess(typeof (SecurableObject), securityPrincipal, AccessType.Get(TestAccessTypes.First));
+      bool hasAccess = _securityClient.HasStatelessAccess(typeof(SecurableObject), securityPrincipal, AccessType.Get(TestAccessTypes.First));
 
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.EqualTo(true));
@@ -63,7 +63,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(TestAccessTypes.First, true);
 
       bool hasAccess = _securityClient.HasStatelessAccess(
-          typeof (SecurableObject),
+          typeof(SecurableObject),
           (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
@@ -76,7 +76,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(TestAccessTypes.First, false);
 
       bool hasAccess = _securityClient.HasStatelessAccess(
-          typeof (SecurableObject),
+          typeof(SecurableObject),
           (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
@@ -90,7 +90,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       using (SecurityFreeSection.Activate())
       {
         hasAccess = _securityClient.HasStatelessAccess(
-            typeof (SecurableObject),
+            typeof(SecurableObject),
             (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
       }
 

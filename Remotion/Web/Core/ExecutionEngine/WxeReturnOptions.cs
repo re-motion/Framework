@@ -36,12 +36,12 @@ namespace Remotion.Web.ExecutionEngine
     private readonly NameValueCollection? _callerUrlParameters;
 
     public WxeReturnOptions ()
-      : this (true, new NameValueCollection())
+      : this(true, new NameValueCollection())
     {
     }
 
     public WxeReturnOptions (NameValueCollection callerUrlParameters)
-      : this (true, ArgumentUtility.CheckNotNull("callerUrlParameters", callerUrlParameters))
+      : this(true, ArgumentUtility.CheckNotNull("callerUrlParameters", callerUrlParameters))
     {      
     }
 

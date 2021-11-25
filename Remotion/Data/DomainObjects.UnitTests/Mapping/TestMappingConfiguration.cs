@@ -93,10 +93,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public static ITypeDiscoveryService GetTypeDiscoveryService ()
     {
-      var mappingRootNamespace = typeof (TestMappingConfiguration).Namespace;
+      var mappingRootNamespace = typeof(TestMappingConfiguration).Namespace;
       var testMappingNamespace = mappingRootNamespace + ".TestDomain.Integration";
 
-      var rootAssemlbies = new[] { new RootAssembly(typeof (TestMappingConfiguration).Assembly, true) };
+      var rootAssemlbies = new[] { new RootAssembly(typeof(TestMappingConfiguration).Assembly, true) };
       var rootAssemblyFinder = new FixedRootAssemblyFinder(rootAssemlbies);
       var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
       var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));

@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
-        : base (classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
+        : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
     }
 
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       var oppositeClassDefinition = GetOppositeClassDefinition(classDefinitions);
       var oppositePropertyInfo = GetOppositePropertyInfo();
       if (oppositePropertyInfo == null)
-        return new PropertyNotFoundRelationEndPointDefinition(oppositeClassDefinition, BidirectionalRelationAttribute.OppositeProperty, typeof (void));
+        return new PropertyNotFoundRelationEndPointDefinition(oppositeClassDefinition, BidirectionalRelationAttribute.OppositeProperty, typeof(void));
       else
         return GetEndPointDefinition(oppositeClassDefinition, oppositePropertyInfo);
     }

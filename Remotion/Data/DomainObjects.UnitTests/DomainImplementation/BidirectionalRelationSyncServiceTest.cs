@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void IsSynchronized ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.OrderItem1, typeof (OrderItem), "Order");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.OrderItem1, typeof(OrderItem), "Order");
       var endPointStub = MockRepository.GenerateStub<IRelationEndPoint>();
       endPointStub.Stub(stub => stub.ID).Return(endPointID);
       endPointStub.Stub(stub => stub.Definition).Return(endPointID.Definition);
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void IsSynchronized_CalledFromSubTransaction_UsesRootTransaction ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.OrderItem1, typeof (OrderItem), "Order");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.OrderItem1, typeof(OrderItem), "Order");
       var endPointStub = MockRepository.GenerateStub<IRelationEndPoint>();
       endPointStub.Stub(stub => stub.ID).Return(endPointID);
       endPointStub.Stub(stub => stub.Definition).Return(endPointID.Definition);
@@ -82,14 +82,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void IsSynchronized_EndPointNotRegistered ()
     {
-      var result = BidirectionalRelationSyncService.IsSynchronized(_transaction, RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderTicket"));
+      var result = BidirectionalRelationSyncService.IsSynchronized(_transaction, RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket"));
       Assert.That(result, Is.Null);
     }
 
     [Test]
     public void IsSynchronized_EndPointReturnsNull ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
       var endPointStub = MockRepository.GenerateStub<IRelationEndPoint>();
       endPointStub.Stub(stub => stub.ID).Return(endPointID);
       endPointStub.Stub(stub => stub.Definition).Return(endPointID.Definition);
@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     public void IsSynchronized_UnidirectionalRelationEndPoint ()
     {
       Assert.That(
-          () => BidirectionalRelationSyncService.IsSynchronized(_transaction, RelationEndPointID.Create(DomainObjectIDs.Location1, typeof (Location), "Client")),
+          () => BidirectionalRelationSyncService.IsSynchronized(_transaction, RelationEndPointID.Create(DomainObjectIDs.Location1, typeof(Location), "Client")),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "BidirectionalRelationSyncService cannot be used with unidirectional relation end-points.", "endPointID"));
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void IsSynchronized_AnonymousRelationEndPoint ()
     {
-      var locationClientEndPoint = RelationEndPointID.Create(DomainObjectIDs.Location1, typeof (Location), "Client");
+      var locationClientEndPoint = RelationEndPointID.Create(DomainObjectIDs.Location1, typeof(Location), "Client");
       var oppositeEndPoint = RelationEndPointID.Create(DomainObjectIDs.Client1, locationClientEndPoint.Definition.GetOppositeEndPointDefinition());
       Assert.That(
           () => BidirectionalRelationSyncService.IsSynchronized(_transaction, oppositeEndPoint),
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void Synchronize ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
 
       var endPointMock = MockRepository.GenerateStrictMock<IRelationEndPoint>();
       endPointMock.Stub(stub => stub.ID).Return(endPointID);
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void Synchronize_InTransactionHierarchy_DescendsToSubTransactions ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
 
       var endPointMockInParent = MockRepository.GenerateStrictMock<IRelationEndPoint>();
       endPointMockInParent.Stub(stub => stub.ID).Return(endPointID);
@@ -171,7 +171,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void Synchronize_InTransactionHierarchy_StartsWithRoot ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
 
       var endPointMockInParent = MockRepository.GenerateStrictMock<IRelationEndPoint>();
       endPointMockInParent.Stub(stub => stub.ID).Return(endPointID);
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void Synchronize_InTransactionHierarchy_StopsWhenEndPointNotLoadedInSub ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
 
       var endPointMockInParent = MockRepository.GenerateStrictMock<IRelationEndPoint>();
       endPointMockInParent.Stub(stub => stub.ID).Return(endPointID);
@@ -219,7 +219,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void Synchronize_UnidirectionalEndpoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Location1, typeof (Location), "Client");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Location1, typeof(Location), "Client");
       Assert.That(
           () => BidirectionalRelationSyncService.Synchronize(_transaction, endPointID),
           Throws.ArgumentException
@@ -230,7 +230,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void Synchronize_AnonymousEndPoint ()
     {
-      var locationClientEndPoint = RelationEndPointID.Create(DomainObjectIDs.Location1, typeof (Location), "Client");
+      var locationClientEndPoint = RelationEndPointID.Create(DomainObjectIDs.Location1, typeof(Location), "Client");
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Client1, locationClientEndPoint.Definition.GetOppositeEndPointDefinition());
       Assert.That(
           () => BidirectionalRelationSyncService.Synchronize(_transaction, endPointID),
@@ -242,7 +242,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void Synchronize_EndPointNotRegistered ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.OrderItem1, typeof (OrderItem), "Order");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.OrderItem1, typeof(OrderItem), "Order");
       Assert.That(
           () => BidirectionalRelationSyncService.Synchronize(_transaction, endPointID),
           Throws.InvalidOperationException
@@ -254,7 +254,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void Synchronize_EndPointIncomplete ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
       var endPointStub = MockRepository.GenerateStub<IRelationEndPoint>();
       endPointStub.Stub(stub => stub.ID).Return(endPointID);
       endPointStub.Stub(stub => stub.Definition).Return(endPointID.Definition);

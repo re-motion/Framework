@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// mapping configuration.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (ITypeDefinitionProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor (typeof(ITypeDefinitionProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class TypeDefinitionProvider : ITypeDefinitionProvider
   {
     public ClassDefinition GetTypeDefinition (Type domainObjectType)

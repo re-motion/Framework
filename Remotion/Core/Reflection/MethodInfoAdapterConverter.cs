@@ -41,7 +41,7 @@ namespace Remotion.Reflection
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
       ArgumentUtility.CheckNotNull("sourceType", sourceType);
-      return sourceType == typeof (MethodInfo);
+      return sourceType == typeof(MethodInfo);
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace Remotion.Reflection
     public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
     {
       ArgumentUtility.CheckNotNull("destinationType", destinationType);
-      return destinationType == typeof (MethodInfo);
+      return destinationType == typeof(MethodInfo);
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ namespace Remotion.Reflection
       var methodInfo = value as MethodInfo;
       if (methodInfo == null)
       {
-        var message = string.Format("Cannot convert value from type '{0}' to type '{1}'.", value.GetType(), typeof (MethodInfoAdapter));
+        var message = string.Format("Cannot convert value from type '{0}' to type '{1}'.", value.GetType(), typeof(MethodInfoAdapter));
         throw new NotSupportedException(message);
       }
 
@@ -113,12 +113,12 @@ namespace Remotion.Reflection
     {
       ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
-      if (destinationType != typeof (MethodInfo))
+      if (destinationType != typeof(MethodInfo))
       {
         var message = string.Format(
             "Cannot convert values to type '{0}'. This converter only supports converting to type '{1}'.",
             destinationType,
-            typeof (MethodInfo));
+            typeof(MethodInfo));
         throw new NotSupportedException(message);
       }
 
@@ -132,7 +132,7 @@ namespace Remotion.Reflection
             "Cannot convert values of type '{0}' to type '{1}'. This converter only supports values of type '{2}'.",
             value.GetType(),
             destinationType,
-            typeof (MethodInfoAdapter));
+            typeof(MethodInfoAdapter));
         throw new NotSupportedException(message);
       }
 

@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     {
       var storageTypeInfo = _storageTypeInformationProvider.GetStorageTypeForSerializedObjectID(true);
       var columnDefinition = new ColumnDefinition(relationColumnName, storageTypeInfo, false);
-      return new SerializedObjectIDStoragePropertyDefinition(new SimpleStoragePropertyDefinition(typeof (ObjectID), columnDefinition));
+      return new SerializedObjectIDStoragePropertyDefinition(new SimpleStoragePropertyDefinition(typeof(ObjectID), columnDefinition));
     }
 
     private IRdbmsStoragePropertyDefinition CreateSameProviderRelationStoragePropertyDefinition (
@@ -124,13 +124,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         var storageTypeForClassID = _storageTypeInformationProvider.GetStorageTypeForClassID(true);
         var classIDColumnDefinition = new ColumnDefinition(relationClassIDColumnName, storageTypeForClassID, false);
         return new ObjectIDStoragePropertyDefinition(
-            new SimpleStoragePropertyDefinition(typeof (object), valueColumnDefinition),
-            new SimpleStoragePropertyDefinition(typeof (string), classIDColumnDefinition));
+            new SimpleStoragePropertyDefinition(typeof(object), valueColumnDefinition),
+            new SimpleStoragePropertyDefinition(typeof(string), classIDColumnDefinition));
       }
       else
       {
         return new ObjectIDWithoutClassIDStoragePropertyDefinition(
-            new SimpleStoragePropertyDefinition(typeof (object), valueColumnDefinition),
+            new SimpleStoragePropertyDefinition(typeof(object), valueColumnDefinition),
             relatedClassDefinition);
       }
     }

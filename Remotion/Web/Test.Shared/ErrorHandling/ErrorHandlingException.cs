@@ -21,7 +21,7 @@ namespace Remotion.Web.Test.Shared.ErrorHandling
   public class ErrorHandlingException : Exception
   {
     public ErrorHandlingException (string message, Exception innerException)
-        : base (message, innerException)
+        : base(message, innerException)
     {
     }
   }

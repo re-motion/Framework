@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
             string.Format(
                 "The storage entity definition of class '{0}' is not of type '{1}'.",
                 classDefinition.ID,
-                typeof (NonPersistentStorageEntity).Name));
+                typeof(NonPersistentStorageEntity).Name));
       }
 
       Assertion.IsNotNull(classDefinition.StorageEntityDefinition);
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
                   propertyDefinition.PropertyName,
                   classDefinition.ID,
                   propertyDefinition.StoragePropertyDefinition.GetType(),
-                  typeof (NonPersistentStorageProperty).Name));
+                  typeof(NonPersistentStorageProperty).Name));
         }
 
         Assertion.IsNotNull(propertyDefinition.StoragePropertyDefinition);

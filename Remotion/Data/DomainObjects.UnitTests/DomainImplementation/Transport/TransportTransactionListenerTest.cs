@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       _transporter.Load(DomainObjectIDs.Computer1);
 
       var source = (Computer) _transporter.GetTransportedObject(DomainObjectIDs.Computer1);
-      _listener.PropertyValueChanging(TestableClientTransaction, source, GetPropertyDefinition(typeof (Computer), "SerialNumber"), null, null);
+      _listener.PropertyValueChanging(TestableClientTransaction, source, GetPropertyDefinition(typeof(Computer), "SerialNumber"), null, null);
     }
 
     [Test]
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       var transportTransaction = _transporter.GetTransportedObject(DomainObjectIDs.Computer2).RootTransaction;
       var source = LifetimeService.GetObject(transportTransaction, DomainObjectIDs.Computer1, false);
       Assert.That(
-          () => _listener.PropertyValueChanging(TestableClientTransaction, source, GetPropertyDefinition(typeof (Computer), "SerialNumber"), null, null),
+          () => _listener.PropertyValueChanging(TestableClientTransaction, source, GetPropertyDefinition(typeof(Computer), "SerialNumber"), null, null),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "Object 'Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid' " 

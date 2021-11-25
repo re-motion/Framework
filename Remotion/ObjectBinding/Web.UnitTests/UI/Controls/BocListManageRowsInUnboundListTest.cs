@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _valuesAsIReadOnlyListStub.Setup(_ => _.Count).Returns(_values.Length);
       _valuesAsIReadOnlyListStub.Setup(_ => _[It.IsAny<int>()]).Returns((int i) => _values[i]);
 
-      _typeWithStringClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithString));
+      _typeWithStringClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(TypeWithString));
 
       _typeWithStringFirstValuePath = BusinessObjectPropertyPath.CreateStatic(_typeWithStringClass, "FirstValue");
       _typeWithStringSecondValuePath = BusinessObjectPropertyPath.CreateStatic(_typeWithStringClass, "SecondValue");

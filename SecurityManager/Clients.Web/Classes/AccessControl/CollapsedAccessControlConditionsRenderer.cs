@@ -49,7 +49,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     private IResourceManager ResourceManager
     {
-      get { return _globalizationService.GetResourceManager(typeof (ResourceIdentifier)); }
+      get { return _globalizationService.GetResourceManager(typeof(ResourceIdentifier)); }
     }
 
     private readonly AccessControlEntry _accessControlEntry;
@@ -262,7 +262,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     private IResourceUrl GetIconUrl (string url)
     {
-      return _resourceUrlFactory.CreateThemedResourceUrl(typeof (CollapsedAccessControlConditionsRenderer), ResourceType.Image, url);
+      return _resourceUrlFactory.CreateThemedResourceUrl(typeof(CollapsedAccessControlConditionsRenderer), ResourceType.Image, url);
     }
   }
 }

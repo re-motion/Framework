@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     private readonly MockRepository _mockRepository;
 
     public RhinoMocksRepositoryAdapter ()
-        : this (new MockRepository())
+        : this(new MockRepository())
     {
     }
 

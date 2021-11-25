@@ -30,7 +30,7 @@ namespace Remotion.SecurityManager.Configuration
     {
       _disableSpecificUserProperty = new ConfigurationProperty(
           "disableSpecificUser",
-          typeof (bool),
+          typeof(bool),
           false,
           ConfigurationPropertyOptions.None);
 

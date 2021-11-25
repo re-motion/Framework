@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     private readonly OrganizationalStructureFactory _factory;
 
     public OrganizationalStructureTestHelper ()
-      : this (ClientTransaction.CreateRootTransaction())
+      : this(ClientTransaction.CreateRootTransaction())
     {
     }
 

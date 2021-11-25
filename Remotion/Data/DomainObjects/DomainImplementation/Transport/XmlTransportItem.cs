@@ -200,7 +200,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
         case "null":
           return null;
         case "ObjectID":
-          return typeof (ObjectID);
+          return typeof(ObjectID);
         default:
           return TypeUtility.GetType(valueTypeAttribute, true);
       }
@@ -208,7 +208,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
      private static bool IsObjectID (Type valueType)
      {
-       return typeof (ObjectID).IsAssignableFrom(valueType);
+       return typeof(ObjectID).IsAssignableFrom(valueType);
      }
   }
 }

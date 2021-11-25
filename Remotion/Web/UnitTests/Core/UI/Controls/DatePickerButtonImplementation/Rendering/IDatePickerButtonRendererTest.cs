@@ -30,7 +30,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
       var factory = SafeServiceLocator.Current.GetInstance<IDatePickerButtonRenderer>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (DatePickerButtonRenderer)));
+      Assert.That(factory, Is.TypeOf(typeof(DatePickerButtonRenderer)));
     }
 
     [Test]

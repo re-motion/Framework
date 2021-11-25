@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public override void SetUp ()
     {
       base.SetUp();
-      _definition = DomainObjectIDs.OrderTicket1.ClassDefinition.GetRelationEndPointDefinition(typeof (OrderTicket).FullName + ".Order");
+      _definition = DomainObjectIDs.OrderTicket1.ClassDefinition.GetRelationEndPointDefinition(typeof(OrderTicket).FullName + ".Order");
       _nullEndPoint = new NullObjectEndPoint(TestableClientTransaction, _definition);
     }
 

@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       : WebFormsControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsDisabledState, IControlObjectWithText
   {
     public TextBoxControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

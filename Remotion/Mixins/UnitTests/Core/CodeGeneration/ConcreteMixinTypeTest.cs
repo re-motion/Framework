@@ -35,14 +35,14 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [SetUp]
     public void SetUp ()
     {
-      var identifier = new ConcreteMixinTypeIdentifier(typeof (object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
+      var identifier = new ConcreteMixinTypeIdentifier(typeof(object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
       _nonPublicMethod = ReflectionObjectMother.GetSomeNonPublicMethod();
       _publicMethod = ReflectionObjectMother.GetSomePublicMethod();
       _wrapperOrInterfaceMethod = ReflectionObjectMother.GetSomeMethod();
       _concreteMixinType = new ConcreteMixinType(
           identifier, 
-          typeof (object),
-          typeof (IServiceProvider),
+          typeof(object),
+          typeof(IServiceProvider),
           new Dictionary<MethodInfo, MethodInfo> { { _nonPublicMethod, _wrapperOrInterfaceMethod } },
           new Dictionary<MethodInfo, MethodInfo> { { _nonPublicMethod, _wrapperOrInterfaceMethod } });
     }
@@ -62,7 +62,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [Test]
     public void GetPubliclyCallableMixinMethod_NotFound ()
     {
-      var method = typeof (StringBuilder).GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance);
+      var method = typeof(StringBuilder).GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.That(
           () => _concreteMixinType.GetPubliclyCallableMixinMethod(method),
           Throws.InstanceOf<KeyNotFoundException>()
@@ -79,7 +79,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [Test]
     public void GetOverrideInterfaceMethod_NotFound ()
     {
-      var method = typeof (object).GetMethod("ToString");
+      var method = typeof(object).GetMethod("ToString");
       Assert.That(
           () => _concreteMixinType.GetOverrideInterfaceMethod(method),
           Throws.InstanceOf<KeyNotFoundException>()

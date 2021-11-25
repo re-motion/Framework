@@ -92,14 +92,14 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       get { return _listOfTForValueType.AsReadOnly(); }
     }
 
-    [ItemType (typeof (SimpleReferenceType))]
+    [ItemType (typeof(SimpleReferenceType))]
     public ArrayList ArrayList
     {
       get { return _arrayList; }
     }
 
     [ObjectBinding (ReadOnly = true)]
-    [ItemType (typeof (SimpleReferenceType))]
+    [ItemType (typeof(SimpleReferenceType))]
     public ArrayList ReadOnlyArrayList
     {
       get { return _readOnlyArrayList; }

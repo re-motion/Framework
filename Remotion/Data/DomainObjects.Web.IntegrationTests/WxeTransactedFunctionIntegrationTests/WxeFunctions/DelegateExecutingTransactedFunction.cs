@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
   {
     public DelegateExecutingTransactedFunction (
         ITransactionMode transactionMode, Action<WxeContext, DelegateExecutingTransactedFunction> testDelegate, params object[] actualParameters)
-        : base (transactionMode, actualParameters)
+        : base(transactionMode, actualParameters)
     {
       Assertion.IsFalse(TransactionMode.AutoCommit);
 

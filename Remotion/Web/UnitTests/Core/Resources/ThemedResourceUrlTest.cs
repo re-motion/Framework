@@ -28,10 +28,10 @@ namespace Remotion.Web.UnitTests.Core.Resources
     public void GetUrl_NovaGray ()
     {
       var resourceUrlBuilderStub = new Mock<IResourcePathBuilder>();
-      var resourceUrl = new ThemedResourceUrl(resourceUrlBuilderStub.Object, typeof (ResourceUrlTest), ResourceType.Html, new ResourceTheme.NovaGray(), "theRelativeUrl.js");
+      var resourceUrl = new ThemedResourceUrl(resourceUrlBuilderStub.Object, typeof(ResourceUrlTest), ResourceType.Html, new ResourceTheme.NovaGray(), "theRelativeUrl.js");
 
       resourceUrlBuilderStub
-          .Setup(_ => _.BuildAbsolutePath(typeof (ResourceUrlTest).Assembly, new[] { "Themes", "NovaGray", "Html", "theRelativeUrl.js" }))
+          .Setup(_ => _.BuildAbsolutePath(typeof(ResourceUrlTest).Assembly, new[] { "Themes", "NovaGray", "Html", "theRelativeUrl.js" }))
           .Returns("expectedUrl");
 
       Assert.That(resourceUrl.GetUrl(), Is.EqualTo("expectedUrl"));
@@ -41,10 +41,10 @@ namespace Remotion.Web.UnitTests.Core.Resources
     public void GetUrl_NovaViso ()
     {
       var resourceUrlBuilderStub = new Mock<IResourcePathBuilder>();
-      var resourceUrl = new ThemedResourceUrl(resourceUrlBuilderStub.Object, typeof (ResourceUrlTest), ResourceType.Html, new ResourceTheme.NovaViso(), "theRelativeUrl.js");
+      var resourceUrl = new ThemedResourceUrl(resourceUrlBuilderStub.Object, typeof(ResourceUrlTest), ResourceType.Html, new ResourceTheme.NovaViso(), "theRelativeUrl.js");
 
       resourceUrlBuilderStub
-          .Setup(_ => _.BuildAbsolutePath(typeof (ResourceUrlTest).Assembly, new[] { "Themes", "NovaViso", "Html", "theRelativeUrl.js" }))
+          .Setup(_ => _.BuildAbsolutePath(typeof(ResourceUrlTest).Assembly, new[] { "Themes", "NovaViso", "Html", "theRelativeUrl.js" }))
           .Returns("expectedUrl");
 
       Assert.That(resourceUrl.GetUrl(), Is.EqualTo("expectedUrl"));

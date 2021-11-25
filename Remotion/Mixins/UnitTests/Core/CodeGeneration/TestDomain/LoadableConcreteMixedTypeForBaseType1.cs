@@ -23,12 +23,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
   [ConcreteMixedType (
       new object[] 
       {
-        typeof (BaseType1), 
+        typeof(BaseType1), 
         new object[] 
         { 
           new object[] 
           {
-              typeof (BT1Mixin1), 
+              typeof(BT1Mixin1), 
               MixinKind.Used, 
               MemberVisibility.Private, 
               new Type[0],
@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
         }, 
         new Type[0] 
       }, 
-      new[] { typeof (BT1Mixin1) })]
+      new[] { typeof(BT1Mixin1) })]
   public class LoadableConcreteMixedTypeForBaseType1
   { }
 }

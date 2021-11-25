@@ -29,7 +29,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
     private readonly IMethodEmitter _methodEmitter;
 
     public ExpressionReference (Type referenceType, Expression expression, IMethodEmitter methodEmitter)
-        : base (ArgumentUtility.CheckNotNull("referenceType", referenceType))
+        : base(ArgumentUtility.CheckNotNull("referenceType", referenceType))
     {
       ArgumentUtility.CheckNotNull("expression", expression);
       ArgumentUtility.CheckNotNull("methodEmitter", methodEmitter);

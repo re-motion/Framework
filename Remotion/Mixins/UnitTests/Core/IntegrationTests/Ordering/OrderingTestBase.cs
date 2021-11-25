@@ -54,7 +54,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
 
     protected T BuildMixedInstanceWithDeclarativeConfiguration<T> (params Type[] additionalAnalyzedTypes)
     {
-      var mixinConfiguration = DeclarativeConfigurationBuilder.BuildConfigurationFromTypes(null, additionalAnalyzedTypes.Concat(typeof (OrderingViaAttributeDependencyTest.C)));
+      var mixinConfiguration = DeclarativeConfigurationBuilder.BuildConfigurationFromTypes(null, additionalAnalyzedTypes.Concat(typeof(OrderingViaAttributeDependencyTest.C)));
       using (mixinConfiguration.EnterScope())
       {
         return ObjectFactory.Create<T>();

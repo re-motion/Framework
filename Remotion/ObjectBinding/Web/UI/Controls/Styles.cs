@@ -81,7 +81,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Description ("Automatically postback to the server after the text is modified.")]
     [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     [NotifyParentProperty (true)]
     public bool? AutoPostBack
     {
@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Description ("The number of visible rows to display.")]
     [Category ("Appearance")]
-    [DefaultValue (typeof (int?), "")]
+    [DefaultValue (typeof(int?), "")]
     [NotifyParentProperty (true)]
     public int? ListBoxRows
     {
@@ -101,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Description ("The padding between each item.")]
     [Category ("Layout")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     [NotifyParentProperty (true)]
     public int? RadioButtonListCellPadding
     {
@@ -111,7 +111,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Description ("The spacing between each item.")]
     [Category ("Layout")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     [NotifyParentProperty (true)]
     public int? RadioButtonListCellSpacing
     {
@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Description ("The number of columns to use to lay out the items.")]
     [Category ("Layout")]
-    [DefaultValue (typeof (int?), "")]
+    [DefaultValue (typeof(int?), "")]
     [NotifyParentProperty (true)]
     public int? RadioButtonListRepeatColumns
     {
@@ -265,7 +265,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Description ("Automatically postback to the server after the text is modified.")]
     [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     [NotifyParentProperty (true)]
     public bool? AutoPostBack
     {
@@ -340,7 +340,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Description ("The width of the textbox in characters.")]
     [Category ("Appearance")]
-    [DefaultValue (typeof (int?), "")]
+    [DefaultValue (typeof(int?), "")]
     [NotifyParentProperty (true)]
     public int? Columns
     {
@@ -350,7 +350,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Description ("The maximum number of characters that can be entered.")]
     [Category ("Behavior")]
-    [DefaultValue (typeof (int?), "")]
+    [DefaultValue (typeof(int?), "")]
     [NotifyParentProperty (true)]
     public int? MaxLength
     {
@@ -360,7 +360,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Description ("Whether the text in the control can be changed or not.")]
     [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     [NotifyParentProperty (true)]
     public bool? ReadOnly
     {
@@ -370,7 +370,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Description ("Automatically postback to the server after the text is modified.")]
     [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     [NotifyParentProperty (true)]
     public bool? AutoPostBack
     {
@@ -382,7 +382,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         "Whether the text in the control can exceed its max length during input. If true, MaxLength is only used for validation after the input is completed."
         )]
     [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     [NotifyParentProperty (true)]
     public bool? CheckClientSideMaxLength
     {
@@ -397,7 +397,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class TextBoxStyle : SingleRowTextBoxStyle
   {
     private const string c_scriptFileUrl = "TextBoxStyle.js";
-    private static readonly string s_scriptFileKey = typeof (TextBoxStyle).GetFullNameChecked() + "_Script";
+    private static readonly string s_scriptFileKey = typeof(TextBoxStyle).GetFullNameChecked() + "_Script";
 
     private int? _rows;
     private BocTextBoxMode _textMode;
@@ -411,7 +411,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     public TextBoxStyle ()
-        : this (BocTextBoxMode.SingleLine)
+        : this(BocTextBoxMode.SingleLine)
     {
     }
 
@@ -454,7 +454,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      var scriptUrl = resourceUrlFactory.CreateResourceUrl(typeof (TextBoxStyle), ResourceType.Html, c_scriptFileUrl);
+      var scriptUrl = resourceUrlFactory.CreateResourceUrl(typeof(TextBoxStyle), ResourceType.Html, c_scriptFileUrl);
       htmlHeadAppender.RegisterJavaScriptInclude(s_scriptFileKey, scriptUrl);
     }
 
@@ -472,7 +472,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Description ("The number of lines to display for a multiline textbox.")]
     [Category ("Behavior")]
-    [DefaultValue (typeof (int?), "")]
+    [DefaultValue (typeof(int?), "")]
     [NotifyParentProperty (true)]
     public int? Rows
     {
@@ -503,7 +503,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     [Description ("Gets or sets a value indicating whether the text should be wrapped in edit mode.")]
     [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     [NotifyParentProperty (true)]
     public bool? Wrap
     {

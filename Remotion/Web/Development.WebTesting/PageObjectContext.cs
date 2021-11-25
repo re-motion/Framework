@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] IRequestErrorDetectionStrategy requestErrorDetectionStrategy,
         [NotNull] ElementScope scope,
         [CanBeNull] PageObjectContext? parentContext)
-        : base (scope)
+        : base(scope)
     {
       ArgumentUtility.CheckNotNull("browser", browser);
       ArgumentUtility.CheckNotNull("window", window);

@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     public DateTime Timestamp { get; }
 
     public BrowserLogEntry ([NotNull] LogEntry logEntry)
-        : this (logEntry.Level, logEntry.Message, logEntry.Timestamp)
+        : this(logEntry.Level, logEntry.Message, logEntry.Timestamp)
     {
       ArgumentUtility.CheckNotNull("logEntry", logEntry);
     }

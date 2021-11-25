@@ -58,10 +58,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       ArgumentUtility.CheckNotNull("args", args);
 
       var result = executor.ExecuteScript(statement, args);
-      if (result == null && !NullableTypeUtility.IsNullableType(typeof (T)))
+      if (result == null && !NullableTypeUtility.IsNullableType(typeof(T)))
       {
         throw new InvalidOperationException(
-            string.Format("The JavaScript statement returned null which is incompatible with the specified type '{0}'.", typeof (T).Name));
+            string.Format("The JavaScript statement returned null which is incompatible with the specified type '{0}'.", typeof(T).Name));
       }
 
       return (T?) result;

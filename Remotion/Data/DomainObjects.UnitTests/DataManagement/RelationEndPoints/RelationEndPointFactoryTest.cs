@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateRealObjectEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "Customer");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
       var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
       
       var endPoint = _factory.CreateRealObjectEndPoint(endPointID, dataContainer);
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateRealObjectEndPoint_NonRealEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
       var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
 
       Assert.That(
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateVirtualObjectEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
 
       var endPoint = _factory.CreateVirtualObjectEndPoint(endPointID);
 
@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateVirtualObjectEndPoint_NonVirtualEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "Customer");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
 
       Assert.That(
           () => _factory.CreateVirtualObjectEndPoint(endPointID), 
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateVirtualObjectEndPoint_NonObjectEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
 
       Assert.That(
           () => _factory.CreateVirtualObjectEndPoint(endPointID),
@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateVirtualCollectionEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Product1, typeof (Product), "Reviews");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Product1, typeof(Product), "Reviews");
 
       var endPoint = _factory.CreateVirtualCollectionEndPoint(endPointID);
 
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateVirtualCollectionEndPoint_NonCollectionEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "Customer");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
 
       Assert.That(
           () => _factory.CreateVirtualCollectionEndPoint(endPointID),
@@ -202,7 +202,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateDomainObjectCollectionEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
 
       var endPoint = _factory.CreateDomainObjectCollectionEndPoint(endPointID);
 
@@ -224,7 +224,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateDomainObjectCollectionEndPoint_NonCollectionEndPoint ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "Customer");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
 
       Assert.That(
           () => _factory.CreateDomainObjectCollectionEndPoint(endPointID),

@@ -8,9 +8,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
   public class OverrideTarget_ForTargetClassWithNonVirtualMethod
   {
     [Test]
-    [TestCase (typeof (MixinWithImplicitTargetSpecification))]
-    [TestCase (typeof (MixinWithoutTargetSpecification))]
-    [TestCase (typeof (MixinWithExplicitTargetSpecification), IgnoreReason = "RM-2745")]
+    [TestCase (typeof(MixinWithImplicitTargetSpecification))]
+    [TestCase (typeof(MixinWithoutTargetSpecification))]
+    [TestCase (typeof(MixinWithExplicitTargetSpecification), IgnoreReason = "RM-2745")]
     public void InstantiateTargetTypeWithNonVirtualMethod_ShouldThrowValidationException (Type mixinType)
     {
       using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
@@ -27,9 +27,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     }
 
     [Test]
-    [TestCase (typeof (MixinWithImplicitTargetSpecification))]
-    [TestCase (typeof (MixinWithoutTargetSpecification))]
-    [TestCase (typeof (MixinWithExplicitTargetSpecification), IgnoreReason = "RM-2745")]
+    [TestCase (typeof(MixinWithImplicitTargetSpecification))]
+    [TestCase (typeof(MixinWithoutTargetSpecification))]
+    [TestCase (typeof(MixinWithExplicitTargetSpecification), IgnoreReason = "RM-2745")]
     public void InstantiateDerivedType_ShouldThrowValidationException (Type mixinType)
     {
       using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
@@ -47,9 +47,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
 
     [Test]
     [Ignore ("RM-2745")]
-    [TestCase (typeof (MixinWithImplicitTargetSpecification))]
-    [TestCase (typeof (MixinWithoutTargetSpecification))]
-    [TestCase (typeof (MixinWithExplicitTargetSpecification))]
+    [TestCase (typeof(MixinWithImplicitTargetSpecification))]
+    [TestCase (typeof(MixinWithoutTargetSpecification))]
+    [TestCase (typeof(MixinWithExplicitTargetSpecification))]
     public void InstantiateShadowOfTargetTypeWithNonVirtualMethod_ShouldThrowValidationException (Type mixinType)
     {
       using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
@@ -67,9 +67,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
 
     [Test]
     [Ignore ("RM-2745")]
-    [TestCase (typeof (MixinWithImplicitTargetSpecification))]
-    [TestCase (typeof (MixinWithoutTargetSpecification))]
-    [TestCase (typeof (MixinWithExplicitTargetSpecification))]
+    [TestCase (typeof(MixinWithImplicitTargetSpecification))]
+    [TestCase (typeof(MixinWithoutTargetSpecification))]
+    [TestCase (typeof(MixinWithExplicitTargetSpecification))]
     public void InstantiateShadowOfDerivedType_ShouldThrowValidationException (Type mixinType)
     {
       using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())

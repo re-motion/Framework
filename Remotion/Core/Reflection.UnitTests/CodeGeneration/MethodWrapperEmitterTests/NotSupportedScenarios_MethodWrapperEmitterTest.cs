@@ -33,17 +33,17 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     public override void SetUp ()
     {
       base.SetUp();
-      _fakeILGenerator = (ILGenerator) FormatterServices.GetSafeUninitializedObject(typeof (ILGenerator));
+      _fakeILGenerator = (ILGenerator) FormatterServices.GetSafeUninitializedObject(typeof(ILGenerator));
     }
 
     [Test]
     public void EmitMethodBody_OutParameter ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithOutParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (void);
-      Type[] parameterTypes = new[] { typeof (object), typeof (object).MakeByRefType() };
+      Type returnType = typeof(void);
+      Type[] parameterTypes = new[] { typeof(object), typeof(object).MakeByRefType() };
       Assert.That(
           () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
@@ -55,11 +55,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_ByRefParameter ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithByRefParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (void);
-      Type[] parameterTypes = new[] { typeof (object), typeof (object).MakeByRefType() };
+      Type returnType = typeof(void);
+      Type[] parameterTypes = new[] { typeof(object), typeof(object).MakeByRefType() };
       Assert.That(
           () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
@@ -71,11 +71,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_OptionalParameter ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("InstanceMethodWithOptionalParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (void);
-      Type[] parameterTypes = new[] { typeof (object), typeof (object) };
+      Type returnType = typeof(void);
+      Type[] parameterTypes = new[] { typeof(object), typeof(object) };
       Assert.That(
           () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException
@@ -87,11 +87,11 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [Test]
     public void EmitMethodBody_OpenGeneric ()
     {
-      Type declaringType = typeof (ClassWithMethods);
+      Type declaringType = typeof(ClassWithMethods);
       var methodInfo = declaringType.GetMethod("GenericInstanceMethod", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (object);
-      Type[] parameterTypes = new[] { typeof (object), typeof (object) };
+      Type returnType = typeof(object);
+      Type[] parameterTypes = new[] { typeof(object), typeof(object) };
       Assert.That(
           () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
           Throws.ArgumentException

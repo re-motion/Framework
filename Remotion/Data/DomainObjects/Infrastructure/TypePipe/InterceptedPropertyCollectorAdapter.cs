@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// Implements <see cref="IInterceptedPropertyFinder"/> by delegating to a new instance of <see cref="InterceptedPropertyCollector"/>.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IInterceptedPropertyFinder), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor (typeof(IInterceptedPropertyFinder), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class InterceptedPropertyCollectorAdapter : IInterceptedPropertyFinder
   {
     private static readonly IRelatedMethodFinder s_relatedMethodFinder = new RelatedMethodFinder();
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     public IEnumerable<IAccessorInterceptor> GetPropertyInterceptors (ClassDefinition classDefinition, Type concreteBaseType)
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("concreteBaseType", concreteBaseType, typeof (DomainObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("concreteBaseType", concreteBaseType, typeof(DomainObject));
 
       var properties = new InterceptedPropertyCollector(classDefinition, _typeConversionProvider).GetProperties();
 

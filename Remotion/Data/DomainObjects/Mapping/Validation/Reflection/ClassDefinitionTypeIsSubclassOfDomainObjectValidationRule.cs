@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
             "Type '{0}' of class '{1}' is not assignable to '{2}'.",
             classDefinition.ClassType.Name,
             classDefinition.ID,
-            typeof (DomainObject).Name);
+            typeof(DomainObject).Name);
       }
       return MappingValidationResult.CreateValidResult();
     }

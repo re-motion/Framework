@@ -106,7 +106,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       var dateTimeFormatter = new DateTimeFormatter();
       _control.Setup(stub => stub.DateTimeFormatter).Returns(dateTimeFormatter);
 
-      _resourceManager = GlobalizationService.GetResourceManager(typeof (BocDateTimeValue.ResourceIdentifier));
+      _resourceManager = GlobalizationService.GetResourceManager(typeof(BocDateTimeValue.ResourceIdentifier));
       _control.Setup(list => list.GetResourceManager()).Returns(_resourceManager);
 
       _dateTextBox = new StubTextBox();

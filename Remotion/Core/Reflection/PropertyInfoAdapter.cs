@@ -31,7 +31,7 @@ namespace Remotion.Reflection
   /// <summary>
   /// Implements the <see cref="IPropertyInformation"/> interface to wrap a <see cref="PropertyInfo"/> instance.
   /// </summary>
-  [TypeConverter (typeof (PropertyInfoAdapterConverter))]
+  [TypeConverter (typeof(PropertyInfoAdapterConverter))]
   public sealed class PropertyInfoAdapter : IPropertyInformation
   {
     private static readonly ConcurrentDictionary<PropertyInfo, PropertyInfoAdapter> s_dataStore =

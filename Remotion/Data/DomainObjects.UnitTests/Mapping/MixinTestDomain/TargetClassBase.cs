@@ -19,7 +19,7 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain
 {
-  [Uses (typeof (MixinBase))]
+  [Uses (typeof(MixinBase))]
   public abstract class TargetClassBase : DomainObject
   {
     public abstract int P0 { get; }

@@ -44,22 +44,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocListControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (DisabledTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (ReadOnlyTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (LabelTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (ValidationErrorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof(DisabledTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof(ReadOnlyTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof(LabelTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof(ValidationErrorTestCaseFactory<BocListSelector, BocListControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocListSelector, BocListControlObject> testAction)
     {
       testAction(Helper, e => e.Lists(), "list");
     }
 
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof(HtmlIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof(IndexControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof(LocalIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof(FirstControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof(SingleControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof(DomainPropertyControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource (typeof(DisplayNameControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocListSelector, BocListControlObject> testAction)
     {
       testAction(Helper, e => e.Lists(), "list");
@@ -1752,7 +1752,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     private class DerivedBocListControlObject : BocListControlObject
     {
       public DerivedBocListControlObject (ControlObjectContext context)
-          : base (context)
+          : base(context)
       {
       }
     }
@@ -1761,7 +1761,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
         where TBocListRowControlObject : BocListRowControlObject
     {
       public DerivedBocListControlObject (ControlObjectContext context)
-          : base (context)
+          : base(context)
       {
       }
     }
@@ -1769,7 +1769,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     private class DerivedBocListRowControlObject : BocListRowControlObject
     {
       public DerivedBocListRowControlObject (IBocListRowControlObjectHostAccessor accessor, ControlObjectContext context)
-          : base (accessor, context)
+          : base(accessor, context)
       {
       }
     }
@@ -1782,7 +1782,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotBocList (
           IFluentScreenshotElementWithCovariance<TList> fluentList,
           IFluentScreenshotElement<ElementScope> fluentElement)
-          : base (fluentList, fluentElement)
+          : base(fluentList, fluentElement)
       {
       }
     }
@@ -1795,7 +1795,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotBocListTableContainer (
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           IFluentScreenshotElement<ElementScope> fluentElement)
-          : base (fluentList, fluentElement)
+          : base(fluentList, fluentElement)
       {
       }
     }
@@ -1808,7 +1808,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotBocListHeaderRow (
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           IFluentScreenshotElement<ElementScope> fluentElement)
-          : base (fluentList, fluentElement)
+          : base(fluentList, fluentElement)
       {
       }
     }
@@ -1821,7 +1821,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotBocListRow (
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           IFluentScreenshotElement<TRow> fluentRow)
-          : base (fluentList, fluentRow)
+          : base(fluentList, fluentRow)
       {
       }
     }
@@ -1835,7 +1835,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           int columnIndex,
           bool includeHeader)
-          : base (fluentList, columnIndex, includeHeader)
+          : base(fluentList, columnIndex, includeHeader)
       {
       }
     }
@@ -1848,7 +1848,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotBocListNavigator (
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           IFluentScreenshotElement<ElementScope> fluentElement)
-          : base (fluentList, fluentElement)
+          : base(fluentList, fluentElement)
       {
       }
     }
@@ -1861,7 +1861,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotBocListMenuBlock (
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           IFluentScreenshotElement<ElementScope> fluentElement)
-          : base (fluentList, fluentElement)
+          : base(fluentList, fluentElement)
       {
       }
     }
@@ -1874,7 +1874,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotBocListDropDown (
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           IFluentScreenshotElement<ElementScope> fluentElement)
-          : base (fluentList, fluentElement)
+          : base(fluentList, fluentElement)
       {
       }
     }

@@ -62,13 +62,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       _queryStub = MockRepository.GenerateStub<IQuery>();
     
-      _orderNumberPropertyDefinition = GetPropertyDefinition(typeof (Order), "OrderNumber");
-      _fileNamePropertyDefinition = GetPropertyDefinition(typeof (OrderTicket), "FileName");
-      _productPropertyDefinition = GetPropertyDefinition(typeof (OrderItem), "Product");
+      _orderNumberPropertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
+      _fileNamePropertyDefinition = GetPropertyDefinition(typeof(OrderTicket), "FileName");
+      _productPropertyDefinition = GetPropertyDefinition(typeof(OrderItem), "Product");
 
-      _virtualObjectRelationEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetEndPointDefinition(typeof (Order), "OrderTicket"));
-      _collectionEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetEndPointDefinition(typeof (Order), "OrderItems"));
-      _nonVirtualEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetEndPointDefinition(typeof (Order), "Customer"));
+      _virtualObjectRelationEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetEndPointDefinition(typeof(Order), "OrderTicket"));
+      _collectionEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetEndPointDefinition(typeof(Order), "OrderItems"));
+      _nonVirtualEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetEndPointDefinition(typeof(Order), "Customer"));
       
       _alreadyLoadedObjectDataProviderMock = MockRepository.GenerateStrictMock<ILoadedObjectDataProvider>();
     }
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     [Test]
     public void CreateNewObjectID ()
     {
-      var classDefinition = GetTypeDefinition(typeof (Order));
+      var classDefinition = GetTypeDefinition(typeof(Order));
       var fakeResult = DomainObjectIDs.Order1;
 
       _parentTransactionContextMock
@@ -456,7 +456,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     {
       var persistableData = CreatePersistableDataForExistingOrder();
       persistableData.DataContainer.SetTimestamp(1676);
-      SetPropertyValue(persistableData.DataContainer, typeof (Order), "OrderNumber", 12);
+      SetPropertyValue(persistableData.DataContainer, typeof(Order), "OrderNumber", 12);
       Assert.That(persistableData.DataContainer.State.IsChanged, Is.True);
 
       _parentTransactionContextMock.Expect(mock => mock.UnlockParentTransaction()).Return(_unlockedParentTransactionContextMock);
@@ -473,7 +473,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .WhenCalled(mi => 
           {
             Assert.That(parentDataContainer.Timestamp, Is.EqualTo(1676), "ParentDataContainer must be changed prior to Dispose.");
-            Assert.That(GetPropertyValue(parentDataContainer, typeof (Order), "OrderNumber"), Is.EqualTo(12));
+            Assert.That(GetPropertyValue(parentDataContainer, typeof(Order), "OrderNumber"), Is.EqualTo(12));
             Assert.That(parentDataContainer.State.IsChanged, Is.True);
             Assert.That(parentDataContainer.HasBeenMarkedChanged, Is.False); 
           });
@@ -499,7 +499,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Return(unchangedParentDataContainer);
 
       var changedParentDataContainer = DataContainerObjectMother.CreateExisting(persistableData2.DomainObject);
-      SetPropertyValue(changedParentDataContainer, typeof (Order), "OrderNumber", 23);
+      SetPropertyValue(changedParentDataContainer, typeof(Order), "OrderNumber", 23);
       _parentTransactionContextMock
           .Expect(mock => mock.GetDataContainerWithoutLoading(persistableData2.DomainObject.ID))
           .Return(changedParentDataContainer);
@@ -576,7 +576,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Order>();
       var persistedDataContainer = DataContainerObjectMother.CreateNew(domainObject);
-      SetPropertyValue(persistedDataContainer, typeof (Order), "OrderNumber", 12);
+      SetPropertyValue(persistedDataContainer, typeof(Order), "OrderNumber", 12);
       var persistedEndPoint = RelationEndPointObjectMother.CreateStub();
       persistedEndPoint.Stub(stub => stub.HasChanged).Return(true);
       var persistableData = new PersistableData(

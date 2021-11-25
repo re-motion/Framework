@@ -40,14 +40,14 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     public void SetUp ()
     {
       _filter = new OverriddenMemberFilter();
-      _overriddenMethod = typeof (DerivedWithNewVirtualMembers).GetMethod("Method");
-      _overridingMethod1 = typeof (DerivedDerivedWithOverrides).GetMethod("Method");
-      _overridingMethod2 = typeof (DerivedDerivedDerivedWithOverrides).GetMethod("Method");
-      _overriddenProperty = typeof (DerivedWithNewVirtualMembers).GetProperty("Property");
-      _overridingPropertyWithGetAndSet = typeof (DerivedDerivedWithOverrides).GetProperty("Property");
-      _overridingPropertyWithGetOnly = typeof (DerivedDerivedWithGetOnlyOverride).GetProperty("Property");
-      _overridingPropertyWithSetOnly = typeof (DerivedDerivedDerivedWithSetOnlyOverride).GetProperty("Property");
-      _overridingPropertyWithGetAndSetAfterSingleOverrides = typeof (DerivedDerivedDerivedDerivedWithGetSetOverride).GetProperty("Property");
+      _overriddenMethod = typeof(DerivedWithNewVirtualMembers).GetMethod("Method");
+      _overridingMethod1 = typeof(DerivedDerivedWithOverrides).GetMethod("Method");
+      _overridingMethod2 = typeof(DerivedDerivedDerivedWithOverrides).GetMethod("Method");
+      _overriddenProperty = typeof(DerivedWithNewVirtualMembers).GetProperty("Property");
+      _overridingPropertyWithGetAndSet = typeof(DerivedDerivedWithOverrides).GetProperty("Property");
+      _overridingPropertyWithGetOnly = typeof(DerivedDerivedWithGetOnlyOverride).GetProperty("Property");
+      _overridingPropertyWithSetOnly = typeof(DerivedDerivedDerivedWithSetOnlyOverride).GetProperty("Property");
+      _overridingPropertyWithGetAndSetAfterSingleOverrides = typeof(DerivedDerivedDerivedDerivedWithGetSetOverride).GetProperty("Property");
     }
 
     [Test]

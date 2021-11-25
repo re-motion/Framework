@@ -67,7 +67,7 @@ namespace Remotion.Configuration.TypeDiscovery
     /// </summary>
     public TypeDiscoveryConfiguration ()
     {
-      var xmlnsProperty = new ConfigurationProperty("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
+      var xmlnsProperty = new ConfigurationProperty("xmlns", typeof(string), null, ConfigurationPropertyOptions.None);
       Properties.Add(xmlnsProperty);
     }
 

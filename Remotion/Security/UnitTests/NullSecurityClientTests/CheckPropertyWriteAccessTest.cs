@@ -37,7 +37,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       _testHelper = NullSecurityClientTestHelper.CreateForStatefulSecurity();
       _securityClient = _testHelper.CreateSecurityClient();
-      _propertyInfo = typeof (SecurableObject).GetProperty("IsVisible");
+      _propertyInfo = typeof(SecurableObject).GetProperty("IsVisible");
       _propertyInformation = new Mock<IPropertyInformation>();
       _methodInformation = new Mock<IMethodInformation>();
       _propertyInformation.Setup(mock => mock.GetSetMethod(true)).Returns(_methodInformation.Object).Verifiable();

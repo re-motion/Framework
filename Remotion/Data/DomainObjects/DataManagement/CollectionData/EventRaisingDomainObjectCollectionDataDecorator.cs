@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     private readonly IDomainObjectCollectionEventRaiser _eventRaiser;
 
     public EventRaisingDomainObjectCollectionDataDecorator (IDomainObjectCollectionEventRaiser eventRaiser, IDomainObjectCollectionData wrappedData)
-      : base (wrappedData)
+      : base(wrappedData)
     {
       ArgumentUtility.CheckNotNull("eventRaiser", eventRaiser);
       _eventRaiser = eventRaiser;

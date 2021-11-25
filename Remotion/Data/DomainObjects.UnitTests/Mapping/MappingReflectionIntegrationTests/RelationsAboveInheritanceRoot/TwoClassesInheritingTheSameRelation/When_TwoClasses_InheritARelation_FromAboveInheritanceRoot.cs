@@ -30,17 +30,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     {
       base.SetUp();
 
-      _derivedClass1 = TypeDefinitions[typeof (DerivedInheritanceRootClass1)];
-      _derivedClass2 = TypeDefinitions[typeof (DerivedInheritanceRootClass2)];
+      _derivedClass1 = TypeDefinitions[typeof(DerivedInheritanceRootClass1)];
+      _derivedClass2 = TypeDefinitions[typeof(DerivedInheritanceRootClass2)];
     }
 
     [Test]
     public void TheDerivedClasses_ShouldGetSeparateRelationDefinitions_WithDifferentIDs ()
     {
-      var endPointInDerivedClass1 = GetRelationEndPointDefinition(_derivedClass1, typeof (AboveInheritanceRootClassWithRelation), "RelationClass");
+      var endPointInDerivedClass1 = GetRelationEndPointDefinition(_derivedClass1, typeof(AboveInheritanceRootClassWithRelation), "RelationClass");
       Assert.That(endPointInDerivedClass1, Is.Not.Null);
 
-      var endPointInDerivedClass2 = GetRelationEndPointDefinition(_derivedClass2, typeof (AboveInheritanceRootClassWithRelation), "RelationClass");
+      var endPointInDerivedClass2 = GetRelationEndPointDefinition(_derivedClass2, typeof(AboveInheritanceRootClassWithRelation), "RelationClass");
       Assert.That(endPointInDerivedClass2, Is.Not.Null);
 
       Assert.That(endPointInDerivedClass1.RelationDefinition, Is.Not.SameAs(endPointInDerivedClass2.RelationDefinition));

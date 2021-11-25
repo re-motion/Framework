@@ -26,7 +26,7 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Globalization
 {
-  [ImplementationFor (typeof (IValidationMessageFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor (typeof(IValidationMessageFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class LocalizedValidationMessageFactory : IValidationMessageFactory
   {
     public const int Position = 0;
@@ -74,7 +74,7 @@ namespace Remotion.Validation.Globalization
       ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
       _resourceManager = new Lazy<IResourceManager>(
-          () => globalizationService.GetResourceManager(TypeAdapter.Create(typeof (ResourceIdentifier))),
+          () => globalizationService.GetResourceManager(TypeAdapter.Create(typeof(ResourceIdentifier))),
           LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
@@ -213,10 +213,10 @@ namespace Remotion.Validation.Globalization
           break;
       }
 
-      if (dataType == typeof (Guid))
+      if (dataType == typeof(Guid))
         return ResourceIdentifier.ValueMustNotBeNullStringValidationMessage;
 
-      if (typeof (IEnumerable).IsAssignableFrom(dataType))
+      if (typeof(IEnumerable).IsAssignableFrom(dataType))
         return ResourceIdentifier.ValueMustNotBeNullCollectionValidationMessage;
 
       return ResourceIdentifier.ValueMustNotBeNullReferenceValidationMessage;
@@ -224,10 +224,10 @@ namespace Remotion.Validation.Globalization
 
     private ResourceIdentifier? GetResourceIdentifierForNotEmptyValidator (Type dataType)
     {
-      if (dataType == typeof (String))
+      if (dataType == typeof(String))
         return ResourceIdentifier.ValueMustNotBeEmptyStringValidationMessage;
 
-      if (typeof (IEnumerable).IsAssignableFrom(dataType))
+      if (typeof(IEnumerable).IsAssignableFrom(dataType))
         return ResourceIdentifier.ValueMustNotBeEmptyCollectionValidationMessage;
 
       return null;

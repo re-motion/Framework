@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
   public class ListMenuSelector : TypedControlSelectorBase<ListMenuControlObject>
   {
     public ListMenuSelector ()
-        : base ("ListMenu")
+        : base("ListMenu")
     {
     }
 

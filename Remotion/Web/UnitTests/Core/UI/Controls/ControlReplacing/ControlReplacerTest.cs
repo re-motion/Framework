@@ -55,7 +55,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       testPageHolder.PageInvoker.InitRecursive();
       object viewState = testPageHolder.PageInvoker.SaveViewStateRecursive(ViewStateMode.Enabled);
 
-      Assert.That(viewState, Is.InstanceOf(typeof (Pair)));
+      Assert.That(viewState, Is.InstanceOf(typeof(Pair)));
       var replacerViewState = (Pair) ((IList) ((Pair) viewState).Second)[3];
       Assert.That(replacerViewState.First, Is.EqualTo("value"));
       var namingContainerViewState = (Pair) ((IList) (replacerViewState).Second)[1];
@@ -246,7 +246,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       testPageHolder.Page.SaveAllState();
 
       var controlStateObject = testPageHolder.Page.GetPageStatePersister().ControlState;
-      Assert.That(controlStateObject, Is.InstanceOf(typeof (IDictionary)));
+      Assert.That(controlStateObject, Is.InstanceOf(typeof(IDictionary)));
       IDictionary controlState = (IDictionary) controlStateObject;
       Assert.That(controlState[replacer.UniqueID], new PairConstraint(new Pair("value", null)));
       Assert.That(controlState[testPageHolder.NamingContainer.UniqueID], new PairConstraint(new Pair("NamingContainerValue", null)));

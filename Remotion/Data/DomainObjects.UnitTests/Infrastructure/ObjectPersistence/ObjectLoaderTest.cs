@@ -194,7 +194,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           UnitTestStorageProviderDefinition,
           "TEST",
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
     }
   }
 }

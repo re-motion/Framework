@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public GetObjectServiceTypeAttribute (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (IGetObjectService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(IGetObjectService));
       _type = type;
     }
 

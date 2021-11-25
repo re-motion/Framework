@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       var table = TableDefinitionObjectMother.Create(
           TestDomainStorageProviderDefinition,
-          new[] { new SimpleStoragePropertyDefinition(typeof (int), _column1) });
+          new[] { new SimpleStoragePropertyDefinition(typeof(int), _column1) });
 
       var result = _specification.AdjustForTable(table);
 

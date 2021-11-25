@@ -52,7 +52,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     protected override void OnPreRenderComplete (EventArgs e)
     {
       string title = string.Format(
-          GlobalizationService.GetResourceManager(typeof (ResourceIdentifier)).GetString(ResourceIdentifier.Title),
+          GlobalizationService.GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.Title),
           CurrentSecurableClassDefinition.DisplayName);
       TitleLabel.InnerText = title;
       HtmlHeadAppender.Current.SetTitle(title);
@@ -91,7 +91,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private void CreateEditAccessControlListControls (AccessControlList[] accessControlLists)
     {
-      var resourceManager = GlobalizationService.GetResourceManager(typeof (ResourceIdentifier));
+      var resourceManager = GlobalizationService.GetResourceManager(typeof(ResourceIdentifier));
 
       AccessControlListsPlaceHolder.Controls.Clear();
       PlaceHolder statelessAccessControlListsPlaceHolder = new PlaceHolder();
@@ -285,7 +285,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GlobalizationService.GetResourceManager(typeof (ResourceIdentifier));
+      var resourceManager = GlobalizationService.GetResourceManager(typeof(ResourceIdentifier));
       DuplicateStateCombinationsValidator.ErrorMessage = resourceManager.GetString(
           ResourceIdentifier.DuplicateStateCombinationsValidatorErrorMessage);
 
@@ -303,7 +303,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       EnableNewAccessControlListButton();
 
       HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude();
-      var url = ResourceUrlFactory.CreateResourceUrl(typeof (EditPermissionsForm), ResourceType.Html, "EditPermissionsForm.js");
+      var url = ResourceUrlFactory.CreateResourceUrl(typeof(EditPermissionsForm), ResourceType.Html, "EditPermissionsForm.js");
       HtmlHeadAppender.Current.RegisterJavaScriptInclude(GetType().GetFullNameChecked() + "_script", url);
     }
 

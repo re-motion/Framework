@@ -28,7 +28,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA
   }
 
   [MultiLingualResources ("Remotion.Validation.Mixins.IntegrationTests.TestDomain.Resources.CustomerMixin")]
-  [Extends (typeof (Customer), IntroducedMemberVisibility = MemberVisibility.Public)]
+  [Extends (typeof(Customer), IntroducedMemberVisibility = MemberVisibility.Public)]
   public class CustomerMixin : Mixin<IPerson, CustomerMixin.IBaseMethods>, ICustomerIntroduced
   {
     public interface IBaseMethods

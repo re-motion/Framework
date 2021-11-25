@@ -36,12 +36,12 @@ namespace Remotion.Web.UI.Controls
     ///   Must not be <see langword="null"/> or contain items that are <see langword="null"/>.
     /// </param>
     public WebTabCollection (IControl? ownerControl, Type[] supportedTypes)
-        : base (ownerControl, supportedTypes)
+        : base(ownerControl, supportedTypes)
     {
       for (int i = 0; i < supportedTypes.Length; i++)
       {
         Type type = supportedTypes[i];
-        if (!typeof (WebTab).IsAssignableFrom(type))
+        if (!typeof(WebTab).IsAssignableFrom(type))
         {
           throw new ArgumentException(
               string.Format("Type '{0}' at index {1} is not compatible with type 'WebTab'.", type.GetFullNameSafe(), i), "supportedTypes");
@@ -51,7 +51,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Initializes a new instance. </summary>
     public WebTabCollection (IControl? ownerControl)
-        : this (ownerControl, new[] { typeof (WebTab) })
+        : this(ownerControl, new[] { typeof(WebTab) })
     {
     }
 
@@ -255,7 +255,7 @@ namespace Remotion.Web.UI.Controls
       if (tabsState.Count == 0)
         return null;
       else
-        return tabsState.ToArray(typeof (Pair));
+        return tabsState.ToArray(typeof(Pair));
     }
   }
 }

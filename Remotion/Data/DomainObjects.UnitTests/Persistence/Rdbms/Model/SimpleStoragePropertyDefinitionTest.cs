@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     {
       _storageTypeInformationStub = MockRepository.GenerateStub<IStorageTypeInformation>();
       _innerColumnDefinition = ColumnDefinitionObjectMother.CreateColumn(storageTypeInformation: _storageTypeInformationStub);
-      _storagePropertyDefinition = new SimpleStoragePropertyDefinition(typeof (string), _innerColumnDefinition);
+      _storagePropertyDefinition = new SimpleStoragePropertyDefinition(typeof(string), _innerColumnDefinition);
 
       _dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
       _dbDataParameterStub = MockRepository.GenerateStub<IDbDataParameter>();
@@ -152,18 +152,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     {
       var isPartOfPrimaryKey = BooleanObjectMother.GetRandomBoolean();
       var property1 = new SimpleStoragePropertyDefinition(
-          typeof (int),
+          typeof(int),
           ColumnDefinitionObjectMother.CreateColumn("Col", CreateDefinedStorageTypeInformation(false), isPartOfPrimaryKey));
       var property2 = new SimpleStoragePropertyDefinition(
-          typeof (int),
+          typeof(int),
           ColumnDefinitionObjectMother.CreateColumn("Col", CreateDefinedStorageTypeInformation(false), isPartOfPrimaryKey));
       var property3 = new SimpleStoragePropertyDefinition(
-          typeof (int),
+          typeof(int),
           ColumnDefinitionObjectMother.CreateColumn("Col", CreateDefinedStorageTypeInformation(true), isPartOfPrimaryKey));
 
       var result = property1.UnifyWithEquivalentProperties(new[] { property2, property3 });
 
-      Assert.That(result, Is.TypeOf<SimpleStoragePropertyDefinition>().With.Property("PropertyType").SameAs(typeof (int)));
+      Assert.That(result, Is.TypeOf<SimpleStoragePropertyDefinition>().With.Property("PropertyType").SameAs(typeof(int)));
       Assert.That(((SimpleStoragePropertyDefinition) result).ColumnDefinition.Name, Is.EqualTo("Col"));
       Assert.That(((SimpleStoragePropertyDefinition) result).ColumnDefinition.StorageTypeInfo.IsStorageTypeNullable, Is.True);
       Assert.That(((SimpleStoragePropertyDefinition) result).ColumnDefinition.IsPartOfPrimaryKey, Is.EqualTo(isPartOfPrimaryKey));
@@ -185,8 +185,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public void UnifyWithEquivalentProperties_ThrowsForDifferentPropertyType ()
     {
       var columnDefinition = ColumnDefinitionObjectMother.CreateColumn();
-      var property1 = new SimpleStoragePropertyDefinition(typeof (int), columnDefinition);
-      var property2 = new SimpleStoragePropertyDefinition(typeof (string), columnDefinition);
+      var property1 = new SimpleStoragePropertyDefinition(typeof(int), columnDefinition);
+      var property2 = new SimpleStoragePropertyDefinition(typeof(string), columnDefinition);
 
       Assert.That(
           () => property1.UnifyWithEquivalentProperties(new[] { property2 }),
@@ -199,8 +199,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public void UnifyWithEquivalentProperties_ThrowsForDifferentColumnName ()
     {
       var storageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation();
-      var property1 = new SimpleStoragePropertyDefinition(typeof (int), ColumnDefinitionObjectMother.CreateColumn("Foo", storageTypeInformation, true));
-      var property2 = new SimpleStoragePropertyDefinition(typeof (int), ColumnDefinitionObjectMother.CreateColumn("Bar", storageTypeInformation, true));
+      var property1 = new SimpleStoragePropertyDefinition(typeof(int), ColumnDefinitionObjectMother.CreateColumn("Foo", storageTypeInformation, true));
+      var property2 = new SimpleStoragePropertyDefinition(typeof(int), ColumnDefinitionObjectMother.CreateColumn("Bar", storageTypeInformation, true));
 
       Assert.That(
           () => property1.UnifyWithEquivalentProperties(new[] { property2 }),
@@ -213,8 +213,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public void UnifyWithEquivalentProperties_ThrowsForDifferentPrimaryKeyFlag ()
     {
       var storageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation();
-      var property1 = new SimpleStoragePropertyDefinition(typeof (int), ColumnDefinitionObjectMother.CreateColumn("Col", storageTypeInformation, true));
-      var property2 = new SimpleStoragePropertyDefinition(typeof (int), ColumnDefinitionObjectMother.CreateColumn("Col", storageTypeInformation, false));
+      var property1 = new SimpleStoragePropertyDefinition(typeof(int), ColumnDefinitionObjectMother.CreateColumn("Col", storageTypeInformation, true));
+      var property2 = new SimpleStoragePropertyDefinition(typeof(int), ColumnDefinitionObjectMother.CreateColumn("Col", storageTypeInformation, false));
 
       Assert.That(
           () => property1.UnifyWithEquivalentProperties(new[] { property2 }),

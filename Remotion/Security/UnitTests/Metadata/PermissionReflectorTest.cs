@@ -36,8 +36,8 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetRequiredMethodPermissionsMethodWithoutAttributes ()
     {
-      IMethodInformation methodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetMethod("Save"));
-      var requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions(typeof (SecurableObject), methodInformation);
+      IMethodInformation methodInformation = MethodInfoAdapter.Create(typeof(SecurableObject).GetMethod("Save"));
+      var requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions(typeof(SecurableObject), methodInformation);
 
       Assert.That(requiredAccessTypes, Is.Not.Null);
       Assert.That(requiredAccessTypes, Is.Empty);
@@ -46,17 +46,17 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetRequiredMethodPermissionsCacheForMethodWithoutAttributes ()
     {
-      IMethodInformation methodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetMethod("Save"));
-      var requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions(typeof (SecurableObject), methodInformation);
+      IMethodInformation methodInformation = MethodInfoAdapter.Create(typeof(SecurableObject).GetMethod("Save"));
+      var requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions(typeof(SecurableObject), methodInformation);
 
-      Assert.That(_permissionReflector.GetRequiredMethodPermissions(typeof (SecurableObject), methodInformation), Is.SameAs(requiredAccessTypes));
+      Assert.That(_permissionReflector.GetRequiredMethodPermissions(typeof(SecurableObject), methodInformation), Is.SameAs(requiredAccessTypes));
     }
 
     [Test]
     public void GetRequiredMethodPermissionsMethodWithOneAttribute ()
     {
-      IMethodInformation methodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetMethod("Record"));
-      var requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions(typeof (SecurableObject), methodInformation);
+      IMethodInformation methodInformation = MethodInfoAdapter.Create(typeof(SecurableObject).GetMethod("Record"));
+      var requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions(typeof(SecurableObject), methodInformation);
 
       Assert.That(requiredAccessTypes.Count, Is.EqualTo(1));
       Assert.That(requiredAccessTypes, Has.Member(GeneralAccessTypes.Edit));
@@ -65,8 +65,8 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetRequiredMethodPermissionsMethodWithTwoPermissions ()
     {
-      IMethodInformation methodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetMethod("Show"));
-      var requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions(typeof (SecurableObject), methodInformation);
+      IMethodInformation methodInformation = MethodInfoAdapter.Create(typeof(SecurableObject).GetMethod("Show"));
+      var requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions(typeof(SecurableObject), methodInformation);
 
       Assert.That(requiredAccessTypes.Count, Is.EqualTo(2));
       Assert.That(requiredAccessTypes, Has.Member(GeneralAccessTypes.Edit));
@@ -76,8 +76,8 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetRequiredMethodPermissionsOverriddenMethodWithPermissionFromBaseMethod ()
     {
-      IMethodInformation methodInformation = MethodInfoAdapter.Create(typeof (DerivedSecurableObject).GetMethod("Record"));
-      var requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions(typeof (DerivedSecurableObject), methodInformation);
+      IMethodInformation methodInformation = MethodInfoAdapter.Create(typeof(DerivedSecurableObject).GetMethod("Record"));
+      var requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions(typeof(DerivedSecurableObject), methodInformation);
 
       Assert.That(requiredAccessTypes.Count, Is.EqualTo(1));
       Assert.That(requiredAccessTypes, Has.Member(GeneralAccessTypes.Edit));
@@ -86,8 +86,8 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void FilterMultipleAccessTypes ()
     {
-      IMethodInformation methodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetMethod("Close"));
-      var requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions(typeof (SecurableObject), methodInformation);
+      IMethodInformation methodInformation = MethodInfoAdapter.Create(typeof(SecurableObject).GetMethod("Close"));
+      var requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions(typeof(SecurableObject), methodInformation);
 
       Assert.That(requiredAccessTypes.Count, Is.EqualTo(2));
       Assert.That(requiredAccessTypes, Has.Member(GeneralAccessTypes.Edit));
@@ -97,8 +97,8 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetRequiredMethodPermissionsStaticMethod ()
     {
-      IMethodInformation methodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetMethod("CreateForSpecialCase"));
-      var requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions(typeof (SecurableObject), methodInformation);
+      IMethodInformation methodInformation = MethodInfoAdapter.Create(typeof(SecurableObject).GetMethod("CreateForSpecialCase"));
+      var requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions(typeof(SecurableObject), methodInformation);
 
       Assert.That(requiredAccessTypes.Count, Is.EqualTo(1));
       Assert.That(requiredAccessTypes[0], Is.EqualTo(GeneralAccessTypes.Create));

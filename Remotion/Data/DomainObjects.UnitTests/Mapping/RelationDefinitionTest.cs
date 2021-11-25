@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       base.SetUp();
 
-      _customerClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Customer)];
+      _customerClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Customer)];
       _customerToOrder =
           FakeMappingConfiguration.Current.RelationDefinitions[
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order:Remotion.Data.DomainObjects.UnitTests.Mapping."
@@ -180,24 +180,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void RelationType_OneToOne ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Computer));
-      var relationDefinition = classDefinition.GetRelationEndPointDefinition(typeof (Computer).FullName + ".Employee").RelationDefinition;
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Computer));
+      var relationDefinition = classDefinition.GetRelationEndPointDefinition(typeof(Computer).FullName + ".Employee").RelationDefinition;
       Assert.That(relationDefinition.RelationKind, Is.EqualTo(RelationKindType.OneToOne));
     }
 
     [Test]
     public void RelationType_OneMany ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (OrderItem));
-      var relationDefinition = classDefinition.GetRelationEndPointDefinition(typeof (OrderItem).FullName + ".Order").RelationDefinition;
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderItem));
+      var relationDefinition = classDefinition.GetRelationEndPointDefinition(typeof(OrderItem).FullName + ".Order").RelationDefinition;
       Assert.That(relationDefinition.RelationKind, Is.EqualTo(RelationKindType.OneToMany));
     }
 
     [Test]
     public void RelationType_Unidirectional ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Location));
-      var relationDefinition = classDefinition.GetRelationEndPointDefinition(typeof (Location).FullName + ".Client").RelationDefinition;
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Location));
+      var relationDefinition = classDefinition.GetRelationEndPointDefinition(typeof(Location).FullName + ".Client").RelationDefinition;
       Assert.That(relationDefinition.RelationKind, Is.EqualTo(RelationKindType.Unidirectional));
     }
 

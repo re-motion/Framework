@@ -26,7 +26,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
     private readonly MockRepository _mockRepository;
 
     public RhinoMocksRepositoryAdapter ()
-        : this (new MockRepository())
+        : this(new MockRepository())
     {
     }
 

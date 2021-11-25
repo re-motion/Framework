@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _notLoadedObject1 = DomainObjectMother.GetNotLoadedObject(TestableClientTransaction, DomainObjectIDs.Order4);
       _notLoadedObject2 = DomainObjectMother.GetNotLoadedObject(TestableClientTransaction, DomainObjectIDs.Order5);
       _invalidObject = DomainObjectMother.GetInvalidObject(TestableClientTransaction);
-      _notLoadedNonExistingObject = DomainObjectMother.GetNotLoadedObject(TestableClientTransaction, new ObjectID(typeof (ClassWithAllDataTypes), Guid.NewGuid()));
+      _notLoadedNonExistingObject = DomainObjectMother.GetNotLoadedObject(TestableClientTransaction, new ObjectID(typeof(ClassWithAllDataTypes), Guid.NewGuid()));
 
       _listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(TestableClientTransaction);
     }

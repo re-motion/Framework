@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
   public class WebTreeViewSelector : TypedControlSelectorBase<WebTreeViewControlObject>
   {
     public WebTreeViewSelector ()
-        : base ("WebTreeView")
+        : base("WebTreeView")
     {
     }
 

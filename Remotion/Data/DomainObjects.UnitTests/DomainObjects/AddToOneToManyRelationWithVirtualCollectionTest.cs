@@ -184,7 +184,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _productReviewWithoutProduct.Product = _product;
 
-      Assert.That(_productReviewWithoutProduct.Properties[typeof (ProductReview), "Product"].GetRelatedObjectID(), Is.EqualTo(_product.ID));
+      Assert.That(_productReviewWithoutProduct.Properties[typeof(ProductReview), "Product"].GetRelatedObjectID(), Is.EqualTo(_product.ID));
     }
 
     [Test]

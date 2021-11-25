@@ -31,9 +31,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
       Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<IBocList>>());
 
       var factories = ((CompoundValidatorFactory<IBocList>) instance).VlidatorFactories.Select(f => f.GetType()).ToList();
-      Assert.That(factories, Has.Member(typeof (BocListValidatorFactory)));
-      Assert.That(factories, Has.Member(typeof (ValidationBocListValidatorFactory)));
-      Assert.That(factories.IndexOf(typeof (BocListValidatorFactory)), Is.LessThan(factories.IndexOf(typeof (ValidationBocListValidatorFactory))));
+      Assert.That(factories, Has.Member(typeof(BocListValidatorFactory)));
+      Assert.That(factories, Has.Member(typeof(ValidationBocListValidatorFactory)));
+      Assert.That(factories.IndexOf(typeof(BocListValidatorFactory)), Is.LessThan(factories.IndexOf(typeof(ValidationBocListValidatorFactory))));
       Assert.That(factories.Count, Is.EqualTo(2));
     }
 
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
       }
       else
       {
-        Assert.That(validators.Select(v => v.GetType()), Is.EquivalentTo(new[] { typeof (BocListValidationResultDispatchingValidator) }));
+        Assert.That(validators.Select(v => v.GetType()), Is.EquivalentTo(new[] { typeof(BocListValidationResultDispatchingValidator) }));
         Assert.That(validators, Has.All.Property("EnableViewState").False);
       }
     }

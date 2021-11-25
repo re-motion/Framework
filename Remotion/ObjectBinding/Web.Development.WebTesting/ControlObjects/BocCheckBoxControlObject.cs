@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   public class BocCheckBoxControlObject : BocControlObject, IControlObjectWithFormElements, ISupportsValidationErrors, ISupportsValidationErrorsForReadOnly
   {
     public BocCheckBoxControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

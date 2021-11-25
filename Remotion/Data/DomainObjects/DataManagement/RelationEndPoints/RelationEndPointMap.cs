@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     #region Serialization
 
     protected RelationEndPointMap (FlattenedDeserializationInfo info)
-      : this (info.GetValueForHandle<IClientTransactionEventSink>())
+      : this(info.GetValueForHandle<IClientTransactionEventSink>())
     {
       var endPointArray = info.GetArray<IRelationEndPoint>();
       foreach (IRelationEndPoint endPoint in endPointArray)

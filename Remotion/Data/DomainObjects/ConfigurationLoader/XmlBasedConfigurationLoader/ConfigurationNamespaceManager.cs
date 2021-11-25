@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
     public ConfigurationNamespaceManager (
         XmlDocument document, 
         PrefixNamespace[] configurationNamespaces)
-        : base (document.NameTable)
+        : base(document.NameTable)
     {
       ArgumentUtility.CheckNotNull("document", document);
       ArgumentUtility.CheckNotNull("configurationNamespaces", configurationNamespaces);

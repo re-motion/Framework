@@ -104,7 +104,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     protected override void OnInit (EventArgs e)
     {
       base.OnInit(e);
-      var resourceManager = GetResourceManager(typeof (ResourceIdentifier));
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
 
       AllPermisionsMenu.MenuItems.Add(
           new WebMenuItem
@@ -150,7 +150,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager(typeof (ResourceIdentifier));
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
       SpecificGroupField.NullItemErrorMessage = resourceManager.GetString(ResourceIdentifier.SpecificGroupFieldRequiredFieldErrorMessage);
       SpecificGroupTypeField.NullItemErrorMessage = resourceManager.GetString(ResourceIdentifier.SpecificGroupTypeFieldRequiredFieldErrorMessage);
       SpecificPositionField.NullItemErrorMessage = resourceManager.GetString(ResourceIdentifier.SpecificPositionFieldRequiredFieldErrorMessage);
@@ -204,7 +204,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
       // Text is not needed before rendering phase. 
       // By moving the evaluation into the Render-method, UpdatePanel-postbacks will not cause a hit for unaffected rows.
-      var resourceManager = GetResourceManager(typeof (ResourceIdentifier));
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
       foreach (var tuple in _permissionControls)
       {
         var permission = tuple.Item1;
@@ -464,7 +464,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private IResourceUrl GetIconUrl (string url)
     {
-      return ResourceUrlFactory.CreateThemedResourceUrl(typeof (EditAccessControlEntryControl), ResourceType.Image, url);
+      return ResourceUrlFactory.CreateThemedResourceUrl(typeof(EditAccessControlEntryControl), ResourceType.Image, url);
     }
   }
 }

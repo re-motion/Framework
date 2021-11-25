@@ -25,7 +25,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
   public class VirtualMethodInvocationExpression : TypedMethodInvocationExpression
   {
     public VirtualMethodInvocationExpression (TypeReference owner, MethodInfo method, params Expression[] arguments)
-        : base (owner, method, arguments)
+        : base(owner, method, arguments)
     {
     }
 

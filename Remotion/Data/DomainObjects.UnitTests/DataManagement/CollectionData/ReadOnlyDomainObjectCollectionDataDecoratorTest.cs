@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void AssociatedEndPointID ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof (Customer), "Orders");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
       _wrappedDataStub.Stub(stub => stub.AssociatedEndPointID).Return(endPointID);
 
       Assert.That(_readOnlyDecorator.AssociatedEndPointID, Is.SameAs(endPointID));

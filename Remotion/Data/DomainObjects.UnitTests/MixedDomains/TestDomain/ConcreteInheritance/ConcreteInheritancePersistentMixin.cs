@@ -22,8 +22,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.Concrete
   {
     public string PersistentProperty
     {
-      get { return Properties[typeof (ConcreteInheritancePersistentMixin), "PersistentProperty"].GetValue<string>(); }
-      set { Properties[typeof (ConcreteInheritancePersistentMixin), "PersistentProperty"].SetValue(value); }
+      get { return Properties[typeof(ConcreteInheritancePersistentMixin), "PersistentProperty"].GetValue<string>(); }
+      set { Properties[typeof(ConcreteInheritancePersistentMixin), "PersistentProperty"].SetValue(value); }
     }
   }
 }

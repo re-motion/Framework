@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public class WxeResetCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (WxeResetCompletionDetectionStrategy));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(WxeResetCompletionDetectionStrategy));
     private readonly TimeSpan? _timeout;
 
     public WxeResetCompletionDetectionStrategy (TimeSpan? timeout = null)

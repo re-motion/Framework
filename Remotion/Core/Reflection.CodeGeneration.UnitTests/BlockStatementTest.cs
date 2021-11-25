@@ -27,8 +27,8 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void Block ()
     {
-      var methodEmitter = GetMethodEmitter(false, typeof (int), new Type[0]);
-      var local = methodEmitter.DeclareLocal(typeof (int));
+      var methodEmitter = GetMethodEmitter(false, typeof(int), new Type[0]);
+      var local = methodEmitter.DeclareLocal(typeof(int));
       var blockStatement = new BlockStatement(
           new AssignStatement(local, new ConstReference(1).ToExpression()),
           new ReturnStatement(local));

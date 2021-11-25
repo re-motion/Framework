@@ -76,7 +76,7 @@ namespace OBWTest
       base.OnInit(e);
 
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
-      var jobIconUrl = resourceUrlFactory.CreateResourceUrl(typeof (Person), ResourceType.Image, "Remotion.ObjectBinding.Sample.Person.gif");
+      var jobIconUrl = resourceUrlFactory.CreateResourceUrl(typeof(Person), ResourceType.Image, "Remotion.ObjectBinding.Sample.Person.gif");
       
       WebTreeNodeCollection nodes;
 

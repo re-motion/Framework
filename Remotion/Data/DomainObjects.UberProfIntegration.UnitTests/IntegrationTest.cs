@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
       base.SetUp();
 
       var clientTransaction = ClientTransaction.CreateRootTransaction();
-      var sampleObject = LifetimeService.NewObject(clientTransaction, typeof (SampleObject), ParamList.Empty);
+      var sampleObject = LifetimeService.NewObject(clientTransaction, typeof(SampleObject), ParamList.Empty);
       _objectID = sampleObject.ID;
       clientTransaction.Commit();
 

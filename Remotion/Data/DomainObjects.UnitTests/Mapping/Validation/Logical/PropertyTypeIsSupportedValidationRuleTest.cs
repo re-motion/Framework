@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       _validationRule = new PropertyTypeIsSupportedValidationRule();
 
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (DerivedValidationDomainObjectClass));
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
     }
 
     [Test]
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassPersistent")),
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassPersistent")),
           "PropertyWithStorageClassPersistent", 
           false,
           true,
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty("PropertyWithTypeObjectWithStorageClassPersistent")),
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithTypeObjectWithStorageClassPersistent")),
           "PropertyWithTypeObjectWithStorageClassPersistent",
           false,
           true,
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty("RelationPropertyWithStorageClassPersistent")),
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("RelationPropertyWithStorageClassPersistent")),
           "RelationPropertyWithStorageClassPersistent", 
           true,
           true,

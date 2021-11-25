@@ -19,7 +19,7 @@ using System.Diagnostics;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
-  [CopyCustomAttributes(typeof (AttributeSource))]
+  [CopyCustomAttributes(typeof(AttributeSource))]
   public class MixinAddingDebuggerDisplay
   {
     [DebuggerDisplay("Y")]

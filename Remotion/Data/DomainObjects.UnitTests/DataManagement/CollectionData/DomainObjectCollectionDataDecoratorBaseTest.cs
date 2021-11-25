@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void AssociatedEndPointID ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof (Customer), "Orders");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
 
       _wrappedDataMock.Expect(mock => mock.AssociatedEndPointID).Return(endPointID);
       _wrappedDataMock.Replay();

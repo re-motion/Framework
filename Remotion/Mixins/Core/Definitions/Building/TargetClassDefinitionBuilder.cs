@@ -30,7 +30,7 @@ namespace Remotion.Mixins.Definitions.Building
   /// <summary>
   /// Builds <see cref="TargetClassDefinition"/> objects containing all metadata required for code generation from a <see cref="ClassContext"/>.
   /// </summary>
-  [ImplementationFor (typeof (ITargetClassDefinitionBuilder), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(ITargetClassDefinitionBuilder), Lifetime = LifetimeKind.Singleton)]
   public class TargetClassDefinitionBuilder : ITargetClassDefinitionBuilder
   {
     private readonly IMixinDefinitionSorter _mixinSorter;
@@ -136,17 +136,17 @@ namespace Remotion.Mixins.Definitions.Building
     private void AnalyzeOverrides (TargetClassDefinition definition)
     {
       var mixinMethods = definition.Mixins.SelectMany(m => m.Methods);
-      var methodAnalyzer = new OverridesAnalyzer<MethodDefinition>(typeof (OverrideMixinAttribute), mixinMethods);
+      var methodAnalyzer = new OverridesAnalyzer<MethodDefinition>(typeof(OverrideMixinAttribute), mixinMethods);
       foreach (var methodOverride in methodAnalyzer.Analyze(definition.Methods))
         InitializeOverride(methodOverride.Overrider, methodOverride.BaseMember);
 
       var mixinProperties = definition.Mixins.SelectMany(m => m.Properties);
-      var propertyAnalyzer = new OverridesAnalyzer<PropertyDefinition>(typeof (OverrideMixinAttribute), mixinProperties);
+      var propertyAnalyzer = new OverridesAnalyzer<PropertyDefinition>(typeof(OverrideMixinAttribute), mixinProperties);
       foreach (var propertyOverride in propertyAnalyzer.Analyze(definition.Properties))
         InitializeOverride(propertyOverride.Overrider, propertyOverride.BaseMember);
 
       var mixinEvents = definition.Mixins.SelectMany(m => m.Events);
-      var eventAnalyzer = new OverridesAnalyzer<EventDefinition>(typeof (OverrideMixinAttribute), mixinEvents);
+      var eventAnalyzer = new OverridesAnalyzer<EventDefinition>(typeof(OverrideMixinAttribute), mixinEvents);
       foreach (var eventOverride in eventAnalyzer.Analyze(definition.Events))
         InitializeOverride(eventOverride.Overrider, eventOverride.BaseMember);
     }
@@ -176,7 +176,7 @@ namespace Remotion.Mixins.Definitions.Building
       // Check that SuppressAttributesAttribute cannot be applied to methods, properties, and fields.
       // As long as this holds, we don't need to deal with potential suppressors here.
       const AttributeTargets memberTargets = AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field;
-      Assertion.IsTrue((AttributeUtility.GetAttributeUsage(typeof (SuppressAttributesAttribute)).ValidOn & memberTargets) == 0, 
+      Assertion.IsTrue((AttributeUtility.GetAttributeUsage(typeof(SuppressAttributesAttribute)).ValidOn & memberTargets) == 0, 
           "TargetClassDefinitionBuilder must be updated with AddPotentialSuppressors once SuppressAttributesAttribute supports members");
 
       foreach (MemberDefinitionBase member in classDefinition.GetAllMembers())

@@ -27,7 +27,7 @@ namespace Remotion.Web.UI
 
 public class WcagHelper
 {
-  private static readonly ILog s_log = LogManager.GetLogger(typeof (WcagHelper));
+  private static readonly ILog s_log = LogManager.GetLogger(typeof(WcagHelper));
   private static readonly DoubleCheckedLockingContainer<WcagHelper> s_instance = new DoubleCheckedLockingContainer<WcagHelper>(()=>new WcagHelper());
 
   public static WcagHelper Instance

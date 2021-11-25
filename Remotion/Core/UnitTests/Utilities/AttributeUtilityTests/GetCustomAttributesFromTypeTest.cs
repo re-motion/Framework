@@ -29,14 +29,14 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void ReturnSpecificArrayType ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes(typeof (BaseClassWithAttribute), typeof (BaseInheritedAttribute), false);
-      Assert.That(attributes, Is.InstanceOf(typeof (BaseInheritedAttribute[])));
+      object[] attributes = AttributeUtility.GetCustomAttributes(typeof(BaseClassWithAttribute), typeof(BaseInheritedAttribute), false);
+      Assert.That(attributes, Is.InstanceOf(typeof(BaseInheritedAttribute[])));
     }
 
     [Test]
     public void BaseClass_InheritedFalse ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes(typeof (BaseClassWithAttribute), typeof (Attribute), false);
+      object[] attributes = AttributeUtility.GetCustomAttributes(typeof(BaseClassWithAttribute), typeof(Attribute), false);
       Assert.That(attributes, Is.EquivalentTo(new object[] {
         new BaseInheritedAttribute("BaseClass"), 
         new DerivedInheritedAttribute("BaseClass"), 
@@ -49,7 +49,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void BaseClass_InheritedTrue ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes(typeof (BaseClassWithAttribute), typeof (Attribute), true);
+      object[] attributes = AttributeUtility.GetCustomAttributes(typeof(BaseClassWithAttribute), typeof(Attribute), true);
       Assert.That(attributes, Is.EquivalentTo(new object[] {
         new BaseInheritedAttribute("BaseClass"), 
         new DerivedInheritedAttribute("BaseClass"), 
@@ -62,7 +62,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void DerivedClass_InheritedFalse ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes(typeof (DerivedClassWithAttribute), typeof (Attribute), false);
+      object[] attributes = AttributeUtility.GetCustomAttributes(typeof(DerivedClassWithAttribute), typeof(Attribute), false);
       Assert.That(attributes, Is.EquivalentTo(new object[] {
         new BaseInheritedAttribute("DerivedClass"), 
         new DerivedInheritedAttribute("DerivedClass"), 
@@ -75,7 +75,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void DerivedClass_InheritedTrue ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes(typeof (DerivedClassWithAttribute), typeof (Attribute), true);
+      object[] attributes = AttributeUtility.GetCustomAttributes(typeof(DerivedClassWithAttribute), typeof(Attribute), true);
       Assert.That(attributes, Is.EquivalentTo(new object[] {
         new BaseInheritedAttribute("BaseClass"), 
         new DerivedInheritedAttribute("BaseClass"), 
@@ -90,7 +90,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void BaseClass_InheritableNotMultipleAttribute ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes(typeof (BaseWithInheritedNonMultipleAttribute), typeof (Attribute), true);
+      object[] attributes = AttributeUtility.GetCustomAttributes(typeof(BaseWithInheritedNonMultipleAttribute), typeof(Attribute), true);
       Assert.That(attributes, Has.Length.EqualTo(1));
       Assert.That(((InheritedNotMultipleAttribute) attributes[0]).Context, Is.EqualTo("Base"));
     }
@@ -98,7 +98,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void DerivedClass_ShadowingInheritedNotMultipleAttribute ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes(typeof (DerivedShadowingNonMultipleAttribute), typeof (Attribute), true);
+      object[] attributes = AttributeUtility.GetCustomAttributes(typeof(DerivedShadowingNonMultipleAttribute), typeof(Attribute), true);
       Assert.That(attributes, Has.Length.EqualTo(1));
       Assert.That(((InheritedNotMultipleAttribute) attributes[0]).Context, Is.EqualTo("Derived"));
     }
@@ -106,7 +106,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void Filtering_WithBaseAttributeType ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes(typeof (BaseClassWithAttribute), typeof (BaseInheritedAttribute), false);
+      object[] attributes = AttributeUtility.GetCustomAttributes(typeof(BaseClassWithAttribute), typeof(BaseInheritedAttribute), false);
       Assert.That(attributes, Is.EquivalentTo(new object[] {
         new BaseInheritedAttribute("BaseClass"), 
         new DerivedInheritedAttribute("BaseClass")}));
@@ -115,7 +115,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void Filtering_WithDerivedAttributeType ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes(typeof (BaseClassWithAttribute), typeof (DerivedInheritedAttribute), false);
+      object[] attributes = AttributeUtility.GetCustomAttributes(typeof(BaseClassWithAttribute), typeof(DerivedInheritedAttribute), false);
       Assert.That(attributes, Is.EquivalentTo(new object[] {
         new DerivedInheritedAttribute("BaseClass")}));
     }
@@ -123,7 +123,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void Filtering_WithInterfaceType ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes(typeof (BaseClassWithAttribute), typeof (ICustomAttribute), false);
+      object[] attributes = AttributeUtility.GetCustomAttributes(typeof(BaseClassWithAttribute), typeof(ICustomAttribute), false);
       Assert.That(attributes, Is.EquivalentTo(new object[] {
         new BaseInheritedAttribute("BaseClass"), 
         new DerivedInheritedAttribute("BaseClass"),
@@ -134,7 +134,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void GetCustomAttributes_WithMemberInfo_DelegatesToTypeVersion ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes((MemberInfo) typeof (DerivedWithAttributesAndSuppressed), typeof (Attribute), true);
+      object[] attributes = AttributeUtility.GetCustomAttributes((MemberInfo) typeof(DerivedWithAttributesAndSuppressed), typeof(Attribute), true);
       Assert.That(attributes, Is.EquivalentTo(new object[] {
         new BaseInheritedAttribute("DerivedWithAttributesAndSuppressed"), 
         new DerivedInheritedAttribute("DerivedWithAttributesAndSuppressed")}));
@@ -143,8 +143,8 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void GetCustomAttriubtes_ReturnsNewInstance ()
     {
-      var attribute1 = AttributeUtility.GetCustomAttributes(typeof (SampleClass), typeof (InheritedAttribute), false).Single();
-      var attribute2 = AttributeUtility.GetCustomAttributes(typeof (SampleClass), typeof (InheritedAttribute), false).Single();
+      var attribute1 = AttributeUtility.GetCustomAttributes(typeof(SampleClass), typeof(InheritedAttribute), false).Single();
+      var attribute2 = AttributeUtility.GetCustomAttributes(typeof(SampleClass), typeof(InheritedAttribute), false).Single();
 
       Assert.That(attribute1, Is.Not.SameAs(attribute2));
     }

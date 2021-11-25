@@ -10,7 +10,7 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.ObjectBinding.Validation
 {
-  [ImplementationFor (typeof (IBusinessObjectPropertyConstraintProvider), Position = Position, RegistrationType = RegistrationType.Multiple, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IBusinessObjectPropertyConstraintProvider), Position = Position, RegistrationType = RegistrationType.Multiple, Lifetime = LifetimeKind.Singleton)]
   public class ValidationBusinessObjectPropertyConstraintProvider : IBusinessObjectPropertyConstraintProvider
   {
     public const int Position = 0;

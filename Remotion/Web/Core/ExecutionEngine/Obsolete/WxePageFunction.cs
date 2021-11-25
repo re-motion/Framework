@@ -28,7 +28,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     private Type _baseClass;
 
     public WxeFunctionPageAttribute (string aspxPageName)
-      : this (aspxPageName, typeof (WxeFunction))
+      : this(aspxPageName, typeof(WxeFunction))
     {
     }
 
@@ -72,17 +72,17 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     }
 
     public WxePageParameterAttribute (int index, string name, Type type)
-      : this (index, name, type, false, WxeParameterDirection.In)
+      : this(index, name, type, false, WxeParameterDirection.In)
     {
     }
 
     public WxePageParameterAttribute (int index, string name, Type type, WxeParameterDirection direction)
-      : this (index, name, type, false, direction)
+      : this(index, name, type, false, direction)
     {
     }
 
     public WxePageParameterAttribute (int index, string name, Type type, bool required)
-      : this (index, name, type, required, WxeParameterDirection.In)
+      : this(index, name, type, required, WxeParameterDirection.In)
     {
     }
 

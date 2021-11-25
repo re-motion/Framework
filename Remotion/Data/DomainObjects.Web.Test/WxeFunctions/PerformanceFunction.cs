@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
   public class PerformanceFunction : WxeFunction
   {
     public PerformanceFunction ()
-      : base (WxeTransactionMode.CreateRootWithAutoCommit)
+      : base(WxeTransactionMode.CreateRootWithAutoCommit)
     {
       ReturnUrl = "default.aspx";
     }

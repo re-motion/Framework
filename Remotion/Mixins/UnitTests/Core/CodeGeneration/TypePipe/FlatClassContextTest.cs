@@ -31,7 +31,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     [SetUp]
     public void SetUp ()
     {
-      _originalClassContext = ClassContextObjectMother.Create(typeof (string), typeof (DateTime));
+      _originalClassContext = ClassContextObjectMother.Create(typeof(string), typeof(DateTime));
       _flatClassContext = FlatClassContext.Create(_originalClassContext);
     }
 

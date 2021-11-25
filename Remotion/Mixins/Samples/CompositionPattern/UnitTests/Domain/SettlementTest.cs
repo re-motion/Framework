@@ -28,7 +28,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain
     public void NewObject ()
     {
       var instance = Settlement.NewObject();
-      Assert.That(instance, Is.InstanceOf(typeof (Settlement)));
+      Assert.That(instance, Is.InstanceOf(typeof(Settlement)));
     }
 
     [Test]

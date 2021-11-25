@@ -80,7 +80,7 @@ namespace Remotion.Reflection
 
     public T GetFastInvoker<T> () where T : class
     {
-      return (T) (object) GetFastInvoker(typeof (T));
+      return (T) (object) GetFastInvoker(typeof(T));
     }
 
     public Delegate GetFastInvoker (Type delegateType)

@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void BindableDomainObjectMixin_ImplementsMixinWithoutBaseObjectDependency ()
     {
-      Assert.That(typeof (BindableDomainObjectImplementation).CanAscribeTo(typeof (Mixin<,>)), Is.False);
+      Assert.That(typeof(BindableDomainObjectImplementation).CanAscribeTo(typeof(Mixin<,>)), Is.False);
     }
   }
 }

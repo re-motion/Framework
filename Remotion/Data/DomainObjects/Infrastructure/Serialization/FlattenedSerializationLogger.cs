@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
             bools.Length);
 
         var objectsByType = from o in objects
-                            group o by o != null ? o.GetType() : typeof (object);
+                            group o by o != null ? o.GetType() : typeof(object);
         var groupingsWithCount = from g in objectsByType
                                  let count = g.Count()
                                  orderby count descending

@@ -157,7 +157,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       CheckDomainObjectCollectionRelationRegistered(DomainObjectIDs.Order1, "OrderItems", false, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
       CheckObjectRelationRegistered(DomainObjectIDs.Order1, "Customer", DomainObjectIDs.Customer1);
       CheckDomainObjectCollectionRelationRegistered(DomainObjectIDs.Customer1, "Orders", true, DomainObjectIDs.Order1, DomainObjectIDs.Order2);
-      CheckObjectRelationRegistered(DomainObjectIDs.Customer1, typeof (Company), "Ceo", DomainObjectIDs.Ceo3);
+      CheckObjectRelationRegistered(DomainObjectIDs.Customer1, typeof(Company), "Ceo", DomainObjectIDs.Ceo3);
     }
 
     [Test]
@@ -459,7 +459,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       CheckDataContainersRegistered(DomainObjectIDs.RelationTargetForPersistentMixin4);
       CheckDomainObjectCollectionRelationRegistered(
           DomainObjectIDs.RelationTargetForPersistentMixin4,
-          typeof (RelationTargetForPersistentMixin),
+          typeof(RelationTargetForPersistentMixin),
           "RelationProperty4",
           false,
           DomainObjectIDs.TargetClassForPersistentMixins2);
@@ -489,7 +489,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       queryProviderStub.Stub(_ => _.Execute<IEnumerable<Order>>(Arg<Expression>.Is.Anything)).Return(orders);
 
       var queryableStub = MockRepository.GenerateStub<IQueryable<Order>>();
-      queryableStub.Stub(_ => _.Expression).Return(Expression.Constant(null, typeof (IQueryable<Order>)));
+      queryableStub.Stub(_ => _.Expression).Return(Expression.Constant(null, typeof(IQueryable<Order>)));
       queryableStub.Stub(_ => _.Provider).Return(queryProviderStub);
       var queryableWithFetch = queryableStub.FetchOne(o => o.Customer);
 
@@ -503,7 +503,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       CheckDataContainersRegistered(DomainObjectIDs.RelationTargetForPersistentMixin3);
       CheckDomainObjectCollectionRelationRegistered(
           DomainObjectIDs.TargetClassForPersistentMixins2,
-          typeof (MixinAddingPersistentProperties),
+          typeof(MixinAddingPersistentProperties),
           "CollectionProperty1Side",
           false,
           DomainObjectIDs.RelationTargetForPersistentMixin3);

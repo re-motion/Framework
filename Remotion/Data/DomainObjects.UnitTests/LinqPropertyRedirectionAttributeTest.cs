@@ -35,18 +35,18 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void Initialization ()
     {
-      var attribute = new LinqPropertyRedirectionAttribute(typeof (Order), "OrderNumber");
+      var attribute = new LinqPropertyRedirectionAttribute(typeof(Order), "OrderNumber");
       
-      var expected = Is.EqualTo(typeof (Order).GetProperty("OrderNumber"));
+      var expected = Is.EqualTo(typeof(Order).GetProperty("OrderNumber"));
       Assert.That(attribute.GetMappedProperty(), expected);
     }
 
     [Test]
     public void Initialization_NonPublicProperty ()
     {
-      var attribute = new LinqPropertyRedirectionAttribute(typeof (ClassWithNonPublicProperties), "PrivateGetSet");
+      var attribute = new LinqPropertyRedirectionAttribute(typeof(ClassWithNonPublicProperties), "PrivateGetSet");
       
-      var expected = typeof (ClassWithNonPublicProperties).GetProperty("PrivateGetSet", BindingFlags.NonPublic | BindingFlags.Instance);
+      var expected = typeof(ClassWithNonPublicProperties).GetProperty("PrivateGetSet", BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.That(attribute.GetMappedProperty(), Is.EqualTo(expected));
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void Initialization_NonExistingProperty ()
     {
       Assert.That(
-          () => new LinqPropertyRedirectionAttribute(typeof (Order), "Hugo").GetMappedProperty(),
+          () => new LinqPropertyRedirectionAttribute(typeof(Order), "Hugo").GetMappedProperty(),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "The member redirects LINQ queries to 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Hugo', which does not exist."));
@@ -63,26 +63,26 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void MethodCallTransformer_SupportedExpressionTypes ()
     {
-      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof (Order).GetProperty("OrderNumber"));
+      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof(Order).GetProperty("OrderNumber"));
       Assert.That(transformer.SupportedExpressionTypes, Is.EqualTo(new[] { ExpressionType.Call }));
     }
 
     [Test]
     public void GetTransformer ()
     {
-      var attribute = new LinqPropertyRedirectionAttribute(typeof (Order), "OrderNumber");
+      var attribute = new LinqPropertyRedirectionAttribute(typeof(Order), "OrderNumber");
 
       var transformer = attribute.GetExpressionTransformer(null);
 
-      Assert.That(transformer, Is.TypeOf(typeof (LinqPropertyRedirectionAttribute.MethodCallTransformer)));
+      Assert.That(transformer, Is.TypeOf(typeof(LinqPropertyRedirectionAttribute.MethodCallTransformer)));
       Assert.That(((LinqPropertyRedirectionAttribute.MethodCallTransformer) transformer).MappedProperty, 
-          Is.SameAs(typeof (Order).GetProperty("OrderNumber")));
+          Is.SameAs(typeof(Order).GetProperty("OrderNumber")));
     }
 
     [Test]
     public void GetTransformer_NonExistingProperty ()
     {
-      var attribute = new LinqPropertyRedirectionAttribute(typeof (Order), "Hugo");
+      var attribute = new LinqPropertyRedirectionAttribute(typeof(Order), "Hugo");
       Assert.That(
           () => attribute.GetExpressionTransformer(null),
           Throws.InvalidOperationException
@@ -93,23 +93,23 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void MethodCallTransformer_Transform ()
     {
-      var instance = Expression.Constant(null, typeof (Order));
-      var call = Expression.Call(instance, typeof (Order).GetProperty("RedirectedOrderNumber").GetGetMethod());
+      var instance = Expression.Constant(null, typeof(Order));
+      var call = Expression.Call(instance, typeof(Order).GetProperty("RedirectedOrderNumber").GetGetMethod());
 
-      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof (Order).GetProperty("OrderNumber"));
+      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof(Order).GetProperty("OrderNumber"));
       var result = transformer.Transform(call);
 
-      var expected = Expression.MakeMemberAccess(instance, typeof (Order).GetProperty("OrderNumber"));
+      var expected = Expression.MakeMemberAccess(instance, typeof(Order).GetProperty("OrderNumber"));
       SqlExpressionTreeComparer.CheckAreEqualTrees(expected, result);
     }
 
     [Test]
     public void MethodCallTransformer_Transform_PublicToPrivateProperty ()
     {
-      var instance = Expression.Constant(null, typeof (ClassWithNonPublicProperties));
-      var call = Expression.Call(instance, typeof (ClassWithNonPublicProperties).GetProperty("PublicGetSet").GetGetMethod());
+      var instance = Expression.Constant(null, typeof(ClassWithNonPublicProperties));
+      var call = Expression.Call(instance, typeof(ClassWithNonPublicProperties).GetProperty("PublicGetSet").GetGetMethod());
 
-      var privateProperty = typeof (ClassWithNonPublicProperties).GetProperty("PrivateGetSet", BindingFlags.Instance | BindingFlags.NonPublic);
+      var privateProperty = typeof(ClassWithNonPublicProperties).GetProperty("PrivateGetSet", BindingFlags.Instance | BindingFlags.NonPublic);
       var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(privateProperty);
       var result = transformer.Transform(call);
 
@@ -120,37 +120,37 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void MethodCallTransformer_Transform_ConvertRequired ()
     {
-      var instance = Expression.Constant(null, typeof (TargetClassForPersistentMixin));
-      var call = Expression.Call(instance, typeof (TargetClassForPersistentMixin).GetProperty("RedirectedPersistentProperty").GetGetMethod());
+      var instance = Expression.Constant(null, typeof(TargetClassForPersistentMixin));
+      var call = Expression.Call(instance, typeof(TargetClassForPersistentMixin).GetProperty("RedirectedPersistentProperty").GetGetMethod());
 
-      var mixinProperty = typeof (IMixinAddingPersistentProperties).GetProperty("PersistentProperty");
+      var mixinProperty = typeof(IMixinAddingPersistentProperties).GetProperty("PersistentProperty");
       var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(mixinProperty);
       var result = transformer.Transform(call);
 
-      var expected = Expression.MakeMemberAccess(Expression.Convert(instance, typeof (IMixinAddingPersistentProperties)), mixinProperty);
+      var expected = Expression.MakeMemberAccess(Expression.Convert(instance, typeof(IMixinAddingPersistentProperties)), mixinProperty);
       SqlExpressionTreeComparer.CheckAreEqualTrees(expected, result);
     }
 
     [Test]
     public void MethodCallTransformer_Transform_ExtensionMethod ()
     {
-      var instance = Expression.Constant(null, typeof (Order));
-      var call = Expression.Call(typeof (OrderExtensions).GetMethod("GetRedirectedOrderNumber"), instance);
+      var instance = Expression.Constant(null, typeof(Order));
+      var call = Expression.Call(typeof(OrderExtensions).GetMethod("GetRedirectedOrderNumber"), instance);
 
-      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof (Order).GetProperty("OrderNumber"));
+      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof(Order).GetProperty("OrderNumber"));
       var result = transformer.Transform(call);
 
-      var expected = Expression.MakeMemberAccess(instance, typeof (Order).GetProperty("OrderNumber"));
+      var expected = Expression.MakeMemberAccess(instance, typeof(Order).GetProperty("OrderNumber"));
       SqlExpressionTreeComparer.CheckAreEqualTrees(expected, result);
     }
 
     [Test]
     public void MethodCallTransformer_Transform_InvalidType ()
     {
-      var instance = Expression.Constant(null, typeof (OrderItem));
-      var call = Expression.Call(instance, typeof (OrderItem).GetProperty("Position").GetGetMethod());
+      var instance = Expression.Constant(null, typeof(OrderItem));
+      var call = Expression.Call(instance, typeof(OrderItem).GetProperty("Position").GetGetMethod());
 
-      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof (Order).GetProperty("OrderNumber"));
+      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof(Order).GetProperty("OrderNumber"));
       Assert.That(
           () => transformer.Transform(call),
           Throws.InstanceOf<NotSupportedException>()
@@ -163,10 +163,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void MethodCallTransformer_Transform_RedirectionToPropertyWithOtherReturnType ()
     {
-      var instance = Expression.Constant(null, typeof (Order));
-      var call = Expression.Call(instance, typeof (Order).GetProperty("OrderNumber").GetGetMethod());
+      var instance = Expression.Constant(null, typeof(Order));
+      var call = Expression.Call(instance, typeof(Order).GetProperty("OrderNumber").GetGetMethod());
 
-      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof (Order).GetProperty("DeliveryDate"));
+      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof(Order).GetProperty("DeliveryDate"));
       Assert.That(
           () => transformer.Transform(call),
           Throws.InstanceOf<NotSupportedException>()
@@ -178,10 +178,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void MethodCallTransformer_Transform_RedirectionToSelf ()
     {
-      var instance = Expression.Constant(null, typeof (Order));
-      var call = Expression.Call(instance, typeof (Order).GetProperty("OrderNumber").GetGetMethod());
+      var instance = Expression.Constant(null, typeof(Order));
+      var call = Expression.Call(instance, typeof(Order).GetProperty("OrderNumber").GetGetMethod());
 
-      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof (Order).GetProperty("OrderNumber"));
+      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof(Order).GetProperty("OrderNumber"));
       Assert.That(
           () => transformer.Transform(call),
           Throws.InstanceOf<NotSupportedException>()
@@ -195,7 +195,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var call = Expression.Call(NormalizingMemberInfoFromExpressionUtility.GetMethod(() => StaticMethod()));
 
-      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof (Order).GetProperty("OrderNumber"));
+      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof(Order).GetProperty("OrderNumber"));
       Assert.That(
           () => transformer.Transform(call),
           Throws.InstanceOf<NotSupportedException>()
@@ -208,11 +208,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void MethodCallTransformer_Transform_MethodWithArguments ()
     {
       var call = Expression.Call(
-          Expression.Constant(null, typeof (LinqPropertyRedirectionAttributeTest)),
+          Expression.Constant(null, typeof(LinqPropertyRedirectionAttributeTest)),
           NormalizingMemberInfoFromExpressionUtility.GetMethod(() => MethodWithArguments(null)),
           Expression.Constant(null));
 
-      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof (Order).GetProperty("OrderNumber"));
+      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof(Order).GetProperty("OrderNumber"));
       Assert.That(
           () => transformer.Transform(call),
           Throws.InstanceOf<NotSupportedException>()
@@ -225,11 +225,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void MethodCallTransformer_Transform_ExtensionMethodWithArguments ()
     {
       var call = Expression.Call(
-          typeof (OrderExtensions).GetMethod("GetRedirectedOrderNumberWithInvalidSignature"),
-          Expression.Constant(null, typeof (Order)),
+          typeof(OrderExtensions).GetMethod("GetRedirectedOrderNumberWithInvalidSignature"),
+          Expression.Constant(null, typeof(Order)),
           Expression.Constant(null));
 
-      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof (Order).GetProperty("OrderNumber"));
+      var transformer = new LinqPropertyRedirectionAttribute.MethodCallTransformer(typeof(Order).GetProperty("OrderNumber"));
       Assert.That(
           () => transformer.Transform(call),
           Throws.InstanceOf<NotSupportedException>()

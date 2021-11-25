@@ -26,7 +26,7 @@ using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
-  [TypeConverter (typeof (ExpandableObjectConverter))]
+  [TypeConverter (typeof(ExpandableObjectConverter))]
   public class WebMenuItem : IControlItem
   {
     private const string c_separator = "-";
@@ -76,7 +76,7 @@ namespace Remotion.Web.UI.Controls
       _style = style;
       _requiredSelection = requiredSelection;
       _isDisabled = isDisabled;
-      _command = new SingleControlItemCollection(command, new[] { typeof (Command) });
+      _command = new SingleControlItemCollection(command, new[] { typeof(Command) });
 
       _commandClick = new CommandClickEventHandler(Command_Click);
       if (_command.ControlItem != null)
@@ -84,7 +84,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     public WebMenuItem ()
-        : this (
+        : this(
             null,
             null,
             null,

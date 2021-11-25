@@ -53,7 +53,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     [Test]
     public void HasAccessGranted ()
     {
-      _testHelper.ExpectHasStatelessAccessForWxeFunction(typeof (TestFunctionWithThisObject), true);
+      _testHelper.ExpectHasStatelessAccessForWxeFunction(typeof(TestFunctionWithThisObject), true);
 
       bool hasAccess = _securityAdapter.HasAccess(null, new EventHandler(TestEventHandler));
 
@@ -64,7 +64,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     [Test]
     public void HasAccessDenied ()
     {
-      _testHelper.ExpectHasStatelessAccessForWxeFunction(typeof (TestFunctionWithThisObject), false);
+      _testHelper.ExpectHasStatelessAccessForWxeFunction(typeof(TestFunctionWithThisObject), false);
 
       bool hasAccess = _securityAdapter.HasAccess(null, new EventHandler(TestEventHandler));
 
@@ -72,7 +72,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
       Assert.That(hasAccess, Is.False);
     }
 
-    [DemandTargetWxeFunctionPermission (typeof (TestFunctionWithThisObject))]
+    [DemandTargetWxeFunctionPermission (typeof(TestFunctionWithThisObject))]
     private void TestEventHandler (object sender, EventArgs args)
     {
     }

@@ -75,8 +75,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       Employee sourceRelated = DomainObjectMother.CreateObjectInTransaction<Employee>(SourceTransaction);
       Employee cloneRelated = DomainObjectMother.CreateObjectInTransaction<Employee>(CloneTransaction);
 
-      PropertyAccessor sourceReference = source.Properties[typeof (Computer), "Employee"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (Computer), "Employee"];
+      PropertyAccessor sourceReference = source.Properties[typeof(Computer), "Employee"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(Computer), "Employee"];
 
       source.Employee = sourceRelated;
 
@@ -93,8 +93,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       Employee sourceRelated = null;
       Employee cloneRelated = null;
 
-      PropertyAccessor sourceReference = source.Properties[typeof (Computer), "Employee"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (Computer), "Employee"];
+      PropertyAccessor sourceReference = source.Properties[typeof(Computer), "Employee"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(Computer), "Employee"];
 
       source.Employee = sourceRelated;
 
@@ -111,8 +111,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       Computer sourceRelated = DomainObjectMother.CreateObjectInTransaction<Computer>(SourceTransaction);
       Computer cloneRelated = DomainObjectMother.CreateObjectInTransaction<Computer>(CloneTransaction);
 
-      PropertyAccessor sourceReference = source.Properties[typeof (Employee), "Computer"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (Employee), "Computer"];
+      PropertyAccessor sourceReference = source.Properties[typeof(Employee), "Computer"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(Employee), "Computer"];
 
       source.Computer = sourceRelated;
 
@@ -129,8 +129,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       Computer sourceRelated = null;
       Computer cloneRelated = null;
 
-      PropertyAccessor sourceReference = source.Properties[typeof (Employee), "Computer"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (Employee), "Computer"];
+      PropertyAccessor sourceReference = source.Properties[typeof(Employee), "Computer"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(Employee), "Computer"];
 
       source.Computer = sourceRelated;
 
@@ -147,8 +147,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       Order sourceRelated = DomainObjectMother.CreateObjectInTransaction<Order>(SourceTransaction);
       Order cloneRelated = DomainObjectMother.CreateObjectInTransaction<Order>(CloneTransaction);
 
-      PropertyAccessor sourceReference = source.Properties[typeof (OrderItem), "Order"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (OrderItem), "Order"];
+      PropertyAccessor sourceReference = source.Properties[typeof(OrderItem), "Order"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(OrderItem), "Order"];
 
       source.Order = sourceRelated;
 
@@ -165,8 +165,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       Order sourceRelated = null;
       Order cloneRelated = null;
 
-      PropertyAccessor sourceReference = source.Properties[typeof (OrderItem), "Order"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (OrderItem), "Order"];
+      PropertyAccessor sourceReference = source.Properties[typeof(OrderItem), "Order"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(OrderItem), "Order"];
 
       source.Order = sourceRelated;
 
@@ -185,8 +185,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       OrderItem sourceRelated = DomainObjectMother.CreateObjectInTransaction<OrderItem>(SourceTransaction);
       OrderItem cloneRelated = DomainObjectMother.CreateObjectInTransaction<OrderItem>(CloneTransaction);
 
-      PropertyAccessor sourceReference = source.Properties[typeof (Order), "OrderItems"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (Order), "OrderItems"];
+      PropertyAccessor sourceReference = source.Properties[typeof(Order), "OrderItems"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(Order), "OrderItems"];
 
       source.OrderItems.Add(sourceRelated);
 
@@ -203,8 +203,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       Order source = DomainObjectMother.CreateObjectInTransaction<Order>(SourceTransaction);
       Order clone = DomainObjectMother.CreateObjectInTransaction<Order>(CloneTransaction);
 
-      PropertyAccessor sourceReference = source.Properties[typeof (Order), "OrderItems"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (Order), "OrderItems"];
+      PropertyAccessor sourceReference = source.Properties[typeof(Order), "OrderItems"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(Order), "OrderItems"];
 
       HandleReference_OneMany_VirtualSide_Checks_Null(sourceReference, cloneReference);
     }

@@ -57,7 +57,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void Initialize ()
     {
-      Assert.IsInstanceOf(typeof (IStatePropertyReflector), _statePropertyReflector);
+      Assert.IsInstanceOf(typeof(IStatePropertyReflector), _statePropertyReflector);
       Assert.That(_statePropertyReflector.EnumerationTypeReflector, Is.SameAs(_enumeratedTypeReflectorMock.Object));
     }
 
@@ -69,9 +69,9 @@ namespace Remotion.Security.UnitTests.Metadata
       values.Add(Confidentiality.Confidential, PropertyStates.ConfidentialityConfidential);
       values.Add(Confidentiality.Private, PropertyStates.ConfidentialityPrivate);
 
-      _enumeratedTypeReflectorMock.Setup(_ => _.GetValues(typeof (Confidentiality), _cache)).Returns(values).Verifiable();
+      _enumeratedTypeReflectorMock.Setup(_ => _.GetValues(typeof(Confidentiality), _cache)).Returns(values).Verifiable();
 
-      StatePropertyInfo info = _statePropertyReflector.GetMetadata(typeof (PaperFile).GetProperty("Confidentiality"), _cache);
+      StatePropertyInfo info = _statePropertyReflector.GetMetadata(typeof(PaperFile).GetProperty("Confidentiality"), _cache);
 
       _enumeratedTypeReflectorMock.Verify();
 
@@ -90,20 +90,20 @@ namespace Remotion.Security.UnitTests.Metadata
     public void GetMetadataFromCache ()
     {
       StatePropertyReflector reflector = new StatePropertyReflector();
-      reflector.GetMetadata(typeof (PaperFile).GetProperty("Confidentiality"), _cache);
-      reflector.GetMetadata(typeof (File).GetProperty("Confidentiality"), _cache);
+      reflector.GetMetadata(typeof(PaperFile).GetProperty("Confidentiality"), _cache);
+      reflector.GetMetadata(typeof(File).GetProperty("Confidentiality"), _cache);
 
-      StatePropertyInfo paperFileConfidentialityInfo = _cache.GetStatePropertyInfo(typeof (PaperFile).GetProperty("Confidentiality"));
+      StatePropertyInfo paperFileConfidentialityInfo = _cache.GetStatePropertyInfo(typeof(PaperFile).GetProperty("Confidentiality"));
       Assert.That(paperFileConfidentialityInfo, Is.Not.Null);
       Assert.That(paperFileConfidentialityInfo.Name, Is.EqualTo("Confidentiality"));
-      Assert.That(_cache.GetStatePropertyInfo(typeof (File).GetProperty("Confidentiality")), Is.SameAs(paperFileConfidentialityInfo));
+      Assert.That(_cache.GetStatePropertyInfo(typeof(File).GetProperty("Confidentiality")), Is.SameAs(paperFileConfidentialityInfo));
     }
 
     [Test]
     public void GetMetadataWithInvalidType ()
     {
       Assert.That(
-          () => new StatePropertyReflector().GetMetadata(typeof (PaperFile).GetProperty("ID"), _cache),
+          () => new StatePropertyReflector().GetMetadata(typeof(PaperFile).GetProperty("ID"), _cache),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "The type of the property 'ID' in type 'Remotion.Security.UnitTests.TestDomain.File' is not an enumerated type.", "property"));
@@ -113,7 +113,7 @@ namespace Remotion.Security.UnitTests.Metadata
     public void GetMetadataWithInvalidEnum ()
     {
       Assert.That(
-          () => new StatePropertyReflector().GetMetadata(typeof (PaperFile).GetProperty("SimpleEnum"), _cache),
+          () => new StatePropertyReflector().GetMetadata(typeof(PaperFile).GetProperty("SimpleEnum"), _cache),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "The type of the property 'SimpleEnum' in type 'Remotion.Security.UnitTests.TestDomain.File' does not have the Remotion.Security.SecurityStateAttribute applied.", "property"));

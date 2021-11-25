@@ -29,7 +29,7 @@ namespace Remotion.Web.UI.Controls.Rendering
   /// Default implementation of the <see cref="IValidationErrorRenderer" /> interface.
   /// </summary>
   /// <seealso cref="IValidationErrorRenderer"/>
-  [ImplementationFor (typeof (IValidationErrorRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IValidationErrorRenderer), Lifetime = LifetimeKind.Singleton)]
   public class ValidationErrorRenderer : IValidationErrorRenderer
   {
     private struct ValidationErrorsAttributeData

@@ -28,7 +28,7 @@ namespace Remotion.UnitTests.Utilities
     {
     }
 
-    [TypeConverter (typeof (StubTypeConverter))]
+    [TypeConverter (typeof(StubTypeConverter))]
     private class BaseType
     {
     }
@@ -48,21 +48,21 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void CreateTypeConverterOrDefault_WithTypeConverter_ReturnsTypeConverter ()
     {
-      var typeConverter = _factory.CreateTypeConverterOrDefault(typeof (BaseType));
+      var typeConverter = _factory.CreateTypeConverterOrDefault(typeof(BaseType));
       Assert.That(typeConverter, Is.TypeOf<StubTypeConverter>());
     }
 
     [Test]
     public void CreateTypeConverterOrDefault_WithTypeConverterOnBaseType_ReturnsTypeConverter ()
     {
-      var typeConverter = _factory.CreateTypeConverterOrDefault(typeof (DerivedType));
+      var typeConverter = _factory.CreateTypeConverterOrDefault(typeof(DerivedType));
       Assert.That(typeConverter, Is.TypeOf<StubTypeConverter>());
     }
 
     [Test]
     public void CreateTypeConverterOrDefault_WithOtherType_ReturnsNull ()
     {
-      var typeConverter = _factory.CreateTypeConverterOrDefault(typeof (Int32));
+      var typeConverter = _factory.CreateTypeConverterOrDefault(typeof(Int32));
       Assert.That(typeConverter, Is.Null);
     }
   }

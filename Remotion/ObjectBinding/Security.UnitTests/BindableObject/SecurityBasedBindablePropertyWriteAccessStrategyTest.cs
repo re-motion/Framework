@@ -205,8 +205,8 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
       return new PropertyBase.Parameters(
           CreateBindableObjectProviderWithStubBusinessObjectServiceFactory(),
           propertyInformation,
-          typeof (IBusinessObject),
-          new Lazy<Type>(() => typeof (IBusinessObject)),
+          typeof(IBusinessObject),
+          new Lazy<Type>(() => typeof(IBusinessObject)),
           null,
           true,
           false,

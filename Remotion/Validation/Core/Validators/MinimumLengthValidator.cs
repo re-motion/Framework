@@ -23,7 +23,7 @@ namespace Remotion.Validation.Validators
   public class MinimumLengthValidator : LengthValidator
   {
     public MinimumLengthValidator (int min, [NotNull] ValidationMessage validationMessage)
-        : base (min, null, $"The value must have at least {min} characters.", validationMessage)
+        : base(min, null, $"The value must have at least {min} characters.", validationMessage)
     {
     }
 

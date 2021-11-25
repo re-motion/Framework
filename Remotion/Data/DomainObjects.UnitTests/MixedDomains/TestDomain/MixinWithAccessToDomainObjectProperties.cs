@@ -22,7 +22,7 @@ using Remotion.Mixins;
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
   [CLSCompliant (false)]
-  [Extends (typeof (ClassWithAllDataTypes), MixinTypeArguments = new[] { typeof (ClassWithAllDataTypes) })]
+  [Extends (typeof(ClassWithAllDataTypes), MixinTypeArguments = new[] { typeof(ClassWithAllDataTypes) })]
   [Serializable]
   public class MixinWithAccessToDomainObjectProperties<TDomainObject> : DomainObjectMixin<TDomainObject>
       where TDomainObject : class, IDomainObject

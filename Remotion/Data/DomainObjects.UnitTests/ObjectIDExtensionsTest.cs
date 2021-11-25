@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       base.SetUp();
       _orderID1 = DomainObjectIDs.Order1;
       _objectID2 = DomainObjectIDs.Order2;
-      _notFoundObjectID = new ObjectID(typeof (Order), Guid.NewGuid());
+      _notFoundObjectID = new ObjectID(typeof(Order), Guid.NewGuid());
       _clientTransaction = ClientTransaction.CreateRootTransaction();
     }
 

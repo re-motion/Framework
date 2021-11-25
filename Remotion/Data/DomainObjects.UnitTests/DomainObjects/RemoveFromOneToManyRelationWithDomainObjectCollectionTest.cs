@@ -228,7 +228,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _supervisor.Subordinates.Remove(_subordinate);
 
-      Assert.That(_subordinate.Properties[typeof (Employee), "Supervisor"].GetRelatedObjectID(), Is.Null);
+      Assert.That(_subordinate.Properties[typeof(Employee), "Supervisor"].GetRelatedObjectID(), Is.Null);
     }
 
     [Test]

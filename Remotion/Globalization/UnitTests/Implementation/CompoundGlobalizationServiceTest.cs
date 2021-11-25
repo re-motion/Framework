@@ -63,7 +63,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
       var result = _service.GetResourceManager(_typeInformationStub.Object);
 
-      Assert.That(result, Is.TypeOf(typeof (ResourceManagerSet)));
+      Assert.That(result, Is.TypeOf(typeof(ResourceManagerSet)));
       Assert.That(((ResourceManagerSet) result).ResourceManagers, Is.EqualTo(new[] { resourceManagerStub1.Object, resourceManagerStub2.Object, resourceManagerStub3.Object }));
 
       _innerService1.Verify();

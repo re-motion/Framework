@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _definition = DomainObjectIDs.Order1.ClassDefinition.GetRelationEndPointDefinition(typeof (Order).FullName + ".OrderTicket");
+      _definition = DomainObjectIDs.Order1.ClassDefinition.GetRelationEndPointDefinition(typeof(Order).FullName + ".OrderTicket");
       _nullEndPoint = new NullVirtualObjectEndPoint(TestableClientTransaction, _definition);
 
       _oppositeEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();

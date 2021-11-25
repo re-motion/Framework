@@ -29,7 +29,7 @@ namespace Remotion.Xml.UnitTests
   
     public static XmlReader GetSchemaReader ()
     {
-      return new XmlTextReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(typeof (SampleClass), "SampleClass.xsd"));
+      return new XmlTextReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(typeof(SampleClass), "SampleClass.xsd"));
     }
 
     private int _value;

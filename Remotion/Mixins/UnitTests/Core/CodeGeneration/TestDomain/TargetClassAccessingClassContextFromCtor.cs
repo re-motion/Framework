@@ -21,7 +21,7 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
-  [Uses (typeof (NullMixin))]
+  [Uses (typeof(NullMixin))]
   public class TargetClassAccessingClassContextFromCtor
   {
     public ClassContext ClassContext;
@@ -32,7 +32,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
       ClassContext = mixinTarget.ClassContext;
 
       Assert.That(ClassContext.Mixins.Count, Is.EqualTo(1));
-      Assert.That(ClassContext.Mixins.ContainsKey(typeof (NullMixin)), Is.True);
+      Assert.That(ClassContext.Mixins.ContainsKey(typeof(NullMixin)), Is.True);
     }
   }
 }

@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       _newOrderContainer = _newOrder.InternalDataContainer;
       _newOrderTicket = OrderTicket.NewObject(_newOrder);
 
-      _orderNumberProperty = GetPropertyDefinition(typeof (Order), "OrderNumber");
+      _orderNumberProperty = GetPropertyDefinition(typeof(Order), "OrderNumber");
     }
 
     [Test]
@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _newOrder.Delete();
       Assert.That(
-          () => _newOrder.Properties[typeof (Order), "OrderNumber"].GetValueWithoutTypeCheck(),
+          () => _newOrder.Properties[typeof(Order), "OrderNumber"].GetValueWithoutTypeCheck(),
           Throws.InstanceOf<ObjectInvalidException>());
     }
 
@@ -189,7 +189,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _newOrder.Delete();
       Assert.That(
-          () => _newOrder.Properties[typeof (Order), "OrderNumber"].SetValueWithoutTypeCheck(10),
+          () => _newOrder.Properties[typeof(Order), "OrderNumber"].SetValueWithoutTypeCheck(10),
           Throws.InstanceOf<ObjectInvalidException>());
     }
 
@@ -198,7 +198,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _newOrder.Delete();
       Assert.That(
-          () => _newOrderContainer.GetValue(GetPropertyDefinition(typeof (Order), "OrderNumber")),
+          () => _newOrderContainer.GetValue(GetPropertyDefinition(typeof(Order), "OrderNumber")),
           Throws.InstanceOf<ObjectInvalidException>());
     }
 
@@ -207,7 +207,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     {
       _newOrder.Delete();
       Assert.That(
-          () => _newOrderContainer.SetValue(GetPropertyDefinition(typeof (Order), "OrderNumber"), 10),
+          () => _newOrderContainer.SetValue(GetPropertyDefinition(typeof(Order), "OrderNumber"), 10),
           Throws.InstanceOf<ObjectInvalidException>());
     }
 

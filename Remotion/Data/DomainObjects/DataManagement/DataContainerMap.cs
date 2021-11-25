@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     #region Serialization
 
     protected DataContainerMap (FlattenedDeserializationInfo info)
-        : this (info.GetValueForHandle<IClientTransactionEventSink>())
+        : this(info.GetValueForHandle<IClientTransactionEventSink>())
     {
       var dataContainerCount = info.GetIntValue();
       for (int i = 0; i < dataContainerCount; ++i)

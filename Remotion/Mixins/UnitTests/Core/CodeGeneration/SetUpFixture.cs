@@ -76,7 +76,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       // Force-initialize ObjectFactory to ensure it does not default onto the test pipeline.
       Dev.Null = ObjectFactory.Create<object>();
       // Force-initialize TestFactory to ensure it does not default onto the test pipeline.
-      Dev.Null = TypeFactory.GetConcreteType(typeof (object));
+      Dev.Null = TypeFactory.GetConcreteType(typeof(object));
 
       var settings = PipelineSettings.New().SetEnableSerializationWithoutAssemblySaving(true).SetAssemblyDirectory(TestContext.CurrentContext.TestDirectory).Build();
       var participants = new IParticipant[]

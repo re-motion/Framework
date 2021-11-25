@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       _dayProperty = new CompoundStoragePropertyDefinition.NestedPropertyInfo(_property3Stub, o => ((DateTime) o).Day);
 
       _compoundStoragePropertyDefinition = new CompoundStoragePropertyDefinition(
-          typeof (DateTime),
+          typeof(DateTime),
           new[] { _yearProperty, _monthProperty, _dayProperty },
           objects => new DateTime((int) objects[0], (int) objects[1], (int) objects[2]));
     }
@@ -203,7 +203,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       property1aMock.VerifyAllExpectations();
       property1bMock.VerifyAllExpectations();
 
-      Assert.That(result, Is.TypeOf<CompoundStoragePropertyDefinition>().With.Property("PropertyType").SameAs(typeof (int)));
+      Assert.That(result, Is.TypeOf<CompoundStoragePropertyDefinition>().With.Property("PropertyType").SameAs(typeof(int)));
       Assert.That(((CompoundStoragePropertyDefinition) result).ValueCombinator, Is.SameAs(property1.ValueCombinator));
       Assert.That(((CompoundStoragePropertyDefinition) result).Properties, Has.Count.EqualTo(2));
       Assert.That(((CompoundStoragePropertyDefinition) result).Properties[0].ValueAccessor, Is.SameAs(property1.Properties[0].ValueAccessor));
@@ -227,8 +227,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void UnifyWithEquivalentProperties_ThrowsForDifferentPropertyType ()
     {
-      var property1 = new CompoundStoragePropertyDefinition(typeof (int), new[] { _monthProperty }, x => x);
-      var property2 = new CompoundStoragePropertyDefinition(typeof (string), new[] { _monthProperty }, x => x);
+      var property1 = new CompoundStoragePropertyDefinition(typeof(int), new[] { _monthProperty }, x => x);
+      var property2 = new CompoundStoragePropertyDefinition(typeof(string), new[] { _monthProperty }, x => x);
 
       Assert.That(
           () => property1.UnifyWithEquivalentProperties(new[] { property2 }),
@@ -240,8 +240,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void UnifyWithEquivalentProperties_ThrowsForDifferentNumberOfNestedProperties ()
     {
-      var property1 = new CompoundStoragePropertyDefinition(typeof (int), new[] { _monthProperty }, x => x);
-      var property2 = new CompoundStoragePropertyDefinition(typeof (int), new[] { _monthProperty, _dayProperty }, x => x);
+      var property1 = new CompoundStoragePropertyDefinition(typeof(int), new[] { _monthProperty }, x => x);
+      var property2 = new CompoundStoragePropertyDefinition(typeof(int), new[] { _monthProperty, _dayProperty }, x => x);
 
       Assert.That(
           () => property1.UnifyWithEquivalentProperties(new[] { property2 }),
@@ -254,7 +254,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
         IRdbmsStoragePropertyDefinition propertyA, IRdbmsStoragePropertyDefinition propertyB)
     {
       return new CompoundStoragePropertyDefinition(
-          typeof (int),
+          typeof(int),
           CreateNestedPropertyInfos(propertyA, propertyB), 
           values => 7);
     }

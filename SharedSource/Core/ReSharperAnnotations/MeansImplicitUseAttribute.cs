@@ -73,17 +73,17 @@ namespace JetBrains.Annotations
   sealed partial class MeansImplicitUseAttribute : Attribute
   {
     public MeansImplicitUseAttribute ()
-        : this (ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default)
+        : this(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.Default)
     {
     }
 
     public MeansImplicitUseAttribute (ImplicitUseKindFlags useKindFlags)
-        : this (useKindFlags, ImplicitUseTargetFlags.Default)
+        : this(useKindFlags, ImplicitUseTargetFlags.Default)
     {
     }
 
     public MeansImplicitUseAttribute (ImplicitUseTargetFlags targetFlags)
-        : this (ImplicitUseKindFlags.Default, targetFlags)
+        : this(ImplicitUseKindFlags.Default, targetFlags)
     {
     }
 

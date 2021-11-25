@@ -75,13 +75,13 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     /// <param name="userFinder"></param>
     /// <param name="accessControlListFinder"></param>
     public AclExpander (IAclExpanderUserFinder userFinder, IAclExpanderAclFinder accessControlListFinder)
-      : this (new UserRoleAclAceCombinationFinder(userFinder, accessControlListFinder))
+      : this(new UserRoleAclAceCombinationFinder(userFinder, accessControlListFinder))
     {}
 
     /// <summary>
     /// Default behavior is to use all <see cref="User"/>|s and all <see cref="AccessControlList"/>|s.
     /// </summary>
-    public AclExpander () : this (new AclExpanderUserFinder(), new AclExpanderAclFinder()) {}
+    public AclExpander () : this(new AclExpanderUserFinder(), new AclExpanderAclFinder()) {}
 
     public AclExpansionEntryCreator AclExpansionEntryCreator
     {

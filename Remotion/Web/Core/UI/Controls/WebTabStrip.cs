@@ -82,17 +82,17 @@ namespace Remotion.Web.UI.Controls
     }
 
     public WebTabStrip (IControl? ownerControl, Type[] supportedTabTypes)
-        : this (new WebTabCollection(ownerControl, supportedTabTypes))
+        : this(new WebTabCollection(ownerControl, supportedTabTypes))
     {
     }
 
     public WebTabStrip (IControl? ownerControl)
-        : this (ownerControl, new[] { typeof (WebTab) })
+        : this(ownerControl, new[] { typeof(WebTab) })
     {
     }
 
     public WebTabStrip ()
-        : this (null, new[] { typeof (WebTab) })
+        : this(null, new[] { typeof(WebTab) })
     {
     }
 

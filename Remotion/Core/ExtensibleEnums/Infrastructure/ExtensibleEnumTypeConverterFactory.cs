@@ -24,7 +24,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   /// <summary>
   /// Creates an <see cref="ExtensibleEnumConverter"/> if the requested type is an extensible enum.
   /// </summary>
-  [ImplementationFor (typeof (ITypeConverterFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor (typeof(ITypeConverterFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class ExtensibleEnumTypeConverterFactory : ITypeConverterFactory
   {
     public const int Position = EnumTypeConverterFactory.Position + 1;

@@ -37,7 +37,7 @@ namespace Remotion.Security.UnitTests.Metadata.MemberResolverTests
     [Test]
     public void Test_MethodWithoutAttribute ()
     {
-      var methodInformation = _resolver.GetMethodInformation(typeof (SecurableObject), "CheckPermissions", MemberAffiliation.Static);
+      var methodInformation = _resolver.GetMethodInformation(typeof(SecurableObject), "CheckPermissions", MemberAffiliation.Static);
 
       Assert.That(methodInformation, Is.InstanceOf(typeof(NullMethodInformation)));
     }
@@ -45,16 +45,16 @@ namespace Remotion.Security.UnitTests.Metadata.MemberResolverTests
     [Test]
     public void Test_CacheForMethodWithoutAttributes ()
     {
-      var methodInformation = _resolver.GetMethodInformation(typeof (SecurableObject), "CheckPermissions", MemberAffiliation.Static);
+      var methodInformation = _resolver.GetMethodInformation(typeof(SecurableObject), "CheckPermissions", MemberAffiliation.Static);
 
-      Assert.That(_resolver.GetMethodInformation(typeof (SecurableObject), "CheckPermissions", MemberAffiliation.Static), Is.SameAs(methodInformation));
+      Assert.That(_resolver.GetMethodInformation(typeof(SecurableObject), "CheckPermissions", MemberAffiliation.Static), Is.SameAs(methodInformation));
     }
 
     [Test]
     public void Test_MethodWithOneAttribute ()
     {
-      var methodInformation = _resolver.GetMethodInformation(typeof (SecurableObject), "CreateForSpecialCase", MemberAffiliation.Static);
-      var expectedMethodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetMethod("CreateForSpecialCase"));
+      var methodInformation = _resolver.GetMethodInformation(typeof(SecurableObject), "CreateForSpecialCase", MemberAffiliation.Static);
+      var expectedMethodInformation = MethodInfoAdapter.Create(typeof(SecurableObject).GetMethod("CreateForSpecialCase"));
 
       Assert.That(methodInformation, Is.Not.Null);
       Assert.That(methodInformation, Is.EqualTo(expectedMethodInformation));
@@ -63,16 +63,16 @@ namespace Remotion.Security.UnitTests.Metadata.MemberResolverTests
     [Test]
     public void Test_CacheForMethodWithOneAttribut ()
     {
-      var methodInformation = _resolver.GetMethodInformation(typeof (SecurableObject), "CreateForSpecialCase", MemberAffiliation.Static);
+      var methodInformation = _resolver.GetMethodInformation(typeof(SecurableObject), "CreateForSpecialCase", MemberAffiliation.Static);
 
-      Assert.That(_resolver.GetMethodInformation(typeof (SecurableObject), "CreateForSpecialCase", MemberAffiliation.Static), Is.SameAs(methodInformation));
+      Assert.That(_resolver.GetMethodInformation(typeof(SecurableObject), "CreateForSpecialCase", MemberAffiliation.Static), Is.SameAs(methodInformation));
     }
 
     [Test]
     public void Test_OverloadedMethodWithOneAttributes ()
     {
-      var methodInformation = _resolver.GetMethodInformation(typeof (SecurableObject), "IsValid", MemberAffiliation.Static);
-      var expectedMethodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetMethod("IsValid", new [] {typeof(SecurableObject)}));
+      var methodInformation = _resolver.GetMethodInformation(typeof(SecurableObject), "IsValid", MemberAffiliation.Static);
+      var expectedMethodInformation = MethodInfoAdapter.Create(typeof(SecurableObject).GetMethod("IsValid", new [] {typeof(SecurableObject)}));
 
       Assert.That(methodInformation, Is.Not.Null);
       Assert.That(methodInformation, Is.EqualTo(expectedMethodInformation));
@@ -81,8 +81,8 @@ namespace Remotion.Security.UnitTests.Metadata.MemberResolverTests
     [Test]
     public void Test_MethodOfDerivedClass ()
     {
-      var methodInformation = _resolver.GetMethodInformation(typeof (DerivedSecurableObject), "CreateForSpecialCase", MemberAffiliation.Static);
-      var expectedMethodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetMethod("CreateForSpecialCase"));
+      var methodInformation = _resolver.GetMethodInformation(typeof(DerivedSecurableObject), "CreateForSpecialCase", MemberAffiliation.Static);
+      var expectedMethodInformation = MethodInfoAdapter.Create(typeof(SecurableObject).GetMethod("CreateForSpecialCase"));
 
       Assert.That(methodInformation, Is.Not.Null);
       Assert.That(methodInformation, Is.EqualTo(expectedMethodInformation));
@@ -92,7 +92,7 @@ namespace Remotion.Security.UnitTests.Metadata.MemberResolverTests
     public void Test_NotExistingMethod ()
     {
       Assert.That(
-          () => _resolver.GetMethodInformation(typeof (SecurableObject), "Sve", MemberAffiliation.Static),
+          () => _resolver.GetMethodInformation(typeof(SecurableObject), "Sve", MemberAffiliation.Static),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "The method 'Sve' could not be found.", "methodName"));

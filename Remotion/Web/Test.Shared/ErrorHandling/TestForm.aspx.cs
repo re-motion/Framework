@@ -43,7 +43,7 @@ namespace Remotion.Web.Test.Shared.ErrorHandling
     protected void SynchronousPostbackErrorButton_Click (object sender, EventArgs e)
     {
       var f = new ErrorPageHandlerFactory();
-      var errorFormVirtualPath = _resourceUrlFactory.CreateResourceUrl(typeof (ErrorForm), TestResourceType.Root, "ErrorHandling/ErrorForm.aspx").GetUrl();
+      var errorFormVirtualPath = _resourceUrlFactory.CreateResourceUrl(typeof(ErrorForm), TestResourceType.Root, "ErrorHandling/ErrorForm.aspx").GetUrl();
       var p = f.GetHandler(Context, "GET", errorFormVirtualPath, Server.MapPath(errorFormVirtualPath));
       var stringBuilder = new StringBuilder();
       TextWriter output = new StringWriter(stringBuilder);

@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
 
       var propertyDefinition = propertyReflector.GetMetadata();
       Assert.That(propertyDefinition.StorageClass, Is.EqualTo(StorageClass.Transaction));
-      Assert.That(propertyDefinition.PropertyType, Is.EqualTo(typeof (DateTime)));
+      Assert.That(propertyDefinition.PropertyType, Is.EqualTo(typeof(DateTime)));
     }
   }
 }

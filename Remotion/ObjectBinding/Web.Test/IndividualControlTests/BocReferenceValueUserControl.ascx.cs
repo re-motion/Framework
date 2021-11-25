@@ -193,7 +193,7 @@ public class BocReferenceValueUserControl : BaseUserControl
     if (! IsPostBack)
     {
       IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert(
-          XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof (Person)), typeof (IBusinessObjectWithIdentity));
+          XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)), typeof(IBusinessObjectWithIdentity));
       UnboundPartnerField.SetBusinessObjectList(objects);
       DisabledUnboundPartnerField.SetBusinessObjectList(objects);
     }

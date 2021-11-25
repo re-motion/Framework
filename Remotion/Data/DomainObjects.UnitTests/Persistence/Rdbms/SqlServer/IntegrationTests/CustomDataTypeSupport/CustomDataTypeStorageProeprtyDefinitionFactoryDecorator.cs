@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
-      if (propertyDefinition.PropertyType == typeof (CompoundDataType))
+      if (propertyDefinition.PropertyType == typeof(CompoundDataType))
         return CreateStoragePropertyDefinitionForCompoundDataType(_storageNameProvider.GetColumnName(propertyDefinition));
       return _innerDataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(propertyDefinition);
     }
@@ -61,37 +61,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     private IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinitionForCompoundDataType (string columnName)
     {
       return new CompoundStoragePropertyDefinition(
-          typeof (CompoundDataType),
+          typeof(CompoundDataType),
           new[]
           {
               new CompoundStoragePropertyDefinition.NestedPropertyInfo(
                   new SimpleStoragePropertyDefinition(
-                    typeof (string),
+                    typeof(string),
                     new ColumnDefinition(
                         columnName + "StringValue",
                         new StorageTypeInformation(
-                        typeof (string),
+                        typeof(string),
                         "nvarchar (100)",
                         DbType.String,
                         true,
                         100,
-                        typeof (string),
-                        new DefaultConverter(typeof (string))),
+                        typeof(string),
+                        new DefaultConverter(typeof(string))),
                     false)),
                   obj => obj == null ? null : ((CompoundDataType) obj).StringValue),
               new CompoundStoragePropertyDefinition.NestedPropertyInfo(
                   new SimpleStoragePropertyDefinition(
-                      typeof (int),
+                      typeof(int),
                       new ColumnDefinition(
                           columnName + "Int32Value",
                           new StorageTypeInformation(
-                          typeof (int?),
+                          typeof(int?),
                           "int",
                           DbType.Int32,
                           true,
                           null,
-                          typeof (int?),
-                          new DefaultConverter(typeof (int?))),
+                          typeof(int?),
+                          new DefaultConverter(typeof(int?))),
                       false)),
                   obj => obj == null ? (int?) null : ((CompoundDataType) obj).Int32Value)
           },

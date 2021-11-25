@@ -32,7 +32,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     public override void SetUp ()
     {
       base.SetUp();
-      _classEmitter = new CustomClassEmitter(Scope, UniqueName, typeof (object), Type.EmptyTypes, TypeAttributes.Public, true); // force unsigned because we use SimpleAttribute below
+      _classEmitter = new CustomClassEmitter(Scope, UniqueName, typeof(object), Type.EmptyTypes, TypeAttributes.Public, true); // force unsigned because we use SimpleAttribute below
     }
 
     public override void TearDown ()
@@ -82,9 +82,9 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     {
       FieldReference field;
       if (eventEmitter.EventKind == EventKind.Static)
-        field = _classEmitter.CreateStaticField("AddCalled", typeof (bool));
+        field = _classEmitter.CreateStaticField("AddCalled", typeof(bool));
       else
-        field = _classEmitter.CreateField("AddCalled", typeof (bool));
+        field = _classEmitter.CreateField("AddCalled", typeof(bool));
 
       eventEmitter.AddMethod.AddStatement(new AssignStatement(field, new ConstReference(true).ToExpression()));
       eventEmitter.AddMethod.ImplementByReturningVoid();
@@ -94,9 +94,9 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     {
       FieldReference field;
       if (eventEmitter.EventKind == EventKind.Static)
-        field = _classEmitter.CreateStaticField("RemoveCalled", typeof (bool));
+        field = _classEmitter.CreateStaticField("RemoveCalled", typeof(bool));
       else
-        field = _classEmitter.CreateField("RemoveCalled", typeof (bool));
+        field = _classEmitter.CreateField("RemoveCalled", typeof(bool));
 
       eventEmitter.RemoveMethod.AddStatement(new AssignStatement(field, new ConstReference(true).ToExpression()));
       eventEmitter.RemoveMethod.ImplementByReturningVoid();
@@ -129,10 +129,10 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void SimpleEvent ()
     {
-      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("SimpleEvent", EventKind.Instance, typeof (EventHandler));
+      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("SimpleEvent", EventKind.Instance, typeof(EventHandler));
 
       Assert.That(eventEmitter.Name, Is.EqualTo("SimpleEvent"));
-      Assert.That(eventEmitter.EventType, Is.EqualTo(typeof (EventHandler)));
+      Assert.That(eventEmitter.EventType, Is.EqualTo(typeof(EventHandler)));
       Assert.That(eventEmitter.EventKind, Is.EqualTo(EventKind.Instance));
 
       ImplementEventAddMethod(eventEmitter);
@@ -156,10 +156,10 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void StaticEvent ()
     {
-      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("StaticEvent", EventKind.Static, typeof (Func<string>));
+      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("StaticEvent", EventKind.Static, typeof(Func<string>));
 
       Assert.That(eventEmitter.Name, Is.EqualTo("StaticEvent"));
-      Assert.That(eventEmitter.EventType, Is.EqualTo(typeof (Func<string>)));
+      Assert.That(eventEmitter.EventType, Is.EqualTo(typeof(Func<string>)));
       Assert.That(eventEmitter.EventKind, Is.EqualTo(EventKind.Static));
 
       ImplementEventAddMethod(eventEmitter);
@@ -184,7 +184,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void DefaultAddMethod ()
     {
-      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("DefaultAddMethod", EventKind.Static, typeof (EventHandler));
+      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("DefaultAddMethod", EventKind.Static, typeof(EventHandler));
       Assert.That(eventEmitter.AddMethod, Is.Not.Null);
       Type type = _classEmitter.BuildType();
       Assert.That(GetEvent(type, eventEmitter).GetAddMethod(), Is.Not.Null);
@@ -193,7 +193,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void DefaultRemoveMethod ()
     {
-      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("DefaultRemoveMethod", EventKind.Static, typeof (EventHandler));
+      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("DefaultRemoveMethod", EventKind.Static, typeof(EventHandler));
       Assert.That(eventEmitter.RemoveMethod, Is.Not.Null);
       Type type = _classEmitter.BuildType();
       Assert.That(GetEvent(type, eventEmitter).GetRemoveMethod(), Is.Not.Null);
@@ -202,27 +202,27 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void CustomAddMethod ()
     {
-      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("CustomAddMethod", EventKind.Static, typeof (EventHandler));
+      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("CustomAddMethod", EventKind.Static, typeof(EventHandler));
       eventEmitter.AddMethod = _classEmitter.CreateMethod(
-          "CustomAdd", MethodAttributes.Public | MethodAttributes.Static, typeof (void), new [] { typeof (EventHandler) });
+          "CustomAdd", MethodAttributes.Public | MethodAttributes.Static, typeof(void), new [] { typeof(EventHandler) });
     }
 
     [Test]
     public void CustomRemoveMethod ()
     {
-      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("CustomRemoveMethod", EventKind.Static, typeof (EventHandler));
+      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("CustomRemoveMethod", EventKind.Static, typeof(EventHandler));
       eventEmitter.RemoveMethod = _classEmitter.CreateMethod(
-          "CustomRemove", MethodAttributes.Public | MethodAttributes.Static, typeof (void), new[] { typeof (EventHandler) });
+          "CustomRemove", MethodAttributes.Public | MethodAttributes.Static, typeof(void), new[] { typeof(EventHandler) });
     }
 
     [Test]
     public void AddMethodCannotBeSetTwice ()
     {
-      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("AddMethodCannotBeSetTwice", EventKind.Static, typeof (EventHandler));
+      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("AddMethodCannotBeSetTwice", EventKind.Static, typeof(EventHandler));
       Dev.Null = eventEmitter.AddMethod;
       Assert.That(
           () => eventEmitter.AddMethod = _classEmitter.CreateMethod(
-          "invalid", MethodAttributes.Public | MethodAttributes.Static, typeof (void), new[] { typeof (EventHandler) }),
+          "invalid", MethodAttributes.Public | MethodAttributes.Static, typeof(void), new[] { typeof(EventHandler) }),
           Throws.InvalidOperationException
               .With.Message.EqualTo("Add methods can only be assigned once."));
     }
@@ -230,11 +230,11 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void RemoveMethodCannotBeSetTwice ()
     {
-      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("AddMethodCannotBeSetTwice", EventKind.Static, typeof (EventHandler));
+      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("AddMethodCannotBeSetTwice", EventKind.Static, typeof(EventHandler));
       Dev.Null = eventEmitter.RemoveMethod;
       Assert.That(
           () => eventEmitter.RemoveMethod = _classEmitter.CreateMethod(
-          "invalid", MethodAttributes.Public | MethodAttributes.Static, typeof (void), new[] { typeof (EventHandler) }),
+          "invalid", MethodAttributes.Public | MethodAttributes.Static, typeof(void), new[] { typeof(EventHandler) }),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "Remove methods can only be assigned once."));
@@ -243,7 +243,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void AddMethodCannotBeSetToNull ()
     {
-      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("AddMethodCannotBeSetToNull", EventKind.Static, typeof (string));
+      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("AddMethodCannotBeSetToNull", EventKind.Static, typeof(string));
       Assert.That(
           () => eventEmitter.AddMethod = null,
           Throws.InstanceOf<ArgumentNullException>()
@@ -253,7 +253,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void RemoveMethodCannotBeSetToNull ()
     {
-      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("RemoveMethodCannotBeSetToNull", EventKind.Static, typeof (string));
+      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("RemoveMethodCannotBeSetToNull", EventKind.Static, typeof(string));
       Assert.That(
           () => eventEmitter.RemoveMethod = null,
           Throws.InstanceOf<ArgumentNullException>()
@@ -263,11 +263,11 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void AddCustomAttribute ()
     {
-      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("AddCustomAttribute", EventKind.Static, typeof (string));
-      eventEmitter.AddCustomAttribute(new CustomAttributeBuilder(typeof (SimpleAttribute).GetConstructor(Type.EmptyTypes), new object[0]));
+      CustomEventEmitter eventEmitter = _classEmitter.CreateEvent("AddCustomAttribute", EventKind.Static, typeof(string));
+      eventEmitter.AddCustomAttribute(new CustomAttributeBuilder(typeof(SimpleAttribute).GetConstructor(Type.EmptyTypes), new object[0]));
 
       Type type = _classEmitter.BuildType();
-      Assert.That(GetEvent(type, eventEmitter).IsDefined(typeof (SimpleAttribute), false), Is.True);
+      Assert.That(GetEvent(type, eventEmitter).IsDefined(typeof(SimpleAttribute), false), Is.True);
       Assert.That(GetEvent(type, eventEmitter).GetCustomAttributes(false).Length, Is.EqualTo(1));
       Assert.That(GetEvent(type, eventEmitter).GetCustomAttributes(false)[0], Is.EqualTo(new SimpleAttribute()));
     }

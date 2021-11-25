@@ -39,9 +39,9 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [SetUp]
     public void SetUp ()
     {
-      _property = PropertyInfoAdapter.Create(typeof (Customer).GetProperty("UserName"));
+      _property = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("UserName"));
       _userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.UserName);
-      _ruleCollector = PropertyMetaValidationRuleCollector.Create(_userNameExpression, typeof (RemovingPropertyValidationRuleCollectorTest));
+      _ruleCollector = PropertyMetaValidationRuleCollector.Create(_userNameExpression, typeof(RemovingPropertyValidationRuleCollectorTest));
     }
 
     [Test]
@@ -49,7 +49,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     {
       Assert.That(_ruleCollector.Property.Equals(_property), Is.True);
       Assert.That(_ruleCollector.Property, Is.EqualTo(_property));
-      Assert.That(_ruleCollector.CollectorType, Is.EqualTo(typeof (RemovingPropertyValidationRuleCollectorTest)));
+      Assert.That(_ruleCollector.CollectorType, Is.EqualTo(typeof(RemovingPropertyValidationRuleCollectorTest)));
       Assert.That(_ruleCollector.MetaValidationRules.Any(), Is.False);
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.Dummy());
 
       Assert.That(
-          () => PropertyMetaValidationRuleCollector.Create(dummyExpression, typeof (CustomerValidationRuleCollector1)),
+          () => PropertyMetaValidationRuleCollector.Create(dummyExpression, typeof(CustomerValidationRuleCollector1)),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Must be a MemberExpression.", "expression"));
     }
 

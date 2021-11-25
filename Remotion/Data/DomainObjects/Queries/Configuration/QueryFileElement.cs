@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     {
       _queryFileFileNameProperty = new ConfigurationProperty(
           "filename",
-          typeof (string),
+          typeof(string),
           null,
           ConfigurationPropertyOptions.IsRequired | ConfigurationPropertyOptions.IsKey);
 

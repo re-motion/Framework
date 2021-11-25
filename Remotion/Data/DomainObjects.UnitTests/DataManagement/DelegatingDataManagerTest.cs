@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var objectID = DomainObjectIDs.Order1;
       var dataContainer = DataContainer.CreateNew(objectID);
-      var relationEndPointID = RelationEndPointID.Create(objectID, typeof (Order), "OrderTicket");
+      var relationEndPointID = RelationEndPointID.Create(objectID, typeof(Order), "OrderTicket");
       var virtualEndPoint = MockRepository.GenerateStub<IVirtualEndPoint>();
       var domainObject = DomainObjectMother.CreateFakeObject<Order>();
       var persistableData = new PersistableData(

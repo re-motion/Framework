@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </summary>
     protected override Type[] SupportedPropertyInterfaces
     {
-      get { return new[] { typeof (IBusinessObjectReferenceProperty) }; }
+      get { return new[] { typeof(IBusinessObjectReferenceProperty) }; }
     }
 
     // Default summary will be created.
@@ -393,7 +393,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public IResourceManager GetResourceManager ()
     {
-      return GetResourceManager(typeof (BusinessObjectReferenceDataSourceControl));
+      return GetResourceManager(typeof(BusinessObjectReferenceDataSourceControl));
     }
   }
 }

@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     [Test]
     public void CreatePropertyRuleReflector_NoDomainObject ()
     {
-      var result = _provider.GetValidationRuleCollectors(new[] { typeof (NoDomainObject) })
+      var result = _provider.GetValidationRuleCollectors(new[] { typeof(NoDomainObject) })
           .SelectMany(t => t)
           .ToArray();
 
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     [Test]
     public void CreatePropertyRuleReflector_DomainObjectWithoutAnnotatedProperties ()
     {
-      var result = _provider.GetValidationRuleCollectors(new[] { typeof (DomainObjectWithoutAnnotatedProperties) })
+      var result = _provider.GetValidationRuleCollectors(new[] { typeof(DomainObjectWithoutAnnotatedProperties) })
           .SelectMany(t => t)
           .ToArray();
 
@@ -67,12 +67,12 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     [Test]
     public void CreatePropertyRuleReflector_DomainObjectWithAnnotatedProperties ()
     {
-      var result = _provider.GetValidationRuleCollectors(new[] { typeof (TypeWithDomainObjectAttributes) })
+      var result = _provider.GetValidationRuleCollectors(new[] { typeof(TypeWithDomainObjectAttributes) })
           .SelectMany(t => t)
           .SingleOrDefault();
       
       Assert.That(result, Is.Not.Null);
-      Assert.That(result.Collector.ValidatedType, Is.EqualTo(typeof (TypeWithDomainObjectAttributes)));
+      Assert.That(result.Collector.ValidatedType, Is.EqualTo(typeof(TypeWithDomainObjectAttributes)));
       Assert.That(result.Collector.AddedPropertyRules.Count, Is.EqualTo(12));
     }
 
@@ -80,12 +80,12 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     public void CreatePropertyRuleReflectorForDomainObject_PropertiesAreOverridden ()
     {
       var result =
-          _provider.GetValidationRuleCollectors(new[] { typeof (DerivedTypeWithDomainObjectAttributes) })
+          _provider.GetValidationRuleCollectors(new[] { typeof(DerivedTypeWithDomainObjectAttributes) })
               .SelectMany(c => c)
               .SingleOrDefault();
 
       Assert.That(result, Is.Not.Null);
-      Assert.That(result.Collector.ValidatedType, Is.EqualTo(typeof (DerivedTypeWithDomainObjectAttributes)));
+      Assert.That(result.Collector.ValidatedType, Is.EqualTo(typeof(DerivedTypeWithDomainObjectAttributes)));
       Assert.That(result.Collector.AddedPropertyRules.Select(r => r.Property.Name).Distinct(), Is.EquivalentTo(new[] { "PropertyInDerivedType" }));
     }
 
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     public void CreatePropertyRuleReflectorForDomainObjectMixin_PropertiesArePartOfDifferentInterfaces ()
     {
       var results =
-          _provider.GetValidationRuleCollectors(new[] { typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces) })
+          _provider.GetValidationRuleCollectors(new[] { typeof(MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces) })
               .SelectMany(c => c)
               .ToArray();
 
@@ -103,8 +103,8 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
           Is.EquivalentTo(
               new[]
               {
-                  typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces1),
-                  typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces2)
+                  typeof(IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces1),
+                  typeof(IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces2)
               }));
       Assert.That(
           results.SelectMany(r => r.Collector.AddedPropertyRules.Select(c => c.Property.Name).Distinct()),
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     public void CreatePropertyRuleReflectorForDomainObjectMixin_WithoutInterface_ExceptionIsThrown ()
     {
       Assert.That(
-          () => _provider.GetValidationRuleCollectors(new[] { typeof (MixinTypeWithDomainObjectAttributes_WithoutInterface) }),
+          () => _provider.GetValidationRuleCollectors(new[] { typeof(MixinTypeWithDomainObjectAttributes_WithoutInterface) }),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "Annotated properties of mixin 'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.MixinTypeWithDomainObjectAttributes_WithoutInterface' have to be part of an interface."));
     }
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     public void CreatePropertyRuleReflectorForDomainObjectMixin_SomeAnnotatedPropertiesNotPartOfAnInterface_ExceptionIsThrown ()
     {
       Assert.That(
-          () => _provider.GetValidationRuleCollectors(new[] { typeof (MixinTypeWithDomainObjectAttributes_SomeAnnotatedPropertiesNotPartOfInterface) }),
+          () => _provider.GetValidationRuleCollectors(new[] { typeof(MixinTypeWithDomainObjectAttributes_SomeAnnotatedPropertiesNotPartOfInterface) }),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "Annotated properties of mixin 'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.MixinTypeWithDomainObjectAttributes_SomeAnnotatedPropertiesNotPartOfInterface' have to be part of an interface."));
     }
@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     public void CreatePropertyRuleReflectorForDomainObjectMixin_AllAnnotatedPropertiesNotPartOfAnInterface_ExceptionIsThrown ()
     {
       Assert.That(
-          () => _provider.GetValidationRuleCollectors(new[] { typeof (MixinTypeWithDomainObjectAttributes_AllAnnotatedPropertiesNotPartOfInterface) }),
+          () => _provider.GetValidationRuleCollectors(new[] { typeof(MixinTypeWithDomainObjectAttributes_AllAnnotatedPropertiesNotPartOfInterface) }),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "Annotated properties of mixin 'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.MixinTypeWithDomainObjectAttributes_AllAnnotatedPropertiesNotPartOfInterface' have to be part of an interface."));
     }
@@ -142,12 +142,12 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     public void CreatePropertyRuleReflectorForDomainObjectMixin_AnnotatedPropertiesPartOfAnInterface ()
     {
       var result =
-          _provider.GetValidationRuleCollectors(new[] { typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) })
+          _provider.GetValidationRuleCollectors(new[] { typeof(MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) })
               .SelectMany(c => c)
               .SingleOrDefault();
 
       Assert.That(result, Is.Not.Null);
-      Assert.That(result.Collector.ValidatedType, Is.EqualTo(typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)));
+      Assert.That(result.Collector.ValidatedType, Is.EqualTo(typeof(IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)));
       Assert.That(result.Collector.AddedPropertyRules.Count, Is.EqualTo(12));
     }
 
@@ -155,14 +155,14 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     public void CreatePropertyRuleReflectorForDomainObjectMixin_PropertiesAreOverridden ()
     {
       var result =
-          _provider.GetValidationRuleCollectors(new[] { typeof (DerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) })
+          _provider.GetValidationRuleCollectors(new[] { typeof(DerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) })
               .SelectMany(c => c)
               .SingleOrDefault();
 
       Assert.That(result, Is.Not.Null);
       Assert.That(
           result.Collector.ValidatedType,
-          Is.EqualTo(typeof (IDerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)));
+          Is.EqualTo(typeof(IDerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)));
       Assert.That(
           result.Collector.AddedPropertyRules.Select(r => r.Property.Name).Distinct(),
           Is.EquivalentTo(new[] { "PropertyInDerivedType" }));
@@ -181,8 +181,8 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
             _provider.GetValidationRuleCollectors(
                 new[]
                 {
-                    MixinTypeUtility.GetConcreteMixedType(typeof (MixinTarget_AnnotatedPropertiesPartOfInterface)),
-                    typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)
+                    MixinTypeUtility.GetConcreteMixedType(typeof(MixinTarget_AnnotatedPropertiesPartOfInterface)),
+                    typeof(MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)
                 })
                 .SelectMany(c => c)
                 .ToArray();
@@ -191,7 +191,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
         Assert.That(resultForConcreteType, Is.Null);
 
         var resultForMixin = result.SingleOrDefault(
-            r => r.Collector.ValidatedType == typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
+            r => r.Collector.ValidatedType == typeof(IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface));
 
         Assert.That(resultForMixin, Is.Not.Null);
         Assert.That(resultForMixin.Collector.AddedPropertyRules.Count, Is.EqualTo(12));

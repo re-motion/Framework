@@ -41,7 +41,7 @@ namespace Remotion.UnitTests.Utilities
       Assert.That(instance, Is.TypeOf<CompoundTypeConverterFactory>());
       Assert.That(
           ((CompoundTypeConverterFactory) instance).TypeConverterFactories.Select(i => i.GetType()),
-          Is.EqualTo(new[] { typeof (AttributeBasedTypeConverterFactory), typeof (EnumTypeConverterFactory) }));
+          Is.EqualTo(new[] { typeof(AttributeBasedTypeConverterFactory), typeof(EnumTypeConverterFactory) }));
     }
 
     [Test]

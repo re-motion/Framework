@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
             string.Format(
                 "The Rdbms provider classes require a storage definition object of type '{0}' for class-definition '{1}', "
                 + "but that class has no storage definition object.",
-                typeof (IRdbmsStorageEntityDefinition).Name,
+                typeof(IRdbmsStorageEntityDefinition).Name,
                 classDefinition.ID));
       }
 
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
             string.Format(
                 "The Rdbms provider classes require a storage definition object of type '{0}' for class-definition '{1}', "
                 + "but that class has a storage definition object of type '{2}'.",
-                typeof (IRdbmsStorageEntityDefinition).Name,
+                typeof(IRdbmsStorageEntityDefinition).Name,
                 classDefinition.ID,
                 classDefinition.StorageEntityDefinition.GetType().Name));
       }
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
             string.Format(
                 "The Rdbms provider classes require a storage definition object of type '{0}' for property '{1}' of class-definition '{2}', "
                 + "but that property has no storage definition object.",
-                typeof (IRdbmsStoragePropertyDefinition).Name,
+                typeof(IRdbmsStoragePropertyDefinition).Name,
                 propertyDefinition.PropertyName,
                 propertyDefinition.ClassDefinition.ID));
       }
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
             string.Format(
                 "The Rdbms provider classes require a storage definition object of type '{0}' for property '{1}' of class-definition '{2}', "
                 + "but that property has a storage definition object of type '{3}'.",
-                typeof (IRdbmsStoragePropertyDefinition).Name,
+                typeof(IRdbmsStoragePropertyDefinition).Name,
                 propertyDefinition.PropertyName,
                 propertyDefinition.ClassDefinition.ID,
                 propertyDefinition.StoragePropertyDefinition.GetType().Name));

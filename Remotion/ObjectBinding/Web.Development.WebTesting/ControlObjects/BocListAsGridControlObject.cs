@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       where TRowControlObject : BocListAsGridRowControlObject
   {
     public BocListAsGridControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull("rowScope", rowScope);
       ArgumentUtility.CheckNotNull("accessor", accessor);
 
-      return (TRowControlObject) Activator.CreateInstance(typeof (TRowControlObject), accessor, Context.CloneForControl(rowScope))!;
+      return (TRowControlObject) Activator.CreateInstance(typeof(TRowControlObject), accessor, Context.CloneForControl(rowScope))!;
     }
 
     /// <inheritdoc/>

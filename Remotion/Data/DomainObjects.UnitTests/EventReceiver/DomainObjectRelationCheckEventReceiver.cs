@@ -37,12 +37,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     // construction and disposing
 
     public DomainObjectRelationCheckEventReceiver (DomainObject domainObject)
-      : this (domainObject, false)
+      : this(domainObject, false)
     {
     }
 
     public DomainObjectRelationCheckEventReceiver (DomainObject domainObject, bool cancel)
-      : base (domainObject, cancel)
+      : base(domainObject, cancel)
     {
       _changingRelatedObjects = new Dictionary<string, DomainObject>();
       _changedRelatedObjects = new Dictionary<string, DomainObject>();

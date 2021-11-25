@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.Linq
         throw new IndexOutOfRangeException(message);
       }
 
-      var storageTypeInformation = _storageTypeInformationProvider.GetStorageType(typeof (T));
+      var storageTypeInformation = _storageTypeInformationProvider.GetStorageType(typeof(T));
       return (T) storageTypeInformation.ConvertFromStorageType(_scalarValue);
     }
 

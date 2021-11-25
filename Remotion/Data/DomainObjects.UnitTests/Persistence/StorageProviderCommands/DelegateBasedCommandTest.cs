@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
       Func<string, int> operation = s => s.Length;
       var instance = DelegateBasedCommand.Create(innerCommandStub, operation);
 
-      Assert.That(instance, Is.TypeOf(typeof (DelegateBasedCommand<string, int, object>)));
+      Assert.That(instance, Is.TypeOf(typeof(DelegateBasedCommand<string, int, object>)));
       Assert.That(instance.Command, Is.SameAs(innerCommandStub));
       Assert.That(instance.Operation, Is.SameAs(operation));
     }

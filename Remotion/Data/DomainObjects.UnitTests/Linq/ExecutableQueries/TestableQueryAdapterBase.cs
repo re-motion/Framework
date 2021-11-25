@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
   public class TestableQueryAdapterBase<T> : QueryAdapterBase<T>
   {
     public TestableQueryAdapterBase (IQuery query)
-        : base (query)
+        : base(query)
     {
     }
 

@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           [NotNull] ElementScope scope,
           [NotNull] SearchServiceResultItem autoCompleteResultItem,
           [NotNull] FinishInputWithAction finishInputWith)
-          : base (control, scope)
+          : base(control, scope)
       {
         ArgumentUtility.CheckNotNull("autoCompleteResultItem", autoCompleteResultItem);
         ArgumentUtility.CheckNotNull("finishInputWith", finishInputWith);
@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     public BocAutoCompleteReferenceValueControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

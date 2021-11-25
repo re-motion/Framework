@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Queries
   /// <summary>
   /// Creates the components required to initialize the LINQ provider.
   /// </summary>
-  [ImplementationFor (typeof (ILinqProviderComponentFactory))]
+  [ImplementationFor (typeof(ILinqProviderComponentFactory))]
   public class LinqProviderComponentFactory : ILinqProviderComponentFactory
   {
     private readonly IMethodCallTransformerProvider _methodCallTransformerProvider;
@@ -99,20 +99,20 @@ namespace Remotion.Data.DomainObjects.Queries
 
       customNodeTypeRegistry.Register(
           new[] { MemberInfoFromExpressionUtility.GetMethod((DomainObjectCollection obj) => obj.ContainsObject(null)) },
-          typeof (ContainsExpressionNode));
+          typeof(ContainsExpressionNode));
       customNodeTypeRegistry.Register(
           new[] { MemberInfoFromExpressionUtility.GetProperty((DomainObjectCollection obj) => obj.Count).GetGetMethod() },
-          typeof (CountExpressionNode));
+          typeof(CountExpressionNode));
       customNodeTypeRegistry.Register(
-          new[] { typeof (IObjectList<>).GetRuntimeMethod("get_Count", new Type[0]) },
-          typeof (CountExpressionNode));
+          new[] { typeof(IObjectList<>).GetRuntimeMethod("get_Count", new Type[0]) },
+          typeof(CountExpressionNode));
 
-      customNodeTypeRegistry.Register(new[] { typeof (EagerFetchingExtensionMethods).GetMethod("FetchOne") }, typeof (FetchOneExpressionNode));
-      customNodeTypeRegistry.Register(new[] { typeof (EagerFetchingExtensionMethods).GetMethod("FetchMany") }, typeof (FetchManyExpressionNode));
+      customNodeTypeRegistry.Register(new[] { typeof(EagerFetchingExtensionMethods).GetMethod("FetchOne") }, typeof(FetchOneExpressionNode));
+      customNodeTypeRegistry.Register(new[] { typeof(EagerFetchingExtensionMethods).GetMethod("FetchMany") }, typeof(FetchManyExpressionNode));
       customNodeTypeRegistry.Register(
-          new[] { typeof (EagerFetchingExtensionMethods).GetMethod("ThenFetchOne") }, typeof (ThenFetchOneExpressionNode));
+          new[] { typeof(EagerFetchingExtensionMethods).GetMethod("ThenFetchOne") }, typeof(ThenFetchOneExpressionNode));
       customNodeTypeRegistry.Register(
-          new[] { typeof (EagerFetchingExtensionMethods).GetMethod("ThenFetchMany") }, typeof (ThenFetchManyExpressionNode));
+          new[] { typeof(EagerFetchingExtensionMethods).GetMethod("ThenFetchMany") }, typeof(ThenFetchManyExpressionNode));
 
       return customNodeTypeRegistry;
     }

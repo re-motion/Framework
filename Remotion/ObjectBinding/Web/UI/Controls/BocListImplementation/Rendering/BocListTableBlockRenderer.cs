@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering the table (consisting of title and data rows) that shows the items contained in the <see cref="IBocList"/>.
   /// </summary>
-  [ImplementationFor (typeof (IBocListTableBlockRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IBocListTableBlockRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocListTableBlockRenderer : IBocListTableBlockRenderer
   {
     private readonly BocListCssClassDefinition _cssClasses;

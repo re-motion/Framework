@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     [Test]
     public void CreateForRelationLookup_TableDefinition_NoSortExpression ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(classType: typeof (Order), storageProviderDefinition: TestDomainStorageProviderDefinition);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(classType: typeof(Order), storageProviderDefinition: TestDomainStorageProviderDefinition);
       var relationEndPointDefinition = CreateForeignKeyEndPointDefinition(classDefinition);
       var oppositeTable = (TableDefinition) relationEndPointDefinition.ClassDefinition.StorageEntityDefinition;
 
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _foreignKeyStoragePropertyDefinitionStrictMock.VerifyAllExpectations();
       _dbCommandBuilderFactoryStrictMock.VerifyAllExpectations();
 
-      Assert.That(result, Is.TypeOf(typeof (MultiObjectLoadCommand<DataContainer>)));
+      Assert.That(result, Is.TypeOf(typeof(MultiObjectLoadCommand<DataContainer>)));
       var dbCommandBuilderTuples = ((MultiObjectLoadCommand<DataContainer>) result).DbCommandBuildersAndReaders;
       Assert.That(dbCommandBuilderTuples.Length, Is.EqualTo(1));
       Assert.That(dbCommandBuilderTuples[0].Item1, Is.SameAs(_dbCommandBuilderStub));
@@ -219,10 +219,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       var innerCommand =
           CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IEnumerable<DataContainer>>(result);
-      Assert.That(innerCommand, Is.TypeOf(typeof (IndirectDataContainerLoadCommand)));
+      Assert.That(innerCommand, Is.TypeOf(typeof(IndirectDataContainerLoadCommand)));
       var indirectLoadCommand = (IndirectDataContainerLoadCommand) innerCommand;
       Assert.That(indirectLoadCommand.StorageProviderCommandFactory, Is.SameAs(_fakeStorageProviderCommandFactory));
-      Assert.That(indirectLoadCommand.ObjectIDLoadCommand, Is.TypeOf(typeof (MultiObjectIDLoadCommand)));
+      Assert.That(indirectLoadCommand.ObjectIDLoadCommand, Is.TypeOf(typeof(MultiObjectIDLoadCommand)));
       Assert.That(((MultiObjectIDLoadCommand) (indirectLoadCommand.ObjectIDLoadCommand)).DbCommandBuilders, Is.EqualTo(new[] { _dbCommandBuilderStub }));
       Assert.That(((MultiObjectIDLoadCommand) indirectLoadCommand.ObjectIDLoadCommand).ObjectIDReader, Is.SameAs(_objectIDReaderStub));
     }
@@ -288,14 +288,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       var result = _factory.CreateForRelationLookup(relationEndPointDefinition, _foreignKeyValue, null);
 
-      Assert.That(result, Is.TypeOf(typeof (FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>)));
+      Assert.That(result, Is.TypeOf(typeof(FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>)));
       var fixedValueCommand = (FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>) result;
       Assert.That(fixedValueCommand.Value, Is.EqualTo(Enumerable.Empty<DataContainer>()));
     }
 
     private ObjectID CreateObjectID (IStorageEntityDefinition entityDefinition)
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Order), baseClass: null);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
       classDefinition.SetStorageEntity(entityDefinition);
 
       return new ObjectID(classDefinition, Guid.NewGuid());
@@ -306,7 +306,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       Assert.That(
           command,
-          Is.TypeOf(typeof (DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>)));
+          Is.TypeOf(typeof(DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>)));
       return ((DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>) command).Command;
     }
 
@@ -317,7 +317,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       return CreateSortedPropertySpecification(
           classDefinition,
-          new SimpleStoragePropertyDefinition(typeof (int), sortedColumn),
+          new SimpleStoragePropertyDefinition(typeof(int), sortedColumn),
           sortOrder);
     }
 
@@ -330,7 +330,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       return CreateSortedPropertySpecification(
           classDefinition,
           new ObjectIDStoragePropertyDefinition(
-              new SimpleStoragePropertyDefinition(typeof (int), sortedColumn1), new SimpleStoragePropertyDefinition(typeof (int), sortedColumn2)),
+              new SimpleStoragePropertyDefinition(typeof(int), sortedColumn1), new SimpleStoragePropertyDefinition(typeof(int), sortedColumn2)),
           sortOrder);
     }
 
@@ -357,7 +357,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
     private ClassDefinition CreateClassDefinition (IStorageEntityDefinition entityDefinition)
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Order), baseClass: null);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
       classDefinition.SetStorageEntity(entityDefinition);
       return classDefinition;
     }

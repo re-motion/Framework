@@ -39,7 +39,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _securityClient = _testHelper.CreateSecurityClient();
       _methodInformation = new Mock<IMethodInformation>();
       _methodInformation.Setup(n => n.Name).Returns("InstanceMethod");
-      _methodInfo = typeof (SecurableObject).GetMethod("IsValid", new[] { typeof (SecurableObject) });
+      _methodInfo = typeof(SecurableObject).GetMethod("IsValid", new[] { typeof(SecurableObject) });
     }
 
     [Test]

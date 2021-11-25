@@ -59,7 +59,7 @@ public class NavigationCommandTest
     _currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
     HttpContextHelper.SetCurrent(_currentHttpContext);
 
-    _functionType = typeof (TestFunction);
+    _functionType = typeof(TestFunction);
     _functionTypeName = TypeUtility.GetPartialAssemblyQualifiedName(_functionType);
     _wxeFunctionParameter1Value = "Value1";
     _wxeFunctionParameters = "\"Value1\"";
@@ -216,7 +216,7 @@ public class NavigationCommandTest
   {
     string mappingID = "Test";
     string resource = "~/Test.wxe";
-    Type functionWithNestingType = typeof (TestFunctionWithNesting);
+    Type functionWithNestingType = typeof(TestFunctionWithNesting);
     UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(mappingID, functionWithNestingType, resource));
     string parameter1 = "Value1";
     

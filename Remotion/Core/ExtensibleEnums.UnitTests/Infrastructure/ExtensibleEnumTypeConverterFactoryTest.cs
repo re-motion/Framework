@@ -36,15 +36,15 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [Test]
     public void CreateTypeConverterOrDefault_WithExtensibleEnum_ReturnsExtensibleEnumConverter ()
     {
-      var typeConverter = _factory.CreateTypeConverterOrDefault(typeof (Color));
+      var typeConverter = _factory.CreateTypeConverterOrDefault(typeof(Color));
       Assert.That(typeConverter, Is.TypeOf<ExtensibleEnumConverter>());
-      Assert.That(((ExtensibleEnumConverter) typeConverter).ExtensibleEnumType, Is.EqualTo(typeof (Color)));
+      Assert.That(((ExtensibleEnumConverter) typeConverter).ExtensibleEnumType, Is.EqualTo(typeof(Color)));
     }
 
     [Test]
     public void CreateTypeConverterOrDefault_WithOtherType_ReturnsNull ()
     {
-      var typeConverter = _factory.CreateTypeConverterOrDefault(typeof (Int32));
+      var typeConverter = _factory.CreateTypeConverterOrDefault(typeof(Int32));
       Assert.That(typeConverter, Is.Null);
     }
   }

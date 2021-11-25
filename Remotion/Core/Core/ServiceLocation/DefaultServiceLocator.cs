@@ -78,7 +78,7 @@ namespace Remotion.ServiceLocation
       // Optimized for memory allocations
       _createRegistrationFromTypeFunc = CreateRegistrationFromType;
 
-      Register(new ServiceConfigurationEntry(typeof (ILogManager), new ServiceImplementationInfo(typeof (Log4NetLogManager), LifetimeKind.Singleton)));
+      Register(new ServiceConfigurationEntry(typeof(ILogManager), new ServiceImplementationInfo(typeof(Log4NetLogManager), LifetimeKind.Singleton)));
     }
 
     /// <summary>
@@ -147,7 +147,7 @@ namespace Remotion.ServiceLocation
     /// could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public TService GetInstance<TService> ()
     {
-      return (TService) GetInstance(typeof (TService));
+      return (TService) GetInstance(typeof(TService));
     }
 
     /// <summary>
@@ -162,7 +162,7 @@ namespace Remotion.ServiceLocation
     /// could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public TService GetInstance<TService> (string key)
     {
-      return (TService) GetInstance(typeof (TService), key);
+      return (TService) GetInstance(typeof(TService), key);
     }
 
     /// <summary>
@@ -178,7 +178,7 @@ namespace Remotion.ServiceLocation
     /// implementation could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public IEnumerable<TService> GetAllInstances<TService> ()
     {
-      return GetAllInstances(typeof (TService)).Cast<TService>();
+      return GetAllInstances(typeof(TService)).Cast<TService>();
     }
 
     /// <summary>

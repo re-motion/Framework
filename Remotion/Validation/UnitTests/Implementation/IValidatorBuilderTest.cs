@@ -39,11 +39,11 @@ namespace Remotion.Validation.UnitTests.Implementation
       var validatorBuilder = _serviceLocator.GetInstance<IValidatorBuilder>();
 
       Assert.That(validatorBuilder, Is.Not.Null);
-      Assert.That(validatorBuilder, Is.TypeOf(typeof (ValidatorBuilderSerializationDecorator)));
+      Assert.That(validatorBuilder, Is.TypeOf(typeof(ValidatorBuilderSerializationDecorator)));
       var validatorBuilderSerializationDecorator = ((ValidatorBuilderSerializationDecorator) validatorBuilder).InnerValidatorBuilder;
-      Assert.That(validatorBuilderSerializationDecorator, Is.TypeOf(typeof (CompoundValidatorBuilder)));
+      Assert.That(validatorBuilderSerializationDecorator, Is.TypeOf(typeof(CompoundValidatorBuilder)));
       var validatorBuilders = ((CompoundValidatorBuilder) validatorBuilderSerializationDecorator).Builders;
-      Assert.That(validatorBuilders.Select(b => b.GetType()), Is.EqualTo(new[] { typeof (ValidationRuleCollectorBasedValidatorBuilder) }));
+      Assert.That(validatorBuilders.Select(b => b.GetType()), Is.EqualTo(new[] { typeof(ValidationRuleCollectorBasedValidatorBuilder) }));
     }
 
     [Test]

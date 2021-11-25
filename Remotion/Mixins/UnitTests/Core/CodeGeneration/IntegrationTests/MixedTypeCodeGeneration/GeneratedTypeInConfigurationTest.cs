@@ -32,7 +32,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     {
       var generator = new AdHocCodeGenerator(TestContext.CurrentContext.TestDirectory, "MixedTypeCodeGeneration.GeneratedTypeInConfigurationTest");
       var typeBuilder = generator.CreateType("GeneratedType");
-      generator.AddCustomAttribute(typeof (NonApplicationAssemblyAttribute));
+      generator.AddCustomAttribute(typeof(NonApplicationAssemblyAttribute));
       _generatedType = typeBuilder.CreateType();
       
       var generatedAssemblyPath = generator.Save();

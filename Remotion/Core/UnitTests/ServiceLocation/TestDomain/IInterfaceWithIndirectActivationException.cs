@@ -23,7 +23,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ImplementationFor (typeof (IInterfaceWithIndirectActivationException))]
+  [ImplementationFor (typeof(IInterfaceWithIndirectActivationException))]
   public class ClassWithIndirectActivationException : IInterfaceWithIndirectActivationException
   {
     public ClassWithIndirectActivationException (IInterfaceWithoutImplementation innerDependency)

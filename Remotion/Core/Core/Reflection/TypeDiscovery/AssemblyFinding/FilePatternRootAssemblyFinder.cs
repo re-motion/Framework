@@ -57,7 +57,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
       }
     }
 
-    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof (FilePatternRootAssemblyFinder)));
+    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof(FilePatternRootAssemblyFinder)));
 
     private readonly string _searchPath;
     private readonly IReadOnlyList<FilePatternSpecification> _specifications;

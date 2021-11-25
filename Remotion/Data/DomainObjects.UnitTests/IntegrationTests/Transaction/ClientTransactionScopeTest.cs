@@ -400,7 +400,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       var scope =
           (ClientTransactionScope)
-          PrivateInvoke.CreateInstanceNonPublicCtor(typeof (ClientTransactionScope), scopedTransaction, AutoRollbackBehavior.None, null);
+          PrivateInvoke.CreateInstanceNonPublicCtor(typeof(ClientTransactionScope), scopedTransaction, AutoRollbackBehavior.None, null);
 
       Assert.That(() => scope.Leave(), Throws.Nothing);
     }
@@ -414,7 +414,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Expect(mock => mock.EnterScope(AutoRollbackBehavior.Discard))
           .Return(
               (ClientTransactionScope)
-              PrivateInvoke.CreateInstanceNonPublicCtor(typeof (ClientTransactionScope), transactionMock, AutoRollbackBehavior.Discard, null));
+              PrivateInvoke.CreateInstanceNonPublicCtor(typeof(ClientTransactionScope), transactionMock, AutoRollbackBehavior.Discard, null));
       transactionMock.Expect(mock => mock.Discard());
 
       transactionMock.Replay();
@@ -434,7 +434,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       attachedScopeMock.Expect(mock => mock.Dispose()).WhenCalled(mock => Assert.That(scopedTransaction.IsDiscarded, Is.True));
 
       var scope = (ClientTransactionScope) PrivateInvoke.CreateInstanceNonPublicCtor(
-          typeof (ClientTransactionScope), scopedTransaction, AutoRollbackBehavior.Discard, attachedScopeMock);
+          typeof(ClientTransactionScope), scopedTransaction, AutoRollbackBehavior.Discard, attachedScopeMock);
 
       scope.Leave();
 

@@ -47,7 +47,7 @@ namespace Remotion.Validation
       _removedObjectRules = new List<IRemovingObjectValidationRuleCollector>();
     }
 
-    public Type ValidatedType => typeof (TValidatedType);
+    public Type ValidatedType => typeof(TValidatedType);
 
     /// <inheritdoc />
     public IReadOnlyCollection<IAddingPropertyValidationRuleCollector> AddedPropertyRules => _addedPropertyRules.AsReadOnly();

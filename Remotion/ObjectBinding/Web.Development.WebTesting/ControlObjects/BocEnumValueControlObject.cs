@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private readonly IBocEnumValueControlObjectVariant _variantImpl;
 
     public BocEnumValueControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
       var style = Scope[DiagnosticMetadataAttributesForObjectBinding.BocEnumValueStyle];
       _variantImpl = CreateVariant(style);

@@ -36,7 +36,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       ITransactionMode transactionMode = new NoneTransactionMode();
       TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(new TestFunction2(transactionMode), context);
 
-      Assert.That(strategy, Is.InstanceOf(typeof (NoneTransactionStrategy)));
+      Assert.That(strategy, Is.InstanceOf(typeof(NoneTransactionStrategy)));
       Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(NullTransactionStrategy.Null));
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
           (WxeContext context) =>
           {
             TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(childFunction, context);
-            Assert.That(strategy, Is.InstanceOf(typeof (NoneTransactionStrategy)));
+            Assert.That(strategy, Is.InstanceOf(typeof(NoneTransactionStrategy)));
             Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2) parentFunction).TransactionStrategy));
           }).Verifiable();
 

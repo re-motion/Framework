@@ -40,10 +40,10 @@ namespace Remotion.Web.UI.Controls
 {
   //  TODO: Command: Move long comment blocks to xml-file
   /// <summary> A <see cref="Command"/> defines an action the user can invoke. </summary>
-  [TypeConverter (typeof (ExpandableObjectConverter))]
+  [TypeConverter (typeof(ExpandableObjectConverter))]
   public class Command : IControlItem
   {
-    [TypeConverter (typeof (ExpandableObjectConverter))]
+    [TypeConverter (typeof(ExpandableObjectConverter))]
     public class NoneCommandInfo
     {
       private bool _enableFocus;
@@ -74,7 +74,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    [TypeConverter (typeof (ExpandableObjectConverter))]
+    [TypeConverter (typeof(ExpandableObjectConverter))]
     public class EventCommandInfo
     {
       //  EventPermissionProvider; //None, EventHandler, Properties
@@ -114,7 +114,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
-    [TypeConverter (typeof (ExpandableObjectConverter))]
+    [TypeConverter (typeof(ExpandableObjectConverter))]
     public class HrefCommandInfo
     {
       private string _href = string.Empty;
@@ -186,7 +186,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
-    [TypeConverter (typeof (ExpandableObjectConverter))]
+    [TypeConverter (typeof(ExpandableObjectConverter))]
     public class WxeFunctionCommandInfo
     {
       private string _mappingID = string.Empty;
@@ -358,12 +358,12 @@ namespace Remotion.Web.UI.Controls
     private readonly IWebSecurityAdapter? _webSecurityAdapter;
 
     public Command ()
-        : this (CommandType.None, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+        : this(CommandType.None, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
     {
     }
 
     public Command (CommandType defaultType)
-      : this (defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+      : this(defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
     {
     }
 
@@ -549,7 +549,7 @@ namespace Remotion.Web.UI.Controls
           return GetCommandInfoForNoneCommand();
         default:
           throw new InvalidOperationException(
-              string.Format("The CommandType '{0}' is not supported by the '{1}'.", _type, typeof (Command).GetFullNameSafe()));
+              string.Format("The CommandType '{0}' is not supported by the '{1}'.", _type, typeof(Command).GetFullNameSafe()));
       }
     }
 
@@ -1044,7 +1044,7 @@ namespace Remotion.Web.UI.Controls
           return true;
         default:
           throw new InvalidOperationException(
-              string.Format("The CommandType '{0}' is not supported by the '{1}'.", _type, typeof (Command).GetFullNameSafe()));
+              string.Format("The CommandType '{0}' is not supported by the '{1}'.", _type, typeof(Command).GetFullNameSafe()));
       }
     }
 

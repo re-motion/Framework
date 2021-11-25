@@ -31,17 +31,17 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
       try
       {
-        return (TSignature) (object) Delegate.CreateDelegate(typeof (TSignature), target, methodName, false, true);
+        return (TSignature) (object) Delegate.CreateDelegate(typeof(TSignature), target, methodName, false, true);
       }
       catch (ArgumentException ex)
       {
-        throw CreateMissingMethodException(target, methodName, typeof (TSignature), ex);
+        throw CreateMissingMethodException(target, methodName, typeof(TSignature), ex);
       }
     }
 
     public static TSignature CreateDelegate<TSignature> (Type target, string methodName)
     {
-      return (TSignature) (object) CreateDelegate(target, methodName, typeof (TSignature));
+      return (TSignature) (object) CreateDelegate(target, methodName, typeof(TSignature));
     }
 
     public static Delegate CreateDelegate (Type target, string methodName, Type signature)
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
       Type targetType = (target is Type) ? (Type) target : target.GetType();
 
-      Assertion.IsTrue(typeof (Delegate).IsAssignableFrom(signatureType));
+      Assertion.IsTrue(typeof(Delegate).IsAssignableFrom(signatureType));
       MethodInfo invoke = signatureType.GetMethod("Invoke");
       Type returnType = invoke.ReturnType;
       var parameters = invoke.GetParameters().Select(p => p.ParameterType);
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
               targetType.GetAssemblyQualifiedNameSafe(),
               methodName,
               string.Join(", ", parameters),
-              returnType == typeof (void) ? "void" : returnType.GetFullNameSafe()),
+              returnType == typeof(void) ? "void" : returnType.GetFullNameSafe()),
           innerException);
     }
   }

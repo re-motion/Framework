@@ -32,10 +32,10 @@ namespace Remotion.Mixins.Utilities
     public static bool IsMixinType (Type type)
     {
       ArgumentUtility.CheckNotNull("type", type);
-      if (!typeof (IInitializableMixin).IsAssignableFrom(type))
+      if (!typeof(IInitializableMixin).IsAssignableFrom(type))
         return false;
 
-      return s_mixinTypeCache.GetOrAdd(type, static t => t.CanAscribeTo(typeof (Mixin<>)));
+      return s_mixinTypeCache.GetOrAdd(type, static t => t.CanAscribeTo(typeof(Mixin<>)));
     }
 
     public static bool IsEqualOrInstantiationOf (Type typeToCheck, Type expectedType)

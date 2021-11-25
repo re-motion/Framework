@@ -33,15 +33,15 @@ namespace Remotion.Web
     /// <inheritdoc />
     public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
     {
-      return sourceType == typeof (string)
+      return sourceType == typeof(string)
              || base.CanConvertFrom(context, sourceType);
     }
 
     /// <inheritdoc />
     public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
     {
-      return destinationType == typeof (string)
-             || destinationType == typeof (InstanceDescriptor)
+      return destinationType == typeof(string)
+             || destinationType == typeof(InstanceDescriptor)
              || base.CanConvertTo(context, destinationType);
     }
 
@@ -65,10 +65,10 @@ namespace Remotion.Web
 
       var plainTextString = (PlainTextString) value;
 
-      if (destinationType == typeof (string))
+      if (destinationType == typeof(string))
         return plainTextString.GetValue();
 
-      if (destinationType == typeof (InstanceDescriptor))
+      if (destinationType == typeof(InstanceDescriptor))
         return ConvertToInstanceDescriptor(in plainTextString);
 
       return base.ConvertTo(context, culture, value, destinationType);

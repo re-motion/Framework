@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     private static int s_nextID = 0;
 
     private static readonly SafeContextSingleton<StorageProvider> _innerMockStorageProvider =
-        new SafeContextSingleton<StorageProvider>(typeof (UnitTestStorageProviderStub) + "._innerMockStorageProvider", () => null);
+        new SafeContextSingleton<StorageProvider>(typeof(UnitTestStorageProviderStub) + "._innerMockStorageProvider", () => null);
 
     public static IDisposable EnterMockStorageProviderScope (StorageProvider mock)
     {
@@ -76,14 +76,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public static StorageProvider CreateStorageProviderMockForOfficial ()
     {
       var storageProviderID =
-          MappingConfiguration.Current.GetTypeDefinition(typeof (Official)).StorageEntityDefinition.StorageProviderDefinition.Name;
+          MappingConfiguration.Current.GetTypeDefinition(typeof(Official)).StorageEntityDefinition.StorageProviderDefinition.Name;
       var storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
       return MockRepository.GenerateMock<StorageProvider>(storageProviderDefinition, NullPersistenceExtension.Instance);
     }
 
     public UnitTestStorageProviderStub (
         UnitTestStorageProviderStubDefinition definition, IPersistenceExtension persistenceExtension)
-        : base (definition, persistenceExtension)
+        : base(definition, persistenceExtension)
     {
     }
 

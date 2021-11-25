@@ -36,12 +36,12 @@ namespace Remotion.Web.ExecutionEngine
     private WxeHandler? _wxeHandler;
 
     public WxeUserControlStep (string userControl)
-      : this (new ResourceObject(ArgumentUtility.CheckNotNullOrEmpty("userControl", userControl)))
+      : this(new ResourceObject(ArgumentUtility.CheckNotNullOrEmpty("userControl", userControl)))
     {
     }
 
     public WxeUserControlStep (WxeVariableReference pageref)
-        : this (new ResourceObjectWithVarRef(pageref))
+        : this(new ResourceObjectWithVarRef(pageref))
     {
     }
 

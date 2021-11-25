@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     private bool _isReadOnly;
 
     public ScreenshotTransformationCollection ()
-        : this (false)
+        : this(false)
     {
     }
 

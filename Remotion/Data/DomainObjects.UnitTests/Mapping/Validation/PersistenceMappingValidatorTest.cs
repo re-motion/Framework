@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
     [SetUp]
     public void SetUp ()
     {
-      var type = typeof (DerivedValidationDomainObjectClass);
+      var type = typeof(DerivedValidationDomainObjectClass);
       _classDefinition1 = ClassDefinitionObjectMother.CreateClassDefinition(classType: type);
       _classDefinition2 = ClassDefinitionObjectMother.CreateClassDefinition(classType: type);
       _classDefinition3 = ClassDefinitionObjectMother.CreateClassDefinition(classType: type);

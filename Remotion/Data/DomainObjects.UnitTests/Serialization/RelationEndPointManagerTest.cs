@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
           Serializer.SerializeAndDeserialize(TestableClientTransaction.DataManager));
 
       Assert.That(deserializedManager.ClientTransaction, Is.Not.Null);
-      Assert.That(deserializedManager.ClientTransaction, Is.InstanceOf(typeof (TestableClientTransaction)));
+      Assert.That(deserializedManager.ClientTransaction, Is.InstanceOf(typeof(TestableClientTransaction)));
       Assert.That(deserializedManager.ClientTransaction, Is.Not.SameAs(TestableClientTransaction));
       Assert.That(deserializedManager.LazyLoader, Is.Not.Null);
       Assert.That(deserializedManager.LazyLoader, Is.TypeOf(_relationEndPointManager.LazyLoader.GetType()));
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       Assert.That(deserializedManager.RelationEndPoints.Count, Is.EqualTo(7));
 
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof (Order), "OrderItems"));
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof(Order), "OrderItems"));
       var endPoint = (ICollectionEndPoint<ICollectionEndPointData>) deserializedManager.GetRelationEndPointWithoutLoading(endPointID);
 
       Assert.That(endPoint.ClientTransaction, Is.SameAs(deserializedManager.ClientTransaction));

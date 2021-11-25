@@ -25,18 +25,18 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 public class WxeFunctionStateMock: WxeFunctionState
 {
   public WxeFunctionStateMock (WxeFunction function, bool enableCleanUp)
-    : base (function, enableCleanUp)
+    : base(function, enableCleanUp)
   {
   }
   
   public WxeFunctionStateMock (WxeFunction function, int lifetime, bool enableCleanUp)
-    : base (function, lifetime, enableCleanUp)
+    : base(function, lifetime, enableCleanUp)
   {
   }
   
   public WxeFunctionStateMock (
       WxeFunction function, int lifetime, bool enableCleanUp, string functionToken)
-    : base (function, lifetime, enableCleanUp)
+    : base(function, lifetime, enableCleanUp)
   {
     FunctionToken = functionToken;
   }

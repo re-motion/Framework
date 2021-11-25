@@ -30,9 +30,9 @@ namespace Remotion.Web.UnitTests.Core.Resources
     {
       var resourceUrlBuilderStub = new Mock<IResourcePathBuilder>();
 
-      var resourceUrl = new ResourceUrl(resourceUrlBuilderStub.Object, typeof (ResourceUrlTest), ResourceType.Html, "theRelativeUrl.js");
+      var resourceUrl = new ResourceUrl(resourceUrlBuilderStub.Object, typeof(ResourceUrlTest), ResourceType.Html, "theRelativeUrl.js");
       resourceUrlBuilderStub
-          .Setup(_ => _.BuildAbsolutePath(typeof (ResourceUrlTest).Assembly, new[] { "Html", "theRelativeUrl.js" }))
+          .Setup(_ => _.BuildAbsolutePath(typeof(ResourceUrlTest).Assembly, new[] { "Html", "theRelativeUrl.js" }))
           .Returns("expectedUrl");
 
       Assert.That(resourceUrl.GetUrl(), Is.EqualTo("expectedUrl"));
@@ -43,10 +43,10 @@ namespace Remotion.Web.UnitTests.Core.Resources
     {
       var resourceUrlBuilderStub = new Mock<IResourcePathBuilder>();
 
-      var resourceUrl = new ResourceUrl(resourceUrlBuilderStub.Object, typeof (ResourceUrlTest), ResourceType.Html, "theRelativeUrl.js");
+      var resourceUrl = new ResourceUrl(resourceUrlBuilderStub.Object, typeof(ResourceUrlTest), ResourceType.Html, "theRelativeUrl.js");
       int count = 0;
       resourceUrlBuilderStub
-          .SetupSequence(_ => _.BuildAbsolutePath(typeof (ResourceUrlTest).Assembly, new[] { "Html", "theRelativeUrl.js" }))
+          .SetupSequence(_ => _.BuildAbsolutePath(typeof(ResourceUrlTest).Assembly, new[] { "Html", "theRelativeUrl.js" }))
           .Returns("expectedUrl " + count++)
           .Returns("expectedUrl " + count);
 

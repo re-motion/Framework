@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
           IFluentControlObjectWithSelectableItems
   {
     public TabbedMenuControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -198,7 +198,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         : WebFormsControlObjectWithDiagnosticMetadata, IControlObjectWithSelectableItems, IFluentControlObjectWithSelectableItems
     {
       public SubMenuItems ([NotNull] ControlObjectContext context)
-          : base (context)
+          : base(context)
       {
       }
 

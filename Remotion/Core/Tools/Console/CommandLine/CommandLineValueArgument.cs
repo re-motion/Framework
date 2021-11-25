@@ -24,12 +24,12 @@ namespace Remotion.Tools.Console.CommandLine
 public abstract class CommandLineValueArgument: CommandLineArgument
 {
   public CommandLineValueArgument (string? name, bool isOptional)
-    : base (name, isOptional)
+    : base(name, isOptional)
   {
   }
 
   public CommandLineValueArgument (bool isOptional)
-    : base (isOptional)
+    : base(isOptional)
   {
   }
 
@@ -49,12 +49,12 @@ public abstract class CommandLineValueArgument: CommandLineArgument
 public class CommandLineStringArgument: CommandLineValueArgument
 {
   public CommandLineStringArgument (string name, bool isOptional)
-    : base (name, isOptional)
+    : base(name, isOptional)
   {
   }
 
   public CommandLineStringArgument (bool isOptional)
-    : base (isOptional)
+    : base(isOptional)
   {
   }
 
@@ -74,12 +74,12 @@ public class CommandLineInt32Argument: CommandLineValueArgument
   private int? _value;
 
   public CommandLineInt32Argument (string name, bool isOptional)
-    : base (name, isOptional)
+    : base(name, isOptional)
   {
   }
 
   public CommandLineInt32Argument (bool isOptional)
-    : base (isOptional)
+    : base(isOptional)
   {
   }
 

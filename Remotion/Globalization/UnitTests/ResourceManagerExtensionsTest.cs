@@ -46,7 +46,7 @@ namespace Remotion.Globalization.UnitTests
       _memoryAppender = new MemoryAppender();
 
       LoggerMatchFilter acceptFilter = new LoggerMatchFilter();
-      acceptFilter.LoggerToMatch = typeof (ResourceLogger).FullName;
+      acceptFilter.LoggerToMatch = typeof(ResourceLogger).FullName;
       acceptFilter.AcceptOnMatch = true;
       _memoryAppender.AddFilter(acceptFilter);
 

@@ -58,11 +58,11 @@ public class CommandLineParserTest
     argCopyBinary.Description = "binary copy on (+, default) or off (-)";
     parser.Arguments.Add(argCopyBinary);
 
-    argEnumOption = new CommandLineEnumArgument("rep", true, typeof (TestOption));
+    argEnumOption = new CommandLineEnumArgument("rep", true, typeof(TestOption));
     argEnumOption.Description = "replace target";
     parser.Arguments.Add(argEnumOption);
 
-    CommandLineModeArgument modeGroup = new CommandLineModeArgument(true, typeof (TestMode));
+    CommandLineModeArgument modeGroup = new CommandLineModeArgument(true, typeof(TestMode));
     foreach (CommandLineModeFlagArgument flag in modeGroup.Parts)
       parser.Arguments.Add(flag);
     parser.Arguments.Add(modeGroup);
@@ -224,11 +224,11 @@ public class CommandLineParserTest
   {
     CommandLineEnumArgument enumArg;
     
-    enumArg = new CommandLineEnumArgument(false, typeof (TestOption));
+    enumArg = new CommandLineEnumArgument(false, typeof(TestOption));
     PrivateInvoke.InvokeNonPublicMethod(enumArg, "SetStringValue", "yes");
     Assert.That((TestOption) enumArg.Value, Is.EqualTo(TestOption.yes));
 
-    enumArg = new CommandLineEnumArgument(false, typeof (IncrementalTestOptions));
+    enumArg = new CommandLineEnumArgument(false, typeof(IncrementalTestOptions));
     PrivateInvoke.InvokeNonPublicMethod(enumArg, "SetStringValue", "no");
     Assert.That((IncrementalTestOptions) enumArg.Value, Is.EqualTo(IncrementalTestOptions.no));
   }
@@ -250,7 +250,7 @@ public class CommandLineParserTest
   [Test]
   public void TestEnumAmbiguous ()
   {
-    CommandLineEnumArgument enumArg = new CommandLineEnumArgument(false, typeof (IncrementalTestOptions));
+    CommandLineEnumArgument enumArg = new CommandLineEnumArgument(false, typeof(IncrementalTestOptions));
 
     Assert.That(
         () => PrivateInvoke.InvokeNonPublicMethod(enumArg, "SetStringValue", "n"),
@@ -261,7 +261,7 @@ public class CommandLineParserTest
   [Test]
   public void TestEnumInvalid ()
   {
-      CommandLineEnumArgument enumArg = new CommandLineEnumArgument(false, typeof (IncrementalTestOptions));
+      CommandLineEnumArgument enumArg = new CommandLineEnumArgument(false, typeof(IncrementalTestOptions));
 
       Assert.That(
        () => PrivateInvoke.InvokeNonPublicMethod(enumArg, "SetStringValue", "invalidvalue"),

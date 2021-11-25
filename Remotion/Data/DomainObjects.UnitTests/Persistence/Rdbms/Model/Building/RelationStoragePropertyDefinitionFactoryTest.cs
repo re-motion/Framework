@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void CreateStoragePropertyDefinition_RelationToClassDefinitionWithoutHierarchy ()
     {
-      var endPointDefinition = GetNonVirtualEndPointDefinition(typeof (ClassWithManySideRelationProperties), "BidirectionalOneToOne");
+      var endPointDefinition = GetNonVirtualEndPointDefinition(typeof(ClassWithManySideRelationProperties), "BidirectionalOneToOne");
       var oppositeClassDefinition = endPointDefinition.GetOppositeEndPointDefinition().ClassDefinition;
       Assert.That(oppositeClassDefinition.IsPartOfInheritanceHierarchy, Is.False);
       
@@ -80,13 +80,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _storageTypeInformationProviderStrictMock.VerifyAllExpectations();
       _storageNameProviderMock.VerifyAllExpectations();
 
-      Assert.That(result, Is.TypeOf(typeof (ObjectIDWithoutClassIDStoragePropertyDefinition)));
+      Assert.That(result, Is.TypeOf(typeof(ObjectIDWithoutClassIDStoragePropertyDefinition)));
 
       var objectIDWithoutClassIDStorageProperty = ((ObjectIDWithoutClassIDStoragePropertyDefinition) result);
-      Assert.That(objectIDWithoutClassIDStorageProperty.ValueProperty, Is.TypeOf(typeof (SimpleStoragePropertyDefinition)));
+      Assert.That(objectIDWithoutClassIDStorageProperty.ValueProperty, Is.TypeOf(typeof(SimpleStoragePropertyDefinition)));
 
       var valueStoragePropertyDefinition = ((SimpleStoragePropertyDefinition) objectIDWithoutClassIDStorageProperty.ValueProperty);
-      Assert.That(valueStoragePropertyDefinition.PropertyType, Is.SameAs(typeof (object)));
+      Assert.That(valueStoragePropertyDefinition.PropertyType, Is.SameAs(typeof(object)));
       Assert.That(valueStoragePropertyDefinition.ColumnDefinition.Name, Is.EqualTo("FakeRelationColumnName"));
       Assert.That(valueStoragePropertyDefinition.ColumnDefinition.StorageTypeInfo, Is.SameAs(_fakeStorageTypeInformation1));
       Assert.That(valueStoragePropertyDefinition.ColumnDefinition.IsPartOfPrimaryKey, Is.False);
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void CreateStoragePropertyDefinition_RelationToClassDefinitionWithoutHierarchy_WithForceClassIDTrue ()
     {
-      var endPointDefinition = GetNonVirtualEndPointDefinition(typeof (ClassWithManySideRelationProperties), "BidirectionalOneToOne");
+      var endPointDefinition = GetNonVirtualEndPointDefinition(typeof(ClassWithManySideRelationProperties), "BidirectionalOneToOne");
       Assert.That(endPointDefinition.GetOppositeEndPointDefinition().ClassDefinition.IsPartOfInheritanceHierarchy, Is.False);
 
       _storageTypeInformationProviderStrictMock
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void CreateStoragePropertyDefinition_RelationToClassWithInheritanceHierarchy ()
     {
-      var relationEndPointDefinition = GetNonVirtualEndPointDefinition(typeof (Ceo), "Company");
+      var relationEndPointDefinition = GetNonVirtualEndPointDefinition(typeof(Ceo), "Company");
       Assert.That(relationEndPointDefinition.GetOppositeEndPointDefinition().ClassDefinition.IsPartOfInheritanceHierarchy, Is.True);
 
       _storageTypeInformationProviderStrictMock
@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void CreateStoragePropertyDefinition_RelationToClassDefinitionWithDifferentStorageProvider ()
     {
-      var relationEndPointDefinition = GetNonVirtualEndPointDefinition(typeof (Order), "Official");
+      var relationEndPointDefinition = GetNonVirtualEndPointDefinition(typeof(Order), "Official");
 
       _storageTypeInformationProviderStrictMock
           .Expect(mock => mock.GetStorageTypeForSerializedObjectID(true))
@@ -188,7 +188,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           .Return("FakeRelationClassIDColumnName");
 
       _storageProviderDefinitionFinderStub
-          .Stub(stub => stub.GetStorageProviderDefinition(GetTypeDefinition(typeof (Official)), null))
+          .Stub(stub => stub.GetStorageProviderDefinition(GetTypeDefinition(typeof(Official)), null))
           .Return(UnitTestStorageProviderDefinition);
 
       var result = _factory.CreateStoragePropertyDefinition(relationEndPointDefinition);
@@ -196,11 +196,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _storageNameProviderMock.VerifyAllExpectations();
       _storageTypeInformationProviderStrictMock.VerifyAllExpectations();
 
-      Assert.That(result, Is.TypeOf(typeof (SerializedObjectIDStoragePropertyDefinition)));
+      Assert.That(result, Is.TypeOf(typeof(SerializedObjectIDStoragePropertyDefinition)));
       Assert.That(((SerializedObjectIDStoragePropertyDefinition) result).SerializedIDProperty, Is.TypeOf<SimpleStoragePropertyDefinition>());
       var serializedIDProperty = ((SimpleStoragePropertyDefinition) ((SerializedObjectIDStoragePropertyDefinition) result).SerializedIDProperty);
 
-      Assert.That(serializedIDProperty.PropertyType, Is.SameAs(typeof (ObjectID)));
+      Assert.That(serializedIDProperty.PropertyType, Is.SameAs(typeof(ObjectID)));
       Assert.That(serializedIDProperty.ColumnDefinition.Name, Is.EqualTo("FakeRelationColumnName"));
       Assert.That(serializedIDProperty.ColumnDefinition.StorageTypeInfo, Is.SameAs(_fakeStorageTypeInformation1));
       Assert.That(serializedIDProperty.ColumnDefinition.IsPartOfPrimaryKey, Is.False);
@@ -213,15 +213,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
         string expectedClassIDColumnName,
         StorageTypeInformation expectedClassIDStorageTypeInformation)
     {
-      Assert.That(result, Is.TypeOf(typeof (ObjectIDStoragePropertyDefinition)));
+      Assert.That(result, Is.TypeOf(typeof(ObjectIDStoragePropertyDefinition)));
       var valueProperty = ((ObjectIDStoragePropertyDefinition) result).ValueProperty;
       var classIDValueProperty = ((ObjectIDStoragePropertyDefinition) result).ClassIDProperty;
 
-      Assert.That(valueProperty, Is.TypeOf(typeof (SimpleStoragePropertyDefinition)));
-      Assert.That(valueProperty.PropertyType, Is.SameAs(typeof (object)));
+      Assert.That(valueProperty, Is.TypeOf(typeof(SimpleStoragePropertyDefinition)));
+      Assert.That(valueProperty.PropertyType, Is.SameAs(typeof(object)));
 
-      Assert.That(classIDValueProperty, Is.TypeOf(typeof (SimpleStoragePropertyDefinition)));
-      Assert.That(classIDValueProperty.PropertyType, Is.SameAs(typeof (string)));
+      Assert.That(classIDValueProperty, Is.TypeOf(typeof(SimpleStoragePropertyDefinition)));
+      Assert.That(classIDValueProperty.PropertyType, Is.SameAs(typeof(string)));
 
       var valueIDColumn = ((SimpleStoragePropertyDefinition) valueProperty).ColumnDefinition;
       var classIDColumn = ((SimpleStoragePropertyDefinition) classIDValueProperty).ColumnDefinition;

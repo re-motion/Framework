@@ -61,9 +61,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _order = DomainObjectMother.CreateFakeObject<Order>();
       _location = DomainObjectMother.CreateFakeObject<Location>();
 
-      _orderOrderTicketEndPointDefinition = GetRelationEndPointDefinition(typeof (Order), "OrderTicket");
-      _locationClientEndPointDefinition = GetRelationEndPointDefinition(typeof (Location), "Client");
-      _orderCustomerEndPointDefinition = GetRelationEndPointDefinition(typeof (Order), "Customer");
+      _orderOrderTicketEndPointDefinition = GetRelationEndPointDefinition(typeof(Order), "OrderTicket");
+      _locationClientEndPointDefinition = GetRelationEndPointDefinition(typeof(Location), "Client");
+      _orderCustomerEndPointDefinition = GetRelationEndPointDefinition(typeof(Order), "Customer");
 
       _fakeSetter = domainObject => { };
       _fakeNullSetter = () => { };
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateDeleteCommand_NonVirtualOpposite ()
     {
-      var virtualDefinition = RelationEndPointObjectMother.GetEndPointDefinition(typeof (Order), "OrderTicket");
+      var virtualDefinition = RelationEndPointObjectMother.GetEndPointDefinition(typeof(Order), "OrderTicket");
 
       _endPointMock.Stub(stub => stub.GetDomainObject()).Return(_order);
       _endPointMock.Stub(stub => stub.IsNull).Return(false);
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var command = (RelationEndPointModificationCommand) _state.CreateDeleteCommand(_endPointMock, _fakeNullSetter);
 
-      Assert.That(command, Is.TypeOf(typeof (ObjectEndPointDeleteCommand)));
+      Assert.That(command, Is.TypeOf(typeof(ObjectEndPointDeleteCommand)));
       Assert.That(command.DomainObject, Is.SameAs(_order));
       Assert.That(command.ModifiedEndPoint, Is.SameAs(_endPointMock));
       Assert.That(GetOppositeObjectNullSetter((ObjectEndPointDeleteCommand) command), Is.SameAs(_fakeNullSetter));
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateDeleteCommand_VirtualOpposite ()
     {
-      var realDefinition = RelationEndPointObjectMother.GetEndPointDefinition(typeof (OrderTicket), "Order");
+      var realDefinition = RelationEndPointObjectMother.GetEndPointDefinition(typeof(OrderTicket), "Order");
 
       _endPointMock.Stub(stub => stub.GetDomainObject()).Return(_order);
       _endPointMock.Stub(stub => stub.IsNull).Return(false);
@@ -130,13 +130,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var command = _state.CreateDeleteCommand(_endPointMock, _fakeNullSetter);
 
-      Assert.That(command, Is.TypeOf(typeof (RealObjectEndPointRegistrationCommandDecorator)));
+      Assert.That(command, Is.TypeOf(typeof(RealObjectEndPointRegistrationCommandDecorator)));
       var decorator = (RealObjectEndPointRegistrationCommandDecorator) command;
       Assert.That(decorator.RealObjectEndPoint, Is.SameAs(_endPointMock));
       Assert.That(decorator.OldRelatedEndPoint, Is.SameAs(oldOppositeEndPointStub));
       Assert.That(decorator.NewRelatedEndPoint, Is.SameAs(newOppositeEndPointStub));
 
-      Assert.That(decorator.DecoratedCommand, Is.TypeOf(typeof (ObjectEndPointDeleteCommand)));
+      Assert.That(decorator.DecoratedCommand, Is.TypeOf(typeof(ObjectEndPointDeleteCommand)));
       var decoratedCommand = (ObjectEndPointDeleteCommand) decorator.DecoratedCommand;
       Assert.That(decoratedCommand.DomainObject, Is.SameAs(_order));
       Assert.That(decoratedCommand.ModifiedEndPoint, Is.SameAs(_endPointMock));
@@ -157,7 +157,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var command = (RelationEndPointModificationCommand) _state.CreateSetCommand(_endPointMock, relatedObject, _fakeSetter);
 
-      Assert.That(command, Is.TypeOf(typeof (ObjectEndPointSetSameCommand)));
+      Assert.That(command, Is.TypeOf(typeof(ObjectEndPointSetSameCommand)));
       Assert.That(command.DomainObject, Is.SameAs(_order));
       Assert.That(command.ModifiedEndPoint, Is.SameAs(_endPointMock));
       Assert.That(command.OldRelatedObject, Is.SameAs(relatedObject));
@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var command = (RelationEndPointModificationCommand) _state.CreateSetCommand(_endPointMock, null, _fakeSetter);
 
-      Assert.That(command, Is.TypeOf(typeof (ObjectEndPointSetSameCommand)));
+      Assert.That(command, Is.TypeOf(typeof(ObjectEndPointSetSameCommand)));
       Assert.That(command.DomainObject, Is.SameAs(_order));
       Assert.That(command.ModifiedEndPoint, Is.SameAs(_endPointMock));
       Assert.That(command.OldRelatedObject, Is.Null);
@@ -198,7 +198,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var command = (RelationEndPointModificationCommand) _state.CreateSetCommand(_endPointMock, newRelatedObject, _fakeSetter);
 
-      Assert.That(command.GetType(), Is.EqualTo(typeof (ObjectEndPointSetUnidirectionalCommand)));
+      Assert.That(command.GetType(), Is.EqualTo(typeof(ObjectEndPointSetUnidirectionalCommand)));
       Assert.That(command.ModifiedEndPoint, Is.SameAs(_endPointMock));
       Assert.That(command.NewRelatedObject, Is.SameAs(newRelatedObject));
       Assert.That(command.OldRelatedObject, Is.SameAs(oldRelatedObject));
@@ -233,13 +233,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var command = _state.CreateSetCommand(_endPointMock, newRelatedObject, _fakeSetter);
 
-      Assert.That(command, Is.TypeOf(typeof (RealObjectEndPointRegistrationCommandDecorator)));
+      Assert.That(command, Is.TypeOf(typeof(RealObjectEndPointRegistrationCommandDecorator)));
       var decorator = (RealObjectEndPointRegistrationCommandDecorator) command;
       Assert.That(decorator.RealObjectEndPoint, Is.SameAs(_endPointMock));
       Assert.That(decorator.OldRelatedEndPoint, Is.SameAs(oldOppositeEndPointStub));
       Assert.That(decorator.NewRelatedEndPoint, Is.SameAs(newOppositeEndPointStub));
 
-      Assert.That(decorator.DecoratedCommand, Is.TypeOf(typeof (ObjectEndPointSetOneOneCommand)));
+      Assert.That(decorator.DecoratedCommand, Is.TypeOf(typeof(ObjectEndPointSetOneOneCommand)));
       var decoratedCommand = (ObjectEndPointSetOneOneCommand) decorator.DecoratedCommand;
       Assert.That(decoratedCommand.ModifiedEndPoint, Is.SameAs(_endPointMock));
       Assert.That(decoratedCommand.NewRelatedObject, Is.SameAs(newRelatedObject));
@@ -276,16 +276,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var command = _state.CreateSetCommand(_endPointMock, newRelatedObject, _fakeSetter);
 
-      Assert.That(command, Is.TypeOf(typeof (RealObjectEndPointRegistrationCommandDecorator)));
+      Assert.That(command, Is.TypeOf(typeof(RealObjectEndPointRegistrationCommandDecorator)));
       var decorator = (RealObjectEndPointRegistrationCommandDecorator) command;
       Assert.That(decorator.RealObjectEndPoint, Is.SameAs(_endPointMock));
       Assert.That(decorator.OldRelatedEndPoint, Is.SameAs(oldOppositeEndPointStub));
       Assert.That(decorator.NewRelatedEndPoint, Is.SameAs(newOppositeEndPointStub));
 
-      Assert.That(decorator.DecoratedCommand, Is.TypeOf(typeof (ObjectEndPointSetOneManyCommand)));
+      Assert.That(decorator.DecoratedCommand, Is.TypeOf(typeof(ObjectEndPointSetOneManyCommand)));
       var decoratedCommand = (ObjectEndPointSetOneManyCommand) decorator.DecoratedCommand;
 
-      Assert.That(decoratedCommand, Is.TypeOf(typeof (ObjectEndPointSetOneManyCommand)));
+      Assert.That(decoratedCommand, Is.TypeOf(typeof(ObjectEndPointSetOneManyCommand)));
       Assert.That(decoratedCommand.ModifiedEndPoint, Is.SameAs(_endPointMock));
       Assert.That(decoratedCommand.NewRelatedObject, Is.SameAs(newRelatedObject));
       Assert.That(decoratedCommand.OldRelatedObject, Is.SameAs(oldRelatedObject));

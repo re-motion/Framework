@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void BindableObjectWithIdentityMixin_ImplementsMixinWithoutBaseObjectDependency ()
     {
-      Assert.That(typeof (BindableObjectWithIdentityBaseImplementation).CanAscribeTo(typeof (Mixin<,>)), Is.False);
+      Assert.That(typeof(BindableObjectWithIdentityBaseImplementation).CanAscribeTo(typeof(Mixin<,>)), Is.False);
     }
   }
 }

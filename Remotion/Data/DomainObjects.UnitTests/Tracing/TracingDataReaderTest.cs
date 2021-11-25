@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     public void GetFieldType ()
     {
       var i = 5;
-      var expectedType = typeof (string);
+      var expectedType = typeof(string);
 
       _innerDataReader.Expect(mock => mock.GetFieldType(i)).Return(expectedType);
       _mockRepository.ReplayAll();

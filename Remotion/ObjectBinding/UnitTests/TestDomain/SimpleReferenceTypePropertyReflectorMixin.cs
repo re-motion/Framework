@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
     {
       ArgumentUtility.CheckNotNull("parameters", parameters);
 
-      if (parameters.UnderlyingType == typeof (SimpleReferenceType))
+      if (parameters.UnderlyingType == typeof(SimpleReferenceType))
         return new SimpleReferenceTypeProperty(parameters);
 
       return Next.GetMetadata(parameters);

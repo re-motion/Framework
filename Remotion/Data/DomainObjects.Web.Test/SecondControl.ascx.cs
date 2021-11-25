@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
       if (page.IsReturningPostBack == false)
       {
         var function = new ShowSecondUserControlFunction(transactionMode, inParameter);
-        function.ExceptionHandler.SetCatchExceptionTypes(typeof (System.Exception));
+        function.ExceptionHandler.SetCatchExceptionTypes(typeof(System.Exception));
         var actualUserControl = (WxeUserControl) page.FindControl(userControl.PermanentUniqueID);
         Assertion.IsNotNull(actualUserControl);
         actualUserControl.ExecuteFunction(function, sender, null);

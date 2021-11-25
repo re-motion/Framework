@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public ClassDefinition[] GetClassDefinitions ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Fake", typeof (Company));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Fake", typeof(Company));
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
       classDefinition.SetDerivedClasses(new ClassDefinition[0]);
       return new[] { classDefinition };

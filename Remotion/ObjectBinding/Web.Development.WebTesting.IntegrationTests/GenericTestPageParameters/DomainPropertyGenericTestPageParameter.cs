@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     public string VisibleDomainProperty { get; private set; }
 
     public DomainPropertyGenericTestPageParameter ()
-        : base (TestConstants.DomainPropertySelectorID, c_parameterCount)
+        : base(TestConstants.DomainPropertySelectorID, c_parameterCount)
     {
     }
 

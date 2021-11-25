@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Linq
       {
         return s_cache.GetOrAdd(
             classType,
-            key => (GenericCallHelper) Activator.CreateInstance(typeof (GenericCallHelper<>).MakeGenericType(key)));
+            key => (GenericCallHelper) Activator.CreateInstance(typeof(GenericCallHelper<>).MakeGenericType(key)));
       }
 
       protected GenericCallHelper ()
@@ -352,12 +352,12 @@ namespace Remotion.Data.DomainObjects.Linq
     private Type GetCollectionType (Type itemType)
     {
       if (itemType == null)
-        return typeof (DomainObjectCollection);
+        return typeof(DomainObjectCollection);
 
-      if (!typeof (DomainObject).IsAssignableFrom(itemType))
-        return typeof (DomainObjectCollection);
+      if (!typeof(DomainObject).IsAssignableFrom(itemType))
+        return typeof(DomainObjectCollection);
 
-      return s_collectionTypeCache.GetOrAdd(itemType, key => typeof (ObjectList<>).MakeGenericType(itemType));
+      return s_collectionTypeCache.GetOrAdd(itemType, key => typeof(ObjectList<>).MakeGenericType(itemType));
     }
   }
 }

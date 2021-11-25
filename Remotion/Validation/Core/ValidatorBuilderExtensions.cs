@@ -34,7 +34,7 @@ namespace Remotion.Validation
     {
       ArgumentUtility.CheckNotNull("builder", builder);
 
-      var validator = builder.BuildValidator(typeof (TValidatedType));
+      var validator = builder.BuildValidator(typeof(TValidatedType));
       return new TypedValidatorDecorator<TValidatedType>(validator);
     }
   }

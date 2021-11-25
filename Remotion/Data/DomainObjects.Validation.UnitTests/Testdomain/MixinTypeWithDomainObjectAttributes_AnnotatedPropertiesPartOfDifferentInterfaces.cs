@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
           IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces1,
           IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces2
   {
-    private static readonly Type s_type = typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces);
+    private static readonly Type s_type = typeof(MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfDifferentInterfaces);
 
     [Mandatory]
     public virtual TestDomainObject PropertyWithMandatoryAttribute

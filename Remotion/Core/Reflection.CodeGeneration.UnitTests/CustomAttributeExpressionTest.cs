@@ -30,20 +30,20 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void CustomAttributeExpression ()
     {
-      var methodEmitter = GetMethodEmitter(false, typeof (Tuple<SimpleAttribute, SimpleAttribute>), new Type[0]);
+      var methodEmitter = GetMethodEmitter(false, typeof(Tuple<SimpleAttribute, SimpleAttribute>), new Type[0]);
 
-      LocalReference attributeOwner = methodEmitter.DeclareLocal(typeof (Type));
-      methodEmitter.AddStatement(new AssignStatement(attributeOwner, new TypeTokenExpression(typeof (ClassWithCustomAttribute))));
+      LocalReference attributeOwner = methodEmitter.DeclareLocal(typeof(Type));
+      methodEmitter.AddStatement(new AssignStatement(attributeOwner, new TypeTokenExpression(typeof(ClassWithCustomAttribute))));
 
       ConstructorInfo tupleCtor =
-          typeof (Tuple<SimpleAttribute, SimpleAttribute>).GetConstructor(new[] {typeof (SimpleAttribute), typeof (SimpleAttribute)});
+          typeof(Tuple<SimpleAttribute, SimpleAttribute>).GetConstructor(new[] {typeof(SimpleAttribute), typeof(SimpleAttribute)});
       Expression tupleExpression = new NewInstanceExpression(tupleCtor,
-          new CustomAttributeExpression(attributeOwner, typeof (SimpleAttribute), 0, true),
-          new CustomAttributeExpression(attributeOwner, typeof (SimpleAttribute), 1, true));
+          new CustomAttributeExpression(attributeOwner, typeof(SimpleAttribute), 0, true),
+          new CustomAttributeExpression(attributeOwner, typeof(SimpleAttribute), 1, true));
 
       methodEmitter.AddStatement(new ReturnStatement(tupleExpression));
 
-      object[] attributes = typeof (ClassWithCustomAttribute).GetCustomAttributes(typeof (SimpleAttribute), true);
+      object[] attributes = typeof(ClassWithCustomAttribute).GetCustomAttributes(typeof(SimpleAttribute), true);
 
       var attributeTuple = (Tuple<SimpleAttribute, SimpleAttribute>) InvokeMethod();
       Assert.That(new object[] { attributeTuple.Item1, attributeTuple.Item2 }, Is.EquivalentTo(attributes));
@@ -53,7 +53,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     public void CustomAttributeExpressionThrowsOnWrongReferenceType ()
     {
       Assert.That(
-          () => new CustomAttributeExpression(new LocalReference(typeof (string)), typeof (SimpleAttribute), 0, true),
+          () => new CustomAttributeExpression(new LocalReference(typeof(string)), typeof(SimpleAttribute), 0, true),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'attributeOwner' is a 'System.String', which cannot be assigned to type 'System.Reflection.ICustomAttributeProvider'.",

@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
     private Person _person;
 
     public ControlTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
     // Steps
     private void Step1 ()
     {
-      ExceptionHandler.AppendCatchExceptionTypes(typeof (WxeUserCancelException));
+      ExceptionHandler.AppendCatchExceptionTypes(typeof(WxeUserCancelException));
     }
 
     private void Step2 ()
@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
       _person = Person.GetObject(personID);
     }
 
-    private WxeStep Step3 = new WxeResourcePageStep(typeof (ControlTestForm), "ControlTestForm.aspx");
+    private WxeStep Step3 = new WxeResourcePageStep(typeof(ControlTestForm), "ControlTestForm.aspx");
 
     private void Step4 ()
     {

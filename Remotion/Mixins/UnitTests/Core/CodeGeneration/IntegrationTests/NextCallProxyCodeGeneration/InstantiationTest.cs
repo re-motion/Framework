@@ -27,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.NextCal
     [Test]
     public void GeneratedTypeInstantiableWithDepthAndBase ()
     {
-      Type t = CreateMixedType(typeof (BaseType3), typeof (BT3Mixin3<,>));
+      Type t = CreateMixedType(typeof(BaseType3), typeof(BT3Mixin3<,>));
       Type proxyType = t.GetNestedType("NextCallProxy");
       Activator.CreateInstance(proxyType, new object[] { null, -1 });
     }
@@ -35,7 +35,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.NextCal
     [Test]
     public void InstantiatedSubclassProxyHasNextCallProxy ()
     {
-      BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof (BT3Mixin3<,>));
+      BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof(BT3Mixin3<,>));
       FieldInfo firstField = bt3.GetType().GetField("__first", BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.That(firstField.GetValue(bt3), Is.Not.Null);
     }

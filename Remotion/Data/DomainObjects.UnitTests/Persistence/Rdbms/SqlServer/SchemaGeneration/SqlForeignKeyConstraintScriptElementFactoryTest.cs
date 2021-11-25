@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var expectedResult = 
         "ALTER TABLE [dbo].[TableName1] ADD\r\n"
        +"  CONSTRAINT [FK1] FOREIGN KEY ([Column1]) REFERENCES [dbo].[TableName1] ([Column2])";
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var expectedResult =
         "ALTER TABLE [SchemaName].[TableName2] ADD\r\n"
        + "  CONSTRAINT [FK2] FOREIGN KEY ([Column1], [Column2]) REFERENCES [SchemaName].[TableName2] ([Column2], [Column1])";
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
         "IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' "
         +"AND fk.name = 'FK1' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'TableName1')\r\n"
         +"  ALTER TABLE [dbo].[TableName1] DROP CONSTRAINT FK1";
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
         "IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' "
         +"AND fk.name = 'FK2' AND schema_name (t.schema_id) = 'SchemaName' AND t.name = 'TableName2')\r\n"
         +"  ALTER TABLE [SchemaName].[TableName2] DROP CONSTRAINT FK2";
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
   }

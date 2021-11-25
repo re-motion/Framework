@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.Domain
       ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
 
       var properties = new PropertyIndexer(domainObject);
-      var propertyAccessor = properties[typeof (TDoaminObject), shortPropertyName];
+      var propertyAccessor = properties[typeof(TDoaminObject), shortPropertyName];
       return args.RelationEndPointDefinition == propertyAccessor.PropertyData.RelationEndPointDefinition;
     }
   }

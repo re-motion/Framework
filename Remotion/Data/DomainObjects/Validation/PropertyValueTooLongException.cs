@@ -30,12 +30,12 @@ namespace Remotion.Data.DomainObjects.Validation
     private readonly int _maxLength;
 
     public PropertyValueTooLongException (DomainObject domainObject, string propertyName, int maxLength, string message)
-        : this (domainObject, propertyName, maxLength, message, null)
+        : this(domainObject, propertyName, maxLength, message, null)
     {
     }
 
     public PropertyValueTooLongException (DomainObject domainObject, string propertyName, int maxLength, string message, Exception inner)
-        : base (message, inner)
+        : base(message, inner)
     {
       _domainObject = domainObject;
       _propertyName = propertyName;
@@ -43,9 +43,9 @@ namespace Remotion.Data.DomainObjects.Validation
     }
 
     protected PropertyValueTooLongException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
-      _domainObject = (DomainObject) info.GetValue("_domainObject", typeof (DomainObject));
+      _domainObject = (DomainObject) info.GetValue("_domainObject", typeof(DomainObject));
       _propertyName = info.GetString("_propertyName");
       _maxLength = info.GetInt32("_maxLength");
     }

@@ -41,13 +41,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateDataStrategyForEndPoint ()
     {
-      var ordersEndPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof (Customer), "Orders");
+      var ordersEndPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
 
       var result = _factory.CreateDataStrategyForEndPoint(ordersEndPointID);
 
       Assert.That(result, Is.TypeOf<ModificationCheckingDomainObjectCollectionDataDecorator>());
       var checkingDecorator = (ModificationCheckingDomainObjectCollectionDataDecorator) result;
-      Assert.That(checkingDecorator.RequiredItemType, Is.SameAs(typeof (Order)));
+      Assert.That(checkingDecorator.RequiredItemType, Is.SameAs(typeof(Order)));
 
       var delegator = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EndPointDelegatingDomainObjectCollectionData>(checkingDecorator);
       Assert.That(delegator.AssociatedEndPointID, Is.EqualTo(ordersEndPointID));

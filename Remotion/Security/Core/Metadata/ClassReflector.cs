@@ -36,7 +36,7 @@ namespace Remotion.Security.Metadata
     // construction and disposing
 
     public ClassReflector ()
-      : this (new StatePropertyReflector(), new AccessTypeReflector())
+      : this(new StatePropertyReflector(), new AccessTypeReflector())
     {
     }
 
@@ -63,7 +63,7 @@ namespace Remotion.Security.Metadata
 
     public SecurableClassInfo GetMetadata (Type type, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
       if (type.IsValueType)
         throw new ArgumentException("Value types are not supported.", "type");
       ArgumentUtility.CheckNotNull("cache", cache);
@@ -73,7 +73,7 @@ namespace Remotion.Security.Metadata
       {
         info = new SecurableClassInfo();
         info.Name = TypeUtility.GetPartialAssemblyQualifiedName(type);
-        PermanentGuidAttribute? guidAttribute = (PermanentGuidAttribute?) Attribute.GetCustomAttribute(type, typeof (PermanentGuidAttribute), true);
+        PermanentGuidAttribute? guidAttribute = (PermanentGuidAttribute?) Attribute.GetCustomAttribute(type, typeof(PermanentGuidAttribute), true);
         if (guidAttribute != null)
           info.ID = guidAttribute.Value.ToString();
         info.Properties.AddRange(GetProperties(type, cache));
@@ -81,7 +81,7 @@ namespace Remotion.Security.Metadata
 
         cache.AddSecurableClassInfo(type, info);
 
-        if (typeof (ISecurableObject).IsAssignableFrom(type.BaseType))
+        if (typeof(ISecurableObject).IsAssignableFrom(type.BaseType))
         {
           info.BaseClass = GetMetadata(type.BaseType, cache);
           info.BaseClass.DerivedClasses.Add(info);
@@ -93,7 +93,7 @@ namespace Remotion.Security.Metadata
 
     protected virtual List<StatePropertyInfo> GetProperties (Type type, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
       ArgumentUtility.CheckNotNull("cache", cache);
 
       MemberInfo[] propertyInfos = type.FindMembers(
@@ -112,7 +112,7 @@ namespace Remotion.Security.Metadata
     protected bool FindStatePropertiesFilter (MemberInfo member, object? filterCriteria)
     {
       PropertyInfo property = ArgumentUtility.CheckNotNullAndType<PropertyInfo>("member", member);
-      return property.PropertyType.IsEnum && Attribute.IsDefined(property.PropertyType, typeof (SecurityStateAttribute), false);
+      return property.PropertyType.IsEnum && Attribute.IsDefined(property.PropertyType, typeof(SecurityStateAttribute), false);
     }
   }
 }

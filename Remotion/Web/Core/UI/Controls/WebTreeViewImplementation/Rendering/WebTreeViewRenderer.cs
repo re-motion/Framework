@@ -27,14 +27,14 @@ namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering
   /// Implements <see cref="IWebTreeViewRenderer"/> for standard mode rendering of <see cref="WebTreeView"/> controls.
   /// <seealso cref="IWebTreeView"/>
   /// </summary>
-  [ImplementationFor (typeof (IWebTreeViewRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IWebTreeViewRenderer), Lifetime = LifetimeKind.Singleton)]
   public class WebTreeViewRenderer : RendererBase<IWebTreeView>, IWebTreeViewRenderer
   {
     public WebTreeViewRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
     }
 
@@ -42,14 +42,14 @@ namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
       
-      string scriptFileKey = typeof (WebTreeViewRenderer).GetFullNameChecked() + "_Script";
-      var scriptFileUrl = ResourceUrlFactory.CreateResourceUrl(typeof (WebTreeViewRenderer), ResourceType.Html, "TreeView.js");
+      string scriptFileKey = typeof(WebTreeViewRenderer).GetFullNameChecked() + "_Script";
+      var scriptFileUrl = ResourceUrlFactory.CreateResourceUrl(typeof(WebTreeViewRenderer), ResourceType.Html, "TreeView.js");
       htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptFileUrl);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string styleKey = typeof (WebTreeViewRenderer).GetFullNameChecked() + "_Style";
-      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof (WebTreeViewRenderer), ResourceType.Html, "TreeView.css");
+      string styleKey = typeof(WebTreeViewRenderer).GetFullNameChecked() + "_Style";
+      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(WebTreeViewRenderer), ResourceType.Html, "TreeView.css");
       htmlHeadAppender.RegisterStylesheetLink(styleKey, styleSheetUrl, HtmlHeadAppender.Priority.Library);
     }
 

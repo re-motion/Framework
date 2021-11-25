@@ -32,7 +32,7 @@ namespace Remotion.Validation.RuleCollectors
     {
       ArgumentUtility.CheckNotNull("collectorType", collectorType);
 
-      return new ObjectMetaValidationRuleCollector(TypeAdapter.Create(typeof (TValidatedType)), collectorType);
+      return new ObjectMetaValidationRuleCollector(TypeAdapter.Create(typeof(TValidatedType)), collectorType);
     }
 
     public ITypeInformation ValidatedType { get; }

@@ -27,9 +27,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetEnumerationValueFilter_FromFilterTypeCtor ()
     {
-      var attribute = new DisableExtensibleEnumValuesAttribute(typeof (StubEnumerationValueFilter));
+      var attribute = new DisableExtensibleEnumValuesAttribute(typeof(StubEnumerationValueFilter));
 
-      Assert.That(attribute.GetEnumerationValueFilter(), Is.TypeOf(typeof (StubEnumerationValueFilter)));
+      Assert.That(attribute.GetEnumerationValueFilter(), Is.TypeOf(typeof(StubEnumerationValueFilter)));
     }
 
     [Test]
@@ -81,7 +81,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     private void CheckDisabledIdentifiersFilter (DisableExtensibleEnumValuesAttribute attribute, params string[] expectedIDs)
     {
       var filter = attribute.GetEnumerationValueFilter();
-      Assert.That(filter, Is.TypeOf(typeof (DisabledIdentifiersEnumerationFilter)));
+      Assert.That(filter, Is.TypeOf(typeof(DisabledIdentifiersEnumerationFilter)));
       Assert.That(((DisabledIdentifiersEnumerationFilter)filter).DisabledIDs.ToArray(), Is.EqualTo(expectedIDs));
     }
   }

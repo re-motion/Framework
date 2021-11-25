@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       RdbmsProviderDefinition provider = new RdbmsProviderDefinition("Provider", _sqlStorageObjectFactory, "ConnectionString");
 
       Assert.That(provider.Name, Is.EqualTo("Provider"));
-      Assert.That(provider.Factory, Is.TypeOf(typeof (SqlStorageObjectFactory)));
+      Assert.That(provider.Factory, Is.TypeOf(typeof(SqlStorageObjectFactory)));
       Assert.That(provider.ConnectionString, Is.EqualTo("ConnectionString"));
     }
 
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       Assert.That(provider.Name, Is.EqualTo("Provider"));
       Assert.That(provider.Description, Is.EqualTo("The Description"));
-      Assert.That(provider.Factory, Is.TypeOf(typeof (SqlStorageObjectFactory)));
+      Assert.That(provider.Factory, Is.TypeOf(typeof(SqlStorageObjectFactory)));
       Assert.That(provider.ConnectionString, Is.EqualTo("ConnectionString"));
       Assert.That(config, Is.Empty);
     }
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       NameValueCollection config = new NameValueCollection();
       config.Add("description", "The Description");
-      config.Add("factoryType", typeof (InvalidRdbmsStorageObjectFactory).AssemblyQualifiedName);
+      config.Add("factoryType", typeof(InvalidRdbmsStorageObjectFactory).AssemblyQualifiedName);
       config.Add("connectionString", "SqlProvider");
       Assert.That(
           () => new RdbmsProviderDefinition("Provider", config),
@@ -102,13 +102,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void IsIdentityTypeSupportedFalse ()
     {
-      Assert.That(_definition.IsIdentityTypeSupported(typeof (int)), Is.False);
+      Assert.That(_definition.IsIdentityTypeSupported(typeof(int)), Is.False);
     }
 
     [Test]
     public void IsIdentityTypeSupportedTrue ()
     {
-      Assert.That(_definition.IsIdentityTypeSupported(typeof (Guid)), Is.True);
+      Assert.That(_definition.IsIdentityTypeSupported(typeof(Guid)), Is.True);
     }
 
     [Test]
@@ -122,14 +122,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void CheckValidIdentityType ()
     {
-      _definition.CheckIdentityType(typeof (Guid));
+      _definition.CheckIdentityType(typeof(Guid));
     }
 
     [Test]
     public void CheckInvalidIdentityType ()
     {
       Assert.That(
-          () => _definition.CheckIdentityType(typeof (string)),
+          () => _definition.CheckIdentityType(typeof(string)),
           Throws.InstanceOf<IdentityTypeNotSupportedException>()
               .With.Message.EqualTo(
                   "The storage provider defined by 'RdbmsProviderDefinition' does not support identity values of type 'System.String'."));
@@ -140,12 +140,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       try
       {
-        _definition.CheckIdentityType(typeof (string));
+        _definition.CheckIdentityType(typeof(string));
         Assert.Fail("Test expects an IdentityTypeNotSupportedException.");
       }
       catch (IdentityTypeNotSupportedException ex)
       {
-        Assert.That(ex.InvalidIdentityType, Is.EqualTo(typeof (string)));
+        Assert.That(ex.InvalidIdentityType, Is.EqualTo(typeof(string)));
       }
     }
   }

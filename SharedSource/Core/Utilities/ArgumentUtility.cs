@@ -327,7 +327,7 @@ namespace Remotion.Utilities
         throw new ArgumentNullException(argumentName);
 
       if (! (actualValue is TExpected))
-        throw CreateArgumentTypeException(argumentName, actualValue.GetType(), typeof (TExpected));
+        throw CreateArgumentTypeException(argumentName, actualValue.GetType(), typeof(TExpected));
       return (TExpected) actualValue;
     }
 
@@ -389,7 +389,7 @@ namespace Remotion.Utilities
       }
 
       if (!(actualValue is TExpected))
-        throw CreateArgumentTypeException(argumentName, actualValue.GetType(), typeof (TExpected));
+        throw CreateArgumentTypeException(argumentName, actualValue.GetType(), typeof(TExpected));
 
       return (TExpected) actualValue;
     }

@@ -50,11 +50,11 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     {
       var appliedWithAttributeTypes = new[]
                                       {
-                                          typeof (CustomerMixinTargetValidationRuleCollector1), typeof (CustomerMixinIntroducedValidationRuleCollector1),
-                                          typeof (CustomerMixinIntroducedValidationRuleCollector2),
-                                          typeof (PersonValidationRuleCollector1)
+                                          typeof(CustomerMixinTargetValidationRuleCollector1), typeof(CustomerMixinIntroducedValidationRuleCollector1),
+                                          typeof(CustomerMixinIntroducedValidationRuleCollector2),
+                                          typeof(PersonValidationRuleCollector1)
                                       };
-      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof (IValidationRuleCollector), false)).Returns(appliedWithAttributeTypes);
+      _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof(IValidationRuleCollector), false)).Returns(appliedWithAttributeTypes);
 
       var typeCollectorProvider = DiscoveryServiceBasedValidationRuleCollectorReflector.Create(
           _typeDiscoveryServiceStub.Object,
@@ -63,12 +63,12 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
                   new GenericTypeAwareValidatedTypeResolverDecorator(new NullValidatedTypeResolver()))));
 
       Assert.That(
-          typeCollectorProvider.GetCollectorsForType(typeof (ICustomerIntroduced)),
-          Is.EqualTo(new[] { typeof (CustomerMixinIntroducedValidationRuleCollector2) }));
+          typeCollectorProvider.GetCollectorsForType(typeof(ICustomerIntroduced)),
+          Is.EqualTo(new[] { typeof(CustomerMixinIntroducedValidationRuleCollector2) }));
 
       Assert.That(
-          typeCollectorProvider.GetCollectorsForType(typeof (CustomerMixin)),
-          Is.EquivalentTo(new[] { typeof (CustomerMixinTargetValidationRuleCollector1), typeof (CustomerMixinIntroducedValidationRuleCollector1) }));
+          typeCollectorProvider.GetCollectorsForType(typeof(CustomerMixin)),
+          Is.EquivalentTo(new[] { typeof(CustomerMixinTargetValidationRuleCollector1), typeof(CustomerMixinIntroducedValidationRuleCollector1) }));
       //ApplyWithMixin attribute!
     }
 

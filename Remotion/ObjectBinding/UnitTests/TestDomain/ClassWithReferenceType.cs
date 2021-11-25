@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   public class ClassWithReferenceType<T> : IInterfaceWithReferenceType<T>
   {
     private T _explicitInterfaceScalar;
-    private readonly T _readOnlyScalar = default (T);
+    private readonly T _readOnlyScalar = default(T);
     private Exception _exception;
 
     protected string NonPublicProperty { get; set; }
@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       {
         if (_exception != null)
           throw _exception;
-        return default (T);
+        return default(T);
       }
       set
       {

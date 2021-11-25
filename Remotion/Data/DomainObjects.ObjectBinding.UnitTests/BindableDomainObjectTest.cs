@@ -52,20 +52,20 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void BindableObjectProviderAttribute ()
     {
-      Assert.That(typeof (BindableDomainObject).IsDefined(typeof (BindableDomainObjectProviderAttribute), false), Is.True);
+      Assert.That(typeof(BindableDomainObject).IsDefined(typeof(BindableDomainObjectProviderAttribute), false), Is.True);
     }
 
     [Test]
     public void BindableObjectBaseClassAttribute ()
     {
-      Assert.That(typeof (BindableDomainObject).IsDefined(typeof (BindableObjectBaseClassAttribute), false), Is.True);
+      Assert.That(typeof(BindableDomainObject).IsDefined(typeof(BindableObjectBaseClassAttribute), false), Is.True);
     }
 
     [Test]
     public void CreateImplementation ()
     {
       var instance = SampleBindableDomainObject.NewObject();
-      Assert.That(PrivateInvoke.GetNonPublicField(instance, "_implementation"), Is.InstanceOf(typeof (BindableDomainObjectImplementation)));
+      Assert.That(PrivateInvoke.GetNonPublicField(instance, "_implementation"), Is.InstanceOf(typeof(BindableDomainObjectImplementation)));
     }
 
     [Test]
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
       Assert.That(implementation, Is.Not.Null);
       Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
-      Assert.That(implementation.BusinessObjectClass.TargetType, Is.SameAs(typeof (SampleBindableDomainObject)));
+      Assert.That(implementation.BusinessObjectClass.TargetType, Is.SameAs(typeof(SampleBindableDomainObject)));
     }
 
     [Test]
@@ -108,13 +108,13 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
       Assert.That(implementation, Is.Not.Null);
       Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
-      Assert.That(implementation.BusinessObjectClass.TargetType, Is.SameAs(typeof (SampleBindableDomainObject_ImplementingISerializable)));
+      Assert.That(implementation.BusinessObjectClass.TargetType, Is.SameAs(typeof(SampleBindableDomainObject_ImplementingISerializable)));
     }
 
     [Test]
     public void Loading ()
     {
-      var newInstanceID = new ObjectID(typeof (SampleBindableDomainObject), Guid.NewGuid());
+      var newInstanceID = new ObjectID(typeof(SampleBindableDomainObject), Guid.NewGuid());
       try
       {
         StubStorageProvider.LoadDataContainerResult = DataContainer.CreateNew(newInstanceID);
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void ObjectReference ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (SampleBindableDomainObject));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(SampleBindableDomainObject));
       var instance = LifetimeService.GetObjectReference(TestableClientTransaction, new ObjectID(classDefinition, Guid.NewGuid()));
       
       var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField(instance, "_implementation");
@@ -230,13 +230,13 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void BindableDomainObject_IsNotPartOfMapping ()
     {
-      Assert.That(MappingConfiguration.Current.GetTypeDefinitions().Where(o => o.ClassType == typeof (BindableDomainObject)), Is.Empty);
+      Assert.That(MappingConfiguration.Current.GetTypeDefinitions().Where(o => o.ClassType == typeof(BindableDomainObject)), Is.Empty);
     }
 
     [Test]
     public void RefectionUtilityIsTypeIgnoredForMappingConfiguration_BindableDomainObject_ReturnsTrue ()
     {
-      Assert.That(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(typeof (BindableDomainObject)), Is.True);
+      Assert.That(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(typeof(BindableDomainObject)), Is.True);
     }
   }
 }

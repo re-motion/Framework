@@ -46,7 +46,7 @@ namespace Remotion.Web.Security.UI
 
     protected DemandTargetPermissionAttribute (Type functionType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("functionType", functionType, typeof (WxeFunction));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("functionType", functionType, typeof(WxeFunction));
 
       _permissionSource = PermissionSource.WxeFunction;
       _functionType = functionType;
@@ -65,7 +65,7 @@ namespace Remotion.Web.Security.UI
     protected DemandTargetPermissionAttribute (object methodEnum, Type securableClass)
     {
       Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>("methodEnum", methodEnum);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof(ISecurableObject));
 
       CheckDeclaringTypeOfMethodNameEnum(enumValue, securableClass);
 
@@ -85,7 +85,7 @@ namespace Remotion.Web.Security.UI
     protected DemandTargetPermissionAttribute (string methodName, Type securableClass)
     {
       ArgumentUtility.CheckNotNullOrEmpty("methodName", methodName);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof(ISecurableObject));
 
       _permissionSource = PermissionSource.SecurableObject;
       _methodName = methodName;
@@ -123,12 +123,12 @@ namespace Remotion.Web.Security.UI
       if (enumType.DeclaringType == null)
         throw new ArgumentException(string.Format("Enumerated type '{0}' is not declared as a nested type.", enumType.GetFullNameSafe()), "methodNameEnum");
 
-      if (!typeof (ISecurableObject).IsAssignableFrom(enumType.DeclaringType))
+      if (!typeof(ISecurableObject).IsAssignableFrom(enumType.DeclaringType))
       {
         throw new ArgumentException(string.Format(
                 "The declaring type of enumerated type '{0}' does not implement interface '{1}'.",
                 enumType.GetFullNameSafe(),
-                typeof (ISecurableObject).GetFullNameSafe()),
+                typeof(ISecurableObject).GetFullNameSafe()),
             "methodNameEnum");
       }
     }

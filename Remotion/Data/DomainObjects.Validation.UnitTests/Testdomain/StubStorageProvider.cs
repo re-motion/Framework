@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
     public const string GetSecurableObjectsQueryID = "StubQueryID";
 
     public StubStorageProvider (StorageProviderDefinition definition, IPersistenceExtension persistenceExtension)
-      : base (definition, persistenceExtension)
+      : base(definition, persistenceExtension)
     {
     }
 

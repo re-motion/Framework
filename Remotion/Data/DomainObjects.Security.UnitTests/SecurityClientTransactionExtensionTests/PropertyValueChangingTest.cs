@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper = new TestHelper();
       _extension = new SecurityClientTransactionExtension();
 
-      _propertyInfo = typeof (SecurableObject).GetProperty("StringProperty");
+      _propertyInfo = typeof(SecurableObject).GetProperty("StringProperty");
       _setMethodInformation = MethodInfoAdapter.Create(_propertyInfo.GetSetMethod());
       _stringPropertyDefinition = PropertyDefinitionObjectMother.CreatePropertyDefinition(_propertyInfo);
 
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_AccessGranted_WithNonPublicAccessor_DowsNotThrow ()
     {
       var propertyInfo =
-          typeof (SecurableObject).GetProperty("NonPublicPropertyWithCustomPermission", BindingFlags.NonPublic | BindingFlags.Instance);
+          typeof(SecurableObject).GetProperty("NonPublicPropertyWithCustomPermission", BindingFlags.NonPublic | BindingFlags.Instance);
       var setMethodInformation = MethodInfoAdapter.Create(propertyInfo.GetSetMethod(true));
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(setMethodInformation, TestAccessTypes.First);
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     public void Test_AccessDenied_WithNonPublicAccessor_ThrowsPermissionDeniedException ()
     {
       var propertyInfo =
-          typeof (SecurableObject).GetProperty("NonPublicPropertyWithCustomPermission", BindingFlags.NonPublic | BindingFlags.Instance);
+          typeof(SecurableObject).GetProperty("NonPublicPropertyWithCustomPermission", BindingFlags.NonPublic | BindingFlags.Instance);
       var setMethodInformation = MethodInfoAdapter.Create(propertyInfo.GetSetMethod(true));
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(setMethodInformation, TestAccessTypes.First);
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     [Test]
     public void Test_AccessGranted_WithMissingAccessor_DowsNotThrow ()
     {
-      var propertyInfo = typeof (SecurableObject).GetProperty("PropertyWithMissingSetAccessor");
+      var propertyInfo = typeof(SecurableObject).GetProperty("PropertyWithMissingSetAccessor");
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new NullMethodInformation());
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, GeneralAccessTypes.Edit, true);
@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     [Test]
     public void Test_AccessDenied_WithMissingAccessor_ThrowsPermissionDeniedException ()
     {
-      var propertyInfo = typeof (SecurableObject).GetProperty("PropertyWithMissingSetAccessor");
+      var propertyInfo = typeof(SecurableObject).GetProperty("PropertyWithMissingSetAccessor");
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new NullMethodInformation());
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, GeneralAccessTypes.Edit, false);
@@ -176,14 +176,14 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     [Test]
     public void Test_WithNonSecurableObject_DoesNotPerformSecurityCheck ()
     {
-      var propertyInfo = typeof (NonSecurableObject).GetProperty("StringProperty");
+      var propertyInfo = typeof(NonSecurableObject).GetProperty("StringProperty");
       NonSecurableObject nonSecurableObject = _testHelper.CreateNonSecurableObject();
       _testHelper.ReplayAll();
 
       _extension.PropertyValueChanging(
           _testHelper.Transaction,
           nonSecurableObject,
-          PropertyDefinitionObjectMother.CreatePropertyDefinition(propertyInfo, typeof (NonSecurableObject)),
+          PropertyDefinitionObjectMother.CreatePropertyDefinition(propertyInfo, typeof(NonSecurableObject)),
           "old",
           "new");
 

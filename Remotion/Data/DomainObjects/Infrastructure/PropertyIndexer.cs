@@ -270,7 +270,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         where TDomainObject : DomainObject
     {
       ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
-      return Find(typeof (TDomainObject), shortPropertyName);
+      return Find(typeof(TDomainObject), shortPropertyName);
     }
 
     /// <summary>

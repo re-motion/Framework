@@ -21,7 +21,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
   public class Color : ExtensibleEnum<Color>
   {
     public Color (string id)
-      : base (id)
+      : base(id)
     {
     }
   }

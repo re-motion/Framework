@@ -44,7 +44,7 @@ public class UrlMappingConfiguration: ConfigurationBase
 
   public static UrlMappingConfiguration CreateUrlMappingConfiguration (string configurationFile)
   {
-    UrlMappingLoader loader = new UrlMappingLoader(configurationFile, typeof (UrlMappingConfiguration));
+    UrlMappingLoader loader = new UrlMappingLoader(configurationFile, typeof(UrlMappingConfiguration));
     return loader.CreateUrlMappingConfiguration();
   }
 
@@ -109,12 +109,12 @@ public class UrlMappingEntry
   }
 
   public UrlMappingEntry (Type functionType, string resource)
-      : this (null, functionType, resource)
+      : this(null, functionType, resource)
   {
   }
 
   public UrlMappingEntry (string functionTypeName, string resource)
-      : this (null, functionTypeName, resource)
+      : this(null, functionTypeName, resource)
   {
   }
 
@@ -172,7 +172,7 @@ public class UrlMappingEntry
     set
     {
       ArgumentUtility.CheckNotNull("FunctionType", value);
-      if (! typeof (WxeFunction).IsAssignableFrom(value))
+      if (! typeof(WxeFunction).IsAssignableFrom(value))
         throw new ArgumentException(string.Format("The FunctionType '{0}' must be derived from WxeFunction.", value), "FunctionType");
       _functionType = value;
       _functionTypeName = _functionType.GetAssemblyQualifiedNameChecked();

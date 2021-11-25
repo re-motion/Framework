@@ -42,9 +42,9 @@ namespace Remotion.Utilities
        where T : class
     {
       ArgumentUtility.CheckNotNull("element", element);
-      CheckAttributeType(typeof (T), "T");
+      CheckAttributeType(typeof(T), "T");
 
-      return IsDefined(element, typeof (T), inherit);
+      return IsDefined(element, typeof(T), inherit);
     }
 
     public static bool IsDefined (MemberInfo element, Type attributeType, bool inherit)
@@ -59,9 +59,9 @@ namespace Remotion.Utilities
         where T: class
     {
       ArgumentUtility.CheckNotNull("element", element);
-      CheckAttributeType(typeof (T), "T");
+      CheckAttributeType(typeof(T), "T");
       
-      return (T?) (object?) GetCustomAttribute(element, typeof (T), inherit);
+      return (T?) (object?) GetCustomAttribute(element, typeof(T), inherit);
     }
 
     public static Attribute? GetCustomAttribute (MemberInfo element, Type attributeType, bool inherit)
@@ -81,9 +81,9 @@ namespace Remotion.Utilities
         where T: class
     {
       ArgumentUtility.CheckNotNull("element", element);
-      CheckAttributeType(typeof (T), "T");
+      CheckAttributeType(typeof(T), "T");
       
-      return (T[])GetCustomAttributes(element, typeof (T), inherit);
+      return (T[])GetCustomAttributes(element, typeof(T), inherit);
     }
 
     public static object[] GetCustomAttributes (MemberInfo element, Type attributeType, bool inherit)
@@ -112,7 +112,7 @@ namespace Remotion.Utilities
       CheckAttributeType(attributeType, "attributeType");
 
       var attributesWithRightType = GetCustomAttributesWithMetadata(type, attributeType, inherit);
-      var filteredAttributes = AttributeWithMetadata.ExcludeAll(attributesWithRightType, typeof (SuppressAttributesAttribute));
+      var filteredAttributes = AttributeWithMetadata.ExcludeAll(attributesWithRightType, typeof(SuppressAttributesAttribute));
 
       var suppressAttributes = GetCachedSuppressAttributes(type, inherit);
       var nonSuppressedAttributes = AttributeWithMetadata.Suppress(filteredAttributes, suppressAttributes);
@@ -149,7 +149,7 @@ namespace Remotion.Utilities
           }
         }
         currentType = currentType.BaseType;
-      } while (inherit && currentType != null && currentType != typeof (object)); // iterate unless inherit == false, stop when typeof (object) is reached
+      } while (inherit && currentType != null && currentType != typeof(object)); // iterate unless inherit == false, stop when typeof (object) is reached
     }
 
     private static object[] CreateTypedArray (IEnumerable attributeInstances, Type elementType)
@@ -169,7 +169,7 @@ namespace Remotion.Utilities
       if (!s_suppressAttributesCache.TryGetValue(key, out result!))
       {
         result = s_suppressAttributesCache.GetOrAdd(
-            key, k => GetCustomAttributesWithMetadata(k.Item1, typeof (SuppressAttributesAttribute), k.Item2).ToArray());
+            key, k => GetCustomAttributesWithMetadata(k.Item1, typeof(SuppressAttributesAttribute), k.Item2).ToArray());
       }
       return result;
     }
@@ -178,7 +178,7 @@ namespace Remotion.Utilities
     {
       ArgumentUtility.CheckNotNull("attributeType", attributeType);
 
-      if (!typeof (Attribute).IsAssignableFrom(attributeType) && !attributeType.IsInterface)
+      if (!typeof(Attribute).IsAssignableFrom(attributeType) && !attributeType.IsInterface)
       {
         string message = "The attribute type must be assignable to System.Attribute or an interface.";
         throw new ArgumentException(message, parameterName);

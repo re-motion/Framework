@@ -26,7 +26,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   {
     public RootTransactionStrategy (
         bool autoCommit, Func<ITransaction> transactionFactory, TransactionStrategyBase outerTransactionStrategy, IWxeFunctionExecutionContext executionContext)
-      : base (autoCommit, transactionFactory, outerTransactionStrategy, executionContext)
+      : base(autoCommit, transactionFactory, outerTransactionStrategy, executionContext)
     {
     }
 

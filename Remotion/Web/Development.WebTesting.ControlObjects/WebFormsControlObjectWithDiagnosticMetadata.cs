@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public abstract class WebFormsControlObjectWithDiagnosticMetadata : ControlObject
   {
     protected WebFormsControlObjectWithDiagnosticMetadata ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

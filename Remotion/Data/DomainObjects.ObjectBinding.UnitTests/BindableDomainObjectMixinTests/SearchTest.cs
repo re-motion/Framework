@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       _stubbedQueryID = "FakeQuery";
 
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>().AddService(
-          typeof (ISearchAvailableObjectsService), new BindableDomainObjectCompoundSearchService());
+          typeof(ISearchAvailableObjectsService), new BindableDomainObjectCompoundSearchService());
 
       _clientTransaction = _searchServiceTestHelper.CreateStubbableTransaction<ClientTransaction>();
       _transactionScope = _clientTransaction.EnterDiscardingScope();
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void SearchAvailableObjectsWithNullSearchArguments ()
     {
       var fakeResultData = _searchServiceTestHelper.CreateFakeResultData(_clientTransaction);
-      _searchServiceTestHelper.StubSearchAllObjectsQueryResult(typeof (OppositeBidirectionalBindableDomainObject), new[] { fakeResultData });
+      _searchServiceTestHelper.StubSearchAllObjectsQueryResult(typeof(OppositeBidirectionalBindableDomainObject), new[] { fakeResultData });
 
       IBusinessObject[] businessObjects = _property.SearchAvailableObjects(_referencingBusinessObject, null);
 
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void SearchAvailableObjectsWithNullQuery ()
     {
       var fakeResultData = _searchServiceTestHelper.CreateFakeResultData(_clientTransaction);
-      _searchServiceTestHelper.StubSearchAllObjectsQueryResult(typeof (OppositeBidirectionalBindableDomainObject), new[] { fakeResultData });
+      _searchServiceTestHelper.StubSearchAllObjectsQueryResult(typeof(OppositeBidirectionalBindableDomainObject), new[] { fakeResultData });
 
       IBusinessObject[] businessObjects = _property.SearchAvailableObjects(_referencingBusinessObject, new DefaultSearchArguments(null));
 
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void SearchAvailableObjectsWithEmptyQuery ()
     {
       var fakeResultData = _searchServiceTestHelper.CreateFakeResultData(_clientTransaction);
-      _searchServiceTestHelper.StubSearchAllObjectsQueryResult(typeof (OppositeBidirectionalBindableDomainObject), new[] { fakeResultData });
+      _searchServiceTestHelper.StubSearchAllObjectsQueryResult(typeof(OppositeBidirectionalBindableDomainObject), new[] { fakeResultData });
 
       IBusinessObject[] businessObjects = _property.SearchAvailableObjects(_referencingBusinessObject, new DefaultSearchArguments(""));
 

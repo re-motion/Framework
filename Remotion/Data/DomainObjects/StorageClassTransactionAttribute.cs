@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects
   public sealed class StorageClassTransactionAttribute : StorageClassAttribute
   {
     public StorageClassTransactionAttribute ()
-        : base (StorageClass.Transaction)
+        : base(StorageClass.Transaction)
     {
     }
   }

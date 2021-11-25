@@ -53,12 +53,12 @@ namespace Remotion.Web.ExecutionEngine
   public abstract class WxeIgnorableException : WxeInfrastructureException
   {
     protected WxeIgnorableException (string message)
-      : base (message)
+      : base(message)
     {
     }
 
     protected WxeIgnorableException (SerializationInfo info, StreamingContext context)
-      : base (info, context)
+      : base(info, context)
     {
     }
   }

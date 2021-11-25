@@ -30,7 +30,7 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     public void GetType_WithValidTypeName_ReturnsType ()
     {
       var service = CreateTypeResolutionService();
-      Assert.That(service.GetType("System.String"), Is.SameAs(typeof (string)));
+      Assert.That(service.GetType("System.String"), Is.SameAs(typeof(string)));
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     public void GetType_WithThrowOnErrorTrue_WithValidTypeName_ReturnsType ()
     {
       var service = CreateTypeResolutionService();
-      Assert.That(service.GetType("System.String", throwOnError: true), Is.SameAs(typeof (string)));
+      Assert.That(service.GetType("System.String", throwOnError: true), Is.SameAs(typeof(string)));
     }
 
     [Test]
@@ -73,7 +73,7 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     public void GetType_WithThrowOnErrorTrue_AndWithIgnoreCaseFalse_WithValidTypeName_ReturnsType ()
     {
       var service = CreateTypeResolutionService();
-      Assert.That(service.GetType("System.String", throwOnError: true, ignoreCase: false), Is.SameAs(typeof (string)));
+      Assert.That(service.GetType("System.String", throwOnError: true, ignoreCase: false), Is.SameAs(typeof(string)));
     }
 
     [Test]
@@ -97,10 +97,10 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     [Test]
     public void GetType_WithThrowOnErrorTrue_AndWithIgnoreCaseTrue_WithTypeNameHavingCaseMismatch_ReturnsType ()
     {
-      Assert.That(() => Type.GetType("system.string", throwOnError: true, ignoreCase: true), Is.SameAs(typeof (string)));
+      Assert.That(() => Type.GetType("system.string", throwOnError: true, ignoreCase: true), Is.SameAs(typeof(string)));
 
       var service = CreateTypeResolutionService();
-      Assert.That(() => service.GetType("system.string", throwOnError: true, ignoreCase: true), Is.SameAs(typeof (string)));
+      Assert.That(() => service.GetType("system.string", throwOnError: true, ignoreCase: true), Is.SameAs(typeof(string)));
     }
 
     [Test]
@@ -115,10 +115,10 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     [Test]
     public void GetType_WithThrowOnErrorFalse_AndWithIgnoreCaseTrue_WithTypeNameHavingCaseMismatch_ReturnsType ()
     {
-      Assert.That(Type.GetType("system.string", throwOnError: false, ignoreCase: true), Is.SameAs(typeof (string)));
+      Assert.That(Type.GetType("system.string", throwOnError: false, ignoreCase: true), Is.SameAs(typeof(string)));
 
       var service = CreateTypeResolutionService();
-      Assert.That(service.GetType("system.string", throwOnError: false, ignoreCase: true), Is.SameAs(typeof (string)));
+      Assert.That(service.GetType("system.string", throwOnError: false, ignoreCase: true), Is.SameAs(typeof(string)));
     }
 
     [Test]
@@ -144,7 +144,7 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     {
       var service = CreateTypeResolutionService();
 
-      var assembly = typeof (string).Assembly;
+      var assembly = typeof(string).Assembly;
       Assert.That(service.GetAssembly(assembly.GetName()), Is.SameAs(assembly));
     }
 
@@ -161,7 +161,7 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     {
       var service = CreateTypeResolutionService();
 
-      var assembly = typeof (string).Assembly;
+      var assembly = typeof(string).Assembly;
       Assert.That(service.GetAssembly(assembly.GetName(), throwOnError: true), Is.SameAs(assembly));
     }
 
@@ -178,7 +178,7 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     {
       var service = CreateTypeResolutionService();
 
-      var assembly = typeof (string).Assembly;
+      var assembly = typeof(string).Assembly;
       Assert.That(service.GetAssembly(assembly.GetName(), throwOnError: false), Is.SameAs(assembly));
     }
 
@@ -195,7 +195,7 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     {
       var service = CreateTypeResolutionService();
 
-      var assembly = typeof (string).Assembly;
+      var assembly = typeof(string).Assembly;
 
       // Shadow Copying is only supported in .NET Framework.
       // Given that we are using mscorlib.dll, we may assume the assembly is never shadow copied and thus Assembly.Location and Assembly.CodeBase are equal

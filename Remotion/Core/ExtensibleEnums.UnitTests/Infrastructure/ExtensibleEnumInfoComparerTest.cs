@@ -31,7 +31,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [SetUp]
     public void SetUp ()
     {
-      _fakeMethod = typeof (ColorExtensions).GetMethod("Red");
+      _fakeMethod = typeof(ColorExtensions).GetMethod("Red");
       _comparer = ExtensibleEnumInfoComparer<ExtensibleEnumInfo<Planet>>.Instance;
     }
 

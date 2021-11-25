@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
         IItemIDControlSelector<WebButtonControlObject>
   {
     public WebButtonSelector ()
-        : base ("WebButton")
+        : base("WebButton")
     {
     }
 

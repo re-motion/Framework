@@ -35,10 +35,10 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void LoadAndStoreStatic ()
     {
-      FieldInfo fieldInfo = typeof (ClassWithPublicFields).GetField("StaticReferenceTypeField");
-      var methodEmitter = GetMethodEmitter(false, typeof (string), new Type[0]);
+      FieldInfo fieldInfo = typeof(ClassWithPublicFields).GetField("StaticReferenceTypeField");
+      var methodEmitter = GetMethodEmitter(false, typeof(string), new Type[0]);
 
-      LocalReference local = methodEmitter.DeclareLocal(typeof (string));
+      LocalReference local = methodEmitter.DeclareLocal(typeof(string));
       FieldInfoReference fieldReference = new FieldInfoReference(null, fieldInfo);
       methodEmitter
           .AddStatement(new AssignStatement(local, fieldReference.ToExpression()))
@@ -53,10 +53,10 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void LoadAndStoreInstance ()
     {
-      FieldInfo fieldInfo = typeof (ClassWithPublicFields).GetField("ReferenceTypeField");
-      var methodEmitter = GetMethodEmitter(false, typeof (string), new[] { typeof (ClassWithPublicFields) });
+      FieldInfo fieldInfo = typeof(ClassWithPublicFields).GetField("ReferenceTypeField");
+      var methodEmitter = GetMethodEmitter(false, typeof(string), new[] { typeof(ClassWithPublicFields) });
 
-      LocalReference local = methodEmitter.DeclareLocal(typeof (string));
+      LocalReference local = methodEmitter.DeclareLocal(typeof(string));
       FieldInfoReference fieldReference = new FieldInfoReference(methodEmitter.ArgumentReferences[0], fieldInfo);
       methodEmitter
           .AddStatement(new AssignStatement(local, fieldReference.ToExpression()))
@@ -72,15 +72,15 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void LoadAndStoreAddressStatic ()
     {
-      FieldInfo fieldInfo = typeof (ClassWithPublicFields).GetField("StaticReferenceTypeField");
-      var methodEmitter = GetMethodEmitter(false, typeof (string), new Type[0]);
+      FieldInfo fieldInfo = typeof(ClassWithPublicFields).GetField("StaticReferenceTypeField");
+      var methodEmitter = GetMethodEmitter(false, typeof(string), new Type[0]);
 
-      LocalReference local = methodEmitter.DeclareLocal(typeof (string));
+      LocalReference local = methodEmitter.DeclareLocal(typeof(string));
       FieldInfoReference fieldReference = new FieldInfoReference(null, fieldInfo);
 
       Expression addressOfFieldExpression = fieldReference.ToAddressOfExpression();
       Reference indirectReference =
-          new IndirectReference(new ExpressionReference(typeof (string).MakeByRefType(), addressOfFieldExpression, methodEmitter));
+          new IndirectReference(new ExpressionReference(typeof(string).MakeByRefType(), addressOfFieldExpression, methodEmitter));
       
       methodEmitter
           .AddStatement(new AssignStatement(local, indirectReference.ToExpression()))
@@ -95,15 +95,15 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void LoadAndStoreAddressInstance ()
     {
-      FieldInfo fieldInfo = typeof (ClassWithPublicFields).GetField("ReferenceTypeField");
-      var methodEmitter = GetMethodEmitter(false, typeof (string), new[] { typeof (ClassWithPublicFields) });
+      FieldInfo fieldInfo = typeof(ClassWithPublicFields).GetField("ReferenceTypeField");
+      var methodEmitter = GetMethodEmitter(false, typeof(string), new[] { typeof(ClassWithPublicFields) });
 
-      LocalReference local = methodEmitter.DeclareLocal(typeof (string));
+      LocalReference local = methodEmitter.DeclareLocal(typeof(string));
       FieldInfoReference fieldReference = new FieldInfoReference(methodEmitter.ArgumentReferences[0], fieldInfo);
 
       Expression addressOfFieldExpression = fieldReference.ToAddressOfExpression();
       Reference indirectReference =
-          new IndirectReference(new ExpressionReference(typeof (string).MakeByRefType(), addressOfFieldExpression, methodEmitter));
+          new IndirectReference(new ExpressionReference(typeof(string).MakeByRefType(), addressOfFieldExpression, methodEmitter));
 
       methodEmitter
           .AddStatement(new AssignStatement(local, indirectReference.ToExpression()))

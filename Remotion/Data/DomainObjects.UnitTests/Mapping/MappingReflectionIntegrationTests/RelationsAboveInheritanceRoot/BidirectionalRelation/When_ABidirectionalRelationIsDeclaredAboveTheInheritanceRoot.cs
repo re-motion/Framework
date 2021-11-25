@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     {
       base.SetUp();
 
-      _inheritanceRootClass = TypeDefinitions[typeof (InheritanceRoot)];
-      _relationTarget = TypeDefinitions[typeof (RelationTarget)];
+      _inheritanceRootClass = TypeDefinitions[typeof(InheritanceRoot)];
+      _relationTarget = TypeDefinitions[typeof(RelationTarget)];
 
       _propertyOnClassAboveInheritanceRoot = GetPropertyInformation((ClassAboveInheritanceRoot c) => c.RelationPropertyOnClassAboveInheritanceRoot);
       _propertyOnRelationTarget = GetPropertyInformation((RelationTarget t) => t.RelationProperty);

@@ -14,7 +14,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     public void GetAvailableStrings_WithID1_DoesNotReturnFallbackValues_DoesNotReturnLocalizationsForCulturesNotDefinedViaAvailableResourcesLanguagesAttribute ()
     {
       var factory = new ResourceAttributeBasedResourceManagerFactory();
-      var type = typeof (ClassWithResources);
+      var type = typeof(ClassWithResources);
       var resourceManager = factory.CreateResourceManager(type);
 
       var id ="property:Value1";
@@ -37,7 +37,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
     public void GetAvailableStrings_WithID2_DoesNotReturnFallbackValues_DoesNotReturnLocalizationsForCulturesNotDefinedViaAvailableResourcesLanguagesAttribute ()
     {
       var factory = new ResourceAttributeBasedResourceManagerFactory();
-      var type = typeof (ClassWithResources);
+      var type = typeof(ClassWithResources);
       var resourceManager = factory.CreateResourceManager(type);
 
       var id = "type:ClassWithShortResourceIdentifier";

@@ -41,7 +41,7 @@ namespace Remotion.Reflection
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
       ArgumentUtility.CheckNotNull("sourceType", sourceType);
-      return sourceType == typeof (PropertyInfo);
+      return sourceType == typeof(PropertyInfo);
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace Remotion.Reflection
     public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
     {
       ArgumentUtility.CheckNotNull("destinationType", destinationType);
-      return destinationType == typeof (PropertyInfo);
+      return destinationType == typeof(PropertyInfo);
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ namespace Remotion.Reflection
       var propertyInfo = value as PropertyInfo;
       if (propertyInfo == null)
       {
-        var message = string.Format("Cannot convert value from type '{0}' to type '{1}'.", value.GetType(), typeof (PropertyInfoAdapter));
+        var message = string.Format("Cannot convert value from type '{0}' to type '{1}'.", value.GetType(), typeof(PropertyInfoAdapter));
         throw new NotSupportedException(message);
       }
 
@@ -113,12 +113,12 @@ namespace Remotion.Reflection
     {
       ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
-      if (destinationType != typeof (PropertyInfo))
+      if (destinationType != typeof(PropertyInfo))
       {
         var message = string.Format(
             "Cannot convert values to type '{0}'. This converter only supports converting to type '{1}'.",
             destinationType,
-            typeof (PropertyInfo));
+            typeof(PropertyInfo));
         throw new NotSupportedException(message);
       }
 
@@ -132,7 +132,7 @@ namespace Remotion.Reflection
             "Cannot convert values of type '{0}' to type '{1}'. This converter only supports values of type '{2}'.",
             value.GetType(),
             destinationType,
-            typeof (PropertyInfoAdapter));
+            typeof(PropertyInfoAdapter));
         throw new NotSupportedException(message);
       }
 

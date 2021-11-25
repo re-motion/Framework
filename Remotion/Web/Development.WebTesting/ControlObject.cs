@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting
     private event Action<WebTestAction, IWebTestActionOptions>? _actionExecuteEvent;
 
     protected ControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

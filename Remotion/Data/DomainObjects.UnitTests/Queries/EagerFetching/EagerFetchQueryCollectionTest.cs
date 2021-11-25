@@ -43,10 +43,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       _query1 = QueryFactory.CreateQuery(TestQueryFactory.CreateOrderSumQueryDefinition());
       _query2 = QueryFactory.CreateQuery(TestQueryFactory.CreateOrderQueryWithCustomCollectionType());
 
-      _endPointDefinition1 = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof (Order).FullName + ".OrderItems");
-      _endPointDefinition2 = DomainObjectIDs.Customer1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof (Customer).FullName + ".Orders");
+      _endPointDefinition1 = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems");
+      _endPointDefinition2 = DomainObjectIDs.Customer1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Customer).FullName + ".Orders");
       
-      _objectEndPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof (Order).FullName + ".OrderTicket");
+      _objectEndPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Order).FullName + ".OrderTicket");
 
       _collection = new EagerFetchQueryCollection();
     }

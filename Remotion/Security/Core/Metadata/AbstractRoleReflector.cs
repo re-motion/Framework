@@ -35,7 +35,7 @@ namespace Remotion.Security.Metadata
     // construction and disposing
 
     public AbstractRoleReflector ()
-      : this (new EnumerationReflector())
+      : this(new EnumerationReflector())
     {
     }
 
@@ -60,7 +60,7 @@ namespace Remotion.Security.Metadata
       List<EnumValueInfo> abstractRoles = new List<EnumValueInfo>();
       foreach (Type type in AssemblyTypeCache.GetTypes(assembly))
       {
-        if (type.IsEnum && Attribute.IsDefined(type, typeof (AbstractRoleAttribute), false))
+        if (type.IsEnum && Attribute.IsDefined(type, typeof(AbstractRoleAttribute), false))
         {
           Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues(type, cache);
           foreach (KeyValuePair<Enum, EnumValueInfo> entry in values)

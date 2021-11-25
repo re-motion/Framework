@@ -114,7 +114,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void TestWithParameterNotOfMatchingType ()
     {
-      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute("Show", typeof (OtherSecurableObject));
+      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute("Show", typeof(OtherSecurableObject));
       attribute.ParameterName = "ThisObject";
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
@@ -134,7 +134,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     public void TestWithInvalidFunctionType ()
     {
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
-          typeof (TestFunctionWithThisObject),
+          typeof(TestFunctionWithThisObject),
           _attribute);
       Assert.That(
           () => helper.GetSecurableObject(new TestFunctionWithoutPermissions()),
@@ -148,7 +148,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     public void TestWithFunctionWithoutParameters ()
     {
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper(
-          typeof (TestFunctionWithoutParameters),
+          typeof(TestFunctionWithoutParameters),
           _attribute);
       Assert.That(
           () => helper.GetSecurableObject(new TestFunctionWithoutParameters()),
@@ -178,11 +178,11 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void TestWithHandle_PointingToSecurableObject_ShouldReturnValue ()
     {
-      var attribute = new WxeDemandTargetMethodPermissionAttribute("Some method", typeof (SecurableObject))
+      var attribute = new WxeDemandTargetMethodPermissionAttribute("Some method", typeof(SecurableObject))
       {
         ParameterName = "HandleWithSecurableObject"
       };
-      var helper = new WxeDemandMethodPermissionAttributeHelper(typeof (TestFunctionWithHandleParameter), attribute);
+      var helper = new WxeDemandMethodPermissionAttributeHelper(typeof(TestFunctionWithHandleParameter), attribute);
       var function = new TestFunctionWithHandleParameter { HandleWithSecurableObject = new Handle<SecurableObject>(_securableObject) };
       
       var result = helper.GetSecurableObject(function);
@@ -193,11 +193,11 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void TestWithHandle_PointingToNull_ShouldThrow ()
     {
-      var attribute = new WxeDemandTargetMethodPermissionAttribute("Some method", typeof (SecurableObject))
+      var attribute = new WxeDemandTargetMethodPermissionAttribute("Some method", typeof(SecurableObject))
       {
         ParameterName = "HandleWithSecurableObject"
       };
-      var helper = new WxeDemandMethodPermissionAttributeHelper(typeof (TestFunctionWithHandleParameter), attribute);
+      var helper = new WxeDemandMethodPermissionAttributeHelper(typeof(TestFunctionWithHandleParameter), attribute);
       var function = new TestFunctionWithHandleParameter { HandleWithSecurableObject = new Handle<SecurableObject>(null) };
 
       Assert.That(
@@ -210,11 +210,11 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void TestWithHandle_NullHandle_ShouldThrow ()
     {
-      var attribute = new WxeDemandTargetMethodPermissionAttribute("Some method", typeof (SecurableObject))
+      var attribute = new WxeDemandTargetMethodPermissionAttribute("Some method", typeof(SecurableObject))
       {
         ParameterName = "HandleWithSecurableObject"
       };
-      var helper = new WxeDemandMethodPermissionAttributeHelper(typeof (TestFunctionWithHandleParameter), attribute);
+      var helper = new WxeDemandMethodPermissionAttributeHelper(typeof(TestFunctionWithHandleParameter), attribute);
       var function = new TestFunctionWithHandleParameter { HandleWithSecurableObject = null };
 
       Assert.That(
@@ -227,11 +227,11 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void TestWithHandle_PointingToNonSecurableObject_ShouldThrow ()
     {
-      var attribute = new WxeDemandTargetMethodPermissionAttribute("Some method", typeof (SecurableObject))
+      var attribute = new WxeDemandTargetMethodPermissionAttribute("Some method", typeof(SecurableObject))
       {
         ParameterName = "HandleWithNonSecurableObject"
       };
-      var helper = new WxeDemandMethodPermissionAttributeHelper(typeof (TestFunctionWithHandleParameter), attribute);
+      var helper = new WxeDemandMethodPermissionAttributeHelper(typeof(TestFunctionWithHandleParameter), attribute);
       var function = new TestFunctionWithHandleParameter { HandleWithNonSecurableObject = new Handle<object>(new object()) };
 
       Assert.That(
@@ -245,11 +245,11 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void TestWithHandle_PointingToSecurableObject_ButIncompatibleParameterDeclaration_ShouldThrow ()
     {
-      var attribute = new WxeDemandTargetMethodPermissionAttribute("Some method", typeof (OtherSecurableObject))
+      var attribute = new WxeDemandTargetMethodPermissionAttribute("Some method", typeof(OtherSecurableObject))
       {
         ParameterName = "HandleWithSecurableObject"
       };
-      var helper = new WxeDemandMethodPermissionAttributeHelper(typeof (TestFunctionWithHandleParameter), attribute);
+      var helper = new WxeDemandMethodPermissionAttributeHelper(typeof(TestFunctionWithHandleParameter), attribute);
       var function = new TestFunctionWithHandleParameter { HandleWithSecurableObject = new Handle<SecurableObject>(_securableObject) };
 
       Assert.That(

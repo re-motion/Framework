@@ -28,8 +28,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     
     private int PrivateGetSet
     {
-      get { return Properties[typeof (ClassWithNonPublicProperties), "PrivateGetSet"].GetValue<int>(); }
-      set { Properties[typeof (ClassWithNonPublicProperties), "PrivateGetSet"].SetValue(value); }
+      get { return Properties[typeof(ClassWithNonPublicProperties), "PrivateGetSet"].GetValue<int>(); }
+      set { Properties[typeof(ClassWithNonPublicProperties), "PrivateGetSet"].SetValue(value); }
     }
   }
 }

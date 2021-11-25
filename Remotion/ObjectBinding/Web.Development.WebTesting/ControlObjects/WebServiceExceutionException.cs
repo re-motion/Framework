@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private readonly string _statusText;
 
     public WebServiceExceutionException (long readyState, [NotNull] string responseText, long status, [NotNull] string statusText)
-        : base (
+        : base(
             string.Format(
                 "The web service call failed with status '{0} - {1}'. The returned JSON object was: '{2}'.",
                 status,

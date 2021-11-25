@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     }
 
     protected TestDomainBase (SerializationInfo info, StreamingContext context)
-      : base (info, context)
+      : base(info, context)
     {
     }
 
@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     [StorageClassNone]
     public bool NeedsLoadModeDataContainerOnly
     {
-      get { return (bool) PrivateInvoke.GetNonPublicField(this, typeof (DomainObject), "_needsLoadModeDataContainerOnly"); }
+      get { return (bool) PrivateInvoke.GetNonPublicField(this, typeof(DomainObject), "_needsLoadModeDataContainerOnly"); }
     }
 
     protected override void OnReferenceInitializing ()

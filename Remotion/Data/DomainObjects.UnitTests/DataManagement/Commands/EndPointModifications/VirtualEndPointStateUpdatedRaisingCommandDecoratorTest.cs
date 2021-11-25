@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       _mockRepository = new MockRepository();
       _decoratedCommandMock = _mockRepository.StrictMock<IDataManagementCommand>();
-      _modifiedEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      _modifiedEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
       _stateUpdateListenerMock = _mockRepository.StrictMock<IVirtualEndPointStateUpdateListener>();
       _fakeChangeState = null;
 
@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       _decoratedCommandMock.VerifyAllExpectations();
       var nestedCommands = result.GetNestedCommands();
       Assert.That(nestedCommands.Count, Is.EqualTo(1));
-      Assert.That(nestedCommands[0], Is.TypeOf(typeof (VirtualEndPointStateUpdatedRaisingCommandDecorator)));
+      Assert.That(nestedCommands[0], Is.TypeOf(typeof(VirtualEndPointStateUpdatedRaisingCommandDecorator)));
 
       var innerExpandedCommand = (VirtualEndPointStateUpdatedRaisingCommandDecorator) nestedCommands[0];
       Assert.That(innerExpandedCommand.DecoratedCommand, Is.SameAs(fakeExpandedCommand));

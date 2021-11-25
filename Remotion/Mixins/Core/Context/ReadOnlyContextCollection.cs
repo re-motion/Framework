@@ -91,7 +91,7 @@ namespace Remotion.Mixins.Context
       get
       {
         if (!_internalCollection.TryGetValue(key, out var value))
-          return default (TValue);
+          return default(TValue);
         else
           return value;
       }

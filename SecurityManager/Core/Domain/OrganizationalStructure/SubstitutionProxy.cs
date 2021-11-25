@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     }
 
     private SubstitutionProxy (IDomainObjectHandle<Substitution> handle, string uniqueIdentifier, string displayName)
-        : base (handle, uniqueIdentifier, displayName)
+        : base(handle, uniqueIdentifier, displayName)
     {
     }
   }

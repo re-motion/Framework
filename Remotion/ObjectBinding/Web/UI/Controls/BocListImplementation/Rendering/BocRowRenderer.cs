@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// Responsible for rendering single data rows or the title row of a specific <see cref="BocList"/>.
   /// </summary>
   /// <remarks>This class should not be instantiated directly. It is meant to be used by a <see cref="BocListRenderer"/>.</remarks>
-  [ImplementationFor (typeof (IBocRowRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IBocRowRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocRowRenderer : IBocRowRenderer
   {
     private readonly BocListCssClassDefinition _cssClasses;

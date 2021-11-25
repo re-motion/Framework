@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
   public class WxeUserControlTestPageFunction : WxeFunction
   {
     public WxeUserControlTestPageFunction ()
-        : base (WxeTransactionMode.CreateRoot)
+        : base(WxeTransactionMode.CreateRoot)
     {
       ReturnUrl = "default.aspx";
     }

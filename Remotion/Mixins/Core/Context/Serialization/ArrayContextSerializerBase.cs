@@ -46,7 +46,7 @@ namespace Remotion.Mixins.Context.Serialization
     protected virtual object ConvertToStorageFormat<T> (T value)
         where T : notnull
     {
-      if (typeof (T) == typeof (Assembly))
+      if (typeof(T) == typeof(Assembly))
         return ConvertToStorageFormat(((Assembly) (object) value).GetFullNameChecked());
 
       return value;

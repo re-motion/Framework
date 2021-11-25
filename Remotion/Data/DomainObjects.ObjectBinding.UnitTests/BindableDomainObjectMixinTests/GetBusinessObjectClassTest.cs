@@ -42,8 +42,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void FromClass ()
     {
       Assert.That(_bindableObjectMixin.BusinessObjectClass, Is.Not.Null);
-      Assert.That(_bindableObjectMixin.BusinessObjectClass.TargetType, Is.SameAs(typeof (SampleBindableMixinDomainObject)));
-      Assert.That(_bindableObjectMixin.BusinessObjectClass.BusinessObjectProvider, Is.SameAs(BusinessObjectProvider.GetProvider(typeof (BindableDomainObjectProviderAttribute))));
+      Assert.That(_bindableObjectMixin.BusinessObjectClass.TargetType, Is.SameAs(typeof(SampleBindableMixinDomainObject)));
+      Assert.That(_bindableObjectMixin.BusinessObjectClass.BusinessObjectProvider, Is.SameAs(BusinessObjectProvider.GetProvider(typeof(BindableDomainObjectProviderAttribute))));
     }
 
     [Test]
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     {
       Assert.That(_businessObject.BusinessObjectClass, Is.Not.Null);
       Assert.That(_businessObject.BusinessObjectClass, Is.SameAs(_bindableObjectMixin.BusinessObjectClass));
-      Assert.That(_businessObject.BusinessObjectClass.BusinessObjectProvider, Is.SameAs(BusinessObjectProvider.GetProvider(typeof (BindableDomainObjectProviderAttribute))));
+      Assert.That(_businessObject.BusinessObjectClass.BusinessObjectProvider, Is.SameAs(BusinessObjectProvider.GetProvider(typeof(BindableDomainObjectProviderAttribute))));
     }
   }
 }

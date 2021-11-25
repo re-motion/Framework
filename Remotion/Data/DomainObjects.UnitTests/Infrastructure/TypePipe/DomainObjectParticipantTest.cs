@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
       _participant = new DomainObjectParticipant(_typeDefinitionProviderMock, _interceptedPropertyFinderMock);
 
-      _proxyTypeAssemblyContext = ProxyTypeAssemblyContextObjectMother.Create(requestedType: typeof (Order));
+      _proxyTypeAssemblyContext = ProxyTypeAssemblyContextObjectMother.Create(requestedType: typeof(Order));
       _proxyType = _proxyTypeAssemblyContext.ProxyType;
     }
 
@@ -82,11 +82,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
       _participant.Participate(null, _proxyTypeAssemblyContext);
 
-      Assert.That(_proxyType.AddedInterfaces, Is.EqualTo(new[] { typeof (IInterceptedDomainObject) }));
+      Assert.That(_proxyType.AddedInterfaces, Is.EqualTo(new[] { typeof(IInterceptedDomainObject) }));
       Assert.That(_proxyType.AddedMethods, Has.Count.EqualTo(2));
       
       var performConstructorCheck = _proxyType.AddedMethods.Single(m => m.Name == "PerformConstructorCheck");
-      Assert.That(performConstructorCheck.Body, Is.TypeOf<DefaultExpression>().And.Property("Type").SameAs(typeof (void)));
+      Assert.That(performConstructorCheck.Body, Is.TypeOf<DefaultExpression>().And.Property("Type").SameAs(typeof(void)));
 
       var getPublicDomainObjectTypeImplementation = _proxyType.AddedMethods.Single(m => m.Name == "GetPublicDomainObjectTypeImplementation");
       Assert.That(
@@ -109,11 +109,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     [Test]
     public void Participate_NonDomainObject_Nop ()
     {
-      var context = ProxyTypeAssemblyContextObjectMother.Create(requestedType: typeof (object));
+      var context = ProxyTypeAssemblyContextObjectMother.Create(requestedType: typeof(object));
 
       _participant.Participate(null, context);
 
-      Assert.That(_proxyType.AddedInterfaces, Has.No.Member(typeof (IInterceptedDomainObject)));
+      Assert.That(_proxyType.AddedInterfaces, Has.No.Member(typeof(IInterceptedDomainObject)));
       _typeDefinitionProviderMock.AssertWasNotCalled(mock => mock.GetTypeDefinition(Arg<Type>.Is.Anything));
     }
 
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
       _participant.Participate(null, _proxyTypeAssemblyContext);
 
-      Assert.That(_proxyType.AddedInterfaces, Has.No.Member(typeof (IInterceptedDomainObject)));
+      Assert.That(_proxyType.AddedInterfaces, Has.No.Member(typeof(IInterceptedDomainObject)));
     }
 
     [Test]
@@ -135,14 +135,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
       _participant.Participate(null, _proxyTypeAssemblyContext);
 
-      Assert.That(_proxyType.AddedInterfaces, Has.No.Member(typeof (IInterceptedDomainObject)));
+      Assert.That(_proxyType.AddedInterfaces, Has.No.Member(typeof(IInterceptedDomainObject)));
     }
 
     [Test]
     public void HandleNonSubclassableType ()
     {
-      _typeDefinitionProviderMock.Stub(stub => stub.GetTypeDefinition(typeof (object))).Return(null);
-      Assert.That(() => _participant.HandleNonSubclassableType(typeof (object)), Throws.Nothing);
+      _typeDefinitionProviderMock.Stub(stub => stub.GetTypeDefinition(typeof(object))).Return(null);
+      Assert.That(() => _participant.HandleNonSubclassableType(typeof(object)), Throws.Nothing);
     }
 
     [Test]
@@ -157,9 +157,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     public void HandleNonSubclassableType_UnsubclassableDomainObject ()
     {
       var nonAbstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(isAbstract: false);
-      _typeDefinitionProviderMock.Stub(stub => stub.GetTypeDefinition(typeof (NonSubclassableDomainObject))).Return(nonAbstractClassDefinition);
+      _typeDefinitionProviderMock.Stub(stub => stub.GetTypeDefinition(typeof(NonSubclassableDomainObject))).Return(nonAbstractClassDefinition);
       Assert.That(
-          () => _participant.HandleNonSubclassableType(typeof (NonSubclassableDomainObject)),
+          () => _participant.HandleNonSubclassableType(typeof(NonSubclassableDomainObject)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo("The requested type 'NonSubclassableDomainObject' is derived from DomainObject but cannot be subclassed."));
     }
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     [Test]
     public void HandleNonSubclassableType_NonDomainObject_Nop ()
     {
-      _participant.HandleNonSubclassableType(typeof (object));
+      _participant.HandleNonSubclassableType(typeof(object));
 
       Assert.That(_proxyType.AddedInterfaces, Has.No.Member(typeof(IInterceptedDomainObject)));
       _typeDefinitionProviderMock.AssertWasNotCalled(mock => mock.GetTypeDefinition(Arg<Type>.Is.Anything));
@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     [Test]
     public void GetAdditionalTypeID ()
     {
-      Assert.That(_participant.GetAdditionalTypeID(typeof (object)), Is.Null);
+      Assert.That(_participant.GetAdditionalTypeID(typeof(object)), Is.Null);
     }
 
     [Test]

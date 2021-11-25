@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
   [TestFixture]
   public class TestInfrastructureConfigurationTest
   {
-    private readonly string _testRequestErrorDetectionStrategyAssemblyQualifiedName = typeof (TestRequestErrorDetectionStrategy).AssemblyQualifiedName;
+    private readonly string _testRequestErrorDetectionStrategyAssemblyQualifiedName = typeof(TestRequestErrorDetectionStrategy).AssemblyQualifiedName;
 
     [Test]
     public void CreateFromWebTestConfigurationSection ()
@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
 
     private WebTestConfigurationSection CreateWebTestConfigurationSection ()
     {
-      return (WebTestConfigurationSection) Activator.CreateInstance(typeof (WebTestConfigurationSection), true);
+      return (WebTestConfigurationSection) Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
     }
 
     private class TestRequestErrorDetectionStrategy : IRequestErrorDetectionStrategy

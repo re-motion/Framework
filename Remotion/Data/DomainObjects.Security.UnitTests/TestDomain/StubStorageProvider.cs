@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
     public const string GetSecurableObjectsQueryID = "StubQueryID";
 
     public StubStorageProvider (StorageProviderDefinition definition, IPersistenceExtension persistenceExtension)
-      : base (definition, persistenceExtension)
+      : base(definition, persistenceExtension)
     {
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
 
       var collection = new List<DataContainer>();
       if (query.ID == GetSecurableObjectsQueryID)
-        collection.Add(DataContainer.CreateNew(CreateNewObjectID(MappingConfiguration.Current.GetTypeDefinition(typeof (SecurableObject)))));
+        collection.Add(DataContainer.CreateNew(CreateNewObjectID(MappingConfiguration.Current.GetTypeDefinition(typeof(SecurableObject)))));
 
       return collection.ToArray();
     }

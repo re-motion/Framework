@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         IRdbmsStoragePropertyDefinition timestampProperty,
         IEnumerable<IRdbmsStoragePropertyDefinition> dataProperties,
         IEnumerable<EntityNameDefinition> synonyms)
-        : base (
+        : base(
             storageProviderDefinition,
             viewName,
             objectIDProperty,

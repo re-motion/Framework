@@ -62,7 +62,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback(
               (IExecutionState executionState) =>
               {
-                Assert.That(executionState, Is.InstanceOf(typeof (ReturningFromSubFunctionState)));
+                Assert.That(executionState, Is.InstanceOf(typeof(ReturningFromSubFunctionState)));
                 var nextState = (ReturningFromSubFunctionState) executionState;
                 Assert.That(nextState.ExecutionStateContext, Is.SameAs(ExecutionStateContextMock.Object));
                 Assert.That(nextState.Parameters.SubFunction, Is.SameAs(SubFunction.Object));

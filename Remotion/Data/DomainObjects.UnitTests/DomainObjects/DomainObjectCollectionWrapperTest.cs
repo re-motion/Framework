@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       _customer2 = DomainObjectIDs.Customer2.GetObject<Customer>();
       _customer3NotInCollection = DomainObjectIDs.Customer3.GetObject<Customer>();
 
-      _wrappedCollection = new DomainObjectCollection(new[] { _customer1, _customer2 }, typeof (Customer));
+      _wrappedCollection = new DomainObjectCollection(new[] { _customer1, _customer2 }, typeof(Customer));
       _wrapper = new DomainObjectCollectionWrapper<Customer>(_wrappedCollection);
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Initialization_TypeCannotBeMoreRestricted ()
     {
-      var wrappedCollection = new DomainObjectCollection(typeof (DomainObject));
+      var wrappedCollection = new DomainObjectCollection(typeof(DomainObject));
       Assert.That(
           () => new DomainObjectCollectionWrapper<Customer>(wrappedCollection),
           Throws.ArgumentException

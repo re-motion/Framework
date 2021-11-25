@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
     private readonly RdbmsToolsParameters _rdbmsToolsParameters;
 
     protected RdbmsToolsRunner (AppDomainSetup appDomainSetup, RdbmsToolsParameters rdbmsToolsParameters)
-        : base (appDomainSetup)
+        : base(appDomainSetup)
     {
       _rdbmsToolsParameters = rdbmsToolsParameters;
     }

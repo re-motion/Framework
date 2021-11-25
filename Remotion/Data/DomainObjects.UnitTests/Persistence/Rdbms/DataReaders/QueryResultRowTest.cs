@@ -79,12 +79,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [Test]
     public void GetConvertedValue_ValidType ()
     {
-      _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof (string))).Return(_storageTypeInformationMock);
+      _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof(string))).Return(_storageTypeInformationMock);
 
       var fakeResult = "fake";
       _storageTypeInformationMock.Expect(mock => mock.Read(_dataReaderStub, 1)).Return(fakeResult);
 
-      var result = _queryResultRow.GetConvertedValue(1, typeof (string));
+      var result = _queryResultRow.GetConvertedValue(1, typeof(string));
 
       Assert.That(result, Is.EqualTo(fakeResult));
       _storageTypeInformationMock.VerifyAllExpectations();
@@ -94,10 +94,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     public void GetConvertedValue_ThrowsNotSupportedException_TypeNotObjectID ()
     {
       _storageTypeInformationProviderStub
-        .Stub(stub => stub.GetStorageType(typeof (int)))
+        .Stub(stub => stub.GetStorageType(typeof(int)))
         .Throw(new NotSupportedException("Type not supported."));
       Assert.That(
-          () => _queryResultRow.GetConvertedValue(1, typeof (int)),
+          () => _queryResultRow.GetConvertedValue(1, typeof(int)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo("Type not supported."));
     }
@@ -106,10 +106,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     public void GetConvertedValue_ThrowsNotSupportedException_TypeObjectID ()
     {
       _storageTypeInformationProviderStub
-        .Stub(stub => stub.GetStorageType(typeof (ObjectID)))
+        .Stub(stub => stub.GetStorageType(typeof(ObjectID)))
         .Throw(new NotSupportedException("Type not supported."));
       Assert.That(
-          () => _queryResultRow.GetConvertedValue(1, typeof (ObjectID)),
+          () => _queryResultRow.GetConvertedValue(1, typeof(ObjectID)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "Type 'ObjectID' ist not supported by this storage provider.\r\n"
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [Test]
     public void GetConvertedValue_GenericOverload_DelegatesToNoGenericOverload ()
     {
-      _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof (string))).Return(_storageTypeInformationMock);
+      _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof(string))).Return(_storageTypeInformationMock);
 
       var fakeResult = "fake";
       _storageTypeInformationMock.Expect(mock => mock.Read(_dataReaderStub, 1)).Return(fakeResult);

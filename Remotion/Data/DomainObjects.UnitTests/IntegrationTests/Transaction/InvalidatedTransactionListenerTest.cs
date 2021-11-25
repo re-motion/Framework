@@ -39,20 +39,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var listener = new InvalidatedTransactionListener();
       MethodInfo[] methods =
-          typeof (InvalidatedTransactionListener).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+          typeof(InvalidatedTransactionListener).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
       Assert.That(methods.Length, Is.EqualTo(38));
 
       foreach (var method in methods)
       {
         var concreteMethod = 
             method.Name == "FilterQueryResult" || method.Name == "FilterCustomQueryResult" 
-            ? method.MakeGenericMethod(typeof (Order)) 
+            ? method.MakeGenericMethod(typeof(Order)) 
             : method;
 
         object[] arguments = Array.ConvertAll(concreteMethod.GetParameters(), p => GetDefaultValue(p.ParameterType));
 
         ExpectException(
-            typeof (InvalidOperationException),
+            typeof(InvalidOperationException),
             "The transaction can no longer be used because it has been discarded.",
             listener,
             concreteMethod,

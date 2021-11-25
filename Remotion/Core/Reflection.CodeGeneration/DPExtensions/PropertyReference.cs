@@ -26,13 +26,13 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
     private readonly PropertyInfo _property;
 
     public PropertyReference (PropertyInfo property)
-        : base (SelfReference.Self, property.PropertyType)
+        : base(SelfReference.Self, property.PropertyType)
     {
       _property = property;
     }
 
     public PropertyReference (Reference? owner, PropertyInfo property)
-        : base (owner, property.PropertyType)
+        : base(owner, property.PropertyType)
     {
       _property = property;
     }

@@ -36,12 +36,12 @@ namespace Remotion.Mixins.Utilities
       Type? candidate = InferFromGenericParameterConstraints(typeParameter);
 
       if (HasAttribute(typeParameter, GenericParameterAttributes.NotNullableValueTypeConstraint))
-        candidate = UnifyConstraints(typeof (ValueType), candidate);
+        candidate = UnifyConstraints(typeof(ValueType), candidate);
 
       if (candidate == null)
-        candidate = typeof (object);
-      else if (candidate == typeof (ValueType))
-        candidate = typeof (int);
+        candidate = typeof(object);
+      else if (candidate == typeof(ValueType))
+        candidate = typeof(int);
 
       return candidate;
     }
@@ -82,7 +82,7 @@ namespace Remotion.Mixins.Utilities
         candidate = constraint;
       else if (!constraint.IsAssignableFrom(candidate))
       {
-        if (constraint.IsInterface && candidate.IsInterface || candidate == typeof (ValueType))
+        if (constraint.IsInterface && candidate.IsInterface || candidate == typeof(ValueType))
         {
           string message = string.Format(
               "The generic type parameter has inconclusive constraints '{0}' and '{1}', which cannot be unified into a single type.",

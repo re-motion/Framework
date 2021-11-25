@@ -268,7 +268,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static T Create<T> (bool allowNonPublicConstructors, ParamList constructorParameters, params object[] preparedMixins)
     {
-      return (T) Create(allowNonPublicConstructors, typeof (T), constructorParameters, preparedMixins);
+      return (T) Create(allowNonPublicConstructors, typeof(T), constructorParameters, preparedMixins);
     }
     
     /// <summary>

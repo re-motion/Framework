@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     private readonly IStorageObjectFactory _factory;
 
     protected StorageProviderDefinition (string name, NameValueCollection config)
-        : base (name, config)
+        : base(name, config)
     {
       ArgumentUtility.CheckNotNullOrEmpty("name", name);
       ArgumentUtility.CheckNotNull("config", config);
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     }
 
     protected StorageProviderDefinition (string name, IStorageObjectFactory factory)
-        : base (name, new NameValueCollection())
+        : base(name, new NameValueCollection())
     {
       ArgumentUtility.CheckNotNull("factory", factory);
 

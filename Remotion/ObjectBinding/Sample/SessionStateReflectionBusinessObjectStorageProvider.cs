@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Sample
 {
   public class SessionStateReflectionBusinessObjectStorageProvider : IReflectionBusinessObjectStorageProvider
   {
-    private static readonly string s_sessionKeyForStorageProvider = typeof (SessionStateReflectionBusinessObjectStorageProvider).GetFullNameChecked();
+    private static readonly string s_sessionKeyForStorageProvider = typeof(SessionStateReflectionBusinessObjectStorageProvider).GetFullNameChecked();
 
     private readonly IHttpContextProvider _httpContextProvider;
     private readonly IReflectionBusinessObjectStorageProviderFactory _reflectionBusinessObjectStorageProviderFactory;

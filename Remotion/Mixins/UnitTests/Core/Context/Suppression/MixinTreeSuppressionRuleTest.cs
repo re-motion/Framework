@@ -30,30 +30,30 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Suppression
     [Test]
     public void RemoveAffectedMixins_LeavesUnrelatedType ()
     {
-      var rule = new MixinTreeSuppressionRule(typeof (string));
-      var dictionary = CreateContextDictionary(typeof (int), typeof (double));
+      var rule = new MixinTreeSuppressionRule(typeof(string));
+      var dictionary = CreateContextDictionary(typeof(int), typeof(double));
 
       rule.RemoveAffectedMixins(dictionary);
 
-      Assert.That(dictionary.Keys, Is.EquivalentTo(new[] { typeof (int), typeof (double) }));
+      Assert.That(dictionary.Keys, Is.EquivalentTo(new[] { typeof(int), typeof(double) }));
     }
 
     [Test]
     public void RemoveAffectedMixins_RemovesSameType ()
     {
-      var rule = new MixinTreeSuppressionRule(typeof (string));
-      var dictionary = CreateContextDictionary(typeof (string), typeof (double));
+      var rule = new MixinTreeSuppressionRule(typeof(string));
+      var dictionary = CreateContextDictionary(typeof(string), typeof(double));
 
       rule.RemoveAffectedMixins(dictionary);
 
-      Assert.That(dictionary.Keys, Is.EquivalentTo(new[] { typeof (double) }));
+      Assert.That(dictionary.Keys, Is.EquivalentTo(new[] { typeof(double) }));
     }
 
     [Test]
     public void RemoveAffectedMixins_RemovesDerivedType ()
     {
-      var rule = new MixinTreeSuppressionRule(typeof (object));
-      var dictionary = CreateContextDictionary(typeof (string), typeof (double));
+      var rule = new MixinTreeSuppressionRule(typeof(object));
+      var dictionary = CreateContextDictionary(typeof(string), typeof(double));
 
       rule.RemoveAffectedMixins(dictionary);
 
@@ -63,34 +63,34 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Suppression
     [Test]
     public void RemoveAffectedMixins_KeepsBaseType ()
     {
-      var rule = new MixinTreeSuppressionRule(typeof (string));
-      var dictionary = CreateContextDictionary(typeof (object), typeof (double));
+      var rule = new MixinTreeSuppressionRule(typeof(string));
+      var dictionary = CreateContextDictionary(typeof(object), typeof(double));
 
       rule.RemoveAffectedMixins(dictionary);
 
-      Assert.That(dictionary.Keys, Is.EquivalentTo(new[] { typeof (object), typeof (double) }));
+      Assert.That(dictionary.Keys, Is.EquivalentTo(new[] { typeof(object), typeof(double) }));
     }
 
     [Test]
     public void RemoveAffectedMixins_RemovesGenericTypeSpecialization ()
     {
-      var rule = new MixinTreeSuppressionRule(typeof (List<>));
-      var dictionary = CreateContextDictionary(typeof (List<string>), typeof (double));
+      var rule = new MixinTreeSuppressionRule(typeof(List<>));
+      var dictionary = CreateContextDictionary(typeof(List<string>), typeof(double));
 
       rule.RemoveAffectedMixins(dictionary);
 
-      Assert.That(dictionary.Keys, Is.EquivalentTo(new[] { typeof (double) }));
+      Assert.That(dictionary.Keys, Is.EquivalentTo(new[] { typeof(double) }));
     }
 
     [Test]
     public void RemoveAffectedMixins_RemovesDerivedGenericTypeSpecialization ()
     {
-      var rule = new MixinTreeSuppressionRule(typeof (GenericMixinWithVirtualMethod<>));
-      var dictionary = CreateContextDictionary(typeof (DerivedGenericMixin<string>), typeof (double));
+      var rule = new MixinTreeSuppressionRule(typeof(GenericMixinWithVirtualMethod<>));
+      var dictionary = CreateContextDictionary(typeof(DerivedGenericMixin<string>), typeof(double));
 
       rule.RemoveAffectedMixins(dictionary);
 
-      Assert.That(dictionary.Keys, Is.EquivalentTo(new[] { typeof (double) }));
+      Assert.That(dictionary.Keys, Is.EquivalentTo(new[] { typeof(double) }));
     }
 
     private Dictionary<Type, MixinContext> CreateContextDictionary (params Type[] types)

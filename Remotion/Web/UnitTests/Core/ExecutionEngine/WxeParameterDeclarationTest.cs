@@ -26,10 +26,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
   public class WxeParameterDeclarationTest
   {
     private static readonly WxeParameterDeclaration[] s_parameters = {
-        new WxeParameterDeclaration("p1", true, WxeParameterDirection.In, typeof (string)),
-        new WxeParameterDeclaration("p2", true, WxeParameterDirection.In, typeof (bool)),
-        new WxeParameterDeclaration("p3", true, WxeParameterDirection.In, typeof (DateTime)),
-        new WxeParameterDeclaration("p4", true, WxeParameterDirection.In, typeof (object))
+        new WxeParameterDeclaration("p1", true, WxeParameterDirection.In, typeof(string)),
+        new WxeParameterDeclaration("p2", true, WxeParameterDirection.In, typeof(bool)),
+        new WxeParameterDeclaration("p3", true, WxeParameterDirection.In, typeof(DateTime)),
+        new WxeParameterDeclaration("p4", true, WxeParameterDirection.In, typeof(object))
     };
 
     [Test]
@@ -77,7 +77,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     public void g ()
     {
       WxeParameterDeclaration parameter =
-          new WxeParameterDeclaration("param", true, WxeParameterDirection.In, typeof (string));
+          new WxeParameterDeclaration("param", true, WxeParameterDirection.In, typeof(string));
     }
   }
 }

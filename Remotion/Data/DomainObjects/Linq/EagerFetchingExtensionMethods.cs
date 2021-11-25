@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull("query", query);
       ArgumentUtility.CheckNotNull("relatedObjectSelector", relatedObjectSelector);
 
-      var methodInfo = ((MethodInfo) MethodBase.GetCurrentMethod()).MakeGenericMethod(typeof (TOriginating), typeof (TRelated));
+      var methodInfo = ((MethodInfo) MethodBase.GetCurrentMethod()).MakeGenericMethod(typeof(TOriginating), typeof(TRelated));
       return CreateFluentFetchRequest<TOriginating, TRelated>(methodInfo, query, relatedObjectSelector);
     }
 
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull("query", query);
       ArgumentUtility.CheckNotNull("relatedObjectSelector", relatedObjectSelector);
 
-      var methodInfo = ((MethodInfo) MethodBase.GetCurrentMethod()).MakeGenericMethod(typeof (TOriginating), typeof (TRelated));
+      var methodInfo = ((MethodInfo) MethodBase.GetCurrentMethod()).MakeGenericMethod(typeof(TOriginating), typeof(TRelated));
       return CreateFluentFetchRequest<TOriginating, TRelated>(methodInfo, query, relatedObjectSelector);
     }
 
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull("query", query);
       ArgumentUtility.CheckNotNull("relatedObjectSelector", relatedObjectSelector);
 
-      var methodInfo = ((MethodInfo) MethodBase.GetCurrentMethod()).MakeGenericMethod(typeof (TQueried), typeof (TFetch), typeof (TRelated));
+      var methodInfo = ((MethodInfo) MethodBase.GetCurrentMethod()).MakeGenericMethod(typeof(TQueried), typeof(TFetch), typeof(TRelated));
       return CreateFluentFetchRequest<TQueried, TRelated>(methodInfo, query, relatedObjectSelector);
     }
 
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull("query", query);
       ArgumentUtility.CheckNotNull("relatedObjectSelector", relatedObjectSelector);
       
-      var methodInfo = ((MethodInfo) MethodBase.GetCurrentMethod()).MakeGenericMethod(typeof (TQueried), typeof (TFetch), typeof (TRelated));
+      var methodInfo = ((MethodInfo) MethodBase.GetCurrentMethod()).MakeGenericMethod(typeof(TQueried), typeof(TFetch), typeof(TRelated));
       return CreateFluentFetchRequest<TQueried, TRelated>(methodInfo, query, relatedObjectSelector);
     }
 

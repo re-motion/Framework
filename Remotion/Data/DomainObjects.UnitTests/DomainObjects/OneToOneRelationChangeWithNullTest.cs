@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Employee employee = DomainObjectIDs.Employee1.GetObject<Employee>();
       computerWithoutEmployee.Employee = employee;
 
-      Assert.That(computerWithoutEmployee.Properties[typeof (Computer), "Employee"].GetRelatedObjectID(), Is.EqualTo(employee.ID));
+      Assert.That(computerWithoutEmployee.Properties[typeof(Computer), "Employee"].GetRelatedObjectID(), Is.EqualTo(employee.ID));
 
       Assert.That(computerWithoutEmployee.Employee, Is.SameAs(employee));
       Assert.That(employee.Computer, Is.SameAs(computerWithoutEmployee));
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = DomainObjectIDs.Computer4.GetObject<Computer>();
       employeeWithoutComputer.Computer = computer;
 
-      Assert.That(computer.Properties[typeof (Computer), "Employee"].GetRelatedObjectID(), Is.EqualTo(employeeWithoutComputer.ID));
+      Assert.That(computer.Properties[typeof(Computer), "Employee"].GetRelatedObjectID(), Is.EqualTo(employeeWithoutComputer.ID));
 
       Assert.That(employeeWithoutComputer.Computer, Is.SameAs(computer));
       Assert.That(computer.Employee, Is.SameAs(employeeWithoutComputer));
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = employee.Computer;
       computer.Employee = null;
 
-      Assert.That(computer.Properties[typeof (Computer), "Employee"].GetRelatedObjectID(), Is.Null);
+      Assert.That(computer.Properties[typeof(Computer), "Employee"].GetRelatedObjectID(), Is.Null);
 
       Assert.That(computer.Employee, Is.Null);
       Assert.That(employee.Computer, Is.Null);
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = employee.Computer;
       employee.Computer = null;
 
-      Assert.That(computer.Properties[typeof (Computer), "Employee"].GetRelatedObjectID(), Is.Null);
+      Assert.That(computer.Properties[typeof(Computer), "Employee"].GetRelatedObjectID(), Is.Null);
 
       Assert.That(employee.Computer, Is.Null);
       Assert.That(computer.Employee, Is.Null);
@@ -113,8 +113,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = employee.Computer;
 
       CheckTouching(delegate { computer.Employee = null; }, computer, "Employee",
-          RelationEndPointID.Create(employee.ID, typeof (Employee).FullName + ".Computer"),
-          RelationEndPointID.Create(computer.ID, typeof (Computer).FullName + ".Employee"));
+          RelationEndPointID.Create(employee.ID, typeof(Employee).FullName + ".Computer"),
+          RelationEndPointID.Create(computer.ID, typeof(Computer).FullName + ".Employee"));
     }
 
     [Test]
@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       TestableClientTransaction.Commit();
 
       CheckTouching(delegate { computer.Employee = null; }, computer, "Employee",
-          RelationEndPointID.Create(computer.ID, typeof (Computer).FullName + ".Employee"));
+          RelationEndPointID.Create(computer.ID, typeof(Computer).FullName + ".Employee"));
     }
 
     [Test]
@@ -139,8 +139,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = employee.Computer;
 
       CheckTouching(delegate { employee.Computer = null; }, computer, "Employee",
-          RelationEndPointID.Create(employee.ID, typeof (Employee).FullName + ".Computer"),
-          RelationEndPointID.Create(computer.ID, typeof (Computer).FullName + ".Employee"));
+          RelationEndPointID.Create(employee.ID, typeof(Employee).FullName + ".Computer"),
+          RelationEndPointID.Create(computer.ID, typeof(Computer).FullName + ".Employee"));
     }
 
     [Test]
@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       TestableClientTransaction.Commit();
 
       CheckTouching(delegate { employee.Computer = null; }, null, null,
-          RelationEndPointID.Create(employee.ID, typeof (Employee).FullName + ".Computer"));
+          RelationEndPointID.Create(employee.ID, typeof(Employee).FullName + ".Computer"));
     }
   }
 }

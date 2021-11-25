@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void Equals_AssertPropertyCount ()
     {
-      Assert.That(typeof (QueryParameter).GetProperties().Length, Is.EqualTo(3), "The implementation of Equals and GetHashCode has to be adapted.");
+      Assert.That(typeof(QueryParameter).GetProperties().Length, Is.EqualTo(3), "The implementation of Equals and GetHashCode has to be adapted.");
     }
 
     [Test]

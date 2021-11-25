@@ -42,7 +42,7 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetServiceLocator_IncludesBootstrapConfiguration ()
     {
-      var entry = new ServiceConfigurationEntry(typeof (IService), new ServiceImplementationInfo(typeof (Service), LifetimeKind.InstancePerDependency));
+      var entry = new ServiceConfigurationEntry(typeof(IService), new ServiceImplementationInfo(typeof(Service), LifetimeKind.InstancePerDependency));
 
       var sloc = _provider.GetServiceLocator(Array.AsReadOnly(new[] { entry }));
 

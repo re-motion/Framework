@@ -154,7 +154,7 @@ namespace Remotion.Collections
           sourceToDest,
           delegate
           {
-            var message = string.Format("This list does not support setting of '{0}' values.", typeof (TDest).Name);
+            var message = string.Format("This list does not support setting of '{0}' values.", typeof(TDest).Name);
             throw new NotSupportedException(message);
           });
     }

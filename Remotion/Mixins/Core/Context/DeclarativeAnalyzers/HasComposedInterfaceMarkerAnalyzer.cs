@@ -35,7 +35,7 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
       var composedInterfaceMarkers = (from ifc in type.GetInterfaces()
                                       where ifc.IsGenericType
                                       let genericTypeDef = ifc.GetGenericTypeDefinition()
-                                      where genericTypeDef == typeof (IHasComposedInterface<>)
+                                      where genericTypeDef == typeof(IHasComposedInterface<>)
                                       let composedInterface = ifc.GetGenericArguments().Single()
                                       where !composedInterface.ContainsGenericParameters
                                       select composedInterface).ToArray();

@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting
   /// </remarks>
   public class WebTestSetUpFixtureHelper
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (WebTestSetUpFixtureHelper));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(WebTestSetUpFixtureHelper));
 
     /// <summary>
     /// Creates a new <see cref="WebTestSetUpFixtureHelper"/> with configuration based on <see cref="WebTestConfigurationFactory"/>.

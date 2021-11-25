@@ -38,7 +38,7 @@ namespace Remotion.Web.UnitTests.Core.Security.Domain
     // construction and disposing
 
     public DerivedSecurableObject (IObjectSecurityStrategy securityStrategy)
-      : base (securityStrategy)
+      : base(securityStrategy)
     {
     }
 

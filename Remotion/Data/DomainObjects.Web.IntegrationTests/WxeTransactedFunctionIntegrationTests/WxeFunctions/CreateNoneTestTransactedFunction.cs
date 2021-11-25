@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     // construction and disposing
 
     public CreateNoneTestTransactedFunction (ClientTransactionScope previousClientTransactionScope)
-        : base (WxeTransactionMode<ClientTransactionFactory>.None, previousClientTransactionScope)
+        : base(WxeTransactionMode<ClientTransactionFactory>.None, previousClientTransactionScope)
     {
     }
 

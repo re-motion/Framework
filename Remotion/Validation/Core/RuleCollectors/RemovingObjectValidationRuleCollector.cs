@@ -30,7 +30,7 @@ namespace Remotion.Validation.RuleCollectors
   {
     public static RemovingObjectValidationRuleCollector Create<TValidatedType> (Type collectorType)
     {
-      return new RemovingObjectValidationRuleCollector(TypeAdapter.Create(typeof (TValidatedType)), collectorType);
+      return new RemovingObjectValidationRuleCollector(TypeAdapter.Create(typeof(TValidatedType)), collectorType);
     }
 
     public ITypeInformation ValidatedType { get; }

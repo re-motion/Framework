@@ -37,7 +37,7 @@ namespace Remotion.Security.UnitTests
       var obj = _serviceLocator.GetInstance<IPrincipalProvider>();
 
       Assert.That(obj, Is.Not.Null);
-      Assert.That(obj, Is.TypeOf(typeof (ThreadPrincipalProvider)));
+      Assert.That(obj, Is.TypeOf(typeof(ThreadPrincipalProvider)));
     }
 
     [Test]

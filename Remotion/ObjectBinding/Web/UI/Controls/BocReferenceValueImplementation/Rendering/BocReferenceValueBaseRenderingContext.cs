@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         [NotNull] HtmlTextWriter writer,
         [NotNull] TControl control,
         [NotNull] BusinessObjectWebServiceContext businessObjectWebServiceContext)
-        : base (httpContext, writer, control)
+        : base(httpContext, writer, control)
     {
       ArgumentUtility.CheckNotNull("businessObjectWebServiceContext", businessObjectWebServiceContext);
 

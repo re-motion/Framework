@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void ClientTransactionCanBeMixed ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof (ClientTransaction)).Clear().AddMixins(typeof (InvertingClientTransactionMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(ClientTransaction)).Clear().AddMixins(typeof(InvertingClientTransactionMixin)).EnterScope())
       {
         ClientTransaction mixedTransaction = ClientTransaction.CreateRootTransaction();
         Assert.That(mixedTransaction, Is.Not.Null);
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void SubTransactionsAlsoMixed ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof (ClientTransaction)).Clear().AddMixins(typeof (InvertingClientTransactionMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(ClientTransaction)).Clear().AddMixins(typeof(InvertingClientTransactionMixin)).EnterScope())
       {
         ClientTransaction mixedTransaction = ClientTransaction.CreateRootTransaction();
         ClientTransaction mixedSubTransaction = mixedTransaction.CreateSubTransaction();
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void TransactionMethodsCanBeOverridden ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof (ClientTransaction)).Clear().AddMixins(typeof (InvertingClientTransactionMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(ClientTransaction)).Clear().AddMixins(typeof(InvertingClientTransactionMixin)).EnterScope())
       {
         ClientTransaction invertedTransaction = ClientTransaction.CreateRootTransaction();
 
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void MixinCanAddInterface ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof (ClientTransaction)).Clear().AddMixins(typeof (ClientTransactionWithIDMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(ClientTransaction)).Clear().AddMixins(typeof(ClientTransactionWithIDMixin)).EnterScope())
       {
         IClientTransactionWithID transactionWithID = (IClientTransactionWithID) ClientTransaction.CreateRootTransaction();
         Assert.That(transactionWithID.ToString(), Is.EqualTo(transactionWithID.ID.ToString()));

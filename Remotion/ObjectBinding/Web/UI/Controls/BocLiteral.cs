@@ -132,7 +132,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     //  statics
 
-    private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { typeof (IBusinessObjectStringProperty) };
+    private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { typeof(IBusinessObjectStringProperty) };
 
     // types
 

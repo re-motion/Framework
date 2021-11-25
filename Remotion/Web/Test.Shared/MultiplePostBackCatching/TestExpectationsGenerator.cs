@@ -107,13 +107,13 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     {
       if (_testControlGenerator.IsEnabled(control))
       {
-        if (control.GetType() == typeof (Button))
+        if (control.GetType() == typeof(Button))
           return ExpectButtonAttributes((Button) control);
-        if (control.GetType() == typeof (WebButton))
+        if (control.GetType() == typeof(WebButton))
           return ExpectWebButtonAttributes((WebButton) control);
-        if (control.GetType() == typeof (LinkButton))
+        if (control.GetType() == typeof(LinkButton))
           return ExpectLinkButtonAttributes((LinkButton) control);
-        if (control.GetType() == typeof (HyperLink))
+        if (control.GetType() == typeof(HyperLink))
           return ExpectHyperLinkAttributes((HyperLink) control);
       }
       return new TableRow[0];

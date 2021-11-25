@@ -71,15 +71,15 @@ namespace Remotion.Utilities
     private static bool IsNet_4_5_2_Installed ()
     {
       // http://msdn.microsoft.com/en-us/library/ms171868.aspx#v452
-      var transactionType = typeof (Transaction);
+      var transactionType = typeof(Transaction);
       return transactionType.GetMethod(
           "PromoteAndEnlistDurable",
           new[]
           {
-              typeof (Guid),
-              typeof (IPromotableSinglePhaseNotification),
-              typeof (ISinglePhaseNotification),
-              typeof (EnlistmentOptions)
+              typeof(Guid),
+              typeof(IPromotableSinglePhaseNotification),
+              typeof(ISinglePhaseNotification),
+              typeof(EnlistmentOptions)
           }) != null;
     }
 

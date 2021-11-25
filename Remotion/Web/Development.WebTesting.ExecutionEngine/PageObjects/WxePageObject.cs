@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects
   {
     // ReSharper disable once MemberCanBeProtected.Global
     public WxePageObject ([NotNull] PageObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

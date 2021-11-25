@@ -23,7 +23,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
 {
   public static class WebDriverLogUtility
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (WebDriverLogUtility));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(WebDriverLogUtility));
     private const string SubDirectoryName = "BrowserLogs";
 
     public static string CreateLogFile (string logsDirectory, string browserName)

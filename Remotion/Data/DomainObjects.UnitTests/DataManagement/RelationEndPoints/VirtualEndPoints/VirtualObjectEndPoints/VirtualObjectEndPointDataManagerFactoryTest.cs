@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var result = _factory.CreateEndPointDataManager(_endPointID);
 
-      Assert.That(result, Is.TypeOf(typeof (VirtualObjectEndPointDataManager)));
+      Assert.That(result, Is.TypeOf(typeof(VirtualObjectEndPointDataManager)));
       Assert.That(((VirtualObjectEndPointDataManager) result).EndPointID, Is.SameAs(_endPointID));
     }
   }

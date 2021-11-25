@@ -79,8 +79,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Assert.That(Pipeline.ReflectionService.IsAssembledType(mixinType), Is.True, "Mixed mixin.");
 
       var underlyingType = Pipeline.ReflectionService.GetRequestedType(mixinType);
-      Assert.That(underlyingType, Is.Not.SameAs(typeof (MixinMixingClassRequiringToBeDerived)), "Derived mixin.");
-      Assert.That(underlyingType.BaseType, Is.SameAs(typeof (MixinMixingClassRequiringToBeDerived)));
+      Assert.That(underlyingType, Is.Not.SameAs(typeof(MixinMixingClassRequiringToBeDerived)), "Derived mixin.");
+      Assert.That(underlyingType.BaseType, Is.SameAs(typeof(MixinMixingClassRequiringToBeDerived)));
 
       var mixinMixin = Mixin.Get<MixinMixingDerivedMixin>(derivedMixin);
       Assert.That(mixinMixin, Is.Not.Null);

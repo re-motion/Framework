@@ -518,7 +518,7 @@ namespace Remotion.Globalization.UnitTests.Implementation.MultiLingualNameBasedM
           .Setup(_ => _.GetCustomAttributes<MultiLingualNameAttribute>(false))
           .Returns(new MultiLingualNameAttribute[0]);
       typeInformationStub.Setup(_ => _.BaseType).Returns((ITypeInformation) null);
-      Assert.That(typeof (object).BaseType, Is.Null, "Defined behavior for BaseType of Object is to return null");
+      Assert.That(typeof(object).BaseType, Is.Null, "Defined behavior for BaseType of Object is to return null");
 
       var typeInformationForResourceResolutionStub = new Mock<ITypeInformation>();
 

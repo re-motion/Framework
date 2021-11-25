@@ -31,8 +31,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class CodeGenerationMixinContextSerializer : IMixinContextSerializer
   {
     private static readonly ConstructorInfo s_constructor =
-        typeof (MixinContext).GetConstructor(
-            new[] { typeof (MixinKind), typeof (Type), typeof (MemberVisibility), typeof (IEnumerable<Type>), typeof (MixinContextOrigin) })!;
+        typeof(MixinContext).GetConstructor(
+            new[] { typeof(MixinKind), typeof(Type), typeof(MemberVisibility), typeof(IEnumerable<Type>), typeof(MixinContextOrigin) })!;
 
     private readonly Expression[] _constructorArguments = new Expression[5];
 
@@ -63,7 +63,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
 
-      _constructorArguments[3] = Expression.NewArrayInit(typeof (Type), explicitDependencies.Select(d => (Expression) Expression.Constant(d)));
+      _constructorArguments[3] = Expression.NewArrayInit(typeof(Type), explicitDependencies.Select(d => (Expression) Expression.Constant(d)));
     }
 
     public void AddOrigin (MixinContextOrigin origin)

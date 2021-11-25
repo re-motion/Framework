@@ -129,12 +129,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // construction and disposing
 
     public BocAutoCompleteReferenceValue ()
-        : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
+        : this(SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
     {
     }
 
     protected BocAutoCompleteReferenceValue ([NotNull] IWebServiceFactory webServiceFactory)
-        : base (webServiceFactory)
+        : base(webServiceFactory)
     {
       _textBoxStyle = new SingleRowTextBoxStyle();
       _businessObjectWebServiceContextFromPreviousLifeCycle = BusinessObjectWebServiceContext.Create(null, null, null);
@@ -413,7 +413,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     protected override IResourceManager GetResourceManager ()
     {
-      return GetResourceManager(typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)

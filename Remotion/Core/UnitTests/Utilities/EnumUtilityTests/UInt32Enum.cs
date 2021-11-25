@@ -91,13 +91,13 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     [Test]
     public void IsValidEnumValue_WithTypeAndUInt32 ()
     {
-      Assert.That(EnumUtility.IsValidEnumValue(typeof (TestEnum), (UInt32) 1), Is.True);
+      Assert.That(EnumUtility.IsValidEnumValue(typeof(TestEnum), (UInt32) 1), Is.True);
     }
 
     [Test]
     public void IsValidEnumValue_WithTypeAndEnum ()
     {
-      Assert.That(EnumUtility.IsValidEnumValue(typeof (TestEnum), TestEnum.Positive), Is.True);
+      Assert.That(EnumUtility.IsValidEnumValue(typeof(TestEnum), TestEnum.Positive), Is.True);
     }
 
     [Test]
@@ -115,13 +115,13 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     [Test]
     public void IsFlagsEnumType_NotFlag ()
     {
-      Assert.That(EnumUtility.IsFlagsEnumType(typeof (TestEnum)), Is.False);
+      Assert.That(EnumUtility.IsFlagsEnumType(typeof(TestEnum)), Is.False);
     }
 
     [Test]
     public void IsFlagsEnumType_Flag ()
     {
-      Assert.That(EnumUtility.IsFlagsEnumType(typeof (TestFlags)), Is.True);
+      Assert.That(EnumUtility.IsFlagsEnumType(typeof(TestFlags)), Is.True);
     }
   }
 }

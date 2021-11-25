@@ -29,7 +29,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     public void ChildSpecificAccept_CallsVisitForClass ()
     {
       var visitorMock = MockRepository.GenerateMock<IDefinitionVisitor>();
-      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (BaseType1));
+      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(BaseType1));
 
       targetClassDefinition.Accept(visitorMock);
 
@@ -39,11 +39,11 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     [Test]
     public void ChildSpecificAccept ()
     {
-      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (BaseType1), typeof (BT1Mixin1));
+      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(BaseType1), typeof(BT1Mixin1));
       var mixinDefinition = targetClassDefinition.Mixins[0];
-      var requiredTargetCallTypeDefinition = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition(targetClassDefinition, typeof (IBT1Mixin1));
-      var requiredNextCallTypeDefinition = DefinitionObjectMother.CreateRequiredNextCallTypeDefinition(targetClassDefinition, typeof (IBT1Mixin1));
-      var requiredMixinTypeDefinition = DefinitionObjectMother.CreateRequiredMixinTypeDefinition(targetClassDefinition, typeof (BT1Mixin2));
+      var requiredTargetCallTypeDefinition = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition(targetClassDefinition, typeof(IBT1Mixin1));
+      var requiredNextCallTypeDefinition = DefinitionObjectMother.CreateRequiredNextCallTypeDefinition(targetClassDefinition, typeof(IBT1Mixin1));
+      var requiredMixinTypeDefinition = DefinitionObjectMother.CreateRequiredMixinTypeDefinition(targetClassDefinition, typeof(BT1Mixin2));
       var composedInterfaceDependencyDefinition = DefinitionObjectMother.CreateComposedInterfaceDependencyDefinition(targetClassDefinition);
 
       var visitorMock = MockRepository.GenerateMock<IDefinitionVisitor>();
@@ -68,7 +68,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     public void ChildSpecificAccept_CallsVisitForMixins ()
     {
       var visitorMock = MockRepository.GenerateMock<IDefinitionVisitor>();
-      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (BaseType1), typeof (BT1Mixin1));
+      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(BaseType1), typeof(BT1Mixin1));
 
       targetClassDefinition.Accept(visitorMock);
 
@@ -78,12 +78,12 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     [Test]
     public void HasMixinWithConfiguredType_True ()
     {
-      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (BaseType3));
+      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(BaseType3));
 
-      var nonGenericMixinType = typeof (BT3Mixin1);
+      var nonGenericMixinType = typeof(BT3Mixin1);
       DefinitionObjectMother.CreateMixinDefinition(targetClassDefinition, nonGenericMixinType);
       
-      var closedMixinType =  targetClassDefinition.MixinTypeCloser.GetClosedMixinType(typeof (BT3Mixin3<,>));
+      var closedMixinType =  targetClassDefinition.MixinTypeCloser.GetClosedMixinType(typeof(BT3Mixin3<,>));
       DefinitionObjectMother.CreateMixinDefinition(targetClassDefinition, closedMixinType);
 
       Assert.That(targetClassDefinition.HasMixinWithConfiguredType(nonGenericMixinType), Is.True);
@@ -94,21 +94,21 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     [Test]
     public void HasMixinWithConfiguredType_False ()
     {
-      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (BaseType3));
+      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(BaseType3));
 
-      Assert.That(targetClassDefinition.HasMixinWithConfiguredType(typeof (BT3Mixin1)), Is.False);
-      Assert.That(targetClassDefinition.HasMixinWithConfiguredType(typeof (BT3Mixin3<,>)), Is.False);
+      Assert.That(targetClassDefinition.HasMixinWithConfiguredType(typeof(BT3Mixin1)), Is.False);
+      Assert.That(targetClassDefinition.HasMixinWithConfiguredType(typeof(BT3Mixin3<,>)), Is.False);
     }
 
     [Test]
     public void GetMixinByConfiguredType_NonNull ()
     {
-      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (BaseType3));
+      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(BaseType3));
 
-      var nonGenericMixinType = typeof (BT3Mixin1);
+      var nonGenericMixinType = typeof(BT3Mixin1);
       var nonGenericMixinDefinition = DefinitionObjectMother.CreateMixinDefinition(targetClassDefinition, nonGenericMixinType);
 
-      var closedMixinType = targetClassDefinition.MixinTypeCloser.GetClosedMixinType(typeof (BT3Mixin3<,>));
+      var closedMixinType = targetClassDefinition.MixinTypeCloser.GetClosedMixinType(typeof(BT3Mixin3<,>));
       var closedMixinDefinition = DefinitionObjectMother.CreateMixinDefinition(targetClassDefinition, closedMixinType);
 
       Assert.That(targetClassDefinition.GetMixinByConfiguredType(nonGenericMixinType), Is.SameAs(nonGenericMixinDefinition));
@@ -119,10 +119,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     [Test]
     public void GetMixinByConfiguredType_Null ()
     {
-      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (BaseType3));
+      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(BaseType3));
 
-      Assert.That(targetClassDefinition.GetMixinByConfiguredType(typeof (BT3Mixin1)), Is.Null);
-      Assert.That(targetClassDefinition.GetMixinByConfiguredType(typeof (BT3Mixin3<,>)), Is.Null);
+      Assert.That(targetClassDefinition.GetMixinByConfiguredType(typeof(BT3Mixin1)), Is.Null);
+      Assert.That(targetClassDefinition.GetMixinByConfiguredType(typeof(BT3Mixin3<,>)), Is.Null);
     }
   }
 }

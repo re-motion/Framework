@@ -35,7 +35,7 @@ namespace Remotion.Web.ExecutionEngine
     public class WxeFunctionStateMetaData : Tuple<string, int, DateTime>
     {
       public WxeFunctionStateMetaData (string functionToken, int lifetimeInMinutes, DateTime lastAccessUtc)
-          : base (functionToken, lifetimeInMinutes, lastAccessUtc)
+          : base(functionToken, lifetimeInMinutes, lastAccessUtc)
       {
       }
 
@@ -67,9 +67,9 @@ namespace Remotion.Web.ExecutionEngine
       }
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (WxeFunctionStateManager));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(WxeFunctionStateManager));
 
-    private static readonly string s_key = typeof (WxeFunctionStateManager).GetAssemblyQualifiedNameChecked();
+    private static readonly string s_key = typeof(WxeFunctionStateManager).GetAssemblyQualifiedNameChecked();
     private static readonly string s_sessionKeyForFunctionStates = s_key + "|WxeFunctionStates";
 
     private static readonly SafeContextSingleton<WxeFunctionStateManager> s_functionStateManager =

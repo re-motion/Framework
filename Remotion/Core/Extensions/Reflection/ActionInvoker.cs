@@ -60,7 +60,7 @@ namespace Remotion.Reflection
 
     public TDelegate GetDelegate<TDelegate> ()
     {
-      return (TDelegate) (object) GetDelegate(typeof (TDelegate));
+      return (TDelegate) (object) GetDelegate(typeof(TDelegate));
     }
 
     public Delegate GetDelegate (Type delegateType)
@@ -263,7 +263,7 @@ namespace Remotion.Reflection
 
     private Type[] GetValueTypes (Type[] valueTypes)
     {
-      Type[] fixedArgTypes = new Type[] { typeof (TFixedArg1) };
+      Type[] fixedArgTypes = new Type[] { typeof(TFixedArg1) };
       return ArrayUtility.Combine(fixedArgTypes, valueTypes);
     }
 
@@ -292,7 +292,7 @@ namespace Remotion.Reflection
 
     public TDelegate GetDelegate<TDelegate> ()
     {
-      return (TDelegate) (object) GetDelegate(typeof (TDelegate));
+      return (TDelegate) (object) GetDelegate(typeof(TDelegate));
     }
 
     public Delegate GetDelegate (Type delegateType)
@@ -497,7 +497,7 @@ namespace Remotion.Reflection
 
     private Type[] GetValueTypes (Type[] valueTypes)
     {
-      Type[] fixedArgTypes = new Type[] { typeof (TFixedArg1), typeof (TFixedArg2) };
+      Type[] fixedArgTypes = new Type[] { typeof(TFixedArg1), typeof(TFixedArg2) };
       return ArrayUtility.Combine(fixedArgTypes, valueTypes);
     }
 
@@ -526,7 +526,7 @@ namespace Remotion.Reflection
 
     public TDelegate GetDelegate<TDelegate> ()
     {
-      return (TDelegate) (object) GetDelegate(typeof (TDelegate));
+      return (TDelegate) (object) GetDelegate(typeof(TDelegate));
     }
 
     public Delegate GetDelegate (Type delegateType)
@@ -733,7 +733,7 @@ namespace Remotion.Reflection
 
     private Type[] GetValueTypes (Type[] valueTypes)
     {
-      Type[] fixedArgTypes = new Type[] { typeof (TFixedArg1), typeof (TFixedArg2), typeof (TFixedArg3) };
+      Type[] fixedArgTypes = new Type[] { typeof(TFixedArg1), typeof(TFixedArg2), typeof(TFixedArg3) };
       return ArrayUtility.Combine(fixedArgTypes, valueTypes);
     }
 
@@ -762,7 +762,7 @@ namespace Remotion.Reflection
 
     public TDelegate GetDelegate<TDelegate> ()
     {
-      return (TDelegate) (object) GetDelegate(typeof (TDelegate));
+      return (TDelegate) (object) GetDelegate(typeof(TDelegate));
     }
 
     public Delegate GetDelegate (Type delegateType)

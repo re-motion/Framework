@@ -82,7 +82,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       var finder = CreateRootAssemblyFinder("relativeSearchPath", false);
       var finderService = GetSearchServiceForCombinedFinder(finder);
 
-      Assert.That(finderService, Is.InstanceOf(typeof (FileSystemSearchService)));
+      Assert.That(finderService, Is.InstanceOf(typeof(FileSystemSearchService)));
     }
 
     [Test]
@@ -108,14 +108,14 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
           new FilePatternSpecification("*.exe", FilePatternSpecificationKind.IncludeFollowReferences), 
 #endif
           new FilePatternSpecification("*.dll", FilePatternSpecificationKind.IncludeFollowReferences) }));
-      Assert.That(finderService, Is.InstanceOf(typeof (FileSystemSearchService)));
+      Assert.That(finderService, Is.InstanceOf(typeof(FileSystemSearchService)));
     }
 
     [Test]
     public void FindRootAssemblies_UsesCombinedFinder ()
     {
       var innerFinderStub = new Mock<IRootAssemblyFinder>();
-      var rootAssembly = new RootAssembly(typeof (object).Assembly, true);
+      var rootAssembly = new RootAssembly(typeof(object).Assembly, true);
       innerFinderStub.Setup(stub => stub.FindRootAssemblies()).Returns(new[] { rootAssembly });
 
       var finderMock = new Mock<SearchPathRootAssemblyFinder>(

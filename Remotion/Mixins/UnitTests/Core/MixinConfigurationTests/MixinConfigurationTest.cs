@@ -50,7 +50,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     [Test]
     public void GetContext_Configured ()
     {
-      var context = MixinConfiguration.ActiveConfiguration.GetContext(typeof (BaseType1));
+      var context = MixinConfiguration.ActiveConfiguration.GetContext(typeof(BaseType1));
       Assert.That(context, Is.Not.Null);
     }
 
@@ -58,27 +58,27 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     public void GetContext_Configured_ButEmpty ()
     {
       var configuration = MixinConfiguration.BuildNew().ForClass<NullTarget>().BuildConfiguration();
-      Assert.That(configuration.ClassContexts.ContainsExact(typeof (NullTarget)), Is.True);
+      Assert.That(configuration.ClassContexts.ContainsExact(typeof(NullTarget)), Is.True);
 
-      var context = configuration.GetContext(typeof (NullTarget));
+      var context = configuration.GetContext(typeof(NullTarget));
       Assert.That(context, Is.Null);
     }
 
     [Test]
     public void GetContext_ReturnsNull_IfNotConfigured ()
     {
-      Assert.That(MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance(typeof (object)), Is.False);
+      Assert.That(MixinConfiguration.ActiveConfiguration.ClassContexts.ContainsWithInheritance(typeof(object)), Is.False);
 
-      var context = MixinConfiguration.ActiveConfiguration.GetContext(typeof (object));
+      var context = MixinConfiguration.ActiveConfiguration.GetContext(typeof(object));
       Assert.That(context, Is.Null);
     }
 
     [Test]
     public void GetContext_NoNewContext_GeneratedForGeneratedType ()
     {
-      var expectedContext = MixinConfiguration.ActiveConfiguration.GetContext(typeof (BaseType1));
+      var expectedContext = MixinConfiguration.ActiveConfiguration.GetContext(typeof(BaseType1));
 
-      Type generatedType = TypeFactory.GetConcreteType(typeof (BaseType1));
+      Type generatedType = TypeFactory.GetConcreteType(typeof(BaseType1));
       var actualContext = MixinConfiguration.ActiveConfiguration.GetContext(generatedType);
       Assert.That(actualContext, Is.EqualTo(expectedContext));
     }
@@ -101,7 +101,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
 
       Assert.That(newMasterConfiguration, Is.Not.Null);
       Assert.That(newMasterConfiguration, Is.Not.SameAs(oldMasterConfiguration));
-      Assert.That(newMasterConfiguration.GetContext(typeof (BaseType1)), Is.Not.Null);
+      Assert.That(newMasterConfiguration.GetContext(typeof(BaseType1)), Is.Not.Null);
     }
   }
 }

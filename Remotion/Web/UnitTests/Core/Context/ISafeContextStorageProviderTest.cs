@@ -23,7 +23,7 @@ namespace Remotion.Web.UnitTests.Core.Context
     {
       var instances = _serviceLocator.GetInstance<ISafeContextStorageProvider>();
 
-      Assert.That(instances, Is.InstanceOf(typeof (HttpContextStorageProvider)));
+      Assert.That(instances, Is.InstanceOf(typeof(HttpContextStorageProvider)));
     }
 
     [Test]

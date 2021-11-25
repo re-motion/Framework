@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void AccessingRelatedObject_ForeignKeySide_NotFoundKeyException_IsTriggeredOnDemand ()
     {
-      var id = new ObjectID(typeof (ClassWithInvalidRelation), new Guid("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
+      var id = new ObjectID(typeof(ClassWithInvalidRelation), new Guid("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
       var objectWithInvalidRelation = (ClassWithInvalidRelation) id.GetObject<TestDomainBase>();
 
       Assert.That(objectWithInvalidRelation.ClassWithGuidKey.State.IsNotLoadedYet, Is.True);
@@ -110,8 +110,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void AccessingOriginalRelatedObject_ForeignKeySide_OriginalObjectIsAlsoNotLoadedOnAccess ()
     {
-      Assert.That(_order.Properties[typeof (Order), "Customer"].GetOriginalValue<Customer>().ID, Is.EqualTo(DomainObjectIDs.Customer1));
-      Assert.That(_order.Properties[typeof (Order), "Customer"].GetOriginalValue<Customer>().State.IsNotLoadedYet, Is.True);
+      Assert.That(_order.Properties[typeof(Order), "Customer"].GetOriginalValue<Customer>().ID, Is.EqualTo(DomainObjectIDs.Customer1));
+      Assert.That(_order.Properties[typeof(Order), "Customer"].GetOriginalValue<Customer>().State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       Assert.That(_order.State.IsNotLoadedYet, Is.True);
 
-      var orderTicket = _order.Properties[typeof (Order), "OrderTicket"].GetOriginalValue<OrderTicket>();
+      var orderTicket = _order.Properties[typeof(Order), "OrderTicket"].GetOriginalValue<OrderTicket>();
 
       Assert.That(orderTicket.ID, Is.EqualTo(DomainObjectIDs.OrderTicket1));
       Assert.That(orderTicket.State.IsUnchanged, Is.True);
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void AccessingOriginalRelatedDomainObjectCollection_LoadsContentsForBothOriginalAndCurrentCollection ()
     {
-      Assert.That(_order.Properties[typeof (Order), "OrderItems"].GetOriginalValue<ObjectList<OrderItem>>().IsDataComplete, Is.True);
+      Assert.That(_order.Properties[typeof(Order), "OrderItems"].GetOriginalValue<ObjectList<OrderItem>>().IsDataComplete, Is.True);
       // Since the data had to be loaded for the original contents, it has also been loaded into the actual collection.
       Assert.That(_order.OrderItems.IsDataComplete, Is.True);
     }

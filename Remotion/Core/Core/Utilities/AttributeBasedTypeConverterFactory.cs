@@ -24,7 +24,7 @@ namespace Remotion.Utilities
   /// <summary>
   /// Creates the <see cref="TypeConverter"/> specified by the <see cref="TypeConverterAttribute"/> if the requested type has the attribute applied.
   /// </summary>
-  [ImplementationFor (typeof (ITypeConverterFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor (typeof(ITypeConverterFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class AttributeBasedTypeConverterFactory : ITypeConverterFactory
   {
     public const int Position = 0;

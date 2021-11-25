@@ -78,7 +78,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
           if (!isRegistered)
             exceptionTypeList.Add(exceptionTypes[idxNewTypes]);
         }
-        exceptionTypes = (Type[]) exceptionTypeList.ToArray(typeof (Type));
+        exceptionTypes = (Type[]) exceptionTypeList.ToArray(typeof(Type));
       }
       SetCatchExceptionTypes(exceptionTypes);
     }

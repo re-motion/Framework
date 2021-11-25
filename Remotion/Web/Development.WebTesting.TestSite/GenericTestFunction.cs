@@ -24,7 +24,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class GenericTestFunction : WxeFunction
   {
     public GenericTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 

@@ -69,7 +69,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       }
       protected set
       {
-        ArgumentUtility.CheckTypeIsAssignableFrom("SecurableClass", value, typeof (ISecurableObject));
+        ArgumentUtility.CheckTypeIsAssignableFrom("SecurableClass", value, typeof(ISecurableObject));
         _securableClass = value;
       }
     }
@@ -95,12 +95,12 @@ namespace Remotion.Web.Security.ExecutionEngine
       if (enumType.DeclaringType == null)
         throw new ArgumentException(string.Format("Enumerated type '{0}' is not declared as a nested type.", enumType.GetFullNameSafe()), "methodNameEnum");
 
-      if (!typeof (ISecurableObject).IsAssignableFrom(enumType.DeclaringType))
+      if (!typeof(ISecurableObject).IsAssignableFrom(enumType.DeclaringType))
       {
         throw new ArgumentException(string.Format(
                 "The declaring type of enumerated type '{0}' does not implement interface '{1}'.",
                 enumType.GetFullNameSafe(),
-                typeof (ISecurableObject).GetFullNameSafe()),
+                typeof(ISecurableObject).GetFullNameSafe()),
             "methodNameEnum");
       }
     }

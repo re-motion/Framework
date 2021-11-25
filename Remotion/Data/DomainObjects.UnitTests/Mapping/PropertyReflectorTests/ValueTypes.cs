@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithAllDataTypes.BooleanProperty"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (bool)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(bool)));
       Assert.That(actual.IsNullable, Is.False);
       Assert.That(actual.MaxLength, Is.Null);
       Assert.That(actual.DefaultValue, Is.EqualTo(false));
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithAllDataTypes.NaBooleanProperty"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (bool?)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(bool?)));
       Assert.That(actual.IsNullable, Is.True);
       Assert.That(actual.MaxLength, Is.Null);
       Assert.That(actual.DefaultValue, Is.Null);
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithAllDataTypes.EnumProperty"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (ClassWithAllDataTypes.EnumType)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(ClassWithAllDataTypes.EnumType)));
       Assert.That(actual.IsNullable, Is.False);
       Assert.That(actual.MaxLength, Is.Null);
       Assert.That(actual.DefaultValue, Is.EqualTo(ClassWithAllDataTypes.EnumType.Value0));
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithAllDataTypes.ExtensibleEnumProperty"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (Color)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(Color)));
       Assert.That(actual.IsNullable, Is.False);
       Assert.That(actual.MaxLength, Is.Null);
       Assert.That(actual.DefaultValue, Is.EqualTo(Color.Values.Blue()));
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithGuidKey.ClassWithValidRelationsOptional"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (ObjectID)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(ObjectID)));
       Assert.That(actual.IsNullable, Is.True);
       Assert.That(actual.MaxLength, Is.Null);
       Assert.That(actual.DefaultValue, Is.EqualTo(null));

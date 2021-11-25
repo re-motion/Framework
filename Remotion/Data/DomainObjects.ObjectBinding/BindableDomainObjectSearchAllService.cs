@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   {
     private static readonly QueryCache s_queryCache = new QueryCache();
     private static readonly MethodInfo s_getQueryMethod = 
-        typeof (BindableDomainObjectSearchAllService).GetMethod("GetQuery", BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
+        typeof(BindableDomainObjectSearchAllService).GetMethod("GetQuery", BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
 
     private readonly ConcurrentDictionary<Type, bool> _bindableObjectTypeCache = new ConcurrentDictionary<Type, bool>();
 
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     [ReflectionAPI]
     private IQuery GetQuery<T> () where T : DomainObject
     {
-      return s_queryCache.GetQuery<T>(typeof (T).GetAssemblyQualifiedNameChecked(), source => from x in source select x);
+      return s_queryCache.GetQuery<T>(typeof(T).GetAssemblyQualifiedNameChecked(), source => from x in source select x);
     }
   }
 }

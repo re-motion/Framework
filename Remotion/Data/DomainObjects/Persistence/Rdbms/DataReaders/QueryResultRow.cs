@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       }
       catch (NotSupportedException ex)
       {
-        if (typeof (ObjectID).IsAssignableFrom(type))
+        if (typeof(ObjectID).IsAssignableFrom(type))
         {
           throw new NotSupportedException(
               "Type 'ObjectID' ist not supported by this storage provider."

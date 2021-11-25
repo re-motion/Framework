@@ -40,7 +40,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI
       var factory = _serviceLocator.GetAllInstances<IWebSecurityAdapter>().SingleOrDefault();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (WebSecurityAdapter)));
+      Assert.That(factory, Is.TypeOf(typeof(WebSecurityAdapter)));
     }
 
     [Test]

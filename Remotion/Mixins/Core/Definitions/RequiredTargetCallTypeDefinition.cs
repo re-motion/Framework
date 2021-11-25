@@ -22,7 +22,7 @@ namespace Remotion.Mixins.Definitions
   public class RequiredTargetCallTypeDefinition : RequirementDefinitionBase
   {
     public RequiredTargetCallTypeDefinition (TargetClassDefinition targetClass, Type type)
-      : base (targetClass, type)
+      : base(targetClass, type)
     {
     }
 

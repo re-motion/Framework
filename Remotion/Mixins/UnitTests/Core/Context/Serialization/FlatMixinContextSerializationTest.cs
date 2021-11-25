@@ -35,11 +35,11 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     [Test]
     public void AddMixinType ()
     {
-      _serializer.AddMixinType(typeof (DateTime));
-      Assert.That(_serializer.Values[0], Is.EqualTo(typeof (DateTime).AssemblyQualifiedName));
+      _serializer.AddMixinType(typeof(DateTime));
+      Assert.That(_serializer.Values[0], Is.EqualTo(typeof(DateTime).AssemblyQualifiedName));
 
       var deserializer = new FlatMixinContextDeserializer(_serializer.Values);
-      Assert.That(deserializer.GetMixinType(), Is.SameAs(typeof (DateTime)));
+      Assert.That(deserializer.GetMixinType(), Is.SameAs(typeof(DateTime)));
     }
 
     [Test]
@@ -65,12 +65,12 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     [Test]
     public void AddExplicitDependencies ()
     {
-      _serializer.AddExplicitDependencies(new[] {typeof (int), typeof (string)});
+      _serializer.AddExplicitDependencies(new[] {typeof(int), typeof(string)});
       Assert.That(_serializer.Values[3], 
-          Is.EqualTo(new[] {typeof (int).AssemblyQualifiedName, typeof (string).AssemblyQualifiedName}));
+          Is.EqualTo(new[] {typeof(int).AssemblyQualifiedName, typeof(string).AssemblyQualifiedName}));
 
       var deserializer = new FlatMixinContextDeserializer(_serializer.Values);
-      Assert.That(deserializer.GetExplicitDependencies().ToArray(), Is.EqualTo(new[] { typeof (int), typeof (string) }));
+      Assert.That(deserializer.GetExplicitDependencies().ToArray(), Is.EqualTo(new[] { typeof(int), typeof(string) }));
     }
 
     [Test]

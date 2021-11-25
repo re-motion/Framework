@@ -30,13 +30,13 @@ public class CommandLineFlagArgument: CommandLineArgument
   // construction and disposal
 
   public CommandLineFlagArgument (string name, bool? defaultValue)
-    : base (name, true)
+    : base(name, true)
   {
     _defaultValue = defaultValue;
   }
 
   public CommandLineFlagArgument (string name)
-    : base (name, true)
+    : base(name, true)
   {
     _defaultValue = null;
   }

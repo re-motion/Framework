@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       Control? control = NamingContainer.FindControl(ControlToValidate);
 
       if (!(control is BocDateTimeValue))
-        throw new HttpException("Control '" + ControlToValidate + "' is not of type '" + typeof (BocDateTimeValue) + "'");
+        throw new HttpException("Control '" + ControlToValidate + "' is not of type '" + typeof(BocDateTimeValue) + "'");
 
       return true;
     }

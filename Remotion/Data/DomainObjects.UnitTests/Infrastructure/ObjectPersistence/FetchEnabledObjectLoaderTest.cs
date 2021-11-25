@@ -71,8 +71,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _resultItemWithSourceData1 = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(DomainObjectIDs.Order1);
       _resultItemWithSourceData2 = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(DomainObjectIDs.Order3);
 
-      _orderTicketEndPointDefinition = GetEndPointDefinition(typeof (Order), "OrderTicket");
-      _customerEndPointDefinition = GetEndPointDefinition(typeof (Order), "Customer");
+      _orderTicketEndPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
+      _customerEndPointDefinition = GetEndPointDefinition(typeof(Order), "Customer");
 
       var fetchQuery1 = CreateFakeQuery();
       var fetchQuery2 = CreateFakeQuery();
@@ -223,7 +223,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     private IQuery CreateFakeQuery (params Tuple<IRelationEndPointDefinition, IQuery>[] fetchQueries)
     {
       var query = QueryFactory.CreateCollectionQuery(
-          "test", TestDomainStorageProviderDefinition, "TEST", new QueryParameterCollection(), typeof (DomainObjectCollection));
+          "test", TestDomainStorageProviderDefinition, "TEST", new QueryParameterCollection(), typeof(DomainObjectCollection));
       foreach (var fetchQuery in fetchQueries)
         query.EagerFetchQueries.Add(fetchQuery.Item1, fetchQuery.Item2);
 

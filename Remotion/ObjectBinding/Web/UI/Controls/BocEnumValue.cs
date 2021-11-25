@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     // static members
 
-    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof (IBusinessObjectEnumerationProperty) };
+    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof(IBusinessObjectEnumerationProperty) };
 
     private static readonly object s_selectionChangedEvent = new object();
 
@@ -629,7 +629,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     public IResourceManager GetResourceManager ()
     {
-      return GetResourceManager(typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>

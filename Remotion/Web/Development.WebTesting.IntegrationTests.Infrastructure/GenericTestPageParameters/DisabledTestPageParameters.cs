@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     public string DisabledHtmlID { get; private set; }
 
     public DisabledTestPageParameters ()
-        : base (TestConstants.DisabledTestsID, c_parameterCount)
+        : base(TestConstants.DisabledTestsID, c_parameterCount)
     {
     }
 

@@ -30,7 +30,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
   /// </summary>
   public class MixinConfigurationBuilder
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (MixinConfigurationBuilder));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(MixinConfigurationBuilder));
 
     private readonly MixinConfiguration? _parentConfiguration;
     private readonly Dictionary<Type, ClassContextBuilder> _classContextBuilders = new Dictionary<Type, ClassContextBuilder>();
@@ -81,7 +81,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A fluent interface object for configuring the given <typeparamref name="TTargetType"/>.</returns>
     public virtual ClassContextBuilder ForClass<TTargetType> ()
     {
-      return ForClass(typeof (TTargetType));
+      return ForClass(typeof(TTargetType));
     }
 
     /// <summary>

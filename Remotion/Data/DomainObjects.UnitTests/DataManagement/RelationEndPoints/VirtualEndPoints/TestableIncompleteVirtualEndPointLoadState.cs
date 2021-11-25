@@ -29,12 +29,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           IVirtualEndPointLoadState<IVirtualEndPoint<object>, object, IVirtualEndPointDataManager>>
   {
     public TestableIncompleteVirtualEndPointLoadState (IEndPointLoader endPointLoader)
-        : base (endPointLoader)
+        : base(endPointLoader)
     {
     }
 
     public TestableIncompleteVirtualEndPointLoadState (FlattenedDeserializationInfo info)
-        : base (info)
+        : base(info)
     {
     }
 

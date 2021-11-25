@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
         ClientTransaction rootTransaction,
         IEnlistedDomainObjectManager enlistedDomainObjectManager,
         IDataManager dataManager)
-      : base (objectID, rootTransaction, enlistedDomainObjectManager)
+      : base(objectID, rootTransaction, enlistedDomainObjectManager)
     {
       ArgumentUtility.CheckNotNull("dataManager", dataManager);
 

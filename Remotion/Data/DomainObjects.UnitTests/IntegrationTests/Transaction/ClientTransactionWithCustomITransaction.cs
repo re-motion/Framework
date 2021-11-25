@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     private readonly ITransaction _wrapper;
 
     public ClientTransactionWithCustomITransaction (ITransaction wrapper)
-      : base (RootClientTransactionComponentFactory.Create())
+      : base(RootClientTransactionComponentFactory.Create())
     {
       _wrapper = wrapper;
     }

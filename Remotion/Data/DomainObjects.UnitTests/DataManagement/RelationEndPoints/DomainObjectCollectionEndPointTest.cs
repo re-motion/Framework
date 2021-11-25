@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(endPoint.DataManagerFactory, Is.SameAs(_dataManagerFactoryStub));
 
       var loadState = DomainObjectCollectionEndPointTestHelper.GetLoadState(endPoint);
-      Assert.That(loadState, Is.TypeOf(typeof (IncompleteDomainObjectCollectionEndPointLoadState)));
+      Assert.That(loadState, Is.TypeOf(typeof(IncompleteDomainObjectCollectionEndPointLoadState)));
       Assert.That(((IncompleteDomainObjectCollectionEndPointLoadState) loadState).DataManagerFactory, Is.SameAs(_dataManagerFactoryStub));
       Assert.That(
           ((IncompleteDomainObjectCollectionEndPointLoadState) loadState).EndPointLoader, 
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Initialize_WithNonManyEndPointID_Throws ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
       Assert.That(
           () => new DomainObjectCollectionEndPoint(
           TestableClientTransaction,
@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void GetCollectionWithOriginalData ()
     {
       var collectionDataStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
-      collectionDataStub.Stub(stub => stub.RequiredItemType).Return(typeof (Order));
+      collectionDataStub.Stub(stub => stub.RequiredItemType).Return(typeof(Order));
       var readOnlyCollectionDataDecorator = new ReadOnlyDomainObjectCollectionDataDecorator(collectionDataStub);
 
       _loadStateMock.Stub(stub => stub.GetOriginalData(_endPoint)).Return(readOnlyCollectionDataDecorator);
@@ -183,7 +183,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var result = _endPoint.GetCollectionWithOriginalData();
 
-      Assert.That(result, Is.TypeOf(typeof (OrderCollection)));
+      Assert.That(result, Is.TypeOf(typeof(OrderCollection)));
       var actualCollectionData = DomainObjectCollectionDataTestHelper.GetDataStrategy(result);
       Assert.That(actualCollectionData, Is.SameAs(readOnlyCollectionDataDecorator));
     }
@@ -365,7 +365,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       stateSetter(dataManagerStub);
       
       var newLoadState = DomainObjectCollectionEndPointTestHelper.GetLoadState(_endPoint);
-      Assert.That(newLoadState, Is.TypeOf(typeof (CompleteDomainObjectCollectionEndPointLoadState)));
+      Assert.That(newLoadState, Is.TypeOf(typeof(CompleteDomainObjectCollectionEndPointLoadState)));
 
       Assert.That(((CompleteDomainObjectCollectionEndPointLoadState) newLoadState).DataManager, Is.SameAs(dataManagerStub));
       Assert.That(((CompleteDomainObjectCollectionEndPointLoadState) newLoadState).TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
@@ -391,7 +391,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       stateSetter();
       
       var newLoadState = DomainObjectCollectionEndPointTestHelper.GetLoadState(_endPoint);
-      Assert.That(newLoadState, Is.TypeOf(typeof (IncompleteDomainObjectCollectionEndPointLoadState)));
+      Assert.That(newLoadState, Is.TypeOf(typeof(IncompleteDomainObjectCollectionEndPointLoadState)));
       Assert.That(
           ((IncompleteDomainObjectCollectionEndPointLoadState) newLoadState).EndPointLoader,
           Is.TypeOf<DomainObjectCollectionEndPoint.EndPointLoader>().With.Property<DomainObjectCollectionEndPoint.EndPointLoader>(l => l.LazyLoader).SameAs(_lazyLoaderMock));
@@ -755,8 +755,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var oppositeEndPoints = _endPoint.GetOppositeRelationEndPointIDs().ToArray();
 
-      var expectedOppositeEndPointID1 = RelationEndPointID.Create(relatedObject1.ID, typeof (Order).FullName + ".Customer");
-      var expectedOppositeEndPointID2 = RelationEndPointID.Create(relatedObject2.ID, typeof (Order).FullName + ".Customer");
+      var expectedOppositeEndPointID1 = RelationEndPointID.Create(relatedObject1.ID, typeof(Order).FullName + ".Customer");
+      var expectedOppositeEndPointID2 = RelationEndPointID.Create(relatedObject2.ID, typeof(Order).FullName + ".Customer");
       Assert.That(oppositeEndPoints, Is.EqualTo(new[] { expectedOppositeEndPointID1, expectedOppositeEndPointID2 }));
     }
 

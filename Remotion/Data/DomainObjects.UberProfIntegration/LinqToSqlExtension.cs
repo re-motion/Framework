@@ -177,7 +177,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public string Key
     {
-      get { return typeof (LinqToSqlExtension).GetFullNameChecked(); }
+      get { return typeof(LinqToSqlExtension).GetFullNameChecked(); }
     }
 
     public void TransactionInitialize (ClientTransaction clientTransaction)

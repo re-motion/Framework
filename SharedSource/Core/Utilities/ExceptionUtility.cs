@@ -37,11 +37,11 @@ namespace Remotion.Utilities
 
     private static Action<Exception> GetInternalPreserveStackTrace ()
     {
-      var methodInfo = typeof (Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic);
+      var methodInfo = typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic);
       if (methodInfo == null)
         throw new InvalidOperationException("Type 'System.Exception' does not contain method InternalPreserveStackTrace().");
 
-      return (Action<Exception>) methodInfo.CreateDelegate(typeof (Action<Exception>));
+      return (Action<Exception>) methodInfo.CreateDelegate(typeof(Action<Exception>));
     }
   }
 }

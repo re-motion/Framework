@@ -63,15 +63,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
 
       _enumValue = new Mock<IBocEnumValue>();
       _enumValue.SetupProperty(_ => _.CssClass);
-      var businessObjectProvider = BindableObjectProvider.GetProvider(typeof (BindableObjectProviderAttribute));
-      var propertyInfo = PropertyInfoAdapter.Create(typeof (TypeWithEnum).GetProperty("EnumValue"));
+      var businessObjectProvider = BindableObjectProvider.GetProvider(typeof(BindableObjectProviderAttribute));
+      var propertyInfo = PropertyInfoAdapter.Create(typeof(TypeWithEnum).GetProperty("EnumValue"));
       IBusinessObjectEnumerationProperty property =
           new EnumerationProperty(
               new PropertyBase.Parameters(
                   (BindableObjectProvider) businessObjectProvider,
                   propertyInfo,
-                  typeof (TestEnum),
-                  new Lazy<Type>(() => typeof (TestEnum)),
+                  typeof(TestEnum),
+                  new Lazy<Type>(() => typeof(TestEnum)),
                   null,
                   false,
                   true,
@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Setup(stub => stub.Page).Returns(pageStub.Object);
 
       var values = new List<EnumerationValueInfo>(3);
-      foreach (TestEnum value in Enum.GetValues(typeof (TestEnum)))
+      foreach (TestEnum value in Enum.GetValues(typeof(TestEnum)))
         values.Add(new EnumerationValueInfo(value, value.ToString(), value.ToString(), true));
       _enumerationInfos = values.ToArray();
       _enumValue.Setup(mock => mock.GetEnabledValues()).Returns(_enumerationInfos);
@@ -260,7 +260,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
         Html.AssertAttribute(select, "onchange", string.Format("javascript:__doPostBack('{0}','')", c_valueName));
 
       int index = withNullValue ? 1 : 0;
-      foreach (TestEnum value in Enum.GetValues(typeof (TestEnum)))
+      foreach (TestEnum value in Enum.GetValues(typeof(TestEnum)))
       {
         AssertOption(select, value.ToString(), value.ToString(), index, selectedValue == value);
         ++index;

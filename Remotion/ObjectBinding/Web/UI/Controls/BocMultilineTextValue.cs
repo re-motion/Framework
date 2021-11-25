@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     // static members
 
-    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof (IBusinessObjectStringProperty) };
+    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof(IBusinessObjectStringProperty) };
 
     private string[]? _text = null;
     private string? _errorMessage;
@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // construction and disposing
 
     public BocMultilineTextValue ()
-        : base (BocTextBoxMode.MultiLine)
+        : base(BocTextBoxMode.MultiLine)
     {
     }
 
@@ -321,7 +321,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     public override IResourceManager GetResourceManager ()
     {
-      return GetResourceManager(typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>

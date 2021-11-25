@@ -19,8 +19,8 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping
 {
-  [Uses (typeof (MixinAddingPersistentProperties))]
-  [Uses (typeof (NullMixin))]
+  [Uses (typeof(MixinAddingPersistentProperties))]
+  [Uses (typeof(NullMixin))]
   [DBTable ("MixedDomains_Target")]
   [TestDomain]
   public class TargetClassForPersistentMixin : DomainObject
@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
     [StorageClassNone]
     public int RedirectedPersistentProperty
     {
-      [LinqPropertyRedirection (typeof (MixinAddingPersistentProperties), "PersistentProperty")]
+      [LinqPropertyRedirection (typeof(MixinAddingPersistentProperties), "PersistentProperty")]
       get { return ((IMixinAddingPersistentProperties) this).PersistentProperty; }
     }
   }

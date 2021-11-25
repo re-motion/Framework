@@ -76,8 +76,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Initialization_Unidirectional ()
     {
-      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof (Client))
-          .GetMandatoryRelationEndPointDefinition(typeof (Client).FullName + ".ParentClient");
+      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof(Client))
+          .GetMandatoryRelationEndPointDefinition(typeof(Client).FullName + ".ParentClient");
       var client = DomainObjectIDs.Client1.GetObject<Client>();
       var id = RelationEndPointID.Create(client.ID, definition);
       var endPoint = (IObjectEndPoint)
@@ -93,8 +93,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Initialization_Bidirectional_OneMany ()
     {
-      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof (OrderItem))
-          .GetMandatoryRelationEndPointDefinition(typeof (OrderItem).FullName + ".Order");
+      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderItem))
+          .GetMandatoryRelationEndPointDefinition(typeof(OrderItem).FullName + ".Order");
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.OrderItem1.GetObject<OrderItem>().ID, definition);
       var endPoint =
           (IObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
@@ -189,7 +189,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var orderOfOldOrderTicketEndPoint =
           TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(orderOfOldOrderTicketEndPointID);
 
-      Assert.That(steps[1], Is.InstanceOf(typeof (RealObjectEndPointRegistrationCommandDecorator)));
+      Assert.That(steps[1], Is.InstanceOf(typeof(RealObjectEndPointRegistrationCommandDecorator)));
       var setOrderOfOldOrderTicketCommand = (ObjectEndPointSetCommand) ((RealObjectEndPointRegistrationCommandDecorator) steps[1]).DecoratedCommand;
       Assert.That(setOrderOfOldOrderTicketCommand.ModifiedEndPoint, Is.SameAs(orderOfOldOrderTicketEndPoint));
       Assert.That(setOrderOfOldOrderTicketCommand.OldRelatedObject, Is.SameAs(_domainObject));
@@ -201,7 +201,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var orderOfNewOrderTicketEndPoint =
           TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(orderOfNewOrderTicketEndPointID);
 
-      Assert.That(steps[2], Is.InstanceOf(typeof (RealObjectEndPointRegistrationCommandDecorator)));
+      Assert.That(steps[2], Is.InstanceOf(typeof(RealObjectEndPointRegistrationCommandDecorator)));
       var setOrderOfNewOrderTicketCommand = (ObjectEndPointSetCommand) ((RealObjectEndPointRegistrationCommandDecorator) steps[2]).DecoratedCommand;
       Assert.That(setOrderOfNewOrderTicketCommand.ModifiedEndPoint, Is.SameAs(orderOfNewOrderTicketEndPoint));
       Assert.That(setOrderOfNewOrderTicketCommand.OldRelatedObject, Is.SameAs(_newRelatedObject.Order));
@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var orderTicketOfOldOrderOfNewOrderTicketEndPoint =
           TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(orderTicketOfOldOrderOfNewOrderTicketEndPointID);
 
-      Assert.That(steps[3], Is.InstanceOf(typeof (VirtualEndPointStateUpdatedRaisingCommandDecorator)));
+      Assert.That(steps[3], Is.InstanceOf(typeof(VirtualEndPointStateUpdatedRaisingCommandDecorator)));
       var setOrderTicketOfOldOrderOfNewOrderTicketCommand = ((ObjectEndPointSetCommand) ((VirtualEndPointStateUpdatedRaisingCommandDecorator) steps[3]).DecoratedCommand);
       Assert.That(setOrderTicketOfOldOrderOfNewOrderTicketCommand.ModifiedEndPoint, Is.SameAs(((StateUpdateRaisingVirtualObjectEndPointDecorator) orderTicketOfOldOrderOfNewOrderTicketEndPoint).InnerEndPoint));
       Assert.That(setOrderTicketOfOldOrderOfNewOrderTicketCommand.OldRelatedObject, Is.SameAs(_newRelatedObject));

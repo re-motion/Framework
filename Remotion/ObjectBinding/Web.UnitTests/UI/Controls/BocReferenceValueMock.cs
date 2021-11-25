@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 public class BocReferenceValueMock: BocReferenceValue
 {
   public BocReferenceValueMock (IWebServiceFactory webServiceFactory)
-      : base (webServiceFactory)
+      : base(webServiceFactory)
   {
   }
 

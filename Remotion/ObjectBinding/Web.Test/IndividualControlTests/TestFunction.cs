@@ -31,7 +31,7 @@ public class TestFunction: WxeFunction
   private Person _person;
 
   public TestFunction ()
-    : base (new NoneTransactionMode())
+    : base(new NoneTransactionMode())
   {
     
   }
@@ -86,7 +86,7 @@ public class TestFunction: WxeFunction
     if (string.IsNullOrEmpty(UserControl))
       UserControl = "BocBooleanValueUserControl.ascx";
 
-    ExceptionHandler.AppendCatchExceptionTypes(typeof (WxeUserCancelException));
+    ExceptionHandler.AppendCatchExceptionTypes(typeof(WxeUserCancelException));
   }
 
   private void Step2 ()

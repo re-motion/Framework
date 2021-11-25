@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     #region Serialization
 
     public TestableCompleteVirtualEndPointLoadState (FlattenedDeserializationInfo info)
-      : base (info)
+      : base(info)
     {
     }
 

@@ -69,7 +69,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     public ValidationError (Control validatedControl, IValidator validator)
-        : this (validatedControl, validator, null)
+        : this(validatedControl, validator, null)
     {
     }
 
@@ -92,7 +92,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     public ValidationError (Control validatedControl, string validationMessage)
-        : this (validatedControl, validationMessage, null)
+        : this(validatedControl, validationMessage, null)
     {
     }
 

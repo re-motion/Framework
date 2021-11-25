@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     public string FoundControlID { get; private set; }
 
     public LocalIDGenericTestPageParameter ()
-        : base (TestConstants.LocalIDSelectorID, c_parameterCount)
+        : base(TestConstants.LocalIDSelectorID, c_parameterCount)
     {
     }
 

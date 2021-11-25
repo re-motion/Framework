@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classID"/> could not be found in the mapping configuration.
     public ObjectID (string classID, object value)
-      : this (MappingConfiguration.Current.GetClassDefinition(ArgumentUtility.CheckNotNullOrEmpty("classID", classID)), value)
+      : this(MappingConfiguration.Current.GetClassDefinition(ArgumentUtility.CheckNotNullOrEmpty("classID", classID)), value)
     {
     }
 
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
     public ObjectID (Type classType, object value)
-      : this (MappingConfiguration.Current.GetTypeDefinition(ArgumentUtility.CheckNotNull("classType", classType)), value)
+      : this(MappingConfiguration.Current.GetTypeDefinition(ArgumentUtility.CheckNotNull("classType", classType)), value)
     {
     }
 
@@ -258,7 +258,7 @@ namespace Remotion.Data.DomainObjects
       }
       catch (InvalidCastException ex)
       {
-        var message = string.Format("The ObjectID '{0}' cannot be represented as an 'IDomainObjectHandle<{1}>'.", this, typeof (T));
+        var message = string.Format("The ObjectID '{0}' cannot be represented as an 'IDomainObjectHandle<{1}>'.", this, typeof(T));
         throw new ArgumentException(message, "T", ex);
       }
     }
@@ -364,13 +364,13 @@ namespace Remotion.Data.DomainObjects
     {
       Type valueType = value.GetType();
 
-      if (valueType != typeof (Guid) && valueType != typeof (int) && valueType != typeof (string))
+      if (valueType != typeof(Guid) && valueType != typeof(int) && valueType != typeof(string))
         throw CreateArgumentException(argumentName, "Remotion.Data.DomainObjects.ObjectID does not support values of type '{0}'.", valueType);
 
-      if (valueType == typeof (string))
+      if (valueType == typeof(string))
         ArgumentUtility.CheckNotEmpty(argumentName, (string) value);
 
-      if (valueType == typeof (Guid))
+      if (valueType == typeof(Guid))
         ArgumentUtility.CheckNotEmpty(argumentName, (Guid)value);
     }
 
@@ -385,7 +385,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull("info", info);
 
-      var value = info.GetValue("Value", typeof (object));
+      var value = info.GetValue("Value", typeof(object));
       var classID = info.GetString("ClassID");
       var classDefinition = MappingConfiguration.Current.GetClassDefinition(classID);
 

@@ -25,32 +25,32 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
   [TestFixture]
   public class DeclarativeConfigurationBuilderInheritanceTest
   {
-    [Uses (typeof (NullMixin))]
+    [Uses (typeof(NullMixin))]
     public class Base { }
 
     public class Derived : Base { }
 
-    [Uses (typeof (NullMixin2))]
+    [Uses (typeof(NullMixin2))]
     public class DerivedWithOwnMixin : Base { }
 
     public class DerivedDerived : Derived { }
 
-    [Uses (typeof (NullMixin2))]
+    [Uses (typeof(NullMixin2))]
     public class DerivedDerivedWithOwnMixin : Derived { }
 
-    [Uses (typeof (DerivedNullMixin))]
+    [Uses (typeof(DerivedNullMixin))]
     public class DerivedWithOverride : Base { }
 
-    [Uses (typeof (DerivedNullMixin))]
+    [Uses (typeof(DerivedNullMixin))]
     public class DerivedDerivedWithOwnMixinAndOverride : DerivedDerivedWithOwnMixin { }
 
     [Test]
     public void BaseContext ()
     {
       MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(Assembly.GetExecutingAssembly());
-      ClassContext classContext = configuration.GetContext(typeof (Base));
+      ClassContext classContext = configuration.GetContext(typeof(Base));
       Assert.That(classContext, Is.Not.Null);
-      Assert.That(classContext.Mixins.ContainsKey(typeof (NullMixin)), Is.True);
+      Assert.That(classContext.Mixins.ContainsKey(typeof(NullMixin)), Is.True);
       Assert.That(classContext.Mixins.Count, Is.EqualTo(1));
     }
 
@@ -58,9 +58,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public void DerivedContext ()
     {
       MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(Assembly.GetExecutingAssembly());
-      ClassContext classContext = configuration.GetContext(typeof (Derived));
+      ClassContext classContext = configuration.GetContext(typeof(Derived));
       Assert.That(classContext, Is.Not.Null);
-      Assert.That(classContext.Mixins.ContainsKey(typeof (NullMixin)), Is.True);
+      Assert.That(classContext.Mixins.ContainsKey(typeof(NullMixin)), Is.True);
       Assert.That(classContext.Mixins.Count, Is.EqualTo(1));
     }
 
@@ -68,10 +68,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public void DerivedContextWithOwnMixin ()
     {
       MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(Assembly.GetExecutingAssembly());
-      ClassContext classContext = configuration.GetContext(typeof (DerivedWithOwnMixin));
+      ClassContext classContext = configuration.GetContext(typeof(DerivedWithOwnMixin));
       Assert.That(classContext, Is.Not.Null);
-      Assert.That(classContext.Mixins.ContainsKey(typeof (NullMixin)), Is.True);
-      Assert.That(classContext.Mixins.ContainsKey(typeof (NullMixin2)), Is.True);
+      Assert.That(classContext.Mixins.ContainsKey(typeof(NullMixin)), Is.True);
+      Assert.That(classContext.Mixins.ContainsKey(typeof(NullMixin2)), Is.True);
       Assert.That(classContext.Mixins.Count, Is.EqualTo(2));
     }
 
@@ -79,9 +79,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public void DerivedDerivedContext ()
     {
       MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(Assembly.GetExecutingAssembly());
-      ClassContext classContext = configuration.GetContext(typeof (DerivedDerived));
+      ClassContext classContext = configuration.GetContext(typeof(DerivedDerived));
       Assert.That(classContext, Is.Not.Null);
-      Assert.That(classContext.Mixins.ContainsKey(typeof (NullMixin)), Is.True);
+      Assert.That(classContext.Mixins.ContainsKey(typeof(NullMixin)), Is.True);
       Assert.That(classContext.Mixins.Count, Is.EqualTo(1));
     }
 
@@ -89,10 +89,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public void DerivedDerivedContextWithOwnMixin ()
     {
       MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(Assembly.GetExecutingAssembly());
-      ClassContext classContext = configuration.GetContext(typeof (DerivedDerivedWithOwnMixin));
+      ClassContext classContext = configuration.GetContext(typeof(DerivedDerivedWithOwnMixin));
       Assert.That(classContext, Is.Not.Null);
-      Assert.That(classContext.Mixins.ContainsKey(typeof (NullMixin)), Is.True);
-      Assert.That(classContext.Mixins.ContainsKey(typeof (NullMixin2)), Is.True);
+      Assert.That(classContext.Mixins.ContainsKey(typeof(NullMixin)), Is.True);
+      Assert.That(classContext.Mixins.ContainsKey(typeof(NullMixin2)), Is.True);
       Assert.That(classContext.Mixins.Count, Is.EqualTo(2));
     }
 
@@ -100,15 +100,15 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public void DerivedDerivedContextWithOwnMixin_Order1 ()
     {
       var builder = new DeclarativeConfigurationBuilder(null);
-      builder.AddType(typeof (Base));
-      builder.AddType(typeof (Derived));
-      builder.AddType(typeof (DerivedDerivedWithOwnMixin));
+      builder.AddType(typeof(Base));
+      builder.AddType(typeof(Derived));
+      builder.AddType(typeof(DerivedDerivedWithOwnMixin));
 
       MixinConfiguration configuration = builder.BuildConfiguration();
-      ClassContext classContext = configuration.GetContext(typeof (DerivedDerivedWithOwnMixin));
+      ClassContext classContext = configuration.GetContext(typeof(DerivedDerivedWithOwnMixin));
       Assert.That(classContext, Is.Not.Null);
-      Assert.That(classContext.Mixins.ContainsKey(typeof (NullMixin)), Is.True);
-      Assert.That(classContext.Mixins.ContainsKey(typeof (NullMixin2)), Is.True);
+      Assert.That(classContext.Mixins.ContainsKey(typeof(NullMixin)), Is.True);
+      Assert.That(classContext.Mixins.ContainsKey(typeof(NullMixin2)), Is.True);
       Assert.That(classContext.Mixins.Count, Is.EqualTo(2));
     }
 
@@ -116,15 +116,15 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public void DerivedDerivedContextWithOwnMixin_Order2 ()
     {
       var builder = new DeclarativeConfigurationBuilder(null);
-      builder.AddType(typeof (DerivedDerivedWithOwnMixin));
-      builder.AddType(typeof (Derived));
-      builder.AddType(typeof (Base));
+      builder.AddType(typeof(DerivedDerivedWithOwnMixin));
+      builder.AddType(typeof(Derived));
+      builder.AddType(typeof(Base));
 
       MixinConfiguration configuration = builder.BuildConfiguration();
-      ClassContext classContext = configuration.GetContext(typeof (DerivedDerivedWithOwnMixin));
+      ClassContext classContext = configuration.GetContext(typeof(DerivedDerivedWithOwnMixin));
       Assert.That(classContext, Is.Not.Null);
-      Assert.That(classContext.Mixins.ContainsKey(typeof (NullMixin)), Is.True);
-      Assert.That(classContext.Mixins.ContainsKey(typeof (NullMixin2)), Is.True);
+      Assert.That(classContext.Mixins.ContainsKey(typeof(NullMixin)), Is.True);
+      Assert.That(classContext.Mixins.ContainsKey(typeof(NullMixin2)), Is.True);
       Assert.That(classContext.Mixins.Count, Is.EqualTo(2));
     }
 
@@ -133,9 +133,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public void DerivedContextWithOverride ()
     {
       MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(Assembly.GetExecutingAssembly());
-      ClassContext classContext = configuration.GetContext(typeof (DerivedWithOverride));
+      ClassContext classContext = configuration.GetContext(typeof(DerivedWithOverride));
       Assert.That(classContext, Is.Not.Null);
-      Assert.That(classContext.Mixins.ContainsKey(typeof (DerivedNullMixin)), Is.True);
+      Assert.That(classContext.Mixins.ContainsKey(typeof(DerivedNullMixin)), Is.True);
       Assert.That(classContext.Mixins.Count, Is.EqualTo(1));
     }
 
@@ -143,10 +143,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     public void DerivedDerivedContextWithOverrideAndOverride ()
     {
       MixinConfiguration configuration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(Assembly.GetExecutingAssembly());
-      ClassContext classContext = configuration.GetContext(typeof (DerivedDerivedWithOwnMixinAndOverride));
+      ClassContext classContext = configuration.GetContext(typeof(DerivedDerivedWithOwnMixinAndOverride));
       Assert.That(classContext, Is.Not.Null);
-      Assert.That(classContext.Mixins.ContainsKey(typeof (DerivedNullMixin)), Is.True);
-      Assert.That(classContext.Mixins.ContainsKey(typeof (NullMixin2)), Is.True);
+      Assert.That(classContext.Mixins.ContainsKey(typeof(DerivedNullMixin)), Is.True);
+      Assert.That(classContext.Mixins.ContainsKey(typeof(NullMixin2)), Is.True);
       Assert.That(classContext.Mixins.Count, Is.EqualTo(2));
     }
   }

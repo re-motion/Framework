@@ -42,7 +42,7 @@ namespace Remotion.Security
     /// <returns>A new instance of the <see cref="SecurityContext"/> type.</returns>
     public static SecurityContext CreateStateless (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
 
       return new SecurityContext(type, null, null, null, true, new Dictionary<string, EnumWrapper>(), new EnumWrapper[0]);
     }
@@ -73,7 +73,7 @@ namespace Remotion.Security
     public static SecurityContext Create (
         Type type, string owner, string ownerGroup, string ownerTenant, IDictionary<string, Enum> states, ICollection<Enum> abstractRoles)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
       ArgumentUtility.CheckNotNull("states", states);
       ArgumentUtility.CheckNotNull("abstractRoles", abstractRoles);
 
@@ -109,7 +109,7 @@ namespace Remotion.Security
         IDictionary<string, EnumWrapper> states,
         ICollection<EnumWrapper> abstractRoles)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
       ArgumentUtility.CheckNotNull("states", states);
       ArgumentUtility.CheckNotNull("abstractRoles", abstractRoles);
 
@@ -129,7 +129,7 @@ namespace Remotion.Security
           string message = string.Format(
               "Enumerated Type '{0}' cannot be used as an abstract role. Valid abstract roles must have the {1} applied.",
               roleType,
-              typeof (AbstractRoleAttribute).GetFullNameSafe());
+              typeof(AbstractRoleAttribute).GetFullNameSafe());
 
           throw new ArgumentException(message, "abstractRoles");
         }
@@ -152,7 +152,7 @@ namespace Remotion.Security
           string message = string.Format(
               "Enumerated Type '{0}' cannot be used as a security state. Valid security states must have the {1} applied.",
               stateType,
-              typeof (SecurityStateAttribute).GetFullNameSafe());
+              typeof(SecurityStateAttribute).GetFullNameSafe());
 
           throw new ArgumentException(message, "states");
         }

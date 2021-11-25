@@ -50,7 +50,7 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery.IntegrationTests.Specif
       var service = section.CreateTypeDiscoveryService();
       
       var types = service.GetTypes(null, false);
-      Assert.That(types, Has.Member(typeof (Moq.Capture)));
+      Assert.That(types, Has.Member(typeof(Moq.Capture)));
     }
 
     [Test]
@@ -64,7 +64,7 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery.IntegrationTests.Specif
         var service = section.CreateTypeDiscoveryService();
 
         var types = service.GetTypes(null, false);
-        Assert.That(types, Has.Member(typeof (SpecificRootAssembliesAreNotSubjectToApplicationFilterTest)));
+        Assert.That(types, Has.Member(typeof(SpecificRootAssembliesAreNotSubjectToApplicationFilterTest)));
       }
       finally
       {
@@ -81,7 +81,7 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery.IntegrationTests.Specif
 
     private static string GetTestAssemblyName ()
     {
-      return typeof (SpecificRootAssembliesAreNotSubjectToApplicationFilterTest).Assembly.GetName().Name;
+      return typeof(SpecificRootAssembliesAreNotSubjectToApplicationFilterTest).Assembly.GetName().Name;
     }
   }
 }

@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     private readonly IWebDriver _driver;
 
     public ActionsWithWaitSupport (IWebDriver driver)
-        : base (driver)
+        : base(driver)
     {
       ArgumentUtility.CheckNotNull("driver", driver);
 
@@ -78,7 +78,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
               () =>
               {
                 var webDriverWait = new WebDriverWait(_driver, timeout);
-                webDriverWait.IgnoreExceptionTypes(typeof (StaleElementReferenceException));
+                webDriverWait.IgnoreExceptionTypes(typeof(StaleElementReferenceException));
                 webDriverWait.Until(_ => predicate(webElement));
               }));
 

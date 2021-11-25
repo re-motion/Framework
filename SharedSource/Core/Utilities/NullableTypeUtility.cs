@@ -53,7 +53,7 @@ namespace Remotion.Utilities
       if (IsNullableType(type))
         return type;
       else
-        return typeof (Nullable<>).MakeGenericType(type);
+        return typeof(Nullable<>).MakeGenericType(type);
     }
 
     public static Type GetBasicType (Type type)

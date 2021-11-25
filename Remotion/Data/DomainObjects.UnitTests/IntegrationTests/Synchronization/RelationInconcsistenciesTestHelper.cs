@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var domainObject = (TCreated) LifetimeService.NewObject(ClientTransaction.Current, typeof (TCreated), ParamList.Empty);
+        var domainObject = (TCreated) LifetimeService.NewObject(ClientTransaction.Current, typeof(TCreated), ParamList.Empty);
         setter(domainObject, relatedID != null ? (TRelated) LifetimeService.GetObject(ClientTransaction.Current, relatedID, true) : null);
         ClientTransaction.Current.Commit();
 

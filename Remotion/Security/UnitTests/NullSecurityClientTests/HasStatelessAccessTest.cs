@@ -37,7 +37,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void Test_WithParamsArray ()
     {
-      bool hasAccess = _securityClient.HasStatelessAccess(typeof (SecurableObject), AccessType.Get(TestAccessTypes.First));
+      bool hasAccess = _securityClient.HasStatelessAccess(typeof(SecurableObject), AccessType.Get(TestAccessTypes.First));
 
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.EqualTo(true));
@@ -47,7 +47,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     public void Test_WithParamsArray_AndSecurityPrincipal ()
     {
       var securityPrincipal = _securityClient.PrincipalProvider.GetPrincipal();
-      bool hasAccess = _securityClient.HasStatelessAccess(typeof (SecurableObject), securityPrincipal, AccessType.Get(TestAccessTypes.First));
+      bool hasAccess = _securityClient.HasStatelessAccess(typeof(SecurableObject), securityPrincipal, AccessType.Get(TestAccessTypes.First));
 
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.EqualTo(true));
@@ -57,7 +57,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     public void Test_AccessGranted ()
     {
       bool hasAccess = _securityClient.HasStatelessAccess(
-          typeof (SecurableObject),
+          typeof(SecurableObject),
           (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
@@ -71,7 +71,7 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       using (SecurityFreeSection.Activate())
       {
         hasAccess = _securityClient.HasStatelessAccess(
-            typeof (SecurableObject),
+            typeof(SecurableObject),
             (IReadOnlyList<AccessType>) new[] { AccessType.Get(TestAccessTypes.First) });
       }
 

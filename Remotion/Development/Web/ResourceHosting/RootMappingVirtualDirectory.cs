@@ -37,7 +37,7 @@ namespace Remotion.Development.Web.ResourceHosting
         IEnumerable<ResourcePathMapping> mappings,
         DirectoryInfo directoryInfo,
         Func<string, ResourceVirtualDirectory> virtualDirectoryFactory)
-        : base (virtualPath, directoryInfo)
+        : base(virtualPath, directoryInfo)
     {
       ArgumentUtility.CheckNotNullOrEmpty("virtualPath", virtualPath);
       ArgumentUtility.CheckNotNull("mappings", mappings);

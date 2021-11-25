@@ -89,12 +89,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void AttributesOnDerivedTypes ()
     {
-      object[] attributes = typeof (DerivedWithoutAttributes).GetCustomAttributes(true);
+      object[] attributes = typeof(DerivedWithoutAttributes).GetCustomAttributes(true);
       Assert.That(attributes.Length, Is.EqualTo(2));
       Assert.That(
           attributes, Is.EquivalentTo(new object[] {new MultiInheritedAttribute(), new NonMultiInheritedAttribute()}));
 
-      attributes = typeof (DerivedWithAttributes).GetCustomAttributes(true);
+      attributes = typeof(DerivedWithAttributes).GetCustomAttributes(true);
       Assert.That(attributes.Length, Is.EqualTo(5));
 
       Assert.That(attributes, Is.EquivalentTo(new object[] { new MultiInheritedAttribute(), new MultiInheritedAttribute(),
@@ -104,12 +104,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void AttributesOnDerivedMethods ()
     {
-      object[] attributes = typeof (DerivedWithoutAttributes).GetMethod("Method").GetCustomAttributes(true);
+      object[] attributes = typeof(DerivedWithoutAttributes).GetMethod("Method").GetCustomAttributes(true);
       Assert.That(attributes.Length, Is.EqualTo(2));
       Assert.That(
           attributes, Is.EquivalentTo(new object[] { new MultiInheritedAttribute(), new NonMultiInheritedAttribute() }));
 
-      attributes = typeof (DerivedWithAttributes).GetMethod("Method").GetCustomAttributes(true);
+      attributes = typeof(DerivedWithAttributes).GetMethod("Method").GetCustomAttributes(true);
       Assert.That(attributes.Length, Is.EqualTo(5));
 
       Assert.That(attributes, Is.EquivalentTo(new object[] { new MultiInheritedAttribute(), new MultiInheritedAttribute(),
@@ -119,10 +119,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void AttributesOnDerivedProperties ()
     {
-      object[] attributes = typeof (DerivedWithoutAttributes).GetProperty("Property").GetCustomAttributes(true);
+      object[] attributes = typeof(DerivedWithoutAttributes).GetProperty("Property").GetCustomAttributes(true);
       Assert.That(attributes.Length, Is.EqualTo(0));
 
-      attributes = typeof (DerivedWithAttributes).GetProperty("Property").GetCustomAttributes(true);
+      attributes = typeof(DerivedWithAttributes).GetProperty("Property").GetCustomAttributes(true);
       Assert.That(attributes.Length, Is.EqualTo(4));
 
       Assert.That(attributes, Is.EquivalentTo(new object[] { new MultiInheritedAttribute(), 
@@ -132,10 +132,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void AttributesOnDerivedEvents ()
     {
-      object[] attributes = typeof (DerivedWithoutAttributes).GetEvent("Event").GetCustomAttributes(true);
+      object[] attributes = typeof(DerivedWithoutAttributes).GetEvent("Event").GetCustomAttributes(true);
       Assert.That(attributes.Length, Is.EqualTo(0));
 
-      attributes = typeof (DerivedWithAttributes).GetEvent("Event").GetCustomAttributes(true);
+      attributes = typeof(DerivedWithAttributes).GetEvent("Event").GetCustomAttributes(true);
       Assert.That(attributes.Length, Is.EqualTo(4));
 
       Assert.That(attributes, Is.EquivalentTo(new object[] { new MultiInheritedAttribute(), 

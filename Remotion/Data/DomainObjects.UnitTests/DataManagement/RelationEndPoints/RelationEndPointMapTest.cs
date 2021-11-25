@@ -47,8 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _transactionEventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
       _map = new RelationEndPointMap(_transactionEventSinkWithMock);
 
-      _endPointID1 = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order), "Customer");
-      _endPointID2 = RelationEndPointID.Create(DomainObjectIDs.Order3, typeof (Order), "Customer");
+      _endPointID1 = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
+      _endPointID2 = RelationEndPointID.Create(DomainObjectIDs.Order3, typeof(Order), "Customer");
 
       _endPointMock1 = MockRepository.GenerateStrictMock<IRelationEndPoint>();
       _endPointMock1.Stub(stub => stub.ID).Return(_endPointID1);

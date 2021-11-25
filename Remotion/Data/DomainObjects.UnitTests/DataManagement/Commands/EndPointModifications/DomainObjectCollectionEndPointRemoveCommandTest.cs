@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That(steps.Count, Is.EqualTo(2));
 
       // _removedRelatedObject.Customer = null
-      Assert.That(steps[0], Is.InstanceOf(typeof (RealObjectEndPointRegistrationCommandDecorator)));
+      Assert.That(steps[0], Is.InstanceOf(typeof(RealObjectEndPointRegistrationCommandDecorator)));
       var setCustomerCommand = ((ObjectEndPointSetCommand) ((RealObjectEndPointRegistrationCommandDecorator) steps[0]).DecoratedCommand);
       Assert.That(setCustomerCommand.ModifiedEndPoint, Is.SameAs(removedEndPoint));
       Assert.That(setCustomerCommand.OldRelatedObject, Is.SameAs(DomainObject));

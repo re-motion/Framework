@@ -34,7 +34,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _validatedType = typeof (Customer);
+      _validatedType = typeof(Customer);
       _addingPropertyValidationRuleCollector = new IAddingPropertyValidationRuleCollector[0];
       _propertyMetaValidationRuleCollector = new IPropertyMetaValidationRuleCollector[0];
       _removingPropertyValidationRuleCollector = new IRemovingPropertyValidationRuleCollector[0];

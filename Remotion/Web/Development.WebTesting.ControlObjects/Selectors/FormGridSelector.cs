@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       : TypedControlSelectorBase<FormGridControlObject>, ITitleControlSelector<FormGridControlObject>
   {
     public FormGridSelector ()
-        : base ("FormGrid")
+        : base("FormGrid")
     {
     }
 

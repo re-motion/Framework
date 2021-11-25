@@ -30,7 +30,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     {
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof (NullMixin)).EnterScope())
+        using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof(NullMixin)).EnterScope())
         {
           var data = MixinConfiguration.ActiveConfiguration.Validate();
           Assert.That(data.GetNumberOfSuccesses() > 0, Is.True);
@@ -44,7 +44,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     {
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        using (MixinConfiguration.BuildFromActive().ForClass<int>().Clear().AddMixins(typeof (NullMixin)).EnterScope())
+        using (MixinConfiguration.BuildFromActive().ForClass<int>().Clear().AddMixins(typeof(NullMixin)).EnterScope())
         {
           var data = MixinConfiguration.ActiveConfiguration.Validate();
           Assert.That(data.GetNumberOfFailures() > 0, Is.True);
@@ -61,8 +61,8 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     public void ValidateWithGenerics_IgnoresGenerics ()
     {
       using (MixinConfiguration.BuildNew()
-          .ForClass(typeof (KeyValuePair<,>)).Clear().AddMixins(typeof (NullMixin))
-          .ForClass(typeof (UninstantiableGeneric<>)).Clear().AddMixins(typeof (NullMixin))
+          .ForClass(typeof(KeyValuePair<,>)).Clear().AddMixins(typeof(NullMixin))
+          .ForClass(typeof(UninstantiableGeneric<>)).Clear().AddMixins(typeof(NullMixin))
           .EnterScope())
       {
         var data = MixinConfiguration.ActiveConfiguration.Validate();

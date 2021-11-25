@@ -37,17 +37,17 @@ namespace Remotion.Collections
     private Func<TValue>? _createMethod;
 
     public AutoInitDictionary ()
-      : this (null, null)
+      : this(null, null)
     {
     }
 
     public AutoInitDictionary (Func<TValue>? createMethod)
-      : this (createMethod, null)
+      : this(createMethod, null)
     {
     }
 
     public AutoInitDictionary (IEqualityComparer<TKey>? comparer)
-      : this (null, comparer)
+      : this(null, comparer)
     {
     }
 

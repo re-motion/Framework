@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void QueryDefinition ()
     {
-      QueryDefinition queryDefinition = new QueryDefinition("queryID", TestDomainStorageProviderDefinition, "statement", QueryType.Collection, typeof (DomainObjectCollection));
+      QueryDefinition queryDefinition = new QueryDefinition("queryID", TestDomainStorageProviderDefinition, "statement", QueryType.Collection, typeof(DomainObjectCollection));
 
       QueryDefinition deserializedQueryDefinition = Serializer.SerializeAndDeserialize(queryDefinition);
 

@@ -74,7 +74,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
       _mockFunctionalSecurityStrategy
           .Setup(
               _ => _.HasAccess(
-                  typeof (SecurableObject),
+                  typeof(SecurableObject),
                   _mockSecurityProvider.Object,
                   _stubUser.Object,
                   accessTypes))

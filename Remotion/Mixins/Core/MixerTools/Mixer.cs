@@ -38,7 +38,7 @@ namespace Remotion.Mixins.MixerTools
   /// </summary>
   public class Mixer
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (Mixer));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(Mixer));
 
     public static Mixer Create (string assemblyName, string assemblyOutputDirectory, int degreeOfParallelism)
     {

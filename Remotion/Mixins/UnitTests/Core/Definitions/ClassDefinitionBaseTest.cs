@@ -45,32 +45,32 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     [SetUp]
     public void SetUp ()
     {
-      _classDefinition1 = new TestClassDefinition(typeof (BaseType1));
-      _classDefinition2 = new TestClassDefinition(typeof (BT1Mixin1));
+      _classDefinition1 = new TestClassDefinition(typeof(BaseType1));
+      _classDefinition2 = new TestClassDefinition(typeof(BT1Mixin1));
       
-      _methodInfo1 = typeof (BaseType1).GetMethod("VirtualMethod", Type.EmptyTypes);
-      _methodInfo2 = typeof (BT1Mixin1).GetMethod("VirtualMethod");
-      _methodInfo3 = typeof (BT1Mixin2).GetMethod("VirtualMethod");
-      _methodInfoProtected = typeof (ClassWithDifferentMemberVisibilities).GetMethod(
+      _methodInfo1 = typeof(BaseType1).GetMethod("VirtualMethod", Type.EmptyTypes);
+      _methodInfo2 = typeof(BT1Mixin1).GetMethod("VirtualMethod");
+      _methodInfo3 = typeof(BT1Mixin2).GetMethod("VirtualMethod");
+      _methodInfoProtected = typeof(ClassWithDifferentMemberVisibilities).GetMethod(
           "ProtectedMethod", 
           BindingFlags.NonPublic | BindingFlags.Instance);
-      _methodInfoProtectedInternal = typeof (ClassWithDifferentMemberVisibilities).GetMethod(
+      _methodInfoProtectedInternal = typeof(ClassWithDifferentMemberVisibilities).GetMethod(
           "ProtectedInternalMethod", 
           BindingFlags.NonPublic | BindingFlags.Instance);
 
-      _propertyInfoWithGetAndSet = typeof (ClassWithDifferentPropertyKinds).GetProperty("PropertyWithGetAndSet");
-      _propertyInfoWithGet = typeof (ClassWithDifferentPropertyKinds).GetProperty("PropertyWithGet");
-      _propertyInfoWithSet = typeof (ClassWithDifferentPropertyKinds).GetProperty("PropertyWithSet");
+      _propertyInfoWithGetAndSet = typeof(ClassWithDifferentPropertyKinds).GetProperty("PropertyWithGetAndSet");
+      _propertyInfoWithGet = typeof(ClassWithDifferentPropertyKinds).GetProperty("PropertyWithGet");
+      _propertyInfoWithSet = typeof(ClassWithDifferentPropertyKinds).GetProperty("PropertyWithSet");
 
-      _eventInfo1 = typeof (ClassWithEvents).GetEvent("Event1");
-      _eventInfo2 = typeof (ClassWithEvents).GetEvent("Event2");
+      _eventInfo1 = typeof(ClassWithEvents).GetEvent("Event1");
+      _eventInfo2 = typeof(ClassWithEvents).GetEvent("Event2");
     }
 
     [Test]
     public void Initialization_WithGenericParameters ()
     {
       Assert.That(
-          () => new TestClassDefinition(typeof (GenericTargetClass<>)),
+          () => new TestClassDefinition(typeof(GenericTargetClass<>)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "The type Remotion.Mixins.UnitTests.Core.TestDomain.GenericTargetClass`1[T] "
@@ -80,56 +80,56 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     [Test]
     public void GetAdjustedInterfaceMap_MethodDeclaredOnThisType ()
     {
-      var classDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (DerivedImplementingInterface));
-      var mapping = classDefinition.GetAdjustedInterfaceMap(typeof (InterfaceImplementedByDerived));
-      Assert.That(GetTargetMethod(mapping, "Void Bar()"), Is.EqualTo(typeof (DerivedImplementingInterface).GetMethod("Bar")));
+      var classDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(DerivedImplementingInterface));
+      var mapping = classDefinition.GetAdjustedInterfaceMap(typeof(InterfaceImplementedByDerived));
+      Assert.That(GetTargetMethod(mapping, "Void Bar()"), Is.EqualTo(typeof(DerivedImplementingInterface).GetMethod("Bar")));
     }
 
     [Test]
     public void GetAdjustedInterfaceMap_MethodDeclaredOnBaseType ()
     {
-      var classDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (DerivedImplementingInterface));
-      var mapping = classDefinition.GetAdjustedInterfaceMap(typeof (InterfaceImplementedByDerived));
-      Assert.That(GetTargetMethod(mapping, "Void Foo()"), Is.EqualTo(typeof (BaseWithDerivedImplementingInterface).GetMethod("Foo")));
+      var classDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(DerivedImplementingInterface));
+      var mapping = classDefinition.GetAdjustedInterfaceMap(typeof(InterfaceImplementedByDerived));
+      Assert.That(GetTargetMethod(mapping, "Void Foo()"), Is.EqualTo(typeof(BaseWithDerivedImplementingInterface).GetMethod("Foo")));
     }
 
     [Test]
     public void GetdjustedInterfaceMap_MethodDeclaredOnThisType_NonGenericOverload ()
     {
-      var classDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (DerivedImplementingInterface));
-      var mapping = classDefinition.GetAdjustedInterfaceMap(typeof (InterfaceWithGenericOverloadsImplementedByDerived));
+      var classDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(DerivedImplementingInterface));
+      var mapping = classDefinition.GetAdjustedInterfaceMap(typeof(InterfaceWithGenericOverloadsImplementedByDerived));
 
-      var expected = typeof (DerivedImplementingInterface).GetMethods().Where(m => m.ToString() == "Void GBar()").Single();
+      var expected = typeof(DerivedImplementingInterface).GetMethods().Where(m => m.ToString() == "Void GBar()").Single();
       Assert.That(GetTargetMethod(mapping, "Void GBar()"), Is.EqualTo(expected));
     }
 
     [Test]
     public void GetAdjustedInterfaceMap_MethodDeclaredOnThisType_GenericOverload ()
     {
-      var classDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (DerivedImplementingInterface));
-      var mapping = classDefinition.GetAdjustedInterfaceMap(typeof (InterfaceWithGenericOverloadsImplementedByDerived));
+      var classDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(DerivedImplementingInterface));
+      var mapping = classDefinition.GetAdjustedInterfaceMap(typeof(InterfaceWithGenericOverloadsImplementedByDerived));
 
-      var expected = typeof (DerivedImplementingInterface).GetMethods().Where(m => m.ToString() == "Void GBar[T1]()").Single();
+      var expected = typeof(DerivedImplementingInterface).GetMethods().Where(m => m.ToString() == "Void GBar[T1]()").Single();
       Assert.That(GetTargetMethod(mapping, "Void GBar[T]()"), Is.EqualTo(expected));
     }
 
     [Test]
     public void GetAdjustedInterfaceMap_MethodDeclaredOnBaseType_NonGenericOverload ()
     {
-      var classDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (DerivedImplementingInterface));
-      var mapping = classDefinition.GetAdjustedInterfaceMap(typeof (InterfaceWithGenericOverloadsImplementedByDerived));
+      var classDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(DerivedImplementingInterface));
+      var mapping = classDefinition.GetAdjustedInterfaceMap(typeof(InterfaceWithGenericOverloadsImplementedByDerived));
 
-      var expected = typeof (BaseWithDerivedImplementingInterface).GetMethods().Where(m => m.ToString() == "Void GFoo()").Single();
+      var expected = typeof(BaseWithDerivedImplementingInterface).GetMethods().Where(m => m.ToString() == "Void GFoo()").Single();
       Assert.That(GetTargetMethod(mapping, "Void GFoo()"), Is.EqualTo(expected));
     }
 
     [Test]
     public void GetAdjustedInterfaceMap_MethodDeclaredOnBaseType_GenericOverload ()
     {
-      var classDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (DerivedImplementingInterface));
-      var mapping = classDefinition.GetAdjustedInterfaceMap(typeof (InterfaceWithGenericOverloadsImplementedByDerived));
+      var classDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(DerivedImplementingInterface));
+      var mapping = classDefinition.GetAdjustedInterfaceMap(typeof(InterfaceWithGenericOverloadsImplementedByDerived));
 
-      var expected = typeof (BaseWithDerivedImplementingInterface).GetMethods().Where(m => m.ToString() == "Void GFoo[T2]()").Single();
+      var expected = typeof(BaseWithDerivedImplementingInterface).GetMethods().Where(m => m.ToString() == "Void GFoo[T2]()").Single();
       Assert.That(GetTargetMethod(mapping, "Void GFoo[T]()"), Is.EqualTo(expected));
     }
 

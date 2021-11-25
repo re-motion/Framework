@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof (MixinWithAbstractMembers))]
+  [Uses (typeof(MixinWithAbstractMembers))]
   [Serializable]
   public class ClassOverridingMixinMembersProtected
   {

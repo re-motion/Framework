@@ -60,12 +60,12 @@ namespace Remotion.Collections.DataStore
     [return: MaybeNull]
     public TValue GetValueOrDefault (TKey key)
     {
-      return default (TValue)!;
+      return default(TValue)!;
     }
 
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
     {
-      value = default (TValue)!;
+      value = default(TValue)!;
       return false;
     }
 

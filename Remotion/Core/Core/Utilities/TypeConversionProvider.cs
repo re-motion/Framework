@@ -28,7 +28,7 @@ namespace Remotion.Utilities
   ///   Provides functionality to get the <see cref="TypeConverter"/> for a <see cref="Type"/> and to convert a value
   ///   from a source <see cref="Type"/> into a destination <see cref="Type"/>.
   /// </summary>
-  [ImplementationFor (typeof (ITypeConversionProvider), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(ITypeConversionProvider), Lifetime = LifetimeKind.Singleton)]
   public class TypeConversionProvider : ITypeConversionProvider
   {
     private readonly ConcurrentDictionary<Type, TypeConverter?> _typeConverters = new ConcurrentDictionary<Type, TypeConverter?>();
@@ -82,7 +82,7 @@ namespace Remotion.Utilities
       if (converter != null)
         return converter;
 
-      if (type == typeof (string))
+      if (type == typeof(string))
         return _stringConverter;
 
       return null;
@@ -122,7 +122,7 @@ namespace Remotion.Utilities
       ArgumentUtility.CheckNotNull("sourceType", sourceType);
       ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
-      if (sourceType == typeof (DBNull))
+      if (sourceType == typeof(DBNull))
         return NullableTypeUtility.IsNullableType(destinationType);
       
       if (AreUnderlyingTypesEqual(destinationType, sourceType))
@@ -173,7 +173,7 @@ namespace Remotion.Utilities
     [return: NotNullIfNotNull ("value")]
     private object? GetValueOrEmptyString (Type destinationType, object? value)
     {
-      if (destinationType == typeof (string) && value == null)
+      if (destinationType == typeof(string) && value == null)
         return string.Empty;
       return value;
     }
@@ -239,10 +239,10 @@ namespace Remotion.Utilities
       ArgumentUtility.CheckNotNull("sourceType", sourceType);
       ArgumentUtility.CheckNotNull("destinationType", destinationType);
       
-      if (sourceType == typeof (string) && _stringConverter.CanConvertTo(destinationType))
+      if (sourceType == typeof(string) && _stringConverter.CanConvertTo(destinationType))
         return new TypeConverterResult(TypeConverterType.SourceTypeConverter, _stringConverter);
 
-      if (destinationType == typeof (string) && _stringConverter.CanConvertFrom(sourceType))
+      if (destinationType == typeof(string) && _stringConverter.CanConvertFrom(sourceType))
         return new TypeConverterResult(TypeConverterType.DestinationTypeConverter, _stringConverter);
 
       return TypeConverterResult.Empty;

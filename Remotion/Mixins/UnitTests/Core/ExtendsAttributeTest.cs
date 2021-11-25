@@ -26,7 +26,7 @@ namespace Remotion.Mixins.UnitTests.Core
   [TestFixture]
   public class ExtendsAttributeTest
   {
-    private readonly Type _extenderType = typeof (List<>);
+    private readonly Type _extenderType = typeof(List<>);
 
     private MockRepository _mockRepository;
     private MixinConfigurationBuilder _configurationBuilderMock;
@@ -41,30 +41,30 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Initialization_Defaults ()
     {
-      ExtendsAttribute attribute = new ExtendsAttribute(typeof (string));
+      ExtendsAttribute attribute = new ExtendsAttribute(typeof(string));
       Assert.That(attribute.AdditionalDependencies, Is.Empty);
       Assert.That(attribute.SuppressedMixins, Is.Empty);
-      Assert.That(attribute.TargetType, Is.EqualTo(typeof (string)));
+      Assert.That(attribute.TargetType, Is.EqualTo(typeof(string)));
       Assert.That(attribute.IntroducedMemberVisibility, Is.EqualTo(MemberVisibility.Private));
     }
 
     [Test]
     public void IgnoresDuplicates ()
     {
-      var attribute = new ExtendsAttribute(typeof (string));
+      var attribute = new ExtendsAttribute(typeof(string));
       Assert.That(attribute.IgnoresDuplicates, Is.False);
     }
 
     [Test]
     public void Apply ()
     {
-      ExtendsAttribute attribute = new ExtendsAttribute(typeof (object));
+      ExtendsAttribute attribute = new ExtendsAttribute(typeof(object));
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
-                  typeof (object),
+                  typeof(object),
                   _extenderType,
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
@@ -80,14 +80,14 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_SuppressedMixins ()
     {
-      ExtendsAttribute attribute = new ExtendsAttribute(typeof (object));
-      attribute.SuppressedMixins = new[] { typeof (int) };
+      ExtendsAttribute attribute = new ExtendsAttribute(typeof(object));
+      attribute.SuppressedMixins = new[] { typeof(int) };
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
-                  typeof (object),
+                  typeof(object),
                   _extenderType,
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
@@ -103,14 +103,14 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_AdditionalDependencies ()
     {
-      ExtendsAttribute attribute = new ExtendsAttribute(typeof (object));
-      attribute.AdditionalDependencies = new[] { typeof (string) };
+      ExtendsAttribute attribute = new ExtendsAttribute(typeof(object));
+      attribute.AdditionalDependencies = new[] { typeof(string) };
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
-                  typeof (object),
+                  typeof(object),
                   _extenderType,
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
@@ -126,14 +126,14 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_PrivateVisibility ()
     {
-      ExtendsAttribute attribute = new ExtendsAttribute(typeof (object));
+      ExtendsAttribute attribute = new ExtendsAttribute(typeof(object));
       attribute.IntroducedMemberVisibility = MemberVisibility.Private;
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
-                  typeof (object),
+                  typeof(object),
                   _extenderType,
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
@@ -149,14 +149,14 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_PublicVisibility ()
     {
-      ExtendsAttribute attribute = new ExtendsAttribute(typeof (object));
+      ExtendsAttribute attribute = new ExtendsAttribute(typeof(object));
       attribute.IntroducedMemberVisibility = MemberVisibility.Public;
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
-                  typeof (object),
+                  typeof(object),
                   _extenderType,
                   MemberVisibility.Public,
                   attribute.AdditionalDependencies,
@@ -172,17 +172,17 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_Generic ()
     {
-      ExtendsAttribute attribute = new ExtendsAttribute(typeof (object));
-      attribute.SuppressedMixins = new[] { typeof (int) };
-      attribute.AdditionalDependencies = new[] { typeof (string) };
-      attribute.MixinTypeArguments = new[] { typeof (double) };
+      ExtendsAttribute attribute = new ExtendsAttribute(typeof(object));
+      attribute.SuppressedMixins = new[] { typeof(int) };
+      attribute.AdditionalDependencies = new[] { typeof(string) };
+      attribute.MixinTypeArguments = new[] { typeof(double) };
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
-                  typeof (object),
-                  typeof (List<double>),
+                  typeof(object),
+                  typeof(List<double>),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
@@ -197,10 +197,10 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_WrongNumberOfGenericArguments ()
     {
-      var attribute = new ExtendsAttribute(typeof (object));
-      attribute.MixinTypeArguments = new[] { typeof (double), typeof (string) };
+      var attribute = new ExtendsAttribute(typeof(object));
+      attribute.MixinTypeArguments = new[] { typeof(double), typeof(string) };
       Assert.That(
-          () => attribute.Apply(_configurationBuilderMock, typeof (List<>)),
+          () => attribute.Apply(_configurationBuilderMock, typeof(List<>)),
           Throws.InstanceOf<ConfigurationException>()
               .With.Message.EqualTo(
                   "The ExtendsAttribute for target class System.Object applied to mixin type"
@@ -210,10 +210,10 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_WrongNumberOfGenericArguments_NoneExpected ()
     {
-      var attribute = new ExtendsAttribute(typeof (object));
-      attribute.MixinTypeArguments = new[] { typeof (double), typeof (string) };
+      var attribute = new ExtendsAttribute(typeof(object));
+      attribute.MixinTypeArguments = new[] { typeof(double), typeof(string) };
       Assert.That(
-          () => attribute.Apply(_configurationBuilderMock, typeof (object)),
+          () => attribute.Apply(_configurationBuilderMock, typeof(object)),
           Throws.InstanceOf<ConfigurationException>()
               .With.Message.EqualTo(
                   "The ExtendsAttribute for target class System.Object applied to mixin type"
@@ -223,32 +223,32 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_GenericArgumentsPossible_NoneGiven ()
     {
-      var attribute = new ExtendsAttribute(typeof (object));
+      var attribute = new ExtendsAttribute(typeof(object));
 
       _configurationBuilderMock
           .Expect(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
-                  typeof (object),
-                  typeof (List<>),
+                  typeof(object),
+                  typeof(List<>),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
-                  CreateExpectedOrigin(attribute, typeof (List<>))))
+                  CreateExpectedOrigin(attribute, typeof(List<>))))
           .Return(null);
 
       _mockRepository.ReplayAll();
-      attribute.Apply(_configurationBuilderMock, typeof (List<>));
+      attribute.Apply(_configurationBuilderMock, typeof(List<>));
       _mockRepository.VerifyAll();
     }
 
     [Test]
     public void Apply_WrongKindOfGenericArguments ()
     {
-      var attribute = new ExtendsAttribute(typeof (object));
-      attribute.MixinTypeArguments = new[] { typeof (string) };
+      var attribute = new ExtendsAttribute(typeof(object));
+      attribute.MixinTypeArguments = new[] { typeof(string) };
       Assert.That(
-          () => attribute.Apply(_configurationBuilderMock, typeof (Nullable<>)),
+          () => attribute.Apply(_configurationBuilderMock, typeof(Nullable<>)),
           Throws.InstanceOf<ConfigurationException>()
               .With.Message.EqualTo(
                   "The ExtendsAttribute for target class 'System.Object' applied to mixin type 'System.Nullable`1[T]' specified invalid generic type arguments: "
@@ -258,10 +258,10 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_GenericArgumentsAlreadyGiven ()
     {
-      var attribute = new ExtendsAttribute(typeof (object));
-      attribute.MixinTypeArguments = new[] { typeof (string) };
+      var attribute = new ExtendsAttribute(typeof(object));
+      attribute.MixinTypeArguments = new[] { typeof(string) };
       Assert.That(
-          () => attribute.Apply(_configurationBuilderMock, typeof (List<string>)),
+          () => attribute.Apply(_configurationBuilderMock, typeof(List<string>)),
           Throws.InstanceOf<ConfigurationException>()
               .With.Message.EqualTo(
                   "The ExtendsAttribute for target class 'System.Object' applied to mixin type 'System.Collections.Generic.List`1[System.String]' specified "
@@ -271,7 +271,7 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply_InvalidOperation ()
     {
-      var attribute = new ExtendsAttribute(typeof (object));
+      var attribute = new ExtendsAttribute(typeof(object));
 
       _configurationBuilderMock
           .Expect(mock => mock.AddMixinToClass(MixinKind.Extending, null, null, MemberVisibility.Private, null, null, null))

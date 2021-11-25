@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// Responsible for rendering the navigation block of a <see cref="BocList"/>.
   /// </summary>
   /// <remarks>This class should not be instantiated directly. It is meant to be used by a <see cref="BocListRenderer"/>.</remarks>
-  [ImplementationFor (typeof (IBocListNavigationBlockRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IBocListNavigationBlockRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocListNavigationBlockRenderer : RendererBase<BocList>, IBocListNavigationBlockRenderer
   {
     /// <summary> A list of control specific resources. </summary>
@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
         BocListCssClassDefinition cssClasses)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
 
@@ -213,7 +213,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           GetCurrentPageIndexControlID(renderingContext));
       renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock(
           renderingContext.Control,
-          typeof (BocListNavigationBlockRenderer),
+          typeof(BocListNavigationBlockRenderer),
           "Initialize_" + renderingContext.Control.ClientID,
           script);
     }
@@ -291,12 +291,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     protected virtual IResourceManager GetResourceManager (BocListRenderingContext renderingContext)
     {
-      return GetResourceManager(typeof (ResourceIdentifier), renderingContext.Control.GetResourceManager());
+      return GetResourceManager(typeof(ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
 
     private IResourceUrl GetResolvedImageUrl (string imageUrl)
     {
-      return ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocListNavigationBlockRenderer), ResourceType.Image, imageUrl);
+      return ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocListNavigationBlockRenderer), ResourceType.Image, imageUrl);
     }
 
     private string GetCurrentPageNumberControlID (BocListRenderingContext renderingContext)

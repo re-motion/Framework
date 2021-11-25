@@ -30,7 +30,7 @@ namespace Remotion.UnitTests.Reflection.PropertyInfoExtensionsTests
     {
       PropertyInfo propertyInfo = GetPropertyInfo<ClassWithDifferentProperties>("String");
 
-      Assert.That(propertyInfo.GetOriginalDeclaringType(), Is.SameAs(typeof (ClassWithDifferentProperties)));
+      Assert.That(propertyInfo.GetOriginalDeclaringType(), Is.SameAs(typeof(ClassWithDifferentProperties)));
     }
 
     [Test]
@@ -38,7 +38,7 @@ namespace Remotion.UnitTests.Reflection.PropertyInfoExtensionsTests
     {
       PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties>("OtherString");
 
-      Assert.That(propertyInfo.GetOriginalDeclaringType(), Is.SameAs(typeof (DerivedClassWithDifferentProperties)));
+      Assert.That(propertyInfo.GetOriginalDeclaringType(), Is.SameAs(typeof(DerivedClassWithDifferentProperties)));
     }
 
     [Test]
@@ -46,7 +46,7 @@ namespace Remotion.UnitTests.Reflection.PropertyInfoExtensionsTests
     {
       PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties>("String");
 
-      Assert.That(propertyInfo.GetOriginalDeclaringType(), Is.SameAs(typeof (DerivedClassWithDifferentProperties)));
+      Assert.That(propertyInfo.GetOriginalDeclaringType(), Is.SameAs(typeof(DerivedClassWithDifferentProperties)));
     }
 
     [Test]
@@ -54,7 +54,7 @@ namespace Remotion.UnitTests.Reflection.PropertyInfoExtensionsTests
     {
       PropertyInfo propertyInfo = GetPropertyInfo<ClassWithDifferentProperties>("Int32");
 
-      Assert.That(propertyInfo.GetOriginalDeclaringType(), Is.SameAs(typeof (ClassWithDifferentProperties)));
+      Assert.That(propertyInfo.GetOriginalDeclaringType(), Is.SameAs(typeof(ClassWithDifferentProperties)));
     }
 
     [Test]
@@ -62,7 +62,7 @@ namespace Remotion.UnitTests.Reflection.PropertyInfoExtensionsTests
     {
       PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties>("Int32");
 
-      Assert.That(propertyInfo.GetOriginalDeclaringType(), Is.SameAs(typeof (ClassWithDifferentProperties)));
+      Assert.That(propertyInfo.GetOriginalDeclaringType(), Is.SameAs(typeof(ClassWithDifferentProperties)));
     }
 
     [Test]
@@ -70,12 +70,12 @@ namespace Remotion.UnitTests.Reflection.PropertyInfoExtensionsTests
     {
       PropertyInfo propertyInfo = GetPropertyInfo<DerivedOfDerivedClassWithDifferentProperties>("Int32");
 
-      Assert.That(propertyInfo.GetOriginalDeclaringType(), Is.SameAs(typeof (ClassWithDifferentProperties)));
+      Assert.That(propertyInfo.GetOriginalDeclaringType(), Is.SameAs(typeof(ClassWithDifferentProperties)));
     }
 
     private PropertyInfo GetPropertyInfo<T> (string property)
     {
-      return typeof (T).GetProperty(property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+      return typeof(T).GetProperty(property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
     }
   }
 }

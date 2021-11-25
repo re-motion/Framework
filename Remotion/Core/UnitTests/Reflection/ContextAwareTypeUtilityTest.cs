@@ -46,7 +46,7 @@ namespace Remotion.UnitTests.Reflection
       _oldTypeResolutionService = ContextAwareTypeUtility.GetTypeResolutionService();
       _oldTypeResolutionConfiguration = TypeResolutionConfiguration.Current;
 
-      var fields = PrivateInvoke.GetNonPublicStaticField(typeof (ContextAwareTypeUtility), "s_fields");
+      var fields = PrivateInvoke.GetNonPublicStaticField(typeof(ContextAwareTypeUtility), "s_fields");
       Assertion.IsNotNull(fields);
       PrivateInvoke.SetPublicField(
           fields,
@@ -63,7 +63,7 @@ namespace Remotion.UnitTests.Reflection
     [TearDown]
     public void TearDown ()
     {
-      var fields = PrivateInvoke.GetNonPublicStaticField(typeof (ContextAwareTypeUtility), "s_fields");
+      var fields = PrivateInvoke.GetNonPublicStaticField(typeof(ContextAwareTypeUtility), "s_fields");
       Assertion.IsNotNull(fields);
       PrivateInvoke.SetPublicField(
           fields,
@@ -82,17 +82,17 @@ namespace Remotion.UnitTests.Reflection
     public void GetTypeDiscoveryService_ComesFromConfiguration ()
     {
       TypeDiscoveryConfiguration.Current.Mode = TypeDiscoveryMode.CustomTypeDiscoveryService;
-      TypeDiscoveryConfiguration.Current.CustomTypeDiscoveryService.Type = typeof (FakeTypeDiscoveryService);
+      TypeDiscoveryConfiguration.Current.CustomTypeDiscoveryService.Type = typeof(FakeTypeDiscoveryService);
 
       var defaultService = ContextAwareTypeUtility.GetTypeDiscoveryService();
-      Assert.That(defaultService, Is.InstanceOf(typeof (FakeTypeDiscoveryService)));
+      Assert.That(defaultService, Is.InstanceOf(typeof(FakeTypeDiscoveryService)));
     }
 
     [Test]
     public void GetTypeDiscoveryService_Cached ()
     {
       TypeDiscoveryConfiguration.Current.Mode = TypeDiscoveryMode.CustomTypeDiscoveryService;
-      TypeDiscoveryConfiguration.Current.CustomTypeDiscoveryService.Type = typeof (FakeTypeDiscoveryService);
+      TypeDiscoveryConfiguration.Current.CustomTypeDiscoveryService.Type = typeof(FakeTypeDiscoveryService);
 
       var defaultService = ContextAwareTypeUtility.GetTypeDiscoveryService();
       var defaultService2 = ContextAwareTypeUtility.GetTypeDiscoveryService();

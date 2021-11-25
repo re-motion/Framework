@@ -29,15 +29,15 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void LoadArrayElementFromExpression ()
     {
-      var method = GetMethodEmitter(false, typeof (object), new [] { typeof (IArrayProvider), typeof (int) });
+      var method = GetMethodEmitter(false, typeof(object), new [] { typeof(IArrayProvider), typeof(int) });
       method.AddStatement(new ILStatement(delegate (IMemberEmitter member, ILGenerator ilgen)
       {
         ilgen.Emit(OpCodes.Ldarg_1); // array provider
-        ilgen.Emit(OpCodes.Callvirt, typeof (IArrayProvider).GetMethod("GetArray")); // array
-        ilgen.Emit(OpCodes.Castclass, typeof (object[])); // essentially a nop
+        ilgen.Emit(OpCodes.Callvirt, typeof(IArrayProvider).GetMethod("GetArray")); // array
+        ilgen.Emit(OpCodes.Castclass, typeof(object[])); // essentially a nop
         ilgen.Emit(OpCodes.Ldarg_2); // index
-        ilgen.Emit(OpCodes.Ldelem, typeof (object));
-        ilgen.Emit(OpCodes.Castclass, typeof (object));
+        ilgen.Emit(OpCodes.Ldelem, typeof(object));
+        ilgen.Emit(OpCodes.Castclass, typeof(object));
         ilgen.Emit(OpCodes.Ret);
       }));
 

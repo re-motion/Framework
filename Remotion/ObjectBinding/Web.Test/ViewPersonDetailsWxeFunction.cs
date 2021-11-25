@@ -25,7 +25,7 @@ namespace OBWTest
 public class ViewPersonDetailsWxeFunction: WxeFunction
 {
   public ViewPersonDetailsWxeFunction ()
-    :base (new NoneTransactionMode())
+    :base(new NoneTransactionMode())
   {
   }
 

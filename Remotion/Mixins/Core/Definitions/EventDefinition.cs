@@ -30,7 +30,7 @@ namespace Remotion.Mixins.Definitions
     private readonly MethodDefinition _removeMethod;
 
     public EventDefinition (EventInfo memberInfo, ClassDefinitionBase declaringClass, MethodDefinition addMethod, MethodDefinition removeMethod)
-        : base (memberInfo, declaringClass)
+        : base(memberInfo, declaringClass)
     {
       ArgumentUtility.CheckNotNull("addMethod", addMethod);
       ArgumentUtility.CheckNotNull("removeMethod", removeMethod);

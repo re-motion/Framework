@@ -27,7 +27,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
     private readonly Type _referenceType;
 
     public TypeReferenceWrapper (Reference referenceToWrap, Type referenceType)
-      : base (referenceToWrap.OwnerReference, referenceType)
+      : base(referenceToWrap.OwnerReference, referenceType)
     {
       ArgumentUtility.CheckNotNull("referenceToWrap", referenceToWrap);
       ArgumentUtility.CheckNotNull("referenceType", referenceType);

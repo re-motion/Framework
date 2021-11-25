@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(endPoint.IsDataComplete, Is.False);
 
       var loadState = VirtualObjectEndPointTestHelper.GetLoadState(endPoint);
-      Assert.That(loadState, Is.TypeOf(typeof (IncompleteVirtualObjectEndPointLoadState)));
+      Assert.That(loadState, Is.TypeOf(typeof(IncompleteVirtualObjectEndPointLoadState)));
       Assert.That(((IncompleteVirtualObjectEndPointLoadState) loadState).DataManagerFactory, Is.SameAs(_dataManagerFactory));
       Assert.That(
           ((IncompleteVirtualObjectEndPointLoadState) loadState).EndPointLoader,
@@ -298,7 +298,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       
       var newLoadState = VirtualObjectEndPointTestHelper.GetLoadState(_endPoint);
       Assert.That(newLoadState, Is.Not.SameAs(_loadStateMock));
-      Assert.That(newLoadState, Is.TypeOf(typeof (CompleteVirtualObjectEndPointLoadState)));
+      Assert.That(newLoadState, Is.TypeOf(typeof(CompleteVirtualObjectEndPointLoadState)));
 
       Assert.That(((CompleteVirtualObjectEndPointLoadState) newLoadState).DataManager, Is.SameAs(dataManagerStub));
       Assert.That(((CompleteVirtualObjectEndPointLoadState) newLoadState).TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
@@ -341,7 +341,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var newLoadState = VirtualObjectEndPointTestHelper.GetLoadState(_endPoint);
       Assert.That(newLoadState, Is.Not.SameAs(_loadStateMock));
-      Assert.That(newLoadState, Is.TypeOf(typeof (IncompleteVirtualObjectEndPointLoadState)));
+      Assert.That(newLoadState, Is.TypeOf(typeof(IncompleteVirtualObjectEndPointLoadState)));
 
       Assert.That(((IncompleteVirtualObjectEndPointLoadState) newLoadState).DataManagerFactory, Is.SameAs(_dataManagerFactory));
       Assert.That(

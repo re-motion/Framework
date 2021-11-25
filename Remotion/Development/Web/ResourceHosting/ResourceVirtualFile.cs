@@ -30,7 +30,7 @@ namespace Remotion.Development.Web.ResourceHosting
     private readonly FileInfo? _physicalFile;
 
     public ResourceVirtualFile (string virtualPath, FileInfo? physicalFile)
-        : base (virtualPath)
+        : base(virtualPath)
     {
       // TODO RM-8063: The constructor of ResourceVirtualFile should not accept null FileInfo arguments
       ArgumentUtility.CheckNotNullOrEmpty("virtualPath", virtualPath);

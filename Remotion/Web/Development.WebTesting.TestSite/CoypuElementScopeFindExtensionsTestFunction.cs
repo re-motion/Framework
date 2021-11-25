@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class CoypuElementScopeFindExtensionsTestFunction : WxeFunction
   {
     public CoypuElementScopeFindExtensionsTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 

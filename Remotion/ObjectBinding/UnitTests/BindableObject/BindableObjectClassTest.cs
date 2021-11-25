@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       private PropertyCollection _properties;
 
       public StubBindableObjectClass (Type concreteType, BindableObjectProvider businessObjectProvider)
-        : base (concreteType, businessObjectProvider, new PropertyBase[0])
+        : base(concreteType, businessObjectProvider, new PropertyBase[0])
       {
       }
 
@@ -72,12 +72,12 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void Initialize_WithTypeNotUsingBindableObjectMixin ()
     {
       var bindableObjectClass = new BindableObjectClass(
-          MixinTypeUtility.GetConcreteMixedType(typeof (SimpleReferenceType)),
+          MixinTypeUtility.GetConcreteMixedType(typeof(SimpleReferenceType)),
           _bindableObjectProvider,
           _bindableObjectGlobalizationService,
           new PropertyBase[0]);
-      Assert.That(bindableObjectClass.TargetType, Is.EqualTo(typeof (SimpleReferenceType)));
-      Assert.That(bindableObjectClass.ConcreteType, Is.EqualTo(typeof (SimpleReferenceType)));
+      Assert.That(bindableObjectClass.TargetType, Is.EqualTo(typeof(SimpleReferenceType)));
+      Assert.That(bindableObjectClass.ConcreteType, Is.EqualTo(typeof(SimpleReferenceType)));
     }
 
     private void CheckPropertyBase (IBusinessObjectProperty expectedProperty, IBusinessObjectProperty actualProperty)
@@ -93,7 +93,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       Assert.That(expectedProperty.IsRequired, Is.EqualTo(actualProperty.IsRequired), "IsRequired");
       Assert.That(((PropertyBase) actualProperty).ReflectedClass, Is.Not.Null);
 
-      if (typeof (IBusinessObjectStringProperty).IsAssignableFrom(actualProperty.GetType()))
+      if (typeof(IBusinessObjectStringProperty).IsAssignableFrom(actualProperty.GetType()))
         CheckStringProperty((IBusinessObjectStringProperty) actualProperty, expectedProperty);
     }
 
@@ -116,7 +116,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var mockMemberInformationGlobalizationService = new Mock<IMemberInformationGlobalizationService>(MockBehavior.Strict);
       var classReflector = new ClassReflector(
-          typeof (ClassWithAllDataTypes),
+          typeof(ClassWithAllDataTypes),
           _bindableObjectProvider,
           BindableObjectMetadataFactory.Create(),
           new BindableObjectGlobalizationService(
@@ -142,9 +142,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetPropertyDefinition ()
     {
       PropertyReflector propertyReflector =
-          PropertyReflector.Create(GetPropertyInfo(typeof (SimpleBusinessObjectClass), "String"), _bindableObjectProvider);
+          PropertyReflector.Create(GetPropertyInfo(typeof(SimpleBusinessObjectClass), "String"), _bindableObjectProvider);
       var classReflector = new ClassReflector(
-          typeof (ClassWithAllDataTypes),
+          typeof(ClassWithAllDataTypes),
           _bindableObjectProvider,
           BindableObjectMetadataFactory.Create(),
           _bindableObjectGlobalizationService);
@@ -158,11 +158,11 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       PropertyReflector propertyReflector = PropertyReflector.Create(
           GetPropertyInfo(
-              MixinTypeUtility.GetConcreteMixedType(typeof (ClassWithMixedProperty)),
-              typeof (IMixinAddingProperty).FullName + ".MixedProperty"),
+              MixinTypeUtility.GetConcreteMixedType(typeof(ClassWithMixedProperty)),
+              typeof(IMixinAddingProperty).FullName + ".MixedProperty"),
           _bindableObjectProvider);
       var classReflector = new ClassReflector(
-          typeof (ClassWithMixedProperty),
+          typeof(ClassWithMixedProperty),
           _bindableObjectProvider,
           BindableObjectMetadataFactory.Create(),
           _bindableObjectGlobalizationService);
@@ -184,7 +184,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetPropertyDefinition_WithInvalidPropertyName ()
     {
       var classReflector = new ClassReflector(
-          typeof (ClassWithAllDataTypes),
+          typeof(ClassWithAllDataTypes),
           _bindableObjectProvider,
           BindableObjectMetadataFactory.Create(),
           _bindableObjectGlobalizationService);
@@ -204,7 +204,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetPropertyDefinitions ()
     {
-      Type type = typeof (ClassWithReferenceType<SimpleReferenceType>);
+      Type type = typeof(ClassWithReferenceType<SimpleReferenceType>);
       var expectedProperties = new[]
                                {
                                    CreateProperty(type, "Scalar"),
@@ -263,62 +263,62 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void Initialize ()
     {
       var bindableObjectClass = new BindableObjectClass(
-          MixinTypeUtility.GetConcreteMixedType(typeof (SimpleBusinessObjectClass)),
+          MixinTypeUtility.GetConcreteMixedType(typeof(SimpleBusinessObjectClass)),
           _bindableObjectProvider,
           _bindableObjectGlobalizationService,
           new PropertyBase[0]);
 
-      Assert.That(bindableObjectClass.TargetType, Is.SameAs(typeof (SimpleBusinessObjectClass)));
-      Assert.That(bindableObjectClass.ConcreteType, Is.Not.SameAs(typeof (SimpleBusinessObjectClass)));
-      Assert.That(bindableObjectClass.ConcreteType, Is.SameAs(MixinTypeUtility.GetConcreteMixedType(typeof (SimpleBusinessObjectClass))));
+      Assert.That(bindableObjectClass.TargetType, Is.SameAs(typeof(SimpleBusinessObjectClass)));
+      Assert.That(bindableObjectClass.ConcreteType, Is.Not.SameAs(typeof(SimpleBusinessObjectClass)));
+      Assert.That(bindableObjectClass.ConcreteType, Is.SameAs(MixinTypeUtility.GetConcreteMixedType(typeof(SimpleBusinessObjectClass))));
       Assert.That(
           bindableObjectClass.Identifier,
           Is.EqualTo("Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests"));
       Assert.That(bindableObjectClass.RequiresWriteBack, Is.False);
       Assert.That(bindableObjectClass.BusinessObjectProvider, Is.SameAs(_bindableObjectProvider));
-      Assert.That(bindableObjectClass.BusinessObjectProviderAttribute, Is.InstanceOf(typeof (BindableObjectProviderAttribute)));
+      Assert.That(bindableObjectClass.BusinessObjectProviderAttribute, Is.InstanceOf(typeof(BindableObjectProviderAttribute)));
     }
 
     [Test]
     public void Initialize_WithGeneric ()
     {
       var bindableObjectClass = new BindableObjectClass(
-          MixinTypeUtility.GetConcreteMixedType(typeof (ClassWithReferenceType<SimpleReferenceType>)),
+          MixinTypeUtility.GetConcreteMixedType(typeof(ClassWithReferenceType<SimpleReferenceType>)),
           _bindableObjectProvider,
           _bindableObjectGlobalizationService,
           new PropertyBase[0]);
 
-      Assert.That(bindableObjectClass.TargetType, Is.SameAs(typeof (ClassWithReferenceType<SimpleReferenceType>)));
+      Assert.That(bindableObjectClass.TargetType, Is.SameAs(typeof(ClassWithReferenceType<SimpleReferenceType>)));
     }
 
     [Test]
     public void Initialize_WithTypeDerivedFromBindableObjectBase ()
     {
       var bindableObjectClass = new BindableObjectClass(
-          typeof (ClassDerivedFromBindableObjectBase),
+          typeof(ClassDerivedFromBindableObjectBase),
           _bindableObjectProvider,
           _bindableObjectGlobalizationService,
           new PropertyBase[0]);
-      Assert.That(bindableObjectClass.TargetType, Is.EqualTo(typeof (ClassDerivedFromBindableObjectBase)));
-      Assert.That(bindableObjectClass.ConcreteType, Is.EqualTo(typeof (ClassDerivedFromBindableObjectBase)));
+      Assert.That(bindableObjectClass.TargetType, Is.EqualTo(typeof(ClassDerivedFromBindableObjectBase)));
+      Assert.That(bindableObjectClass.ConcreteType, Is.EqualTo(typeof(ClassDerivedFromBindableObjectBase)));
     }
 
     [Test]
     public void Initialize_WithUnmixedType ()
     {
       var bindableObjectClass = new BindableObjectClass(
-          typeof (ManualBusinessObject),
+          typeof(ManualBusinessObject),
           _bindableObjectProvider,
           _bindableObjectGlobalizationService,
           new PropertyBase[0]);
-      Assert.That(bindableObjectClass.TargetType, Is.EqualTo(typeof (ManualBusinessObject)));
-      Assert.That(bindableObjectClass.ConcreteType, Is.EqualTo(typeof (ManualBusinessObject)));
+      Assert.That(bindableObjectClass.TargetType, Is.EqualTo(typeof(ManualBusinessObject)));
+      Assert.That(bindableObjectClass.ConcreteType, Is.EqualTo(typeof(ManualBusinessObject)));
     }
 
     [Test]
     public void SetPropertyDefinitions ()
     {
-      Type type = typeof (ClassWithReferenceType<SimpleReferenceType>);
+      Type type = typeof(ClassWithReferenceType<SimpleReferenceType>);
       var expectedProperties = new[] { CreateProperty(type, "Scalar"), CreateProperty(type, "ReadOnlyScalar"), };
 
       var bindableObjectClass = new BindableObjectClass(
@@ -335,7 +335,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     private StubBindableObjectClass CreateStubBindableObjectClass (PropertyBase property)
     {
-      var bindableObjectClass = new StubBindableObjectClass(typeof (ClassWithAllDataTypes), _bindableObjectProvider);
+      var bindableObjectClass = new StubBindableObjectClass(typeof(ClassWithAllDataTypes), _bindableObjectProvider);
       bindableObjectClass.SetProperties(new PropertyCollection(new[] { property }));
       return bindableObjectClass;
     }
@@ -346,9 +346,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           new PropertyBase.Parameters(
               new BindableObjectProvider(
                   new Mock<IMetadataFactory>().Object, new Mock<IBusinessObjectServiceFactory>().Object),
-              GetPropertyInfo(typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
-              typeof (SimpleReferenceType),
-              new Lazy<Type>(() => typeof (SimpleReferenceType)),
+              GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
+              typeof(SimpleReferenceType),
+              new Lazy<Type>(() => typeof(SimpleReferenceType)),
               null,
               true,
               false,

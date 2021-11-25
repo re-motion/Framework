@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
   public class DropDownMenuSelector : TypedControlSelectorBase<DropDownMenuControlObject>, ITextContentControlSelector<DropDownMenuControlObject>
   {
     public DropDownMenuSelector ()
-        : base ("DropDownMenu")
+        : base("DropDownMenu")
     {
     }
 

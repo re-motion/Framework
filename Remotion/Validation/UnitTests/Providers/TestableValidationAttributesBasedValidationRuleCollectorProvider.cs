@@ -26,7 +26,7 @@ namespace Remotion.Validation.UnitTests.Providers
   public class TestableValidationAttributesBasedValidationRuleCollectorProvider : ValidationAttributesBasedValidationRuleCollectorProvider
   {
     public TestableValidationAttributesBasedValidationRuleCollectorProvider (IValidationMessageFactory validationMessageFactory)
-        : base (validationMessageFactory)
+        : base(validationMessageFactory)
     {
     }
 

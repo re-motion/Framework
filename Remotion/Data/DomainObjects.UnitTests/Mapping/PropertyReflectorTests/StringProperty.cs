@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithStringProperties.NoAttribute"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (string)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(string)));
       Assert.That(actual.IsNullable, Is.False);
       Assert.That(actual.MaxLength, Is.Null);
       Assert.That(actual.DefaultValue, Is.EqualTo(string.Empty));
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithStringProperties.NullableFromAttribute"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (string)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(string)));
       Assert.That(actual.IsNullable, Is.True);
       Assert.That(actual.MaxLength, Is.Null);
       Assert.That(actual.DefaultValue, Is.EqualTo(null));
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithStringProperties.MaximumLength"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (string)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(string)));
       Assert.That(actual.IsNullable, Is.True);
       Assert.That(actual.MaxLength, Is.EqualTo(100));
       Assert.That(actual.DefaultValue, Is.EqualTo(null));
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithStringProperties.NotNullableAndMaximumLength"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (string)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(string)));
       Assert.That(actual.IsNullable, Is.False);
       Assert.That(actual.MaxLength, Is.EqualTo(100));
       Assert.That(actual.DefaultValue, Is.EqualTo(string.Empty));

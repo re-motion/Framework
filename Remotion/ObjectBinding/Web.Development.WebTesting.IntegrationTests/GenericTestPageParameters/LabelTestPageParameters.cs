@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     public string ControlNotInFormGridHtmlId { get; private set; }
 
     public LabelTestPageParameters ()
-        : base (TestConstants.LabelTestsID, c_parameterCount)
+        : base(TestConstants.LabelTestsID, c_parameterCount)
     {
     }
 

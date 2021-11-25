@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Provider.StorageProviderDefinition,
           "SELECT NULL AS [ID], NULL As [ClassID] FROM [Order] WHERE [Order].[OrderNo] IN (1, 2)",
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
 
       var orderContainers = Provider.ExecuteCollectionQuery(query);
       Assert.That(orderContainers, Is.EqualTo(new DataContainer[] { null, null }));
@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Provider.StorageProviderDefinition,
           "SELECT NULL AS [ID], NULL As [ClassID] FROM [TableWithAllDataTypes] WHERE LEN (@parameter) > 0",
           queryParameterCollection,
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
 
       var orderContainers = Provider.ExecuteCollectionQuery(query);
       Assert.That(orderContainers, Is.EqualTo(new DataContainer[] { null, null }));

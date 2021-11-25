@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     private static readonly Lazy<FieldInfo> s_knownCapabilityNamesField = new Lazy<FieldInfo>(
         () =>
         {
-          var knownCapabilityNamesField = typeof (DriverOptions).GetField("knownCapabilityNames", BindingFlags.Instance | BindingFlags.NonPublic);
+          var knownCapabilityNamesField = typeof(DriverOptions).GetField("knownCapabilityNames", BindingFlags.Instance | BindingFlags.NonPublic);
           Assertion.IsNotNull(knownCapabilityNamesField, "Selenium has changed, please update s_knownCapabilityNamesField field.");
           return knownCapabilityNamesField;
         },
@@ -68,14 +68,14 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
     public ChromeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection)
-        : this (webTestConfigurationSection, s_chromeExecutable.Value)
+        : this(webTestConfigurationSection, s_chromeExecutable.Value)
     {
     }
 
     public ChromeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection,
         [NotNull] ChromeExecutable chromeExecutable)
-        : base (webTestConfigurationSection)
+        : base(webTestConfigurationSection)
     {
       ArgumentUtility.CheckNotNull("webTestConfigurationSection", webTestConfigurationSection);
       ArgumentUtility.CheckNotNull("chromeExecutable", chromeExecutable);

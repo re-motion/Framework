@@ -27,7 +27,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
     private HtmlTextWriterTag _tag;
 
     public HtmlTextWriterSingleTagMock ()
-        : base (new StringWriter())
+        : base(new StringWriter())
     {
     }
 

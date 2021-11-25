@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         IDomainObjectCreator instanceCreator = null)
     {
       id = id ?? "Test";
-      classType = classType ?? typeof (Order);
+      classType = classType ?? typeof(Order);
       var defaultStorageClassNotNullable = defaultStorageClass ?? DefaultStorageClass.Persistent;
       persistentMixinFinder = persistentMixinFinder ?? new PersistentMixinFinderStub(classType, Type.EmptyTypes);
       instanceCreator = instanceCreator ?? MockRepository.GenerateStrictMock<IDomainObjectCreator>();

@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private readonly IBocListRowControlObjectHostAccessor _accessor;
 
     public BocListRowFunctionality (IBocListRowControlObjectHostAccessor accessor, [NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
       _accessor = accessor;
     }
@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public TCellControlObject GetCellWithColumnIndex<TCellControlObject> (int oneBasedIndex)
     {
       var cellScope = Scope.FindTagWithAttribute("td", DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedIndex.ToString());
-      return (TCellControlObject) Activator.CreateInstance(typeof (TCellControlObject), new object[] { Context.CloneForControl(cellScope) })!;
+      return (TCellControlObject) Activator.CreateInstance(typeof(TCellControlObject), new object[] { Context.CloneForControl(cellScope) })!;
     }
 
     /// <inheritdoc/>

@@ -29,7 +29,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void FailsIfImplementingIMixinTarget ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType1), typeof (MixinImplementingIMixinTarget));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(BaseType1), typeof(MixinImplementingIMixinTarget));
       var log = Validator.Validate(definition);
 
       Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.IMixinTargetCannotBeIntroduced", log), Is.True);
@@ -38,7 +38,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void FailsIfIntroducedInterfaceNotVisible ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType2), typeof (MixinIntroducingInternalInterface));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(BaseType2), typeof(MixinIntroducingInternalInterface));
       var log = Validator.Validate(definition);
 
       Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.IntroducedInterfaceMustBePublic", log), Is.True);

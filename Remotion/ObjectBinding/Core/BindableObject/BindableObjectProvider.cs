@@ -96,12 +96,12 @@ namespace Remotion.ObjectBinding.BindableObject
 
     private static bool IsBindableObjectBaseClass (Type type)
     {
-      return typeof (IBusinessObject).IsAssignableFrom(type) && AttributeUtility.IsDefined(type, typeof (BindableObjectBaseClassAttribute), true);
+      return typeof(IBusinessObject).IsAssignableFrom(type) && AttributeUtility.IsDefined(type, typeof(BindableObjectBaseClassAttribute), true);
     }
 
     private static bool HasBindableObjectMixin (Type type)
     {
-      return MixinTypeUtility.HasAscribableMixin(type, typeof (BindableObjectMixinBase<>));
+      return MixinTypeUtility.HasAscribableMixin(type, typeof(BindableObjectMixinBase<>));
     }
 
     private static Type FindProviderAttributeType (Type type)
@@ -114,16 +114,16 @@ namespace Remotion.ObjectBinding.BindableObject
         var message = string.Format(
             "The type '{0}' does not have the '{1}' applied.",
             type.GetFullNameSafe(),
-            typeof (BusinessObjectProviderAttribute).GetFullNameSafe());
+            typeof(BusinessObjectProviderAttribute).GetFullNameSafe());
         throw new ArgumentException(message, "type");
       }
 
-      if (!TypeExtensions.CanAscribeTo(attribute.BusinessObjectProviderType, typeof (BindableObjectProvider)))
+      if (!TypeExtensions.CanAscribeTo(attribute.BusinessObjectProviderType, typeof(BindableObjectProvider)))
       {
         var message = string.Format(
             "The business object provider associated with the type '{0}' is not of type '{1}'.",
             type.GetFullNameSafe(),
-            typeof (BindableObjectProvider).GetFullNameSafe());
+            typeof(BindableObjectProvider).GetFullNameSafe());
         throw new ArgumentException(message, "type");
       }
 
@@ -138,17 +138,17 @@ namespace Remotion.ObjectBinding.BindableObject
     private readonly Func<Type, BindableObjectClass> _createBindableObjectClassFunc;
 
     public BindableObjectProvider ()
-        : this (BindableObjectMetadataFactory.Create(), BindableObjectServiceFactory.Create())
+        : this(BindableObjectMetadataFactory.Create(), BindableObjectServiceFactory.Create())
     {
     }
 
     protected BindableObjectProvider (IMetadataFactory metadataFactory)
-        : this (metadataFactory, BindableObjectServiceFactory.Create())
+        : this(metadataFactory, BindableObjectServiceFactory.Create())
     {
     }
 
     public BindableObjectProvider (IMetadataFactory metadataFactory, IBusinessObjectServiceFactory serviceFactory)
-        : base (serviceFactory)
+        : base(serviceFactory)
     {
       ArgumentUtility.CheckNotNull("metadataFactory", metadataFactory);
       ArgumentUtility.CheckNotNull("serviceFactory", serviceFactory);

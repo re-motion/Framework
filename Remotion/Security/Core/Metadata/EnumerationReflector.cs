@@ -72,7 +72,7 @@ namespace Remotion.Security.Metadata
         info = new EnumValueInfo(TypeUtility.GetPartialAssemblyQualifiedName(value.GetType()), name, Convert.ToInt32(value));
         FieldInfo? fieldInfo = value.GetType().GetField(name, BindingFlags.Static | BindingFlags.Public);
         Assertion.DebugIsNotNull(fieldInfo, "Field '{0}' was not found on type '{1}'.", name, value.GetType());
-        PermanentGuidAttribute? attribute = (PermanentGuidAttribute?) Attribute.GetCustomAttribute(fieldInfo, typeof (PermanentGuidAttribute), false);
+        PermanentGuidAttribute? attribute = (PermanentGuidAttribute?) Attribute.GetCustomAttribute(fieldInfo, typeof(PermanentGuidAttribute), false);
         if (attribute != null)
           info.ID = attribute.Value.ToString();
 

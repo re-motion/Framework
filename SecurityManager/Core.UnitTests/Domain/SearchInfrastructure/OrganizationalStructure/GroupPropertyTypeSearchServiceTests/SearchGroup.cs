@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       base.SetUp();
 
       _searchService = new GroupPropertyTypeSearchService();
-      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (Role));
+      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
       _property = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition("Group");
       Assert.That(_property, Is.Not.Null);
 

@@ -36,7 +36,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
   /// </remarks>
   public class FilteringAssemblyLoader : IAssemblyLoader
   {
-    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof (FilteringAssemblyLoader)));
+    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof(FilteringAssemblyLoader)));
 
     private readonly IAssemblyLoaderFilter _filter;
 
@@ -112,7 +112,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
             assemblyDescriptionText);
         s_log.Value.DebugFormat(ex, "The file {0} triggered a BadImageFormatException.", assemblyDescriptionText);
 
-        return default (T)!;
+        return default(T)!;
       }
       catch (FileLoadException ex)
       {
@@ -120,7 +120,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
             ex,
             "The assembly {0} triggered a FileLoadException and will be ignored - maybe the assembly is DelaySigned, but signing has not been completed?",
             assemblyDescriptionText);
-        return default (T)!;
+        return default(T)!;
       }
       catch (FileNotFoundException ex)
       {
@@ -133,7 +133,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
         if (assemblyDescription.Contains("System.IdentityModel.Selectors"))
         {
           s_log.Value.WarnFormat(message, ex);
-          return default (T)!;
+          return default(T)!;
         }
 
         throw new AssemblyLoaderException(message, ex);

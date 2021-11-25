@@ -62,17 +62,17 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
 
     public void ExpectMemberResolverGetMethodInformation (string methodName, MemberAffiliation memberAffiliation, IMethodInformation returnValue)
     {
-      _mockMemberResolver.Setup(_ => _.GetMethodInformation(typeof (SecurableObject), methodName, memberAffiliation)).Returns(returnValue).Verifiable();
+      _mockMemberResolver.Setup(_ => _.GetMethodInformation(typeof(SecurableObject), methodName, memberAffiliation)).Returns(returnValue).Verifiable();
     }
 
     public void ExpectMemberResolverGetMethodInformation (MethodInfo methodInfo, MemberAffiliation memberAffiliation, IMethodInformation returnValue)
     {
-      _mockMemberResolver.Setup(_ => _.GetMethodInformation(typeof (SecurableObject), methodInfo, memberAffiliation)).Returns(returnValue).Verifiable();
+      _mockMemberResolver.Setup(_ => _.GetMethodInformation(typeof(SecurableObject), methodInfo, memberAffiliation)).Returns(returnValue).Verifiable();
     }
 
     public void ExpectPermissionReflectorGetRequiredMethodPermissions (IMethodInformation methodInformation, params Enum[] returnValue)
     {
-      _mockPermissionReflector.Setup(_ => _.GetRequiredMethodPermissions(typeof (SecurableObject), methodInformation)).Returns(returnValue).Verifiable();
+      _mockPermissionReflector.Setup(_ => _.GetRequiredMethodPermissions(typeof(SecurableObject), methodInformation)).Returns(returnValue).Verifiable();
     }
 
     public void ExpectObjectSecurityStrategyHasAccess (Enum requiredAccessType, bool returnValue)
@@ -102,7 +102,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       var value = ConvertAccessTypeEnums(requiredAccessTypes);
       _mockFunctionalSecurityStrategy
           .Setup(_ => _.HasAccess(
-                  typeof (SecurableObject),
+                  typeof(SecurableObject),
                   _mockSecurityProvider.Object,
                   _userStub.Object,
                   value))

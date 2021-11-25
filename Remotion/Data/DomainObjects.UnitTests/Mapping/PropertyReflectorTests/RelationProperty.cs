@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithRealRelationEndPoints.NoAttributeForDomainObjectCollection"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (ObjectID)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(ObjectID)));
       Assert.That(actual.IsNullable, Is.True);
       Assert.That(actual.MaxLength, Is.Null);
       Assert.That(actual.DefaultValue, Is.EqualTo(null));
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithRealRelationEndPoints.NotNullableForVirtualCollection"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (ObjectID)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(ObjectID)));
       Assert.That(actual.IsNullable, Is.True);
       Assert.That(actual.MaxLength, Is.Null);
       Assert.That(actual.DefaultValue, Is.EqualTo(null));

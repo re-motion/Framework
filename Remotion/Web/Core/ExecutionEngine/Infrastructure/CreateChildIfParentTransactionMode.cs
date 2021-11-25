@@ -25,7 +25,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   public class CreateChildIfParentTransactionMode : CreateRootTransactionMode
   {
     public CreateChildIfParentTransactionMode (bool autoCommit, ITransactionFactory transactionFactory)
-      :base (autoCommit, transactionFactory)
+      :base(autoCommit, transactionFactory)
     {
     }
 

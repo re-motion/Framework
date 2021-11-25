@@ -63,13 +63,13 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     {
       get 
       { 
-        return Properties[typeof (BindableDomainObjectWithProperties),
-            typeof (IBindableDomainObjectWithProperties).FullName + ".RequiredStringPropertyExplicitInInterface"].GetValue<string>(); 
+        return Properties[typeof(BindableDomainObjectWithProperties),
+            typeof(IBindableDomainObjectWithProperties).FullName + ".RequiredStringPropertyExplicitInInterface"].GetValue<string>(); 
       }
       set 
       {
-        Properties[typeof (BindableDomainObjectWithProperties), 
-            typeof (IBindableDomainObjectWithProperties).FullName + ".RequiredStringPropertyExplicitInInterface"].SetValue(value);
+        Properties[typeof(BindableDomainObjectWithProperties), 
+            typeof(IBindableDomainObjectWithProperties).FullName + ".RequiredStringPropertyExplicitInInterface"].SetValue(value);
       }
     }
 

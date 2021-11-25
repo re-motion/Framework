@@ -52,7 +52,7 @@ namespace Remotion.Web.UI
     }
 
     private static readonly SafeContextSingleton<HtmlHeadAppender> s_current =
-        new SafeContextSingleton<HtmlHeadAppender>(typeof (HtmlHeadAppender).GetAssemblyQualifiedNameChecked() + "_Current", () => new HtmlHeadAppender());
+        new SafeContextSingleton<HtmlHeadAppender>(typeof(HtmlHeadAppender).GetAssemblyQualifiedNameChecked() + "_Current", () => new HtmlHeadAppender());
 
     /// <summary>
     ///   Gets the <see cref="HtmlHeadAppender"/> instance.

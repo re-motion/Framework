@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
       : MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface,
           IDerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface
   {
-    private static readonly Type s_type = typeof (DerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface);
+    private static readonly Type s_type = typeof(DerivedMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface);
 
     public override string PropertyWithNullableStringPropertyAttribute
     {

@@ -52,9 +52,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     /// <remarks>Be sure to call this base constructor from the deserialization constructor of any concrete <see cref="BindableDomainObject"/> type
     /// implementing the <see cref="ISerializable"/> interface.</remarks>
     protected BindableDomainObject (SerializationInfo info, StreamingContext context)
-      : base (info, context)
+      : base(info, context)
     {
-      _implementation = (IBindableDomainObjectImplementation) info.GetValue("BDO._implementation", typeof (IBindableDomainObjectImplementation));
+      _implementation = (IBindableDomainObjectImplementation) info.GetValue("BDO._implementation", typeof(IBindableDomainObjectImplementation));
     }
 
     protected new void BaseGetObjectData (SerializationInfo info, StreamingContext context)

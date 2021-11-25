@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
 
       foreach (ClassDefinition classDefinition in inheritanceRootClasses)
       {
-        if (typeof (OrderViewModel).IsAssignableFrom(classDefinition.ClassType))
+        if (typeof(OrderViewModel).IsAssignableFrom(classDefinition.ClassType))
         {
           var persistenceModelLoader = nonPersistentStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
               nonPersistentStorageProviderDefinition,
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
       var classDefinitionChecker = new ClassDefinitionChecker();
       classDefinitionChecker.Check(FakeMappingConfiguration.Current.TypeDefinitions.Values, actualClassDefinitions, false, true);
       classDefinitionChecker.CheckPersistenceModel(FakeMappingConfiguration.Current.TypeDefinitions.Values, actualClassDefinitions);
-      Assert.That(actualClassDefinitions.ContainsKey(typeof (TestDomainBase)), Is.False);
+      Assert.That(actualClassDefinitions.ContainsKey(typeof(TestDomainBase)), Is.False);
     }
   }
 }

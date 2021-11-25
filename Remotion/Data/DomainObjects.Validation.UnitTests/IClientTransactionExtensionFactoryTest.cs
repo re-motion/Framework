@@ -42,11 +42,11 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
       Assert.That(factory, Is.TypeOf<CompoundClientTransactionExtensionFactory>());
       var clientTransactionExtensionFactories = ((CompoundClientTransactionExtensionFactory) factory).ClientTransactionExtensionFactories;
       var factoryTypes = clientTransactionExtensionFactories.Select(f => f.GetType()).ToList();
-      Assert.That(factoryTypes, Has.Member(typeof (ValidationClientTransactionExtensionFactory)));
-      Assert.That(factoryTypes, Has.Member(typeof (CommitValidationClientTransactionExtensionFactory)));
+      Assert.That(factoryTypes, Has.Member(typeof(ValidationClientTransactionExtensionFactory)));
+      Assert.That(factoryTypes, Has.Member(typeof(CommitValidationClientTransactionExtensionFactory)));
       Assert.That(
-          factoryTypes.IndexOf(typeof (ValidationClientTransactionExtensionFactory)),
-          Is.LessThan(factoryTypes.IndexOf(typeof (CommitValidationClientTransactionExtensionFactory))));
+          factoryTypes.IndexOf(typeof(ValidationClientTransactionExtensionFactory)),
+          Is.LessThan(factoryTypes.IndexOf(typeof(CommitValidationClientTransactionExtensionFactory))));
     }
   }
 }

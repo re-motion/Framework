@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         Assert.That(obj.State.IsNotLoadedYet, Is.True);
-        Assert.That(obj.Properties[typeof (Order) + ".OrderNumber"].GetOriginalValue<int>(), Is.EqualTo(obj.OrderNumber));
+        Assert.That(obj.Properties[typeof(Order) + ".OrderNumber"].GetOriginalValue<int>(), Is.EqualTo(obj.OrderNumber));
         Assert.That(obj.State.IsUnchanged, Is.True);
       }
       Assert.That(obj.State.IsChanged, Is.True);
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         Assert.That(obj.State.IsNotLoadedYet, Is.True);
-        Assert.That(obj.Properties[typeof (Order) + ".OrderItems"].GetOriginalValue<ObjectList<OrderItem>>().Count, Is.EqualTo(obj.OrderItems.Count));
+        Assert.That(obj.Properties[typeof(Order) + ".OrderItems"].GetOriginalValue<ObjectList<OrderItem>>().Count, Is.EqualTo(obj.OrderItems.Count));
         Assert.That(obj.State.IsUnchanged, Is.True);
       }
       Assert.That(obj.State.IsChanged, Is.True);
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         Assert.That(obj.State.IsNotLoadedYet, Is.True);
-        Assert.That(obj.Properties[typeof (Computer) + ".Employee"].GetOriginalValue<Employee>(), Is.EqualTo(obj.Employee));
+        Assert.That(obj.Properties[typeof(Computer) + ".Employee"].GetOriginalValue<Employee>(), Is.EqualTo(obj.Employee));
         Assert.That(obj.State.IsUnchanged, Is.True);
       }
       Assert.That(obj.State.IsChanged, Is.True);
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         Assert.That(obj.State.IsNotLoadedYet, Is.True);
-        Assert.That(obj.Properties[typeof (Employee) + ".Computer"].GetOriginalValue<Computer>(), Is.EqualTo(obj.Computer));
+        Assert.That(obj.Properties[typeof(Employee) + ".Computer"].GetOriginalValue<Computer>(), Is.EqualTo(obj.Computer));
         Assert.That(obj.State.IsUnchanged, Is.True);
       }
       Assert.That(obj.State.IsChanged, Is.True);

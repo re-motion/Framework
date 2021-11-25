@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
   /// Implements the <see cref="IBocTextValueValidatorFactory"/> inteface and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
   /// </summary>
   /// <seealso cref="IBocTextValueValidatorFactory"/>
-  [ImplementationFor (typeof (IBocTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
+  [ImplementationFor (typeof(IBocTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class BocTextValueValidatorFactory : IBocTextValueValidatorFactory
   {
     public const int Position = 0;
@@ -133,7 +133,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         default:
         {
           throw new InvalidOperationException(
-              "BocTextValue '" + control.ID + "': Cannot convert " + valueType + " to type " + typeof (ValidationDataType).GetFullNameSafe() + ".");
+              "BocTextValue '" + control.ID + "': Cannot convert " + valueType + " to type " + typeof(ValidationDataType).GetFullNameSafe() + ".");
         }
       }
     }

@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding
   public sealed class BindableObjectWithIdentityAttribute : UsesAttribute
   {
     public BindableObjectWithIdentityAttribute ()
-        : base (typeof (BindableObjectWithIdentityMixin))
+        : base(typeof(BindableObjectWithIdentityMixin))
     {
     }
   }

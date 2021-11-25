@@ -19,14 +19,14 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
-  [Uses (typeof (MixinAddingInterfaceAlsoImplementedOnTargetClass))]
+  [Uses (typeof(MixinAddingInterfaceAlsoImplementedOnTargetClass))]
   [DBTable ("MixedDomains_TargetClassWithSameInterfaceAsPersistentMixin")]
   public class TargetClassWithSameInterfaceAsPersistentMixin : DomainObject, IInterfaceImplementedByMixinAndTargetClass
   {
     [StorageClassNone]
     public int PersistentPropertyRedirectedToMixin
     {
-      [LinqPropertyRedirection (typeof (IInterfaceImplementedByMixinAndTargetClass), "PersistentPropertyRedirectedToMixin")]
+      [LinqPropertyRedirection (typeof(IInterfaceImplementedByMixinAndTargetClass), "PersistentPropertyRedirectedToMixin")]
       get { return Mixin.Get<MixinAddingInterfaceAlsoImplementedOnTargetClass>(this).PersistentPropertyRedirectedToMixin; }
       set { Mixin.Get<MixinAddingInterfaceAlsoImplementedOnTargetClass>(this).PersistentPropertyRedirectedToMixin = value; }
     }

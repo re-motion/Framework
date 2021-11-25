@@ -28,31 +28,31 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
       CheckCycleException(
           () => BuildMixedInstance<C>(
             b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinA, MixinB>(), 
-            typeof (MixinB), typeof (MixinA), typeof (MixinC)),
-          typeof (C),
-          typeof (MixinA), typeof (MixinB));
+            typeof(MixinB), typeof(MixinA), typeof(MixinC)),
+          typeof(C),
+          typeof(MixinA), typeof(MixinB));
       CheckCycleException(
           () => BuildMixedInstance<C>(
               b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinA, MixinB>().AddMixinDependency<MixinA, MixinC>(),
-              typeof (MixinB), typeof (MixinA), typeof (MixinC)),
-          typeof (C),
+              typeof(MixinB), typeof(MixinA), typeof(MixinC)),
+          typeof(C),
         // The cycle is only between MixinB and MixinA, but the algorithm doesn't isolate the culprits.
-          typeof (MixinA), typeof (MixinB), typeof (MixinC));
+          typeof(MixinA), typeof(MixinB), typeof(MixinC));
       CheckCycleException(
           () => BuildMixedInstance<C>(
               b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinA, MixinB>()
                     .AddMixinDependency<MixinA, MixinC>().AddMixinDependency<MixinB, MixinC>(),
-              typeof (MixinB), typeof (MixinA), typeof (MixinC)),
-          typeof (C),
+              typeof(MixinB), typeof(MixinA), typeof(MixinC)),
+          typeof(C),
         // The cycle is only between MixinB and MixinA, but the algorithm doesn't isolate the culprits.
-          typeof (MixinA), typeof (MixinB), typeof (MixinC));
+          typeof(MixinA), typeof(MixinB), typeof(MixinC));
       CheckCycleException(
           () => BuildMixedInstance<C>(
               b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinA, MixinB>()
                     .AddMixinDependency<MixinC, MixinA>().AddMixinDependency<MixinC, MixinB>(),
-              typeof (MixinB), typeof (MixinA), typeof (MixinC)),
-          typeof (C),
-          typeof (MixinA), typeof (MixinB));
+              typeof(MixinB), typeof(MixinA), typeof(MixinC)),
+          typeof(C),
+          typeof(MixinA), typeof(MixinB));
     }
 
     [Test]
@@ -61,9 +61,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
       CheckCycleException(
           () => BuildMixedInstance<C>(
               b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinA, MixinC>().AddMixinDependency<MixinC, MixinB>(),
-              typeof (MixinB), typeof (MixinA), typeof (MixinC)),
-          typeof (C),
-          typeof (MixinA), typeof (MixinB), typeof (MixinC));
+              typeof(MixinB), typeof(MixinA), typeof(MixinC)),
+          typeof(C),
+          typeof(MixinA), typeof(MixinB), typeof(MixinC));
     }
 
     [Test]
@@ -73,9 +73,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
           () => BuildMixedInstance<C>(
               b => b.AddMixinDependency<MixinB, MixinA>().AddMixinDependency<MixinA, MixinB>()
                     .AddMixinDependency<MixinC, MixinB>().AddMixinDependency<MixinB, MixinC>(),
-              typeof (MixinB), typeof (MixinA), typeof (MixinC)),
-          typeof (C),
-          typeof (MixinA), typeof (MixinB), typeof (MixinC));
+              typeof(MixinB), typeof(MixinA), typeof(MixinC)),
+          typeof(C),
+          typeof(MixinA), typeof(MixinB), typeof(MixinC));
     }
 
     [Test]
@@ -84,9 +84,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
       CheckCycleException(
           () => BuildMixedInstance<C>(
               b => b.AddMixinDependency<MixinB, MixinB>(),
-              typeof (MixinB), typeof (MixinA), typeof (MixinC)),
-          typeof (C),
-          typeof (MixinB));
+              typeof(MixinB), typeof(MixinA), typeof(MixinC)),
+          typeof(C),
+          typeof(MixinB));
     }
 
     public class C

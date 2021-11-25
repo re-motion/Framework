@@ -105,9 +105,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     private ReferenceProperty DeleteProperty (string propertyName)
     {
       PropertyBase.Parameters propertyParameters =
-          GetPropertyParameters(GetPropertyInfo(typeof (ClassWithBusinessObjectProperties), propertyName), _bindableObjectProviderForDeclaringType);
+          GetPropertyParameters(GetPropertyInfo(typeof(ClassWithBusinessObjectProperties), propertyName), _bindableObjectProviderForDeclaringType);
       ReferenceProperty property = new ReferenceProperty(propertyParameters);
-      property.SetReflectedClass(BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (ClassWithBusinessObjectProperties)));
+      property.SetReflectedClass(BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(ClassWithBusinessObjectProperties)));
 
       return property;
     }

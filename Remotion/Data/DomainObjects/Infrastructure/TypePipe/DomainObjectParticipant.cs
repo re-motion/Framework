@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// </list>
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IParticipant), Position = 2, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor (typeof(IParticipant), Position = 2, RegistrationType = RegistrationType.Multiple)]
   public class DomainObjectParticipant : IParticipant
   {
     static DomainObjectParticipant ()
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       return new DomainObjectParticipant(typeDefinitionProvider, interceptedPropertyFinder);
     }
 
-    private static readonly Type s_domainObjectBaseType = typeof (DomainObject);
+    private static readonly Type s_domainObjectBaseType = typeof(DomainObject);
     private static readonly MethodInfo s_getPublicDomainObjectTypeImplementation = GetInfrastructureHook("GetPublicDomainObjectTypeImplementation");
     private static readonly MethodInfo s_performConstructorCheck = GetInfrastructureHook("PerformConstructorCheck");
 
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
         return;
 
       // Add marker interface.
-      proxyType.AddInterface(typeof (IInterceptedDomainObject));
+      proxyType.AddInterface(typeof(IInterceptedDomainObject));
 
       // Override infrastructure hooks on DomainObject.
       OverridePerformConstructorCheck(proxyType);

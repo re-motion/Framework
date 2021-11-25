@@ -18,13 +18,13 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof (GenericMixinImplementingGenericInterfaceWithMembers<>))]
+  [Uses (typeof(GenericMixinImplementingGenericInterfaceWithMembers<>))]
   public class GenericClassWithMembersWithComposedInterfaceWithHasComposedInterface<T>
       : IHasComposedInterface<IComposedInterfaceForGenericClassWithMembersWithComposedInterfaceHasComposedInterface<T>>
   {
     public string M1 (T parameter)
     {
-      return string.Format("GenericClassWithMembersWithComposedInterfaceWithHasComposedInterface<{0}>.M1", typeof (T).Name);
+      return string.Format("GenericClassWithMembersWithComposedInterfaceWithHasComposedInterface<{0}>.M1", typeof(T).Name);
     }
   }
 }

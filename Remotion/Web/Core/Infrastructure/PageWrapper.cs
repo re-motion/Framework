@@ -54,7 +54,7 @@ namespace Remotion.Web.Infrastructure
     private ClientScriptManagerWrapper? _clientScriptManager;
 
     private PageWrapper (Page page)
-        : base (page)
+        : base(page)
     {
       ArgumentUtility.CheckNotNull("page", page);
       _page = page;

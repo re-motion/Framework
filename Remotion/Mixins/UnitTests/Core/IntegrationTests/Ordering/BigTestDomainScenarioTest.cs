@@ -31,13 +31,13 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
       {
         return new[]
                {
-                   typeof (BT7Mixin0),
-                   typeof (BT7Mixin10),
-                   typeof (BT7Mixin5),
-                   typeof (BT7Mixin2),
-                   typeof (BT7Mixin9),
-                   typeof (BT7Mixin3),
-                   typeof (BT7Mixin1)
+                   typeof(BT7Mixin0),
+                   typeof(BT7Mixin10),
+                   typeof(BT7Mixin5),
+                   typeof(BT7Mixin2),
+                   typeof(BT7Mixin9),
+                   typeof(BT7Mixin3),
+                   typeof(BT7Mixin1)
                };
       }
     }
@@ -79,7 +79,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
       Assert.That(bt7.Four(), Is.EqualTo("BT7Mixin2.Four-BaseType7.Four-BT7Mixin9.Five-BaseType7.Five-BaseType7.NotOverridden"));
       Assert.That(bt7.Five(), Is.EqualTo("BT7Mixin9.Five-BaseType7.Five"));
 
-      TargetClassDefinition targetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (BaseType7));
+      TargetClassDefinition targetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(BaseType7));
       Assert.That(targetClassDefinition.Mixins.Count, Is.EqualTo(7));
 
       // This part is fixed, independent of the algorithm:
@@ -87,25 +87,25 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
       // Group 1 with internal ordering
       CheckRelativeMixinOrdering(
           targetClassDefinition,
-          typeof (BT7Mixin0),
-          typeof (BT7Mixin2),
-          typeof (BT7Mixin3),
-          typeof (BT7Mixin1));
+          typeof(BT7Mixin0),
+          typeof(BT7Mixin2),
+          typeof(BT7Mixin3),
+          typeof(BT7Mixin1));
 
       // Group 2 with internal ordering
       CheckRelativeMixinOrdering(
           targetClassDefinition,
-          typeof (BT7Mixin10),
-          typeof (BT7Mixin9));
+          typeof(BT7Mixin10),
+          typeof(BT7Mixin9));
 
       // Group 3 consists of just BT7Mixin5
 
       // The three groups must be ordered lexicographically
       CheckRelativeMixinOrdering(
           targetClassDefinition,
-          typeof (BT7Mixin0),
-          typeof (BT7Mixin10),
-          typeof (BT7Mixin5));
+          typeof(BT7Mixin0),
+          typeof(BT7Mixin10),
+          typeof(BT7Mixin5));
 
       // This part depends on the algorithm:
       Assert.That(targetClassDefinition.Mixins.Select(m => m.Type), Is.EqualTo(ExpectedBaseType7OrderedMixinTypesSmall));
@@ -119,17 +119,17 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
           .ForClass<BaseType7>()
           .Clear()
           .AddMixins(
-              typeof (BT7Mixin0),
-              typeof (BT7Mixin1),
-              typeof (BT7Mixin2),
-              typeof (BT7Mixin3),
-              typeof (BT7Mixin4),
-              typeof (BT7Mixin5),
-              typeof (BT7Mixin6),
-              typeof (BT7Mixin7),
-              typeof (BT7Mixin8),
-              typeof (BT7Mixin9),
-              typeof (BT7Mixin10))
+              typeof(BT7Mixin0),
+              typeof(BT7Mixin1),
+              typeof(BT7Mixin2),
+              typeof(BT7Mixin3),
+              typeof(BT7Mixin4),
+              typeof(BT7Mixin5),
+              typeof(BT7Mixin6),
+              typeof(BT7Mixin7),
+              typeof(BT7Mixin8),
+              typeof(BT7Mixin9),
+              typeof(BT7Mixin10))
           .EnterScope())
       {
         CheckGrandOrdering();
@@ -140,17 +140,17 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
           .ForClass<BaseType7>()
           .Clear()
           .AddMixins(
-              typeof (BT7Mixin10),
-              typeof (BT7Mixin9),
-              typeof (BT7Mixin8),
-              typeof (BT7Mixin7),
-              typeof (BT7Mixin6),
-              typeof (BT7Mixin5),
-              typeof (BT7Mixin4),
-              typeof (BT7Mixin3),
-              typeof (BT7Mixin2),
-              typeof (BT7Mixin1),
-              typeof (BT7Mixin0))
+              typeof(BT7Mixin10),
+              typeof(BT7Mixin9),
+              typeof(BT7Mixin8),
+              typeof(BT7Mixin7),
+              typeof(BT7Mixin6),
+              typeof(BT7Mixin5),
+              typeof(BT7Mixin4),
+              typeof(BT7Mixin3),
+              typeof(BT7Mixin2),
+              typeof(BT7Mixin1),
+              typeof(BT7Mixin0))
           .EnterScope())
       {
         CheckGrandOrdering();
@@ -160,17 +160,17 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
           .ForClass<BaseType7>()
           .Clear()
           .AddMixins(
-              typeof (BT7Mixin5),
-              typeof (BT7Mixin8),
-              typeof (BT7Mixin9),
-              typeof (BT7Mixin2),
-              typeof (BT7Mixin1),
-              typeof (BT7Mixin10),
-              typeof (BT7Mixin4),
-              typeof (BT7Mixin0),
-              typeof (BT7Mixin6),
-              typeof (BT7Mixin3),
-              typeof (BT7Mixin7))
+              typeof(BT7Mixin5),
+              typeof(BT7Mixin8),
+              typeof(BT7Mixin9),
+              typeof(BT7Mixin2),
+              typeof(BT7Mixin1),
+              typeof(BT7Mixin10),
+              typeof(BT7Mixin4),
+              typeof(BT7Mixin0),
+              typeof(BT7Mixin6),
+              typeof(BT7Mixin3),
+              typeof(BT7Mixin7))
           .EnterScope())
       {
         CheckGrandOrdering();
@@ -185,24 +185,24 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
               .BuildFromActive()
               .ForClass<BaseType7>()
               .Clear()
-              .AddMixins(typeof (BT7Mixin0), typeof (BT7Mixin4), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin2), typeof (BT7Mixin5))
+              .AddMixins(typeof(BT7Mixin0), typeof(BT7Mixin4), typeof(BT7Mixin6), typeof(BT7Mixin7), typeof(BT7Mixin2), typeof(BT7Mixin5))
               .EnterScope())
       {
         CheckOrderingException(
-            () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (BaseType7)),
-            typeof (BaseType7),
-            Tuple.Create(new[] { typeof (BT7Mixin0), typeof (BT7Mixin4), typeof (BT7Mixin6) }, "One"));
+            () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(BaseType7)),
+            typeof(BaseType7),
+            Tuple.Create(new[] { typeof(BT7Mixin0), typeof(BT7Mixin4), typeof(BT7Mixin6) }, "One"));
       }
     }
 
     private void CheckGrandOrdering ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<BaseType7>()
-          .EnsureMixin(typeof (BT7Mixin0)).WithDependency<IBT7Mixin7>()
-          .EnsureMixin(typeof (BT7Mixin7)).WithDependency<IBT7Mixin4>()
-          .EnsureMixin(typeof (BT7Mixin4)).WithDependency<IBT7Mixin6>()
-          .EnsureMixin(typeof (BT7Mixin6)).WithDependency<IBT7Mixin2>()
-          .EnsureMixin(typeof (BT7Mixin9)).WithDependency<IBT7Mixin8>()
+          .EnsureMixin(typeof(BT7Mixin0)).WithDependency<IBT7Mixin7>()
+          .EnsureMixin(typeof(BT7Mixin7)).WithDependency<IBT7Mixin4>()
+          .EnsureMixin(typeof(BT7Mixin4)).WithDependency<IBT7Mixin6>()
+          .EnsureMixin(typeof(BT7Mixin6)).WithDependency<IBT7Mixin2>()
+          .EnsureMixin(typeof(BT7Mixin9)).WithDependency<IBT7Mixin8>()
           .EnterScope())
       {
         var bt7 = BuildMixedInstanceWithActiveConfiguration<BaseType7>();
@@ -241,7 +241,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
         Assert.That(bt7.Four(), Is.EqualTo("BT7Mixin2.Four-BaseType7.Four-BT7Mixin9.Five-BT7Mixin8.Five-BaseType7.Five-BaseType7.NotOverridden"));
         Assert.That(bt7.Five(), Is.EqualTo("BT7Mixin9.Five-BT7Mixin8.Five-BaseType7.Five"));
 
-        var targetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof (BaseType7));
+        var targetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(BaseType7));
         Assert.That(targetClassDefinition.Mixins.Count, Is.EqualTo(11));
 
         // This part is fixed, independent of the algorithm:
@@ -249,20 +249,20 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
         // Group 1 with internal ordering
         CheckRelativeMixinOrdering(
             targetClassDefinition,
-            typeof (BT7Mixin0),
-            typeof (BT7Mixin7),
-            typeof (BT7Mixin4),
-            typeof (BT7Mixin6),
-            typeof (BT7Mixin2),
-            typeof (BT7Mixin3),
-            typeof (BT7Mixin1));
+            typeof(BT7Mixin0),
+            typeof(BT7Mixin7),
+            typeof(BT7Mixin4),
+            typeof(BT7Mixin6),
+            typeof(BT7Mixin2),
+            typeof(BT7Mixin3),
+            typeof(BT7Mixin1));
 
         // Group 2 with internal ordering
         CheckRelativeMixinOrdering(
             targetClassDefinition,
-            typeof (BT7Mixin10),
-            typeof (BT7Mixin9),
-            typeof (BT7Mixin8));
+            typeof(BT7Mixin10),
+            typeof(BT7Mixin9),
+            typeof(BT7Mixin8));
 
         // Group 3 consists of just BT7Mixin5
 
@@ -270,17 +270,17 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
         var expectedBaseType7OrderedMixinTypesGrand =
             new[]
             {
-                typeof (BT7Mixin0), 
-                typeof (BT7Mixin10), 
-                typeof (BT7Mixin5), 
-                typeof (BT7Mixin7),
-                typeof (BT7Mixin9), 
-                typeof (BT7Mixin4), 
-                typeof (BT7Mixin8), 
-                typeof (BT7Mixin6),
-                typeof (BT7Mixin2),
-                typeof (BT7Mixin3),
-                typeof (BT7Mixin1)
+                typeof(BT7Mixin0), 
+                typeof(BT7Mixin10), 
+                typeof(BT7Mixin5), 
+                typeof(BT7Mixin7),
+                typeof(BT7Mixin9), 
+                typeof(BT7Mixin4), 
+                typeof(BT7Mixin8), 
+                typeof(BT7Mixin6),
+                typeof(BT7Mixin2),
+                typeof(BT7Mixin3),
+                typeof(BT7Mixin1)
             };
         Assert.That(targetClassDefinition.Mixins.Select(m => m.Type), Is.EqualTo(expectedBaseType7OrderedMixinTypesGrand));
       }

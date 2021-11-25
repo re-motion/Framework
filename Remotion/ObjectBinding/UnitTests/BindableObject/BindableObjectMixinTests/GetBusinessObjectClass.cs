@@ -44,8 +44,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     public void FromClass ()
     {
       Assert.That(_bindableObjectMixin.BusinessObjectClass, Is.Not.Null);
-      Assert.That(_bindableObjectMixin.BusinessObjectClass.TargetType, Is.SameAs(typeof (SimpleBusinessObjectClass)));
-      Assert.That(_bindableObjectMixin.BusinessObjectClass.BusinessObjectProvider, Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof (SimpleBusinessObjectClass))));
+      Assert.That(_bindableObjectMixin.BusinessObjectClass.TargetType, Is.SameAs(typeof(SimpleBusinessObjectClass)));
+      Assert.That(_bindableObjectMixin.BusinessObjectClass.BusinessObjectProvider, Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof(SimpleBusinessObjectClass))));
     }
 
     [Test]
@@ -53,18 +53,18 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     {
       Assert.That(_businessObject.BusinessObjectClass, Is.Not.Null);
       Assert.That(_businessObject.BusinessObjectClass, Is.SameAs(_bindableObjectMixin.BusinessObjectClass));
-      Assert.That(_businessObject.BusinessObjectClass.BusinessObjectProvider, Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof (SimpleBusinessObjectClass))));
+      Assert.That(_businessObject.BusinessObjectClass.BusinessObjectProvider, Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof(SimpleBusinessObjectClass))));
     }
 
     [Test]
     public void LazyInitialization_KeepsProviderOfConstructionTime ()
     {
       var objectCreatedBefore = ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty);
-      var providerBefore = BindableObjectProvider.GetProviderForBindableObjectType(typeof (SimpleBusinessObjectClass));
+      var providerBefore = BindableObjectProvider.GetProviderForBindableObjectType(typeof(SimpleBusinessObjectClass));
 
-      BindableObjectProvider.SetProvider(typeof (BindableObjectProviderAttribute), null);
+      BindableObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), null);
       
-      var providerAfter = BindableObjectProvider.GetProviderForBindableObjectType(typeof (SimpleBusinessObjectClass));
+      var providerAfter = BindableObjectProvider.GetProviderForBindableObjectType(typeof(SimpleBusinessObjectClass));
       Assert.That(providerAfter, Is.Not.SameAs(providerBefore));
       var objectCreatedAfter = ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty);
 
@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
           .EnterScope())
       {
         businessObject = (IBusinessObject) ObjectFactory.Create<DerivedBusinessObjectClass>(ParamList.Empty);
-        Assert.That(businessObject, Is.InstanceOf(typeof (IMixinAddingProperty)));
+        Assert.That(businessObject, Is.InstanceOf(typeof(IMixinAddingProperty)));
       }
 
       // lazy initialization here - should use mixin configuration from above
@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
           .EnterScope())
       {
         businessObject = Serializer.SerializeAndDeserialize((IBusinessObject) ObjectFactory.Create<DerivedBusinessObjectClass>(ParamList.Empty));
-        Assert.That(businessObject, Is.InstanceOf(typeof (IMixinAddingProperty)));
+        Assert.That(businessObject, Is.InstanceOf(typeof(IMixinAddingProperty)));
       }
 
       // lazy initialization here - should use mixin configuration from above

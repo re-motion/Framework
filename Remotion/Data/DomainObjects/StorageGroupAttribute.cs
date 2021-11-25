@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects
     public DefaultStorageClass DefaultStorageClass { get; }
 
     protected StorageGroupAttribute ()
-        : this (DefaultStorageClass.Persistent)
+        : this(DefaultStorageClass.Persistent)
     {
     }
 

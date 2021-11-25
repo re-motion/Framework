@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       base.SetUp();
       _orderHandle1 = DomainObjectIDs.Order1.GetHandle<Order>();
       _orderHandle2 = DomainObjectIDs.Order2.GetHandle<Order>();
-      _notFoundOrderHandle = new ObjectID(typeof (Order), Guid.NewGuid()).GetHandle<Order>();
+      _notFoundOrderHandle = new ObjectID(typeof(Order), Guid.NewGuid()).GetHandle<Order>();
       _clientTransaction = ClientTransaction.CreateRootTransaction();
     }
 

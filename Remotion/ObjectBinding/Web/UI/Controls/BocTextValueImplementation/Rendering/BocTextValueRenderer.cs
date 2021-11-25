@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
   /// Provides a label for rendering a <see cref="BocTextValue"/> control in read-only mode. 
   /// Rendering is done by the parent class.
   /// </summary>
-  [ImplementationFor (typeof (IBocTextValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IBocTextValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocTextValueRenderer : BocTextValueRendererBase<IBocTextValue>, IBocTextValueRenderer
   {
     public BocTextValueRenderer (
@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
     {
     }
 
@@ -55,8 +55,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string styleKey = typeof (BocTextValueRenderer).GetFullNameChecked() + "_Style";
-      var styleFile = ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocTextValueRenderer), ResourceType.Html, "BocTextValue.css");
+      string styleKey = typeof(BocTextValueRenderer).GetFullNameChecked() + "_Style";
+      var styleFile = ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocTextValueRenderer), ResourceType.Html, "BocTextValue.css");
       htmlHeadAppender.RegisterStylesheetLink(styleKey, styleFile, HtmlHeadAppender.Priority.Library);
     }
 

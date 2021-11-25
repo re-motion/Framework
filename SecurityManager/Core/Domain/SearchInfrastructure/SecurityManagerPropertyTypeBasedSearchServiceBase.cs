@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
     {
       ArgumentUtility.CheckNotNull("property", property);
 
-      return typeof (TReferencedObject).IsAssignableFrom(property.PropertyType);
+      return typeof(TReferencedObject).IsAssignableFrom(property.PropertyType);
     }
 
     protected override sealed QueryFactory GetQueryFactory (IBusinessObjectReferenceProperty property)

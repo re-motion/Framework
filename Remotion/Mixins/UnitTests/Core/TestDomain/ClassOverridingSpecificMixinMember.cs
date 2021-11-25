@@ -21,7 +21,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   [Serializable]
   public class ClassOverridingSpecificMixinMember
   {
-    [OverrideMixin (typeof (MixinWithVirtualMethod))]
+    [OverrideMixin (typeof(MixinWithVirtualMethod))]
     public virtual string VirtualMethod ()
     {
       return "ClassOverridingSpecificMixinMember.ToString";

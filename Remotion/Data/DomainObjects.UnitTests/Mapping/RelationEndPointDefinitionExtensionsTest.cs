@@ -30,13 +30,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetOppositeEndPointDefinition ()
     {
       var endPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(
-          typeof (Order).FullName + ".OrderTicket");
+          typeof(Order).FullName + ".OrderTicket");
 
       var oppositeEndPointDefinition = endPointDefinition.GetOppositeEndPointDefinition();
 
       Assert.That(
           oppositeEndPointDefinition,
-          Is.SameAs(DomainObjectIDs.OrderTicket1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof (OrderTicket).FullName + ".Order")));
+          Is.SameAs(DomainObjectIDs.OrderTicket1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(OrderTicket).FullName + ".Order")));
     }
 
     [Test]
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetOppositeClassDefinition ()
     {
       var endPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(
-          typeof (Order).FullName + ".OrderTicket");
+          typeof(Order).FullName + ".OrderTicket");
 
       var oppositeEndPointDefinition = endPointDefinition.GetOppositeClassDefinition();
 

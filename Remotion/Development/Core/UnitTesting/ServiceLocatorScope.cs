@@ -56,7 +56,7 @@ namespace Remotion.Development.UnitTesting
     }
 
     public ServiceLocatorScope (params ServiceConfigurationEntry[] temporaryConfiguration)
-      : this (CreateServiceLocator(temporaryConfiguration))
+      : this(CreateServiceLocator(temporaryConfiguration))
     {
     }
 

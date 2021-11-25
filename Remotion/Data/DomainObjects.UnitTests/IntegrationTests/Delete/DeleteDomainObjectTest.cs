@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       order.Delete();
       Assert.That(
-          () => SetPropertyValue(dataContainer, typeof (Order), "OrderNumber", 10),
+          () => SetPropertyValue(dataContainer, typeof(Order), "OrderNumber", 10),
           Throws.InstanceOf<ObjectDeletedException>());
     }
 
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       Assert.That(order.OrderNumber, Is.EqualTo(3));
       Assert.That(order.DeliveryDate, Is.EqualTo(new DateTime(2005, 3, 1)));
       Assert.That(order.InternalDataContainer.Timestamp, Is.Not.Null);
-      Assert.That(GetPropertyValue(order.InternalDataContainer, typeof (Order), "OrderNumber"), Is.Not.Null);
+      Assert.That(GetPropertyValue(order.InternalDataContainer, typeof(Order), "OrderNumber"), Is.Not.Null);
     }
 
     [Test]

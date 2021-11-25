@@ -29,34 +29,34 @@ namespace Remotion.Security
     private readonly object[] _accessTypes; 
 
     public DemandPermissionAttribute (object accessType1)
-        : this (new [] { accessType1 })
+        : this(new [] { accessType1 })
     {
     }
 
     public DemandPermissionAttribute (object accessType1, object accessType2)
-        : this (new [] { accessType1, accessType2 })
+        : this(new [] { accessType1, accessType2 })
     {
     }
 
     public DemandPermissionAttribute (object accessType1, object accessType2, object accessType3)
-        : this (new [] { accessType1, accessType2, accessType3 })
+        : this(new [] { accessType1, accessType2, accessType3 })
     {
     }
 
     public DemandPermissionAttribute (object accessType1, object accessType2, object accessType3, object accessType4)
-        : this (new [] { accessType1, accessType2, accessType3, accessType4 })
+        : this(new [] { accessType1, accessType2, accessType3, accessType4 })
     {
     }
 
     public DemandPermissionAttribute (object accessType1, object accessType2, object accessType3, object accessType4, object accessType5)
-        : this (new [] { accessType1, accessType2, accessType3, accessType4, accessType5 })
+        : this(new [] { accessType1, accessType2, accessType3, accessType4, accessType5 })
     {
     }
 
     private DemandPermissionAttribute (object[] accessTypes)
     {
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("accessTypes", accessTypes);
-      ArgumentUtility.CheckItemsType("accessTypes", accessTypes, typeof (Enum));
+      ArgumentUtility.CheckItemsType("accessTypes", accessTypes, typeof(Enum));
 
       Enum[] accessTypeEnums = new Enum[accessTypes.Length];
 
@@ -74,7 +74,7 @@ namespace Remotion.Security
     private Enum GetAccessType (object accessType)
     {
       Type permissionType = accessType.GetType();
-      if (!permissionType.IsDefined(typeof (AccessTypeAttribute), false))
+      if (!permissionType.IsDefined(typeof(AccessTypeAttribute), false))
       {
         string message = string.Format(string.Format("Enumerated Type '{0}' cannot be used as an access type. Valid access types must have the "
                 + "Remotion.Security.AccessTypeAttribute applied.", permissionType.GetFullNameSafe()));

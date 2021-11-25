@@ -29,7 +29,7 @@ using Remotion.Web.UI.Globalization;
 namespace Remotion.Web.UI.Controls
 {
 
-[TypeConverter (typeof (ExpandableObjectConverter))]
+[TypeConverter (typeof(ExpandableObjectConverter))]
 public class WebTab: IWebTab, IControlStateManager
 {
   /// <summary> The control to which this object belongs. </summary>
@@ -57,13 +57,13 @@ public class WebTab: IWebTab, IControlStateManager
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, string text, string iconUrl)
-    : this (itemID, text, new IconInfo(iconUrl))
+    : this(itemID, text, new IconInfo(iconUrl))
   {
   }
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, string text)
-    : this (itemID, text, (IconInfo?) null)
+    : this(itemID, text, (IconInfo?) null)
   {
   }
 

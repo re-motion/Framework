@@ -72,7 +72,7 @@ namespace Remotion.Security.UnitTests.Configuration
 
     private void ResetCurrentSecurityConfiguration ()
     {
-      var fields = PrivateInvoke.GetNonPublicStaticField(typeof (SecurityConfiguration), "s_fields");
+      var fields = PrivateInvoke.GetNonPublicStaticField(typeof(SecurityConfiguration), "s_fields");
       Assertion.IsNotNull(fields);
       PrivateInvoke.SetPublicField(
           fields,

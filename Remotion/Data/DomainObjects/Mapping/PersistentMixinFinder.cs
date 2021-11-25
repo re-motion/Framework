@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull("mixinType", mixinType);
 
-      return typeof (IDomainObjectMixin).IsAssignableFrom(mixinType);
+      return typeof(IDomainObjectMixin).IsAssignableFrom(mixinType);
     }
 
     private static ClassContext CreateEmptyClassContext (Type type)
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     private Type[] _persistentMixins;
 
     public PersistentMixinFinder (Type type)
-      : this (type, false)
+      : this(type, false)
     {
     }
 

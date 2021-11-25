@@ -272,7 +272,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     {
       AssemblyCompiler assemblyCompiler = AssemblyCompiler.CreateInMemoryAssemblyCompiler(
           c_testAssemblySourceDirectoryRoot + "\\" + assemblyName,
-          ArrayUtility.Combine(new[] { typeof (MarkerAttribute).Module.Name }, 
+          ArrayUtility.Combine(new[] { typeof(MarkerAttribute).Module.Name }, 
           referencedAssemblies));
       assemblyCompiler.Compile();
       return assemblyCompiler.CompiledAssembly;
@@ -282,12 +282,12 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     {
       var createBuildOutputDirectory = buildOutputDirectory != AppContext.BaseDirectory;
       return new AssemblyCompilerBuildOutputManager(
-          buildOutputDirectory, createBuildOutputDirectory, c_testAssemblySourceDirectoryRoot, typeof (MarkerAttribute).Module.Name);
+          buildOutputDirectory, createBuildOutputDirectory, c_testAssemblySourceDirectoryRoot, typeof(MarkerAttribute).Module.Name);
     }
 
     private FilteringAssemblyLoader CreateLoaderForMarkedAssemblies ()
     {
-      var markerAttributeType = typeof (MarkerAttribute);
+      var markerAttributeType = typeof(MarkerAttribute);
       var attributeFilter = new AttributeAssemblyLoaderFilter(markerAttributeType);
       return new FilteringAssemblyLoader(attributeFilter);
     }

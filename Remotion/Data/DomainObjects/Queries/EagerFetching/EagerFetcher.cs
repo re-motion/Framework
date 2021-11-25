@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   [Serializable]
   public class EagerFetcher : IEagerFetcher
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (EagerFetcher));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(EagerFetcher));
 
     private readonly IFetchedRelationDataRegistrationAgent _registrationAgent;
 

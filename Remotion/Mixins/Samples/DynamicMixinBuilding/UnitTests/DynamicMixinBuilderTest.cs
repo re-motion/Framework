@@ -54,7 +54,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
       public static T Create<T> (ParamList constructorParameters)
       {
         var objectFactoryImplementation = SafeServiceLocator.Current.GetInstance<IObjectFactoryImplementation>();
-        return (T) objectFactoryImplementation.CreateInstance(false, typeof (T), constructorParameters);
+        return (T) objectFactoryImplementation.CreateInstance(false, typeof(T), constructorParameters);
       }
     }
 
@@ -90,7 +90,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
       
       _calls.Clear();
 
-      _builder = new DynamicMixinBuilder(typeof (SampleTarget));
+      _builder = new DynamicMixinBuilder(typeof(SampleTarget));
     }
 
     private IPipelineRegistry CreatePipelineRegistry ()
@@ -114,8 +114,8 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
         Directory.Delete(directory, true);
       Directory.CreateDirectory(directory);
 
-      CopyFile(typeof (Mixin<,>).Assembly.ManifestModule.FullyQualifiedName, directory); // Core/Mixins assembly
-      CopyFile(typeof (MethodInvocationHandler).Assembly.ManifestModule.FullyQualifiedName, directory); // Samples assembly
+      CopyFile(typeof(Mixin<,>).Assembly.ManifestModule.FullyQualifiedName, directory); // Core/Mixins assembly
+      CopyFile(typeof(MethodInvocationHandler).Assembly.ManifestModule.FullyQualifiedName, directory); // Samples assembly
       return directory;
     }
 
@@ -146,33 +146,33 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
     [Test]
     public void BuildMixinType_CreatesType ()
     {
-      Type t = new DynamicMixinBuilder(typeof (object)).BuildMixinType(_invocationHandler);
+      Type t = new DynamicMixinBuilder(typeof(object)).BuildMixinType(_invocationHandler);
       Assert.That(t, Is.Not.Null);
     }
 
     [Test]
     public void BuildMixinType_CreatesTypeDerivedFromMixin ()
     {
-      Type t = new DynamicMixinBuilder(typeof (object)).BuildMixinType(_invocationHandler);
-      Assert.That(Reflection.TypeExtensions.CanAscribeTo(t, typeof (Mixin<,>)), Is.True);
+      Type t = new DynamicMixinBuilder(typeof(object)).BuildMixinType(_invocationHandler);
+      Assert.That(Reflection.TypeExtensions.CanAscribeTo(t, typeof(Mixin<,>)), Is.True);
     }
 
     [Test]
     public void BuildMixinType_AddsMethodsWithOverrideAttribute ()
     {
-      _builder.OverrideMethod(typeof (SampleTarget).GetMethod("StringMethod"));
+      _builder.OverrideMethod(typeof(SampleTarget).GetMethod("StringMethod"));
       Type t = _builder.BuildMixinType(_invocationHandler);
 
       MethodInfo overriderMethod = t.GetMethod("StringMethod");
       Assert.That(overriderMethod, Is.Not.Null);
-      Assert.That(overriderMethod.IsDefined(typeof (OverrideTargetAttribute), false), Is.True);
+      Assert.That(overriderMethod.IsDefined(typeof(OverrideTargetAttribute), false), Is.True);
     }
 
     [Test]
     public void BuildMixinType_OverrideMethod_FromWrongType ()
     {
       Assert.That(
-          () => _builder.OverrideMethod(typeof (object).GetMethod("ToString")),
+          () => _builder.OverrideMethod(typeof(object).GetMethod("ToString")),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "The declaring type of the method must be the "
@@ -191,10 +191,10 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
     [Test]
     public void GeneratedMethodIsIntercepted ()
     {
-      _builder.OverrideMethod(typeof (SampleTarget).GetMethod("StringMethod"));
+      _builder.OverrideMethod(typeof(SampleTarget).GetMethod("StringMethod"));
       Type t = _builder.BuildMixinType(_invocationHandler);
 
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof (SampleTarget)).Clear().AddMixins(t).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(SampleTarget)).Clear().AddMixins(t).EnterScope())
       {
         SampleTarget target = ObjectFactory.Create<SampleTarget>(ParamList.Empty);
         target.StringMethod(4);
@@ -205,17 +205,17 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
     [Test]
     public void GeneratedMethodIsIntercepted_WithRightParameters ()
     {
-      _builder.OverrideMethod(typeof (SampleTarget).GetMethod("StringMethod"));
+      _builder.OverrideMethod(typeof(SampleTarget).GetMethod("StringMethod"));
       Type t = _builder.BuildMixinType(_invocationHandler);
 
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof (SampleTarget)).Clear().AddMixins(t).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(SampleTarget)).Clear().AddMixins(t).EnterScope())
       {
         SampleTarget target = ObjectFactory.Create<SampleTarget>(ParamList.Empty);
         target.StringMethod(4);
 
         Tuple<object, MethodInfo, object[], object> callInfo = _calls[0];
         Assert.That(callInfo.Item1, Is.SameAs(target));
-        Assert.That(callInfo.Item2, Is.EqualTo(typeof (SampleTarget).GetMethod("StringMethod")));
+        Assert.That(callInfo.Item2, Is.EqualTo(typeof(SampleTarget).GetMethod("StringMethod")));
         Assert.That(callInfo.Item3, Is.EquivalentTo(new object[] { 4 } ));
       }
     }
@@ -223,10 +223,10 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
     [Test]
     public void GeneratedMethodIsIntercepted_WithRightReturnValue ()
     {
-      _builder.OverrideMethod(typeof (SampleTarget).GetMethod("StringMethod"));
+      _builder.OverrideMethod(typeof(SampleTarget).GetMethod("StringMethod"));
       Type t = _builder.BuildMixinType(_invocationHandler);
 
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof (SampleTarget)).Clear().AddMixins(t).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(SampleTarget)).Clear().AddMixins(t).EnterScope())
       {
         SampleTarget target = ObjectFactory.Create<SampleTarget>(ParamList.Empty);
         target.StringMethod(4);
@@ -239,10 +239,10 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
     [Test]
     public void GeneratedMethodIsIntercepted_WithCorrectBase ()
     {
-      _builder.OverrideMethod(typeof (SampleTarget).GetMethod("StringMethod"));
+      _builder.OverrideMethod(typeof(SampleTarget).GetMethod("StringMethod"));
       Type t = _builder.BuildMixinType(_invocationHandler);
 
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof (SampleTarget)).Clear().AddMixins(t).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(SampleTarget)).Clear().AddMixins(t).EnterScope())
       {
         SampleTarget target = ObjectFactory.Create<SampleTarget>(ParamList.Empty);
         string result = target.StringMethod(4);
@@ -253,10 +253,10 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
     [Test]
     public void InterceptVoidMethod ()
     {
-      _builder.OverrideMethod(typeof (SampleTarget).GetMethod("VoidMethod"));
+      _builder.OverrideMethod(typeof(SampleTarget).GetMethod("VoidMethod"));
       Type t = _builder.BuildMixinType(_invocationHandler);
 
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof (SampleTarget)).Clear().AddMixins(t).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(SampleTarget)).Clear().AddMixins(t).EnterScope())
       {
         SampleTarget target = ObjectFactory.Create<SampleTarget>(ParamList.Empty);
         target.VoidMethod();

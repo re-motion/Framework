@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     [Test]
     public void Import_DeserializesData ()
     {
-      var orderNumberPropertyDefinition = GetPropertyDefinition(typeof (Order), "OrderNumber");
+      var orderNumberPropertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
 
       DataContainer expectedContainer1 = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
       DataContainer expectedContainer2 = DomainObjectIDs.Order3.GetObject<Order>().InternalDataContainer;

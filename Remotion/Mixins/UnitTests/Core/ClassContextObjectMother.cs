@@ -25,7 +25,7 @@ namespace Remotion.Mixins.UnitTests.Core
   {
     public static ClassContext Create (Type type = null)
     {
-      type = type ?? typeof (object);
+      type = type ?? typeof(object);
       return new ClassContext(type, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
     }
 

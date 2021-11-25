@@ -39,14 +39,14 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
       var service = _serviceLocator.GetInstance<IExtensibleEnumGlobalizationService>();
 
       Assert.That(service, Is.Not.Null);
-      Assert.That(service, Is.TypeOf(typeof (CompoundExtensibleEnumGlobalizationService)));
+      Assert.That(service, Is.TypeOf(typeof(CompoundExtensibleEnumGlobalizationService)));
       Assert.That(
           ((CompoundExtensibleEnumGlobalizationService) service).ExtensibleEnumGlobalizationServices.Select(s => s.GetType()),
           Is.EqualTo(
               new[]
               {
-                  typeof (ResourceManagerBasedExtensibleEnumGlobalizationService),
-                  typeof (MultiLingualNameBasedExtensibleEnumGlobalizationService)
+                  typeof(ResourceManagerBasedExtensibleEnumGlobalizationService),
+                  typeof(MultiLingualNameBasedExtensibleEnumGlobalizationService)
               }));
     }
 

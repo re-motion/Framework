@@ -38,7 +38,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       var factory = _serviceLocator.GetInstance<IPropertyMetaValidationRuleValidatorFactory>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (PropertyMetaValidationRuleValidatorFactory)));
+      Assert.That(factory, Is.TypeOf(typeof(PropertyMetaValidationRuleValidatorFactory)));
     }
 
     [Test]

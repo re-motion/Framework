@@ -37,7 +37,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     {
       var factory = _serviceLocator.GetInstance<IExtensibleEnumValueDiscoveryService>();
 
-      Assert.That(factory, Is.TypeOf(typeof (ExtensibleEnumValueDiscoveryService)));
+      Assert.That(factory, Is.TypeOf(typeof(ExtensibleEnumValueDiscoveryService)));
     }
 
     [Test]

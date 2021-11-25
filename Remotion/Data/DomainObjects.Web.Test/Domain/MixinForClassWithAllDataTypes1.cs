@@ -21,7 +21,7 @@ using Remotion.Mixins;
 namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
   [Serializable]
-  [Extends (typeof (ClassWithAllDataTypes))]
+  [Extends (typeof(ClassWithAllDataTypes))]
 	[MultiLingualResources ("Remotion.Data.DomainObjects.Web.Test.Globalization.MixinForClassWithAllDataTypes1")]
 	public class MixinForClassWithAllDataTypes1
 	{

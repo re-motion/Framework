@@ -50,7 +50,7 @@ namespace Remotion.Mixins.Definitions.Building
       {
         Type? attributeType = attributeData.Constructor.DeclaringType;
         Assertion.IsNotNull(attributeType);
-        if (attributeType == typeof (CopyCustomAttributesAttribute))
+        if (attributeType == typeof(CopyCustomAttributesAttribute))
           ApplyViaCopyAttribute(attributeSource, attributeData);
         else if (attributeType.IsVisible && !IsIgnoredAttributeType(attributeType))
           _attributableDefinition.CustomAttributes.Add(new AttributeDefinition(_attributableDefinition, attributeData, isCopyTemplate));
@@ -59,13 +59,13 @@ namespace Remotion.Mixins.Definitions.Building
 
     private bool IsIgnoredAttributeType (Type type)
     {
-      return type == typeof (SerializableAttribute)
-          || (typeof (ExtendsAttribute).Assembly.Equals(type.Assembly) && type.GetNamespaceChecked().StartsWith("Remotion.Mixins"));
+      return type == typeof(SerializableAttribute)
+          || (typeof(ExtendsAttribute).Assembly.Equals(type.Assembly) && type.GetNamespaceChecked().StartsWith("Remotion.Mixins"));
     }
 
     private void ApplyViaCopyAttribute (MemberInfo copyAttributeSource, ICustomAttributeData copyAttributeData)
     {
-      Assertion.IsTrue(copyAttributeData.Constructor.DeclaringType == typeof (CopyCustomAttributesAttribute));
+      Assertion.IsTrue(copyAttributeData.Constructor.DeclaringType == typeof(CopyCustomAttributesAttribute));
       string sourceName = GetFullMemberNameSafe(copyAttributeSource);
 
       var copyAttribute = (CopyCustomAttributesAttribute) copyAttributeData.CreateInstance();
@@ -119,7 +119,7 @@ namespace Remotion.Mixins.Definitions.Building
       foreach (var attributeData in TypePipeCustomAttributeData.GetCustomAttributes(copiedAttributesSource, inherit: true))
       {
         Type attributeType = attributeData.Constructor.DeclaringType!;
-        if (typeof (CopyCustomAttributesAttribute).IsAssignableFrom(attributeType))
+        if (typeof(CopyCustomAttributesAttribute).IsAssignableFrom(attributeType))
         {
           if (includeCopyAttributes)
             yield return attributeData;

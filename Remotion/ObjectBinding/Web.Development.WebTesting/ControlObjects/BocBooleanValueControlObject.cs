@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   public class BocBooleanValueControlObject : BocControlObject, IControlObjectWithFormElements, ISupportsValidationErrors, ISupportsValidationErrorsForReadOnly
   {
     public BocBooleanValueControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

@@ -24,11 +24,11 @@ namespace Remotion.Web.UnitTests.Core.Security.Domain
   {
     public Type GetReferencedType (Type handleType)
     {
-      if (handleType.IsGenericType && handleType.GetGenericTypeDefinition() == typeof (IHandle<>))
+      if (handleType.IsGenericType && handleType.GetGenericTypeDefinition() == typeof(IHandle<>))
         return handleType.GetGenericArguments().Single();
       else
       {
-        var handleInterface = handleType.GetInterfaces().Single(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof (IHandle<>));
+        var handleInterface = handleType.GetInterfaces().Single(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IHandle<>));
         return GetReferencedType(handleInterface);
       }
     }

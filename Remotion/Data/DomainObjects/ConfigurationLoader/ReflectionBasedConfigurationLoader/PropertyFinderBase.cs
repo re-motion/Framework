@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     {
       var propertyInfos = new List<IPropertyInformation>();
 
-      if (_includeBaseProperties && _type.BaseType != typeof (DomainObject) && _type.BaseType != null)
+      if (_includeBaseProperties && _type.BaseType != typeof(DomainObject) && _type.BaseType != null)
       {
         // Use a new PropertyFinder of the same type as this one to get all properties from above this class. Mixins are not included for the base
         // classes; the mixin finder below will include the mixins for those classes anyway.

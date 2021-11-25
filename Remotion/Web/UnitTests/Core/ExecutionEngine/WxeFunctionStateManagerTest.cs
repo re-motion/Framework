@@ -45,7 +45,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     public void TearDown ()
     {
       HttpContextHelper.SetCurrent(null);
-      SafeContext.Instance.FreeData(typeof (WxeFunctionStateManager).AssemblyQualifiedName);
+      SafeContext.Instance.FreeData(typeof(WxeFunctionStateManager).AssemblyQualifiedName);
     }
 
     [Test]
@@ -189,12 +189,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 
     private string GetSessionKeyForFunctionState (string functionToken)
     {
-      return typeof (WxeFunctionStateManager).AssemblyQualifiedName + "|WxeFunctionState|" + functionToken;
+      return typeof(WxeFunctionStateManager).AssemblyQualifiedName + "|WxeFunctionState|" + functionToken;
     }
 
     private string GetSessionKeyForFunctionStates ()
     {
-      return typeof (WxeFunctionStateManager).AssemblyQualifiedName + "|WxeFunctionStates";
+      return typeof(WxeFunctionStateManager).AssemblyQualifiedName + "|WxeFunctionStates";
     }
   }
 }

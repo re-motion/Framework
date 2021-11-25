@@ -54,12 +54,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
 
       var parameterCollection = new QueryParameterCollection { { "p1", 7 } };
       var eagerFetchQueries = 
-          new EagerFetchQueryCollection { { GetEndPointDefinition(typeof (Order), "OrderTicket"), MockRepository.GenerateStub<IQuery>() } };
+          new EagerFetchQueryCollection { { GetEndPointDefinition(typeof(Order), "OrderTicket"), MockRepository.GenerateStub<IQuery>() } };
       
       testHelper.CheckDelegation(q => q.ID, "Some ID");
       testHelper.CheckDelegation(q => q.Statement, "Some Statement");
       testHelper.CheckDelegation(q => q.StorageProviderDefinition, TestDomainStorageProviderDefinition);
-      testHelper.CheckDelegation(q => q.CollectionType, typeof (OrderCollection));
+      testHelper.CheckDelegation(q => q.CollectionType, typeof(OrderCollection));
       testHelper.CheckDelegation(q => q.QueryType, QueryType.Collection);
       testHelper.CheckDelegation(q => q.Parameters, parameterCollection);
       testHelper.CheckDelegation(q => q.EagerFetchQueries, eagerFetchQueries);

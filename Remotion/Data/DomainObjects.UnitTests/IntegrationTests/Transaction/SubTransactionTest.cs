@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       ClientTransaction subTransaction = TestableClientTransaction.CreateSubTransaction();
       Assert.That(subTransaction, Is.Not.Null);
-      Assert.That(ClientTransactionTestHelper.GetPersistenceStrategy(subTransaction), Is.TypeOf(typeof (SubPersistenceStrategy)));
+      Assert.That(ClientTransactionTestHelper.GetPersistenceStrategy(subTransaction), Is.TypeOf(typeof(SubPersistenceStrategy)));
     }
 
     [Test]
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       ClientTransaction subTransaction1 = TestableClientTransaction.CreateSubTransaction();
       ClientTransaction subTransaction2 = subTransaction1.CreateSubTransaction();
-      Assert.That(ClientTransactionTestHelper.GetPersistenceStrategy(subTransaction2), Is.TypeOf(typeof (SubPersistenceStrategy)));
+      Assert.That(ClientTransactionTestHelper.GetPersistenceStrategy(subTransaction2), Is.TypeOf(typeof(SubPersistenceStrategy)));
     }
 
     [Test]

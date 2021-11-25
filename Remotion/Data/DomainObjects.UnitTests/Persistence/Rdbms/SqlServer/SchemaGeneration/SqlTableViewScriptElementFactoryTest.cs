@@ -58,12 +58,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     {
       var result = _factory.GetCreateElement(_tableDefinitionWithCustomSchema);
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptElementCollection)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptElementCollection)));
       var elements = ((ScriptElementCollection) result).Elements;
       Assert.That(elements.Count, Is.EqualTo(3));
-      Assert.That(elements[0], Is.TypeOf(typeof (BatchDelimiterStatement)));
-      Assert.That(elements[2], Is.TypeOf(typeof (BatchDelimiterStatement)));
-      Assert.That(elements[1], Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(elements[0], Is.TypeOf(typeof(BatchDelimiterStatement)));
+      Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
+      Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
           "CREATE VIEW [SchemaName].[View1] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
          + "  WITH SCHEMABINDING AS\r\n"
@@ -80,12 +80,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 
       var result = factory.GetCreateElement(_tableDefinitionWithDefaultSchema);
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptElementCollection)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptElementCollection)));
       var elements = ((ScriptElementCollection) result).Elements;
       Assert.That(elements.Count, Is.EqualTo(3));
-      Assert.That(elements[0], Is.TypeOf(typeof (BatchDelimiterStatement)));
-      Assert.That(elements[2], Is.TypeOf(typeof (BatchDelimiterStatement)));
-      Assert.That(elements[1], Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(elements[0], Is.TypeOf(typeof(BatchDelimiterStatement)));
+      Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
+      Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
           "CREATE VIEW [dbo].[View2] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
           + "  AS\r\n"
@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'View1' AND TABLE_SCHEMA = 'SchemaName')\r\n"
           + "  DROP VIEW [SchemaName].[View1]";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'View2' AND TABLE_SCHEMA = 'dbo')\r\n"
           + "  DROP VIEW [dbo].[View2]";
 
-      Assert.That(result, Is.TypeOf(typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement) result).Statement, Is.EqualTo(expectedResult));
     }
   }

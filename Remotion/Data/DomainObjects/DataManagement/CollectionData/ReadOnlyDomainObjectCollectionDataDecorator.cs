@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   public class ReadOnlyDomainObjectCollectionDataDecorator : DomainObjectCollectionDataDecoratorBase, ICollectionEndPointData
   {
     public ReadOnlyDomainObjectCollectionDataDecorator (IDomainObjectCollectionData wrappedData)
-        : base (wrappedData)
+        : base(wrappedData)
     {
     }
 

@@ -27,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class FormGridControlObject : WebFormsControlObjectWithDiagnosticMetadata, IControlHost
   {
     public FormGridControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

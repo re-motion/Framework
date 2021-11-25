@@ -12,7 +12,7 @@ namespace Remotion.Web.UI.Controls
   {
     public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
     {
-      if (context == null && sourceType == typeof (string))
+      if (context == null && sourceType == typeof(string))
         return true;
 
       return base.CanConvertFrom(context, sourceType);
@@ -20,7 +20,7 @@ namespace Remotion.Web.UI.Controls
 
     public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
     {
-      if (destinationType == typeof (string))
+      if (destinationType == typeof(string))
         return true;
 
       return base.CanConvertTo(context, destinationType);
@@ -49,7 +49,7 @@ namespace Remotion.Web.UI.Controls
 
     public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo culture, object? value, Type destinationType)
     {
-      if (destinationType == typeof (string))
+      if (destinationType == typeof(string))
       {
         if (value == null)
           return null;

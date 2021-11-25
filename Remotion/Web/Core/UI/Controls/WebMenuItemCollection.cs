@@ -67,24 +67,24 @@ namespace Remotion.Web.UI.Controls
         }
         arrayList.AddRange((ArrayList) groupedMenuItems[category]!);
       }
-      return (WebMenuItem[]) arrayList.ToArray(typeof (WebMenuItem));
+      return (WebMenuItem[]) arrayList.ToArray(typeof(WebMenuItem));
     }
 
     /// <summary> Initializes a new instance. </summary>
     public WebMenuItemCollection (IControl? ownerControl, Type[] supportedTypes)
-        : base (ownerControl, supportedTypes)
+        : base(ownerControl, supportedTypes)
     {
     }
 
     /// <summary> Initializes a new instance. </summary>
     public WebMenuItemCollection (IControl? ownerControl)
-        : this (ownerControl, new[] { typeof (WebMenuItem) })
+        : this(ownerControl, new[] { typeof(WebMenuItem) })
     {
     }
 
     public new WebMenuItem[] ToArray ()
     {
-      return (WebMenuItem[]) InnerList.ToArray(typeof (WebMenuItem));
+      return (WebMenuItem[]) InnerList.ToArray(typeof(WebMenuItem));
     }
 
     //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.

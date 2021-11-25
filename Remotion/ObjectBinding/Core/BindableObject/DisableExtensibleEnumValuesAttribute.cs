@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <param name="filterType">The type of the filter to use, must implement <see cref="IEnumerationValueFilter"/>.</param>
     public DisableExtensibleEnumValuesAttribute (Type filterType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("filterType", filterType, typeof (IEnumerationValueFilter));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("filterType", filterType, typeof(IEnumerationValueFilter));
       _filter = (IEnumerationValueFilter) Activator.CreateInstance(filterType)!;
     }
 
@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </summary>
     /// <param name="disabledEnumValueID1">The disabled enum values.</param>
     public DisableExtensibleEnumValuesAttribute (string disabledEnumValueID1) 
-        : this (new[] { 
+        : this(new[] { 
             ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID1) })
     {
     }
@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.BindableObject
     public DisableExtensibleEnumValuesAttribute (
         string disabledEnumValueID1,
         string disabledEnumValueID2)
-      : this (new[] { 
+      : this(new[] { 
           ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID1),
           ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID2),
       })
@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.BindableObject
         string disabledEnumValueID1,
         string disabledEnumValueID2,
         string disabledEnumValueID3)
-      : this (new[] { 
+      : this(new[] { 
           ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID1),
           ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID2),
           ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID3),
@@ -106,7 +106,7 @@ namespace Remotion.ObjectBinding.BindableObject
         string disabledEnumValueID2,
         string disabledEnumValueID3,
         string disabledEnumValueID4)
-      : this (new[] { 
+      : this(new[] { 
           ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID1),
           ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID2),
           ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID3),
@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.BindableObject
         string disabledEnumValueID3, 
         string disabledEnumValueID4, 
         string disabledEnumValueID5)
-      : this (new[] { 
+      : this(new[] { 
           ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID1),
           ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID2),
           ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID3),

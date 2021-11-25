@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Customer), "Orders");
+      var endPointDefinition = GetEndPointDefinition(typeof(Customer), "Orders");
 
       var collectionEndPointMock1 = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
       ExpectGetEndPoint(_originatingCustomer1.ID, endPointDefinition, _virtualEndPointProviderMock, collectionEndPointMock1, false);
@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WithRelatedObjectPointingToNonOriginatingObject ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Customer), "Orders");
+      var endPointDefinition = GetEndPointDefinition(typeof(Customer), "Orders");
 
       var collectionEndPointMock1 = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
       ExpectGetEndPoint(_originatingCustomer1.ID, endPointDefinition, _virtualEndPointProviderMock, collectionEndPointMock1, false);
@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_MandatoryEndPointWithoutRelatedObjects_Throws ()
     {
-      var orderItemsEndPointDefinition = GetEndPointDefinition(typeof (Order), "OrderItems");
+      var orderItemsEndPointDefinition = GetEndPointDefinition(typeof(Order), "OrderItems");
       Assert.That(orderItemsEndPointDefinition.IsMandatory, Is.True);
 
       var originatingOrderData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order1);
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     public void GroupAndRegisterRelatedObjects_NonMandatoryEndPointWithoutRelatedObjects_RegistersEmptyCollection ()
     {
       var originatingCustomerData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Customer1);
-      var ordersEndPointDefinition = GetEndPointDefinition(typeof (Customer), "Orders");
+      var ordersEndPointDefinition = GetEndPointDefinition(typeof(Customer), "Orders");
       Assert.That(ordersEndPointDefinition.IsMandatory, Is.False);
 
       var collectionEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
@@ -169,7 +169,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WithNullOriginalObject ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Customer), "Orders");
+      var endPointDefinition = GetEndPointDefinition(typeof(Customer), "Orders");
 
       _virtualEndPointProviderMock.Replay();
 
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WithNullRelatedObject ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Customer), "Orders");
+      var endPointDefinition = GetEndPointDefinition(typeof(Customer), "Orders");
 
       var collectionEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
       ExpectGetEndPoint(_originatingCustomer1.ID, endPointDefinition, _virtualEndPointProviderMock, collectionEndPointMock, false);
@@ -202,7 +202,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WithRelatedObjectPointingToNull ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Customer), "Orders");
+      var endPointDefinition = GetEndPointDefinition(typeof(Customer), "Orders");
 
       var fetchedOrderItemDataPointingToNull = CreateFetchedOrderData(_fetchedOrder1, null);
 
@@ -225,7 +225,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WithEndPointAlreadyComplete ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Customer), "Orders");
+      var endPointDefinition = GetEndPointDefinition(typeof(Customer), "Orders");
 
       var collectionEndPointMock1 = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
       var collectionEndPointMock2 = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
@@ -251,14 +251,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_PropertyOnBaseType ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Customer), "Orders");
+      var endPointDefinition = GetEndPointDefinition(typeof(Customer), "Orders");
 
       var originatingSpecialCustomer = DomainObjectMother.CreateFakeObject<SpecialCustomer>();
       var originatingSpecialCustomerData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingSpecialCustomer);
 
       var fetchedOrder = DomainObjectMother.CreateFakeObject<Order>();
       var fetchedOrderData = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(fetchedOrder);
-      fetchedOrderData.DataSourceData.SetValue(GetPropertyDefinition(typeof (Order), "Customer"), originatingSpecialCustomer.ID);
+      fetchedOrderData.DataSourceData.SetValue(GetPropertyDefinition(typeof(Order), "Customer"), originatingSpecialCustomer.ID);
 
       var endPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
       ExpectGetEndPoint(originatingSpecialCustomer.ID, endPointDefinition, _virtualEndPointProviderMock, endPointMock, false);
@@ -279,7 +279,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_PropertyOnDerivedType ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Folder), "FileSystemItems");
+      var endPointDefinition = GetEndPointDefinition(typeof(Folder), "FileSystemItems");
 
       var originatingFolder = DomainObjectMother.CreateFakeObject<Folder>();
       var originatingFolderData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingFolder);
@@ -289,7 +289,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 
       var fetchedFile = DomainObjectMother.CreateFakeObject<File>();
       var fetchedFileData = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(fetchedFile);
-      fetchedFileData.DataSourceData.SetValue(GetPropertyDefinition(typeof (FileSystemItem), "ParentFolder"), originatingFolder.ID);
+      fetchedFileData.DataSourceData.SetValue(GetPropertyDefinition(typeof(FileSystemItem), "ParentFolder"), originatingFolder.ID);
 
       var endPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
       ExpectGetEndPoint(originatingFolder.ID, endPointDefinition, _virtualEndPointProviderMock, endPointMock, false);
@@ -310,7 +310,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_OriginatingObjectOfInvalidType ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Customer), "Orders");
+      var endPointDefinition = GetEndPointDefinition(typeof(Customer), "Orders");
 
       _virtualEndPointProviderMock.Replay();
       Assert.That(
@@ -329,7 +329,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_RelatedObjectOfInvalidType ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Customer), "Orders");
+      var endPointDefinition = GetEndPointDefinition(typeof(Customer), "Orders");
 
       _virtualEndPointProviderMock.Replay();
       Assert.That(
@@ -347,7 +347,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WrongCardinality ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Order), "OrderTicket");
+      var endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
 
       Assert.That(
           () =>

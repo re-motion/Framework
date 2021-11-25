@@ -29,22 +29,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [SetUp]
     public void SetUp ()
     {
-      _propertyInformation = new InvalidPropertyInformation(TypeAdapter.Create(typeof (string)), "PropertyName", typeof (int));
+      _propertyInformation = new InvalidPropertyInformation(TypeAdapter.Create(typeof(string)), "PropertyName", typeof(int));
     }
 
     [Test]
     public void Initialization ()
     {
       Assert.That(_propertyInformation.Name, Is.EqualTo("PropertyName"));
-      Assert.That(_propertyInformation.DeclaringType, Is.SameAs(TypeAdapter.Create(typeof (string))));
-      Assert.That(_propertyInformation.PropertyType, Is.EqualTo(typeof (int)));
+      Assert.That(_propertyInformation.DeclaringType, Is.SameAs(TypeAdapter.Create(typeof(string))));
+      Assert.That(_propertyInformation.PropertyType, Is.EqualTo(typeof(int)));
       Assert.That(_propertyInformation.CanBeSetFromOutside, Is.False);
     }
 
     [Test]
     public void GetOriginalDeclaringType ()
     {
-      Assert.That(_propertyInformation.GetOriginalDeclaringType(), Is.SameAs(TypeAdapter.Create(typeof (string))));
+      Assert.That(_propertyInformation.GetOriginalDeclaringType(), Is.SameAs(TypeAdapter.Create(typeof(string))));
     }
 
     [Test]
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void FindInterfaceImplementation ()
     {
       Assert.That(
-          () => _propertyInformation.FindInterfaceImplementation(typeof (object)),
+          () => _propertyInformation.FindInterfaceImplementation(typeof(object)),
           Throws.InvalidOperationException
               .With.Message.EqualTo("FindInterfaceImplementation can only be called on inteface properties."));
     }

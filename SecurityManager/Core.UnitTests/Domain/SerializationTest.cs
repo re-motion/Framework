@@ -51,13 +51,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       CheckDomainObjectSerializability(delegate { return StateDefinition.NewObject(); });
       CheckDomainObjectSerializability(delegate { return StatePropertyDefinition.NewObject(); });
       CheckDomainObjectSerializability(delegate { return StatePropertyReference.NewObject(); });
-      CheckDomainObjectSerializability(delegate { return (Group) LifetimeService.NewObject(ClientTransaction.Current, typeof (Group), ParamList.Empty); });
-      CheckDomainObjectSerializability(delegate { return (GroupType) LifetimeService.NewObject(ClientTransaction.Current, typeof (GroupType), ParamList.Empty); });
+      CheckDomainObjectSerializability(delegate { return (Group) LifetimeService.NewObject(ClientTransaction.Current, typeof(Group), ParamList.Empty); });
+      CheckDomainObjectSerializability(delegate { return (GroupType) LifetimeService.NewObject(ClientTransaction.Current, typeof(GroupType), ParamList.Empty); });
       CheckDomainObjectSerializability(delegate { return GroupTypePosition.NewObject(); });
-      CheckDomainObjectSerializability(delegate { return (Position) LifetimeService.NewObject(ClientTransaction.Current, typeof (Position), ParamList.Empty); });
+      CheckDomainObjectSerializability(delegate { return (Position) LifetimeService.NewObject(ClientTransaction.Current, typeof(Position), ParamList.Empty); });
       CheckDomainObjectSerializability(delegate { return Role.NewObject(); });
-      CheckDomainObjectSerializability(delegate { return (Tenant) LifetimeService.NewObject(ClientTransaction.Current, typeof (Tenant), ParamList.Empty); });
-      CheckDomainObjectSerializability(delegate { return (User) LifetimeService.NewObject(ClientTransaction.Current, typeof (User), ParamList.Empty); });
+      CheckDomainObjectSerializability(delegate { return (Tenant) LifetimeService.NewObject(ClientTransaction.Current, typeof(Tenant), ParamList.Empty); });
+      CheckDomainObjectSerializability(delegate { return (User) LifetimeService.NewObject(ClientTransaction.Current, typeof(User), ParamList.Empty); });
     }
 
     private void CheckDomainObjectSerializability<T> (Func<T> creator)

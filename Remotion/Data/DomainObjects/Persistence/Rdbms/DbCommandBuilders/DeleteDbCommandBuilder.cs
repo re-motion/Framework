@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         TableDefinition tableDefinition,
         IComparedColumnsSpecification comparedColumnsSpecification,
         ISqlDialect sqlDialect)
-        : base (sqlDialect)
+        : base(sqlDialect)
     {
       ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
       ArgumentUtility.CheckNotNull("comparedColumnsSpecification", comparedColumnsSpecification);

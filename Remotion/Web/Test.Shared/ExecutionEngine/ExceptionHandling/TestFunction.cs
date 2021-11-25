@@ -24,10 +24,10 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
   public class TestFunction : WxeFunction
   {
     public TestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
-    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof (TestForm), "ExecutionEngine/ExceptionHandling/TestForm.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof(TestForm), "ExecutionEngine/ExceptionHandling/TestForm.aspx");
   }
 }

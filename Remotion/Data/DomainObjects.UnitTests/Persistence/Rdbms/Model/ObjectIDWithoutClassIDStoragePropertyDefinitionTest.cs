@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void Initialization_WithAbstractClassDefinition ()
     {
-      var abstractClassDefinition = GetTypeDefinition(typeof (TIFileSystemItem));
+      var abstractClassDefinition = GetTypeDefinition(typeof(TIFileSystemItem));
       Assert.That(abstractClassDefinition.IsAbstract, Is.True);
 
       Assert.That(
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void PropertyType ()
     {
-      Assert.That(_objectIDWithoutClassIDStoragePropertyDefinition.PropertyType, Is.SameAs(typeof (ObjectID)));
+      Assert.That(_objectIDWithoutClassIDStoragePropertyDefinition.PropertyType, Is.SameAs(typeof(ObjectID)));
     }
 
     [Test]
@@ -233,7 +233,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       var result = _objectIDWithoutClassIDStoragePropertyDefinition.CombineValue(_columnValueProviderStub);
 
-      Assert.That(result, Is.TypeOf(typeof (ObjectID)));
+      Assert.That(result, Is.TypeOf(typeof(ObjectID)));
       Assert.That(((ObjectID) result).Value.ToString(), Is.EqualTo(DomainObjectIDs.Order1.Value.ToString()));
       Assert.That(((ObjectID) result).ClassDefinition, Is.SameAs(_classDefinition));
     }
@@ -291,7 +291,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void UnifyWithEquivalentProperties_ThrowsForDifferentClassDefinitions ()
     {
-      var property2 = new ObjectIDWithoutClassIDStoragePropertyDefinition(_valuePropertyStub, GetTypeDefinition(typeof (OrderItem)));
+      var property2 = new ObjectIDWithoutClassIDStoragePropertyDefinition(_valuePropertyStub, GetTypeDefinition(typeof(OrderItem)));
 
       Assert.That(
           () => _objectIDWithoutClassIDStoragePropertyDefinition.UnifyWithEquivalentProperties(new[] { property2 }),

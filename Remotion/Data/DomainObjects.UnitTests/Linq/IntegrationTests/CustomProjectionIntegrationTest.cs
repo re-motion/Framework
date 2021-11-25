@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void SequenceOfForeignKeyIDs_NonPersistedClassID_ConstructedInMemory ()
     {
-      var endPointDefinition = GetNonVirtualEndPointDefinition(typeof (Computer), "Employee");
+      var endPointDefinition = GetNonVirtualEndPointDefinition(typeof(Computer), "Employee");
       Assert.That(endPointDefinition.PropertyDefinition.StoragePropertyDefinition, Is.TypeOf<ObjectIDWithoutClassIDStoragePropertyDefinition>());
 
       var result =

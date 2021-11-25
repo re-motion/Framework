@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       {
         sector = IndustrialSector.NewObject();
       }
-      var data = new PropertyAccessorData(sector.ID.ClassDefinition, typeof (IndustrialSector).FullName + ".Name");
+      var data = new PropertyAccessorData(sector.ID.ClassDefinition, typeof(IndustrialSector).FullName + ".Name");
 
       var propertyAccessor = new PropertyAccessor(sector, data, transaction);
       Assert.That(propertyAccessor.DomainObject, Is.SameAs(sector));
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
         sector = IndustrialSector.NewObject();
         sector.Name = "Foo";
       }
-      var data = new PropertyAccessorData(sector.ID.ClassDefinition, typeof (IndustrialSector).FullName + ".Name");
+      var data = new PropertyAccessorData(sector.ID.ClassDefinition, typeof(IndustrialSector).FullName + ".Name");
       var accessor = new PropertyAccessor(sector, data, transaction);
 
       Assert.That(accessor.GetValue<string>(), Is.EqualTo("Foo"));
@@ -207,7 +207,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       var customer1 = Customer.NewObject();
 
-      var newCollection = new DomainObjectCollection(typeof (Customer));
+      var newCollection = new DomainObjectCollection(typeof(Customer));
       Assert.That(
           () => CreateAccessor(customer1, "Orders").SetValueWithoutTypeCheck(newCollection),
           Throws.InvalidOperationException
@@ -688,7 +688,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       var order = Order.NewObject();
       order.Delete();
 
-      PropertyAccessor property = order.Properties[typeof (Order), "OrderNumber"];
+      PropertyAccessor property = order.Properties[typeof(Order), "OrderNumber"];
 
       ExpectDiscarded(() => Dev.Null = property.HasChanged);
       ExpectDiscarded(() => Dev.Null = property.HasBeenTouched);

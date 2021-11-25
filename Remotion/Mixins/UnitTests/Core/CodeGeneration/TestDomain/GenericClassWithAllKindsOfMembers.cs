@@ -29,7 +29,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 
     public virtual T Property
     {
-      get { return default (T); }
+      get { return default(T); }
     }
 
     public virtual event Func<T> Event;

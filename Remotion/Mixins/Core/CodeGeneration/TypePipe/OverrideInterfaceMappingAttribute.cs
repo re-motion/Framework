@@ -27,7 +27,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class OverrideInterfaceMappingAttribute : MethodReferencingAttribute
   {
     public OverrideInterfaceMappingAttribute (Type declaringType, string methodName, string methodSignature)
-        : base (declaringType, methodName, methodSignature)
+        : base(declaringType, methodName, methodSignature)
     {
     }
   }

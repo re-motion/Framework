@@ -210,7 +210,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     /// </remarks>
     [Description ("Automatically postback to the server after the checked state is modified. Undefined is interpreted as false.")]
     [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
+    [DefaultValue (typeof(bool?), "")]
     [NotifyParentProperty (true)]
     public bool? AutoPostBack
     {

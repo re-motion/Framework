@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
 
     public StringProperty (Parameters parameters, int? maxLength)
-        : base (parameters)
+        : base(parameters)
     {
       _maxLength = maxLength;
     }

@@ -37,39 +37,39 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [Test]
     public void GetTypesToInheritFrom_None ()
     {
-      Assert.That(_policy.GetTypesToInheritFrom(typeof (object)).ToArray(), Is.Empty);
+      Assert.That(_policy.GetTypesToInheritFrom(typeof(object)).ToArray(), Is.Empty);
     }
 
     [Test]
     public void GetTypesToInheritFrom_Base ()
     {
-      Assert.That(_policy.GetTypesToInheritFrom(typeof (string)).ToArray(), Has.Member(typeof (object)));
+      Assert.That(_policy.GetTypesToInheritFrom(typeof(string)).ToArray(), Has.Member(typeof(object)));
     }
 
     [Test]
     public void GetTypesToInheritFrom_Interfaces ()
     {
-      Assert.That(_policy.GetTypesToInheritFrom(typeof (string)).ToArray(), 
-          Has.Member(typeof (IEnumerable<char>)));
+      Assert.That(_policy.GetTypesToInheritFrom(typeof(string)).ToArray(), 
+          Has.Member(typeof(IEnumerable<char>)));
     }
 
     [Test]
     public void GetTypesToInheritFrom_GenericTypeDef ()
     {
-      Assert.That(_policy.GetTypesToInheritFrom(typeof (List<int>)).ToArray(), Has.Member(typeof (List<>)));
+      Assert.That(_policy.GetTypesToInheritFrom(typeof(List<int>)).ToArray(), Has.Member(typeof(List<>)));
     }
 
     [Test]
     public void GetTypesToInheritFrom_NoGenericTypeDef_ForOpenGenericType ()
     {
-      Assert.That(_policy.GetTypesToInheritFrom(typeof (List<>)).ToArray(), Has.No.Member(typeof (List<>)));
+      Assert.That(_policy.GetTypesToInheritFrom(typeof(List<>)).ToArray(), Has.No.Member(typeof(List<>)));
     }
 
     [Test]
     public void GetClassContextsToInheritFrom ()
     {
-      var fakeClassContext = ClassContextObjectMother.Create(typeof (object));
-      var result = _policy.GetClassContextsToInheritFrom(typeof (BaseType1), t => fakeClassContext);
+      var fakeClassContext = ClassContextObjectMother.Create(typeof(object));
+      var result = _policy.GetClassContextsToInheritFrom(typeof(BaseType1), t => fakeClassContext);
 
       Assert.That(result.ToArray(), Is.EqualTo(new[] { fakeClassContext }));
     }

@@ -102,7 +102,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       _strategy.Verify();
       childTransaction.Verify();
       childExecutionContextStub.Verify();
-      Assert.That(childTransactionStrategy, Is.InstanceOf(typeof (ChildTransactionStrategy)));
+      Assert.That(childTransactionStrategy, Is.InstanceOf(typeof(ChildTransactionStrategy)));
       Assert.That(((ChildTransactionStrategy)childTransactionStrategy).AutoCommit, Is.True);
       Assert.That(((ChildTransactionStrategy) childTransactionStrategy).Transaction, Is.SameAs(childTransaction.Object));
       Assert.That(childTransactionStrategy.OuterTransactionStrategy, Is.SameAs(_strategy.Object));
@@ -132,7 +132,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       childTransaction.Verify();
       childScope.Verify();
       childExecutionContextStub.Verify();
-      Assert.That(childTransactionStrategy, Is.InstanceOf(typeof (ChildTransactionStrategy)));
+      Assert.That(childTransactionStrategy, Is.InstanceOf(typeof(ChildTransactionStrategy)));
       Assert.That(((ChildTransactionStrategy) childTransactionStrategy).AutoCommit, Is.True);
       Assert.That(((ChildTransactionStrategy) childTransactionStrategy).Transaction, Is.SameAs(childTransaction.Object));
       Assert.That(childTransactionStrategy.OuterTransactionStrategy, Is.SameAs(_strategy.Object));
@@ -185,7 +185,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
         childTransaction.Verify();
         childExecutionContextStub.Verify();
         Assert.That(e.InnerException, Is.SameAs(innerException));
-        Assert.That(_strategy.Object.Child, Is.InstanceOf(typeof (ChildTransactionStrategy)));
+        Assert.That(_strategy.Object.Child, Is.InstanceOf(typeof(ChildTransactionStrategy)));
       }
     }
 

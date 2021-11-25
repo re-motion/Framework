@@ -46,9 +46,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     {
       _loaderMock = new Mock<IAssemblyLoader>();
 
-      _assembly1 = typeof (object).Assembly;
-      _assembly2 = typeof (NamedRootAssemblyFinder).Assembly;
-      _assembly3 = typeof (NamedRootAssemblyFinderTest).Assembly;
+      _assembly1 = typeof(object).Assembly;
+      _assembly2 = typeof(NamedRootAssemblyFinder).Assembly;
+      _assembly3 = typeof(NamedRootAssemblyFinderTest).Assembly;
 
       _name1 = new AssemblyName("n1");
       _name2 = new AssemblyName("n2");

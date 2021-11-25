@@ -55,7 +55,7 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     public void IsFlagsEnum_WithOtherType ()
     {
       Assert.That(
-          () => EnumUtility.IsFlagsEnumType(typeof (int)),
+          () => EnumUtility.IsFlagsEnumType(typeof(int)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Argument was a type representing 'System.Int32' but only enum-types are supported.", "enumType"));
@@ -65,7 +65,7 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     public void IsValidEnumValue_WithValueNotMatchingType ()
     {
       Assert.That(
-          () => EnumUtility.IsValidEnumValue(typeof (TestFlags), (Int16Enum.TestEnum) (short) 1),
+          () => EnumUtility.IsValidEnumValue(typeof(TestFlags), (Int16Enum.TestEnum) (short) 1),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Object must be the same type as the enum. The type passed in was 'Remotion.UnitTests.Utilities.EnumUtilityTests.Int16Enum+TestEnum'; "
@@ -77,7 +77,7 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     public void IsValidEnumValue_WithValueNotMatchingUnderlyingType ()
     {
       Assert.That(
-          () => EnumUtility.IsValidEnumValue(typeof (TestFlags), (short) 1),
+          () => EnumUtility.IsValidEnumValue(typeof(TestFlags), (short) 1),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Enum underlying type and the object must be same type. The type passed in was 'System.Int16'; the enum underlying type was 'System.Int32'.",
@@ -98,7 +98,7 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
     public void IsValidEnumValue_WithOtherType ()
     {
       Assert.That(
-          () => EnumUtility.IsValidEnumValue(typeof (Int32), (short) 1),
+          () => EnumUtility.IsValidEnumValue(typeof(Int32), (short) 1),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Argument was a type representing 'System.Int32' but only enum-types are supported.", "enumType"));

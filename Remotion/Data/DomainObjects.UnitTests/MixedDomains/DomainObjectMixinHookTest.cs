@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     {
       base.SetUp();
 
-      _objectID = new ObjectID(typeof (HookedTargetClass), Guid.NewGuid());
+      _objectID = new ObjectID(typeof(HookedTargetClass), Guid.NewGuid());
     }
 
     [Test]
@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       using (new MixedObjectInstantiationScope(mixinInstance))
       {
         var tx = ClientTransaction.CreateRootTransaction();
-        LifetimeService.NewObject(tx, typeof (HookedTargetClass), ParamList.Empty);
+        LifetimeService.NewObject(tx, typeof(HookedTargetClass), ParamList.Empty);
       }
 
       Assert.That(mixinInstance.OnLoadedCalled, Is.False);

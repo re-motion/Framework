@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void Enum ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty(typeof (ClassWithValueType<TestEnum>), "Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
       EnumerationValueInfo[] expected = new[]
           {
               new EnumerationValueInfo(TestEnum.Value1, "Value1", "Value1", true),
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void NullableEnum ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty(typeof (ClassWithValueType<TestEnum>), "NullableScalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "NullableScalar");
       EnumerationValueInfo[] expected = new[]
           {
               new EnumerationValueInfo(TestEnum.Value1, "Value1", "Value1", true),
@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     [Test]
     public void UndefinedValueEnum ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty(typeof (ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
       EnumerationValueInfo[] expected = new[]
           {
               new EnumerationValueInfo(EnumWithUndefinedValue.Value1, "Value1", "Value1", true),

@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IVirtualObjectEndPointDataManager dataManager, 
         IRelationEndPointProvider endPointProvider, 
         IClientTransactionEventSink transactionEventSink)
-        : base (dataManager, endPointProvider, transactionEventSink)
+        : base(dataManager, endPointProvider, transactionEventSink)
     {
     }
 
@@ -183,7 +183,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     #region Serialization
 
     public CompleteVirtualObjectEndPointLoadState (FlattenedDeserializationInfo info)
-      : base (info)
+      : base(info)
     {
     }
 

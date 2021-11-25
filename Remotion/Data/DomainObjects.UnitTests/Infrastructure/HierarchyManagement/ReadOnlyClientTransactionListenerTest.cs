@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       _listener = new ReadOnlyClientTransactionListener();
       _clientTransaction = new TestableClientTransaction();
 
-      _allMethods = typeof (ReadOnlyClientTransactionListener).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+      _allMethods = typeof(ReadOnlyClientTransactionListener).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
       Assert.That(_allMethods, Has.Length.EqualTo(38));
 
       _neverThrowingMethods = _allMethods.Where(n => _neverThrowingMethodNames.Contains(n.Name)).ToArray();
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     {
       if (t.IsValueType)
         return Activator.CreateInstance(t);
-      else if (t == typeof (ClientTransaction))
+      else if (t == typeof(ClientTransaction))
         return _clientTransaction;
       else
         return null;
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     private MethodInfo GetCallableMethod (MethodInfo method)
     {
       return method.Name == "FilterQueryResult" || method.Name == "FilterCustomQueryResult"
-                 ? method.MakeGenericMethod(typeof (Order))
+                 ? method.MakeGenericMethod(typeof(Order))
                  : method;
     }
   }

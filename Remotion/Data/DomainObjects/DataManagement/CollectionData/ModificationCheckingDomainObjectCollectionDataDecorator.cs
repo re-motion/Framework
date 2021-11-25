@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     private readonly Type _requiredItemType;
 
     public ModificationCheckingDomainObjectCollectionDataDecorator (Type requiredItemType, IDomainObjectCollectionData wrappedData)
-      : base (wrappedData)
+      : base(wrappedData)
     {
       _requiredItemType = requiredItemType;
     }

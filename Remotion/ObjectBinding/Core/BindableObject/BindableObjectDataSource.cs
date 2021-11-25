@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     [Category ("Data")]
     [DefaultValue (null)]
-    [TypeConverter (typeof (TypeNameConverter))]
+    [TypeConverter (typeof(TypeNameConverter))]
     public Type? Type
     {
       get

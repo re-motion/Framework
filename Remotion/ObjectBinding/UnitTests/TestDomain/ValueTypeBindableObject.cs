@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
 
     public IBusinessObjectClass BusinessObjectClass
     {
-      get { return BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (ValueTypeBindableObject)); }
+      get { return BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(ValueTypeBindableObject)); }
     }
   }
 }

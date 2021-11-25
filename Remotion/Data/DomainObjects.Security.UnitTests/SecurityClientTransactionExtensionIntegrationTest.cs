@@ -243,7 +243,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       _functionalSecurityStrategyStub
           .Stub(
               mock => mock.HasAccess(
-                  Arg.Is(  typeof (SecurableObject)),
+                  Arg.Is(  typeof(SecurableObject)),
                   Arg.Is(_securityProviderStub),
                   Arg.Is(_securityPrincipalStub),
                   Arg<IReadOnlyList<AccessType>>.List.Equal( new[] { AccessType.Get(GeneralAccessTypes.Create) })))

@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandBuilderFactoryStrictMock.VerifyAllExpectations();
       _objectReaderFactoryStrictMock.VerifyAllExpectations();
 
-      Assert.That(result, Is.TypeOf(typeof (MultiObjectLoadCommand<DataContainer>)));
+      Assert.That(result, Is.TypeOf(typeof(MultiObjectLoadCommand<DataContainer>)));
       var command = ((MultiObjectLoadCommand<DataContainer>) result);
       Assert.That(command.DbCommandBuildersAndReaders.Length, Is.EqualTo(1));
       Assert.That(command.DbCommandBuildersAndReaders[0].Item1, Is.SameAs(commandBuilderStub));
@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _dataStoragePropertyDefinitionFactoryStrictMock
           .Stub(stub => stub.CreateStoragePropertyDefinition(Tuple.Create(1, "a")))
-          .Return(new UnsupportedStoragePropertyDefinition(typeof (string), "X.", null));
+          .Return(new UnsupportedStoragePropertyDefinition(typeof(string), "X.", null));
       _dataStoragePropertyDefinitionFactoryStrictMock.Replay();
 
       Assert.That(
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       var result = _factory.CreateForCustomQuery(_queryStub);
 
-      Assert.That(result, Is.TypeOf(typeof (MultiObjectLoadCommand<IQueryResultRow>)));
+      Assert.That(result, Is.TypeOf(typeof(MultiObjectLoadCommand<IQueryResultRow>)));
       var command = ((MultiObjectLoadCommand<IQueryResultRow>) result);
       Assert.That(command.DbCommandBuildersAndReaders.Length, Is.EqualTo(1));
       Assert.That(command.DbCommandBuildersAndReaders[0].Item1, Is.SameAs(commandBuilderStub));
@@ -225,7 +225,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dataStoragePropertyDefinitionFactoryStrictMock.VerifyAllExpectations();
       _dbCommandBuilderFactoryStrictMock.VerifyAllExpectations();
 
-      Assert.That(result, Is.TypeOf(typeof (ScalarValueLoadCommand)));
+      Assert.That(result, Is.TypeOf(typeof(ScalarValueLoadCommand)));
       var command = ((ScalarValueLoadCommand) result);
       Assert.That(command.DbCommandBuilder, Is.SameAs(commandBuilderStub));
     }

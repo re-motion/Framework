@@ -29,11 +29,11 @@ namespace Remotion.Mixins.Definitions
   {
     private Dictionary<TKey, TValue> _items = new Dictionary<TKey, TValue>();
 
-    public UniqueDefinitionCollection (KeyMaker keyMaker, Predicate<TValue> guardian) : base (keyMaker, guardian)
+    public UniqueDefinitionCollection (KeyMaker keyMaker, Predicate<TValue> guardian) : base(keyMaker, guardian)
     {
     }
 
-    public UniqueDefinitionCollection (KeyMaker keyMaker) : base (keyMaker, null)
+    public UniqueDefinitionCollection (KeyMaker keyMaker) : base(keyMaker, null)
     {
     }
 
@@ -62,7 +62,7 @@ namespace Remotion.Mixins.Definitions
 
     public TValue this[TKey key]
     {
-      get { return ContainsKey(ArgumentUtility.CheckNotNull("key", key)) ? _items[key] : default (TValue)!; }
+      get { return ContainsKey(ArgumentUtility.CheckNotNull("key", key)) ? _items[key] : default(TValue)!; }
     }
   }
 }

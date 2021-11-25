@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Domain
       set { _referenceList = value; }
     }
 
-    [ItemType(typeof (TypeWithReference))]
+    [ItemType(typeof(TypeWithReference))]
     public IList ReferenceListAsList
     {
       get { return _referenceListAsList; }

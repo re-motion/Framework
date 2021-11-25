@@ -39,7 +39,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [Test]
     public void CheckValid_MixinType_ExceptionIsThrown ()
     {
-      _collectorStub.Setup(stub => stub.ValidatedType).Returns(typeof (CustomerMixin));
+      _collectorStub.Setup(stub => stub.ValidatedType).Returns(typeof(CustomerMixin));
 
       Assert.That(
           () => _validator.CheckValid(_collectorStub.Object),
@@ -52,7 +52,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [Test]
     public void CheckValid_NoMixinType_NoExceptionIsThrown ()
     {
-      _collectorStub.Setup(stub => stub.ValidatedType).Returns(typeof (Customer));
+      _collectorStub.Setup(stub => stub.ValidatedType).Returns(typeof(Customer));
 
       _validator.CheckValid(_collectorStub.Object);
     }

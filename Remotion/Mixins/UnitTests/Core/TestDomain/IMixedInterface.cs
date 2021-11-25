@@ -18,6 +18,6 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof (NullMixin))]
+  [Uses (typeof(NullMixin))]
   public interface IMixedInterface { }
 }

@@ -514,15 +514,15 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     private Func<ObjectID, IDomainObjectHandle<DomainObject>> BuildHandleCreator ()
     {
-      var objectIDParameter = Expression.Parameter(typeof (ObjectID), "objectID");
+      var objectIDParameter = Expression.Parameter(typeof(ObjectID), "objectID");
 
       Expression body;
-      if (typeof (DomainObject).IsAssignableFrom(ClassType))
+      if (typeof(DomainObject).IsAssignableFrom(ClassType))
       {
-        var handleType = typeof (DomainObjectHandle<>).MakeGenericType(ClassType);
+        var handleType = typeof(DomainObjectHandle<>).MakeGenericType(ClassType);
 
         var constructorInfo = handleType.GetConstructor(
-            BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof (ObjectID) }, null);
+            BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(ObjectID) }, null);
         Assertion.DebugAssert(constructorInfo != null);
 
         body = Expression.New(constructorInfo, objectIDParameter);

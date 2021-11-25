@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 
       _query = MockRepository.GenerateStub<IQuery>();
       _queryWithCustomType = MockRepository.GenerateStub<IQuery>();
-      _queryWithCustomType.Stub(stub => stub.CollectionType).Return(typeof (OrderCollection));
+      _queryWithCustomType.Stub(stub => stub.CollectionType).Return(typeof(OrderCollection));
 
       _result = new QueryResult<Order>(_query, new[] { _order1, _order3, _order4 });
       _resultWithDuplicates = new QueryResult<Order>(_query, new[] { _order1, _order3, _order4, _order1 });
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     public void ToCustomCollection_WithCollectionType ()
     {
       var collection = _resultWithCustomType.ToCustomCollection();
-      Assert.That(collection, Is.InstanceOf(typeof (OrderCollection)));
+      Assert.That(collection, Is.InstanceOf(typeof(OrderCollection)));
       Assert.That(collection, Is.EqualTo(new[] { _order1, _order3, _order4 }));
     }
 
@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     public void ToCustomCollection_WithoutCollectionType ()
     {
       var collection = _result.ToCustomCollection();
-      Assert.That(collection, Is.InstanceOf(typeof (DomainObjectCollection)));
+      Assert.That(collection, Is.InstanceOf(typeof(DomainObjectCollection)));
       Assert.That(collection, Is.EqualTo(new[] { _order1, _order3, _order4 }));
     }
 
@@ -223,7 +223,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       using (ClientTransactionScope.EnterNullScope())
       {
         var collection = _resultWithCustomType.ToCustomCollection();
-        Assert.That(collection, Is.InstanceOf(typeof (OrderCollection)));
+        Assert.That(collection, Is.InstanceOf(typeof(OrderCollection)));
         Assert.That(collection, Is.EqualTo(new[] { _order1, _order3, _order4 }));
       }
     }

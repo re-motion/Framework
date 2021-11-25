@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Employee), "Computer");
+      var endPointDefinition = GetEndPointDefinition(typeof(Employee), "Computer");
 
       _loadedDataContainerProviderStub.Stub(stub => stub.GetDataContainerWithoutLoading(_fetchedComputer1.ID)).Return(_fetchedComputerData1.DataSourceData);
       _loadedDataContainerProviderStub.Stub(stub => stub.GetDataContainerWithoutLoading(_fetchedComputer2.ID)).Return(_fetchedComputerData2.DataSourceData);
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WithOriginatingWithoutRelated ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Employee), "Computer");
+      var endPointDefinition = GetEndPointDefinition(typeof(Employee), "Computer");
 
       var endPointMock1 = MockRepository.GenerateStrictMock<IVirtualObjectEndPoint>();
       ExpectGetEndPoint(_originatingEmployee1.ID, endPointDefinition, _virtualEndPointProviderMock, endPointMock1, false);
@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WithNullOriginalObject ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Employee), "Computer");
+      var endPointDefinition = GetEndPointDefinition(typeof(Employee), "Computer");
 
       _virtualEndPointProviderMock.Replay();
 
@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WithNullRelatedObject_AndNonMandatoryRelation ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Employee), "Computer");
+      var endPointDefinition = GetEndPointDefinition(typeof(Employee), "Computer");
 
       Assert.That(endPointDefinition.IsMandatory, Is.False);
 
@@ -167,14 +167,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_PropertyOnBaseType ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Company), "Ceo");
+      var endPointDefinition = GetEndPointDefinition(typeof(Company), "Ceo");
 
       var originatingSupplier = DomainObjectMother.CreateFakeObject<Supplier>();
       var originatingSupplierData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingSupplier);
 
       var fetchedCeo = DomainObjectMother.CreateFakeObject<Ceo>();
       var fetchedCeoData = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(fetchedCeo);
-      fetchedCeoData.DataSourceData.SetValue(GetPropertyDefinition(typeof (Ceo), "Company"), originatingSupplier.ID);
+      fetchedCeoData.DataSourceData.SetValue(GetPropertyDefinition(typeof(Ceo), "Company"), originatingSupplier.ID);
 
       _loadedDataContainerProviderStub.Stub(stub => stub.GetDataContainerWithoutLoading(fetchedCeo.ID)).Return(fetchedCeoData.DataSourceData);
 
@@ -197,7 +197,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_PropertyOnDerivedType ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Customer), "ContactPerson");
+      var endPointDefinition = GetEndPointDefinition(typeof(Customer), "ContactPerson");
 
       var originatingCustomer = DomainObjectMother.CreateFakeObject<Customer>();
       var originatingCustomerData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingCustomer);
@@ -210,7 +210,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 
       var fetchedPerson = DomainObjectMother.CreateFakeObject<Person>();
       var fetchedPersonData = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(fetchedPerson);
-      fetchedPersonData.DataSourceData.SetValue(GetPropertyDefinition(typeof (Person), "AssociatedCustomerCompany"), originatingCustomer.ID);
+      fetchedPersonData.DataSourceData.SetValue(GetPropertyDefinition(typeof(Person), "AssociatedCustomerCompany"), originatingCustomer.ID);
 
       _loadedDataContainerProviderStub.Stub(stub => stub.GetDataContainerWithoutLoading(fetchedPerson.ID)).Return(fetchedPersonData.DataSourceData);
 
@@ -233,7 +233,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WithNullRelatedObject_AndMandatoryRelation ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Order), "OrderTicket");
+      var endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
       Assert.That(endPointDefinition.IsMandatory, Is.True);
       var originatingOrderData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order1);
       Assert.That(
@@ -250,7 +250,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WithRelatedObjectPointingToNull ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Employee), "Computer");
+      var endPointDefinition = GetEndPointDefinition(typeof(Employee), "Computer");
 
       var fetchedComputerDataPointingToNull = CreateFetchedComputerData(_fetchedComputer1, null);
       _loadedDataContainerProviderStub.Stub(stub => stub.GetDataContainerWithoutLoading(fetchedComputerDataPointingToNull.LoadedObjectData.ObjectID)).Return(fetchedComputerDataPointingToNull.DataSourceData);
@@ -271,7 +271,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WithEndPointAlreadyComplete ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Employee), "Computer");
+      var endPointDefinition = GetEndPointDefinition(typeof(Employee), "Computer");
 
       _loadedDataContainerProviderStub.Stub(stub => stub.GetDataContainerWithoutLoading(_fetchedComputer1.ID)).Return(_fetchedComputerData1.DataSourceData);
       _loadedDataContainerProviderStub.Stub(stub => stub.GetDataContainerWithoutLoading(_fetchedComputer2.ID)).Return(_fetchedComputerData2.DataSourceData);
@@ -301,7 +301,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WithInvalidDuplicateForeignKey ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Employee), "Computer");
+      var endPointDefinition = GetEndPointDefinition(typeof(Employee), "Computer");
 
       var fetchedComputerWithDuplicateKey = CreateFetchedComputerData(_fetchedComputer2, _originatingEmployee1.ID);
       _loadedDataContainerProviderStub.Stub(stub => stub.GetDataContainerWithoutLoading(_fetchedComputer1.ID)).Return(_fetchedComputerData1.DataSourceData);
@@ -326,7 +326,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_OriginatingObjectOfInvalidType ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Employee), "Computer");
+      var endPointDefinition = GetEndPointDefinition(typeof(Employee), "Computer");
 
       _virtualEndPointProviderMock.Replay();
       Assert.That(
@@ -345,7 +345,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_InvalidRelatedObject ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Employee), "Computer");
+      var endPointDefinition = GetEndPointDefinition(typeof(Employee), "Computer");
 
       _virtualEndPointProviderMock.Replay();
       Assert.That(
@@ -363,7 +363,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_WrongCardinality ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Employee), "Subordinates");
+      var endPointDefinition = GetEndPointDefinition(typeof(Employee), "Subordinates");
 
       Assert.That(
           () =>

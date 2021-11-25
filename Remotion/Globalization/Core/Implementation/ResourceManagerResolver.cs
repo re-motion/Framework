@@ -26,7 +26,7 @@ namespace Remotion.Globalization.Implementation
   /// Resource managers are resolved based on the <see cref="IResourcesAttribute"/> applied to the type.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IResourceManagerResolver), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IResourceManagerResolver), Lifetime = LifetimeKind.Singleton)]
   public sealed class ResourceManagerResolver : IResourceManagerResolver
   {
     private readonly ConcurrentDictionary<Type, ResolvedResourceManagerResult> _resourceManagerWrappersCache =

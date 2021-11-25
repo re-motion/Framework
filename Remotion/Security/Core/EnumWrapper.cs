@@ -74,13 +74,13 @@ namespace Remotion.Security
     private static EnumWrapper CreateEnumWrapperFromEnumValue (Enum enumValue)
     {
       Type type = enumValue.GetType();
-      if (Attribute.IsDefined(type, typeof (FlagsAttribute), false))
+      if (Attribute.IsDefined(type, typeof(FlagsAttribute), false))
       {
         throw new ArgumentException(
             string.Format(
                 "Enumerated type '{0}' cannot be wrapped. Only enumerated types without the {1} can be wrapped.",
                 type.GetFullNameSafe(),
-                typeof (FlagsAttribute).GetFullNameSafe()),
+                typeof(FlagsAttribute).GetFullNameSafe()),
             "enumValue");
       }
 
@@ -118,7 +118,7 @@ namespace Remotion.Security
     {
       if (obj == null)
         return false;
-      if (obj.GetType() != typeof (EnumWrapper))
+      if (obj.GetType() != typeof(EnumWrapper))
         return false;
       return Equals((EnumWrapper) obj);
     }

@@ -40,17 +40,17 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
       var factory = _serviceLocator.GetInstance<IValidationRuleCollectorProvider>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (AggregatingValidationRuleCollectorProvider)));
-      Assert.That(((AggregatingValidationRuleCollectorProvider) factory).InvolvedTypeProvider, Is.TypeOf(typeof (MixedInvolvedTypeProviderDecorator)));
+      Assert.That(factory, Is.TypeOf(typeof(AggregatingValidationRuleCollectorProvider)));
+      Assert.That(((AggregatingValidationRuleCollectorProvider) factory).InvolvedTypeProvider, Is.TypeOf(typeof(MixedInvolvedTypeProviderDecorator)));
       var validationCollectorProviders = ((AggregatingValidationRuleCollectorProvider) factory).ValidationCollectorProviders;
-      Assert.That(validationCollectorProviders[0], Is.TypeOf(typeof (DomainObjectAttributesBasedValidationRuleCollectorProvider)));
-      Assert.That(validationCollectorProviders[1], Is.TypeOf(typeof (ValidationAttributesBasedValidationRuleCollectorProvider)));
-      Assert.That(validationCollectorProviders[2], Is.TypeOf(typeof (ApiBasedValidationRuleCollectorProvider)));
+      Assert.That(validationCollectorProviders[0], Is.TypeOf(typeof(DomainObjectAttributesBasedValidationRuleCollectorProvider)));
+      Assert.That(validationCollectorProviders[1], Is.TypeOf(typeof(ValidationAttributesBasedValidationRuleCollectorProvider)));
+      Assert.That(validationCollectorProviders[2], Is.TypeOf(typeof(ApiBasedValidationRuleCollectorProvider)));
       var validationCollectorReflector = ((ApiBasedValidationRuleCollectorProvider) validationCollectorProviders[2]).ValidationRuleCollectorReflector;
-      Assert.That(validationCollectorReflector, Is.TypeOf(typeof (DiscoveryServiceBasedValidationRuleCollectorReflector)));
+      Assert.That(validationCollectorReflector, Is.TypeOf(typeof(DiscoveryServiceBasedValidationRuleCollectorReflector)));
       Assert.That(
           ((DiscoveryServiceBasedValidationRuleCollectorReflector) validationCollectorReflector).ValidatedTypeResolver,
-          Is.TypeOf(typeof (MixinTypeAwareValidatedTypeResolverDecorator)));
+          Is.TypeOf(typeof(MixinTypeAwareValidatedTypeResolverDecorator)));
     }
 
     [Test]

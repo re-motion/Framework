@@ -57,10 +57,10 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void SameConditionTrue ()
     {
-      var methodEmitter = GetMethodEmitter(false, typeof (string), new Type[0]);
+      var methodEmitter = GetMethodEmitter(false, typeof(string), new Type[0]);
 
       methodEmitter.AddStatement(new TestStatement(
-          new SameConditionExpression(new TypeTokenExpression(typeof (object)), new TypeTokenExpression(typeof (object)))));
+          new SameConditionExpression(new TypeTokenExpression(typeof(object)), new TypeTokenExpression(typeof(object)))));
 
       Assert.That(InvokeMethod(), Is.EqualTo("True"));
     }
@@ -68,10 +68,10 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void SameConditionFalse ()
     {
-      var methodEmitter = GetMethodEmitter(false, typeof (string), new Type[0]);
+      var methodEmitter = GetMethodEmitter(false, typeof(string), new Type[0]);
 
       methodEmitter.AddStatement(new TestStatement(
-          new SameConditionExpression(new TypeTokenExpression(typeof (string)), new TypeTokenExpression(typeof (object)))));
+          new SameConditionExpression(new TypeTokenExpression(typeof(string)), new TypeTokenExpression(typeof(object)))));
 
       Assert.That(InvokeMethod(), Is.EqualTo("False"));
     }

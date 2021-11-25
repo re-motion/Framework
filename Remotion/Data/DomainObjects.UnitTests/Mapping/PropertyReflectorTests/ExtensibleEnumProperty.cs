@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithExtensibleEnumProperties.NoAttribute"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (TestExtensibleEnum)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(TestExtensibleEnum)));
       Assert.That(actual.IsNullable, Is.True);
       Assert.That(actual.MaxLength, Is.Null);
       Assert.That(actual.DefaultValue, Is.EqualTo(null));
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithExtensibleEnumProperties.NullableFromAttribute"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (TestExtensibleEnum)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(TestExtensibleEnum)));
       Assert.That(actual.IsNullable, Is.True);
       Assert.That(actual.MaxLength, Is.Null);
       Assert.That(actual.DefaultValue, Is.EqualTo(null));
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithExtensibleEnumProperties.NotNullable"));
-      Assert.That(actual.PropertyType, Is.SameAs(typeof (TestExtensibleEnum)));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(TestExtensibleEnum)));
       Assert.That(actual.IsNullable, Is.False);
       Assert.That(actual.MaxLength, Is.Null);
       Assert.That(actual.DefaultValue, Is.EqualTo(TestExtensibleEnum.Values.Value1()));

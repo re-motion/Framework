@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     public void SetUp ()
     {
       _validationRule = new RelationEndPointNamesAreConsistentValidationRule();
-      _classDefinition1 = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (RelationEndPointPropertyClass1));
-      _classDefinition2 = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (RelationEndPointPropertyClass2));
+      _classDefinition1 = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(RelationEndPointPropertyClass1));
+      _classDefinition2 = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(RelationEndPointPropertyClass2));
     }
 
     [Test]
@@ -45,12 +45,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
           _classDefinition1,
           "RelationProperty2",
           false,
-          PropertyInfoAdapter.Create(typeof (RelationEndPointPropertyClass1).GetProperty("RelationProperty2")));
+          PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass1).GetProperty("RelationProperty2")));
       var endPointDefinition2 = new VirtualObjectRelationEndPointDefinition(
           _classDefinition2,
           "RelationProperty2",
           false,
-          PropertyInfoAdapter.Create(typeof (RelationEndPointPropertyClass2).GetProperty("RelationProperty2")));
+          PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass2).GetProperty("RelationProperty2")));
 
       var relationDefinition = CreateRelationDefinitionAndSetBackReferences("Test", endPointDefinition1, endPointDefinition2);
 
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
           _classDefinition2,
           "RelationProperty2",
           false,
-          PropertyInfoAdapter.Create(typeof (RelationEndPointPropertyClass2).GetProperty("RelationProperty2")));
+          PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass2).GetProperty("RelationProperty2")));
 
       var relationDefinition = CreateRelationDefinitionAndSetBackReferences("Test", endPointDefinition1, endPointDefinition2);
 
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
           _classDefinition1,
           "RelationProperty2",
           false,
-          PropertyInfoAdapter.Create(typeof (RelationEndPointPropertyClass1).GetProperty("RelationProperty2")));
+          PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass1).GetProperty("RelationProperty2")));
       var endPointDefinition2 = new AnonymousRelationEndPointDefinition(_classDefinition2);
 
       var relationDefinition = CreateRelationDefinitionAndSetBackReferences("Test", endPointDefinition1, endPointDefinition2);
@@ -97,12 +97,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
           _classDefinition1,
           "RelationProperty1",
           false,
-         PropertyInfoAdapter.Create(typeof (RelationEndPointPropertyClass1).GetProperty("RelationProperty1")));
+         PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass1).GetProperty("RelationProperty1")));
       var endPointDefinition2 = new VirtualObjectRelationEndPointDefinition(
           _classDefinition2,
           "RelationPopertyWithoutBidirectionalRelationAttribute",
           false,
-          PropertyInfoAdapter.Create(typeof (RelationEndPointPropertyClass2).GetProperty("RelationPopertyWithoutBidirectionalRelationAttribute")));
+          PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass2).GetProperty("RelationPopertyWithoutBidirectionalRelationAttribute")));
 
       var relationDefinition = CreateRelationDefinitionAndSetBackReferences("Test", endPointDefinition1, endPointDefinition2);
 
@@ -124,12 +124,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
           _classDefinition1,
           "RelationProperty3",
           false,
-          PropertyInfoAdapter.Create(typeof (RelationEndPointPropertyClass1).GetProperty("RelationProperty3")));
+          PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass1).GetProperty("RelationProperty3")));
       var endPointDefinition2 = new VirtualObjectRelationEndPointDefinition(
           _classDefinition2,
           "RelationPopertyWithNonMatchingPropertyName",
           false,
-          PropertyInfoAdapter.Create(typeof (RelationEndPointPropertyClass2).GetProperty("RelationPopertyWithNonMatchingPropertyName")));
+          PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass2).GetProperty("RelationPopertyWithNonMatchingPropertyName")));
 
       var relationDefinition = CreateRelationDefinitionAndSetBackReferences("Test", endPointDefinition1, endPointDefinition2);
 

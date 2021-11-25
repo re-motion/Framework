@@ -29,13 +29,13 @@ namespace Remotion.Validation.Mixins.UnitTests.Attributes
     [SetUp]
     public void SetUp ()
     {
-      _attribute = new ApplyWithMixinAttribute(typeof (CustomerMixin));
+      _attribute = new ApplyWithMixinAttribute(typeof(CustomerMixin));
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That(_attribute.MixinType, Is.EqualTo(typeof (CustomerMixin)));
+      Assert.That(_attribute.MixinType, Is.EqualTo(typeof(CustomerMixin)));
     }
   }
 }

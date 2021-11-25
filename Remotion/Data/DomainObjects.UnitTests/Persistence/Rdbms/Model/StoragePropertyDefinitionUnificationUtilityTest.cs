@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           "param", 
           item => Tuple.Create<string, object>("Year", item.Year));
 
-      Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof (DateTime)));
+      Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof(DateTime)));
       Assert.That(result, Is.EqualTo(actual));
     }
 
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           "param", 
           item => Tuple.Create<string, object>("Item1", item.Item1));
 
-      Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof (Tuple<int?>)));
+      Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof(Tuple<int?>)));
       Assert.That(result, Is.EqualTo(actual));
     }
 

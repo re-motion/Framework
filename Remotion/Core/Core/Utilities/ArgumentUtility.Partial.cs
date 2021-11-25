@@ -51,10 +51,10 @@ namespace Remotion.Utilities
         where TEnum: struct
     {
       if (enumValue == null)
-        return default (TEnum?);
+        return default(TEnum?);
 
       if (! (enumValue is TEnum))
-        throw CreateArgumentTypeException(argumentName, enumValue.GetType(), typeof (TEnum));
+        throw CreateArgumentTypeException(argumentName, enumValue.GetType(), typeof(TEnum));
 
       if (! EnumUtility.IsValidEnumValue(enumValue))
         throw CreateEnumArgumentOutOfRangeException(argumentName, enumValue);
@@ -80,7 +80,7 @@ namespace Remotion.Utilities
         throw new ArgumentNullException(argumentName);
 
       if (! (enumValue is TEnum))
-        throw CreateArgumentTypeException(argumentName, enumValue.GetType(), typeof (TEnum));
+        throw CreateArgumentTypeException(argumentName, enumValue.GetType(), typeof(TEnum));
 
       if (!EnumUtility.IsValidEnumValue(enumValue))
         throw CreateEnumArgumentOutOfRangeException(argumentName, enumValue);

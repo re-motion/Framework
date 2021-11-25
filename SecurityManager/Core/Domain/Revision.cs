@@ -51,7 +51,7 @@ namespace Remotion.SecurityManager.Domain
 
       return QueryFactory.CreateQuery(
           new QueryDefinition(
-              typeof (Revision) + "." + MethodBase.GetCurrentMethod().Name,
+              typeof(Revision) + "." + MethodBase.GetCurrentMethod().Name,
               storageProviderDefinition,
               statement.ToString(),
               QueryType.Scalar),
@@ -125,7 +125,7 @@ namespace Remotion.SecurityManager.Domain
 
       return QueryFactory.CreateQuery(
           new QueryDefinition(
-              typeof (Revision) + "." + MethodBase.GetCurrentMethod().Name,
+              typeof(Revision) + "." + MethodBase.GetCurrentMethod().Name,
               storageProviderDefinition,
               statement.ToString(),
               QueryType.Scalar),
@@ -164,13 +164,13 @@ namespace Remotion.SecurityManager.Domain
 
     private static RdbmsProviderDefinition GetStorageProviderDefinition ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (SecurableClassDefinition));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(SecurableClassDefinition));
       return (RdbmsProviderDefinition) classDefinition.StorageEntityDefinition.StorageProviderDefinition;
     }
 
     private static string GetRevisionTableIdentifier (ISqlDialect sqlDialect)
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (SecurableClassDefinition));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(SecurableClassDefinition));
       var tableDefinition = (TableDefinition) classDefinition.StorageEntityDefinition;
 
       if (tableDefinition.TableName.SchemaName == null)

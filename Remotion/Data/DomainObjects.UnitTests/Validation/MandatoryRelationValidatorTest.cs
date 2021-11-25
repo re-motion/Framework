@@ -45,8 +45,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
 
       _endPointMock = MockRepository.GenerateStrictMock<IRelationEndPoint>();
 
-      _mandatoryEndPointDefinition = GetEndPointDefinition(typeof (Order), "OrderTicket");
-      _nonMandatoryEndPointDefinition = GetEndPointDefinition(typeof (Computer), "Employee");
+      _mandatoryEndPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
+      _nonMandatoryEndPointDefinition = GetEndPointDefinition(typeof(Computer), "Employee");
     }
 
     [Test]

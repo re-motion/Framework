@@ -28,13 +28,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     private string _lastExecutedStepID;
 
     public OtherTestFunction ()
-      : base (new NoneTransactionMode())
+      : base(new NoneTransactionMode())
     {
       ReturnUrl = TestFunction.ReturnUrlValue;
     }
 
     public OtherTestFunction (params object[] args)
-        : base (new NoneTransactionMode(), args)
+        : base(new NoneTransactionMode(), args)
     {
       ReturnUrl = TestFunction.ReturnUrlValue;
     }

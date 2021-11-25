@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
         string propertyName,
         DomainObject oldDomainObject,
         DomainObject newDomainObject)
-      : this (sender, propertyName, oldDomainObject, newDomainObject, null)
+      : this(sender, propertyName, oldDomainObject, newDomainObject, null)
     {
     }
 
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
         DomainObject oldDomainObject,
         DomainObject newDomainObject,
         string message)
-      : base (sender, message)
+      : base(sender, message)
     {
       ArgumentUtility.CheckNotNull("propertyName", propertyName);
 

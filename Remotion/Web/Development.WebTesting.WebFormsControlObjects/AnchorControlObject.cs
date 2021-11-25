@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   public class AnchorControlObject : WebFormsControlObject, IClickableControlObject, IControlObjectWithText
   {
     public AnchorControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

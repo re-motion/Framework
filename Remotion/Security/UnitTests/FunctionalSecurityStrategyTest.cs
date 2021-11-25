@@ -38,7 +38,7 @@ namespace Remotion.Security.UnitTests
       _principalStub = new Mock<ISecurityPrincipal>();
       _principalStub.Setup(_ => _.User).Returns("user");
 
-      _securableType = typeof (SecurableObject);
+      _securableType = typeof(SecurableObject);
 
       _strategy = new FunctionalSecurityStrategy();
     }

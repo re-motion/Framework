@@ -28,10 +28,10 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void FailsIfRequiredBaseMethodIsExplit ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingAllMemberRequirementsExplicitly>().Clear().AddMixins(typeof (MixinRequiringAllMembersNextCall)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingAllMemberRequirementsExplicitly>().Clear().AddMixins(typeof(MixinRequiringAllMembersNextCall)).EnterScope())
       {
         TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(
-            typeof (ClassFulfillingAllMemberRequirementsExplicitly), typeof (MixinRequiringAllMembersNextCall));
+            typeof(ClassFulfillingAllMemberRequirementsExplicitly), typeof(MixinRequiringAllMembersNextCall));
         var log = Validator.Validate(definition);
 
         Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultRequiredMethodRules.RequiredNextCallMethodMustBePublicOrProtected", log), Is.True);
@@ -41,10 +41,10 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void SucceedsIfRequiredTargetCallMethodIsExplit ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingAllMemberRequirementsExplicitly>().Clear().AddMixins(typeof (MixinRequiringAllMembersTargetCall)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingAllMemberRequirementsExplicitly>().Clear().AddMixins(typeof(MixinRequiringAllMembersTargetCall)).EnterScope())
       {
         TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(
-            typeof (ClassFulfillingAllMemberRequirementsExplicitly), typeof (MixinRequiringAllMembersTargetCall));
+            typeof(ClassFulfillingAllMemberRequirementsExplicitly), typeof(MixinRequiringAllMembersTargetCall));
         var log = Validator.Validate(definition);
 
         AssertSuccess(log);

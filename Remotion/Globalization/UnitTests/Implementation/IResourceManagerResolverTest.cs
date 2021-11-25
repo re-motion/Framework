@@ -38,7 +38,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var factory = _serviceLocator.GetInstance<IResourceManagerResolver>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (ResourceManagerResolver)));
+      Assert.That(factory, Is.TypeOf(typeof(ResourceManagerResolver)));
     }
 
     [Test]

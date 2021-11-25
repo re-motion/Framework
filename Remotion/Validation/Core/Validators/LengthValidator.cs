@@ -35,7 +35,7 @@ namespace Remotion.Validation.Validators
     public ValidationMessage ValidationMessage { get; }
 
     public LengthValidator (int min, int max, [NotNull] ValidationMessage validationMessage)
-        : this (min, max, $"The value must have between {min} and {max} characters.", validationMessage)
+        : this(min, max, $"The value must have between {min} and {max} characters.", validationMessage)
     {
     }
 

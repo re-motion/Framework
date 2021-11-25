@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       Assert.That(factory, Is.TypeOf<CompoundClientTransactionExtensionFactory>());
       Assert.That(
           ((CompoundClientTransactionExtensionFactory) factory).ClientTransactionExtensionFactories.Select(f => f.GetType()),
-          Has.Member(typeof (CommitValidationClientTransactionExtensionFactory)));
+          Has.Member(typeof(CommitValidationClientTransactionExtensionFactory)));
     }
   }
 }

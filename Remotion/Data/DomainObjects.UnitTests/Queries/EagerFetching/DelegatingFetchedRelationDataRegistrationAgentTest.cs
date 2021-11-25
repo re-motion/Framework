@@ -59,9 +59,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     public void GroupAndRegisterRelatedObjects_AnonymousEndPoints ()
     {
       var endPointDefinition = Configuration
-          .GetTypeDefinition(typeof (Location))
+          .GetTypeDefinition(typeof(Location))
           .PropertyAccessorDataCache
-          .GetPropertyAccessorData(typeof (Location), "Client")
+          .GetPropertyAccessorData(typeof(Location), "Client")
           .RelationEndPointDefinition
           .GetOppositeEndPointDefinition();
 
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_RealObjectEndPoints ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (OrderItem), "Order");
+      var endPointDefinition = GetEndPointDefinition(typeof(OrderItem), "Order");
 
       _realObjectAgentMock
           .Expect(
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_VirtualObjectEndPoints ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Order), "OrderTicket");
+      var endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
 
       _virtualObjectAgentMock
           .Expect(mock => mock.GroupAndRegisterRelatedObjects(
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_CollectionEndPoints ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Order), "OrderItems");
+      var endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderItems");
 
       _collectionAgentMock
           .Expect(
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_CollectionEndPoints_EmptyRelatedObjects ()
     {
-      var endPointDefinition = GetEndPointDefinition(typeof (Order), "OrderItems");
+      var endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderItems");
 
       var relatedObjects = new LoadedObjectDataWithDataSourceData[0];
       _collectionAgentMock.Expect(mock => mock.GroupAndRegisterRelatedObjects(endPointDefinition, _originatingObjects, relatedObjects));

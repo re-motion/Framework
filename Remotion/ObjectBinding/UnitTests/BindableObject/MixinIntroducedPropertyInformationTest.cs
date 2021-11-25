@@ -106,10 +106,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void FindInterfaceImplementation ()
     {
-      var propertyInfoAdapter = PropertyInfoAdapter.Create(typeof (string).GetProperty("Length"));
-      _implementationPropertyInformationStub.Setup(stub => stub.FindInterfaceImplementation(typeof (object))).Returns(propertyInfoAdapter);
+      var propertyInfoAdapter = PropertyInfoAdapter.Create(typeof(string).GetProperty("Length"));
+      _implementationPropertyInformationStub.Setup(stub => stub.FindInterfaceImplementation(typeof(object))).Returns(propertyInfoAdapter);
 
-      Assert.That(_mixinIntroducedPropertyInformation.FindInterfaceImplementation(typeof (object)), Is.SameAs(propertyInfoAdapter));
+      Assert.That(_mixinIntroducedPropertyInformation.FindInterfaceImplementation(typeof(object)), Is.SameAs(propertyInfoAdapter));
     }
 
     [Test]
@@ -121,15 +121,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void PropertyType ()
     {
-      _implementationPropertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof (object));
+      _implementationPropertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(object));
 
-      Assert.That(_mixinIntroducedPropertyInformation.PropertyType, Is.SameAs(typeof (object)));
+      Assert.That(_mixinIntroducedPropertyInformation.PropertyType, Is.SameAs(typeof(object)));
     }
 
     [Test]
     public void CanBeSetFromOutside_IsBasedOnGetSetMethod_TrueForInterfaceImplementationPropertySetter ()
     {
-      var methodInfoAdapter = MethodInfoAdapter.Create(typeof (object).GetMethod("ToString"));
+      var methodInfoAdapter = MethodInfoAdapter.Create(typeof(object).GetMethod("ToString"));
       _implementationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns(methodInfoAdapter);
       _declarationPropertyInformationStub.Setup(stub => stub.GetSetMethod(false)).Returns(methodInfoAdapter);
 
@@ -139,7 +139,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void CanBeSetFromOutside_IsBasedOnGetSetMethod_FalseForImplementationOnlyPropertySetter ()
     {
-      var methodInfoAdapter = MethodInfoAdapter.Create(typeof (object).GetMethod("ToString"));
+      var methodInfoAdapter = MethodInfoAdapter.Create(typeof(object).GetMethod("ToString"));
       _implementationPropertyInformationStub.Setup(stub => stub.GetSetMethod(false)).Returns(methodInfoAdapter);
 
       Assert.That(_mixinIntroducedPropertyInformation.CanBeSetFromOutside, Is.False);
@@ -156,13 +156,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetGetMethod ()
     {
-      var methodInfoAdapter = MethodInfoAdapter.Create(typeof (object).GetMethod("ToString"));
+      var methodInfoAdapter = MethodInfoAdapter.Create(typeof(object).GetMethod("ToString"));
       _implementationPropertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns(methodInfoAdapter);
       _declarationPropertyInformationStub.Setup(stub => stub.GetGetMethod(false)).Returns(methodInfoAdapter);
 
       var result = _mixinIntroducedPropertyInformation.GetGetMethod(false);
 
-      Assert.That(result, Is.TypeOf(typeof (MixinIntroducedMethodInformation)));
+      Assert.That(result, Is.TypeOf(typeof(MixinIntroducedMethodInformation)));
       Assert.That(result.Name, Is.EqualTo("ToString"));
     }
 
@@ -177,13 +177,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetSetMethod ()
     {
-      var methodInfoAdapter = MethodInfoAdapter.Create(typeof (object).GetMethod("ToString"));
+      var methodInfoAdapter = MethodInfoAdapter.Create(typeof(object).GetMethod("ToString"));
       _implementationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns(methodInfoAdapter);
       _declarationPropertyInformationStub.Setup(stub => stub.GetSetMethod(false)).Returns(methodInfoAdapter);
 
       var result = _mixinIntroducedPropertyInformation.GetSetMethod(false);
 
-      Assert.That(result, Is.TypeOf(typeof (MixinIntroducedMethodInformation)));
+      Assert.That(result, Is.TypeOf(typeof(MixinIntroducedMethodInformation)));
       Assert.That(result.Name, Is.EqualTo("ToString"));
     }
 
@@ -203,7 +203,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       _declarationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns((IMethodInformation) null);
       _implementationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns(
-          MethodInfoAdapter.Create(typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetSetMethod(true)));
+          MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetSetMethod(true)));
 
       _mixinIntroducedPropertyInformation.SetValue(instance, value, null);
 
@@ -219,7 +219,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       _declarationPropertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns((IMethodInformation) null);
       _implementationPropertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns(
-          MethodInfoAdapter.Create(typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetGetMethod(true)));
+          MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetGetMethod(true)));
 
       Assert.That(_mixinIntroducedPropertyInformation.GetValue(instance, null), Is.SameAs(value));
     }
@@ -251,8 +251,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           _mixinIntroducedPropertyInformation.Equals(
               new MixinIntroducedPropertyInformation(
                   new InterfaceImplementationPropertyInformation(
-                      PropertyInfoAdapter.Create(typeof (string).GetProperty("Length")),
-                      PropertyInfoAdapter.Create(typeof (string).GetProperty("Length"))))),
+                      PropertyInfoAdapter.Create(typeof(string).GetProperty("Length")),
+                      PropertyInfoAdapter.Create(typeof(string).GetProperty("Length"))))),
           Is.False);
 
       Assert.That(

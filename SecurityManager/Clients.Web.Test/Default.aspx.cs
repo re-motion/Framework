@@ -76,7 +76,7 @@ namespace Remotion.SecurityManager.Clients.Web.Test
       ISecurityProvider provider = SafeServiceLocator.Current.GetInstance<ISecurityProvider>();
       SecurityContext context =
           SecurityContext.Create(
-              typeof (File),
+              typeof(File),
               "1A",
               "{00000004-1000-0000-0000-000000000007}",
               string.Empty,

@@ -45,8 +45,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<Person>(DomainObjectIDs.Person1);
 
       var dataContainer = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
-      dataContainer.SetValue(GetPropertyDefinition(typeof (Person), "Name"), "Not Null");
-      dataContainer.SetValue(GetPropertyDefinition(typeof (Person), "AssociatedCustomerCompany"), null);
+      dataContainer.SetValue(GetPropertyDefinition(typeof(Person), "Name"), "Not Null");
+      dataContainer.SetValue(GetPropertyDefinition(typeof(Person), "AssociatedCustomerCompany"), null);
 
       Assert.That(() => _validator.Validate(dataContainer), Throws.Nothing);
     }
@@ -57,8 +57,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<Person>(DomainObjectIDs.Person1);
 
       var dataContainer = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
-      dataContainer.SetValue(GetPropertyDefinition(typeof (Person), "Name"), "Not Null");
-      dataContainer.SetValue(GetPropertyDefinition(typeof (Person), "AssociatedCustomerCompany"), null);
+      dataContainer.SetValue(GetPropertyDefinition(typeof(Person), "Name"), "Not Null");
+      dataContainer.SetValue(GetPropertyDefinition(typeof(Person), "AssociatedCustomerCompany"), null);
       var eventListenerStub = MockRepository.GenerateStub<IDataContainerEventListener>();
       dataContainer.SetEventListener(eventListenerStub);
 
@@ -73,8 +73,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<Person>(DomainObjectIDs.Person1);
 
       var dataContainer = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
-      dataContainer.SetValue(GetPropertyDefinition(typeof (Person), "Name"), null);
-      dataContainer.SetValue(GetPropertyDefinition(typeof (Person), "AssociatedCustomerCompany"), DomainObjectIDs.Customer1);
+      dataContainer.SetValue(GetPropertyDefinition(typeof(Person), "Name"), null);
+      dataContainer.SetValue(GetPropertyDefinition(typeof(Person), "AssociatedCustomerCompany"), DomainObjectIDs.Customer1);
 
       Assert.That(
           () => _validator.Validate(dataContainer),
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes>(DomainObjectIDs.ClassWithAllDataTypes1);
 
       var dataContainer = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
-      dataContainer.SetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "TransactionOnlyStringProperty"), null);
+      dataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "TransactionOnlyStringProperty"), null);
 
       Assert.That(() => _validator.Validate(dataContainer), Throws.Nothing);
     }
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes>(DomainObjectIDs.ClassWithAllDataTypes1);
 
       var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject);
-      dataItem.DataContainer.SetValue(GetPropertyDefinition(typeof (ClassWithAllDataTypes), "TransactionOnlyStringProperty"), null);
+      dataItem.DataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "TransactionOnlyStringProperty"), null);
 
       Assert.That(
           () => _validator.Validate(ClientTransaction.CreateRootTransaction(), dataItem),
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<Person>(DomainObjectIDs.Person1);
 
       var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetDeleted().Value, domainObject);
-      dataItem.DataContainer.SetValue(GetPropertyDefinition(typeof (Person), "Name"), null);
+      dataItem.DataContainer.SetValue(GetPropertyDefinition(typeof(Person), "Name"), null);
 
       Assert.That(() => _validator.Validate(ClientTransaction.CreateRootTransaction(), dataItem), Throws.Nothing);
     }

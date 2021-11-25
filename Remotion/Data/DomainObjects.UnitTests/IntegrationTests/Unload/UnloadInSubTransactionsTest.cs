@@ -415,7 +415,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     [Test]
     public void UnloadData_New_InSubTransaction_ButNotInParentTransaction ()
     {
-      var orderNew = (Order) LifetimeService.NewObject(_subTransaction, typeof (Order), ParamList.Empty);
+      var orderNew = (Order) LifetimeService.NewObject(_subTransaction, typeof(Order), ParamList.Empty);
       orderNew.OrderNumber = 4711;
 
       Assert.That(orderNew.State.IsNew, Is.True);

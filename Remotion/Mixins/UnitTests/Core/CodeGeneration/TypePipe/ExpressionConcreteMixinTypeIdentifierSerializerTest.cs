@@ -41,19 +41,19 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       // base.SetUp ();
 
-      _simpleMethod1 = Assertion.IsNotNull(typeof (BT1Mixin1).GetMethod("VirtualMethod"));
-      _simpleMethod2 = Assertion.IsNotNull(typeof (BT1Mixin2).GetMethod("VirtualMethod"));
-      _genericMethod = Assertion.IsNotNull(typeof (BaseType7).GetMethod("One"));
+      _simpleMethod1 = Assertion.IsNotNull(typeof(BT1Mixin1).GetMethod("VirtualMethod"));
+      _simpleMethod2 = Assertion.IsNotNull(typeof(BT1Mixin2).GetMethod("VirtualMethod"));
+      _genericMethod = Assertion.IsNotNull(typeof(BaseType7).GetMethod("One"));
       
-      _methodOnGenericClosedWithReferenceType = typeof (GenericClassWithAllKindsOfMembers<string>).GetMethod("Method");
-      _methodOnGenericClosedWithValueType = typeof (GenericClassWithAllKindsOfMembers<int>).GetMethod("Method");
+      _methodOnGenericClosedWithReferenceType = typeof(GenericClassWithAllKindsOfMembers<string>).GetMethod("Method");
+      _methodOnGenericClosedWithValueType = typeof(GenericClassWithAllKindsOfMembers<int>).GetMethod("Method");
     }
 
     [Test]
     public void IntegrationTest ()
     {
       var referenceIdentifier = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _simpleMethod1 },
           new HashSet<MethodInfo> { _simpleMethod2 });
 
@@ -69,7 +69,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     public void IntegrationTest_MethodsOnGenericType ()
     {
       var referenceIdentifier = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _methodOnGenericClosedWithReferenceType, _methodOnGenericClosedWithValueType },
           new HashSet<MethodInfo> { _methodOnGenericClosedWithReferenceType, _methodOnGenericClosedWithValueType });
 
@@ -85,7 +85,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     public void IntegrationTest_GenericMethods ()
     {
       var referenceIdentifier = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _genericMethod },
           new HashSet<MethodInfo> { _genericMethod });
 

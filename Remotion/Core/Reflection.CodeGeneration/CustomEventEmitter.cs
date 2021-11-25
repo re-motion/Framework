@@ -130,7 +130,7 @@ namespace Remotion.Reflection.CodeGeneration
       MethodAttributes flags = MethodAttributes.Public | MethodAttributes.SpecialName;
       if (EventKind == EventKind.Static)
         flags |= MethodAttributes.Static;
-      IMethodEmitter method = _declaringType.CreateMethod("add_" + Name, flags, typeof (void), new [] { EventType });
+      IMethodEmitter method = _declaringType.CreateMethod("add_" + Name, flags, typeof(void), new [] { EventType });
       AddMethod = method;
     }
 
@@ -142,7 +142,7 @@ namespace Remotion.Reflection.CodeGeneration
       MethodAttributes flags = MethodAttributes.Public | MethodAttributes.SpecialName;
       if (EventKind == EventKind.Static)
         flags |= MethodAttributes.Static;
-      IMethodEmitter method = _declaringType.CreateMethod("remove_" + Name, flags, typeof (void), new [] { EventType });
+      IMethodEmitter method = _declaringType.CreateMethod("remove_" + Name, flags, typeof(void), new [] { EventType });
       RemoveMethod = method;
     }
 

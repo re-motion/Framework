@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Product1, typeof (Product), "Reviews");
+      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Product1, typeof(Product), "Reviews");
       _listenerMock = MockRepository.GenerateStrictMock<IVirtualEndPointStateUpdateListener>();
       _innerEndPointMock = MockRepository.GenerateStrictMock<IVirtualCollectionEndPoint>();
       _innerEndPointMock.Stub(stub => stub.HasChanged).Return(false);
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void DelegatedMembers ()
     {
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Product1, typeof (Product), "Reviews");
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Product1, typeof(Product), "Reviews");
       var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
       var dataContainerMapStub = MockRepository.GenerateStub<IDataContainerMapReadOnlyView>();
       var readOnlyCollectionDataDecorator = new ReadOnlyVirtualCollectionDataDecorator(new VirtualCollectionData(endPointID, dataContainerMapStub, ValueAccess.Current));
@@ -172,8 +172,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _decoratorTestHelper.CheckDelegation(ep => ep.IsNull, true);
       _decoratorTestHelper.CheckDelegation(ep => ep.ClientTransaction, ClientTransaction.CreateRootTransaction());
       _decoratorTestHelper.CheckDelegation(ep => ep.ObjectID, DomainObjectIDs.Product1);
-      _decoratorTestHelper.CheckDelegation(ep => ep.Definition, GetEndPointDefinition(typeof (Product), "Reviews"));
-      _decoratorTestHelper.CheckDelegation(ep => ep.RelationDefinition, GetRelationDefinition(typeof (Product), "Reviews"));
+      _decoratorTestHelper.CheckDelegation(ep => ep.Definition, GetEndPointDefinition(typeof(Product), "Reviews"));
+      _decoratorTestHelper.CheckDelegation(ep => ep.RelationDefinition, GetRelationDefinition(typeof(Product), "Reviews"));
       _decoratorTestHelper.CheckDelegation(ep => ep.HasBeenTouched, false);
       _decoratorTestHelper.CheckDelegation(ep => ep.HasBeenTouched, true);
       _decoratorTestHelper.CheckDelegation(ep => ep.GetDomainObject(), productReview);

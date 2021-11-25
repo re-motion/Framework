@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void SetUp ()
     {
       _validationRule = new SortExpressionIsSupportedForCardinalityOfRelationPropertyValidationRule();
-      _classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Order)];
+      _classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Order)];
     }
 
     [Test]
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void CardinalityIsMany ()
     {
       var endPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
-          _classDefinition, "PropertyName", false, typeof (DomainObjectCollection));
+          _classDefinition, "PropertyName", false, typeof(DomainObjectCollection));
       var relationDefinition = new RelationDefinition("Test", endPointDefinition, endPointDefinition);
       
       var validationResult = _validationRule.Validate(relationDefinition);
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void CardinalityIsOne_And_EndPointDefinitionHasNoSortExpression ()
     {
       var endPointDefinition = VirtualObjectRelationEndPointDefinitionFactory.Create(
-        _classDefinition, "PropertyName", false, typeof (DerivedValidationDomainObjectClass));
+        _classDefinition, "PropertyName", false, typeof(DerivedValidationDomainObjectClass));
       var relationDefinition = new RelationDefinition("Test", endPointDefinition, endPointDefinition);
       
       var validationResult = _validationRule.Validate(relationDefinition);
@@ -76,10 +76,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void CardinalityOne_And_EndPointDefinitionsHaveSortExpression ()
     {
       var leftEndPointDefinition = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
-          _classDefinition, "PropertyName", false, typeof (DerivedValidationDomainObjectClass));
+          _classDefinition, "PropertyName", false, typeof(DerivedValidationDomainObjectClass));
 
       var rightEndPointDefinition = VirtualObjectRelationEndPointDefinitionFactory.Create(
-          _classDefinition, "PropertyName", false, typeof (DomainObject), "SortExpression");
+          _classDefinition, "PropertyName", false, typeof(DomainObject), "SortExpression");
 
       var relationDefinition = new RelationDefinition("Test", leftEndPointDefinition, rightEndPointDefinition);
       

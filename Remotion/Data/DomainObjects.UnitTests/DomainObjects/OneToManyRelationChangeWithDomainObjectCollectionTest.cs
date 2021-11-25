@@ -334,34 +334,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void HasBeenTouched_FromOneProperty ()
     {
       CheckTouching(delegate { _order1.Customer = _newCustomer; }, _order1, "Customer", 
-        RelationEndPointID.Create(_order1.ID, typeof (Order).FullName + ".Customer"),
-        RelationEndPointID.Create(_newCustomer.ID, typeof (Customer).FullName + ".Orders"),
-        RelationEndPointID.Create(_oldCustomer.ID, typeof (Customer).FullName + ".Orders"));
+        RelationEndPointID.Create(_order1.ID, typeof(Order).FullName + ".Customer"),
+        RelationEndPointID.Create(_newCustomer.ID, typeof(Customer).FullName + ".Orders"),
+        RelationEndPointID.Create(_oldCustomer.ID, typeof(Customer).FullName + ".Orders"));
     }
 
     [Test]
     public void HasBeenTouched_FromManyPropertyAdd ()
     {
       CheckTouching(delegate { _newCustomer.Orders.Add(_order1); }, _order1, "Customer",
-          RelationEndPointID.Create(_order1.ID, typeof (Order).FullName + ".Customer"),
-          RelationEndPointID.Create(_newCustomer.ID, typeof (Customer).FullName + ".Orders"),
-          RelationEndPointID.Create(_oldCustomer.ID, typeof (Customer).FullName + ".Orders"));
+          RelationEndPointID.Create(_order1.ID, typeof(Order).FullName + ".Customer"),
+          RelationEndPointID.Create(_newCustomer.ID, typeof(Customer).FullName + ".Orders"),
+          RelationEndPointID.Create(_oldCustomer.ID, typeof(Customer).FullName + ".Orders"));
     }
 
     [Test]
     public void HasBeenTouched_FromManyPropertyRemove ()
     {
       CheckTouching(delegate { _oldCustomer.Orders.Remove(_order1); }, _order1, "Customer",
-          RelationEndPointID.Create(_order1.ID, typeof (Order).FullName + ".Customer"),
-          RelationEndPointID.Create(_oldCustomer.ID, typeof (Customer).FullName + ".Orders"));
+          RelationEndPointID.Create(_order1.ID, typeof(Order).FullName + ".Customer"),
+          RelationEndPointID.Create(_oldCustomer.ID, typeof(Customer).FullName + ".Orders"));
     }
 
     [Test]
     public void HasBeenTouched_FromManyPropertyReplaceWithNull ()
     {
       CheckTouching(delegate { _oldCustomer.Orders[_oldCustomer.Orders.IndexOf(_order1)] = null; }, _order1, "Customer",
-          RelationEndPointID.Create(_order1.ID, typeof (Order).FullName + ".Customer"),
-          RelationEndPointID.Create(_oldCustomer.ID, typeof (Customer).FullName + ".Orders"));
+          RelationEndPointID.Create(_order1.ID, typeof(Order).FullName + ".Customer"),
+          RelationEndPointID.Create(_oldCustomer.ID, typeof(Customer).FullName + ".Orders"));
     }
 
     [Test]
@@ -369,31 +369,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order newOrder = Order.NewObject();
       
-      Assert.IsFalse(newOrder.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (Order), "Customer")), "newOrder ObjectID touched");
+      Assert.IsFalse(newOrder.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(Order), "Customer")), "newOrder ObjectID touched");
 
       CheckTouching(delegate { _oldCustomer.Orders[_oldCustomer.Orders.IndexOf(_order1)] = newOrder; }, _order1, "Customer",
-        RelationEndPointID.Create(_order1.ID, typeof (Order).FullName + ".Customer"),
-        RelationEndPointID.Create(newOrder.ID, typeof (Order).FullName + ".Customer"),
-        RelationEndPointID.Create(_oldCustomer.ID, typeof (Customer).FullName + ".Orders"));
+        RelationEndPointID.Create(_order1.ID, typeof(Order).FullName + ".Customer"),
+        RelationEndPointID.Create(newOrder.ID, typeof(Order).FullName + ".Customer"),
+        RelationEndPointID.Create(_oldCustomer.ID, typeof(Customer).FullName + ".Orders"));
 
-      Assert.IsTrue(newOrder.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof (Order), "Customer")), "newOrder ObjectID touched");
+      Assert.IsTrue(newOrder.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(Order), "Customer")), "newOrder ObjectID touched");
     }
 
     [Test]
     public void HasBeenTouched_FromOneProperty_OriginalValue ()
     {
       CheckTouching(delegate { _order1.Customer = _order1.Customer; }, _order1, "Customer",
-          RelationEndPointID.Create(_order1.ID, typeof (Order).FullName + ".Customer"),
-          RelationEndPointID.Create(_oldCustomer.ID, typeof (Customer).FullName + ".Orders"));
+          RelationEndPointID.Create(_order1.ID, typeof(Order).FullName + ".Customer"),
+          RelationEndPointID.Create(_oldCustomer.ID, typeof(Customer).FullName + ".Orders"));
     }
 
     [Test]
     public void HasBeenTouched_FromManyPropertyReplace_OriginalValue ()
     {
       CheckTouching(delegate { _oldCustomer.Orders[_oldCustomer.Orders.IndexOf(_order1)] = _order1; }, _order1, "Customer",
-          RelationEndPointID.Create(_order1.ID, typeof (Order).FullName + ".Customer"),
-          RelationEndPointID.Create(_oldCustomer.ID, typeof (Customer).FullName + ".Orders"),
-          RelationEndPointID.Create(_oldCustomer.ID, typeof (Customer).FullName + ".Orders"));
+          RelationEndPointID.Create(_order1.ID, typeof(Order).FullName + ".Customer"),
+          RelationEndPointID.Create(_oldCustomer.ID, typeof(Customer).FullName + ".Orders"),
+          RelationEndPointID.Create(_oldCustomer.ID, typeof(Customer).FullName + ".Orders"));
     }
     
     [Test]
@@ -480,21 +480,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       var expectedStates = new ChangeState[]
       {
-        new RelationChangeState(_order2, typeof (Order).FullName + ".Customer", _oldCustomer, null, "1. Setting _order2.Customer to null"),
+        new RelationChangeState(_order2, typeof(Order).FullName + ".Customer", _oldCustomer, null, "1. Setting _order2.Customer to null"),
         new CollectionChangeState(_oldCustomer.Orders, _order2, "2. Removing _order2 from _oldCustomer.Orders"),
-        new RelationChangeState(_oldCustomer, typeof (Customer).FullName + ".Orders", _order2, null, "3. Removing _order2 from _oldCustomer"),
+        new RelationChangeState(_oldCustomer, typeof(Customer).FullName + ".Orders", _order2, null, "3. Removing _order2 from _oldCustomer"),
 
-        new RelationChangeState(_order1, typeof (Order).FullName + ".Customer", _oldCustomer, null, "4. Setting _order1.Customer to null"),
+        new RelationChangeState(_order1, typeof(Order).FullName + ".Customer", _oldCustomer, null, "4. Setting _order1.Customer to null"),
         new CollectionChangeState(_oldCustomer.Orders, _order1, "5. Removing _order1 from _oldCustomer.Orders"),
-        new RelationChangeState(_oldCustomer, typeof (Customer).FullName + ".Orders", _order1, null, "6. Removing _order1 from _oldCustomer"),
+        new RelationChangeState(_oldCustomer, typeof(Customer).FullName + ".Orders", _order1, null, "6. Removing _order1 from _oldCustomer"),
 
-        new RelationChangeState(_oldCustomer, typeof (Customer).FullName + ".Orders", null, null, "7. Removed _order1 from _oldCustomer"),
+        new RelationChangeState(_oldCustomer, typeof(Customer).FullName + ".Orders", null, null, "7. Removed _order1 from _oldCustomer"),
         new CollectionChangeState(_oldCustomer.Orders, _order1, "8. Removed _order1 from _oldCustomer.Orders"),
-        new RelationChangeState(_order1, typeof (Order).FullName + ".Customer", null, null, "9. Setting _order1.Customer to null"),
+        new RelationChangeState(_order1, typeof(Order).FullName + ".Customer", null, null, "9. Setting _order1.Customer to null"),
 
-        new RelationChangeState(_oldCustomer, typeof (Customer).FullName + ".Orders", null, null, "10. Removed _order2 from _oldCustomer"),
+        new RelationChangeState(_oldCustomer, typeof(Customer).FullName + ".Orders", null, null, "10. Removed _order2 from _oldCustomer"),
         new CollectionChangeState(_oldCustomer.Orders, _order2, "11. Removed _order2 from _oldCustomer.Orders"),
-        new RelationChangeState(_order2, typeof (Order).FullName + ".Customer", null, null, "12. Set _order2.Customer to null"),
+        new RelationChangeState(_order2, typeof(Order).FullName + ".Customer", null, null, "12. Set _order2.Customer to null"),
       };
 
       eventReceiver.Check(expectedStates);
@@ -528,13 +528,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       var expectedStates = new ChangeState[]
       {
-        new RelationChangeState(_order2, typeof (Order).FullName + ".Customer", _oldCustomer, null, "1. Setting _order2.Customer to null"),
+        new RelationChangeState(_order2, typeof(Order).FullName + ".Customer", _oldCustomer, null, "1. Setting _order2.Customer to null"),
         new CollectionChangeState(_oldCustomer.Orders, _order2, "2. Removing _order2 from _oldCustomer.Orders"),
-        new RelationChangeState(_oldCustomer, typeof (Customer).FullName + ".Orders", _order2, null, "3. Removing _order2 from _oldCustomer"),
+        new RelationChangeState(_oldCustomer, typeof(Customer).FullName + ".Orders", _order2, null, "3. Removing _order2 from _oldCustomer"),
 
-        new RelationChangeState(_order1, typeof (Order).FullName + ".Customer", _oldCustomer, null, "4. Setting _order1.Customer to null"),
+        new RelationChangeState(_order1, typeof(Order).FullName + ".Customer", _oldCustomer, null, "4. Setting _order1.Customer to null"),
         new CollectionChangeState(_oldCustomer.Orders, _order1, "5. Removing _order1 from _oldCustomer.Orders"),
-        new RelationChangeState(_oldCustomer, typeof (Customer).FullName + ".Orders", _order1, null, "6. Removing _order1 from _oldCustomer"),
+        new RelationChangeState(_oldCustomer, typeof(Customer).FullName + ".Orders", _order1, null, "6. Removing _order1 from _oldCustomer"),
       };
 
       eventReceiver.Check(expectedStates);

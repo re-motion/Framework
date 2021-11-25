@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering table cells of <see cref="BocSimpleColumnDefinition"/> columns.
   /// </summary>
-  [ImplementationFor (typeof (IBocSimpleColumnRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IBocSimpleColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocSimpleColumnRenderer : BocValueColumnRendererBase<BocSimpleColumnDefinition>, IBocSimpleColumnRenderer
   {
     private readonly IRenderingFeatures _renderingFeatures;
@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IResourceUrlFactory resourceUrlFactory,
         IRenderingFeatures renderingFeatures,
         BocListCssClassDefinition cssClasses)
-        : base (resourceUrlFactory, renderingFeatures, cssClasses)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses)
     {
       ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 

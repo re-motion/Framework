@@ -30,7 +30,7 @@ namespace Remotion.Globalization.Implementation
   public static class ResourceLogger
   {
     private const LogLevel c_logLevel = LogLevel.Debug;
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (ResourceLogger));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(ResourceLogger));
 
     public static bool IsEnabled
     {

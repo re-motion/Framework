@@ -34,13 +34,13 @@ namespace Remotion.Mixins.Definitions.Building
     {
       _mixin = mixin;
       _defaultVisibility = defaultVisibility;
-      _nonIntroducedInterfaces = new HashSet<Type> { typeof (ISerializable), typeof (IDeserializationCallback), typeof (IInitializableMixin) };
+      _nonIntroducedInterfaces = new HashSet<Type> { typeof(ISerializable), typeof(IDeserializationCallback), typeof(IInitializableMixin) };
       AnalyzeNonIntroducedInterfaces();
     }
 
     private void AnalyzeNonIntroducedInterfaces ()
     {
-      foreach (NonIntroducedAttribute notIntroducedAttribute in _mixin.Type.GetCustomAttributes(typeof (NonIntroducedAttribute), true))
+      foreach (NonIntroducedAttribute notIntroducedAttribute in _mixin.Type.GetCustomAttributes(typeof(NonIntroducedAttribute), true))
         _nonIntroducedInterfaces.Add(notIntroducedAttribute.NonIntroducedType);
     }
 

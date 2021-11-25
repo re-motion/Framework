@@ -46,11 +46,11 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void Test_FromBaseWithAttribute ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes(BaseMemberWithSingleAttribute, typeof (InheritedAttribute), true);
+      object[] attributes = AttributeUtility.GetCustomAttributes(BaseMemberWithSingleAttribute, typeof(InheritedAttribute), true);
 
       Assert.That(attributes.Length, Is.EqualTo(1));
       Assert.That(attributes[0], Is.Not.Null);
-      Assert.IsInstanceOf(typeof (InheritedAttribute), attributes[0]);
+      Assert.IsInstanceOf(typeof(InheritedAttribute), attributes[0]);
     }
 
     [Test]
@@ -65,11 +65,11 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void Test_FromBaseWithInterface ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes(BaseMemberWithSingleAttribute, typeof (ICustomAttribute), true);
+      object[] attributes = AttributeUtility.GetCustomAttributes(BaseMemberWithSingleAttribute, typeof(ICustomAttribute), true);
 
       Assert.That(attributes.Length, Is.EqualTo(1));
       Assert.That(attributes[0], Is.Not.Null);
-      Assert.IsInstanceOf(typeof (ICustomAttribute), attributes[0]);
+      Assert.IsInstanceOf(typeof(ICustomAttribute), attributes[0]);
     }
 
     [Test]
@@ -85,7 +85,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     public void Test_FromBaseWithInvalidType ()
     {
       Assert.That(
-          () => AttributeUtility.GetCustomAttributes(BaseMemberWithSingleAttribute, typeof (object), true),
+          () => AttributeUtility.GetCustomAttributes(BaseMemberWithSingleAttribute, typeof(object), true),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("The attribute type must be assignable to System.Attribute or an interface.", "attributeType"));
     }
@@ -181,15 +181,15 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void Test_ReturnSpecificArrayType ()
     {
-      object[] attributes = AttributeUtility.GetCustomAttributes(BaseMemberWithSingleAttribute, typeof (BaseInheritedAttribute), false);
-      Assert.That(attributes, Is.InstanceOf(typeof (BaseInheritedAttribute[])));
+      object[] attributes = AttributeUtility.GetCustomAttributes(BaseMemberWithSingleAttribute, typeof(BaseInheritedAttribute), false);
+      Assert.That(attributes, Is.InstanceOf(typeof(BaseInheritedAttribute[])));
     }
 
     [Test]
     public void Test_ReturnsNewInstance ()
     {
-      var attribute1 = AttributeUtility.GetCustomAttributes(BaseMemberWithSingleAttribute, typeof (InheritedAttribute), false).Single();
-      var attribute2 = AttributeUtility.GetCustomAttributes(BaseMemberWithSingleAttribute, typeof (InheritedAttribute), false).Single();
+      var attribute1 = AttributeUtility.GetCustomAttributes(BaseMemberWithSingleAttribute, typeof(InheritedAttribute), false).Single();
+      var attribute2 = AttributeUtility.GetCustomAttributes(BaseMemberWithSingleAttribute, typeof(InheritedAttribute), false).Single();
 
       Assert.That(attribute1, Is.Not.SameAs(attribute2));
     }

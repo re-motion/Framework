@@ -54,14 +54,14 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     public override IDownloadHelper DownloadHelper { get; }
 
     public FirefoxConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
-        : this (webTestConfigurationSection, s_firefoxExecutable.Value)
+        : this(webTestConfigurationSection, s_firefoxExecutable.Value)
     {
     }
 
     public FirefoxConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection,
         [NotNull] FirefoxExecutable firefoxExecutable)
-        : base (webTestConfigurationSection)
+        : base(webTestConfigurationSection)
     {
       ArgumentUtility.CheckNotNull("firefoxExecutable", firefoxExecutable);
 

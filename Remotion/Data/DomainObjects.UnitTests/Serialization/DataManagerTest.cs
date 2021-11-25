@@ -83,9 +83,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
         newOrder.OrderTicket = OrderTicket.NewObject();
       }
 
-      var info = new SerializationInfo(typeof (DataManager), new FormatterConverter());
+      var info = new SerializationInfo(typeof(DataManager), new FormatterConverter());
       ((ISerializable) dataManager).GetObjectData(info, new StreamingContext());
-      var data = (object[]) info.GetValue("doInfo.GetData", typeof (object[]));
+      var data = (object[]) info.GetValue("doInfo.GetData", typeof(object[]));
       Console.WriteLine("Object stream:");
       Dump((object[]) data[0]);
       Console.WriteLine("Int stream:");
@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       foreach (var o in data)
       {
 // ReSharper disable CompareNonConstrainedGenericWithNull
-        Type type = o != null ? o.GetType() : typeof (void);
+        Type type = o != null ? o.GetType() : typeof(void);
 // ReSharper restore CompareNonConstrainedGenericWithNull
         if (!types.ContainsKey(type))
           types.Add(type, 0);
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       var typeList = new List<KeyValuePair<Type, int>>(types);
       typeList.Sort((one, two) => one.Value.CompareTo(two.Value));
       foreach (var entry in typeList)
-        Console.WriteLine("{0}: {1}", entry.Key != typeof (void) ? entry.Key.ToString() : "<null>", entry.Value);
+        Console.WriteLine("{0}: {1}", entry.Key != typeof(void) ? entry.Key.ToString() : "<null>", entry.Value);
     }
   }
 }

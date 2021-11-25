@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects
     private readonly object _invalidValue;
 
     public InvalidEnumValueException (string message, string propertyName, Type propertyType, object invalidValue)
-        : base (message)
+        : base(message)
     {
       ArgumentUtility.CheckNotNullOrEmpty("message", message);
       ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
@@ -44,11 +44,11 @@ namespace Remotion.Data.DomainObjects
     }
 
     protected InvalidEnumValueException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
       _propertyName = info.GetString("PropertyName");
-      _underlyingPropertyType = (Type) info.GetValue("UnderlyingPropertyType", typeof (Type));
-      _invalidValue = info.GetValue("InvalidValue", typeof (object));
+      _underlyingPropertyType = (Type) info.GetValue("UnderlyingPropertyType", typeof(Type));
+      _invalidValue = info.GetValue("InvalidValue", typeof(object));
     }
 
     public string PropertyName

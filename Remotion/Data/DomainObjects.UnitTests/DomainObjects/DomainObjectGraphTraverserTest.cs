@@ -107,31 +107,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
         strategy.Expect(mock => mock.ShouldProcessObject(order.Customer.IndustrialSector.Companies[2])).Return(true);
         strategy.Expect(mock => mock.ShouldProcessObject(order.Customer.IndustrialSector.Companies[2].Ceo)).Return(true);
 
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order, 0, order.Properties[typeof (Order), "Official"])).Return(true);
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order, 0, order.Properties[typeof (Order), "OrderTicket"])).Return(true);
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order, 0, order.Properties[typeof (Order), "OrderItems"])).Return(true);
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order, 0, order.Properties[typeof (Order), "Customer"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order, 0, order.Properties[typeof(Order), "Official"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order, 0, order.Properties[typeof(Order), "OrderTicket"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order, 0, order.Properties[typeof(Order), "OrderItems"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order, 0, order.Properties[typeof(Order), "Customer"])).Return(true);
 
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Official, 1, order.Official.Properties[typeof (Official), "Orders"])).Return(true);
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.OrderTicket, 1, order.OrderTicket.Properties[typeof (OrderTicket), "Order"])).Return(true);
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.OrderItems[0], 1, order.OrderItems[0].Properties[typeof (OrderItem), "Order"])).Return(true);
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.OrderItems[1], 1, order.OrderItems[1].Properties[typeof (OrderItem), "Order"])).Return(true);
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer, 1, order.Customer.Properties[typeof (Customer), "Orders"])).Return(true);
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer, 1, order.Customer.Properties[typeof (Customer), "ContactPerson"])).Return(true);
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer, 1, order.Customer.Properties[typeof (Company), "Ceo"])).Return(true);
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer, 1, order.Customer.Properties[typeof (Company), "IndustrialSector"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Official, 1, order.Official.Properties[typeof(Official), "Orders"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.OrderTicket, 1, order.OrderTicket.Properties[typeof(OrderTicket), "Order"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.OrderItems[0], 1, order.OrderItems[0].Properties[typeof(OrderItem), "Order"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.OrderItems[1], 1, order.OrderItems[1].Properties[typeof(OrderItem), "Order"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer, 1, order.Customer.Properties[typeof(Customer), "Orders"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer, 1, order.Customer.Properties[typeof(Customer), "ContactPerson"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer, 1, order.Customer.Properties[typeof(Company), "Ceo"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer, 1, order.Customer.Properties[typeof(Company), "IndustrialSector"])).Return(true);
 
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.Ceo, 2, order.Customer.Ceo.Properties[typeof (Ceo), "Company"])).Return(true);
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.IndustrialSector, 2, order.Customer.IndustrialSector.Properties[typeof (IndustrialSector), "Companies"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.Ceo, 2, order.Customer.Ceo.Properties[typeof(Ceo), "Company"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.IndustrialSector, 2, order.Customer.IndustrialSector.Properties[typeof(IndustrialSector), "Companies"])).Return(true);
 
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.IndustrialSector.Companies[1], 3, order.Customer.IndustrialSector.Companies[1].Properties[typeof (Company), "IndustrialSector"])).Return(true);
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.IndustrialSector.Companies[1], 3, order.Customer.IndustrialSector.Companies[1].Properties[typeof (Company), "Ceo"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.IndustrialSector.Companies[1], 3, order.Customer.IndustrialSector.Companies[1].Properties[typeof(Company), "IndustrialSector"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.IndustrialSector.Companies[1], 3, order.Customer.IndustrialSector.Companies[1].Properties[typeof(Company), "Ceo"])).Return(true);
 
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.IndustrialSector.Companies[2], 3, order.Customer.IndustrialSector.Companies[2].Properties[typeof (Company), "IndustrialSector"])).Return(true);
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.IndustrialSector.Companies[2], 3, order.Customer.IndustrialSector.Companies[2].Properties[typeof (Company), "Ceo"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.IndustrialSector.Companies[2], 3, order.Customer.IndustrialSector.Companies[2].Properties[typeof(Company), "IndustrialSector"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.IndustrialSector.Companies[2], 3, order.Customer.IndustrialSector.Companies[2].Properties[typeof(Company), "Ceo"])).Return(true);
 
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.IndustrialSector.Companies[1].Ceo, 4, order.Customer.IndustrialSector.Companies[1].Ceo.Properties[typeof (Ceo), "Company"])).Return(true);
-        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.IndustrialSector.Companies[2].Ceo, 4, order.Customer.IndustrialSector.Companies[2].Ceo.Properties[typeof (Ceo), "Company"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.IndustrialSector.Companies[1].Ceo, 4, order.Customer.IndustrialSector.Companies[1].Ceo.Properties[typeof(Ceo), "Company"])).Return(true);
+        strategy.Expect(mock => mock.ShouldFollowLink(order, order.Customer.IndustrialSector.Companies[2].Ceo, 4, order.Customer.IndustrialSector.Companies[2].Ceo.Properties[typeof(Ceo), "Company"])).Return(true);
       }
 
       repository.ReplayAll();
@@ -226,10 +226,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       public bool ShouldFollowLink (DomainObject root, DomainObject currentObject, int currentDepth, PropertyAccessor linkProperty)
       {
-        return !typeof (Ceo).IsAssignableFrom(linkProperty.PropertyData.PropertyType)
-          && !typeof (Order).IsAssignableFrom(linkProperty.PropertyData.PropertyType)
-          && !typeof (ObjectList<Order>).IsAssignableFrom(linkProperty.PropertyData.PropertyType)
-          && !typeof (IObjectList<ProductReview>).IsAssignableFrom(linkProperty.PropertyData.PropertyType);
+        return !typeof(Ceo).IsAssignableFrom(linkProperty.PropertyData.PropertyType)
+          && !typeof(Order).IsAssignableFrom(linkProperty.PropertyData.PropertyType)
+          && !typeof(ObjectList<Order>).IsAssignableFrom(linkProperty.PropertyData.PropertyType)
+          && !typeof(IObjectList<ProductReview>).IsAssignableFrom(linkProperty.PropertyData.PropertyType);
       }
     }
   }

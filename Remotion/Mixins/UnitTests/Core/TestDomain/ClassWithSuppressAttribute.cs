@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [SuppressAttributes(typeof (Attribute))]
+  [SuppressAttributes(typeof(Attribute))]
   public class ClassWithSuppressAttribute
   {
     

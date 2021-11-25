@@ -69,8 +69,8 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetMetadata ()
     {
-      Assembly securityAssembly = typeof (IAccessTypeReflector).Assembly;
-      Assembly assembly = typeof (File).Assembly;
+      Assembly securityAssembly = typeof(IAccessTypeReflector).Assembly;
+      Assembly assembly = typeof(File).Assembly;
 
       _accessTypeReflectorMock
           .Setup(_ => _.GetAccessTypesFromAssembly(securityAssembly, _cache))
@@ -85,8 +85,8 @@ namespace Remotion.Security.UnitTests.Metadata
           .Setup(_ => _.GetAbstractRoles(assembly, _cache))
           .Returns(new List<EnumValueInfo>(new EnumValueInfo[] { AbstractRoles.Clerk, AbstractRoles.Secretary, AbstractRoles.Administrator }))
           .Verifiable();
-      _classReflectorMock.Setup(_ => _.GetMetadata(typeof (File), _cache)).Returns(new SecurableClassInfo()).Verifiable();
-      _classReflectorMock.Setup(_ => _.GetMetadata(typeof (PaperFile), _cache)).Returns(new SecurableClassInfo()).Verifiable();
+      _classReflectorMock.Setup(_ => _.GetMetadata(typeof(File), _cache)).Returns(new SecurableClassInfo()).Verifiable();
+      _classReflectorMock.Setup(_ => _.GetMetadata(typeof(PaperFile), _cache)).Returns(new SecurableClassInfo()).Verifiable();
 
       _assemblyReflector.GetMetadata(assembly, _cache);
 

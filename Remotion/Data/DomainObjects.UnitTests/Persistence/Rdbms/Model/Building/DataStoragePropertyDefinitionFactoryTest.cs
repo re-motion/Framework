@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void CreateStoragePropertyDefinition_PropertyDefinition_RelationEndPoint ()
     {
-      var endPointDefinition = GetNonVirtualEndPointDefinition(typeof (OrderItem), "Order");
+      var endPointDefinition = GetNonVirtualEndPointDefinition(typeof(OrderItem), "Order");
       var propertyDefinition = endPointDefinition.PropertyDefinition;
       _relationPropertyFactoryMock.Expect(mock => mock.CreateStoragePropertyDefinition(endPointDefinition)).Return(_fakeStoragePropertyDefinition);
 
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void CreateStoragePropertyDefinition_PropertyDefinition_NoRelationEndPoint ()
     {
-      var propertyDefinition = GetPropertyDefinition(typeof (Order), "OrderNumber");
+      var propertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
       _valuePropertyFactoryMock.Expect(mock => mock.CreateStoragePropertyDefinition(propertyDefinition)).Return(_fakeStoragePropertyDefinition);
 
       var result = _factory.CreateStoragePropertyDefinition(propertyDefinition);
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void CreateStoragePropertyDefinition_Value_ObjectID ()
     {
-      var expectedClassDefinition = GetTypeDefinition(typeof (Order));
+      var expectedClassDefinition = GetTypeDefinition(typeof(Order));
       _relationPropertyFactoryMock
           .Expect(mock => mock.CreateStoragePropertyDefinition(expectedClassDefinition, "Value", "ValueClassID"))
           .Return(_fakeStoragePropertyDefinition);

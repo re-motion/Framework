@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       Assert.That(_orderItem.Order, Is.Null);
       Assert.That(_order.OrderItems.Count, Is.EqualTo(numberOfOrderItemsBeforeDelete - 1));
       Assert.That(_order.OrderItems.Contains(_orderItem.ID), Is.False);
-      Assert.That(_orderItem.Properties[typeof (OrderItem), "Order"].GetRelatedObjectID(), Is.Null);
+      Assert.That(_orderItem.Properties[typeof(OrderItem), "Order"].GetRelatedObjectID(), Is.Null);
       Assert.That(_order.State.IsChanged, Is.True);
       Assert.That(_order.InternalDataContainer.State.IsUnchanged, Is.True);
     }

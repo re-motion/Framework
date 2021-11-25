@@ -59,9 +59,9 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
 
       var testFixtureInstance = Activator.CreateInstance(type);
 
-      var setupMethod = type.GetMethods().SingleOrDefault(m => IsDefined(m, typeof (SetUpAttribute)));
-      var tearDownMethod = type.GetMethods().SingleOrDefault(m => IsDefined(m, typeof (TearDownAttribute)));
-      var testMethods = type.GetMethods().Where(m => IsDefined(m, typeof (TestAttribute)));
+      var setupMethod = type.GetMethods().SingleOrDefault(m => IsDefined(m, typeof(SetUpAttribute)));
+      var tearDownMethod = type.GetMethods().SingleOrDefault(m => IsDefined(m, typeof(TearDownAttribute)));
+      var testMethods = type.GetMethods().Where(m => IsDefined(m, typeof(TestAttribute)));
 
       var testResults = testMethods.Select(testMethod => RunTestMethod(testFixtureInstance, testMethod, setupMethod, tearDownMethod)).ToArray();
       return new TestFixtureResult(type, testResults);
@@ -70,16 +70,16 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
     public TestResult RunTestMethod (object testFixtureInstance, MethodInfo testMethod, MethodInfo setupMethod, MethodInfo tearDownMethod)
     {
       Exception exception;
-      if (IsDefined(testMethod, typeof (IgnoreAttribute)) || IsDefined(testMethod.DeclaringType, typeof (IgnoreAttribute)))
+      if (IsDefined(testMethod, typeof(IgnoreAttribute)) || IsDefined(testMethod.DeclaringType, typeof(IgnoreAttribute)))
         return TestResult.CreateIgnored(testMethod);
 
       if (setupMethod!=null && !(TryInvokeMethod(setupMethod, testFixtureInstance, out exception)))
         return TestResult.CreateFailedInSetUp(setupMethod, exception);
 
       TestResult result;
-      if (IsDefined(testMethod, typeof (ExpectedExceptionAttribute)))
+      if (IsDefined(testMethod, typeof(ExpectedExceptionAttribute)))
       {
-        var exceptionType = (Type) GetAttribute(testMethod, typeof (ExpectedExceptionAttribute)).ConstructorArguments[0].Value;
+        var exceptionType = (Type) GetAttribute(testMethod, typeof(ExpectedExceptionAttribute)).ConstructorArguments[0].Value;
         if (!TryInvokeMethod(testMethod, testFixtureInstance, out exception) && exception.GetType() == exceptionType)
           result = TestResult.CreateSucceeded(testMethod);
         else

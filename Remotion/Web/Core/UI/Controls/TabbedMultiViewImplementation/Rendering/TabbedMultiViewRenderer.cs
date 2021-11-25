@@ -32,7 +32,7 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
   /// Implements <see cref="ITabbedMultiViewRenderer"/> for standard mode rendering of <see cref="TabbedMultiView"/> controls.
   /// <seealso cref="ITabbedMultiView"/>
   /// </summary>
-  [ImplementationFor (typeof (ITabbedMultiViewRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(ITabbedMultiViewRenderer), Lifetime = LifetimeKind.Singleton)]
   public class TabbedMultiViewRenderer : RendererBase<ITabbedMultiView>, ITabbedMultiViewRenderer
   {
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
@@ -42,7 +42,7 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
 
@@ -58,8 +58,8 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string keyStyle = typeof (TabbedMultiViewRenderer).GetFullNameChecked() + "_Style";
-      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof (TabbedMultiViewRenderer), ResourceType.Html, "TabbedMultiView.css");
+      string keyStyle = typeof(TabbedMultiViewRenderer).GetFullNameChecked() + "_Style";
+      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(TabbedMultiViewRenderer), ResourceType.Html, "TabbedMultiView.css");
       htmlHeadAppender.RegisterStylesheetLink(keyStyle, styleSheetUrl, HtmlHeadAppender.Priority.Library);
 
       ScriptUtility.Instance.RegisterJavaScriptInclude(control, htmlHeadAppender);

@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <para>The property is nullable and the property's type defines an UndefinedEnumValueAttribute</para>
     /// </exception>
     public EnumerationProperty (Parameters parameters)
-        : base (parameters)
+        : base(parameters)
     {
       if (AttributeUtility.IsDefined<FlagsAttribute>(parameters.UnderlyingType, false))
       {
@@ -165,7 +165,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
             string.Format(
                 "The enum type '{0}' defines a '{1}' with an enum value that belongs to a different enum type.",
                 UnderlyingType,
-                typeof (UndefinedEnumValueAttribute)));
+                typeof(UndefinedEnumValueAttribute)));
       }
 
       if (IsNullableDotNetType)
@@ -175,7 +175,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
                 "The property '{0}' defined on type '{1}' must not be nullable since the property's type already defines a '{2}'.",
                 Identifier,
                 PropertyInfo.DeclaringType,
-                typeof (UndefinedEnumValueAttribute)));
+                typeof(UndefinedEnumValueAttribute)));
       }
 
       return undefinedEnumValueAttribute.GetValue();

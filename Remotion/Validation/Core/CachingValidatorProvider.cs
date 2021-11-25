@@ -22,7 +22,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation
 {
-  [ImplementationFor (typeof (IValidatorProvider), Position = Position, RegistrationType = RegistrationType.Single, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IValidatorProvider), Position = Position, RegistrationType = RegistrationType.Single, Lifetime = LifetimeKind.Singleton)]
   public class CachingValidatorProvider : IValidatorProvider
   {
     public const int Position = 0;

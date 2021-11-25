@@ -43,7 +43,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
 
     public static EnumWithDifferentCtors DeclaringTypeAndName (this ExtensibleEnumDefinition<EnumWithDifferentCtors> enumWithDifferentCtors)
     {
-      return new EnumWithDifferentCtors(typeof (EnumWithDifferentCtorsExtensions), "ValueName");
+      return new EnumWithDifferentCtors(typeof(EnumWithDifferentCtorsExtensions), "ValueName");
     }
 
     public static EnumWithDifferentCtors CurrentMethod (this ExtensibleEnumDefinition<EnumWithDifferentCtors> enumWithDifferentCtors)

@@ -20,7 +20,7 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping
 {
-  [NonIntroduced (typeof (IDomainObjectMixin))]
+  [NonIntroduced (typeof(IDomainObjectMixin))]
   public class HookedDomainObjectMixin : Mixin<Order>, IDomainObjectMixin
   {
     public event EventHandler InitializationHandler;

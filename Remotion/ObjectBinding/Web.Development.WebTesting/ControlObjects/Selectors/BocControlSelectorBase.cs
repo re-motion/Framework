@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
       where TControlObject : BocControlObject
   {
     protected BocControlSelectorBase ([NotNull] string controlType)
-        : base (controlType)
+        : base(controlType)
     {
     }
 

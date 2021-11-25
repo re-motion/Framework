@@ -41,11 +41,11 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       var result = ExpiringDataStoreFactory.Create(_expirationPolicy.Object, _comparer);
 
-      Assert.That(result, Is.TypeOf(typeof (ExpiringDataStore<string, object, DateTime, DateTime>)));
+      Assert.That(result, Is.TypeOf(typeof(ExpiringDataStore<string, object, DateTime, DateTime>)));
       var expirationPolicy = PrivateInvoke.GetNonPublicField(result, "_expirationPolicy");
       Assert.That(expirationPolicy, Is.SameAs(_expirationPolicy.Object));
       var innerDataStore = PrivateInvoke.GetNonPublicField(result, "_innerDataStore");
-      Assert.That(innerDataStore, Is.TypeOf(typeof (SimpleDataStore<string, Tuple<object, DateTime>>)));
+      Assert.That(innerDataStore, Is.TypeOf(typeof(SimpleDataStore<string, Tuple<object, DateTime>>)));
       Assert.That(((SimpleDataStore<string, Tuple<object, DateTime>>) innerDataStore).Comparer, Is.SameAs(_comparer));
     }
 
@@ -55,13 +55,13 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       var result = ExpiringDataStoreFactory.CreateWithLocking(_expirationPolicy.Object, _comparer);
 
-      Assert.That(result, Is.TypeOf(typeof (LockingDataStoreDecorator<string, object>)));
+      Assert.That(result, Is.TypeOf(typeof(LockingDataStoreDecorator<string, object>)));
       var innerStore = PrivateInvoke.GetNonPublicField(result, "_innerStore");
-      Assert.That(innerStore, Is.TypeOf(typeof (ExpiringDataStore<string, object, DateTime, DateTime>)));
+      Assert.That(innerStore, Is.TypeOf(typeof(ExpiringDataStore<string, object, DateTime, DateTime>)));
       var expirationPolicy = PrivateInvoke.GetNonPublicField(innerStore, "_expirationPolicy");
       Assert.That(expirationPolicy, Is.SameAs(_expirationPolicy.Object));
       var underlyingDataStore = PrivateInvoke.GetNonPublicField(innerStore, "_innerDataStore");
-      Assert.That(underlyingDataStore, Is.TypeOf(typeof (SimpleDataStore<string, Tuple<object, DateTime>>)));
+      Assert.That(underlyingDataStore, Is.TypeOf(typeof(SimpleDataStore<string, Tuple<object, DateTime>>)));
       Assert.That(((SimpleDataStore<string, Tuple<object, DateTime>>) underlyingDataStore).Comparer, Is.SameAs(_comparer));
     }
 
@@ -72,15 +72,15 @@ namespace Remotion.Collections.DataStore.UnitTests
 
       var result = ExpiringDataStoreFactory.CreateWithLazyLocking(policy.Object,  _comparer);
 
-      Assert.That(result, Is.TypeOf(typeof (LazyLockingDataStoreAdapter<string,  object>)));
+      Assert.That(result, Is.TypeOf(typeof(LazyLockingDataStoreAdapter<string,  object>)));
       var innerDataStore = PrivateInvoke.GetNonPublicField(result, "_innerDataStore");
-      Assert.That(innerDataStore, Is.TypeOf(typeof (LockingDataStoreDecorator<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
+      Assert.That(innerDataStore, Is.TypeOf(typeof(LockingDataStoreDecorator<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>>)));
       var innerStore = PrivateInvoke.GetNonPublicField(innerDataStore, "_innerStore");
-      Assert.That(innerStore, Is.TypeOf(typeof (ExpiringDataStore<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime, DateTime>)));
+      Assert.That(innerStore, Is.TypeOf(typeof(ExpiringDataStore<string, Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime, DateTime>)));
       var expirationPolicy = PrivateInvoke.GetNonPublicField(innerStore, "_expirationPolicy");
       Assert.That(expirationPolicy, Is.SameAs(expirationPolicy));
       var innerInnerDataStore = PrivateInvoke.GetNonPublicField(innerStore, "_innerDataStore");
-      Assert.That(innerInnerDataStore, Is.TypeOf(typeof (SimpleDataStore<string, Tuple<Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime>>)));
+      Assert.That(innerInnerDataStore, Is.TypeOf(typeof(SimpleDataStore<string, Tuple<Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime>>)));
       Assert.That(((SimpleDataStore<string, Tuple<Lazy<LazyLockingDataStoreAdapter<string, object>.Wrapper>, DateTime>>) innerInnerDataStore).Comparer, Is.SameAs(_comparer));
     }
 #pragma warning restore 618

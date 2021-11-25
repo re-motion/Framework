@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     public void SetUp ()
     {
       _validationRule = new PropertyStorageClassIsSupportedByStorageProviderValidationRule();
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof (DerivedValidationDomainObjectClass));
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
       _persistentStorageEntityDefinition = MockRepository.GenerateStub<IStorageEntityDefinition>();
       _nonPersistentStorageEntityDefinition =
           new NonPersistentStorageEntity(new NonPersistentProviderDefinition("NonPersistent", new NonPersistentStorageObjectFactory()));
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassNone")),
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassNone")),
           "PropertyWithStorageClassNone",
           false,
           true,
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassTransaction")),
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassTransaction")),
           "PropertyWithStorageClassTransaction",
           false,
           true,
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty("PropertyWithTypeObjectWithStorageClassPersistent")),
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithTypeObjectWithStorageClassPersistent")),
           "PropertyWithTypeObjectWithStorageClassPersistent",
           false,
           true,
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     {
       var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty("PropertyWithTypeObjectWithStorageClassPersistent")),
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithTypeObjectWithStorageClassPersistent")),
           "PropertyWithTypeObjectWithStorageClassPersistent",
           false,
           true,

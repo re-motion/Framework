@@ -28,8 +28,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     [Test]
     public void ResolveMethod ()
     {
-      var attribute = new OverrideInterfaceMappingAttribute(typeof (MixinWithAbstractMembers), "AbstractMethod", "Void AbstractMethod()");
-      var expected = typeof (MixinWithAbstractMembers).GetMethod("AbstractMethod", BindingFlags.NonPublic | BindingFlags.Instance);
+      var attribute = new OverrideInterfaceMappingAttribute(typeof(MixinWithAbstractMembers), "AbstractMethod", "Void AbstractMethod()");
+      var expected = typeof(MixinWithAbstractMembers).GetMethod("AbstractMethod", BindingFlags.NonPublic | BindingFlags.Instance);
 
       Assert.That(attribute.ResolveReferencedMethod(), Is.EqualTo(expected));
     }

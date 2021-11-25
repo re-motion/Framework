@@ -31,7 +31,7 @@ namespace Remotion.Reflection
   /// <summary>
   /// Implements the <see cref="IMethodInformation"/> to wrap a <see cref="MethodInfo"/> instance.
   /// </summary>
-  [TypeConverter (typeof (MethodInfoAdapterConverter))]
+  [TypeConverter (typeof(MethodInfoAdapterConverter))]
   public sealed class MethodInfoAdapter : IMethodInformation
   {
     private static readonly ConcurrentDictionary<MethodInfo, MethodInfoAdapter> s_dataStore =
@@ -170,12 +170,12 @@ namespace Remotion.Reflection
 
     public T GetFastInvoker<T> () where T: class
     {
-      return (T) (object) GetFastInvoker(typeof (T));
+      return (T) (object) GetFastInvoker(typeof(T));
     }
 
     public Delegate GetFastInvoker (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
 
       return DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate(_methodInfo, delegateType);
     }

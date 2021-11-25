@@ -31,7 +31,7 @@ namespace Remotion.Mixins.Context.Serialization
 
     protected override T ConvertFromStorageFormat<T> (object value, int index)
     {
-      if (typeof (T) == typeof (Assembly))
+      if (typeof(T) == typeof(Assembly))
         return (T) (object) Assembly.Load(ConvertFromStorageFormat<string>(value, index));
 
       return base.ConvertFromStorageFormat<T>(value, index);

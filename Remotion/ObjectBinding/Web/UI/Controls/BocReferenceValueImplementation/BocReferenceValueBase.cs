@@ -46,12 +46,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       where TControlWebService : class, IBocReferenceValueBaseWebService
   {
     protected BocReferenceValueBase ()
-        : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
+        : this(SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
     {
     }
 
     protected BocReferenceValueBase ([NotNull] IWebServiceFactory webServiceFactory)
-        : base (webServiceFactory)
+        : base(webServiceFactory)
     {
     }
 
@@ -143,7 +143,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <summary> The key identifying a options menu item resource entry. </summary>
     private const string c_resourceKeyOptionsMenuItems = "OptionsMenuItems";
 
-    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof (IBusinessObjectReferenceProperty) };
+    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof(IBusinessObjectReferenceProperty) };
 
     private static readonly object SelectionChangedEvent = new object();
     private static readonly object MenuItemClickEvent = new object();
@@ -334,7 +334,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <value> The <see cref="Unit"/> value used for the option menu's width. The default value is <b>undefined</b>. </value>
     [Category ("Menu")]
     [Description ("The width of the options menu.")]
-    [DefaultValue (typeof (Unit), "")]
+    [DefaultValue (typeof(Unit), "")]
     public Unit OptionsMenuWidth
     {
       get { return _optionsMenuWidth; }
@@ -358,7 +358,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
     [DefaultValue ((string?) null)]
     [PersistenceMode (PersistenceMode.Attribute)]
-    [TypeConverter (typeof (StringArrayConverter))]
+    [TypeConverter (typeof(StringArrayConverter))]
     public string[] HiddenMenuItems
     {
       get

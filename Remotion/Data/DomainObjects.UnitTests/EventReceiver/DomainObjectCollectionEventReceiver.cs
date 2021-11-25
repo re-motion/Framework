@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     // construction and disposing
 
     public DomainObjectCollectionEventReceiver (DomainObjectCollection collection)
-      : this (collection, false)
+      : this(collection, false)
     {
     }
 

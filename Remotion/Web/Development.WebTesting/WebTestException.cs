@@ -21,12 +21,12 @@ namespace Remotion.Web.Development.WebTesting
   public class WebTestException : Exception
   {
     public WebTestException (string message)
-        : base (message)
+        : base(message)
     {
     }
 
     public WebTestException (string message, Exception inner)
-        : base (message, inner)
+        : base(message, inner)
     {
     }
   }

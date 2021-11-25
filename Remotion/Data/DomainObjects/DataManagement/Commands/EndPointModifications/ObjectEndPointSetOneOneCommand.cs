@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         DomainObject newRelatedObject,
         Action<DomainObject> oppositeObjectSetter,
         IClientTransactionEventSink transactionEventSink)
-        : base (modifiedEndPoint, newRelatedObject, oppositeObjectSetter, transactionEventSink)
+        : base(modifiedEndPoint, newRelatedObject, oppositeObjectSetter, transactionEventSink)
     {
       if (modifiedEndPoint.Definition.GetOppositeEndPointDefinition().IsAnonymous)
       {

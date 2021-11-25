@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   public class BocAutoCompleteReferenceValueSelector : BocControlSelectorBase<BocAutoCompleteReferenceValueControlObject>
   {
     public BocAutoCompleteReferenceValueSelector ()
-        : base ("BocAutoCompleteReferenceValue")
+        : base("BocAutoCompleteReferenceValue")
     {
     }
 

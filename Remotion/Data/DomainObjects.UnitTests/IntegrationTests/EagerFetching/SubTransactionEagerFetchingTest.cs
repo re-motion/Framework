@@ -36,16 +36,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
           TestDomainStorageProviderDefinition,
           "SELECT * FROM [Order] WHERE OrderNo IN (1, 3)",
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
 
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (Order), "OrderItems");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(Order), "OrderItems");
 
       var orderItemsFetchQuery = QueryFactory.CreateCollectionQuery(
           "test fetch",
           TestDomainStorageProviderDefinition,
           "SELECT oi.* FROM [Order] o LEFT OUTER JOIN OrderItem oi ON o.ID = oi.OrderID WHERE o.OrderNo IN (1, 3)",
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
       ordersQuery.EagerFetchQueries.Add(relationEndPointDefinition, orderItemsFetchQuery);
 
       var id1 = RelationEndPointID.Create(DomainObjectIDs.Order1, relationEndPointDefinition);
@@ -84,16 +84,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
           TestDomainStorageProviderDefinition,
           "outerQuery",
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
 
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (Customer), "Orders");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(Customer), "Orders");
 
       var fetchQuery = QueryFactory.CreateCollectionQuery(
           "test fetch",
           TestDomainStorageProviderDefinition,
           "fetchQuery",
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
       outerQuery.EagerFetchQueries.Add(relationEndPointDefinition, fetchQuery);
 
       var persistenceStrategyMock = MockRepository.GenerateStrictMock<IFetchEnabledPersistenceStrategy>();
@@ -133,9 +133,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
           TestDomainStorageProviderDefinition,
           "SELECT * FROM [Company] WHERE ID = '" + DomainObjectIDs.Customer1.Value + "'",
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
 
-      var relationEndPointDefinition = GetEndPointDefinition(typeof (Customer), "Orders");
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(Customer), "Orders");
 
       // This will yield different orders (none) than the actual relation query above - simulating the database has changed in between
       var orderItemsFetchQuery = QueryFactory.CreateCollectionQuery(
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
           TestDomainStorageProviderDefinition,
           "SELECT NULL WHERE 1 = 0",
           new QueryParameterCollection(),
-          typeof (DomainObjectCollection));
+          typeof(DomainObjectCollection));
       customersQuery.EagerFetchQueries.Add(relationEndPointDefinition, orderItemsFetchQuery);
 
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())

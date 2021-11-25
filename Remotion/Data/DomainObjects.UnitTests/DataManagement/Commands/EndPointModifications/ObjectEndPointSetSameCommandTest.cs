@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       Assert.That(steps[0], Is.SameAs(_command));
 
-      Assert.That(steps[1], Is.InstanceOf(typeof (RelationEndPointTouchCommand)));
+      Assert.That(steps[1], Is.InstanceOf(typeof(RelationEndPointTouchCommand)));
       Assert.That(((RelationEndPointTouchCommand) steps[1]).EndPoint, Is.SameAs(oppositeEndPoint));
     }
   }

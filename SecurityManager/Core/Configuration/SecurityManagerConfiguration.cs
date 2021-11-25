@@ -52,18 +52,18 @@ namespace Remotion.SecurityManager.Configuration
 
     public SecurityManagerConfiguration ()
     {
-      _xmlnsProperty = new ConfigurationProperty("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
+      _xmlnsProperty = new ConfigurationProperty("xmlns", typeof(string), null, ConfigurationPropertyOptions.None);
 
       _organizationalStructureFactory = new DoubleCheckedLockingContainer<IOrganizationalStructureFactory>(
           delegate { return OrganizationalStructureFactoryElement.CreateInstance(); });
       _organizationalStructureFactoryProperty = new ConfigurationProperty(
           "organizationalStructureFactory",
-          typeof (TypeElement<IOrganizationalStructureFactory, OrganizationalStructureFactory>),
+          typeof(TypeElement<IOrganizationalStructureFactory, OrganizationalStructureFactory>),
           null,
           ConfigurationPropertyOptions.None);
       _accessControlProperty = new ConfigurationProperty(
           "accessControl",
-          typeof (AccessControlElement),
+          typeof(AccessControlElement),
           null,
           ConfigurationPropertyOptions.None);
 

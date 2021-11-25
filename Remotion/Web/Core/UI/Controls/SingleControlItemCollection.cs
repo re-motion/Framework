@@ -40,7 +40,7 @@ public class SingleControlItemCollection
   }
 
   public SingleControlItemCollection (Type[] supportedTypes)
-    : this (null, supportedTypes)
+    : this(null, supportedTypes)
   {
   }
 

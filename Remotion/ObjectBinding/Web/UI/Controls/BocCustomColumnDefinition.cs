@@ -549,7 +549,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocCustomColumnDefinition columnDefinition,
         int listIndex,
         Control control)
-        : base (list, columnDefinition)
+        : base(list, columnDefinition)
     {
       _businessObject = businessObject;
       _listIndex = listIndex;
@@ -584,7 +584,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocList list,
         IBusinessObject businessObject,
         BocCustomColumnDefinition columnDefinition)
-        : base (list, columnDefinition)
+        : base(list, columnDefinition)
     {
       _businessObject = businessObject;
     }
@@ -608,7 +608,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         IBusinessObject businessObject,
         BocCustomColumnDefinition columnDefinition,
         Control control)
-        : base (list, columnDefinition)
+        : base(list, columnDefinition)
     {
       _businessObject = businessObject;
       _control = control;
@@ -671,7 +671,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         int columnIndex,
         int listIndex,
         string onClick)
-        : base (list, columnDefinition)
+        : base(list, columnDefinition)
     {
       _columnIndex = columnIndex;
       _businessObject = businessObject;

@@ -46,14 +46,14 @@ namespace Remotion.Mixins.UnitTests.Core
       var bt1 = ObjectFactory.Create<BaseType1>(ParamList.Empty);
       var mixin = Mixin.Get<IBT1Mixin1>(bt1);
       Assert.That(mixin, Is.Not.Null);
-      Assert.That(mixin, Is.InstanceOf(typeof (BT1Mixin1)));
+      Assert.That(mixin, Is.InstanceOf(typeof(BT1Mixin1)));
     }
 
     [Test]
     public void MixinGet_FindsMixinWithGenericMatch ()
     {
       BaseType3 bt3 = ObjectFactory.Create<BaseType3>(ParamList.Empty);
-      object mixin = Mixin.Get(typeof (BT3Mixin3<,>), bt3);
+      object mixin = Mixin.Get(typeof(BT3Mixin3<,>), bt3);
       Assert.That(mixin, Is.Not.Null);
     }
 

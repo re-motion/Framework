@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Validation
   /// Uses the <see cref="ILengthConstrainedPropertyAttribute"/> and the <see cref="INullablePropertyAttribute"/> to build <see cref="LengthValidator"/> 
   /// and <see cref="NotNullValidator"/> for properties.
   /// </summary>
-  [ImplementationFor (typeof (IValidationRuleCollectorProvider), Lifetime = LifetimeKind.Singleton, Position = 0, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor (typeof(IValidationRuleCollectorProvider), Lifetime = LifetimeKind.Singleton, Position = 0, RegistrationType = RegistrationType.Multiple)]
   public class DomainObjectAttributesBasedValidationRuleCollectorProvider : AttributeBasedValidationRuleCollectorProviderBase
   {
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.Validation
                         _validationMessageFactory)));
       }
 
-      if (typeof (IDomainObjectMixin).IsAssignableFrom(annotatedType) && !annotatedType.IsInterface)
+      if (typeof(IDomainObjectMixin).IsAssignableFrom(annotatedType) && !annotatedType.IsInterface)
       {
         var implementedInterfaces = interfaceTypes.Where(i => i.IsAssignableFrom(annotatedType));
 

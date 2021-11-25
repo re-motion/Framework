@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           Is.TypeOf<UnsupportedStoragePropertyDefinition>()
               .With.Property<UnsupportedStoragePropertyDefinition>(pd => pd.Message).EqualTo(
                   "There was an error when retrieving storage type for property 'Test' (declaring class: '" + _someClassDefinition.ID + "'): Msg.")
-              .And.Property<UnsupportedStoragePropertyDefinition>(pd => pd.PropertyType).EqualTo(typeof (string))
+              .And.Property<UnsupportedStoragePropertyDefinition>(pd => pd.PropertyType).EqualTo(typeof(string))
               .And.Property<UnsupportedStoragePropertyDefinition>(pd => pd.InnerException).SameAs(exception));
     }
 
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       var result = _factory.CreateStoragePropertyDefinition(propertyDefinition);
 
       _storageTypeInformationProviderMock.VerifyAllExpectations();
-      CheckSimplePropertyDefinition(result, typeof (string), "FakeColumnName", _fakeStorageTypeInformation1);
+      CheckSimplePropertyDefinition(result, typeof(string), "FakeColumnName", _fakeStorageTypeInformation1);
     }
 
     [Test]
@@ -245,7 +245,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       Assert.That(result, Is.TypeOf<UnsupportedStoragePropertyDefinition>()
           .With.Property<UnsupportedStoragePropertyDefinition>(pd => pd.Message).EqualTo(
             "There was an error when retrieving storage type for value of type 'String': Msg.")
-          .And.Property<UnsupportedStoragePropertyDefinition>(pd => pd.PropertyType).EqualTo(typeof (string))
+          .And.Property<UnsupportedStoragePropertyDefinition>(pd => pd.PropertyType).EqualTo(typeof(string))
           .And.Property<UnsupportedStoragePropertyDefinition>(pd => pd.InnerException).SameAs(exception));
     }
 
@@ -263,7 +263,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       Assert.That(result, Is.TypeOf<UnsupportedStoragePropertyDefinition>()
           .With.Property<UnsupportedStoragePropertyDefinition>(pd => pd.Message).EqualTo(
             "There was an error when retrieving storage type for value of type '<null>': Msg.")
-          .And.Property<UnsupportedStoragePropertyDefinition>(pd => pd.PropertyType).EqualTo(typeof (object))
+          .And.Property<UnsupportedStoragePropertyDefinition>(pd => pd.PropertyType).EqualTo(typeof(object))
           .And.Property<UnsupportedStoragePropertyDefinition>(pd => pd.InnerException).SameAs(exception));
     }
 
@@ -277,7 +277,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       var result = _factory.CreateStoragePropertyDefinition(null, "Column");
       
       _storageTypeInformationProviderMock.VerifyAllExpectations();
-      CheckSimplePropertyDefinition(result, typeof (object), "Column", _fakeStorageTypeInformation1);
+      CheckSimplePropertyDefinition(result, typeof(object), "Column", _fakeStorageTypeInformation1);
     }
 
     [Test]
@@ -290,7 +290,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       var result = _factory.CreateStoragePropertyDefinition("Test", "Column");
 
       _storageTypeInformationProviderMock.VerifyAllExpectations();
-      CheckSimplePropertyDefinition(result, typeof (string), "Column", _fakeStorageTypeInformation1);
+      CheckSimplePropertyDefinition(result, typeof(string), "Column", _fakeStorageTypeInformation1);
     }
 
     private void CheckSimplePropertyDefinition (
@@ -299,7 +299,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
         string expectedColumnName,
         StorageTypeInformation expectedStorageTypeInformation)
     {
-      Assert.That(result, Is.TypeOf(typeof (SimpleStoragePropertyDefinition)));
+      Assert.That(result, Is.TypeOf(typeof(SimpleStoragePropertyDefinition)));
       Assert.That(result.PropertyType, Is.SameAs(expectedPropertyType));
       var column = StoragePropertyDefinitionTestHelper.GetSingleColumn(result);
       Assert.That(column.Name, Is.EqualTo(expectedColumnName));

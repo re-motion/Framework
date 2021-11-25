@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   public abstract class ImplementingAccessorInterceptorBase : WrappingAccessorInterceptor
   {
     private static readonly PropertyInfo s_properties = Assertion.IsNotNull(
-        typeof (DomainObject).GetProperty("Properties", BindingFlags.Instance | BindingFlags.NonPublic),
+        typeof(DomainObject).GetProperty("Properties", BindingFlags.Instance | BindingFlags.NonPublic),
         "DomainObject.Properties was not found.");
     private static readonly MethodInfo s_getPropertyAccessor = MemberInfoFromExpressionUtility.GetMethod((PropertyIndexer i) => i["propertyName"]);
 
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     private readonly Type _propertyType;
 
     protected ImplementingAccessorInterceptorBase (MethodInfo interceptedAccessorMethod, string propertyName, Type propertyType)
-        : base (interceptedAccessorMethod, propertyName)
+        : base(interceptedAccessorMethod, propertyName)
     {
       ArgumentUtility.CheckNotNull("propertyType", propertyType);
 

@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       base.SetUp();
 
-      _id = RelationEndPointID.Create(DomainObjectIDs.Computer1, ReflectionMappingHelper.GetPropertyName(typeof (Computer), "Employee"));
+      _id = RelationEndPointID.Create(DomainObjectIDs.Computer1, ReflectionMappingHelper.GetPropertyName(typeof(Computer), "Employee"));
     }
 
 

@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Gene
     {
       var control = base.CreateControl(options);
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
-      control.ControlServicePath = resourceUrlFactory.CreateResourceUrl(typeof (BocAutoCompleteReferenceValueWebService), TestResourceType.Root, "Controls/BocAutoCompleteReferenceValueWebService.asmx").GetUrl();
+      control.ControlServicePath = resourceUrlFactory.CreateResourceUrl(typeof(BocAutoCompleteReferenceValueWebService), TestResourceType.Root, "Controls/BocAutoCompleteReferenceValueWebService.asmx").GetUrl();
       return control;
     }
   }

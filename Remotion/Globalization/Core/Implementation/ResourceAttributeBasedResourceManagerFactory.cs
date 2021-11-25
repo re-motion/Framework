@@ -33,7 +33,7 @@ namespace Remotion.Globalization.Implementation
   /// </summary>
   /// <seealso cref="MultiLingualResourcesAttribute"/>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IResourceManagerFactory), Position = Position, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor (typeof(IResourceManagerFactory), Position = Position, RegistrationType = RegistrationType.Multiple)]
   public sealed class ResourceAttributeBasedResourceManagerFactory : IResourceManagerFactory
   {
     public const int Position = 19;

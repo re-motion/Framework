@@ -144,14 +144,14 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     [Test]
     public void ControlStateNames_AreEquvialentToInternalControlStateNames ()
     {
-      Assert.That(Enum.GetNames(InternalControlMemberCaller.InternalControlStateType), Is.EqualTo(Enum.GetNames(typeof (ControlState))));
+      Assert.That(Enum.GetNames(InternalControlMemberCaller.InternalControlStateType), Is.EqualTo(Enum.GetNames(typeof(ControlState))));
     }
 
     [Test]
     public void ControlStateValues_AreEquvialentToInternalControlStateValues ()
     {
       Assert.That(Enum.GetValues(InternalControlMemberCaller.InternalControlStateType).Cast<int>().ToArray(),
-          Is.EqualTo(Enum.GetValues(typeof (ControlState)).Cast<int>().ToArray()));
+          Is.EqualTo(Enum.GetValues(typeof(ControlState)).Cast<int>().ToArray()));
     }
 
     [Test]
@@ -174,10 +174,10 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       object viewState = _memberCaller.SaveViewStateRecursive(_parent);
 
-      Assert.That(viewState, Is.InstanceOf(typeof (Pair)));
+      Assert.That(viewState, Is.InstanceOf(typeof(Pair)));
       var parentViewState = (Pair) viewState;
       Assert.That(parentViewState.First, Is.EqualTo("ParentValue"));
-      Assert.That(parentViewState.Second, Is.InstanceOf(typeof (ArrayList)));
+      Assert.That(parentViewState.Second, Is.InstanceOf(typeof(ArrayList)));
       var childViewStates = (IList) parentViewState.Second;
       Assert.That(childViewStates.Count, Is.EqualTo(2));
       Assert.That(childViewStates[0], Is.EqualTo(0));
@@ -194,10 +194,10 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       object viewState = _memberCaller.SaveViewStateRecursive(_parent);
 
-      Assert.That(viewState, Is.InstanceOf(typeof (Pair)));
+      Assert.That(viewState, Is.InstanceOf(typeof(Pair)));
       var parentViewState = (Pair) viewState;
       Assert.That(parentViewState.First, Is.EqualTo("ParentValue"));
-      Assert.That(parentViewState.Second, Is.InstanceOf(typeof (ArrayList)));
+      Assert.That(parentViewState.Second, Is.InstanceOf(typeof(ArrayList)));
       var childViewStates = (IList) parentViewState.Second;
       Assert.That(childViewStates.Count, Is.EqualTo(2));
       Assert.That(childViewStates[0], Is.EqualTo(0));
@@ -226,10 +226,10 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       object viewState = _memberCaller.SaveViewStateRecursive(_parent);
 
-      Assert.That(viewState, Is.InstanceOf(typeof (Pair)));
+      Assert.That(viewState, Is.InstanceOf(typeof(Pair)));
       var parentViewState = (Pair) viewState;
       Assert.That(parentViewState.First, Is.EqualTo("ParentValue"));
-      Assert.That(parentViewState.Second, Is.InstanceOf(typeof (ArrayList)));
+      Assert.That(parentViewState.Second, Is.InstanceOf(typeof(ArrayList)));
       var childViewStates = (IList) parentViewState.Second;
       Assert.That(childViewStates.Count, Is.EqualTo(2));
       Assert.That(childViewStates[0], Is.EqualTo(0));
@@ -278,7 +278,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       IDictionary childControlState = _memberCaller.SaveChildControlState(_namingContainer);
 
-      Assert.That(childControlState, Is.InstanceOf(typeof (HybridDictionary)));
+      Assert.That(childControlState, Is.InstanceOf(typeof(HybridDictionary)));
       Assert.That(childControlState.Count, Is.EqualTo(2));
       Assert.That(childControlState[_parent.UniqueID], new PairConstraint(new Pair("ParentValue", null)));
       Assert.That(childControlState[_child.UniqueID], new PairConstraint(new Pair("ChildValue", null)));
@@ -307,7 +307,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       IDictionary childControlState = _memberCaller.SaveChildControlState(_namingContainer);
 
-      Assert.That(childControlState, Is.InstanceOf(typeof (HybridDictionary)));
+      Assert.That(childControlState, Is.InstanceOf(typeof(HybridDictionary)));
       Assert.That(childControlState.Count, Is.EqualTo(1));
       Assert.That(childControlState[_child.UniqueID], new PairConstraint(new Pair("ChildValue", null)));
     }
@@ -327,7 +327,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       IDictionary childControlState = _memberCaller.SaveChildControlState(_namingContainer);
 
-      Assert.That(childControlState, Is.InstanceOf(typeof (HybridDictionary)));
+      Assert.That(childControlState, Is.InstanceOf(typeof(HybridDictionary)));
       Assert.That(childControlState.Count, Is.EqualTo(1));
       Assert.That(childControlState[_child.UniqueID], new PairConstraint(new Pair("ChildValue", null)));
     }
@@ -347,7 +347,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       IDictionary childControlState = _memberCaller.GetChildControlState(_namingContainer);
 
-      Assert.That(childControlState, Is.InstanceOf(typeof (HybridDictionary)));
+      Assert.That(childControlState, Is.InstanceOf(typeof(HybridDictionary)));
       Assert.That(childControlState.Count, Is.EqualTo(2));
       Assert.That(childControlState[_parent.UniqueID], Is.EqualTo("ParentValue"));
       Assert.That(childControlState[_child.UniqueID], Is.EqualTo("ChildValue"));
@@ -414,10 +414,10 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       _memberCaller.SaveAllState(_page);
       var viewState = _page.GetPageStatePersister().ViewState;
 
-      Assert.That(viewState, Is.InstanceOf(typeof (Pair)));
+      Assert.That(viewState, Is.InstanceOf(typeof(Pair)));
       var pageViewState = (Pair) viewState;
       var namingContainerViewState = pageViewState.Second;
-      Assert.That(namingContainerViewState, Is.InstanceOf(typeof (Pair)));
+      Assert.That(namingContainerViewState, Is.InstanceOf(typeof(Pair)));
     }
 
     [Test]

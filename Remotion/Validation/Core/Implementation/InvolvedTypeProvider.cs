@@ -28,7 +28,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Returns all base classes, interfaces and mixins for the given type hierarchy.
   /// </summary>
-  [ImplementationFor (typeof (IInvolvedTypeProvider), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IInvolvedTypeProvider), Lifetime = LifetimeKind.Singleton)]
   public class InvolvedTypeProvider : IInvolvedTypeProvider
   {
     private readonly Func<IEnumerable<Type>, IEnumerable<Type>> _hierarchyLevelsubSort;
@@ -36,7 +36,7 @@ namespace Remotion.Validation.Implementation
 
 
     public InvolvedTypeProvider (IValidationTypeFilter validationTypeFilter)
-        : this (c => c.OrderBy(t => t.Name), validationTypeFilter)
+        : this(c => c.OrderBy(t => t.Name), validationTypeFilter)
     {
     }
 

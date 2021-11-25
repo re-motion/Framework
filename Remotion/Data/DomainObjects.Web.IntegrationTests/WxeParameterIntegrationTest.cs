@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
     private class TestFunction : WxeFunction
     {
       public TestFunction (WxeParameterDeclaration parameterDeclaration, object parameterValue)
-          : base (WxeTransactionMode<ClientTransactionFactory>.None, new[] { parameterDeclaration }, new[] { parameterValue })
+          : base(WxeTransactionMode<ClientTransactionFactory>.None, new[] { parameterDeclaration }, new[] { parameterValue })
       {
       }
     }
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
     public void SerializeObjectID ()
     {
       var objectID = GetObjectID();
-      var parameterDeclaration = new WxeParameterDeclaration("name", true, WxeParameterDirection.In, typeof (ObjectID));
+      var parameterDeclaration = new WxeParameterDeclaration("name", true, WxeParameterDirection.In, typeof(ObjectID));
       var function = new TestFunction(parameterDeclaration, objectID);
       function.VariablesContainer.EnsureParametersInitialized(null);
 
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
     public void DeserializeObjectID ()
     {
       var objectID = GetObjectID();
-      var parameterDeclaration = new WxeParameterDeclaration("name", true, WxeParameterDirection.In, typeof (ObjectID));
+      var parameterDeclaration = new WxeParameterDeclaration("name", true, WxeParameterDirection.In, typeof(ObjectID));
       var function = new TestFunction(parameterDeclaration, null);
 
       function.VariablesContainer.InitializeParameters(new NameValueCollection { { "name", objectID.ToString() } });
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
     public void SerializeAndDeserializeObjectID ()
     {
       var objectID = GetObjectID();
-      var parameterDeclaration = new WxeParameterDeclaration("name", true, WxeParameterDirection.In, typeof (ObjectID));
+      var parameterDeclaration = new WxeParameterDeclaration("name", true, WxeParameterDirection.In, typeof(ObjectID));
       var function = new TestFunction(parameterDeclaration, objectID);
       function.VariablesContainer.EnsureParametersInitialized(null);
 
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
           "name",
           true,
           WxeParameterDirection.In,
-          typeof (IDomainObjectHandle<SampleObject>));
+          typeof(IDomainObjectHandle<SampleObject>));
       var function = new TestFunction(parameterDeclaration, domainObjectHandle);
       function.VariablesContainer.EnsureParametersInitialized(null);
 
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
           "name",
           true,
           WxeParameterDirection.In,
-          typeof (IDomainObjectHandle<SampleObject>));
+          typeof(IDomainObjectHandle<SampleObject>));
       var function = new TestFunction(parameterDeclaration, null);
 
       function.VariablesContainer.InitializeParameters(new NameValueCollection { { "name", objectID.ToString() } });
@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
           "name",
           true,
           WxeParameterDirection.In,
-          typeof (IDomainObjectHandle<SampleObject>));
+          typeof(IDomainObjectHandle<SampleObject>));
       var function = new TestFunction(parameterDeclaration, domainObjectHandle);
       function.VariablesContainer.EnsureParametersInitialized(null);
 
@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
 
     private static ObjectID GetObjectID ()
     {
-      return new ObjectID(typeof (SampleObject), Guid.NewGuid());
+      return new ObjectID(typeof(SampleObject), Guid.NewGuid());
     }
   }
 }

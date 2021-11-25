@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Layout")]
     [Description ("The width used for all generated property columns combined.")]
-    [DefaultValue (typeof (Unit), "")]
+    [DefaultValue (typeof(Unit), "")]
     [NotifyParentProperty (true)]
     public new Unit Width
     {

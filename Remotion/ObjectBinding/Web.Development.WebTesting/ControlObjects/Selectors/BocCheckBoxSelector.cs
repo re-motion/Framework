@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   public class BocCheckBoxSelector : BocControlSelectorBase<BocCheckBoxControlObject>
   {
     public BocCheckBoxSelector ()
-        : base ("BocCheckBox")
+        : base("BocCheckBox")
     {
     }
 

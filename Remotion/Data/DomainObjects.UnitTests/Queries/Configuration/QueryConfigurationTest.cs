@@ -336,7 +336,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     public void CollectionType_SupportsTypeUtilityNotation ()
     {
       QueryDefinitionCollection queries = new QueryConfiguration("QueriesForStandardMapping.xml").QueryDefinitions;
-      Assert.That(queries["QueryWithSpecificCollectionType"].CollectionType, Is.SameAs(typeof (SpecificOrderCollection)));
+      Assert.That(queries["QueryWithSpecificCollectionType"].CollectionType, Is.SameAs(typeof(SpecificOrderCollection)));
     }
 
     [Test]

@@ -42,7 +42,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var classContext = ArgumentUtility.CheckNotNullAndType<ClassContext>("id", id);
 
       var classContextExpression = GetClassContextExpression(classContext);
-      return Expression.Convert(classContextExpression, typeof (object));
+      return Expression.Convert(classContextExpression, typeof(object));
     }
 
     public Expression GetFlatValueExpressionForSerialization (object id)

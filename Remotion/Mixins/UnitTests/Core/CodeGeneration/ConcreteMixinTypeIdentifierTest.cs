@@ -38,21 +38,21 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
       const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance;
 
-      _overrider1 = typeof (MixinWithProtectedOverrider).GetMethod("VirtualMethod", flags);
-      _overrider2 = typeof (MixinWithProtectedOverrider).GetMethod("get_VirtualProperty", flags);
-      _overridden1 = typeof (MixinWithAbstractMembers).GetMethod("AbstractMethod", flags);
-      _overridden2 = typeof (MixinWithAbstractMembers).GetMethod("get_AbstractProperty", flags);
+      _overrider1 = typeof(MixinWithProtectedOverrider).GetMethod("VirtualMethod", flags);
+      _overrider2 = typeof(MixinWithProtectedOverrider).GetMethod("get_VirtualProperty", flags);
+      _overridden1 = typeof(MixinWithAbstractMembers).GetMethod("AbstractMethod", flags);
+      _overridden2 = typeof(MixinWithAbstractMembers).GetMethod("get_AbstractProperty", flags);
     }
 
     [Test]
     public void Equals_True ()
     {
       var one = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1), 
+          typeof(BT1Mixin1), 
           new HashSet<MethodInfo> { _overrider1, _overrider2  }, 
           new HashSet<MethodInfo> { _overridden1, _overridden2  });
       var two = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider1, _overrider2  },
           new HashSet<MethodInfo> { _overridden1, _overridden2  });
 
@@ -63,11 +63,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void Equals_True_OrderOfExternalOverridersIrrelevant ()
     {
       var one = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider1, _overrider2  },
           new HashSet<MethodInfo> { _overridden1, _overridden2  });
       var two = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider2, _overrider1  },
           new HashSet<MethodInfo> { _overridden1, _overridden2  });
 
@@ -78,11 +78,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void Equals_True_OrderOfWrappedProtectedMembersIsIrrelevant ()
     {
       var one = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider1, _overrider2  },
           new HashSet<MethodInfo> { _overridden1, _overridden2  });
       var two = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider1, _overrider2  },
           new HashSet<MethodInfo> { _overridden2, _overridden1  });
 
@@ -93,11 +93,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void Equals_False_DifferentTypes ()
     {
       var one = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider1, _overrider2  },
           new HashSet<MethodInfo> { _overridden1, _overridden2  });
       var two = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin2),
+          typeof(BT1Mixin2),
           new HashSet<MethodInfo> { _overrider1, _overrider2  },
           new HashSet<MethodInfo> { _overridden1, _overridden2  });
 
@@ -108,11 +108,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void Equals_False_DifferentExternalOverriders ()
     {
       var one = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider1  },
           new HashSet<MethodInfo> { _overridden1, _overridden2  });
       var two = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider1, _overrider2  },
           new HashSet<MethodInfo> { _overridden1, _overridden2  });
 
@@ -123,11 +123,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void Equals_False_DifferentWrappedProtectedMembers ()
     {
       var one = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider1, _overrider2  },
           new HashSet<MethodInfo> { _overridden1  });
       var two = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider1, _overrider2  },
           new HashSet<MethodInfo> { _overridden1, _overridden2  });
 
@@ -138,11 +138,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void GetHashCode_EqualObjects ()
     {
       var one = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider1, _overrider2 },
           new HashSet<MethodInfo> { _overridden1, _overridden2 });
       var two = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider1, _overrider2 },
           new HashSet<MethodInfo> { _overridden1, _overridden2 });
 
@@ -153,11 +153,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void GetHashCode_EqualObjects_OrderOfExternalOverridersIrrelevant ()
     {
       var one = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider1, _overrider2 },
           new HashSet<MethodInfo> { _overridden1, _overridden2 });
       var two = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider2, _overrider1 },
           new HashSet<MethodInfo> { _overridden1, _overridden2 });
 
@@ -168,11 +168,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void GetHashCode_EqualObjects_OrderOfWrappedProtectedMembersIsIrrelevant ()
     {
       var one = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider1, _overrider2 },
           new HashSet<MethodInfo> { _overridden1, _overridden2 });
       var two = new ConcreteMixinTypeIdentifier(
-          typeof (BT1Mixin1),
+          typeof(BT1Mixin1),
           new HashSet<MethodInfo> { _overrider1, _overrider2 },
           new HashSet<MethodInfo> { _overridden2, _overridden1 });
 
@@ -185,12 +185,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var overriders = new HashSet<MethodInfo> { _overrider1, _overrider2 };
       var overridden = new HashSet<MethodInfo> { _overridden1, _overridden2 };
 
-      var identifier = new ConcreteMixinTypeIdentifier(typeof (BT1Mixin1), overriders, overridden);
+      var identifier = new ConcreteMixinTypeIdentifier(typeof(BT1Mixin1), overriders, overridden);
       var serializerMock = MockRepository.GenerateMock<IConcreteMixinTypeIdentifierSerializer>();
 
       identifier.Serialize(serializerMock);
 
-      serializerMock.AssertWasCalled(mock => mock.AddMixinType(typeof (BT1Mixin1)));
+      serializerMock.AssertWasCalled(mock => mock.AddMixinType(typeof(BT1Mixin1)));
       serializerMock.AssertWasCalled(mock => mock.AddOverriders(overriders));
       serializerMock.AssertWasCalled(mock => mock.AddOverridden(overridden));
     }
@@ -202,7 +202,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var overridden = new HashSet<MethodInfo> { _overridden1, _overridden2 };
       var deserializerMock = MockRepository.GenerateMock<IConcreteMixinTypeIdentifierDeserializer>();
 
-      deserializerMock.Expect(mock => mock.GetMixinType()).Return(typeof (BT1Mixin1));
+      deserializerMock.Expect(mock => mock.GetMixinType()).Return(typeof(BT1Mixin1));
       deserializerMock.Expect(mock => mock.GetOverriders()).Return(overriders);
       deserializerMock.Expect(mock => mock.GetOverridden()).Return(overridden);
 
@@ -211,7 +211,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var identifier = ConcreteMixinTypeIdentifier.Deserialize(deserializerMock);
       
       deserializerMock.VerifyAllExpectations();
-      Assert.That(identifier.MixinType, Is.SameAs(typeof (BT1Mixin1)));
+      Assert.That(identifier.MixinType, Is.SameAs(typeof(BT1Mixin1)));
       Assert.That(identifier.Overriders, Is.SameAs(overriders));
       Assert.That(identifier.Overridden, Is.SameAs(overridden));
     }

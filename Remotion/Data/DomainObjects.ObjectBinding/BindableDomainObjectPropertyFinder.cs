@@ -23,16 +23,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   internal class BindableDomainObjectPropertyFinder : ReflectionBasedPropertyFinder
   {
     public BindableDomainObjectPropertyFinder (Type targetType)
-        : base (targetType)
+        : base(targetType)
     {
     }
 
     protected override bool IsInfrastructureProperty (PropertyInfo propertyInfo, MethodInfo accessorDeclaration)
     {
       return base.IsInfrastructureProperty(propertyInfo, accessorDeclaration)
-          || accessorDeclaration.DeclaringType == typeof (DomainObject)
-          || accessorDeclaration.DeclaringType == typeof (BindableDomainObject)
-          || accessorDeclaration.DeclaringType == typeof (IDomainObject);
+          || accessorDeclaration.DeclaringType == typeof(DomainObject)
+          || accessorDeclaration.DeclaringType == typeof(BindableDomainObject)
+          || accessorDeclaration.DeclaringType == typeof(IDomainObject);
     }
   }
 }

@@ -30,7 +30,7 @@ namespace Remotion.Mixins.Definitions
     private readonly MethodDefinition? _setMethod;
 
     public PropertyDefinition (PropertyInfo memberInfo, ClassDefinitionBase declaringClass, MethodDefinition? getMethod, MethodDefinition? setMethod)
-        : base (memberInfo, declaringClass)
+        : base(memberInfo, declaringClass)
     {
       _getMethod = getMethod;
       _setMethod = setMethod;

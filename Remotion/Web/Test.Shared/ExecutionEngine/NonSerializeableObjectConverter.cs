@@ -24,14 +24,14 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
   {
     public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
     {
-      if (sourceType == typeof (string))
+      if (sourceType == typeof(string))
         return true;
       return base.CanConvertFrom(context, sourceType);
     }
 
     public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
     {
-      if (destinationType == typeof (string))
+      if (destinationType == typeof(string))
         return true;
       return base.CanConvertTo(context, destinationType);
     }
@@ -48,7 +48,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     public override object ConvertTo (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
     {
       NonSerializeableObject obj = ArgumentUtility.CheckNotNullAndType<NonSerializeableObject>("value", value);
-      if (destinationType == typeof (string))
+      if (destinationType == typeof(string))
       {
         return obj.Value;
       }

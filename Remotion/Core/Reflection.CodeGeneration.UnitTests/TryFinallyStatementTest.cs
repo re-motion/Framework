@@ -29,10 +29,10 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void TryFinallyWithoutException ()
     {
-      FieldReference tryField = ClassEmitter.CreateField("TryExecuted", typeof (bool), FieldAttributes.Public);
-      FieldReference finallyField = ClassEmitter.CreateField("FinallyExecuted", typeof (bool), FieldAttributes.Public);
+      FieldReference tryField = ClassEmitter.CreateField("TryExecuted", typeof(bool), FieldAttributes.Public);
+      FieldReference finallyField = ClassEmitter.CreateField("FinallyExecuted", typeof(bool), FieldAttributes.Public);
 
-      var methodEmitter = GetMethodEmitter(false, typeof (void), new Type[0]);
+      var methodEmitter = GetMethodEmitter(false, typeof(void), new Type[0]);
       Statement[] tryBlock = new Statement[]
       {
         new AssignStatement(tryField, new ConstReference(true).ToExpression())
@@ -53,13 +53,13 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void TryFinallyWithException ()
     {
-      FieldReference tryField = ClassEmitter.CreateField("TryExecuted", typeof (bool), FieldAttributes.Public);
-      FieldReference finallyField = ClassEmitter.CreateField("FinallyExecuted", typeof (bool), FieldAttributes.Public);
+      FieldReference tryField = ClassEmitter.CreateField("TryExecuted", typeof(bool), FieldAttributes.Public);
+      FieldReference finallyField = ClassEmitter.CreateField("FinallyExecuted", typeof(bool), FieldAttributes.Public);
 
-      var methodEmitter = GetMethodEmitter(false, typeof (void), new Type[0]);
+      var methodEmitter = GetMethodEmitter(false, typeof(void), new Type[0]);
       Statement[] tryBlock = new Statement[]
       {
-        new ThrowStatement(typeof (Exception), "Expected exception"),
+        new ThrowStatement(typeof(Exception), "Expected exception"),
         new AssignStatement(tryField, new ConstReference(true).ToExpression())
       };
       Statement[] finallyBlock = new Statement[]
@@ -77,7 +77,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       }
       catch (Exception ex)
       {
-        Assert.That(ex.GetType(), Is.EqualTo(typeof (Exception)));
+        Assert.That(ex.GetType(), Is.EqualTo(typeof(Exception)));
         Assert.That(ex.Message, Is.EqualTo("Expected exception"));
       }
       Assert.That((bool) PrivateInvoke.GetPublicField(GetBuiltInstance(), tryField.Reference.Name), Is.False);

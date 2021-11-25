@@ -272,7 +272,7 @@ public class BocListAsGridUserControl : BaseUserControl
     for (int i = 0; i < count; i++)
       persons[i] = Person.CreateObject(Guid.NewGuid());
 
-    ChildrenList.AddRows((IBusinessObjectWithIdentity[]) ArrayUtility.Convert(persons, typeof (IBusinessObjectWithIdentity)));
+    ChildrenList.AddRows((IBusinessObjectWithIdentity[]) ArrayUtility.Convert(persons, typeof(IBusinessObjectWithIdentity)));
   }
 
   private void RemoveRowsButton_Click (object sender, EventArgs e)

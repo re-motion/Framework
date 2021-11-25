@@ -37,7 +37,7 @@ namespace Remotion.Reflection.TypeDiscovery
   /// </summary>
   public sealed class AssemblyFinderTypeDiscoveryService : ITypeDiscoveryService
   {
-    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof (AssemblyFinderTypeDiscoveryService)));
+    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof(AssemblyFinderTypeDiscoveryService)));
 
     private readonly IAssemblyFinder _assemblyFinder;
     private readonly Lazy<BaseTypeCache> _baseTypeCache;
@@ -79,7 +79,7 @@ namespace Remotion.Reflection.TypeDiscovery
     /// </returns>
     public ICollection GetTypes (Type? baseType, bool excludeGlobalTypes)
     {
-      var nonNullBaseType = baseType ?? typeof (object);
+      var nonNullBaseType = baseType ?? typeof(object);
 
       if (nonNullBaseType.IsSealed) // ValueTypes are also sealed
         return new[] { nonNullBaseType };

@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         ServiceLocator.SetLocatorProvider(() => null);
 
         LogManager.ResetConfiguration();
-        Assert.That(LogManager.GetLogger(typeof (LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
+        Assert.That(LogManager.GetLogger(typeof(LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
 
         StandardConfiguration.Initialize();
         TableInheritanceConfiguration.Initialize();
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
               throw new InvalidOperationException(
                   "This test failed to setup the mapping configuration. Did you forget to derive from StandardMappingTest or to call base.SetUp?");
             });
-        var fields = PrivateInvoke.GetNonPublicStaticField(typeof (MappingConfiguration), "s_fields");
+        var fields = PrivateInvoke.GetNonPublicStaticField(typeof(MappingConfiguration), "s_fields");
         Assertion.IsNotNull(fields);
         _previousMappingConfigurationContainer = (DoubleCheckedLockingContainer<IMappingConfiguration>) PrivateInvoke.GetPublicField(fields, "Current");
         PrivateInvoke.SetPublicField(fields, "Current", throwingMappingConfigurationContainer);
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [OneTimeTearDown]
     public void OneTimeTearDown ()
     {
-      var fields = PrivateInvoke.GetNonPublicStaticField(typeof (MappingConfiguration), "s_fields");
+      var fields = PrivateInvoke.GetNonPublicStaticField(typeof(MappingConfiguration), "s_fields");
       Assertion.IsNotNull(fields);
       PrivateInvoke.SetPublicField(fields, "Current", _previousMappingConfigurationContainer);
 

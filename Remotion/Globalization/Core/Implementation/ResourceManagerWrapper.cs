@@ -46,7 +46,7 @@ namespace Remotion.Globalization.Implementation
   {
     //  static members
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (ResourceManagerWrapper));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(ResourceManagerWrapper));
 
     // member fields
 
@@ -241,7 +241,7 @@ namespace Remotion.Globalization.Implementation
 
       hierarchyTopDown.Reverse();
 
-      return (CultureInfo[]) hierarchyTopDown.ToArray(typeof (CultureInfo));
+      return (CultureInfo[]) hierarchyTopDown.ToArray(typeof(CultureInfo));
     }
 
     bool INullObject.IsNull

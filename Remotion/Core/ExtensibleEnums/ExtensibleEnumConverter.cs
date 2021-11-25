@@ -65,7 +65,7 @@ namespace Remotion.ExtensibleEnums
     {
       ArgumentUtility.CheckNotNull("sourceType", sourceType);
 
-      return sourceType == typeof (string);
+      return sourceType == typeof(string);
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ namespace Remotion.ExtensibleEnums
     {
       ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
-      return destinationType == typeof (string);
+      return destinationType == typeof(string);
     }
 
     /// <summary>
@@ -143,12 +143,12 @@ namespace Remotion.ExtensibleEnums
     {
       ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
-      if (destinationType != typeof (string))
+      if (destinationType != typeof(string))
       {
         var message = string.Format(
             "Cannot convert values to type '{0}'. This converter only supports converting to type '{1}'.",
             destinationType,
-            typeof (string));
+            typeof(string));
         throw new NotSupportedException(message);
       }
 

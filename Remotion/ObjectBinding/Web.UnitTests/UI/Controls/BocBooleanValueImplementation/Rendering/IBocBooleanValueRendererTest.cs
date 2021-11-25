@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       var factory = _serviceLocator.GetInstance<IBocBooleanValueRenderer>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof (BocBooleanValueRenderer)));
+      Assert.That(factory, Is.TypeOf(typeof(BocBooleanValueRenderer)));
     }
 
     [Test]

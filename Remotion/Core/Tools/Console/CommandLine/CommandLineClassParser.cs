@@ -39,7 +39,7 @@ namespace Remotion.Tools.Console.CommandLine
         if (member.MemberType == MemberTypes.Field || member.MemberType == MemberTypes.Property)
         {
           CommandLineArgumentAttribute? argumentAttribute = (CommandLineArgumentAttribute?) AttributeUtility.GetCustomAttribute(
-              member, typeof (CommandLineArgumentAttribute), false);
+              member, typeof(CommandLineArgumentAttribute), false);
           if (argumentAttribute != null)
           {
             argumentAttribute.SetMember(member);
@@ -68,7 +68,7 @@ namespace Remotion.Tools.Console.CommandLine
         if (argument is ICommandLinePartArgument)
           value = ((ICommandLinePartArgument)argument).Group.ValueObject;
 
-        if (memberType == typeof (bool))
+        if (memberType == typeof(bool))
         {
           if (value == null)
             throw new ApplicationException(string.Format("{0} {1}: Cannot convert null to System.Boolean. Use Nullable<Boolean> type for optional attributes without default values.", fieldOrProperty.MemberType, fieldOrProperty.Name));
@@ -95,7 +95,7 @@ namespace Remotion.Tools.Console.CommandLine
   public class CommandLineClassParser<T>: CommandLineClassParser
   {
     public CommandLineClassParser ()
-        : base (typeof (T))
+        : base(typeof(T))
     {
     }
 

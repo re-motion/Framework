@@ -25,7 +25,7 @@ namespace Remotion.Validation.Mixins.UnitTests.TestDomain
     public override string LastName { get; set; }
 
     [LengthValidation(0, 10)]
-    [RemoveValidator (typeof (LengthValidator))]
+    [RemoveValidator (typeof(LengthValidator))]
     public override string UserName { get; set; }
   }
 }

@@ -43,7 +43,7 @@ namespace Remotion.Security.UnitTests.ObjectSecurityStrategyTests
 
       _principalStub = new Mock<ISecurityPrincipal>();
       _principalStub.Setup(_ => _.User).Returns("user");
-      _context = SecurityContext.Create(typeof (SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum>(), new Enum[0]);
+      _context = SecurityContext.Create(typeof(SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum>(), new Enum[0]);
       _securityContextFactoryStub.Setup(_ => _.CreateSecurityContext()).Returns(_context);
 
       _invalidationToken = InvalidationToken.Create();

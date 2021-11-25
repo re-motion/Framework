@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
       var tableSerializer = new TableSerializer(MockRepository.GenerateStub<IPropertySerializer>());
 
       var actual =
-          tableSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinition(typeof (ClassWithAllDataTypes))).Single();
+          tableSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinition(typeof(ClassWithAllDataTypes))).Single();
 
       Assert.That(actual.Name.LocalName, Is.EqualTo("table"));
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("name"));
@@ -58,14 +58,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
           .Repeat.AtLeastOnce();
 
       propertySerializerMock.Replay();
-      tableSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinition(typeof (ClassWithAllDataTypes))).ToArray();
+      tableSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinition(typeof(ClassWithAllDataTypes))).ToArray();
       propertySerializerMock.VerifyAllExpectations();
     }
 
     [Test]
     public void Serialize_AddsPropertyElements ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Ceo));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Ceo));
       var propertySerializerStub = MockRepository.GenerateStub<IPropertySerializer>();
       var expected1 = new XElement("property1");
       var expected2 = new XElement("property2");
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize_OnlyAddsPersistentProperties ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (Ceo));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Ceo));
       var propertySerializerMock = MockRepository.GenerateStrictMock<IPropertySerializer>();
 
       Expression<Predicate<PropertyDefinition>> propertyDefinitionConstraint =
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
 
       var actual =
           tableSerializer.Serialize(
-              MappingConfiguration.Current.GetTypeDefinition(typeof (DerivedAbstractClass))).Single();
+              MappingConfiguration.Current.GetTypeDefinition(typeof(DerivedAbstractClass))).Single();
 
       Assert.That(actual.Name.LocalName, Is.EqualTo("table"));
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("name"));

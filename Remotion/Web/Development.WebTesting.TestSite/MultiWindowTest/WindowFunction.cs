@@ -23,7 +23,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
   public class WindowFunction : WxeFunction
   {
     public WindowFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 

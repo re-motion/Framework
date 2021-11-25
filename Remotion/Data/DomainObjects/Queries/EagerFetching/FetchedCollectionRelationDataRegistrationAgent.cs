@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   [Serializable]
   public class FetchedCollectionRelationDataRegistrationAgent : FetchedRelationDataRegistrationAgentBase
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof (FetchedCollectionRelationDataRegistrationAgent));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(FetchedCollectionRelationDataRegistrationAgent));
 
     private readonly IVirtualEndPointProvider _virtualEndPointProvider;
 

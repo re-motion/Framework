@@ -36,32 +36,32 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       string resourceValue;
       Assert.That(
           service.TryGetTypeDisplayName(
-              TypeAdapter.Create(typeof (ClassWithShortResourceIdentifier)),
-              TypeAdapter.Create(typeof (ClassWithResources)),
+              TypeAdapter.Create(typeof(ClassWithShortResourceIdentifier)),
+              TypeAdapter.Create(typeof(ClassWithResources)),
               out resourceValue),
           Is.True);
       Assert.That(resourceValue, Is.EqualTo("Short Type ID"));
 
       Assert.That(
           service.TryGetTypeDisplayName(
-              TypeAdapter.Create(typeof (ClassWithLongResourceIdentifier)),
-              TypeAdapter.Create(typeof (ClassWithResources)),
+              TypeAdapter.Create(typeof(ClassWithLongResourceIdentifier)),
+              TypeAdapter.Create(typeof(ClassWithResources)),
               out resourceValue),
           Is.True);
       Assert.That(resourceValue, Is.EqualTo("Long Type ID"));
 
       Assert.That(
           service.TryGetTypeDisplayName(
-              TypeAdapter.Create(typeof (ClassWithLongResourceIdentifier)),
-              TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+              TypeAdapter.Create(typeof(ClassWithLongResourceIdentifier)),
+              TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
               out resourceValue),
           Is.False);
       Assert.That(resourceValue, Is.Null);
 
       Assert.That(
           () => service.TryGetTypeDisplayName(
-              TypeAdapter.Create(typeof (ClassWithLongResourceIdentifier)),
-              TypeAdapter.Create(typeof (ClassWithMissingResources)),
+              TypeAdapter.Create(typeof(ClassWithLongResourceIdentifier)),
+              TypeAdapter.Create(typeof(ClassWithMissingResources)),
               out resourceValue),
           Throws.TypeOf<MissingManifestResourceException>()
               .With.Message.EqualTo(
@@ -76,26 +76,26 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
 
       Assert.That(
           service.GetTypeDisplayName(
-              TypeAdapter.Create(typeof (ClassWithShortResourceIdentifier)),
-              TypeAdapter.Create(typeof (ClassWithResources))),
+              TypeAdapter.Create(typeof(ClassWithShortResourceIdentifier)),
+              TypeAdapter.Create(typeof(ClassWithResources))),
           Is.EqualTo("Short Type ID"));
 
       Assert.That(
           service.GetTypeDisplayName(
-              TypeAdapter.Create(typeof (ClassWithLongResourceIdentifier)),
-              TypeAdapter.Create(typeof (ClassWithResources))),
+              TypeAdapter.Create(typeof(ClassWithLongResourceIdentifier)),
+              TypeAdapter.Create(typeof(ClassWithResources))),
           Is.EqualTo("Long Type ID"));
 
       Assert.That(
           service.GetTypeDisplayName(
-              TypeAdapter.Create(typeof (ClassWithLongResourceIdentifier)),
-              TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes))),
+              TypeAdapter.Create(typeof(ClassWithLongResourceIdentifier)),
+              TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes))),
           Is.EqualTo("ClassWithLongResourceIdentifier"));
 
       Assert.That(
           () => service.GetTypeDisplayName(
-              TypeAdapter.Create(typeof (ClassWithLongResourceIdentifier)),
-              TypeAdapter.Create(typeof (ClassWithMissingResources))),
+              TypeAdapter.Create(typeof(ClassWithLongResourceIdentifier)),
+              TypeAdapter.Create(typeof(ClassWithMissingResources))),
           Throws.TypeOf<MissingManifestResourceException>());
     }
 
@@ -106,26 +106,26 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
 
       Assert.That(
           service.ContainsTypeDisplayName(
-              TypeAdapter.Create(typeof (ClassWithShortResourceIdentifier)),
-              TypeAdapter.Create(typeof (ClassWithResources))),
+              TypeAdapter.Create(typeof(ClassWithShortResourceIdentifier)),
+              TypeAdapter.Create(typeof(ClassWithResources))),
           Is.True);
 
       Assert.That(
           service.ContainsTypeDisplayName(
-              TypeAdapter.Create(typeof (ClassWithLongResourceIdentifier)),
-              TypeAdapter.Create(typeof (ClassWithResources))),
+              TypeAdapter.Create(typeof(ClassWithLongResourceIdentifier)),
+              TypeAdapter.Create(typeof(ClassWithResources))),
           Is.True);
 
       Assert.That(
           service.ContainsTypeDisplayName(
-              TypeAdapter.Create(typeof (ClassWithLongResourceIdentifier)),
-              TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes))),
+              TypeAdapter.Create(typeof(ClassWithLongResourceIdentifier)),
+              TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes))),
           Is.False);
 
       Assert.That(
           () => service.ContainsTypeDisplayName(
-              TypeAdapter.Create(typeof (ClassWithLongResourceIdentifier)),
-              TypeAdapter.Create(typeof (ClassWithMissingResources))),
+              TypeAdapter.Create(typeof(ClassWithLongResourceIdentifier)),
+              TypeAdapter.Create(typeof(ClassWithMissingResources))),
           Throws.TypeOf<MissingManifestResourceException>());
     }
 
@@ -137,40 +137,40 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       string resourceValue;
       Assert.That(
           service.TryGetPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithShortIdentifier")),
-              TypeAdapter.Create(typeof (ClassWithResources)),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithShortIdentifier")),
+              TypeAdapter.Create(typeof(ClassWithResources)),
               out resourceValue),
           Is.True);
       Assert.That(resourceValue, Is.EqualTo("Short Property ID"));
 
       Assert.That(
           service.TryGetPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
-              TypeAdapter.Create(typeof (ClassWithResources)),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
+              TypeAdapter.Create(typeof(ClassWithResources)),
               out resourceValue),
           Is.True);
       Assert.That(resourceValue, Is.EqualTo("Long Property ID"));
 
       Assert.That(
           service.TryGetPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithoutResources")),
-              TypeAdapter.Create(typeof (ClassWithResources)),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithoutResources")),
+              TypeAdapter.Create(typeof(ClassWithResources)),
               out resourceValue),
           Is.False);
       Assert.That(resourceValue, Is.Null);
 
       Assert.That(
           service.TryGetPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
-              TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes)),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
+              TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes)),
               out resourceValue),
           Is.False);
       Assert.That(resourceValue, Is.Null);
 
       Assert.That(
           () => service.TryGetPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
-              TypeAdapter.Create(typeof (ClassWithMissingResources)),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
+              TypeAdapter.Create(typeof(ClassWithMissingResources)),
               out resourceValue),
           Throws.TypeOf<MissingManifestResourceException>()
               .With.Message.EqualTo(
@@ -185,32 +185,32 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
 
       Assert.That(
           service.GetPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithShortIdentifier")),
-              TypeAdapter.Create(typeof (ClassWithResources))),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithShortIdentifier")),
+              TypeAdapter.Create(typeof(ClassWithResources))),
           Is.EqualTo("Short Property ID"));
 
       Assert.That(
           service.GetPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
-              TypeAdapter.Create(typeof (ClassWithResources))),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
+              TypeAdapter.Create(typeof(ClassWithResources))),
           Is.EqualTo("Long Property ID"));
 
       Assert.That(
           service.GetPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithoutResources")),
-              TypeAdapter.Create(typeof (ClassWithResources))),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithoutResources")),
+              TypeAdapter.Create(typeof(ClassWithResources))),
           Is.EqualTo("PropertyWithoutResources"));
 
       Assert.That(
           service.GetPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
-              TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes))),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
+              TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes))),
           Is.EqualTo("PropertyWithLongIdentifier"));
 
       Assert.That(
           () => service.GetPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
-              TypeAdapter.Create(typeof (ClassWithMissingResources))),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
+              TypeAdapter.Create(typeof(ClassWithMissingResources))),
           Throws.TypeOf<MissingManifestResourceException>());
     }
 
@@ -221,32 +221,32 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
 
       Assert.That(
           service.ContainsPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithShortIdentifier")),
-              TypeAdapter.Create(typeof (ClassWithResources))),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithShortIdentifier")),
+              TypeAdapter.Create(typeof(ClassWithResources))),
           Is.True);
 
       Assert.That(
           service.ContainsPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
-              TypeAdapter.Create(typeof (ClassWithResources))),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
+              TypeAdapter.Create(typeof(ClassWithResources))),
           Is.True);
 
       Assert.That(
           service.ContainsPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithoutResources")),
-              TypeAdapter.Create(typeof (ClassWithResources))),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithoutResources")),
+              TypeAdapter.Create(typeof(ClassWithResources))),
           Is.False);
 
       Assert.That(
           service.ContainsPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
-              TypeAdapter.Create(typeof (ClassWithoutMultiLingualResourcesAttributes))),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
+              TypeAdapter.Create(typeof(ClassWithoutMultiLingualResourcesAttributes))),
           Is.False);
 
       Assert.That(
           () => service.ContainsPropertyDisplayName(
-              PropertyInfoAdapter.Create(typeof (ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
-              TypeAdapter.Create(typeof (ClassWithMissingResources))),
+              PropertyInfoAdapter.Create(typeof(ClassWithProperties).GetProperty("PropertyWithLongIdentifier")),
+              TypeAdapter.Create(typeof(ClassWithMissingResources))),
           Throws.TypeOf<MissingManifestResourceException>());
     }
 
@@ -256,8 +256,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       var service = GetGlobalizationService();
 
       var result = service.GetAvailablePropertyDisplayNames(
-          PropertyInfoAdapter.Create(typeof (ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
-          TypeAdapter.Create(typeof (ClassWithResources)));
+          PropertyInfoAdapter.Create(typeof(ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
+          TypeAdapter.Create(typeof(ClassWithResources)));
 
       Assert.That(result.Values, Is.EquivalentTo(new [] { "Resource-based Property ID" }));
     }
@@ -268,8 +268,8 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       var service = GetGlobalizationService();
 
       var result = service.GetAvailableTypeDisplayNames(
-          TypeAdapter.Create(typeof (ClassWithMultiLingualNameAttribute)),
-          TypeAdapter.Create(typeof (ClassWithResources)));
+          TypeAdapter.Create(typeof(ClassWithMultiLingualNameAttribute)),
+          TypeAdapter.Create(typeof(ClassWithResources)));
 
       Assert.That(result.Values, Is.EquivalentTo(new[] { "Resource-based Type ID" }));
     }

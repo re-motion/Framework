@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void Remove_ObjectFromOtherTransaction_WhoseIDIsInCollection ()
     {
-      var collection = new DomainObjectCollection(typeof (Customer));
+      var collection = new DomainObjectCollection(typeof(Customer));
       Customer customer = DomainObjectIDs.Customer1.GetObject<Customer>();
       collection.Add(customer);
 

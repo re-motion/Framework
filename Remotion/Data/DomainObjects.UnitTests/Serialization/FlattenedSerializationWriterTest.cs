@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       FlattenedSerializationWriter<object> writer = new FlattenedSerializationWriter<object>();
       Assert.That(
-          () => writer.AddSimpleValue(typeof (DomainObject)),
+          () => writer.AddSimpleValue(typeof(DomainObject)),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "Cannot serialize values of type 'System.RuntimeType'.",
               "value"));

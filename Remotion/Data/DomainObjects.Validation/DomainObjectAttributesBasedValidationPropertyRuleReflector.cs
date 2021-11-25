@@ -110,22 +110,22 @@ namespace Remotion.Data.DomainObjects.Validation
 
       // TODO RM-5906: Add cache, try to unify with ValidationAttributesBasedPropertyRuleReflector and AddingComponentPropertyRule
 
-      var parameterExpression = Expression.Parameter(typeof (object), "t");
+      var parameterExpression = Expression.Parameter(typeof(object), "t");
 
       // object o => UsePersistentProperty ((DomainObject)o, _interfaceProperty) ? (object) (TheType o).TheProperty : nonEmptyObject;
 
       var usePersistentPropertyMethod = MemberInfoFromExpressionUtility.GetMethod(() => UsePersistentProperty(null, null));
       var conditionExpression = Expression.Call(
           usePersistentPropertyMethod,
-          Expression.Convert(parameterExpression, typeof (DomainObject)),
-          Expression.Constant(_implementationProperty, typeof (PropertyInfo)));
+          Expression.Convert(parameterExpression, typeof(DomainObject)),
+          Expression.Constant(_implementationProperty, typeof(PropertyInfo)));
 
       // object o => (object) (TheType o).TheProperty
       var domainObjectPropertyAccessExpression = Expression.Convert(
           Expression.MakeMemberAccess(
               Expression.Convert(parameterExpression, validatedType),
               _interfaceProperty),
-          typeof (object));
+          typeof(object));
 
 
       object nonEmptyDummyValue;
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.Validation
         nonEmptyDummyValue = FakeDomainObject.CollectionValue;
       else
         nonEmptyDummyValue = FakeDomainObject.SingleValue;
-      var nonEmptyDummyValueExpression = Expression.Constant(nonEmptyDummyValue, typeof (object));
+      var nonEmptyDummyValueExpression = Expression.Constant(nonEmptyDummyValue, typeof(object));
 
       var accessorExpression = Expression.Lambda<Func<object, object>>(
           Expression.Condition(conditionExpression, domainObjectPropertyAccessExpression, nonEmptyDummyValueExpression),
@@ -171,7 +171,7 @@ namespace Remotion.Data.DomainObjects.Validation
       }
 
       if (!_domainModelConstraintProvider.IsNullable(_implementationPropertyInformation) 
-          && typeof (IEnumerable).IsAssignableFrom(_implementationProperty.PropertyType)
+          && typeof(IEnumerable).IsAssignableFrom(_implementationProperty.PropertyType)
           && !ReflectionUtility.IsObjectList(_implementationProperty.PropertyType)
           && !ReflectionUtility.IsIObjectList(_implementationProperty.PropertyType))
       {

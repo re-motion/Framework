@@ -23,7 +23,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
   public class TestFunctionWithDuplicateParameterIndices : WxeFunction
   {
     public TestFunctionWithDuplicateParameterIndices ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 

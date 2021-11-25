@@ -45,14 +45,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
   /// <seealso cref="IBocDateTimeValueValidatorFactory"/>
   /// <seealso cref="IBocEnumValueValidatorFactory"/>
   /// <seealso cref="IBocMultilineTextValueValidatorFactory"/>
-  [ImplementationFor (typeof (IBocReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocReferenceValueValidatorFactory)]
-  [ImplementationFor (typeof (IBocAutoCompleteReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocAutoCompleteReferenceValueValidatorFactory)]
-  [ImplementationFor (typeof (IBocTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocTextValueValidatorFactory)]
-  [ImplementationFor (typeof (IBocBooleanValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocBooleanValueValidatorFactory)]
-  [ImplementationFor (typeof (IBocCheckBoxValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocCheckBoxValidatorFactory)]
-  [ImplementationFor (typeof (IBocDateTimeValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocDateTimeValueValidatorFactory)]
-  [ImplementationFor (typeof (IBocEnumValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocEnumValueValidatorFactory)]
-  [ImplementationFor (typeof (IBocMultilineTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocMultilineTextValueValidatorFactory)]
+  [ImplementationFor (typeof(IBocReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocReferenceValueValidatorFactory)]
+  [ImplementationFor (typeof(IBocAutoCompleteReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocAutoCompleteReferenceValueValidatorFactory)]
+  [ImplementationFor (typeof(IBocTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocTextValueValidatorFactory)]
+  [ImplementationFor (typeof(IBocBooleanValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocBooleanValueValidatorFactory)]
+  [ImplementationFor (typeof(IBocCheckBoxValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocCheckBoxValidatorFactory)]
+  [ImplementationFor (typeof(IBocDateTimeValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocDateTimeValueValidatorFactory)]
+  [ImplementationFor (typeof(IBocEnumValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocEnumValueValidatorFactory)]
+  [ImplementationFor (typeof(IBocMultilineTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position_BocMultilineTextValueValidatorFactory)]
   public class ValidationBusinessObjectBoundEditableWebControlValidatorFactory
       : IBocTextValueValidatorFactory,
         IBocReferenceValueValidatorFactory,

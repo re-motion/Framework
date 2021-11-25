@@ -22,7 +22,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
     public virtual T VirtualMethod ()
     {
-      return default (T);
+      return default(T);
     }
   }
 }

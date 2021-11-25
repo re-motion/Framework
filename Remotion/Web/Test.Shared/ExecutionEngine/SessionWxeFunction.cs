@@ -24,12 +24,12 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
   public class SessionWxeFunction: WxeFunction
   {
     public SessionWxeFunction ()
-      : base (new NoneTransactionMode())
+      : base(new NoneTransactionMode())
     {
     }
 
     public SessionWxeFunction (params object[] args)
-        : base (new NoneTransactionMode(), args)
+        : base(new NoneTransactionMode(), args)
     {
     }
 
@@ -50,14 +50,14 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     class Step2 : WxeStepList
     {
       SessionWxeFunction Function { get { return (SessionWxeFunction) ParentFunction; } }
-      WxeStep Step1_ = new WxeResourcePageStep(typeof (SessionForm), "ExecutionEngine/SessionForm.aspx");
+      WxeStep Step1_ = new WxeResourcePageStep(typeof(SessionForm), "ExecutionEngine/SessionForm.aspx");
     }
 
     [Serializable]
     class Step3 : WxeStepList
     {
       SessionWxeFunction Function { get { return (SessionWxeFunction) ParentFunction; } }
-      WxeStep Step1_ = new WxeResourcePageStep(typeof (SessionForm), "ExecutionEngine/SessionForm.aspx");
+      WxeStep Step1_ = new WxeResourcePageStep(typeof(SessionForm), "ExecutionEngine/SessionForm.aspx");
     }
   }
 }

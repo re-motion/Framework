@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.Sample
   public class TestWxeFunction : WxeFunction
   {
     public TestWxeFunction ()
-      : base (new NoneTransactionMode())
+      : base(new NoneTransactionMode())
     {
     }
 

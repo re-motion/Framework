@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Database
   public class StandardMappingDatabaseAgent : DatabaseAgent
   {
     public StandardMappingDatabaseAgent (string connectionString)
-        : base (connectionString)
+        : base(connectionString)
     {
     }
 

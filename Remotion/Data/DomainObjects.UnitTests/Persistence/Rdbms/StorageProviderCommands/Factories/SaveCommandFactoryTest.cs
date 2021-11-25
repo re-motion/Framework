@@ -59,9 +59,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     public void CreateForSave_New ()
     {
       var dataContainerNew1 = DataContainer.CreateNew(DomainObjectIDs.Computer1);
-      SetPropertyValue(dataContainerNew1, typeof (Computer), "SerialNumber", "123456");
+      SetPropertyValue(dataContainerNew1, typeof(Computer), "SerialNumber", "123456");
       var dataContainerNew2 = DataContainer.CreateNew(DomainObjectIDs.Computer2);
-      SetPropertyValue(dataContainerNew2, typeof (Computer), "SerialNumber", "654321");
+      SetPropertyValue(dataContainerNew2, typeof(Computer), "SerialNumber", "654321");
 
       var dataContainerNewWithoutRelations = DataContainer.CreateNew(DomainObjectIDs.Official1);
 
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
           });
 
       _tableDefinitionFinderStrictMock.VerifyAllExpectations();
-      Assert.That(result, Is.TypeOf(typeof (MultiDataContainerSaveCommand)));
+      Assert.That(result, Is.TypeOf(typeof(MultiDataContainerSaveCommand)));
       var tuples = ((MultiDataContainerSaveCommand) result).Tuples.ToList();
 
       Assert.That(tuples.Count, Is.EqualTo(5));
@@ -145,9 +145,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     public void CreateForSave_Changed ()
     {
       var dataContainerChangedSerialNumber = DataContainer.CreateForExisting(DomainObjectIDs.Computer1, null, pd => pd.DefaultValue);
-      SetPropertyValue(dataContainerChangedSerialNumber, typeof (Computer), "SerialNumber", "123456");
+      SetPropertyValue(dataContainerChangedSerialNumber, typeof(Computer), "SerialNumber", "123456");
       var dataContainerChangedEmployee = DataContainer.CreateForExisting(DomainObjectIDs.Computer2, null, pd => pd.DefaultValue);
-      SetPropertyValue(dataContainerChangedEmployee, typeof (Computer), "Employee", DomainObjectIDs.Employee2);
+      SetPropertyValue(dataContainerChangedEmployee, typeof(Computer), "Employee", DomainObjectIDs.Employee2);
       var dataContainerChangedMarkedAsChanged = DataContainer.CreateForExisting(DomainObjectIDs.Computer3, null, pd => pd.DefaultValue);
       dataContainerChangedMarkedAsChanged.MarkAsChanged();
 
@@ -194,7 +194,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var result =
           _factory.CreateForSave(new[] { dataContainerChangedSerialNumber, dataContainerChangedEmployee, dataContainerChangedMarkedAsChanged });
 
-      Assert.That(result, Is.TypeOf(typeof (MultiDataContainerSaveCommand)));
+      Assert.That(result, Is.TypeOf(typeof(MultiDataContainerSaveCommand)));
       var tuples = ((MultiDataContainerSaveCommand) result).Tuples.ToList();
 
       _tableDefinitionFinderStrictMock.VerifyAllExpectations();
@@ -278,7 +278,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
           });
 
       _tableDefinitionFinderStrictMock.VerifyAllExpectations();
-      Assert.That(result, Is.TypeOf(typeof (MultiDataContainerSaveCommand)));
+      Assert.That(result, Is.TypeOf(typeof(MultiDataContainerSaveCommand)));
       var tuples = ((MultiDataContainerSaveCommand) result).Tuples.ToList();
 
       Assert.That(tuples.Count, Is.EqualTo(5));
@@ -305,7 +305,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var result = _factory.CreateForSave(new[] { dataContainerUnchanged });
 
       _tableDefinitionFinderStrictMock.VerifyAllExpectations();
-      Assert.That(result, Is.TypeOf(typeof (MultiDataContainerSaveCommand)));
+      Assert.That(result, Is.TypeOf(typeof(MultiDataContainerSaveCommand)));
       var tuples = ((MultiDataContainerSaveCommand) result).Tuples.ToList();
 
       Assert.That(tuples.Count, Is.EqualTo(0));
@@ -340,9 +340,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
         bool expectClassID)
     {
       CheckColumnValue(
-          "SerialNumber", expectSerialNumber, columnValues, GetPropertyValue(dataContainer, typeof (Computer), "SerialNumber"));
+          "SerialNumber", expectSerialNumber, columnValues, GetPropertyValue(dataContainer, typeof(Computer), "SerialNumber"));
       CheckColumnValue(
-          "EmployeeID", expectEmployee, columnValues, GetObjectIDValue(dataContainer, typeof (Computer), "Employee"));
+          "EmployeeID", expectEmployee, columnValues, GetObjectIDValue(dataContainer, typeof(Computer), "Employee"));
       CheckColumnValue("ClassID", expectClassID, columnValues, dataContainer.ID.ClassID);
 
       var expectedColumnCount =
@@ -358,8 +358,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       CheckColumnValue("ID", true, columnValues, dataContainer.ID.Value);
       CheckColumnValue("ClassID", true, columnValues, dataContainer.ID.ClassID);
-      CheckColumnValue("SerialNumber", true, columnValues, GetPropertyValue(dataContainer, typeof (Computer), "SerialNumber"));
-      CheckColumnValue("EmployeeID", false, columnValues, GetObjectIDValue(dataContainer, typeof (Computer), "Employee"));
+      CheckColumnValue("SerialNumber", true, columnValues, GetPropertyValue(dataContainer, typeof(Computer), "SerialNumber"));
+      CheckColumnValue("EmployeeID", false, columnValues, GetObjectIDValue(dataContainer, typeof(Computer), "Employee"));
 
       Assert.That(columnValues.Count(), Is.EqualTo(3));
 

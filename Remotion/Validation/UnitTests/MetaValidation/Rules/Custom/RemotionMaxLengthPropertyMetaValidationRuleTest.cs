@@ -32,7 +32,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
     [SetUp]
     public void SetUp ()
     {
-      _rule = new RemotionMaxLengthPropertyMetaValidationRule(typeof (Customer).GetProperty("UserName"), 50);
+      _rule = new RemotionMaxLengthPropertyMetaValidationRule(typeof(Customer).GetProperty("UserName"), 50);
     }
 
     [Test]

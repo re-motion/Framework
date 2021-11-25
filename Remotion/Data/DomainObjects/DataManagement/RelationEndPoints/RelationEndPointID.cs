@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       ArgumentUtility.CheckNotNull("info", info);
 
-      var objectID = (ObjectID) info.GetValue("ObjectID", typeof (ObjectID));
+      var objectID = (ObjectID) info.GetValue("ObjectID", typeof(ObjectID));
       var classDefinitionID = info.GetString("ClassID");
       var propertyName = info.GetString("PropertyName");
       

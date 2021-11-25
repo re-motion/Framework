@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
   public class WebTabStripSelector : TypedControlSelectorBase<WebTabStripControlObject>
   {
     public WebTabStripSelector ()
-        : base ("WebTabStrip")
+        : base("WebTabStrip")
     {
     }
 

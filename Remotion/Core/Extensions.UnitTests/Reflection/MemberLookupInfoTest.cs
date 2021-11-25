@@ -28,9 +28,9 @@ namespace Remotion.Extensions.UnitTests.Reflection
     {
       var info = new MemberLookupInfo("Foo");
 
-      var parameterTypes = info.GetParameterTypes(typeof (Func<int, string, object>));
+      var parameterTypes = info.GetParameterTypes(typeof(Func<int, string, object>));
 
-      var expected = new[] { typeof (int), typeof (string) };
+      var expected = new[] { typeof(int), typeof(string) };
       Assert.That(parameterTypes, Is.EqualTo(expected));
     }
 
@@ -39,9 +39,9 @@ namespace Remotion.Extensions.UnitTests.Reflection
     {
       var info = new MemberLookupInfo("Foo");
 
-      var signature = info.GetSignature(typeof (Func<int, string, object>));
+      var signature = info.GetSignature(typeof(Func<int, string, object>));
 
-      var expected = Tuple.Create(new[] { typeof (int), typeof (string) }, typeof (object));
+      var expected = Tuple.Create(new[] { typeof(int), typeof(string) }, typeof(object));
       Assert.That(signature.Item1, Is.EqualTo(expected.Item1));
       Assert.That(signature.Item2, Is.EqualTo(expected.Item2));
     }

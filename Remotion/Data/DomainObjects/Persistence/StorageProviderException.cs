@@ -30,10 +30,10 @@ public class StorageProviderException : PersistenceException
 
   // construction and disposing
 
-  public StorageProviderException () : this ("A storage provider exception occurred.") {}
-  public StorageProviderException (string message) : base (message) {}
-  public StorageProviderException (string message, Exception inner) : base (message, inner) {}
-  protected StorageProviderException (SerializationInfo info, StreamingContext context) : base (info, context) {}
+  public StorageProviderException () : this("A storage provider exception occurred.") {}
+  public StorageProviderException (string message) : base(message) {}
+  public StorageProviderException (string message, Exception inner) : base(message, inner) {}
+  protected StorageProviderException (SerializationInfo info, StreamingContext context) : base(info, context) {}
 
   // methods and properties
 

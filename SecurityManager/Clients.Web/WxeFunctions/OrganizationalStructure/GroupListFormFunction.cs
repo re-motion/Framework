@@ -33,10 +33,10 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
 
     // TODO: Make protected once a way is found to solve the "WxeDemandTargetStaticMethodPermission being typed on fixed class" problem
     public GroupListFormFunction (ITransactionMode transactionMode, params object[] args)
-      : base (transactionMode, args)
+      : base(transactionMode, args)
     {
     }
 
-    WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof (GroupListForm), "UI/OrganizationalStructure/GroupListForm.aspx");
+    WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof(GroupListForm), "UI/OrganizationalStructure/GroupListForm.aspx");
   }
 }

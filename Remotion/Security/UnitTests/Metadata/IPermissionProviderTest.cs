@@ -38,8 +38,8 @@ namespace Remotion.Security.UnitTests.Metadata
       var obj = _serviceLocator.GetInstance<IPermissionProvider>();
 
       Assert.That(obj, Is.Not.Null);
-      Assert.That(obj, Is.TypeOf(typeof (CachingPermissionProviderDecorator)));
-      Assert.That(((CachingPermissionProviderDecorator) obj).InnerPermissionProvider, Is.TypeOf(typeof (PermissionReflector)));
+      Assert.That(obj, Is.TypeOf(typeof(CachingPermissionProviderDecorator)));
+      Assert.That(((CachingPermissionProviderDecorator) obj).InnerPermissionProvider, Is.TypeOf(typeof(PermissionReflector)));
     }
 
     [Test]

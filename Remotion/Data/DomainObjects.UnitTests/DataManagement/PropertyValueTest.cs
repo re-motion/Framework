@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       base.SetUp();
 
-      _orderNumberPropertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("OrderNumber", typeof (int), false);
+      _orderNumberPropertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("OrderNumber", typeof(int), false);
     }
 
     [Test]
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var guidValue = Guid.NewGuid();
       Assert.That(
-          PropertyValue.AreValuesDifferent(new ObjectID(typeof (Order), guidValue), new ObjectID(typeof (Order), guidValue)),
+          PropertyValue.AreValuesDifferent(new ObjectID(typeof(Order), guidValue), new ObjectID(typeof(Order), guidValue)),
           Is.False);
     }
 
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(PropertyValue.AreValuesDifferent(new byte[] { 1, 2, 3 }, new byte[] { 1, 3, 2 }), Is.True);
 
       Assert.That(
-          PropertyValue.AreValuesDifferent(new ObjectID(typeof (Order), Guid.NewGuid()), new ObjectID(typeof (Order), Guid.NewGuid())),
+          PropertyValue.AreValuesDifferent(new ObjectID(typeof(Order), Guid.NewGuid()), new ObjectID(typeof(Order), Guid.NewGuid())),
           Is.True);
     }
 
@@ -85,48 +85,48 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void PropertyValue_WithReferenceType_NotAllowed ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("ClassName");
-      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "test", typeof (List<object>));
+      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "test", typeof(List<object>));
       Assert.That(
           () => new PropertyValue(propertyDefinition, null),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   @"The property 'test' (declared on class 'ClassName') is invalid because its values cannot be copied. "
                   + @"Only value types, strings, the Type type, byte arrays, types implementing IStructualEquatable, and ObjectIDs are currently supported, but the property's type is "
-                  + @"'System.Collections.Generic.List`1[[" + typeof (object).AssemblyQualifiedName + "]]'."));
+                  + @"'System.Collections.Generic.List`1[[" + typeof(object).AssemblyQualifiedName + "]]'."));
     }
 
     [Test]
     public void PropertyValue_WithValueType_Allowed ()
     {
-      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (DateTime), false);
+      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(DateTime), false);
       Assert.That(() => new PropertyValue(propertyDefinition, DateTime.Now), Throws.Nothing);
     }
 
     [Test]
     public void PropertyValue_WithString_Allowed ()
     {
-      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (string), true);
+      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(string), true);
       Assert.That(() => new PropertyValue(propertyDefinition, null), Throws.Nothing);
     }
 
     [Test]
     public void PropertyValue_WithType_Allowed ()
     {
-      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (Type), true);
+      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Type), true);
       Assert.That(() => new PropertyValue(propertyDefinition, null), Throws.Nothing);
     }
 
     [Test]
     public void PropertyValue_WithExtensibleEnum_Allowed ()
     {
-      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (Color), true);
+      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Color), true);
       Assert.That(() => new PropertyValue(propertyDefinition, null), Throws.Nothing);
     }
 
     [Test]
     public void PropertyValue_WithStructuralEquatableType_Allowed ()
     {
-      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (Tuple<int>), true);
+      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Tuple<int>), true);
       Assert.That(() => new PropertyValue(propertyDefinition, null), Throws.Nothing);
     }
 
@@ -252,7 +252,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SettingOfNullValueForStructuralEquatableType ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (Tuple<string>), true);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Tuple<string>), true);
 
       var propertyValue = new PropertyValue(definition, null);
 
@@ -286,7 +286,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void DoesNotPerformMaxLengthCheck ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_MaxLength("test", typeof (string), 10);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_MaxLength("test", typeof(string), 10);
 
       var propertyValue = new PropertyValue(definition, "12345");
       propertyValue.Value = "12345678901";
@@ -296,7 +296,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void DoesNotPerformMaxLengthCheckInConstructor ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_MaxLength("test", typeof (string), 10);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_MaxLength("test", typeof(string), 10);
 
       var propertyValue = new PropertyValue(definition, "12345678901");
       Assert.That(propertyValue.Value, Is.EqualTo("12345678901"));
@@ -305,7 +305,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void TypeCheckInConstructor ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (string));
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(string));
 
       Assert.That(
           () =>  new PropertyValue(definition, 123),
@@ -316,7 +316,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void TypeCheck ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (string));
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(string));
       var propertyValue = new PropertyValue(definition, "123");
 
       Assert.That(
@@ -328,7 +328,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNotNullableStringToNull ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (string), false);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(string), false);
       var propertyValue = new PropertyValue(definition, string.Empty);
 
       propertyValue.Value = null;
@@ -338,7 +338,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNullableBinary ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (byte[]), true);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(byte[]), true);
 
       var propertyValue = new PropertyValue(definition, null);
       Assert.That(propertyValue.Value, Is.Null);
@@ -347,7 +347,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNotNullableBinary ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (byte[]), false);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(byte[]), false);
 
       var propertyValue = new PropertyValue(definition, new byte[0]);
       ResourceManager.IsEmptyImage((byte[]) propertyValue.Value);
@@ -359,7 +359,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetBinaryWithInvalidType ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (byte[]));
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(byte[]));
 
       Assert.That(
           () =>  new PropertyValue(definition, new int[0]),
@@ -370,7 +370,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNotNullableBinaryToNullViaConstructor ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (byte[]), false);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(byte[]), false);
 
       var propertyValue = new PropertyValue(definition, null);
       Assert.That(propertyValue.Value, Is.Null);
@@ -379,7 +379,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNotNullableBinaryToNullViaProperty ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (byte[]), false);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(byte[]), false);
       var propertyValue = new PropertyValue(definition, ResourceManager.GetImage1());
 
       propertyValue.Value = null;
@@ -389,7 +389,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNullableExtensibleEnum ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (Color), true);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Color), true);
 
       var propertyValue = new PropertyValue(definition, null);
       Assert.That(propertyValue.Value, Is.Null);
@@ -398,7 +398,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNotNullableExtensibleEnum ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (Color), false);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Color), false);
 
       var propertyValue = new PropertyValue(definition, ExtensibleEnum<Color>.Values.Red());
       Assert.That(propertyValue.Value, Is.EqualTo(ExtensibleEnum<Color>.Values.Red()));
@@ -407,7 +407,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetExtensibleEnumWithInvalidType ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (Color), false);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Color), false);
 
       Assert.That(
           () =>  new PropertyValue(definition, 12),
@@ -418,7 +418,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNotNullableExtensibleEnumToNullViaConstructor ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (Color), false);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Color), false);
 
       var propertyValue = new PropertyValue(definition, null);
       Assert.That(propertyValue.Value, Is.Null);
@@ -427,7 +427,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNotNullableExtensibleEnumToNullViaProperty ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (Color), false);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Color), false);
       var propertyValue = new PropertyValue(definition, ExtensibleEnum<Color>.Values.Red());
 
       propertyValue.Value = null;
@@ -437,7 +437,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNullableStructuralEquatableType ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (Tuple<int>), true);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Tuple<int>), true);
 
       var propertyValue = new PropertyValue(definition, null);
       Assert.That(propertyValue.Value, Is.Null);
@@ -446,7 +446,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNotNullableStructuralEquatableType ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (Tuple<int>), false);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Tuple<int>), false);
 
       var propertyValue = new PropertyValue(definition, Tuple.Create(50));
       Assert.That(propertyValue.Value, Is.EqualTo(Tuple.Create(50)));
@@ -455,7 +455,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetStructuralEquatableTypeWithInvalidType ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (Tuple<int>), false);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Tuple<int>), false);
 
       Assert.That(
           () =>  new PropertyValue(definition, 12),
@@ -466,7 +466,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNotNullableStructuralEquatableTypeToNullViaConstructor ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (Tuple<int>), false);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Tuple<int>), false);
 
       var propertyValue = new PropertyValue(definition, null);
       Assert.That(propertyValue.Value, Is.Null);
@@ -475,7 +475,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNotNullableStructuralEquatableTypeToNullViaProperty ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (Tuple<int>), false);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Tuple<int>), false);
       var propertyValue = new PropertyValue(definition, Tuple.Create(50));
 
       propertyValue.Value = null;
@@ -485,7 +485,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetBinaryLargerThanMaxLength ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_MaxLength("test", typeof (byte[]), 1000000);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_MaxLength("test", typeof(byte[]), 1000000);
       var propertyValue = new PropertyValue(definition, new byte[0]);
 
       byte[] value = ResourceManager.GetImageLarger1MB();
@@ -497,7 +497,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void EnumCheck_ValidNonFlagsEnum ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (DayOfWeek));
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(DayOfWeek));
 
       var propertyValue = new PropertyValue(definition, DayOfWeek.Monday);
       propertyValue.Value = DayOfWeek.Monday;
@@ -507,7 +507,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void EnumCheck_InvalidNonFlagsEnum ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (DayOfWeek));
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(DayOfWeek));
       var propertyValue = new PropertyValue(definition, DayOfWeek.Monday);
 
       Assert.That(
@@ -519,7 +519,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void EnumCheck_ValidFlagsEnum ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (AttributeTargets));
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(AttributeTargets));
       var propertyValue = new PropertyValue(definition, AttributeTargets.Method);
       
       propertyValue.Value = AttributeTargets.Field | AttributeTargets.Method;
@@ -529,7 +529,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void EnumCheck_InvalidFlagsEnum ()
     {
-      var definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (AttributeTargets));
+      var definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(AttributeTargets));
       var propertyValue = new PropertyValue(definition, AttributeTargets.Method);
 
       Assert.That(
@@ -541,7 +541,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void EnumCheck_ValidNullEnum ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (DayOfWeek?), true);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(DayOfWeek?), true);
 
       var propertyValue = new PropertyValue(definition, DayOfWeek.Monday);
       propertyValue.Value = DayOfWeek.Monday;
@@ -553,7 +553,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void EnumCheck_InvalidNullEnum ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (DayOfWeek?), true);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(DayOfWeek?), true);
       var propertyValue = new PropertyValue(definition, DayOfWeek.Monday);
 
       Assert.That(
@@ -565,7 +565,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void EnumCheck_InvalidNonNullEnum_Null ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (DayOfWeek), false);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(DayOfWeek), false);
       var propertyValue = new PropertyValue(definition, DayOfWeek.Monday);
 
       Assert.That(
@@ -577,7 +577,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void EnumCheckInConstructor ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof (DayOfWeek));
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(DayOfWeek));
 
       Assert.That(
           () => new PropertyValue(definition, (DayOfWeek) 17420),
@@ -722,7 +722,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Ignore ("TODO 954: Fix this bug! https://www.re-motion.org/jira/browse/RM-954")]
     public void BinaryDataBug ()
     {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("testProperty2", typeof (byte[]), true);
+      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("testProperty2", typeof(byte[]), true);
       var propertyValue = new PropertyValue(definition, new byte[] { 1, 2, 3 });
 
       ((byte[]) propertyValue.Value)[0] = 7;
@@ -750,7 +750,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       using (clientTransactionMock.EnterDiscardingScope())
       {
         var dataContainer = Order.NewObject().InternalDataContainer;
-        var propertyDefinition = GetPropertyDefinition(typeof (Order), "OrderNumber");
+        var propertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
 
         ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents(clientTransactionMock);
 
@@ -760,23 +760,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
     private PropertyValue CreateIntPropertyValue (string name, int intValue)
     {
-      return CreatePropertyValue(name, typeof (int), false, intValue);
+      return CreatePropertyValue(name, typeof(int), false, intValue);
     }
 
     private PropertyValue CreateNullableIntPropertyValue (string name, int? intValue)
     {
-      return CreatePropertyValue(name, typeof (int?), true, intValue);
+      return CreatePropertyValue(name, typeof(int?), true, intValue);
     }
 
     private PropertyValue CreateStringPropertyValue (string name, string stringValue)
     {
       bool isNullable = (stringValue == null) ? true : false;
-      return CreatePropertyValue(name, typeof (string), isNullable, stringValue);
+      return CreatePropertyValue(name, typeof(string), isNullable, stringValue);
     }
 
     private PropertyDefinition CreateIntPropertyDefinition (string name)
     {
-      return PropertyDefinitionObjectMother.CreateForFakePropertyInfo(name, typeof (int), false);
+      return PropertyDefinitionObjectMother.CreateForFakePropertyInfo(name, typeof(int), false);
     }
 
     private PropertyValue CreatePropertyValue (string name, Type propertyType, bool isNullable, object value)

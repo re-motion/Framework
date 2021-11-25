@@ -28,90 +28,90 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building.RequiredMethodDefi
     [Test]
     public void CreateRequiredMethodDefinitions ()
     {
-      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (ClassImplementingInterfaceWithDuckTyping));
+      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(ClassImplementingInterfaceWithDuckTyping));
       var m1 = DefinitionObjectMother.CreateMethodDefinition(
           targetClassDefinition, 
-          typeof (ClassImplementingInterfaceWithDuckTyping).GetMethod("Method1"));
+          typeof(ClassImplementingInterfaceWithDuckTyping).GetMethod("Method1"));
       var m2 = DefinitionObjectMother.CreateMethodDefinition(
           targetClassDefinition, 
-          typeof (ClassImplementingInterfaceWithDuckTyping).GetMethod("Method2"));
+          typeof(ClassImplementingInterfaceWithDuckTyping).GetMethod("Method2"));
 
-      var requirement = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition(targetClassDefinition, typeof (IInterface));
+      var requirement = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition(targetClassDefinition, typeof(IInterface));
       var builder = new DuckTypingRequiredMethodDefinitionCollector(targetClassDefinition);
       
       var definitions = builder.CreateRequiredMethodDefinitions(requirement).OrderBy(def => def.FullName).ToArray();
       Assert.That(definitions.Length, Is.EqualTo(2));
 
       Assert.That(definitions[0].DeclaringRequirement, Is.SameAs(requirement));
-      Assert.That(definitions[0].InterfaceMethod, Is.EqualTo(typeof (IInterface).GetMethod("Method1")));
+      Assert.That(definitions[0].InterfaceMethod, Is.EqualTo(typeof(IInterface).GetMethod("Method1")));
       Assert.That(definitions[0].ImplementingMethod, Is.SameAs(m1));
 
       Assert.That(definitions[1].DeclaringRequirement, Is.SameAs(requirement));
-      Assert.That(definitions[1].InterfaceMethod, Is.EqualTo(typeof (IInterface).GetMethod("Method2")));
+      Assert.That(definitions[1].InterfaceMethod, Is.EqualTo(typeof(IInterface).GetMethod("Method2")));
       Assert.That(definitions[1].ImplementingMethod, Is.SameAs(m2));
     }
 
     [Test]
     public void CreateRequiredMethodDefinitions_WithOverloads ()
     {
-      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (ClassImplementingInterfaceWithDuckTypingWithOverloads));
+      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(ClassImplementingInterfaceWithDuckTypingWithOverloads));
       DefinitionObjectMother.CreateMethodDefinition(
           targetClassDefinition,
-          typeof (ClassImplementingInterfaceWithDuckTypingWithOverloads).GetMethod("Method1", new[] { typeof (string ) }));
+          typeof(ClassImplementingInterfaceWithDuckTypingWithOverloads).GetMethod("Method1", new[] { typeof(string ) }));
       var m1b = DefinitionObjectMother.CreateMethodDefinition(
           targetClassDefinition,
-          typeof (ClassImplementingInterfaceWithDuckTypingWithOverloads).GetMethod("Method1", Type.EmptyTypes));
+          typeof(ClassImplementingInterfaceWithDuckTypingWithOverloads).GetMethod("Method1", Type.EmptyTypes));
       DefinitionObjectMother.CreateMethodDefinition(
           targetClassDefinition,
-          typeof (ClassImplementingInterfaceWithDuckTypingWithOverloads).GetMethod("Method2"));
+          typeof(ClassImplementingInterfaceWithDuckTypingWithOverloads).GetMethod("Method2"));
 
-      var requirement = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition(targetClassDefinition, typeof (IInterface));
+      var requirement = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition(targetClassDefinition, typeof(IInterface));
       var builder = new DuckTypingRequiredMethodDefinitionCollector(targetClassDefinition);
 
       var definitions = builder.CreateRequiredMethodDefinitions(requirement).OrderBy(def => def.FullName).ToArray();
 
       Assert.That(definitions[0].DeclaringRequirement, Is.SameAs(requirement));
-      Assert.That(definitions[0].InterfaceMethod, Is.EqualTo(typeof (IInterface).GetMethod("Method1")));
+      Assert.That(definitions[0].InterfaceMethod, Is.EqualTo(typeof(IInterface).GetMethod("Method1")));
       Assert.That(definitions[0].ImplementingMethod, Is.SameAs(m1b));
     }
 
     [Test]
     public void CreateRequiredMethodDefinitions_BaseWithSameMembers ()
     {
-      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (ClassImplementingInterfaceWithDuckTypingWithBaseWithSameMembers));
+      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(ClassImplementingInterfaceWithDuckTypingWithBaseWithSameMembers));
       DefinitionObjectMother.CreateMethodDefinition(
           targetClassDefinition,
-          typeof (ClassImplementingInterfaceWithDuckTyping).GetMethod("Method1"));
+          typeof(ClassImplementingInterfaceWithDuckTyping).GetMethod("Method1"));
       DefinitionObjectMother.CreateMethodDefinition(
           targetClassDefinition,
-          typeof (ClassImplementingInterfaceWithDuckTyping).GetMethod("Method2"));
+          typeof(ClassImplementingInterfaceWithDuckTyping).GetMethod("Method2"));
       var m1b = DefinitionObjectMother.CreateMethodDefinition(
           targetClassDefinition,
-          typeof (ClassImplementingInterfaceWithDuckTypingWithBaseWithSameMembers).GetMethod("Method1"));
+          typeof(ClassImplementingInterfaceWithDuckTypingWithBaseWithSameMembers).GetMethod("Method1"));
       var m2b = DefinitionObjectMother.CreateMethodDefinition(
           targetClassDefinition,
-          typeof (ClassImplementingInterfaceWithDuckTypingWithBaseWithSameMembers).GetMethod("Method2"));
+          typeof(ClassImplementingInterfaceWithDuckTypingWithBaseWithSameMembers).GetMethod("Method2"));
 
-      var requirement = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition(targetClassDefinition, typeof (IInterface));
+      var requirement = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition(targetClassDefinition, typeof(IInterface));
       var builder = new DuckTypingRequiredMethodDefinitionCollector(targetClassDefinition);
 
       var definitions = builder.CreateRequiredMethodDefinitions(requirement).OrderBy(def => def.FullName).ToArray();
       Assert.That(definitions.Length, Is.EqualTo(2));
 
       Assert.That(definitions[0].DeclaringRequirement, Is.SameAs(requirement));
-      Assert.That(definitions[0].InterfaceMethod, Is.EqualTo(typeof (IInterface).GetMethod("Method1")));
+      Assert.That(definitions[0].InterfaceMethod, Is.EqualTo(typeof(IInterface).GetMethod("Method1")));
       Assert.That(definitions[0].ImplementingMethod, Is.SameAs(m1b));
 
       Assert.That(definitions[1].DeclaringRequirement, Is.SameAs(requirement));
-      Assert.That(definitions[1].InterfaceMethod, Is.EqualTo(typeof (IInterface).GetMethod("Method2")));
+      Assert.That(definitions[1].InterfaceMethod, Is.EqualTo(typeof(IInterface).GetMethod("Method2")));
       Assert.That(definitions[1].ImplementingMethod, Is.SameAs(m2b));
     }
 
     [Test]
     public void CreateRequiredMethodDefinitions_NoMatch ()
     {
-      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (object));
-      var requiringMixin = DefinitionObjectMother.CreateMixinDefinition(targetClassDefinition, typeof (string));
+      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(object));
+      var requiringMixin = DefinitionObjectMother.CreateMixinDefinition(targetClassDefinition, typeof(string));
 
       var dependency = DefinitionObjectMother.CreateTargetCallDependencyDefinition(requiringMixin);
       var requirement = dependency.RequiredType;
@@ -129,9 +129,9 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building.RequiredMethodDefi
     [Test]
     public void CreateRequiredMethodDefinitions_NoMatch_NoRequiringMixin ()
     {
-      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof (object));
+      var targetClassDefinition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(object));
 
-      var requirement = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition(targetClassDefinition, typeof (IInterface));
+      var requirement = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition(targetClassDefinition, typeof(IInterface));
       var builder = new DuckTypingRequiredMethodDefinitionCollector(targetClassDefinition);
       Assert.That(
           () => builder.CreateRequiredMethodDefinitions(requirement).ToArray(),

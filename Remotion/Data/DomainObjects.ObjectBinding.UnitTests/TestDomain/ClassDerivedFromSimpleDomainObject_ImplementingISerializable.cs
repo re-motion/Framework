@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     }
 
     protected ClassDerivedFromSimpleDomainObject_ImplementingISerializable (SerializationInfo info, StreamingContext context)
-      : base (info, context)
+      : base(info, context)
     {
     }
 

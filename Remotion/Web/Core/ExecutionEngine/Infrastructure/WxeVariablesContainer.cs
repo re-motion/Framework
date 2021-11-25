@@ -43,7 +43,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     public static WxeParameterDeclaration[] GetParameterDeclarations (Type type)
     {
       ArgumentUtility.CheckNotNull("type", type);
-      if (!typeof (WxeFunction).IsAssignableFrom(type))
+      if (!typeof(WxeFunction).IsAssignableFrom(type))
         throw new ArgumentException("Type " + type.GetFullNameSafe() + " is not derived from WxeFunction.", "type");
 
       return s_parameterDeclarations.GetOrAdd(type, s_getParameterDeclarationsUncheckedFunc);
@@ -144,10 +144,10 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
         {
           if (item.IsQuoted)
           {
-            if (paramDecl.Type == typeof (string)) // string constant
+            if (paramDecl.Type == typeof(string)) // string constant
               arguments.Add(item.Value);
             else // parse constant
-              arguments.Add(s_typeConversionProvider.Convert(null, culture, typeof (string), paramDecl.Type, item.Value));
+              arguments.Add(s_typeConversionProvider.Convert(null, culture, typeof(string), paramDecl.Type, item.Value));
           }
           else
           {
@@ -156,7 +156,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
             else if (string.CompareOrdinal(item.Value, "false") == 0) // false
               arguments.Add(false);
             else if (item.Value.Length > 0 && char.IsDigit(item.Value[0])) // starts with digit -> parse constant
-              arguments.Add(s_typeConversionProvider.Convert(null, culture, typeof (string), paramDecl.Type, item.Value));
+              arguments.Add(s_typeConversionProvider.Convert(null, culture, typeof(string), paramDecl.Type, item.Value));
             else // variable name
               arguments.Add(new WxeVariableReference(item.Value));
           }
@@ -216,7 +216,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     private static readonly Func<Type, WxeParameterDeclaration[]> s_getParameterDeclarationsUncheckedFunc = GetParameterDeclarationsUnchecked;
 
     public WxeVariablesContainer (WxeFunction function, object[] actualParameters)
-        : this (ArgumentUtility.CheckNotNull("function", function), actualParameters, GetParameterDeclarations(function.GetType()))
+        : this(ArgumentUtility.CheckNotNull("function", function), actualParameters, GetParameterDeclarations(function.GetType()))
     {
     }
 
@@ -265,7 +265,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
           try
           {
             _variables[paramDeclaration.Name] = 
-                s_typeConversionProvider.Convert(null, CultureInfo.InvariantCulture, typeof (string), paramDeclaration.Type, strval);
+                s_typeConversionProvider.Convert(null, CultureInfo.InvariantCulture, typeof(string), paramDeclaration.Type, strval);
           }
           catch (Exception e)
           {

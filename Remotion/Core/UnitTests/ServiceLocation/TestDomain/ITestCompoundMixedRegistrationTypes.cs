@@ -24,17 +24,17 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ImplementationFor (typeof (ITestCompoundMixedRegistrationTypes), RegistrationType = RegistrationType.Multiple, Position = 1)]
+  [ImplementationFor (typeof(ITestCompoundMixedRegistrationTypes), RegistrationType = RegistrationType.Multiple, Position = 1)]
   public class TestCompoundMixedRegistrationImplementation1 : ITestCompoundMixedRegistrationTypes
   {
   }
 
-  [ImplementationFor (typeof (ITestCompoundMixedRegistrationTypes), RegistrationType = RegistrationType.Single, Position = 2)]
+  [ImplementationFor (typeof(ITestCompoundMixedRegistrationTypes), RegistrationType = RegistrationType.Single, Position = 2)]
   public class TestCompoundMixedRegistrationImplementation2 : ITestCompoundMixedRegistrationTypes
   {
   }
 
-  [ImplementationFor (typeof (ITestCompoundMixedRegistrationTypes), RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor (typeof(ITestCompoundMixedRegistrationTypes), RegistrationType = RegistrationType.Compound)]
   public class TestCompoundMixedRegistrationTypes : ITestCompoundMixedRegistrationTypes
   {
     private readonly IEnumerable<ITestCompoundRegistration> _compoundRegistrations;

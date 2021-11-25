@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     }
 
     private TenantProxy (IDomainObjectHandle<Tenant> handle, string uniqueIdentifier, string displayName)
-        : base (handle, uniqueIdentifier, displayName)
+        : base(handle, uniqueIdentifier, displayName)
     {
     }
   }

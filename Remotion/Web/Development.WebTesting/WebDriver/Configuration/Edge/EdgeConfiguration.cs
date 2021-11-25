@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     private static readonly Lazy<FieldInfo> s_knownCapabilityNamesField = new Lazy<FieldInfo>(
         () =>
         {
-          var knownCapabilityNamesField = typeof (DriverOptions).GetField("knownCapabilityNames", BindingFlags.Instance | BindingFlags.NonPublic);
+          var knownCapabilityNamesField = typeof(DriverOptions).GetField("knownCapabilityNames", BindingFlags.Instance | BindingFlags.NonPublic);
           Assertion.IsNotNull(knownCapabilityNamesField, "Selenium has changed, please update s_knownCapabilityNamesField field.");
           return knownCapabilityNamesField;
         },
@@ -67,14 +67,14 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
 
     public EdgeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection)
-        : this (webTestConfigurationSection, s_edgeExecutable.Value)
+        : this(webTestConfigurationSection, s_edgeExecutable.Value)
     {
     }
 
     public EdgeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection,
         [NotNull] EdgeExecutable edgeExecutable)
-        : base (webTestConfigurationSection)
+        : base(webTestConfigurationSection)
     {
       ArgumentUtility.CheckNotNull("webTestConfigurationSection", webTestConfigurationSection);
       ArgumentUtility.CheckNotNull("edgeExecutable", edgeExecutable);

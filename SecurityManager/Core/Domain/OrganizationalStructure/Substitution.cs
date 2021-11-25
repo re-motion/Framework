@@ -50,7 +50,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     [DBBidirectionalRelation ("SubstitutingFor")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof (UserPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType (typeof(UserPropertyTypeSearchService))]
     public abstract User SubstitutingUser { get; set; }
 
     [DBBidirectionalRelation ("SubstitutedBy")]
@@ -58,7 +58,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     public abstract User SubstitutedUser { get; set; }
 
     [DBBidirectionalRelation ("SubstitutedBy")]
-    [SearchAvailableObjectsServiceType (typeof (SubstitutionPropertiesSearchService))]
+    [SearchAvailableObjectsServiceType (typeof(SubstitutionPropertiesSearchService))]
     public abstract Role SubstitutedRole { get; set; }
 
     [DateProperty]
@@ -114,7 +114,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
       base.OnCommitting(args);
 
-      var substitutedUserProperty = Properties[typeof (Substitution), "SubstitutedUser"];
+      var substitutedUserProperty = Properties[typeof(Substitution), "SubstitutedUser"];
       if (substitutedUserProperty.GetValue<User>() != null)
         substitutedUserProperty.GetValue<User>().RegisterForCommit();
       else if (substitutedUserProperty.GetOriginalValue<User>() != null)

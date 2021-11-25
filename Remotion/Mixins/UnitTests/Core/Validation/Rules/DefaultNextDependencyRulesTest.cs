@@ -29,9 +29,9 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void FailsIfEmptyNextCallDependencyNotFulfilled ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType3), typeof (MixinWithUnsatisfiedEmptyNextCallDependency));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(BaseType3), typeof(MixinWithUnsatisfiedEmptyNextCallDependency));
       var log = Validator.Validate(
-          definition.Mixins[typeof (MixinWithUnsatisfiedEmptyNextCallDependency)].NextCallDependencies[typeof (IEmptyInterface)]);
+          definition.Mixins[typeof(MixinWithUnsatisfiedEmptyNextCallDependency)].NextCallDependencies[typeof(IEmptyInterface)]);
 
       Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultNextCallDependencyRules.DependencyMustBeSatisfied", log), Is.True);
     }
@@ -39,8 +39,8 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void SucceedsIfDuckNextCallDependency ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (ClassFulfillingAllMemberRequirementsDuck),
-          typeof (MixinRequiringAllMembersNextCall));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(ClassFulfillingAllMemberRequirementsDuck),
+          typeof(MixinRequiringAllMembersNextCall));
       var log = Validator.Validate(definition);
 
       AssertSuccess(log);
@@ -49,7 +49,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void SucceedsIfAggregateNextCallDependencyIsFullyImplemented ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType3), typeof (BT3Mixin4), typeof (BT3Mixin7Base));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(BaseType3), typeof(BT3Mixin4), typeof(BT3Mixin7Base));
       var log = Validator.Validate(definition);
 
       AssertSuccess(log);
@@ -58,7 +58,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void FailsIfEmptyAggregateNextCallDependencyIsNotAvailable ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (NullTarget), typeof (MixinWithUnsatisfiedEmptyAggregateNextCallDependency));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(NullTarget), typeof(MixinWithUnsatisfiedEmptyAggregateNextCallDependency));
       var log = Validator.Validate(definition);
 
       Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultNextCallDependencyRules.DependencyMustBeSatisfied", log), Is.True);

@@ -30,12 +30,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      var instance = new NonInterceptableTypeException("Mess", typeof (string), new InvalidOperationException("Inner"));
+      var instance = new NonInterceptableTypeException("Mess", typeof(string), new InvalidOperationException("Inner"));
 
       var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
 
       Assert.That(deserializedInstance.Message, Is.EqualTo("Mess"));
-      Assert.That(deserializedInstance.Type, Is.SameAs(typeof (string)));
+      Assert.That(deserializedInstance.Type, Is.SameAs(typeof(string)));
       Assert.That(deserializedInstance.InnerException, Is.TypeOf<InvalidOperationException>());
     }
   }

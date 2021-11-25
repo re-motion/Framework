@@ -47,7 +47,7 @@ public class WxeContextTest
 
     _currentHttpContext = WxeContextMock.CreateHttpContext(queryString);
 
-    _functionType = typeof (TestFunction);
+    _functionType = typeof(TestFunction);
     _functionTypeName = TypeUtility.GetPartialAssemblyQualifiedName(_functionType);
     _resource = "~/Test.wxe";
 

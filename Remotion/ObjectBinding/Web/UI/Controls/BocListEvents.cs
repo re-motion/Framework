@@ -91,7 +91,7 @@ public class BocListEditableRowChangesEventArgs : BocListItemEventArgs
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
       IBusinessObjectBoundEditableWebControl[] controls)
-    : base (listIndex, businessObject)
+    : base(listIndex, businessObject)
   {
     _dataSource = dataSource;
     _controls = controls;
@@ -117,7 +117,7 @@ public class BocListDataRowRenderEventArgs: BocListItemEventArgs
   private string? _additionalCssClassForDataRow;
 
   public BocListDataRowRenderEventArgs (int listIndex, IBusinessObject businessObject, bool isEditableRow, bool isOddRow)
-    : base (listIndex, businessObject)
+    : base(listIndex, businessObject)
   {
     _isEditableRow = isEditableRow;
     _isOddRow = isOddRow;

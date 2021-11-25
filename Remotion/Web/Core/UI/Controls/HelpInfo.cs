@@ -34,7 +34,7 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     /// <param name="navigateUrl">The URL assigned to the hyperlinks <c>href</c>-attribute. Must not be <see langword="null" /> or empty.</param>
     public HelpInfo (string navigateUrl)
-        : this (navigateUrl, null, null, null)
+        : this(navigateUrl, null, null, null)
     {
 
     }

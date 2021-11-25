@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   public class ImageButtonControlObject : WebFormsControlObject, IClickableControlObject, ISupportsDisabledState
   {
     public ImageButtonControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

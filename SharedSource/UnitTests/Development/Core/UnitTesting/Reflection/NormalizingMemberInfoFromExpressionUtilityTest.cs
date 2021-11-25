@@ -40,7 +40,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMember(() => DomainType.StaticField);
 
-      var expected = typeof (DomainType).GetMember("StaticField").Single();
+      var expected = typeof(DomainType).GetMember("StaticField").Single();
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -49,7 +49,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMember(() => DomainType.StaticMethod());
 
-      var expected = typeof (DomainType).GetMember("StaticMethod").Single();
+      var expected = typeof(DomainType).GetMember("StaticMethod").Single();
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -58,7 +58,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMember(() => new DomainType());
 
-      var expected = typeof (DomainType).GetMember(".ctor").Single();
+      var expected = typeof(DomainType).GetMember(".ctor").Single();
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -76,7 +76,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMember((DomainType obj) => obj.InstanceProperty);
 
-      var expected = typeof (DomainType).GetMember("InstanceProperty").Single();
+      var expected = typeof(DomainType).GetMember("InstanceProperty").Single();
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -85,7 +85,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMember((DomainType obj) => obj.OverridingProperty);
 
-      var expected = typeof (DomainType).GetProperty("OverridingProperty");
+      var expected = typeof(DomainType).GetProperty("OverridingProperty");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -94,7 +94,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMember((DomainType obj) => obj.InstanceMethod());
 
-      var expected = typeof (DomainType).GetMember("InstanceMethod").Single();
+      var expected = typeof(DomainType).GetMember("InstanceMethod").Single();
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -103,7 +103,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMember((DomainType obj) => new DomainType());
 
-      var expected = typeof (DomainType).GetMember(".ctor").Single();
+      var expected = typeof(DomainType).GetMember(".ctor").Single();
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -121,7 +121,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetField(() => DomainType.StaticField);
 
-      var expected = typeof (DomainType).GetField("StaticField");
+      var expected = typeof(DomainType).GetField("StaticField");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -150,7 +150,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetField((DomainType obj) => obj.InstanceField);
 
-      var expected = typeof (DomainType).GetField("InstanceField");
+      var expected = typeof(DomainType).GetField("InstanceField");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -179,7 +179,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetConstructor(() => new DomainType());
 
-      var expected = typeof (DomainType).GetConstructor(Type.EmptyTypes);
+      var expected = typeof(DomainType).GetConstructor(Type.EmptyTypes);
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -198,7 +198,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod(() => DomainType.StaticVoidMethod());
 
-      var expected = typeof (DomainType).GetMethod("StaticVoidMethod");
+      var expected = typeof(DomainType).GetMethod("StaticVoidMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -207,7 +207,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod(() => DomainType.StaticMethod());
 
-      var expected = typeof (DomainType).GetMethod("StaticMethod");
+      var expected = typeof(DomainType).GetMethod("StaticMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -216,7 +216,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod(() => DomainType.StaticVoidGenericMethod<TestClass?>(null));
 
-      var expected = typeof (DomainType).GetMethod("StaticVoidGenericMethod")!.MakeGenericMethod(typeof (TestClass));
+      var expected = typeof(DomainType).GetMethod("StaticVoidGenericMethod")!.MakeGenericMethod(typeof(TestClass));
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -225,7 +225,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod(() => DomainType.StaticGenericMethod<TestClass?>(null));
 
-      var expected = typeof (DomainType).GetMethod("StaticGenericMethod")!.MakeGenericMethod(typeof (TestClass));
+      var expected = typeof(DomainType).GetMethod("StaticGenericMethod")!.MakeGenericMethod(typeof(TestClass));
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -244,7 +244,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((DomainType obj) => obj.InstanceVoidMethod());
 
-      var expected = typeof (DomainType).GetMethod("InstanceVoidMethod");
+      var expected = typeof(DomainType).GetMethod("InstanceVoidMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -253,7 +253,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((DomainType obj) => obj.InstanceMethod());
 
-      var expected = typeof (DomainType).GetMethod("InstanceMethod");
+      var expected = typeof(DomainType).GetMethod("InstanceMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -262,7 +262,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((DomainType obj) => obj.OverridingVoidMethod());
 
-      var expected = typeof (DomainType).GetMethod("OverridingVoidMethod");
+      var expected = typeof(DomainType).GetMethod("OverridingVoidMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -271,7 +271,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((DomainType obj) => obj.OverridingMethod());
 
-      var expected = typeof (DomainType).GetMethod("OverridingMethod");
+      var expected = typeof(DomainType).GetMethod("OverridingMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -280,8 +280,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       // The C# compiler always inserts the root method definition for virtual methods into expression trees.
       // To test behavior with non-root definitions, we need to construct an expression tree manually.
-      var parameter = Expression.Parameter(typeof (DomainType), "obj");
-      var method = typeof (DomainType).GetMethod("OverridingVoidMethod")!;
+      var parameter = Expression.Parameter(typeof(DomainType), "obj");
+      var method = typeof(DomainType).GetMethod("OverridingVoidMethod")!;
       var expression = Expression.Lambda<Action<DomainType>>(Expression.Call(parameter, method), parameter);
 
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod(expression);
@@ -294,8 +294,8 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       // The C# compiler always inserts the root method definition for virtual methods into expression trees.
       // To test behavior with non-root definitions, we need to construct an expression tree manually.
-      var parameter = Expression.Parameter(typeof (DomainType), "obj");
-      var method = typeof (DomainType).GetMethod("OverridingMethod")!;
+      var parameter = Expression.Parameter(typeof(DomainType), "obj");
+      var method = typeof(DomainType).GetMethod("OverridingMethod")!;
       var expression = Expression.Lambda<Func<DomainType, int>>(Expression.Call(parameter, method), parameter);
 
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod(expression);
@@ -318,7 +318,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((DomainType obj) => obj.InstanceVoidGenericMethod<TestClass?>(null));
 
-      var expected = typeof (DomainType).GetMethod("InstanceVoidGenericMethod")!.MakeGenericMethod(typeof (TestClass));
+      var expected = typeof(DomainType).GetMethod("InstanceVoidGenericMethod")!.MakeGenericMethod(typeof(TestClass));
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -327,7 +327,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((DomainType obj) => obj.InstanceGenericMethod<TestClass?>(null));
 
-      var expected = typeof (DomainType).GetMethod("InstanceGenericMethod")!.MakeGenericMethod(typeof (TestClass));
+      var expected = typeof(DomainType).GetMethod("InstanceGenericMethod")!.MakeGenericMethod(typeof(TestClass));
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -336,7 +336,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((DomainType obj) => obj.OverridingVoidGenericMethod<TestClass?>(null));
 
-      var expected = typeof (DomainType).GetMethod("OverridingVoidGenericMethod")!.MakeGenericMethod(typeof (TestClass));
+      var expected = typeof(DomainType).GetMethod("OverridingVoidGenericMethod")!.MakeGenericMethod(typeof(TestClass));
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -345,7 +345,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((DomainType obj) => obj.OverridingGenericMethod<TestClass?>(null));
 
-      var expected = typeof (DomainType).GetMethod("OverridingGenericMethod")!.MakeGenericMethod(typeof (TestClass));
+      var expected = typeof(DomainType).GetMethod("OverridingGenericMethod")!.MakeGenericMethod(typeof(TestClass));
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -354,10 +354,10 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       // The C# compiler always inserts the root method definition for virtual methods into expression trees.
       // To test behavior with non-root definitions, we need to construct an expression tree manually.
-      var parameter = Expression.Parameter(typeof (DomainType), "obj");
-      var method = typeof (DomainType).GetMethod("OverridingVoidGenericMethod")!.MakeGenericMethod(typeof (TestClass));
+      var parameter = Expression.Parameter(typeof(DomainType), "obj");
+      var method = typeof(DomainType).GetMethod("OverridingVoidGenericMethod")!.MakeGenericMethod(typeof(TestClass));
       var expression = Expression.Lambda<Action<DomainType>>(
-          Expression.Call(parameter, method, Expression.Constant(null, typeof (TestClass))), parameter);
+          Expression.Call(parameter, method, Expression.Constant(null, typeof(TestClass))), parameter);
 
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod(expression);
 
@@ -369,10 +369,10 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       // The C# compiler always inserts the root method definition for virtual methods into expression trees.
       // To test behavior with non-root definitions, we need to construct an expression tree manually.
-      var parameter = Expression.Parameter(typeof (DomainType), "obj");
-      var method = typeof (DomainType).GetMethod("OverridingGenericMethod")!.MakeGenericMethod(typeof (TestClass));
+      var parameter = Expression.Parameter(typeof(DomainType), "obj");
+      var method = typeof(DomainType).GetMethod("OverridingGenericMethod")!.MakeGenericMethod(typeof(TestClass));
       var expression = Expression.Lambda<Func<DomainType, int>>(
-          Expression.Call(parameter, method, Expression.Constant(null, typeof (TestClass))), parameter);
+          Expression.Call(parameter, method, Expression.Constant(null, typeof(TestClass))), parameter);
 
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod(expression);
 
@@ -384,7 +384,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((DomainType obj) => obj.BaseMethod());
 
-      var expected = typeof (DomainType).GetMethod("BaseMethod");
+      var expected = typeof(DomainType).GetMethod("BaseMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -393,7 +393,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((DomainType obj) => obj.VirtualBaseMethod());
 
-      var expected = typeof (DomainType).GetMethod("VirtualBaseMethod");
+      var expected = typeof(DomainType).GetMethod("VirtualBaseMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -402,7 +402,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((DomainType obj) => obj.InterfaceMethod());
 
-      var expected = typeof (DomainType).GetMethod("InterfaceMethod");
+      var expected = typeof(DomainType).GetMethod("InterfaceMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -411,7 +411,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((IDomainInterface obj) => obj.InterfaceMethod());
 
-      var expected = typeof (IDomainInterface).GetMethod("InterfaceMethod");
+      var expected = typeof(IDomainInterface).GetMethod("InterfaceMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -421,7 +421,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetMethod((DomainType obj) => ((IDomainInterface) obj).InterfaceMethod());
 
-      var expected = typeof (DomainType).GetMethod("InterfaceMethod");
+      var expected = typeof(DomainType).GetMethod("InterfaceMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -430,7 +430,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition(() => DomainType.StaticVoidGenericMethod<TestClass?>(null));
 
-      var expected = typeof (DomainType).GetMethod("StaticVoidGenericMethod");
+      var expected = typeof(DomainType).GetMethod("StaticVoidGenericMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -449,7 +449,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition(() => DomainType.StaticGenericMethod<TestClass?>(null));
 
-      var expected = typeof (DomainType).GetMethod("StaticGenericMethod");
+      var expected = typeof(DomainType).GetMethod("StaticGenericMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -478,7 +478,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition((DomainType obj) => obj.InstanceVoidGenericMethod<TestClass?>(null));
 
-      var expected = typeof (DomainType).GetMethod("InstanceVoidGenericMethod");
+      var expected = typeof(DomainType).GetMethod("InstanceVoidGenericMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -487,7 +487,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition((DomainType obj) => obj.InstanceGenericMethod<TestClass?>(null));
 
-      var expected = typeof (DomainType).GetMethod("InstanceGenericMethod");
+      var expected = typeof(DomainType).GetMethod("InstanceGenericMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -496,7 +496,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition((DomainType obj) => obj.OverridingVoidGenericMethod<TestClass?>(null));
 
-      var expected = typeof (DomainType).GetMethod("OverridingVoidGenericMethod");
+      var expected = typeof(DomainType).GetMethod("OverridingVoidGenericMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -505,7 +505,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition((DomainType obj) => obj.OverridingGenericMethod<TestClass?>(null));
 
-      var expected = typeof (DomainType).GetMethod("OverridingGenericMethod");
+      var expected = typeof(DomainType).GetMethod("OverridingGenericMethod");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -544,7 +544,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetProperty(() => DomainType.StaticProperty);
 
-      var expected = typeof (DomainType).GetProperty("StaticProperty");
+      var expected = typeof(DomainType).GetProperty("StaticProperty");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -573,7 +573,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetProperty((DomainType obj) => obj.InstanceProperty);
 
-      var expected = typeof (DomainType).GetProperty("InstanceProperty");
+      var expected = typeof(DomainType).GetProperty("InstanceProperty");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -602,7 +602,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetProperty((DomainType obj) => obj.BaseProperty);
 
-      var expected = typeof (DomainType).GetProperty("BaseProperty");
+      var expected = typeof(DomainType).GetProperty("BaseProperty");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -611,7 +611,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetProperty((DomainType obj) => obj.VirtualBaseProperty);
 
-      var expected = typeof (DomainType).GetProperty("VirtualBaseProperty");
+      var expected = typeof(DomainType).GetProperty("VirtualBaseProperty");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -620,7 +620,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetProperty((DomainType obj) => obj.OverridingProperty);
 
-      var expected = typeof (DomainType).GetProperty("OverridingProperty");
+      var expected = typeof(DomainType).GetProperty("OverridingProperty");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -629,7 +629,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetProperty((DomainType obj) => obj.SpecialOverridingProperty);
 
-      var expected = typeof (DomainType).GetProperty("SpecialOverridingProperty", BindingFlags.NonPublic | BindingFlags.Instance);
+      var expected = typeof(DomainType).GetProperty("SpecialOverridingProperty", BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -638,7 +638,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetProperty((DomainType obj) => obj.InterfaceProperty);
 
-      var expected = typeof (DomainType).GetProperty("InterfaceProperty");
+      var expected = typeof(DomainType).GetProperty("InterfaceProperty");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -647,7 +647,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetProperty((IDomainInterface obj) => obj.InterfaceProperty);
 
-      var expected = typeof (IDomainInterface).GetProperty("InterfaceProperty");
+      var expected = typeof(IDomainInterface).GetProperty("InterfaceProperty");
       Assert.That(member, Is.EqualTo(expected));
     }
 
@@ -657,7 +657,7 @@ namespace Remotion.UnitTests.Development.Core.UnitTesting.Reflection
     {
       var member = NormalizingMemberInfoFromExpressionUtility.GetProperty((DomainType obj) => ((IDomainInterface) obj).InterfaceProperty);
 
-      var expected = typeof (DomainType).GetProperty("InterfaceProperty");
+      var expected = typeof(DomainType).GetProperty("InterfaceProperty");
       Assert.That(member, Is.EqualTo(expected));
     }
 

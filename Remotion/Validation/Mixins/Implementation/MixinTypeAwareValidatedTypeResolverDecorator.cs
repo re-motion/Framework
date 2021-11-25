@@ -25,7 +25,7 @@ namespace Remotion.Validation.Mixins.Implementation
   /// <summary>
   /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via the <see cref="ApplyWithMixinAttribute"/>.
   /// </summary>
-  [ImplementationFor (typeof (IValidatedTypeResolver), Position = 2, RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor (typeof(IValidatedTypeResolver), Position = 2, RegistrationType = RegistrationType.Decorator)]
   public class MixinTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private readonly IValidatedTypeResolver _validatedTypeResolver;
@@ -46,7 +46,7 @@ namespace Remotion.Validation.Mixins.Implementation
     {
       ArgumentUtility.CheckNotNull("collectorType", collectorType);
 
-      if (collectorType.IsDefined(typeof (ApplyWithMixinAttribute), false))
+      if (collectorType.IsDefined(typeof(ApplyWithMixinAttribute), false))
         return AttributeUtility.GetCustomAttribute<ApplyWithMixinAttribute>(collectorType, false)!.MixinType;
       return _validatedTypeResolver.GetValidatedType(collectorType);
     }

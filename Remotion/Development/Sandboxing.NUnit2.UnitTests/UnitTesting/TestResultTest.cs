@@ -30,7 +30,7 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [SetUp]
     public void SetUp ()
     {
-      _methodInfo = typeof (DummyTest1).GetMethod("Test1");
+      _methodInfo = typeof(DummyTest1).GetMethod("Test1");
       _exception = new Exception("Test");
     }
 

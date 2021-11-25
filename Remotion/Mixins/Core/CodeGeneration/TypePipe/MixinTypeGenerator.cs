@@ -61,14 +61,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddInterfaces ()
     {
-      _type.AddInterface(typeof (ISerializable));
-      _type.AddInterface(typeof (IGeneratedMixinType));
+      _type.AddInterface(typeof(ISerializable));
+      _type.AddInterface(typeof(IGeneratedMixinType));
     }
 
     [MemberNotNull (nameof(_identifierField))]
     public void AddFields ()
     {
-      var field = _type.AddField("__identifier", FieldAttributes.Public | FieldAttributes.Static, typeof (ConcreteMixinTypeIdentifier));
+      var field = _type.AddField("__identifier", FieldAttributes.Public | FieldAttributes.Static, typeof(ConcreteMixinTypeIdentifier));
       _identifierField = Expression.Field(null, field);
     }
 

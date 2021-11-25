@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     public string ReadOnlyHtmlID { get; private set; }
 
     public ReadOnlyTestPageParameters ()
-        : base (TestConstants.ReadOnlyTestsID, c_parameterCount)
+        : base(TestConstants.ReadOnlyTestsID, c_parameterCount)
     {
     }
 

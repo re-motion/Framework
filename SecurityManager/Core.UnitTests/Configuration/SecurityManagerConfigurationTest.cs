@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.UnitTests.Configuration
       _configuration.DeserializeSection(xmlFragment);
 
       Assert.That(_configuration.OrganizationalStructureFactory, Is.Not.Null);
-      Assert.IsInstanceOf(typeof (OrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
+      Assert.IsInstanceOf(typeof(OrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
     }
 
     [Test]
@@ -50,7 +50,7 @@ namespace Remotion.SecurityManager.UnitTests.Configuration
       _configuration.DeserializeSection(xmlFragment);
 
       Assert.That(_configuration.OrganizationalStructureFactory, Is.Not.Null);
-      Assert.IsInstanceOf(typeof (OrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
+      Assert.IsInstanceOf(typeof(OrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
     }
 
     [Test]
@@ -64,7 +64,7 @@ namespace Remotion.SecurityManager.UnitTests.Configuration
       _configuration.DeserializeSection(xmlFragment);
 
       Assert.That(_configuration.OrganizationalStructureFactory, Is.Not.Null);
-      Assert.IsInstanceOf(typeof (TestOrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
+      Assert.IsInstanceOf(typeof(TestOrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
     }
 
     [Test]

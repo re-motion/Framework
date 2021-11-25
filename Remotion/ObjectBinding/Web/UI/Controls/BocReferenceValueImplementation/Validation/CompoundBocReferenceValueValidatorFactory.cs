@@ -25,11 +25,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   /// </summary>
   /// <seealso cref="IBocReferenceValueValidatorFactory"/>
   /// <seealso cref="CompoundValidatorFactory{T}"/>
-  [ImplementationFor (typeof (IBocReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor (typeof(IBocReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundBocReferenceValueValidatorFactory : CompoundValidatorFactory<IBocReferenceValue>, IBocReferenceValueValidatorFactory
   {
     public CompoundBocReferenceValueValidatorFactory (IEnumerable<IBocReferenceValueValidatorFactory> innerFactories)
-        : base (innerFactories)
+        : base(innerFactories)
     { }
   }
 }

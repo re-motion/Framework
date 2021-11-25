@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     {
       _enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.EnumProperty));
 
-      Assert.That(_enumSerializer.EnumTypes, Contains.Item(typeof (ClassWithAllDataTypes.EnumType)));
+      Assert.That(_enumSerializer.EnumTypes, Contains.Item(typeof(ClassWithAllDataTypes.EnumType)));
     }
 
     [Test]
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     {
       _enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.NaEnumProperty));
 
-      Assert.That(_enumSerializer.EnumTypes, Contains.Item(typeof (ClassWithAllDataTypes.EnumType)));
+      Assert.That(_enumSerializer.EnumTypes, Contains.Item(typeof(ClassWithAllDataTypes.EnumType)));
     }
   }
 }

@@ -27,17 +27,17 @@ namespace Remotion.Data.DomainObjects.UnitTests
   [Serializable]
   public class TestableClientTransaction : ClientTransaction
   {
-    public TestableClientTransaction () : this (RootClientTransactionComponentFactory.Create())
+    public TestableClientTransaction () : this(RootClientTransactionComponentFactory.Create())
     {
     }
 
-    protected TestableClientTransaction (IClientTransactionComponentFactory componentFactory) : base (componentFactory)
+    protected TestableClientTransaction (IClientTransactionComponentFactory componentFactory) : base(componentFactory)
     {
     }
 
     public IClientTransactionEventBroker EventBroker
     {
-      get { return (IClientTransactionEventBroker) PrivateInvoke.GetNonPublicProperty(this, typeof (ClientTransaction), "eventBroker"); }
+      get { return (IClientTransactionEventBroker) PrivateInvoke.GetNonPublicProperty(this, typeof(ClientTransaction), "eventBroker"); }
     }
 
     public new DomainObject GetObject (ObjectID id, bool includeDeleted)

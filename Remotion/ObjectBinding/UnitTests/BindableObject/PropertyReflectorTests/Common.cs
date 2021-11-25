@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     [Test]
     public void Initialize ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo(typeof (ClassWithAllDataTypes), "String");
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithAllDataTypes), "String");
 
       PropertyReflector propertyReflector = PropertyReflector.Create(propertyInfo, _businessObjectProvider);
 
@@ -52,15 +52,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     [Test]
     public void Initialize_WithMixin ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo(typeof (ClassWithAllDataTypes), "String");
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithAllDataTypes), "String");
 
-      using (MixinConfiguration.BuildNew().ForClass(typeof (PropertyReflector)).AddMixin<MixinStub>().EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass(typeof(PropertyReflector)).AddMixin<MixinStub>().EnterScope())
       {
         PropertyReflector propertyReflector = PropertyReflector.Create(propertyInfo, _businessObjectProvider);
 
         Assert.That(propertyReflector.PropertyInfo, Is.SameAs(propertyInfo));
         Assert.That(propertyReflector.BusinessObjectProvider, Is.SameAs(_businessObjectProvider));
-        Assert.That(propertyReflector, Is.InstanceOf(typeof (IMixinTarget)));
+        Assert.That(propertyReflector, Is.InstanceOf(typeof(IMixinTarget)));
       }
     }
 
@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Boolean");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (BooleanProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(BooleanProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Boolean"));
     }
 
@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Byte");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (ByteProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(ByteProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Byte"));
     }
 
@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Date");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (DateProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(DateProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Date"));
     }
 
@@ -96,7 +96,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("DateTime");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (DateTimeProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(DateTimeProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("DateTime"));
     }
 
@@ -105,7 +105,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Decimal");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (DecimalProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(DecimalProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Decimal"));
     }
 
@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Double");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (DoubleProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(DoubleProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Double"));
     }
 
@@ -123,7 +123,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Enum");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (EnumerationProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(EnumerationProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Enum"));
     }
 
@@ -132,7 +132,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Flags");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (NotSupportedProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(NotSupportedProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Flags"));
     }
 
@@ -141,7 +141,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("ExtensibleEnum");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (ExtensibleEnumerationProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(ExtensibleEnumerationProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("ExtensibleEnum"));
     }
 
@@ -150,19 +150,19 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Guid");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (GuidProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(GuidProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Guid"));
     }
 
     [Test]
     public void GetMetadata_WithEnumBase ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof (ClassWithReferenceType<Enum>), "Scalar");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof(ClassWithReferenceType<Enum>), "Scalar");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (NotSupportedProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(NotSupportedProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Scalar"));
     }
 
@@ -171,7 +171,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Int16");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (Int16Property)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(Int16Property)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Int16"));
     }
 
@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Int32");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (Int32Property)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(Int32Property)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Int32"));
     }
 
@@ -189,7 +189,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Int64");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (Int64Property)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(Int64Property)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Int64"));
     }
 
@@ -198,7 +198,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("BusinessObject");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (ReferenceProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(ReferenceProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("BusinessObject"));
     }
 
@@ -207,7 +207,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Single");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (SingleProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(SingleProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Single"));
     }
 
@@ -216,7 +216,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("String");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (StringProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(StringProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("String"));
     }
     
@@ -225,7 +225,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("IEnumerable");
 
-      Assert.That(businessObjectProperty, Is.TypeOf(typeof (NotSupportedProperty)));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(NotSupportedProperty)));
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("IEnumerable"));
     }
 
@@ -243,7 +243,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
 
     private IBusinessObjectProperty GetMetadataFromPropertyReflector (string propertyName)
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo(typeof (ClassWithAllDataTypes), propertyName);
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithAllDataTypes), propertyName);
       PropertyReflector propertyReflector = PropertyReflector.Create(propertyInfo, _businessObjectProvider);
 
       return propertyReflector.GetMetadata();

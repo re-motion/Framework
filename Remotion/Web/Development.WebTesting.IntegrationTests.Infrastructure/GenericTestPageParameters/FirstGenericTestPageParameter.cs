@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     public string FoundControlID { get; private set; }
 
     public FirstGenericTestPageParameter ()
-        : base (TestConstants.FirstSelectorID, c_parameterCount)
+        : base(TestConstants.FirstSelectorID, c_parameterCount)
     {
     }
 

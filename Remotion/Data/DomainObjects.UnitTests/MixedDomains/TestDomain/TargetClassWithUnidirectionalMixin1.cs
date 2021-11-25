@@ -20,7 +20,7 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
-  [Uses (typeof (MixinAddingUnidirectionalRelation1))]
+  [Uses (typeof(MixinAddingUnidirectionalRelation1))]
   [DBTable ("MixedDomains_TargetWithUnidirectionalMixin1")]
   [TestDomain]
   public class TargetClassWithUnidirectionalMixin1 : DomainObject, ISupportsGetObject
@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
     [StorageClassNone]
     public Computer RedirectedComputer
     {
-      [LinqPropertyRedirection (typeof (MixinAddingUnidirectionalRelation1), "Computer")] get { throw new NotImplementedException(); }
+      [LinqPropertyRedirection (typeof(MixinAddingUnidirectionalRelation1), "Computer")] get { throw new NotImplementedException(); }
     }
   }
 }

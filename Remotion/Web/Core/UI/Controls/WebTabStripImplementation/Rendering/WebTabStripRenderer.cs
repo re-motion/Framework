@@ -30,14 +30,14 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
   /// Implements <see cref="IWebTabStripRenderer"/> for standard mode rendering of <see cref="WebTabStrip"/> controls.
   /// <seealso cref="IWebTabStrip"/>
   /// </summary>
-  [ImplementationFor (typeof (IWebTabStripRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(IWebTabStripRenderer), Lifetime = LifetimeKind.Singleton)]
   public class WebTabStripRenderer : RendererBase<IWebTabStrip>, IWebTabStripRenderer
   {
     public WebTabStripRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
     }
 
@@ -48,12 +48,12 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string key = typeof (WebTabStripRenderer).GetFullNameChecked() + "_Style";
-      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof (WebTabStripRenderer), ResourceType.Html, "TabStrip.css");
+      string key = typeof(WebTabStripRenderer).GetFullNameChecked() + "_Style";
+      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(WebTabStripRenderer), ResourceType.Html, "TabStrip.css");
       htmlHeadAppender.RegisterStylesheetLink(key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
 
-      string keyScript = typeof (WebTabStripRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof (WebTabStripRenderer), ResourceType.Html, "TabStrip.js");
+      string keyScript = typeof(WebTabStripRenderer).GetFullNameChecked() + "_Script";
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(WebTabStripRenderer), ResourceType.Html, "TabStrip.js");
       htmlHeadAppender.RegisterJavaScriptInclude(keyScript, scriptUrl);
 
       ScriptUtility.Instance.RegisterJavaScriptInclude(control, htmlHeadAppender);
@@ -65,7 +65,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
       renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock(
           renderingContext.Control,
-          typeof (WebTabStrip),
+          typeof(WebTabStrip),
           Guid.NewGuid().ToString(),
           string.Format("WebTabStrip.Initialize ('#{0}');", renderingContext.Control.ClientID));
 

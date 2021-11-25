@@ -31,13 +31,13 @@ namespace Remotion.Mixins.Context.Serialization
     
     protected override T ConvertFromStorageFormat<T> (object value, int index)
     {
-      if (typeof (T) == typeof (Type[]))
+      if (typeof(T) == typeof(Type[]))
       {
         var convertedTypes = ConvertFromStorageFormat<string[]>(value, index);
         return (T) (object) Enumerable.ToArray(convertedTypes.Select(ConvertFromStorageFormat<Type>));
       }
 
-      if (typeof (T) == typeof (Type))
+      if (typeof(T) == typeof(Type))
       {
         var typeName = ConvertFromStorageFormat<string>(value, index);
         // TODO RM-7810: A meaningful exception should be thrown if no type can be found.

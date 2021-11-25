@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     // construction and disposing
 
     public ChangeState (object sender)
-      : this (sender, null)
+      : this(sender, null)
     {
     }
 

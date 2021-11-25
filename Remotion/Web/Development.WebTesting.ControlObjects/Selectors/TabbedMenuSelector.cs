@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
   public class TabbedMenuSelector : TypedControlSelectorBase<TabbedMenuControlObject>
   {
     public TabbedMenuSelector ()
-        : base ("TabbedMenu")
+        : base("TabbedMenu")
     {
     }
 

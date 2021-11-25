@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   // Also supports ClassWithComposedInterface.IComposedInterface
-  [Uses (typeof (NullMixin))] // Enforce a separate class context
+  [Uses (typeof(NullMixin))] // Enforce a separate class context
   public class DerivedClassWithComposedInterface : ClassWithComposedInterface
   {
   }

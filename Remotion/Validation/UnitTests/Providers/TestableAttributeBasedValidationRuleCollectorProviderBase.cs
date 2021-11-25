@@ -96,7 +96,7 @@ namespace Remotion.Validation.UnitTests.Providers
           {
             _validationPropertyRuleReflectorMocks[type]
                 .InSequence(sequence1)
-                .Setup(mock => mock.GetValidatedPropertyFunc(typeof (Employee)))
+                .Setup(mock => mock.GetValidatedPropertyFunc(typeof(Employee)))
                 .Returns(e => ((Employee) e).Position)
                 .Verifiable();
             _validationPropertyRuleReflectorMocks[type]
@@ -124,7 +124,7 @@ namespace Remotion.Validation.UnitTests.Providers
           {
             _validationPropertyRuleReflectorMocks[type]
                 .InSequence(sequence1)
-                .Setup(mock => mock.GetValidatedPropertyFunc(typeof (Employee)))
+                .Setup(mock => mock.GetValidatedPropertyFunc(typeof(Employee)))
                 .Returns(e => ((Employee) e).Notes)
                 .Verifiable();
             _validationPropertyRuleReflectorMocks[type]
@@ -152,7 +152,7 @@ namespace Remotion.Validation.UnitTests.Providers
           {
             _validationPropertyRuleReflectorMocks[type]
                 .InSequence(sequence1)
-                .Setup(mock => mock.GetValidatedPropertyFunc(typeof (SpecialCustomer1)))
+                .Setup(mock => mock.GetValidatedPropertyFunc(typeof(SpecialCustomer1)))
                 .Returns(c => ((SpecialCustomer1) c).LastName)
                 .Verifiable();
             _validationPropertyRuleReflectorMocks[type]
@@ -180,7 +180,7 @@ namespace Remotion.Validation.UnitTests.Providers
           {
             _validationPropertyRuleReflectorMocks[type]
                 .InSequence(sequence1)
-                .Setup(mock => mock.GetValidatedPropertyFunc(typeof (SpecialCustomer1)))
+                .Setup(mock => mock.GetValidatedPropertyFunc(typeof(SpecialCustomer1)))
                 .Returns(c => ((SpecialCustomer1) c).UserName)
                 .Verifiable();
             _validationPropertyRuleReflectorMocks[type]
@@ -206,7 +206,7 @@ namespace Remotion.Validation.UnitTests.Providers
           }
           else
           {
-            if (property.DeclaringType != typeof (Person))
+            if (property.DeclaringType != typeof(Person))
               throw new Exception(string.Format("Property '{0}' not expected.", property.Name));
           }
         }

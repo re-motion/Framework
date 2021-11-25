@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects
     /// </summary>
     /// <param name="oppositeProperty">The name of the opposite property. Must not be <see langword="null" /> or empty.</param>
     public DBBidirectionalRelationAttribute (string oppositeProperty)
-        : base (oppositeProperty)
+        : base(oppositeProperty)
     {
       ContainsForeignKey = false;
     }

@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   public class LabelControlObject : WebFormsControlObject, IControlObjectWithText
   {
     public LabelControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 

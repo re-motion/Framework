@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That(query1.EagerFetchQueries.Count, Is.EqualTo(0));
 
       var query2 = new Query(definition, new QueryParameterCollection());
-      var endPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof (Order).FullName + ".OrderItems");
+      var endPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems");
 
       query1.EagerFetchQueries.Add(endPointDefinition, query2);
       Assert.That(query1.EagerFetchQueries.Count, Is.EqualTo(1));
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That(query1.EagerFetchQueries.Count, Is.EqualTo(0));
 
       var query2 = new Query(definition, new QueryParameterCollection());
-      var endPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof (Order).FullName + ".OrderItems");
+      var endPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems");
 
       query1.EagerFetchQueries.Add(endPointDefinition, query2);
       Assert.That(query1.EagerFetchQueries.Count, Is.EqualTo(1));

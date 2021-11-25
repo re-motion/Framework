@@ -34,17 +34,17 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [SetUp]
     public void SetUp ()
     {
-      _basePropertyWithSingleAttribute = typeof (SampleClass).GetProperty("PropertyWithSingleAttribute");
-      _derivedPropertyWithSingleAttribute = typeof (DerivedSampleClass).GetProperty("PropertyWithSingleAttribute");
-      _derivedPropertyWithMultipleAttribute = typeof (DerivedSampleClass).GetProperty("PropertyWithMultipleAttribute");
-      _derivedProtectedProperty = typeof (DerivedSampleClass).GetProperty("ProtectedPropertyWithAttribute",
+      _basePropertyWithSingleAttribute = typeof(SampleClass).GetProperty("PropertyWithSingleAttribute");
+      _derivedPropertyWithSingleAttribute = typeof(DerivedSampleClass).GetProperty("PropertyWithSingleAttribute");
+      _derivedPropertyWithMultipleAttribute = typeof(DerivedSampleClass).GetProperty("PropertyWithMultipleAttribute");
+      _derivedProtectedProperty = typeof(DerivedSampleClass).GetProperty("ProtectedPropertyWithAttribute",
           BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
     [Test]
     public void Test_FromBaseWithAttribute ()
     {
-      Assert.That(AttributeUtility.IsDefined(_basePropertyWithSingleAttribute, typeof (InheritedAttribute), true), Is.True);
+      Assert.That(AttributeUtility.IsDefined(_basePropertyWithSingleAttribute, typeof(InheritedAttribute), true), Is.True);
     }
 
     [Test]
@@ -56,13 +56,13 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void Test_FromOverrideWithAttribute_ExpectAmbigousMatch ()
     {
-      Assert.That(AttributeUtility.IsDefined(_derivedPropertyWithMultipleAttribute, typeof (MultipleAttribute), true), Is.True);
+      Assert.That(AttributeUtility.IsDefined(_derivedPropertyWithMultipleAttribute, typeof(MultipleAttribute), true), Is.True);
     }
 
     [Test]
     public void Test_FromBaseWithInterface ()
     {
-      Assert.That(AttributeUtility.IsDefined(_basePropertyWithSingleAttribute, typeof (ICustomAttribute), true), Is.True);
+      Assert.That(AttributeUtility.IsDefined(_basePropertyWithSingleAttribute, typeof(ICustomAttribute), true), Is.True);
     }
 
     [Test]
@@ -74,7 +74,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void Test_FromOverrideWithInterface_ExpectAmbigousMatch ()
     {
-      Assert.That(AttributeUtility.IsDefined(_derivedPropertyWithMultipleAttribute, typeof (ICustomAttribute), true), Is.True);
+      Assert.That(AttributeUtility.IsDefined(_derivedPropertyWithMultipleAttribute, typeof(ICustomAttribute), true), Is.True);
     }
 
     [Test]
@@ -90,7 +90,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     public void Test_FromBaseWithInvalidType ()
     {
       Assert.That(
-          () => AttributeUtility.IsDefined(_basePropertyWithSingleAttribute, typeof (object), true),
+          () => AttributeUtility.IsDefined(_basePropertyWithSingleAttribute, typeof(object), true),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("The attribute type must be assignable to System.Attribute or an interface.", "attributeType"));
     }
@@ -98,32 +98,32 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
     [Test]
     public void Test_FromOverrideWithAttribute ()
     {
-      Assert.That(AttributeUtility.IsDefined(_derivedPropertyWithSingleAttribute, typeof (InheritedAttribute), true), Is.True);
+      Assert.That(AttributeUtility.IsDefined(_derivedPropertyWithSingleAttribute, typeof(InheritedAttribute), true), Is.True);
     }
 
     [Test]
     [Ignore ("Not supported at the moment by Attribute.GetCustomAttribute - should we leave this or add a workaround?")]
     public void Test_FromProtectedOverrideWithAttribute ()
     {
-      Assert.That(AttributeUtility.IsDefined(_derivedProtectedProperty, typeof (InheritedAttribute), true), Is.True);
+      Assert.That(AttributeUtility.IsDefined(_derivedProtectedProperty, typeof(InheritedAttribute), true), Is.True);
     }
 
     [Test]
     public void Test_FromOverrideWithInterface ()
     {
-      Assert.That(AttributeUtility.IsDefined(_derivedPropertyWithSingleAttribute, typeof (ICustomAttribute), true), Is.True);
+      Assert.That(AttributeUtility.IsDefined(_derivedPropertyWithSingleAttribute, typeof(ICustomAttribute), true), Is.True);
     }
 
     [Test]
     public void Test_FromOverrideWithAttributeAndWithoutInherited ()
     {
-      Assert.That(AttributeUtility.IsDefined(_derivedPropertyWithSingleAttribute, typeof (InheritedAttribute), false), Is.False);
+      Assert.That(AttributeUtility.IsDefined(_derivedPropertyWithSingleAttribute, typeof(InheritedAttribute), false), Is.False);
     }
 
     [Test]
     public void Test_FromOverrideWithInterfaceAndWithoutInherited ()
     {
-      Assert.That(AttributeUtility.IsDefined(_derivedPropertyWithSingleAttribute, typeof (ICustomAttribute), false), Is.False);
+      Assert.That(AttributeUtility.IsDefined(_derivedPropertyWithSingleAttribute, typeof(ICustomAttribute), false), Is.False);
     }
   }
 }

@@ -29,7 +29,7 @@ using Remotion.Web.UI.Globalization;
 
 namespace Remotion.Web.UI.Controls
 {
-  [TypeConverter (typeof (IconInfoConverter))]
+  [TypeConverter (typeof(IconInfoConverter))]
   public sealed class IconInfo
   {
     public static IconInfo CreateSpacer (IResourceUrlFactory resourceUrlFactory)
@@ -72,27 +72,27 @@ namespace Remotion.Web.UI.Controls
     }
 
     public IconInfo (string url, Unit width, Unit height)
-        : this (url, null, null, width, height)
+        : this(url, null, null, width, height)
     {
     }
 
     public IconInfo (string url, string? alternateText, string? toolTip, string width, string height)
-        : this (url, alternateText, toolTip, new Unit(width), new Unit(height))
+        : this(url, alternateText, toolTip, new Unit(width), new Unit(height))
     {
     }
 
     public IconInfo (string url, string width, string height)
-        : this (url, null, null, width, height)
+        : this(url, null, null, width, height)
     {
     }
 
     public IconInfo (string url)
-        : this (url, null, null, Unit.Empty, Unit.Empty)
+        : this(url, null, null, Unit.Empty, Unit.Empty)
     {
     }
 
     public IconInfo ()
-        : this (string.Empty)
+        : this(string.Empty)
     {
     }
 
@@ -128,7 +128,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     [PersistenceMode (PersistenceMode.Attribute)]
-    [DefaultValue (typeof (Unit), "")]
+    [DefaultValue (typeof(Unit), "")]
     [NotifyParentProperty (true)]
     public Unit Width
     {
@@ -137,7 +137,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     [PersistenceMode (PersistenceMode.Attribute)]
-    [DefaultValue (typeof (Unit), "")]
+    [DefaultValue (typeof(Unit), "")]
     [NotifyParentProperty (true)]
     public Unit Height
     {
@@ -239,14 +239,14 @@ namespace Remotion.Web.UI.Controls
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
       if (context == null // Requried to circumvent the Designer
-          && sourceType == typeof (string))
+          && sourceType == typeof(string))
         return true;
       return base.CanConvertFrom(context, sourceType);
     }
 
     public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
     {
-      if (destinationType == typeof (string))
+      if (destinationType == typeof(string))
         return true;
       return base.CanConvertTo(context, destinationType);
     }
@@ -278,7 +278,7 @@ namespace Remotion.Web.UI.Controls
 
     public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo culture, object? value, Type destinationType)
     {
-      if (destinationType == typeof (string))
+      if (destinationType == typeof(string))
       {
         if (value == null)
           return null;

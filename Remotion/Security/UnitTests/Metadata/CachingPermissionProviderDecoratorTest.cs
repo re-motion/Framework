@@ -36,7 +36,7 @@ namespace Remotion.Security.UnitTests.Metadata
     {
       _innerProviderStub = new Mock<IPermissionProvider>();
       _cacheDecorator = new CachingPermissionProviderDecorator(_innerProviderStub.Object);
-      _type = typeof (SecurableObject);
+      _type = typeof(SecurableObject);
       _methodInformation = MethodInfoAdapter.Create(_type.GetMethod("Save"));
     }
 

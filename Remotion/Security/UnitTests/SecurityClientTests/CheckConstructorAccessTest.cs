@@ -38,7 +38,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(GeneralAccessTypes.Create, true);
 
-      _securityClient.CheckConstructorAccess(typeof (SecurableObject));
+      _securityClient.CheckConstructorAccess(typeof(SecurableObject));
 
       _testHelper.VerifyAll();
     }
@@ -49,7 +49,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(GeneralAccessTypes.Create, false);
 
       Assert.That(
-          () => _securityClient.CheckConstructorAccess(typeof (SecurableObject)),
+          () => _securityClient.CheckConstructorAccess(typeof(SecurableObject)),
           Throws.InstanceOf<PermissionDeniedException>());
       _testHelper.VerifyAll();
     }
@@ -59,7 +59,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckConstructorAccess(typeof (SecurableObject));
+        _securityClient.CheckConstructorAccess(typeof(SecurableObject));
       }
 
       _testHelper.VerifyAll();

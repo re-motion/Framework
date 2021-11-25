@@ -52,7 +52,7 @@ public class WorkContext: IDisposable
     /// </returns>
     public WorkContext[] ToArray ()
     {
-      return (WorkContext[]) _stack.ToArray(typeof (WorkContext)); 
+      return (WorkContext[]) _stack.ToArray(typeof(WorkContext)); 
     }
 
     /// <summary>

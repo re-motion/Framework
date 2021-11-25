@@ -38,7 +38,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(GeneralAccessTypes.Create, true);
 
-      bool hasAccess = _securityClient.HasConstructorAccess(typeof (SecurableObject));
+      bool hasAccess = _securityClient.HasConstructorAccess(typeof(SecurableObject));
 
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.True);
@@ -49,7 +49,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess(GeneralAccessTypes.Create, false);
 
-      bool hasAccess = _securityClient.HasConstructorAccess(typeof (SecurableObject));
+      bool hasAccess = _securityClient.HasConstructorAccess(typeof(SecurableObject));
 
       _testHelper.VerifyAll();
       Assert.That(hasAccess, Is.False);
@@ -62,7 +62,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasConstructorAccess(typeof (SecurableObject));
+        hasAccess = _securityClient.HasConstructorAccess(typeof(SecurableObject));
       }
 
       _testHelper.VerifyAll();

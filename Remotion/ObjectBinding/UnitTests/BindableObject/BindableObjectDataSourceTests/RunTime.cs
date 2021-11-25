@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
       _dataSource = new BindableObjectDataSource();
 
       _provider = new BindableObjectProvider();
-      BusinessObjectProvider.SetProvider(typeof (BindableObjectProviderAttribute), _provider);
-      BusinessObjectProvider.SetProvider(typeof (BindableObjectWithIdentityProviderAttribute), _provider);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), _provider);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectWithIdentityProviderAttribute), _provider);
     }
 
     [Test]
@@ -55,8 +55,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
     public void GetAndSetType ()
     {
       Assert.That(_dataSource.Type, Is.Null);
-      _dataSource.Type = typeof (SimpleBusinessObjectClass);
-      Assert.That(_dataSource.Type, Is.EqualTo(typeof (SimpleBusinessObjectClass)));
+      _dataSource.Type = typeof(SimpleBusinessObjectClass);
+      Assert.That(_dataSource.Type, Is.EqualTo(typeof(SimpleBusinessObjectClass)));
     }
 
     [Test]
@@ -76,8 +76,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
     [Test]
     public void GetBusinessObjectClass_WithValidType ()
     {
-      _dataSource.Type = typeof (SimpleBusinessObjectClass);
-      Type type = typeof (SimpleBusinessObjectClass);
+      _dataSource.Type = typeof(SimpleBusinessObjectClass);
+      Type type = typeof(SimpleBusinessObjectClass);
       ArgumentUtility.CheckNotNull("type", type);
       Assert.That(_dataSource.BusinessObjectClass, Is.SameAs(BindableObjectProviderTestHelper.GetBindableObjectClass(type)));
     }
@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
     [Test]
     public void GetBusinessObjectClass_WithTypeNotUsingBindableObjectMixin ()
     {
-      _dataSource.Type = typeof (StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass);
+      _dataSource.Type = typeof(StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass);
       Assert.That(
           () => _dataSource.BusinessObjectClass,
           Throws.ArgumentException

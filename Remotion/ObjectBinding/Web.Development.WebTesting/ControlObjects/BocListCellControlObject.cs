@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private readonly BocListCellFunctionality _impl;
 
     public BocListCellControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
       _impl = new BocListCellFunctionality(context);
     }

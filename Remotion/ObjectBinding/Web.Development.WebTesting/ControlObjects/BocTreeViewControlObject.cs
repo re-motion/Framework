@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private readonly BocTreeViewNodeControlObject _metaRootNode;
 
     public BocTreeViewControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
       _metaRootNode = new BocTreeViewNodeControlObject(context);
     }

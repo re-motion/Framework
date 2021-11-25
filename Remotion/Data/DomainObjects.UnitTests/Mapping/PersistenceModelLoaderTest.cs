@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _storageProviderDefinitionStub = MockRepository.GenerateStub<IStorageProviderDefinitionFinder>();
       _persistenceModelLoader = new PersistenceModelLoader(_storageProviderDefinitionStub);
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof (Order), baseClass: null);
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
     }
 
     [Test]
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var result = _persistenceModelLoader.CreatePersistenceMappingValidator(_classDefinition);
 
       Assert.That(result, Is.Not.Null);
-      Assert.That(result, Is.TypeOf(typeof (PersistenceMappingValidator)));
+      Assert.That(result, Is.TypeOf(typeof(PersistenceMappingValidator)));
     }
   }
 }

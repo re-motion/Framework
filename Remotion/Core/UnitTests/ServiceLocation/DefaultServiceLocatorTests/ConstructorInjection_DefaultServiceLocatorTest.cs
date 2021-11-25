@@ -27,8 +27,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_ConstructorWithOneParameter_PerformsIndirectResolutionCalls ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
-          typeof (ITestType),
-          typeof (TestImplementationWithOneConstructorParameter));
+          typeof(ITestType),
+          typeof(TestImplementationWithOneConstructorParameter));
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register(serviceConfigurationEntry);
@@ -44,8 +44,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_ConstructorWithMultipleParameters_PerformsIndirectResolutionCalls ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
-          typeof (ITestType),
-          typeof (TestImplementationWithMultipleConstructorParameters));
+          typeof(ITestType),
+          typeof(TestImplementationWithMultipleConstructorParameters));
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register(serviceConfigurationEntry);
@@ -69,8 +69,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_ConstructorWithRecursiveParameter_PerformsIndirectResolutionCalls ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
-          typeof (ITestType),
-          typeof (TestImplementationWithRecursiceConstructorParameter));
+          typeof(ITestType),
+          typeof(TestImplementationWithRecursiceConstructorParameter));
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register(serviceConfigurationEntry);
@@ -89,8 +89,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_ConstructorWithParameterWithInstanceLifetime_UsesDifferentInstances ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
-          typeof (ITestType),
-          typeof (TestImplementationWithMultipleConstructorParameters));
+          typeof(ITestType),
+          typeof(TestImplementationWithMultipleConstructorParameters));
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register(serviceConfigurationEntry);
@@ -116,8 +116,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_ConstructorWithParameterWithSingletonLifetime_UsesSameInstance ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry(
-          typeof (ITestType),
-          typeof (TestImplementationWithMultipleConstructorParameters));
+          typeof(ITestType),
+          typeof(TestImplementationWithMultipleConstructorParameters));
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register(serviceConfigurationEntry);
@@ -140,16 +140,16 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_CompoundWithAdditionalConstructorParameters_PerformsIndirectResolutionCalls ()
     {
       var serviceConfigurationEntry = CreateCompoundServiceConfigurationEntry(
-          typeof (ITestType),
-          typeof (TestCompoundWithAdditionalConstructorParameters),
-          new[] { typeof (TestImplementation1) });
+          typeof(ITestType),
+          typeof(TestCompoundWithAdditionalConstructorParameters),
+          new[] { typeof(TestImplementation1) });
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register(serviceConfigurationEntry);
       serviceLocator.Register(CreateSingleService());
       serviceLocator.Register(CreateMultipleService());
 
-      var instance = serviceLocator.GetInstance(typeof (ITestType));
+      var instance = serviceLocator.GetInstance(typeof(ITestType));
 
       Assert.That(instance, Is.TypeOf<TestCompoundWithAdditionalConstructorParameters>());
       var compoundInstance = (TestCompoundWithAdditionalConstructorParameters) instance;
@@ -165,16 +165,16 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_DecoratorWithAdditionalConstructorParameters_PerformsIndirectResolutionCalls ()
     {
       var serviceConfigurationEntry = CreateDecoratorServiceConfigurationEntry(
-          typeof (ITestType),
-          new[] { typeof (TestDecoratorWithAdditionalConstructorParameters) },
-          typeof (TestImplementation1));
+          typeof(ITestType),
+          new[] { typeof(TestDecoratorWithAdditionalConstructorParameters) },
+          typeof(TestImplementation1));
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register(serviceConfigurationEntry);
       serviceLocator.Register(CreateSingleService());
       serviceLocator.Register(CreateMultipleService());
 
-      var instance = serviceLocator.GetInstance(typeof (ITestType));
+      var instance = serviceLocator.GetInstance(typeof(ITestType));
 
       Assert.That(instance, Is.TypeOf<TestDecoratorWithAdditionalConstructorParameters>());
       var decoratorInstance = (TestDecoratorWithAdditionalConstructorParameters) instance;

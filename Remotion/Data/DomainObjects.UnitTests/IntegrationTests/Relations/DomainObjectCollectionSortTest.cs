@@ -64,8 +64,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemA, _itemB }));
       Assert.That(_owningCustomer.State.IsUnchanged, Is.True);
-      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
-      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.False);
+      Assert.That(_owningCustomer.Properties[typeof(Customer), "Orders"].HasChanged, Is.False);
+      Assert.That(_owningCustomer.Properties[typeof(Customer), "Orders"].HasBeenTouched, Is.False);
       Assert.That(_itemA.State.IsUnchanged, Is.True);
       Assert.That(_itemB.State.IsUnchanged, Is.True);
 
@@ -74,8 +74,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
       Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemA, _itemB }));
       Assert.That(_owningCustomer.State.IsUnchanged, Is.True);
-      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
-      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.True);
+      Assert.That(_owningCustomer.Properties[typeof(Customer), "Orders"].HasChanged, Is.False);
+      Assert.That(_owningCustomer.Properties[typeof(Customer), "Orders"].HasBeenTouched, Is.True);
       Assert.That(_itemA.State.IsUnchanged, Is.True);
       Assert.That(_itemB.State.IsUnchanged, Is.True);
     }
@@ -85,8 +85,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemA, _itemB }));
       Assert.That(_owningCustomer.State.IsUnchanged, Is.True);
-      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
-      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.False);
+      Assert.That(_owningCustomer.Properties[typeof(Customer), "Orders"].HasChanged, Is.False);
+      Assert.That(_owningCustomer.Properties[typeof(Customer), "Orders"].HasBeenTouched, Is.False);
       Assert.That(_itemA.State.IsUnchanged, Is.True);
       Assert.That(_itemB.State.IsUnchanged, Is.True);
 
@@ -94,8 +94,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
       Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemB, _itemA }));
       Assert.That(_owningCustomer.State.IsUnchanged, Is.True);
-      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
-      Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.True);
+      Assert.That(_owningCustomer.Properties[typeof(Customer), "Orders"].HasChanged, Is.False);
+      Assert.That(_owningCustomer.Properties[typeof(Customer), "Orders"].HasBeenTouched, Is.True);
       Assert.That(_itemA.State.IsUnchanged, Is.True);
       Assert.That(_itemB.State.IsUnchanged, Is.True);
     }
@@ -107,8 +107,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       {
         Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemA, _itemB }));
         Assert.That(_owningCustomer.State.IsUnchanged, Is.True);
-        Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.False);
-        Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.False);
+        Assert.That(_owningCustomer.Properties[typeof(Customer), "Orders"].HasChanged, Is.False);
+        Assert.That(_owningCustomer.Properties[typeof(Customer), "Orders"].HasBeenTouched, Is.False);
         Assert.That(_itemA.State.IsUnchanged, Is.True);
         Assert.That(_itemB.State.IsUnchanged, Is.True);
 
@@ -116,8 +116,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
         Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemB, _itemA }));
         Assert.That(_owningCustomer.State.IsChanged, Is.True);
-        Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasChanged, Is.True);
-        Assert.That(_owningCustomer.Properties[typeof (Customer), "Orders"].HasBeenTouched, Is.True);
+        Assert.That(_owningCustomer.Properties[typeof(Customer), "Orders"].HasChanged, Is.True);
+        Assert.That(_owningCustomer.Properties[typeof(Customer), "Orders"].HasBeenTouched, Is.True);
         Assert.That(_itemA.State.IsUnchanged, Is.True);
         Assert.That(_itemB.State.IsUnchanged, Is.True);
       }

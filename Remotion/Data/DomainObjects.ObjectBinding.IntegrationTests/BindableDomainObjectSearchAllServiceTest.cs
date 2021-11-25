@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void SupportsProperty_True_SingleProperty ()
     {
-      var property = GetBusinessObjectProperty(typeof (BindableDomainObjectWithProperties), "RequiredRelatedObjectProperty");
+      var property = GetBusinessObjectProperty(typeof(BindableDomainObjectWithProperties), "RequiredRelatedObjectProperty");
       Assert.That(property, Is.Not.Null);
       Assert.That(_service.SupportsProperty(property), Is.True);
     }
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void SupportsProperty_True_CollectionProperty ()
     {
-      var property = GetBusinessObjectProperty(typeof (BindableDomainObjectWithProperties), "RequiredBidirectionalRelatedObjectsProperty");
+      var property = GetBusinessObjectProperty(typeof(BindableDomainObjectWithProperties), "RequiredBidirectionalRelatedObjectsProperty");
       Assert.That(property, Is.Not.Null);
       Assert.That(_service.SupportsProperty(property), Is.True);
     }
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void SupportsProperty_False ()
     {
-      var property = GetBusinessObjectProperty(typeof (BindableDomainObjectWithProperties), "ReferencePropertyNotInMapping");
+      var property = GetBusinessObjectProperty(typeof(BindableDomainObjectWithProperties), "ReferencePropertyNotInMapping");
       Assert.That(property, Is.Not.Null);
       Assert.That(_service.SupportsProperty(property), Is.False);
     }
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     public void GetAllObjects_ThrowsOnNonDomainObjects ()
     {
       Assert.That(
-          () => _service.GetAllObjects(ClientTransaction.Current, typeof (object)),
+          () => _service.GetAllObjects(ClientTransaction.Current, typeof(object)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "This service only supports queries for DomainObject types.", "type"));
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     public void GetAllObjects_ThrowsOnNonBindableObjects ()
     {
       Assert.That(
-          () => _service.GetAllObjects(ClientTransaction.Current, typeof (NonBindableDomainObject)),
+          () => _service.GetAllObjects(ClientTransaction.Current, typeof(NonBindableDomainObject)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "This service only supports queries for bindable DomainObject types, the " 
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void GetAllObjects_WorksOnBindableDomainObjects ()
     {
-      var result = _service.GetAllObjects(ClientTransaction.Current, typeof (SampleBindableDomainObject));
+      var result = _service.GetAllObjects(ClientTransaction.Current, typeof(SampleBindableDomainObject));
       Assert.That(result, Is.EquivalentTo(new[] { _persistedSampleObject1, _persistedSampleObject2 }));
     }
 
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     public void GetAllObjects_DifferentTransaction ()
     {
       var transaction = ClientTransaction.CreateRootTransaction();
-      var result = _service.GetAllObjects(transaction, typeof (SampleBindableDomainObject));
+      var result = _service.GetAllObjects(transaction, typeof(SampleBindableDomainObject));
       Assert.That(transaction.IsEnlisted((DomainObject) result[0]), Is.True);
       Assert.That(ClientTransaction.Current.IsEnlisted((DomainObject) result[0]), Is.False);
     }
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void Search_ThrowsOnUnsupportedProperty ()
     {
-      var property = GetBusinessObjectProperty(typeof (BindableDomainObjectWithProperties), "ReferencePropertyNotInMapping");
+      var property = GetBusinessObjectProperty(typeof(BindableDomainObjectWithProperties), "ReferencePropertyNotInMapping");
       Assert.That(property, Is.Not.Null);
       Assert.That(_service.SupportsProperty(property), Is.False);
       Assert.That(
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void Search_SingleProperty ()
     {
-      var property = GetBusinessObjectProperty(typeof (OppositeBidirectionalBindableDomainObject), "OppositeSampleObject");
+      var property = GetBusinessObjectProperty(typeof(OppositeBidirectionalBindableDomainObject), "OppositeSampleObject");
       var result = _service.Search(null, property, null);
       Assert.That(result, Is.EquivalentTo(new[] { _persistedSampleObject1, _persistedSampleObject2 }));
     }
@@ -132,7 +132,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void Search_CollectionProperty ()
     {
-      var property = GetBusinessObjectProperty(typeof (OppositeBidirectionalBindableDomainObject), "OppositeSampleObjects");
+      var property = GetBusinessObjectProperty(typeof(OppositeBidirectionalBindableDomainObject), "OppositeSampleObjects");
       var result = _service.Search(null, property, null);
       Assert.That(result, Is.EquivalentTo(new[] { _persistedSampleObject1, _persistedSampleObject2 }));
     }
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void Search_UsesCurrentTransaction_WithNullObject ()
     {
-      var property = GetBusinessObjectProperty(typeof (OppositeBidirectionalBindableDomainObject), "OppositeSampleObject");
+      var property = GetBusinessObjectProperty(typeof(OppositeBidirectionalBindableDomainObject), "OppositeSampleObject");
       var result = _service.Search(null, property, null);
       Assert.That(result.Length, Is.EqualTo(2));
       Assert.That(((DomainObject) result[0]).RootTransaction, Is.SameAs(ClientTransaction.Current));
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void Search_UsesCurrentTransaction_WithNonDomainObject ()
     {
-      var property = GetBusinessObjectProperty(typeof (BindableNonDomainObjectReferencingDomainObject), "OppositeSampleObject");
+      var property = GetBusinessObjectProperty(typeof(BindableNonDomainObjectReferencingDomainObject), "OppositeSampleObject");
       var result = _service.Search(new BindableNonDomainObjectReferencingDomainObject(), property, null);
       Assert.That(result.Length, Is.EqualTo(2));
       Assert.That(((DomainObject) result[0]).RootTransaction, Is.SameAs(ClientTransaction.Current));
@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       var otherTransaction = ClientTransaction.CreateRootTransaction();
       var referencingObject = otherTransaction.ExecuteInScope(() => OppositeBidirectionalBindableDomainObject.NewObject());
 
-      var property = GetBusinessObjectProperty(typeof (OppositeBidirectionalBindableDomainObject), "OppositeSampleObject");
+      var property = GetBusinessObjectProperty(typeof(OppositeBidirectionalBindableDomainObject), "OppositeSampleObject");
       var result = _service.Search(referencingObject, property, null);
 
       Assert.That(result.Length, Is.EqualTo(2));
@@ -173,7 +173,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     {
       using (ClientTransactionScope.EnterNullScope())
       {
-        var property = GetBusinessObjectProperty(typeof (OppositeBidirectionalBindableDomainObject), "OppositeSampleObject");
+        var property = GetBusinessObjectProperty(typeof(OppositeBidirectionalBindableDomainObject), "OppositeSampleObject");
         Assert.That(
             () => _service.Search(null, property, null),
             Throws.InvalidOperationException

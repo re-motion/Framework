@@ -34,7 +34,7 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
         HtmlTextWriter writer,
         IHtmlHeadContents control,
         IReadOnlyCollection<HtmlHeadElement> htmlHeadElements)
-        : base (httpContext, writer, control)
+        : base(httpContext, writer, control)
     {
       ArgumentUtility.CheckNotNull("htmlHeadElements", htmlHeadElements);
 

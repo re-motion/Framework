@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IDomainObjectCollectionData collectionData,
         IRelationEndPointProvider endPointProvider, 
         IClientTransactionEventSink transactionEventSink)
-        : base (
+        : base(
             ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
             ArgumentUtility.CheckNotNull("removedObject", removedObject),
             null,

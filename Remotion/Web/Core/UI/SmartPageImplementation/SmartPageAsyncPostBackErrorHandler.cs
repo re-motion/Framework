@@ -61,7 +61,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
         string aspNetErrorPage;
         using (var reader = new StreamReader(
             Assembly.GetExecutingAssembly().GetManifestResourceStream(
-                typeof (SmartPageInfo),
+                typeof(SmartPageInfo),
                 "Generic_Error_Async_Remote.htm")!))
         {
           aspNetErrorPage = reader.ReadToEnd();

@@ -60,154 +60,154 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     public void GetStorageType_ForProperty_SimpleValueTypes ()
     {
       CheckGetStorageType_ForProperty(
-          typeof (Boolean),
+          typeof(Boolean),
           null,
           false,
           false,
-          typeof (bool),
+          typeof(bool),
           "bit",
           DbType.Boolean,
           false,
           null,
-          typeof (bool),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (bool)));
+          typeof(bool),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(bool)));
       CheckGetStorageType_ForProperty(
-          typeof (Byte),
+          typeof(Byte),
           null,
           false,
           false,
-          typeof (Byte),
+          typeof(Byte),
           "tinyint",
           DbType.Byte,
           false,
           null,
-          typeof (byte),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (byte)));
+          typeof(byte),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte)));
       CheckGetStorageType_ForProperty(
-          typeof (DateTime),
+          typeof(DateTime),
           null,
           false,
           false,
-          typeof (DateTime),
+          typeof(DateTime),
           "datetime",
           DbType.DateTime,
           false,
           null,
-          typeof (DateTime),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (DateTime)));
+          typeof(DateTime),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(DateTime)));
       CheckGetStorageType_ForProperty(
-          typeof (Decimal),
+          typeof(Decimal),
           null,
           false,
           false,
-          typeof (Decimal),
+          typeof(Decimal),
           "decimal (38, 3)",
           DbType.Decimal,
           false,
           null,
-          typeof (decimal),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (Decimal)));
+          typeof(decimal),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Decimal)));
       CheckGetStorageType_ForProperty(
-          typeof (Double),
+          typeof(Double),
           null,
           false,
           false,
-          typeof (Double),
+          typeof(Double),
           "float",
           DbType.Double,
           false,
           null,
-          typeof (double),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (Double)));
+          typeof(double),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Double)));
       CheckGetStorageType_ForProperty(
-          typeof (Guid),
+          typeof(Guid),
           null,
           false,
           false,
-          typeof (Guid),
+          typeof(Guid),
           "uniqueidentifier",
           DbType.Guid,
           false,
           null,
-          typeof (Guid),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (Guid)));
+          typeof(Guid),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Guid)));
       CheckGetStorageType_ForProperty(
-          typeof (Int16),
+          typeof(Int16),
           null,
           false,
           false,
-          typeof (Int16),
+          typeof(Int16),
           "smallint",
           DbType.Int16,
           false,
           null,
-          typeof (short),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (Int16)));
+          typeof(short),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Int16)));
       CheckGetStorageType_ForProperty(
-          typeof (Int32),
+          typeof(Int32),
           null,
           false,
           false,
-          typeof (Int32),
+          typeof(Int32),
           "int",
           DbType.Int32,
           false,
           null,
-          typeof (int),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (Int32)));
+          typeof(int),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Int32)));
       CheckGetStorageType_ForProperty(
-          typeof (Int64),
+          typeof(Int64),
           null,
           false,
           false,
-          typeof (Int64),
+          typeof(Int64),
           "bigint",
           DbType.Int64,
           false,
           null,
-          typeof (long),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (Int64)));
+          typeof(long),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Int64)));
       CheckGetStorageType_ForProperty(
-          typeof (Single),
+          typeof(Single),
           null,
           false,
           false,
-          typeof (Single),
+          typeof(Single),
           "real",
           DbType.Single,
           false,
           null,
-          typeof (float),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (Single)));
+          typeof(float),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Single)));
     }
 
     [Test]
     public void GetStorageType_ForProperty_Enums ()
     {
       CheckGetStorageType_ForProperty(
-          typeof (Int32Enum),
+          typeof(Int32Enum),
           null, 
           false, 
           false,
-          typeof (Int32),
+          typeof(Int32),
           "int",
           DbType.Int32, 
           false,
           null,
-          typeof (Int32Enum),
-          Is.TypeOf(typeof (AdvancedEnumConverter)).With.Property("EnumType").EqualTo(typeof (Int32Enum)));
+          typeof(Int32Enum),
+          Is.TypeOf(typeof(AdvancedEnumConverter)).With.Property("EnumType").EqualTo(typeof(Int32Enum)));
       CheckGetStorageType_ForProperty(
-          typeof (Int16Enum),
+          typeof(Int16Enum),
           null, 
           false, 
           false,
-          typeof (Int16),
+          typeof(Int16),
           "smallint",
           DbType.Int16, 
           false,
           null,
-          typeof (Int16Enum),
-          Is.TypeOf(typeof (AdvancedEnumConverter)).With.Property("EnumType").EqualTo(typeof (Int16Enum)));
+          typeof(Int16Enum),
+          Is.TypeOf(typeof(AdvancedEnumConverter)).With.Property("EnumType").EqualTo(typeof(Int16Enum)));
     }
 
     [Test]
@@ -215,238 +215,238 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     {
       var maxColorIDLength = Color.Values.Green().ID.Length;
       CheckGetStorageType_ForProperty(
-          typeof (Color),
+          typeof(Color),
           null, 
           false, 
           false,
-          typeof (string),
+          typeof(string),
           "varchar (" + maxColorIDLength + ")",
           DbType.AnsiString, 
           false,
           maxColorIDLength,
-          typeof (Color),
-          Is.TypeOf(typeof (ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof (Color)));
+          typeof(Color),
+          Is.TypeOf(typeof(ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof(Color)));
       CheckGetStorageType_ForProperty(
-          typeof (Color),
+          typeof(Color),
           null,
           true,
           false,
-          typeof (string),
+          typeof(string),
           "varchar (" + maxColorIDLength + ")",
           DbType.AnsiString,
           true,
           maxColorIDLength,
-          typeof (Color),
-          Is.TypeOf(typeof (ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof (Color)));
+          typeof(Color),
+          Is.TypeOf(typeof(ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof(Color)));
       CheckGetStorageType_ForProperty(
-          typeof (Color),
+          typeof(Color),
           null,
           false,
           true,
-          typeof (string),
+          typeof(string),
           "varchar (" + maxColorIDLength + ")",
           DbType.AnsiString,
           true,
           maxColorIDLength,
-          typeof (Color),
-          Is.TypeOf(typeof (ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof (Color)));
+          typeof(Color),
+          Is.TypeOf(typeof(ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof(Color)));
       CheckGetStorageType_ForProperty(
-          typeof (ExtensibleEnumNotDefiningAnyValues),
+          typeof(ExtensibleEnumNotDefiningAnyValues),
           null,
           false,
           true,
-          typeof (string),
+          typeof(string),
           "varchar (max)",
           DbType.AnsiString,
           true,
           null,
-          typeof (ExtensibleEnumNotDefiningAnyValues),
-          Is.TypeOf(typeof (ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof (ExtensibleEnumNotDefiningAnyValues)));
+          typeof(ExtensibleEnumNotDefiningAnyValues),
+          Is.TypeOf(typeof(ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof(ExtensibleEnumNotDefiningAnyValues)));
     }
 
     [Test]
     public void GetStorageType_ForProperty_String ()
     {
       CheckGetStorageType_ForProperty(
-          typeof (String),
+          typeof(String),
           200, 
           false, 
           false,
-          typeof (string),
+          typeof(string),
           "nvarchar (200)",
           DbType.String, 
           false,
           200,
-          typeof (string),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (string)));
+          typeof(string),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
       CheckGetStorageType_ForProperty(
-          typeof (String),
+          typeof(String),
           200,
           false,
           true,
-          typeof (string),
+          typeof(string),
           "nvarchar (200)",
           DbType.String,
           true,
           200,
-          typeof (string),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (string)));
+          typeof(string),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
       CheckGetStorageType_ForProperty(
-          typeof (String),
+          typeof(String),
           200,
           true,
           false,
-          typeof (string),
+          typeof(string),
           "nvarchar (200)",
           DbType.String,
           true,
           200,
-          typeof (string),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (string)));
+          typeof(string),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
       CheckGetStorageType_ForProperty(
-          typeof (String),
+          typeof(String),
           null, 
           false, 
           false,
-          typeof (string),
+          typeof(string),
           "nvarchar (max)",
           DbType.String, 
           false,
           -1,
-          typeof (string),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (string)));
+          typeof(string),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
     }
 
     [Test]
     public void GetStorageType_ForProperty_ByteArray ()
     {
       CheckGetStorageType_ForProperty(
-          typeof (Byte[]),
+          typeof(Byte[]),
           200, 
           false, 
           false,
-          typeof (Byte[]),
+          typeof(Byte[]),
           "varbinary (200)",
           DbType.Binary, 
           false,
           200,
-          typeof (byte[]),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (byte[])));
+          typeof(byte[]),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
       CheckGetStorageType_ForProperty(
-          typeof (Byte[]),
+          typeof(Byte[]),
           200,
           true,
           false,
-          typeof (Byte[]),
+          typeof(Byte[]),
           "varbinary (200)",
           DbType.Binary,
           true,
           200,
-          typeof (byte[]),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (byte[])));
+          typeof(byte[]),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
       CheckGetStorageType_ForProperty(
-          typeof (Byte[]),
+          typeof(Byte[]),
           200,
           false,
           true,
-          typeof (Byte[]),
+          typeof(Byte[]),
           "varbinary (200)",
           DbType.Binary,
           true,
           200,
-          typeof (byte[]),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (byte[])));
+          typeof(byte[]),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
       CheckGetStorageType_ForProperty(
-          typeof (Byte[]),
+          typeof(Byte[]),
           null, 
           false, 
           false,
-          typeof (Byte[]),
+          typeof(Byte[]),
           "varbinary (max)",
           DbType.Binary, 
           false,
           -1,
-          typeof (byte[]),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (byte[])));
+          typeof(byte[]),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
     }
 
     [Test]
     public void GetStorageType_PropertyDefinition_ForNullableValueTypes ()
     {
       CheckGetStorageType_ForProperty(
-          typeof (bool?),
+          typeof(bool?),
           null, 
           false, 
           false,
-          typeof (bool?),
+          typeof(bool?),
           "bit",
           DbType.Boolean, 
           false,
           null,
-          typeof (bool?),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").SameAs(typeof (bool?)));
+          typeof(bool?),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").SameAs(typeof(bool?)));
 
       CheckGetStorageType_ForProperty(
-          typeof (bool?),
+          typeof(bool?),
           null,
           true,
           false,
-          typeof (bool?),
+          typeof(bool?),
           "bit",
           DbType.Boolean,
           true,
           null,
-          typeof (bool?),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").SameAs(typeof (bool?)));
+          typeof(bool?),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").SameAs(typeof(bool?)));
       CheckGetStorageType_ForProperty(
-          typeof (bool?),
+          typeof(bool?),
           null,
           false,
           true,
-          typeof (bool?),
+          typeof(bool?),
           "bit",
           DbType.Boolean,
           true,
           null,
-          typeof (bool?),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").SameAs(typeof (bool?)));
+          typeof(bool?),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").SameAs(typeof(bool?)));
 
       CheckGetStorageType_ForProperty(
-          typeof (Int16Enum?),
+          typeof(Int16Enum?),
           null,
           false,
           false,
-          typeof (Int16?),
+          typeof(Int16?),
           "smallint",
           DbType.Int16,
           false,
           null,
-          typeof (Int16Enum?),
-          Is.TypeOf(typeof (AdvancedEnumConverter)));
+          typeof(Int16Enum?),
+          Is.TypeOf(typeof(AdvancedEnumConverter)));
       CheckGetStorageType_ForProperty(
-          typeof (Int16Enum?),
+          typeof(Int16Enum?),
           null,
           false,
           true,
-          typeof (Int16?),
+          typeof(Int16?),
           "smallint",
           DbType.Int16,
           true,
           null,
-          typeof (Int16Enum?),
-          Is.TypeOf(typeof (AdvancedEnumConverter)));
+          typeof(Int16Enum?),
+          Is.TypeOf(typeof(AdvancedEnumConverter)));
       CheckGetStorageType_ForProperty(
-          typeof (Int16Enum?),
+          typeof(Int16Enum?),
           null,
           true,
           false,
-          typeof (Int16?),
+          typeof(Int16?),
           "smallint",
           DbType.Int16,
           true,
           null,
-          typeof (Int16Enum?),
-          Is.TypeOf(typeof (AdvancedEnumConverter)));
+          typeof(Int16Enum?),
+          Is.TypeOf(typeof(AdvancedEnumConverter)));
     }
 
     [Test]
@@ -455,24 +455,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var storageTypeForObjectID = (StorageTypeInformation) _storageTypeInformationProvider.GetStorageTypeForID(true);
       CheckStorageTypeInformation(
           storageTypeForObjectID,
-          typeof (Guid?),
+          typeof(Guid?),
           "uniqueidentifier",
           DbType.Guid,
           true,
           null,
-          typeof (Guid?),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (Guid?)));
+          typeof(Guid?),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Guid?)));
 
       var storageTypeForObjectIDNotNullable = (StorageTypeInformation) _storageTypeInformationProvider.GetStorageTypeForID(false);
       CheckStorageTypeInformation(
           storageTypeForObjectIDNotNullable,
-          typeof (Guid?),
+          typeof(Guid?),
           "uniqueidentifier",
           DbType.Guid,
           false,
           null,
-          typeof (Guid?),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (Guid?)));
+          typeof(Guid?),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Guid?)));
     }
 
     [Test]
@@ -481,25 +481,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var storageTypeForSerializedObjectID = (StorageTypeInformation) _storageTypeInformationProvider.GetStorageTypeForSerializedObjectID(true);
       CheckStorageTypeInformation(
           storageTypeForSerializedObjectID,
-          typeof (string),
+          typeof(string),
           "varchar (255)",
           DbType.AnsiString,
           true,
           255,
-          typeof (string),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (string)));
+          typeof(string),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
 
       var storageTypeForSerializedObjectIDNotNullable = 
           (StorageTypeInformation) _storageTypeInformationProvider.GetStorageTypeForSerializedObjectID(false);
       CheckStorageTypeInformation(
           storageTypeForSerializedObjectIDNotNullable,
-          typeof (string),
+          typeof(string),
           "varchar (255)",
           DbType.AnsiString,
           false,
           255,
-          typeof (string),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (string)));
+          typeof(string),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
     }
 
     [Test]
@@ -508,24 +508,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var storageTypeForClassID = (StorageTypeInformation) _storageTypeInformationProvider.GetStorageTypeForClassID(true);
       CheckStorageTypeInformation(
           storageTypeForClassID,
-          typeof (string),
+          typeof(string),
           "varchar (100)",
           DbType.AnsiString,
           true,
           100,
-          typeof (string),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (string)));
+          typeof(string),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
 
       var storageTypeForClassIDNotNullable = (StorageTypeInformation) _storageTypeInformationProvider.GetStorageTypeForClassID(false);
       CheckStorageTypeInformation(
           storageTypeForClassIDNotNullable,
-          typeof (string),
+          typeof(string),
           "varchar (100)",
           DbType.AnsiString,
           false,
           100,
-          typeof (string),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (string)));
+          typeof(string),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
     }
 
     [Test]
@@ -534,30 +534,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var storageTypeForTimestamp = (StorageTypeInformation) _storageTypeInformationProvider.GetStorageTypeForTimestamp(true);
       CheckStorageTypeInformation(
           storageTypeForTimestamp,
-          typeof (byte[]),
+          typeof(byte[]),
           "rowversion",
           DbType.Binary,
           true,
           null,
-          typeof (Byte[]),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (byte[])));
+          typeof(Byte[]),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
 
       var storageTypeForTimestampNotNullable = (StorageTypeInformation) _storageTypeInformationProvider.GetStorageTypeForTimestamp(false);
       CheckStorageTypeInformation(
           storageTypeForTimestampNotNullable,
-          typeof (byte[]),
+          typeof(byte[]),
           "rowversion",
           DbType.Binary,
           false,
           null,
-          typeof (Byte[]),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (byte[])));
+          typeof(Byte[]),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
     }
 
     [Test]
     public void GetStorageType_PropertyDefinition_WithNotSupportedType ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("Name", typeof (Char));
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("Name", typeof(Char));
       Assert.That(
           () => _storageTypeInformationProvider.GetStorageType(propertyDefinition, false),
           Throws.InstanceOf<NotSupportedException>()
@@ -568,40 +568,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     [Test]
     public void GetStorageType_Type_SupportedType_Nullable ()
     {
-      var result = (StorageTypeInformation) _storageTypeInformationProvider.GetStorageType(typeof (int?));
+      var result = (StorageTypeInformation) _storageTypeInformationProvider.GetStorageType(typeof(int?));
 
       CheckStorageTypeInformation(
           result,
-          typeof (int?),
+          typeof(int?),
           "int",
           DbType.Int32,
           true,
           null,
-          typeof (int?),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (int?)));
+          typeof(int?),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(int?)));
     }
 
     [Test]
     public void GetStorageType_Type_SupportedType_NotNullable ()
     {
-      var result = (StorageTypeInformation) _storageTypeInformationProvider.GetStorageType(typeof (int));
+      var result = (StorageTypeInformation) _storageTypeInformationProvider.GetStorageType(typeof(int));
 
       CheckStorageTypeInformation(
           result,
-          typeof (int),
+          typeof(int),
           "int",
           DbType.Int32,
           false,
           null,
-          typeof (int),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (int)));
+          typeof(int),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(int)));
     }
 
     [Test]
     public void GetStorageType_Type_UnsupportedType_NotNullable ()
     {
       Assert.That(
-          () => _storageTypeInformationProvider.GetStorageType(typeof (Char)),
+          () => _storageTypeInformationProvider.GetStorageType(typeof(Char)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "Type 'System.Char' is not supported by this storage provider."));
@@ -611,7 +611,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     public void GetStorageType_Type_UnsupportedType_Nullable ()
     {
       Assert.That(
-          () => _storageTypeInformationProvider.GetStorageType(typeof (Char?)),
+          () => _storageTypeInformationProvider.GetStorageType(typeof(Char?)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo("Type 'System.Nullable`1[System.Char]' is not supported by this storage provider."));
     }
@@ -620,7 +620,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     public void GetStorageType_Type_UnsupportedType_EnumWithUnsupportedUnderlyingType ()
     {
       Assert.That(
-          () => _storageTypeInformationProvider.GetStorageType(typeof (UnsupportedEnum)),
+          () => _storageTypeInformationProvider.GetStorageType(typeof(UnsupportedEnum)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "Type 'Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Model.Building.SqlStorageTypeInformationProviderTest+UnsupportedEnum' "
@@ -634,13 +634,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
 
       CheckStorageTypeInformation(
           result,
-          typeof (object),
+          typeof(object),
           "nvarchar (max)",
           DbType.String, 
           true,
           -1,
-          typeof (object),
-          Is.TypeOf(typeof (NullValueConverter)));
+          typeof(object),
+          Is.TypeOf(typeof(NullValueConverter)));
     }
 
     [Test]
@@ -650,13 +650,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
 
       CheckStorageTypeInformation(
           result,
-          typeof (int),
+          typeof(int),
           "int",
           DbType.Int32,
           false,
           null,
-          typeof (int),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (int)));
+          typeof(int),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(int)));
     }
 
     [Test]
@@ -666,13 +666,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
 
       CheckStorageTypeInformation(
           result,
-          typeof (string),
+          typeof(string),
           "nvarchar (max)",
           DbType.String,
           true,
           -1,
-          typeof (string),
-          Is.TypeOf(typeof (DefaultConverter)).With.Property("Type").EqualTo(typeof (string)));
+          typeof(string),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
     }
 
     private void CheckGetStorageType_ForProperty (

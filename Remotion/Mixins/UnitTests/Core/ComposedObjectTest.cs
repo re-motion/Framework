@@ -30,8 +30,8 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       var instance = ObjectFactory.Create<ClassDerivedFromComposedObject>(ParamList.Empty);
 
-      Assert.That(instance, Is.InstanceOf(typeof (ClassDerivedFromComposedObject)));
-      Assert.That(instance, Is.InstanceOf(typeof (ClassDerivedFromComposedObject.IClassDerivedFromComposedObject)));
+      Assert.That(instance, Is.InstanceOf(typeof(ClassDerivedFromComposedObject)));
+      Assert.That(instance, Is.InstanceOf(typeof(ClassDerivedFromComposedObject.IClassDerivedFromComposedObject)));
       Assert.That(Mixin.Get<ClassDerivedFromComposedObject.Mixin1>(instance), Is.Not.Null);
     }
 
@@ -67,7 +67,7 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       ClassDerivedFromComposedObject.IClassDerivedFromComposedObject instance = ClassDerivedFromComposedObject.NewObject();
 
-      Assert.That(instance, Is.InstanceOf(typeof (ClassDerivedFromComposedObject)));
+      Assert.That(instance, Is.InstanceOf(typeof(ClassDerivedFromComposedObject)));
       Assert.That(Mixin.Get<ClassDerivedFromComposedObject.Mixin1>(instance), Is.Not.Null);
     }
 
@@ -79,7 +79,7 @@ namespace Remotion.Mixins.UnitTests.Core
       var result = instance.This;
 
       Assert.That(result, Is.SameAs(instance));
-      Assert.That(result, Is.InstanceOf(typeof (ClassDerivedFromComposedObject.IClassDerivedFromComposedObject)));
+      Assert.That(result, Is.InstanceOf(typeof(ClassDerivedFromComposedObject.IClassDerivedFromComposedObject)));
     }
 
     [Test]

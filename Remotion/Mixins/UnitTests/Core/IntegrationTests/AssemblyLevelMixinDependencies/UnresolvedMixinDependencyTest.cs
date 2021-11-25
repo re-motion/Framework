@@ -26,7 +26,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     [Test]
     public void UnresolvedDependency_ViaAssemblyLevelAttribute ()
     {
-      PrepareMixinConfigurationWithAttributeDeclarations(new AdditionalMixinDependencyAttribute(typeof (C), typeof (M1), typeof (M2)));
+      PrepareMixinConfigurationWithAttributeDeclarations(new AdditionalMixinDependencyAttribute(typeof(C), typeof(M1), typeof(M2)));
 
       Assert.That(
           () => ObjectFactory.Create<C>(), 
@@ -47,7 +47,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       string M ();
     }
 
-    [Extends (typeof (C))]
+    [Extends (typeof(C))]
     public class M1 : Mixin<C, IC>
     {
       [OverrideTarget]

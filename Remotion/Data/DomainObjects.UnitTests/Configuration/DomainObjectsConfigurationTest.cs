@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
         DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
         Assert.That(domainObjectsConfiguration.MappingLoader, Is.Not.Null);
-        Assert.That(domainObjectsConfiguration.MappingLoader.MappingLoaderType, Is.SameAs(typeof (FakeMappingLoader)));
+        Assert.That(domainObjectsConfiguration.MappingLoader.MappingLoaderType, Is.SameAs(typeof(FakeMappingLoader)));
 
         Assert.That(domainObjectsConfiguration.Storage, Is.Not.Null);
         Assert.That(domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition, Is.Not.Null);
@@ -206,7 +206,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     {
     }
 
-    [ImplementationFor (typeof (ICustomStorageObjectFactory))]
+    [ImplementationFor (typeof(ICustomStorageObjectFactory))]
     public class CustomStorageObjectFactory : SqlStorageObjectFactory, ICustomStorageObjectFactory
     {
     }
@@ -215,7 +215,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     {
     }
 
-    [Uses (typeof (FakeMixin))]
+    [Uses (typeof(FakeMixin))]
     public class MixedCustomStorageObjectFactory : SqlStorageObjectFactory
     {
     }

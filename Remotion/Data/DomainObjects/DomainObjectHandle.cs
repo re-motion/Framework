@@ -34,9 +34,9 @@ namespace Remotion.Data.DomainObjects
     public DomainObjectHandle (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
-      if (objectID.ClassDefinition.ClassType != typeof (T))
+      if (objectID.ClassDefinition.ClassType != typeof(T))
       {
-        var message = string.Format("The class type of ObjectID '{0}' doesn't match the handle type '{1}'.", objectID, typeof (T));
+        var message = string.Format("The class type of ObjectID '{0}' doesn't match the handle type '{1}'.", objectID, typeof(T));
         throw new ArgumentException(message, "objectID");
       }
 
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects
       }
       catch (InvalidCastException ex)
       {
-        var message = string.Format("The handle for object '{0}' cannot be represented as a handle for type '{1}'.", _objectID, typeof (TOther));
+        var message = string.Format("The handle for object '{0}' cannot be represented as a handle for type '{1}'.", _objectID, typeof(TOther));
         throw new InvalidCastException(message, ex);
       }
     }

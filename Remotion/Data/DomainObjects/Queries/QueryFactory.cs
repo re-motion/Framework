@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Queries
     public static IQueryable<T> CreateLinqQuery<T> ()
         where T: DomainObject
     {
-      var startingClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof (T));
+      var startingClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(T));
       var providerDefinition = startingClassDefinition.StorageEntityDefinition.StorageProviderDefinition;
 
       var executor = s_linqProviderComponentFactory.Value.CreateQueryExecutor(providerDefinition);

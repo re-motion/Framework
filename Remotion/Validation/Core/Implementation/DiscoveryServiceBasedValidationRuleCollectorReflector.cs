@@ -31,7 +31,7 @@ namespace Remotion.Validation.Implementation
   /// of the <see cref="IValidationRuleCollector"/> interface. The <see cref="IValidatedTypeResolver"/> is the used to associate the 
   /// collector types to the validated type. 
   /// </summary>
-  [ImplementationFor (typeof (IValidationRuleCollectorReflector), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor (typeof(IValidationRuleCollectorReflector), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class DiscoveryServiceBasedValidationRuleCollectorReflector : IValidationRuleCollectorReflector
   {
     private readonly ITypeDiscoveryService _typeDiscoveryService;
@@ -47,7 +47,7 @@ namespace Remotion.Validation.Implementation
     }
 
     public DiscoveryServiceBasedValidationRuleCollectorReflector (IValidatedTypeResolver validatedTypeResolver)
-        : this (ContextAwareTypeUtility.GetTypeDiscoveryService(), validatedTypeResolver)
+        : this(ContextAwareTypeUtility.GetTypeDiscoveryService(), validatedTypeResolver)
     {
     }
 
@@ -77,7 +77,7 @@ namespace Remotion.Validation.Implementation
 
     private ILookup<Type, Type> GetValidationCollectors ()
     {
-      return _typeDiscoveryService.GetTypes(typeof (IValidationRuleCollector), excludeGlobalTypes: false).Cast<Type>()
+      return _typeDiscoveryService.GetTypes(typeof(IValidationRuleCollector), excludeGlobalTypes: false).Cast<Type>()
           .Where(IsRelevant)
           .ToLookup(GetValidatedType, collectorType => collectorType);
     }
@@ -95,7 +95,7 @@ namespace Remotion.Validation.Implementation
       return !(collectorType.IsAbstract
                || collectorType.IsInterface
                || collectorType.IsGenericTypeDefinition
-               || collectorType.IsDefined(typeof (ApplyProgrammaticallyAttribute), false));
+               || collectorType.IsDefined(typeof(ApplyProgrammaticallyAttribute), false));
     }
   }
 }

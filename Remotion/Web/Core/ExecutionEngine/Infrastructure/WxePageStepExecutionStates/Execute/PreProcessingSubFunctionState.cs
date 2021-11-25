@@ -34,7 +34,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 
     public PreProcessingSubFunctionState (
         IExecutionStateContext executionStateContext, PreProcessingSubFunctionStateParameters parameters, WxeRepostOptions repostOptions)
-        : base (executionStateContext, parameters)
+        : base(executionStateContext, parameters)
     {
       _repostOptions = repostOptions;
     }

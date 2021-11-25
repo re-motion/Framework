@@ -102,7 +102,7 @@ namespace Remotion.FunctionalProgramming
       ArgumentUtility.CheckNotNull("source", source);
       ArgumentUtility.CheckNotNull("createEmptySequenceException", createEmptySequenceException);
 
-      TSource result = default (TSource)!;
+      TSource result = default(TSource)!;
       bool isElementFound = false;
       foreach (TSource current in source)
       {
@@ -140,7 +140,7 @@ namespace Remotion.FunctionalProgramming
       ArgumentUtility.CheckNotNull("predicate", predicate);
       ArgumentUtility.CheckNotNull("createNoMatchingElementException", createNoMatchingElementException);
 
-      TSource result = default (TSource)!;
+      TSource result = default(TSource)!;
       bool isElementFound = false;
       foreach (TSource current in source)
       {
@@ -403,7 +403,7 @@ namespace Remotion.FunctionalProgramming
       using (var enumerator = source.GetEnumerator())
       {
         if (!enumerator.MoveNext())
-          return default (TSource)!;
+          return default(TSource)!;
 
         var element = enumerator.Current;
         if (enumerator.MoveNext())

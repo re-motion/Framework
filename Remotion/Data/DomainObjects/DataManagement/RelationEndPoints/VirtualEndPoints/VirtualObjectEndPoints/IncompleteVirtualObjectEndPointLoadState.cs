@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public IncompleteVirtualObjectEndPointLoadState (
         IEndPointLoader endPointLoader,
         IVirtualObjectEndPointDataManagerFactory dataManagerFactory)
-        : base (endPointLoader)
+        : base(endPointLoader)
     {
       ArgumentUtility.CheckNotNull("dataManagerFactory", dataManagerFactory);
       _dataManagerFactory = dataManagerFactory;
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     #region Serialization
 
     public IncompleteVirtualObjectEndPointLoadState (FlattenedDeserializationInfo info)
-        : base (info)
+        : base(info)
     {
       _dataManagerFactory = info.GetValueForHandle<IVirtualObjectEndPointDataManagerFactory>();
     }

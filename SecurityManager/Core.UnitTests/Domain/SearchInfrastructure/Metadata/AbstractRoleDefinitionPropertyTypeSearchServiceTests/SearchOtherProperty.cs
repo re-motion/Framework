@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Metadat
       _testHelper.Transaction.EnterNonDiscardingScope();
 
       _searchService = new AbstractRoleDefinitionPropertyTypeSearchService();
-      IBusinessObjectClass aceClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (AccessControlEntry));
+      IBusinessObjectClass aceClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(AccessControlEntry));
       _property = (IBusinessObjectReferenceProperty) aceClass.GetPropertyDefinition("AccessControlList");
       Assert.That(_property, Is.Not.Null);
     }

@@ -36,7 +36,7 @@ namespace Remotion.Security.Metadata
     
     // construction and disposing
 
-    public AssemblyReflector () : this (new AccessTypeReflector(), new ClassReflector(), new AbstractRoleReflector())
+    public AssemblyReflector () : this(new AccessTypeReflector(), new ClassReflector(), new AbstractRoleReflector())
     {
     }
 
@@ -82,7 +82,7 @@ namespace Remotion.Security.Metadata
 
       foreach (Type type in AssemblyTypeCache.GetTypes(assembly))
       {
-        if (typeof (ISecurableObject).IsAssignableFrom(type))
+        if (typeof(ISecurableObject).IsAssignableFrom(type))
           _classReflector.GetMetadata(type, cache);
       }
 

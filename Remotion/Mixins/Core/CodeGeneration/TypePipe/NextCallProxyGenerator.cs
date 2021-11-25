@@ -32,7 +32,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// Generates <see cref="INextCallProxy"/> instances.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (INextCallProxyGenerator), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor (typeof(INextCallProxyGenerator), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class NextCallProxyGenerator : INextCallProxyGenerator
   {
     public NextCallProxyGenerator ()
@@ -52,7 +52,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var nextCallProxyType = CreateNextCallProxyType(concreteTarget, targetClassDefinition);
 
       var thisField = AddPublicField(nextCallProxyType, "__this", concreteTarget);
-      var depthField = AddPublicField(nextCallProxyType, "__depth", typeof (int));
+      var depthField = AddPublicField(nextCallProxyType, "__depth", typeof(int));
 
       var constructor = AddConstructor(nextCallProxyType, concreteTarget, thisField, depthField);
 
@@ -78,7 +78,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private MutableType CreateNextCallProxyType (MutableType concreteTarget, TargetClassDefinition targetClassDefinition)
     {
       var attributes = TypeAttributes.NestedPublic | TypeAttributes.Sealed;
-      var nextCallProxy =  concreteTarget.AddNestedType("NextCallProxy", attributes, typeof (object));
+      var nextCallProxy =  concreteTarget.AddNestedType("NextCallProxy", attributes, typeof(object));
 
       AddRequiredInterfaces(nextCallProxy, targetClassDefinition);
 
@@ -88,7 +88,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private void AddRequiredInterfaces (MutableType nextCallProxy, TargetClassDefinition targetClassDefinition)
     {
       var interfaces = EnumerableUtility
-          .Singleton(typeof (IGeneratedNextCallProxyType))
+          .Singleton(typeof(IGeneratedNextCallProxyType))
           .Concat(targetClassDefinition.RequiredNextCallTypes.Select(requiredType => requiredType.Type));
 
       foreach (var ifc in interfaces)
@@ -106,7 +106,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       return nextCallProxy.AddConstructor(
           MethodAttributes.Public,
-          new[] { new ParameterDeclaration(concreteTarget, "this"), new ParameterDeclaration(typeof (int), "depth") },
+          new[] { new ParameterDeclaration(concreteTarget, "this"), new ParameterDeclaration(typeof(int), "depth") },
           ctx =>
           Expression.Block(
               ctx.CallBaseConstructor(),

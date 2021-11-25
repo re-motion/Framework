@@ -92,7 +92,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnPreRender (EventArgs e)
     {
-      UserLabel.Text = GetResourceManager(typeof (ResourceIdentifier)).GetString(ResourceIdentifier.UserLabelText);
+      UserLabel.Text = GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.UserLabelText);
 
       base.OnPreRender(e);
 

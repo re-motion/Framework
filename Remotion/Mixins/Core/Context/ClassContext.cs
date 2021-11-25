@@ -63,7 +63,7 @@ namespace Remotion.Mixins.Context
     /// <param name="composedInterfaces">The composed interfaces supported by the class.</param>
     /// <exception cref="ArgumentNullException">The <paramref name="type"/> parameter is <see langword="null"/>.</exception>
     public ClassContext (Type type, IEnumerable<MixinContext> mixins, IEnumerable<Type> composedInterfaces)
-        : this (
+        : this(
             ArgumentUtility.CheckNotNull("type", type),
             new MixinContextCollection(ArgumentUtility.CheckNotNull("mixins", mixins)),
             new HashSet<Type>(ArgumentUtility.CheckNotNull("composedInterfaces", composedInterfaces)).AsReadOnly())

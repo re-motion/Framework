@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   public class BocReferenceValueSelector : BocControlSelectorBase<BocReferenceValueControlObject>
   {
     public BocReferenceValueSelector ()
-        : base ("BocReferenceValue")
+        : base("BocReferenceValue")
     {
     }
 

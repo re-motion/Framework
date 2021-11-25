@@ -37,7 +37,7 @@ namespace Remotion.Collections
 
     protected NameObjectCollection (SerializationInfo info, StreamingContext context)
     {
-      _hashtable = (Hashtable) info.GetValue("_hashtable", typeof (Hashtable))!;
+      _hashtable = (Hashtable) info.GetValue("_hashtable", typeof(Hashtable))!;
     }
 
     void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)

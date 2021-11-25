@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
   /// </summary>
   public class DefaultDownloadHelper : DownloadHelperBase
   {
-    private static ILog Log { get; } = LogManager.GetLogger(typeof (DefaultDownloadHelper));
+    private static ILog Log { get; } = LogManager.GetLogger(typeof(DefaultDownloadHelper));
 
     [NotNull]
     private string DownloadDirectory { get; }
@@ -69,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
         TimeSpan downloadUpdatedTimeout,
         TimeSpan downloadStartedGracePeriod,
         bool cleanUpDownloadFolderOnError)
-        : base (downloadStartedTimeout, downloadUpdatedTimeout)
+        : base(downloadStartedTimeout, downloadUpdatedTimeout)
     {
       ArgumentUtility.CheckNotNullOrEmpty("downloadDirectory", downloadDirectory);
       ArgumentUtility.CheckNotNullOrEmpty("partialFileExtension", partialFileExtension);

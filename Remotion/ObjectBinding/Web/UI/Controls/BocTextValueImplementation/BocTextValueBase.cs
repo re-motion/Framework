@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     private static readonly object s_textChangedEvent = new object();
 
     protected BocTextValueBase ()
-        : this (BocTextBoxMode.SingleLine)
+        : this(BocTextBoxMode.SingleLine)
     {
     }
 

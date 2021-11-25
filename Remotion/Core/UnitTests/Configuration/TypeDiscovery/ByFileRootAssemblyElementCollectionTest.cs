@@ -54,9 +54,9 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
       ByFileRootAssemblyElementBase[] result = collection.ToArray();
 
       Assert.That(result.Length, Is.EqualTo(3));
-      Assert.That(result[0], Is.InstanceOf(typeof (ByFileIncludeRootAssemblyElement)));
-      Assert.That(result[1], Is.InstanceOf(typeof (ByFileIncludeRootAssemblyElement)));
-      Assert.That(result[2], Is.InstanceOf(typeof (ByFileExcludeRootAssemblyElement)));
+      Assert.That(result[0], Is.InstanceOf(typeof(ByFileIncludeRootAssemblyElement)));
+      Assert.That(result[1], Is.InstanceOf(typeof(ByFileIncludeRootAssemblyElement)));
+      Assert.That(result[2], Is.InstanceOf(typeof(ByFileExcludeRootAssemblyElement)));
     }
 
     [Test]
@@ -147,7 +147,7 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
       var finder = collection.CreateRootAssemblyFinder(loaderStub.Object);
 
       Assert.That(finder.SearchPath, Is.EqualTo(AppContext.BaseDirectory));
-      Assert.That(finder.FileSearchService, Is.InstanceOf(typeof (FileSystemSearchService)));
+      Assert.That(finder.FileSearchService, Is.InstanceOf(typeof(FileSystemSearchService)));
       Assert.That(finder.AssemblyLoader, Is.SameAs(loaderStub.Object));
 
       var specs = finder.Specifications.ToArray();

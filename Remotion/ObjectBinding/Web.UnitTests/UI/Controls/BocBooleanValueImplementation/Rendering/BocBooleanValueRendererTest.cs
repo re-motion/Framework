@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup(mock => mock.GetLabelIDs()).Returns(EnumerableUtility.Singleton(c_labelID));
       _booleanValue.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton(c_validationErrors));
       
-      string startupScriptKey = typeof (BocBooleanValueRenderer).FullName + "_Startup_" + _resourceSet.ResourceKey;
+      string startupScriptKey = typeof(BocBooleanValueRenderer).FullName + "_Startup_" + _resourceSet.ResourceKey;
       _startupScript = string.Format(
           "BocBooleanValue.InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}');",
           _resourceSet.ResourceKey,
@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           _resourceSet.TrueIconUrl,
           _resourceSet.FalseIconUrl,
           _resourceSet.NullIconUrl);
-      clientScriptManagerMock.Setup(mock => mock.RegisterStartupScriptBlock(_booleanValue.Object, typeof (BocBooleanValueRenderer), startupScriptKey, _startupScript)).Verifiable();
+      clientScriptManagerMock.Setup(mock => mock.RegisterStartupScriptBlock(_booleanValue.Object, typeof(BocBooleanValueRenderer), startupScriptKey, _startupScript)).Verifiable();
       clientScriptManagerMock.Setup(mock => mock.IsStartupScriptRegistered(It.IsNotNull<Type>(), It.IsNotNull<string>())).Returns(false);
       clientScriptManagerMock.Setup(mock => mock.GetPostBackEventReference(_booleanValue.Object, string.Empty)).Returns(c_postbackEventReference);
 

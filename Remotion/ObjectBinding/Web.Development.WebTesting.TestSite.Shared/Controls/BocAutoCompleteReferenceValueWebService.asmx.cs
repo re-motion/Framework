@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         throw new InvalidOperationException("I'm always going to throw an exception if you search for 'throw'!");
 
       var persons = new List<BusinessObjectWithIdentityProxy>();
-      foreach (var person in XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof (Person)))
+      foreach (var person in XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)))
       {
         persons.Add(
             new BusinessObjectWithIdentityProxy((IBusinessObjectWithIdentity) person) { IconUrl = GetUrl(GetIcon((IBusinessObject) person)) });

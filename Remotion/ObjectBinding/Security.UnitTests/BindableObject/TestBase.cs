@@ -25,15 +25,15 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     [SetUp]
     public virtual void SetUp ()
     {
-      BusinessObjectProvider.SetProvider(typeof (BindableObjectProviderAttribute), null);
-      BusinessObjectProvider.SetProvider(typeof (BindableObjectWithIdentityProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectWithIdentityProviderAttribute), null);
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      BusinessObjectProvider.SetProvider(typeof (BindableObjectProviderAttribute), null);
-      BusinessObjectProvider.SetProvider(typeof (BindableObjectWithIdentityProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectWithIdentityProviderAttribute), null);
     }
   }
 }

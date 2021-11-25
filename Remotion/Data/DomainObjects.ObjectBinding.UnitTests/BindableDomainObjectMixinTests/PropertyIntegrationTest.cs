@@ -67,8 +67,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void GetPropertyDefinitions ()
     {
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof (SampleBindableMixinDomainObject));
-      var bindableObjectClass = provider.GetBindableObjectClass(typeof (SampleBindableMixinDomainObject));
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(SampleBindableMixinDomainObject));
+      var bindableObjectClass = provider.GetBindableObjectClass(typeof(SampleBindableMixinDomainObject));
 
       var properties = bindableObjectClass.GetPropertyDefinitions();
 

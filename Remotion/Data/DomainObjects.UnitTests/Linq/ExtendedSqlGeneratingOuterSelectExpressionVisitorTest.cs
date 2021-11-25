@@ -76,12 +76,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     [Test]
     public void VisitNewExpression_ForObjectID_GeneratesNullCheckInInMemoryProjection ()
     {
-      var constructorInfo = typeof (ObjectID).GetConstructor(new[] { typeof (string), typeof (object) });
+      var constructorInfo = typeof(ObjectID).GetConstructor(new[] { typeof(string), typeof(object) });
       Assertion.IsNotNull(constructorInfo);
       var newObjectIDExpression = Expression.New(
           constructorInfo,
-          new SqlColumnDefinitionExpression(typeof (string), "t0", "CustomerClassID", false),
-          Expression.Convert(new SqlColumnDefinitionExpression(typeof (Guid), "t0", "CustomerID", false), typeof (object)));
+          new SqlColumnDefinitionExpression(typeof(string), "t0", "CustomerClassID", false),
+          Expression.Convert(new SqlColumnDefinitionExpression(typeof(Guid), "t0", "CustomerID", false), typeof(object)));
       var compoundExpression = NamedExpression.CreateNewExpressionWithNamedArguments(newObjectIDExpression);
 
       ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql(compoundExpression, _commandBuilder, _stageMock, _someSetOperationsMode);

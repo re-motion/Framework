@@ -29,9 +29,9 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void SucceedsIfEmptyTargetCallDependencyNotFulfilled ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType3), typeof (MixinWithUnsatisfiedEmptyTargetCallDependency));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(BaseType3), typeof(MixinWithUnsatisfiedEmptyTargetCallDependency));
       var log = Validator.Validate(
-          definition.Mixins[typeof (MixinWithUnsatisfiedEmptyTargetCallDependency)].TargetCallDependencies[typeof (IEmptyInterface)]);
+          definition.Mixins[typeof(MixinWithUnsatisfiedEmptyTargetCallDependency)].TargetCallDependencies[typeof(IEmptyInterface)]);
 
       AssertSuccess(log);
     }
@@ -39,9 +39,9 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void SucceedsIfCircularTargetCallDependency ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType3), typeof (MixinWithCircularTargetCallDependency1), typeof (MixinWithCircularTargetCallDependency2));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(BaseType3), typeof(MixinWithCircularTargetCallDependency1), typeof(MixinWithCircularTargetCallDependency2));
       var log = Validator.Validate(
-          definition.Mixins[typeof (MixinWithCircularTargetCallDependency1)]);
+          definition.Mixins[typeof(MixinWithCircularTargetCallDependency1)]);
 
       AssertSuccess(log);
     }
@@ -49,8 +49,8 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void SucceedsIfDuckTargetCallDependency ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (ClassFulfillingAllMemberRequirementsDuck),
-          typeof (MixinRequiringAllMembersTargetCall));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(ClassFulfillingAllMemberRequirementsDuck),
+          typeof(MixinRequiringAllMembersTargetCall));
       var log = Validator.Validate(definition);
 
       AssertSuccess(log);
@@ -59,7 +59,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void SucceedsIfAggregateTargetCallDependencyIsFullyImplemented ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (BaseType3), typeof (BT3Mixin4), typeof (Bt3Mixin7TargetCall));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(BaseType3), typeof(BT3Mixin4), typeof(Bt3Mixin7TargetCall));
       var log = Validator.Validate(definition);
 
       AssertSuccess(log);
@@ -69,7 +69,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void SucceedsIfEmptyAggregateTargetCallDependencyIsNotAvailable ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof (NullTarget), typeof (MixinWithUnsatisfiedEmptyAggregateTargetCallDependency));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(NullTarget), typeof(MixinWithUnsatisfiedEmptyAggregateTargetCallDependency));
       var log = Validator.Validate(definition);
 
       AssertSuccess(log);

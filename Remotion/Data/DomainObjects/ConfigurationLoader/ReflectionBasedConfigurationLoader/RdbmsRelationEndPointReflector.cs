@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
-        : base (classDefinition, propertyInfo, nameResolver, propertyMetadataProvider, domainModelConstraintProvider, sortExpressionDefinitionProvider)
+        : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider, domainModelConstraintProvider, sortExpressionDefinitionProvider)
     {
     }
 

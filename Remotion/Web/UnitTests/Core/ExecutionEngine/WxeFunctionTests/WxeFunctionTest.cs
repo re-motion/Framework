@@ -112,7 +112,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     public void GetExecutionListener ()
     {
       TestFunction2 function = new TestFunction2();
-      Assert.That(function.ExecutionListener, Is.InstanceOf(typeof (NullExecutionListener)));
+      Assert.That(function.ExecutionListener, Is.InstanceOf(typeof(NullExecutionListener)));
     }
 
     [Test]
